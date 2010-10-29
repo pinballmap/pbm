@@ -64,6 +64,10 @@ GEM
       abstract (>= 1.0.0)
     ffi (0.6.3)
       rake (>= 0.8.7)
+    formtastic (1.1.0)
+      actionpack (>= 2.3.0)
+      activesupport (>= 2.3.0)
+      i18n (>= 0.4.0)
     gherkin (2.2.9)
       json (~> 1.4.6)
       term-ansicolor (~> 1.0.5)
@@ -140,6 +144,7 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner
   devise
+  formtastic
   launchy
   rails (= 3.0.1)
   rspec-rails
