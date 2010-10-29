@@ -147,6 +147,7 @@ DEPENDENCIES
   formtastic
   launchy
   rails (= 3.0.1)
+  rspec
   rspec-rails
   spork
   sqlite3-ruby
