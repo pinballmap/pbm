@@ -32,6 +32,7 @@
     <td><%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
+<%= will_paginate @locations %>
 </table>
 
 <br />

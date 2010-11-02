@@ -1,17 +1,14 @@
 class LocationsController < ApplicationController
-  # GET /locations
-  # GET /locations.xml
+
   def index
-    @locations = Location.all
+    @locations = Location.paginate :page => params[:page], :per_page => 20
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html
       format.xml  { render :xml => @locations }
     end
   end
 
-  # GET /locations/1
-  # GET /locations/1.xml
   def show
     @location = Location.find(params[:id])
 
@@ -21,24 +18,19 @@ class LocationsController < ApplicationController
     end
   end
 
-  # GET /locations/new
-  # GET /locations/new.xml
   def new
     @location = Location.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html
       format.xml  { render :xml => @location }
     end
   end
 
-  # GET /locations/1/edit
   def edit
     @location = Location.find(params[:id])
   end
 
-  # POST /locations
-  # POST /locations.xml
   def create
     @location = Location.new(params[:location])
 
@@ -53,8 +45,6 @@ class LocationsController < ApplicationController
     end
   end
 
-  # PUT /locations/1
-  # PUT /locations/1.xml
   def update
     @location = Location.find(params[:id])
 
@@ -69,8 +59,6 @@ class LocationsController < ApplicationController
     end
   end
 
-  # DELETE /locations/1
-  # DELETE /locations/1.xml
   def destroy
     @location = Location.find(params[:id])
     @location.destroy
