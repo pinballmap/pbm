@@ -1,5 +1,4 @@
-class LocationsController < ApplicationController
-
+class LocationsController < InheritedResources::Base
   def index
     @locations = Location.paginate :page => params[:page], :per_page => 20
 

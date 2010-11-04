@@ -26,4 +26,5 @@ group :development, :test do
   gem 'autotest-fsevent'
   gem 'factory_girl'
   gem 'factory_girl_rails'
+  gem 'pickle'
 end
