@@ -6,10 +6,12 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 
 gem 'devise'
 gem 'inherited_resources'
-gem 'formtastic'
+gem 'simple_form'
 gem 'has_scope'
 gem "will_paginate", "~> 3.0.pre2"
 gem 'escape_utils'
+gem 'meta_where'
+gem 'jquery-rails'
 
 group :development, :test do
   gem 'capybara'
@@ -26,4 +28,5 @@ group :development, :test do
   gem 'autotest-fsevent'
   gem 'factory_girl'
   gem 'factory_girl_rails'
+  gem 'pickle'
 end

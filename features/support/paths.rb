@@ -5,16 +5,10 @@ module NavigationHelpers
     when /the home\s?page/
       '/'
 
-    when /the index of locations/
-      locations_path
-
-    when /new location/
-      new_location_path
-
-    when /^(.*)'s detail page$/i
+    when /^"(.*)"'s detail page$/i
       location_path(Location.find_by_name($1))
 
-    when /^(.*)'s edit page$/i
+    when /^"(.*)"'s edit page$/i
       edit_location_path(Location.find_by_name($1))
 
     else

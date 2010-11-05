@@ -1,5 +1,7 @@
 <h1>Listing locations</h1>
 
+<%= render :partial => "form" %>
+
 <table>
   <tr>
     <th>Name</th>
@@ -31,8 +33,8 @@
     <td><%= link_to 'Edit', edit_location_path(location) %></td>
     <td><%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
+  <%= will_paginate @locations %>
 <% end %>
-<%= will_paginate @locations %>
 </table>
 
 <br />

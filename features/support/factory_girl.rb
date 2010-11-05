@@ -1,1 +1,1 @@
-require "factory_girl/step_definitions"
+require File.dirname(__FILE__) + '/../../spec/factories'
