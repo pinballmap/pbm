@@ -6,10 +6,11 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 
 gem 'devise'
 gem 'inherited_resources'
-gem 'formtastic'
+gem 'simple_form'
 gem 'has_scope'
 gem "will_paginate", "~> 3.0.pre2"
 gem 'escape_utils'
+gem 'meta_where'
 
 group :development, :test do
   gem 'capybara'

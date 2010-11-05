@@ -5,29 +5,29 @@ Feature: Lookup Locations
 
   Scenario: Locations List
     Given a location exists with name: "Bar Cleo"
-    And I am on the index of locations
+    And I am on the locations page
     Then I should see "Bar Cleo"
 
   Scenario: Pagination
     Given there are 51 locations
     And a location exists with name: "Bar Cleo"
-    When I go to the index of locations
+    When I go to the locations page
     Then I should not see "Bar Cleo"
 
   Scenario: New location
-    Given I am on the index of locations
+    Given I am on the locations page
     When I follow "New Location"
-    Then I should be on "new location"
+    Then I should be on the new location page
 
   Scenario: Show location
     Given a location exists with name: "Bar Cleo"
-    And I am on the index of locations
+    And I am on the locations page
     When I follow "Show"
     Then I should be on Bar Cleo's detail page
 
   Scenario: Edit location
     Given a location exists with name: "Bar Cleo"
-    And I am on the index of locations
+    And I am on the locations page
     When I follow "Edit"
     Then I should be on Bar Cleo's edit page
 
@@ -36,7 +36,8 @@ Feature: Lookup Locations
       | name  |
       | Cleo  |
       | Sassy |
-    When I go to the index of locations
+    When I go to the locations page
     And I fill in "Name" with "Cleo"
-    Then I should see "Bar Cleo"
+    And I press "Search"
+    Then I should see "Cleo"
     And I should not see "Sassy"

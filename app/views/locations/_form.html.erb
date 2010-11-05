@@ -1,4 +1,5 @@
-<%= semantic_form_for @location do |form| %>
-  <%= form.inputs %>
-  <%= form.buttons %>
+<%= form_tag locations_path, :method => 'get' do %>
+  <%= label_tag :by_name, 'Name' %>
+  <%= text_field_tag :by_name, params[:name] %>
+  <%= submit_tag 'Search', :name => nil %>
 <% end %>
