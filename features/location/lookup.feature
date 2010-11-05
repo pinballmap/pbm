@@ -23,20 +23,20 @@ Feature: Lookup Locations
     Given a location exists with name: "Bar Cleo"
     And I am on the locations page
     When I follow "Show"
-    Then I should be on Bar Cleo's detail page
+    Then I should be on "Bar Cleo"'s detail page
 
   Scenario: Edit location
     Given a location exists with name: "Bar Cleo"
     And I am on the locations page
     When I follow "Edit"
-    Then I should be on Bar Cleo's edit page
+    Then I should be on "Bar Cleo"'s edit page
 
   Scenario: Delete location
     Given a location exists with name: "Cleo"
     And I am on the locations page
     When I follow "Destroy"
     Then I should be on the locations page
-    And I should not see "Cleo"
+    And I should see "Location was successfully destroyed."
 
   Scenario: Search by name
     Given the following locations exist
