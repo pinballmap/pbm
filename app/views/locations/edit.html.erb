@@ -1,6 +1,16 @@
 <h1>Editing location</h1>
 
-<%= render 'form' %>
+<%= simple_form_for @location do |f| %>
+  <%= f.input :name %>
+  <%= f.input :street %>
+  <%= f.input :city %>
+  <%= f.input :state %>
+  <%= f.input :zip %>
+  <%= f.input :phone, :required => false %>
+  <%= f.input :lat, :as => :string %>
+  <%= f.input :lon, :as => :string %>
+  <%= f.input :website, :as => :url, :required => false %>
+  <%= f.button :submit %>
+<% end %>
 
-<%= link_to 'Show', @location %> |
 <%= link_to 'Back', locations_path %>

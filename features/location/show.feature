@@ -1,4 +1,4 @@
-Feature: Lookup Locations
+Feature: Show Locations
   In order to scope out a location
   As a guest
   I want to look at a location
