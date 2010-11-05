@@ -31,6 +31,13 @@ Feature: Lookup Locations
     When I follow "Edit"
     Then I should be on Bar Cleo's edit page
 
+  Scenario: Delete location
+    Given a location exists with name: "Cleo"
+    And I am on the locations page
+    When I follow "Destroy"
+    Then I should be on the locations page
+    And I should not see "Cleo"
+
   Scenario: Search by name
     Given the following locations exist
       | name  |

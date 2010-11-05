@@ -1,5 +1,5 @@
 <%= form_tag locations_path, :method => 'get' do %>
   <%= label_tag :by_name, 'Name' %>
-  <%= text_field_tag :by_name, params[:name] %>
+  <%= text_field_tag :by_name, params[:by_name] %>
   <%= submit_tag 'Search', :name => nil %>
 <% end %>

@@ -80,6 +80,8 @@ GEM
     inherited_resources (1.1.2)
       has_scope (~> 0.5.0)
       responders (~> 0.6.0)
+    jquery-rails (0.2.4)
+      rails (~> 3.0)
     json (1.4.6)
     json_pure (1.4.6)
     launchy (0.3.7)
@@ -171,6 +173,7 @@ DEPENDENCIES
   factory_girl_rails
   has_scope
   inherited_resources
+  jquery-rails
   launchy
   meta_where
   pickle
