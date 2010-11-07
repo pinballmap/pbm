@@ -11,7 +11,7 @@ Feature: New Locations
     And I fill in "State" with "OR"
     And I fill in "Zip" with "97211"
     And I press "Create Location"
-    Then I should be on "Cleo"'s detail page
+    Then I should be on the location detail page for "Cleo"
     And a location should exist with name: "Cleo"
 
   Scenario: Required fields not filled in
