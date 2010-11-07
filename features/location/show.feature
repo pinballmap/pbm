@@ -7,7 +7,7 @@ Feature: Show Locations
     Given a location exists with name: "Bar Cleo"
     And I am on "Bar Cleo"'s detail page
     Then I should see "Name: Bar Cleo"
-  
+
   Scenario: Back button
     Given a location exists with name: "Bar Cleo"
     And I am on "Bar Cleo"'s detail page

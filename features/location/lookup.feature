@@ -32,7 +32,7 @@ Feature: Lookup Locations
     Then I should be on "Bar Cleo"'s edit page
 
   Scenario: Delete location
-    Given a location exists with name: "Cleo"
+    Given a location exists with name: "Bar Cleo"
     And I am on the locations page
     When I follow "Destroy"
     Then I should be on the locations page
