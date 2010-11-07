@@ -1,0 +1,8 @@
+<h1>Editing machine</h1>
+
+<%= simple_form_for @machine do |f| %>
+  <%= f.input :name %>
+  <%= f.button :submit %>
+<% end %>
+
+<%= link_to 'Back', machines_path %>

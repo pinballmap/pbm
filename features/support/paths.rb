@@ -5,11 +5,17 @@ module NavigationHelpers
     when /the home\s?page/
       '/'
 
-    when /^"(.*)"'s detail page$/i
+    when /^the location detail page for "(.*)"$/i
       location_path(Location.find_by_name($1))
 
-    when /^"(.*)"'s edit page$/i
+    when /^the location edit page for "(.*)"$/i
       edit_location_path(Location.find_by_name($1))
+
+    when /^the machine detail page for "(.*)"$/i
+      machine_path(Machine.find_by_name($1))
+
+    when /^the machine edit page for "(.*)"$/i
+      edit_machine_path(Machine.find_by_name($1))
 
     else
       begin
