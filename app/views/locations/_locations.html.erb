@@ -1,1 +1,26 @@
-<%= @locations %>
+<% if (@locations) %>
+<h1>Locations</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @locations.each do |location| %>
+  <tr>
+    <td><%= location.name %></td>
+    <td><%= link_to 'Show', location %></td>
+    <td><%= link_to 'Edit', edit_location_path(location) %></td>
+    <td><%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+  <%= will_paginate @locations %>
+<% end %>
+</table>
+<% end %>
+
+<br />
+
+<%= link_to 'New Location', new_location_path %>
