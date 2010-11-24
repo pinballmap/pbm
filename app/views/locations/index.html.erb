@@ -1,42 +1,7 @@
-<h1>Listing locations</h1>
-
-<%= render :partial => "locations/form" %>
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Street</th>
-    <th>City</th>
-    <th>State</th>
-    <th>Zip</th>
-    <th>Phone</th>
-    <th>Lat</th>
-    <th>Lon</th>
-    <th>Website</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @locations.each do |location| %>
-  <tr>
-    <td><%= location.name %></td>
-    <td><%= location.street %></td>
-    <td><%= location.city %></td>
-    <td><%= location.state %></td>
-    <td><%= location.zip %></td>
-    <td><%= location.phone %></td>
-    <td><%= location.lat %></td>
-    <td><%= location.lon %></td>
-    <td><%= location.website %></td>
-    <td><%= link_to 'Show', location %></td>
-    <td><%= link_to 'Edit', edit_location_path(location) %></td>
-    <td><%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-  <%= will_paginate @locations %>
+<%= form_tag locations_path, :method => 'get', :id => "locations_search" do %>
+  <p>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Search", :name => nil %>
+  </p>
+  <div id="locations"><%= render 'locations' %></div>
 <% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Location', new_location_path %>
