@@ -12,6 +12,7 @@ gem "will_paginate", "~> 3.0.pre2"
 gem 'escape_utils'
 gem 'meta_where'
 gem 'jquery-rails'
+gem 'cells'
 
 group :development, :test do
   gem 'capybara'

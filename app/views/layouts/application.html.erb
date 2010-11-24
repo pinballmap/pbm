@@ -1,18 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Pbm</title>
-  <%= stylesheet_link_tag :all %>
+  <title>Pinball Map</title>
+  <%= stylesheet_link_tag "style" %>
   <%= javascript_include_tag :defaults %>
-  <%= javascript_include_tag 'jquery', 'rails', 'application' %>
+  <%= javascript_include_tag 'jquery', 'rails', 'application', 'util' %>
   <%= csrf_meta_tag %>
+  <script type="text/javascript"
+      src="http://maps.google.com/maps/api/js?sensor=true">
+  </script>
 </head>
-<body>
+<body onload="initializeMap()">
+<div id="user_nav">
+  <% if user_signed_in? %>
+    Signed in as <%= current_user.email %>
+    <%= link_to "Log out", destroy_user_session_path %>
+  <% else %>
+    <%= link_to "Sign up", new_user_registration_path %>
+    <%= link_to "Log in", new_user_session_path %>
+  <% end %>
+</div>
 
 <p class="notice"><%= notice %></p>
 <p class="alert"><%= alert %></p>
 
 <%= yield %>
+
+<%= render :partial => 'locations/form' %>
+<%= render :partial => 'locations/map' %>
 
 </body>
 </html>

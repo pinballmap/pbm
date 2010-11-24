@@ -1,8 +1,9 @@
 class LocationsController < InheritedResources::Base
-  has_scope :by_name
+#  has_scope :by_name
 
-  protected
-    def collection
-      @locations ||= end_of_association_chain.paginate(:page => params[:page])
-    end
+  def index
+    @locations = Location.search(params[:by_name]).paginate(:per_page => 5, :page => params[:page])
+
+    render
+  end
 end
