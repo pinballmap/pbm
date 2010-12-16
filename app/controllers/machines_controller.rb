@@ -1,8 +1,9 @@
 class MachinesController < InheritedResources::Base
   has_scope :by_name
 
-  protected
-    def collection
-      @machines ||= end_of_association_chain.paginate(:page => params[:page])
-    end
+  def index
+    @machines = Location.search(params[:by_name]).paginate(:per_page => 5, :page => params[:page])
+
+    render
+  end
 end

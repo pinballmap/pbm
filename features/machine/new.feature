@@ -5,7 +5,7 @@ Feature: New machines
 
   Scenario: machines List
     Given I am on the new_machine page
-    And I fill in "Name" with "Cleo"
+    And I fill in "Machine Name" with "Cleo"
     And I press "Create Machine"
     Then I should be on the machine detail page for "Cleo"
     And a machine should exist with name: "Cleo"

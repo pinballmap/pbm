@@ -1,7 +1,7 @@
 <h1>New machine</h1>
 
 <%= simple_form_for @machine do |f| %>
-  <%= f.input :name %>
+  <%= f.input :name, :label => 'Machine Name' %>
   <%= f.button :submit %>
 <% end %>
 

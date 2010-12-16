@@ -5,11 +5,12 @@ Feature: New Locations
 
   Scenario: Locations List
     Given I am on the new_location page
-    And I fill in "Name" with "Cleo"
-    And I fill in "Street" with "123 Pine"
-    And I fill in "City" with "Portland"
-    And I fill in "State" with "OR"
-    And I fill in "Zip" with "97211"
+    And I fill in the following:
+      |Location Name|Cleo    |
+      |Street|123 Pine|
+      |City|Portland|
+      |State|OR      |
+      |Zip|97211   |
     And I press "Create Location"
     Then I should be on the location detail page for "Cleo"
     And a location should exist with name: "Cleo"

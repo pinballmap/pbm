@@ -6,7 +6,7 @@ Feature: Edit machines
   Scenario: Edit name
     Given a machine exists with name: "Cleo Tales"
     And I am on the machine edit page for "Cleo Tales"
-    And I fill in "Name" with "Sass"
+    And I fill in "Machine Name" with "Sass"
     And I press "Update Machine"
     Then I should be on the machine detail page for "Sass"
     And I should see "Sass"
