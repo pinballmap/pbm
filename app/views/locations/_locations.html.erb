@@ -11,7 +11,7 @@
 
 <% @locations.each do |location| %>
   <tr>
-    <td><%= location.name %></td>
+  <td><a onclick="showLocation(<%= location.lat %>, <%= location.lon %>);"><%= location.name %></a></td>
     <td><%= link_to 'Show', location %></td>
     <td><%= link_to 'Edit', edit_location_path(location) %></td>
     <td><%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %></td>
