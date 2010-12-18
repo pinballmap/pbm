@@ -30,4 +30,8 @@ group :development, :test do
   gem 'factory_girl'
   gem 'factory_girl_rails'
   gem 'pickle'
+  gem 'selenium'
+  gem 'selenium-client'
+  gem 'rails3-jquery-autocomplete'
+  gem 'cucumber_factory'
 end
