@@ -20,11 +20,12 @@ Feature: Main page
 #    And I press "Search"
 #    Then I should see "Bar Cleo | 123 pine | Portland"
 
+  @javascript
   Scenario: Search by location name from select
-    Given "Bar Cleo" is a location with the name "Bar Cleo" and the street "123 pine" and the city "Portland"
-    And "Star Wars" is a machine with the name "Star Wars"
-    And there is a location machine xref with the location "Bar Cleo" and the machine "Star Wars"
+    Given "Cleo" is a location with the name "Bar Cleo" and the street "123 pine" and the city "Portland"
+    And "SW" is a machine with the name "Star Wars"
+    And there is a location machine xref with the location "Cleo" and the machine "SW"
     And I am on the home page
-    And I select "Bar Cleo" from "location_select"
+    And I select "Bar Cleo" from "by_id"
     And I press "Search"
     Then I should see "Bar Cleo | 123 pine | Portland | Star Wars"

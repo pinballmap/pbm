@@ -1,4 +1,4 @@
 class LocationMachineXref < ActiveRecord::Base
-  has_one :location
-  has_one :machine
+  belongs_to :location
+  belongs_to :machine
 end

@@ -10,7 +10,7 @@ Factory.define :machine do |m|
   m.name 'Test Machine Name'
 end
 
-Factory.define :location_machine_xref, :class => 'location_machine_xref'  do |lmx|
+Factory.define :location_machine_xref do |lmx|
   lmx.association :location
   lmx.association :machine
 end

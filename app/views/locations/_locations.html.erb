@@ -1,8 +1,8 @@
 <% if (@locations) %>
 <table>
-<% @locations.each do |location| %>
+<% @locations.each do |l| %>
   <tr>
-  <td><a onclick="showLocation(<%= location.lat %>, <%= location.lon %>);"><%= [location.name, location.street, location.city].join(' | ') %></a></td>
+  <td><a onclick="showLocation(<%= l.lat %>, <%= l.lon %>);"><%= [l.name, l.street, l.city, l.machine_names].join(' | ') %></a></td>
   </tr>
   <%= will_paginate @locations %>
 <% end %>

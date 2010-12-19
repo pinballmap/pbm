@@ -1,7 +1,7 @@
 <%= form_tag locations_path, :method => 'get', :id => 'location_search' do %>
   <%= label_tag :by_name, 'Location Name' %>
   <%= text_field_tag :by_name, params[:by_name] %>
-  <%= select_tag :location_select, options_for_select([""]) + options_from_collection_for_select(Location.find(:all), "id", "name") %>
-  <%= submit_tag 'Search', :name => nil %>
+  <%= select_tag :by_id, options_for_select(['']) + options_from_collection_for_select(Location.all, 'id', 'name', params[:by_id]) %>
+  <%= submit_tag 'Search' %>
   <div id="locations"><%= render 'locations/locations' %></div>
 <% end %>
