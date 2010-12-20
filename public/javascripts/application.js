@@ -12,9 +12,7 @@ function initializeMap() {
   map = new google.maps.Map(document.getElementById("map_canvas"), { zoom: 8, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP });
 }
 
-function showLocation(lat, lon) {
-console.log(lat);
-console.log(lon);
+function showLocation(id, lat, lon) {
   var latlng = new google.maps.LatLng(lat, lon);
 
   var marker = new google.maps.Marker({
@@ -24,4 +22,6 @@ console.log(lon);
   });
 
   map.setCenter(latlng, 0);
+
+  $('#location_detail_' + id).toggle();
 }

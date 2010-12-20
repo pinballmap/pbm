@@ -1,12 +1,13 @@
 Pbm::Application.routes.draw do
-  get "pages/home"
-  get "pages/contact"
+  get 'pages/home'
+  get 'pages/contact'
 
-  resources :locations, :machines
-  devise_for :users
-  root :to => "pages#home"
+  resources :machines
 
   resources :locations do
-    get :autocomplete_location_name, :on => :collection
+    get :autocomplete, :on => :collection
   end
+
+  devise_for :users
+  root :to => 'pages#home'
 end

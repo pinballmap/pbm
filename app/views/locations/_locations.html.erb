@@ -2,7 +2,12 @@
 <table>
 <% @locations.each do |l| %>
   <tr>
-  <td><a onclick="showLocation(<%= l.lat %>, <%= l.lon %>);"><%= [l.name, l.street, l.city, l.machine_names].join(' | ') %></a></td>
+    <td><%= image_tag('closed_arrow.gif') %></td>
+    <td><a href="#" id="show_detail_<%= l.id %>" onclick="showLocation(<%= l.id %>, <%= l.lat %>, <%= l.lon %>);"><%= [l.name, l.street, l.city, l.machine_names].join(' | ') %></a></td>
+  </tr>
+  <tr id="location_detail_<%= l.id %>" style="display: none;">
+    <td>&nbsp;</td>
+    <td><%= [l.name, l.street, l.city, l.state, l.zip].join(' | ') %></td>
   </tr>
   <%= will_paginate @locations %>
 <% end %>
