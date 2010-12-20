@@ -1,26 +1,15 @@
 <% if (@locations) %>
-<h1>Locations</h1>
-
 <table>
+<% @locations.each do |l| %>
   <tr>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-    <th></th>
+    <td><%= image_tag('closed_arrow.gif') %></td>
+    <td><a href="#" id="show_detail_<%= l.id %>" onclick="showLocation(<%= l.id %>, <%= l.lat %>, <%= l.lon %>);"><%= [l.name, l.street, l.city, l.machine_names].join(' | ') %></a></td>
   </tr>
-
-<% @locations.each do |location| %>
-  <tr>
-    <td><%= location.name %></td>
-    <td><%= link_to 'Show', location %></td>
-    <td><%= link_to 'Edit', edit_location_path(location) %></td>
-    <td><%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %></td>
+  <tr id="location_detail_<%= l.id %>" style="display: none;">
+    <td>&nbsp;</td>
+    <td><%= [l.name, l.street, l.city, l.state, l.zip].join(' | ') %></td>
   </tr>
   <%= will_paginate @locations %>
 <% end %>
 </table>
 <% end %>
-
-<br />
-
-<%= link_to 'New Location', new_location_path %>

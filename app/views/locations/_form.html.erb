@@ -1,6 +1,13 @@
-<%= form_tag locations_path, :method => 'get', :id => 'location_search' do %>
-  <%= label_tag :by_name, 'Name' %>
+<%= form_tag locations_path, :method => 'get', :id => 'location_search', :remote => true do %>
+  <%= label_tag :by_name, 'Location Name' %>
   <%= text_field_tag :by_name, params[:by_name] %>
-  <%= submit_tag 'Search', :name => nil %>
+  <%= select_tag :by_id, options_for_select(['']) + options_from_collection_for_select(Location.all, 'id', 'name', params[:by_id]) %>
+  <%= submit_tag 'Search' %>
   <div id="locations"><%= render 'locations/locations' %></div>
 <% end %>
+
+<script type="text/javascript">
+  $(function () {
+    $('#by_name').autocomplete('<%= autocomplete_locations_path %>');
+  });
+</script>

@@ -8,7 +8,7 @@ gem 'devise'
 gem 'inherited_resources'
 gem 'simple_form'
 gem 'has_scope'
-gem "will_paginate", "~> 3.0.pre2"
+gem "will_paginate"
 gem 'escape_utils'
 gem 'meta_where'
 gem 'jquery-rails'
@@ -30,4 +30,7 @@ group :development, :test do
   gem 'factory_girl'
   gem 'factory_girl_rails'
   gem 'pickle'
+  gem 'selenium'
+  gem 'selenium-client'
+  gem 'cucumber_factory'
 end
