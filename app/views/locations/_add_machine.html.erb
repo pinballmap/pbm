@@ -1,0 +1,5 @@
+<%= form_tag locations_path, :method => 'get', :remote => true do %>
+  <%= label_tag ('add_machine_by_name_' + location_id.to_s).intern, 'Machine Name' %>
+  <%= text_field_tag ('add_machine_by_name_' + location_id.to_s), params[('add_machine_by_name_' + location_id.to_s).intern] %>
+  <%= select_tag ('add_machine_by_id_' + location_id.to_s).intern, options_for_select(['']) + options_from_collection_for_select(Machine.all, 'id', 'name', params[('add_machine_by_id_' + location_id.to_s).intern]) %>
+<% end %>

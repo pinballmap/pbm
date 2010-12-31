@@ -23,3 +23,7 @@ end
 When /^I click on the "([^"]*)" autocomplete option$/ do |link_text|
   page.evaluate_script %Q{ $('.ui-menu-item a:contains("#{link_text}")').trigger("mouseenter").click(); }
 end
+
+Then /^I should see the "([^"]*)" input$/ do |labeltext|
+    find_field("#{labeltext}").should be_true
+end

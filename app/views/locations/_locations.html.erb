@@ -1,14 +1,27 @@
 <% if (@locations) %>
-<table>
-<% @locations.each do |l| %>
-  <tr>
-    <td><%= image_tag('closed_arrow.gif') %></td>
-    <td><a href="#" id="show_detail_<%= l.id %>" onclick="showLocation(<%= l.id %>, <%= l.lat %>, <%= l.lon %>);"><%= [l.name, l.street, l.city, l.machine_names].join(' | ') %></a></td>
-  </tr>
-  <tr id="location_detail_<%= l.id %>" style="display: none;">
-    <td>&nbsp;</td>
-    <td><%= [l.name, l.street, l.city, l.state, l.zip].join(' | ') %></td>
-  </tr>
-<% end %>
-</table>
+  <% @locations.each do |l| %>
+  <table>
+    <tr>
+      <td><%= image_tag('closed_arrow.gif') %></td>
+      <td>
+        <a href="#" id="show_location_detail_<%= l.id %>" onclick="showLocation(<%= l.id %>, <%= l.lat %>, <%= l.lon %>);">
+          <span><%= [l.name, l.street, l.city].join(' | ') %></span><span id="machine_summary_<%= l.id %>"> # <%= [l.machine_names].join(' | ') %></span>
+        </a>
+      </td>
+    </tr>
+  </table>
+  <table id="location_detail_<%= l.id %>" style="display: none;">
+    <tr>
+      <td>Add Machine</td>
+    </tr>
+    <tr>
+      <td><%= render :partial => 'locations/add_machine', :locals => {:location_id => l.id} %></td>
+    </tr>
+    <% l.location_machine_xrefs.each do |lmx| %>
+    <tr>
+      <td><%= lmx %></td>
+    </tr>
+    <% end %>
+  </table>
+  <% end %>
 <% end %>

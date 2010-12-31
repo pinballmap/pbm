@@ -24,4 +24,5 @@ function showLocation(id, lat, lon) {
   map.setCenter(latlng, 0);
 
   $('#location_detail_' + id).toggle();
+  $('#machine_summary_' + id).toggle();
 }
