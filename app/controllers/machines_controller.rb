@@ -1,8 +1,12 @@
 class MachinesController < InheritedResources::Base
   has_scope :by_name
 
+  def autocomplete
+    render :json => Machine.find(:all, :conditions => ['name like ?', '%' + params[:term] + '%']).map {|m| m.name}
+  end
+
   def index
-    @machines = Location.search(params[:by_name]).paginate(:per_page => 5, :page => params[:page])
+    @machines = apply_scopes(Machine).all
 
     render
   end

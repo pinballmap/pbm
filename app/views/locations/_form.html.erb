@@ -2,6 +2,7 @@
   <%= label_tag :by_location_name, 'Location Name' %>
   <%= text_field_tag :by_location_name, params[:by_location_name] %>
   <%= select_tag :by_location_id, options_for_select(['']) + options_from_collection_for_select(Location.all, 'id', 'name', params[:by_location_id]) %>
+  <br />
   <%= label_tag :by_machine_name, 'Machine Name' %>
   <%= text_field_tag :by_machine_name, params[:by_machine_name] %>
   <%= select_tag :by_machine_id, options_for_select(['']) + options_from_collection_for_select(Machine.all, 'id', 'name', params[:by_machine_id]) %>
@@ -11,7 +12,7 @@
 
 <script type="text/javascript">
   $(function () {
-    $('#by_location_name').autocomplete('<%= autocomplete_locations_path %>');
-    $('#by_machine_name').autocomplete('<%= autocomplete_machines_path %>');
+    $('#by_location_name').autocomplete({source: '<%= autocomplete_locations_path %>'});
+    $('#by_machine_name').autocomplete({source: '<%= autocomplete_machines_path %>'});
   });
 </script>
