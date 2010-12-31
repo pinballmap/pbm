@@ -4,7 +4,7 @@ Pbm::Application.routes.draw do
 
   resources :machines
 
-  resources :locations do
+  resources :locations, :machines do
     get :autocomplete, :on => :collection
   end
 
