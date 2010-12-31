@@ -1,20 +1,14 @@
 class Location < ActiveRecord::Base
   has_many :location_machine_xrefs
-#  scope :by_name, proc { |name| { :conditions => { :name => name }}}
-
   validates_presence_of :name, :street, :city, :state, :zip
+
+  scope :by_location_id, lambda {|id| where(:id => id)}
+  scope :by_location_name, lambda {|name| where(:name => name)}
+  scope :by_machine_id, lambda {|id|
+    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id = ?', id)
+  }
 
   def machine_names
     self.location_machine_xrefs.collect! { |lmx| lmx.machine ? lmx.machine.name : 'MACHINELESS XREF!' }.sort
-  end
-
-  def self.search(location_name, location_id)
-    if !location_id.empty?
-      where('id = ?', location_id)
-    elsif location_name
-      where('name LIKE ?', "%#{location_name}%")
-    else
-      scoped
-    end
   end
 end

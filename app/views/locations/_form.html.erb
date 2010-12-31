@@ -1,13 +1,17 @@
 <%= form_tag locations_path, :method => 'get', :id => 'location_search', :remote => true do %>
-  <%= label_tag :by_name, 'Location Name' %>
-  <%= text_field_tag :by_name, params[:by_name] %>
-  <%= select_tag :by_id, options_for_select(['']) + options_from_collection_for_select(Location.all, 'id', 'name', params[:by_id]) %>
+  <%= label_tag :by_location_name, 'Location Name' %>
+  <%= text_field_tag :by_location_name, params[:by_location_name] %>
+  <%= select_tag :by_location_id, options_for_select(['']) + options_from_collection_for_select(Location.all, 'id', 'name', params[:by_location_id]) %>
+  <%= label_tag :by_machine_name, 'Machine Name' %>
+  <%= text_field_tag :by_machine_name, params[:by_machine_name] %>
+  <%= select_tag :by_machine_id, options_for_select(['']) + options_from_collection_for_select(Machine.all, 'id', 'name', params[:by_machine_id]) %>
   <%= submit_tag 'Search' %>
   <div id="locations"><%= render 'locations/locations' %></div>
 <% end %>
 
 <script type="text/javascript">
   $(function () {
-    $('#by_name').autocomplete('<%= autocomplete_locations_path %>');
+    $('#by_location_name').autocomplete('<%= autocomplete_locations_path %>');
+    $('#by_machine_name').autocomplete('<%= autocomplete_machines_path %>');
   });
 </script>
