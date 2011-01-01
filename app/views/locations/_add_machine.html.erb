@@ -5,3 +5,9 @@
   <%= select_tag :add_machine_by_id, options_for_select(['']) + options_from_collection_for_select(Machine.all, 'id', 'name', params[:add_machine_by_id]) %>
   <%= submit_tag 'Add' %>
 <% end %>
+
+<script type="text/javascript">
+  $(function () {
+    $('#add_machine_by_name').autocomplete({source: '<%= autocomplete_machines_path %>'});
+  });
+</script>
