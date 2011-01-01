@@ -5,6 +5,10 @@ class LocationsController < InheritedResources::Base
     render :json => Location.find(:all, :conditions => ['name like ?', '%' + params[:term] + '%']).map { |l| l.name }
   end
 
+  def remove_machine
+    LocationMachineXref.delete(:location_id => Location.find(params[:location_id]).id, :machine_id => Machine.find(params[:machine_id]).id)
+  end
+
   def add_machine
     machine = nil
     if(!params[:add_machine_by_id].empty?)

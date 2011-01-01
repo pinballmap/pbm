@@ -3,6 +3,7 @@ Pbm::Application.routes.draw do
   get 'pages/contact'
 
   get 'locations/add_machine'
+  get 'locations/remove_machine'
 
   resources :locations, :machines do
     get :autocomplete, :on => :collection
