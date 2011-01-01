@@ -7,7 +7,6 @@
   <%= text_field_tag :by_machine_name, params[:by_machine_name] %>
   <%= select_tag :by_machine_id, options_for_select(['']) + options_from_collection_for_select(Machine.all, 'id', 'name', params[:by_machine_id]) %>
   <%= submit_tag 'Search' %>
-  <div id="locations"><%= render 'locations/locations' %></div>
 <% end %>
 
 <script type="text/javascript">

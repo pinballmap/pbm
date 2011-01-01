@@ -1,68 +1,32 @@
-Feature: Main page
-  In order to do pretty much everything on this website
+Feature: New Machine for Location
+  In order to add machines to locations
   As a guest
-  I want to do basic site navigation
+  I want to be able to add machines to locations
 
-  @javascript
-  Scenario: Search by machine name from input with autocomplete
-    Given the following machines exist:
-      |name|
-      |Sassy Madness|
-      |Sassy From The Black Lagoon|
-      |Cleo Game|
-    And I am on the home page
-    When I fill in "Machine Name" with "Sassy"
-    And I wait for 1 second
-    Then I should see the following autocomplete options:
-      |Sassy Madness|
-      |Sassy From The Black Lagoon|
-
-  @javascript
-  Scenario: Search by location name from input with autocomplete
-    Given the following locations exist:
-      |name|
-      |Cleo North|
-      |Cleo South|
-      |Sassy|
-    And I am on the home page
-    When I fill in "Location Name" with "Cleo"
-    And I wait for 1 second
-    Then I should see the following autocomplete options:
-      |Cleo North|
-      |Cleo South|
-
-  @javascript
-  Scenario: Search by location name from select
-    Given "Cleo" is a location with the name "Bar Cleo" and the street "123 pine" and the city "Portland"
-    And "SW" is a machine with the name "Star Wars"
-    And there is a location machine xref with the location "Cleo" and the machine "SW"
+  Scenario: Add machine by name
+    Given "Cleo" is a location with the name "Bar Cleo" and the lat "12.12" and the lon "44.44" and the id "1"
+    And the following machines exist:
+    |name|id|
+    |Star Wars|1|
+    |Medieval Madness|2|
     And I am on the home page
     And I select "Bar Cleo" from "by_location_id"
     And I press "Search"
-    Then I should see "Bar Cleo | 123 pine | Portland # Star Wars"
-
-  @javascript
-  Scenario: Search by machine name from select
-    Given "Cleo" is a location with the name "Bar Cleo" and the street "123 pine" and the city "Portland"
-    And "SW" is a machine with the name "Star Wars"
-    And there is a location machine xref with the location "Cleo" and the machine "SW"
-    And I am on the home page
-    And I select "Star Wars" from "by_machine_id"
-    And I press "Search"
-    Then I should see "Bar Cleo | 123 pine | Portland # Star Wars"
-
-  @javascript
-  Scenario: Location detail shows the stuff that I want it to show
-    Given "Cleo" is a location with the name "Bar Cleo" and the street "123 pine" and the city "Portland" and the lat "12.12" and the lon "44.44" and the id "1"
-    And "SW" is a machine with the name "Star Wars"
-    And there is a location machine xref with the location "Cleo" and the machine "SW"
-    And I am on the home page
-    And I select "Bar Cleo" from "by_location_id"
-    And I press "Search"
-    Then I should see "Bar Cleo | 123 pine | Portland # Star Wars"
     And I follow "show_location_detail_1"
-    Then I should see "Bar Cleo | 123 pine | Portland"
-    And I should see "Add Machine"
-    And I should see the "add_machine_by_id" input
-    And I should see the "add_machine_by_name" input
-    And I should see "Star Wars"
+    And I fill in "Machine Name" with "Star Wars"
+    And I press "Add"
+    Then location_machine_xref should exist with location_id: "1", machine_id: "1"
+
+  Scenario: Add machine by id
+    Given "Cleo" is a location with the name "Bar Cleo" and the lat "12.12" and the lon "44.44" and the id "1"
+    And the following machines exist:
+    |name|id|
+    |Star Wars|1|
+    |Medieval Madness|2|
+    And I am on the home page
+    And I select "Bar Cleo" from "by_location_id"
+    And I press "Search"
+    And I follow "show_location_detail_1"
+    And I select "Medieval Madness" from "add_machine_by_id"
+    And I press "Add"
+    Then location_machine_xref should exist with location_id: "1", machine_id: "2"

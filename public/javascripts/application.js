@@ -3,6 +3,11 @@ $(function () {
     $.get(this.action, $(this).serialize(), null, 'script');
     return false;
   });
+
+  $('.add_new_machine').submit(function () {
+    $.get(this.action, $(this).serialize(), null, 'script');
+    return false;
+  });
 });
 
 var map;
