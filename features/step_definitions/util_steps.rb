@@ -25,5 +25,5 @@ When /^I click on the "([^"]*)" autocomplete option$/ do |link_text|
 end
 
 Then /^I should see the "([^"]*)" input$/ do |labeltext|
-    find_field("#{labeltext}").should be_true
+  find_field("#{labeltext}").should be_true
 end

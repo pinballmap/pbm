@@ -1,0 +1,6 @@
+<%= lmx.machine.name %>
+<%= form_tag locations_remove_machine_path, :class => 'remove_machine', :method => 'get', :remote => true do %>
+  <%= hidden_field_tag :location_id, lmx.location_id %>
+  <%= hidden_field_tag :machine_id, lmx.machine_id %>
+  <%= submit_tag 'Remove' %>
+<% end %>

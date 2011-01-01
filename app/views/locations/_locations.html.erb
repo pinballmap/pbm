@@ -17,9 +17,9 @@
     <tr>
       <td><%= render :partial => 'locations/add_machine', :locals => {:location_id => l.id} %></td>
     </tr>
-    <% l.location_machine_xrefs.each do |lmx| %>
+    <% LocationMachineXref.find_all_by_location_id(l.id).collect! do |lmx| %>
     <tr>
-      <td><%= lmx %></td>
+      <td><%= render :partial => 'locations/show_machine', :locals => {:lmx => lmx} %></td>
     </tr>
     <% end %>
   </table>

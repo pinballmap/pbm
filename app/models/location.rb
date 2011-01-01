@@ -1,6 +1,6 @@
 class Location < ActiveRecord::Base
-  has_many :location_machine_xrefs
   validates_presence_of :name, :street, :city, :state, :zip
+  has_many :location_machine_xrefs
 
   scope :by_location_id, lambda {|id| where(:id => id)}
   scope :by_location_name, lambda {|name| where(:name => name)}
@@ -13,6 +13,6 @@ class Location < ActiveRecord::Base
   }
 
   def machine_names
-    self.location_machine_xrefs.collect! { |lmx| lmx.machine.name }.sort
+    LocationMachineXref.find_all_by_location_id(self.id).collect! { |lmx| lmx.machine.name }.sort
   end
 end
