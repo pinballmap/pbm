@@ -13,6 +13,6 @@ class Location < ActiveRecord::Base
   }
 
   def machine_names
-    self.location_machine_xrefs.collect! { |lmx| lmx.machine ? lmx.machine.name : 'MACHINELESS XREF!' }.sort
+    self.location_machine_xrefs.collect! { |lmx| lmx.machine.name }.sort
   end
 end

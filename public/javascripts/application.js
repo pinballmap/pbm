@@ -3,6 +3,11 @@ $(function () {
     $.get(this.action, $(this).serialize(), null, 'script');
     return false;
   });
+
+  $('.add_new_machine').submit(function () {
+    $.get(this.action, $(this).serialize(), null, 'script');
+    return false;
+  });
 });
 
 var map;
@@ -24,4 +29,5 @@ function showLocation(id, lat, lon) {
   map.setCenter(latlng, 0);
 
   $('#location_detail_' + id).toggle();
+  $('#machine_summary_' + id).toggle();
 }
