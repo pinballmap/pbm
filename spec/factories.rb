@@ -4,6 +4,8 @@ Factory.define :location do |l|
   l.city 'Portland'
   l.state 'OR'
   l.zip '97211'
+  l.lat '11'
+  l.lon '-122'
 end
 
 Factory.define :machine do |m|

@@ -38,3 +38,16 @@ Feature: Main page
     And I should see the "add_machine_by_id" input
     And I should see the "add_machine_by_name" input
     And I should see "Star Wars"
+
+  @javascript
+  Scenario: Search by city
+    Given the following locations exist:
+      |name|city|
+      |Cleo|Portland|
+      |Sassy|Beaverton|
+      |Zelda|Hillsboro|
+      |Bawb|Hillsboro|
+    And I am on the home page
+    And I select "Beaverton" from "by_city"
+    And I press "Search"
+    Then I should see "Sassy"
