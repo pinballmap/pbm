@@ -16,3 +16,7 @@ Factory.define :location_machine_xref do |lmx|
   lmx.association :location
   lmx.association :machine
 end
+
+Factory.define :zone do |z|
+  z.name 'Test Zone'
+end

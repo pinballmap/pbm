@@ -1,8 +1,10 @@
 class Location < ActiveRecord::Base
   validates_presence_of :name, :street, :city, :state, :zip
   has_many :location_machine_xrefs
+  belongs_to :zone
 
   scope :by_location_id, lambda {|id| where(:id => id)}
+  scope :by_zone_id, lambda {|id| where(:zone_id => id)}
   scope :by_city, lambda {|city| where(:city => city)}
   scope :by_location_name, lambda {|name| where(:name => name)}
   scope :by_machine_id, lambda {|id|
