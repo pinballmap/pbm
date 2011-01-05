@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101218055651) do
+ActiveRecord::Schema.define(:version => 20110104034353) do
 
   create_table "location_machine_xrefs", :force => true do |t|
     t.datetime "created_at"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(:version => 20101218055651) do
     t.string   "website"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "zone_id"
   end
 
   create_table "machines", :force => true do |t|
@@ -58,5 +59,12 @@ ActiveRecord::Schema.define(:version => 20101218055651) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "zones", :force => true do |t|
+    t.string   "name"
+    t.integer  "region_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end
