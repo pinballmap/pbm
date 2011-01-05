@@ -38,3 +38,31 @@ Feature: Main page
     And I should see the "add_machine_by_id" input
     And I should see the "add_machine_by_name" input
     And I should see "Star Wars"
+
+  @javascript
+  Scenario: Search by city
+    Given the following locations exist:
+      |name|city|
+      |Cleo|Portland|
+      |Sassy|Beaverton|
+      |Zelda|Hillsboro|
+      |Bawb|Hillsboro|
+    And I am on the home page
+    And I select "Beaverton" from "by_city"
+    And I press "Search"
+    Then I should see "Sassy"
+
+  @javascript
+  Scenario: Search by zone
+    Given there is a zone with the name "Alberta" and the id "1"
+    And the following locations exist:
+      |name|zone_id|
+      |Cleo|1|
+      |Zelda|1|
+      |Sassy|2|
+    And I am on the home page
+    And I select "Alberta" from "by_zone_id"
+    And I press "Search"
+    Then I should see "Cleo | 123 Pine"
+    And I should see "Zelda | 123 Pine"
+    And I should not see "Sassy | 123 Pine"

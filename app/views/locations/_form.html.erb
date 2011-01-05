@@ -1,4 +1,10 @@
 <%= form_tag locations_path, :method => 'get', :id => 'location_search', :remote => true do %>
+  <%= label_tag :by_city, 'By City' %>
+  <%= select_tag :by_city, options_for_select(['']) + options_from_collection_for_select(Location.find(:all, :select => 'distinct city'), 'city', 'city', params[:by_city]) %>
+  <br />
+  <%= label_tag :by_zone_id, 'By Zone' %>
+  <%= select_tag :by_zone_id, options_for_select(['']) + options_from_collection_for_select(Zone.all, 'id', 'name', params[:by_zone_id]) %>
+  <br />
   <%= label_tag :by_location_name, 'Location Name' %>
   <%= text_field_tag :by_location_name, params[:by_location_name] %>
   <%= select_tag :by_location_id, options_for_select(['']) + options_from_collection_for_select(Location.all, 'id', 'name', params[:by_location_id]) %>

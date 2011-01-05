@@ -4,6 +4,8 @@ Factory.define :location do |l|
   l.city 'Portland'
   l.state 'OR'
   l.zip '97211'
+  l.lat '11'
+  l.lon '-122'
 end
 
 Factory.define :machine do |m|
@@ -13,4 +15,8 @@ end
 Factory.define :location_machine_xref do |lmx|
   lmx.association :location
   lmx.association :machine
+end
+
+Factory.define :zone do |z|
+  z.name 'Test Zone'
 end
