@@ -5,6 +5,12 @@ class LocationsController < InheritedResources::Base
     render :json => Location.find(:all, :conditions => ['name like ?', '%' + params[:term] + '%']).map { |l| l.name }
   end
 
+  def update_condition
+    lmx = LocationMachineXref.find(:all, :conditions => ['location_id = ? and machine_id = ?', params[:location_id], params[:machine_id]])
+    lmx.condition = params[:condition]
+    lmx.condition_date = Time.now
+  end
+
   def remove_machine
     LocationMachineXref.delete(:location_id => Location.find(params[:location_id]).id, :machine_id => Machine.find(params[:machine_id]).id)
   end

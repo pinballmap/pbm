@@ -1,7 +1,0 @@
-<%= form_tag locations_path, :method => 'get', :id => "locations_search" do %>
-  <p>
-    <%= text_field_tag :search, params[:search] %>
-    <%= submit_tag "Search", :name => nil %>
-  </p>
-  <div id="locations"><%= render 'locations' %></div>
-<% end %>

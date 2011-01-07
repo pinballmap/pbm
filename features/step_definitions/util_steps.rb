@@ -27,3 +27,7 @@ end
 Then /^I should see the "([^"]*)" input$/ do |labeltext|
   find_field("#{labeltext}").should be_true
 end
+
+Then /^"([^"]*)" should have "([^"]*)"$/ do |location_name, machine_name|
+  Location.find_by_name(location_name).machine_names.should include(machine_name)
+end
