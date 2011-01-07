@@ -4,9 +4,9 @@
     <tr>
       <td><%= image_tag('closed_arrow.gif') %></td>
       <td>
-        <a href="#" id="show_location_detail_<%= l.id %>" onclick="showLocation(<%= l.id %>, <%= l.lat %>, <%= l.lon %>);">
+        <%= link_to('#', :id => 'show_location_detail_' + l.id.to_s, :onclick => 'showLocation(' + l.id.to_s + ',' + l.lat.to_s + ',' +  l.lon.to_s + ');') do %>
           <span><%= [l.name, l.street, l.city].join(' | ') %></span><span id="machine_summary_<%= l.id %>"> # <%= [l.machine_names].join(' | ') %></span>
-        </a>
+        <% end %>
       </td>
     </tr>
   </table>

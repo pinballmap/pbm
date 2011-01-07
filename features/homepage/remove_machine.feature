@@ -8,7 +8,6 @@ Feature: Remove Machine for Location
     And "SW" is a machine with the name "Star Wars"
     And there is a location machine xref with the location "Cleo" and the machine "SW"
     And I am on the home page
-    And I select "Bar Cleo" from "by_location_id"
     And I press "Search"
     And I follow "show_location_detail_1"
     And I press "Remove"
