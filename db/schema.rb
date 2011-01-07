@@ -10,13 +10,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110104034353) do
+ActiveRecord::Schema.define(:version => 20110106015040) do
 
   create_table "location_machine_xrefs", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "location_id"
     t.integer  "machine_id"
+    t.string   "condition"
+    t.date     "condition_date"
   end
 
   create_table "locations", :force => true do |t|

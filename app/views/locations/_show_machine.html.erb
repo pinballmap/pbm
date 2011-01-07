@@ -4,3 +4,9 @@
   <%= hidden_field_tag :machine_id, lmx.machine_id %>
   <%= submit_tag 'Remove' %>
 <% end %>
+<%= form_tag locations_update_machine_condition_path, :class => 'add_machine_condition', :method => 'get', :remote => true do %>
+  <%= hidden_field_tag :location_id, lmx.location_id %>
+  <%= hidden_field_tag :machine_id, lmx.machine_id %>
+  <%= text_field_tag :machine_condition, lmx.condition ? lmx.condition + '-' + lmx.condition_date : 'No Condition' %>
+  <%= submit_tag 'Update Condition' %>
+<% end %>

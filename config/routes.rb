@@ -4,6 +4,7 @@ Pbm::Application.routes.draw do
 
   get 'locations/add_machine'
   get 'locations/remove_machine'
+  get 'locations/update_machine_condition'
 
   resources :locations, :machines do
     get :autocomplete, :on => :collection
