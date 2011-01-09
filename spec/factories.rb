@@ -20,3 +20,7 @@ end
 Factory.define :zone do |z|
   z.name 'Test Zone'
 end
+
+Factory.define :region do |r|
+  r.name 'Test Region'
+end
