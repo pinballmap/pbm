@@ -12,6 +12,15 @@ class LocationsController < InheritedResources::Base
     lmx.save
   end
 
+  def add_high_score
+    msx = MachineScoreXref.create(:location_machine_xref_id => params[:location_machine_xref_id])
+    msx.score = params[:score]
+    msx.initials = params[:initials]
+    msx.rank = params[:rank]
+
+    msx.save
+  end
+
   def remove_machine
     LocationMachineXref.delete(:location_id => Location.find(params[:location_id]).id, :machine_id => Machine.find(params[:machine_id]).id)
   end

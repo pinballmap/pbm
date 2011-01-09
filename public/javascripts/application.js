@@ -1,5 +1,5 @@
 $(function () {
-  $('#location_search', '.add_new_machine', '.update_machine_condition', '.remove_machine').submit(function () {
+  $('#location_search', '.add_new_machine', '.update_machine_condition', '.remove_machine', '.add_high_score').submit(function () {
     $.get(this.action, $(this).serialize(), null, 'script');
     return false;
   });
