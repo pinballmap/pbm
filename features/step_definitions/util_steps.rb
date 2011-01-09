@@ -31,3 +31,15 @@ end
 Then /^"([^"]*)" should have "([^"]*)"$/ do |location_name, machine_name|
   Location.find_by_name(location_name).machine_names.should include(machine_name)
 end
+
+Then /^"([^"]*)"'s "([^"]*)" should have the condition "([^"]*)"$/ do |location_name, machine_name, condition|
+  LocationMachineXref.where('machine_id = ? and location_id = ?', Machine.find_by_name(machine_name).id, Location.find_by_name(location_name).id).first.condition.should == condition
+end
+
+Then /^"([^"]*)"'s "([^"]*)" should have a score with initials "([^"]*)" and score "([^"]*)" and rank "([^"]*)"$/ do |location_name, machine_name, initials, score, rank|
+  lmx = LocationMachineXref.where('machine_id = ? and location_id = ?', Machine.find_by_name(machine_name).id, Location.find_by_name(location_name).id).first
+  msx = MachineScoreXref.where('location_machine_xref_id = ?', lmx.id).first
+  msx.initials.should == initials
+  msx.score.should == score.to_i
+  msx.rank.should == rank.to_i
+end
