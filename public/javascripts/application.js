@@ -1,10 +1,5 @@
 $(function () {
-  $('#location_search').submit(function () {
-    $.get(this.action, $(this).serialize(), null, 'script');
-    return false;
-  });
-
-  $('.add_new_machine').submit(function () {
+  $('#location_search', '.add_new_machine', '.update_machine_condition', '.remove_machine').submit(function () {
     $.get(this.action, $(this).serialize(), null, 'script');
     return false;
   });
