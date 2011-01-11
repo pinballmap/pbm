@@ -1,4 +1,4 @@
-<%= form_tag locations_add_machine_path, :class => 'add_new_machine', :method => 'get', :remote => true do %>
+<%= form_tag add_machine_locations_path, :class => 'add_new_machine', :method => 'get', :remote => true do %>
   <%= hidden_field_tag :location_id, location_id %>
   <%= label_tag :add_machine_by_name, 'Add By Machine Name' %>
   <%= text_field_tag :add_machine_by_name, params[:add_machine_by_name] %>

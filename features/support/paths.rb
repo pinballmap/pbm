@@ -2,6 +2,9 @@ module NavigationHelpers
   def path_to(page_name)
     case page_name
 
+    when /"(.*)"'s home page/
+      "/#{$1.downcase}"
+
     when /the home\s?page/
       '/'
 
