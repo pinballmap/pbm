@@ -4,8 +4,9 @@ Factory.define :location do |l|
   l.city 'Portland'
   l.state 'OR'
   l.zip '97211'
-  l.lat '11'
-  l.lon '-122'
+  l.lat 45.5589
+  l.lon -122.645
+  l.association :region, :name => 'portland'
 end
 
 Factory.define :machine do |m|
@@ -19,4 +20,8 @@ end
 
 Factory.define :zone do |z|
   z.name 'Test Zone'
+end
+
+Factory.define :region do |r|
+  r.name 'Test Region'
 end

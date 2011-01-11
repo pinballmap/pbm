@@ -40,7 +40,7 @@ class LocationsController < InheritedResources::Base
   end
 
   def index
-    @locations = apply_scopes(Location).all
+    @locations = apply_scopes(Location).where('region_id = ?', @region.id)
 
     render
   end
