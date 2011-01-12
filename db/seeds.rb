@@ -1,3 +1,5 @@
+User.create(:username => 'pdx', :password => 'password', :password_confirmation => 'password', :email => 'scott.wainstock@gmail.com')
+
 regions = Region.create([
   {:name => 'portland', :full_name => 'Portland'},
   {:name => 'chicago', :full_name => 'Chicago'},

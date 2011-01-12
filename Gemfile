@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.1'
+gem 'rails', '3.0.3'
+gem 'arel', '2.0.2'
 
 gem 'sqlite3-ruby', :require => 'sqlite3'
 
@@ -13,6 +14,7 @@ gem 'escape_utils'
 gem 'meta_where'
 gem 'jquery-rails'
 gem 'cells'
+gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
 
 group :development, :test do
   gem 'capybara'
