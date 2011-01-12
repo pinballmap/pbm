@@ -18,6 +18,7 @@ Feature: Main page
     And I press "Search"
     Then I should see "Test Location Name | 123 Pine | Portland # Test Machine Name"
 
+  @javascript
   Scenario: Search by machine name from select
     Given there is a location machine xref
     And I am on "Portland"'s home page
@@ -39,6 +40,7 @@ Feature: Main page
     And I should see the "add_machine_by_name" input
     And I should see "Test Machine Name"
 
+  @javascript
   Scenario: Search by city
     Given there is a region with the name "portland" and the id "1"
     Given the following locations exist:
@@ -52,6 +54,7 @@ Feature: Main page
     And I press "Search"
     Then I should see "Sassy"
 
+  @javascript
   Scenario: Search by zone
     Given there is a region with the name "portland" and the id "1"
     And there is a zone with the name "Alberta" and the id "1" and the region_id "1"

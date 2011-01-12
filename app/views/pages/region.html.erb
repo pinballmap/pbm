@@ -1,1 +1,6 @@
 <h1>THIS IS A REGION'S PAGE.</h1>
+<body onload="initializeMap()">
+  <%= render :partial => 'locations/form' %>
+  <div id="locations"><%= render 'locations/locations' %></div>
+  <%= render :partial => 'locations/map' %>
+</body>
