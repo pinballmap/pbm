@@ -1,15 +1,5 @@
 Pbm::Application.routes.draw do
-  get 'pages/home'
-  get 'pages/contact'
-
-  resources :locations, :machines do
-    get :autocomplete, :on => :collection
-  end
-
-  devise_for :users
-  root :to => 'pages#home'
-
-  scope ':region' do
+  scope ':region', :constraints => { :region => /portland|chicago/i } do
     resource :pages
     resource :locations do
       get :index
@@ -22,4 +12,13 @@ Pbm::Application.routes.draw do
     match '/' => "pages#region"
   end
 
+  devise_for :users
+
+  resources :locations, :machines do
+    get :autocomplete, :on => :collection
+  end
+
+  get 'pages/home'
+  get 'pages/contact'
+  root :to => 'pages#home'
 end
