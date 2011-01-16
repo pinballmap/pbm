@@ -1,13 +1,22 @@
-html { 
-  height: 100% 
+body {
+  margin: 0px;
+  padding: 0px;
+  background-color: #000;
+  color: #fff;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 11px;
 }
 
-body { 
-  height: 100%; 
-  margin: 0px; 
-  padding: 0px 
+#lookup, #form, #locations, #page {
+  float: left;
 }
 
-#map_canvas { 
-  height: 100% 
+#map {
+  float: right;
+  height: 500px;
+  width: 700px;
+}
+
+#lookup {
+  width: 350px;
 }
