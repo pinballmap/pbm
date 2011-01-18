@@ -43,3 +43,39 @@ Then /^"([^"]*)"'s "([^"]*)" should have a score with initials "([^"]*)" and sco
   msx.score.should == score.to_i
   msx.rank.should == rank.to_i
 end
+
+Then /^I should see the listing for "([^"]*)"$/ do |name|
+  within('div.float_left.search_result') do
+    page.should have_content(name)
+  end
+end
+
+Then /^I should not see the listing for "([^"]*)"$/ do |name|
+  if page.has_css?('div.float_left.search_result')
+    within('div.float_left.search_result') do
+      page.should have_no_content(name)
+    end
+  end
+end
+
+Then /^I click to see the detail for "([^"]*)"$/ do |name|
+  if page.has_css?('div.float_left.search_result')
+    within('div.float_left.search_result') do
+      click_link(name)
+    end
+  end
+end
+
+Then /^I click on the add machine link for "([^"]*)"$/ do |name|
+  l = Location.find_by_name(name)
+  if page.has_css?("div#add_machine_banner_#{l.id.to_i}.sub_nav_item")
+    page.find("div#add_machine_banner_#{l.id.to_i}.sub_nav_item").click
+  end
+end
+
+Then /^I click on the show machines link for "([^"]*)"$/ do |name|
+  l = Location.find_by_name(name)
+  if page.has_css?("div#show_machines_banner_#{l.id.to_i}.sub_nav_item")
+    page.find("div#show_machines_banner_#{l.id.to_i}.sub_nav_item").click
+  end
+end

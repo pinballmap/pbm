@@ -1,27 +1,44 @@
 <% if (@locations) %>
-  <% @locations.each do |l| %>
-  <table>
-    <tr>
-      <td><%= image_tag('closed_arrow.gif') %></td>
-      <td>
-        <%= link_to('#', :id => 'show_location_detail_' + l.id.to_s, :onclick => 'showLocation(' + l.id.to_s + ',' + l.lat.to_s + ',' +  l.lon.to_s + ');') do %>
-          <span><%= [l.name, l.street, l.city].join(' | ') %></span><span id="machine_summary_<%= l.id %>"> # <%= [l.machine_names].join(' | ') %></span>
-        <% end %>
-      </td>
-    </tr>
-  </table>
-  <table id="location_detail_<%= l.id %>" style="display: none;">
-    <tr>
-      <td>Add Machine</td>
-    </tr>
-    <tr>
-      <td><%= render :partial => 'locations/add_machine', :locals => {:location_id => l.id} %></td>
-    </tr>
-    <% LocationMachineXref.find_all_by_location_id(l.id).collect! do |lmx| %>
-    <tr>
-      <td><%= render :partial => 'locations/show_machine', :locals => {:lmx => lmx} %></td>
-    </tr>
+  <h2 class="search_results_header">Search Results</h2>
+  <div class="float_left" id="search_results">
+    <% @locations.each do |l| %>
+      <script type="text/javascript">show_location(<%= l.id.to_s %>, <%= l.lat.to_s %>, <%= l.lon.to_s %>);</script>
+      <div class="float_left search_result">
+        <div class="sub_nav_item">
+          <%= open_closed_arrows_for('location_detail', l.id) %>
+          <%= link_to('#', :id => "show_location_detail_#{l.id.to_s}", :class => 'float_left', :onclick => "$('.location_summary_#{l.id}').toggle(); toggle_data('location_detail', #{l.id});") do %>
+            <span class="float_left"><%= l.name %> </span><span class="float_left location_summary_<%= l.id %>"><%= [l.street, l.city].join(' | ') %></span>
+            <br clear="all" />
+            <span class="float_left location_summary_<%= l.id %>"><%= [l.machine_names].join(' | ')[0, 10] %></span>
+          <% end %>
+        </div>
+        <div id="location_detail_<%= l.id %>" class="sub_nav_item" style="display: none;">
+          <div class="location_name">
+            <ul>
+              <li><%= l.street %></li>
+              <li><%= [l.city, l.zip, l.state].join(', ') %></li>
+            </ul>
+          </div>
+          <div id="add_machine_banner_<%= l.id %>" class="sub_nav_item" onclick="toggle_data('add_machine', <%= l.id %>);">
+            <span>Add New Machine At This Location</span>
+            <%= open_closed_arrows_for('add_machine', l.id) %>
+          </div>
+          <div id="add_machine_<%= l.id %>" style="display: none;">
+            <br clear="all" />
+            <%= render :partial => 'locations/add_machine', :locals => {:location_id => l.id} %>
+          </div>
+          <div id="show_machines_banner_<%= l.id %>" class="sub_nav_item" onclick="toggle_data('show_machines', <%= l.id %>);">
+            <span>Show Machines At This Location</span>
+            <%= open_closed_arrows_for('show_machines', l.id) %>
+          </div>
+          <div id="show_machines_<%= l.id %>" style="display: none;">
+            <br clear="all" />
+            <% LocationMachineXref.find_all_by_location_id(l.id).collect! do |lmx| %>
+              <%= render :partial => 'locations/show_machine', :locals => {:lmx => lmx} %>
+            <% end %>
+          </div>
+        </div>
+      </div>
     <% end %>
-  </table>
-  <% end %>
+  </div>
 <% end %>

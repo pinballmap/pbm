@@ -9,7 +9,8 @@ Feature: update condition for location's machine
     And I am on "Portland"'s home page
     And I fill in "by_location_name" with "Test Location Name"
     And I press "Search"
-    And I follow "Test Location Name | 123 Pine | Portland"
+    And I click to see the detail for "Test Location Name"
+    And I click on the show machines link for "Test Location Name"
     Then the "machine_condition" field should contain "No Condition"
     When I fill in "machine_condition" with "This is a new condition"
     And I press "Update Condition"

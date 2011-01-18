@@ -12,8 +12,9 @@ Feature: Autocomplete
       |Sassy From The Black Lagoon|
       |Cleo Game|
     And I am on "Portland"'s home page
-    And I press "Search"
-    And I follow "Test Location Name | 123 Pine | Portland"
+    And I press "search"
+    And I click to see the detail for "Test Location Name"
+    And I click on the add machine link for "Test Location Name"
     And I fill in "add_machine_by_name" with "Sassy"
     And I wait for 1 second
     Then I should see the following autocomplete options:

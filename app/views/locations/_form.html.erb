@@ -1,18 +1,19 @@
 <%= form_tag locations_path, :method => 'get', :id => 'location_search', :remote => true do %>
   <%= label_tag :by_city, 'By City' %>
   <%= select_tag :by_city, options_for_select(['']) + options_from_collection_for_select(Location.find(:all, :conditions => ['region_id = ?', @region.id], :select => 'distinct city'), 'city', 'city', params[:by_city]) %>
-  <br />
+  <br clear="all" />
   <%= label_tag :by_zone_id, 'By Zone' %>
   <%= select_tag :by_zone_id, options_for_select(['']) + options_from_collection_for_select(Zone.where('region_id = ?', @region.id), 'id', 'name', params[:by_zone_id]) %>
-  <br />
+  <br clear="all" />
   <%= label_tag :by_location_name, 'Location Name' %>
   <%= text_field_tag :by_location_name, params[:by_location_name] %>
   <%= select_tag :by_location_id, options_for_select(['']) + options_from_collection_for_select(Location.where('region_id = ?', @region.id), 'id', 'name', params[:by_location_id]) %>
-  <br />
+  <br clear="all" />
   <%= label_tag :by_machine_name, 'Machine Name' %>
   <%= text_field_tag :by_machine_name, params[:by_machine_name] %>
   <%= select_tag :by_machine_id, options_for_select(['']) + options_from_collection_for_select(Machine.all, 'id', 'name', params[:by_machine_id]) %>
-  <%= submit_tag 'Search' %>
+  <br clear="all" />
+  <%= submit_tag 'Search', :id => 'search' %>
 <% end %>
 
 <script type="text/javascript">
