@@ -7,22 +7,24 @@ $(function () {
 
 var map;
 
-function initializeMap() {
+function initialize_map() {
   var latlng = new google.maps.LatLng(-34.397, 150.644);
   map = new google.maps.Map(document.getElementById("map_canvas"), { zoom: 8, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP });
 }
 
-function showLocation(id, lat, lon) {
+function toggle_data(name, id) {
+  $('#' + name + '_' + id).toggle();
+  $('#' + name + '_open_arrow_' + id).toggle();
+  $('#' + name + '_closed_arrow_' + id).toggle();
+}
+
+function show_location(id, lat, lon) {
   var latlng = new google.maps.LatLng(lat, lon);
 
   var marker = new google.maps.Marker({
       position: latlng,
       map: map,
-      title: "Brotastic"
   });
 
   map.setCenter(latlng, 0);
-
-  $('#location_detail_' + id).toggle();
-  $('#machine_summary_' + id).toggle();
 }

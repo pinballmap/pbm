@@ -7,16 +7,56 @@ body {
   font-size: 11px;
 }
 
-#lookup, #form, #locations, #page {
-  float: left;
-}
-
 #map {
   float: right;
+  padding-left: 40px;
   height: 500px;
   width: 700px;
 }
 
 #lookup {
-  width: 350px;
+  width: 375px;
+}
+
+.search_results_header {
+  margin: 10px 0 5px 13px;
+  color: #fff;
+  border-bottom: 1px solid #fff;
+}
+
+.search_result ul {
+  border-left: 8px solid #A9BEFF;
+  padding-left: 10px;
+}
+
+#search_results li {
+  list-style-type: none;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.sub_nav_item span {
+  float: left;
+}
+
+.location_name {
+  border-bottom: 1px solid #494949;
+}
+
+.sub_nav_item {
+  font-size: 10px;
+  display: block;
+  width: 240px;
+  font-weight: normal;
+  color: #999999;
+  padding: 3px 10px 3px 0;
+  cursor: pointer;
+}
+
+.float_left {
+  float: left;
+}
+
+.search_result {
+  height: 100%;
 }

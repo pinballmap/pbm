@@ -8,6 +8,7 @@ Feature: Remove Machine for Location
     Given there is a location machine xref
     And I am on "Portland"'s home page
     And I press "Search"
-    And I follow "Test Location Name | 123 Pine | Portland"
+    And I click to see the detail for "Test Location Name"
+    And I click on the show machines link for "Test Location Name"
     And I press "Remove"
     Then location_machine_xref should not exist

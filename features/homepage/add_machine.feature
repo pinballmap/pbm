@@ -12,7 +12,8 @@ Feature: New Machine for Location
     |Medieval Madness|
     And I am on "Portland"'s home page
     And I press "Search"
-    And I follow "Test Location Name | 123 Pine | Portland"
+    And I click to see the detail for "Test Location Name"
+    And I click on the add machine link for "Test Location Name"
     And I fill in "add_machine_by_name" with "Star Wars"
     And I press "Add"
     Then "Test Location Name" should have "Star Wars"
@@ -26,7 +27,8 @@ Feature: New Machine for Location
     |Medieval Madness|
     And I am on "Portland"'s home page
     And I press "Search"
-    And I follow "Test Location Name | 123 Pine | Portland"
+    And I click to see the detail for "Test Location Name"
+    And I click on the add machine link for "Test Location Name"
     And I select "Medieval Madness" from "add_machine_by_id"
     And I press "Add"
     Then "Test Location Name" should have "Medieval Madness"
