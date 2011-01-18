@@ -86,6 +86,13 @@ GEM
       railties (>= 3.0.0)
     ffi (0.6.3)
       rake (>= 0.8.7)
+    fuubar (0.0.3)
+      rspec (~> 2.0)
+      rspec-instafail (~> 0.1.4)
+      ruby-progressbar (~> 0.0.9)
+    fuubar-cucumber (0.0.9)
+      cucumber
+      ruby-progressbar (~> 0.0.9)
     gherkin (2.3.3)
       json (~> 1.4.6)
     git (1.2.5)
@@ -150,12 +157,14 @@ GEM
     rspec-core (2.4.0)
     rspec-expectations (2.4.0)
       diff-lcs (~> 1.1.2)
+    rspec-instafail (0.1.5)
     rspec-mocks (2.4.0)
     rspec-rails (2.4.1)
       actionpack (~> 3.0)
       activesupport (~> 3.0)
       railties (~> 3.0)
       rspec (~> 2.4.0)
+    ruby-progressbar (0.0.9)
     rubyzip (0.9.4)
     selenium (0.0.3)
       jeweler
@@ -202,6 +211,8 @@ DEPENDENCIES
   escape_utils
   factory_girl
   factory_girl_rails
+  fuubar
+  fuubar-cucumber
   has_scope
   inherited_resources
   jquery-rails

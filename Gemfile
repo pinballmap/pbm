@@ -36,4 +36,6 @@ group :development, :test do
   gem 'selenium'
   gem 'selenium-client'
   gem 'cucumber_factory'
+  gem 'fuubar'
+  gem 'fuubar-cucumber'
 end
