@@ -1,3 +1,7 @@
+* {
+  float: left;
+}
+
 body {
   margin: 0px;
   padding: 0px;
@@ -8,7 +12,6 @@ body {
 }
 
 #map {
-  float: right;
   padding-left: 40px;
   height: 500px;
   width: 700px;
@@ -35,10 +38,6 @@ body {
   font-weight: bold;
 }
 
-.sub_nav_item span {
-  float: left;
-}
-
 .location_name {
   border-bottom: 1px solid #494949;
 }
@@ -53,10 +52,14 @@ body {
   cursor: pointer;
 }
 
-.float_left {
-  float: left;
-}
-
 .search_result {
   height: 100%;
+}
+
+#welcome {
+  width: 220px;
+}
+
+#map_summaries {
+  width: 500px;
 }

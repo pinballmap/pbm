@@ -1,15 +1,15 @@
 <% if (@locations) %>
   <h2 class="search_results_header">Search Results</h2>
-  <div class="float_left" id="search_results">
+  <div id="search_results">
     <% @locations.each do |l| %>
       <script type="text/javascript">show_location(<%= l.id.to_s %>, <%= l.lat.to_s %>, <%= l.lon.to_s %>);</script>
-      <div class="float_left search_result">
+      <div class="search_result">
         <div class="sub_nav_item">
           <%= open_closed_arrows_for('location_detail', l.id) %>
-          <%= link_to('#', :id => "show_location_detail_#{l.id.to_s}", :class => 'float_left', :onclick => "$('.location_summary_#{l.id}').toggle(); toggle_data('location_detail', #{l.id});") do %>
-            <span class="float_left"><%= l.name %> </span><span class="float_left location_summary_<%= l.id %>"><%= [l.street, l.city].join(' | ') %></span>
+          <%= link_to('#', :id => "show_location_detail_#{l.id.to_s}", :onclick => "$('.location_summary_#{l.id}').toggle(); toggle_data('location_detail', #{l.id});") do %>
+            <span><%= l.name %> </span><span class="location_summary_<%= l.id %>"><%= [l.street, l.city].join(' | ') %></span>
             <br clear="all" />
-            <span class="float_left location_summary_<%= l.id %>"><%= [l.machine_names].join(' | ')[0, 10] %></span>
+            <span class="location_summary_<%= l.id %>"><%= [l.machine_names].join(' | ')[0, 10] %></span>
           <% end %>
         </div>
         <div id="location_detail_<%= l.id %>" class="sub_nav_item" style="display: none;">
