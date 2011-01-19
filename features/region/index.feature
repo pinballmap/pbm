@@ -1,4 +1,4 @@
-Feature: Main page
+Feature: Region main page
   In order to do pretty much everything on this website
   As a guest
   I want to do basic site navigation
