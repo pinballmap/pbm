@@ -63,3 +63,11 @@ body {
 #map_summaries {
   width: 500px;
 }
+
+.infowindow {
+  color: black;
+}
+
+.infowindow hr {
+  width: 50px;
+}
