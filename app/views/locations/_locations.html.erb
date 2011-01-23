@@ -1,8 +1,16 @@
 <% if (@locations) %>
+  <% location_data = locations_javascript_data(@locations) %>
+  <script type="text/javascript">
+    show_locations(
+      [<%= location_data[0].join(', ') %>],
+      [<%= location_data[1].join(', ') %>],
+      [<%= location_data[2].join(', ') %>],
+      [<%= location_data[3].join(', ') %>]
+    );
+  </script>
   <h2 class="search_results_header">Search Results</h2>
   <div id="search_results">
     <% @locations.each do |l| %>
-      <script type="text/javascript">show_location(<%= l.id.to_s %>, <%= l.lat.to_s %>, <%= l.lon.to_s %>);</script>
       <div class="search_result">
         <div class="sub_nav_item">
           <%= open_closed_arrows_for('location_detail', l.id) %>

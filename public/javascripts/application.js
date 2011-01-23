@@ -1,11 +1,20 @@
 $(function () {
-  $('#location_search', '.add_new_machine', '.update_machine_condition', '.remove_machine', '.add_high_score').submit(function () {
+  $('#location_search').submit(function () {
+    clear_markers();
+    clear_infowindows();
+    $.get(this.action, $(this).serialize(), null, 'script');
+    return false;
+  });
+
+  $('.add_new_machine', '.update_machine_condition', '.remove_machine', '.add_high_score').submit(function () {
     $.get(this.action, $(this).serialize(), null, 'script');
     return false;
   });
 });
 
 var map;
+var markers = new Array();
+var infowindows = new Array();
 
 function initialize_map() {
   var latlng = new google.maps.LatLng(-34.397, 150.644);
@@ -18,13 +27,48 @@ function toggle_data(name, id) {
   $('#' + name + '_closed_arrow_' + id).toggle();
 }
 
-function show_location(id, lat, lon) {
-  var latlng = new google.maps.LatLng(lat, lon);
+function clear_infowindows() {
+  if (infowindows) {
+    for (i in infowindows) {
+      infowindows[i].close();
+    }
+  }
+}
 
-  var marker = new google.maps.Marker({
+function clear_markers() {
+  if (markers) {
+    for (i in markers) {
+      markers[i].setMap(null);
+    }
+  }
+}
+
+function show_locations(ids, lats, lons, contents) {
+  var bounds = new google.maps.LatLngBounds();
+
+  for (i in ids) {
+    var latlng = new google.maps.LatLng(lats[i], lons[i]);
+
+    var marker = new google.maps.Marker({
+      animation: google.maps.Animation.DROP,
       position: latlng,
       map: map,
-  });
+    });
 
-  map.setCenter(latlng, 0);
+    markers.push(marker);
+    bounds.extend(latlng);
+    infowindows.push(new google.maps.InfoWindow({ content: $("<div/>").html(contents[i]).text() }));
+
+    attach_marker_click(marker, i)
+  }
+
+  map.fitBounds(bounds);
+}
+
+function attach_marker_click(marker, index) {
+  google.maps.event.addListener(marker, 'click', function() {
+    clear_infowindows();
+    map.panTo(marker.getPosition());
+    infowindows[index].open(map, marker);
+  });
 }
