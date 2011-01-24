@@ -2,8 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.3'
 gem 'arel', '2.0.2'
-
-gem 'sqlite3-ruby', :require => 'sqlite3'
+gem 'pg'
 
 gem 'devise'
 gem 'inherited_resources'
@@ -16,7 +15,6 @@ gem 'jquery-rails'
 gem 'cells'
 gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
 gem 'declarative_authorization'
-gem 'pg'
 
 group :development, :test do
   gem 'capybara'
