@@ -2,8 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.3'
 gem 'arel', '2.0.2'
-
-gem 'sqlite3-ruby', :require => 'sqlite3'
+gem 'pg'
 
 gem 'devise'
 gem 'inherited_resources'
