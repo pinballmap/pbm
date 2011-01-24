@@ -1,4 +1,5 @@
 class LocationsController < InheritedResources::Base
+  respond_to :xml, :json, :html, :js
   has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city, :by_zone_id
 
   def autocomplete
@@ -40,8 +41,6 @@ class LocationsController < InheritedResources::Base
   end
 
   def index
-    @locations = apply_scopes(Location).where('region_id = ?', @region.id)
-
-    render
+    respond_with(@locations = apply_scopes(Location).where('region_id = ?', @region.id))
   end
 end

@@ -1,12 +1,15 @@
 Pbm::Application.routes.draw do
   scope ':region', :constraints => { :region => /portland|chicago/i } do
-    resource :pages
-    resource :locations do
-      get :index
-      get :remove_machine
-      get :add_machine
-      get :update_machine_condition
-      get :add_high_score
+    resources :pages
+    resources :regions
+    resources :machines
+    resources :locations do
+      collection do
+        get :remove_machine
+        get :add_machine
+        get :update_machine_condition
+        get :add_high_score
+      end
     end
 
     match '/' => "pages#region"
