@@ -1,13 +1,20 @@
-<%= form_tag add_machine_locations_path, :class => 'add_new_machine', :method => 'get', :remote => true do %>
-  <%= hidden_field_tag :location_id, location_id %>
-  <%= label_tag :add_machine_by_name, 'Add By Machine Name' %>
-  <%= text_field_tag :add_machine_by_name, params[:add_machine_by_name] %>
-  <%= select_tag :add_machine_by_id, options_for_select(['']) + options_from_collection_for_select(Machine.all, 'id', 'name', params[:add_machine_by_id]) %>
-  <%= submit_tag 'Add' %>
-<% end %>
+<div id="add_machine_banner_<%= location.id %>" class="sub_nav_item" onclick="toggle_data('add_machine', <%= location.id %>);">
+  <span>Add New Machine At This Location</span>
+  <%= open_closed_arrows_for('add_machine', location.id) %>
+</div>
+<div id="add_machine_<%= location.id %>" style="display: none;">
+  <br clear="all" />
+  <%= form_tag add_machine_locations_path, :class => 'add_new_machine', :method => 'get', :remote => true do %>
+    <%= hidden_field_tag :location_id, location.id %>
+    <%= label_tag :add_machine_by_name, 'Add By Machine Name' %>
+    <%= text_field_tag :add_machine_by_name, params[:add_machine_by_name] %>
+    <%= select_tag :add_machine_by_id, options_for_select(['']) + options_from_collection_for_select(Machine.all, 'id', 'name', params[:add_machine_by_id]) %>
+    <%= submit_tag 'Add' %>
+  <% end %>
 
-<script type="text/javascript">
-  $(function () {
-    $('#add_machine_by_name').autocomplete({source: '<%= autocomplete_machines_path %>'});
-  });
-</script>
+  <script type="text/javascript">
+    $(function () {
+      $('#add_machine_by_name').autocomplete({source: '<%= autocomplete_machines_path %>'});
+    });
+  </script>
+</div>
