@@ -16,6 +16,7 @@ gem 'jquery-rails'
 gem 'cells'
 gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
 gem 'declarative_authorization'
+gem 'pg'
 
 group :development, :test do
   gem 'capybara'

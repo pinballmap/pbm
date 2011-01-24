@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(:version => 20110113015641) do
     t.integer  "item"
     t.string   "table"
     t.integer  "month",      :limit => 2
-    t.integer  "year",       :limit => 5
+    t.integer  "year",       :limit => 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(:version => 20110113015641) do
     t.string   "initials"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "rank",                     :limit => 255
+    t.integer  "rank"
   end
 
   create_table "machines", :force => true do |t|
