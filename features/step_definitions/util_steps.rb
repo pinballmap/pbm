@@ -62,24 +62,23 @@ Then /^I should not see the listing for "([^"]*)"$/ do |name|
 end
 
 Then /^I click to see the detail for "([^"]*)"$/ do |name|
-  if page.has_css?('div.search_result')
-    within('div.search_result') do
-      click_link(name)
-    end
+  l = Location.find_by_name(name)
+  if page.has_css?("div#show_location_detail_#{l.id.to_i}")
+    page.find("div#show_location_detail_#{l.id.to_i}").click
   end
 end
 
 Then /^I click on the add machine link for "([^"]*)"$/ do |name|
   l = Location.find_by_name(name)
-  if page.has_css?("div#add_machine_banner_#{l.id.to_i}.sub_nav_item")
-    page.find("div#add_machine_banner_#{l.id.to_i}.sub_nav_item").click
+  if page.has_css?("div#add_machine_banner_#{l.id.to_i}")
+    page.find("div#add_machine_banner_#{l.id.to_i}").click
   end
 end
 
 Then /^I click on the show machines link for "([^"]*)"$/ do |name|
   l = Location.find_by_name(name)
-  if page.has_css?("div#show_machines_banner_#{l.id.to_i}.sub_nav_item")
-    page.find("div#show_machines_banner_#{l.id.to_i}.sub_nav_item").click
+  if page.has_css?("div#show_machines_banner_#{l.id.to_i}")
+    page.find("div#show_machines_banner_#{l.id.to_i}").click
   end
 end
 
