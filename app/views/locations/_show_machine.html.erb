@@ -3,12 +3,13 @@
   <%= open_closed_arrows_for('show_machines', location.id) %>
 </div>
 <div id="show_machines_<%= location.id %>" style="display: none;">
-  <br clear="all" />
+  <span>You can edit a machine's condition (click the comment text), view high scores, add a new high score, or delete a machine if that machine is no longer available at the selected location.</span>
+  <br />
   <% LocationMachineXref.find_all_by_location_id(location.id).collect! do |lmx| %>
-    <%= lmx.machine.name %>
     <%= form_tag remove_machine_locations_path, :class => 'remove_machine', :method => 'get', :remote => true do %>
       <%= hidden_field_tag :location_id, lmx.location_id %>
       <%= hidden_field_tag :machine_id, lmx.machine_id %>
+      <%= label_tag :machine_name, lmx.machine.name %>
       <%= submit_tag 'Remove' %>
     <% end %>
     <%= form_tag update_machine_condition_locations_path, :class => 'update_machine_condition', :method => 'get', :remote => true do %>
