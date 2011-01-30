@@ -1,12 +1,5 @@
 $(function () {
   $('#location_search').submit(function () {
-    clear_markers();
-    clear_infowindows();
-    $.get(this.action, $(this).serialize(), null, 'script');
-    return false;
-  });
-
-  $('.add_new_machine', '.update_machine_condition', '.remove_machine', '.add_high_score').submit(function () {
     $.get(this.action, $(this).serialize(), null, 'script');
     return false;
   });
@@ -71,4 +64,8 @@ function attach_marker_click(marker, index) {
     map.panTo(marker.getPosition());
     infowindows[index].open(map, marker);
   });
+}
+
+function loading_html() {
+  return "<div class='loading'><img src='images/spinner_blue.gif' /> Loading <div>";
 }

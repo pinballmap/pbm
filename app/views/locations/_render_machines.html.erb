@@ -1,0 +1,8 @@
+<% LocationMachineXref.find_all_by_location_id(location.id).each do |lmx| %>
+  <div id="machine_<%= lmx.id %>">
+    <%= render :partial => 'locations/show_machine_name', :locals => {:lmx => lmx} %>
+    <%= render :partial => 'locations/update_machine_condition', :locals => {:lmx => lmx} %>
+    <%= render :partial => 'locations/show_high_scores', :locals => {:lmx => lmx} %>
+    <%= render :partial => 'locations/add_high_score',  :locals => {:lmx => lmx} %>
+  </div>
+<% end %>

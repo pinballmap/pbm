@@ -7,8 +7,10 @@ class LocationsController < InheritedResources::Base
   end
 
   def update_machine_condition
-    lmx = LocationMachineXref.find(:all, :conditions => ['location_id = ? and machine_id = ?', params[:location_id], params[:machine_id]]).first
-    lmx.condition = params[:machine_condition]
+    lmx_id = params[:location_machine_xref_id]
+
+    lmx = LocationMachineXref.find(lmx_id)
+    lmx.condition = params["new_machine_condition_#{lmx_id}".to_sym]
     lmx.condition_date = Time.now
     lmx.save
   end
@@ -42,5 +44,13 @@ class LocationsController < InheritedResources::Base
 
   def index
     respond_with(@locations = apply_scopes(Location).where('region_id = ?', @region.id))
+  end
+
+  def render_machines
+    render :partial => 'locations/render_machines', :locals => {:location => Location.find(params[:id])}
+  end
+
+  def render_scores
+    render :partial => 'locations/render_scores', :locals => {:lmx => LocationMachineXref.find(params[:id])}
   end
 end

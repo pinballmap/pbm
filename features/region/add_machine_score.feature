@@ -10,8 +10,9 @@ Feature: add a high score for a machine
     And I press "Search"
     And I click to see the detail for "Test Location Name"
     And I click on the show machines link for "Test Location Name"
-    And I fill in "score" with "1234"
-    And I select "GC" from "rank"
-    And I fill in "initials" with "ssw"
-    And I press "Add Score"
+    And I click on the add scores link for "Test Location Name"
+    And I fill in a score with initials "ssw" and score "1234" and rank "GC"
+    And I wait for 1 seconds
+    And I press "add_score"
+    And I wait for 1 seconds
     Then "Test Location Name"'s "Test Machine Name" should have a score with initials "ssw" and score "1234" and rank "1"

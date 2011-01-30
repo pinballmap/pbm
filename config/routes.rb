@@ -12,6 +12,9 @@ Pbm::Application.routes.draw do
       end
     end
 
+    match 'locations/:id/render_scores'   => 'locations#render_scores'
+    match 'locations/:id/render_machines' => 'locations#render_machines'
+
     match '/' => "pages#region"
   end
 

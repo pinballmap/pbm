@@ -10,5 +10,6 @@ Feature: Remove Machine for Location
     And I press "Search"
     And I click to see the detail for "Test Location Name"
     And I click on the show machines link for "Test Location Name"
-    And I press "Remove"
+    And I press "remove"
+    And I wait for 2 seconds
     Then location_machine_xref should not exist

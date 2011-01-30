@@ -1,0 +1,5 @@
+<%= banner(lmx, 'show_scores', 'Show Scores At This Location') %>
+<div id="show_scores_<%= lmx.id %>" style="display: none;">
+  <br />
+  <%= render :partial => 'locations/render_scores', :locals => {:lmx => lmx} %>
+</div>
