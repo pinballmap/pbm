@@ -63,22 +63,22 @@ end
 
 Then /^I click to see the detail for "([^"]*)"$/ do |name|
   l = Location.find_by_name(name)
-  if page.has_css?("div#show_location_detail_#{l.id.to_i}")
-    page.find("div#show_location_detail_#{l.id.to_i}").click
+  if page.has_css?("div#show_location_detail_#{l.id}")
+    page.find("div#show_location_detail_#{l.id}").click
   end
 end
 
 Then /^I click on the add machine link for "([^"]*)"$/ do |name|
   l = Location.find_by_name(name)
-  if page.has_css?("div#add_machine_banner_#{l.id.to_i}")
-    page.find("div#add_machine_banner_#{l.id.to_i}").click
+  if page.has_css?("div#add_machine_banner_#{l.id}")
+    page.find("div#add_machine_banner_#{l.id}").click
   end
 end
 
 Then /^I click on the show machines link for "([^"]*)"$/ do |name|
   l = Location.find_by_name(name)
-  if page.has_css?("div#show_machines_banner_#{l.id.to_i}")
-    page.find("div#show_machines_banner_#{l.id.to_i}").click
+  if page.has_css?("div#show_machines_banner_#{l.id}")
+    page.find("div#show_machines_banner_#{l.id}").click
   end
 end
 
@@ -100,4 +100,28 @@ Then /^I should see a summary for "([^"]*)" and "([^"]*)"$/ do |location_text, m
     page.find("div#map_summaries").should have_content(location_text)
     page.find("div#map_summaries").should have_content(machine_text)
   end
+end
+
+Given /^I click on the add scores link for "([^"]*)"$/ do |name|
+  lmx = LocationMachineXref.where(:location_id => Location.find_by_name(name).id).first
+  if page.has_css?("div#add_scores_banner_#{lmx.id}")
+    page.find("div#add_scores_banner_#{lmx.id}").click
+  end
+end
+
+Given /^I update the machine condition for "([^"]*)"'s "([^"]*)" to be "([^"]*)"$/ do |location_name, machine_name, condition|
+  lmx = LocationMachineXref.where('machine_id = ? and location_id = ?',
+    Machine.find_by_name(machine_name).id,
+    Location.find_by_name(location_name).id
+  ).first
+
+  page.find("div#machine_condition_display_#{lmx.id}").click
+  fill_in("new_machine_condition_#{lmx.id}", :with => condition)
+  click_button('update_condition')
+end
+
+Given /^I fill in a score with initials "([^"]*)" and score "([^"]*)" and rank "([^"]*)"$/ do |initials, score, rank|
+  fill_in("initials", :with => initials)
+  fill_in("score", :with => score)
+  select(rank, :from => 'rank')
 end

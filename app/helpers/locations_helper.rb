@@ -34,4 +34,14 @@ module LocationsHelper
 
     [ids, lats, lons, contents]
   end
+
+  def banner(obj, type, header_text)
+    html = <<HERE
+<div id="#{type}_banner_#{obj.id}" class="sub_nav_item" onclick="toggle_data('#{type}', #{obj.id});">
+  <span>#{header_text}</span>
+  #{open_closed_arrows_for(type, obj.id)}
+</div>
+HERE
+    html.html_safe
+  end
 end

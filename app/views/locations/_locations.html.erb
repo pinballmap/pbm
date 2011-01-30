@@ -11,7 +11,7 @@
   <h2 class="search_results_header">Search Results</h2>
   <div id="search_results">
     <% @locations.each do |l| %>
-      <div class="search_result">
+      <div id="location_<%= l.id %>" class="search_result">
         <div class="sub_nav_item">
           <%= open_closed_arrows_for('location_detail', l.id) %>
           <div id="show_location_detail_<%= l.id.to_s %>" onclick="$('.location_summary_<%= l.id %>').toggle(); toggle_data('location_detail', <%= l.id %>);">
@@ -29,7 +29,7 @@
             </ul>
           </div>
           <%= render :partial => 'locations/add_machine', :locals => {:location => l} %>
-          <%= render :partial => 'locations/show_machine', :locals => {:location => l} %>
+          <%= render :partial => 'locations/show_machines', :locals => {:location => l} %>
         </div>
       </div>
     <% end %>
