@@ -22,6 +22,7 @@ class LocationsController < InheritedResources::Base
     msx.rank = params[:rank]
 
     msx.save
+    msx.sanitize_scores
   end
 
   def remove_machine
