@@ -18,3 +18,8 @@ Then /^"([^"]*)"'s "([^"]*)" should have a score with initials "([^"]*)" and sco
   msx.score.should == score.to_i
   msx.rank.should == rank.to_i
 end
+
+Given /^a high score exists for location "([^"]*)"'s "([^"]*)" with initials "([^"]*)" and score "([^"]*)" and rank "([^"]*)"$/ do |location_name, machine_name, initials, score, rank|
+  lmx = LocationMachineXref.where(:location => Location.find_by_name(location_name), :machine => Machine.find_by_name(machine_name)).first
+  Factory.create(:machine_score_xref, :location_machine_xref => lmx, :initials => initials, :score => score, :rank => MachineScoreXref::ENGLISH_SCORES.key(rank))
+end

@@ -25,3 +25,6 @@ end
 Factory.define :region do |r|
   r.name 'Test Region'
 end
+
+Factory.define :machine_score_xref do |msx|
+end

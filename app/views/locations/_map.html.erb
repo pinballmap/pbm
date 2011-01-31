@@ -1,1 +1,19 @@
 <div id="map_canvas" style="width:100%; height:100%"></div>
+<script type="text/javascript">
+  $().ready(function(){
+      $("#ticker").scrollSomething({
+        scrollerWidth: 645,
+        scrollerHeight: 40,
+        buttonSettings: "show",
+        itemsVisable: 3,
+        itemsScrolling: 1,
+        buttonPosition: "bottomRight",
+        scrollInterval: 1000
+      });
+  });
+</script>
+<div id="ticker">
+<% Region.find_by_name(params[:region]).n_recent_scores(20).each do |msx| %>
+  <span><%= "#{msx.location.name}'s #{msx.machine.name}: #{MachineScoreXref::ENGLISH_SCORES[msx.rank]} with #{msx.score} by #{msx.initials}" %></span>
+<% end %>
+</div>
