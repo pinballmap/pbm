@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe MachineScoreXref do
-  describe 'scopes' do
+  context 'manipulate score data' do
     before(:each) do
       @lmx = Factory.create(:location_machine_xref, :location => Factory.create(:location), :machine => Factory.create(:machine))
       @gc = Factory.create(:machine_score_xref, :location_machine_xref => @lmx, :rank => 1, :score => 1000, :initials => 'ssw')
