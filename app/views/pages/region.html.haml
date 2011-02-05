@@ -1,0 +1,10 @@
+%h1 THIS IS A REGION'S PAGE
+%div#page
+  %div#lookup
+    %div#form
+      = render :partial => 'locations/form'
+    %br/
+    %div#locations
+      = render 'locations/locations'
+  %div#map
+    = render :partial => 'locations/map'

@@ -1,0 +1,4 @@
+= banner(lmx, 'show_scores_location_machine_xref', 'Show Scores At This Location')
+%div[lmx, :show_scores]{:style => 'display:none'}
+  %br/
+  = render :partial => 'locations/render_scores', :locals => {:lmx => lmx}

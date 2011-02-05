@@ -12,9 +12,10 @@ gem "will_paginate"
 gem 'escape_utils'
 gem 'meta_where'
 gem 'jquery-rails'
-gem 'cells'
 gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
 gem 'declarative_authorization'
+gem 'haml'
+gem "haml-rails"
 
 group :development, :test do
   gem 'capybara'
