@@ -1,4 +1,4 @@
-= banner(lmx, 'add_scores_location_machine_xref', 'Add Scores At This Location')
+= banner(lmx, 'add_scores_lmx', 'Add Scores At This Location')
 %div[lmx, :add_scores]{:style => 'display:none;'}
   %span You Can Add Your Score Here LOOLLL
   %br/
@@ -17,11 +17,11 @@
 
   :javascript
     $('#add_high_score_#{lmx.id}').submit(function () {
-      $('#show_scores_location_machine_xref_#{lmx.id}').html(loading_html());
+      $('#show_scores_lmx_#{lmx.id}').html(loading_html());
 
       $.get(this.action, $(this).serialize(), null, 'script');
 
-      $('#show_scores_location_machine_xref_#{lmx.id}').load('/#{params[:region]}/locations/#{lmx.id}/render_scores');
+      $('#show_scores_lmx_#{lmx.id}').load('/#{params[:region]}/locations/#{lmx.id}/render_scores');
 
       return false;
     });
