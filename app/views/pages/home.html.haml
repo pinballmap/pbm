@@ -1,0 +1,44 @@
+%br/
+%br/
+%div#landing_header
+  %img{:src => 'images/pinball.png'}/
+  %img{:src => 'images/pinballmapcom.jpg'}/
+%br/
+%div#welcome
+  %p
+    Welcome to pinballmap.com!
+    %br/
+    %br/
+    This site shows all the public pinball
+    machines in select regions in North America.
+    Each region’s data is curated by a local
+    administrator, and also maintained by players
+    in the areas.
+    %br/
+    %br/
+    Use your local region’s map to find machines,
+    %br/
+    %br/
+    You can help keep the maps up to date by
+    anonymously updating locations, plus you can
+    do it while logged in!
+    %br/
+    %br/
+    You can also comment on a machine’s
+    condition, upload photos, add your high
+    scores, and so on.
+    %br/
+    %br/
+    We have mobile apps for iPhone and Android.
+%div#map_summaries
+  Pick a map!
+  %br/
+  - Region.all.each do |r|
+    %div.map_summary
+      = r.name
+      %br/
+      Tracking:
+      %br/
+      = "#{Location.find_all_by_region_id(r.id).size} Machines"
+      %br/
+      = "#{LocationMachineXref.where("location_id in (select id from locations where region_id = ?)", r.id).size} Locations"

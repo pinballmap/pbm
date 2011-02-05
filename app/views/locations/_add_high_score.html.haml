@@ -1,0 +1,27 @@
+= banner(lmx, 'add_scores_location_machine_xref', 'Add Scores At This Location')
+%div[lmx, :add_scores]{:style => 'display:none;'}
+  %span You Can Add Your Score Here LOOLLL
+  %br/
+  = form_tag add_high_score_locations_path, :id => "add_high_score_#{lmx.id}", :method => 'get', :remote => true do
+    = hidden_field_tag :location_machine_xref_id, lmx.id
+    = label_tag :initials, 'Initials: '
+    = text_field_tag :initials
+    %br/
+    = label_tag :score, 'Score: '
+    = text_field_tag :score
+    %br/
+    = label_tag :rank, 'Rank: '
+    = select_tag :rank, options_for_select({'' => '', 'GC' => 1, '1st' => 2, '2nd' => 3, '3rd' => 4, '4th' => 5})
+    %br/
+    = submit_tag 'Add Score', :id => 'add_score'
+
+  :javascript
+    $('#add_high_score_#{lmx.id}').submit(function () {
+      $('#show_scores_location_machine_xref_#{lmx.id}').html(loading_html());
+
+      $.get(this.action, $(this).serialize(), null, 'script');
+
+      $('#show_scores_location_machine_xref_#{lmx.id}').load('/#{params[:region]}/locations/#{lmx.id}/render_scores');
+
+      return false;
+    });

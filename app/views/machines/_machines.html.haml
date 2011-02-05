@@ -1,0 +1,21 @@
+- if (@machines)
+  %h1 machines
+
+  %table
+    %tr
+      %th Name
+      %th
+      %th
+      %th
+
+  - @machines.each do |machine|
+    %tr
+      %td= machine.name
+      %td= link_to 'Show', machine
+      %td= link_to 'Edit', edit_machine_path(machine)
+      %td= link_to 'Destroy', machine, :confirm => 'Are you sure?', :method => :delete
+    = will_paginate @machines
+
+%br/
+
+= link_to 'New machine', new_machine_path

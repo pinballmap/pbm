@@ -1,6 +1,0 @@
-<%= banner(location, 'show_machines', 'Show Machines At This Location') %>
-<div id="show_machines_<%= location.id %>" style="display: none;">
-  <span>You can edit a machine's condition (click the comment text), view high scores, add a new high score, or delete a machine if that machine is no longer available at the selected location.</span>
-  <br />
-  <%= render :partial => 'locations/render_machines', :locals => {:location => location} %>
-</div>
