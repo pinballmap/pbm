@@ -1,7 +1,7 @@
 Given /^I click on the add scores link for "([^"]*)"$/ do |name|
   lmx = LocationMachineXref.where(:location_id => Location.find_by_name(name).id).first
-  if page.has_css?("div#add_scores_location_machine_xref_banner_#{lmx.id}")
-    page.find("div#add_scores_location_machine_xref_banner_#{lmx.id}").click
+  if page.has_css?("div#add_scores_lmx_banner_#{lmx.id}")
+    page.find("div#add_scores_lmx_banner_#{lmx.id}").click
   end
 end
 

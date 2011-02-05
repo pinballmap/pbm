@@ -10,12 +10,12 @@
 :javascript
   $('#update_machine_condition_#{lmx.id}').submit(function () {
     $.get(this.action, $(this).serialize(), null, 'script');
-    $('#machine_condition_location_machine_xref_#{lmx.id}').text($('#new_machine_condition_#{lmx.id}').val());
-    $('#machine_condition_edit_location_machine_xref_#{lmx.id}').toggle();
-    $('#machine_condition_display_location_machine_xref_#{lmx.id}').toggle();
+    $('#machine_condition_lmx_#{lmx.id}').text($('#new_machine_condition_#{lmx.id}').val());
+    $('#machine_condition_edit_lmx_#{lmx.id}').toggle();
+    $('#machine_condition_display_lmx_#{lmx.id}').toggle();
   });
 
-  $('#machine_condition_display_location_machine_xref_#{lmx.id}').click(function () {
-    $('#machine_condition_edit_location_machine_xref_#{lmx.id}').toggle();
-    $('#machine_condition_display_location_machine_xref_#{lmx.id}').toggle();
+  $('#machine_condition_display_lmx_#{lmx.id}').click(function () {
+    $('#machine_condition_edit_lmx_#{lmx.id}').toggle();
+    $('#machine_condition_display_lmx_#{lmx.id}').toggle();
   });

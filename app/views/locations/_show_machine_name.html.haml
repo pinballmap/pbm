@@ -7,7 +7,7 @@
 :javascript
   $('#remove_machine_#{lmx.id}').submit(function () {
     $.get(this.action, $(this).serialize(), null, 'script');
-    $('#machine_location_machine_xref_#{lmx.id}').fadeOut('slow', function() {});
+    $('#machine_lmx_#{lmx.id}').fadeOut('slow', function() {});
 
     return false;
   });
