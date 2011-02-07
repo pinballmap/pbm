@@ -38,4 +38,5 @@ group :development, :test do
   gem 'cucumber_factory'
   gem 'fuubar'
   gem 'fuubar-cucumber'
+  gem 'timecop'
 end

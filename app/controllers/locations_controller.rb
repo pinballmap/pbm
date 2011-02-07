@@ -40,7 +40,8 @@ class LocationsController < InheritedResources::Base
       return
     end
 
-    LocationMachineXref.create(:location => Location.find(params[:location_id]), :machine => machine)
+    LocationMachineXref.where(:location => Location.find(params[:location_id]), :machine => machine).first ||
+      LocationMachineXref.create(:location => Location.find(params[:location_id]), :machine => machine).first
   end
 
   def index
