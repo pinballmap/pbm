@@ -36,3 +36,16 @@ Feature: New Machine for Location
     And I press "add"
     And I wait for 1 seconds
     Then "Test Location Name" should have "Medieval Madness"
+
+  @javascript
+  Scenario: Add machine by id
+    Given there is a location machine_xref
+    And I am on "Portland"'s home page
+    And I press "Search"
+    And I click to see the detail for "Test Location Name"
+    And I click on the add machine link for "Test Location Name"
+    And I fill in "add_machine_by_name" with "Test Machine Name"
+    And I wait for 1 seconds
+    And I press "add"
+    And I wait for 1 seconds
+    Then "Test Location Name" should only have "Test Machine Name"

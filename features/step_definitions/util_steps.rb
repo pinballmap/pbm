@@ -10,16 +10,18 @@ Given /^there are (\d+) (.+)$/ do |n, model_str|
   end
 end
 
-When /^I wait for (\d+) seconds?$/ do |secs|
-  sleep secs.to_i
-end
-
 Then /^I should see the "([^"]*)" input$/ do |labeltext|
   find_field("#{labeltext}").should be_true
 end
 
 Then /^"([^"]*)" should have "([^"]*)"$/ do |location_name, machine_name|
   Location.find_by_name(location_name).machine_names.should include(machine_name)
+end
+
+Then /^"([^"]*)" should only have "([^"]*)"$/ do |location_name, machine_name|
+  l = Location.find_by_name(location_name)
+  l.machine_names.should include(machine_name)
+  l.machine_names.length.should be 1
 end
 
 Given /^"([^"]*)" has (\d+) locations and (\d+) machines$/ do |name, num_locations, num_machines|
