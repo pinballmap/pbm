@@ -6,15 +6,6 @@ class LocationsController < InheritedResources::Base
     render :json => Location.find(:all, :conditions => ['name like ?', '%' + params[:term] + '%']).map { |l| l.name }
   end
 
-  def update_machine_condition
-    lmx_id = params[:location_machine_xref_id]
-
-    lmx = LocationMachineXref.find(lmx_id)
-    lmx.condition = params["new_machine_condition_#{lmx_id}".to_sym]
-    lmx.condition_date = Time.now
-    lmx.save
-  end
-
   def index
     respond_with(@locations = apply_scopes(Location).where('region_id = ?', @region.id))
   end

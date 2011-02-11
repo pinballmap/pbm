@@ -22,6 +22,12 @@ Pbm::Application.routes.draw do
   resources :location_machine_xrefs, :only => [:create, :destroy]
   resources :machine_score_xrefs,    :only => [:create]
 
+  resources :location_machine_xrefs do
+    collection do
+      get :update_machine_condition
+    end
+  end
+
   resources :locations, :machines do
     get :autocomplete, :on => :collection
   end

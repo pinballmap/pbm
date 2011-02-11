@@ -22,5 +22,5 @@
               %li= l.street
               %br{:style => "clear:all;"}/
               %li= [l.city, l.zip, l.state].join(', ')
-          = render :partial => 'locations/add_machine', :locals => {:location => l}
+          = render :partial => 'location_machine_xrefs/add_machine', :locals => {:location => l}
           = render :partial => 'locations/show_machines', :locals => {:location => l}

@@ -17,4 +17,13 @@ class LocationMachineXrefsController < InheritedResources::Base
   def destroy
     LocationMachineXref.find(params[:id]).destroy
   end
+
+  def update_machine_condition
+    id = params[:id]
+
+    lmx = LocationMachineXref.find(id)
+    lmx.condition = params["new_machine_condition_#{id}".to_sym]
+    lmx.condition_date = Time.now
+    lmx.save
+  end
 end
