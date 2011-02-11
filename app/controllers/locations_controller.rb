@@ -25,25 +25,6 @@ class LocationsController < InheritedResources::Base
     msx.sanitize_scores
   end
 
-  def remove_machine
-    LocationMachineXref.delete(:location_id => Location.find(params[:location_id]).id, :machine_id => Machine.find(params[:machine_id]).id)
-  end
-
-  def add_machine
-    machine = nil
-    if(!params[:add_machine_by_id].empty?)
-      machine = Machine.find(params[:add_machine_by_id])
-    elsif (!params[:add_machine_by_name].empty?)
-      machine = Machine.find_or_create_by_name(params[:add_machine_by_name])
-    else
-      #blank submit
-      return
-    end
-
-    LocationMachineXref.where(:location => Location.find(params[:location_id]), :machine => machine).first ||
-      LocationMachineXref.create(:location => Location.find(params[:location_id]), :machine => machine).first
-  end
-
   def index
     respond_with(@locations = apply_scopes(Location).where('region_id = ?', @region.id))
   end
@@ -54,5 +35,29 @@ class LocationsController < InheritedResources::Base
 
   def render_scores
     render :partial => 'locations/render_scores', :locals => {:lmx => LocationMachineXref.find(params[:id])}
+  end
+
+  def unknown_route
+    if (params[:page] == 'iphone.html')
+      if (params[:init])
+        case params[:init].to_i
+        when 1 then
+          redirect_to "/#{params[:region]}/locations.xml"
+        when 2 then
+          redirect_to "/#{params[:region]}/regions.xml"
+        when 4 then
+#          redirect_to "/#{params[:region]}/location_machine_xrefs.xml"
+        end
+      elsif (location_id = params[:get_location])
+        redirect_to "/#{params[:region]}/locations/#{location_id}.xml"
+      elsif (location_id = params[:get_machine])
+      elsif (location_id = params[:error])
+      elsif (location_id = params[:condition])
+      elsif (location_id = params[:modify_location])
+        if (params[:add_machine])
+        elsif (params[:remove_machine])
+        end
+      end
+    end
   end
 end

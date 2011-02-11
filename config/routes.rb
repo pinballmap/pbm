@@ -16,9 +16,13 @@ Pbm::Application.routes.draw do
     match 'locations/:id/render_machines' => 'locations#render_machines'
 
     match '/' => "pages#region"
+
+    match '*page', :to => 'locations#unknown_route'
   end
 
   devise_for :users
+
+  resources :location_machine_xrefs, :only => [:create, :destroy]
 
   resources :locations, :machines do
     get :autocomplete, :on => :collection
