@@ -5,10 +5,7 @@ Pbm::Application.routes.draw do
     resources :machines
     resources :locations do
       collection do
-        get :remove_machine
-        get :add_machine
         get :update_machine_condition
-        get :add_high_score
       end
     end
 
@@ -23,6 +20,7 @@ Pbm::Application.routes.draw do
   devise_for :users
 
   resources :location_machine_xrefs, :only => [:create, :destroy]
+  resources :machine_score_xrefs,    :only => [:create]
 
   resources :locations, :machines do
     get :autocomplete, :on => :collection
