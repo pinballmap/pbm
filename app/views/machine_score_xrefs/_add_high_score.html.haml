@@ -2,7 +2,7 @@
 %div[lmx, :add_scores]{:style => 'display:none;'}
   %span You Can Add Your Score Here LOOLLL
   %br/
-  = form_tag add_high_score_locations_path, :id => "add_high_score_#{lmx.id}", :method => 'get', :remote => true do
+  = form_tag machine_score_xrefs_path, :id => "add_high_score_#{lmx.id}", :method => 'post', :remote => true do
     = hidden_field_tag :location_machine_xref_id, lmx.id
     = label_tag :initials, 'Initials: '
     = text_field_tag :initials
@@ -19,7 +19,7 @@
     $('#add_high_score_#{lmx.id}').submit(function () {
       $('#show_scores_lmx_#{lmx.id}').html(loading_html());
 
-      $.get(this.action, $(this).serialize(), null, 'script');
+      $.post(this.action, $(this).serialize(), null, 'script');
 
       $('#show_scores_lmx_#{lmx.id}').load('/#{params[:region]}/locations/#{lmx.id}/render_scores');
 
