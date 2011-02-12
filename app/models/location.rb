@@ -2,6 +2,7 @@ class Location < ActiveRecord::Base
   validates_presence_of :name, :street, :city, :state, :zip
   belongs_to :zone
   belongs_to :region
+  has_many :events
   has_many :machines, :through => :location_machine_xrefs
   has_many :location_machine_xrefs
 

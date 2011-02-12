@@ -28,3 +28,7 @@ end
 
 Factory.define :machine_score_xref do |msx|
 end
+
+Factory.define :event do |e|
+  e.name 'Test Event'
+end

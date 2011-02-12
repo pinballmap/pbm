@@ -2,6 +2,7 @@ class Region < ActiveRecord::Base
   has_many :locations
   has_many :zones
   has_many :users
+  has_many :events
   has_many :location_machine_xrefs, :through => :locations
 
   def n_recent_scores(n)

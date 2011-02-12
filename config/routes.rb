@@ -1,6 +1,7 @@
 Pbm::Application.routes.draw do
   scope ':region', :constraints => { :region => /portland|chicago/i } do
     resources :pages
+    resources :events
     resources :regions
     resources :machines
     resources :locations do

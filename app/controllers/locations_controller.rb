@@ -26,6 +26,8 @@ class LocationsController < InheritedResources::Base
           redirect_to "/#{params[:region]}/locations.xml"
         when 2 then
           redirect_to "/#{params[:region]}/regions.xml"
+        when 3 then
+          redirect_to "/#{params[:region]}/events.xml"
         when 4 then
 #          redirect_to "/#{params[:region]}/location_machine_xrefs.xml"
         end
