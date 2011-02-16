@@ -17,6 +17,8 @@
 
   :javascript
     $('#add_high_score_#{lmx.id}').submit(function () {
+      $('#score_container_lmx_#{lmx.id}').css('visibility', 'visible');
+      $('#score_container_lmx_#{lmx.id}').css('display', 'block');
       $('#show_scores_lmx_#{lmx.id}').html(loading_html());
 
       $.post(this.action, $(this).serialize(), null, 'script');
