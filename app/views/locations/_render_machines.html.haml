@@ -2,5 +2,6 @@
   %div[lmx, :machine]
     = render :partial => 'location_machine_xrefs/remove_machine', :locals => {:lmx => lmx}
     = render :partial => 'location_machine_xrefs/update_machine_condition', :locals => {:lmx => lmx}
-    = render :partial => 'locations/show_high_scores', :locals => {:lmx => lmx}
+    - unless (lmx.machine_score_xrefs.empty?)
+      = render :partial => 'machine_score_xrefs/show_high_scores', :locals => {:lmx => lmx}
     = render :partial => 'machine_score_xrefs/add_high_score',  :locals => {:lmx => lmx}

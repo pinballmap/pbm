@@ -23,3 +23,11 @@ Given /^a high score exists for location "([^"]*)"'s "([^"]*)" with initials "([
   lmx = LocationMachineXref.where(:location => Location.find_by_name(location_name), :machine => Machine.find_by_name(machine_name)).first
   Factory.create(:machine_score_xref, :location_machine_xref => lmx, :initials => initials, :score => score, :rank => MachineScoreXref::ENGLISH_SCORES.key(rank))
 end
+
+Then /^I should not see the show scores option for "([^"]*)"'s "([^"]*)"$/ do |location_name, machine_name|
+  lmx = LocationMachineXref.where('machine_id = ? and location_id = ?', Machine.find_by_name(machine_name).id, Location.find_by_name(location_name).id).first
+
+  within("div#machine_lmx_#{lmx.id}") do
+    page.should have_no_content("Show Scores At This Location")
+  end
+end
