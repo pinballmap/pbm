@@ -21,4 +21,17 @@ class Location < ActiveRecord::Base
   def machine_names
     LocationMachineXref.find_all_by_location_id(self.id).collect! { |lmx| lmx.machine.name }.sort
   end
+
+  def content_for_infowindow
+    content = "'<div class=\"infowindow\">"
+    content += [self.name, self.street, [self.city, self.state, self.zip].join(', '), self.phone].join('<br />')
+    content += '<hr /><br />'
+
+    machines = self.machines.map {|m| m.name + '<br />'}
+
+    content += machines.join
+    content += "</div>'"
+
+    content.html_safe
+  end
 end

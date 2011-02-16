@@ -1,11 +1,10 @@
 - if (@locations)
-  - location_data = locations_javascript_data(@locations)
   :javascript
     show_locations(
-      [#{location_data[0].join(', ')}],
-      [#{location_data[1].join(', ')}],
-      [#{location_data[2].join(', ')}],
-      [#{location_data[3].join(', ')}]
+      [#{@location_data[0].join(', ')}],
+      [#{@location_data[1].join(', ')}],
+      [#{@location_data[2].join(', ')}],
+      [#{@location_data[3].join(', ')}]
     );
   %h2.search_results_header Search Results
   %div#search_results

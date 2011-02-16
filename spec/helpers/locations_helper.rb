@@ -1,27 +1,6 @@
 require 'spec_helper'
 
 describe LocationsHelper do
-  describe '#locations_javascript_data' do
-    it 'should build up a list of location information to put out to the map' do
-      locations = Array.new
-      2.times do
-        l = Factory.create(:location)
-        ['Foo', 'Bar', 'Baz'].each {|name| Factory.create(:location_machine_xref, :location => l, :machine => Factory.create(:machine, :name => name)) }
-        locations << l
-      end
-
-      helper.locations_javascript_data(locations).should == [
-        [ locations[0].id,  locations[1].id  ],
-        [ locations[0].lat, locations[1].lat ],
-        [ locations[0].lon, locations[1].lon ],
-        [ 
-          "'<div class=\"infowindow\">Test Location Name<br />123 Pine<br />Portland, OR, 97211<br /><hr /><br />Foo<br />Bar<br />Baz<br /></div>'",
-          "'<div class=\"infowindow\">Test Location Name<br />123 Pine<br />Portland, OR, 97211<br /><hr /><br />Foo<br />Bar<br />Baz<br /></div>'"
-        ],
-      ]
-    end
-  end
-
   describe '#open_closed_arrows' do
     it 'should give me some open and closed arrows' do
       l = Factory.create(:location)
