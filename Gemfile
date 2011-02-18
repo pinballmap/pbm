@@ -16,7 +16,7 @@ gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
 gem 'declarative_authorization'
 gem 'haml'
 gem 'haml-rails'
-gem 'paperclip'
+gem 'carrierwave'
 
 group :development, :test do
   gem 'capybara'
