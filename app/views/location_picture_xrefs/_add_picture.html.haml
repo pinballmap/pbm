@@ -1,0 +1,5 @@
+= banner(location, 'add_picture_location', 'Add New Photo At This Location')
+%div[location, :add_picture]{:style => 'display:none;'}
+  %span Select a machine and then click the Add button.
+  %br{:style => "clear:both;"}/
+  = render :partial => 'location_picture_xrefs/form',  :locals => {:location => location}

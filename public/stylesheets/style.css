@@ -77,47 +77,42 @@ body {
   width: 50px;
 }
 
-.scrollerWrapper
-{
-    margin: 0;
-    padding: 0;
-    position: relative;
-    overflow: hidden;
+.scrollerWrapper {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
 }
 
-.scrollerScroller
-{
-    margin: 0;
-    padding: 0;
-    position: relative;
-    overflow: hidden;
+.scrollerScroller {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
 }
 
-.scrollerNext, .scrollerPrev
-{
-    padding: 2px;
-    width: 16px;
-    height: 16px;
-    position: absolute;
-    display: none;
-    background: #aaaaaa url(/images/arrow_prev.png) no-repeat center center;
-    cursor: pointer;
-    cursor: hand;
+.scrollerNext, .scrollerPrev {
+  padding: 2px;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  display: none;
+  background: #aaaaaa url(/images/arrow_prev.png) no-repeat center center;
+  cursor: pointer;
+  cursor: hand;
 
-    border: solid 1px #444444;
+  border: solid 1px #444444;
 
-    -moz-border-radius: 8px;
-    -webkit-border-radius: 8px;
-    -border-radius: 8px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -border-radius: 8px;
 }
 
-.scrollerNext
-{
-    display: block;
-    background: #aaaaaa url(/images/arrow_next.png) no-repeat center center;
+.scrollerNext {
+  display: block;
+  background: #aaaaaa url(/images/arrow_next.png) no-repeat center center;
 }
 
-.itemBackground , .itemLink
-{
-    display: none;
+.itemBackground , .itemLink {
+  display: none;
 }

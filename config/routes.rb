@@ -20,6 +20,7 @@ Pbm::Application.routes.draw do
 
   devise_for :users
 
+  resources :location_picture_xrefs
   resources :location_machine_xrefs, :only => [:create, :destroy]
   resources :machine_score_xrefs,    :only => [:create]
 

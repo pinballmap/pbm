@@ -1,0 +1,5 @@
+= form_for LocationPictureXref.new, :html => {:multipart => true}, :remote => true do |f|
+  = f.hidden_field :location_id, { :value => location.id }
+  = f.label :photo, 'Add Photo'
+  = f.file_field :photo
+  = f.submit

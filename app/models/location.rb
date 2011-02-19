@@ -5,6 +5,7 @@ class Location < ActiveRecord::Base
   has_many :events
   has_many :machines, :through => :location_machine_xrefs
   has_many :location_machine_xrefs
+  has_many :location_picture_xrefs
 
   scope :by_location_id, lambda {|id| where(:id => id)}
   scope :by_zone_id, lambda {|id| where(:zone_id => id)}
