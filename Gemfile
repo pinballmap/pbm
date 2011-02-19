@@ -17,6 +17,8 @@ gem 'declarative_authorization'
 gem 'haml'
 gem 'haml-rails'
 gem 'carrierwave'
+gem 'rmagick'
+gem 'remotipart'
 
 group :development, :test do
   gem 'capybara'
