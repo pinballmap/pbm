@@ -5,6 +5,8 @@ describe LocationsHelper do
     it 'should give me some open and closed arrows' do
       l = Factory.create(:location)
       helper.open_closed_arrows_for('foo', l.id).should == "<div id='foo_open_arrow_#{l.id}' class='float_left' style='display: none;'><img alt='open arrow' src='images/open_arrow.gif' /></div><div id='foo_closed_arrow_#{l.id}' class='float_left'><img alt='closed arrow' src='images/closed_arrow.gif' /></div>"
+
+      helper.open_closed_arrows_for('foo').should == "<div id='foo_open_arrow' class='float_left' style='display: none;'><img alt='open arrow' src='images/open_arrow.gif' /></div><div id='foo_closed_arrow' class='float_left'><img alt='closed arrow' src='images/closed_arrow.gif' /></div>"
     end
   end
 
@@ -15,6 +17,13 @@ describe LocationsHelper do
 <div id="cool_type_banner_#{l.id}" class="sub_nav_item" onclick="toggle_data('cool_type', #{l.id});">
   <span>This is a cool type, bro</span>
   #{open_closed_arrows_for('cool_type', l.id)}
+</div>
+HERE
+
+      helper.banner(nil, 'cool_type', 'This is a cool type, bro').should == <<HERE
+<div id="cool_type_banner" class="sub_nav_item" onclick="toggle_data('cool_type');">
+  <span>This is a cool type, bro</span>
+  #{open_closed_arrows_for('cool_type')}
 </div>
 HERE
     end
