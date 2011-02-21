@@ -31,16 +31,19 @@ class LocationsController < InheritedResources::Base
         when 3 then
           redirect_to "/#{params[:region]}/events.xml"
         when 4 then
-#          redirect_to "/#{params[:region]}/location_machine_xrefs.xml"
+          redirect_to "/#{params[:region]}/machines.xml"
         end
       elsif (location_id = params[:get_location])
         redirect_to "/#{params[:region]}/locations/#{location_id}.xml"
-      elsif (location_id = params[:get_machine])
+      elsif (machine_id = params[:get_machine])
+        redirect_to "/#{params[:region]}/machines/#{machine_id}.xml"
       elsif (location_id = params[:error])
       elsif (location_id = params[:condition])
       elsif (location_id = params[:modify_location])
-        if (params[:add_machine])
-        elsif (params[:remove_machine])
+      # action? :<
+        if (params[:action] == 'add_machine')
+        elsif (params[:action] == 'remove_machine')
+          LocationMachineXref.find(:all, :conditions => ['location_id = ? and machine_id = ?', location_id, params[:machine_no]]).delete
         end
       end
     end
