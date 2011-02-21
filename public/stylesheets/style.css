@@ -134,3 +134,23 @@ body {
   margin: 0 10px 15px 0;
   cursor: pointer;
 }
+
+.search_banner {
+  font-size: 11px;
+  text-transform: uppercase;
+  display: block;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  width: 280px;
+  height: 13px;
+  font-weight: normal;
+  color: white;
+  padding: 8px 10px;
+  cursor: pointer;
+  vertical-align: top;
+}
+
+.arrow {
+  float: right;
+  border: 1px solid white;
+}
