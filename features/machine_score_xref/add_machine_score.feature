@@ -8,7 +8,7 @@ Feature: add a high score for a machine
     Given there is a location machine xref
     And today is 02/05/2011
     And I am on "Portland"'s home page
-    And I press "Search"
+    And I press the "location" search button
     And I click to see the detail for "Test Location Name"
     And I click on the show machines link for "Test Location Name"
     And I click on the add scores link for "Test Location Name"

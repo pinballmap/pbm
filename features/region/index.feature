@@ -8,7 +8,7 @@ Feature: Region main page
     Given "Chicago" is a region with the name "chicago" and the id "1"
     And there is a location machine xref
     And I am on "Chicago"'s home page
-    And I press "Search"
+    And I press the "location" search button
     Then I should not see the listing for "Test Location Name"
 
   @javascript
@@ -16,22 +16,23 @@ Feature: Region main page
     Given there is a location machine xref
     And I am on "Portland"'s home page
     And I select "Test Location Name" from "by_location_id"
-    And I press "Search"
+    And I press the "location" search button
     Then I should see the listing for "Test Location Name"
 
   @javascript
   Scenario: Search by machine name from select
     Given there is a location machine xref
     And I am on "Portland"'s home page
+    And I click to search by "machine"
     And I select "Test Machine Name" from "by_machine_id"
-    And I press "Search"
+    And I press the "machine" search button
     Then I should see the listing for "Test Location Name"
 
   @javascript
   Scenario: Location detail shows the stuff that I want it to show
     Given there is a location machine xref
     And I am on "Portland"'s home page
-    And I press "Search"
+    And I press the "location" search button
     Then I should see "Test Location Name"
     And I should see "123 Pine | Portland"
     And I should see "Add New Machine At This Location"
@@ -47,8 +48,9 @@ Feature: Region main page
       |Zelda|Hillsboro|1|
       |Bawb|Hillsboro|1|
     And I am on "Portland"'s home page
+    And I click to search by "city"
     And I select "Beaverton" from "by_city"
-    And I press "Search"
+    And I press the "city" search button
     Then I should see the listing for "Sassy"
 
   @javascript
@@ -60,7 +62,8 @@ Feature: Region main page
       |Cleo|1|1|
       |Sassy|2|1|
     And I am on "Portland"'s home page
+    And I click to search by "zone"
     And I select "Alberta" from "by_zone_id"
-    And I press "Search"
+    And I press the "zone" search button
     Then I should see the listing for "Sassy"
     And I should not see the listing for "Cleo"

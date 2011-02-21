@@ -1,11 +1,10 @@
 - if (@locations)
-  - location_data = locations_javascript_data(@locations)
   :javascript
     show_locations(
-      [#{location_data[0].join(', ')}],
-      [#{location_data[1].join(', ')}],
-      [#{location_data[2].join(', ')}],
-      [#{location_data[3].join(', ')}]
+      [#{@location_data[0].join(', ')}],
+      [#{@location_data[1].join(', ')}],
+      [#{@location_data[2].join(', ')}],
+      [#{@location_data[3].join(', ')}]
     );
   %h2.search_results_header Search Results
   %div#search_results
@@ -22,5 +21,7 @@
               %li= l.street
               %br{:style => "clear:all;"}/
               %li= [l.city, l.zip, l.state].join(', ')
+          = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location => l}
+          = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
           = render :partial => 'location_machine_xrefs/add_machine', :locals => {:location => l}
           = render :partial => 'locations/show_machines', :locals => {:location => l}

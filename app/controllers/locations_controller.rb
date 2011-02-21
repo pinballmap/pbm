@@ -7,7 +7,9 @@ class LocationsController < InheritedResources::Base
   end
 
   def index
-    respond_with(@locations = apply_scopes(Location).where('region_id = ?', @region.id))
+    @locations = apply_scopes(Location).where('region_id = ?', @region.id)
+    @location_data = locations_javascript_data(@locations)
+    respond_with(@locations)
   end
 
   def render_machines
@@ -26,6 +28,8 @@ class LocationsController < InheritedResources::Base
           redirect_to "/#{params[:region]}/locations.xml"
         when 2 then
           redirect_to "/#{params[:region]}/regions.xml"
+        when 3 then
+          redirect_to "/#{params[:region]}/events.xml"
         when 4 then
 #          redirect_to "/#{params[:region]}/location_machine_xrefs.xml"
         end
@@ -40,5 +44,21 @@ class LocationsController < InheritedResources::Base
         end
       end
     end
+  end
+
+  def locations_javascript_data(locations)
+    ids = Array.new
+    lats = Array.new
+    lons = Array.new
+    contents = Array.new
+
+    locations.each do |l|
+      ids      << l.id
+      lats     << l.lat
+      lons     << l.lon
+      contents << l.content_for_infowindow
+    end
+
+    [ids, lats, lons, contents]
   end
 end

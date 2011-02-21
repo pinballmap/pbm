@@ -1,3 +1,15 @@
+Given /^I click to search by "([^"]*)"$/ do |type|
+  if page.has_css?("div#by_#{type}_banner")
+    page.find("div#by_#{type}_banner").click
+  end
+end
+
+Given /^I press the "([^"]*)" search button$/ do |type|
+  if page.has_css?("input##{type}_search_button")
+    page.find("input##{type}_search_button").click
+  end
+end
+
 Then /^I should see the listing for "([^"]*)"$/ do |name|
   within('div.search_result') do
     page.should have_content(name)

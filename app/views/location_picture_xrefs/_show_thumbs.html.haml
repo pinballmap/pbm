@@ -1,0 +1,2 @@
+- LocationPictureXref.find_all_by_location_id(location.id).each do |lpx|
+  = image_tag lpx.photo_url(:thumb) if lpx.photo?

@@ -20,4 +20,13 @@ describe Location do
       @l.machine_names.should == ['Cleo', 'Sassy']
     end
   end
+
+  describe '#content_for_infowindow' do
+    it 'generate the html that the infowindow wants to use' do
+      l = Factory.create(:location)
+      ['Foo', 'Bar', 'Baz'].each {|name| Factory.create(:location_machine_xref, :location => l, :machine => Factory.create(:machine, :name => name)) }
+
+      l.content_for_infowindow.chomp.should == "'<div class=\"infowindow\">Test Location Name<br />123 Pine<br />Portland, OR, 97211<br /><hr /><br />Foo<br />Bar<br />Baz<br /></div>'"
+    end
+  end
 end
