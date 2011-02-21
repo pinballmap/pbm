@@ -1,22 +1,51 @@
-= form_tag locations_path, :method => 'get', :id => 'location_search', :remote => true do
-  = label_tag :by_city, 'By City'
-  = select_tag :by_city, options_for_select(['']) + options_from_collection_for_select(Location.find(:all, :conditions => ['region_id = ?', @region.id], :select => 'distinct city'), 'city', 'city', params[:by_city])
-  %br{:style => "clear:both;"}/
-  = label_tag :by_zone_id, 'By Zone'
-  = select_tag :by_zone_id, options_for_select(['']) + options_from_collection_for_select(Zone.where('region_id = ?', @region.id), 'id', 'name', params[:by_zone_id])
-  %br{:style => "clear:both;"}/
-  = label_tag :by_location_name, 'Location Name'
-  = text_field_tag :by_location_name, params[:by_location_name]
-  = select_tag :by_location_id, options_for_select(['']) + options_from_collection_for_select(Location.where('region_id = ?', @region.id), 'id', 'name', params[:by_location_id])
-  %br{:style => "clear:both;"}/
-  = label_tag :by_machine_name, 'Machine Name'
-  = text_field_tag :by_machine_name, params[:by_machine_name]
-  = select_tag :by_machine_id, options_for_select(['']) + options_from_collection_for_select(Machine.all, 'id', 'name', params[:by_machine_id])
-  %br{:style => "clear:both;"}/
-  = submit_tag 'Search', :id => 'search'
+= banner(nil, 'by_city', 'LOOKUP BY CITY')
+= banner(nil, 'by_zone', 'LOOKUP BY ZONE')
+= banner(nil, 'by_location', 'LOOKUP BY LOCATION')
+= banner(nil, 'by_machine', 'LOOKUP BY MACHINE')
+
+%div{:id => 'by_city', :style => 'display:none;'}
+  = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do
+    %span.info To search locations by city, please select a city from the drop down
+    %br{:style => "clear:both;"}/
+    = select_tag :by_city, options_for_select(['']) + options_from_collection_for_select(Location.find(:all, :conditions => ['region_id = ?', @region.id], :select => 'distinct city'), 'city', 'city', params[:by_city])
+    %br{:style => "clear:both;"}/
+    = submit_tag 'Search', :class => 'search', :id => 'city_search_button'
+
+%div{:id => 'by_zone', :style => 'display:none;'}
+  = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do
+    %span.info To search locations by zone, please select a zone from the drop down
+    %br{:style => "clear:both;"}/
+    = select_tag :by_zone_id, options_for_select(['']) + options_from_collection_for_select(Zone.where('region_id = ?', @region.id), 'id', 'name', params[:by_zone_id])
+    %br{:style => "clear:both;"}/
+    = submit_tag 'Search', :class => 'search', :id => 'zone_search_button'
+
+%div{:id => 'by_location', :style => 'display:none;'}
+  = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do
+    %span.info To search locations please select a place or region from the drop down or begin typing in the text box.
+    %br{:style => "clear:both;"}/
+    = text_field_tag :by_location_name, params[:by_location_name]
+    %br{:style => "clear:both;"}/
+    = select_tag :by_location_id, options_for_select(['']) + options_from_collection_for_select(Location.where('region_id = ?', @region.id), 'id', 'name', params[:by_location_id])
+    %br{:style => "clear:both;"}/
+    = submit_tag 'Search', :class => 'search', :id => 'location_search_button'
+
+%div{:id => 'by_machine', :style => 'display:none;'}
+  = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do
+    %span.info To find a machine please select one from the drop down or use the text box.
+    %br{:style => "clear:both;"}/
+    = text_field_tag :by_machine_name, params[:by_machine_name]
+    %br{:style => "clear:both;"}/
+    = select_tag :by_machine_id, options_for_select(['']) + options_from_collection_for_select(Machine.all, 'id', 'name', params[:by_machine_id])
+    %br{:style => "clear:both;"}/
+    = submit_tag 'Search', :class => 'search', :id => 'machine_search_button'
 
 :javascript
   $(function () {
     $('#by_location_name').autocomplete({source: '#{autocomplete_locations_path}'});
     $('#by_machine_name').autocomplete({source: '#{autocomplete_machines_path}'});
+
+    $('.location_search').submit(function () {
+      $.get(this.action, $(this).serialize(), null, 'script');
+      return false;
+    });
   });

@@ -12,7 +12,7 @@ Feature: Autocomplete
       |Sassy From The Black Lagoon|
       |Cleo Game|
     And I am on "Portland"'s home page
-    And I press "search"
+    And I press the "location" search button
     And I click to see the detail for "Test Location Name"
     And I click on the add machine link for "Test Location Name"
     And I fill in "add_machine_by_name" with "Sassy"
@@ -30,7 +30,8 @@ Feature: Autocomplete
       |Sassy From The Black Lagoon|
       |Cleo Game|
     And I am on "Portland"'s home page
-    And I fill in "Machine Name" with "Sassy"
+    And I click to search by "machine"
+    And I fill in "by_machine_name" with "Sassy"
     And I wait for 1 second
     Then I should see the following autocomplete options:
       |Sassy Madness|
@@ -45,7 +46,7 @@ Feature: Autocomplete
       |Cleo South|
       |Sassy|
     And I am on "Portland"'s home page
-    And I fill in "Location Name" with "Cleo"
+    And I fill in "by_location_name" with "Cleo"
     And I wait for 1 second
     Then I should see the following autocomplete options:
       |Cleo North|

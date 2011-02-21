@@ -1,10 +1,3 @@
-$(function () {
-  $('#location_search').submit(function () {
-    $.get(this.action, $(this).serialize(), null, 'script');
-    return false;
-  });
-});
-
 var map;
 var markers = new Array();
 var infowindows = new Array();
@@ -15,9 +8,13 @@ function initialize_map() {
 }
 
 function toggle_data(name, id) {
-  $('#' + name + '_' + id).toggle();
-  $('#' + name + '_open_arrow_' + id).toggle();
-  $('#' + name + '_closed_arrow_' + id).toggle();
+  var main = id ? '_' + id : '';
+  var open = '_open_arrow' + (id ? '_' + id : '');
+  var closed = '_closed_arrow' + (id ? '_' + id : '');
+
+  $('#' + name + main).toggle();
+  $('#' + name + open).toggle();
+  $('#' + name + closed).toggle();
 }
 
 function clear_infowindows() {

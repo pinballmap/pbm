@@ -7,7 +7,7 @@ Feature: update condition for location's machine
   Scenario: Add a new condition to a machine
     Given there is a location machine xref
     And I am on "Portland"'s home page
-    And I press "search"
+    And I press the "location" search button
     And I click to see the detail for "Test Location Name"
     And I click on the show machines link for "Test Location Name"
     And I update the machine condition for "Test Location Name"'s "Test Machine Name" to be "New Condition"

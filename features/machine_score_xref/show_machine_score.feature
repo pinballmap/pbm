@@ -7,7 +7,7 @@ Feature: show high scores for a machine
   Scenario: Don't show the "show high scores" option if there are no high scores
     Given there is a location machine xref
     And I am on "Portland"'s home page
-    And I press "Search"
+    And I press the "location" search button
     And I click to see the detail for "Test Location Name"
     And I click on the show machines link for "Test Location Name"
     Then I should not see the show scores option for "Test Location Name"'s "Test Machine Name"
@@ -16,7 +16,7 @@ Feature: show high scores for a machine
   Scenario: Show the "show high scores" option if you just made a new machine, and there were previously no machines
     Given there is a location machine xref
     And I am on "Portland"'s home page
-    And I press "Search"
+    And I press the "location" search button
     And I click to see the detail for "Test Location Name"
     And I click on the show machines link for "Test Location Name"
     Then I should not see the show scores option for "Test Location Name"'s "Test Machine Name"
