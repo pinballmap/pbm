@@ -1,7 +1,7 @@
-= banner(nil, 'by_city', 'LOOKUP BY CITY')
-= banner(nil, 'by_zone', 'LOOKUP BY ZONE')
-= banner(nil, 'by_location', 'LOOKUP BY LOCATION')
-= banner(nil, 'by_machine', 'LOOKUP BY MACHINE')
+= search_banner('by_city', 'LOOKUP BY CITY')
+= search_banner('by_zone', 'LOOKUP BY ZONE')
+= search_banner('by_location', 'LOOKUP BY LOCATION')
+= search_banner('by_machine', 'LOOKUP BY MACHINE')
 
 %div{:id => 'by_city', :style => 'display:none;'}
   = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do

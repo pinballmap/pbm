@@ -4,6 +4,14 @@ Feature: Region main page
   I want to do basic site navigation
 
   @javascript
+  Scenario: Lookup navigation closes other tabs when selected
+    Given there is a location machine xref
+    And I am on "Portland"'s home page
+    And I click to search by "machine"
+    Then I should not see "To search locations please select a place or region from the drop down or begin typing in the text box." within "span.info"
+    And I should see "To find a machine please select one from the drop down or use the text box."
+
+  @javascript
   Scenario: Searching is automatically limited by region
     Given "Chicago" is a region with the name "chicago" and the id "1"
     And there is a location machine xref

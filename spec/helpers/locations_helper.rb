@@ -28,4 +28,16 @@ HERE
 HERE
     end
   end
+
+  describe '#search_banner' do
+    it 'should give me a banner' do
+      l = Factory.create(:location)
+      helper.search_banner('by_cool_type', 'This is a cool type, bro').should == <<HERE
+<div id="by_cool_type_banner" class="sub_nav_item" onclick="hide_search_sections(); toggle_data('by_cool_type');">
+  <span>This is a cool type, bro</span>
+  #{open_closed_arrows_for('by_cool_type')}
+</div>
+HERE
+    end
+  end
 end

@@ -15,4 +15,14 @@ module LocationsHelper
 HERE
     html.html_safe
   end
+
+  def search_banner(type, header_text)
+    html = <<HERE
+<div id="#{type}_banner" class="sub_nav_item" onclick="hide_search_sections(); toggle_data('#{type}');">
+  <span>#{header_text}</span>
+  #{open_closed_arrows_for(type)}
+</div>
+HERE
+    html.html_safe
+  end
 end
