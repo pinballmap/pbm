@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110222060400) do
+ActiveRecord::Schema.define(:version => 20110222061738) do
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"
@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(:version => 20110222060400) do
 
   create_table "machine_score_xrefs", :force => true do |t|
     t.integer  "location_machine_xref_id"
-    t.integer  "score"
+    t.integer  "score",                    :limit => 8
     t.string   "initials"
     t.datetime "created_at"
     t.datetime "updated_at"
