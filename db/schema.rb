@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110222002318) do
+ActiveRecord::Schema.define(:version => 20110222054539) do
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"
@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(:version => 20110222002318) do
     t.integer  "machine_id"
     t.string   "condition"
     t.date     "condition_date"
+    t.integer  "operator_id"
+    t.string   "ip"
   end
 
   create_table "location_picture_xrefs", :force => true do |t|
