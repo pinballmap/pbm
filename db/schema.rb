@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110221234608) do
+ActiveRecord::Schema.define(:version => 20110222000458) do
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"
@@ -83,6 +83,16 @@ ActiveRecord::Schema.define(:version => 20110221234608) do
   create_table "machines", :force => true do |t|
     t.string   "name"
     t.boolean  "is_active"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "operators", :force => true do |t|
+    t.string   "name"
+    t.integer  "region_id"
+    t.string   "email"
+    t.string   "website"
+    t.string   "phone"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
