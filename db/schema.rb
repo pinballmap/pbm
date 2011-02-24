@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110218024542) do
+ActiveRecord::Schema.define(:version => 20110223052335) do
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"
@@ -43,8 +43,10 @@ ActiveRecord::Schema.define(:version => 20110218024542) do
     t.datetime "updated_at"
     t.integer  "location_id"
     t.integer  "machine_id"
-    t.string   "condition"
+    t.text     "condition"
     t.date     "condition_date"
+    t.integer  "operator_id"
+    t.string   "ip"
   end
 
   create_table "location_picture_xrefs", :force => true do |t|
@@ -53,6 +55,7 @@ ActiveRecord::Schema.define(:version => 20110218024542) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "photo"
+    t.text     "description"
   end
 
   create_table "locations", :force => true do |t|
@@ -73,16 +76,27 @@ ActiveRecord::Schema.define(:version => 20110218024542) do
 
   create_table "machine_score_xrefs", :force => true do |t|
     t.integer  "location_machine_xref_id"
-    t.integer  "score"
+    t.integer  "score",                    :limit => 8
     t.string   "initials"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "rank"
+    t.string   "ip"
   end
 
   create_table "machines", :force => true do |t|
     t.string   "name"
     t.boolean  "is_active"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "operators", :force => true do |t|
+    t.string   "name"
+    t.integer  "region_id"
+    t.string   "email"
+    t.string   "website"
+    t.string   "phone"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -93,6 +107,9 @@ ActiveRecord::Schema.define(:version => 20110218024542) do
     t.datetime "updated_at"
     t.string   "full_name"
     t.string   "motd"
+    t.float    "lat"
+    t.float    "lon"
+    t.integer  "n_search_no"
   end
 
   create_table "users", :force => true do |t|
@@ -120,6 +137,8 @@ ActiveRecord::Schema.define(:version => 20110218024542) do
     t.integer  "region_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "short_name"
+    t.boolean  "is_primary"
   end
 
 end

@@ -1,10 +1,19 @@
 var map;
 var markers = new Array();
 var infowindows = new Array();
+var searchSections = new Array('city', 'location', 'machine', 'zone');
 
 function initialize_map() {
   var latlng = new google.maps.LatLng(-34.397, 150.644);
   map = new google.maps.Map(document.getElementById("map_canvas"), { zoom: 8, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP });
+}
+
+function hide_search_sections() {
+  for (section in searchSections) {
+    $('#by_' + searchSections[section] + "_open_arrow").toggle(false);
+    $('#by_' + searchSections[section] + "_closed_arrow").toggle(true);
+    $('#by_' + searchSections[section]).toggle(false);
+  }
 }
 
 function toggle_data(name, id) {
