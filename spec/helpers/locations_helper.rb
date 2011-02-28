@@ -4,7 +4,7 @@ describe LocationsHelper do
   describe '#open_closed_arrows' do
     it 'should give me some open and closed arrows' do
       l = Factory.create(:location)
-      helper.open_closed_arrows_for('foo', l.id).should == "<div class='' id='foo_open_arrow_#{l.id}' style='display: none;'><img alt='open arrow' src='images/open_arrow.gif' /></div><div class='' id='foo_closed_arrow_#{l.id}'><img alt='closed arrow' src='images/closed_arrow.gif' /></div>"
+      helper.open_closed_arrows_for('foo', l.id).should == "<div class='arrow' id='foo_open_arrow_#{l.id}' style='display: none;'><img alt='open arrow' src='images/open_arrow.gif' /></div><div class='arrow' id='foo_closed_arrow_#{l.id}'><img alt='closed arrow' src='images/closed_arrow.gif' /></div>"
 
       helper.open_closed_arrows_for('foo').should == "<div class='arrow' id='foo_open_arrow' style='display: none;'><img alt='open arrow' src='images/open_arrow.gif' /></div><div class='arrow' id='foo_closed_arrow'><img alt='closed arrow' src='images/closed_arrow.gif' /></div>"
     end
