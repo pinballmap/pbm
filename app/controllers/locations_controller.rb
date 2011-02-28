@@ -7,7 +7,7 @@ class LocationsController < InheritedResources::Base
   end
 
   def index
-    @locations = apply_scopes(Location).where('region_id = ?', @region.id)
+    @locations = apply_scopes(Location).where('region_id = ?', @region.id).includes(:location_machine_xrefs, :machines, :location_picture_xrefs)
     @location_data = locations_javascript_data(@locations)
     respond_with(@locations)
   end

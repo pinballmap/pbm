@@ -1,5 +1,5 @@
 = banner(location, 'add_picture_location', 'Add New Photo At This Location')
 %div[location, :add_picture]{:style => 'display:none;'}
-  %span Select a machine and then click the Add button.
+  %span.info If you want to show others how this location looks and feels, feel free to upload a picture of it. Choose a file from your computer, then click 'upload'. Once the photo is approved, it will show up!
   %br{:style => "clear:both;"}/
   = render :partial => 'location_picture_xrefs/form',  :locals => {:location => location}

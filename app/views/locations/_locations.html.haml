@@ -7,20 +7,25 @@
       [#{@location_data[3].join(', ')}]
     );
   %h2.search_results_header Search Results
+  %br{:style => "clear:all;"}
   %div#search_results
     - @locations.each do |l|
       %div.search_result[l]
-        %div.sub_nav_item
+        %div
           = open_closed_arrows_for('location_detail_location', l.id)
           %div[l, :show_location_detail]{:onclick => "$('#location_summary_location_#{l.id}').toggle(); toggle_data('location_detail_location', #{l.id});"}
             %span= l.name
+            %br{:style => "clear:all;"}
             %span[l, :location_summary] #{[l.street, l.city].join(' | ')}<br style="clear:all" />#{[l.machine_names].join(' | ')[0, 10]}
+        %br{:style => "clear:all;"}
         %div.sub_nav_item[l, :location_detail]{:style => 'display:none'}
           %div.location_name
             %ul
               %li= l.street
               %br{:style => "clear:all;"}/
               %li= [l.city, l.zip, l.state].join(', ')
+              %li
+                = link_to 'Link to this map result', locations_path, :class =>'location_link', :id => l.id
           = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location => l}
           = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
           = render :partial => 'location_machine_xrefs/add_machine', :locals => {:location => l}
