@@ -42,17 +42,15 @@ body {
 }
 
 .sub_nav_item {
-  border-bottom: 1px solid #494949;
-  border-top: 1px solid #494949;
   color: #999;
   cursor: pointer;
-  display: block;
   font-size: 10px;
   font-weight: normal;
   height: 11px;
   padding: 3px 10px 3px 0;
   text-transform: uppercase;
   width: 240px;
+  float: none;
 }
 
 .search_result {
@@ -117,7 +115,6 @@ body {
 
 .info {
   padding: 10px 0px;
-  display: block;
   font-style: italic;
   color: #999;
 }
@@ -171,4 +168,8 @@ body {
   border-style: solid;
   padding: 2px 2px 1px 2px;
   float: right;
+}
+
+.clear {
+  clear: both;
 }
