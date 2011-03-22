@@ -16,14 +16,19 @@ function hideSearchSections() {
   }
 }
 
-function toggleData(name, id) {
-  var main = id ? '_' + id : '';
+function toggleArrows(name, id) {
   var open = '_open_arrow' + (id ? '_' + id : '');
   var closed = '_closed_arrow' + (id ? '_' + id : '');
 
-  $('#' + name + main).toggle();
   $('#' + name + open).toggle();
   $('#' + name + closed).toggle();
+}
+
+function toggleData(name, id) {
+  var main = id ? '_' + id : '';
+
+  $('#' + name + main).toggle();
+  toggleArrows(name, id);
 }
 
 function clearInfoWindows() {

@@ -11,23 +11,25 @@
   %div#search_results
     - @locations.each do |l|
       %div.search_result[l]
-        %div
-          = open_closed_arrows_for('location_detail_location', l.id)
-          %div[l, :show_location_detail]{:onclick => "$('#location_summary_location_#{l.id}').toggle(); toggleData('location_detail_location', #{l.id});"}
-            %span= l.name
+        = open_closed_arrows_for('location_detail', l.id)
+        %div.sub_nav_item[l, :show_location_detail]{:onclick => "$('#show_location_detail_location_#{l.id}').toggle(); toggleData('location_detail_location', #{l.id}); toggleArrows('location_detail', #{l.id});"}
+          %ul
+            %li= l.name
             %div.clear
-            %span[l, :location_summary] #{[l.street, l.city].join(' | ')}<br class="clear" />#{[l.machine_names].join(' | ')[0, 10]}
+            %li
+              %span[l, :location_summary] #{[l.street, l.city].join(' | ')}<br class="clear" />#{[l.machine_names].join(' | ')}
         %div.clear
         %div.sub_nav_item[l, :location_detail]{:style => 'display:none'}
-          %div.location_name
+          %div.location_name{:onclick => "$('#location_detail_location_#{l.id}').toggle(); toggleData('show_location_detail_location', #{l.id}); toggleArrows('location_detail', #{l.id});"}
             %ul
+              %li= l.name
+              %div.clear
               %li= l.street
               %div.clear
               %li= [l.city, l.zip, l.state].join(', ')
-              %li
-                = link_to 'Link to this map result', locations_path, :class =>'location_link', :id => l.id
+              %div.clear
+              %li= link_to 'Link to this map result', locations_path, :class =>'location_link', :id => l.id
           = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location => l}
           = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
           = render :partial => 'location_machine_xrefs/add_machine', :locals => {:location => l}
           = render :partial => 'locations/show_machines', :locals => {:location => l}
-      %div.clear
