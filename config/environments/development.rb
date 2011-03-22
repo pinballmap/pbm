@@ -24,5 +24,11 @@ Pbm::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
-end
 
+  config.after_initialize do
+    Bullet.enable = false #enable this if you need some N+1 work, but note that it will slow your dev environment down...a lot
+    Bullet.bullet_logger = true
+    Bullet.rails_logger = true
+    Bullet.disable_browser_cache = true
+  end
+end
