@@ -1,6 +1,6 @@
 - if (@locations)
   :javascript
-    show_locations(
+    showLocations(
       [#{@location_data[0].join(', ')}],
       [#{@location_data[1].join(', ')}],
       [#{@location_data[2].join(', ')}],
@@ -13,7 +13,7 @@
       %div.search_result[l]
         %div
           = open_closed_arrows_for('location_detail_location', l.id)
-          %div[l, :show_location_detail]{:onclick => "$('#location_summary_location_#{l.id}').toggle(); toggle_data('location_detail_location', #{l.id});"}
+          %div[l, :show_location_detail]{:onclick => "$('#location_summary_location_#{l.id}').toggle(); toggleData('location_detail_location', #{l.id});"}
             %span= l.name
             %div.clear
             %span[l, :location_summary] #{[l.street, l.city].join(' | ')}<br class="clear" />#{[l.machine_names].join(' | ')[0, 10]}
