@@ -26,7 +26,7 @@ class Location < ActiveRecord::Base
   def content_for_infowindow
     content = "'<div class=\"infowindow\">"
     content += [self.name.gsub("'", "\\\\'"), self.street, [self.city, self.state, self.zip].join(', '), self.phone].join('<br />')
-    content += '<hr /><br />'
+    content += '<br /><hr /><br />'
 
     machines = self.machines.map {|m| m.name.gsub("'", "\\\\'") + '<br />'}
 

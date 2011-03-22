@@ -56,7 +56,7 @@ function showLocations(ids, lats, lons, contents) {
 
     markers.push(marker);
     bounds.extend(latlng);
-    infoWindows.push(new google.maps.InfoWindow({ content: $("<div/>").html(contents[i]).text() }));
+    infoWindows.push(new google.maps.InfoWindow({ content: contents[i] }));
 
     attachMarkerClick(marker, i)
   }
