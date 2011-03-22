@@ -6,7 +6,7 @@
     = hidden_field_tag :location_id, location.id
     = text_field_tag :add_machine_by_name, params[:add_machine_by_name]
     %br/
-    = select_tag :add_machine_by_id, options_for_select(['']) + options_from_collection_for_select(Machine.all, 'id', 'name', params[:add_machine_by_id])
+    = select_tag :add_machine_by_id, options_for_select(['']) + options_from_collection_for_select(Machine.order('name'), 'id', 'name', params[:add_machine_by_id])
     %br/
     = submit_tag 'Add', :id => 'add'
 

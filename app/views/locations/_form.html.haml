@@ -7,7 +7,7 @@
   = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do
     %span.info To search locations by city, please select a city from the drop down
     %br{:style => "clear:both;"}/
-    = select_tag :by_city, options_for_select(['']) + options_from_collection_for_select(Location.find(:all, :conditions => ['region_id = ?', @region.id], :select => 'distinct city'), 'city', 'city', params[:by_city])
+    = select_tag :by_city, options_for_select(['']) + options_from_collection_for_select(Location.find(:all, :conditions => ['region_id = ?', @region.id], :select => 'distinct city', :order => 'city'), 'city', 'city', params[:by_city])
     %br{:style => "clear:both;"}/
     = submit_tag 'Search', :class => 'search', :id => 'city_search_button'
 
@@ -15,7 +15,7 @@
   = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do
     %span.info To search locations by zone, please select a zone from the drop down
     %br{:style => "clear:both;"}/
-    = select_tag :by_zone_id, options_for_select(['']) + options_from_collection_for_select(Zone.where('region_id = ?', @region.id), 'id', 'name', params[:by_zone_id])
+    = select_tag :by_zone_id, options_for_select(['']) + options_from_collection_for_select(Zone.where('region_id = ?', @region.id).order('name'), 'id', 'name', params[:by_zone_id])
     %br{:style => "clear:both;"}/
     = submit_tag 'Search', :class => 'search', :id => 'zone_search_button'
 
@@ -25,7 +25,7 @@
     %br{:style => "clear:both;"}/
     = text_field_tag :by_location_name, params[:by_location_name]
     %br{:style => "clear:both;"}/
-    = select_tag :by_location_id, options_for_select(['']) + options_from_collection_for_select(Location.where('region_id = ?', @region.id), 'id', 'name', params[:by_location_id])
+    = select_tag :by_location_id, options_for_select(['']) + options_from_collection_for_select(Location.where('region_id = ?', @region.id).order('name'), 'id', 'name', params[:by_location_id])
     %br{:style => "clear:both;"}/
     = submit_tag 'Search', :class => 'search', :id => 'location_search_button'
 
@@ -35,7 +35,7 @@
     %br{:style => "clear:both;"}/
     = text_field_tag :by_machine_name, params[:by_machine_name]
     %br{:style => "clear:both;"}/
-    = select_tag :by_machine_id, options_for_select(['']) + options_from_collection_for_select(Machine.all, 'id', 'name', params[:by_machine_id])
+    = select_tag :by_machine_id, options_for_select(['']) + options_from_collection_for_select(Machine.order('name'), 'id', 'name', params[:by_machine_id])
     %br{:style => "clear:both;"}/
     = submit_tag 'Search', :class => 'search', :id => 'machine_search_button'
 
