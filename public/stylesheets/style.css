@@ -2,6 +2,10 @@
   float: left;
 }
 
+li {
+  padding: 2px 0 4px 10px;
+}
+
 body {
   margin: 0px;
   padding: 0px;
@@ -31,6 +35,10 @@ body {
   padding-left: 10px;
 }
 
+#search_results {
+  color: #ffffff;
+}
+
 #search_results li {
   list-style-type: none;
   font-size: 12px;
@@ -42,19 +50,18 @@ body {
 }
 
 .sub_nav_item {
-  color: #999;
+  border-bottom:1px solid #494949;
   cursor: pointer;
   font-size: 10px;
   font-weight: normal;
-  height: 11px;
-  padding: 3px 10px 3px 0;
-  text-transform: uppercase;
+  height: 100%;
   width: 240px;
-  float: none;
+  padding: 3px 10px 3px 0;
 }
 
 .search_result {
   height: 100%;
+  width: 240px;
 }
 
 #welcome {

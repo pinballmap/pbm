@@ -1,14 +1,14 @@
 var map;
 var markers = new Array();
-var infowindows = new Array();
+var infoWindows = new Array();
 var searchSections = new Array('city', 'location', 'machine', 'zone');
 
-function initialize_map() {
+function initializeMap() {
   var latlng = new google.maps.LatLng(-34.397, 150.644);
   map = new google.maps.Map(document.getElementById("map_canvas"), { zoom: 8, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP });
 }
 
-function hide_search_sections() {
+function hideSearchSections() {
   for (section in searchSections) {
     $('#by_' + searchSections[section] + "_open_arrow").toggle(false);
     $('#by_' + searchSections[section] + "_closed_arrow").toggle(true);
@@ -16,25 +16,30 @@ function hide_search_sections() {
   }
 }
 
-function toggle_data(name, id) {
-  var main = id ? '_' + id : '';
+function toggleArrows(name, id) {
   var open = '_open_arrow' + (id ? '_' + id : '');
   var closed = '_closed_arrow' + (id ? '_' + id : '');
 
-  $('#' + name + main).toggle();
   $('#' + name + open).toggle();
   $('#' + name + closed).toggle();
 }
 
-function clear_infowindows() {
-  if (infowindows) {
-    for (i in infowindows) {
-      infowindows[i].close();
+function toggleData(name, id) {
+  var main = id ? '_' + id : '';
+
+  $('#' + name + main).toggle();
+  toggleArrows(name, id);
+}
+
+function clearInfoWindows() {
+  if (infoWindows) {
+    for (i in infoWindows) {
+      infoWindows[i].close();
     }
   }
 }
 
-function clear_markers() {
+function clearMarkers() {
   if (markers) {
     for (i in markers) {
       markers[i].setMap(null);
@@ -42,7 +47,7 @@ function clear_markers() {
   }
 }
 
-function show_locations(ids, lats, lons, contents) {
+function showLocations(ids, lats, lons, contents) {
   var bounds = new google.maps.LatLngBounds();
 
   for (i in ids) {
@@ -56,19 +61,19 @@ function show_locations(ids, lats, lons, contents) {
 
     markers.push(marker);
     bounds.extend(latlng);
-    infowindows.push(new google.maps.InfoWindow({ content: $("<div/>").html(contents[i]).text() }));
+    infoWindows.push(new google.maps.InfoWindow({ content: contents[i] }));
 
-    attach_marker_click(marker, i)
+    attachMarkerClick(marker, i)
   }
 
   map.fitBounds(bounds);
 }
 
-function attach_marker_click(marker, index) {
+function attachMarkerClick(marker, index) {
   google.maps.event.addListener(marker, 'click', function() {
-    clear_infowindows();
+    clearInfoWindows();
     map.panTo(marker.getPosition());
-    infowindows[index].open(map, marker);
+    infoWindows[index].open(map, marker);
   });
 }
 

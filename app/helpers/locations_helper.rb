@@ -8,7 +8,7 @@ module LocationsHelper
 
   def banner(obj=nil, type, header_text)
     html = <<HERE
-<div id="#{type}_banner#{"_#{obj.id}" if (obj)}" class="sub_nav_item" onclick="toggle_data('#{type}'#{", #{obj.id}" if (obj)});">
+<div id="#{type}_banner#{"_#{obj.id}" if (obj)}" class="sub_nav_item" onclick="toggleData('#{type}'#{", #{obj.id}" if (obj)});">
   <span>#{header_text}</span>
   #{open_closed_arrows_for(type, obj ? obj.id : nil)}
 </div>
@@ -18,7 +18,7 @@ HERE
 
   def search_banner(type, header_text)
     html = <<HERE
-<div id="#{type}_banner" class="search_banner" onclick="hide_search_sections(); toggle_data('#{type}');">
+<div id="#{type}_banner" class="search_banner" onclick="hideSearchSections(); toggleData('#{type}');">
   <span>#{header_text}</span>
   #{open_closed_arrows_for(type)}
 </div>
