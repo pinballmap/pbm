@@ -1,5 +1,5 @@
 = lmx.machine.name
-= button_to "remove",  location_machine_xref_path(lmx), :id => "remove_machine_#{lmx.id}", :method => 'delete', :remote => true
+= button_to "remove",  "/location_machine_xref/#{lmx.id}", :id => "remove_machine_#{lmx.id}", :method => 'delete', :remote => true
 
 :javascript
   $('#remove_machine_#{lmx.id}').click(function () {
