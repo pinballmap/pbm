@@ -3,11 +3,6 @@ var markers = new Array();
 var infoWindows = new Array();
 var searchSections = new Array('city', 'location', 'machine', 'zone');
 
-function initializeMap() {
-  var latlng = new google.maps.LatLng(-34.397, 150.644);
-  map = new google.maps.Map(document.getElementById("map_canvas"), { zoom: 8, center: latlng, mapTypeId: google.maps.MapTypeId.ROADMAP });
-}
-
 function hideSearchSections() {
   for (section in searchSections) {
     $('#by_' + searchSections[section] + "_open_arrow").toggle(false);
@@ -49,6 +44,7 @@ function clearMarkers() {
 
 function showLocations(ids, lats, lons, contents) {
   var bounds = new google.maps.LatLngBounds();
+  map = new google.maps.Map(document.getElementById("map_canvas"), { mapTypeId: google.maps.MapTypeId.ROADMAP });
 
   for (i in ids) {
     var latlng = new google.maps.LatLng(lats[i], lons[i]);
