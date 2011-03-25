@@ -6,6 +6,11 @@ li {
   padding: 2px 0 4px 10px;
 }
 
+a {
+  color: white;
+  text-decoration: none;
+}
+
 body {
   margin: 0px;
   padding: 0px;
@@ -15,10 +20,15 @@ body {
   font-size: 11px;
 }
 
+#page {
+  padding: 25px;
+}
+
 #map {
   padding-left: 40px;
   height: 500px;
   width: 600px;
+  margin-top: 20px;
 }
 
 #map_canvas {
@@ -28,6 +38,7 @@ body {
 
 #lookup {
   width: 375px;
+  margin-top: 20px;
 }
 
 .search_result ul {
@@ -180,3 +191,20 @@ body {
 .clear {
   clear: both;
 }
+
+#header li {
+  list-style-type: none;
+  margin-left: 5px;
+  font-weight: bold;
+  position: relative;
+  display: inline;
+}
+
+#header ul {
+  font-size: 10px;
+  font-weight: bold;
+  text-align: right;
+  line-height: 130%;
+  margin-top: 0px;
+}
+
