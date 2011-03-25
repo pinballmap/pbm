@@ -47,6 +47,8 @@ GEM
       ZenTest
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
+    bullet (2.0.1)
+      uniform_notifier (~> 1.0.0)
     capybara (0.4.1.1)
       celerity (>= 0.7.9)
       culerity (>= 0.2.4)
@@ -174,6 +176,7 @@ GEM
       activesupport (~> 3.0)
       railties (~> 3.0)
       rspec (~> 2.4.0)
+    ruby-growl (3.0)
     ruby-progressbar (0.0.9)
     rubyzip (0.9.4)
     selenium (0.0.3)
@@ -194,6 +197,7 @@ GEM
     treetop (1.4.9)
       polyglot (>= 0.3.1)
     tzinfo (0.3.24)
+    uniform_notifier (1.0.1)
     warden (1.0.3)
       rack (>= 1.0.0)
     will_paginate (2.3.15)
@@ -210,6 +214,7 @@ DEPENDENCIES
   autotest-fsevent
   autotest-growl
   autotest-rails
+  bullet
   capybara
   carrierwave
   cucumber
@@ -238,6 +243,7 @@ DEPENDENCIES
   rmagick
   rspec
   rspec-rails
+  ruby-growl
   selenium
   selenium-client
   simple_form

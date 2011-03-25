@@ -1,4 +1,6 @@
 class LocationMachineXrefsController < InheritedResources::Base
+  respond_to :xml, :json, :html, :js, :rss
+
   def create
     machine = nil
     if(!params[:add_machine_by_id].empty?)
@@ -25,5 +27,10 @@ class LocationMachineXrefsController < InheritedResources::Base
     lmx.condition = params["new_machine_condition_#{id}".to_sym]
     lmx.condition_date = Time.now
     lmx.save
+  end
+
+  def index
+    @lmxs = apply_scopes(LocationMachineXref).includes(:location)
+    respond_with(@lmxs)
   end
 end

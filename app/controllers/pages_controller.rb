@@ -7,4 +7,19 @@ class PagesController < ApplicationController
 
   def contact
   end
+
+  def about
+  end
+
+  def newlocation
+  end
+
+  def apps
+  end
+
+  def links
+  end
+
+  def highrollers
+  end
 end

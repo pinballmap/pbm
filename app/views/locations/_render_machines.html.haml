@@ -1,4 +1,4 @@
-- location.location_machine_xrefs.each do |lmx|
+- location_machine_xrefs.each do |lmx|
   %div[lmx, :machine]
     = render :partial => 'location_machine_xrefs/remove_machine', :locals => {:lmx => lmx}
     = render :partial => 'location_machine_xrefs/update_machine_condition', :locals => {:lmx => lmx}

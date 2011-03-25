@@ -1,5 +1,5 @@
 class LocationsController < InheritedResources::Base
-  respond_to :xml, :json, :html, :js
+  respond_to :xml, :json, :html, :js, :rss
   has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city, :by_zone_id
 
   def autocomplete
@@ -7,17 +7,17 @@ class LocationsController < InheritedResources::Base
   end
 
   def index
-    @locations = apply_scopes(Location).where('region_id = ?', @region.id).includes(:location_machine_xrefs, :machines, :location_picture_xrefs)
+    @locations = apply_scopes(Location).where('region_id = ?', @region.id).includes(:location_machine_xrefs, :machines)
     @location_data = locations_javascript_data(@locations)
     respond_with(@locations)
   end
 
   def render_machines
-    render :partial => 'locations/render_machines', :locals => {:location => Location.find(params[:id])}
+    render :partial => 'locations/render_machines', :locals => {:location => Location.find(params[:id]).includes(:location_machine_xrefs, :machines)}
   end
 
   def render_scores
-    render :partial => 'locations/render_scores', :locals => {:lmx => LocationMachineXref.find(params[:id])}
+    render :partial => 'locations/render_scores', :locals => {:lmx => LocationMachineXref.find(params[:id]).includes(:machine_score_xrefs)}
   end
 
   def unknown_route

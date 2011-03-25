@@ -7,16 +7,12 @@
   = csrf_meta_tag
   = javascript_include_tag 'http://maps.google.com/maps/api/js?sensor=true'
 
-  %body{ :onload => "initializeMap(); toggleData('by_location');" }
-    %div#user_nav
-    - if user_signed_in?
-      = "Signed in as #{current_user.email}"
-      = link_to 'Log out', destroy_user_session_path
-    - else
-      = link_to 'Sign up', new_user_registration_path
-      = link_to 'Log in', new_user_session_path
+  %div#page
+    = render :partial => 'pages/header'
+    %div.clear
 
-    %p.notice= notice
-    %p.alert= alert
+    %body{ :onload => "toggleData('by_location');" }
+      %p.notice= notice
+      %p.alert= alert
 
-    =yield
+      =yield

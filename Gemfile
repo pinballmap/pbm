@@ -32,6 +32,7 @@ group :development, :test do
   gem 'autotest'
   gem 'autotest-rails'
   gem 'autotest-growl'
+  gem 'ruby-growl'
   gem 'autotest-fsevent'
   gem 'factory_girl'
   gem 'factory_girl_rails'
@@ -42,4 +43,5 @@ group :development, :test do
   gem 'fuubar'
   gem 'fuubar-cucumber'
   gem 'timecop'
+  gem 'bullet'
 end
