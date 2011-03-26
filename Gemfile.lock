@@ -93,9 +93,6 @@ GEM
       rspec (~> 2.0)
       rspec-instafail (~> 0.1.4)
       ruby-progressbar (~> 0.0.9)
-    fuubar-cucumber (0.0.9)
-      cucumber
-      ruby-progressbar (~> 0.0.9)
     gherkin (2.3.3)
       json (~> 1.4.6)
     git (1.2.5)
@@ -227,7 +224,6 @@ DEPENDENCIES
   factory_girl
   factory_girl_rails
   fuubar
-  fuubar-cucumber
   haml
   haml-rails
   has_scope

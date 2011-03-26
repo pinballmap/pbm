@@ -1,31 +1,32 @@
 #header
   = image_tag 'pinballmapcom.jpg'
   %ul
-    %li=link_to 'About Pinball Map', about_path
-    %li=link_to 'Enter A New Location', newlocation_path
-    %li=link_to 'Contact Us', contact_path
-    %li=link_to 'Apps', apps_path
-    %li=link_to 'Links', links_path
-    .clear
-    %li
-      %span Other Regions
-      %ul
-        #other_regions= other_regions_html(@region)
-    %li=link_to 'Events', events_path
-    %li
-      =image_tag 'feed-icon-14x14.png'
-      =link_to 'Location Feed', "/#{params[:region]}/location_machine_xrefs.rss"
-    %li
-      =image_tag 'feed-icon-14x14.png'
-      =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss"
-    %li=link_to 'High Rollers', highrollers_path
-    .clear
-    - if user_signed_in?
-      %li="Signed in as #{current_user.email}"
-      %li=link_to 'Log out', destroy_user_session_path
-    - else
-      %li=link_to 'Sign up', new_user_registration_path
-      %li=link_to 'Log in', new_user_session_path
+    - if (@region)
+      %li=link_to 'About Pinball Map', about_path
+      %li=link_to 'Enter A New Location', newlocation_path
+      %li=link_to 'Contact Us', contact_path
+      %li=link_to 'Apps', apps_path
+      %li=link_to 'Links', links_path
+      .clear
+      %li
+        %span Other Regions
+        %ul
+          #other_regions= other_regions_html(@region)
+      %li=link_to 'Events', events_path
+      %li
+        =image_tag 'feed-icon-14x14.png'
+        =link_to 'Location Feed', "/#{params[:region]}/location_machine_xrefs.rss"
+      %li
+        =image_tag 'feed-icon-14x14.png'
+        =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss"
+      %li=link_to 'High Rollers', highrollers_path
+      .clear
+      - if user_signed_in?
+        %li="Signed in as #{current_user.email}"
+        %li=link_to 'Log out', destroy_user_session_path
+      - else
+        %li=link_to 'Sign up', new_user_registration_path
+        %li=link_to 'Log in', new_user_session_path
 
 :javascript
   $().ready(function() {
