@@ -41,7 +41,6 @@ group :development, :test do
   gem 'selenium-client'
   gem 'cucumber_factory'
   gem 'fuubar'
-  gem 'fuubar-cucumber'
   gem 'timecop'
   gem 'bullet'
 end

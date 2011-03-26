@@ -1,19 +1,15 @@
+regions = Region.all.empty? ? 'portland' : Region.all.each.collect {|r| r.name}.join('|')
+
 Pbm::Application.routes.draw do
-  scope ':region', :constraints => { :region => /portland|chicago/i } do
+  scope ':region', :constraints => { :region => /#{regions}/i } do
     devise_for :users
 
     resources :pages
     resources :events
     resources :regions
+    resources :locations
     resources :machines
-    resources :locations do
-      collection do
-        get :update_machine_condition
-      end
-    end
-
     resources :machine_score_xrefs
-    resources :location_machine_xrefs
     resources :location_machine_xrefs do
       collection do
         get :update_machine_condition
@@ -33,8 +29,6 @@ Pbm::Application.routes.draw do
 
     match '*page', :to => 'locations#unknown_route'
   end
-
-
 
   resources :location_picture_xrefs
 

@@ -208,3 +208,17 @@ body {
   margin-top: 0px;
 }
 
+#header li:hover ul, li.over ul { display: block; }
+
+#header li ul {
+    display: none;
+    position: absolute;
+    top: 1em;
+    right: 0;
+    list-style: none;
+    width:100px;
+    padding: 5px;
+    border-right: 1px solid #ffffff;
+    background: #000000;
+    z-index:100;
+} 

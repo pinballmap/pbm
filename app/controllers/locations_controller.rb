@@ -17,7 +17,7 @@ class LocationsController < InheritedResources::Base
   end
 
   def render_scores
-    render :partial => 'locations/render_scores', :locals => {:lmx => LocationMachineXref.find(params[:id]).includes(:machine_score_xrefs)}
+    render :partial => 'locations/render_scores', :locals => {:lmx => LocationMachineXref.find(params[:id])}
   end
 
   def unknown_route
