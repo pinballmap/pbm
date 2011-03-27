@@ -19,6 +19,7 @@ Pbm::Application.routes.draw do
     match '/' => "pages#region"
     match '/about' => 'pages#about'
     match '/apps' => 'pages#apps'
+    match '/appsupport' => 'pages#appsupport'
     match '/contact' => 'pages#contact'
     match '/links' => 'pages#links'
     match '/newlocation' => 'pages#newlocation'

@@ -1,2 +1,56 @@
-%h1 Pages#app
-%p Find me in app/views/pages/app.html.haml
+#leftcol
+  %p.subpage-text
+    %strong Pinball Map Apps
+  %br.clear
+  %p.subpage-text 
+    We currently have two mobile apps released. One's for the iPhone, and the other is for Android. The iPhone app has just seen the release of version 2 (with some major updates)! And the Android app was recently released!
+    %br/
+    %br/
+    The newest versions of these apps will work for all the regions the website currently covers. You just open the app and then choose where you are located. And they will automatically support the new regions that are added in the future (and you won't need to update).
+  %p.subpage-text
+    %span Featuring splash artwork by&nbsp;
+    =link_to 'Drew Marshall', 'http://workbydrew.com', :class => 'light-blue'
+  %p.pink.subpage-text
+    %strong Android app - Pinball Map
+    .clear
+    %p.subpage-text
+      =link_to 'Click here to download the app', 'http://market.android.com/search?q=pname:com.pbm', :class => 'light-blue'
+  %p.subpage-text
+    If you have an Android phone, you should download it! It's free.
+  %p.pink
+    %strong iPhone app - version 2
+    %p.subpage-text
+      \.99 cents on the iTunes store (link to the upper right). The app totally rules.
+      %br/
+      %br/
+      iPhone 4.0 and iPod Touch 3.0 compatible.
+  %p.subpage-text
+    =link_to 'Click here for iPhone app support (and to see some screenshots).', appsupport_path, :class => 'light-blue'
+  %br/
+  %p.subpage-text
+    %strong Features of these fine apps:
+  %ul.weekly-text
+    %li Add/Remove machines from locations, to help keep the map up to date
+    %li Find locations by proximity
+    %li Filter locations by those having four or more machines
+    %li Stay up to date on your favorite spots, or find new favorites
+    %li Add comments about machines
+    %li View upcoming events (not available in all regions)
+    %li Add in your high scores
+    %li SHAKE THE PHONE to find a random spot near you! (not available on Android... yet)
+    %li Other stuff I'm forgetting
+#rightcol
+  %p.title
+    =link_to image_tag('App_Store.jpg'), "http://itunes.apple.com/us/app/portland-pinball-map/id359275713?mt=8", :class => 'pic'
+  =image_tag 'appLoadingPortland.jpg'
+  %br/
+  %br/
+  =image_tag 'appLoadingBC.jpg'
+  %br/
+  %br/
+  =image_tag 'appLoadingSeattle.jpg'
+  %br/
+  %br/
+  =image_tag 'appLoadingSD.jpg'
+  %br/
+  %br/
