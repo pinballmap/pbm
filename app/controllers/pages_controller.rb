@@ -17,6 +17,9 @@ class PagesController < ApplicationController
   def apps
   end
 
+  def appsupport
+  end
+
   def links
   end
 

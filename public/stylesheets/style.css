@@ -192,6 +192,14 @@ body {
   clear: both;
 }
 
+.right {
+  float: right;
+}
+
+.none {
+  float: none;
+}
+
 #header li {
   list-style-type: none;
   margin-left: 5px;
@@ -211,14 +219,65 @@ body {
 #header li:hover ul, li.over ul { display: block; }
 
 #header li ul {
-    display: none;
-    position: absolute;
-    top: 1em;
-    right: 0;
-    list-style: none;
-    width:100px;
-    padding: 5px;
-    border-right: 1px solid #ffffff;
-    background: #000000;
-    z-index:100;
-} 
+  display: none;
+  position: absolute;
+  top: 1em;
+  right: 0;
+  list-style: none;
+  width:100px;
+  padding: 5px;
+  border-right: 1px solid #ffffff;
+  background: #000000;
+  z-index:100;
+}
+
+.subpage-text {
+  font-size:14px;
+  letter-spacing: .3px;
+}
+
+a.light-blue:link {color: #A9BEFF; background: #000000;}
+a.light-blue:visited {color: #A9BEFF;}
+a.light-blue:hover {background: #000000; color: #ffffcc;}
+a.light-blue:active {background: #000000;}
+
+.pink {
+  color:#ffcc00;
+  font-size:14px;
+  font-weight:bold;
+}
+
+.yellow {
+  color:#ffffcc;
+  font-size:14px;
+}
+
+.yellowb {
+  color:#ffffcc;
+  font-size:14px;
+  font-weight:bold;
+}
+
+#leftcol {
+  width:400px;
+  float:left;
+  padding:1em;
+}
+
+#rightcol {
+  float: none;
+  width:500px;
+  margin-left:490px;
+  padding:1em;
+}
+
+.pic {
+  padding: 3px 3px 3px 3px;
+}
+
+.weekly-text {
+  font-size: 14px;
+  list-style-position: inside;
+  font-weight: normal;
+  padding: 0 0 0 10px;
+}
