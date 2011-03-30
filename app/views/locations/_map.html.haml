@@ -1,4 +1,5 @@
 %div#map_canvas
+  = render :partial => 'pages/intro'
 %div#ticker
   - @region.n_recent_scores(20).each do |msx|
     %span= "#{msx.location.name}'s #{msx.machine.name}: #{MachineScoreXref::ENGLISH_SCORES[msx.rank]} with #{msx.score} by #{msx.initials}"

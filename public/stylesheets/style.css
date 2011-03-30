@@ -77,10 +77,18 @@ body {
 
 #welcome {
   width: 220px;
+  padding-top: 20px;
+  padding-right: 20px;
 }
 
 #map_summaries {
-  width: 500px;
+  padding-top: 20px;
+  width: 660px;
+}
+
+.map_summary {
+  padding-top: 20px;
+  padding-right: 20px;
 }
 
 .infowindow {
@@ -245,6 +253,15 @@ a.light-blue:active {background: #000000;}
   color:#ffcc00;
   font-size:14px;
   font-weight:bold;
+}
+
+.intro {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.stufflike {
+  font-size: 14px;
 }
 
 .yellow {
