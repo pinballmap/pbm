@@ -3,6 +3,8 @@ class PagesController < ApplicationController
   end
 
   def region
+    @location_count = @region.locations.size
+    @lmx_count = @region.location_machine_xrefs.size
   end
 
   def contact

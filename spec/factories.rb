@@ -6,7 +6,7 @@ Factory.define :location do |l|
   l.zip '97211'
   l.lat 45.5589
   l.lon -122.645
-  l.association :region, :name => 'portland'
+  l.association :region, :name => 'portland', :factory => :region
 end
 
 Factory.define :machine do |m|
@@ -14,8 +14,8 @@ Factory.define :machine do |m|
 end
 
 Factory.define :location_machine_xref do |lmx|
-  lmx.association :location
-  lmx.association :machine
+  lmx.association :location, :factory => :location
+  lmx.association :machine, :factory => :machine
 end
 
 Factory.define :zone do |z|

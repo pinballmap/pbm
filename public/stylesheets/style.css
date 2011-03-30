@@ -255,6 +255,15 @@ a.light-blue:active {background: #000000;}
   font-weight:bold;
 }
 
+.intro {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.stufflike {
+  font-size: 14px;
+}
+
 .yellow {
   color:#ffffcc;
   font-size:14px;
