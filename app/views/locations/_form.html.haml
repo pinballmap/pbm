@@ -41,7 +41,7 @@
 
 :javascript
   $(function () {
-    $('#by_location_name').autocomplete({source: '#{autocomplete_locations_path}'});
+    $('#by_location_name').autocomplete({source: '#{autocomplete_locations_path(:region_id => @region.id)}'});
     $('#by_machine_name').autocomplete({source: '#{autocomplete_machines_path}'});
 
     $('.location_search').submit(function () {
