@@ -32,3 +32,9 @@ end
 Factory.define :event do |e|
   e.name 'Test Event'
 end
+
+Factory.define :user do |u|
+  u.initials 'cap'
+  u.email 'captainamerica@foo.bar'
+  u.password 'password'
+end

@@ -8,9 +8,10 @@ class Region < ActiveRecord::Base
 
   def n_recent_scores(n)
     MachineScoreXref.find_by_sql(<<HERE)
-select location_machine_xref_id, rank, score, initials, machine_score_xrefs.created_at
-from machine_score_xrefs, location_machine_xrefs
+select location_machine_xref_id, rank, score, users.initials, machine_score_xrefs.created_at
+from machine_score_xrefs, location_machine_xrefs, users
 where machine_score_xrefs.location_machine_xref_id in (select id from location_machine_xrefs where location_id in (select id from locations where region_id = #{self.id}))
+and machine_score_xrefs.user_id = users.id
 order by machine_score_xrefs.created_at desc
 limit #{n}
 HERE

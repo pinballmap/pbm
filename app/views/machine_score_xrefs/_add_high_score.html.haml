@@ -1,12 +1,9 @@
 = banner(lmx, 'add_scores_lmx', 'Add Scores At This Location')
 %div[lmx, :add_scores]{:style => 'display:none;'}
-  %span.info You Can Add Your Score Here LOOLLL
+  %span.info You Can Add Your Score Here
   %br/
   = form_tag machine_score_xrefs_path, :id => "add_high_score_#{lmx.id}", :method => 'post', :remote => true do
     = hidden_field_tag :location_machine_xref_id, lmx.id
-    = label_tag :initials, 'Initials: '
-    = text_field_tag :initials
-    %br/
     = label_tag :score, 'Score: '
     = text_field_tag :score
     %br/
