@@ -9,6 +9,7 @@ Pbm::Application.routes.draw do
     resources :regions
     resources :locations
     resources :machines
+
     resources :machine_score_xrefs
     resources :location_machine_xrefs do
       collection do
@@ -32,9 +33,10 @@ Pbm::Application.routes.draw do
   end
 
   resources :location_picture_xrefs
-
   resources :locations, :machines do
-    get :autocomplete, :on => :collection
+    collection do
+      get :autocomplete
+    end
   end
 
   get 'pages/home'

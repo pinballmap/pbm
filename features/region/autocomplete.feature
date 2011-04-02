@@ -40,14 +40,21 @@ Feature: Autocomplete
   @javascript
   Scenario: Search by location name from input with autocomplete
     Given there is a region with the name "portland"
-    And the following locations exist:
+    And the following regions exist:
       |name|
-      |Cleo North|
-      |Cleo South|
-      |Sassy|
+      |portland|
+      |chicago|
+    And the following locations exist:
+      |name|region|
+      |Cleo North|name: portland|
+      |Cleo South|name: portland|
+      |Sassy|name: portland|
+      |Cleo East|name: chicago|
     And I am on "Portland"'s home page
     And I fill in "by_location_name" with "cleo"
     And I wait for 1 second
     Then I should see the following autocomplete options:
       |Cleo North|
       |Cleo South|
+    And I should not see the following autocomplete options:
+      |Cleo East|

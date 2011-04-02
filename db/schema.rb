@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110325061757) do
+ActiveRecord::Schema.define(:version => 20110401001017) do
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"
@@ -80,11 +80,11 @@ ActiveRecord::Schema.define(:version => 20110325061757) do
   create_table "machine_score_xrefs", :force => true do |t|
     t.integer  "location_machine_xref_id"
     t.integer  "score",                    :limit => 8
-    t.string   "initials"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "rank"
     t.string   "ip"
+    t.integer  "user_id"
   end
 
   add_index "machine_score_xrefs", ["location_machine_xref_id"], :name => "index_machine_score_xrefs_on_location_machine_xref_id"
@@ -132,6 +132,7 @@ ActiveRecord::Schema.define(:version => 20110325061757) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "region_id"
+    t.string   "initials"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

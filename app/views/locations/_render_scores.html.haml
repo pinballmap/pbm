@@ -1,2 +1,2 @@
 - lmx.machine_score_xrefs.collect! do |msx|
-  %span= "Rank: #{MachineScoreXref::ENGLISH_SCORES[msx.rank]} Initials: #{msx.initials} Score #{msx.score} Date #{msx.created_at ? msx.created_at.strftime("%m-%d-%Y") : ''}"
+  %span= "Rank: #{MachineScoreXref::ENGLISH_SCORES[msx.rank]} Initials: #{msx.user ? msx.user.initials : 'SASSY'} Score #{msx.score} Date #{msx.created_at ? msx.created_at.strftime("%m-%d-%Y") : ''}"

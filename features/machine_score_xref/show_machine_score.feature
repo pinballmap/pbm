@@ -14,14 +14,15 @@ Feature: show high scores for a machine
 
   @javascript
   Scenario: Show the "show high scores" option if you just made a new machine, and there were previously no machines
-    Given there is a location machine xref
+    Given I am a logged in user
+    And there is a location machine xref
     And I am on "Portland"'s home page
     And I press the "location" search button
     And I click to see the detail for "Test Location Name"
     And I click on the show machines link for "Test Location Name"
     Then I should not see the show scores option for "Test Location Name"'s "Test Machine Name"
     Given I click on the add scores link for "Test Location Name"
-    And I fill in a score with initials "ssw" and score "1234" and rank "GC"
+    And I fill in a score of "1234" and rank "GC"
     And I wait for 1 seconds
     And I press "add_score"
     And I wait for 1 seconds
