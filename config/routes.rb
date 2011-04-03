@@ -17,7 +17,7 @@ Pbm::Application.routes.draw do
       end
     end
 
-    match '/' => "pages#region"
+    match '/' => "pages#region", :as => 'region_homepage'
     match '/about' => 'pages#about'
     match '/apps' => 'pages#apps'
     match '/appsupport' => 'pages#appsupport'
