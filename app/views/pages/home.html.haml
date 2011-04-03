@@ -1,4 +1,4 @@
-%div#welcome
+#welcome
   %p
     Welcome to pinballmap.com!
     %br/
@@ -24,11 +24,11 @@
     %br/
     %br/
     We have mobile apps for iPhone and Android.
-%div#map_summaries
+#map_summaries
   Pick a map!
   %br/
   - Region.order('full_name').each do |r|
-    %div.map_summary
+    .map_summary
       = r.full_name
       %br/
       = link_to image_tag("landing_thumbs/#{r.name}-thumbnail.png", :size => '150x150'), "/#{r.name}"
