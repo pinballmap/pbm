@@ -2,6 +2,10 @@
   float: left;
 }
 
+h1 {
+  font-size: 36px;
+}
+
 li {
   padding: 2px 0 4px 10px;
 }
@@ -297,4 +301,8 @@ a.light-blue:active {background: #000000;}
   list-style-position: inside;
   font-weight: normal;
   padding: 0 0 0 10px;
+}
+
+.score_result {
+  width: 100%;
 }

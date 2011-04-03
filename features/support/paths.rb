@@ -5,6 +5,9 @@ module NavigationHelpers
     when /"(.*)"'s home page/
       "/#{$1.downcase}"
 
+    when /"(.*)"'s high rollers page/
+      "/#{$1.downcase}/highrollers"
+
     when /the home\s?page/
       '/'
 

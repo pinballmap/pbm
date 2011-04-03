@@ -27,7 +27,8 @@ class PagesController < ApplicationController
   def links
   end
 
-  def highrollers
+  def highrollers 
+    @high_rollers = @region.n_high_rollers(10)
   end
 
   def submitted_new_location

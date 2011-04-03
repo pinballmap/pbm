@@ -14,8 +14,8 @@ Factory.define :machine do |m|
 end
 
 Factory.define :location_machine_xref do |lmx|
-  lmx.association :location, :factory => :location
-  lmx.association :machine, :factory => :machine
+  lmx.association :location
+  lmx.association :machine
 end
 
 Factory.define :zone do |z|
@@ -27,6 +27,8 @@ Factory.define :region do |r|
 end
 
 Factory.define :machine_score_xref do |msx|
+  msx.association :location_machine_xref
+  msx.association :user
 end
 
 Factory.define :event do |e|
@@ -35,6 +37,6 @@ end
 
 Factory.define :user do |u|
   u.initials 'cap'
-  u.email 'captainamerica@foo.bar'
+  u.sequence(:email) {|n| "captainamerica#{n}@foo.bar"}
   u.password 'password'
 end
