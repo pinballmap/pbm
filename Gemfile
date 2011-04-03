@@ -19,6 +19,8 @@ gem 'haml-rails'
 gem 'carrierwave'
 gem 'rmagick'
 gem 'remotipart'
+gem 'pony'
+gem "recaptcha", :require => "recaptcha/rails"
 
 group :development, :test do
   gem 'capybara'
@@ -43,4 +45,5 @@ group :development, :test do
   gem 'fuubar'
   gem 'timecop'
   gem 'bullet'
+  gem 'email_spec'
 end
