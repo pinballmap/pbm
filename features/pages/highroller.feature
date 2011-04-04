@@ -48,6 +48,7 @@ Feature: high roller list for region
       |1|20|12|6|
       |3|1|9|1|
     And I am on "Portland"'s high rollers page
+    Then show me the page
     Then I should see "ssw: with 2 scores"
     And I should see "rtgt: with 1 scores"
     And I should not see "mcu: with 1 scores"

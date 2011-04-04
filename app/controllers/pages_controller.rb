@@ -24,20 +24,20 @@ class PagesController < ApplicationController
   def about
   end
 
-  def newlocation
-  end
-
   def apps
   end
 
-  def appsupport
+  def app_support
   end
 
   def links
   end
 
-  def highrollers 
+  def high_rollers 
     @high_rollers = @region.n_high_rollers(10)
+  end
+
+  def suggest_new_location
   end
 
   def submitted_new_location
