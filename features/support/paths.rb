@@ -8,6 +8,9 @@ module NavigationHelpers
     when /"(.*)"'s high rollers page/
       "/#{$1.downcase}/highrollers"
 
+    when /"(.*)"'s contact page/
+      "/#{$1.downcase}/contact"
+
     when /the home\s?page/
       '/'
 

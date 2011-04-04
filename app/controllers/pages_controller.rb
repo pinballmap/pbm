@@ -12,6 +12,15 @@ class PagesController < ApplicationController
   def contact
   end
 
+  def contact_sent
+      Pony.mail(
+        :to => @region.users.collect {|u| u.email},
+        :from => 'admin@pinballmap.com',
+        :subject => "Message from #{@region.full_name} pinball map",
+        :body => [params['contact_name'], params['contact_email'], params['contact_msg']].join("\n")
+      )
+  end
+
   def about
   end
 

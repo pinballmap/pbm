@@ -1,5 +1,5 @@
 #header
-  =link_to image_tag('pinballmapcom.jpg'), region_homepage_path
+  =link_to image_tag('pinballmapcom.jpg'), @region ? region_homepage_path : root_path
   %ul
     - if (@region)
       %li=link_to 'About Pinball Map', about_path

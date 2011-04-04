@@ -25,6 +25,7 @@ Pbm::Application.routes.draw do
     match '/links' => 'pages#links'
     match '/newlocation' => 'pages#newlocation'
     match '/highrollers' => 'pages#highrollers'
+    match '/contact_sent' => 'pages#contact_sent'
     match '/submitted_new_location' => 'pages#submitted_new_location'
 
     match 'locations/:id/render_scores'   => 'locations#render_scores'
