@@ -17,14 +17,16 @@ Pbm::Application.routes.draw do
       end
     end
 
-    match '/' => "pages#region"
+    match '/' => "pages#region", :as => 'region_homepage'
     match '/about' => 'pages#about'
     match '/apps' => 'pages#apps'
-    match '/appsupport' => 'pages#appsupport'
+    match '/app_support' => 'pages#app_support'
     match '/contact' => 'pages#contact'
+    match '/contact_sent' => 'pages#contact_sent'
     match '/links' => 'pages#links'
-    match '/newlocation' => 'pages#newlocation'
-    match '/highrollers' => 'pages#highrollers'
+    match '/high_rollers' => 'pages#high_rollers'
+    match '/suggest_new_location' => 'pages#suggest_new_location'
+    match '/submitted_new_location' => 'pages#submitted_new_location'
 
     match 'locations/:id/render_scores'   => 'locations#render_scores'
     match 'locations/:id/render_machines' => 'locations#render_machines'

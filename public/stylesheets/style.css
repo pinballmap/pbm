@@ -1,5 +1,5 @@
-* {
-  float: left;
+h1 {
+  font-size: 36px;
 }
 
 li {
@@ -25,6 +25,7 @@ body {
 }
 
 #map {
+  float: left;
   padding-left: 40px;
   height: 500px;
   width: 600px;
@@ -37,6 +38,7 @@ body {
 }
 
 #lookup {
+  float: left;
   width: 375px;
   margin-top: 20px;
 }
@@ -76,19 +78,25 @@ body {
 }
 
 #welcome {
+  float: left;
   width: 220px;
   padding-top: 20px;
-  padding-right: 20px;
+  padding-right: 30px;
 }
 
 #map_summaries {
+  float: left;
   padding-top: 20px;
-  width: 660px;
 }
 
 .map_summary {
+  float: left;
   padding-top: 20px;
   padding-right: 20px;
+}
+
+.map_summary_info {
+  float: left;
 }
 
 .infowindow {
@@ -216,7 +224,12 @@ body {
   display: inline;
 }
 
+#header a img {
+  float: left;
+}
+
 #header ul {
+  float: left;
   font-size: 10px;
   font-weight: bold;
   text-align: right;
@@ -297,4 +310,8 @@ a.light-blue:active {background: #000000;}
   list-style-position: inside;
   font-weight: normal;
   padding: 0 0 0 10px;
+}
+
+.score_result {
+  width: 100%;
 }

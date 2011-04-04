@@ -1,4 +1,4 @@
-%div#welcome
+#welcome
   %p
     Welcome to pinballmap.com!
     %br/
@@ -24,16 +24,21 @@
     %br/
     %br/
     We have mobile apps for iPhone and Android.
-%div#map_summaries
+#map_summaries
   Pick a map!
   %br/
+  - count = 1
   - Region.order('full_name').each do |r|
-    %div.map_summary
+    .map_summary
       = r.full_name
       %br/
       = link_to image_tag("landing_thumbs/#{r.name}-thumbnail.png", :size => '150x150'), "/#{r.name}"
-      Tracking:
-      %br/
-      = "#{Location.find_all_by_region_id(r.id).size} Machines"
-      %br/
-      = "#{LocationMachineXref.where("location_id in (select id from locations where region_id = ?)", r.id).size} Locations"
+      .map_summary_info
+        Tracking:
+        %br/
+        = "#{Location.find_all_by_region_id(r.id).size} Machines"
+        %br/
+        = "#{LocationMachineXref.where("location_id in (select id from locations where region_id = ?)", r.id).size} Locations"
+    - if ((count % 3) == 0)
+      .clear
+    - count += 1

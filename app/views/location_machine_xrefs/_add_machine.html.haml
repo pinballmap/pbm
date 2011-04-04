@@ -1,7 +1,7 @@
 = banner(location, 'add_machine_location', 'Add New Machine At This Location')
 %div[location, :add_machine]{:style => 'display:none;'}
   %span.info Select a machine and then click the Add button.
-  %div.clear
+  .clear
   = form_tag location_machine_xrefs_path, :method => 'post', :id => "add_new_machine_#{location.id}", :remote => true do
     = hidden_field_tag :location_id, location.id
     = text_field_tag :add_machine_by_name, params[:add_machine_by_name]
