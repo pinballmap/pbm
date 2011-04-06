@@ -1,5 +1,6 @@
 class LocationMachineXrefsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
+  has_scope :region
 
   def create
     machine = nil
@@ -30,7 +31,8 @@ class LocationMachineXrefsController < InheritedResources::Base
   end
 
   def index
-    @lmxs = apply_scopes(LocationMachineXref).includes(:location)
+    @lmxs = apply_scopes(LocationMachineXref).includes(:location, :machine)
+    @lmxs.sort! {|a,b| b.created_at <=> a.created_at}
     respond_with(@lmxs)
   end
 end

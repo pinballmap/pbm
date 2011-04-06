@@ -4,6 +4,11 @@ class MachineScoreXref < ActiveRecord::Base
   has_one :location, :through => :location_machine_xref
   has_one :machine, :through => :location_machine_xref
 
+  scope :region, lambda {|name| 
+    r = Region.find_by_name(name)
+    joins(:location_machine_xref).joins(:location).where('location_machine_xref.id = machine_score_xrefs.location_machine_xref_id and location.id = location_machine_xref.location_id')
+  }
+
   ENGLISH_SCORES = {
     1 => 'GC',
     2 => '1st',

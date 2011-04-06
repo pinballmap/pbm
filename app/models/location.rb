@@ -7,6 +7,10 @@ class Location < ActiveRecord::Base
   has_many :location_machine_xrefs
   has_many :location_picture_xrefs
 
+  scope :region, lambda {|name| 
+    r = Region.find_by_name(name)
+    where(:region_id => r.id)
+  }
   scope :by_location_id, lambda {|id| where(:id => id)}
   scope :by_zone_id, lambda {|id| where(:zone_id => id)}
   scope :by_city, lambda {|city| where(:city => city)}

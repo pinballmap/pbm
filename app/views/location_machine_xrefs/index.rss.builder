@@ -6,9 +6,10 @@ xml.rss :version => "2.0" do
     xml.link root_path
 
     for lmx in @lmxs
-      location = lmx.location
       machine = lmx.machine
+      location = lmx.location
       xml.item do
+        xml.title "#{machine.name} was added to #{location.name}"
         xml.description "Added on #{lmx.created_at.to_s(:rfc822)}"
         xml.guid lmx.id
         xml.pubDate lmx.created_at.to_s(:rfc822)
