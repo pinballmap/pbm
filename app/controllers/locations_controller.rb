@@ -1,13 +1,13 @@
 class LocationsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
-  has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city, :by_zone_id
+  has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city, :by_zone_id, :region
 
   def autocomplete
     render :json => Location.find(:all, :conditions => ['region_id = ? and name ilike ?', params[:region_id], '%' + params[:term] + '%']).map { |l| l.name }
   end
 
   def index
-    @locations = apply_scopes(Location).where('region_id = ?', @region.id).includes(:location_machine_xrefs, :machines)
+    @locations = apply_scopes(Location).includes(:location_machine_xrefs, :machines)
     @location_data = locations_javascript_data(@locations)
     respond_with(@locations)
   end
