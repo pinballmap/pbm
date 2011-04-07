@@ -343,3 +343,9 @@ a.light-blue:active {background: #000000;}
   width: 340px;
   padding-left: 20px;
 }
+
+.location_summary_image_mouseover {
+  background-image: url('/images/add_item.png');
+  background-repeat: no-repeat;
+  background-position: center;
+}

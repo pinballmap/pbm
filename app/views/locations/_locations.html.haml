@@ -12,8 +12,7 @@
       #search_results
         - @locations.each do |l|
           %div.search_result[l]
-            = open_closed_arrows_for('location_detail', l.id)
-            %div.sub_nav_item[l, :show_location_detail]{:onclick => "$('#show_location_detail_location_#{l.id}').toggle(); toggleData('location_detail_location', #{l.id}); toggleArrows('location_detail', #{l.id});"}
+            %div.sub_nav_item[l, :show_location_detail]{:onmouseover => "$(this).addClass('location_summary_image_mouseover');", :onmouseout => "$(this).removeClass('location_summary_image_mouseover');", :onclick => "$('#show_location_detail_location_#{l.id}').toggle(); toggleData('location_detail_location', #{l.id}); toggleArrows('location_detail', #{l.id});"}
               %ul
                 %li= l.name
                 .clear
