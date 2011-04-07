@@ -1,3 +1,7 @@
+* {
+  outline: none;
+}
+
 h1 {
   font-size: 36px;
 }
@@ -9,7 +13,10 @@ li {
 a {
   color: white;
   text-decoration: none;
+  border: 0;
 }
+
+a:active { outline: none }
 
 body {
   margin: 0px;
@@ -314,4 +321,25 @@ a.light-blue:active {background: #000000;}
 
 .score_result {
   width: 100%;
+}
+
+#results_container {
+  color:white;
+  background-color:black;
+  width:380px;
+  height:370px;
+  border:0 solid;
+  border-radius:15px;
+  -moz-border-radius:15px;
+  -webkit-border-radius:15px;
+  -webkit-box-shadow: 5px 5px 8px #666666; 
+  -moz-box-shadow: 5px 5px 8px #666666; 
+  /* Safari */
+  box-shadow: 5px 5px 8px #666666;
+}
+
+.scroll_pane {
+  height: 330px;
+  width: 340px;
+  padding-left: 20px;
 }
