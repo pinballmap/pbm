@@ -13,7 +13,6 @@ Feature: Autocomplete
       |Cleo Game|
     And I am on "Portland"'s home page
     And I press the "location" search button
-    And I click to see the detail for "Test Location Name"
     And I click on the add machine link for "Test Location Name"
     And I fill in "add_machine_by_name" with "sassy"
     And I wait for 1 second

@@ -1,5 +1,8 @@
 - if (@locations)
   :javascript
+    clearMarkers()
+    clearInfoWindows();
+
     showLocations(
       [#{@location_data[0].join(', ')}],
       [#{@location_data[1].join(', ')}],
@@ -12,7 +15,7 @@
       #search_results
         - @locations.each do |l|
           %div.search_result[l]
-            %div.sub_nav_item[l, :show_location_detail]{:onmouseover => "$(this).addClass('location_summary_image_mouseover');", :onmouseout => "$(this).removeClass('location_summary_image_mouseover');", :onclick => "$('#show_location_detail_location_#{l.id}').toggle(); toggleData('location_detail_location', #{l.id}); toggleArrows('location_detail', #{l.id});"}
+            %div.sub_nav_item[l, :show_location_detail]{:onmouseover => "$(this).addClass('location_summary_image_mouseover');", :onmouseout => "$(this).removeClass('location_summary_image_mouseover');", :onclick => "showLocationDetail(#{l.id});"}
               %ul
                 %li= l.name
                 .clear
@@ -35,5 +38,11 @@
               = render :partial => 'locations/show_machines', :locals => {:location => l}
     :javascript
       $(function () {
-        $('.scroll_pane').jScrollPane({showArrows: true});
+        $('.scroll_pane').jScrollPane({showArrows: true, autoReinitialise: true});
       });
+
+    - if (@locations.size == 1)
+      :javascript
+        $(function() {
+          singleLocationLoad(#{@location_data[0][0]});
+        });

@@ -8,8 +8,6 @@ Feature: show high scores for a machine
     Given there is a location machine xref
     And I am on "Portland"'s home page
     And I press the "location" search button
-    And I click to see the detail for "Test Location Name"
-    And I click on the show machines link for "Test Location Name"
     Then I should not see the show scores option for "Test Location Name"'s "Test Machine Name"
 
   @javascript
@@ -18,8 +16,6 @@ Feature: show high scores for a machine
     And there is a location machine xref
     And I am on "Portland"'s home page
     And I press the "location" search button
-    And I click to see the detail for "Test Location Name"
-    And I click on the show machines link for "Test Location Name"
     Then I should not see the show scores option for "Test Location Name"'s "Test Machine Name"
     Given I click on the add scores link for "Test Location Name"
     And I fill in a score of "1234" and rank "GC"

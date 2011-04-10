@@ -18,7 +18,7 @@ HERE
 
   def search_banner(type, header_text)
     html = <<HERE
-<div id="#{type}_banner" class="search_banner" onclick="hideSearchSections(); toggleData('#{type}');">
+<div id="#{type}_banner" class="search_banner">
   <span>#{header_text}</span>
 </div>
 HERE

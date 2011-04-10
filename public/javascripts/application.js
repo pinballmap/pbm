@@ -37,6 +37,7 @@ function clearMarkers() {
 function showLocations(ids, lats, lons, contents) {
   var bounds = new google.maps.LatLngBounds();
   map = new google.maps.Map(document.getElementById("map_canvas"), { mapTypeId: google.maps.MapTypeId.ROADMAP });
+  infoWindows = new Array();
 
   for (i in ids) {
     var latlng = new google.maps.LatLng(lats[i], lons[i]);
@@ -65,14 +66,14 @@ function attachMarkerClick(marker, index) {
   });
 }
 
-function loading_html() {
+function loadingHTML() {
   return "<div class='loading'><img src='images/spinner_blue.gif' /> Loading <div>";
 }
 
-function setOtherSearchOptions(new_section) {
+function setOtherSearchOptions(newSection) {
   var html = "";
   for (section in searchSections) {
-    if (searchSections[section] != new_section) {
+    if (searchSections[section] != newSection) {
       html += "  <a href='#' id='" + searchSections[section] + "_section_link' onclick='switchSection(\"" + searchSections[section] + "\");'>" + searchSections[section] + "</a>\n"
     }
   }
@@ -80,9 +81,27 @@ function setOtherSearchOptions(new_section) {
   $('#other_search_options').html(html);
 }
 
-function switchSection(new_section) {
+function switchSection(newSection) {
   $(document).trigger('close.facebox')
-  setOtherSearchOptions(new_section);
+  setOtherSearchOptions(newSection);
   $("div .section:visible").hide();
-  $('#by_' + new_section).toggle();
+  $('#by_' + newSection).toggle();
+}
+
+function initSearch(region, locationID) {
+  var url = '/' + region + '/locations?by_location_id=' + locationID;
+
+  $('#locations').html(loadingHTML());
+  $.get(url, function(data){$('#locations').html(data);}, 'script');
+}
+
+function showLocationDetail(locationID) {
+  $('#show_location_detail_location_' + locationID).toggle();
+  toggleData('location_detail_location', locationID);
+  toggleArrows('location_detail', locationID);
+}
+
+function singleLocationLoad(locationID) {
+  showLocationDetail(locationID);
+  toggleData('show_machines_location', locationID);
 }
