@@ -3,14 +3,6 @@ var markers = new Array();
 var infoWindows = new Array();
 var searchSections = new Array('city', 'location', 'machine', 'zone');
 
-function hideSearchSections() {
-  for (section in searchSections) {
-    $('#by_' + searchSections[section] + "_open_arrow").toggle(false);
-    $('#by_' + searchSections[section] + "_closed_arrow").toggle(true);
-    $('#by_' + searchSections[section]).toggle(false);
-  }
-}
-
 function toggleArrows(name, id) {
   var open = '_open_arrow' + (id ? '_' + id : '');
   var closed = '_closed_arrow' + (id ? '_' + id : '');
@@ -75,4 +67,22 @@ function attachMarkerClick(marker, index) {
 
 function loading_html() {
   return "<div class='loading'><img src='images/spinner_blue.gif' /> Loading <div>";
+}
+
+function setOtherSearchOptions(new_section) {
+  var html = "";
+  for (section in searchSections) {
+    if (searchSections[section] != new_section) {
+      html += "  <a href='#' id='" + searchSections[section] + "_section_link' onclick='switchSection(\"" + searchSections[section] + "\");'>" + searchSections[section] + "</a>\n"
+    }
+  }
+
+  $('#other_search_options').html(html);
+}
+
+function switchSection(new_section) {
+  $(document).trigger('close.facebox')
+  setOtherSearchOptions(new_section);
+  $("div .section:visible").hide();
+  $('#by_' + new_section).toggle();
 }

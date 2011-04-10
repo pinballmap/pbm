@@ -20,7 +20,6 @@ HERE
     html = <<HERE
 <div id="#{type}_banner" class="search_banner" onclick="hideSearchSections(); toggleData('#{type}');">
   <span>#{header_text}</span>
-  #{open_closed_arrows_for(type)}
 </div>
 HERE
     html.html_safe

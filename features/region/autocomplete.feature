@@ -30,7 +30,7 @@ Feature: Autocomplete
       |Sassy From The Black Lagoon|
       |Cleo Game|
     And I am on "Portland"'s home page
-    And I click to search by "machine"
+    And I switch to "machine" lookup
     And I fill in "by_machine_name" with "sassy"
     And I wait for 1 second
     Then I should see the following autocomplete options:

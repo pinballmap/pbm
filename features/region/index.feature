@@ -4,12 +4,15 @@ Feature: Region main page
   I want to do basic site navigation
 
   @javascript
-  Scenario: Lookup navigation closes other tabs when selected
+  Scenario: Change navigation type
     Given there is a location machine xref
     And I am on "Portland"'s home page
-    And I click to search by "machine"
-    Then I should not see "To search locations please select a place or region from the drop down or begin typing in the text box." within "span.info"
-    And I should see "To find a machine please select one from the drop down or use the text box."
+    Then I should see "To search locations please select a place or region from the drop down or begin typing in the text box."
+    And I should not see "To find a machine please select one from the drop down or use the text box." within "span.info"
+    And my other search options should be "city machine zone"
+    Given I switch to "machine" lookup
+    Then I should see "To find a machine please select one from the drop down or use the text box."
+    And I should not see "To search locations please select a place or region from the drop down or begin typing in the text box." within "span.info"
 
   @javascript
   Scenario: Searching is automatically limited by region
@@ -31,7 +34,7 @@ Feature: Region main page
   Scenario: Search by machine name from select
     Given there is a location machine xref
     And I am on "Portland"'s home page
-    And I click to search by "machine"
+    And I switch to "machine" lookup
     And I select "Test Machine Name" from "by_machine_id"
     And I press the "machine" search button
     Then I should see the listing for "Test Location Name"
@@ -56,7 +59,7 @@ Feature: Region main page
       |Zelda|Hillsboro|1|
       |Bawb|Hillsboro|1|
     And I am on "Portland"'s home page
-    And I click to search by "city"
+    And I switch to "city" lookup
     And I select "Beaverton" from "by_city"
     And I press the "city" search button
     Then I should see the listing for "Sassy"
@@ -70,7 +73,7 @@ Feature: Region main page
       |Cleo|1|1|
       |Sassy|2|1|
     And I am on "Portland"'s home page
-    And I click to search by "zone"
+    And I switch to "zone" lookup
     And I select "Alberta" from "by_zone_id"
     And I press the "zone" search button
     Then I should see the listing for "Sassy"
