@@ -349,3 +349,8 @@ a.light-blue:active {background: #000000;}
   background-repeat: no-repeat;
   background-position: center;
 }
+
+.search_option_selector a {
+  color: #000;
+  padding-right: 10px;
+}
