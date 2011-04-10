@@ -31,7 +31,7 @@
                   .clear
                   %li= [l.city, l.zip, l.state].join(', ')
                   .clear
-                  %li= link_to 'Link to this map result', locations_path, :class =>'location_link', :id => l.id
+                  %li= link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :class =>'location_link', :id => l.id
               = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location => l}
               = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
               = render :partial => 'location_machine_xrefs/add_machine', :locals => {:location => l}
