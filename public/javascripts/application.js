@@ -94,3 +94,14 @@ function initSearch(region, locationID) {
   $('#locations').html(loadingHTML());
   $.get(url, function(data){$('#locations').html(data);}, 'script');
 }
+
+function showLocationDetail(locationID) {
+  $('#show_location_detail_location_' + locationID).toggle();
+  toggleData('location_detail_location', locationID);
+  toggleArrows('location_detail', locationID);
+}
+
+function singleLocationLoad(locationID) {
+  showLocationDetail(locationID);
+  toggleData('show_machines_location', locationID);
+}

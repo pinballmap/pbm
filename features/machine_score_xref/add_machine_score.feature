@@ -8,8 +8,6 @@ Feature: add a high score for a machine
     Given there is a location machine xref
     And I am on "Portland"'s home page
     And I press the "location" search button
-    And I click to see the detail for "Test Location Name"
-    And I click on the show machines link for "Test Location Name"
     Then I should not see "Add Scores At This Location"
 
   @javascript
@@ -19,8 +17,6 @@ Feature: add a high score for a machine
     And today is 02/05/2011
     And I am on "Portland"'s home page
     And I press the "location" search button
-    And I click to see the detail for "Test Location Name"
-    And I click on the show machines link for "Test Location Name"
     And I click on the add scores link for "Test Location Name"
     And I fill in a score of "1234" and rank "GC"
     And I wait for 1 seconds

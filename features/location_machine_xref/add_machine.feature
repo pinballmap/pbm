@@ -12,7 +12,6 @@ Feature: New Machine for Location
     |Medieval Madness|
     And I am on "Portland"'s home page
     And I press the "location" search button
-    And I click to see the detail for "Test Location Name"
     And I click on the add machine link for "Test Location Name"
     And I fill in "add_machine_by_name" with "Star Wars"
     And I wait for 1 seconds
@@ -29,7 +28,6 @@ Feature: New Machine for Location
     |Medieval Madness|
     And I am on "Portland"'s home page
     And I press the "location" search button
-    And I click to see the detail for "Test Location Name"
     And I click on the add machine link for "Test Location Name"
     And I select "Medieval Madness" from "add_machine_by_id"
     And I wait for 1 seconds
@@ -42,7 +40,6 @@ Feature: New Machine for Location
     Given there is a location machine_xref
     And I am on "Portland"'s home page
     And I press the "location" search button
-    And I click to see the detail for "Test Location Name"
     And I click on the add machine link for "Test Location Name"
     And I fill in "add_machine_by_name" with "Test Machine Name"
     And I wait for 1 seconds

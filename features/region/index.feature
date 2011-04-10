@@ -40,14 +40,16 @@ Feature: Region main page
     Then I should see the listing for "Test Location Name"
 
   @javascript
-  Scenario: Location detail shows the stuff that I want it to show
+  Scenario: Single location search automatically loads with machine detail visible
     Given there is a location machine xref
     And I am on "Portland"'s home page
     And I press the "location" search button
     Then I should see "Test Location Name"
     And I should see "123 Pine | Portland"
+    And I should see "Add New Photo At This Location"
     And I should see "Add New Machine At This Location"
     And I should see "Show Machines At This Location"
+    And I should see "No Description"
 
   @javascript
   Scenario: Search by city
