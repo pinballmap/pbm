@@ -47,8 +47,8 @@
     $('#by_machine_name').autocomplete({source: '#{autocomplete_machines_path}'});
 
     $('.location_search').submit(function () {
-      $('#locations').html(loading_html());
-      $.get(this.action, $(this).serialize(), null, 'script');
+      $('#locations').html(loadingHTML());
+      $.get(this.action, $(this).serialize(), function(data){$('#locations').html(data);}, 'script');
       return false;
     });
 

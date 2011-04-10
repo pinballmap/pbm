@@ -33,7 +33,7 @@ HERE
     it 'should give me a banner' do
       l = Factory.create(:location)
       helper.search_banner('by_cool_type', 'This is a cool type, bro').should == <<HERE
-<div id="by_cool_type_banner" class="search_banner" onclick="hideSearchSections(); toggleData('by_cool_type');">
+<div id="by_cool_type_banner" class="search_banner">
   <span>This is a cool type, bro</span>
 </div>
 HERE
