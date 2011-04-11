@@ -131,8 +131,8 @@ GEM
       activesupport (~> 3.0.2)
       arel (~> 2.0.2)
     mime-types (1.16)
+    mysql2 (0.2.7)
     nokogiri (1.4.4)
-    pg (0.10.1)
     pickle (0.4.4)
       cucumber (>= 0.8)
       rake
@@ -237,7 +237,7 @@ DEPENDENCIES
   jquery-rails
   launchy
   meta_where
-  pg
+  mysql2
   pickle
   pony
   rails (= 3.0.3)
