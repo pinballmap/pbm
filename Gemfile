@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.3'
 gem 'arel', '2.0.2'
-gem 'pg'
+gem 'mysql2'
 
 gem 'devise'
 gem 'inherited_resources'

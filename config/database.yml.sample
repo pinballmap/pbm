@@ -1,0 +1,29 @@
+production:
+  host: localhost
+  adapter: mysql2
+  encoding: utf8
+  database: pbm
+  pool: 5
+  username: root
+  password:
+  socket: /tmp/mysql.sock
+
+development:
+  host: localhost
+  adapter: mysql2
+  encoding: utf8
+  database: pbm_dev
+  pool: 5
+  socket: /tmp/mysql.sock
+
+test: &test
+  host: localhost
+  adapter: mysql2
+  encoding: utf8
+  database: pbm_test
+  pool: 5
+  min_messages: WARNING
+  socket: /tmp/mysql.sock
+
+cucumber:
+  <<: *test
