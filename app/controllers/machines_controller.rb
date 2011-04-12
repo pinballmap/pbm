@@ -3,7 +3,7 @@ class MachinesController < InheritedResources::Base
   has_scope :by_name
 
   def autocomplete
-    render :json => Machine.find(:all, :conditions => ['name ilike ?', '%' + params[:term] + '%']).map {|m| m.name}
+    render :json => Machine.find(:all, :conditions => ['upper(name) like upper(?)', '%' + params[:term] + '%']).map {|m| m.name}
   end
 
   def index

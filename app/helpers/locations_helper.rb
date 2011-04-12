@@ -6,7 +6,7 @@ module LocationsHelper
     arrows.html_safe
   end
 
-  def banner(obj=nil, type, header_text)
+  def banner(type, header_text, obj=nil)
     html = <<HERE
 <div id="#{type}_banner#{"_#{obj.id}" if (obj)}" class="sub_nav_item" onclick="toggleData('#{type}'#{", #{obj.id}" if (obj)});">
   <span>#{header_text}</span>

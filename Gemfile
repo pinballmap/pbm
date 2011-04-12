@@ -35,7 +35,6 @@ group :development, :test do
   gem 'autotest-rails'
   gem 'autotest-growl'
   gem 'ruby-growl'
-  gem 'autotest-fsevent'
   gem 'factory_girl'
   gem 'factory_girl_rails'
   gem 'pickle'
