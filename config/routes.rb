@@ -1,4 +1,8 @@
-regions = Region.all.empty? ? 'portland' : Region.all.each.collect {|r| r.name}.join('|')
+regions = ['portland']
+
+if (Region.table_exists?)
+  regions = Region.all.each.collect {|r| r.name}.join('|')
+end
 
 Pbm::Application.routes.draw do
   scope ':region', :constraints => { :region => /#{regions}/i } do
