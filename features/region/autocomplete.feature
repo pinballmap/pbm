@@ -17,8 +17,8 @@ Feature: Autocomplete
     And I fill in "add_machine_by_name" with "sassy"
     And I wait for 1 second
     Then I should see the following autocomplete options:
-      |Sassy Madness|
       |Sassy From The Black Lagoon|
+      |Sassy Madness|
 
   @javascript
   Scenario: Search by machine name from input with autocomplete
@@ -33,8 +33,8 @@ Feature: Autocomplete
     And I fill in "by_machine_name" with "sassy"
     And I wait for 1 second
     Then I should see the following autocomplete options:
-      |Sassy Madness|
       |Sassy From The Black Lagoon|
+      |Sassy Madness|
 
   @javascript
   Scenario: Search by location name from input with autocomplete

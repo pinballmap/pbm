@@ -3,7 +3,7 @@ class LocationsController < InheritedResources::Base
   has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city, :by_zone_id, :region
 
   def autocomplete
-    render :json => Location.find(:all, :conditions => ['region_id = ? and name ilike ?', params[:region_id], '%' + params[:term] + '%']).map { |l| l.name }
+    render :json => Location.find(:all, :conditions => ['region_id = ? and upper(name) like upper(?)', params[:region_id], '%' + params[:term] + '%']).map { |l| l.name }
   end
 
   def index

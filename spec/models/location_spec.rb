@@ -11,7 +11,7 @@ describe Location do
 
   describe '#location_machine_xrefs' do
     it 'should return all machines for this location' do
-      @l.location_machine_xrefs.should == [@lmx2, @lmx1]
+      @l.location_machine_xrefs.should == [@lmx1, @lmx2]
     end
   end
 
