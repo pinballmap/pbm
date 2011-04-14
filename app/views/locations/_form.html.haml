@@ -5,40 +5,40 @@
   = search_banner('by_city', 'LOOKUP BY CITY')
   = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do
     %span.info To search locations by city, please select a city from the drop down
-    %br{:style => "clear:both;"}/
+    %br.clear
     = select_tag :by_city, options_for_select(['']) + options_from_collection_for_select(Location.find(:all, :conditions => ['region_id = ?', @region.id], :select => 'distinct city', :order => 'city'), 'city', 'city', params[:by_city])
-    %br{:style => "clear:both;"}/
+    %br.clear
     = submit_tag 'Search', :class => 'search', :id => 'city_search_button'
 
 %div{:id => 'by_zone', :class => 'section', :style => 'display:none;'}
   = search_banner('by_zone', 'LOOKUP BY ZONE')
   = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do
     %span.info To search locations by zone, please select a zone from the drop down
-    %br{:style => "clear:both;"}/
+    %br.clear
     = select_tag :by_zone_id, options_for_select(['']) + options_from_collection_for_select(Zone.where('region_id = ?', @region.id).order('name'), 'id', 'name', params[:by_zone_id])
-    %br{:style => "clear:both;"}/
+    %br.clear
     = submit_tag 'Search', :class => 'search', :id => 'zone_search_button'
 
 %div{:id => 'by_location', :class => 'section', :style => 'display:none;'}
   = search_banner('by_location', 'LOOKUP BY LOCATION')
   = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do
     %span.info To search locations please select a place or region from the drop down or begin typing in the text box.
-    %br{:style => "clear:both;"}/
+    %br.clear
     = select_tag :by_location_id, options_for_select(['']) + options_from_collection_for_select(Location.where('region_id = ?', @region.id).order('name'), 'id', 'name', params[:by_location_id])
-    %br{:style => "clear:both;"}/
+    %br.clear
     = text_field_tag :by_location_name, params[:by_location_name]
-    %br{:style => "clear:both;"}/
+    %br.clear
     = submit_tag 'Search', :class => 'search', :id => 'location_search_button'
 
 %div{:id => 'by_machine', :class => 'section', :style => 'display:none;'}
   = search_banner('by_machine', 'LOOKUP BY MACHINE')
   = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do
     %span.info To find a machine please select one from the drop down or use the text box.
-    %br{:style => "clear:both;"}/
+    %br.clear
     = select_tag :by_machine_id, options_for_select(['']) + options_from_collection_for_select(Machine.order('name'), 'id', 'name', params[:by_machine_id])
-    %br{:style => "clear:both;"}/
+    %br.clear
     = text_field_tag :by_machine_name, params[:by_machine_name]
-    %br{:style => "clear:both;"}/
+    %br.clear
     = submit_tag 'Search', :class => 'search', :id => 'machine_search_button'
 
 :javascript
