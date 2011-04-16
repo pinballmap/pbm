@@ -9,4 +9,16 @@ Feature: update condition for location's machine
     And I am on "Portland"'s home page
     And I press the "location" search button
     And I update the machine condition for "Test Location Name"'s "Test Machine Name" to be "New Condition"
+    And I press "Save"
+    Then "Test Location Name"'s "Test Machine Name" should have the condition "New Condition"
+
+  @javascript
+  Scenario: Cancel condition editing
+    Given there is a location machine xref
+    And I am on "Portland"'s home page
+    And I press the "location" search button
+    And I update the machine condition for "Test Location Name"'s "Test Machine Name" to be "New Condition"
+    And I press "Save"
+    And I update the machine condition for "Test Location Name"'s "Test Machine Name" to be "Condition That I Hope Will Be Rejected"
+    And I press "Cancel"
     Then "Test Location Name"'s "Test Machine Name" should have the condition "New Condition"
