@@ -13,7 +13,7 @@ class LocationsController < InheritedResources::Base
   end
 
   def render_machines
-    render :partial => 'locations/render_machines', :locals => {:location => Location.find(params[:id]).includes(:location_machine_xrefs, :machines)}
+    render :partial => 'locations/render_machines', :locals => {:location_machine_xrefs => Location.find(params[:id]).location_machine_xrefs}
   end
 
   def render_scores

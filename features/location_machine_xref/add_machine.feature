@@ -18,6 +18,7 @@ Feature: New Machine for Location
     And I press "add"
     And I wait for 1 seconds
     Then "Test Location Name" should have "Star Wars"
+    And I should see "Star Wars Test Machine Name"
 
   @javascript
   Scenario: Add machine by id
