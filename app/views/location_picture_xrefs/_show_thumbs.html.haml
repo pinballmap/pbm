@@ -1,2 +1,3 @@
 - LocationPictureXref.find_all_by_location_id(location.id).each do |lpx|
-  = link_to_if lpx.photo?, image_tag(lpx.photo_url(:thumb)), lpx.photo_url, :class => 'highslide', :onclick => 'return hs.expand(this);'
+  - if (lpx.photo? && lpx.approved?)
+    = link_to image_tag(lpx.photo_url(:thumb)), lpx.photo_url, :class => "location_picture_xref_#{lpx.id} highslide", :onclick => 'return hs.expand(this);'

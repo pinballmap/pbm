@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   belongs_to :region
   has_many :machine_score_xrefs
+  has_many :location_picture_xrefs
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable

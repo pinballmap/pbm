@@ -1,0 +1,17 @@
+Feature: Show Photos for Location
+  In order to show photos at a location
+  As a guest
+  I want to be able to see photos at a location
+
+  @javascript
+  Scenario: Does not display photos that have not been approved
+    Given there is a location machine xref
+    And the following location picture xref exists:
+      |id|location|approved|
+      |1|name: Test Location Name|0|
+      |2|name: Test Location Name|1|
+    And I am on "Portland"'s home page
+    And I press the "location" search button
+    And I wait for 1 seconds
+    Then I should see a thumbnail for photo "2"
+    And I should not see a thumbnail for photo "1"

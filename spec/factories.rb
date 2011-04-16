@@ -40,3 +40,9 @@ Factory.define :user do |u|
   u.sequence(:email) {|n| "captainamerica#{n}@foo.bar"}
   u.password 'password'
 end
+
+Factory.define :location_picture_xref do |lpx|
+  lpx.association :location
+  lpx.association :user
+  lpx.photo File.open(File.join(Rails.root, '/public/images/favicon.ico'))
+end
