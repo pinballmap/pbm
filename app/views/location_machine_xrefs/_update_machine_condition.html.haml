@@ -3,14 +3,20 @@
 %div[lmx, :machine_condition_edit]{:style => 'display:none'}
   = form_tag update_machine_condition_location_machine_xrefs_path(:action => 'update_machine_condition', :id => lmx.id, :region => @region.name), :id => "update_machine_condition_#{lmx.id}", :method => 'get', :remote => true do
     = hidden_field_tag :id, lmx.id
-    = text_field_tag "new_machine_condition_#{lmx.id}", lmx.condition ? lmx.condition : 'No Condition'
-    = submit_tag 'Update Condition', :id => 'update_condition'
-    = submit_tag 'Cancel'
+    = text_area_tag "new_machine_condition_#{lmx.id}", lmx.condition ? lmx.condition : 'No Condition', :cols => 20, :rows => 3, :class => 'edit_mode'
+    %br/
+    = submit_tag 'Save'
+  = submit_tag 'Cancel', :id => "cancel_machine_condition_#{lmx.id}"
 
 :javascript
   $('#update_machine_condition_#{lmx.id}').submit(function () {
     $.get(this.action, $(this).serialize(), null, 'script');
     $('#machine_condition_lmx_#{lmx.id}').text($('#new_machine_condition_#{lmx.id}').val());
+    $('#machine_condition_edit_lmx_#{lmx.id}').toggle();
+    $('#machine_condition_display_lmx_#{lmx.id}').toggle();
+  });
+
+  $('#cancel_machine_condition_#{lmx.id}').click(function () {
     $('#machine_condition_edit_lmx_#{lmx.id}').toggle();
     $('#machine_condition_display_lmx_#{lmx.id}').toggle();
   });
