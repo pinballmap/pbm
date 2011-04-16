@@ -1,6 +1,6 @@
-regions = ['portland']
+regions = 'portland|chicago'
 
-if (Region.table_exists?)
+if (Region.table_exists? && Region.all.size > 0)
   regions = Region.all.each.collect {|r| r.name}.join('|')
 end
 
