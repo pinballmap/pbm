@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110416205031) do
+ActiveRecord::Schema.define(:version => 20110416232037) do
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"
@@ -105,6 +105,14 @@ ActiveRecord::Schema.define(:version => 20110416205031) do
     t.string   "phone"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "region_link_xrefs", :force => true do |t|
+    t.string  "name"
+    t.string  "url"
+    t.string  "description"
+    t.string  "category"
+    t.integer "region_id"
   end
 
   create_table "regions", :force => true do |t|

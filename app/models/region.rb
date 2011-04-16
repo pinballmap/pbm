@@ -4,6 +4,7 @@ class Region < ActiveRecord::Base
   has_many :users
   has_many :events
   has_many :operators
+  has_many :region_link_xrefs
   has_many :location_machine_xrefs, :through => :locations
 
   def machine_score_xrefs
