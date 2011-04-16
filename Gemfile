@@ -17,7 +17,7 @@ gem 'declarative_authorization'
 gem 'haml'
 gem 'haml-rails'
 gem 'carrierwave'
-gem 'rmagick'
+gem 'mini_magick'
 gem 'remotipart'
 gem 'pony'
 gem "recaptcha", :require => "recaptcha/rails"
