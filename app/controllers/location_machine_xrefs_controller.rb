@@ -32,7 +32,7 @@ class LocationMachineXrefsController < InheritedResources::Base
 
   def index
     @lmxs = apply_scopes(LocationMachineXref).includes(:location, :machine)
-    @lmxs.sort! {|a,b| b.created_at <=> a.created_at}
+    @lmxs.sort! {|a,b| b.id <=> a.id}
     respond_with(@lmxs)
   end
 end
