@@ -31,9 +31,13 @@ class PagesController < ApplicationController
   end
 
   def links
+    @links = Hash.new
+    @region.region_link_xrefs.each do |rlx|
+      (@links[rlx.category] ||= []) << rlx
+    end
   end
 
-  def high_rollers 
+  def high_rollers
     @high_rollers = @region.n_high_rollers(10)
   end
 

@@ -52,5 +52,5 @@ Factory.define :region_link_xref do |rlx|
   rlx.description 'This is a test link'
   rlx.url 'http://www.foo.com'
   rlx.category 'Test Category'
-  rlx.associateion :region
+  rlx.association :region
 end

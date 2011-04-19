@@ -1,2 +1,8 @@
-%h1 Pages#link
-%p Find me in app/views/pages/link.html.haml
+- @links.each do |category, links|
+  %h1 #{category}
+  - links.each do |l|
+    = link_to l.name, l.url
+    %br/
+    %span #{l.description}
+    %br/
+    %br/
