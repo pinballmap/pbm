@@ -19,7 +19,5 @@ Feature: show high scores for a machine
     Then I should not see the show scores option for "Test Location Name"'s "Test Machine Name"
     Given I click on the add scores link for "Test Location Name"
     And I fill in a score of "1234" and rank "GC"
-    And I wait for 1 seconds
     And I press "add_score"
-    And I wait for 1 seconds
     Then I should see the show scores option for "Test Location Name"'s "Test Machine Name"
