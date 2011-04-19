@@ -46,3 +46,11 @@ Factory.define :location_picture_xref do |lpx|
   lpx.association :user
   lpx.photo File.open(File.join(Rails.root, '/public/images/favicon.ico'))
 end
+
+Factory.define :region_link_xref do |rlx|
+  rlx.name 'Test Link Name'
+  rlx.description 'This is a test link'
+  rlx.url 'http://www.foo.com'
+  rlx.category 'Test Category'
+  rlx.association :region
+end

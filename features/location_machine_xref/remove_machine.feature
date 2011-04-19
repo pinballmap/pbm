@@ -9,5 +9,5 @@ Feature: Remove Machine for Location
     And I am on "Portland"'s home page
     And I press the "location" search button
     And I press "remove"
-    And I wait for 2 seconds
+    And I wait for 1 seconds
     Then location_machine_xref should not exist

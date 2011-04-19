@@ -19,7 +19,6 @@ Feature: add a high score for a machine
     And I press the "location" search button
     And I click on the add scores link for "Test Location Name"
     And I fill in a score of "1234" and rank "GC"
-    And I wait for 1 seconds
     And I press "add_score"
     And I wait for 1 seconds
     Then "Test Location Name"'s "Test Machine Name" should have a score with score "1234" and rank "1"

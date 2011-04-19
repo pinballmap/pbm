@@ -40,6 +40,14 @@ Feature: Region main page
     Then I should see the listing for "Test Location Name"
 
   @javascript
+  Scenario: Search by machine name from select, limits to machines in region
+    Given there is a location machine xref
+    And there is a machine with the name "This is not in the region"
+    And I am on "Portland"'s home page
+    And I switch to "machine" lookup
+    Then I should not see "This is not in the region"
+
+  @javascript
   Scenario: Single location search automatically loads with machine detail visible
     Given there is a location machine xref
     And I am on "Portland"'s home page

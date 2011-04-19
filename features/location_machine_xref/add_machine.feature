@@ -14,7 +14,6 @@ Feature: New Machine for Location
     And I press the "location" search button
     And I click on the add machine link for "Test Location Name"
     And I fill in "add_machine_by_name" with "Star Wars"
-    And I wait for 1 seconds
     And I press "add"
     And I wait for 1 seconds
     Then "Test Location Name" should have "Star Wars"
@@ -31,7 +30,6 @@ Feature: New Machine for Location
     And I press the "location" search button
     And I click on the add machine link for "Test Location Name"
     And I select "Medieval Madness" from "add_machine_by_id"
-    And I wait for 1 seconds
     And I press "add"
     And I wait for 1 seconds
     Then "Test Location Name" should have "Medieval Madness"
@@ -43,7 +41,5 @@ Feature: New Machine for Location
     And I press the "location" search button
     And I click on the add machine link for "Test Location Name"
     And I fill in "add_machine_by_name" with "Test Machine Name"
-    And I wait for 1 seconds
     And I press "add"
-    And I wait for 1 seconds
     Then "Test Location Name" should only have "Test Machine Name"

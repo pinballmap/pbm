@@ -35,7 +35,7 @@
   = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do
     %span.info To find a machine please select one from the drop down or use the text box.
     %br.clear
-    = select_tag :by_machine_id, options_for_select(['']) + options_from_collection_for_select(Machine.order('name'), 'id', 'name', params[:by_machine_id])
+    = select_tag :by_machine_id, options_for_select(['']) + options_from_collection_for_select(@region.machines, 'id', 'name', params[:by_machine_id])
     %br.clear
     = text_field_tag :by_machine_name, params[:by_machine_name]
     %br.clear
@@ -44,7 +44,7 @@
 :javascript
   $(function () {
     $('#by_location_name').autocomplete({source: '#{autocomplete_locations_path(:region_id => @region.id)}'});
-    $('#by_machine_name').autocomplete({source: '#{autocomplete_machines_path}'});
+    $('#by_machine_name').autocomplete({source: '#{autocomplete_machines_path(:region_id => @region.id)}'});
 
     $('.location_search').submit(function () {
       $('#locations').html(loadingHTML());

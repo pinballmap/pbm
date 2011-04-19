@@ -12,6 +12,5 @@ Feature: Show Photos for Location
       |2|name: Test Location Name|1|
     And I am on "Portland"'s home page
     And I press the "location" search button
-    And I wait for 1 seconds
     Then I should see a thumbnail for photo "2"
     And I should not see a thumbnail for photo "1"

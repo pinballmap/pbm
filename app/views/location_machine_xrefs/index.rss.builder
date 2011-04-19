@@ -11,9 +11,9 @@ xml.rss :version => "2.0" do
       xml.item do
         xml.title "#{machine.name} was added to #{location.name}"
         xml.link "http://pinballmap.com/#{@region.name.downcase}/?by_location_id=#{location.id}"
-        xml.description "Added on #{lmx.created_at.to_s(:rfc822)}"
+        xml.description "Added on #{lmx.created_at.nil? ? 'UNKNOWN' : lmx.created_at.to_s(:rfc822)}"
         xml.guid lmx.id
-        xml.pubDate lmx.created_at.to_s(:rfc822)
+        xml.pubDate lmx.created_at.nil? ? 'UNKNOWN' : lmx.created_at.to_s(:rfc822)
       end
     end
   end
