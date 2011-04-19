@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110416232037) do
+ActiveRecord::Schema.define(:version => 20110419023435) do
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"
@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(:version => 20110416232037) do
     t.string  "description"
     t.string  "category"
     t.integer "region_id"
+    t.integer "sort_order"
   end
 
   create_table "regions", :force => true do |t|

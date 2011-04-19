@@ -33,7 +33,7 @@ class PagesController < ApplicationController
   def links
     @links = Hash.new
     @region.region_link_xrefs.each do |rlx|
-      (@links[rlx.category] ||= []) << rlx
+      (@links[rlx.sort_order || 0] ||= []) << rlx
     end
   end
 
