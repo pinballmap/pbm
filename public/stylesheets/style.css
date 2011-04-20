@@ -155,7 +155,8 @@ body {
 }
 
 .info {
-  padding: 10px 0px;
+  display: block;
+  padding-top: 10px;
   font-style: italic;
   color: #999;
 }
