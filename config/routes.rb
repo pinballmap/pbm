@@ -5,9 +5,7 @@ if (Region.table_exists? && Region.all.size > 0)
 end
 
 Pbm::Application.routes.draw do
-  scope ':region', :constraints => { :region => /#{regions}/i } do
-    devise_for :users
-
+  scope ':region', :constraints => { :region => /#{regions}|!admin/i } do
     resources :pages
     resources :events
     resources :regions
@@ -44,6 +42,8 @@ Pbm::Application.routes.draw do
       get :autocomplete
     end
   end
+
+  devise_for :users
 
   get 'pages/home'
   root :to => 'pages#home'

@@ -82,6 +82,7 @@ body {
 .search_result {
   height: 100%;
   width: 240px;
+  padding-bottom: 50px;
 }
 
 #welcome {
@@ -155,7 +156,8 @@ body {
 }
 
 .info {
-  padding: 10px 0px;
+  display: block;
+  padding-top: 10px;
   font-style: italic;
   color: #999;
 }
@@ -357,4 +359,50 @@ a.light-blue:active {background: #000000;}
 
 .edit_mode {
   background-color: #A9BEFF;
+}
+
+.delete_button {
+  border: 1px solid #494949;
+  background-color: black;
+  color: #494949;
+  cursor: pointer;
+  padding: 0 1px;
+  margin-left: 5px;
+}
+
+.machine_name {
+  font-size: 12px;
+  font-weight: bold;
+  float: left;
+}
+
+.lookup_search_input {
+  width: 275px;
+}
+
+.lookup_search_select {
+  width: 280px;
+}
+
+#file_chooser_button {
+  padding-left: 10px;
+  width: 90px;
+}
+
+.machine_lmx {
+  padding-bottom: 30px;
+}
+
+.location_detail {
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: normal;
+  height: 100%;
+  width: 240px;
+  padding: 3px 10px 3px 0;
+}
+
+.machine_condition_display_lmx {
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
