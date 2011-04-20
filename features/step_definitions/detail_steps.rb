@@ -7,8 +7,8 @@ end
 
 Then /^I click on the add machine link for "([^"]*)"$/ do |name|
   l = Location.find_by_name(name)
-  if page.has_css?("div#add_machine_location_banner_#{l.id}")
-    page.find("div#add_machine_location_banner_#{l.id}").click
+  if page.has_css?("div#add_machine_location_banner_#{l.id}.sub_nav_item")
+    page.find("div#add_machine_location_banner_#{l.id}.sub_nav_item").click
   end
 end
 

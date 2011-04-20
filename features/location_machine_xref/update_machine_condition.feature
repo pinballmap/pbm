@@ -2,6 +2,13 @@ Feature: update condition for location's machine
   In order to update a location's machine's condition
   As a guest
   I want to be able to update a condition on a machine
+  
+  @javascript
+  Scenario: Machines with no condition have default text
+    Given there is a location machine xref
+    And I am on "Portland"'s home page
+    And I press the "location" search button
+    Then I should see "Click to enter machine description"
 
   @javascript
   Scenario: Add a new condition to a machine
