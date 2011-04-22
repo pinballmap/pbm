@@ -39,6 +39,7 @@ Factory.define :user do |u|
   u.initials 'cap'
   u.sequence(:email) {|n| "captainamerica#{n}@foo.bar"}
   u.password 'password'
+  u.association :region
 end
 
 Factory.define :location_picture_xref do |lpx|
