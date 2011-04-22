@@ -9,6 +9,7 @@ class LocationsController < InheritedResources::Base
   def index
     @locations = apply_scopes(Location).includes(:location_machine_xrefs, :machines)
     @location_data = locations_javascript_data(@locations)
+
     respond_with(@locations)
   end
 
@@ -21,22 +22,23 @@ class LocationsController < InheritedResources::Base
   end
 
   def unknown_route
+    region = params[:region] || 'portland'
     if (params[:page] == 'iphone.html')
       if (params[:init])
         case params[:init].to_i
         when 1 then
-          redirect_to "/#{params[:region]}/locations.xml"
+          redirect_to "/#{region}/locations.xml"
         when 2 then
-          redirect_to "/#{params[:region]}/regions.xml"
+          redirect_to "/#{region}/regions.xml"
         when 3 then
-          redirect_to "/#{params[:region]}/events.xml"
+          redirect_to "/#{region}/events.xml"
         when 4 then
-          redirect_to "/#{params[:region]}/machines.xml"
+          redirect_to "/#{region}/machines.xml"
         end
       elsif (location_id = params[:get_location])
-        redirect_to "/#{params[:region]}/locations/#{location_id}.xml"
+        redirect_to "/#{region}/locations/#{location_id}.xml"
       elsif (machine_id = params[:get_machine])
-        redirect_to "/#{params[:region]}/machines/#{machine_id}.xml"
+        redirect_to "/#{region}/machines/#{machine_id}.xml"
       elsif (location_id = params[:error])
       elsif (location_id = params[:condition])
       elsif (location_id = params[:modify_location])

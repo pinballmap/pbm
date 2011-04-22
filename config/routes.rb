@@ -45,6 +45,7 @@ Pbm::Application.routes.draw do
 
   devise_for :users
 
+  match '*page', :to => 'locations#unknown_route'
   get 'pages/home'
   root :to => 'pages#home'
 end
