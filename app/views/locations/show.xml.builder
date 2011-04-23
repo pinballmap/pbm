@@ -21,7 +21,7 @@ xml.data do
           xml.id lmx.machine_id
           xml.name lmx.machine.name
           xml.condition lmx.condition, :date => lmx.condition_date.nil? ? '' : lmx.condition_date.to_s
-          xml.dateAdded lmx.created_at.to_date.nil? ? '' : lmx.created_at.to_date.to_s
+          xml.dateAdded lmx.created_at.nil? ? '' : lmx.created_at.to_date.to_s
         end
       end
     end

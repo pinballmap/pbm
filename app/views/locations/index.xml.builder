@@ -28,4 +28,15 @@ xml.data do
       end
     end
   end
+
+  xml.zones do
+    for zone in @region.zones
+      xml.zone do
+        xml.id zone.id
+        xml.name zone.name
+        xml.shortName zone.short_name
+        xml.isPrimary zone.is_primary ? 1 : 0
+      end
+    end
+  end
 end
