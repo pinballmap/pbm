@@ -30,6 +30,9 @@ Pbm::Application.routes.draw do
     match '/suggest_new_location' => 'pages#suggest_new_location'
     match '/submitted_new_location' => 'pages#submitted_new_location'
 
+    match ':region' + '.rss' => 'location_machine_xrefs#index', :format => 'xml'
+    match ':region' + '_scores.rss' => 'machine_score_xrefs#index', :format => 'xml'
+
     match 'locations/:id/render_scores'   => 'locations#render_scores'
     match 'locations/:id/render_machines' => 'locations#render_machines'
 
