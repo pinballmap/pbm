@@ -13,6 +13,10 @@ class LocationsController < InheritedResources::Base
     respond_with(@locations)
   end
 
+  def locations_for_machine
+    @locations = @region.location_machine_xrefs.reject{|lmx| lmx.machine_id.to_s != params[:id]}.map{|lmx| lmx.location}.sort{|a,b| a.name <=> b.name}
+  end
+
   def render_machines
     render :partial => 'locations/render_machines', :locals => {:location_machine_xrefs => Location.find(params[:id]).location_machine_xrefs}
   end
@@ -38,21 +42,26 @@ class LocationsController < InheritedResources::Base
       elsif (location_id = params[:get_location])
         redirect_to "/#{region}/locations/#{location_id}.xml"
       elsif (machine_id = params[:get_machine])
-        redirect_to "/#{region}/machines/#{machine_id}.xml"
+        redirect_to "/#{region}/locations/#{machine_id}/locations_for_machine.xml"
       elsif (location_id = params[:error])
       elsif (condition = params[:condition])
         lmx = LocationMachineXref.find_by_location_id_and_machine_id(params[:location_no], params[:machine_no])
         lmx.condition = condition
         lmx.condition_date = Time.now
         lmx.save
+        redirect_to "/#{region}/location_machine_xrefs/#{lmx.id}/condition_update_confirmation.xml"
       elsif (location_id = params[:modify_location])
         # unfortunately, the mobile devices are sending us a parameter called 'action'...until I figure out a way to handle this,
         # I assume if a machine doesn't exist at a location, create it..if it does, delete it
         machine = params[:machine_no] ? Machine.find(params[:machine_no]) : Machine.find_by_name(params[:machine_name])
+
         if (lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine.id))
+          id = lmx.id
           lmx.delete
+          redirect_to "/#{region}/location_machine_xrefs/#{id}/remove_confirmation.xml"
         else
-          LocationMachineXref.create(:location_id => location_id, :machine_id => machine.id)
+          lmx = LocationMachineXref.create(:location_id => location_id, :machine_id => machine.id)
+          redirect_to "/#{region}/location_machine_xrefs/#{lmx.id}/create_confirmation.xml"
         end
       end
     end

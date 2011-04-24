@@ -19,6 +19,12 @@ Pbm::Application.routes.draw do
       end
     end
 
+    match 'locations/:id/locations_for_machine' => 'locations#locations_for_machine'
+
+    match 'location_machine_xrefs/:id/create_confirmation' => 'location_machine_xrefs#create_confirmation'
+    match 'location_machine_xrefs/:id/remove_confirmation' => 'location_machine_xrefs#remove_confirmation'
+    match 'location_machine_xrefs/:id/condition_update_confirmation' => 'location_machine_xrefs#condition_update_confirmation'
+
     match '/' => "pages#region", :as => 'region_homepage'
     match '/about' => 'pages#about'
     match '/apps' => 'pages#apps'
