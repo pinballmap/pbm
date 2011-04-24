@@ -22,6 +22,7 @@ class PagesController < ApplicationController
   end
 
   def about
+    render "#{@region.name}/about" if (template_exists?("#{@region.name}/about"))
   end
 
   def apps
