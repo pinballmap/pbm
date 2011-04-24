@@ -55,6 +55,11 @@ class LocationsController < InheritedResources::Base
         # I assume if a machine doesn't exist at a location, create it..if it does, delete it
         machine = params[:machine_no] ? Machine.find(params[:machine_no]) : Machine.find_by_name(params[:machine_name])
 
+        if (machine.nil?)
+          machine = Machine.create(:name => params[:machine_name])
+          #send an email about this
+        end
+
         if (lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine.id))
           id = lmx.id
           lmx.delete
