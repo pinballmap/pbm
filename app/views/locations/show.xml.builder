@@ -5,6 +5,8 @@ xml.data do
       xml.id @location.id
       xml.name @location.name
       xml.zoneNo @location.zone_id
+      xml.zone @location.zone_id.nil? ? '' : @location.zone.short_name
+      xml.neighborhood @location.zone_id.nil? ? '' : @location.zone.short_name
       xml.lat @location.lat
       xml.lon @location.lon
       xml.street1 @location.street
@@ -14,14 +16,15 @@ xml.data do
       xml.zip @location.zip
       xml.phone @location.phone
       xml.numMachines @location.machines.size
-    end
-    xml.machines do
-      for lmx in @location.location_machine_xrefs
-        xml.machine do
-          xml.id lmx.machine_id
-          xml.name lmx.machine.name
-          xml.condition lmx.condition, :date => lmx.condition_date.nil? ? '' : lmx.condition_date.to_s
-          xml.dateAdded lmx.created_at.nil? ? '' : lmx.created_at.to_date.to_s
+      xml.machines do
+        for lmx in @location.location_machine_xrefs
+          xml.machine do
+            xml.id lmx.machine_id
+            xml.name lmx.machine.name
+            if (lmx.condition.to_s != '')
+              xml.condition lmx.condition, :date => lmx.condition_date.nil? ? '' : lmx.condition_date.to_s
+            end
+          end
         end
       end
     end

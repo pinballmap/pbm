@@ -251,7 +251,7 @@ body {
 #header li ul {
   display: none;
   position: absolute;
-  top: 1em;
+  top: 2em;
   right: 0;
   list-style: none;
   width:100px;
@@ -405,4 +405,23 @@ a.light-blue:active {background: #000000;}
 .machine_condition_display_lmx {
   padding-top: 15px;
   padding-bottom: 15px;
+}
+
+.text_col {
+  width: 400px;
+  float: left;
+  padding: 1em;
+}
+
+.photo_image {
+  border-color: white;
+  border-width: 6px;
+  border-style: solid;
+}
+
+.right_column {
+  width: 300px;
+  margin-left: 650px;
+  margin-top: 20px;
+  padding: 1em;
 }

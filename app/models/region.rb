@@ -46,12 +46,7 @@ class Region < ActiveRecord::Base
     @high_rollers
   end
 
-  #methods below are to handle legacy xml requirements for android/iphone apps
-  def subdir
-    self.name
-  end
-
-  def emailContact
+  def primary_email_contact
     self.users.empty? ? 'email_not_found@noemailfound.noemail' : self.users[0].email
   end
 end

@@ -33,7 +33,7 @@ describe Region do
 
   describe '#emailContact' do
     it 'should return a default email address if no users are in region' do
-      @r.emailContact.should == 'email_not_found@noemailfound.noemail'
+      @r.primary_email_contact.should == 'email_not_found@noemailfound.noemail'
     end
   end
 end

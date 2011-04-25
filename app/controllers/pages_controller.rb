@@ -22,6 +22,7 @@ class PagesController < ApplicationController
   end
 
   def about
+    render "#{@region.name}/about" if (template_exists?("#{@region.name}/about"))
   end
 
   def apps
@@ -35,6 +36,8 @@ class PagesController < ApplicationController
     @region.region_link_xrefs.each do |rlx|
       (@links[rlx.sort_order || 0] ||= []) << rlx
     end
+
+    render "#{@region.name}/links" if (template_exists?("#{@region.name}/links"))
   end
 
   def high_rollers

@@ -17,6 +17,14 @@ class LocationMachineXrefsController < InheritedResources::Base
       LocationMachineXref.create(:location => Location.find(params[:location_id]), :machine => machine)
   end
 
+  def remove_confirmation
+  end
+  def create_confirmation
+    @lmx = LocationMachineXref.find(params[:id])
+  end
+  def condition_update_confirmation
+  end
+
   def destroy
     LocationMachineXref.find(params[:id]).destroy
   end
