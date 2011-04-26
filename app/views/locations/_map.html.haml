@@ -1,5 +1,5 @@
 #map_canvas
-  = render :partial => template_exists?("#{@region.name}/_intro") ? "#{@region.name}/intro" : 'pages/intro',
+  = render :partial => template_exists?("#{@region.name}/_intro") ? "#{@region.name}/intro" : 'pages/intro'
 #ticker
   - @region.n_recent_scores(20).each do |msx|
     %span= "#{msx.location.name}'s #{msx.machine.name}: #{MachineScoreXref::ENGLISH_SCORES[msx.rank]} with #{msx.score} by #{msx.user.initials}"
