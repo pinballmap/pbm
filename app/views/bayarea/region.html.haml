@@ -1,0 +1,8 @@
+- content_for :presearch_sidebar do
+  = image_tag 'bayarea/bayarea_nes.jpg'
+  - if @region.motd
+    %p
+      %span.yellow Message of the Day:
+      %br/
+      = @region.motd
+= render :file => 'pages/region'

@@ -4,6 +4,8 @@ class PagesController < ApplicationController
   def region
     @location_count = @region.locations.size
     @lmx_count = @region.location_machine_xrefs.size
+
+    render "#{@region.name}/region" if (template_exists?("#{@region.name}/region"))
   end
 
   def contact_sent
