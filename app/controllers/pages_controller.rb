@@ -1,15 +1,9 @@
 require 'pony'
 
 class PagesController < ApplicationController
-  def home
-  end
-
   def region
     @location_count = @region.locations.size
     @lmx_count = @region.location_machine_xrefs.size
-  end
-
-  def contact
   end
 
   def contact_sent
@@ -25,12 +19,6 @@ class PagesController < ApplicationController
     render "#{@region.name}/about" if (template_exists?("#{@region.name}/about"))
   end
 
-  def apps
-  end
-
-  def app_support
-  end
-
   def links
     @links = Hash.new
     @region.region_link_xrefs.each do |rlx|
@@ -44,9 +32,6 @@ class PagesController < ApplicationController
     @high_rollers = @region.n_high_rollers(10)
   end
 
-  def suggest_new_location
-  end
-
   def submitted_new_location
     if (verify_recaptcha)
       flash[:notice] = "Thanks for entering that location. We'll get it in the system as soon as possible."
@@ -54,5 +39,20 @@ class PagesController < ApplicationController
     else
       flash[:alert] = "Your captcha entering skills have failed you. Please go back and try again."
     end
+  end
+
+  def apps
+  end
+
+  def app_support
+  end
+
+  def contact
+  end
+
+  def home
+  end
+
+  def suggest_new_location
   end
 end
