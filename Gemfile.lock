@@ -132,6 +132,7 @@ GEM
     mini_magick (3.2)
       subexec (~> 0.0.4)
     mysql2 (0.2.7)
+    newrelic_rpm (2.14.1)
     nokogiri (1.4.4)
     pickle (0.4.4)
       cucumber (>= 0.8)
@@ -237,6 +238,7 @@ DEPENDENCIES
   meta_where
   mini_magick
   mysql2
+  newrelic_rpm
   pickle
   pony
   rails (= 3.0.3)
