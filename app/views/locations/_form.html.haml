@@ -1,6 +1,15 @@
 %a{:id => 'other_search_options_link', :href => '#other_search_options', :rel => 'facebox[.search_option_selector]'} Other search options
 %div{:id => 'other_search_options', :style => 'display:none;'}
 
+%div{:id => 'by_type', :class => 'section', :style => 'display:none;'}
+  = search_banner('by_type', 'LOOKUP BY TYPE')
+  = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do
+    %span.info To search locations by type, please select a type from the drop down
+    %br.clear
+    = select_tag :by_type, options_for_select([['All', '']]) + options_from_collection_for_select(LocationType.all.sort{|a,b| a.name <=> b.name}, 'id', 'name', params[:by_type])
+    %br.clear
+    = submit_tag 'Search', :class => 'search', :id => 'type_search_button'
+
 %div{:id => 'by_city', :class => 'section', :style => 'display:none;'}
   = search_banner('by_city', 'LOOKUP BY CITY')
   = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do
