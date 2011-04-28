@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110428031156) do
+ActiveRecord::Schema.define(:version => 20110428054244) do
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"
@@ -63,6 +63,12 @@ ActiveRecord::Schema.define(:version => 20110428031156) do
     t.integer  "user_id"
   end
 
+  create_table "location_types", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+  end
+
   create_table "locations", :force => true do |t|
     t.string   "name"
     t.string   "street"
@@ -77,6 +83,7 @@ ActiveRecord::Schema.define(:version => 20110428031156) do
     t.datetime "updated_at"
     t.integer  "zone_id"
     t.integer  "region_id"
+    t.integer  "location_type_id"
   end
 
   create_table "machine_score_xrefs", :force => true do |t|

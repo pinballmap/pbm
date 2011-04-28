@@ -1,5 +1,6 @@
 class Location < ActiveRecord::Base
   validates_presence_of :name, :street, :city, :state, :zip
+  belongs_to :location_type
   belongs_to :zone
   belongs_to :region
   has_many :events

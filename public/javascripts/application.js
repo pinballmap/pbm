@@ -1,7 +1,7 @@
 var map;
 var markers = new Array();
 var infoWindows = new Array();
-var searchSections = new Array('city', 'location', 'machine', 'zone');
+var searchSections = new Array('city', 'location', 'machine', 'type', 'zone');
 
 function toggleArrows(name, id) {
   var open = '_open_arrow' + (id ? '_' + id : '');
