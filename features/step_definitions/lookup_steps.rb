@@ -46,3 +46,10 @@ Then /^I should see a summary for "([^"]*)" and "([^"]*)"$/ do |location_text, m
     page.find("div#map_summaries").should have_content(machine_text)
   end
 end
+
+Then /^a location machine xref should exist with the machine name "([^"]*)" and the initials "([^"]*)"$/ do |machine_name, initials|
+  m = Machine.find_by_name(machine_name)
+  lmx = LocationMachineXref.find_by_machine_id(m.id)
+
+  lmx.user.should == User.find_by_initials(initials)
+end

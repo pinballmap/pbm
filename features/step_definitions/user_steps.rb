@@ -1,5 +1,6 @@
 Given /^I am a logged in user$/ do
-  u = Factory.create :user
+  r = Region.find_by_name('portland')
+  u = Factory.create :user, :region => r
 
   visit '/users/sign_in'
   fill_in('Email', :with => u.email)

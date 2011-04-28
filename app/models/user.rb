@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   belongs_to :region
+  has_many :location_machine_xrefs
   has_many :machine_score_xrefs
   has_many :location_picture_xrefs
 
