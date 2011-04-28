@@ -6,7 +6,7 @@ Factory.define :location do |l|
   l.zip '97211'
   l.lat 45.5589
   l.lon -122.645
-  l.association :region, :name => 'portland', :factory => :region
+  l.association :region, :name => 'portland'
 end
 
 Factory.define :machine do |m|
@@ -39,7 +39,7 @@ Factory.define :user do |u|
   u.initials 'cap'
   u.sequence(:email) {|n| "captainamerica#{n}@foo.bar"}
   u.password 'password'
-  u.association :region
+  u.association :region, :name => 'portland'
 end
 
 Factory.define :location_picture_xref do |lpx|

@@ -24,7 +24,7 @@ class Location < ActiveRecord::Base
   }
 
   def machine_names
-    self.machines.collect! { |m| m.name }.sort
+    self.machines.collect { |m| m.name }.sort
   end
 
   def content_for_infowindow
