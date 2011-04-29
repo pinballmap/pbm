@@ -18,6 +18,8 @@
             %div.sub_nav_item[l, :show_location_detail]{:onmouseover => "$(this).addClass('location_summary_image_mouseover');", :onmouseout => "$(this).removeClass('location_summary_image_mouseover');", :onclick => "showLocationDetail(#{l.id});"}
               %ul
                 %li= l.name
+                - if (l.location_type)
+                  %li= " (#{l.location_type.name})"
                 .clear
                 %li
                   %span[l, :location_summary] #{[l.street, l.city].join(' | ')}<br class="clear" />#{[l.machine_names].join(' | ')}
@@ -26,6 +28,8 @@
               %div.location_name{:onclick => "$('#location_detail_location_#{l.id}').toggle(); toggleData('show_location_detail_location', #{l.id}); toggleArrows('location_detail', #{l.id});"}
                 %ul
                   %li= l.name
+                  - if (l.location_type)
+                    %li= " (#{l.location_type.name})"
                   .clear
                   %li= l.street
                   .clear

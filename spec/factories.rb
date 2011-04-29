@@ -7,6 +7,7 @@ Factory.define :location do |l|
   l.lat 45.5589
   l.lon -122.645
   l.association :region, :name => 'portland'
+  l.association :location_type
 end
 
 Factory.define :machine do |m|
