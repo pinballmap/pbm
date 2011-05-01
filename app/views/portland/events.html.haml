@@ -1,0 +1,31 @@
+- content_for :events_extra do
+  .text_col
+    %p
+      %span Let's join together for some pinball activities!
+    %p
+      %span Most weeks there are weekly tournaments run in Portland. Check here for the latest updates. And use the 
+      = link_to 'CFF message board', 'http://crazyflipperfingers.com/talk'
+      %span to discuss the matters at hand.
+    %p
+      %span Details for most weeklies:
+    %ul
+      %li Starts at 7pm
+      %li $5 entry
+      %li 1 on 1, single game match, double elimination
+    %p
+      %span These tournaments, while casual and fun, are 
+      = link_to 'internationally ranked', 'http://www.pinballrankings.com/'
+      %span ! So, not only can you win money from them (every dime of the entry fees go back to the winners), but you can also get points. Points are rad, by the way.
+    %p
+      %span.yellow Elsewise
+      %span , there are occasionally other interesting tournaments in town. We'll list those here, too.
+    %p
+      %span.yellow Plus what's more!
+      %span There are plenty of non-tournament events going on. One notable one is the monthly ladies league. If you are a lady, and you like pinball, this event is an opportunity to meet up and make friends and stuff! 
+      %span.yellow UPDATE! Ladies League is on indefinite hiatus! Maybe because not enough ladies?
+      %p.pink If you have a pinball event that you'd like included on this page, use the contact form on the 
+      = link_to 'contact page', 'contact', :class => 'tourney_links'
+      %span to give us the info.
+      %p
+        %span We'll probably eventually make this page rss'able, or something.
+= render :file => 'events/index'
