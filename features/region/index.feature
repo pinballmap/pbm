@@ -108,3 +108,16 @@ Feature: Region main page
     Then I should see the listing for "Cleo"
     And I should not see the listing for "Zelda"
     And I should not see the listing for "Bawb"
+
+  @javascript
+  Scenario: Displays location type if available
+    Given there is a region with the name "Portland" and the id "1"
+    And there is a location type with the name "bar"
+    And the following locations exist:
+      |name|location_type|region_id|
+      |Cleo|name: bar|1|
+      |Sass||1|
+    And I am on "Portland"'s home page
+    And I press the "location" search button
+    Then I should see "Cleo (bar)"
+    And I should see "Sass"

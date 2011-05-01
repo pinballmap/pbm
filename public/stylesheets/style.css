@@ -251,7 +251,7 @@ body {
 #header li ul {
   display: none;
   position: absolute;
-  top: 2em;
+  top: 14px;
   right: 0;
   list-style: none;
   width:100px;
@@ -428,4 +428,27 @@ a.light_blue:active {background: #000000;}
 
 .photo_caption {
   font-style: italic;
+}
+
+.blue_header {
+  color: #A9BEFF;
+  font-size: 14px;
+}
+
+.tourney_info {
+  font-size: 14px;
+  list-style-position: inside;
+  margin-left: 10px;
+  color: #FFC;
+}
+
+.tourney_description {
+  font-size: 12px;
+  font-weight: normal;
+  color: white;
+}
+
+.tourney_link {
+  color: #FFC;
+  background: black;
 }
