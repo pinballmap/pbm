@@ -452,3 +452,8 @@ a.light_blue:active {background: #000000;}
   color: #FFC;
   background: black;
 }
+
+#findapinball {
+  text-align: center;
+  font-size: 16px;
+}
