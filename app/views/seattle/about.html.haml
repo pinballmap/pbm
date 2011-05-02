@@ -1,0 +1,14 @@
+.text_col
+  %p
+    %span Hi. This site lists all the pinball machines in the
+    %span.yellow Seattle, WA.
+    %span This data on it is kept up to date by YOU (and you and you, too). So please use the features on the site to add/remove machines from locations, and to add new locations to the map. You can also add photos of the locations, so that people can get a better idea of what the place is like.
+  %p
+    %span This site was developed by Scott and Ryan from the 
+    = link_to 'Portland Pinball Map.', 'http://portlandpinballmap.com'
+    %span If you live in a region with pinball and have some hot data to back it up, and would like to have your region covered with a map site like this, please 
+    = link_to 'contact us', 'http://portlandpinballmap.com/contact'
+  %p
+    = link_to image_tag('twitter-icon.png') + 'Follow the updates to this map on Twitter.', 'http://twitter.com/seattlepinball', :class => 'light_blue'
+.right_column
+  = image_tag 'seattle/seattle-shorty.jpg'

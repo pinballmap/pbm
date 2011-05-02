@@ -2,7 +2,7 @@ class RegionsController < InheritedResources::Base
   respond_to :xml, :json, :only => [:index, :show]
 
   def index
-    respond_with(@regions = Region.all)
+    respond_with(@regions = Region.all, :methods => [:subdir, :emailContact])
   end
 
   def show

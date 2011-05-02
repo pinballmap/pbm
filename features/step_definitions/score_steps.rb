@@ -33,6 +33,6 @@ Then /^I should see the show scores option for "([^"]*)"'s "([^"]*)"$/ do |locat
   lmx = LocationMachineXref.where('machine_id = ? and location_id = ?', Machine.find_by_name(machine_name).id, Location.find_by_name(location_name).id).first
 
   within("div#machine_lmx_#{lmx.id}") do
-    page.should have_content("Show Scores At This Location")
+    page.should have_content('SHOW HIGH SCORES')
   end
 end

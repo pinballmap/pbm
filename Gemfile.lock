@@ -47,6 +47,12 @@ GEM
     builder (2.1.2)
     bullet (2.0.1)
       uniform_notifier (~> 1.0.0)
+    capistrano (2.5.21)
+      highline
+      net-scp (>= 1.0.0)
+      net-sftp (>= 2.0.0)
+      net-ssh (>= 2.0.14)
+      net-ssh-gateway (>= 1.0.0)
     capybara (0.4.1.1)
       celerity (>= 0.7.9)
       culerity (>= 0.2.4)
@@ -103,6 +109,7 @@ GEM
       haml (~> 3.0)
       railties (~> 3.0)
     has_scope (0.5.0)
+    highline (1.6.1)
     i18n (0.5.0)
     inherited_resources (1.1.2)
       has_scope (~> 0.5.0)
@@ -132,6 +139,14 @@ GEM
     mini_magick (3.2)
       subexec (~> 0.0.4)
     mysql2 (0.2.7)
+    net-scp (1.0.4)
+      net-ssh (>= 1.99.1)
+    net-sftp (2.0.5)
+      net-ssh (>= 2.0.9)
+    net-ssh (2.1.4)
+    net-ssh-gateway (1.1.0)
+      net-ssh (>= 1.99.1)
+    newrelic_rpm (2.14.1)
     nokogiri (1.4.4)
     pickle (0.4.4)
       cucumber (>= 0.8)
@@ -215,6 +230,7 @@ DEPENDENCIES
   autotest-growl
   autotest-rails
   bullet
+  capistrano
   capybara
   carrierwave
   cucumber
@@ -237,6 +253,7 @@ DEPENDENCIES
   meta_where
   mini_magick
   mysql2
+  newrelic_rpm
   pickle
   pony
   rails (= 3.0.3)

@@ -11,6 +11,6 @@ Given /^I update the machine condition for "([^"]*)"'s "([^"]*)" to be "([^"]*)"
     Location.find_by_name(location_name).id
   ).first
 
-  page.find("div#machine_condition_display_lmx_#{lmx.id}").click
+  page.find("div#machine_condition_display_lmx_#{lmx.id}.machine_condition_display_lmx").click
   fill_in("new_machine_condition_#{lmx.id}", :with => condition)
 end

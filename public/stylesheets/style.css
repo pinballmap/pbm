@@ -150,6 +150,7 @@ br.clear {
 .search_result {
   height: 100%;
   width: 240px;
+  padding-bottom: 50px;
 }
 
 #welcome {
@@ -223,7 +224,8 @@ br.clear {
 }
 
 .info {
-  padding: 10px 0px;
+  display: block;
+  padding-top: 10px;
   font-style: italic;
   color: #999;
 }
@@ -378,7 +380,7 @@ input.ui-autocomplete-input, input#add_machine_by_name, input#location_picture_x
 #header li ul {
   display: none;
   position: absolute;
-  top: 1em;
+  top: 14px;
   right: 0;
   list-style: none;
   width:100px;
@@ -388,15 +390,15 @@ input.ui-autocomplete-input, input#add_machine_by_name, input#location_picture_x
   z-index:100;
 }
 
-.subpage-text {
+.subpage_text {
   font-size:14px;
   letter-spacing: .3px;
 }
 
-a.light-blue:link {color: #A9BEFF; background: #000000;}
-a.light-blue:visited {color: #A9BEFF;}
-a.light-blue:hover {background: #000000; color: #ffffcc;}
-a.light-blue:active {background: #000000;}
+a.light_blue:link {color: #A9BEFF; background: #000000;}
+a.light_blue:visited {color: #A9BEFF;}
+a.light_blue:hover {background: #000000; color: #ffffcc;}
+a.light_blue:active {background: #000000;}
 
 .pink {
   color:#ffcc00;
@@ -441,7 +443,7 @@ a.light-blue:active {background: #000000;}
   padding: 3px 3px 3px 3px;
 }
 
-.weekly-text {
+.weekly_text {
   font-size: 14px;
   list-style-position: inside;
   font-weight: normal;
@@ -486,4 +488,101 @@ a.light-blue:active {background: #000000;}
 
 .edit_mode {
   background-color: #A9BEFF;
+}
+
+.delete_button {
+  border: 1px solid #494949;
+  background-color: black;
+  color: #494949;
+  cursor: pointer;
+  padding: 0 1px;
+  margin-left: 5px;
+}
+
+.machine_name {
+  font-size: 12px;
+  font-weight: bold;
+  float: left;
+}
+
+.lookup_search_input {
+  width: 275px;
+}
+
+.lookup_search_select {
+  width: 280px;
+}
+
+#file_chooser_button {
+  padding-left: 10px;
+  width: 90px;
+}
+
+.machine_lmx {
+  padding-bottom: 30px;
+}
+
+.location_detail {
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: normal;
+  height: 100%;
+  width: 240px;
+  padding: 3px 10px 3px 0;
+}
+
+.machine_condition_display_lmx {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.text_col {
+  width: 400px;
+  float: left;
+  padding: 1em;
+}
+
+.photo_image {
+  border-color: white;
+  border-width: 6px;
+  border-style: solid;
+}
+
+.right_column {
+  width: 300px;
+  margin-left: 650px;
+  margin-top: 20px;
+  padding: 1em;
+}
+
+.photo_caption {
+  font-style: italic;
+}
+
+.blue_header {
+  color: #A9BEFF;
+  font-size: 14px;
+}
+
+.tourney_info {
+  font-size: 14px;
+  list-style-position: inside;
+  margin-left: 10px;
+  color: #FFC;
+}
+
+.tourney_description {
+  font-size: 12px;
+  font-weight: normal;
+  color: white;
+}
+
+.tourney_link {
+  color: #FFC;
+  background: black;
+}
+
+#findapinball {
+  text-align: center;
+  font-size: 16px;
 }

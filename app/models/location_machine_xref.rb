@@ -2,6 +2,7 @@ class LocationMachineXref < ActiveRecord::Base
   belongs_to :location
   belongs_to :machine
   belongs_to :operator
+  belongs_to :user
   has_many :machine_score_xrefs
 
   scope :region, lambda {|name| 

@@ -1,9 +1,9 @@
 %div[lmx, :machine_condition_display]
-  %span[lmx, :machine_condition]= lmx.condition ? lmx.condition : 'No Description'
+  %span[lmx, :machine_condition]= (lmx.condition.to_s == '') ? 'Click to enter machine description' : lmx.condition
 %div[lmx, :machine_condition_edit]{:style => 'display:none'}
   = form_tag update_machine_condition_location_machine_xrefs_path(:action => 'update_machine_condition', :id => lmx.id, :region => @region.name), :id => "update_machine_condition_#{lmx.id}", :method => 'get', :remote => true do
     = hidden_field_tag :id, lmx.id
-    = text_area_tag "new_machine_condition_#{lmx.id}", lmx.condition ? lmx.condition : 'No Condition', :cols => 20, :rows => 3, :class => 'edit_mode'
+    = text_area_tag "new_machine_condition_#{lmx.id}", (lmx.condition.to_s == '') ? 'No Description' : lmx.condition, :cols => 20, :rows => 3, :class => 'edit_mode'
     %br/
     = submit_tag 'Save'
   = submit_tag 'Cancel', :id => "cancel_machine_condition_#{lmx.id}"

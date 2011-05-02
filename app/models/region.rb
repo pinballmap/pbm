@@ -4,7 +4,17 @@ class Region < ActiveRecord::Base
   has_many :users
   has_many :events
   has_many :operators
+  has_many :region_link_xrefs
   has_many :location_machine_xrefs, :through => :locations
+
+  def machines
+    machines = Array.new
+    self.location_machine_xrefs.sort{|a,b| a.machine.name <=> b.machine.name}.each do |lmx|
+      machines << lmx.machine
+    end
+
+    machines.uniq
+  end
 
   def machine_score_xrefs
     machine_score_xrefs = Array.new
@@ -34,5 +44,9 @@ class Region < ActiveRecord::Base
     end
 
     @high_rollers
+  end
+
+  def primary_email_contact
+    self.users.empty? ? 'email_not_found@noemailfound.noemail' : self.users[0].email
   end
 end

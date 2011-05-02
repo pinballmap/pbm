@@ -5,9 +5,7 @@ if (Region.table_exists? && Region.all.size > 0)
 end
 
 Pbm::Application.routes.draw do
-  scope ':region', :constraints => { :region => /#{regions}/i } do
-    devise_for :users
-
+  scope ':region', :constraints => { :region => /#{regions}|!admin/i } do
     resources :pages
     resources :events
     resources :regions
@@ -21,6 +19,12 @@ Pbm::Application.routes.draw do
       end
     end
 
+    match 'locations/:id/locations_for_machine' => 'locations#locations_for_machine'
+
+    match 'location_machine_xrefs/:id/create_confirmation' => 'location_machine_xrefs#create_confirmation'
+    match 'location_machine_xrefs/:id/remove_confirmation' => 'location_machine_xrefs#remove_confirmation'
+    match 'location_machine_xrefs/:id/condition_update_confirmation' => 'location_machine_xrefs#condition_update_confirmation'
+
     match '/' => "pages#region", :as => 'region_homepage'
     match '/about' => 'pages#about'
     match '/apps' => 'pages#apps'
@@ -31,6 +35,9 @@ Pbm::Application.routes.draw do
     match '/high_rollers' => 'pages#high_rollers'
     match '/suggest_new_location' => 'pages#suggest_new_location'
     match '/submitted_new_location' => 'pages#submitted_new_location'
+
+    match ':region' + '.rss' => 'location_machine_xrefs#index', :format => 'xml'
+    match ':region' + '_scores.rss' => 'machine_score_xrefs#index', :format => 'xml'
 
     match 'locations/:id/render_scores'   => 'locations#render_scores'
     match 'locations/:id/render_machines' => 'locations#render_machines'
@@ -45,6 +52,9 @@ Pbm::Application.routes.draw do
     end
   end
 
+  devise_for :users
+
+  match '*page', :to => 'locations#unknown_route'
   get 'pages/home'
   root :to => 'pages#home'
 end

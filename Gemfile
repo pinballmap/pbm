@@ -8,7 +8,7 @@ gem 'devise'
 gem 'inherited_resources'
 gem 'simple_form'
 gem 'has_scope'
-gem "will_paginate"
+gem 'will_paginate'
 gem 'escape_utils'
 gem 'meta_where'
 gem 'jquery-rails'
@@ -20,7 +20,9 @@ gem 'carrierwave'
 gem 'mini_magick'
 gem 'remotipart'
 gem 'pony'
-gem "recaptcha", :require => "recaptcha/rails"
+gem 'recaptcha', :require => 'recaptcha/rails'
+gem 'newrelic_rpm'
+gem 'capistrano'
 
 group :development, :test do
   gem 'capybara'

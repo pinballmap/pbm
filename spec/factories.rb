@@ -6,7 +6,8 @@ Factory.define :location do |l|
   l.zip '97211'
   l.lat 45.5589
   l.lon -122.645
-  l.association :region, :name => 'portland', :factory => :region
+  l.association :region, :name => 'portland'
+  l.association :location_type
 end
 
 Factory.define :machine do |m|
@@ -16,6 +17,10 @@ end
 Factory.define :location_machine_xref do |lmx|
   lmx.association :location
   lmx.association :machine
+end
+
+Factory.define :location_type do |lt|
+  lt.name 'Test Location Type'
 end
 
 Factory.define :zone do |z|
@@ -39,10 +44,19 @@ Factory.define :user do |u|
   u.initials 'cap'
   u.sequence(:email) {|n| "captainamerica#{n}@foo.bar"}
   u.password 'password'
+  u.association :region, :name => 'portland'
 end
 
 Factory.define :location_picture_xref do |lpx|
   lpx.association :location
   lpx.association :user
   lpx.photo File.open(File.join(Rails.root, '/public/images/favicon.ico'))
+end
+
+Factory.define :region_link_xref do |rlx|
+  rlx.name 'Test Link Name'
+  rlx.description 'This is a test link'
+  rlx.url 'http://www.foo.com'
+  rlx.category 'Test Category'
+  rlx.association :region
 end

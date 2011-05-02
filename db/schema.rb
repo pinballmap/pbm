@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110416205031) do
+ActiveRecord::Schema.define(:version => 20110429005401) do
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20110416205031) do
     t.integer  "location_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "category"
   end
 
   create_table "histories", :force => true do |t|
@@ -47,6 +48,7 @@ ActiveRecord::Schema.define(:version => 20110416205031) do
     t.date     "condition_date"
     t.integer  "operator_id"
     t.string   "ip"
+    t.integer  "user_id"
   end
 
   add_index "location_machine_xrefs", ["location_id"], :name => "index_location_machine_xrefs_on_location_id"
@@ -60,6 +62,12 @@ ActiveRecord::Schema.define(:version => 20110416205031) do
     t.text     "description"
     t.boolean  "approved"
     t.integer  "user_id"
+  end
+
+  create_table "location_types", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
   end
 
   create_table "locations", :force => true do |t|
@@ -76,6 +84,7 @@ ActiveRecord::Schema.define(:version => 20110416205031) do
     t.datetime "updated_at"
     t.integer  "zone_id"
     t.integer  "region_id"
+    t.integer  "location_type_id"
   end
 
   create_table "machine_score_xrefs", :force => true do |t|
@@ -105,6 +114,15 @@ ActiveRecord::Schema.define(:version => 20110416205031) do
     t.string   "phone"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "region_link_xrefs", :force => true do |t|
+    t.string  "name"
+    t.string  "url"
+    t.string  "description"
+    t.string  "category"
+    t.integer "region_id"
+    t.integer "sort_order"
   end
 
   create_table "regions", :force => true do |t|

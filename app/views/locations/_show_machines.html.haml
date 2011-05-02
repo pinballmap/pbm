@@ -1,5 +1,6 @@
-= banner('show_machines_location', 'Show Machines At This Location', location)
+= banner('show_machines_location', 'SHOW MACHINES AT THIS LOCATION', location)
 %div[location, :show_machines]{:style => 'display:none'}
   %span.info You can edit a machine's condition (click the comment text), view high scores, add a new high score, or delete a machine if that machine is no longer available at the selected location.
+  %br/
   %br/
   = render :partial => 'locations/render_machines', :locals => {:location_machine_xrefs => location.location_machine_xrefs}
