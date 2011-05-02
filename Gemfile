@@ -22,6 +22,7 @@ gem 'remotipart'
 gem 'pony'
 gem 'recaptcha', :require => 'recaptcha/rails'
 gem 'newrelic_rpm'
+gem 'capistrano'
 
 group :development, :test do
   gem 'capybara'
