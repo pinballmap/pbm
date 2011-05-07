@@ -19,8 +19,7 @@ Feature: update condition for location's machine
     And I update the machine condition for "Test Location Name"'s "Test Machine Name" to be "New Condition"
     And I press "Save"
     Then "Test Location Name"'s "Test Machine Name" should have the condition "New Condition"
-    Given I press the "location" search button
-    Then I should see "Updated: 08-Apr-2010"
+    And I should see "Updated: 08-Apr-2010"
 
   @javascript
   Scenario: Cancel condition editing

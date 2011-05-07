@@ -34,6 +34,10 @@ class LocationMachineXrefsController < InheritedResources::Base
     lmx.save
   end
 
+  def render_machine_condition
+    render :partial => 'location_machine_xrefs/update_machine_condition', :locals => {:lmx => LocationMachineXref.find(params[:id])}
+  end
+
   def index
     @lmxs = apply_scopes(LocationMachineXref).includes(:location, :machine, :machine_score_xrefs)
     @lmxs.sort! {|a,b| b.id <=> a.id}
