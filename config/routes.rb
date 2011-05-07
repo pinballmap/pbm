@@ -20,13 +20,14 @@ Pbm::Application.routes.draw do
 
     resources :locations do
       collection do
-        get :update_location_desc
+        get :update_desc
       end
     end
 
     match 'locations/:id/locations_for_machine' => 'locations#locations_for_machine'
     match 'locations/:id/render_scores'   => 'locations#render_scores'
     match 'locations/:id/render_machines' => 'locations#render_machines'
+    match 'locations/:id/render_desc' => 'locations#render_desc'
 
     match 'location_machine_xrefs/:id/create_confirmation' => 'location_machine_xrefs#create_confirmation'
     match 'location_machine_xrefs/:id/remove_confirmation' => 'location_machine_xrefs#remove_confirmation'

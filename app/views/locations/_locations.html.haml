@@ -25,7 +25,7 @@
                   %span[l, :location_summary] #{[l.street, l.city].join(' | ')}<br class="clear" />#{[l.machine_names].join(' | ')}
             .clear
             %div.location_detail[l, :location_detail]{:style => 'display:none'}
-              %div.location_name{:onclick => "$('#location_detail_location_#{l.id}').toggle(); toggleData('show_location_detail_location', #{l.id}); toggleArrows('location_detail', #{l.id});"}
+              %div.location_name{:onclick => "toggleArrows('location_detail', #{l.id});"}
                 %ul
                   %li= l.name
                   - if (l.location_type)
@@ -35,15 +35,19 @@
                   .clear
                   %li= [l.city, l.zip, l.state].join(', ')
                   .clear
+                  %div[l, :desc]
+                    = render :partial => 'locations/render_desc', :locals => {:l => l}
+                  .clear
                   %li= link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :class =>'location_link', :id => l.id
               = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
               = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
               = render :partial => 'location_machine_xrefs/add_machine', :locals => {:location => l}
               = render :partial => 'locations/show_machines', :locals => {:location => l}
-    :javascript
-      $(function () {
-        $('.scroll_pane').jScrollPane({showArrows: true, autoReinitialise: true});
-      });
+
+              :javascript
+                $(function () {
+                  $('.scroll_pane').jScrollPane({showArrows: true, autoReinitialise: true});
+                });
 
     - if (@locations.size == 1)
       :javascript

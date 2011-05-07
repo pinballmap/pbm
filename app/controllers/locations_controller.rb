@@ -25,6 +25,18 @@ class LocationsController < InheritedResources::Base
     render :partial => 'locations/render_scores', :locals => {:lmx => LocationMachineXref.find(params[:id])}
   end
 
+  def render_desc
+    render :partial => 'locations/render_desc', :locals => {:l => Location.find(params[:id])}
+  end
+
+  def update_desc
+    id = params[:id]
+
+    l = Location.find(id)
+    l.desc = params["new_desc_#{id}".to_sym]
+    l.save
+  end
+
   def unknown_route
     region = params[:region] || 'portland'
     if (params[:page] == 'iphone.html')

@@ -17,6 +17,7 @@ end
 
 Given /^I update the location condition for "([^"]*)" to be "([^"]*)"$/ do |name, desc|
   l = Location.find_by_name(name)
-  page.find("span#location_desc_location_#{l.id}.location_desc_location").click
-  fill_in("new_location_desc_#{l.id}", :with => desc)
+
+  page.find("div#desc_show_location_#{l.id}.desc_show_location").click
+  fill_in("new_desc_#{l.id}", :with => desc)
 end
