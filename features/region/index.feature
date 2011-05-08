@@ -121,3 +121,13 @@ Feature: Region main page
     And I press the "location" search button
     Then I should see "Cleo (bar)"
     And I should see "Sass"
+
+  @javascript
+  Scenario: Location description displays appropriate values
+    Given there is a location machine xref
+    And I am on "Portland"'s home page
+    And I press the "location" search button
+    Then I should see "Click to enter description"
+    Given I update the location condition for "Test Location Name" to be "New Condition"
+    And I press "Save"
+    Then I should see "New Condition"

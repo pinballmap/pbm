@@ -1,0 +1,21 @@
+%div[l, :desc_show]
+  %span= (l.desc.to_s == '') ? 'Click to enter description' : l.desc
+%div[l, :desc_edit]{:style => 'display:none'}
+  = form_tag update_desc_locations_path(:action => 'update_desc', :id => l.id, :region => @region.name), :id => "update_desc_#{l.id}", :method => 'get', :remote => true do
+    = hidden_field_tag :id, l.id
+    = text_area_tag "new_desc_#{l.id}", (l.desc.to_s == '') ? 'No Description' : l.desc, :cols => 20, :rows => 3, :class => 'edit_mode'
+    %br/
+    = submit_tag 'Save'
+  = submit_tag 'Cancel', :id => "desc_cancel_#{l.id}"
+
+:javascript
+  $('#update_desc_#{l.id}').submit(function () {
+    $('#desc_location_#{l.id}').html(loadingHTML());
+    $.get(this.action, $(this).serialize(), null, 'script');
+    $('#desc_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_desc');
+  });
+
+  $('#desc_cancel_#{l.id}, #desc_show_location_#{l.id}').click(function () {
+    $('#desc_show_location_#{l.id}').toggle();
+    $('#desc_edit_location_#{l.id}').toggle();
+  });
