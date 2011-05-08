@@ -9,7 +9,7 @@
     = hidden_field_tag :id, lmx.id
     = text_area_tag "new_machine_condition_#{lmx.id}", (lmx.condition.to_s == '') ? 'No Description' : lmx.condition, :cols => 20, :rows => 3, :class => 'edit_mode'
     %br/
-    = submit_tag 'Save'
+    = submit_tag 'Save', :id => "save_machine_condition_#{lmx.id}"
   = submit_tag 'Cancel', :id => "cancel_machine_condition_#{lmx.id}"
 
 :javascript
