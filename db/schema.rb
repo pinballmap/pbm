@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110505231652) do
+ActiveRecord::Schema.define(:version => 20110509032221) do
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(:version => 20110505231652) do
     t.integer  "operator_id"
     t.string   "ip"
     t.integer  "user_id"
+    t.integer  "machine_score_xrefs_count", :default => 0
   end
 
   add_index "location_machine_xrefs", ["location_id"], :name => "index_location_machine_xrefs_on_location_id"

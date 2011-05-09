@@ -33,7 +33,7 @@ class Location < ActiveRecord::Base
     content += [self.name.gsub("'", "\\\\'"), self.street, [self.city, self.state, self.zip].join(', '), self.phone].join('<br />')
     content += '<br /><hr /><br />'
 
-    machines = self.machines.order('name').map {|m| m.name.gsub("'", "\\\\'") + '<br />'}
+    machines = self.machines.sort_by { |m| m.name }.map {|m| m.name.gsub("'", "\\\\'") + '<br />'}
 
     content += machines.join
     content += "</div>'"
