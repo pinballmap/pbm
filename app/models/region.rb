@@ -9,7 +9,7 @@ class Region < ActiveRecord::Base
 
   def machines
     machines = Array.new
-    self.location_machine_xrefs.sort{|a,b| a.machine.name <=> b.machine.name}.each do |lmx|
+    self.location_machine_xrefs.includes(:machine).sort{|a,b| a.machine.name <=> b.machine.name}.each do |lmx|
       machines << lmx.machine
     end
 
