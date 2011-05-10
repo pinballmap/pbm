@@ -101,7 +101,10 @@ function showLocationDetail(locationID) {
   toggleArrows('location_detail', locationID);
 }
 
-function singleLocationLoad(locationID) {
+function singleLocationLoad(region, locationID) {
   showLocationDetail(locationID);
   toggleData('show_machines_location', locationID);
+
+  $('#show_machines_location_' + locationID).html(loadingHTML());
+  $('#show_machines_location_' + locationID).load('/' + region + '/locations/' + locationID + '/render_machines');
 }
