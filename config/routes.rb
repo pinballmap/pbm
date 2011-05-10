@@ -27,13 +27,14 @@ Pbm::Application.routes.draw do
     match 'locations/:id/locations_for_machine' => 'locations#locations_for_machine'
     match 'locations/:id/render_scores'   => 'locations#render_scores'
     match 'locations/:id/render_machines' => 'locations#render_machines'
+    match 'locations/:id/render_add_machine' => 'locations#render_add_machine'
     match 'locations/:id/render_desc' => 'locations#render_desc'
 
     match 'location_machine_xrefs/:id/create_confirmation' => 'location_machine_xrefs#create_confirmation'
     match 'location_machine_xrefs/:id/remove_confirmation' => 'location_machine_xrefs#remove_confirmation'
     match 'location_machine_xrefs/:id/render_machine_condition' => 'location_machine_xrefs#render_machine_condition'
     match 'location_machine_xrefs/:id/condition_update_confirmation' => 'location_machine_xrefs#condition_update_confirmation'
-    
+
     match ':region' + '.rss' => 'location_machine_xrefs#index', :format => 'xml'
     match ':region' + '_scores.rss' => 'machine_score_xrefs#index', :format => 'xml'
 
