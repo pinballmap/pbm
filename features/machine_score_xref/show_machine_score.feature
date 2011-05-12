@@ -18,6 +18,6 @@ Feature: show high scores for a machine
     And I press the "location" search button
     Then I should not see the show scores option for "Test Location Name"'s "Test Machine Name"
     Given I click on the add scores link for "Test Location Name"
-    And I fill in a score of "1234" and rank "GC"
+    And I fill in a score of "1234" and rank "GC" and initials "cap"
     And I press "add_score"
     Then I should see the show scores option for "Test Location Name"'s "Test Machine Name"
