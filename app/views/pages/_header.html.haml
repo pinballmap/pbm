@@ -20,13 +20,6 @@
         =image_tag 'feed-icon-14x14.png'
         =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss"
       %li=link_to 'High Rollers', high_rollers_path
-      .clear
-      - if user_signed_in?
-        %li="Signed in as #{current_user.email}"
-        %li=link_to 'Log out', destroy_user_session_path
-      - else
-        %li=link_to 'Sign up', new_user_registration_path
-        %li=link_to 'Log in', new_user_session_path
 
 :javascript
   $().ready(function() {

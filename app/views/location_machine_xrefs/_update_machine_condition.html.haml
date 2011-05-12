@@ -1,27 +1,25 @@
-%div[lmx, :machine_condition_display]
-  %span[lmx, :machine_condition]= (lmx.condition.to_s == '') ? 'Click to enter machine description' : lmx.condition
+%div[lmx, :machine_condition]
+  %span= (lmx.condition.to_s == '') ? 'Click to enter machine description' : lmx.condition
+  - if (!lmx.condition_date.nil?)
+    %br/
+    %br/
+    %span= 'Updated: ' + lmx.condition_date.strftime("%d-%b-%Y")
 %div[lmx, :machine_condition_edit]{:style => 'display:none'}
   = form_tag update_machine_condition_location_machine_xrefs_path(:action => 'update_machine_condition', :id => lmx.id, :region => @region.name), :id => "update_machine_condition_#{lmx.id}", :method => 'get', :remote => true do
     = hidden_field_tag :id, lmx.id
     = text_area_tag "new_machine_condition_#{lmx.id}", (lmx.condition.to_s == '') ? 'No Description' : lmx.condition, :cols => 20, :rows => 3, :class => 'edit_mode'
     %br/
-    = submit_tag 'Save'
+    = submit_tag 'Save', :id => "save_machine_condition_#{lmx.id}"
   = submit_tag 'Cancel', :id => "cancel_machine_condition_#{lmx.id}"
 
 :javascript
   $('#update_machine_condition_#{lmx.id}').submit(function () {
+    $('#machine_condition_display_#{lmx.id}').html(loadingHTML());
     $.get(this.action, $(this).serialize(), null, 'script');
-    $('#machine_condition_lmx_#{lmx.id}').text($('#new_machine_condition_#{lmx.id}').val());
-    $('#machine_condition_edit_lmx_#{lmx.id}').toggle();
-    $('#machine_condition_display_lmx_#{lmx.id}').toggle();
+    $('#machine_condition_display_lmx_#{lmx.id}').load('/#{params[:region]}/location_machine_xrefs/#{lmx.id}/render_machine_condition');
   });
 
-  $('#cancel_machine_condition_#{lmx.id}').click(function () {
+  $('#cancel_machine_condition_#{lmx.id}, #machine_condition_lmx_#{lmx.id}').click(function () {
     $('#machine_condition_edit_lmx_#{lmx.id}').toggle();
-    $('#machine_condition_display_lmx_#{lmx.id}').toggle();
-  });
-
-  $('#machine_condition_display_lmx_#{lmx.id}').click(function () {
-    $('#machine_condition_edit_lmx_#{lmx.id}').toggle();
-    $('#machine_condition_display_lmx_#{lmx.id}').toggle();
+    $('#machine_condition_lmx_#{lmx.id}').toggle();
   });

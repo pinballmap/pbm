@@ -7,6 +7,7 @@ class MachineScoreXrefsController < InheritedResources::Base
     msx.score = params[:score]
     msx.user = current_user
     msx.rank = params[:rank]
+    msx.initials = params[:initials]
 
     msx.save
     msx.sanitize_scores

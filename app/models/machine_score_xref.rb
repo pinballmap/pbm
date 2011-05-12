@@ -1,6 +1,6 @@
 class MachineScoreXref < ActiveRecord::Base
-  belongs_to :location_machine_xref
   belongs_to :user
+  belongs_to :location_machine_xref, :counter_cache => true
   has_one :location, :through => :location_machine_xref
   has_one :machine, :through => :location_machine_xref
 

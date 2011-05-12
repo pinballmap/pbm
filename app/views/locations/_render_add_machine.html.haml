@@ -1,0 +1,21 @@
+%span.info Select a machine and then click the Add button.
+%br/
+= form_tag location_machine_xrefs_path, :method => 'post', :id => "add_new_machine_#{l.id}", :remote => true do
+  = hidden_field_tag :location_id, l.id
+  = select_tag :add_machine_by_id, options_for_select(['']) + options_from_collection_for_select(Machine.order('name'), 'id', 'name', params[:add_machine_by_id]), :class => 'lookup_search_select'
+  %br/
+  = text_field_tag :add_machine_by_name, params[:add_machine_by_name], :class => 'lookup_search_input'
+  = submit_tag 'Add', :id => 'add'
+
+:javascript
+  $(function () {
+    $('#add_machine_by_name').autocomplete({source: '#{autocomplete_machines_path}'});
+  });
+
+  $('#add_new_machine_#{l.id}').submit(function () {
+    $('#show_machines_location_#{l.id}').html(loadingHTML());
+    $.post(this.action, $(this).serialize(), null, 'script');
+    $('#show_machines_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machines');
+
+    return false;
+  });

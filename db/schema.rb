@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110429005401) do
+ActiveRecord::Schema.define(:version => 20110512032510) do
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(:version => 20110429005401) do
     t.integer  "operator_id"
     t.string   "ip"
     t.integer  "user_id"
+    t.integer  "machine_score_xrefs_count", :default => 0
   end
 
   add_index "location_machine_xrefs", ["location_id"], :name => "index_location_machine_xrefs_on_location_id"
@@ -85,6 +86,7 @@ ActiveRecord::Schema.define(:version => 20110429005401) do
     t.integer  "zone_id"
     t.integer  "region_id"
     t.integer  "location_type_id"
+    t.string   "desc"
   end
 
   create_table "machine_score_xrefs", :force => true do |t|
@@ -95,6 +97,7 @@ ActiveRecord::Schema.define(:version => 20110429005401) do
     t.integer  "rank"
     t.string   "ip"
     t.integer  "user_id"
+    t.string   "initials"
   end
 
   add_index "machine_score_xrefs", ["location_machine_xref_id"], :name => "index_machine_score_xrefs_on_location_machine_xref_id"

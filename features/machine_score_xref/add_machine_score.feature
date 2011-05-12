@@ -18,8 +18,8 @@ Feature: add a high score for a machine
     And I am on "Portland"'s home page
     And I press the "location" search button
     And I click on the add scores link for "Test Location Name"
-    And I fill in a score of "1234" and rank "GC"
+    And I fill in a score of "1234" and rank "GC" and initials "cap"
     And I press "add_score"
     And I wait for 1 seconds
-    Then "Test Location Name"'s "Test Machine Name" should have a score with score "1234" and rank "1"
+    Then "Test Location Name"'s "Test Machine Name" should have a score with score "1234" and rank "1" and initials "cap"
     And I should see "Rank: GC Initials: cap Score 1234 Date 02-05-2011"
