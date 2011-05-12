@@ -1,4 +1,4 @@
-.textcol
+.text_column
   %p.yellow Add a new location to the database. Fill in this form. We'll review it to make sure the data works... so don't expect it to show up just yet. Thanks for helping out!
   %br/
   #location_maker
@@ -33,5 +33,13 @@
           %td= text_field_tag :submitter_email, params[:submitter_email]
         %tr.clear
           %td
-          %td= submit_tag 'Submit Location'
-%p.yellow Remember, only use this form if you are adding a new <i>location</i> to the map. If you want to add/remove a <i>machine</i> to/from a location, just bring up that location on the map and then use the add/remove functions.</p><p class="pink">For example, if you are adding a game to, say, Tanker, you should not be using the form on this page. Instead, you should bring up Tanker on the map, and then use the add/remove functions. Know what I'm saying?
+          %td= submit_tag 'Submit Location', :class => 'submit_button'
+
+  %p.yellow 
+    Remember, only use this form if you are adding a new 
+    %em
+      location
+    to the map. If you want to add/remove a 
+    %em
+      machine
+    to/from a location, just bring up that location on the map and then use the add/remove functions.

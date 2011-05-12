@@ -20,6 +20,22 @@ a {
   border: 0;
 }
 
+li a:hover {
+  text-decoration: underline;
+}
+
+.text_column a:hover, #left_column a:hover {
+  text-decoration: underline;
+}
+
+.text_column_portland {
+  width: 440px;
+  }
+
+a.apps_link {
+  text-decoration: underline;
+}
+
 a:active { outline: none }
 
 body {
@@ -51,7 +67,7 @@ body {
 #lookup {
   float: left;
   width: 375px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .search_result ul {
@@ -72,13 +88,18 @@ body {
   border-bottom: 1px solid #494949;
 }
 
+.portland_region_image {
+  margin-left: 30px;
+  border: 1px solid #FFEEDD;
+}
+
 .name {
   font-size:13px;
   height:12px;
   color:black;
   width:260px;
   background-color:#FFEEDD;
-  padding-top:5px;
+  padding-top:2px;
   margin-bottom:3px;
   border-radius:2px;
   -moz-border-radius:2px;
@@ -86,11 +107,6 @@ body {
 }
 
 .address {
-  font-size: 12px;
-}
-
-.machine_name {
-  color: #FFEEDD;
   font-size: 12px;
 }
 
@@ -121,12 +137,16 @@ body {
   border: 1px solid #494949;
   color: #494949; 
   cursor: pointer;
-  padding: 0 1px;
+  padding: 0 2px 1px 2px; 
 }
 
 .remove_machine_button:hover {
   border: 1px solid #cccccc;
   color: #cccccc;
+}
+
+.pick_a_map {
+  margin-bottom:-20px;
 }
 
 .machine_title {
@@ -150,13 +170,13 @@ br.clear {
 .search_result {
   height: 100%;
   width: 240px;
-  padding-bottom: 50px;
+  padding-bottom: 10px;
 }
 
 #welcome {
   float: left;
   width: 220px;
-  padding-top: 20px;
+  padding-top: 5px;
   padding-right: 30px;
 }
 
@@ -172,7 +192,7 @@ br.clear {
 }
 
 .map_summary_info {
-  float: left;
+  padding-left: 10px;
 }
 
 .infowindow {
@@ -225,12 +245,12 @@ br.clear {
 
 .info {
   display: block;
-  padding-top: 10px;
+  padding-top: 2px;
   font-style: italic;
   color: #999;
 }
 
-.search {
+.search, #add, #location_picture_xref_submit, .submit_button {
   border: 1px solid #494949;
   color: black;
   background-color: #FED;
@@ -244,12 +264,12 @@ br.clear {
   -webkit-border-radius:3px;
 }
 
-input.search:hover {
+input.search:hover, input#add:hover, input#location_picture_xref_submit:hover, input.submit_button:hover {
   background-color:#c55929;
   color:white;
 }
 
-input.ui-autocomplete-input, input#add_machine_by_name, input#location_picture_xref_photo {
+input.ui-autocomplete-input, input#add_machine_by_, input#location_picture_xref_photo, input#file_chooser_button, input#location_name, input#location_street, input#location_city, input#location_state, input#location_zip, textarea#location_machines, input#submitter_name, input#submitter_email {
   background-color:#f8f9e5;
   border:1px solid #c55929;
   border-radius:3px;
@@ -395,9 +415,9 @@ input.ui-autocomplete-input, input#add_machine_by_name, input#location_picture_x
   letter-spacing: .3px;
 }
 
-a.light_blue:link {color: #A9BEFF; background: #000000;}
-a.light_blue:visited {color: #A9BEFF;}
-a.light_blue:hover {background: #000000; color: #ffffcc;}
+a.light_blue:link {color: #cccccc; background: #000000;}
+a.light_blue:visited {color: #cccccc;}
+a.light_blue:hover {background: #000000; color: #ffffff; text-decoration: underline}
 a.light_blue:active {background: #000000;}
 
 .pink {
@@ -411,8 +431,17 @@ a.light_blue:active {background: #000000;}
   font-weight: bold;
 }
 
+.regular_text, .light_blue {
+  font-size:14px;
+}
+
+.intro_image {
+  padding: 4px;
+}
+
 .stufflike {
   font-size: 14px;
+  font-weight:bold;
 }
 
 .yellow {
@@ -426,21 +455,28 @@ a.light_blue:active {background: #000000;}
   font-weight:bold;
 }
 
-#leftcol {
+#leftcol, #left_column, .left_column {
   width:400px;
   float:left;
   padding:1em;
 }
 
-#rightcol {
+#right_column, .right_column {
   float: none;
   width:500px;
-  margin-left:490px;
+  margin-left:450px;
+  padding:1em;
+}
+
+.high_roller_right_column {
+  float:right;
+  width:400px;
+  margin-left:550px;
   padding:1em;
 }
 
 .pic {
-  padding: 3px 3px 3px 3px;
+  padding: 5px;
 }
 
 .weekly_text {
@@ -500,9 +536,14 @@ a.light_blue:active {background: #000000;}
 }
 
 .machine_name {
-  font-size: 12px;
   font-weight: bold;
   float: left;
+  color: #FFEEDD;
+  font-size: 13px;
+}
+
+.show_machines_location {
+  width: 280px;
 }
 
 .lookup_search_input {
@@ -516,10 +557,6 @@ a.light_blue:active {background: #000000;}
 #file_chooser_button {
   padding-left: 10px;
   width: 90px;
-}
-
-.machine_lmx {
-  padding-bottom: 30px;
 }
 
 .location_detail {
@@ -536,23 +573,17 @@ a.light_blue:active {background: #000000;}
   padding-bottom: 15px;
 }
 
-.text_col {
-  width: 400px;
+.text_col, .text_column {
   float: left;
   padding: 1em;
+  width: 420px;
+
 }
 
 .photo_image {
   border-color: white;
   border-width: 6px;
   border-style: solid;
-}
-
-.right_column {
-  width: 300px;
-  margin-left: 650px;
-  margin-top: 20px;
-  padding: 1em;
 }
 
 .photo_caption {

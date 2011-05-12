@@ -110,8 +110,8 @@
       $('#facebox').css({
         //top:	getPageScroll()[1] + (getPageHeight() / 10),
         //left:	$(window).width() / 2 - 205
-        top:	80,
-        left:	200,
+        top:	70,
+        left:	175,
       }).show()
 
       $(document).bind('keydown.facebox', function(e) {

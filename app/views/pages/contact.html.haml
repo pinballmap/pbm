@@ -1,4 +1,4 @@
-.textcol
+.text_column
   %p.yellow If you find bugs or have suggestions or whatever, please give us a ring. Try to be as specific as possible when describing problems.
   %br/
   #contact_maker
@@ -13,4 +13,4 @@
         %tr
           %td Message: 
           %td= text_area_tag :contact_msg, params[:contact_msg]
-      =submit_tag 'Submit Comment'
+      =submit_tag 'Submit Comment', :class => 'submit_button'

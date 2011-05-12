@@ -1,7 +1,7 @@
 #facebox {
   position: absolute;
-  top: 80px;
-  left: 200px;
+  top: 70px;
+  left: 170px;
   z-index: 100;
   text-align: left;
 }
@@ -20,7 +20,7 @@
 
 #facebox .content {
   display:table;
-  width: 160px;
+  width: 200px;
   padding: 10px;
   background: #fff;
   -webkit-border-radius:4px;
@@ -79,7 +79,7 @@
   z-index: 99;
 }
 
-#zone_section_link, #machine_section_link, #city_section_link, #location_section_link {
+#zone_section_link, #machine_section_link, #city_section_link, #location_section_link, #type_section_link {
 	padding:2px;
 	background-color:#FFEEDD;
 	color:black;
@@ -88,13 +88,13 @@
 	  -webkit-border-radius:3px;
 }
 
-a#city_section_link, a#machine_section_link, a#zone_section_link, a#location_section_link {
+a#city_section_link, a#machine_section_link, a#zone_section_link, a#location_section_link, a#type_section_link {
 	padding-right:5px;
 	padding-left:5px;
 	margin-right:5px;
 }
 
-a#city_section_link:hover, a#machine_section_link:hover, a#zone_section_link:hover, a#location_section_link:hover {
+a#city_section_link:hover, a#machine_section_link:hover, a#zone_section_link:hover, a#location_section_link:hover, a#type_section_link:hover {
 	background-color:#c55929;
 	color:white;
 }
