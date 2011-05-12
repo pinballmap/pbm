@@ -1,5 +1,5 @@
 #welcome
-  %p
+  %p.intro
     Welcome to pinballmap.com!
     %br/
     %br/
@@ -10,27 +10,26 @@
     in the areas.
     %br/
     %br/
-    Use your local region’s map to find machines,
-    %br/
-    %br/
-    You can help keep the maps up to date by
-    anonymously updating locations, plus you can
-    do it while logged in!
+    Use your local region’s map to find your fave machines. 
+    Keep the map up to date by adding and removing 
+    machines from locations, and from entering locations 
+    that aren't already on the map!
     %br/
     %br/
     You can also comment on a machine’s
-    condition, upload photos, add your high
-    scores, and so on.
+    condition, upload photos of locations, add your high
+    scores on a machine, and so on.
     %br/
     %br/
-    We have mobile apps for iPhone and Android.
-#map_summaries
-  Pick a map!
+    We have    
+    = link_to 'mobile apps for iPhone and Android', 'http://pinballmap.com/apps', :class => 'apps_link'
+#map_summaries.intro
+  %span.pick_a_map Pick a map!
   %br/
   - count = 1
   - Region.order('full_name').each do |r|
     .map_summary
-      = r.full_name
+      = link_to image_tag("landing_thumbs/#{r.name}-logo.png"), "/#{r.name}"
       %br/
       = link_to image_tag("landing_thumbs/#{r.name}-thumbnail.png", :size => '150x150'), "/#{r.name}"
       .map_summary_info

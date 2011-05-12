@@ -1,7 +1,11 @@
 - content_for :presearch_sidebar do
-  = image_tag 'bayarea/bayarea_nes.jpg'
+  = image_tag 'bayarea/bayarea_pinball.png'
   - if @region.motd
     %p
+      %span.yellowb Check out the official blog of
+      = link_to 'pinballmachine.org', 'http://pinballbayarea.wordpress.com/', :class => 'intro'
+      %br/
+      %br/
       %span.yellow Message of the Day:
       %br/
       = @region.motd

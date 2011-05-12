@@ -110,8 +110,8 @@
       $('#facebox').css({
         //top:	getPageScroll()[1] + (getPageHeight() / 10),
         //left:	$(window).width() / 2 - 205
-        top:	90,
-        left:	20,
+        top:	70,
+        left:	175,
       }).show()
 
       $(document).bind('keydown.facebox', function(e) {
@@ -278,7 +278,7 @@
     $('#facebox_overlay').hide().addClass("facebox_overlayBG")
       .css('opacity', $.facebox.settings.opacity)
       .click(function() { $(document).trigger('close.facebox') })
-      .fadeIn(200)
+      .fadeIn('200')
     return false
   }
 

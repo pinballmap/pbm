@@ -17,23 +17,26 @@
           %div.search_result[l]
             %div.sub_nav_item[l, :show_location_detail]{:onmouseover => "$(this).addClass('location_summary_image_mouseover');", :onmouseout => "$(this).removeClass('location_summary_image_mouseover');", :onclick => "showLocationDetail(#{l.id});"}
               %ul
-                %li= l.name
+                %li.name= l.name
                 - if (l.location_type)
                   %li= " (#{l.location_type.name})"
                 .clear
                 %li
-                  %span[l, :location_summary] #{[l.street, l.city].join(' | ')}<br class="clear" />#{[l.machine_names].join(' | ')}
+                  %span.machine_name[l, :location_summary] #{[l.street, l.city].join(' | ')}
+                  .clear
+                %li.machine_names
+                  #{[l.machine_names].join('<br />').html_safe}
             .clear
             %div.location_detail[l, :location_detail]{:style => 'display:none'}
               %div.location_name{:onclick => "toggleArrows('location_detail', #{l.id});"}
                 %ul
-                  %li= l.name
+                  %li.name= l.name
                   - if (l.location_type)
                     %li= " (#{l.location_type.name})"
                   .clear
-                  %li= l.street
+                  %li.address= l.street
                   .clear
-                  %li= [l.city, l.zip, l.state].join(', ')
+                  %li.address= [l.city, l.zip, l.state].join(', ')
                   .clear
                   %div[l, :desc]
                     = render :partial => 'locations/render_desc', :locals => {:l => l}

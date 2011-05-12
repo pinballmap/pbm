@@ -2,6 +2,10 @@
   outline: none;
 }
 
+img {
+  border:0;
+}
+
 h1 {
   font-size: 36px;
 }
@@ -14,6 +18,22 @@ a {
   color: white;
   text-decoration: none;
   border: 0;
+}
+
+li a:hover {
+  text-decoration: underline;
+}
+
+.text_column a:hover, #left_column a:hover {
+  text-decoration: underline;
+}
+
+.text_column_portland {
+  width: 440px;
+  }
+
+a.apps_link {
+  text-decoration: underline;
 }
 
 a:active { outline: none }
@@ -46,8 +66,8 @@ body {
 
 #lookup {
   float: left;
-  width: 350px;
-  margin-top: 20px;
+  width: 375px;
+  margin-top: 10px;
 }
 
 .search_result ul {
@@ -61,12 +81,80 @@ body {
 
 #search_results li {
   list-style-type: none;
-  font-size: 12px;
   font-weight: bold;
 }
 
 .location_name {
   border-bottom: 1px solid #494949;
+}
+
+.portland_region_image {
+  margin-left: 30px;
+  border: 1px solid #FFEEDD;
+}
+
+.name {
+  font-size:13px;
+  height:12px;
+  color:black;
+  width:260px;
+  background-color:#FFEEDD;
+  padding-top:2px;
+  margin-bottom:3px;
+  border-radius:2px;
+  -moz-border-radius:2px;
+  -webkit-border-radius:2px;
+}
+
+.address {
+  font-size: 12px;
+}
+
+.machine_names {
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.machine_lmx {
+  color:#FFEEDD;
+  font-size:14px;
+  padding:5px 0 5px 0;
+}
+
+.machine_condition_display_lmx {
+  color:white;
+  font-size:10px;
+  font-style:italic;
+  margin-left:10px;
+}
+
+.button_to {
+  float:right;
+}
+
+.remove_machine_button {
+  background-color:#000000;
+  border: 1px solid #494949;
+  color: #494949; 
+  cursor: pointer;
+  padding: 0 2px 1px 2px; 
+}
+
+.remove_machine_button:hover {
+  border: 1px solid #cccccc;
+  color: #cccccc;
+}
+
+.pick_a_map {
+  margin-bottom:-20px;
+}
+
+.machine_title {
+	margin-top:20px;
+}
+
+br.clear {
+	margin-top:10px;
 }
 
 .sub_nav_item {
@@ -75,20 +163,20 @@ body {
   font-size: 10px;
   font-weight: normal;
   height: 100%;
-  width: 240px;
-  padding: 3px 10px 3px 0;
+  width: 280px;
+  padding: 3px 0 3px 0;
 }
 
 .search_result {
   height: 100%;
   width: 240px;
-  padding-bottom: 50px;
+  padding-bottom: 10px;
 }
 
 #welcome {
   float: left;
   width: 220px;
-  padding-top: 20px;
+  padding-top: 5px;
   padding-right: 30px;
 }
 
@@ -104,7 +192,7 @@ body {
 }
 
 .map_summary_info {
-  float: left;
+  padding-left: 10px;
 }
 
 .infowindow {
@@ -157,40 +245,90 @@ body {
 
 .info {
   display: block;
-  padding-top: 10px;
+  padding-top: 2px;
   font-style: italic;
   color: #999;
 }
 
-.search {
+.search, #add, #location_picture_xref_submit, .submit_button {
   border: 1px solid #494949;
   color: black;
   background-color: #FED;
   text-transform: uppercase;
-  padding: 4px 3px 2px 3px;
+  padding: 1px 3px 1px 3px;
   display: block;
-  margin: 0 10px 15px 0;
+  margin: 3px 10px 3px 0;
   cursor: pointer;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+}
+
+input.search:hover, input#add:hover, input#location_picture_xref_submit:hover, input.submit_button:hover {
+  background-color:#c55929;
+  color:white;
+}
+
+input.ui-autocomplete-input, input#add_machine_by_, input#location_picture_xref_photo, input#file_chooser_button, input#location_name, input#location_street, input#location_city, input#location_state, input#location_zip, textarea#location_machines, input#submitter_name, input#submitter_email {
+  background-color:#f8f9e5;
+  border:1px solid #c55929;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  width:200px;
+  margin: 4px 0;
 }
 
 .search_banner {
   font-size: 11px;
   text-transform: uppercase;
+  text-align:center;
   display: block;
-  border-top: 1px solid white;
-  border-bottom: 1px solid white;
-  width: 280px;
-  height: 13px;
+  border: 1px solid gray;
+  width: 360px;
+  height: 15px;
+  margin: 8px 0;
+  padding: 4px 0 0 0;
   font-weight: normal;
   color: white;
-  padding: 8px 10px;
-  cursor: pointer;
+  background-color:#5e5b4d;
   vertical-align: top;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+}
+
+#other_search_options_link {
+  font-size:11px;
+  text-align:center;
+  background: #000;
+  padding: 2px 10px 3px 10px;
+  border: 1px solid gray;
+  border-bottom-style:none;
+  border-radius:3px 3px 0 0;
+  -moz-border-radius:3px 3px 0 0;
+  -webkit-border-radius:3px 3px 0 0;
+  width:250px;
+  height:6px;
+  margin-left:200px;
+  position: relative;
+  top: 5px;
+  transition: padding 250ms ease-out;
+  -moz-transition: padding 250ms ease-ou; /* Firefox 4 */
+  -webkit-transition: padding 250ms ease-ou; /* Safari and Chrome */
+  -o-transition: padding 250ms ease-ou; /* Opera */
+}
+
+#other_search_options_link:hover
+{
+  background-color:#FFEEDD;
+  color:black;
 }
 
 .arrow {
   float: right;
   border: 1px solid white;
+  height: 13px;
 }
 
 .search_results_header {
@@ -206,11 +344,21 @@ body {
   cursor: pointer;
   font-size: 10px;
   font-weight: normal;
-  border-color: #494949;
-  border-width: 1px;
-  border-style: solid;
+  border: 1px solid #494949;
   padding: 2px 2px 1px 2px;
   float: right;
+  height: 10px;
+}
+
+.location_link:hover {
+  color: #cccccc;
+  border: 1px solid #cccccc;
+}
+
+#by_location_id, #by_machine_id, #by_zone_id, #by_city_id {
+	margin-top:3px;
+	margin-bottom:3px;
+	width:360px;
 }
 
 .clear {
@@ -235,6 +383,7 @@ body {
 
 #header a img {
   float: left;
+  border:0;
 }
 
 #header ul {
@@ -266,9 +415,9 @@ body {
   letter-spacing: .3px;
 }
 
-a.light_blue:link {color: #A9BEFF; background: #000000;}
-a.light_blue:visited {color: #A9BEFF;}
-a.light_blue:hover {background: #000000; color: #ffffcc;}
+a.light_blue:link {color: #cccccc; background: #000000;}
+a.light_blue:visited {color: #cccccc;}
+a.light_blue:hover {background: #000000; color: #ffffff; text-decoration: underline}
 a.light_blue:active {background: #000000;}
 
 .pink {
@@ -282,8 +431,17 @@ a.light_blue:active {background: #000000;}
   font-weight: bold;
 }
 
+.regular_text, .light_blue {
+  font-size:14px;
+}
+
+.intro_image {
+  padding: 4px;
+}
+
 .stufflike {
   font-size: 14px;
+  font-weight:bold;
 }
 
 .yellow {
@@ -297,21 +455,28 @@ a.light_blue:active {background: #000000;}
   font-weight:bold;
 }
 
-#leftcol {
+#leftcol, #left_column, .left_column {
   width:400px;
   float:left;
   padding:1em;
 }
 
-#rightcol {
+#right_column, .right_column {
   float: none;
   width:500px;
-  margin-left:490px;
+  margin-left:450px;
+  padding:1em;
+}
+
+.high_roller_right_column {
+  float:right;
+  width:400px;
+  margin-left:550px;
   padding:1em;
 }
 
 .pic {
-  padding: 3px 3px 3px 3px;
+  padding: 5px;
 }
 
 .weekly_text {
@@ -326,22 +491,22 @@ a.light_blue:active {background: #000000;}
 }
 
 #results_container {
-  color:white;
+  color:#cccccc;
   background-color:black;
-  width:380px;
+  width:370px;
   height:370px;
-  border:0 solid;
-  border-radius:15px;
-  -moz-border-radius:15px;
-  -webkit-border-radius:15px;
-  -webkit-box-shadow: 5px 5px 8px #666666; 
-  -moz-box-shadow: 5px 5px 8px #666666; 
+  border:1px solid;
+  border-radius:5px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  -webkit-box-shadow: 0 0 30px #666666; 
+  -moz-box-shadow: 0 0 30px #666666; 
   /* Safari */
-  box-shadow: 5px 5px 8px #666666;
+  box-shadow: 0 0 30px #666666;
 }
 
 .scroll_pane {
-  height: 330px;
+  height: 360px;
   width: 340px;
   padding-left: 20px;
 }
@@ -371,9 +536,14 @@ a.light_blue:active {background: #000000;}
 }
 
 .machine_name {
-  font-size: 12px;
   font-weight: bold;
   float: left;
+  color: #FFEEDD;
+  font-size: 13px;
+}
+
+.show_machines_location {
+  width: 280px;
 }
 
 .lookup_search_input {
@@ -387,10 +557,6 @@ a.light_blue:active {background: #000000;}
 #file_chooser_button {
   padding-left: 10px;
   width: 90px;
-}
-
-.machine_lmx {
-  padding-bottom: 30px;
 }
 
 .location_detail {
@@ -407,23 +573,17 @@ a.light_blue:active {background: #000000;}
   padding-bottom: 15px;
 }
 
-.text_col {
-  width: 400px;
+.text_col, .text_column {
   float: left;
   padding: 1em;
+  width: 420px;
+
 }
 
 .photo_image {
   border-color: white;
   border-width: 6px;
   border-style: solid;
-}
-
-.right_column {
-  width: 300px;
-  margin-left: 650px;
-  margin-top: 20px;
-  padding: 1em;
 }
 
 .photo_caption {
