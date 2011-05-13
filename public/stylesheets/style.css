@@ -52,7 +52,7 @@ body {
 }
 
 #map {
-  float: left;
+  margin-left:350px;
   padding-left: 40px;
   height: 500px;
   width: 600px;
@@ -269,7 +269,9 @@ input.search:hover, input#add:hover, input#location_picture_xref_submit:hover, i
   color:white;
 }
 
-input.ui-autocomplete-input, input#add_machine_by_, input#location_picture_xref_photo, input#file_chooser_button, input#location_name, input#location_street, input#location_city, input#location_state, input#location_zip, textarea#location_machines, input#submitter_name, input#submitter_email {
+input.ui-autocomplete-input, input#add_machine_by_, input#location_picture_xref_photo, input#file_chooser_button, 
+input#location_name, input#location_street, input#location_city, input#location_state, input#location_zip, 
+textarea#location_machines, input#submitter_name, input#submitter_email, input#contact_name, input#contact_email, textarea#contact_msg {
   background-color:#f8f9e5;
   border:1px solid #c55929;
   border-radius:3px;
@@ -373,6 +375,10 @@ input.ui-autocomplete-input, input#add_machine_by_, input#location_picture_xref_
   float: none;
 }
 
+#header {
+  margin-top: -10px;
+}
+
 #header li {
   list-style-type: none;
   margin-left: 5px;
@@ -387,12 +393,13 @@ input.ui-autocomplete-input, input#add_machine_by_, input#location_picture_xref_
 }
 
 #header ul {
-  float: left;
+  padding-top: 10px;
   font-size: 10px;
   font-weight: bold;
   text-align: right;
-  line-height: 130%;
-  margin-top: 0px;
+  line-height: 150%;
+  width: 450px;
+  margin-left: 480px;
 }
 
 #header li:hover ul, li.over ul { display: block; }
