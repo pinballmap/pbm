@@ -13,7 +13,7 @@
   %p
     - if (@sorted_events.size > 0)
       - @sorted_events.keys.sort.each do |key|
-        %h2.blue_header #{key}
+        %h2.yellowb #{key}
         %ul.tourney_info
         - @sorted_events[key].each do |e|
           %li
