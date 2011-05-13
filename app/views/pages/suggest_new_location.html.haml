@@ -15,7 +15,7 @@
           %td= text_field_tag :location_city, params[:location_city]
         %tr.clear
           %td State:
-          %td= select_tag :location_state, options_for_select({'OR' => 'Oregon', 'WA' => 'Washington'})
+          %td= select_tag :location_state, options_for_select(@states)
         %tr.clear
           %td Zip: 
           %td= text_field_tag :location_zip, params[:location_zip]
@@ -41,5 +41,4 @@
       location
     to the map. If you want to add/remove a 
     %em
-      machine
-    to/from a location, just bring up that location on the map and then use the add/remove functions.
+      machine to/from a location, just bring up that location on the map and then use the add/remove functions.
