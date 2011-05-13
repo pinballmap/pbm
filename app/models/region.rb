@@ -36,7 +36,7 @@ class Region < ActiveRecord::Base
     @high_rollers = Hash.new
 
     self.machine_score_xrefs.each do |msx|
-      (rollers[msx.user] ||= []) << msx
+      (rollers[msx.initials] ||= []) << msx
     end
 
     rollers.sort{|a,b| b[1].size <=> a[1].size}.each do |roller|

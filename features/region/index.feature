@@ -7,7 +7,7 @@ Feature: Region main page
   Scenario: Change navigation type
     Given there is a location machine xref
     And I am on "Portland"'s home page
-    Then I should see "To search locations please select a place or region from the drop down or begin typing in the text box."
+    Then I should see "To search locations please select a place from the drop down or begin typing in the text box."
     And I should not see "To find a machine please select one from the drop down or use the text box." within "span.info"
     And my other search options should be "city machine type zone"
     Given I switch to "machine" lookup

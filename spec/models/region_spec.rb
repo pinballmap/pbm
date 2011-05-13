@@ -20,13 +20,12 @@ describe Region do
       scores = Array.new
       lmx = Factory.create(:location_machine_xref, :location => Factory.create(:location, :region => @r))
 
-      3.times {|n| Factory.create(:user, :initials => "ssw#{n}")}
-      3.times {|n| scores << Factory.create(:machine_score_xref, :location_machine_xref => lmx, :user => User.find_by_initials("ssw#{n}"))}
-      scores << Factory.create(:machine_score_xref, :location_machine_xref => lmx, :user => User.find_by_initials("ssw0"))
+      3.times {|n| scores << Factory.create(:machine_score_xref, :location_machine_xref => lmx, :initials => "ssw#{n}")}
+      scores << Factory.create(:machine_score_xref, :location_machine_xref => lmx, :initials => "ssw0")
 
       @r.n_high_rollers(2).should == {
-        User.find_by_initials("ssw0") => [scores[0], scores[3]],
-        User.find_by_initials("ssw1") => [scores[1]],
+        "ssw0" => [scores[0], scores[3]],
+        "ssw1" => [scores[1]],
       }
     end
   end
