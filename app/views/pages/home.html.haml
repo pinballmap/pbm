@@ -35,9 +35,9 @@
       .map_summary_info
         Tracking:
         %br/
-        = "#{Location.find_all_by_region_id(r.id).size} Machines"
+        = "#{Location.find_all_by_region_id(r.id).size} Locations"
         %br/
-        = "#{LocationMachineXref.where("location_id in (select id from locations where region_id = ?)", r.id).size} Locations"
+        = "#{LocationMachineXref.where("location_id in (select id from locations where region_id = ?)", r.id).size} Machines"
     - if ((count % 3) == 0)
       .clear
     - count += 1
