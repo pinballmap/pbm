@@ -43,6 +43,10 @@ class PagesController < ApplicationController
     end
   end
 
+  def suggest_new_location
+    @states = Location.find_all_by_region_id(@region.id).collect {|r| r.state}.uniq.sort
+  end
+
   def apps
   end
 
@@ -53,9 +57,5 @@ class PagesController < ApplicationController
   end
 
   def home
-  end
-
-  def suggest_new_location
-    @states = Location.find_all_by_region_id(@region.id).collect {|r| r.state}.uniq.sort
   end
 end

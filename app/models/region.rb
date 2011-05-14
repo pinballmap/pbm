@@ -19,7 +19,7 @@ class Region < ActiveRecord::Base
   def machine_score_xrefs
     machine_score_xrefs = Array.new
 
-    self.location_machine_xrefs.each do |lmx|
+    self.location_machine_xrefs.includes(:machine_score_xrefs, :location, :machine).each do |lmx|
       machine_score_xrefs += lmx.machine_score_xrefs if lmx.machine_score_xrefs
     end
 
