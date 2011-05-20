@@ -7,12 +7,12 @@ Feature: Region main page
   Scenario: Change navigation type
     Given there is a location machine xref
     And I am on "Portland"'s home page
-    Then I should see "To search locations please select a place from the drop down or begin typing in the text box."
-    And I should not see "To find a machine please select one from the drop down or use the text box." within "span.info"
-    And my other search options should be "city machine type zone"
+    Then I should see "To search locations by location, please select a location from the drop down or use the text box"
+    And I should not see "To search locations by machine, please select a machine from the drop down or use the text box" within "span.info"
+    And my other search options should be "city machine type operator zone"
     Given I switch to "machine" lookup
-    Then I should see "To find a machine please select one from the drop down or use the text box."
-    And I should not see "To search locations please select a place or region from the drop down or begin typing in the text box." within "span.info"
+    Then I should see "To search locations by machine, please select a machine from the drop down or use the text box"
+    And I should not see "To search locations by location, please select a location from the drop down or use text box" within "span.info"
 
   @javascript
   Scenario: Searching is automatically limited by region
@@ -70,7 +70,7 @@ Feature: Region main page
       |Bawb|Hillsboro|1|
     And I am on "Portland"'s home page
     And I switch to "city" lookup
-    And I select "Beaverton" from "by_city"
+    And I select "Beaverton" from "by_city_id"
     And I press the "city" search button
     Then I should see the listing for "Sassy"
 
@@ -103,8 +103,29 @@ Feature: Region main page
       |Bawb|1|2|
     And I am on "Portland"'s home page
     And I switch to "type" lookup
-    And I select "bar" from "by_type"
+    And I select "bar" from "by_type_id"
     And I press the "type" search button
+    Then I should see the listing for "Cleo"
+    And I should not see the listing for "Zelda"
+    And I should not see the listing for "Bawb"
+
+  @javascript
+  Scenario: Search by operator
+    Given there is a region with the name "portland" and the id "1"
+    And the following operators exist:
+      |id|name|region_id|
+      |1|Sassco|1|
+      |2|Quarter Bean|1|
+      |3|Bawbco|2|
+    And the following locations exist:
+      |name|operator_id|region_id|
+      |Cleo|1|1|
+      |Zelda|2|1|
+      |Bawb|1|2|
+    And I am on "Portland"'s home page
+    And I switch to "operator" lookup
+    And I select "Sassco" from "by_operator_id"
+    And I press the "operator" search button
     Then I should see the listing for "Cleo"
     And I should not see the listing for "Zelda"
     And I should not see the listing for "Bawb"
@@ -127,7 +148,7 @@ Feature: Region main page
     Given there is a location machine xref
     And I am on "Portland"'s home page
     And I press the "location" search button
-    Then I should see "Click to enter description"
+    Then I should see "Click to enter location description/hours/etc"
     Given I update the location condition for "Test Location Name" to be "New Condition"
     And I press "Save"
     Then I should see "New Condition"
