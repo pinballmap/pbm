@@ -22,7 +22,7 @@
                   %li= " (#{l.location_type.name})"
                 .clear
                 %li
-                  %span.machine_name[l, :location_summary] #{[l.street, l.city].join(' | ')}
+                  %span.address_name[l, :location_summary] #{[l.street, l.city].join(' | ')}
                   .clear
                 %li.machine_names
                   #{[l.machine_names].join('<br />').html_safe}

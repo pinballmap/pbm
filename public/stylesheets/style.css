@@ -73,6 +73,9 @@ body {
 .search_result ul {
   border-left: 8px solid #A9BEFF;
   padding-left: 10px;
+  border-radius:2px;
+  -moz-border-radius:2px;
+  -webkit-border-radius:2px;
 }
 
 #search_results {
@@ -112,20 +115,35 @@ body {
 
 .machine_names {
   color: #ffffff;
-  font-size: 13px;
+  font-size: 14px;
+}
+
+.address_name {
+  color: #FFEEDD;
+  font-size: 12px;
+}
+
+.machine_name {
+  font-weight: bold;
+  float: left;
+  color: #FFEEDD;
+  font-size: 14px;
 }
 
 .machine_lmx {
-  color:#FFEEDD;
-  font-size:14px;
-  padding:5px 0 5px 0;
+  color: #FFEEDD;
+  font-size: 12px;
+  padding: 5px 0 5px 0;
 }
 
 .machine_condition_display_lmx {
-  color:white;
-  font-size:10px;
-  font-style:italic;
-  margin-left:10px;
+  color: #cccccc;
+  font-size: 10px;
+  font-style: italic;
+  margin-left: 10px;
+  padding-top: 20px;
+  padding-bottom: 15px;
+  line-height: 125%;
 }
 
 .button_to {
@@ -146,15 +164,24 @@ body {
 }
 
 .pick_a_map {
-  margin-bottom:-20px;
+  margin-bottom: -20px;
+  color: #ffffcc;
+}
+
+.landing_logo {
+  margin-left: 5px;
+}
+
+.black_text {
+	color:#000000;
 }
 
 .machine_title {
-	margin-top:20px;
+	margin-top: 20px;
 }
 
 br.clear {
-	margin-top:10px;
+	margin-top: 10px;
 }
 
 .sub_nav_item {
@@ -165,6 +192,11 @@ br.clear {
   height: 100%;
   width: 280px;
   padding: 3px 0 3px 0;
+  color: #cccccc;
+}
+
+.sub_nav_item:hover {
+  color: #ffffff;
 }
 
 .search_result {
@@ -255,7 +287,7 @@ br.clear {
   color: black;
   background-color: #FED;
   text-transform: uppercase;
-  padding: 1px 3px 1px 3px;
+  padding: 2px 3px 2px 3px;
   display: block;
   margin: 3px 10px 3px 0;
   cursor: pointer;
@@ -264,14 +296,30 @@ br.clear {
   -webkit-border-radius:3px;
 }
 
-input.search:hover, input#add:hover, input#location_picture_xref_submit:hover, input.submit_button:hover {
+.save_button, .cancel_button, #add_score {
+  border: 1px solid #494949;
+  color: black;
+  background-color: #FED;
+  text-transform: uppercase;
+  padding: 0px 3px 0px 3px;
+  display: block;
+  margin: 3px 10px 3px 0;
+  cursor: pointer;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+}
+
+input.search:hover, input#add:hover, input#location_picture_xref_submit:hover, input.submit_button:hover,
+.save_button:hover, .cancel_button:hover, #add_score:hover {
   background-color:#c55929;
   color:white;
 }
 
 input.ui-autocomplete-input, input#add_machine_by_, input#location_picture_xref_photo, input#file_chooser_button, 
 input#location_name, input#location_street, input#location_city, input#location_state, input#location_zip, 
-textarea#location_machines, input#submitter_name, input#submitter_email, input#contact_name, input#contact_email, textarea#contact_msg {
+textarea#location_machines, input#submitter_name, input#submitter_email, input#contact_name, input#contact_email, 
+textarea#contact_msg, .edit_mode, input#score, input#initials {
   background-color:#f8f9e5;
   border:1px solid #c55929;
   border-radius:3px;
@@ -279,6 +327,18 @@ textarea#location_machines, input#submitter_name, input#submitter_email, input#c
   -webkit-border-radius:3px;
   width:200px;
   margin: 4px 0;
+}
+
+.edit_mode {
+  background-color: #FFFFCC;
+}
+
+#rank {
+  margin-left:6px;
+}
+
+input#score {
+  margin-left:3px;
 }
 
 .search_banner {
@@ -329,8 +389,12 @@ textarea#location_machines, input#submitter_name, input#submitter_email, input#c
 
 .arrow {
   float: right;
-  border: 1px solid white;
+  border: 1px solid #cccccc;
   height: 13px;
+}
+
+.arrow:hover {
+  border-color: #ffffff;
 }
 
 .search_results_header {
@@ -529,10 +593,6 @@ a.light_blue:active {background: #000000;}
   padding-right: 10px;
 }
 
-.edit_mode {
-  background-color: #A9BEFF;
-}
-
 .delete_button {
   border: 1px solid #494949;
   background-color: black;
@@ -540,13 +600,6 @@ a.light_blue:active {background: #000000;}
   cursor: pointer;
   padding: 0 1px;
   margin-left: 5px;
-}
-
-.machine_name {
-  font-weight: bold;
-  float: left;
-  color: #FFEEDD;
-  font-size: 13px;
 }
 
 .show_machines_location {
@@ -575,9 +628,16 @@ a.light_blue:active {background: #000000;}
   padding: 3px 10px 3px 0;
 }
 
-.machine_condition_display_lmx {
-  padding-top: 15px;
-  padding-bottom: 15px;
+.location_description {
+  font-style: italic;
+  color: #cccccc;
+  padding-left: 10px;
+  padding-top: 5px;
+}
+
+.desc_show_location {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .text_col, .text_column {

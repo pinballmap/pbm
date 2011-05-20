@@ -1335,7 +1335,7 @@
 		clickOnTrack				: true,
 		autoReinitialise			: false,
 		autoReinitialiseDelay		: 500,
-		verticalDragMinHeight		: 0,
+		verticalDragMinHeight		: 20,
 		verticalDragMaxHeight		: 99999,
 		horizontalDragMinWidth		: 0,
 		horizontalDragMaxWidth		: 99999,
