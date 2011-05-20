@@ -421,7 +421,7 @@ input#score {
   border: 1px solid #cccccc;
 }
 
-#by_location_id, #by_machine_id, #by_zone_id, #by_city_id {
+#by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id {
 	margin-top:3px;
 	margin-bottom:3px;
 	width:360px;

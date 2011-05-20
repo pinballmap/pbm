@@ -13,9 +13,10 @@ class Location < ActiveRecord::Base
     r = Region.find_by_name(name)
     where(:region_id => r.id)
   }
+  scope :by_operator_id, lambda {|id| where(:operator_id => id)}
   scope :by_location_id, lambda {|id| where(:id => id)}
   scope :by_zone_id, lambda {|id| where(:zone_id => id)}
-  scope :by_city, lambda {|city| where(:city => city)}
+  scope :by_city_id, lambda {|city| where(:city => city)}
   scope :by_location_name, lambda {|name| where(:name => name)}
   scope :by_machine_id, lambda {|id|
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id = ?', id)

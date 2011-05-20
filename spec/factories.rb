@@ -27,6 +27,10 @@ Factory.define :zone do |z|
   z.name 'Test Zone'
 end
 
+Factory.define :operator do |o|
+  o.name 'Test Operator'
+end
+
 Factory.define :region do |r|
   r.name 'Test Region'
 end
