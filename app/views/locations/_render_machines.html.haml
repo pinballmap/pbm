@@ -1,8 +1,8 @@
-%span.info You can edit a machine's condition (click the comment text), view high scores, add a new high score, or delete a machine if that machine is no longer available at the selected location.
+%span.info You can edit a machine's condition (click the comment text), view high scores, add a new high score, or remove a machine if that machine is no longer at this location.
 %br/
 %br/
 - location_machine_xrefs.sort{|a,b| a.machine.name <=> b.machine.name}.each do |lmx|
-  %div[lmx, :machine]
+  %div.machine_names[lmx, :machine]
     = render :partial => 'location_machine_xrefs/remove_machine', :locals => {:lmx => lmx}
     %div[lmx, :machine_condition_display]
       = render :partial => 'location_machine_xrefs/update_machine_condition', :locals => {:lmx => lmx}

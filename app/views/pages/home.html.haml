@@ -12,7 +12,7 @@
     %br/
     Use your local region’s map to find your fave machines. 
     Keep the map up to date by adding and removing 
-    machines from locations, and from entering locations 
+    machines from locations, and by submitting new locations 
     that aren't already on the map!
     %br/
     %br/
@@ -22,14 +22,14 @@
     %br/
     %br/
     We have    
-    = link_to 'mobile apps for iPhone and Android', 'http://pinballmap.com/apps', :class => 'apps_link'
+    = link_to 'mobile apps for iPhone and Android', 'portland/apps', :class => 'apps_link'
 #map_summaries.intro
   %span.pick_a_map Pick a map!
   %br/
   - count = 1
   - Region.order('full_name').each do |r|
     .map_summary
-      = link_to image_tag("landing_thumbs/#{r.name}-logo.png"), "/#{r.name}"
+      = link_to image_tag("landing_thumbs/#{r.name}-logo.png"), "/#{r.name}", :class => 'landing_logo'
       %br/
       = link_to image_tag("landing_thumbs/#{r.name}-thumbnail.png", :size => '150x150'), "/#{r.name}"
       .map_summary_info

@@ -71,7 +71,7 @@ function loadingHTML() {
 }
 
 function setOtherSearchOptions(newSection) {
-  var html = "";
+  var html = "<span class='black_text'>Search by: </span>";
   for (section in searchSections) {
     if (searchSections[section] != newSection) {
       html += "  <a href='#' id='" + searchSections[section] + "_section_link' onclick='switchSection(\"" + searchSections[section] + "\");'>" + searchSections[section] + "</a>\n"
