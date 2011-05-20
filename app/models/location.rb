@@ -3,6 +3,7 @@ class Location < ActiveRecord::Base
   belongs_to :location_type
   belongs_to :zone
   belongs_to :region
+  belongs_to :operator
   has_many :events
   has_many :machines, :through => :location_machine_xrefs
   has_many :location_machine_xrefs
