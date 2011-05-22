@@ -6,14 +6,14 @@
     = search_banner("by_#{key}", "LOOKUP BY #{key.upcase}")
     = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do
       %span.info To search locations by #{key}, please select a #{key} from the drop down
-      - if @search_options[key][:autocomplete]
+      - if @search_options[key]['autocomplete']
         %span.info or use the text box
-      = select_tag "by_#{key}_id", options_for_select([['All', '']]) + options_from_collection_for_select(@search_options[key][:search_collection], @search_options[key][:id], @search_options[key][:name], params["by_#{key}"])
-      - if @search_options[key][:autocomplete]
+      = select_tag "by_#{key}_id", options_for_select([['All', '']]) + options_from_collection_for_select(@search_options[key]['search_collection'], @search_options[key]['id'], @search_options[key]['name'], params["by_#{key}"])
+      - if @search_options[key]['autocomplete']
         = text_field_tag "by_#{key}_name", params["by_#{key}_name"], :class => 'lookup_search_input'
       %br.clear
       = submit_tag 'Search', :class => 'search', :id => "#{key}_search_button"
-      - if @search_options[key][:autocomplete]
+      - if @search_options[key]['autocomplete']
         :javascript
           $(function () {
             $('#by_#{key}_name').autocomplete({source: '/#{key}s/autocomplete?region_id=#{@region.id}'});

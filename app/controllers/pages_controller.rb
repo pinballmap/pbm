@@ -6,37 +6,37 @@ class PagesController < ApplicationController
     @lmx_count = @region.location_machine_xrefs.size
 
     @search_options = {
-      :type => {
-        :id   => 'id',
-        :name => 'name',
-        :search_collection => LocationType.all.sort{|a,b| a.name <=> b.name},
+      'type' => {
+        'id'   => 'id',
+        'name' => 'name',
+        'search_collection' => LocationType.all.sort{|a,b| a.name <=> b.name},
       },
-      :location => {
-        :id   => 'id',
-        :name => 'name',
-        :search_collection => Location.where('region_id = ?', @region.id).order('name'),
-        :autocomplete => 1,
+      'location' => {
+        'id'   => 'id',
+        'name' => 'name',
+        'search_collection' => Location.where('region_id = ?', @region.id).order('name'),
+        'autocomplete' => 1,
       },
-      :machine => {
-        :id   => 'id',
-        :name => 'name',
-        :search_collection => @region.machines,
-        :autocomplete => 1,
+      'machine' => {
+        'id'   => 'id',
+        'name' => 'name',
+        'search_collection' => @region.machines,
+        'autocomplete' => 1,
       },
-      :zone => {
-        :id   => 'id',
-        :name => 'name',
-        :search_collection => Zone.where('region_id = ?', @region.id).order('name'),
+      'zone' => {
+        'id'   => 'id',
+        'name' => 'name',
+        'search_collection' => Zone.where('region_id = ?', @region.id).order('name'),
       },
-      :operator => {
-        :id   => 'id',
-        :name => 'name',
-        :search_collection => Operator.where('region_id = ?', @region.id).order('name'),
+      'operator' => {
+        'id'   => 'id',
+        'name' => 'name',
+        'search_collection' => Operator.where('region_id = ?', @region.id).order('name'),
       },
-      :city => {
-        :id   => 'city',
-        :name => 'city',
-        :search_collection => Location.find(:all, :conditions => ['region_id = ?', @region.id], :select => 'distinct city', :order => 'city'),
+      'city' => {
+        'id'   => 'city',
+        'name' => 'city',
+        'search_collection' => Location.find(:all, :conditions => ['region_id = ?', @region.id], :select => 'distinct city', :order => 'city'),
       }
     }
 
