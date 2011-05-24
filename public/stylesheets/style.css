@@ -73,9 +73,9 @@ body {
 .search_result ul {
   border-left: 8px solid #A9BEFF;
   padding-left: 10px;
-  border-radius:2px;
-  -moz-border-radius:2px;
-  -webkit-border-radius:2px;
+  border-radius:2px 0 0 0;
+  -moz-border-radius:2px 0 0 0;
+  -webkit-border-radius:2px 0 0 0;
 }
 
 #search_results {
@@ -103,6 +103,7 @@ body {
   width:260px;
   background-color:#FFEEDD;
   padding-top:2px;
+  padding-bottom: 4px;
   margin-bottom:3px;
   border-radius:2px;
   -moz-border-radius:2px;
@@ -172,6 +173,17 @@ body {
   margin-left: 5px;
 }
 
+.region_logo {
+  float:left;
+  position: absolute;
+  left: 5px;
+  top: 15px;
+}
+
+img.header_image {
+  margin-left: 30px;
+}
+
 .black_text {
 	color:#000000;
 }
@@ -191,7 +203,7 @@ br.clear {
   font-weight: normal;
   height: 100%;
   width: 280px;
-  padding: 3px 0 3px 0;
+  padding: 3px 0 1px 0;
   color: #cccccc;
 }
 
@@ -282,12 +294,12 @@ br.clear {
   color: #999;
 }
 
-.search, #add, #location_picture_xref_submit, .submit_button {
+.search, .submit_button {
   border: 1px solid #494949;
   color: black;
   background-color: #FED;
   text-transform: uppercase;
-  padding: 2px 3px 2px 3px;
+  padding: 1px 2px 1px 2px;
   display: block;
   margin: 3px 10px 3px 0;
   cursor: pointer;
@@ -296,12 +308,12 @@ br.clear {
   -webkit-border-radius:3px;
 }
 
-.save_button, .cancel_button, #add_score {
+.save_button, .cancel_button, #add_score, #add, #location_picture_xref_submit {
   border: 1px solid #494949;
   color: black;
   background-color: #FED;
   text-transform: uppercase;
-  padding: 0px 3px 0px 3px;
+  padding: 0px 2px 0px 2px;
   display: block;
   margin: 3px 10px 3px 0;
   cursor: pointer;
@@ -316,9 +328,9 @@ input.search:hover, input#add:hover, input#location_picture_xref_submit:hover, i
   color:white;
 }
 
-input.ui-autocomplete-input, input#add_machine_by_, input#location_picture_xref_photo, input#file_chooser_button, 
+input.ui-autocomplete-input, input#add_machine_by_, input#location_picture_xref_photo, button#file_chooser_button, 
 input#location_name, input#location_street, input#location_city, input#location_state, input#location_zip, 
-textarea#location_machines, input#submitter_name, input#submitter_email, input#contact_name, input#contact_email, 
+input#location_phone, input#location_website, textarea#location_machines, input#submitter_name, input#submitter_email, input#contact_name, input#contact_email, 
 textarea#contact_msg, .edit_mode, input#score, input#initials {
   background-color:#f8f9e5;
   border:1px solid #c55929;
@@ -390,7 +402,8 @@ input#score {
 .arrow {
   float: right;
   border: 1px solid #cccccc;
-  height: 13px;
+  height: 11px;
+  width: 11px;
 }
 
 .arrow:hover {
@@ -440,7 +453,7 @@ input#score {
 }
 
 #header {
-  margin-top: -10px;
+  margin-top: -20px;
 }
 
 #header li {
@@ -624,7 +637,7 @@ a.light_blue:active {background: #000000;}
   font-size: 10px;
   font-weight: normal;
   height: 100%;
-  width: 240px;
+  width: 280px;
   padding: 3px 10px 3px 0;
 }
 
