@@ -36,7 +36,7 @@
                   .clear
                   %li.address= l.street
                   .clear
-                  %li.address= [l.city, l.zip, l.state].join(', ')
+                  %li.address= [l.city, l.state + " " + l.zip].join(', ')
                   .clear
                   %div[l, :desc]
                     = render :partial => 'locations/render_desc', :locals => {:l => l}
