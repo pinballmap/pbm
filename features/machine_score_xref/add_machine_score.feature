@@ -14,7 +14,7 @@ Feature: add a high score for a machine
   Scenario: Add a new high score to a machine
     Given I am a logged in user
     And there is a location machine xref
-    And today is 02/05/2011
+    And today is "02/05/2011"
     And I am on "Portland"'s home page
     And I press the "location" search button
     And I click on the add scores link for "Test Location Name"

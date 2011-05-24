@@ -36,4 +36,4 @@ Feature: high roller list for region
     And I am on "Portland"'s high rollers page
     Then I should see "ssw: with 2 scores"
     And I should see "rtgt: with 1 scores"
-    And I should not see "rcb: with 1 scores"
+    And I should not see "mcu: with 1 scores"
