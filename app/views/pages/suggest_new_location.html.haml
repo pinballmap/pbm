@@ -20,6 +20,12 @@
           %td Zip: 
           %td= text_field_tag :location_zip, params[:location_zip]
         %tr.clear
+          %td Phone: 
+          %td= text_field_tag :location_phone, params[:location_phone]
+        %tr.clear
+          %td Website: 
+          %td= text_field_tag :location_website, params[:location_website]
+        %tr.clear
           %td Machines:
           %td= text_area_tag :location_machines, params[:location_machines]
         %tr.clear
@@ -42,4 +48,4 @@
     to the map. If you want to add/remove a 
     %em
       machine
-    to/from a location, just bring up that location on the map and then use the add/remove functions.
+    to/from an existing location, just bring up that location on the map and then use the add/remove functions.

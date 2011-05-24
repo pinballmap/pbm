@@ -1,5 +1,7 @@
 #header
-  =link_to image_tag('pinballmapcom.jpg'), @region ? region_homepage_path : root_path
+  =link_to image_tag('pinballmapcom.jpg', :class => "header_image"), @region ? region_homepage_path : root_path
+  - if (@region)  
+    =image_tag "region_names/#{params[:region]}-diag.png", :class => "region_logo"
   %ul
     - if (@region)
       %li=link_to 'About Pinball Map', about_path
