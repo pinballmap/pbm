@@ -61,7 +61,7 @@ Pbm::Application.routes.draw do
 
   devise_for :users
 
-  match '*page', :to => 'locations#unknown_route'
+  match 'iphone.html', :to => 'locations#mobile'
   get 'pages/home'
   root :to => 'pages#home'
 end
