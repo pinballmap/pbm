@@ -27,7 +27,7 @@ class Region < ActiveRecord::Base
   end
 
   def n_recent_scores(n)
-    scores = self.machine_score_xrefs.sort {|a,b| b.created_at <=> a.created_at}
+    scores = self.machine_score_xrefs.sort {|a,b| b.id <=> a.id}
     scores[0, n]
   end
 

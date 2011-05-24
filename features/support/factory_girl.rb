@@ -1,1 +1,1 @@
-require File.join(File.dirname(__FILE__), '../../spec/factories')
+require File.join(::Rails.root.to_s + '/spec/factories')
