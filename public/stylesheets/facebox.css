@@ -16,12 +16,12 @@
   -webkit-box-shadow:0 0 18px rgba(0,0,0,0.4);
   -moz-box-shadow:0 0 18px rgba(0,0,0,0.4);
   box-shadow:0 0 18px rgba(0,0,0,0.4);
+  width: 100%;
 }
 
 #facebox .content {
   display:table;
-  width: 100%;
-  padding: 10px;
+  padding: 10px 15px 10px 10px;
   background: #fff;
   -webkit-border-radius:4px;
   -moz-border-radius:4px;
@@ -38,7 +38,7 @@
 #facebox .close{
   position:absolute;
   top:6px;
-  right:-10px;
+  right:8px;
   padding:2px;
   background:#fff;
 }
