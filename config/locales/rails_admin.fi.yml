@@ -22,8 +22,10 @@ fi:
     list:
       edit_action: "Muokkaa"
       delete_action: "Poista"
+      select_action: "Valitse"
+      delete_selected: "Poista valitut"
       add_new: "Lisää uusi"
-      search_btn: "HAKU"
+      search: "HAKU"
       select: "Valitse muokattava %{name}"
       show_all: "Näytä kaikki"
     new:
@@ -36,6 +38,8 @@ fi:
       select_choice: "Tee valinnat ja klikkaa"
       chose_all: "Valitse kaikki"
       clear_all: "Tyhjennä"
+      up: "Up"
+      down: "Down"
       save: "Tallenna"
       save_and_add_another: "Tallenna ja lisää uusi"
       save_and_edit: "Tallenna ja muokkaa"

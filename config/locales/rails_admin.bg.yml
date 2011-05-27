@@ -25,7 +25,7 @@ bg:
       edit_action: "Редактирай"
       delete_action: "Изтрий"
       add_new: "Добави"
-      search_btn: "ТЪРСИ"
+      search: "ТЪРСИ"
       select: "Избор на %{name} за редакция"
       show_all: "Покажи всички"
     new:
@@ -38,6 +38,8 @@ bg:
       select_choice: "Избери и кликни"
       chose_all: "Избери всички"
       clear_all: "Изчисти всички"
+      up: "Up"
+      down: "Down"
       save: "Запамети"
       save_and_add_another: "Запамети и добави друг"
       save_and_edit: "Запамети и редактирай"
