@@ -1,3 +1,5 @@
+require 'pony'
+
 class LocationMachineXrefsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   has_scope :region
@@ -7,7 +9,19 @@ class LocationMachineXrefsController < InheritedResources::Base
     if(!params[:add_machine_by_id].empty?)
       machine = Machine.find(params[:add_machine_by_id])
     elsif (!params[:add_machine_by_name].empty?)
-      machine = Machine.find_or_create_by_name(params[:add_machine_by_name])
+      machine = Machine.find_by_name(params[:add_machine_by_name])
+
+      if (machine.nil?)
+        machine = Machine.new
+        machine.name = params[:add_machine_by_name]
+
+        Pony.mail(
+          :to => Region.find_by_name('portland').users.collect {|u| u.email},
+          :from => 'admin@pinballmap.com',
+          :subject => "PBM - Someone entered a new machine name",
+          :body => [machine.name, Location.find(params[:location_id]).name].join("\n")
+        )
+      end
     else
       #blank submit
       return
