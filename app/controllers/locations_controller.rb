@@ -37,7 +37,7 @@ class LocationsController < InheritedResources::Base
     id = params[:id]
 
     l = Location.find(id)
-    l.desc = params["new_desc_#{id}".to_sym]
+    l.description = params["new_desc_#{id}".to_sym]
     l.save
   end
 

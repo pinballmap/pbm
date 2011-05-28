@@ -1,9 +1,9 @@
 %div[l, :desc_show]
-  %span.location_description= (l.desc.to_s == '') ? 'Click to enter location description/hours/etc' : l.desc
+  %span.location_description= (l.description.to_s == '') ? 'Click to enter location description/hours/etc' : l.description
 %div[l, :desc_edit]{:style => 'display:none'}
   = form_tag update_desc_locations_path(:action => 'update_desc', :id => l.id, :region => @region.name), :id => "update_desc_#{l.id}", :method => 'get', :remote => true do
     = hidden_field_tag :id, l.id
-    = text_area_tag "new_desc_#{l.id}", (l.desc.to_s == '') ? 'No Description' : l.desc, :cols => 20, :rows => 3, :class => 'edit_mode'
+    = text_area_tag "new_desc_#{l.id}", (l.description.to_s == '') ? 'No Description' : l.description, :cols => 20, :rows => 3, :class => 'edit_mode'
     %br/
     = submit_tag 'Save', :class => "save_button"
   = submit_tag 'Cancel', :id => "desc_cancel_#{l.id}", :class => "cancel_button"
