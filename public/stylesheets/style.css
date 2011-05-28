@@ -103,7 +103,7 @@ body {
   width:260px;
   background-color:#FFEEDD;
   padding-top:2px;
-  padding-bottom: 4px;
+  padding-bottom: 5px;
   margin-bottom:3px;
   border-radius:2px;
   -moz-border-radius:2px;
@@ -362,7 +362,7 @@ input#score {
   width: 360px;
   height: 15px;
   margin: 8px 0;
-  padding: 4px 0 0 0;
+  padding: 4px 0 2px 0;
   font-weight: normal;
   color: white;
   background-color:#5e5b4d;
@@ -375,7 +375,7 @@ input#score {
 #other_search_options_link {
   font-size:11px;
   text-align:center;
-  background: #000;
+  background: #484848;
   padding: 2px 10px 3px 10px;
   border: 1px solid gray;
   border-bottom-style:none;
