@@ -28,6 +28,13 @@ RailsAdmin.config do |config|
       end
     end
   end
+
+  config.model LocationPictureXref do
+    list do
+      field :description
+      field :approved
+    end
+  end
 end
 
 RailsAdmin::Adapters::ActiveRecord.module_eval do
