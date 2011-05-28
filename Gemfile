@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.7'
-gem 'arel', '2.0.2'
+gem 'arel'
 gem 'mysql2'
 gem 'rake', '~> 0.8.7'
 

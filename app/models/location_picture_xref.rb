@@ -3,4 +3,7 @@ class LocationPictureXref < ActiveRecord::Base
   belongs_to :location
   belongs_to :user
   mount_uploader :photo, PhotoUploader
+
+  def rails_admin_default_object_label_method
+  end
 end
