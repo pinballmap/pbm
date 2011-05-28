@@ -204,8 +204,7 @@ GEM
       ffi (~> 0.6.3)
       json_pure
       rubyzip
-    simple_form (1.3.0)
-      rails (~> 3.0.0)
+    simple_form (1.4.0)
     spork (0.8.4)
     subexec (0.0.4)
     term-ansicolor (1.0.5)
@@ -226,7 +225,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  arel (= 2.0.2)
+  arel
   autotest
   autotest-growl
   autotest-rails
