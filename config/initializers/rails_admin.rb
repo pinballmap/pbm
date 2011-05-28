@@ -7,11 +7,25 @@ module RailsAdmin
 end
 
 RailsAdmin.config do |config|
+  config.list.default_items_per_page = 5000
+  config.navigation.max_visible_tabs 15
   config.excluded_models << User << LocationMachineXref << MachineScoreXref
+
+  config.model Location do
+    list do
+      sort_by :name
+      sort_reverse false
+    end
+  end
 
   config.model Region do
     list do
       field :motd
+    end
+    create do
+      group :default do
+        hide
+      end
     end
   end
 end
