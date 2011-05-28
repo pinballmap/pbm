@@ -10,13 +10,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110527230812) do
+ActiveRecord::Schema.define(:version => 20110528184008) do
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"
     t.string   "name"
     t.text     "long_desc"
-    t.string   "link"
+    t.string   "external_link"
     t.integer  "category_no"
     t.date     "start_date"
     t.date     "end_date"
@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(:version => 20110527230812) do
     t.integer  "zone_id"
     t.integer  "region_id"
     t.integer  "location_type_id"
-    t.string   "desc"
+    t.string   "description"
     t.integer  "operator_id"
   end
 

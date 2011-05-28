@@ -6,7 +6,7 @@ xml.data do
         xml.id event.id
         xml.name event.name
         xml.longDesc event.long_desc
-        xml.link event.link
+        xml.link event.external_link
         xml.categoryNo event.category_no
         xml.startDate event.start_date
         xml.locationNo event.location_id
