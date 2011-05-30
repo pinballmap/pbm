@@ -225,7 +225,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  arel
+  arel (= 2.0.2)
   autotest
   autotest-growl
   autotest-rails
@@ -256,6 +256,7 @@ DEPENDENCIES
   newrelic_rpm
   pickle
   pony
+  rack (~> 1.2.3)
   rails (= 3.0.7)
   rails_admin!
   rake (~> 0.8.7)

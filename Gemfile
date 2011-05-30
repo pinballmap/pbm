@@ -1,9 +1,10 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.7'
-gem 'arel'
+gem 'arel', '2.0.2'
 gem 'mysql2'
 gem 'rake', '~> 0.8.7'
+gem 'rack', '~> 1.2.3'
 
 gem 'devise'
 gem 'inherited_resources'
