@@ -1,11 +1,10 @@
+#  the lat/lon of this address is (45.5207, -122.6628)
 Factory.define :location do |l|
   l.name 'Test Location Name'
-  l.street '123 Pine'
+  l.street '303 Southeast 3rd Avenue'
   l.city 'Portland'
   l.state 'OR'
-  l.zip '97211'
-  l.lat 45.5589
-  l.lon -122.645
+  l.zip '97214'
   l.association :region, :name => 'portland'
   l.association :location_type
 end

@@ -9,6 +9,9 @@ class Location < ActiveRecord::Base
   has_many :location_machine_xrefs
   has_many :location_picture_xrefs
 
+  geocoded_by :full_street_address, :latitude  => :lat, :longitude => :lon
+  after_validation :geocode, :unless => ENV['SKIP_GEOCODE']
+
   scope :region, lambda {|name| 
     r = Region.find_by_name(name)
     where(:region_id => r.id)
@@ -41,5 +44,9 @@ class Location < ActiveRecord::Base
     content += "</div>'"
 
     content.html_safe
+  end
+
+  def full_street_address
+    [self.street, self.city, self.state, self.zip].join(', ')
   end
 end

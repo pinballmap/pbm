@@ -9,6 +9,13 @@ describe Location do
     @lmx2 = Factory.create(:location_machine_xref, :location => @l, :machine => @m2)
   end
 
+#  describe '#after_save' do
+#    it 'should try to find the latitude and longitude of the location after it creates it' do
+#      @l.lat.should == 45.520784
+#      @l.lon.should == -122.66275
+#    end
+#  end
+
   describe '#location_machine_xrefs' do
     it 'should return all machines for this location' do
       @l.location_machine_xrefs.should == [@lmx1, @lmx2]
@@ -26,7 +33,7 @@ describe Location do
       l = Factory.create(:location)
       ['Foo', 'Bar', 'Baz', "Beans'"].each {|name| Factory.create(:location_machine_xref, :location => l, :machine => Factory.create(:machine, :name => name)) }
 
-      l.content_for_infowindow.chomp.should == "'<div class=\"infowindow\">Test Location Name<br />123 Pine<br />Portland, OR, 97211<br /><br /><hr /><br />Bar<br />Baz<br />Beans\\'<br />Foo<br /></div>'"
+      l.content_for_infowindow.chomp.should == "'<div class=\"infowindow\">Test Location Name<br />303 Southeast 3rd Avenue<br />Portland, OR, 97214<br /><br /><hr /><br />Bar<br />Baz<br />Beans\\'<br />Foo<br /></div>'"
     end
   end
 end
