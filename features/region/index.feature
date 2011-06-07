@@ -53,7 +53,7 @@ Feature: Region main page
     And I am on "Portland"'s home page
     And I press the "location" search button
     Then I should see "Test Location Name"
-    And I should see "123 Pine | Portland"
+    And I should see "303 Southeast 3rd Avenue | Portland"
     And I should see "ADD A PICTURE"
     And I should see "ADD NEW MACHINE TO THIS LOCATION"
     And I should see "SHOW MACHINES AT THIS LOCATION"

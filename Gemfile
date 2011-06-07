@@ -25,6 +25,7 @@ gem 'pony'
 gem 'recaptcha', :require => 'recaptcha/rails'
 gem 'newrelic_rpm'
 gem 'capistrano'
+gem 'geocoder'
 
 group :development, :test do
   gem 'capybara'
