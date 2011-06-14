@@ -31,7 +31,10 @@ RailsAdmin.config do |config|
 
   config.model LocationPictureXref do
     list do
-      field :description
+      field :id
+      field :approved
+    end
+    edit do
       field :approved
     end
   end
@@ -49,6 +52,8 @@ RailsAdmin::Adapters::ActiveRecord.module_eval do
       else
         model.all(merge_order(options))
       end
+    elsif (model.name == 'LocationPictureXref')
+      LocationPictureXref.all.select{|lpx| lpx.location.region_id == Authorization.current_user.region_id}
     else
       model.all(merge_order(options))
     end
