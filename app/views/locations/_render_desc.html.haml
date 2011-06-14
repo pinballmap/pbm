@@ -11,8 +11,7 @@
 :javascript
   $('#update_desc_#{l.id}').submit(function () {
     $('#desc_location_#{l.id}').html(loadingHTML());
-    $.get(this.action, $(this).serialize(), null, 'script');
-    $('#desc_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_desc');
+    $.get(this.action, $(this).serialize(), function (date) { $('#desc_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_desc') });
   });
 
   $('#desc_cancel_#{l.id}, #desc_show_location_#{l.id}').click(function () {

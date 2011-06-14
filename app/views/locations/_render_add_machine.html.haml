@@ -14,8 +14,7 @@
 
   $('#add_new_machine_#{l.id}').submit(function () {
     $('#show_machines_location_#{l.id}').html(loadingHTML());
-    $.post(this.action, $(this).serialize(), null, 'script');
-    $('#show_machines_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machines');
+    $.post(this.action, $(this).serialize(), function (data) { $('#show_machines_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machines') });
 
     return false;
   });
