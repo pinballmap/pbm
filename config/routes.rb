@@ -49,6 +49,7 @@ Pbm::Application.routes.draw do
     match '/suggest_new_location' => 'pages#suggest_new_location'
     match '/submitted_new_location' => 'pages#submitted_new_location'
 
+    match 'iphone.html', :to => 'locations#mobile'
     match '*page', :to => 'locations#unknown_route'
   end
 
