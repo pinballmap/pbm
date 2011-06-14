@@ -7,5 +7,13 @@ class LocationPictureXrefsController < InheritedResources::Base
         format.js
       end
     end
+
+    Pony.mail(
+      :to => @location_picture_xref.location.region.users.collect {|u| u.email},
+      :from => 'admin@pinballmap.com',
+      :subject => 'PBM - Someone wants you to approve a picture',
+      :body => "This is photo ID: #{@location_picture_xref.id}. To approve it, please visit here http://pinballmap.com/admin/location_picture_xrefs\n",
+      :attachments => {@location_picture_xref.photo.to_s => File.read(RAILS_ROOT + '/public/' + @location_picture_xref.photo.to_s)}
+    )
   end
 end
