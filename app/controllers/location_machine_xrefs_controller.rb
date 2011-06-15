@@ -19,7 +19,7 @@ class LocationMachineXrefsController < InheritedResources::Base
           :to => Region.find_by_name('portland').users.collect {|u| u.email},
           :from => 'admin@pinballmap.com',
           :subject => "PBM - Someone entered a new machine name",
-          :body => [machine.name, Location.find(params[:location_id]).name].join("\n")
+          :body => [machine.name, Location.find(params[:location_id]).name, @region.name].join("\n")
         )
       end
     else
