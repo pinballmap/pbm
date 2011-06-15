@@ -46,4 +46,9 @@ Pbm::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  config.middleware.use ExceptionNotifier,
+    :email_prefix => "[PBM Exception] ",
+    :sender_address => %{"PBM Exceptions" <exceptions@pinballmap.com>},
+    :exception_recipients => %w{scott.wainstock@gmail.com}
 end
