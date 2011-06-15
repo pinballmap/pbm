@@ -9,9 +9,9 @@ xml.rss :version => "2.0" do
       machine = msx.machine
       location = msx.location
       xml.item do
-        xml.title "#{msx.location.name}'s #{msx.machine.name}: #{MachineScoreXref::ENGLISH_SCORES[msx.rank]}, with #{msx.score} by #{msx.user.initials} on #{msx.created_at.to_s(:rfc822)}"
+        xml.title "#{msx.location.name}'s #{msx.machine.name}: #{MachineScoreXref::ENGLISH_SCORES[msx.rank]}, with #{msx.score} by #{msx.initials} on #{msx.created_at.to_s(:rfc822)}"
         xml.link "http://pinballmap.com/#{@region.name.downcase}/?by_location_id=#{location.id}"
-        xml.description "#{msx.location.name}'s #{msx.machine.name}: #{MachineScoreXref::ENGLISH_SCORES[msx.rank]}, with #{msx.score} by #{msx.user.initials} on #{msx.created_at.to_s(:rfc822)}"
+        xml.description "#{msx.location.name}'s #{msx.machine.name}: #{MachineScoreXref::ENGLISH_SCORES[msx.rank]}, with #{msx.score} by #{msx.initials} on #{msx.created_at.to_s(:rfc822)}"
         xml.guid msx.id
         xml.pubDate msx.created_at.to_s(:rfc822)
       end
