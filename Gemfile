@@ -26,6 +26,7 @@ gem 'recaptcha', :require => 'recaptcha/rails'
 gem 'newrelic_rpm'
 gem 'capistrano'
 gem 'geocoder'
+gem 'exception_notification_rails3', :require => 'exception_notifier'
 
 group :development, :test do
   gem 'capybara'
