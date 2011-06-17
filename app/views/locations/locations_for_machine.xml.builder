@@ -7,8 +7,8 @@ xml.data do
           xml.id location.id
           xml.name location.name
           xml.zoneNo location.zone_id
-          xml.zone location.zone_id.nil? ? '' : location.zone.short_name
-          xml.neighborhood location.zone_id.nil? ? '' : location.zone.short_name
+          xml.zone location.zone.nil? ? '' : location.zone.short_name
+          xml.neighborhood location.zone.nil? ? '' : location.zone.short_name
           xml.lat location.lat
           xml.lon location.lon
           xml.street1 location.street
