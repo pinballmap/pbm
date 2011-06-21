@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
   protected
     def detect_region
-      @region = Region.find_by_name(params[:region].downcase) if params[:region]
+      @region = Region.find_by_name(params[:region].downcase) if (params[:region] && (params[:region].is_a? String))
     end
 
     def set_current_user
