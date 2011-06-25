@@ -130,6 +130,9 @@ RailsAdmin.config do |config|
       end
     end
     create do
+      group :default do
+        hide
+      end
     end
   end
 
