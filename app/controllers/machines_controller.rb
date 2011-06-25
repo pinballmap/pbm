@@ -3,11 +3,9 @@ class MachinesController < InheritedResources::Base
   has_scope :by_name
 
   def autocomplete
-    if (params['region_id'])
-      render :json => Region.find(params['region_id']).machines.map{|m| m.name}.grep(/#{params[:term]}/)
-    else
-      render :json => Machine.find(:all, :conditions => ['upper(name) like upper(?)', '%' + params[:term] + '%']).map {|m| m.name}
-    end
+    machines = params[:region_level_search].nil? ? Machine.all : @region.machines
+
+    render :json => machines.map{|m| m.name}.grep(/#{params[:term]}/i).sort
   end
 
   def index

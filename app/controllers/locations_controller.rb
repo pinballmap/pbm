@@ -5,7 +5,7 @@ class LocationsController < InheritedResources::Base
   def autocomplete
     term = params[:term] || ''
 
-    render :json => Location.find(:all, :conditions => ['region_id = ? and upper(name) like upper(?)', params[:region_id], '%' + term + '%']).map { |l| l.name }
+    render :json => @region.locations.map{|l| l.name}.grep(/#{params[:term]}/i).sort
   end
 
   def index

@@ -16,7 +16,7 @@
       - if @search_options[key]['autocomplete']
         :javascript
           $(function () {
-            $('#by_#{key}_name').autocomplete({source: '/#{key}s/autocomplete?region_id=#{@region.id}'});
+            $('#by_#{key}_name').autocomplete({source: '/#{@region.name}/#{key}s/autocomplete?region_level_search=1'});
           });
 
 :javascript
