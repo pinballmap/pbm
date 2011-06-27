@@ -35,7 +35,6 @@ ActiveRecord::Schema.define(:version => 20110527230812) do
     t.date     "condition_date"
     t.string   "ip"
     t.integer  "user_id"
-    t.integer  "machine_score_xrefs_count", :default => 0
   end
 
   add_index "location_machine_xrefs", ["location_id"], :name => "index_location_machine_xrefs_on_location_id"
