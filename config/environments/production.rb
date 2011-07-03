@@ -47,6 +47,8 @@ Pbm::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
+  config.action_mailer.default_url_options = { :host => 'pinballmap.com' }
+
   config.middleware.use ExceptionNotifier,
     :email_prefix => "[PBM Exception] ",
     :sender_address => %{"PBM Exceptions" <exceptions@pinballmap.com>},
