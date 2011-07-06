@@ -1,7 +1,7 @@
 %div[l, :desc_show]
   %span.location_description= (l.description.to_s == '') ? 'Click to enter location description/hours/etc' : l.description
 %div[l, :desc_edit]{:style => 'display:none'}
-  = form_tag update_desc_locations_path(:action => 'update_desc', :id => l.id, :region => @region.name), :id => "update_desc_#{l.id}", :method => 'get', :remote => true do
+  = form_tag update_desc_locations_path(:action => 'update_desc', :id => l.id, :region => @region.name), :id => "update_desc_#{l.id}", :method => 'get' do
     = hidden_field_tag :id, l.id
     = text_area_tag "new_desc_#{l.id}", (l.description.to_s == '') ? 'No Description' : l.description, :cols => 20, :rows => 3, :class => 'edit_mode'
     %br/
@@ -11,7 +11,9 @@
 :javascript
   $('#update_desc_#{l.id}').submit(function () {
     $('#desc_location_#{l.id}').html(loadingHTML());
-    $.get(this.action, $(this).serialize(), function (date) { $('#desc_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_desc') });
+    $.get(this.action, $(this).serialize(), function (data) { $('#desc_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_desc') });
+
+    return false;
   });
 
   $('#desc_cancel_#{l.id}, #desc_show_location_#{l.id}').click(function () {
