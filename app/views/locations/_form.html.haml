@@ -4,7 +4,7 @@
 - @search_options.each_key do |key|
   %div{:id => "by_#{key}", :class => 'section', :style => 'display:none;'}
     = search_banner("by_#{key}", "LOOKUP BY #{key.upcase}")
-    = form_tag locations_path, :method => 'get', :class => 'location_search', :remote => true do
+    = form_tag locations_path, :method => 'get', :class => 'location_search' do
       %span.info To search locations by #{key}, please select a #{key} from the drop down
       - if @search_options[key]['autocomplete']
         %span.info or use the text box
