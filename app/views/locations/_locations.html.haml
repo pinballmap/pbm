@@ -38,6 +38,10 @@
                   .clear
                   %li.address= [l.city, l.state + " " + l.zip].join(', ')
                   .clear
+                  %li.address= l.phone
+                  .clear
+                  %li.address= l.website
+                  .clear
                   %div[l, :desc]
                     = render :partial => 'locations/render_desc', :locals => {:l => l}
                   .clear
