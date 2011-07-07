@@ -28,6 +28,7 @@ Feature: update condition for location's machine
     And I press the "location" search button
     And I update the machine condition for "Test Location Name"'s "Test Machine Name" to be "New Condition"
     And I press save for the machine condition for "Test Location Name"'s "Test Machine Name"
+    And I wait for 1 seconds
     And I update the machine condition for "Test Location Name"'s "Test Machine Name" to be "Condition That I Hope Will Be Rejected"
     And I press cancel for the machine condition for "Test Location Name"'s "Test Machine Name"
     Then "Test Location Name"'s "Test Machine Name" should have the condition "New Condition"

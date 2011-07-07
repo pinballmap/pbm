@@ -4,6 +4,7 @@ gem 'rails', '3.0.7'
 gem 'arel', '2.0.2'
 gem 'mysql2'
 gem 'rake', '~> 0.8.7'
+gem 'rack', '~> 1.2.3'
 
 gem 'devise'
 gem 'inherited_resources'
@@ -24,6 +25,8 @@ gem 'pony'
 gem 'recaptcha', :require => 'recaptcha/rails'
 gem 'newrelic_rpm'
 gem 'capistrano'
+gem 'geocoder'
+gem 'exception_notification_rails3', :require => 'exception_notifier'
 
 group :development, :test do
   gem 'capybara'

@@ -1,6 +1,12 @@
-= form_for LocationPictureXref.new, :html => {:multipart => true}, :remote => true do |f|
+= form_for LocationPictureXref.new, :id => "new_location_picture_xref_#{location.id}", :html => {:id => "new_location_picture_xref_#{location.id}", :multipart => true}, :remote => true do |f|
   = f.hidden_field :location_id, { :value => location.id }
   = f.label :photo, 'Photo To Upload:', :style => 'float: left;'
   = f.file_field :photo, :id => 'file_chooser_button'
   %br/
   = f.submit "Upload"
+
+:javascript
+  $('#new_location_picture_xref_#{location.id}').submit(function () {
+    window.alert("Thanks for uploading that picture! It'll show up on the site as soon as an admin approves it.");
+    toggleData('add_picture_location', #{location.id});
+  });

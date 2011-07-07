@@ -90,6 +90,7 @@ GEM
     erubis (2.6.6)
       abstract (>= 1.0.0)
     escape_utils (0.1.9)
+    exception_notification_rails3 (1.2.0)
     factory_girl (1.3.3)
     factory_girl_rails (1.0.1)
       factory_girl (~> 1.3)
@@ -100,6 +101,7 @@ GEM
       rspec (~> 2.0)
       rspec-instafail (~> 0.1.4)
       ruby-progressbar (~> 0.0.9)
+    geocoder (1.0.1)
     gherkin (2.3.3)
       json (~> 1.4.6)
     git (1.2.5)
@@ -204,8 +206,7 @@ GEM
       ffi (~> 0.6.3)
       json_pure
       rubyzip
-    simple_form (1.3.0)
-      rails (~> 3.0.0)
+    simple_form (1.4.0)
     spork (0.8.4)
     subexec (0.0.4)
     term-ansicolor (1.0.5)
@@ -242,9 +243,11 @@ DEPENDENCIES
   devise
   email_spec
   escape_utils
+  exception_notification_rails3
   factory_girl
   factory_girl_rails
   fuubar
+  geocoder
   haml
   haml-rails
   has_scope
@@ -257,6 +260,7 @@ DEPENDENCIES
   newrelic_rpm
   pickle
   pony
+  rack (~> 1.2.3)
   rails (= 3.0.7)
   rails_admin!
   rake (~> 0.8.7)

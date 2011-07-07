@@ -3,7 +3,9 @@ class LocationsController < InheritedResources::Base
   has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_zone_id, :by_operator_id, :region
 
   def autocomplete
-    render :json => Location.find(:all, :conditions => ['region_id = ? and upper(name) like upper(?)', params[:region_id], '%' + params[:term] + '%']).map { |l| l.name }
+    term = params[:term] || ''
+
+    render :json => @region.locations.map{|l| l.name}.grep(/#{params[:term]}/i).sort
   end
 
   def index
@@ -37,7 +39,7 @@ class LocationsController < InheritedResources::Base
     id = params[:id]
 
     l = Location.find(id)
-    l.desc = params["new_desc_#{id}".to_sym]
+    l.description = params["new_desc_#{id}".to_sym]
     l.save
   end
 

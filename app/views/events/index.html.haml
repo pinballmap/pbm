@@ -15,13 +15,13 @@
       - @sorted_events.keys.sort.each do |key|
         %h2.yellowb #{key}
         %ul.tourney_info
-        - @sorted_events[key].each do |e|
+        - @sorted_events[key].sort{|a,b| a.start_date <=> b.start_date}.each do |e|
           %li
             %span #{e.start_date.to_s}
             - if e.end_date
               %span - #{e.end_date.to_s}:
             %span :
-            = link_to e.name, e.link, :class => 'tourney_link'
+            = link_to e.name, e.external_link, :class => 'tourney_link'
             %span @ 
             = link_to e.location.name, "http://pinballmap.com/#{@region.name}/?by_location_id=#{e.location_id}", :class => 'tourney_link'
             %br/

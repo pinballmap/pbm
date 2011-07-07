@@ -9,7 +9,13 @@ Pbm::Application.routes.draw do
     resources :pages
     resources :events
     resources :regions
-    resources :machines
+
+    resources :machines do
+      collection do
+        get :autocomplete
+      end
+    end
+
     resources :machine_score_xrefs
 
     resources :location_machine_xrefs do
@@ -21,6 +27,7 @@ Pbm::Application.routes.draw do
     resources :locations do
       collection do
         get :update_desc
+        get :autocomplete
       end
     end
 
@@ -49,15 +56,11 @@ Pbm::Application.routes.draw do
     match '/suggest_new_location' => 'pages#suggest_new_location'
     match '/submitted_new_location' => 'pages#submitted_new_location'
 
+    match 'iphone.html', :to => 'locations#mobile'
     match '*page', :to => 'locations#unknown_route'
   end
 
   resources :location_picture_xrefs
-  resources :locations, :machines do
-    collection do
-      get :autocomplete
-    end
-  end
 
   devise_for :users
 

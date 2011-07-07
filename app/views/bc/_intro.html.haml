@@ -1,3 +1,16 @@
-- content_for :intro_extra do
-  = image_tag 'bc/vrpa-logo.jpg'
-= render :partial => 'pages/intro'
+= image_tag 'bc/vrpa-logo.jpg'
+#intro
+  %p.intro Welcome to pinballmap.com/#{@region.name}
+  %p.intro
+    %span.yellowb This map is best maintained with the help of YOU.
+    %span If a place adds/replaces a machine, use the "&nbsp;
+    %span.yellowb add
+    %span " and "&nbsp;
+    %span.yellowb remove
+    %span " functions under that location on the map to bring things up to date. If you know of a location with machines that 
+    %span{:style => "font-style:italic;"} isn't on the map
+    %span , use the "&nbsp;
+    %span.yellowb Enter a New Location
+    %span " link up top to add the place to the database!
+  %p.intro We currently are tracking #{@location_count} locations and #{@lmx_count} machines. Backups are made nightly. So if something bad happens, the site can be replenished.
+  %p.intro And be sure to check out the links page for more pinball resources.
