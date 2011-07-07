@@ -16,6 +16,21 @@ describe Location do
 #    end
 #  end
 
+  describe '#before_destroy' do
+    it 'should clean up location_machine_xrefs, events, location_picture_xrefs' do
+      Factory.create(:event, :location => @l)
+      Factory.create(:location_picture_xref, :location => @l)
+
+      @l.destroy
+
+      Event.all.should == []
+      LocationPictureXref.all.should == []
+      LocationMachineXref.all.should == []
+      MachineScoreXref.all.should == []
+      Location.all.should == []
+    end
+  end
+
   describe '#location_machine_xrefs' do
     it 'should return all machines for this location' do
       @l.location_machine_xrefs.should == [@lmx1, @lmx2]
