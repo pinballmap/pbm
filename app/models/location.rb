@@ -32,6 +32,13 @@ class Location < ActiveRecord::Base
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id = ?', machine.id)
   }
 
+  before_destroy do |record| 
+    Event.destroy_all "location_id = #{record.id}"
+    LocationPictureXref.destroy_all "location_id = #{record.id}"
+    MachineScoreXref.destroy_all "location_machine_xref_id in (select id from location_machine_xrefs where location_id = #{record.id})"
+    LocationMachineXref.destroy_all "location_id = #{record.id}"
+  end
+
   def machine_names
     self.machines.collect { |m| m.name }.sort
   end
