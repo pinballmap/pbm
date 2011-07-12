@@ -3,8 +3,10 @@
 
 :javascript
   $('#remove_machine_#{lmx.id}').click(function () {
-    $('#machine_lmx_#{lmx.id}').fadeOut('slow', function() {});
-    $(this).callRemote();
+    if (confirm("Remove this machine?")) {
+      $('#machine_lmx_#{lmx.id}').fadeOut('slow', function() {});
+      $(this).callRemote();
+    }
 
     return false;
   });
