@@ -9,7 +9,7 @@ end
 RailsAdmin.config do |config|
   config.list.default_items_per_page = 5000
   config.navigation.max_visible_tabs 15
-  config.excluded_models << User << LocationMachineXref << MachineScoreXref
+  config.excluded_models << User << MachineScoreXref
 
   editable_location_fields = [
       'name',
@@ -194,6 +194,18 @@ RailsAdmin.config do |config|
     end
   end
 
+  config.model LocationMachineXref do
+    edit do
+      field :condition
+    end
+    list do
+      field :updated_at
+      field :condition
+      field :location_id
+      field :machine_id
+    end
+  end
+
   config.model LocationPictureXref do
     list do
       field :id
@@ -219,6 +231,9 @@ RailsAdmin::Adapters::ActiveRecord.module_eval do
       end
     elsif (model.name == 'LocationPictureXref')
       LocationPictureXref.all.select{|lpx| lpx.location.region_id == Authorization.current_user.region_id}
+    elsif (model.name == 'LocationMachineXref')
+      lmxes = LocationMachineXref.all.select{|lmx| (lmx.location && (lmx.location.region_id == Authorization.current_user.region_id)) && (!lmx.condition.blank?)}
+      lmxes.sort! {|a,b| b.updated_at.to_s <=> a.updated_at.to_s}
     else
       model.all(merge_order(options))
     end

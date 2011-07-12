@@ -9,5 +9,15 @@ Feature: Remove Machine for Location
     And I am on "Portland"'s home page
     And I press the "location" search button
     And I press "remove"
+    And I accept the "Remove this machine?" alert
     And I wait for 1 seconds
     Then location_machine_xref should not exist
+
+  @javascript
+  Scenario: Remove machine from location doesn't happen when you dismiss the remove dialog
+    Given there is a location machine xref
+    And I am on "Portland"'s home page
+    And I press the "location" search button
+    And I press "remove"
+    And I dismiss the "Remove this machine?" alert
+    Then location_machine_xref should exist
