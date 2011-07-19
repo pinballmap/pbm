@@ -40,8 +40,9 @@
                   .clear
                   %li.address= l.phone
                   .clear
-                  %li.address= l.website
-                  .clear
+                  - if l.website
+                    %li= link_to l.website, l.website, :class => 'address'
+                    .clear
                   %div[l, :desc]
                     = render :partial => 'locations/render_desc', :locals => {:l => l}
                   .clear
