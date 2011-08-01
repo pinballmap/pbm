@@ -22,4 +22,4 @@ Feature: add a high score for a machine
     And I press "add_score"
     And I wait for 1 seconds
     Then "Test Location Name"'s "Test Machine Name" should have a score with score "1234" and rank "1" and initials "cap"
-    And I should see "Rank: GC Initials: cap Score 1234 Date 02-05-2011"
+    And I should see "Rank: GC; Initials: cap; Score 1234; Date 02-05-2011"
