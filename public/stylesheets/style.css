@@ -559,6 +559,12 @@ a.light_blue:active {background: #000000;}
   padding:1em;
 }
 
+.high_score_new_line {
+  display:block;
+  font-size:10px;
+  padding-bottom:2px;
+}
+
 .pic {
   padding: 5px;
 }
