@@ -30,10 +30,14 @@ li a:hover {
 
 .text_column_portland {
   width: 440px;
-  }
+}
 
 a.apps_link {
   text-decoration: underline;
+}
+
+a.apps_link:hover {
+  color: #FFEEDD;
 }
 
 a:active { outline: none }
@@ -167,6 +171,11 @@ body {
 .pick_a_map {
   margin-bottom: -20px;
   color: #ffffcc;
+  background-color: #666666;
+  padding: 4px;
+  border-radius: 3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
 }
 
 .landing_logo {
