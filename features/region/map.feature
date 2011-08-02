@@ -8,4 +8,4 @@ Feature: Map map
     And there is a location machine xref
     And a high score exists for location "Test Location Name"'s "Test Machine Name" with initials "cap" and score "1234" and rank "GC"
     And I am on "Portland"'s home page
-    Then I should see "Test Location Name's Test Machine Name: GC with 1234 by cap"
+    Then I should see "Test Location Name's Test Machine Name: GC with 1,234 by cap"
