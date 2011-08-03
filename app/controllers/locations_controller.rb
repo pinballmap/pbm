@@ -1,3 +1,5 @@
+require 'pony'
+
 class LocationsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_zone_id, :by_operator_id, :region
@@ -74,7 +76,13 @@ class LocationsController < InheritedResources::Base
 
       if (machine.nil?)
         machine = Machine.create(:name => params[:machine_name])
-        #send an email about this
+
+        Pony.mail(
+          :to => Region.find_by_name('portland').users.collect {|u| u.email},
+          :from => 'admin@pinballmap.com',
+          :subject => "PBM - Someone entered a new machine name",
+          :body => [machine.name, Location.find(location_id).name, region].join("\n")
+        )
       end
 
       if (lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine.id))
