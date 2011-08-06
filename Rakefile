@@ -10,8 +10,7 @@ Pbm::Application.load_tasks
 
 desc "Email admins about empty locations"
 task :report_empty_locations => :environment do
-  #Region.all.each do |r|
-  r = Region.find(1)
+  Region.all.each do |r|
     machineless_locations = r.machineless_locations
     if machineless_locations.size
       Pony.mail(
@@ -21,5 +20,5 @@ task :report_empty_locations => :environment do
         :body => ["The following locations don't have machines at them anymore. You may want to consider removing them from the map. This check will happen again, automatically, in one week.\n\n", machineless_locations.each.map {|ml| ml.name}.sort.join("\n")].join("\n")
       )
     end
-#  end
+  end
 end
