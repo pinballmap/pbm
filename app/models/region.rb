@@ -49,4 +49,12 @@ class Region < ActiveRecord::Base
   def primary_email_contact
     self.users.empty? ? 'email_not_found@noemailfound.noemail' : self.users[0].email
   end
+
+  def machineless_locations
+    machineless_locations = Array.new
+
+    self.locations.each { |l| machineless_locations.push(l) unless l.machines.size > 0 }
+
+    machineless_locations
+  end
 end
