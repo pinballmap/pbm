@@ -35,4 +35,15 @@ describe Region do
       @r.primary_email_contact.should == 'email_not_found@noemailfound.noemail'
     end
   end
+
+  describe '#machinesless_locations' do
+    it 'should return any location without a machine' do
+      Factory.create(:location_machine_xref, :location => Factory.create(:location, :region => @r))
+      Factory.create(:location_machine_xref, :location => Factory.create(:location, :region => @r))
+      l = Factory.create(:location, :region => @r)
+      l2 = Factory.create(:location, :region => @r)
+
+      @r.machineless_locations.should == [l, l2]
+    end
+  end
 end
