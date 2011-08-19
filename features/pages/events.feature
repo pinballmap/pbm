@@ -15,5 +15,6 @@ Feature: events for region
       |1|event 1|2011-01-20|1|
       |1|event 2|2011-01-30|1|
       |1|event 3|2011-01-10|1|
+      |1|event 4||1|
     And I am on "portland"'s events page
-    Then I should see "2011-01-10 : event 3 @ Test Location Name 2011-01-20 : event 1 @ Test Location Name 2011-01-30 : event 2 @ Test Location Name"
+    Then I should see ": event 4 @ Test Location Name 2011-01-10 : event 3 @ Test Location Name 2011-01-20 : event 1 @ Test Location Name 2011-01-30 : event 2 @ Test Location Name"
