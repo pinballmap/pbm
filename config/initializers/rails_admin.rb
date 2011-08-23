@@ -209,6 +209,7 @@ RailsAdmin.config do |config|
   config.model LocationPictureXref do
     list do
       field :id
+      field :photo.to_s
       field :approved
     end
     edit do
