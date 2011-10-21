@@ -141,7 +141,7 @@ GEM
     mime-types (1.16)
     mini_magick (3.2)
       subexec (~> 0.0.4)
-    mysql2 (0.2.11)
+    mysql2 (0.2.7)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -256,7 +256,7 @@ DEPENDENCIES
   launchy
   meta_where
   mini_magick
-  mysql2 (= 0.2.11)
+  mysql2 (= 0.2.7)
   newrelic_rpm
   pickle
   pony
