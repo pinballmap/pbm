@@ -4,7 +4,11 @@ class MachineScoreXrefsController < InheritedResources::Base
 
   def create
     msx = MachineScoreXref.create(:location_machine_xref_id => params[:location_machine_xref_id])
-    msx.score = params[:score]
+
+    score = params[:score]
+    score.gsub!(/[^0-9]/,'')
+
+    msx.score = score
     msx.user = current_user
     msx.rank = params[:rank]
     msx.initials = params[:initials]
