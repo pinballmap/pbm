@@ -1,6 +1,7 @@
 GIT
   remote: git@github.com:scottwainstock/rails_admin.git
   revision: 4735766b7ef46dfd15bfc74bd7789f37c2669648
+  ref: 4735766b7ef46dfd15bfc74bd7789f37c2669648
   specs:
     rails_admin (0.0.1)
       builder (~> 2.1.0)
