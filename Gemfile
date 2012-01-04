@@ -24,7 +24,7 @@ gem 'remotipart'
 gem 'pony'
 gem 'recaptcha', :require => 'recaptcha/rails'
 gem 'newrelic_rpm'
-gem 'capistrano'
+gem 'capistrano', '2.5.21'
 gem 'geocoder'
 gem 'exception_notification_rails3', :require => 'exception_notifier'
 
