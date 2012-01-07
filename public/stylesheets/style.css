@@ -15,7 +15,7 @@ li {
 }
 
 a {
-  color: white;
+  color: #ebebeb;
   text-decoration: none;
   border: 0;
 }
@@ -46,7 +46,7 @@ body {
   margin: 0px;
   padding: 0px;
   background-color: #000;
-  color: #fff;
+  color: #ebebeb;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 11px;
 }
@@ -83,7 +83,7 @@ body {
 }
 
 #search_results {
-  color: #ffffff;
+  color: #ebebeb;
 }
 
 #search_results li {
@@ -305,7 +305,7 @@ br.clear {
 
 .search, .submit_button {
   border: 1px solid #494949;
-  color: white;
+  color: #ebebeb;
   text-transform: uppercase;
   padding: 1px 2px 1px 2px;
   display: block;
@@ -382,9 +382,9 @@ input#score {
   -moz-border-radius:5px;
   -webkit-border-radius:5px;
   border: 1px solid gray;
-  box-shadow: inset 0px 0px 8px rgba(250, 243, 232, 0.80);
-  -moz-box-shadow: inset 0px 0px 8px rgba(250, 243, 232, 0.80);
-  -webkit-box-shadow: inset 0px 0px 8px rgba(250, 243, 232, 0.80);
+  box-shadow: inset 0px 0px 3px rgba(250, 243, 232, 0.80);
+  -moz-box-shadow: inset 0px 0px 3px rgba(250, 243, 232, 0.80);
+  -webkit-box-shadow: inset 0px 0px 3px rgba(250, 243, 232, 0.80);
 }
 
 .search_banner {
@@ -398,7 +398,7 @@ input#score {
   margin: 8px 15%;
   padding: 4px 0 2px 0;
   font-weight: normal;
-  color: white;
+  color: #ebebeb;
   background-color:#5e5b4d;
   vertical-align: top;
   border-top-left-radius:5px;
@@ -449,7 +449,7 @@ background-image: -webkit-gradient(
    background: -moz-linear-gradient(top, #c7b79b, #484848);
    background: -ms-linear-gradient(top, #c7b79b, #484848);
    background: -o-linear-gradient(top, #c7b79b, #484848);
-   color: white;
+   color: #ebebeb;
    text-decoration: none;
    vertical-align: middle;
    box-shadow: 0px -1px 10px rgba(255, 255, 255, 0.80);
@@ -488,7 +488,7 @@ background-image: -webkit-gradient(
   margin: 20px 0 5px 13px;
   padding: 0 0 5px 0;
   text-transform: uppercase;
-  color: white;
+  color: #ebebeb;
   border-bottom: 1px solid white;
 }
 
@@ -663,14 +663,14 @@ a.light_blue:active {background: #000000;}
   -moz-border-radius:5px;
   -webkit-border-radius:5px;
   border: 2px solid rgba(235, 235, 235, 0.90);
-  box-shadow: 0px 0px 15px rgba(235, 235, 235, 0.80);
-  -moz-box-shadow: 0px 0px 15px rgba(235, 235, 235, 0.80);
-  -webkit-box-shadow: 0px 0px 15px rgba(235, 235, 235, 0.80);
+  box-shadow: 0px 0px 8px rgba(235, 235, 235, 0.80);
+  -moz-box-shadow: 0px 0px 8px rgba(235, 235, 235, 0.80);
+  -webkit-box-shadow: 0px 0px 8px rgba(235, 235, 235, 0.80);
 }
 
 .scroll_pane {
-  height: 360px;
-  width: 340px;
+  height: 370px;
+  width: 350px;
   padding-left: 20px;
 }
 
@@ -764,7 +764,7 @@ a.light_blue:active {background: #000000;}
 .tourney_description {
   font-size: 12px;
   font-weight: normal;
-  color: white;
+  color: #ebebeb;
 }
 
 .tourney_link {

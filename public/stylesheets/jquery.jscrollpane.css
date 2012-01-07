@@ -23,12 +23,17 @@
 .jspVerticalBar
 {
 	position: absolute;
-	top: 2px;
-	bottom:2px;
+	top: 0;
+	bottom:0;
 	right: 0;
 	width: 20px;
 	height: 100%;
-	background: gray;
+	background: black;
+	border-left: .1em solid gray;
+	border-bottom:none;
+	box-shadow: -3px 0px 5px rgba(59, 59, 59, 0.80);
+    -moz-box-shadow: -3px 0px 5px rgba(59, 59, 59, 0.80);
+    -webkit-box-shadow: -3px 0px 5px rgba(59, 59, 59, 0.80);
 }
 
 .jspHorizontalBar
