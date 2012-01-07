@@ -82,6 +82,20 @@
 #operator_section_link, #zone_section_link, #machine_section_link, #city_section_link, #location_section_link, #type_section_link {
 	padding:2px;
 	background-color:#FFEEDD;
+	background-image: linear-gradient(bottom, rgb(235,235,235) 4%, rgb(255,238,221) 100%);
+	background-image: -o-linear-gradient(bottom, rgb(235,235,235) 4%, rgb(255,238,221) 100%);
+	background-image: -moz-linear-gradient(bottom, rgb(235,235,235) 4%, rgb(255,238,221) 100%);
+	background-image: -webkit-linear-gradient(bottom, rgb(235,235,235) 4%, rgb(255,238,221) 100%);
+	background-image: -ms-linear-gradient(bottom, rgb(235,235,235) 4%, rgb(255,238,221) 100%);
+
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.04, rgb(235,235,235)),
+		color-stop(1, rgb(255,238,221))
+	);
+	border-top:#ffeedd;
 	color:black;
 	border-radius:3px;
 	  -moz-border-radius:3px;
@@ -95,6 +109,7 @@ a#operator_section_link, a#city_section_link, a#machine_section_link, a#zone_sec
 }
 
 a#operator_section_link:hover, a#city_section_link:hover, a#machine_section_link:hover, a#zone_section_link:hover, a#location_section_link:hover, a#type_section_link:hover {
-	background-color:#c55929;
+	background:#70706a;
+	border-top-color:#70706a;
 	color:white;
 }
