@@ -1,5 +1,5 @@
 #welcome
-  %p.intro
+  %p.home_intro.intro
     Welcome to pinballmap.com!
     %br/
     %br/
@@ -24,7 +24,8 @@
     We have    
     = link_to 'mobile apps for iPhone and Android', 'portland/apps', :class => 'apps_link'
 #map_summaries.intro
-  %span.pick_a_map Pick a map!
+  .pick_a_map 
+    %p.pick_a_map Pick a map!
   %br/
   - count = 1
   - Region.order('full_name').each do |r|
