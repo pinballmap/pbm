@@ -169,13 +169,23 @@ body {
 }
 
 .pick_a_map {
-  margin-bottom: -20px;
   color: #ffffcc;
   background-color: #666666;
-  padding: 4px;
   border-radius: 3px;
   -moz-border-radius:3px;
   -webkit-border-radius:3px;
+  width: 100%;
+  text-align: center;
+  font-size: 14pt;
+  -moz-box-shadow:    inset 0 0 5px #000000;
+  -webkit-box-shadow: inset 0 0 5px #000000;
+  box-shadow:         inset 0 0 5px #000000;
+
+}
+
+p.pick_a_map {
+  padding: 0.5em 0 0.5em 0;
+  text-shadow: black 0.1em 0.1em 0.2em;
 }
 
 .landing_logo {
@@ -235,7 +245,6 @@ br.clear {
 
 #map_summaries {
   float: left;
-  padding-top: 20px;
 }
 
 .map_summary {
@@ -390,29 +399,28 @@ input#score {
 .search_banner {
   font-size: 11px;
   text-transform: uppercase;
-  text-align:center;
+  text-align: center;
   display: block;
-  border:none;
+  border: none;
   width: 260px;
   height: 15px;
   margin: 8px 15%;
   padding: 4px 0 2px 0;
   font-weight: normal;
   color: #ebebeb;
-  background-color:#5e5b4d;
+  background-color: #5e5b4d;
   vertical-align: top;
-  border-top-left-radius:5px;
-  -moz-border-top-left-radius:5px;
-  -webkit-border-top-left-radius:5px;
-  border-top-right-radius:5px;
-  -moz-border-top-right-radius:5px;
-  -webkit-border-top-right-radius:5px;
+  border-top-left-radius: 5px;
+  -moz-border-top-left-radius: 5px;
+  -webkit-border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  -moz-border-top-right-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
 background-image: linear-gradient(bottom, rgb(28,21,11) 48%, rgb(94,91,77) 100%);
 background-image: -o-linear-gradient(bottom, rgb(28,21,11) 48%, rgb(94,91,77) 100%);
 background-image: -moz-linear-gradient(bottom, rgb(28,21,11) 48%, rgb(94,91,77) 100%);
 background-image: -webkit-linear-gradient(bottom, rgb(28,21,11) 48%, rgb(94,91,77) 100%);
 background-image: -ms-linear-gradient(bottom, rgb(28,21,11) 48%, rgb(94,91,77) 100%);
-
 background-image: -webkit-gradient(
 	linear,
 	left bottom,
@@ -587,6 +595,15 @@ a.light_blue:active {background: #000000;}
 .intro {
   font-size: 14px;
   font-weight: bold;
+}
+
+.home_intro {
+  padding: 6px;
+  background-color: #1c150b;
+  border-radius:5px;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  border: 2px solid rgba(250, 243, 232, 0.80);
 }
 
 .regular_text, .light_blue {
