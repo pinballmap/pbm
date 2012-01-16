@@ -98,8 +98,8 @@
 	border-top:#ffeedd;
 	color:black;
 	border-radius:3px;
-	  -moz-border-radius:3px;
-	  -webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
 }
 
 a#operator_section_link, a#city_section_link, a#machine_section_link, a#zone_section_link, a#location_section_link, a#type_section_link {

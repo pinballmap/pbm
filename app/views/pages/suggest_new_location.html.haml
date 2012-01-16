@@ -29,6 +29,9 @@
           %td Machines:
           %td= text_area_tag :location_machines, params[:location_machines]
         %tr.clear
+          %td Operator:
+          %td= text_field_tag :location_operator, params[:location_operator]
+        %tr.clear
           %td 
           %td= recaptcha_tags
         %tr.clear

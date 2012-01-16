@@ -84,6 +84,7 @@ class PagesController < ApplicationController
           Zip: #{params['location_zip']}\n
           Phone: #{params['location_phone']}\n
           Website: #{params['location_website']}\n
+          Operator: #{params['location_operator']}\n
           Machines: #{params['location_machines']}\n
           Their Name: #{params['submitter_name']}\n
           Their Email: #{params['submitter_email']}\n
