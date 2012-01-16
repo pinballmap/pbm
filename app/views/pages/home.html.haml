@@ -6,7 +6,7 @@
     This site shows all the public pinball
     machines in select regions in North America.
     Each region’s data is curated by a local
-    administrator, and also maintained by players
+    administrator, and also maintained by players (YOU!)
     in the areas.
     %br/
     %br/
@@ -18,11 +18,19 @@
     %br/
     You can also comment on a machine’s
     condition, upload photos of locations, add your high
-    scores on a machine, and so on.
+    scores on a machine, check out upcoming events, and so on.
     %br/
     %br/
     We have    
     = link_to 'mobile apps for iPhone and Android', 'portland/apps', :class => 'apps_link'
+    %br/
+    %br/
+    If you'd like to see your city on this site, 
+    =link_to 'contact us!', 'portland/contact', :class => 'apps_link'
+    %br/
+    %br/
+    The code for this site is open source and
+    = link_to 'on github', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
 #map_summaries.intro
   .pick_a_map 
     %p.pick_a_map Pick a map!
@@ -39,7 +47,7 @@
         = "#{Location.find_all_by_region_id(r.id).size} Locations"
         %br/
         = "#{LocationMachineXref.where("location_id in (select id from locations where region_id = ?)", r.id).size} Machines"
-    - if ((count % 3) == 0)
+    - if ((count % 4) == 0)
       .clear
     - count += 1
 .clear
