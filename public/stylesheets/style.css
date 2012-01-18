@@ -57,12 +57,12 @@ body {
 
 #page {
   width: 1060px;
-  margin: 40px auto;
+  margin: 20px auto;
 }
 
 #page_home {
   width: 800px;
-  margin: 40px auto;
+  margin: 20px auto;
 }
 
 #map {
@@ -70,7 +70,7 @@ body {
   padding: 20px 40px 40px 40px;
   height: 540px;
   width: 600px;
-  margin-top: 22px;
+  margin-top: 21px;
   display: block;
   border: 1px solid #5C4A2E;
   border-radius: 5px;
@@ -102,6 +102,18 @@ body {
   width: 375px;
   margin-top: 10px;
   background-color:#858481;
+  background-image: linear-gradient(bottom, rgb(102,102,102) 13%, rgb(128,128,128) 84%);
+  background-image: -o-linear-gradient(bottom, rgb(102,102,102) 13%, rgb(128,128,128) 84%);
+  background-image: -moz-linear-gradient(bottom, rgb(102,102,102) 13%, rgb(128,128,128) 84%);
+  background-image: -webkit-linear-gradient(bottom, rgb(102,102,102) 13%, rgb(128,128,128) 84%);
+  background-image: -ms-linear-gradient(bottom, rgb(102,102,102) 13%, rgb(128,128,128) 84%);
+  background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0.13, rgb(102,102,102)),
+	color-stop(0.84, rgb(128,128,128))
+);
   padding: 10px;
   border: 1px solid #5C5C5A;
   border-radius: 5px;
@@ -341,7 +353,7 @@ br.clear {
   padding: 0;
   position: relative;
   overflow: hidden;
-  margin-left: -20px;
+  margin-left: -10px;
 }
 
 .scrollerScroller {
@@ -611,10 +623,6 @@ background-image: -webkit-gradient(
   float: none;
 }
 
-#header {
-  margin-top: -20px;
-}
-
 #header li {
   list-style-type: none;
   margin-left: 5px;
@@ -646,11 +654,33 @@ background-image: -webkit-gradient(
   top: 14px;
   right: 0;
   list-style: none;
-  width:100px;
+  width: 100px;
   padding: 5px;
-  border-right: 1px solid #ffffff;
-  background: #000000;
+  border: 1px solid rgb(82,82,82);
+  background: rgb(56,56,56);
+background-image: linear-gradient(bottom, rgb(38,38,38) 13%, rgb(82,82,82) 84%);
+background-image: -o-linear-gradient(bottom, rgb(38,38,38) 13%, rgb(82,82,82) 84%);
+background-image: -moz-linear-gradient(bottom, rgb(38,38,38) 13%, rgb(82,82,82) 84%);
+background-image: -webkit-linear-gradient(bottom, rgb(38,38,38) 13%, rgb(82,82,82) 84%);
+background-image: -ms-linear-gradient(bottom, rgb(38,38,38) 13%, rgb(82,82,82) 84%);
+
+background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0.13, rgb(38,38,38)),
+	color-stop(0.84, rgb(82,82,82))
+);
   z-index:100;
+  border-bottom-left-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -moz-border-bottom-right-radius: 5px;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 3px 4px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 3px 4px rgba(0, 0, 0, 0.5);
 }
 
 .subpage_text {
