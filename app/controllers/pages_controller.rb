@@ -71,7 +71,7 @@ class PagesController < ApplicationController
 
   def submitted_new_location
     if (verify_recaptcha)
-      flash[:notice] = "Thanks for entering that location. We'll get it in the system as soon as possible."
+      flash.now[:notice] = "Thanks for entering that location. We'll get it in the system as soon as possible."
       Pony.mail(
         :to => @region.users.collect {|u| u.email},
         :from => 'admin@pinballmap.com',
@@ -91,7 +91,7 @@ class PagesController < ApplicationController
         "
       )
     else
-      flash[:alert] = "Your captcha entering skills have failed you. Please go back and try again."
+      flash.now[:alert] = "Your captcha entering skills have failed you. Please go back and try again."
     end
   end
 
