@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110528184008) do
+ActiveRecord::Schema.define(:version => 20120121231029) do
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20110528184008) do
     t.date     "condition_date"
     t.string   "ip"
     t.integer  "user_id"
+    t.integer  "machine_score_xrefs_count"
   end
 
   add_index "location_machine_xrefs", ["location_id"], :name => "index_location_machine_xrefs_on_location_id"
@@ -63,8 +64,8 @@ ActiveRecord::Schema.define(:version => 20110528184008) do
     t.string   "state"
     t.string   "zip"
     t.string   "phone"
-    t.float    "lat"
-    t.float    "lon"
+    t.decimal  "lat",              :precision => 18, :scale => 12
+    t.decimal  "lon",              :precision => 18, :scale => 12
     t.string   "website"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -136,6 +137,7 @@ ActiveRecord::Schema.define(:version => 20110528184008) do
     t.float    "lat"
     t.float    "lon"
     t.integer  "n_search_no"
+    t.string   "default_search_type"
   end
 
   create_table "users", :force => true do |t|
