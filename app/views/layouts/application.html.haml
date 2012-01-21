@@ -14,11 +14,15 @@
     = render :partial => 'pages/header'
     .clear
 
-    %body{ :onload => "switchSection('location'); #{params['by_location_id'] ? "initSearch('#{@region.name.downcase}', #{params['by_location_id']});" : ""}" }
-      %p.notice= notice
-      %p.alert= alert
+    - if (@region)
+      %body{ :onload => "switchSection('#{@region.default_search_type || 'location'}'); #{params['by_location_id'] ? "initSearch('#{@region.name.downcase}', #{params['by_location_id']});" : ""}" }
+    - else
+      %body
 
-      = yield
+    %p.notice= notice
+    %p.alert= alert
+
+    = yield
 
 :javascript
   $(function () {

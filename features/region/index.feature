@@ -152,3 +152,10 @@ Feature: Region main page
     Given I update the location condition for "Test Location Name" to be "New Condition"
     And I press "Save"
     Then I should see "New Condition"
+
+  @javascript
+  Scenario: Default search type for region
+    Given there is a region with the name "Portland" and the default_search_type "city"
+    And I am on "Portland"'s home page
+    Then I should see "To search locations by city, please select a city from the drop down"
+    And my other search options should be "location machine type operator zone"
