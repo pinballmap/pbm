@@ -17,7 +17,7 @@ task :report_empty_locations => :environment do
         :to => r.users.collect {|u| u.email},
         :from => 'admin@pinballmap.com',
         :subject => "PBM - List of empty locations",
-        :body => ["The following locations don't have machines at them anymore. You may want to consider removing them from the map. This check will happen again, automatically, in one week.\n\n", machineless_locations.each.map {|ml| ml.name}.sort.join("\n")].join("\n")
+        :body => ["The following locations don't have machines at them anymore. You may want to consider removing them from the map. This check will happen again, automatically, in one week.\n\n", machineless_locations.each.map { |ml| ml.name + " (#{ml.city}, #{ml.state}})" })"}.sort.join("\n")].join("\n")
       )
     end
   end
