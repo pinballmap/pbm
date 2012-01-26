@@ -270,7 +270,10 @@ img.header_image_home {
 }
 
 .black_text {
-	color:#000000;
+	color: #383838;
+	font-size: 10pt;
+	font-weight: bold;
+	padding-right: 1em;
 }
 
 .machine_title {
@@ -372,7 +375,6 @@ br.clear {
   background: #aaaaaa url(/images/arrow_prev.png) no-repeat center center;
   cursor: pointer;
   cursor: hand;
-
   border: solid 1px #444444;
 
   -moz-border-radius: 8px;
@@ -427,11 +429,12 @@ br.clear {
   border-radius:3px;
   -moz-border-radius:3px;
   -webkit-border-radius:3px;
+  background: #484848;
   background: -webkit-gradient(linear, left top, left bottom, from(#c7b79b), to(#484848));
-   background: -webkit-linear-gradient(top, #c7b79b, #484848);
-   background: -moz-linear-gradient(top, #c7b79b, #484848);
-   background: -ms-linear-gradient(top, #c7b79b, #484848);
-   background: -o-linear-gradient(top, #c7b79b, #484848);
+  background: -webkit-linear-gradient(top, #c7b79b, #484848);
+  background: -moz-linear-gradient(top, #c7b79b, #484848);
+  background: -ms-linear-gradient(top, #c7b79b, #484848);
+  background: -o-linear-gradient(top, #c7b79b, #484848);
 }
 
 input.search:hover, input#add:hover, input#location_picture_xref_submit:hover, input.submit_button:hover,
