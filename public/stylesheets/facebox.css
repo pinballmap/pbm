@@ -9,7 +9,8 @@
 
 #facebox .popup{
   position:relative;
-  border:3px solid rgba(0,0,0,0);
+  border: 3px solid rgba(0,0,0,0);
+  border-right: .5px;
   -webkit-border-radius:5px;
   -moz-border-radius:5px;
   border-radius:5px;
@@ -22,10 +23,24 @@
 #facebox .content {
   display:table;
   padding: 10px 15px 10px 10px;
-  background: #fff;
+  background: #FFFFCC;
   -webkit-border-radius:4px;
   -moz-border-radius:4px;
   border-radius:4px;
+  text-align: center;
+  background-image: linear-gradient(right , rgb(252,252,226) 4%, rgb(255,255,255) 51%, rgb(252,252,226) 97%);
+  background-image: -o-linear-gradient(right , rgb(252,252,226) 4%, rgb(255,255,255) 51%, rgb(252,252,226) 97%);
+  background-image: -moz-linear-gradient(right , rgb(252,252,226) 4%, rgb(255,255,255) 51%, rgb(252,252,226) 97%);
+  background-image: -webkit-linear-gradient(right , rgb(252,252,226) 4%, rgb(255,255,255) 51%, rgb(252,252,226) 97%);
+  background-image: -ms-linear-gradient(right , rgb(252,252,226) 4%, rgb(255,255,255) 51%, rgb(252,252,226) 97%);
+  background-image: -webkit-gradient(
+	linear,
+	right top,
+	left top,
+	color-stop(0.04, rgb(252,252,226)),
+	color-stop(0.51, rgb(255,255,255)),
+	color-stop(0.97, rgb(252,252,226))
+);
 }
 
 #facebox .content > p:first-child{
@@ -40,7 +55,7 @@
   top:6px;
   right:8px;
   padding:2px;
-  background:#fff;
+  background:#FFFFCC;
 }
 #facebox .close img{
   opacity:0.3;
@@ -81,25 +96,19 @@
 
 #operator_section_link, #zone_section_link, #machine_section_link, #city_section_link, #location_section_link, #type_section_link {
 	padding:2px;
-	background-color:#FFEEDD;
-	background-image: linear-gradient(bottom, rgb(235,235,235) 4%, rgb(255,238,221) 100%);
-	background-image: -o-linear-gradient(bottom, rgb(235,235,235) 4%, rgb(255,238,221) 100%);
-	background-image: -moz-linear-gradient(bottom, rgb(235,235,235) 4%, rgb(255,238,221) 100%);
-	background-image: -webkit-linear-gradient(bottom, rgb(235,235,235) 4%, rgb(255,238,221) 100%);
-	background-image: -ms-linear-gradient(bottom, rgb(235,235,235) 4%, rgb(255,238,221) 100%);
-
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.04, rgb(235,235,235)),
-		color-stop(1, rgb(255,238,221))
-	);
+	font-size: 9pt;
+	background: #484848;
+	background: -webkit-gradient(linear, left top, left bottom, from(#c7b79b), to(#484848));
+	background: -webkit-linear-gradient(top, #c7b79b, #484848);
+	background: -moz-linear-gradient(top, #c7b79b, #484848);
+	background: -ms-linear-gradient(top, #c7b79b, #484848);
+	background: -o-linear-gradient(top, #c7b79b, #484848);
 	border-top:#ffeedd;
-	color:black;
+	color: white;
 	border-radius:3px;
 	-moz-border-radius:3px;
 	-webkit-border-radius:3px;
+	text-shadow: black 0.02em 0.02em 0.04em;
 }
 
 a#operator_section_link, a#city_section_link, a#machine_section_link, a#zone_section_link, a#location_section_link, a#type_section_link {
@@ -109,7 +118,12 @@ a#operator_section_link, a#city_section_link, a#machine_section_link, a#zone_sec
 }
 
 a#operator_section_link:hover, a#city_section_link:hover, a#machine_section_link:hover, a#zone_section_link:hover, a#location_section_link:hover, a#type_section_link:hover {
-	background:#70706a;
+	background: #484848;
+	background: -webkit-gradient(linear, left top, left bottom, from(#c7b79b), to(#242324));
+    background: -webkit-linear-gradient(top, #c7b79b, #242324);
+    background: -moz-linear-gradient(top, #c7b79b, #242324);
+    background: -ms-linear-gradient(top, #c7b79b, #242324);
+    background: -o-linear-gradient(top, #c7b79b, #242324);
 	border-top-color:#70706a;
-	color:white;
+	color: #FFFFCC;
 }
