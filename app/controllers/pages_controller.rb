@@ -9,7 +9,7 @@ class PagesController < ApplicationController
       'type' => {
         'id'   => 'id',
         'name' => 'name',
-        'search_collection' => LocationType.all.sort{|a,b| a.name <=> b.name},
+        'search_collection' => Location.find(:all, :conditions => ['region_id = ? and location_type_id is not null', @region.id], :select => 'distinct location_type_id').collect { |l| l.location_type }.sort {|a,b| a.name <=> b.name},
       },
       'location' => {
         'id'   => 'id',
