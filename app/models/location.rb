@@ -16,6 +16,7 @@ class Location < ActiveRecord::Base
     r = Region.find_by_name(name)
     where(:region_id => r.id)
   }
+  scope :by_type_id, lambda {|id| where(:location_type_id => id)}
   scope :by_operator_id, lambda {|id| where(:operator_id => id)}
   scope :by_location_id, lambda {|id| where(:id => id)}
   scope :by_zone_id, lambda {|id| where(:zone_id => id)}
