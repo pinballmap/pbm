@@ -96,6 +96,7 @@ Feature: Region main page
       |id|name|
       |1|bar|
       |2|playground|
+      |3|bowling alley|
     And the following locations exist:
       |name|location_type_id|region_id|
       |Cleo|1|1|
@@ -108,6 +109,7 @@ Feature: Region main page
     Then I should see the listing for "Cleo"
     And I should not see the listing for "Zelda"
     And I should not see the listing for "Bawb"
+    And I should not see "bowling alley" within "select#by_type_id"
 
   @javascript
   Scenario: Search by operator
