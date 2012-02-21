@@ -693,8 +693,8 @@ background-image: -webkit-gradient(
 
 a.light_blue:link {color: #cccccc;}
 a.light_blue:visited {color: #cccccc;}
-a.light_blue:hover {color: #ffffff; text-decoration: underline}
-a.light_blue:active {background: #000000;}
+a.light_blue:hover {color: #ffffff; text-decoration: underline;}
+a.light_blue:active {color: #ffffff; text-decoration: underline;}
 
 .pink {
   color:#ffcc00;
