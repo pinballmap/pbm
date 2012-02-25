@@ -2,8 +2,8 @@
 %html
   %head
     %title #{(defined? @region) ? @region.full_name : ''} Pinball Map
-    %meta{:name => "keywords", :content => "pinball, map, google map" }
-    %meta{:name => "description", :content => "Welcome to the #{(defined? @region) ? @region.full_name : ''} Pinball Map. This site is a user-powered map of all the public pinball machines." }
+    %meta{:name => "keywords", :content => "pinball, map, google map, locator" }
+    %meta{:name => "description", :content => "Find local places to play pinball! The #{(defined? @region) ? @region.full_name : ''} Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area." }
     = stylesheet_link_tag 'style', 'jquery.ui.all', 'jquery.jscrollpane', 'facebox', 'highslide', 'highslide-ie6'
     = javascript_include_tag 'jquery', 'jquery-ui-1.8.5.custom.min', 'jQuery.scrollSomething-1.0.0', 'rails', 'application', 'jquery.form', 'jquery.remotipart', 'jquery.mousewheel', 'jquery.jscrollpane', 'facebox', 'highslide.min'
     = csrf_meta_tag
