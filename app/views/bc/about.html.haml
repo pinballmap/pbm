@@ -1,5 +1,8 @@
-.text_column
-  = image_tag "bc/bc-about.jpg", :class => 'pic', :style => 'float:left;'
+.left_column.secondary
+  = image_tag "bc/bc-about.jpg", :class => 'pic'
+
+.right_column
+  = image_tag 'bc/bc-about-2.jpg', :class => 'pic', :style => 'float:right;'
   %p.regular_text
     %span Hi. This site lists all the pinball machines in the
     %span.yellow Vancouver, BC
@@ -13,5 +16,3 @@
     = link_to 'contact us', 'http://pinballmap.com/portland/contact'
   %p.regular_text
     = link_to image_tag('twitter-icon.png') + 'Follow the updates to this map on Twitter.', 'http://twitter.com/bcpinball'
-.right_column
-  = image_tag 'bc/bc-about-2.jpg'

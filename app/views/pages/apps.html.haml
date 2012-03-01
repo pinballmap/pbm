@@ -1,28 +1,19 @@
-#left_column
-  %p.subpage_text
+#left_column.secondary
+  =link_to image_tag('App_Store.png'), "http://itunes.apple.com/us/app/portland-pinball-map/id359275713?mt=8", :class => 'pic', :target => '_blank'
+  %br/
+  %br/
+  =link_to image_tag('android_market.png'), "https://market.android.com/details?id=com.pbm&feature=search_result#?t=W251bGwsMSwxLDEsImNvbS5wYm0iXQ..", :class => 'pic', :target => '_blank'
+  %br/
+  %br/
+  =image_tag 'appLoadingPortland.jpg'
+#right_column
+  %span.subpage_text
     %strong Pinball Map Apps
   %p.subpage_text 
-    We currently have two mobile apps released. One's for the iPhone, and the other is for Android. The iPhone app has just seen the release of version 2 (with some major updates)! And the Android app was recently released!
-    %br/
-    %br/
-    The newest versions of these apps will work for all the regions the website currently covers. You just open the app and then choose where you are located. And they will automatically support the new regions that are added in the future (and you won't need to update).
+    We currently have two mobile apps released. One's for the iPhone, and the other is for Android. The newest versions of these apps will work for all the regions the website currently covers. You just open the app and then choose where you are located. And they will automatically support the new regions that are added in the future (and you won't need to update).
   %p.subpage_text
     %span Featuring splash artwork by&nbsp;
     =link_to 'Drew Marshall', 'http://workbydrew.com', :class => 'light_blue', :target => '_blank'
-  %p.yellowb.subpage_text
-    %strong Android app - Pinball Map
-    .clear
-    %p.subpage_text
-      =link_to 'Click here to download the app', 'http://market.android.com/search?q=pname:com.pbm', :class => 'light_blue', :target => '_blank'
-  %p.subpage_text
-    If you have an Android phone, you should download it! It's free.
-  %p.yellowb
-    %strong iPhone app - version 2
-    %p.subpage_text
-      FREE on the iTunes store (link to the upper right). The app totally rules.
-      %br/
-      %br/
-      iPhone 4.0 and iPod Touch 3.0 compatible.
   %p.subpage_text
     =link_to 'Click here for iPhone app support (and to see some screenshots).', app_support_path, :class => 'light_blue'
   %br/
@@ -38,18 +29,4 @@
     %li Add in your high scores
     %li SHAKE THE PHONE to find a random spot near you! (not available on Android... yet)
     %li Other stuff I'm forgetting
-#right_column{:style => 'margin-left:55%;'}
-  %p.title
-    =link_to image_tag('App_Store.jpg'), "http://itunes.apple.com/us/app/portland-pinball-map/id359275713?mt=8", :class => 'pic', :target => '_blank'
-  =image_tag 'appLoadingPortland.jpg'
-  %br/
-  %br/
-  =image_tag 'appLoadingBC.jpg'
-  %br/
-  %br/
-  =image_tag 'appLoadingSeattle.jpg'
-  %br/
-  %br/
-  =image_tag 'appLoadingSD.jpg'
-  %br/
-  %br/
+
