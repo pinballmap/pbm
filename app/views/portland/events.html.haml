@@ -1,5 +1,5 @@
 - content_for :events_extra do
-  .text_column.regular_text
+  .left_column.regular_text
     %p
       %span Let's join together for some pinball activities!
     %p
@@ -26,5 +26,4 @@
         %span If you have a pinball event that you'd like included on this page, use the contact form on the 
         = link_to 'contact page', 'contact', :class => 'intro'
         to give us the info.
-      %span We'll probably eventually make this page rss'able, or something.
 = render :file => 'events/index'
