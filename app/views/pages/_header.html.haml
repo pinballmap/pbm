@@ -11,17 +11,14 @@
       %li=link_to 'Links', links_path
       %br/
       %li
-        %span Other Regions
-        %span.other_regions_arrow
+        %span.other_regions.other_regions_arrow Other Regions
         %ul
           #other_regions= other_regions_html(@region)
       %li=link_to 'Events', events_path
       %li
-        =image_tag 'feed-icon-10x10.png'
-        =link_to 'Location Feed', "/#{params[:region]}/location_machine_xrefs.rss"
+        =link_to 'Location Feed', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
       %li
-        =image_tag 'feed-icon-10x10.png'
-        =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss"
+        =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
       %li=link_to 'High Rollers', high_rollers_path
 
 :javascript
