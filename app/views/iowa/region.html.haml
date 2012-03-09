@@ -1,0 +1,10 @@
+- content_for :presearch_sidebar do
+  %span{:style => 'margin-left:10%;'}
+    = image_tag 'iowa/iowa-pinball-club-logo.png'
+  %br/
+  %br/
+  %span.regular_text The
+  =link_to 'Iowa Pinball Club', 'http://iowapinballclub.com/', :class => 'light_blue', :target => '_blank' 
+  %span.regular_text supports and maintains this map. They have lots of stuff going on, so check out their site!
+  %br/
+= render :file => 'pages/region'
