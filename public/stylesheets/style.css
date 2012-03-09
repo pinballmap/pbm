@@ -94,15 +94,15 @@ background-image: -webkit-gradient(
   width: 600px;
   margin-top: 21px;
   display: block;
-  border: 1px solid #5C4A2E;
+  border: 1px solid #5c462c;
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  background-color:rgba(92,88,81,0.9);
+  background-color:rgba(92,70,44,0.9);
 	/* Fallback for web browsers that doesn't support RGBa */
-	background: rgb(92,88,81) transparent;
+	background: rgb(92,70,44) transparent;
 	/* RGBa with 0.7 opacity */
-	background: rgba(92,88,81,0.9);
+	background: rgba(92,70,44,0.9);
 	/* For IE 5.5 - 7*/
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#905c5851, endColorstr=#905c5851);
 	/* For IE 8*/
@@ -275,14 +275,16 @@ background-image: -webkit-gradient(
   color: #cccccc;
 }
 
-.pick_a_map {
+div.pick_a_map {
+  margin-left:50%;
+  margin-top:-92px;
   color: #ffffcc;
-  background-color:rgb(92,88,81);
-  background: rgb(92,88,81) transparent;
+  background-color:rgb(75,82,89);
+  background: rgb(75,82,89) transparent;
   border-radius: 3px;
   -moz-border-radius:3px;
   -webkit-border-radius:3px;
-  width: 100%;
+  width: 140px;
   text-align: center;
   font-size: 14pt;
   -moz-box-shadow:    inset 0 0 5px #000000;
@@ -311,7 +313,7 @@ img.header_image {
 }
 
 img.header_image_home {
-  margin-left: 34%;
+  margin-left: 5%;
 }
 
 .black_text {
