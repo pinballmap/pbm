@@ -276,25 +276,26 @@ background-image: -webkit-gradient(
 }
 
 div.pick_a_map {
-  margin-left:50%;
-  margin-top:-92px;
-  color: #ffffcc;
-  background-color:rgb(75,82,89);
   background: rgb(75,82,89) transparent;
   border-radius: 3px;
-  -moz-border-radius:3px;
-  -webkit-border-radius:3px;
-  width: 140px;
-  text-align: center;
-  font-size: 14pt;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
   -moz-box-shadow:    inset 0 0 5px #000000;
   -webkit-box-shadow: inset 0 0 5px #000000;
   box-shadow:         inset 0 0 5px #000000;
+  background-color: #4B5259;
+  color: #FFFFCC;
+  font-size: 14pt;
+  left: 58%;
+  position: absolute;
+  text-align: center;
+  top: 22px;
 }
 
 p.pick_a_map {
-  padding: 0.5em 0 0.5em 0;
-  text-shadow: black 0.1em 0.1em 0.2em;
+margin: 0;
+padding: 10px 14px 10px 14px;
+text-shadow: 0.1em 0.1em 0.2em black;
 }
 
 .landing_logo {
