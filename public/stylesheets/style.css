@@ -209,12 +209,11 @@ background-image: -webkit-gradient(
 
 .name {
   font-size:13px;
-  height:12px;
+  height:100%;
   color:black;
   width:260px;
   background-color:#FFEEDD;
-  padding-top:2px;
-  padding-bottom: 5px;
+  padding:4px 5px 5px 6px;
   margin-bottom:3px;
   border-radius:2px;
   -moz-border-radius:2px;
