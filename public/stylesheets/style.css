@@ -239,6 +239,10 @@ background-image: -webkit-gradient(
   float: left;
   color: #FFEEDD;
   font-size: 14px;
+  background-color: #333333;
+  height: 100%;
+  padding: 1px 3px;
+  width: 78%;
 }
 
 .machine_lmx {
@@ -252,10 +256,18 @@ background-image: -webkit-gradient(
   font-size: 10px;
   font-style: italic;
   margin-left: 10px;
-  padding-top: 20px;
-  padding-bottom: 15px;
+  padding-top: 25px;
+  padding-bottom: 10px;
   line-height: 125%;
 }
+
+.high_score { 
+  margin-left: 10px;  
+}
+
+.high_score > .sub_nav_item {width: 270px;}
+
+.new_location_picture_xref, .add_machine_location { padding: 10px 0px;}
 
 .button_to {
   float:right;
