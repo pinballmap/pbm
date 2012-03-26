@@ -70,16 +70,16 @@ body {
   height: 70px;
   background:rgb(64,90,106) transparent;
   background-image: linear-gradient(bottom, rgba(64,90,106,0.7) 7%, rgba(130,154,168,0.7) 54%);
-background-image: -o-linear-gradient(bottom, rgba(64,90,106,0.7) 7%, rgba(130,154,168,0.7) 54%);
-background-image: -moz-linear-gradient(bottom, rgba(64,90,106,0.7) 7%, rgba(130,154,168,0.7) 54%);
-background-image: -webkit-linear-gradient(bottom, rgba(64,90,106,0.7) 7%, rgba(130,154,168,0.7) 54%);
-background-image: -ms-linear-gradient(bottom, rgba(64,90,106,0.7) 7%, rgba(130,154,168,0.7) 54%);
-background-image: -webkit-gradient(
+  background-image: -o-linear-gradient(bottom, rgba(64,90,106,0.7) 7%, rgba(130,154,168,0.7) 54%);
+  background-image: -moz-linear-gradient(bottom, rgba(64,90,106,0.7) 7%, rgba(130,154,168,0.7) 54%);
+  background-image: -webkit-linear-gradient(bottom, rgba(64,90,106,0.7) 7%, rgba(130,154,168,0.7) 54%);
+  background-image: -ms-linear-gradient(bottom, rgba(64,90,106,0.7) 7%, rgba(130,154,168,0.7) 54%);
+  background-image: -webkit-gradient(
 	linear,
 	left bottom,
 	left top,
-	color-stop(0.07, rgb(64,90,106)),
-	color-stop(0.54, rgb(130,154,168))
+	color-stop(0.07, rgba(64,90,106,0.7)),
+	color-stop(0.54, rgba(130,154,168,0.7))
 );
   border-radius: 5px;
   padding: 25px 0 0 0;
