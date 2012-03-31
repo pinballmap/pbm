@@ -231,7 +231,7 @@ RailsAdmin::Adapters::ActiveRecord.module_eval do
         model.all(merge_order(options))
       end
     elsif (model.name == 'LocationPictureXref')
-      LocationPictureXref.all.select{|lpx| lpx.location.region_id == Authorization.current_user.region_id}
+      LocationPictureXref.all.select{|lpx| lpx.location && (lpx.location.region_id == Authorization.current_user.region_id)}
     elsif (model.name == 'LocationMachineXref')
       lmxes = LocationMachineXref.all.select{|lmx| (lmx.location && (lmx.location.region_id == Authorization.current_user.region_id)) && (!lmx.condition.blank?)}
       lmxes.sort! {|a,b| b.updated_at.to_s <=> a.updated_at.to_s}
