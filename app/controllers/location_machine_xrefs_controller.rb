@@ -41,18 +41,9 @@ class LocationMachineXrefsController < InheritedResources::Base
 
   def update_machine_condition
     id = params[:id]
-
     lmx = LocationMachineXref.find(id)
-    lmx.condition = params["new_machine_condition_#{id}".to_sym]
-    lmx.condition_date = Time.now
-    lmx.save
-
-    Pony.mail(
-      :to => Region.find_by_name(@region.name).users.collect {|u| u.email},
-      :from => 'admin@pinballmap.com',
-      :subject => "PBM - Someone entered a machine condition",
-      :body => [lmx.condition, lmx.machine.name, lmx.location.name, @region.name].join("\n")
-    )
+    
+    lmx.update_condition(params["new_machine_condition_#{id}".to_sym])
   end
 
   def render_machine_condition

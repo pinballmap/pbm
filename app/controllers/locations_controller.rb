@@ -65,9 +65,8 @@ class LocationsController < InheritedResources::Base
     elsif (location_id = params[:error])
     elsif (condition = params[:condition])
       lmx = LocationMachineXref.find_by_location_id_and_machine_id(params[:location_no], params[:machine_no])
-      lmx.condition = condition
-      lmx.condition_date = Time.now
-      lmx.save
+      lmx.update_condition(condition)
+
       redirect_to "/#{region}/location_machine_xrefs/#{lmx.id}/condition_update_confirmation.xml"
     elsif (location_id = params[:modify_location])
       # unfortunately, the mobile devices are sending us a parameter called 'action'...until I figure out a way to handle this,

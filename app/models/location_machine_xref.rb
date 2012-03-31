@@ -12,4 +12,17 @@ class LocationMachineXref < ActiveRecord::Base
   def haml_object_ref
     'lmx'
   end
+
+  def update_condition(condition)
+    self.condition = condition
+    self.condition_date = Time.now
+    self.save
+
+    Pony.mail(
+      :to => self.location.region.users.collect {|u| u.email},
+      :from => 'admin@pinballmap.com',
+      :subject => "PBM - Someone entered a machine condition",
+      :body => [self.condition, self.machine.name, self.location.name, self.location.region.name].join("\n")
+    )
+  end
 end
