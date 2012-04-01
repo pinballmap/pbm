@@ -21,9 +21,7 @@
         $('#score_container_lmx_#{lmx.id}').css('display', 'block');
         $('#show_scores_lmx_#{lmx.id}').html(loadingHTML());
 
-        $.post(this.action, $(this).serialize(), null, 'script');
-
-        $('#show_scores_lmx_#{lmx.id}').load('/#{params[:region]}/locations/#{lmx.id}/render_scores');
+        $.post(this.action, $(this).serialize(), function (data) { $('#show_scores_lmx_#{lmx.id}').load('/#{params[:region]}/locations/#{lmx.id}/render_scores') });
 
         return false;
       });
