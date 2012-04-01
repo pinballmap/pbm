@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120121231029) do
+ActiveRecord::Schema.define(:version => 20120331225504) do
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"
@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(:version => 20120121231029) do
     t.float    "lon"
     t.integer  "n_search_no"
     t.string   "default_search_type"
+    t.boolean  "should_email_machine_removal"
   end
 
   create_table "users", :force => true do |t|
