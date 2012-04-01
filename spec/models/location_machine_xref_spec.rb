@@ -14,10 +14,21 @@ describe LocationMachineXref do
 
     @lmx = Factory.create(:location_machine_xref, :location => @l, :machine => @m)
     @lmx_no_email = Factory.create(:location_machine_xref, :location => @l_no_email, :machine => @m)
+
+    Pony.stub!(:mail)
   end
 
   describe '#update_condition' do
     it 'should update the condition of the lmx, timestamp it, and email the admins of the region' do
+      Pony.should_receive(:mail) do |mail|
+        mail.should == {
+          :body => "foo\nSassy\nCool Bar\nPortland",
+          :subject => "PBM - Someone entered a machine condition",
+          :to => ["foo@bar.com"],
+          :from =>"admin@pinballmap.com"
+        }
+      end
+
       @lmx.update_condition('foo')
 
       @lmx.condition.should == 'foo'
@@ -27,8 +38,6 @@ describe LocationMachineXref do
 
   describe '#destroy' do
     it 'should remove the lmx, and email admins if appropriate' do
-      Pony.stub!(:mail)
-
       Pony.should_receive(:mail) do |mail|
         mail.should == {
           :body => "Cool Bar\nSassy\nPortland",
