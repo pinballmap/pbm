@@ -42,7 +42,7 @@ class LocationMachineXrefsController < InheritedResources::Base
   def update_machine_condition
     id = params[:id]
     lmx = LocationMachineXref.find(id)
-    
+
     lmx.update_condition(params["new_machine_condition_#{id}".to_sym])
   end
 
