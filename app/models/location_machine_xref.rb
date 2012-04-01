@@ -25,4 +25,17 @@ class LocationMachineXref < ActiveRecord::Base
       :body => [self.condition, self.machine.name, self.location.name, self.location.region.name].join("\n")
     )
   end
+
+  def destroy
+    if (self.location.region.should_email_machine_removal)
+      Pony.mail(
+          :to => self.location.region.users.collect {|u| u.email},
+          :from => 'admin@pinballmap.com',
+          :subject => "PBM - Someone removed a machine from a location",
+          :body => [self.location.name, self.machine.name, self.location.region.name].join("\n")
+      )
+    end
+
+    super
+  end
 end

@@ -70,7 +70,7 @@ class LocationsController < InheritedResources::Base
       redirect_to "/#{region}/location_machine_xrefs/#{lmx.id}/condition_update_confirmation.xml"
     elsif (location_id = params[:modify_location])
       # unfortunately, the mobile devices are sending us a parameter called 'action'...until I figure out a way to handle this,
-      # I assume if a machine doesn't exist at a location, create it..if it does, delete it
+      # I assume if a machine doesn't exist at a location, create it..if it does, destroy it
       machine = params[:machine_no] ? Machine.find(params[:machine_no]) : Machine.find_by_name(params[:machine_name])
 
       if (machine.nil?)
@@ -86,7 +86,8 @@ class LocationsController < InheritedResources::Base
 
       if (lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine.id))
         id = lmx.id
-        lmx.delete
+        lmx.destroy
+
         redirect_to "/#{region}/location_machine_xrefs/#{id}/remove_confirmation.xml"
       else
         lmx = LocationMachineXref.create(:location_id => location_id, :machine_id => machine.id)
