@@ -173,7 +173,6 @@ GEM
     mini_magick (3.4)
       subexec (~> 0.2.1)
     multi_json (1.2.0)
-    mysql2 (0.3.11)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -184,6 +183,7 @@ GEM
     newrelic_rpm (3.3.3)
     nokogiri (1.5.2)
     orm_adapter (0.0.7)
+    pg (0.13.2)
     pickle (0.4.10)
       cucumber (>= 0.8)
       rake
@@ -313,8 +313,8 @@ DEPENDENCIES
   kaminari
   launchy
   mini_magick
-  mysql2
   newrelic_rpm
+  pg
   pickle
   pony
   rack
