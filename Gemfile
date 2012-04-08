@@ -10,10 +10,11 @@ gem 'devise'
 gem 'inherited_resources'
 gem 'simple_form'
 gem 'has_scope'
-gem 'will_paginate'
+gem 'kaminari'
 gem 'escape_utils'
 gem 'jquery-rails'
 gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
+gem "cancan"
 gem 'declarative_authorization'
 gem 'haml'
 gem 'haml-rails'
@@ -34,25 +35,24 @@ group :test do
   gem 'spork'
   gem 'factory_girl'
   gem 'factory_girl_rails', :require => false
-end
-
-group :development, :test do
-  gem 'capybara'
-  gem 'database_cleaner'
-  gem 'gherkin'
+  gem 'cucumber_factory'
   gem 'cucumber'
   gem 'launchy'
+  gem 'capybara'
   gem 'autotest'
   gem 'autotest-rails'
-  gem 'autotest-growl'
-  gem 'ruby-growl'
-  gem 'pickle'
   gem 'selenium'
   gem 'selenium-client'
   gem 'selenium-webdriver'
-  gem 'cucumber_factory'
-  gem 'fuubar'
+  gem 'autotest-growl'
   gem 'timecop'
+end
+
+group :development, :test do
+  gem 'database_cleaner'
+  gem 'gherkin'
+  gem 'ruby-growl'
+  gem 'pickle'
   gem 'bullet'
   gem 'email_spec'
 end
