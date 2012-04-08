@@ -67,7 +67,7 @@ function attachMarkerClick(marker, index) {
 }
 
 function loadingHTML() {
-  return "<div class='loading'><img src='images/spinner_blue.gif' /> Loading <div>";
+  return "<div class='loading'><img src='assets/spinner_blue.gif' /> Loading <div>";
 }
 
 function setOtherSearchOptions(newSection) {
