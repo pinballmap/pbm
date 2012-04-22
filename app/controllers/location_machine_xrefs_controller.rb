@@ -27,8 +27,8 @@ class LocationMachineXrefsController < InheritedResources::Base
       return
     end
 
-    LocationMachineXref.where(:location_id => params[:location_id], :machine => machine).first ||
-      LocationMachineXref.create(:location_id => params[:location_id], :machine => machine, :user => current_user)
+    LocationMachineXref.where(:location_id => params[:location_id], :machine_id => machine.id).first ||
+      LocationMachineXref.create(:location_id => params[:location_id], :machine_id => machine.id)
   end
 
   def create_confirmation

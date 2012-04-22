@@ -29,10 +29,10 @@ Given /^"([^"]*)" has (\d+) locations and (\d+) machines$/ do |name, num_locatio
   r = Region.find_by_name(name)
 
   num_locations.to_i.times {
-    locations << Factory.create(:location, :region_id => r.id)
+    locations << FactoryGirl.create(:location, :region_id => r.id)
   }
 
   num_machines.to_i.times {
-    Factory.create(:location_machine_xref, :location_id => locations.first.id, :machine_id => Factory.create(:machine).id)
+    FactoryGirl.create(:location_machine_xref, :location_id => locations.first.id, :machine_id => FactoryGirl.create(:machine).id)
   }
 end

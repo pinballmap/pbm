@@ -16,7 +16,7 @@ Feature: Region main page
 
   @javascript
   Scenario: Searching is automatically limited by region
-    Given "Chicago" is a region with the name "chicago" and the id "1"
+    Given "Chicago" is a region with the name "chicago" and the id "2"
     And there is a location machine xref
     And I am on "Chicago"'s home page
     And I press the "location" search button
@@ -134,11 +134,11 @@ Feature: Region main page
 
   @javascript
   Scenario: Displays location type if available
-    Given there is a region with the name "Portland" and the id "1"
-    And there is a location type with the name "bar"
+    Given there is a region with the name "portland" and the id "1"
+    And there is a location type with the name "bar" and the id "1"
     And the following locations exist:
-      |name|location_type|region_id|
-      |Cleo|name: bar|1|
+      |name|location_type_id|region_id|
+      |Cleo|1|1|
       |Sass||1|
     And I am on "Portland"'s home page
     And I press the "location" search button
@@ -157,7 +157,7 @@ Feature: Region main page
 
   @javascript
   Scenario: Default search type for region
-    Given there is a region with the name "Portland" and the default_search_type "city"
+    Given there is a region with the name "portland" and the default_search_type "city"
     And I am on "Portland"'s home page
     Then I should see "To search locations by city, please select a city from the drop down"
     And my other search options should be "location machine type operator zone"

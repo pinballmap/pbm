@@ -48,7 +48,6 @@ FactoryGirl.define do
     initials 'cap'
     sequence(:email) {|n| "captainamerica#{n}@foo.bar"}
     password 'password'
-    association :region, :name => 'portland'
   end
 
   factory :location_picture_xref do
