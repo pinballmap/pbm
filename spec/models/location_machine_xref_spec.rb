@@ -2,18 +2,18 @@ require 'spec_helper'
 
 describe LocationMachineXref do
   before(:each) do
-    @r = Factory.create(:region, :name => 'Portland', :should_email_machine_removal => 1)
-    @r_no_email = Factory.create(:region, :should_email_machine_removal => 0)
+    @r = FactoryGirl.create(:region, :name => 'Portland', :should_email_machine_removal => 1)
+    @r_no_email = FactoryGirl.create(:region, :should_email_machine_removal => 0)
 
-    @u = Factory.create(:user, :region => @r, :email => 'foo@bar.com')
+    @u = FactoryGirl.create(:user, :region => @r, :email => 'foo@bar.com')
 
-    @l = Factory.create(:location, :region => @r, :name => 'Cool Bar')
-    @l_no_email = Factory.create(:location, :region => @r_no_email)
+    @l = FactoryGirl.create(:location, :region => @r, :name => 'Cool Bar')
+    @l_no_email = FactoryGirl.create(:location, :region => @r_no_email)
 
-    @m = Factory.create(:machine, :name => 'Sassy')
+    @m = FactoryGirl.create(:machine, :name => 'Sassy')
 
-    @lmx = Factory.create(:location_machine_xref, :location => @l, :machine => @m)
-    @lmx_no_email = Factory.create(:location_machine_xref, :location => @l_no_email, :machine => @m)
+    @lmx = FactoryGirl.create(:location_machine_xref, :location => @l, :machine => @m)
+    @lmx_no_email = FactoryGirl.create(:location_machine_xref, :location => @l_no_email, :machine => @m)
 
     Pony.stub!(:mail)
   end

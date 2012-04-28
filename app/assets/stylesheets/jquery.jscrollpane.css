@@ -76,7 +76,7 @@
 	top: 0;
 	left: 0;
 	cursor: pointer;
-	background: url(/images/scroll-squigglyball.png) repeat-y;
+	background: url(/assets/scroll-squigglyball.png) repeat-y;
 	height:133px;
 }
 
@@ -96,7 +96,7 @@
 }
 
 a.jspArrowDown {
-	background: url(/images/scroll-base2.png) no-repeat;
+	background: url(/assets/scroll-base2.png) no-repeat;
 	padding-bottom:40px;
 }
 
@@ -105,7 +105,7 @@ a.jspArrowDown {
 }
 
 a.jspArrowUp {
-	background: url(/images/scroll-top.png) no-repeat;
+	background: url(/assets/scroll-top.png) no-repeat;
 }
 
 .jspArrowUp:focus {
