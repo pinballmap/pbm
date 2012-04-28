@@ -40,5 +40,6 @@ module Pbm
     config.filter_parameters += [:password]
 
     config.assets.enabled = true
+    config.assets.initialize_on_precompile = false
   end
 end
