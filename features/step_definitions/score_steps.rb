@@ -21,7 +21,7 @@ end
 
 Given /^a high score exists for location "([^"]*)"'s "([^"]*)" with initials "([^"]*)" and score "([^"]*)" and rank "([^"]*)"$/ do |location_name, machine_name, initials, score, rank|
   lmx = LocationMachineXref.where(:location_id => Location.find_by_name(location_name).id, :machine_id => Machine.find_by_name(machine_name).id).first
-  FactoryGirl.create(:machine_score_xref, :initials => initials, :location_machine_xref => lmx, :score => score, :rank => MachineScoreXref::ENGLISH_SCORES.index(rank))
+  FactoryGirl.create(:machine_score_xref, :initials => initials, :location_machine_xref => lmx, :score => score, :rank => MachineScoreXref::ENGLISH_SCORES.key(rank))
 end
 
 Then /^I should not see the show scores option for "([^"]*)"'s "([^"]*)"$/ do |location_name, machine_name|
