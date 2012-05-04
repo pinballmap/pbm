@@ -47,6 +47,7 @@ class LocationsController < InheritedResources::Base
 
   def mobile
     region = params[:region] || 'portland'
+
     if (params[:init])
       case params[:init].to_i
       when 1 then

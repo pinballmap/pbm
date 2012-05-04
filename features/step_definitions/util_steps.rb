@@ -36,3 +36,9 @@ Given /^"([^"]*)" has (\d+) locations and (\d+) machines$/ do |name, num_locatio
     FactoryGirl.create(:location_machine_xref, :location_id => locations.first.id, :machine_id => FactoryGirl.create(:machine).id)
   }
 end
+
+Then /^I should see the following output:$/ do |xml_output|
+  response = Hash.from_xml(page.body)
+  expected = Hash.from_xml(xml_output)
+  expected.diff(response).should == {}
+end
