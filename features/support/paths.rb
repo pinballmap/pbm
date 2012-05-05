@@ -35,6 +35,10 @@ module NavigationHelpers
     when /^the machine edit page for "(.*)"$/i
       edit_machine_path(Machine.find_by_name($1))
 
+    when /^the mobile page for "(.*)"$/i
+      $1
+
+
     else
       begin
         page_name =~ /the (.*) page/
