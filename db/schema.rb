@@ -11,9 +11,25 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120408220929) do
+ActiveRecord::Schema.define(:version => 20120520190845) do
 
-  create_table "events", :force => true do |t|
+  create_table "active_admin_comments", :force => true do |t|
+    t.string   "resource_id",   :null => false
+    t.string   "resource_type", :null => false
+    t.integer  "author_id"
+    t.string   "author_type"
+    t.text     "body"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "namespace"
+  end
+
+  add_index "active_admin_comments", ["author_type", "author_id"], :name => "index_active_admin_comments_on_author_type_and_author_id"
+  add_index "active_admin_comments", ["namespace"], :name => "index_active_admin_comments_on_namespace"
+  add_index "active_admin_comments", ["resource_type", "resource_id"], :name => "index_admin_notes_on_resource_type_and_resource_id"
+
+  create_table "events", :id => false, :force => true do |t|
+    t.integer  "id",            :null => false
     t.integer  "region_id"
     t.string   "name"
     t.text     "long_desc"
@@ -27,7 +43,8 @@ ActiveRecord::Schema.define(:version => 20120408220929) do
     t.string   "category"
   end
 
-  create_table "location_machine_xrefs", :force => true do |t|
+  create_table "location_machine_xrefs", :id => false, :force => true do |t|
+    t.integer  "id",                        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "location_id"
@@ -42,23 +59,29 @@ ActiveRecord::Schema.define(:version => 20120408220929) do
   add_index "location_machine_xrefs", ["location_id"], :name => "index_location_machine_xrefs_on_location_id"
   add_index "location_machine_xrefs", ["machine_id"], :name => "index_location_machine_xrefs_on_machine_id"
 
-  create_table "location_picture_xrefs", :force => true do |t|
+  create_table "location_picture_xrefs", :id => false, :force => true do |t|
+    t.integer  "id",                 :null => false
     t.integer  "location_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "photo"
     t.text     "description"
     t.boolean  "approved"
     t.integer  "user_id"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
   end
 
-  create_table "location_types", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+  create_table "location_types", :id => false, :force => true do |t|
+    t.integer  "id",         :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "name"
   end
 
-  create_table "locations", :force => true do |t|
+  create_table "locations", :id => false, :force => true do |t|
+    t.integer  "id",                                               :null => false
     t.string   "name"
     t.string   "street"
     t.string   "city"
@@ -77,7 +100,8 @@ ActiveRecord::Schema.define(:version => 20120408220929) do
     t.integer  "operator_id"
   end
 
-  create_table "machine_score_xrefs", :force => true do |t|
+  create_table "machine_score_xrefs", :id => false, :force => true do |t|
+    t.integer  "id",                                    :null => false
     t.integer  "location_machine_xref_id"
     t.integer  "score",                    :limit => 8
     t.datetime "created_at"
@@ -90,14 +114,16 @@ ActiveRecord::Schema.define(:version => 20120408220929) do
 
   add_index "machine_score_xrefs", ["location_machine_xref_id"], :name => "index_machine_score_xrefs_on_location_machine_xref_id"
 
-  create_table "machines", :force => true do |t|
+  create_table "machines", :id => false, :force => true do |t|
+    t.integer  "id",         :null => false
     t.string   "name"
     t.boolean  "is_active"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "operators", :force => true do |t|
+  create_table "operators", :id => false, :force => true do |t|
+    t.integer  "id",         :null => false
     t.string   "name"
     t.integer  "region_id"
     t.string   "email"
@@ -107,12 +133,13 @@ ActiveRecord::Schema.define(:version => 20120408220929) do
     t.datetime "updated_at"
   end
 
-  create_table "rails_admin_histories", :force => true do |t|
+  create_table "rails_admin_histories", :id => false, :force => true do |t|
+    t.integer  "id",                      :null => false
     t.string   "message"
     t.string   "username"
     t.integer  "item"
     t.string   "table"
-    t.integer  "month",      :limit => 2
+    t.integer  "month"
     t.integer  "year",       :limit => 8
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -120,7 +147,8 @@ ActiveRecord::Schema.define(:version => 20120408220929) do
 
   add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_histories_on_item_and_table_and_month_and_year"
 
-  create_table "region_link_xrefs", :force => true do |t|
+  create_table "region_link_xrefs", :id => false, :force => true do |t|
+    t.integer "id",          :null => false
     t.string  "name"
     t.string  "url"
     t.string  "description"
@@ -129,20 +157,22 @@ ActiveRecord::Schema.define(:version => 20120408220929) do
     t.integer "sort_order"
   end
 
-  create_table "regions", :force => true do |t|
+  create_table "regions", :id => false, :force => true do |t|
+    t.integer  "id",                                                           :null => false
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "full_name"
     t.string   "motd"
-    t.float    "lat"
-    t.float    "lon"
+    t.decimal  "lat",                          :precision => 255, :scale => 0
+    t.decimal  "lon",                          :precision => 255, :scale => 0
     t.integer  "n_search_no"
     t.string   "default_search_type"
     t.boolean  "should_email_machine_removal"
   end
 
-  create_table "users", :force => true do |t|
+  create_table "users", :id => false, :force => true do |t|
+    t.integer  "id",                                                    :null => false
     t.string   "email",                                 :default => "", :null => false
     t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
     t.string   "password_salt",                         :default => "", :null => false
@@ -163,7 +193,8 @@ ActiveRecord::Schema.define(:version => 20120408220929) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
-  create_table "zones", :force => true do |t|
+  create_table "zones", :id => false, :force => true do |t|
+    t.integer  "id",         :null => false
     t.string   "name"
     t.integer  "region_id"
     t.datetime "created_at"

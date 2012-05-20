@@ -6,6 +6,7 @@ gem 'pg'
 gem 'rake'
 gem 'rack'
 
+gem 'paperclip'
 gem 'devise'
 gem 'inherited_resources'
 gem 'simple_form'
@@ -18,7 +19,6 @@ gem "cancan"
 gem 'declarative_authorization'
 gem 'haml'
 gem 'haml-rails'
-gem 'carrierwave'
 gem 'mini_magick'
 gem 'remotipart'
 gem 'pony'
@@ -27,6 +27,7 @@ gem 'newrelic_rpm'
 gem 'capistrano'
 gem 'geocoder'
 gem 'exception_notification_rails3', :require => 'exception_notifier'
+gem 'aws-sdk'
 
 group :test do
   gem 'cucumber-rails', :require => false

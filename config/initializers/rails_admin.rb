@@ -203,22 +203,14 @@ RailsAdmin.config do |config|
       field :location, :belongs_to_association 
       field :created_at, :datetime 
       field :description, :text 
-      field :photo do
-        pretty_value do
-          bindings[:view].render :partial => 'lpx_show', :locals => {:photo => bindings[:object].photo}
-        end
-      end
+      field :photo, :paperclip
       field :approved, :boolean 
     end
     edit do
       field :location, :belongs_to_association 
       field :created_at, :datetime 
       field :description, :text 
-      field :photo do
-        render do
-          bindings[:view].render :partial => 'lpx_show', :locals => {:photo => bindings[:object].photo}
-        end
-      end
+      field :photo, :paperclip
       field :approved, :boolean 
     end
     export do; end
@@ -427,25 +419,5 @@ RailsAdmin.config do |config|
     end
     export do; end
     update do; end
-  end
-end
-
-RailsAdmin::Adapters::ActiveRecord.module_eval do
-  def all(options = {}, scope = nil)
-    if (model.name == 'Region')
-      if (Authorization.current_user.region_id != Region.find_by_name('portland').id)
-        model.all().select{|v| v.id == Authorization.current_user.region_id}
-      else
-        model.all()
-      end
-    elsif (model.name == 'User' || model.name == 'Machine' || model.name == 'LocationType')
-        model.all()
-    elsif (model.column_names.include?('region_id'))
-      model.all().select{|v| v.region_id == Authorization.current_user.region_id}
-    elsif (model.name == 'LocationPictureXref')
-      LocationPictureXref.all.select{|lpx| lpx.location && (lpx.location.region_id == Authorization.current_user.region_id)}
-    else
-      model.all()
-    end
   end
 end
