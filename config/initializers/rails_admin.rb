@@ -17,7 +17,7 @@ RailsAdmin.config do |config|
   # config.audit_with :paper_trail, User
 
   # Set the admin name here (optional second array element will appear in a beautiful RailsAdmin red ©)
-  config.main_app_name = ['Pbm', 'Admin']
+  config.main_app_name = ['Pinball Map', 'Admin']
   # or for a dynamic name:
   # config.main_app_name = Proc.new { |controller| [Rails.application.engine_name.titleize, controller.params['action'].titleize] }
 
@@ -32,7 +32,7 @@ RailsAdmin.config do |config|
 
   #  ==> Included models
   # Add all excluded models here:
-  config.excluded_models = [Region, User]
+  config.excluded_models = [LocationMachineXref, MachineScoreXref]
 
   # Add models here if you want to go 'whitelist mode':
   # config.included_models = [Event, Location, LocationMachineXref, LocationPictureXref, LocationType, Machine, Operator, Region, RegionLinkXref, Zone]
@@ -81,195 +81,371 @@ RailsAdmin.config do |config|
   # All fields marked as 'hidden' won't be shown anywhere in the rails_admin unless you mark them as visible. (visible(true))
 
   config.model Event do
-    # Found associations:
-      configure :location, :belongs_to_association   #   # Found columns:
-      configure :name, :string 
-      configure :long_desc, :text 
-      configure :external_link, :string 
-      configure :category_no, :integer 
-      configure :start_date, :date 
-      configure :end_date, :date 
-      configure :created_at, :datetime 
-      configure :updated_at, :datetime 
-      configure :category, :string   #   # Sections:
-    list do; end
+    list do
+      field :name, :string 
+      field :location, :belongs_to_association
+      field :start_date, :date 
+      field :end_date, :date 
+    end
+    show do
+      field :name, :string 
+      field :location, :belongs_to_association
+      field :long_desc, :text 
+      field :external_link, :string 
+      field :category_no, :integer 
+      field :start_date, :date 
+      field :end_date, :date 
+      field :updated_at, :datetime 
+      field :category, :string
+    end
+    edit do
+      field :name, :string 
+      field :location, :belongs_to_association
+      field :long_desc, :text 
+      field :external_link, :string 
+      field :category_no, :integer 
+      field :start_date, :date 
+      field :end_date, :date 
+      field :category, :string
+    end
+    create do
+      field :name, :string 
+      field :location, :belongs_to_association
+      field :long_desc, :text 
+      field :external_link, :string 
+      field :category_no, :integer 
+      field :start_date, :date 
+      field :end_date, :date 
+      field :category, :string
+      field :region_id do
+        render do
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.region_id, :object_type => 'event'}
+        end
+      end
+    end
     export do; end
-    show do; end
-    edit do; end
-    create do; end
     update do; end
   end
   config.model Location do
-    # Found associations:
-      configure :zone, :belongs_to_association 
-      configure :location_type, :belongs_to_association 
-      configure :operator, :belongs_to_association 
-      configure :events, :has_many_association 
-      configure :machines, :has_many_association 
-      configure :location_machine_xrefs, :has_many_association 
-      configure :location_picture_xrefs, :has_many_association   #   # Found columns:
-      configure :name, :string 
-      configure :street, :string 
-      configure :city, :string 
-      configure :state, :string 
-      configure :zip, :string 
-      configure :phone, :string 
-      configure :lat, :decimal 
-      configure :lon, :decimal 
-      configure :website, :string 
-      configure :created_at, :datetime 
-      configure :updated_at, :datetime 
-      configure :description, :string 
-    list do; end
+    list do
+      field :name, :string 
+      field :street, :string 
+      field :city, :string 
+      field :state, :string 
+      field :zip, :string 
+      field :phone, :string 
+      field :zone, :belongs_to_association 
+      field :operator, :belongs_to_association 
+    end
+    show do
+      field :name, :string 
+      field :zone, :belongs_to_association 
+      field :location_type, :belongs_to_association 
+      field :operator, :belongs_to_association 
+      field :street, :string 
+      field :city, :string 
+      field :state, :string 
+      field :zip, :string 
+      field :phone, :string 
+      field :lat, :decimal 
+      field :lon, :decimal 
+      field :website, :string 
+      field :updated_at, :datetime 
+      field :description, :string 
+    end
+    edit do
+      field :name, :string 
+      field :zone, :belongs_to_association 
+      field :location_type, :belongs_to_association 
+      field :operator, :belongs_to_association 
+      field :street, :string 
+      field :city, :string 
+      field :state, :string 
+      field :zip, :string 
+      field :phone, :string 
+      field :lat, :decimal 
+      field :lon, :decimal 
+      field :website, :string 
+      field :updated_at, :datetime 
+      field :description, :string 
+    end
+    create do
+      field :name, :string 
+      field :zone, :belongs_to_association 
+      field :location_type, :belongs_to_association 
+      field :operator, :belongs_to_association 
+      field :street, :string 
+      field :city, :string 
+      field :state, :string 
+      field :zip, :string 
+      field :phone, :string 
+      field :lat, :decimal 
+      field :lon, :decimal 
+      field :website, :string 
+      field :description, :string 
+      field :region_id do
+        render do
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.region_id, :object_type => 'location'}
+        end
+      end
+    end
     export do; end
-    show do; end
-    edit do; end
-    create do; end
-    update do; end
-  end
-  config.model LocationMachineXref do
-    # Found associations:
-      configure :location, :belongs_to_association 
-      configure :machine, :belongs_to_association 
-      configure :user, :belongs_to_association         # Hidden 
-      configure :machine_score_xrefs, :has_many_association         # Hidden   #   # Found columns:
-      configure :id, :integer 
-      configure :created_at, :datetime 
-      configure :updated_at, :datetime 
-      configure :location_id, :integer         # Hidden 
-      configure :machine_id, :integer         # Hidden 
-      configure :condition, :text 
-      configure :condition_date, :date 
-      configure :ip, :string 
-      configure :user_id, :integer         # Hidden 
-      configure :machine_score_xrefs_count, :integer   #   # Sections:
-    list do; end
-    export do; end
-    show do; end
-    edit do; end
-    create do; end
     update do; end
   end
   config.model LocationPictureXref do
-    # Found associations:
-      configure :location, :belongs_to_association 
-      configure :user, :belongs_to_association         # Hidden   #   # Found columns:
-      configure :id, :integer 
-      configure :location_id, :integer         # Hidden 
-      configure :created_at, :datetime 
-      configure :updated_at, :datetime 
-      configure :photo, :carrierwave 
-      configure :description, :text 
-      configure :approved, :boolean 
-      configure :user_id, :integer         # Hidden   #   # Sections:
-    list do; end
+    list do
+      field :location, :belongs_to_association 
+      field :created_at, :datetime 
+      field :description, :text 
+      field :approved, :boolean 
+    end
+    show do
+      field :location, :belongs_to_association 
+      field :created_at, :datetime 
+      field :description, :text 
+      field :photo do
+        pretty_value do
+          bindings[:view].render :partial => 'lpx_show', :locals => {:photo => bindings[:object].photo}
+        end
+      end
+      field :approved, :boolean 
+    end
+    edit do
+      field :location, :belongs_to_association 
+      field :created_at, :datetime 
+      field :description, :text 
+      field :photo do
+        render do
+          bindings[:view].render :partial => 'lpx_show', :locals => {:photo => bindings[:object].photo}
+        end
+      end
+      field :approved, :boolean 
+    end
     export do; end
-    show do; end
-    edit do; end
     create do; end
     update do; end
   end
   config.model LocationType do
-    # Found associations:
-      configure :locations, :has_many_association   #   # Found columns:
-      configure :id, :integer 
-      configure :created_at, :datetime 
-      configure :updated_at, :datetime 
-      configure :name, :string   #   # Sections:
-    list do; end
+    list do
+      field :name, :string
+    end
+    show do
+      field :name, :string
+    end
+    edit do
+      field :name, :string
+    end
     export do; end
-    show do; end
-    edit do; end
     create do; end
     update do; end
   end
   config.model Machine do
-    # Found associations:
-    # Found columns:
-    configure :id, :integer 
-    configure :name, :string 
-    configure :is_active, :boolean 
-    configure :created_at, :datetime 
-    configure :updated_at, :datetime   #   # Sections:
-    list do; end
+    list do
+      field :name, :string 
+      field :is_active, :boolean 
+    end
+    show do
+      field :name, :string 
+      field :is_active, :boolean 
+      field :updated_at, :datetime
+    end
+    edit do
+      field :name, :string 
+      field :is_active, :boolean 
+    end
     export do; end
-    show do; end
-    edit do; end
     create do; end
     update do; end
   end
   config.model Operator do
-    # Found associations:
-      configure :locations, :has_many_association   #   # Found columns:
-      configure :name, :string 
-      configure :email, :string 
-      configure :website, :string 
-      configure :phone, :string 
-      configure :created_at, :datetime 
-      configure :updated_at, :datetime   #   # Sections:
-    list do; end
+    list do
+      field :name, :string 
+      field :email, :string 
+      field :website, :string 
+      field :phone, :string 
+    end
+    show do
+      field :name, :string 
+      field :locations, :has_many_association
+      field :email, :string 
+      field :website, :string 
+      field :phone, :string 
+      field :updated_at, :datetime
+    end
+    edit do
+      field :name, :string 
+      field :email, :string 
+      field :website, :string 
+      field :phone, :string 
+    end
+    create do
+      field :name, :string 
+      field :email, :string 
+      field :website, :string 
+      field :phone, :string 
+      field :region_id do
+        render do
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.region_id, :object_type => 'operator'}
+        end
+      end
+    end
     export do; end
-    show do; end
-    edit do; end
-    create do; end
     update do; end
   end
   config.model Region do
-    # Found associations:
-    configure :locations, :has_many_association 
-    configure :zones, :has_many_association 
-    configure :users, :has_many_association         # Hidden 
-    configure :events, :has_many_association 
-    configure :operators, :has_many_association 
-    configure :region_link_xrefs, :has_many_association 
-    configure :location_machine_xrefs, :has_many_association   #   # Found columns:
-    configure :id, :integer 
-    configure :name, :string 
-    configure :created_at, :datetime 
-    configure :updated_at, :datetime 
-    configure :full_name, :string 
-    configure :motd, :string 
-    configure :lat, :float 
-    configure :lon, :float 
-    configure :n_search_no, :integer 
-    configure :default_search_type, :string 
-    configure :should_email_machine_removal, :boolean   #   # Sections:
-    list do; end
+    list do
+      field :name, :string 
+      field :full_name, :string 
+    end
+    show do
+      field :name, :string 
+      field :updated_at, :datetime 
+      field :full_name, :string 
+      field :motd, :string 
+      field :lat, :float 
+      field :lon, :float 
+      field :n_search_no, :integer 
+      field :default_search_type, :string 
+      field :should_email_machine_removal, :boolean
+    end
+    edit do
+      field :name, :string 
+      field :updated_at, :datetime 
+      field :full_name, :string 
+      field :motd, :string 
+      field :lat, :float 
+      field :lon, :float 
+      field :n_search_no, :integer 
+      field :default_search_type, :string 
+      field :should_email_machine_removal, :boolean
+    end
+    create do
+      field :name, :string 
+      field :updated_at, :datetime 
+      field :full_name, :string 
+      field :motd, :string 
+      field :lat, :float 
+      field :lon, :float 
+      field :n_search_no, :integer 
+      field :default_search_type, :string 
+      field :should_email_machine_removal, :boolean
+    end
     export do; end
-    show do; end
-    edit do; end
-    create do; end
     update do; end
   end
   config.model RegionLinkXref do
-    # Found associations:
-      configure :id, :integer 
-      configure :name, :string 
-      configure :url, :string 
-      configure :description, :string 
-      configure :category, :string 
-      configure :sort_order, :integer   #   # Sections:
-    list do; end
+    list do
+      field :name, :string 
+      field :url, :string 
+      field :description, :string 
+      field :category, :string 
+      field :sort_order, :integer
+    end
+    show do
+      field :name, :string 
+      field :url, :string 
+      field :description, :string 
+      field :category, :string 
+      field :sort_order, :integer
+    end
+    edit do
+      field :name, :string 
+      field :url, :string 
+      field :description, :string 
+      field :category, :string 
+      field :sort_order, :integer
+    end
+    create do
+      field :name, :string 
+      field :url, :string 
+      field :description, :string 
+      field :category, :string 
+      field :sort_order, :integer
+      field :region_id do
+        render do
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.region_id, :object_type => 'region_link_xref'}
+        end
+      end
+    end
     export do; end
-    show do; end
-    edit do; end
-    create do; end
+    update do; end
+  end
+  config.model User do
+    list do
+      field :email, :string 
+      field :region, :belongs_to_association
+      field :last_sign_in_at, :datetime
+    end
+    show do
+      field :email, :string 
+      field :region, :belongs_to_association
+      field :last_sign_in_at, :datetime
+    end
+    edit do
+      field :email, :string 
+      field :region_id do
+        render do
+          bindings[:view].render :partial => 'region_user', :locals => {:region_id => bindings[:object].region_id}
+        end
+      end
+    end
+    create do
+      field :email, :string 
+      field :password, :password 
+      field :region_id do
+        render do
+          bindings[:view].render :partial => 'region_user', :locals => {:region_id => nil}
+        end
+      end
+    end
+    export do; end
     update do; end
   end
   config.model Zone do
-    # Found associations:
-      configure :locations, :has_many_association   #   # Found columns:
-      configure :id, :integer 
-      configure :name, :string 
-      configure :created_at, :datetime 
-      configure :updated_at, :datetime 
-      configure :short_name, :string 
-      configure :is_primary, :boolean   #   # Sections:
-    list do; end
+    list do
+      field :name, :string 
+      field :is_primary, :boolean
+    end
+    show do
+      field :name, :string 
+      field :updated_at, :datetime 
+      field :is_primary, :boolean
+    end
+    edit do
+      field :name, :string 
+      field :updated_at, :datetime 
+      field :is_primary, :boolean
+    end
+    create do
+      field :name, :string 
+      field :is_primary, :boolean
+      field :region_id do
+        render do
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.region_id, :object_type => 'zone'}
+        end
+      end
+    end
     export do; end
-    show do; end
-    edit do; end
-    create do; end
     update do; end
+  end
+end
+
+RailsAdmin::Adapters::ActiveRecord.module_eval do
+  def all(options = {}, scope = nil)
+    if (model.name == 'Region')
+      if (Authorization.current_user.region_id != Region.find_by_name('portland').id)
+        model.all().select{|v| v.id == Authorization.current_user.region_id}
+      else
+        model.all()
+      end
+    elsif (model.name == 'User' || model.name == 'Machine' || model.name == 'LocationType')
+        model.all()
+    elsif (model.column_names.include?('region_id'))
+      model.all().select{|v| v.region_id == Authorization.current_user.region_id}
+    elsif (model.name == 'LocationPictureXref')
+      LocationPictureXref.all.select{|lpx| lpx.location && (lpx.location.region_id == Authorization.current_user.region_id)}
+    else
+      model.all()
+    end
   end
 end

@@ -9,7 +9,8 @@ class Ability
         can :manage, :all
       else
         can :manage, [LocationType]
-        can :manage, [LocationPictureXref, LocationMachineXref], :location => { :region_id => user.region_id }
+        can [:update, :read], [Region], :id => user.region_id
+        can :manage, [LocationPictureXref], :location => { :region_id => user.region_id }
         can :manage, [Location, Event, Operator, RegionLinkXref, Zone], :region_id => user.region_id
       end
     end
