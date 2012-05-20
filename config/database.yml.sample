@@ -1,29 +1,22 @@
-production:
-  host: localhost
-  adapter: mysql2
-  encoding: utf8
-  database: pbm
-  pool: 5
-  username: root
-  password:
-  socket: /tmp/mysql.sock
-
 development:
-  host: localhost
-  adapter: mysql2
+  adapter: postgresql
   encoding: utf8
   database: pbm_dev
-  pool: 5
-  socket: /tmp/mysql.sock
+  template: template0
 
-test: &test
-  host: localhost
-  adapter: mysql2
+test:
+  adapter: postgresql
   encoding: utf8
   database: pbm_test
-  pool: 5
-  min_messages: WARNING
-  socket: /tmp/mysql.sock
+  template: template0
+
+production:
+  adapter: postgresql
+  encoding: utf8
+  database: pbm
+  username: root
+  password:
+  template: template0
 
 cucumber:
   <<: *test

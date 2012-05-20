@@ -2,15 +2,15 @@ require 'spec_helper'
 
 describe Region do
   before(:each) do
-    @r = Factory.create(:region, :name => 'portland')
+    @r = FactoryGirl.create(:region, :name => 'portland')
   end
 
   describe '#n_recent_scores' do
     it 'should return the most recent n scores' do
-      lmx = Factory.create(:location_machine_xref, :location => Factory.create(:location, :region => @r))
-      one = Factory.create(:machine_score_xref, :location_machine_xref => lmx, :created_at => '2001-01-01')
-      two = Factory.create(:machine_score_xref, :location_machine_xref => lmx, :created_at => '2001-02-01')
-      three = Factory.create(:machine_score_xref, :location_machine_xref => lmx, :created_at => '2001-03-01')
+      lmx = FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => @r))
+      one = FactoryGirl.create(:machine_score_xref, :location_machine_xref => lmx, :created_at => '2001-01-01')
+      two = FactoryGirl.create(:machine_score_xref, :location_machine_xref => lmx, :created_at => '2001-02-01')
+      three = FactoryGirl.create(:machine_score_xref, :location_machine_xref => lmx, :created_at => '2001-03-01')
       @r.n_recent_scores(2).should == [three, two]
     end
   end
@@ -18,10 +18,10 @@ describe Region do
   describe '#n_high_rollers' do
     it 'should return the high n rollers' do
       scores = Array.new
-      lmx = Factory.create(:location_machine_xref, :location => Factory.create(:location, :region => @r))
+      lmx = FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => @r))
 
-      3.times {|n| scores << Factory.create(:machine_score_xref, :location_machine_xref => lmx, :initials => "ssw#{n}")}
-      scores << Factory.create(:machine_score_xref, :location_machine_xref => lmx, :initials => "ssw0")
+      3.times {|n| scores << FactoryGirl.create(:machine_score_xref, :location_machine_xref => lmx, :initials => "ssw#{n}")}
+      scores << FactoryGirl.create(:machine_score_xref, :location_machine_xref => lmx, :initials => "ssw0")
 
       @r.n_high_rollers(2).should == {
         "ssw0" => [scores[0], scores[3]],
@@ -38,10 +38,10 @@ describe Region do
 
   describe '#machinesless_locations' do
     it 'should return any location without a machine' do
-      Factory.create(:location_machine_xref, :location => Factory.create(:location, :region => @r))
-      Factory.create(:location_machine_xref, :location => Factory.create(:location, :region => @r))
-      l = Factory.create(:location, :region => @r)
-      l2 = Factory.create(:location, :region => @r)
+      FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => @r))
+      FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => @r))
+      l = FactoryGirl.create(:location, :region => @r)
+      l2 = FactoryGirl.create(:location, :region => @r)
 
       @r.machineless_locations.should == [l, l2]
     end

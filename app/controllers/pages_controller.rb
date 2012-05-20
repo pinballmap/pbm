@@ -40,7 +40,7 @@ class PagesController < ApplicationController
       }
     }
 
-    render "#{@region.name}/region" if (template_exists?("#{@region.name}/region"))
+    render "#{@region.name}/region" if (lookup_context.find_all("#{@region.name}/region").any?)
   end
 
   def contact_sent
@@ -53,7 +53,7 @@ class PagesController < ApplicationController
   end
 
   def about
-    render "#{@region.name}/about" if (template_exists?("#{@region.name}/about"))
+    render "#{@region.name}/about" if (lookup_context.find_all("#{@region.name}/about").any?)
   end
 
   def links
@@ -62,7 +62,7 @@ class PagesController < ApplicationController
       (@links[rlx.sort_order || 0] ||= []) << rlx
     end
 
-    render "#{@region.name}/links" if (template_exists?("#{@region.name}/links"))
+    render "#{@region.name}/links" if (lookup_context.find_all("#{@region.name}/links").any?)
   end
 
   def high_rollers

@@ -43,16 +43,3 @@ Feature: New Machine for Location
     And I fill in "add_machine_by_name" with "Test Machine Name"
     And I press "add"
     Then "Test Location Name" should only have "Test Machine Name"
-
-  @javascript
-  Scenario: LMX gets tagged with the user that created it
-    Given there is a location machine_xref
-    And I am a logged in user
-    And I am on "Portland"'s home page
-    And I press the "location" search button
-    And I click on the add machine link for "Test Location Name"
-    And I fill in "add_machine_by_name" with "Cool machine, bro"
-    And I press "add"
-    And I wait for 1 seconds
-    Then a location machine xref should exist with the machine name "Cool machine, bro" and the initials "CAP"
-    And a location machine xref should exist with the machine name "Test Machine Name" and the initials ""

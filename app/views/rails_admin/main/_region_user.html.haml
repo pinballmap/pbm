@@ -1,0 +1,3 @@
+%select{:name => "user[region_id]"}
+  - Region.all.each do |r|
+    <option value="#{r.id}" #{r.id == region_id ? 'selected=select' : ''} >#{r.name}</option>
