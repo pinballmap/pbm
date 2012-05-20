@@ -8,6 +8,7 @@ gem 'rack'
 
 gem 'paperclip'
 gem 'devise'
+gem 'devise-encryptable'
 gem 'inherited_resources'
 gem 'simple_form'
 gem 'has_scope'
