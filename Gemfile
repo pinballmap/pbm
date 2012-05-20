@@ -13,7 +13,7 @@ gem 'has_scope'
 gem 'kaminari'
 gem 'escape_utils'
 gem 'jquery-rails'
-gem 'rails_admin', :git => 'git://github.com/sferik/rails_admin.git'
+gem 'rails_admin'
 gem "cancan"
 gem 'declarative_authorization'
 gem 'haml'
