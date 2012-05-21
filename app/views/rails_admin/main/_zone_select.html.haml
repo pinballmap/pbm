@@ -1,0 +1,4 @@
+%select{:name => "#{object_type}[zone_id]"}
+  <option value=""></option>
+  - Zone.all.select {|z| z.region_id == Authorization.current_user.region_id}.each do |z|
+    <option value="#{z.id}" #{z.id == zone_id ? 'selected=select' : ''} >#{z.name}</option>

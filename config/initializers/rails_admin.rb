@@ -100,7 +100,11 @@ RailsAdmin.config do |config|
     end
     edit do
       field :name, :string 
-      field :location, :belongs_to_association
+      field :location_id do
+        render do
+          bindings[:view].render :partial => 'location_select', :locals => {:object_type => 'event', :location_id => bindings[:object].location_id}
+        end
+      end
       field :long_desc, :text 
       field :external_link, :string 
       field :category_no, :integer 
@@ -110,7 +114,11 @@ RailsAdmin.config do |config|
     end
     create do
       field :name, :string 
-      field :location, :belongs_to_association
+      field :location_id do
+        render do
+          bindings[:view].render :partial => 'location_select', :locals => {:object_type => 'event', :location_id => nil}
+        end
+      end
       field :long_desc, :text 
       field :external_link, :string 
       field :category_no, :integer 
@@ -155,7 +163,11 @@ RailsAdmin.config do |config|
     end
     edit do
       field :name, :string 
-      field :zone, :belongs_to_association 
+      field :zone_id do
+        render do
+          bindings[:view].render :partial => 'zone_select', :locals => {:object_type => 'location', :zone_id => bindings[:object].zone_id}
+        end
+      end
       field :location_type, :belongs_to_association 
       field :operator, :belongs_to_association 
       field :street, :string 
@@ -171,7 +183,11 @@ RailsAdmin.config do |config|
     end
     create do
       field :name, :string 
-      field :zone, :belongs_to_association 
+      field :zone_id do
+        render do
+          bindings[:view].render :partial => 'zone_select', :locals => {:object_type => 'location', :zone_id => nil}
+        end
+      end
       field :location_type, :belongs_to_association 
       field :operator, :belongs_to_association 
       field :street, :string 
@@ -207,7 +223,9 @@ RailsAdmin.config do |config|
       field :approved, :boolean 
     end
     edit do
-      field :location, :belongs_to_association 
+      field :location, :belongs_to_association do
+        read_only true
+      end
       field :created_at, :datetime 
       field :description, :text 
       field :photo, :paperclip
