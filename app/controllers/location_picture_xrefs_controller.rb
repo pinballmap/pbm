@@ -12,8 +12,7 @@ class LocationPictureXrefsController < InheritedResources::Base
       :to => @location_picture_xref.location.region.users.collect {|u| u.email},
       :from => 'admin@pinballmap.com',
       :subject => 'PBM - Someone wants you to approve a picture',
-      :body => "This is photo ID: #{@location_picture_xref.id}. It's at location: #{@location_picture_xref.location.name}.\nTo approve it, please visit here http://pinballmap.com/admin/location_picture_xrefs\nOnce there, click 'edit' and then tick the 'approve' button.",
-      :attachments => {@location_picture_xref.photo.to_s => File.read(RAILS_ROOT + '/public/' + @location_picture_xref.photo.to_s)}
+      :body => "This is photo ID: #{@location_picture_xref.id}. It's at location: #{@location_picture_xref.location.name}.\nYou can view the picture here #{@location_picture_xrefs.photo.url}\nTo approve it, please visit here http://pinballmap.com/admin/location_picture_xrefs\nOnce there, click 'edit' and then tick the 'approve' button.",
     )
   end
 end
