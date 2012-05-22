@@ -5,9 +5,12 @@ class LocationPictureXref < ActiveRecord::Base
   has_attached_file :photo,
     :storage => :s3,
     :bucket => ENV['S3_BUCKET_NAME'],
-    :path => "location_picture_xref/photo/:id/:photo",
-    :url => "https://s3.amazonaws.com/pbm-images/location_picture_xref/photo/:id/:photo",
-    :styles => { :thumb => "36x25>" },
+    :path => "location_picture_xref/photo/:id/:photo_file_name",
+    :url => "https://s3.amazonaws.com/pbm-images/location_picture_xref/photo/:id/:photo_file_name",
+    :styles => {
+      :thumb => "36x25>",
+      :medium => "300x300>",
+    },
     :s3_credentials => {
       :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
       :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
