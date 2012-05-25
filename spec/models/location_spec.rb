@@ -19,7 +19,7 @@ describe Location do
   describe '#before_destroy' do
     it 'should clean up location_machine_xrefs, events, location_picture_xrefs' do
       FactoryGirl.create(:event, :location => @l)
-      FactoryGirl.create(:location_picture_xref, :location => @l)
+      FactoryGirl.create(:location_picture_xref, :location => @l, :photo => nil)
 
       @l.destroy
 
@@ -33,7 +33,7 @@ describe Location do
 
   describe '#location_machine_xrefs' do
     it 'should return all machines for this location' do
-      @l.location_machine_xrefs.should == [@lmx1, @lmx2]
+      @l.location_machine_xrefs.should == [@lmx2, @lmx1]
     end
   end
 

@@ -24,8 +24,8 @@ describe Region do
       scores << FactoryGirl.create(:machine_score_xref, :location_machine_xref => lmx, :initials => "ssw0")
 
       @r.n_high_rollers(2).should == {
-        "ssw0" => [scores[0], scores[3]],
-        "ssw1" => [scores[1]],
+        "ssw0" => [scores[3], scores[0]],
+        "ssw2" => [scores[2]],
       }
     end
   end
