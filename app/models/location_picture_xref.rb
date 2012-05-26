@@ -4,7 +4,7 @@ class LocationPictureXref < ActiveRecord::Base
 
   has_attached_file :photo,
     :storage => :s3,
-    :bucket => ENV['S3_BUCKET_NAME'],
+    :bucket => 'pbm-images',
     :path => "location_picture_xref/photo/:id/:style/:filename",
     :url => "https://s3.amazonaws.com/pbm-images/location_picture_xref/photo/:id/medium/:filename",
     :styles => {

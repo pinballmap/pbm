@@ -161,3 +161,25 @@ Feature: Region main page
     And I am on "Portland"'s home page
     Then I should see "To search locations by city, please select a city from the drop down"
     And my other search options should be "location machine type operator zone"
+
+  @javascript
+  Scenario: N or more machines
+    Given there is a region with the name "portland" and the id "1"
+    And the following locations exist:
+      |id|name|region_id|
+      |1|Foo|1|
+      |2|Bar|1|
+    And the following machines exist:
+      |id|
+      |1|
+      |2|
+    And the following location machine xrefs exist:
+      |location_id|machine_id|
+      |1|1|
+      |2|1|
+      |2|2|
+    And I am on "Portland"'s home page
+    And I select "2" from "by_at_least_n_machines"
+    And I press the "location" search button
+    Then I should see the listing for "Bar"
+    And I should not see the listing for "Foo"
