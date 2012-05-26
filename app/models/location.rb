@@ -32,6 +32,9 @@ class Location < ActiveRecord::Base
 
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id = ?', machine.id)
   }
+  scope :by_at_least_n_machines, lambda {|n|
+    where("id in (select location_id from (select location_id, count(*) as count from location_machine_xrefs group by location_id) x where x.count >= #{n})")
+  }
 
   before_destroy do |record| 
     Event.destroy_all "location_id = #{record.id}"
