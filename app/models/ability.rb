@@ -6,16 +6,17 @@ class Ability
       can :access, :rails_admin
       can :dashboard
       can :history
+      can :manage, [LocationType]
+      can :manage, [Location, Event, Operator, RegionLinkXref, Zone], :region_id => user.region_id
+      can [:update, :read], [LocationPictureXref], :location => { :region_id => user.region_id }
+      can [:update, :read, :destroy], [MachineScoreXref], :location => { :region_id => user.region_id }
+
       if user.region.name == 'portland'
-        can :manage, [LocationType, Region, Machine]
-        can [:update, :read], [LocationPictureXref], :location => { :region_id => user.region_id }
-        can :manage, [Location, Event, Operator, RegionLinkXref, Zone], :region_id => user.region_id
+        can :manage, [Region, Machine]
       else
-        can :manage, [LocationType]
         can [:update, :read], [Region], :id => user.region_id
-        can [:update, :read], [LocationPictureXref], :location => { :region_id => user.region_id }
-        can :manage, [Location, Event, Operator, RegionLinkXref, Zone], :region_id => user.region_id
       end
+
     end
   end
 end

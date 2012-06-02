@@ -32,7 +32,7 @@ RailsAdmin.config do |config|
 
   #  ==> Included models
   # Add all excluded models here:
-  config.excluded_models = [LocationMachineXref, MachineScoreXref]
+  config.excluded_models = [LocationMachineXref]
 
   # Add models here if you want to go 'whitelist mode':
   # config.included_models = [Event, Location, LocationMachineXref, LocationPictureXref, LocationType, Machine, Operator, Region, RegionLinkXref, Zone]
@@ -434,6 +434,41 @@ RailsAdmin.config do |config|
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.region_id, :object_type => 'zone'}
         end
       end
+    end
+    export do; end
+    update do; end
+  end
+  config.model MachineScoreXref do
+    list do
+      field :location_machine_xref_id do
+        label "Machine"
+        pretty_value do
+          bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object].location_machine_xref_id}
+        end
+      end
+      field :rank
+      field :score
+    end
+    show do
+      field :location_machine_xref_id do
+        label "Machine"
+        pretty_value do
+          bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object].location_machine_xref_id}
+        end
+      end
+      field :rank
+      field :score
+    end
+    edit do
+      field :location_machine_xref_id do
+        read_only true
+        label "Machine"
+        pretty_value do
+          bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object].location_machine_xref_id}
+        end
+      end
+      field :rank
+      field :score
     end
     export do; end
     update do; end
