@@ -11,8 +11,6 @@
         = text_field_tag "by_#{key}_name", params["by_#{key}_name"], :class => 'lookup_search_input'
       %br.clear
       = submit_tag 'Search', :class => 'search', :id => "#{key}_search_button"
-      = select_tag "by_at_least_n_machines", "<option></option><option value=\"2\">2</option><option value=\"3\">3</option><option value=\"4\">4</option><option value=\"5\">5</option>".html_safe
-      %span.info or more machines.
       - if @search_options[key]['autocomplete']
         :javascript
           $(function () {
@@ -23,24 +21,7 @@
   $(function () {
     $('.location_search').submit(function () {
       $('#locations').html(loadingHTML());
-<<<<<<< HEAD
-<<<<<<< HEAD
         $.get(this.action, $(this).serialize(), function(data){$('#locations').html(data);}, 'script');
         return false;
-=======
-      $.get(this.action, $(this).serialize(), function(data){$('#locations').html(data);}, 'script');
-      return false;
-    });
-
-    $('a[rel*=facebox]').facebox({
-      loadingImage : '/assets/facebox/loading.gif',
-      closeImage   : '/assets/facebox/closelabel.png'
->>>>>>> 25d40e5f1a23b0c0ebc51c03bc892ac2b2992c25
-=======
-        $.get(this.action, $(this).serialize(), function(data){$('#locations').html(data);}, 'script');
-        return false;
->>>>>>> ab27214... updated other-search-options to tabbed-based
     });
   });
-
-
