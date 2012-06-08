@@ -12,7 +12,7 @@ class EventsController < InheritedResources::Base
           (@sorted_events[e.category || 'General'] ||= []) << e
         }
 
-        render "#{@region.name}/events" if (template_exists?("#{@region.name}/events"))
+        render "#{@region.name}/events" if lookup_context.find_all("#{@region.name}/events").any?
       end
       format.xml { respond_with @events }
     end

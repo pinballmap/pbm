@@ -3,6 +3,8 @@
 Devise.setup do |config|
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in DeviseMailer.
+  config.case_insensitive_keys = [:email]
+  Devise.reset_password_within = 6.hours
   config.mailer_sender = "pbm@pinballmap.com"
 
   # Configure the class responsible to send e-mails.

@@ -48,7 +48,7 @@ a:active { outline: none }
 body {
   margin: 0 auto;
   padding: 0px;
-  background-image: url('../images/PPM-SplashTile-BW-Simple.png');
+  background-image: url('/assets/PPM-SplashTile-BW-Simple.png');
   background-color: #000;
   color: #ebebeb;
   font-family: "Lucida Grande","Lucida Sans Unicode",Helvetica,Arial,Verdana,sans-serif;
@@ -185,7 +185,7 @@ a#operator_section_link:hover, a#city_section_link:hover, a#machine_section_link
 
 .other_regions_arrow:after {
 	content:"";
-    background: url("../images/arrow-sprite.png") no-repeat;
+    background: url("/assets/arrow-sprite.png") no-repeat;
     display: inline-block;
     height: 7px;
     margin-left: 2px;
@@ -197,7 +197,7 @@ a#operator_section_link:hover, a#city_section_link:hover, a#machine_section_link
 
 .feed_icon:before {
   content:"";
-  background: url("../images/feed-icon-10x10.png") no-repeat;
+  background: url("/assets/feed-icon-10x10.png") no-repeat;
   display: inline-block;
   height: 10px;
   margin-left: 1px;
@@ -461,7 +461,7 @@ br.clear {
   height: 16px;
   position: absolute;
   display: none;
-  background: #aaaaaa url(/images/arrow_prev.png) no-repeat center center;
+  background: #aaaaaa url(/assets/arrow_prev.png) no-repeat center center;
   cursor: pointer;
   cursor: hand;
   border: solid 1px #444444;
@@ -473,7 +473,7 @@ br.clear {
 
 .scrollerNext {
   display: block;
-  background: #aaaaaa url(/images/arrow_next.png) no-repeat center center;
+  background: #aaaaaa url(/assets/arrow_next.png) no-repeat center center;
 }
 
 .itemBackground , .itemLink {
@@ -491,7 +491,6 @@ br.clear {
   color: #ebebeb;
   text-transform: uppercase;
   padding: 1px 2px 1px 2px;
-  display: block;
   margin: 3px 10px 3px 0;
   cursor: pointer;
   border-radius:3px;
@@ -981,7 +980,7 @@ a.light_blue:active {color: #ffffff; text-decoration: underline;}
 }
 
 .location_summary_image_mouseover {
-  background-image: url('/images/coincard.png');
+  background-image: url('/assets/coincard.png');
   background-repeat: no-repeat;
   background-position: center;
 }

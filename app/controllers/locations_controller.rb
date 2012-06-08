@@ -2,7 +2,7 @@ require 'pony'
 
 class LocationsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
-  has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_zone_id, :by_operator_id, :by_type_id, :region
+  has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_zone_id, :by_operator_id, :by_type_id, :by_at_least_n_machines, :region
 
   def autocomplete
     term = params[:term] || ''
@@ -47,6 +47,7 @@ class LocationsController < InheritedResources::Base
 
   def mobile
     region = params[:region] || 'portland'
+
     if (params[:init])
       case params[:init].to_i
       when 1 then
