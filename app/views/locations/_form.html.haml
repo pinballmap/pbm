@@ -24,6 +24,7 @@
     $('.location_search').submit(function () {
       $('#locations').html(loadingHTML());
 <<<<<<< HEAD
+<<<<<<< HEAD
         $.get(this.action, $(this).serialize(), function(data){$('#locations').html(data);}, 'script');
         return false;
 =======
@@ -35,6 +36,10 @@
       loadingImage : '/assets/facebox/loading.gif',
       closeImage   : '/assets/facebox/closelabel.png'
 >>>>>>> 25d40e5f1a23b0c0ebc51c03bc892ac2b2992c25
+=======
+        $.get(this.action, $(this).serialize(), function(data){$('#locations').html(data);}, 'script');
+        return false;
+>>>>>>> ab27214... updated other-search-options to tabbed-based
     });
   });
 
