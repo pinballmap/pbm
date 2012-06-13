@@ -43,7 +43,7 @@
   *
   * Release 0.0.7 - Fev 10, 2011
   * Added function to set time after initialisation :$('#timepicker').timepicker('setTime',newTime);
-  * Added support for disabled period of time : onHourShow and onMinuteShow (thanks Rene Felgentr‰ger)
+  * Added support for disabled period of time : onHourShow and onMinuteShow (thanks Rene Felgentr√§ger)
   *
   * Release 0.0.8 - Fev 17, 2011
   * Fixed close event not triggered when switching to another input with time picker (thanks Stuart Gregg)

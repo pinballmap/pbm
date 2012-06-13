@@ -21,17 +21,19 @@ Feature: Autocomplete
 
   @javascript
   Scenario: Search by machine name from input with autocomplete
-    Given there is a location machine xref
+    Given there is a region with the name "portland" and the id "1"
     And the following locations exist:
-      |name|region|
-      |Bawb|name: portland|
+      |id|region_id|
+      |1|1|
     And the following machines exist:
-      |name|
-      |Cleo|
-      |Another Test Machine|
+      |id|name|
+      |1|Cleo|
+      |2|Another Test Machine|
+      |3|Test Machine Name|
     And the following location machine xrefs exist:
-      |location|machine|
-      |name: Bawb|name: Another Test Machine|
+      |location_id|machine_id|
+      |1|2|
+      |1|3|
     And I am on "Portland"'s home page
     And I switch to "machine" lookup
     And I fill in "by_machine_name" with "test"

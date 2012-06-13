@@ -11,6 +11,8 @@
         = text_field_tag "by_#{key}_name", params["by_#{key}_name"], :class => 'lookup_search_input'
       %br.clear
       = submit_tag 'Search', :class => 'search', :id => "#{key}_search_button"
+      = select_tag "by_at_least_n_machines", "<option></option><option value=\"2\">2</option><option value=\"3\">3</option><option value=\"4\">4</option><option value=\"5\">5</option>".html_safe
+      %span.info or more machines.
       - if @search_options[key]['autocomplete']
         :javascript
           $(function () {
@@ -24,6 +26,7 @@
         $.get(this.action, $(this).serialize(), function(data){$('#locations').html(data);}, 'script');
         return false;
     });
+
   });
 
 
