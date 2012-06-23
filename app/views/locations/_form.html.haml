@@ -11,6 +11,7 @@
         = text_field_tag "by_#{key}_name", params["by_#{key}_name"], :class => 'lookup_search_input'
       %br.clear
       = submit_tag 'Search', :class => 'search', :id => "#{key}_search_button"
+<<<<<<< HEAD
       - if (['city', 'zone', 'type'].include? key)
         %span.info Limit results by
         = select_tag "by_at_least_n_machines", "<option></option><option value=\"2\">2</option><option value=\"3\">3</option><option value=\"4\">4</option><option value=\"5\">5</option>".html_safe
@@ -30,5 +31,3 @@
     });
 
   });
-
-
