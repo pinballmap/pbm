@@ -4,11 +4,11 @@
     %title #{(defined? @region) ? @region.full_name : ''} Pinball Map
     %meta{:name => "keywords", :content => "pinball, map, google map, locator" }
     %meta{:name => "description", :content => "Find local places to play pinball! The #{(defined? @region) ? @region.full_name : ''} Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area." }
-    = stylesheet_link_tag 'style', 'jquery.ui.all', 'jquery.jscrollpane', 'facebox', 'highslide', 'highslide-ie6'
-    = javascript_include_tag 'jquery', 'jquery-ui-1.8.5.custom.min', 'jQuery.scrollSomething-1.0.0', 'rails', 'application', 'jquery.form', 'jquery.remotipart', 'jquery.mousewheel', 'jquery.jscrollpane', 'facebox', 'highslide.min'
+    = stylesheet_link_tag 'style', 'jquery.ui.all', 'jquery.jscrollpane', 'highslide', 'highslide-ie6'
+    = javascript_include_tag 'jquery', 'jquery-ui-1.8.5.custom.min', 'jQuery.scrollSomething-1.0.0', 'rails', 'application', 'jquery.form', 'jquery.remotipart', 'jquery.mousewheel', 'jquery.jscrollpane', 'highslide.min'
     = csrf_meta_tag
     = javascript_include_tag 'http://maps.google.com/maps/api/js?sensor=true'
-    %link{:rel => 'shortcut icon', :href => '/assets/favicon.ico', :type => 'image/x-icon'}/
+    %link{:rel => 'shortcut icon', :href => '/images/favicon.ico', :type => 'image/x-icon'}/
 
   #page
     = render :partial => 'pages/header'
@@ -26,8 +26,6 @@
 
 :javascript
   $(function () {
-    $.facebox.settings.closeImage = '/assets/facebox/closelabel.png'
-    $.facebox.settings.loadingImage = '/assets/facebox/loading.gif'
 
     hs.registerOverlay({
       html: '<div class="closebutton" onclick="return hs.close(this)" title="Close"></div>',
@@ -35,6 +33,6 @@
       fade: 2
     });
 
-    hs.graphicsDir = '/assets/highslide/graphics/';
+    hs.graphicsDir = '/images/highslide/graphics/';
     hs.wrapperClassName = 'borderless';
   });
