@@ -165,10 +165,13 @@ Feature: Region main page
   @javascript
   Scenario: N or more machines
     Given there is a region with the name "portland" and the id "1"
-    And the following locations exist:
+    And the following zones exist:
       |id|name|region_id|
-      |1|Foo|1|
-      |2|Bar|1|
+      |1|Baz|1|
+    And the following locations exist:
+      |id|name|region_id|zone_id|
+      |1|Foo|1|1|
+      |2|Bar|1|1|
     And the following machines exist:
       |id|
       |1|
@@ -179,7 +182,8 @@ Feature: Region main page
       |2|1|
       |2|2|
     And I am on "Portland"'s home page
+    And I switch to "zone" lookup
     And I select "2" from "by_at_least_n_machines"
-    And I press the "location" search button
+    And I press the "zone" search button
     Then I should see the listing for "Bar"
     And I should not see the listing for "Foo"
