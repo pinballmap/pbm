@@ -1,17 +1,9 @@
 Then /^my other search options should be "([^"]*)"$/ do |options|
-  page.find('a#other_search_options_link').click
-
-  sleep 1
-
-  page.find("div#facebox div.popup div.content.search_option_selector").should have_content(options)
+  page.find("div#other_search_options").should have_content(options)
 end
 
 Given /^I switch to "([^"]*)" lookup$/ do |type|
-  page.find('a#other_search_options_link').click
-
-  sleep 1
-
-  page.find("div#facebox div.popup div.content.search_option_selector a##{type}_section_link").click
+  page.find("div#other_search_options a##{type}_section_link").click
 end
 
 Given /^I click to search by "([^"]*)"$/ do |type|

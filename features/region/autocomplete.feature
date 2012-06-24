@@ -55,6 +55,7 @@ Feature: Autocomplete
       |Cleo East|2|
     And I am on "portland"'s home page
     And I fill in "by_location_name" with "cleo"
+    And I wait for 1 seconds
     Then I should see the following autocomplete options:
       |Cleo North|
       |Cleo South|
