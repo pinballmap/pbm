@@ -45,3 +45,12 @@ Then /^a location machine xref should exist with the machine name "([^"]*)" and 
 
   lmx.user.should == User.find_by_initials(initials)
 end
+
+Then /^the order of the listings should be "([^"]*)"$/ do |raw_listing|
+  listings = raw_listing.split(",")
+  actual_order = page.all('div.search_result').collect(&:text)
+
+  actual_order.each_with_index do |value, index|
+    value.should match /#{listings[index].strip}/i
+  end
+end
