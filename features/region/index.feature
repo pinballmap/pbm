@@ -163,6 +163,20 @@ Feature: Region main page
     And my other search options should be "location machine type operator zone"
 
   @javascript
+  Scenario: Searches are displayed in alphabetical order
+  Given there is a region with the name "portland" and the id "1"
+  And the following locations exist:
+    |name|region_id|
+    |Cleo|1|
+    |Sassy|1|
+    |Zelda|1|
+    |Bawb|1|
+  And I am on "Portland"'s home page
+  And I press the "location" search button
+  And I wait for 1 seconds
+  Then the order of the listings should be "Bawb, Cleo, Sassy, Zelda"
+
+  @javascript
   Scenario: N or more machines
     Given there is a region with the name "portland" and the id "1"
     And the following zones exist:
