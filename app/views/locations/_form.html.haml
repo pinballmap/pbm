@@ -1,9 +1,7 @@
-%a{:id => 'other_search_options_link', :href => '#other_search_options', :rel => 'facebox[.search_option_selector]'} Other search options
-%div{:id => 'other_search_options', :style => 'display:none;'}
+%div{:id => 'other_search_options'}
 
 - @search_options.each_key do |key|
   %div{:id => "by_#{key}", :class => 'section', :style => 'display:none;'}
-    = search_banner("by_#{key}", "LOOKUP BY #{key.upcase}")
     = form_tag locations_path, :method => 'get', :class => 'location_search' do
       %span.info To search locations by #{key}, please select a #{key} from the drop down
       - if @search_options[key]['autocomplete']
@@ -13,6 +11,10 @@
         = text_field_tag "by_#{key}_name", params["by_#{key}_name"], :class => 'lookup_search_input'
       %br.clear
       = submit_tag 'Search', :class => 'search', :id => "#{key}_search_button"
+      - if (['city', 'zone', 'type'].include? key)
+        %span.info Limit results by
+        = select_tag "by_at_least_n_machines", "<option></option><option value=\"2\">2</option><option value=\"3\">3</option><option value=\"4\">4</option><option value=\"5\">5</option>".html_safe
+        %span.info or more machines.
       - if @search_options[key]['autocomplete']
         :javascript
           $(function () {
@@ -23,12 +25,8 @@
   $(function () {
     $('.location_search').submit(function () {
       $('#locations').html(loadingHTML());
-      $.get(this.action, $(this).serialize(), function(data){$('#locations').html(data);}, 'script');
-      return false;
+        $.get(this.action, $(this).serialize(), function(data){$('#locations').html(data);}, 'script');
+        return false;
     });
 
-    $('a[rel*=facebox]').facebox({
-      loadingImage : '/images/facebox/loading.gif',
-      closeImage   : '/images/facebox/closelabel.png'
-    });
   });

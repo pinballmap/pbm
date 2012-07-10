@@ -67,25 +67,23 @@ function attachMarkerClick(marker, index) {
 }
 
 function loadingHTML() {
-  return "<div class='loading'><img src='images/spinner_blue.gif' /> Loading <div>";
+  return "<div class='loading'><img src='/assets/spinner_blue.gif' /> Loading <div>";
 }
 
 function setOtherSearchOptions(newSection) {
-  var html = "<p class='black_text'>Pick another parameter by which to search: </p>";
+  var html = "<p class='black_text'>SEARCH BY</p>";
   for (section in searchSections) {
-    if (searchSections[section] != newSection) {
       html += "  <a href='#' id='" + searchSections[section] + "_section_link' onclick='switchSection(\"" + searchSections[section] + "\");'>" + searchSections[section] + "</a>\n"
-    }
   }
 
   $('#other_search_options').html(html);
 }
 
 function switchSection(newSection) {
-  $(document).trigger('close.facebox')
   setOtherSearchOptions(newSection);
   $("div .section:visible").hide();
   $('#by_' + newSection).toggle();
+  $("#" + newSection + "_section_link").toggleClass("active_section_link");
 }
 
 function initSearch(region, locationID) {

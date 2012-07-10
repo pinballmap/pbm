@@ -5,23 +5,23 @@ Feature: intro text for the site
 
   Scenario: intro text display correct number of locations and machines for a region
     Given the following regions exist:
-      |name|
-      |chicago|
-      |portland|
+      |name|id|
+      |chicago|1|
+      |portland|2|
     And the following locations exist:
-      |name|region|
-      |sassers|name: portland|
-      |bawb|name: portland|
-      |not a cat|name: chicago|
+      |name|region_id|id|
+      |sassers|2|1|
+      |bawb|2|2|
+      |not a cat|1|3|
     And the following machines exist:
-      |name|
-      |cleo|
-      |zelda|
+      |name|id|
+      |cleo|1|
+      |zelda|2|
     And the following location machine xrefs exist:
-      |location|machine|
-      |name: sassers|name: cleo|
-      |name: sassers|name: zelda|
-      |name: bawb|name: cleo|
-      |name: not a cat|name: cleo|
+      |location_id|machine_id|
+      |1|1|
+      |1|2|
+      |2|1|
+      |3|1|
     And I am on "Portland"'s home page
     Then I should see "2 locations and 3 machines"

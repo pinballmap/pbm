@@ -16,7 +16,7 @@ Feature: Region main page
 
   @javascript
   Scenario: Searching is automatically limited by region
-    Given "Chicago" is a region with the name "chicago" and the id "1"
+    Given "Chicago" is a region with the name "chicago" and the id "2"
     And there is a location machine xref
     And I am on "Chicago"'s home page
     And I press the "location" search button
@@ -134,11 +134,11 @@ Feature: Region main page
 
   @javascript
   Scenario: Displays location type if available
-    Given there is a region with the name "Portland" and the id "1"
-    And there is a location type with the name "bar"
+    Given there is a region with the name "portland" and the id "1"
+    And there is a location type with the name "bar" and the id "1"
     And the following locations exist:
-      |name|location_type|region_id|
-      |Cleo|name: bar|1|
+      |name|location_type_id|region_id|
+      |Cleo|1|1|
       |Sass||1|
     And I am on "Portland"'s home page
     And I press the "location" search button
@@ -157,7 +157,47 @@ Feature: Region main page
 
   @javascript
   Scenario: Default search type for region
-    Given there is a region with the name "Portland" and the default_search_type "city"
+    Given there is a region with the name "portland" and the default_search_type "city"
     And I am on "Portland"'s home page
     Then I should see "To search locations by city, please select a city from the drop down"
     And my other search options should be "location machine type operator zone"
+
+  @javascript
+  Scenario: Searches are displayed in alphabetical order
+  Given there is a region with the name "portland" and the id "1"
+  And the following locations exist:
+    |name|region_id|
+    |Cleo|1|
+    |Sassy|1|
+    |Zelda|1|
+    |Bawb|1|
+  And I am on "Portland"'s home page
+  And I press the "location" search button
+  And I wait for 1 seconds
+  Then the order of the listings should be "Bawb, Cleo, Sassy, Zelda"
+
+  @javascript
+  Scenario: N or more machines
+    Given there is a region with the name "portland" and the id "1"
+    And the following zones exist:
+      |id|name|region_id|
+      |1|Baz|1|
+    And the following locations exist:
+      |id|name|region_id|zone_id|
+      |1|Foo|1|1|
+      |2|Bar|1|1|
+    And the following machines exist:
+      |id|
+      |1|
+      |2|
+    And the following location machine xrefs exist:
+      |location_id|machine_id|
+      |1|1|
+      |2|1|
+      |2|2|
+    And I am on "Portland"'s home page
+    And I switch to "zone" lookup
+    And I select "2" from "by_at_least_n_machines"
+    And I press the "zone" search button
+    Then I should see the listing for "Bar"
+    And I should not see the listing for "Foo"

@@ -1,7 +1,7 @@
 require 'timecop'
 
 Given /^today is "(.*)"$/ do |date|
-  Timecop.freeze(Time.parse(date))
+  Timecop.travel(Time.parse(date))
 end
 
 When /^I wait for (\d+) seconds?$/ do |secs|

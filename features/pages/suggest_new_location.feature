@@ -4,13 +4,13 @@ Feature: suggest location for region
   I want to have a cool location suggestion form
 
   Scenario: state dropdown is limited to unique states within a region
-    Given there is a region with the name "portland"
-    And there is a region with the name "chicago"
+    Given there is a region with the name "portland" and the id "1"
+    And there is a region with the name "chicago" and the id "2"
     And the following locations exist:
-      |name|region|state|
-      |cleo|name: portland|OR|
-      |sassy|name: portland|WA|
-      |zelda|name: chicago|IL|
+      |name|region_id|state|
+      |cleo|1|OR|
+      |sassy|1|WA|
+      |zelda|2|IL|
     And I am on "Portland"'s suggest new location page
     Then I should see "OR"
     And I should see "WA"
