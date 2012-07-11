@@ -41,5 +41,6 @@ module Pbm
 
     config.assets.enabled = true
     config.assets.initialize_on_precompile = false
+    config.assets.compile = true
   end
 end
