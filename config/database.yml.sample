@@ -4,7 +4,7 @@ development:
   database: pbm_dev
   template: template0
 
-test:
+test: &test
   adapter: postgresql
   encoding: utf8
   database: pbm_test
