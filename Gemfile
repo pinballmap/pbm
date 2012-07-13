@@ -30,6 +30,7 @@ gem 'geocoder'
 gem 'exception_notification_rails3', :require => 'exception_notifier'
 gem 'aws-sdk'
 gem 'newrelic_rpm'
+gem 'dalli'
 
 group :test do
   gem 'cucumber-rails', :require => false

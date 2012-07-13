@@ -83,6 +83,7 @@ GEM
     cucumber_factory (1.8.3)
       activesupport
       cucumber
+    dalli (2.1.0)
     database_cleaner (0.8.0)
     declarative_authorization (0.5.5)
     devise (2.1.1)
@@ -307,6 +308,7 @@ DEPENDENCIES
   cucumber
   cucumber-rails
   cucumber_factory
+  dalli
   database_cleaner
   declarative_authorization
   devise
