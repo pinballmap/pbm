@@ -9,7 +9,8 @@ class EventsController < InheritedResources::Base
       format.html do
         @sorted_events = Hash.new
         @events.each {|e|
-          (@sorted_events[e.category || 'General'] ||= []) << e
+          category = e.category.blank? ? 'General' : e.category
+          (@sorted_events[category] ||= []) << e
         }
 
         render "#{@region.name}/events" if lookup_context.find_all("#{@region.name}/events").any?
