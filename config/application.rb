@@ -41,7 +41,7 @@ module Pbm
 
     config.assets.enabled = true
     config.assets.initialize_on_precompile = false
-    config.assets.compile = false
+    config.assets.compile = true
 
     config.assets.precompile += ['style.css']
   end
