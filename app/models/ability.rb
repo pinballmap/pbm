@@ -12,7 +12,7 @@ class Ability
       can [:update, :read, :destroy], [MachineScoreXref], :location => { :region_id => user.region_id }
 
       if user.region.name == 'portland'
-        can :manage, [Region, Machine]
+        can :manage, [Region, Machine, User]
       else
         can [:update, :read], [Region], :id => user.region_id
       end
