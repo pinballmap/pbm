@@ -18,7 +18,7 @@ Feature: events for mobile apps
     And I go to the mobile page for "/iphone.html?init=1;region=chicago"
     Then I should be on the mobile page for "/chicago/locations.xml"
 
-  Scenario: respects region param
+  Scenario: init=1
     Given the following regions exist:
       |id|name|
       |1|portland|
@@ -39,6 +39,30 @@ Feature: events for mobile apps
     And I should see the following output:
       """
       <!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<?xml version=\"1.0\" encoding=\"UTF-8\"?><html><body><data><locations><location><id>1</id><name>Sasston</name><neighborhood></neighborhood><zoneno></zoneno><nummachines>1</nummachines><lat>12.0</lat><lon>21.0</lon></location></locations><machines><machine><id>1</id><name>Cleo's Adventure</name><numlocations>1</numlocations></machine></machines><zones></zones></data></body></html>
+      """
+
+  Scenario: 4sq export
+    Given the following regions exist:
+      |id|name|full_name|lat|lon|
+      |1|portland|Portland|1|2|
+      |2|chicago|Chicago|3|4|
+    And the following locations exist:
+      |id|name|lat|lon|street|city|state|zip|phone|region_id|
+      |1|Foo|1|1|123 pine|portland|OR|97211|555-555-5555|1|
+      |2|Bar|2|2|456 oak|chicago|IL|55555|123-456-7890|2|
+    And the following machines exist:
+      |id|name|
+      |1|Cleo|
+      |2|Satchmo|
+    And the following location machine xrefs exist:
+      |location_id|machine_id|
+      |1|1|
+      |1|2|
+      |2|1|
+    And I go to the mobile page for "/4sq_export.xml"
+    And I should see the following output:
+      """
+    <!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<?xml version=\"1.0\" encoding=\"UTF-8\"?><html><body><data><regions><region><name>portland</name><fullname>Portland</fullname><lat>1.0</lat><lon>2.0</lon><locations><location><name>Foo</name><lat>1.0</lat><lon>1.0</lon><street>123 pine</street><city>portland</city><state>OR</state><zip>97211</zip><phone>555-555-5555</phone><nummachines>2</nummachines><machines><machine><name>Satchmo</name></machine><machine><name>Cleo</name></machine></machines></location></locations></region><region><name>chicago</name><fullname>Chicago</fullname><lat>3.0</lat><lon>4.0</lon><locations><location><name>Bar</name><lat>2.0</lat><lon>2.0</lon><street>456 oak</street><city>chicago</city><state>IL</state><zip>55555</zip><phone>123-456-7890</phone><nummachines>1</nummachines><machines><machine><name>Cleo</name></machine></machines></location></locations></region></regions></data></body></html>
       """
 
   Scenario: region init
