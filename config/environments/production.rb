@@ -10,7 +10,7 @@ Pbm::Application.configure do
   config.action_controller.perform_caching = true
 
   # Specifies the header that your server uses for sending files
-  config.action_dispatch.x_sendfile_header = nil
+  config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
 
   # If you have no front-end server that supports something like X-Sendfile,
   # just comment this out and Rails will serve the files
@@ -32,7 +32,6 @@ Pbm::Application.configure do
   config.static_cache_control = "public, max-age=2592000"
 
   confid.assets.compress = true
-  config.assets.digest = true
 
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
