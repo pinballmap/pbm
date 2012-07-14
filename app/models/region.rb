@@ -57,4 +57,12 @@ class Region < ActiveRecord::Base
 
     machineless_locations
   end
+
+  def locations_count
+    Location.count_by_sql "select count(*) from locations where region_id=#{self.id}"
+  end
+
+  def machines_count
+    LocationMachineXref.count_by_sql "select count(*) from location_machine_xrefs lmx inner join locations l on (lmx.location_id = l.id) where l.region_id=#{self.id}"
+  end
 end
