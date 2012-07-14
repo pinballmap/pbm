@@ -37,9 +37,9 @@
   - count = 1
   - Region.order('full_name').each do |r|
     .map_summary
-      = link_to image_tag("landing_thumbs/#{r.name}-logo.png"), "/#{r.name}", :class => 'landing_logo'
+      = link_to image_tag("/assets/landing_thumbs/#{r.name}-logo.png"), "/#{r.name}", :class => 'landing_logo'
       %br/
-      = link_to image_tag("landing_thumbs/#{r.name}-thumbnail.png", :size => '150x150'), "/#{r.name}"
+      = link_to image_tag("/assets/landing_thumbs/#{r.name}-thumbnail.png", :size => '150x150'), "/#{r.name}"
       .map_summary_info
         Tracking:
         %br/

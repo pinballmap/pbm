@@ -41,19 +41,42 @@ module Pbm
 
     config.assets.enabled = true
     config.assets.initialize_on_precompile = false
-    config.assets.compile = true
+    config.assets.compile = false
 
+    # unfortunate inability to use wildcards because of a bug in rails admin
     config.assets.precompile += %w(
+      facebox.css
+      highslide-ie6.css
+      highslide.css
+      jquery.jscrollpane.css
+      jquery.ui.accordion.css
+      jquery.ui.all.css
+      jquery.ui.autocomplete.css
+      jquery.ui.base.css
+      jquery.ui.button.css
+      jquery.ui.core.css
+      jquery.ui.datepicker.css
+      jquery.ui.dialog.css
+      jquery.ui.progressbar.css
+      jquery.ui.resizable.css
+      jquery.ui.selectable.css
+      jquery.ui.slider.css
+      jquery.ui.tabs.css
+      jquery.ui.theme.css
       rails_admin.css
       style.css
-      facebox.css
-      highslide.css
-      rails_admin/rails_admin.js
       facebox.js
       highslide.min.js
-      jquery.jscrollpane.js
       jQuery.scrollSomething-1.0.0.js
+      jquery-ui-1.8.5.custom.min.js
+      jquery.form.js
+      jquery.js
+      jquery.jscrollpane.js
+      jquery.mousewheel.js
+      jquery.remotipart.js
+      rails.js
       rails_admin.js
+      rails_admin/rails_admin.js
     )
   end
 end
