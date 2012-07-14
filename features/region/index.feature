@@ -9,7 +9,7 @@ Feature: Region main page
     And I am on "Portland"'s home page
     Then I should see "To search locations by location, please select a location from the drop down or use the text box"
     And I should not see "To search locations by machine, please select a machine from the drop down or use the text box" within "span.info"
-    And my other search options should be "city machine type operator zone"
+    And my other search options should be "city location machine type operator zone"
     Given I switch to "machine" lookup
     Then I should see "To search locations by machine, please select a machine from the drop down or use the text box"
     And I should not see "To search locations by location, please select a location from the drop down or use text box" within "span.info"
