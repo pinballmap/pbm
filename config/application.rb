@@ -43,6 +43,6 @@ module Pbm
     config.assets.initialize_on_precompile = false
     config.assets.compile = true
 
-    config.assets.precompile += ['style.css']
+    config.assets.precompile += ['*.js', '*.css']
   end
 end
