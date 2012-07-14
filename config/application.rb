@@ -43,6 +43,17 @@ module Pbm
     config.assets.initialize_on_precompile = false
     config.assets.compile = true
 
-    config.assets.precompile += ['*.js', '*.css']
+    config.assets.precompile += %w(
+      rails_admin.css
+      style.css
+      facebox.css
+      highslide.css
+      rails_admin/rails_admin.js
+      facebox.js
+      highslide.min.js
+      jquery.jscrollpane.js
+      jQuery.scrollSomething-1.0.0.js
+      rails_admin.js
+    )
   end
 end
