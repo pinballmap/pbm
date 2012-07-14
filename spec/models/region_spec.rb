@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Region do
   before(:each) do
     @r = FactoryGirl.create(:region, :name => 'portland')
+    @other_region = FactoryGirl.create(:region, :name => 'chicago')
   end
 
   describe '#n_recent_scores' do
@@ -44,6 +45,28 @@ describe Region do
       l2 = FactoryGirl.create(:location, :region => @r)
 
       @r.machineless_locations.should == [l, l2]
+    end
+  end
+
+  describe '#locations_count' do
+    it 'should return an int representing the number of locations in the region' do
+      FactoryGirl.create(:location, :region => @r)
+      FactoryGirl.create(:location, :region => @r)
+
+      @r.locations_count.should == 2
+    end
+  end
+
+  describe '#machines_count' do
+    it 'should return an int representing the number of machines in the region' do
+      FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => @r))
+      FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => @r))
+      FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => @r))
+      FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => @r))
+
+      FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => @other_region))
+
+      @r.machines_count.should == 4
     end
   end
 end
