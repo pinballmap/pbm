@@ -1,6 +1,7 @@
 var map;
 var markers = new Array();
 var infoWindows = new Array();
+var locationIDs = new Array();
 var searchSections = new Array('city', 'location', 'machine', 'type', 'operator', 'zone');
 
 function toggleArrows(name, id) {
@@ -35,9 +36,12 @@ function clearMarkers() {
 }
 
 function showLocations(ids, lats, lons, contents) {
+  locationIDs = ids;
+  infoWindows = new Array();
+  markers = new Array();
+
   var bounds = new google.maps.LatLngBounds();
   map = new google.maps.Map(document.getElementById("map_canvas"), { mapTypeId: google.maps.MapTypeId.ROADMAP });
-  infoWindows = new Array();
 
   for (i in ids) {
     var latlng = new google.maps.LatLng(lats[i], lons[i]);
@@ -94,6 +98,8 @@ function initSearch(region, locationID) {
 }
 
 function showLocationDetail(locationID) {
+  locationLookupMapCenter(locationID);
+
   $('#show_location_detail_location_' + locationID).toggle();
   toggleData('location_detail_location', locationID);
   toggleArrows('location_detail', locationID);
@@ -105,4 +111,11 @@ function singleLocationLoad(region, locationID) {
 
   $('#show_machines_location_' + locationID).html(loadingHTML());
   $('#show_machines_location_' + locationID).load('/' + region + '/locations/' + locationID + '/render_machines');
+}
+
+function locationLookupMapCenter(locationID) {
+  var index = jQuery.inArray(locationID, locationIDs);
+  clearInfoWindows();
+  map.panTo(markers[index].getPosition());
+  infoWindows[index].open(map, markers[index]);
 }
