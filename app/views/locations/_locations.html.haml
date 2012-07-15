@@ -28,7 +28,7 @@
                   #{[l.machine_names].join('<br />').html_safe}
             .clear
             %div.location_detail[l, :location_detail]{:style => 'display:none'}
-              %div.location_name{:onclick => "toggleArrows('location_detail', #{l.id});"}
+              %div.location_name{:onclick => "toggleArrows('location_detail', #{l.id}); locationLookupMapCenter(#{l.id});"}
                 %ul
                   %li.name= l.name
                   - if (l.location_type)

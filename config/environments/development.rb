@@ -24,6 +24,8 @@ Pbm::Application.configure do
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
+  config.assets.compile = true
+
   config.after_initialize do
     Bullet.enable = false #enable this if you need some N+1 work, but note that it will slow your dev environment down...a lot
     Bullet.bullet_logger = true

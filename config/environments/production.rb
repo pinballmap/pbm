@@ -28,6 +28,7 @@ Pbm::Application.configure do
 
   # Disable Rails's static asset server
   # In production, Apache or nginx will already do this
+  config.assets.compile = false
   config.serve_static_assets = true
   config.static_cache_control = "public, max-age=2592000"
 
