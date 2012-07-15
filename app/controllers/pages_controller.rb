@@ -2,8 +2,8 @@ require 'pony'
 
 class PagesController < ApplicationController
   def region
-    @location_count = @region.locations.size
-    @lmx_count = @region.location_machine_xrefs.size
+    @location_count = @region.locations_count
+    @lmx_count = @region.machines_count
 
     @search_options = {
       'type' => {
