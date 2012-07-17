@@ -8,4 +8,8 @@ class RegionsController < InheritedResources::Base
   def show
     respond_with(@region = Region.find(params[:id]))
   end
+
+  def four_square_export
+    @regions = Region.all
+  end
 end

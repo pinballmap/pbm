@@ -5,6 +5,8 @@ if (Region.table_exists? && Region.all.size > 0)
 end
 
 Pbm::Application.routes.draw do
+  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+
   scope ':region', :constraints => { :region => /#{regions}|!admin/i } do
     resources :pages
     resources :events
@@ -65,6 +67,7 @@ Pbm::Application.routes.draw do
   devise_for :users
 
   match 'iphone.html', :to => 'locations#mobile'
+  match '4sq_export.xml' => 'regions#four_square_export', :format => 'xml'
   get 'pages/home'
   root :to => 'pages#home'
 end

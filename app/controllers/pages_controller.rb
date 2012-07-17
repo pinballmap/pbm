@@ -2,25 +2,36 @@ require 'pony'
 
 class PagesController < ApplicationController
   def region
-    @location_count = @region.locations.size
-    @lmx_count = @region.location_machine_xrefs.size
+    @locations = Location.where('region_id = ?', @region.id)
+    @location_count = @region.locations_count
+    @lmx_count = @region.machines_count
+
+    location_types = Hash.new
+    cities = Hash.new
+    @locations.each do |l|
+      if (l.location_type_id)
+        location_types[l.location_type_id] = l
+      end
+
+      cities[l.city] = l
+    end
 
     @search_options = {
       'type' => {
         'id'   => 'id',
         'name' => 'name',
-        'search_collection' => Location.find(:all, :conditions => ['region_id = ? and location_type_id is not null', @region.id], :select => 'distinct location_type_id').collect { |l| l.location_type }.sort {|a,b| a.name <=> b.name},
+        'search_collection' => location_types.values.collect { |l| l.location_type }.sort {|a,b| a.name <=> b.name},
       },
       'location' => {
         'id'   => 'id',
         'name' => 'name',
-        'search_collection' => Location.where('region_id = ?', @region.id).order('name'),
+        'search_collection' => @locations.sort {|a,b| a.name <=> b.name},
         'autocomplete' => 1,
       },
       'machine' => {
         'id'   => 'id',
         'name' => 'name',
-        'search_collection' => @region.machines,
+        'search_collection' => @region.machines.sort {|a,b| a.name <=> b.name},
         'autocomplete' => 1,
       },
       'zone' => {
@@ -36,11 +47,11 @@ class PagesController < ApplicationController
       'city' => {
         'id'   => 'city',
         'name' => 'city',
-        'search_collection' => Location.find(:all, :conditions => ['region_id = ?', @region.id], :select => 'distinct city', :order => 'city'),
+        'search_collection' => cities.values.sort {|a,b| a.city <=> b.city}
       }
     }
 
-    render "#{@region.name}/region" if (template_exists?("#{@region.name}/region"))
+    render "#{@region.name}/region" if (lookup_context.find_all("#{@region.name}/region").any?)
   end
 
   def contact_sent
@@ -53,7 +64,7 @@ class PagesController < ApplicationController
   end
 
   def about
-    render "#{@region.name}/about" if (template_exists?("#{@region.name}/about"))
+    render "#{@region.name}/about" if (lookup_context.find_all("#{@region.name}/about").any?)
   end
 
   def links
@@ -62,7 +73,7 @@ class PagesController < ApplicationController
       (@links[rlx.sort_order || 0] ||= []) << rlx
     end
 
-    render "#{@region.name}/links" if (template_exists?("#{@region.name}/links"))
+    render "#{@region.name}/links" if (lookup_context.find_all("#{@region.name}/links").any?)
   end
 
   def high_rollers

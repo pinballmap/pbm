@@ -1,65 +1,66 @@
 #  the lat/lon of this address is (45.5207, -122.6628)
-Factory.define :location do |l|
-  l.name 'Test Location Name'
-  l.street '303 Southeast 3rd Avenue'
-  l.city 'Portland'
-  l.state 'OR'
-  l.zip '97214'
-  l.association :region, :name => 'portland'
-  l.association :location_type
-end
+FactoryGirl.define do
+  factory :location do
+    name 'Test Location Name'
+    street '303 Southeast 3rd Avenue'
+    city 'Portland'
+    state 'OR'
+    zip '97214'
+    association :region, :name => 'portland'
+    association :location_type
+  end
 
-Factory.define :machine do |m|
-  m.name 'Test Machine Name'
-end
+  factory :machine do
+    name 'Test Machine Name'
+  end
 
-Factory.define :location_machine_xref do |lmx|
-  lmx.association :location
-  lmx.association :machine
-end
+  factory :location_machine_xref do
+    association :location
+    association :machine
+  end
 
-Factory.define :location_type do |lt|
-  lt.name 'Test Location Type'
-end
+  factory :location_type do
+    name 'Test Location Type'
+  end
 
-Factory.define :zone do |z|
-  z.name 'Test Zone'
-end
+  factory :zone do
+    name 'Test Zone'
+  end
 
-Factory.define :operator do |o|
-  o.name 'Test Operator'
-end
+  factory :operator do
+    name 'Test Operator'
+  end
 
-Factory.define :region do |r|
-  r.name 'Test Region'
-end
+  factory :region do
+    name 'Test Region'
+  end
 
-Factory.define :machine_score_xref do |msx|
-  msx.association :location_machine_xref
-  msx.association :user
-end
+  factory :machine_score_xref do
+    association :location_machine_xref
+    association :user
+  end
 
-Factory.define :event do |e|
-  e.name 'Test Event'
-end
+  factory :event do
+    name 'Test Event'
+  end
 
-Factory.define :user do |u|
-  u.initials 'cap'
-  u.sequence(:email) {|n| "captainamerica#{n}@foo.bar"}
-  u.password 'password'
-  u.association :region, :name => 'portland'
-end
+  factory :user do
+    initials 'cap'
+    sequence(:email) {|n| "captainamerica#{n}@foo.bar"}
+    password 'password'
+  end
 
-Factory.define :location_picture_xref do |lpx|
-  lpx.association :location
-  lpx.association :user
-  lpx.photo File.open(File.join(Rails.root, '/public/images/favicon.ico'))
-end
+  factory :location_picture_xref do
+    association :location
+    association :user
+    photo File.open(File.join(Rails.root, '/app/assets/images/favicon.ico'))
+  end
 
-Factory.define :region_link_xref do |rlx|
-  rlx.name 'Test Link Name'
-  rlx.description 'This is a test link'
-  rlx.url 'http://www.foo.com'
-  rlx.category 'Test Category'
-  rlx.association :region
+  factory :region_link_xref do 
+    name 'Test Link Name'
+    description 'This is a test link'
+    url 'http://www.foo.com'
+    category 'Test Category'
+    association :region
+  end
 end

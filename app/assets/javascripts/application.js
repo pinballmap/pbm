@@ -1,6 +1,7 @@
 var map;
 var markers = new Array();
 var infoWindows = new Array();
+var locationIDs = new Array();
 var searchSections = new Array('city', 'location', 'machine', 'type', 'operator', 'zone');
 
 function toggleArrows(name, id) {
@@ -35,9 +36,12 @@ function clearMarkers() {
 }
 
 function showLocations(ids, lats, lons, contents) {
+  locationIDs = ids;
+  infoWindows = new Array();
+  markers = new Array();
+
   var bounds = new google.maps.LatLngBounds();
   map = new google.maps.Map(document.getElementById("map_canvas"), { mapTypeId: google.maps.MapTypeId.ROADMAP });
-  infoWindows = new Array();
 
   for (i in ids) {
     var latlng = new google.maps.LatLng(lats[i], lons[i]);
@@ -67,25 +71,23 @@ function attachMarkerClick(marker, index) {
 }
 
 function loadingHTML() {
-  return "<div class='loading'><img src='images/spinner_blue.gif' /> Loading <div>";
+  return "<div class='loading'><img src='/assets/spinner_blue.gif' /> Loading <div>";
 }
 
 function setOtherSearchOptions(newSection) {
-  var html = "<p class='black_text'>Pick another parameter by which to search: </p>";
+  var html = "<p class='black_text'>SEARCH BY</p>";
   for (section in searchSections) {
-    if (searchSections[section] != newSection) {
       html += "  <a href='#' id='" + searchSections[section] + "_section_link' onclick='switchSection(\"" + searchSections[section] + "\");'>" + searchSections[section] + "</a>\n"
-    }
   }
 
   $('#other_search_options').html(html);
 }
 
 function switchSection(newSection) {
-  $(document).trigger('close.facebox')
   setOtherSearchOptions(newSection);
   $("div .section:visible").hide();
   $('#by_' + newSection).toggle();
+  $("#" + newSection + "_section_link").toggleClass("active_section_link");
 }
 
 function initSearch(region, locationID) {
@@ -96,6 +98,8 @@ function initSearch(region, locationID) {
 }
 
 function showLocationDetail(locationID) {
+  locationLookupMapCenter(locationID);
+
   $('#show_location_detail_location_' + locationID).toggle();
   toggleData('location_detail_location', locationID);
   toggleArrows('location_detail', locationID);
@@ -107,4 +111,11 @@ function singleLocationLoad(region, locationID) {
 
   $('#show_machines_location_' + locationID).html(loadingHTML());
   $('#show_machines_location_' + locationID).load('/' + region + '/locations/' + locationID + '/render_machines');
+}
+
+function locationLookupMapCenter(locationID) {
+  var index = jQuery.inArray(locationID, locationIDs);
+  clearInfoWindows();
+  map.panTo(markers[index].getPosition());
+  infoWindows[index].open(map, markers[index]);
 }
