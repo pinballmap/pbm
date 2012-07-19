@@ -14,6 +14,7 @@ class LocationMachineXrefsController < InheritedResources::Base
       if (machine.nil?)
         machine = Machine.new
         machine.name = params[:add_machine_by_name]
+        machine.save
 
         Pony.mail(
           :to => Region.find_by_name('portland').users.collect {|u| u.email},
