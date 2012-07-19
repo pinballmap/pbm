@@ -152,10 +152,6 @@ a#operator_section_link:hover, a#city_section_link:hover, a#machine_section_link
   margin-top: 5px;
 }
 
-#lookup {
-	padding: 5px 10px 10px 10px !important;
-}
-
 #lookup, #left_column, .left_column {
   float: left;
   width: 375px;
@@ -173,7 +169,7 @@ a#operator_section_link:hover, a#city_section_link:hover, a#machine_section_link
 	color-stop(0.13, rgb(102,102,102)),
 	color-stop(0.84, rgb(128,128,128))
 );
-  padding: 10px;
+  padding: 5px 10px 10px 10px;
   border: 1px solid #5C5C5A;
   border-radius: 5px;
   -moz-border-radius: 5px;
