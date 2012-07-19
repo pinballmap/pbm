@@ -2,25 +2,36 @@ require 'pony'
 
 class PagesController < ApplicationController
   def region
+    @locations = Location.where('region_id = ?', @region.id)
     @location_count = @region.locations_count
     @lmx_count = @region.machines_count
+
+    location_types = Hash.new
+    cities = Hash.new
+    @locations.each do |l|
+      if (l.location_type_id)
+        location_types[l.location_type_id] = l
+      end
+
+      cities[l.city] = l
+    end
 
     @search_options = {
       'type' => {
         'id'   => 'id',
         'name' => 'name',
-        'search_collection' => Location.find(:all, :conditions => ['region_id = ? and location_type_id is not null', @region.id], :select => 'distinct location_type_id').collect { |l| l.location_type }.sort {|a,b| a.name <=> b.name},
+        'search_collection' => location_types.values.collect { |l| l.location_type }.sort {|a,b| a.name <=> b.name},
       },
       'location' => {
         'id'   => 'id',
         'name' => 'name',
-        'search_collection' => Location.where('region_id = ?', @region.id).order('name'),
+        'search_collection' => @locations.sort {|a,b| a.name <=> b.name},
         'autocomplete' => 1,
       },
       'machine' => {
         'id'   => 'id',
         'name' => 'name',
-        'search_collection' => @region.machines,
+        'search_collection' => @region.machines.sort {|a,b| a.name <=> b.name},
         'autocomplete' => 1,
       },
       'zone' => {
@@ -36,7 +47,7 @@ class PagesController < ApplicationController
       'city' => {
         'id'   => 'city',
         'name' => 'city',
-        'search_collection' => Location.find(:all, :conditions => ['region_id = ?', @region.id], :select => 'distinct city', :order => 'city'),
+        'search_collection' => cities.values.sort {|a,b| a.city <=> b.city}
       }
     }
 

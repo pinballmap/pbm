@@ -18,6 +18,7 @@ Feature: update condition for location's machine
     And I press the "location" search button
     And I update the machine condition for "Test Location Name"'s "Test Machine Name" to be "New Condition"
     And I press save for the machine condition for "Test Location Name"'s "Test Machine Name"
+    And I wait for 1 seconds
     Then "Test Location Name"'s "Test Machine Name" should have the condition "New Condition"
     And I should see "Updated: 08-Apr-2010"
 
