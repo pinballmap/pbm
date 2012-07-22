@@ -1,3 +1,3 @@
 %select{:name => "#{object_type}[location_id]"}
-  - Location.all.select {|l| l.region_id == Authorization.current_user.region_id}.each do |l|
+  - Location.where('region_id = ?', Authorization.current_user.region_id).order('name').each do |l|
     <option value="#{l.id}" #{l.id == location_id ? 'selected=select' : ''} >#{l.name}</option>
