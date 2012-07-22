@@ -20,6 +20,9 @@ module NavigationHelpers
     when /"(.*)"'s contact page/
       "/#{$1.downcase}/contact"
 
+    when /"(.*)"'s location feed page/
+      "/#{$1.downcase}/location_machine_xrefs.rss"
+
     when /the home\s?page/
       '/'
 

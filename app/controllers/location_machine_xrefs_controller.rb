@@ -52,8 +52,7 @@ class LocationMachineXrefsController < InheritedResources::Base
   end
 
   def index
-    @lmxs = apply_scopes(LocationMachineXref).includes(:location, :machine, :machine_score_xrefs)
-    @lmxs.sort! {|a,b| b.id <=> a.id}
+    @lmxs = apply_scopes(LocationMachineXref).order('location_machine_xrefs.id desc').limit(50).includes(:location, :machine, :machine_score_xrefs)
     respond_with(@lmxs)
   end
 
