@@ -11,10 +11,8 @@ class LocationsController < InheritedResources::Base
   end
 
   def index
-    @locations = apply_scopes(Location).includes(:location_machine_xrefs, :machines, :location_picture_xrefs)
+    @locations = apply_scopes(Location).order("locations.name").includes(:location_machine_xrefs, :machines, :location_picture_xrefs)
     @location_data = locations_javascript_data(@locations)
-
-    @locations.sort! {|a, b| a.name.downcase <=> b.name.downcase }
 
     respond_with(@locations)
   end
