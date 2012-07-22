@@ -104,10 +104,13 @@ class LocationsController < InheritedResources::Base
     contents = Array.new
 
     locations.each do |l|
-      ids      << l.id
-      lats     << l.lat
-      lons     << l.lon
-      contents << l.content_for_infowindow
+      cloned_location = l.clone
+      ids      << cloned_location.id
+      lats     << cloned_location.lat
+      lons     << cloned_location.lon
+      contents << cloned_location.content_for_infowindow
+
+      cloned_location = nil
     end
 
     [ids, lats, lons, contents]
