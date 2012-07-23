@@ -1,5 +1,5 @@
 Pbm::Application.configure do
-  config.middleware.use(Oink::Middleware, :logger => Rails.logger)
+  Pbm::Application.middleware.use(Oink::Middleware, :logger => Rails.logger)
 
   # The production environment is meant for finished, "live" apps.
   # Code is not reloaded between requests
