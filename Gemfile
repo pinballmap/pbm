@@ -31,6 +31,7 @@ gem 'exception_notification_rails3', :require => 'exception_notifier'
 gem 'aws-sdk'
 gem 'newrelic_rpm'
 gem 'dalli'
+gem 'oink'
 
 group :test do
   gem 'cucumber-rails', :require => false
@@ -59,5 +60,4 @@ group :development, :test do
   gem 'pickle'
   gem 'bullet'
   gem 'email_spec'
-  gem 'oink'
 end
