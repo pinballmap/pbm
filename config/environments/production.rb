@@ -1,5 +1,6 @@
 Pbm::Application.configure do
-  Pbm::Application.middleware.use(Oink::Middleware, :logger => Rails.logger)
+  config.logger = h3_log = Hodel3000CompliantLogger.new(config.paths['log'].first)
+  config.middleware.use "Oink::Middleware", :logger => h3_log
 
   # The production environment is meant for finished, "live" apps.
   # Code is not reloaded between requests
