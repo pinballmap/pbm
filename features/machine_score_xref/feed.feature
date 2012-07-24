@@ -1,10 +1,10 @@
-Feature: Location feeds
-  In order to show users recent additions to the system
+Feature: Score feeds
+  In order to show users recent scores to the system
   As a guest
-  I want to be able to get an xml feed of recent additions to the system
+  I want to be able to get an xml feed of recent scores
 
   @javascript
-  Scenario: locations are limited to most recent 50
+  Scenario: Add machine by name
     Given there is a region with the name "portland" with the id "1"
     And the following locations exist:
     |id|name|region_id|
@@ -66,6 +66,59 @@ Feature: Location feeds
     |49|1|1|
     |50|1|1|
     |51|1|1|
-    And I am on "portland"'s location feed page
+    And the following machine score xrefs exist:
+    |location_machine_xref_id|
+    |1|
+    |2|
+    |3|
+    |4|
+    |5|
+    |6|
+    |7|
+    |8|
+    |9|
+    |10|
+    |11|
+    |12|
+    |13|
+    |14|
+    |15|
+    |16|
+    |17|
+    |18|
+    |19|
+    |20|
+    |21|
+    |22|
+    |23|
+    |24|
+    |25|
+    |26|
+    |27|
+    |28|
+    |29|
+    |30|
+    |31|
+    |32|
+    |33|
+    |34|
+    |35|
+    |36|
+    |37|
+    |38|
+    |39|
+    |40|
+    |41|
+    |42|
+    |43|
+    |44|
+    |45|
+    |46|
+    |47|
+    |48|
+    |49|
+    |50|
+    |51|
+    And I am on "portland"'s score feed page
     Then I should not see "Zelda"
     And I should see "Bawb"
