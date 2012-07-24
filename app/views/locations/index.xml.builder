@@ -2,31 +2,30 @@ xml.instruct! :xml, :version => "1.0"
 xml.data do
   xml.locations do
     for location in @locations
+      cloned_location = location.clone
       xml.location do
-        xml.id location.id
-        xml.name location.name
-        xml.neighborhood location.zone.nil? ? '' : location.zone.short_name
-        xml.zoneNo location.zone_id
-        xml.numMachines location.machines.size
-        xml.lat location.lat
-        xml.lon location.lon
+        xml.id cloned_location.id
+        xml.name cloned_location.name
+        xml.neighborhood cloned_location.zone.nil? ? '' : cloned_location.zone.short_name
+        xml.zoneNo cloned_location.zone_id
+        xml.numMachines cloned_location.machines.size
+        xml.lat cloned_location.lat
+        xml.lon cloned_location.lon
       end
+      cloned_location = nil
     end
   end
 
   xml.machines do
     for machine in @region.machines
+      cloned_machine = machine.clone
       xml.machine do
-        xml.id machine.id
-        xml.name machine.name
+        xml.id cloned_machine.id
+        xml.name cloned_machine.name
 
-        machine_counts = Hash.new
-        @region.location_machine_xrefs.each do |lmx|
-          (machine_counts[lmx.machine_id] ||= []) << lmx
-        end
-
-        xml.numLocations machine_counts[machine.id].size
+        xml.numLocations LocationMachineXref.count_by_sql "select count(*) from location_machine_xrefs lmx inner join locations l on (lmx.location_id = l.id) where l.region_id=#{@region.id} and lmx.machine_id=#{cloned_machine.id}"
       end
+      cloned_machine = nil
     end
   end
 
