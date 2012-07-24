@@ -18,18 +18,7 @@ class MachineScoreXrefsController < InheritedResources::Base
   end
 
   def index
-    @lmxs = apply_scopes(LocationMachineXref).includes([:machine_score_xrefs, :location, :machine])
-
-    @msxs = Array.new
-
-    @lmxs.each do |lmx|
-      @msxs << lmx.machine_score_xrefs unless lmx.machine_score_xrefs.empty?
-    end
-
-    if (!@msxs.empty?)
-      @msxs.flatten!
-      @msxs.sort! {|a, b| b.created_at <=> a.created_at}
-    end
+    @msxs = apply_scopes(MachineScoreXref).order('machine_score_xrefs.id desc').limit(50).includes([:location_machine_xref, :location, :machine])
 
     respond_with(@msxs)
   end

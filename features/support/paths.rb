@@ -23,6 +23,9 @@ module NavigationHelpers
     when /"(.*)"'s location feed page/
       "/#{$1.downcase}/location_machine_xrefs.rss"
 
+    when /"(.*)"'s score feed page/
+      "/#{$1.downcase}/machine_score_xrefs.rss"
+
     when /the home\s?page/
       '/'
 
