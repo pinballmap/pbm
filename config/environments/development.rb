@@ -1,5 +1,6 @@
 Pbm::Application.configure do
-  Pbm::Application.middleware.use Oink::Middleware
+  config.logger = h3_log = Hodel3000CompliantLogger.new('log/development.log')
+  config.middleware.use "Oink::Middleware", :logger => h3_log
 
   # In the development environment your application's code is reloaded on
   # every request.  This slows down response time but is perfect for development
