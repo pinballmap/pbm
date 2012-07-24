@@ -4,7 +4,7 @@
     %title #{(defined? @region) ? @region.full_name : ''} Pinball Map
     %meta{:name => "keywords", :content => "pinball, map, google map, locator" }
     %meta{:name => "description", :content => "Find local places to play pinball! The #{(defined? @region) ? @region.full_name : ''} Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area." }
-    = stylesheet_link_tag '/assets/style', '/assets/jquery.ui.all', '/assets/jquery.jscrollpane', '/assets/highslide', '/assets/highslide-ie6'
+    = stylesheet_link_tag 'application', '/assets/jquery.ui.all', '/assets/jquery.jscrollpane', '/assets/highslide', '/assets/highslide-ie6'
     = javascript_include_tag '/assets/jquery', '/assets/jquery-ui-1.8.5.custom.min', '/assets/jQuery.scrollSomething-1.0.0', '/assets/rails', 'application', '/assets/jquery.form', '/assets/jquery.remotipart', '/assets/jquery.mousewheel', '/assets/jquery.jscrollpane', '/assets/highslide.min'
     = csrf_meta_tag
     = javascript_include_tag 'http://maps.google.com/maps/api/js?sensor=true'
