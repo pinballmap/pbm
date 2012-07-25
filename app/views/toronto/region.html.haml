@@ -1,8 +1,7 @@
 - content_for :presearch_sidebar do
   = image_tag '/assets/toronto/topl-logo.gif'
   %br/
-  %br/
-  %span.regular_text This regional map is maintained with the help of the
-  =link_to 'Toronto Pinball League', 'http://www.topl.org/', :class => 'light_blue', :target => '_blank'
-  %br/
+  %p.regular_text 
+    This regional map is maintained with the help of the
+    =link_to 'Toronto Pinball League', 'http://www.topl.org/', :class => 'light_blue', :target => '_blank'
 = render :file => 'pages/region'
