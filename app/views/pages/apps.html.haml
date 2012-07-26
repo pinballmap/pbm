@@ -1,24 +1,22 @@
-#left_column.secondary
-  =link_to image_tag('/assets/App_Store.png'), "http://itunes.apple.com/us/app/portland-pinball-map/id359275713?mt=8", :class => 'pic', :target => '_blank'
-  %br/
-  %br/
-  =link_to image_tag('/assets/android_market.png'), "https://market.android.com/details?id=com.pbm&feature=search_result#?t=W251bGwsMSwxLDEsImNvbS5wYm0iXQ..", :class => 'pic', :target => '_blank'
-  %br/
-  %br/
-  =image_tag '/assets/appLoadingPortland.jpg'
-#right_column
-  %span.subpage_text
-    %strong Pinball Map Apps
-  %p.subpage_text 
+.left_column.secondary
+  %p{:style => 'margin-top:7%;'}
+    =link_to image_tag('/assets/App_Store.png'), "http://itunes.apple.com/us/app/portland-pinball-map/id359275713?mt=8", :class => 'pic', :target => '_blank'
+  %p
+    =link_to image_tag('/assets/android_market.png'), "https://market.android.com/details?id=com.pbm&feature=search_result#?t=W251bGwsMSwxLDEsImNvbS5wYm0iXQ..", :class => 'pic', :target => '_blank'
+  %p
+    =image_tag '/assets/appLoadingPortland.jpg', :style => 'height:340px;width:226px;'
+.right_column
+  %p.yellow Pinball Map Apps
+  %p.regular_text 
     We currently have two mobile apps released. One's for the iPhone, and the other is for Android. The newest versions of these apps will work for all the regions the website currently covers. You just open the app and then choose where you are located. And they will automatically support the new regions that are added in the future (and you won't need to update).
-  %p.subpage_text
-    %span Featuring splash artwork by&nbsp;
+  %p.regular_text
+    Featuring splash artwork by&nbsp;
     =link_to 'Drew Marshall', 'http://workbydrew.com', :class => 'light_blue', :target => '_blank'
-  %p.subpage_text
+  %p.regular_text
     =link_to 'Click here for iPhone app support (and to see some screenshots).', app_support_path, :class => 'light_blue'
   %br/
-  %p.subpage_text
-    %strong Features of these fine apps:
+  %p.regular_text
+    %span.yellow Features of these fine apps:
   %ul.weekly_text
     %li Add/Remove machines from locations, to help keep the map up to date
     %li Find locations by proximity

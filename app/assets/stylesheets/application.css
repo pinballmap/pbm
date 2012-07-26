@@ -29,6 +29,7 @@ li a:hover {
 }
 .text_column a:hover, #left_column a:hover {
   text-decoration: underline;
+  color: #CCCCCC;
 }
 
 .text_column_portland {
@@ -111,6 +112,15 @@ a#operator_section_link:hover, a#city_section_link:hover, a#machine_section_link
 	color: #FFFFCC;
 }
 
+#locations p {
+	background-color: #676767;
+	padding: 10px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+	border: 1px solid #565656;
+}
+
 #map, .right_column, #right_column {
   margin-left:35em;
   padding: 20px 40px 40px 40px;
@@ -137,7 +147,7 @@ a#operator_section_link:hover, a#city_section_link:hover, a#machine_section_link
 
 .events_column {
 	padding-top:10px;
-	min-height: 580px;
+	min-height: 575px;
 	padding-bottom:10px;
 	height: 100%;
 }
@@ -443,6 +453,7 @@ br.clear {
   position: relative;
   overflow: hidden;
   margin-left: -10px;
+  border-top: 1px solid #9a9a9a;
 }
 
 .scrollerScroller {
@@ -462,7 +473,6 @@ br.clear {
   cursor: pointer;
   cursor: hand;
   border: solid 1px #444444;
-
   -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
   -border-radius: 8px;
@@ -879,10 +889,10 @@ background-image: -webkit-gradient(
   letter-spacing: .3px;
 }
 
-a.light_blue:link {color: #cccccc;}
-a.light_blue:visited {color: #cccccc;}
-a.light_blue:hover {color: #ffffff; text-decoration: underline;}
-a.light_blue:active {color: #ffffff; text-decoration: underline;}
+a.light_blue:link, p.regular_text a:link, li a:link {color: #cccccc;}
+a.light_blue:visited, p.regular_text a:visited {color: #cccccc;}
+a.light_blue:hover, p.regular_text a:hover {color: #ffffff; text-decoration: underline;}
+a.light_blue:active, p.regular_text a:hover {color: #ffffff; text-decoration: underline;}
 
 .pink {
   color:#ffcc00;
@@ -892,7 +902,6 @@ a.light_blue:active {color: #ffffff; text-decoration: underline;}
 
 .intro {
   font-size: 14px;
-  font-weight: bold;
 }
 
 .home_intro {
@@ -914,7 +923,6 @@ a.light_blue:active {color: #ffffff; text-decoration: underline;}
 
 .stufflike {
   font-size: 14px;
-  font-weight:bold;
 }
 
 .yellow {
