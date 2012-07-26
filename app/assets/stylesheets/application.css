@@ -889,10 +889,10 @@ background-image: -webkit-gradient(
   letter-spacing: .3px;
 }
 
-a.light_blue:link {color: #cccccc;}
-a.light_blue:visited {color: #cccccc;}
-a.light_blue:hover {color: #ffffff; text-decoration: underline;}
-a.light_blue:active {color: #ffffff; text-decoration: underline;}
+a.light_blue:link, p.regular_text a:link, li a:link {color: #cccccc;}
+a.light_blue:visited, p.regular_text a:visited {color: #cccccc;}
+a.light_blue:hover, p.regular_text a:hover {color: #ffffff; text-decoration: underline;}
+a.light_blue:active, p.regular_text a:hover {color: #ffffff; text-decoration: underline;}
 
 .pink {
   color:#ffcc00;
