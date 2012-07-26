@@ -1,7 +1,7 @@
 module LocationsHelper
   def open_closed_arrows_for(name, id=nil)
-    arrows = "<div class='arrow' id='#{name}_open_arrow#{"_#{id}" if (id)}' style='display: none;'><img alt='open arrow' src='/assets/open_arrow.gif' /></div>"
-    arrows += "<div class='arrow' id='#{name}_closed_arrow#{"_#{id}" if (id)}'><img alt='closed arrow' src='/assets/closed_arrow.gif' /></div>"
+    arrows = "<div class='arrow' id='#{name}_open_arrow#{"_#{id}" if (id)}' style='display: none;'><img alt='open arrow' src='#{asset_path 'open_arrow.gif'}' /></div>"
+    arrows += "<div class='arrow' id='#{name}_closed_arrow#{"_#{id}" if (id)}'><img alt='closed arrow' src='#{asset_path 'closed_arrow.gif'}' /></div>"
 
     arrows.html_safe
   end

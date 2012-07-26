@@ -1,9 +1,9 @@
 - content_for :presearch_sidebar do
   %p.regular_text{:style => 'margin-top:0px;'}
-    =link_to image_tag('/assets/twitter-icon.png'), 'http://www.twitter.com/la_pinball', :target => '_blank'
+    =link_to image_tag('twitter-icon.png'), 'http://www.twitter.com/la_pinball', :target => '_blank'
     =link_to 'Follow us on twitter for map updates and news', 'http://www.twitter.com/la_pinball', :class => 'light_blue', :target => '_blank'
     %br/
     %br/
     %span{:style => 'padding-left:7%;'}
-      = image_tag '/assets/la/la_pinball.jpg'
+      = image_tag 'la/la_pinball.jpg'
 = render :file => 'pages/region'

@@ -1,10 +1,10 @@
 - content_for :presearch_sidebar do
-  = image_tag '/assets/bayarea/bayarea_pinball.png'
+  = image_tag 'bayarea/bayarea_pinball.png'
   %p.regular_text
     = link_to 'Check out the official blog of this site!', "http://pinballbayarea.wordpress.com/", :class => 'light_blue', :target => '_blank'
     %br/
     %br/
-    =link_to image_tag('/assets/twitter-icon.png'), 'http://www.twitter.com/pinballbayarea', :target => '_blank'
+    =link_to image_tag('twitter-icon.png'), 'http://www.twitter.com/pinballbayarea', :target => '_blank'
     =link_to 'Follow us on twitter for map updates and news', 'http://www.twitter.com/pinballbayarea', :class => 'light_blue', :target => '_blank'
   - if @region.motd
     %p.regular_text
