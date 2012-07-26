@@ -1,12 +1,12 @@
 - content_for :presearch_sidebar do
-  = image_tag '/assets/portland/sassy.jpg', :class => 'portland_region_image'
+  = image_tag 'portland/sassy.jpg', :class => 'portland_region_image'
   %br/
   %br/
   #findapinball{:style => 'display:none'}
     %span Looking for pinball machines in Europe?
     %br/
     %br/
-    = link_to image_tag('/assets/findapinball.png'), 'http://findapinball.com', :style => 'border-style: none'
+    = link_to image_tag('findapinball.png'), 'http://findapinball.com', :style => 'border-style: none'
   - if !(params[:by_location_id])
     :javascript
       $(function () {
