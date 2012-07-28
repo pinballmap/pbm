@@ -1,25 +1,36 @@
 = yield :intro_extra
 #intro
-  %p.intro Welcome to pinballmap.com/#{@region.name}
-  %p.intro
+  %p.regular_text 
+    Welcome to 
+    %span.yellow pinballmap.com/#{@region.name}
+  %p.regular_text
     %span.yellowb This map is best maintained with the help of YOU.
-    %span If a place adds/replaces a machine, use the
+    If a place adds/replaces a machine, use the
     %span.yellowb "add"
-    %span and 
+    and 
     %span.yellowb "remove"
-    %span functions under that location on the map to bring things up to date. If you know of a location with machines that 
+    functions under that location on the map to bring things up to date. If you know of a location with machines that 
     %span{:style => "font-style:italic;"} isn't on the map,
-    %span  use the
-    %span.yellowb "Enter a New Location"
-    %span link up top to add the place to the database!
-  %p.intro Use the tools at left to do stuff like:
+    use the
+    %span.regular_text
+      =link_to '"Enter a New Location"', suggest_new_location_path
+    link up top to add the place to the database!
+  %p.regular_text Use the tools at left to do stuff like:
   %ul.stufflike
+    %li Update the map!
     %li Check your favorite locations for their latest line-up
-    %li Search for machines throughout town
-    %li Browse the machines in your region
+    %li Search or browse for machines throughout your town
     %li Search for locations with four or more machines
     %li Comment on a machine's condition
     %li Add photos of locations
     %li Input your high scores
-  %p.intro We currently are tracking #{@location_count} locations and #{@lmx_count} machines. Backups are made nightly. So if something bad happens, the site can be replenished.
-  %p.intro And be sure to check out the links page for more pinball resources.
+  %p.regular_text 
+    We currently are tracking 
+    %span.yellow #{@location_count} locations 
+    and 
+    %span.yellow #{@lmx_count} machines. 
+    Backups are made nightly. So if something bad happens, the site can be replenished.
+  %p.regular_text
+    And be sure to check out the 
+    =link_to 'Links page', links_path
+    for more pinball resources.
