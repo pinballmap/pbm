@@ -20,7 +20,7 @@ xml.data do
               xml.phone location.phone
               xml.numMachines location.machines.size
               xml.machines do
-                for machine in location.machines do
+                for machine in location.machines.sort_by(&:name) do
                   xml.machine do
                     xml.name machine.name
                   end
