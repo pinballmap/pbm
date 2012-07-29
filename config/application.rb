@@ -48,9 +48,6 @@ module Pbm
       highslide-ie6.css
       highslide.css
       jquery.jscrollpane.css
-      jquery.ui.all.css
-      jquery.ui.base.css
-      jquery.ui.theme.css
       rails_admin.css
       highslide.min.js
       jQuery.scrollSomething-1.0.0.js
