@@ -15,6 +15,8 @@ class MachineScoreXrefsController < InheritedResources::Base
 
     msx.save
     msx.sanitize_scores
+
+    render :nothing => true
   end
 
   def index

@@ -14,7 +14,9 @@ class LocationsController < InheritedResources::Base
     @locations = apply_scopes(Location).order("locations.name").includes(:location_machine_xrefs, :machines, :location_picture_xrefs)
     @location_data = locations_javascript_data(@locations)
 
-    respond_with(@locations)
+    respond_with(@locations) do |format|
+      format.html { render :partial => "locations/locations", :layout => false }
+    end
   end
 
   def locations_for_machine
@@ -43,6 +45,8 @@ class LocationsController < InheritedResources::Base
     l = Location.find(id)
     l.description = params["new_desc_#{id}".to_sym]
     l.save
+
+    render :nothing => true
   end
 
   def mobile
