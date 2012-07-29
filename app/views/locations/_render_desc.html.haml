@@ -11,7 +11,11 @@
 :javascript
   $('#update_desc_#{l.id}').submit(function () {
     $('#desc_location_#{l.id}').html(loadingHTML());
-    $.get(this.action, $(this).serialize(), function (data) { $('#desc_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_desc') });
+
+    var form = $(this);
+    $.get(form.attr('action'), form.serialize(), function (data) {
+      $('#desc_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_desc');
+    });
 
     return false;
   });

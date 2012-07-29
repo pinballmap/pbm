@@ -20,13 +20,18 @@
           $(function () {
             $('#by_#{key}_name').autocomplete({source: '/#{@region.name}/#{key}s/autocomplete?region_level_search=1'});
           });
-
 :javascript
   $(function () {
-    $('.location_search').submit(function () {
-      $('#locations').html(loadingHTML());
-        $.get(this.action, $(this).serialize(), function(data){$('#locations').html(data);}, 'script');
-        return false;
-    });
+    $('.location_search').on('submit', function(e) {
+      e.preventDefault();
+      var form = $(this);
 
+      $('#locations').html(loadingHTML());
+
+      $.get(form.attr('action'), form.serialize(), function(data, textStatus, jqxhr) {
+        $('#locations').html(data);
+      });
+
+      return false;
+    });
   });
