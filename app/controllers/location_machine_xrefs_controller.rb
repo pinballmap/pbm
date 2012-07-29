@@ -38,6 +38,8 @@ class LocationMachineXrefsController < InheritedResources::Base
 
   def destroy
     LocationMachineXref.find(params[:id]).destroy
+
+    render :nothing => true
   end
 
   def update_machine_condition
@@ -45,6 +47,8 @@ class LocationMachineXrefsController < InheritedResources::Base
     lmx = LocationMachineXref.find(id)
 
     lmx.update_condition(params["new_machine_condition_#{id}".to_sym])
+
+    render :nothing => true
   end
 
   def render_machine_condition
