@@ -7,20 +7,4 @@
     %br/
     %br/
     = link_to image_tag('findapinball.png'), 'http://findapinball.com', :style => 'border-style: none'
-  - if !(params[:by_location_id])
-    :javascript
-      $(function () {
-        $.getJSON("http://jsonip.appspot.com?callback=?", function(data){
-          ip = data.ip;
-          $.get("http://geoip.pidgets.com/?ip=" + data.ip + '&format=json', function(loc_data) {
-              if (loc_data.country_code) {
-                var originCountry = loc_data.country_code;
-                if((originCountry != "US") && (originCountry != "Canada")){
-                  $('#findapinball').css('display', 'block');
-                  $('#findapinball').css('visibility', 'visible');
-                }
-              }
-          }, 'jsonp')
-        });
-      })
 = render :file => 'pages/region'
