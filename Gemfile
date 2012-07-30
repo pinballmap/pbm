@@ -32,6 +32,7 @@ gem 'aws-sdk'
 gem 'newrelic_rpm'
 gem 'dalli'
 gem 'oink'
+gem 'jquery-ui-rails'
 
 group :test do
   gem 'cucumber-rails', :require => false
