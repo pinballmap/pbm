@@ -201,3 +201,13 @@ Feature: Region main page
     And I press the "zone" search button
     Then I should see the listing for "Bar"
     And I should not see the listing for "Foo"
+
+  @javascript
+  Scenario: Direct link
+  Given there is a region with the name "portland" and the id "1"
+  And the following locations exist:
+    |id|name|region_id|
+    |1|Cleo|1|
+  And I navigate to the direct link for region "portland" location "1"
+  And I wait for 1 seconds
+  Then I should see the listing for "Cleo"

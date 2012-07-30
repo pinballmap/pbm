@@ -98,7 +98,9 @@ function initSearch(region, locationID) {
   var url = '/' + region + '/locations?by_location_id=' + locationID;
 
   $('#locations').html(loadingHTML());
-  $.get(url, function(data){$('#locations').html(data);}, 'script');
+  $.get(url, function(data) {
+    $('#locations').html(data);
+  });
 }
 
 function showLocationDetail(locationID) {
