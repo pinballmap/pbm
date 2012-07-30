@@ -328,6 +328,7 @@ DEPENDENCIES
   has_scope
   inherited_resources
   jquery-rails
+  jquery-ui-rails
   kaminari
   launchy
   mini_magick
