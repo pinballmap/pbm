@@ -54,3 +54,7 @@ Then /^the order of the listings should be "([^"]*)"$/ do |raw_listing|
     value.should match /#{listings[index].strip}/i
   end
 end
+
+Given /^I navigate to the direct link for region "([^"]*)" location "(\d+)"$/ do |region, id|
+  visit path_to("/#{region}/?by_location_id=#{id}")
+end
