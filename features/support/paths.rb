@@ -47,6 +47,9 @@ module NavigationHelpers
     when /(.*by_location_id=\d+)/i
       $1
 
+    when /(.*by_city_id=.*)/i
+      $1
+
 
     else
       begin

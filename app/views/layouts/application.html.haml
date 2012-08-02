@@ -15,7 +15,7 @@
     .clear
 
     - if (@region)
-      %body{ :onload => "switchSection('#{(@region.default_search_type && !@region.default_search_type.empty?) ? @region.default_search_type : 'location'}'); #{params['by_location_id'] ? "initSearch('#{@region.name.downcase}', #{params['by_location_id']});" : ""}" }
+      %body{ :onload => "switchSection('#{(@region.default_search_type && !@region.default_search_type.empty?) ? @region.default_search_type : 'location'}'); #{params['by_location_id'] ? "initSearchLocation('#{@region.name.downcase}', #{params['by_location_id']});" : params['by_city_id'] ? "initSearchCity('#{@region.name.downcase}', '#{params['by_city_id']}');" : ""}" }
     - else
       %body
 
