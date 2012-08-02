@@ -8,6 +8,7 @@ class Ability
       can :history
       can :manage, [LocationType]
       can :manage, [Location, Event, Operator, RegionLinkXref, Zone], :region_id => user.region_id
+      can :manage, [LocationMachineXref], :location => { :region_id => user.region_id }
       can [:update, :read], [LocationPictureXref], :location => { :region_id => user.region_id }
       can [:update, :read, :destroy], [MachineScoreXref], :location => { :region_id => user.region_id }
 
