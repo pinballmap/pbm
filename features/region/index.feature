@@ -203,11 +203,22 @@ Feature: Region main page
     And I should not see the listing for "Foo"
 
   @javascript
-  Scenario: Direct link
+  Scenario: Direct link for location
   Given there is a region with the name "portland" and the id "1"
   And the following locations exist:
     |id|name|region_id|
     |1|Cleo|1|
   And I navigate to the direct link for region "portland" location "1"
+  And I wait for 1 seconds
+  Then I should see the listing for "Cleo"
+
+  @javascript
+  Scenario: Direct link for city
+  Given there is a region with the name "portland" and the id "1"
+  And the following locations exist:
+    |id|name|city|region_id|
+    |1|Cleo|portland|1|
+    |2|Bawb|beaverton|1|
+  And I navigate to the direct link for region "portland" city "portland"
   And I wait for 1 seconds
   Then I should see the listing for "Cleo"

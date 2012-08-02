@@ -94,8 +94,17 @@ function switchSection(newSection) {
   $("#" + newSection + "_section_link").toggleClass("active_section_link");
 }
 
-function initSearch(region, locationID) {
+function initSearchLocation(region, locationID) {
   var url = '/' + region + '/locations?by_location_id=' + locationID;
+
+  $('#locations').html(loadingHTML());
+  $.get(url, function(data) {
+    $('#locations').html(data);
+  });
+}
+
+function initSearchCity(region, city) {
+  var url = '/' + region + '/locations?by_city_id=' + city;
 
   $('#locations').html(loadingHTML());
   $.get(url, function(data) {

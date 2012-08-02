@@ -58,3 +58,7 @@ end
 Given /^I navigate to the direct link for region "([^"]*)" location "(\d+)"$/ do |region, id|
   visit path_to("/#{region}/?by_location_id=#{id}")
 end
+
+Given /^I navigate to the direct link for region "([^"]*)" city "([^"]*)"$/ do |region, city|
+  visit path_to("/#{region}/?by_city_id=#{city}")
+end
