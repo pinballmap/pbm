@@ -32,7 +32,7 @@ RailsAdmin.config do |config|
 
   #  ==> Included models
   # Add all excluded models here:
-  config.excluded_models = [LocationMachineXref]
+  config.excluded_models = []
 
   # Add models here if you want to go 'whitelist mode':
   # config.included_models = [Event, Location, LocationMachineXref, LocationPictureXref, LocationType, Machine, Operator, Region, RegionLinkXref, Zone]
@@ -472,5 +472,20 @@ RailsAdmin.config do |config|
     end
     export do; end
     update do; end
+  end
+  config.model LocationMachineXref do
+    edit do
+      field :condition
+    end
+    list do
+      field :updated_at
+      field :condition
+      field :location_id do
+        label "Machine"
+        pretty_value do
+          bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object]}
+        end
+      end
+    end
   end
 end
