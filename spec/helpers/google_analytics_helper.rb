@@ -7,11 +7,6 @@ describe GoogleAnalyticsHelper do
 
       Rails.env = 'production'
       helper.analytics_js.should == <<HERE
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-33321299-1']);
-      _gaq.push(['_setDomainName', 'pinballmap.com']);
-      _gaq.push(['_trackPageview']);
-
       var ga = document.createElement('script');
       ga.type = 'text/javascript'; ga.async = true;
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';

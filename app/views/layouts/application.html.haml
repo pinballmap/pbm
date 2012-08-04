@@ -25,6 +25,11 @@
     = yield
 
 :javascript
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-33321299-1']);
+  _gaq.push(['_setDomainName', 'pinballmap.com']);
+  _gaq.push(['_trackPageview']);
+
   $(function () {
     hs.registerOverlay({
       html: '<div class="closebutton" onclick="return hs.close(this)" title="Close"></div>',
