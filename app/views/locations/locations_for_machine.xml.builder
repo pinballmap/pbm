@@ -3,22 +3,24 @@ xml.data do
   xml.locations do
     if (@locations)
       for location in @locations
+        cloned_location = location.clone
         xml.location do
-          xml.id location.id
-          xml.name location.name
-          xml.zoneNo location.zone_id
-          xml.zone location.zone.nil? ? '' : location.zone.short_name
-          xml.neighborhood location.zone.nil? ? '' : location.zone.short_name
-          xml.lat location.lat
-          xml.lon location.lon
-          xml.street1 location.street
+          xml.id cloned_location.id
+          xml.name cloned_location.name
+          xml.zoneNo cloned_location.zone_id
+          xml.zone cloned_location.zone.nil? ? '' : cloned_location.zone.short_name
+          xml.neighborhood cloned_location.zone.nil? ? '' : cloned_location.zone.short_name
+          xml.lat cloned_location.lat
+          xml.lon cloned_location.lon
+          xml.street1 cloned_location.street
           xml.street2
-          xml.city location.city
-          xml.state location.state
-          xml.zip location.zip
-          xml.phone location.phone
-          xml.numMachines location.machines.size
+          xml.city cloned_location.city
+          xml.state cloned_location.state
+          xml.zip cloned_location.zip
+          xml.phone cloned_location.phone
+          xml.numMachines cloned_location.machines.size
         end
+        cloned_location = nil
       end
     end
   end

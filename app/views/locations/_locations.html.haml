@@ -13,7 +13,8 @@
     .scroll_pane
       .clear
       #search_results
-        - @locations.each do |l|
+        - @locations.each do |location|
+          - l = location.clone
           %div.search_result[l]
             %div.sub_nav_item[l, :show_location_detail]{:onmouseover => "$(this).addClass('location_summary_image_mouseover');", :onmouseout => "$(this).removeClass('location_summary_image_mouseover');", :onclick => "showLocationDetail(#{l.id});"}
               %ul
@@ -51,11 +52,12 @@
               = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
               = render :partial => 'locations/add_machine', :locals => {:location => l}
               = render :partial => 'locations/show_machines', :locals => {:location => l}
+          - l = nil
 
     - if (@locations.size == 1)
       :javascript
         $(function() {
-          singleLocationLoad('#{@region.name.downcase}', #{@location_data[0][0]});
+          singleLocationLoad('#{@region.name.downcase}', #{@locations.first.id});
         });
 
 :javascript

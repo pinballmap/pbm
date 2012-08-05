@@ -9,11 +9,13 @@ class Region < ActiveRecord::Base
 
   def machines
     machines = Array.new
-    self.location_machine_xrefs.includes(:machine).sort{|a,b| a.machine.name <=> b.machine.name}.each do |lmx|
+    self.location_machine_xrefs.includes(:machine).each do |lmx|
       machines << lmx.machine
     end
 
     machines.uniq
+
+    machines.sort_by(&:name)
   end
 
   def machine_score_xrefs
@@ -27,7 +29,7 @@ class Region < ActiveRecord::Base
   end
 
   def n_recent_scores(n)
-    scores = self.machine_score_xrefs.sort {|a,b| b.id <=> a.id}
+    scores = self.machine_score_xrefs.sort_by(&:id)
     scores[0, n]
   end
 
