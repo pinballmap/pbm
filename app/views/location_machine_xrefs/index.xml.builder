@@ -1,11 +1,13 @@
 xml.instruct! :xml, :version => "1.0"
 xml.data do
   xml.items do
-    for lmx in @lmxs[0..50]
+    for lmx in @lmxs
+      cloned_lmx = lmx.clone
       xml.item do
-        xml.title "#{lmx.machine.name} was added to #{lmx.location.name}"
-        xml.description "Added on #{lmx.created_at.nil? ? '' : lmx.created_at.strftime("%d-%b-%Y")}"
+        xml.title "#{cloned_lmx.machine.name} was added to #{cloned_lmx.location.name}"
+        xml.description "Added on #{cloned_lmx.created_at.nil? ? '' : cloned_lmx.created_at.strftime("%d-%b-%Y")}"
       end
+      cloned_lmx = nil
     end
   end
 end

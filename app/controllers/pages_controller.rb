@@ -3,17 +3,21 @@ require 'pony'
 class PagesController < ApplicationController
   def region
     @locations = Location.where('region_id = ?', @region.id)
-    @location_count = @region.locations_count
+    @location_count = @locations.count
     @lmx_count = @region.machines_count
 
-    location_types = Hash.new
     cities = Hash.new
+    location_types = Hash.new
+
     @locations.each do |l|
-      if (l.location_type_id)
-        location_types[l.location_type_id] = l
+      location_copy = l.clone
+      if (location_copy.location_type_id)
+        location_types[location_copy.location_type_id] = location_copy
       end
 
-      cities[l.city] = l
+      cities[l.city] = location_copy
+
+      location_copy = nil
     end
 
     @search_options = {
@@ -25,13 +29,13 @@ class PagesController < ApplicationController
       'location' => {
         'id'   => 'id',
         'name' => 'name',
-        'search_collection' => @locations.sort {|a,b| a.name <=> b.name},
+        'search_collection' => @locations.sort_by(&:name),
         'autocomplete' => 1,
       },
       'machine' => {
         'id'   => 'id',
         'name' => 'name',
-        'search_collection' => @region.machines.sort {|a,b| a.name <=> b.name},
+        'search_collection' => @region.machines.sort_by(&:name),
         'autocomplete' => 1,
       },
       'zone' => {
@@ -47,7 +51,7 @@ class PagesController < ApplicationController
       'city' => {
         'id'   => 'city',
         'name' => 'city',
-        'search_collection' => cities.values.sort {|a,b| a.city <=> b.city}
+        'search_collection' => cities.values.sort_by(&:city),
       }
     }
 

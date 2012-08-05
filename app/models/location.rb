@@ -12,7 +12,7 @@ class Location < ActiveRecord::Base
   geocoded_by :full_street_address, :latitude  => :lat, :longitude => :lon
   after_validation :geocode, :unless => ENV['SKIP_GEOCODE']
 
-  scope :region, lambda {|name| 
+  scope :region, lambda {|name|
     r = Region.find_by_name(name)
     where(:region_id => r.id)
   }
@@ -52,7 +52,7 @@ class Location < ActiveRecord::Base
     content += [self.name.gsub("'", "\\\\'"), self.street, [self.city, self.state, self.zip].join(', '), self.phone].join('<br />')
     content += '<br /><hr /><br />'
 
-    machines = self.machines.sort_by { |m| m.name }.map {|m| m.name.gsub("'", "\\\\'") + '<br />'}
+    machines = self.machines.sort_by(&:name).map {|m| m.name.gsub("'", "\\\\'") + '<br />'}
 
     content += machines.join
     content += "</div>'"
