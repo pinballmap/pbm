@@ -8,14 +8,12 @@ class Region < ActiveRecord::Base
   has_many :location_machine_xrefs, :through => :locations
 
   def machines
-    machines = Array.new
+    machines = Hash.new
     self.location_machine_xrefs.includes(:machine).each do |lmx|
-      machines << lmx.machine
+      machines[lmx.machine.id] = lmx.machine
     end
 
-    machines.uniq
-
-    machines.sort_by(&:name)
+    machines.values.sort_by(&:name)
   end
 
   def machine_score_xrefs
