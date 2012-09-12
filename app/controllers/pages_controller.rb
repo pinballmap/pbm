@@ -114,6 +114,11 @@ class PagesController < ApplicationController
     @states = Location.find_all_by_region_id(@region.id).collect {|r| r.state}.uniq.sort
   end
 
+  def robots
+    robots = File.read(Rails.root + 'public/robots.txt')
+    render :text => robots, :layout => false, :content_type => "text/plain"
+  end
+
   def apps
   end
 
