@@ -46,6 +46,7 @@ Pbm::Application.routes.draw do
 
     match ':region' + '.rss' => 'location_machine_xrefs#index', :format => 'xml'
     match ':region' + '_scores.rss' => 'machine_score_xrefs#index', :format => 'xml'
+    match '/robots.txt', :to => 'pages#robots'
 
     match '/' => "pages#region", :as => 'region_homepage'
     match '/about' => 'pages#about'
