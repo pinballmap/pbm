@@ -44,6 +44,9 @@ Pbm::Application.routes.draw do
     match 'location_machine_xrefs/:id/render_machine_condition' => 'location_machine_xrefs#render_machine_condition'
     match 'location_machine_xrefs/:id/condition_update_confirmation' => 'location_machine_xrefs#condition_update_confirmation'
 
+    # xml/rss mismatch to support rss-formatted output with $region.xml urls, $region.rss is already expected by mobile devices, and is expected to be formatted without hrefs
+    match ':region' + '.xml' => 'location_machine_xrefs#index', :format => 'rss'
+
     match ':region' + '.rss' => 'location_machine_xrefs#index', :format => 'xml'
     match ':region' + '_scores.rss' => 'machine_score_xrefs#index', :format => 'xml'
     match '/robots.txt', :to => 'pages#robots'
