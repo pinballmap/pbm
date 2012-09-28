@@ -125,7 +125,9 @@ function singleLocationLoad(region, locationID) {
   toggleData('show_machines_location', locationID);
 
   $('#show_machines_location_' + locationID).html(loadingHTML());
-  $('#show_machines_location_' + locationID).load('/' + region + '/locations/' + locationID + '/render_machines');
+  $.get('/' + region + '/locations/' + locationID + '/render_machines', function(data) {
+    $('#show_machines_location_' + locationID).html(data);
+  });
 }
 
 function locationLookupMapCenter(locationID) {
