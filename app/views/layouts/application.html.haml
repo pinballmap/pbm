@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 %html
   %head
+    %meta{:charset => "UTF-8"}
     %title #{(defined? @region) ? @region.full_name : ''} Pinball Map
     %meta{:name => "keywords", :content => "pinball, map, google map, locator" }
     %meta{:name => "description", :content => "Find local places to play pinball! The #{(defined? @region) ? @region.full_name : ''} Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area." }
@@ -16,13 +17,16 @@
 
     - if (@region)
       %body{ :onload => "switchSection('#{(@region.default_search_type && !@region.default_search_type.empty?) ? @region.default_search_type : 'location'}'); #{params['by_location_id'] ? "initSearchLocation('#{@region.name.downcase}', #{params['by_location_id']});" : params['by_city_id'] ? "initSearchCity('#{@region.name.downcase}', '#{params['by_city_id']}');" : ""}" }
+        %p.notice= notice
+        %p.alert= alert
+
+        = yield
     - else
       %body
+        %p.notice= notice
+        %p.alert= alert
 
-    %p.notice= notice
-    %p.alert= alert
-
-    = yield
+        = yield
 
 :javascript
   var _gaq = _gaq || [];
