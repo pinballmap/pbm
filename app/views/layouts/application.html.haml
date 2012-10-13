@@ -11,35 +11,30 @@
     = javascript_include_tag 'http://maps.google.com/maps/api/js?sensor=true'
     = favicon_link_tag 'favicon.ico'
 
-  #page
-    = render :partial => 'pages/header'
-    .clear
-
-    - if (@region)
-      %body{ :onload => "switchSection('#{(@region.default_search_type && !@region.default_search_type.empty?) ? @region.default_search_type : 'location'}'); #{params['by_location_id'] ? "initSearchLocation('#{@region.name.downcase}', #{params['by_location_id']});" : params['by_city_id'] ? "initSearchCity('#{@region.name.downcase}', '#{params['by_city_id']}');" : ""}" }
-    - else
-      %body
-
+  %body{ :onload => defined?(@region) ? "switchSection('#{(@region.default_search_type && !@region.default_search_type.empty?) ? @region.default_search_type : 'location'}'); #{params['by_location_id'] ? "initSearchLocation('#{@region.name.downcase}', #{params['by_location_id']});" : params['by_city_id'] ? "initSearchCity('#{@region.name.downcase}', '#{params['by_city_id']}');" : ""}" : nil }
     %p.notice= notice
     %p.alert= alert
+    #page
+      = render :partial => 'pages/header'
+      .clear
 
     = yield
 
-:javascript
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-33321299-1']);
-  _gaq.push(['_setDomainName', 'pinballmap.com']);
-  _gaq.push(['_trackPageview']);
+    :javascript
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-33321299-1']);
+      _gaq.push(['_setDomainName', 'pinballmap.com']);
+      _gaq.push(['_trackPageview']);
 
-  $(function () {
-    hs.registerOverlay({
-      html: '<div class="closebutton" onclick="return hs.close(this)" title="Close"></div>',
-      position: 'top right',
-      fade: 2
-    });
+      $(function () {
+        hs.registerOverlay({
+          html: '<div class="closebutton" onclick="return hs.close(this)" title="Close"></div>',
+          position: 'top right',
+          fade: 2
+        });
 
-    hs.graphicsDir = '/images/highslide/graphics/';
-    hs.wrapperClassName = 'borderless';
+        hs.graphicsDir = '/images/highslide/graphics/';
+        hs.wrapperClassName = 'borderless';
 
-    #{analytics_js}
-  });
+        #{analytics_js}
+      });

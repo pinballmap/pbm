@@ -177,7 +177,7 @@ Feature: Region main page
   Then the order of the listings should be "Bawb, Cleo, Sassy, Zelda"
 
   @javascript
-  Scenario: N or more machines
+  Scenario: N or more machines zone
     Given there is a region with the name "portland" and the id "1"
     And the following zones exist:
       |id|name|region_id|
@@ -197,7 +197,7 @@ Feature: Region main page
       |2|2|
     And I am on "Portland"'s home page
     And I switch to "zone" lookup
-    And I select "2" from "by_at_least_n_machines"
+    And I select "2" from "by_at_least_n_machines_zone"
     And I press the "zone" search button
     Then I should see the listing for "Bar"
     And I should not see the listing for "Foo"

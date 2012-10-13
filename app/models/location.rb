@@ -32,8 +32,14 @@ class Location < ActiveRecord::Base
 
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id = ?', machine.id)
   }
-  scope :by_at_least_n_machines, lambda {|n|
-    where("id in (select location_id from (select location_id, count(*) as count from location_machine_xrefs group by location_id) x where x.count >= #{n})")
+  scope :by_at_least_n_machines_city, lambda {|n|
+    where(Location.by_at_least_n_machines_sql(n))
+  }
+  scope :by_at_least_n_machines_zone, lambda {|n|
+    where(Location.by_at_least_n_machines_sql(n))
+  }
+  scope :by_at_least_n_machines_type, lambda {|n|
+    where(Location.by_at_least_n_machines_sql(n))
   }
 
   before_destroy do |record| 
@@ -41,6 +47,10 @@ class Location < ActiveRecord::Base
     LocationPictureXref.destroy_all "location_id = #{record.id}"
     MachineScoreXref.destroy_all "location_machine_xref_id in (select id from location_machine_xrefs where location_id = #{record.id})"
     LocationMachineXref.destroy_all "location_id = #{record.id}"
+  end
+
+  def self.by_at_least_n_machines_sql(n)
+    "id in (select location_id from (select location_id, count(*) as count from location_machine_xrefs group by location_id) x where x.count >= #{n})"
   end
 
   def machine_names
