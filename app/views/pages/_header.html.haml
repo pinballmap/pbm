@@ -12,23 +12,21 @@
     %ul
       %li
         %span.other_regions.other_regions_arrow Other Regions
-        %ul
-          #other_regions= other_regions_html(@region)
       %li=link_to 'Events', events_path
       %li
         =link_to 'Location Feed', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
       %li
         =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
       %li=link_to 'High Rollers', high_rollers_path
+    #other_regions= other_regions_html(@region)
 
 :javascript
   $().ready(function() {
-    $("#other_regions_menu li ul").hide();
+    $("#other_regions").hide();
 
-    $("#other_regions_menu li").hover(
-          function () {
-      $(this).children("ul").show();
-          },function(){
-      $(this).children("ul").hide();
+    $("ul li .other_regions").hover(function () {
+        $("#other_regions").show();
+      },function(){
+        $("#other_regions").hide();
     });
   });
