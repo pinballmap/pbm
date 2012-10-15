@@ -3,11 +3,11 @@
 - else
   #left_column.regular_text
     %p
-      %span Here's a list of the upcoming pinball events in the #{@region.full_name} area.
+      Here's a list of the upcoming pinball events in the #{@region.full_name} area.
     %p 
-      %span If you have a pinball event that you'd like included on this page, use the contact form on the 
+      If you have a pinball event that you'd like included on this page, use the contact form on the 
       = link_to 'contact page', './contact', :class => 'intro'
-      %span to give us the info.
+      to give us the info.
 
 .right_column.regular_text.events_column{:style => 'margin-left:27.5em;'}
   - if (@sorted_events.size > 0)

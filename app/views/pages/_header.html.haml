@@ -5,28 +5,28 @@
   - if (@region)
     %ul
       %li=link_to 'About Pinball Map', about_path
-      %li=link_to 'Enter A New Location', suggest_new_location_path
+      %li=link_to 'Suggest A New Location', suggest_new_location_path
       %li=link_to 'Contact Us', contact_path
       %li=link_to 'Apps', apps_path
       %li=link_to 'Links', links_path
-    %ul
-      %li
-        %span.other_regions.other_regions_arrow Other Regions
+      %br/
+      %li.other_regions.other_regions_arrow 
+        %span Other Regions
+        %ul.other_regions_list= other_regions_html(@region)
       %li=link_to 'Events', events_path
       %li
         =link_to 'Location Feed', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
       %li
         =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
       %li=link_to 'High Rollers', high_rollers_path
-    #other_regions= other_regions_html(@region)
 
 :javascript
   $().ready(function() {
-    $("#other_regions").hide();
+    $(".other_regions_list").hide();
 
-    $("ul li .other_regions").hover(function () {
-        $("#other_regions").show();
+    $(".other_regions").hover(function () {
+        $(".other_regions_list").show();
       },function(){
-        $("#other_regions").hide();
+        $(".other_regions_list").hide();
     });
   });
