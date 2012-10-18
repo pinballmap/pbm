@@ -43,6 +43,8 @@ module Pbm
     config.assets.initialize_on_precompile = false
     config.assets.version = '1.1'
 
+    config.logger = Logger.new(STDOUT)
+
     # unfortunate inability to use wildcards because of a bug in rails admin
     config.assets.precompile += %w(
       highslide-ie6.css

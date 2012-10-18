@@ -33,6 +33,7 @@ gem 'newrelic_rpm'
 gem 'dalli'
 gem 'oink'
 gem 'jquery-ui-rails'
+gem 'unicorn'
 
 group :test do
   gem 'cucumber-rails', :require => false
