@@ -196,8 +196,6 @@ GEM
     polyglot (0.3.3)
     pony (1.4)
       mail (> 2.0)
-    puma (1.6.3)
-      rack (~> 1.2)
     rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -344,7 +342,6 @@ DEPENDENCIES
   pg
   pickle
   pony
-  puma
   rack
   rails (= 3.2.0)
   rails_admin
