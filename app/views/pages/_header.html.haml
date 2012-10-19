@@ -4,7 +4,7 @@
   =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}"), @region ? region_homepage_path : root_path
   - if (@region)
     %ul
-      %li=link_to 'About Pinball Map', about_path
+      %li.first_header_link=link_to 'About Pinball Map', about_path
       %li=link_to 'Suggest A New Location', suggest_new_location_path
       %li=link_to 'Contact Us', contact_path
       %li=link_to 'Apps', apps_path
