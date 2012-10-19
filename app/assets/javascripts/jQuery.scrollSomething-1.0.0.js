@@ -42,8 +42,8 @@
 		scrollSomething: function(custom_settings) {
             // default settings
             var defaults = {
-                scrollerWidth: 500,
-                scrollerHeight: 250,
+                scrollerWidth: 668,
+                scrollerHeight: 55,
                 itemsVisable: 1,
                 itemsScrolling: 1,
                 scrollInterval: 0,
@@ -71,12 +71,12 @@
                                                          .css("padding", 0);
                 
                 // Add some css to the wrapper
-                $("."+ settings.scrollPrefix +"scrollerWrapper").css("width", settings.scrollerWidth +"px")
-                                                                .css("height", settings.scrollerHeight +"px");
+                $("."+ settings.scrollPrefix +"scrollerWrapper").css("width", "658px")
+                                                                .css("height", "55px");
                 
                 // Add some css to the scroller
-                $("."+ settings.scrollPrefix +"scrollerScroller").css("width", settings.scrollerWidth +"px")
-                                                                 .css("height", settings.scrollerHeight +"px");
+                $("."+ settings.scrollPrefix +"scrollerScroller").css("width", "640px")
+                                                                 .css("height", "55px");
                 
                 // Add button wrapper
                 $("."+ settings.scrollPrefix +"scrollerWrapper").append("<div class=\""+ settings.scrollPrefix +"scrollerButtons scrollerButtons\" />");
@@ -101,19 +101,19 @@
                     
                     leftCorrection = 30; rightCorrection = 0;
                 }else if(settings.buttonPosition == "bottomRight"){
-                    buttonPos_1 = "bottom"; buttonPos_2 = "right";
+                    buttonPos_1 = "right"; buttonPos_2 = "bottom";
                     
-                    leftCorrection = 0; rightCorrection = 30;
+                    leftCorrection = 0; rightCorrection = 0; bottomCorrection = 26;
                 };
                 
-                $("."+ settings.scrollPrefix +"scrollerNext").css(buttonPos_1, 5 +"px")
-                                                             .css(buttonPos_2, 5 + leftCorrection +"px");
-                $("."+ settings.scrollPrefix +"scrollerPrev").css(buttonPos_1, 5 +"px")
-                                                             .css(buttonPos_2, 5 + rightCorrection +"px");
+                $("."+ settings.scrollPrefix +"scrollerNext").css(buttonPos_1, 4 +"px")
+                                                             .css(buttonPos_2, 8 + leftCorrection +"px");
+                $("."+ settings.scrollPrefix +"scrollerPrev").css(buttonPos_1, 4 +"px")
+                                                             .css(buttonPos_2, 5 + bottomCorrection +"px");
                 
                 // Add some css to the ul
                 var slideWidth = settings.scrollerWidth / settings.itemsVisable;
-                $("."+ settings.scrollPrefix +"scroller > *").css("width", slideWidth +"px")
+                $("."+ settings.scrollPrefix +"scroller > *").css("width", "205px")
                                                              .css("height", settings.scrollerHeight +"px")
                                                              .css("float", "left")
                                                              .css("display", "block");

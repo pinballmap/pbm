@@ -60,11 +60,6 @@ body {
   font-size: 11px;
 }
 
-/* #page {
-  width: 1060px;
-  margin: -20px auto;
-} */
-
 #page_home {
   width: 800px;
   margin: 20px auto;
@@ -170,11 +165,6 @@ a#operator_section_link:hover, a#city_section_link:hover, a#machine_section_link
   width: 1060px;
   margin: -20px auto 20px auto;
 }
-
-/* #page_body {
-  margin-top: 40px;
-} */
-
 
 #lookup, #left_column, .left_column {
   margin-top: 20px;
@@ -344,7 +334,8 @@ div.pick_a_map {
   background-color: #4B5259;
   color: #FFFFCC;
   font-size: 14pt;
-  left: 58%;
+  margin-left: 350px;
+  float: left;
   position: absolute;
   text-align: center;
   top: 22px;
@@ -461,11 +452,13 @@ br.clear {
 
 .scrollerWrapper {
   margin: 0;
-  padding: 0;
+  padding: 5px 10px 0 0;
   position: relative;
   overflow: hidden;
-  margin-left: -10px;
-  border-top: 1px solid #9a9a9a;
+  margin-left: -28px;
+  border-top: 1px solid #856540;
+  background-color:#57422a;
+
 }
 
 .scrollerScroller {
@@ -473,6 +466,11 @@ br.clear {
   padding: 0;
   position: relative;
   overflow: hidden;
+}
+
+#ticker span {
+  padding: 0 2px 0 8px;
+  color: #d0b99e;
 }
 
 .scrollerNext, .scrollerPrev {
@@ -779,21 +777,11 @@ a.active_section_link:hover {
 
 #header li:nth-child(5):after { content: '\a'; white-space:pre; }
 
-#header li a, .other_regions {
-	background: #5C462C;
-/*	background-image: linear-gradient(bottom, rgba(59,99,125,0.8) 7%, rgba(128,180,189,0.8) 54%);
-	background-image: -o-linear-gradient(bottom, rgba(59,99,125,0.8) 7%, rgba(128,180,189,0.8) 54%);
-	background-image: -moz-linear-gradient(bottom, rgba(59,99,125,0.8) 7%, rgba(128,180,189,0.8) 54%);
-	background-image: -webkit-linear-gradient(bottom, rgba(59,99,125,0.8) 7%, rgba(128,180,189,0.8) 54%);
-	background-image: -ms-linear-gradient(bottom, rgba(59,99,125,0.8) 7%, rgba(128,180,189,0.8) 54%);
+li.first_header_link {
+  padding: 2px 0 6px 0;
+}
 
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.07, rgba(59,99,125,0.8)),
-		color-stop(0.54, rgba(128,180,189,0.8))
-	); */
+#header li a, .other_regions {
   padding: 2px 4px 2px 4px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -807,32 +795,14 @@ a.active_section_link:hover {
 	vertical-align: middle;
 }
 
-#header li a {
-}
-
 #header li a:hover, .other_regions:hover {
-	background: #453521;
-/*	background-image: linear-gradient(bottom, rgba(59,99,125,0.8) 7%, rgba(128,180,189,0.8) 54%);
-	background-image: -o-linear-gradient(bottom, rgba(59,99,125,0.8) 7%, rgba(128,180,189,0.8) 54%);
-	background-image: -moz-linear-gradient(bottom, rgba(59,99,125,0.8) 7%, rgba(128,180,189,0.8) 54%);
-	background-image: -webkit-linear-gradient(bottom, rgba(59,99,125,0.8) 7%, rgba(128,180,189,0.8) 54%);
-	background-image: -ms-linear-gradient(bottom, rgba(59,99,125,0.8) 7%, rgba(128,180,189,0.8) 54%);
-
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.07, rgba(59,99,125,0.8)),
-		color-stop(0.54, rgba(128,180,189,0.8))
-	); */
-	box-shadow: 0 2px 6px white inset, 0 2px 2px rgba(0,0,0,0.6);
-	-moz-box-shadow: 0 2px 6px white inset, 0 2px 2px rgba(0,0,0,0.6);
-	-webkit-box-shadow: 0 2px 6px white inset, 0 2px 2px rgba(0,0,0,0.6);
+	box-shadow: 0 2px 2px white inset, 0 2px 2px rgba(0,0,0,0.6);
+	-moz-box-shadow: 0 2px 2px white inset, 0 2px 2px rgba(0,0,0,0.6);
+	-webkit-box-shadow: 0 2px 2px white inset, 0 2px 2px rgba(0,0,0,0.6);
 	text-shadow: rgba(0,0,0,.4) 0 1px 0;
 	color: white;
 	text-decoration: none;
 	vertical-align: middle;
-  cursor: pointer;
 }
 
 #header ul {
