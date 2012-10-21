@@ -9,7 +9,7 @@
       = link_to 'contact page', './contact', :class => 'intro'
       to give us the info.
 
-.right_column.regular_text.events_column{:style => 'margin-left:27.5em;'}
+.right_column.regular_text.events_column
   - if (@sorted_events.size > 0)
     - @sorted_events.keys.sort.each do |key|
       %p.yellowb #{key}
