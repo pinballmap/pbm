@@ -41,6 +41,12 @@
 .home_intro {
   width: 550px;
   margin: 5px auto;
+  float: none;
+  margin-top: 10px;
+}
+
+#welcome {
+  padding: 0;
 }
 
 div.pick_a_map {
@@ -50,11 +56,15 @@ div.pick_a_map {
 }
 
 #map_summaries {
-  padding-left: 80px;
+  padding-left: 20%;
 }
 
 .scrollerWrapper {
   display: none;
+}
+
+#lookup, #left_column, .left_column, #map, .right_column, #right_column {
+  height: 100%;
 }
 
 }
