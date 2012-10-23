@@ -67,4 +67,9 @@ div.pick_a_map {
   height: 100%;
 }
 
+.intro_image, #map_canvas img {
+  max-width: 500px;
+  max-height: 300px;
+}
+
 }
