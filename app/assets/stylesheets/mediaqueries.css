@@ -20,15 +20,22 @@
   font-size: 12px;
 }
 
+#page_body {
+  width: 600px;
+}
+
 #lookup, .left_column, #left_column {
   float: none;
   margin: 20px auto;
+  display: block;
 }
 
 #map, .right_column, #right_column {
   margin: 20px auto;
   width: 500px;
   height: 550px;
+  display: block;
+  float: none;
 }
 
 .home_intro {

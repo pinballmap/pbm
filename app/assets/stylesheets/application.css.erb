@@ -66,7 +66,7 @@ body {
 }
 
 #header {
-  width: 1068px;
+  width: 1070px;
   height: 70px;
   background: rgba(102,102,102,0.4);
   background: rgb(102,102,102) transparent;	
@@ -121,12 +121,12 @@ a#operator_section_link:hover, a#city_section_link:hover, a#machine_section_link
 }
 
 #map, .right_column, #right_column {
-  margin-left:35em;
   padding: 20px 40px 40px 40px;
   height: 535px;
-  width: 600px;
+  width: 590px;
   margin-top: 20px;
-  display: block;
+  display: inline;
+  float: right;
   border: 1px solid #5c462c;
   border-radius: 5px;
   -moz-border-radius: 5px;
@@ -149,7 +149,6 @@ a#operator_section_link:hover, a#city_section_link:hover, a#machine_section_link
 	min-height: 575px;
 	padding-bottom:10px;
 	height: 100%;
-  margin-left:27.5em;
 }
 
 #map_canvas {
@@ -162,12 +161,20 @@ a#operator_section_link:hover, a#city_section_link:hover, a#machine_section_link
   margin-top: 5px;
 }
 
-#lookup_map, #page_body, #container {
-  width: 1060px;
+#lookup_map, #container {
+  width: 1070px;
   margin: -20px auto 20px auto;
 }
 
+#page_body {
+  display: block;
+  width: 1070px;
+  margin: 0 auto;
+  min-height: 100%;
+}
+
 #lookup, #left_column, .left_column {
+  display: inline;
   margin-top: 20px;
   float: left;
   width: 375px;
@@ -456,7 +463,7 @@ br.clear {
   padding: 5px 10px 0 0;
   position: relative;
   overflow: hidden;
-  margin-left: -28px;
+  margin-left: -40px;
   border-top: 1px solid #856540;
   background-color:#57422a;
 

@@ -71,7 +71,7 @@
                                                          .css("padding", 0);
                 
                 // Add some css to the wrapper
-                $("."+ settings.scrollPrefix +"scrollerWrapper").css("width", "658px")
+                $("."+ settings.scrollPrefix +"scrollerWrapper").css("width", "660px")
                                                                 .css("height", "55px");
                 
                 // Add some css to the scroller

@@ -1,15 +1,16 @@
-.text_column
-  - if (@links.size > 0)
-    - @links.keys.sort.each do |key|
-      %span.intro #{@links[key][0].category}
-      - @links[key].each do |l|
-        %br/
-        %br/
-        = link_to l.name, l.url, :class => 'light_blue'
-        %br/
-        %span.regular_text #{l.description}
-        %br/
-        %br/
-  - else
-    .left_column
-      %p.regular_text Coming soon...
+#page_body  
+  .text_column
+    - if (@links.size > 0)
+      - @links.keys.sort.each do |key|
+        %span.intro #{@links[key][0].category}
+        - @links[key].each do |l|
+          %br/
+          %br/
+          = link_to l.name, l.url, :class => 'light_blue'
+          %br/
+          %span.regular_text #{l.description}
+          %br/
+          %br/
+    - else
+      .left_column
+        %p.regular_text Coming soon...
