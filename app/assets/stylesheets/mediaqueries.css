@@ -91,8 +91,8 @@ div.pick_a_map {
   margin: -20px auto 20px auto;
 }
 
-#page_body {
-  width: 450px;
+#page_body, .home_intro {
+  width: 400px;
 }
 
 #map, .right_column, #right_column {
@@ -107,6 +107,16 @@ div.pick_a_map {
 .intro_image, #map_canvas img {
   max-width: 350px;
   max-height: 200px;
+}
+
+div.pick_a_map {
+  top: 62px;
+  float: none;
+  margin-left: 100px;
+}
+
+#map_summaries {
+  padding-left: 10%;
 }
 
 }
