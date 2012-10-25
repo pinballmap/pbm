@@ -1,53 +1,54 @@
-.left_column{:style => 'height:100%;margin-bottom:10px;'}
-  %p.yellow Add a new location to the database. Fill in this form. We'll review it to make sure the data works... so don't expect it to show up just yet. Thanks for helping out!
-  %br/
-  #location_maker
-    = form_tag submitted_new_location_path, :method => 'get' do
-      %table
-        %tr.clear
-          %td Location Name:
-          %td= text_field_tag :location_name, params[:location_name]
-        %tr.clear
-          %td Street:
-          %td= text_field_tag :location_street, params[:location_street]
-        %tr.clear
-          %td City:
-          %td= text_field_tag :location_city, params[:location_city]
-        %tr.clear
-          %td State:
-          %td= select_tag :location_state, options_for_select(@states)
-        %tr.clear
-          %td Zip: 
-          %td= text_field_tag :location_zip, params[:location_zip]
-        %tr.clear
-          %td Phone: 
-          %td= text_field_tag :location_phone, params[:location_phone]
-        %tr.clear
-          %td Website: 
-          %td= text_field_tag :location_website, params[:location_website]
-        %tr.clear
-          %td Machines:
-          %td= text_area_tag :location_machines, params[:location_machines]
-        %tr.clear
-          %td Operator:
-          %td= text_field_tag :location_operator, params[:location_operator]
-        %tr.clear
-          %td 
-          %td= recaptcha_tags
-        %tr.clear
-          %td Your name (optional):
-          %td= text_field_tag :submitter_name, params[:submitter_name]
-        %tr.clear
-          %td Your email (optional):
-          %td= text_field_tag :submitter_email, params[:submitter_email]
-        %tr.clear
-          %td
-          %td= submit_tag 'Submit Location', :class => 'submit_button'
+#page_body  
+  .left_column{:style => 'height:100%;margin-bottom:10px;'}
+    %p.yellow Add a new location to the database. Fill in this form. We'll review it to make sure the data works... so don't expect it to show up just yet. Thanks for helping out!
+    %br/
+    #location_maker
+      = form_tag submitted_new_location_path, :method => 'get' do
+        %table
+          %tr.clear
+            %td Location Name:
+            %td= text_field_tag :location_name, params[:location_name]
+          %tr.clear
+            %td Street:
+            %td= text_field_tag :location_street, params[:location_street]
+          %tr.clear
+            %td City:
+            %td= text_field_tag :location_city, params[:location_city]
+          %tr.clear
+            %td State:
+            %td= select_tag :location_state, options_for_select(@states)
+          %tr.clear
+            %td Zip: 
+            %td= text_field_tag :location_zip, params[:location_zip]
+          %tr.clear
+            %td Phone: 
+            %td= text_field_tag :location_phone, params[:location_phone]
+          %tr.clear
+            %td Website: 
+            %td= text_field_tag :location_website, params[:location_website]
+          %tr.clear
+            %td Machines:
+            %td= text_area_tag :location_machines, params[:location_machines]
+          %tr.clear
+            %td Operator:
+            %td= text_field_tag :location_operator, params[:location_operator]
+          %tr.clear
+            %td 
+            %td= recaptcha_tags
+          %tr.clear
+            %td Your name (optional):
+            %td= text_field_tag :submitter_name, params[:submitter_name]
+          %tr.clear
+            %td Your email (optional):
+            %td= text_field_tag :submitter_email, params[:submitter_email]
+          %tr.clear
+            %td
+            %td= submit_tag 'Submit Location', :class => 'submit_button'
 
-  %p.yellow 
-    Remember, only use this form if you are adding a new 
-    %em
-      location
-    to the map. If you want to add/remove a 
-    %em
-      machine to/from a location, just bring up that location on the map and then use the add/remove functions.
+    %p.yellow 
+      Remember, only use this form if you are adding a new 
+      %em
+        location
+      to the map. If you want to add/remove a 
+      %em
+        machine to/from a location, just bring up that location on the map and then use the add/remove functions.
