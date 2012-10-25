@@ -1,8 +1,9 @@
-#lookup
-  #form
-    = render :partial => 'locations/form'
-  %br/
-  #locations
-    = yield :presearch_sidebar
-#map
-  = render :partial => 'locations/map'
+#page_body  
+  #lookup
+    #form
+      = render :partial => 'locations/form'
+    %br/
+    #locations
+      = yield :presearch_sidebar
+  #map
+    = render :partial => 'locations/map'

@@ -17,23 +17,35 @@
 #header ul {
   margin: 5px auto;
   width: 550px;
-  font-size: 12px;
+}
+
+#page_body {
+  width: 600px;
 }
 
 #lookup, .left_column, #left_column {
   float: none;
   margin: 20px auto;
+  display: block;
 }
 
 #map, .right_column, #right_column {
   margin: 20px auto;
   width: 500px;
   height: 550px;
+  display: block;
+  float: none;
 }
 
 .home_intro {
   width: 550px;
   margin: 5px auto;
+  float: none;
+  margin-top: 10px;
+}
+
+#welcome {
+  padding: 0;
 }
 
 div.pick_a_map {
@@ -43,11 +55,59 @@ div.pick_a_map {
 }
 
 #map_summaries {
-  padding-left: 80px;
+  padding-left: 20%;
 }
 
 .scrollerWrapper {
   display: none;
 }
 
+#lookup, #left_column, .left_column, #map, .right_column, #right_column {
+  height: 100%;
 }
+
+.intro_image, #map_canvas img {
+  max-width: 500px;
+  max-height: 300px;
+}
+
+}
+
+@media only screen and (max-width: 479px) {
+
+#header {
+  width: 450px;
+  height: 100px;
+}
+
+#header ul {
+  width: 450px;
+  margin-left: -25px;
+  font-size: 9px;
+}
+
+#container {
+  width: 450px;
+  margin: -20px auto 20px auto;
+}
+
+#page_body {
+  width: 450px;
+}
+
+#map, .right_column, #right_column {
+  width: 400px;
+  padding: 5px;
+}
+
+#header a img {
+  max-width: 350px;
+}
+
+.intro_image, #map_canvas img {
+  max-width: 350px;
+  max-height: 200px;
+}
+
+}
+
