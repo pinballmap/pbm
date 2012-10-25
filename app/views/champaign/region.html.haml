@@ -1,0 +1,7 @@
+- content_for :presearch_sidebar do
+  = image_tag 'champaign/ipa-logo.jpg'
+  %br/
+  %p.regular_text 
+    This regional map is maintained with the help of the
+    =link_to 'Illini Pinball Association', 'http://illinipinball.org', :class => 'light_blue', :target => '_blank'
+= render :file => 'pages/region'
