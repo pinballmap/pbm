@@ -17,7 +17,6 @@
 #header ul {
   margin: 5px auto;
   width: 550px;
-  font-size: 12px;
 }
 
 #page_body {
@@ -73,3 +72,42 @@ div.pick_a_map {
 }
 
 }
+
+@media only screen and (max-width: 479px) {
+
+#header {
+  width: 450px;
+  height: 100px;
+}
+
+#header ul {
+  width: 450px;
+  margin-left: -25px;
+  font-size: 9px;
+}
+
+#container {
+  width: 450px;
+  margin: -20px auto 20px auto;
+}
+
+#page_body {
+  width: 450px;
+}
+
+#map, .right_column, #right_column {
+  width: 400px;
+  padding: 5px;
+}
+
+#header a img {
+  max-width: 350px;
+}
+
+.intro_image, #map_canvas img {
+  max-width: 350px;
+  max-height: 200px;
+}
+
+}
+
