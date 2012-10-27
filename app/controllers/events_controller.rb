@@ -16,6 +16,7 @@ class EventsController < InheritedResources::Base
         render "#{@region.name}/events" if lookup_context.find_all("#{@region.name}/events").any?
       end
       format.xml { respond_with @events }
+      format.json { respond_with @events }
     end
   end
 end
