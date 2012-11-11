@@ -63,7 +63,13 @@ function showLocations(ids, lats, lons, contents) {
     attachMarkerClick(marker, i)
   }
 
-  map.fitBounds(bounds);
+
+  if (contents.length === 1) {
+    map.setZoom(18);
+    map.setCenter(new google.maps.LatLng(lats[0], lons[0]));
+  } else {
+    map.fitBounds(bounds);
+  }
 }
 
 function attachMarkerClick(marker, index) {
