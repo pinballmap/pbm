@@ -1,5 +1,5 @@
 class RegionsController < InheritedResources::Base
-  respond_to :xml, :json, :only => [:index, :show]
+  respond_to :xml, :json
 
   def index
     respond_with(@regions = Region.all, :methods => [:subdir, :emailContact])
@@ -11,5 +11,9 @@ class RegionsController < InheritedResources::Base
 
   def four_square_export
     @regions = Region.all
+  end
+
+  def all_region_data
+    @region = Region.find_by_name(params[:region] || 'portland')
   end
 end

@@ -18,6 +18,14 @@ Feature: events for mobile apps
     And I go to the mobile page for "/iphone.html?init=1;region=chicago"
     Then I should be on the mobile page for "/chicago/locations.xml"
 
+  Scenario: respects all region data init param
+    Given the following regions exist:
+      |id|name|
+      |1|portland|
+      |2|chicago|
+    And I go to the mobile page for "/iphone.html?init=5;region=chicago"
+    Then I should be on the mobile page for "/chicago/all_region_data.json"
+
   Scenario: init=1
     Given the following regions exist:
       |id|name|

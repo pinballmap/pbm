@@ -63,6 +63,8 @@ Pbm::Application.routes.draw do
     match '/submitted_new_location' => 'pages#submitted_new_location'
 
     match 'iphone.html', :to => 'locations#mobile'
+    match 'all_region_data.json', :to => 'regions#all_region_data', :format => 'json'
+
     match '*page', :to => 'locations#unknown_route'
   end
 
