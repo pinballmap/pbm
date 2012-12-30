@@ -62,6 +62,8 @@ class LocationsController < InheritedResources::Base
         redirect_to "/#{region}/events.xml"
       when 4 then
         redirect_to "/#{region}/machines.xml"
+      when 5 then
+        redirect_to "/#{region}/all_region_data.json"
       end
     elsif (location_id = params[:get_location])
       redirect_to "/#{region}/locations/#{location_id}.xml"
