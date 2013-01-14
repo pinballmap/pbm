@@ -44,6 +44,9 @@ module NavigationHelpers
     when /^the mobile page for "(.*)"$/i
       $1
 
+    when /^the page for "(.*)"$/i
+      $1
+
     when /(.*by_location_id=\d+)/i
       $1
 

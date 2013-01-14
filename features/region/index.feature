@@ -222,3 +222,16 @@ Feature: Region main page
   And I navigate to the direct link for region "portland" city "portland"
   And I wait for 1 seconds
   Then I should see the listing for "Cleo"
+
+  @javascript
+  Scenario: Search by box boundary
+    Given there is a region with the name "portland" and the id "1"
+    And the following locations exist:
+      |name|region_id|lat|lon|
+      |Cleo|1|10|-10|
+      |Zelda|1|100|-100|
+      |Bawb|2|10|-10|
+    And I go to the page for "/portland/locations?by_center_point_and_ne_boundary=10,-10,10,-10"
+    Then I should see the listing for "Cleo"
+    And I should not see the listing for "Zelda"
+    And I should not see the listing for "Bawb"

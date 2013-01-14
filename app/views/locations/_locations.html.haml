@@ -1,8 +1,5 @@
 - if (@locations)
   :javascript
-    clearMarkers()
-    clearInfoWindows();
-
     showLocations(
       [#{@location_data[0].join(', ')}],
       [#{@location_data[1].join(', ')}],
@@ -57,7 +54,7 @@
     - if (@locations.size == 1)
       :javascript
         $(function() {
-          singleLocationLoad('#{@region.name.downcase}', #{@locations.first.id});
+          singleLocationLoad(#{@locations.first.id});
         });
 
 :javascript
