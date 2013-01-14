@@ -1,5 +1,6 @@
 - if (@locations)
   :javascript
+
     clearMarkers()
     clearInfoWindows();
     $("#search_link_wrapper").removeClass("hide_search_link");
@@ -73,5 +74,5 @@
     - if (@locations.size == 1)
       :javascript
         $(function() {
-          singleLocationLoad('#{@region.name.downcase}', #{@locations.first.id});
+          singleLocationLoad(#{@locations.first.id});
         });
