@@ -222,3 +222,20 @@ Feature: Region main page
   And I navigate to the direct link for region "portland" city "portland"
   And I wait for 1 seconds
   Then I should see the listing for "Cleo"
+
+  @javascript
+  Scenario: escapes characters in location address for infowindow
+    Given there is a region with the name "portland" and the id "1"
+    And the following locations exist:
+      |id|name|street|city|region_id|
+      |1|The Screen|1600 St. Michael's Drive|Sassy's Ville|1|
+    And the following machines exist:
+      |id|name|
+      |1|Cleo|
+    And the following location machine xrefs exist:
+      |location_id|machine_id|condition|
+      |1|1|cool machine condition|
+    And I am on "Portland"'s home page
+    And I press the "location" search button
+    Then I should see the listing for "The Screen"
+    And I should see the listing for "cool machine condition"
