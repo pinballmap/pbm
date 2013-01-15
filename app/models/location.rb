@@ -42,7 +42,7 @@ class Location < ActiveRecord::Base
     where(Location.by_at_least_n_machines_sql(n))
   }
 
-  before_destroy do |record| 
+  before_destroy do |record|
     Event.destroy_all "location_id = #{record.id}"
     LocationPictureXref.destroy_all "location_id = #{record.id}"
     MachineScoreXref.destroy_all "location_machine_xref_id in (select id from location_machine_xrefs where location_id = #{record.id})"
@@ -59,7 +59,7 @@ class Location < ActiveRecord::Base
 
   def content_for_infowindow
     content = "'<div class=\"infowindow\">"
-    content += [self.name.gsub("'", "\\\\'"), self.street, [self.city, self.state, self.zip].join(', '), self.phone].join('<br />')
+    content += [self.name.gsub("'", "\\\\'"), self.street.gsub("'", "\\\\'"), [self.city.gsub("'", "\\\\'"), self.state, self.zip].join(', '), self.phone].join('<br />')
     content += '<br /><hr /><br />'
 
     machines = self.machines.sort_by(&:name).map {|m| m.name.gsub("'", "\\\\'") + '<br />'}
