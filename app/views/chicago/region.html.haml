@@ -1,0 +1,6 @@
+- content_for :presearch_sidebar do
+  - if @region.motd
+    %p.regular_text
+      %span.yellowb Message of the Day:
+      = @region.motd
+= render :file => 'pages/region'
