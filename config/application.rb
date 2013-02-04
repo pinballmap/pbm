@@ -41,7 +41,7 @@ module Pbm
 
     config.assets.enabled = true
     config.assets.initialize_on_precompile = false
-    config.assets.version = '1.2'
+    config.assets.version = '1.3'
 
     # unfortunate inability to use wildcards because of a bug in rails admin
     config.assets.precompile += %w(
