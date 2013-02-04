@@ -124,7 +124,6 @@ GEM
     has_scope (0.5.1)
     highline (1.6.15)
     hike (1.2.1)
-    hodel_3000_compliant_logger (0.1.1)
     httparty (0.10.0)
       multi_json (~> 1.0)
       multi_xml
@@ -181,9 +180,6 @@ GEM
       net-ssh (>= 1.99.1)
     newrelic_rpm (3.5.5.38)
     nokogiri (1.5.6)
-    oink (0.10.0)
-      activerecord
-      hodel_3000_compliant_logger
     orm_adapter (0.4.0)
     paperclip (3.4.0)
       activemodel (>= 3.0.0)
@@ -344,7 +340,6 @@ DEPENDENCIES
   launchy
   mini_magick
   newrelic_rpm
-  oink
   paperclip
   pg
   pickle

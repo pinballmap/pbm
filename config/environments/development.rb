@@ -1,7 +1,4 @@
 Pbm::Application.configure do
-  config.logger = h3_log = Hodel3000CompliantLogger.new('log/development.log')
-  config.middleware.use "Oink::Middleware", :logger => h3_log
-
   # In the development environment your application's code is reloaded on
   # every request.  This slows down response time but is perfect for development
   # since you don't have to restart the webserver when you make code changes.
@@ -24,8 +21,6 @@ Pbm::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
-
-  config.assets.compile = true
 
   config.after_initialize do
     Bullet.enable = false #enable this if you need some N+1 work, but note that it will slow your dev environment down...a lot
