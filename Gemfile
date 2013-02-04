@@ -31,7 +31,6 @@ gem 'exception_notification_rails3', :require => 'exception_notifier'
 gem 'aws-sdk'
 gem 'newrelic_rpm'
 gem 'dalli'
-gem 'oink'
 gem 'jquery-ui-rails'
 gem 'jbuilder'
 
