@@ -319,7 +319,6 @@ RailsAdmin.config do |config|
       field :should_email_machine_removal, :boolean
     end
     edit do
-      field :name, :string 
       field :updated_at, :datetime 
       field :full_name, :string 
       field :motd, :string 
