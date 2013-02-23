@@ -2,7 +2,7 @@
   .left_column
     - if (@links.size > 0)
       - @links.keys.sort.each do |key|
-        %span.intro #{@links[key][0].category}
+        %span.yellowb #{@links[key][0].category}
         - @links[key].each do |l|
           %br/
           %br/
