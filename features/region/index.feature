@@ -8,11 +8,11 @@ Feature: Region main page
     Given there is a location machine xref
     And I am on "Portland"'s home page
     Then I should see "To search locations by location, please select a location from the drop down or use the text box"
-    And I should not see "To search locations by machine, please select a machine from the drop down or use the text box" within "span.info"
+    And I should not see "To search locations by machine, please select a machine from the drop down or use the text box"
     And my other search options should be "city location machine type operator zone"
     Given I switch to "machine" lookup
     Then I should see "To search locations by machine, please select a machine from the drop down or use the text box"
-    And I should not see "To search locations by location, please select a location from the drop down or use text box" within "span.info"
+    And I should not see "To search locations by location, please select a location from the drop down or use text box"
 
   @javascript
   Scenario: Searching is automatically limited by region
@@ -53,11 +53,11 @@ Feature: Region main page
     And I am on "Portland"'s home page
     And I press the "location" search button
     Then I should see "Test Location Name"
-    And I should see "303 Southeast 3rd Avenue | Portland"
+    And I should see "303 Southeast 3rd Avenue Portland, OR 97214"
     And I should see "ADD A PICTURE"
     And I should see "ADD NEW MACHINE TO THIS LOCATION"
     And I should see "SHOW MACHINES AT THIS LOCATION"
-    And I should see "No Description"
+    And I should see "Click to enter machine description"
 
   @javascript
   Scenario: Search by city
@@ -147,12 +147,15 @@ Feature: Region main page
 
   @javascript
   Scenario: Location description displays appropriate values
-    Given there is a location machine xref
+    Given there is a region with the name "portland" and the id "1"
+    And the following locations exist:
+        |id|region_id|
+        |1|1|
     And I am on "Portland"'s home page
     And I press the "location" search button
     Then I should see "Click to enter location description/hours/etc"
     Given I update the location condition for "Test Location Name" to be "New Condition"
-    And I press "Save"
+    And I press "save_desc_1"
     Then I should see "New Condition"
 
   @javascript

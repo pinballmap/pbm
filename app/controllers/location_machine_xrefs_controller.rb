@@ -37,7 +37,8 @@ class LocationMachineXrefsController < InheritedResources::Base
   end
 
   def destroy
-    LocationMachineXref.find(params[:id]).destroy
+    lmx = LocationMachineXref.find_by_id(params[:id])
+    lmx.destroy unless lmx.nil?
 
     render :nothing => true
   end
