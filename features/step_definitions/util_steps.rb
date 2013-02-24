@@ -38,7 +38,13 @@ Given /^"([^"]*)" has (\d+) locations and (\d+) machines$/ do |name, num_locatio
 end
 
 Then /^I should see the following output:$/ do |xml_output|
-  response = Hash.from_xml(page.body)
-  expected = Hash.from_xml(xml_output)
-  expected.diff(response).should == {}
+  response = page.body.gsub!(/\s+/, "")
+  expected = xml_output.gsub!(/\s+/, "")
+  expected.should == response
+end
+
+Then /^I should not see the following output:$/ do |xml_output|
+  response = page.body.gsub!(/\s+/, "")
+  expected = xml_output.gsub!(/\s+/, "")
+  response.should_not =~ /#{expected}/
 end

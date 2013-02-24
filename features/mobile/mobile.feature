@@ -46,7 +46,29 @@ Feature: events for mobile apps
     Then I should be on the mobile page for "/portland/locations.xml"
     And I should see the following output:
       """
-      <!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<?xml version=\"1.0\" encoding=\"UTF-8\"?><html><body><data><locations><location><id>1</id><name>Sasston</name><neighborhood></neighborhood><zoneno></zoneno><nummachines>1</nummachines><lat>12.0</lat><lon>21.0</lon></location></locations><machines><machine><id>1</id><name>Cleo's Adventure</name><numlocations>1</numlocations></machine></machines><zones></zones></data></body></html>
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+    <locations>
+        <location>
+            <id>1</id>
+            <name>Sasston</name>
+            <neighborhood></neighborhood>
+            <zoneNo/>
+            <numMachines>1</numMachines>
+            <lat>12.0</lat>
+            <lon>21.0</lon>
+        </location>
+    </locations>
+    <machines>
+        <machine>
+            <id>1</id>
+            <name>Cleo's Adventure</name>
+            <numLocations>1</numLocations>
+        </machine>
+    </machines>
+    <zones>
+    </zones>
+</data>
       """
 
   Scenario: 4sq export
@@ -70,7 +92,62 @@ Feature: events for mobile apps
     And I go to the mobile page for "/4sq_export.xml"
     And I should see the following output:
       """
-    <!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<?xml version=\"1.0\" encoding=\"UTF-8\"?><html><body><data><regions><region><name>portland</name><fullname>Portland</fullname><lat>1.0</lat><lon>2.0</lon><locations><location><name>Foo</name><lat>1.0</lat><lon>1.0</lon><street>123 pine</street><city>portland</city><state>OR</state><zip>97211</zip><phone>555-555-5555</phone><nummachines>2</nummachines><machines><machine><name>Cleo</name></machine><machine><name>Satchmo</name></machine></machines></location></locations></region><region><name>chicago</name><fullname>Chicago</fullname><lat>3.0</lat><lon>4.0</lon><locations><location><name>Bar</name><lat>2.0</lat><lon>2.0</lon><street>456 oak</street><city>chicago</city><state>IL</state><zip>55555</zip><phone>123-456-7890</phone><nummachines>1</nummachines><machines><machine><name>Cleo</name></machine></machines></location></locations></region></regions></data></body></html>
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+    <regions>
+        <region>
+            <name>portland</name>
+            <fullName>Portland</fullName>
+            <lat>1.0</lat>
+            <lon>2.0</lon>
+            <locations>
+                <location>
+                    <name>Foo</name>
+                    <lat>1.0</lat>
+                    <lon>1.0</lon>
+                    <street>123 pine</street>
+                    <city>portland</city>
+                    <state>OR</state>
+                    <zip>97211</zip>
+                    <phone>555-555-5555</phone>
+                    <numMachines>2</numMachines>
+                    <machines>
+                        <machine>
+                            <name>Cleo</name>
+                        </machine>
+                        <machine>
+                            <name>Satchmo</name>
+                        </machine>
+                    </machines>
+                </location>
+            </locations>
+        </region>
+        <region>
+            <name>chicago</name>
+            <fullName>Chicago</fullName>
+            <lat>3.0</lat>
+            <lon>4.0</lon>
+            <locations>
+                <location>
+                    <name>Bar</name>
+                    <lat>2.0</lat>
+                    <lon>2.0</lon>
+                    <street>456 oak</street>
+                    <city>chicago</city>
+                    <state>IL</state>
+                    <zip>55555</zip>
+                    <phone>123-456-7890</phone>
+                    <numMachines>1</numMachines>
+                    <machines>
+                        <machine>
+                            <name>Cleo</name>
+                        </machine>
+                    </machines>
+                </location>
+            </locations>
+        </region>
+    </regions>
+</data>
       """
 
   Scenario: region init
@@ -85,7 +162,33 @@ Feature: events for mobile apps
     Then I should be on the mobile page for "/portland/regions.xml"
     And I should see the following output:
       """
-      <!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<?xml version=\"1.0\" encoding=\"UTF-8\"?><html><body><data><regions><region><id>1</id><name>portland</name><formalname>Portland OR</formalname><subdir>portland</subdir><lat>12.1</lat><lon>-1.9</lon><nsearchno>4</nsearchno><motd>This is a MOTD</motd><emailcontact>foo@bar.com</emailcontact></region><region><id>2</id><name>bayarea</name><formalname>Bay Area</formalname><subdir>bayarea</subdir><lat>2.4</lat><lon>-4.9</lon><nsearchno></nsearchno><motd></motd><emailcontact>email_not_found@noemailfound.noemail</emailcontact></region></regions></data></body></html>
+    <?xml version="1.0" encoding="UTF-8"?>
+        <data>
+            <regions>
+                <region>
+                    <id>1</id>
+                    <name>portland</name>
+                    <formalName>Portland OR</formalName>
+                    <subdir>portland</subdir>
+                    <lat>12.1</lat>
+                    <lon>-1.9</lon>
+                    <nSearchNo>4</nSearchNo>
+                    <motd>This is a MOTD</motd>
+                    <emailContact>foo@bar.com</emailContact>
+                </region>
+                <region>
+                    <id>2</id>
+                    <name>bayarea</name>
+                    <formalName>Bay Area</formalName>
+                    <subdir>bayarea</subdir>
+                    <lat>2.4</lat>
+                    <lon>-4.9</lon>
+                    <nSearchNo />
+                    <motd />
+                    <emailContact>email_not_found@noemailfound.noemail</emailContact>
+                </region>
+            </regions>
+        </data>
       """
 
   Scenario: location detail
@@ -105,7 +208,33 @@ Feature: events for mobile apps
     Then I should be on the mobile page for "/portland/locations/1.xml"
     And I should see the following output:
       """
-      <!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<?xml version=\"1.0\" encoding=\"UTF-8\"?><html><body><data><locations><location><id>1</id><name>Sasston</name><zoneno></zoneno><zone></zone><neighborhood></neighborhood><lat>12.0</lat><lon>21.0</lon><street1>303 Southeast 3rd Avenue</street1><street2></street2><city>Portland</city><state>OR</state><zip>97214</zip><phone></phone><nummachines>1</nummachines><machines><machine><id>1</id><name>Cleo's Adventure</name></machine></machines></location></locations></data></body></html>
+      <?xml version="1.0" encoding="UTF-8"?>
+        <data>
+            <locations>
+                <location>
+                    <id>1</id>
+                    <name>Sasston</name>
+                    <zoneNo/>
+                    <zone></zone>
+                    <neighborhood></neighborhood>
+                    <lat>12.0</lat>
+                    <lon>21.0</lon>
+                    <street1>303 Southeast 3rd Avenue</street1>
+                    <street2/>
+                    <city>Portland</city>
+                    <state>OR</state>
+                    <zip>97214</zip>
+                    <phone/>
+                    <numMachines>1</numMachines>
+                    <machines>
+                        <machine>
+                            <id>1</id>
+                            <name>Cleo's Adventure</name>
+                        </machine>
+                    </machines>
+                </location>
+            </locations>
+        </data>
       """
 
   Scenario: locations for machine
@@ -128,7 +257,43 @@ Feature: events for mobile apps
     Then I should be on the mobile page for "/portland/locations/1/locations_for_machine.xml"
     And I should see the following output:
       """
-      <!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<?xml version=\"1.0\" encoding=\"UTF-8\"?><html><body><data><locations><location><id>2</id><name>Cleoville</name><zoneno></zoneno><zone></zone><neighborhood></neighborhood><lat></lat><lon></lon><street1>303 Southeast 3rd Avenue</street1><street2></street2><city>Portland</city><state>OR</state><zip>97214</zip><phone></phone><nummachines>1</nummachines></location><location><id>1</id><name>Sasston</name><zoneno></zoneno><zone></zone><neighborhood></neighborhood><lat></lat><lon></lon><street1>303 Southeast 3rd Avenue</street1><street2></street2><city>Portland</city><state>OR</state><zip>97214</zip><phone></phone><nummachines>1</nummachines></location></locations></data></body></html>
+        <?xml version="1.0" encoding="UTF-8"?>
+            <data>
+                <locations>
+                    <location>
+                        <id>2</id>
+                        <name>Cleoville</name>
+                        <zoneNo/>
+                        <zone></zone>
+                        <neighborhood></neighborhood>
+                        <lat/>
+                        <lon/>
+                        <street1>303 Southeast 3rd Avenue</street1>
+                        <street2/>
+                        <city>Portland</city>
+                        <state>OR</state>
+                        <zip>97214</zip>
+                        <phone/>
+                        <numMachines>1</numMachines>
+                    </location>
+                    <location>
+                        <id>1</id>
+                        <name>Sasston</name>
+                        <zoneNo/>
+                        <zone></zone>
+                        <neighborhood></neighborhood>
+                        <lat/>
+                        <lon/>
+                        <street1>303 Southeast 3rd Avenue</street1>
+                        <street2/>
+                        <city>Portland</city>
+                        <state>OR</state>
+                        <zip>97214</zip>
+                        <phone/>
+                        <numMachines>1</numMachines>
+                    </location>
+                </locations>
+            </data>
       """
 
   Scenario: update conditions
@@ -148,7 +313,10 @@ Feature: events for mobile apps
     Then I should be on the mobile page for "/portland/location_machine_xrefs/1/condition_update_confirmation.xml"
     And I should see the following output:
       """
-      <!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<?xml version=\"1.0\" encoding=\"UTF-8\"?><html><body><data><msg>add successful</msg></data></body></html>
+      <?xml version="1.0" encoding="UTF-8"?>
+      <data>
+          <msg>add successful</msg>
+      </data>
       """
 
   Scenario: modify location, add existing machine by machine_no
@@ -166,11 +334,11 @@ Feature: events for mobile apps
     And "Sasston" should have "Bawb's Adventure"
     And I should see the following output:
       """
-      <!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<?xml version=\"1.0\" encoding=\"UTF-8\"?><html><body><data><msg>
-      add successful
-      </msg><id>
-      2
-      </id></data></body></html>
+      <?xml version="1.0" encoding="UTF-8"?>
+      <data>
+        <msg>add successful</msg>
+        <id>2</id>
+      </data>
       """
 
   Scenario: modify location, add existing machine by machine_name
@@ -188,11 +356,11 @@ Feature: events for mobile apps
     And "Sasston" should have "Cleo"
     And I should see the following output:
       """
-      <!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<?xml version=\"1.0\" encoding=\"UTF-8\"?><html><body><data><msg>
-      add successful
-      </msg><id>
-      1
-      </id></data></body></html>
+      <?xml version="1.0" encoding="UTF-8"?>
+      <data>
+        <msg>add successful</msg>
+        <id>1</id>
+      </data>
       """
 
   Scenario: modify location, add machine that isn't in the system
@@ -226,5 +394,8 @@ Feature: events for mobile apps
     And location_machine_xref should not exist
     And I should see the following output:
       """
-      <!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<?xml version=\"1.0\" encoding=\"UTF-8\"?><html><body><data><msg>remove successful</msg></data></body></html>
+      <?xml version="1.0" encoding="UTF-8"?>
+      <data>
+          <msg>remove successful</msg>
+      </data>
       """

@@ -67,5 +67,7 @@ Feature: Location feeds
     |50|1|1|
     |51|1|1|
     And I am on "portland"'s location feed page
-    Then I should not see "Zelda"
-    And I should see "Bawb"
+    Then I should not see the following output:
+    """
+        Zelda
+    """

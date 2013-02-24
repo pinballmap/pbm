@@ -120,5 +120,7 @@ Feature: Score feeds
     |50|
     |51|
     And I am on "portland"'s score feed page
-    Then I should not see "Zelda"
-    And I should see "Bawb"
+    Then I should not see the following output:
+    """
+        Zelda
+    """
