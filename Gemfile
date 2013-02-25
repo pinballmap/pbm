@@ -6,6 +6,8 @@ gem 'pg'
 gem 'rake'
 gem 'rack'
 
+gem 'puma'
+
 gem 'paperclip'
 gem 'devise'
 gem 'devise-encryptable'
