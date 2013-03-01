@@ -7,7 +7,7 @@ describe PagesHelper do
       other_region = FactoryGirl.create(:region, :name => 'Xanadu', :full_name => 'Xanadu, FL')
       yet_another_region = FactoryGirl.create(:region, :name => 'Anaconda', :full_name => 'Anaconda, MI')
 
-      helper.other_regions_html(r).should == "<li><a href='/anaconda'>Anaconda, MI</a></li><div class='clear'></div><li><a href='/xanadu'>Xanadu, FL</a></li><div class='clear'></div>"
+      helper.other_regions_html(r).should == "<li><a href='/anaconda'>Anaconda, MI</a></li><li><a href='/xanadu'>Xanadu, FL</a></li>"
     end
   end
 end
