@@ -16,12 +16,7 @@ class LocationMachineXrefsController < InheritedResources::Base
         machine.name = params[:add_machine_by_name]
         machine.save
 
-        Pony.mail(
-          :to => Region.find_by_name('portland').users.collect {|u| u.email},
-          :from => 'admin@pinballmap.com',
-          :subject => "PBM - Someone entered a new machine name",
-          :body => [machine.name, Location.find(params[:location_id]).name, @region.name].join("\n")
-        )
+        send_new_machine_notification(machine, Location.find(params[:location_id]))
       end
     else
       #blank submit
