@@ -12,7 +12,8 @@ describe Region do
       one = FactoryGirl.create(:machine_score_xref, :location_machine_xref => lmx, :created_at => '2001-01-01')
       two = FactoryGirl.create(:machine_score_xref, :location_machine_xref => lmx, :created_at => '2001-02-01')
       three = FactoryGirl.create(:machine_score_xref, :location_machine_xref => lmx, :created_at => '2001-03-01')
-      @r.n_recent_scores(2).should == [three, two]
+
+      @r.n_recent_scores(2).should == [one, two]
     end
   end
 
