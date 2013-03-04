@@ -1,5 +1,5 @@
 #page_body  
-  .left_column
+  .left_column{:style => 'min-height:580px;'}
     - if (@links.size > 0)
       - @links.keys.sort.each do |key|
         %p.yellowb #{@links[key][0].category}
