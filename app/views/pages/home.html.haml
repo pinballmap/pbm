@@ -32,8 +32,6 @@
     = link_to 'on github', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
     (it's a Rails app).
   #map_summaries.intro
-    .pick_a_map 
-      %p.pick_a_map Pick a map!
     - count = 1
     - Region.order('full_name').each do |r|
       .map_summary
@@ -41,7 +39,7 @@
         %br/
         = link_to image_tag("landing_thumbs/#{r.name}-thumbnail.png", :size => '150x150'), "/#{r.name}"
         .map_summary_info
-          Tracking:
+          %span.yellow Tracking:
           %br/
           = "#{r.locations_count} Locations"
           %br/

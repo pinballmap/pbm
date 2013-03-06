@@ -7,18 +7,18 @@ Feature: Region main page
   Scenario: Change navigation type
     Given there is a location machine xref
     And I am on "Portland"'s home page
-    Then I should see "To search locations by location, please select a location from the drop down or use the text box"
-    And I should not see "To search locations by machine, please select a machine from the drop down or use the text box"
+    Then I should see "To search by location, please select a location from the drop down or use the text box"
+    And I should not see "To search by machine, please select a machine from the drop down or use the text box"
     And my other search options should be "city location machine type operator zone"
     Given I switch to "machine" lookup
-    Then I should see "To search locations by machine, please select a machine from the drop down or use the text box"
-    And I should not see "To search locations by location, please select a location from the drop down or use text box"
+    Then I should see "To search by machine, please select a machine from the drop down or use the text box"
+    And I should not see "To search by location, please select a location from the drop down or use text box"
 
   @javascript
   Scenario: Searching is automatically limited by region
-    Given "Chicago" is a region with the name "chicago" and the id "2"
+    Given "chicago" is a region with the name "chicago" and the id "2"
     And there is a location machine xref
-    And I am on "Chicago"'s home page
+    And I am on "chicago"'s home page
     And I press the "location" search button
     Then I should not see the listing for "Test Location Name"
 
@@ -162,7 +162,7 @@ Feature: Region main page
   Scenario: Default search type for region
     Given there is a region with the name "portland" and the default_search_type "city"
     And I am on "Portland"'s home page
-    Then I should see "To search locations by city, please select a city from the drop down"
+    Then I should see "To search by city, please select a city from the drop down"
     And my other search options should be "location machine type operator zone"
 
   @javascript

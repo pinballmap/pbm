@@ -20,7 +20,7 @@
               %ul
                 %li.name= l.name
                 - if (l.location_type)
-                  %li= " (#{l.location_type.name})"
+                  %li.location_type= " (#{l.location_type.name})"
                 .clear
                 %li
                   %span.address_name[l, :location_summary] #{[l.street, l.city].join(' | ')}
@@ -33,7 +33,7 @@
                 %ul
                   %li.name= l.name
                   - if (l.location_type)
-                    %li= " (#{l.location_type.name})"
+                    %li.location_type= " (#{l.location_type.name})"
                   .clear
                   %li.address= l.street
                   .clear
@@ -47,7 +47,8 @@
                   %div[l, :desc]
                     = render :partial => 'locations/render_desc', :locals => {:l => l}
                   .clear
-                  %li= link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :class =>'location_link', :id => l.id
+              %div.location_link 
+                =link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
               = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
               = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
               = render :partial => 'locations/add_machine', :locals => {:location => l}
