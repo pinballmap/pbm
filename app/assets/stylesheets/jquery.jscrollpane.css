@@ -26,14 +26,11 @@
 	top: 0;
 	bottom:0;
 	right: 0;
-	width: 20px;
+	width: 15px;
 	height: 100%;
-	background: black;
+	background: #fbfbfb;
 	border-left: .1em solid gray;
 	border-bottom:none;
-	box-shadow: -3px 0px 5px rgba(59, 59, 59, 0.80);
-    -moz-box-shadow: -3px 0px 5px rgba(59, 59, 59, 0.80);
-    -webkit-box-shadow: -3px 0px 5px rgba(59, 59, 59, 0.80);
 }
 
 .jspHorizontalBar
@@ -65,7 +62,7 @@
 
 .jspTrack
 {
-	background: black;
+	background-color: #aba6a1;
 	position: relative;
 
 }
@@ -76,8 +73,16 @@
 	top: 0;
 	left: 0;
 	cursor: pointer;
-	background: url(/assets/scroll-squigglyball.png) repeat-y;
+	background: #f4eee8;
+	/* background: url(/assets/scroll-squigglyball.png) repeat-y; */
 	height:133px;
+	box-shadow: -1px 2px 5px rgba(59, 59, 59, 0.6);
+    -moz-box-shadow: -1px 2px 5px rgba(59, 59, 59, 0.6);
+    -webkit-box-shadow: -1px 2px 5px rgba(59, 59, 59, 0.6);
+}
+
+.jspDrag:hover {
+	background: #eee6dc;
 }
 
 .jspHorizontalBar .jspTrack,
@@ -96,16 +101,34 @@
 }
 
 a.jspArrowDown {
-	background: url(/assets/scroll-base2.png) no-repeat;
-	padding-bottom:40px;
+	/* background: url(/assets/scroll-base2.png) no-repeat; */
+	background-color: #513d27;
+	box-shadow: -1px 2px 5px rgba(59, 59, 59, 0.6);
+    -moz-box-shadow: -1px 2px 5px rgba(59, 59, 59, 0.6);
+    -webkit-box-shadow: -1px 2px 5px rgba(59, 59, 59, 0.6);
+}
+
+a.jspArrowDown:hover {
+	background: #2e2316;
 }
 
 .jspArrowDown {
 	height:100px;
 }
 
+.jspArrow:active {	background: white;
+}
+
 a.jspArrowUp {
-	background: url(/assets/scroll-top.png) no-repeat;
+/*	background: url(/assets/scroll-top.png) no-repeat; */
+	background-color: #513d27;
+	box-shadow: -1px 2px 5px rgba(59, 59, 59, 0.6);
+    -moz-box-shadow: -1px 2px 5px rgba(59, 59, 59, 0.6);
+    -webkit-box-shadow: -1px 2px 5px rgba(59, 59, 59, 0.6);
+}
+
+a.jspArrowUp:hover {
+	background: #2e2316;
 }
 
 .jspArrowUp:focus {

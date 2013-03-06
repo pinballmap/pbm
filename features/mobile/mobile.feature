@@ -14,17 +14,17 @@ Feature: events for mobile apps
     Given the following regions exist:
       |id|name|
       |1|portland|
-      |2|chicago|
-    And I go to the mobile page for "/iphone.html?init=1;region=chicago"
-    Then I should be on the mobile page for "/chicago/locations.xml"
+      |2|toronto|
+    And I go to the mobile page for "/iphone.html?init=1;region=toronto"
+    Then I should be on the mobile page for "/toronto/locations.xml"
 
   Scenario: respects all region data init param
     Given the following regions exist:
       |id|name|
       |1|portland|
-      |2|chicago|
-    And I go to the mobile page for "/iphone.html?init=5;region=chicago"
-    Then I should be on the mobile page for "/chicago/all_region_data.json"
+      |2|toronto|
+    And I go to the mobile page for "/iphone.html?init=5;region=toronto"
+    Then I should be on the mobile page for "/toronto/all_region_data.json"
 
   Scenario: init=1
     Given the following regions exist:
@@ -75,11 +75,11 @@ Feature: events for mobile apps
     Given the following regions exist:
       |id|name|full_name|lat|lon|
       |1|portland|Portland|1|2|
-      |2|chicago|Chicago|3|4|
+      |2|toronto|toronto|3|4|
     And the following locations exist:
       |id|name|lat|lon|street|city|state|zip|phone|region_id|
       |1|Foo|1|1|123 pine|portland|OR|97211|555-555-5555|1|
-      |2|Bar|2|2|456 oak|chicago|IL|55555|123-456-7890|2|
+      |2|Bar|2|2|456 oak|toronto|IL|55555|123-456-7890|2|
     And the following machines exist:
       |id|name|
       |1|Cleo|
@@ -123,8 +123,8 @@ Feature: events for mobile apps
             </locations>
         </region>
         <region>
-            <name>chicago</name>
-            <fullName>Chicago</fullName>
+            <name>toronto</name>
+            <fullName>toronto</fullName>
             <lat>3.0</lat>
             <lon>4.0</lon>
             <locations>
@@ -133,7 +133,7 @@ Feature: events for mobile apps
                     <lat>2.0</lat>
                     <lon>2.0</lon>
                     <street>456 oak</street>
-                    <city>chicago</city>
+                    <city>toronto</city>
                     <state>IL</state>
                     <zip>55555</zip>
                     <phone>123-456-7890</phone>

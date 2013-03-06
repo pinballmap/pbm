@@ -4,6 +4,10 @@
       = render :partial => 'locations/form'
     %br/
     #locations
-      = yield :presearch_sidebar
+      - if !@region.motd.blank?
+        %p.regular_text{:style => "margin-top: 0px;"}
+          %span.yellowb Message of the Day:
+          = @region.motd 
+      = yield :presearch_sidebar 
   #map
     = render :partial => 'locations/map'

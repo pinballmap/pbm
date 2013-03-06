@@ -1,22 +1,21 @@
 = yield :intro_extra
 #intro
-  %p.regular_text 
-    Welcome to 
-    %span.yellow pinballmap.com/#{@region.name}
+  %p.yellow{:style => 'margin-top:0;'}
+    Welcome to the #{@region.full_name} Pinball Map!
   %p.regular_text
     %span.yellowb This map is best maintained with the help of YOU.
-    If a place adds/replaces a machine, use the
+    Please
     %span.yellowb "add"
     and 
     %span.yellowb "remove"
-    functions under that location on the map to bring things up to date. If you know of a location with machines that 
+    machines to/from locations to keep things up to date. And if you know of a location with machines that 
     %span{:style => "font-style:italic;"} isn't on the map,
     use the
     %span.regular_text
       =link_to '"Enter a New Location"', suggest_new_location_path
-    link up top to add the place to the database!
+    link up top!
   %p.regular_text Use the tools at left to do stuff like:
-  %ul.stufflike
+  %ul.list
     %li Update the map!
     %li Check your favorite locations for their latest line-up
     %li Search or browse for machines throughout your town

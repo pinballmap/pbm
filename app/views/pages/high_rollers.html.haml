@@ -9,8 +9,7 @@
   - @high_rollers.sort{|a,b| b[1].size <=> a[1].size}.each do |roller|
     .score_result
       %h1= rank
-      %span= "#{roller[0]}: with #{roller[1].size} scores"
-      %br/
+      %p.regular_text= "#{roller[0]}: with #{roller[1].size} scores"
       = banner("user_#{count}", 'Show Score Detail')
       %div{:style => 'display:none', :id => "user_#{count}"}
         - roller[1].each do |msx|

@@ -1,10 +1,10 @@
 #page_body  
-  .left_column{:style => 'min-height:580px;'}
+  .left_column.links_column
     - if (@links.size > 0)
       - @links.keys.sort.each do |key|
-        %p.yellowb #{@links[key][0].category}
+        %p.yellowb.links_category #{@links[key][0].category}
         - @links[key].each do |l|
-          %p
+          %p.links_content
             = link_to l.name, l.url, :class => 'light_blue', :target => '_blank'
             %br/
             %span.regular_text #{l.description}

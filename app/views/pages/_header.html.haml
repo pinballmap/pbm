@@ -2,6 +2,8 @@
   - if (@region)
     =image_tag "region_names/#{params[:region]}-diag.png", :class => "region_logo"
   =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}"), @region ? region_homepage_path : root_path
+  %div{:class => "#{@region ? 'dont_pick_a_map' : 'pick_a_map'}"}
+    %p.pick_a_map Pick a map!
   - if (@region)
     %ul
       %li.first_header_link=link_to 'About Pinball Map', about_path
