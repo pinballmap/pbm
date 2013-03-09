@@ -62,3 +62,7 @@ end
 Given /^I navigate to the direct link for region "([^"]*)" city "([^"]*)"$/ do |region, city|
   visit path_to("/#{region}/?by_city_id=#{city}")
 end
+
+Then /^I should see a link titled "([^"]*)" to "([^"]*)"/ do |title, url|
+  URI.parse(page.find_link(title)['href']).to_s.should == url
+end

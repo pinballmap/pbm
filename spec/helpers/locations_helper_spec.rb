@@ -14,14 +14,14 @@ describe LocationsHelper do
     it 'should give me a banner' do
       l = FactoryGirl.create(:location)
       helper.banner('cool_type', 'This is a cool type, bro', l).should == <<HERE
-<div id="cool_type_banner_#{l.id}" class="sub_nav_item" onclick="toggleData('cool_type', #{l.id});">
+<div id="cool_type_banner_#{l.id}" class="sub_nav_item cool_type_toggle" onclick="toggleData('cool_type', #{l.id});">
   <span>This is a cool type, bro</span>
   #{open_closed_arrows_for('cool_type', l.id)}
 </div>
 HERE
 
       helper.banner('cool_type', 'This is a cool type, bro').should == <<HERE
-<div id="cool_type_banner" class="sub_nav_item" onclick="toggleData('cool_type');">
+<div id="cool_type_banner" class="sub_nav_item cool_type_toggle" onclick="toggleData('cool_type');">
   <span>This is a cool type, bro</span>
   #{open_closed_arrows_for('cool_type')}
 </div>
