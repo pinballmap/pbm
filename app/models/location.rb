@@ -54,7 +54,7 @@ class Location < ActiveRecord::Base
   end
 
   def machine_names
-    self.machines.collect { |m| m.name }.sort
+    self.machines.collect { |m| m.name_and_year }.sort
   end
 
   def content_for_infowindow

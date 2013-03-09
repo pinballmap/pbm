@@ -251,17 +251,22 @@ RailsAdmin.config do |config|
   end
   config.model Machine do
     list do
-      field :name, :string 
-      field :is_active, :boolean 
+      field :name, :string
+      field :manufacturer, :string
+      field :year, :integer
+      field :is_active, :boolean
     end
     show do
-      field :name, :string 
-      field :is_active, :boolean 
+      field :name, :string
+      field :is_active, :boolean
       field :updated_at, :datetime
     end
     edit do
-      field :name, :string 
-      field :is_active, :boolean 
+      field :name, :string
+      field :manufacturer, :string
+      field :year, :integer
+      field :ipdb_link, :string
+      field :is_active, :boolean
     end
     export do; end
     create do; end

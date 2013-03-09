@@ -242,3 +242,88 @@ Feature: Region main page
     And I press the "location" search button
     Then I should see the listing for "The Screen"
     And I should see the listing for "cool machine condition"
+
+  @javascript
+  Scenario: machine dropdown has year, manufacturer if available
+    Given there is a region with the name "portland" and the id "1"
+    And there is a location with the region_id "1" and the id "1"
+    And the following machines exist:
+      |id|name|year|manufacturer|
+      |1|foo||stern|
+      |2|bar|2000|bally|
+      |3|baz|2001||
+    And the following location machine xrefs exist:
+      |location_id|machine_id|
+      |1|1|
+      |1|2|
+      |1|3|
+    And I am on "Portland"'s home page
+    And I switch to "machine" lookup
+    Then I should see "foo (stern)"
+    And I should see "bar (bally, 2000)"
+    And I should see "baz (2001)"
+
+  @javascript
+  Scenario: Location summary info shows machine metadata when available
+    Given there is a region with the name "portland" and the id "1"
+    And the following locations exist:
+      |id|region_id|name|
+      |1|1|Sassy|
+      |2|1|Zelda|
+    And the following machines exist:
+      |id|name|year|manufacturer|
+      |1|foo||stern|
+      |2|bar|2000|bally|
+      |3|baz|2001||
+    And the following location machine xrefs exist:
+      |location_id|machine_id|
+      |1|1|
+      |1|2|
+      |1|3|
+    And I am on "Portland"'s home page
+    And I press the "location" search button
+    Then I should see "foo (stern)"
+    And I should see "bar (bally, 2000)"
+    And I should see "baz (2001)"
+
+  @javascript
+  Scenario: Location detail shows machine metadata when available
+    Given there is a region with the name "portland" and the id "1"
+    And the following locations exist:
+      |id|region_id|name|
+      |1|1|Sassy|
+    And the following machines exist:
+      |id|name|year|manufacturer|
+      |1|foo||stern|
+      |2|bar|2000|bally|
+      |3|baz|2001||
+      |4|bark|||
+    And the following location machine xrefs exist:
+      |location_id|machine_id|
+      |1|1|
+      |1|2|
+      |1|3|
+      |1|4|
+    And I am on "Portland"'s home page
+    And I press the "location" search button
+    Then I should see "foo (stern)"
+    And I should see "bar (bally, 2000)"
+    And I should see "bark"
+    And I should see "baz (2001)"
+
+  @javascript
+  Scenario: ipdb links are generic or specific when appropriate
+    Given there is a region with the name "portland" and the id "1"
+    And there is a location with the region_id "1" and the id "1"
+    And the following machines exist:
+      |id|name|ipdb_link|
+      |1|foo|http://foo.com|
+      |2|bar||
+    And the following location machine xrefs exist:
+      |id|location_id|machine_id|
+      |1|1|1|
+      |2|1|2|
+    And I am on "Portland"'s home page
+    And I press the "location" search button
+    Then I should see a link titled "foo" to "http://foo.com/"
+    And I should see a link titled "bar" to "http://ipdb.org/search.pl?name=bar;qh=checked;searchtype=advanced"

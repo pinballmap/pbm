@@ -4,6 +4,10 @@ class Machine < ActiveRecord::Base
 
   validates_presence_of :name
 
+  def name_and_year
+    name + ((year.blank? && manufacturer.blank?) ? '' : " (#{[manufacturer, year].reject(&:blank?).join(', ')})")
+  end
+
   before_destroy do |record|
     MachineScoreXref.destroy_all "location_machine_xref_id in (select id from location_machine_xrefs where machine_id = #{record.id})"
     LocationMachineXref.destroy_all "machine_id = #{record.id}"
