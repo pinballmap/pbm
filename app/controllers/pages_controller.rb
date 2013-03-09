@@ -74,7 +74,7 @@ class PagesController < ApplicationController
   def links
     @links = Hash.new
     @region.region_link_xrefs.each do |rlx|
-      (@links[rlx.sort_order || 0] ||= []) << rlx
+      (@links[rlx.category || 'Uncategorized'] ||= []) << rlx
     end
 
     render "#{@region.name}/links" if (lookup_context.find_all("#{@region.name}/links").any?)

@@ -17,3 +17,15 @@ Feature: links for region
       |2|cool link 1|cool links||1|
     And I am on "chicago"'s links page
     Then I should see "cool links cool link 1 main links chicago link 1"
+
+  Scenario: sort order doesn't cause headers to display twice
+    Given the following regions exist:
+      |id|name|
+      |1|chicago|
+    And the following region link xrefs exist:
+      |region_id|name|category|description|sort_order|
+      |1|link 1|main links||2|
+      |1|link 2|main links||1|
+      |1|link 3||||
+    And I am on "chicago"'s links page
+    Then I should see "link 3 main links link 2 link 1"
