@@ -1,4 +1,4 @@
-regions = 'portland|chicago'
+regions = 'portland|chicago|toronto'
 
 if (Region.table_exists? && Region.all.size > 0)
   regions = Region.all.each.collect {|r| r.name}.join('|')
