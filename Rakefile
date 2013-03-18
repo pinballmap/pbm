@@ -10,7 +10,7 @@ desc "Email admins about empty locations"
 task :report_empty_locations => :environment do
   Region.all.each do |r|
     machineless_locations = r.machineless_locations
-    if machineless_locations.size
+    if machineless_locations.size > 0
       Pony.mail(
         :to => r.users.collect {|u| u.email},
         :from => 'admin@pinballmap.com',
