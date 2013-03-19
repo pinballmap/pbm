@@ -12,4 +12,8 @@ class Machine < ActiveRecord::Base
     MachineScoreXref.destroy_all "location_machine_xref_id in (select id from location_machine_xrefs where machine_id = #{record.id})"
     LocationMachineXref.destroy_all "machine_id = #{record.id}"
   end
+
+  def massaged_name
+    name.sub(/^the /i,"")
+  end
 end

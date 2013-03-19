@@ -54,7 +54,7 @@ class Location < ActiveRecord::Base
   end
 
   def machine_names
-    self.machines.collect { |m| m.name_and_year }.sort
+    self.machines.sort_by(&:massaged_name).collect { |m| m.name_and_year }
   end
 
   def content_for_infowindow
@@ -62,7 +62,7 @@ class Location < ActiveRecord::Base
     content += [self.name.gsub("'", "\\\\'"), self.street.gsub("'", "\\\\'"), [self.city.gsub("'", "\\\\'"), self.state, self.zip].join(', '), self.phone].join('<br />')
     content += '<br /><hr /><br />'
 
-    machines = self.machines.sort_by(&:name).map {|m| m.name.gsub("'", "\\\\'") + '<br />'}
+    machines = self.machines.sort_by(&:massaged_name).map {|m| m.name.gsub("'", "\\\\'") + '<br />'}
 
     content += machines.join
     content += "</div>'"
