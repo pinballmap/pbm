@@ -35,7 +35,7 @@ class PagesController < ApplicationController
       'machine' => {
         'id'   => 'id',
         'name' => 'name_and_year',
-        'search_collection' => @region.machines.sort_by(&:name),
+        'search_collection' => @region.machines.sort_by(&:massaged_name),
         'autocomplete' => 1,
       },
       'zone' => {
