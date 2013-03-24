@@ -5,7 +5,11 @@ class Machine < ActiveRecord::Base
   validates_presence_of :name
 
   def name_and_year
-    name + ((year.blank? && manufacturer.blank?) ? '' : " (#{[manufacturer, year].reject(&:blank?).join(', ')})")
+    name + year_and_manufacturer
+  end
+
+  def year_and_manufacturer
+    ((year.blank? && manufacturer.blank?) ? '' : " (#{[manufacturer, year].reject(&:blank?).join(', ')})")
   end
 
   before_destroy do |record|
