@@ -326,6 +326,11 @@ RailsAdmin.config do |config|
     edit do
       field :updated_at, :datetime 
       field :full_name, :string 
+      field :name do
+        render do
+          bindings[:view].render :partial => 'region_name_edit', :locals => {:region => bindings[:object]}
+        end
+      end
       field :motd, :string 
       field :lat, :float 
       field :lon, :float 
