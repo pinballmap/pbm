@@ -5,7 +5,7 @@ class MachinesController < InheritedResources::Base
   def autocomplete
     machines = params[:region_level_search].nil? ? Machine.all : @region.machines
 
-    render :json => machines.map{|m| m.name}.grep(/#{params[:term]}/i).sort
+    render :json => machines.select{|m| m.name_and_year =~ /#{params[:term]}/i}.sort_by(&:name).map{|m| {:label => m.name_and_year, :value => m.name}}
   end
 
   def index
