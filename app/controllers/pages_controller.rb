@@ -59,6 +59,8 @@ class PagesController < ApplicationController
   end
 
   def contact_sent
+      return unless params['contact_msg']
+
       Pony.mail(
         :to => @region.users.collect {|u| u.email},
         :from => 'admin@pinballmap.com',
