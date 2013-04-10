@@ -20,6 +20,8 @@
       %li
         =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
       %li=link_to 'High Rollers', high_rollers_path
+%p.notice= notice
+%p.alert= alert
 
 :javascript
   $().ready(function() {
