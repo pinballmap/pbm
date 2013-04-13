@@ -332,8 +332,8 @@ li.address {
   font-size: 14px;
   background-color: #e79e55;
   height: 100%;
-  padding: 3px 3px 1px;
   width: 78%;
+  padding: 2px 3px 2px;
 }
 
 span.machine_year_man {
@@ -447,17 +447,31 @@ br.clear {
 }
 
 .sub_nav_item {
+  padding-left: 2px; 
+  height: 14px;
   cursor: pointer;
   font-size: 10px;
   font-weight: normal;
-  height: 100%;
   width: 310px;
-  padding: 2px 0 1px 2px;
   color: #f9f9f9;
 }
 
 .sub_nav_item:hover {
   color: #ffffff;
+}
+
+@-moz-document url-prefix() {
+    .sub_nav_item {
+        padding-top: 2px;
+        margin-bottom: -2px;
+    }
+    .arrow {
+        margin-top: -2px;
+    }
+    .sub_nav_item.show_machines_location_toggle {
+        height: 12px;
+    }
+
 }
 
 .search_result {
@@ -568,7 +582,6 @@ br.clear {
 }
 
 .info {
-  padding-top: 2px;
   font-style: italic;
   color: #999;
 }
@@ -832,7 +845,6 @@ background-image: -webkit-gradient(
 /*  border: 1px solid #827c75; */
   height: 14px;
   width: 14px;
-  margin-top: -2px;
 }
 
 .arrow:hover {
@@ -1147,6 +1159,7 @@ ul.stufflike li, ul.list li {
 
 .show_machines_location {
   width: 310px;
+  padding-top: 2px;
 }
 
 .lookup_search_input {
@@ -1182,6 +1195,7 @@ ul.stufflike li, ul.list li {
 .desc_show_location {
   padding-top: 5px;
   padding-bottom: 5px;
+  width: 101%;
 } 
 
 .desc_show_location:hover {
