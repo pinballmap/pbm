@@ -16,7 +16,7 @@
         - @locations.each do |location|
           - l = location.clone
           %div.search_result[l]
-            %div.sub_nav_item[l, :show_location_detail]{:onmouseover => "$(this).addClass('location_summary_image_mouseover');", :onmouseout => "$(this).removeClass('location_summary_image_mouseover');", :onclick => "showLocationDetail(#{l.id});"}
+            %div.sub_nav_location[l, :show_location_detail]{:onmouseover => "$(this).addClass('location_summary_image_mouseover');", :onmouseout => "$(this).removeClass('location_summary_image_mouseover');", :onclick => "showLocationDetail(#{l.id});"}
               %ul
                 %li.name= l.name
                 - if (l.location_type)
