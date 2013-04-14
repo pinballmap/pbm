@@ -85,7 +85,7 @@ function loadingHTML() {
 }
 
 function setOtherSearchOptions(newSection) {
-  var html = "<p class='black_text'>SEARCH BY</p>";
+  var html = "<p class='black_text'>TO VIEW THE MAP, SEARCH BY</p>";
   for (section in searchSections) {
       html += "  <a href='#' id='" + searchSections[section] + "_section_link' onclick='switchSection(\"" + searchSections[section] + "\");'>" + searchSections[section] + "</a>\n"
   }
