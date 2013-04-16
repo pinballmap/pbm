@@ -63,7 +63,10 @@ GEM
       xpath (~> 1.0.0)
     childprocess (0.3.6)
       ffi (~> 1.0, >= 1.0.6)
-    cocaine (0.4.2)
+    climate_control (0.0.3)
+      activesupport (>= 3.0)
+    cocaine (0.5.1)
+      climate_control (>= 0.0.3, < 1.0)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -181,11 +184,11 @@ GEM
     newrelic_rpm (3.5.5.38)
     nokogiri (1.5.6)
     orm_adapter (0.4.0)
-    paperclip (3.4.0)
+    paperclip (3.4.1)
       activemodel (>= 3.0.0)
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
-      cocaine (~> 0.4.0)
+      cocaine (~> 0.5.0)
       mime-types
     pg (0.14.1)
     pickle (0.4.11)
@@ -342,7 +345,7 @@ DEPENDENCIES
   launchy
   mini_magick
   newrelic_rpm
-  paperclip
+  paperclip (= 3.4.1)
   pg
   pickle
   pony
