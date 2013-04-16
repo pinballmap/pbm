@@ -60,7 +60,7 @@ body {
   margin: 0 auto;
   padding: 0px;
   background-image: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>);
-  background-color: #000;
+  background-color: #FFFFFF;
   color: #180E03;
   font-family: Helvetica,Arial,sans-serif;
   font-size: 11px;
@@ -328,12 +328,16 @@ li.address {
 .machine_name {
   font-weight: bold;
   float: left;
+  background-color: ##EBAF73;
   color: #180e03;
   font-size: 14px;
-  background-color: #e79e55;
   height: 100%;
   padding: 2px 3px 2px;
   width: 78%;
+}
+
+.machine_name:hover {
+  background-color: #e79e55;
 }
 
 span.machine_year_man {
@@ -475,8 +479,10 @@ br.clear {
 
 @-moz-document url-prefix() {
 
-    .sub_nav_item {
-        padding-top: 2px;
+    .sub_nav_item span {
+        position: relative;
+        top: 2px;
+     /*   padding-top: 2px;
         margin-bottom: -2px;
     }
     .arrow {
@@ -486,10 +492,10 @@ br.clear {
         height: 12px;
     }
     .add_scores_lmx_toggle {
-        height: 12px;
-    }
+        height: 12px; */
+    } 
 
-} 
+}
 
 .search_result {
   height: 100%;
