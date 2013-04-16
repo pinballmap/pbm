@@ -8,7 +8,7 @@ gem 'rack'
 
 gem 'puma'
 
-gem 'paperclip'
+gem 'paperclip', '3.4.1'
 gem 'devise'
 gem 'devise-encryptable'
 gem 'inherited_resources'
