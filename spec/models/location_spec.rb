@@ -31,6 +31,21 @@ describe Location do
     end
   end
 
+  describe 'website validation' do
+    it 'should allow blank websites' do
+      @l.update_attributes(:website => '')
+      @l.save!
+      @l.errors[:website].should_not be_present
+    end
+    it 'should not update location with websites that do not start with http://' do
+      @l.update_attributes(:website => 'lol.com')
+      @l.errors[:website].should be_present
+
+      @l.update_attributes(:website => 'http://lol.com')
+      @l.errors[:website].should_not be_present
+    end
+  end
+
   describe '#location_machine_xrefs' do
     it 'should return all machines for this location' do
       @l.location_machine_xrefs.should == [@lmx2, @lmx1]
