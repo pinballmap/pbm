@@ -34,15 +34,20 @@ describe Location do
   describe 'website validation' do
     it 'should allow blank websites' do
       @l.update_attributes(:website => '')
-      @l.save!
-      @l.errors[:website].should_not be_present
+      lambda do
+        @l.save!
+      end.should_not raise_error
     end
     it 'should not update location with websites that do not start with http://' do
       @l.update_attributes(:website => 'lol.com')
-      @l.errors[:website].should be_present
+      lambda do
+        @l.save!
+      end.should raise_error
 
       @l.update_attributes(:website => 'http://lol.com')
-      @l.errors[:website].should_not be_present
+      lambda do
+        @l.save!
+      end.should_not raise_error
     end
   end
 
