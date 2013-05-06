@@ -15,6 +15,7 @@ class Ability
       if (user.region.name == 'portland')
         can :manage, [Region, Machine, User]
       elsif (user.is_machine_admin)
+        can [:update, :read], [Region], :id => user.region_id
         can :manage, [Machine]
       else
         can [:update, :read], [Region], :id => user.region_id
