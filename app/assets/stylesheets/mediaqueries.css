@@ -1,3 +1,15 @@
+@media (max-width: 1050px) { 
+
+#form {
+  left: 573px;
+}
+
+#lookup {
+  left: 578px;
+  float: left;
+}
+}
+
 @media (max-width: 650px) {
 
 #container {
