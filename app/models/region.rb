@@ -47,7 +47,14 @@ class Region < ActiveRecord::Base
   end
 
   def primary_email_contact
-    self.users.empty? ? 'email_not_found@noemailfound.noemail' : self.users[0].email
+    if (self.users.empty?)
+      'email_not_found@noemailfound.noemail'
+    elsif (self.users.any? { |u| u.is_primary_email_contact } )
+      primary_email_contact = self.users.detect { |u| u.is_primary_email_contact }
+      primary_email_contact.email
+    else
+      self.users[0].email
+    end
   end
 
   def machineless_locations

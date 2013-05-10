@@ -36,6 +36,18 @@ describe Region do
     it 'should return a default email address if no users are in region' do
       @r.primary_email_contact.should == 'email_not_found@noemailfound.noemail'
     end
+    it 'should return the primary email contact if they are flagged' do
+      FactoryGirl.create(:user, :region => @r, :email => 'not@primary.com')
+      FactoryGirl.create(:user, :region => @r, :email => 'is@primary.com', :is_primary_email_contact => 1)
+
+      @r.primary_email_contact.should == 'is@primary.com'
+    end
+    it 'should return the first user if there is no primary email contact' do
+      FactoryGirl.create(:user, :region => @r, :email => 'first@first.com')
+      FactoryGirl.create(:user, :region => @r, :email => 'second@second.com')
+
+      @r.primary_email_contact.should == 'first@first.com'
+    end
   end
 
   describe '#machinesless_locations' do
