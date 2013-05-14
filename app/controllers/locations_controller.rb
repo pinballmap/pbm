@@ -44,7 +44,7 @@ class LocationsController < InheritedResources::Base
     l = Location.find(id)
     l.description = params["new_desc_#{id}".to_sym]
 
-    if (Rails.env.production? && !l.spam?)
+    if (ENV['RAKISMET_KEY'] && !l.spam?)
       l.save
     else
       l.save
