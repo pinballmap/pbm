@@ -43,7 +43,12 @@ class LocationsController < InheritedResources::Base
 
     l = Location.find(id)
     l.description = params["new_desc_#{id}".to_sym]
-    l.save
+
+    if (Rails.env.production? && !l.spam?)
+      l.save
+    else
+      l.save
+    end
 
     render :nothing => true
   end

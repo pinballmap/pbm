@@ -35,6 +35,7 @@ gem 'newrelic_rpm'
 gem 'dalli'
 gem 'jquery-ui-rails'
 gem 'jbuilder'
+gem 'rakismet'
 
 group :test do
   gem 'cucumber-rails', :require => false
