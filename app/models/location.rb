@@ -1,4 +1,8 @@
 class Location < ActiveRecord::Base
+  include Rakismet::Model
+
+  rakismet_attrs :content => :description
+
   validates_presence_of :name, :street, :city, :state, :zip
   validates :website, format: { with: /^http:\/\//, message: "must begin with http://" }, :if => :website?
   belongs_to :location_type

@@ -60,5 +60,8 @@ module Pbm
       rails_admin.js
       rails_admin/rails_admin.js
     )
+
+    config.rakismet.key = ENV['RAKISMET_KEY']
+    config.rakismet.url = 'http://pinballmap.com/'
   end
 end
