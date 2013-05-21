@@ -10,7 +10,7 @@ json.locations @locations.each do |json, location|
   end
 end
 
-json.machines Machine.all.each do |json, machine|
+json.machines @region.machines.each do |json, machine|
   json.machine do
     json.id machine.id
     json.name machine.name

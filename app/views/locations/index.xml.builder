@@ -17,7 +17,7 @@ xml.data do
   end
 
   xml.machines do
-    for machine in Machine.all
+    for machine in @region.machines
       cloned_machine = machine.clone
       xml.machine do
         xml.id cloned_machine.id
