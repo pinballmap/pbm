@@ -15,8 +15,7 @@ json.machines @region.machines.each do |json, machine|
     json.id machine.id
     json.name machine.name
 
-    num_locations = LocationMachineXref.count_by_sql "select count(*) from location_machine_xrefs lmx inner join locations l on (lmx.location_id = l.id) where l.region_id=#{@region.id} and lmx.machine_id=#{machine.id}"
-    json.numLocations num_locations > 0 ? num_locations : nil
+    json.numLocations LocationMachineXref.count_by_sql "select count(*) from location_machine_xrefs lmx inner join locations l on (lmx.location_id = l.id) where l.region_id=#{@region.id} and lmx.machine_id=#{machine.id}"
   end
 end
 

@@ -23,8 +23,7 @@ xml.data do
         xml.id cloned_machine.id
         xml.name cloned_machine.name
 
-        num_locations = LocationMachineXref.count_by_sql "select count(*) from location_machine_xrefs lmx inner join locations l on (lmx.location_id = l.id) where l.region_id=#{@region.id} and lmx.machine_id=#{cloned_machine.id}"
-        xml.numLocations num_locations > 0 ? num_locations : nil
+        xml.numLocations LocationMachineXref.count_by_sql "select count(*) from location_machine_xrefs lmx inner join locations l on (lmx.location_id = l.id) where l.region_id=#{@region.id} and lmx.machine_id=#{cloned_machine.id}"
       end
       cloned_machine = nil
     end
