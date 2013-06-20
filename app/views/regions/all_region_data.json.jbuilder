@@ -6,6 +6,7 @@ json.data do
     json.lon @region.lon
     json.locations @region.locations.each do |location|
       json.location do
+        json.id location.id
         json.name location.name
         json.lat location.lat
         json.lon location.lon
@@ -14,10 +15,16 @@ json.data do
         json.state location.state
         json.zip location.zip
         json.phone location.phone
+        json.zoneNo location.zone_id
+        json.neighborhood location.zone.nil? ? '' : location.zone.short_name
+        json.zone location.zone.nil? ? '' : location.zone.short_name
         json.numMachines location.machines.size
-        json.machines location.machines.sort_by(&:name).each do |machine|
+        json.machines location.location_machine_xrefs.each do |json, lmx|
           json.machine do
-            json.name machine.name
+            json.id lmx.machine.id
+            json.name lmx.machine.name
+            json.condition lmx.condition
+            json.condition_date lmx.condition_date.nil? ? '' : lmx.condition_date.to_s
           end
         end
       end

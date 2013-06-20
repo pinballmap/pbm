@@ -52,7 +52,7 @@ group :test do
   gem 'autotest-rails'
   gem 'selenium'
   gem 'selenium-client'
-  gem 'selenium-webdriver'
+  gem "selenium-webdriver", "~> 2.33.0"
   gem 'autotest-growl'
   gem 'timecop'
 end
