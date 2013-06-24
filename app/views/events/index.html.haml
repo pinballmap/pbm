@@ -2,7 +2,7 @@
   - if content_for?(:events_extra)
     = yield :events_extra
   - else
-    #left_column.regular_text
+    .left_column.regular_text
       %p
         Here's a list of the upcoming pinball events in the #{@region.full_name} area.
       %p 
@@ -27,4 +27,4 @@
               %br/
               %span.event_description #{e.long_desc}
     - else
-      %span Coming soon...
+      %p Events coming soon...

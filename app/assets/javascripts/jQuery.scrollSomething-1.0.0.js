@@ -71,11 +71,11 @@
                                                          .css("padding", 0);
                 
                 // Add some css to the wrapper
-                $("."+ settings.scrollPrefix +"scrollerWrapper").css("width", "660px")
+                $("."+ settings.scrollPrefix +"scrollerWrapper").css("width", "440px")
                                                                 .css("height", "55px");
                 
                 // Add some css to the scroller
-                $("."+ settings.scrollPrefix +"scrollerScroller").css("width", "640px")
+                $("."+ settings.scrollPrefix +"scrollerScroller").css("width", "430px")
                                                                  .css("height", "55px");
                 
                 // Add button wrapper

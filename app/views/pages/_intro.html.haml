@@ -1,6 +1,6 @@
 = yield :intro_extra
 #intro
-  %p.yellow{:style => 'margin-top:0;'}
+  %p.yellow.hello{:style => 'margin-top:0;'}
     Welcome to the #{@region.full_name} Pinball Map!
   %p.regular_text
     %span.yellowb This map is best maintained with the help of YOU.
@@ -14,12 +14,9 @@
     %span.regular_text
       =link_to '"Enter a New Location"', suggest_new_location_path
     link up top!
-  %p.regular_text Use the tools at left to do stuff like:
+  %p.regular_text Use the tools at right to do stuff like:
   %ul.list
-    %li Update the map!
-    %li Check your favorite locations for their latest line-up
     %li Search or browse for machines throughout your town
-    %li Search for locations with four or more machines
     %li Comment on a machine's condition
     %li Add photos of locations
     %li Input your high scores

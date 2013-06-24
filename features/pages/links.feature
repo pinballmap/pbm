@@ -15,7 +15,7 @@ Feature: links for region
       |1|cool link 2|cool links||1|
       |2|chicago link 1|main links||2|
       |2|cool link 1|cool links||1|
-    And I am on "chicago"'s links page
+    And I am on "chicago"'s about page
     Then I should see "cool links cool link 1 main links chicago link 1"
 
   Scenario: sort order doesn't cause headers to display twice

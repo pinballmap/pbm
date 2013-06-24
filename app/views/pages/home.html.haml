@@ -1,51 +1,34 @@
 #welcome
-  %p.home_intro.intro
+  %div.home_intro.intro
     %span.yellowb Welcome to PinballMap.com!
-    %br/
-    %br/
-    PinballMap.com is a pinball locator, showing all the public pinball
-    machines in select regions of North America.
-    Each regional map is curated by a local
-    administrator, often with the support of a league. Most importantly, the maps are kept up-to-date by local players (YOU!).
-    %br/
-    %br/
-    Use your local region’s map to find your fave machines. 
-    Keep the map up to date by adding and removing 
-    machines from locations, and by submitting new locations 
-    that aren't already on the map!
-    %br/
-    %br/
-    You can also comment on a machine’s
-    condition, upload photos of locations, add your high
-    scores on a machine, check out upcoming events, and so on.
-    %br/
-    %br/
-    We have free    
-    = link_to 'mobile apps for iPhone and Android', 'portland/apps', :class => 'apps_link'
-    %br/
-    %br/
-    If you'd like to see your city on this site, 
-    =link_to 'contact us!', 'portland/contact', :class => 'apps_link'
-    %br/
-    %br/
-    Also, the code for this site is open source and
-    = link_to 'on github', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
-    (it's a Rails app).
+    %p
+      PinballMap.com is a pinball locator, showing all the public pinball machines in select regions of North America.
+      Each regional map is curated by a local administrator, often with the support of a league.
+    %p
+      Use your region’s map to find machines, and keep the map up to date by adding and removing machines from locations, and by submitting new locations that aren't already on the map!
+    %p
+      You can also comment on a machine’s condition, upload photos of locations, add your high scores on a machine, check out upcoming events, and so on.
+    %p
+      We have free
+      = link_to 'mobile apps for iPhone and Android', 'portland/apps', :class => 'apps_link'
+    %p
+      If you'd like to see your city on this site,
+      =link_to 'contact us!', 'portland/about', :class => 'apps_link'
+    %p
+      Also, the code for this site is open source and
+      = link_to 'on github', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
   #map_summaries.intro
     - count = 1
     - Region.order('full_name').each do |r|
-      .map_summary
-        = link_to image_tag("landing_thumbs/#{r.name}-logo.png"), "/#{r.name}", :class => 'landing_logo'
-        %br/
-        = link_to image_tag("landing_thumbs/#{r.name}-thumbnail.png", :size => '150x150'), "/#{r.name}"
-        .map_summary_info
-          %span.yellow Tracking:
+      =link_to "/#{r.name}" do
+        %span.map_summary
+          %span.region_name #{r.full_name}
           %br/
-          = "#{r.locations_count} Locations"
-          %br/
-          = "#{r.machines_count} Machines"
-      - if ((count % 4) == 0)
-        .clear
-      - count += 1
+          %span.map_summary_info
+            %span.yellow Tracking:
+            %br/
+            = "#{r.locations_count} Locations"
+            %br/
+            = "#{r.machines_count} Machines"
   .clear
   %br/

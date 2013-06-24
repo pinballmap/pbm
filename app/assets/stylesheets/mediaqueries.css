@@ -1,3 +1,15 @@
+@media (max-width: 915px) { 
+
+#form {
+  left: 438px;
+}
+
+#lookup, .scrollerWrapper {
+  left: 443px;
+  float: left;
+}
+}
+
 @media (max-width: 650px) {
 
 #container {
