@@ -66,3 +66,7 @@ end
 Then /^I should see a link titled "([^"]*)" to "([^"]*)"/ do |title, url|
   URI.parse(page.find_link(title)['href']).to_s.should == url
 end
+
+Then /^"([^"]*)" should have class "([^"]*)"$/ do |element_id,css_class|
+  page.should have_css("a##{element_id}.#{css_class}")
+end

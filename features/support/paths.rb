@@ -11,6 +11,9 @@ module NavigationHelpers
     when /"(.*)"'s suggest new location page/
       "/#{$1.downcase}/suggest_new_location"
 
+    when /"(.*)"'s about page/
+      "/#{$1.downcase}/about"
+
     when /"(.*)"'s links page/
       "/#{$1.downcase}/links"
 
