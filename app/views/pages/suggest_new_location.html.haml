@@ -1,49 +1,47 @@
 #page_body  
-  .left_column{:style => 'height:100%;margin-bottom:10px;'}
+  .left_column.suggest
     %p.yellow Add a new location to the database. Fill in this form. We'll review it to make sure the data works... so don't expect it to show up just yet. Thanks for helping out!
-    %br/
     #location_maker
       = form_tag submitted_new_location_path, :method => 'get' do
-        %table
-          %tr.clear
-            %td Location Name:
-            %td= text_field_tag :location_name, params[:location_name]
-          %tr.clear
-            %td Street:
-            %td= text_field_tag :location_street, params[:location_street]
-          %tr.clear
-            %td City:
-            %td= text_field_tag :location_city, params[:location_city]
-          %tr.clear
-            %td State:
-            %td= select_tag :location_state, options_for_select(@states)
-          %tr.clear
-            %td Zip: 
-            %td= text_field_tag :location_zip, params[:location_zip]
-          %tr.clear
-            %td Phone: 
-            %td= text_field_tag :location_phone, params[:location_phone]
-          %tr.clear
-            %td Website: 
-            %td= text_field_tag :location_website, params[:location_website]
-          %tr.clear
-            %td Machines:
-            %td= text_area_tag :location_machines, params[:location_machines]
-          %tr.clear
-            %td Operator:
-            %td= text_field_tag :location_operator, params[:location_operator]
-          %tr.clear
-            %td 
-            %td= recaptcha_tags
-          %tr.clear
-            %td Your name (optional):
-            %td= text_field_tag :submitter_name, params[:submitter_name]
-          %tr.clear
-            %td Your email (optional):
-            %td= text_field_tag :submitter_email, params[:submitter_email]
-          %tr.clear
-            %td
-            %td= submit_tag 'Submit Location', :class => 'submit_button'
+        %form#submit_location
+          %ul{:style => "width:600px;padding-left:15px"}
+            %li{:class => "first"}
+              %label{:for => "location_name"} Location Name:
+              %input{:type => "text", :name => "location_name", :params => "location_name", :class => "text"}
+            %li
+              %label{:for => "location_street"} Street:
+              %input{:type => "text", :name => "location_street", :params => "location_street", :class => "text"}
+            %li{:class => "first"}
+              %label{:for => "location_city"} City:
+              %input{:type => "text", :name => "location_city", :params => "location_city", :class => "text"}
+            %li
+              %label{:for => "location_state"} State:
+              = select_tag :location_state, options_for_select(@states)
+            %li{:class => "first"}
+              %label{:for => "location_zip"} Zip:
+              %input{:type => "text", :name => "location_zip", :params => "location_zip", :class => "text"}
+            %li
+              %label{:for => "location_phone"} Phone:
+              %input{:type => "text", :name => "location_phone", :params => "location_phone", :class => "text"}
+            %li{:class => "first"}
+              %label{:for => "location_website"} Website:
+              %input{:type => "text", :name => "location_website", :params => "location_website", :class => "text"}
+            %li
+              %label{:for => "location_operator"} Operator:
+              %input{:type => "text", :name => "location_operator", :params => "location_operator", :class => "text"}
+            %li.machines{:class => "first"}
+              %label{:for => "location_machines"} Machines:
+              %textarea{:type => "text", :name => "location_machines", :params => "location_machines", :class => "text machines"}
+            %li{:class => "first"}
+              %label{:for => "submitter_name"} Your name (optional):
+              %input{:type => "text", :name => "submitter_name", :params => "submitter_name", :class => "text"}
+            %li
+              %label{:for => "submitter_email"} Your email (optional):
+              %input{:type => "text", :name => "submitter_email", :params => "submitter_email", :class => "text"}
+            %li.recaptcha{:style => "clear:both;"}
+              %div= recaptcha_tags
+            %li.submit{:style => "clear:both;"}
+              %input{:type => "submit", :value => "Submit New Location", :class => "submit_button"}
 
     %p.yellow 
       Remember, only use this form if you are adding a new 

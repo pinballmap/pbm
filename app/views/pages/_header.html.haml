@@ -1,35 +1,39 @@
-#header
+#header{:class => "#{@region ? '' : 'header_home'}"}
   - if (@region)
-    =image_tag "region_names/#{params[:region]}-diag.png", :class => "region_logo"
-  =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}"), @region ? region_homepage_path : root_path
+    %ul.region_logo_dropdown
+      %li.other_regions
+        %span.region_name_page
+          =link_to "#{@region.full_name}", region_homepage_path
+        %ul.other_regions_list= other_regions_html(@region)
+  =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}"), root_path
   %div{:class => "#{@region ? 'dont_pick_a_map' : 'pick_a_map'}"}
-    %p.pick_a_map Pick a map!
+    %p.pick_a_map Play Public Pinball!
   - if (@region)
     %ul
-      %li.first_header_link=link_to 'About Pinball Map', about_path
+      %li.first_header_link=link_to 'About', about_path
       %li=link_to 'Suggest A New Location', suggest_new_location_path
-      %li=link_to 'Contact Us', contact_path
       %li=link_to 'Apps', apps_path
-      %li=link_to 'Links', links_path
-      %li.other_regions.other_regions_arrow 
-        %span Other Regions
-        %ul.other_regions_list= other_regions_html(@region)
       %li=link_to 'Events', events_path
-      %li
+      %li.other_links
         =link_to 'Location Feed', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
-      %li
-        =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
+        %ul.other_links_dropdown
+          %li.other_links_list
+            =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
       %li=link_to 'High Rollers', high_rollers_path
 %p.notice= notice
-%p.alert= alert
+//%p.alert= alert
 
 :javascript
   $().ready(function() {
-    $(".other_regions_list").hide();
 
-    $(".other_regions").hover(function () {
+    $(".region_logo_dropdown").hover(function () {
         $(".other_regions_list").show();
       },function(){
         $(".other_regions_list").hide();
+    });
+    $(".other_links").hover(function () {
+        $(".other_links_dropdown").show();
+      },function(){
+        $(".other_links_dropdown").hide();
     });
   });

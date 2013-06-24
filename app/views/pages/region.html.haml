@@ -1,13 +1,28 @@
-#page_body  
+#region_page_body
+  #map
+    = render :partial => 'locations/map' 
+  #form
+    = render :partial => 'locations/form'
   #lookup
-    #form
-      = render :partial => 'locations/form'
-    %br/
     #locations
       - if !@region.motd.blank?
-        %p.regular_text{:style => "margin-top: 0px;"}
+        %p.regular_text
           %span.yellowb Message of the Day:
           = @region.motd 
-      = yield :presearch_sidebar 
-  #map
-    = render :partial => 'locations/map'
+      = yield :presearch_sidebar
+  #ticker
+    - @region.n_recent_scores(20).each do |msx|
+      %span= "#{msx.location.name}'s #{msx.machine.name}: #{MachineScoreXref::ENGLISH_SCORES[msx.rank]} with #{number_with_delimiter(msx.score, :delimiter => ",")} by #{msx.initials}"
+
+:javascript
+  $().ready(function(){
+      $("#ticker").scrollSomething({
+        scrollerWidth: 445,
+        scrollerHeight: 50,
+        buttonSettings: "show",
+        itemsVisible: 2,
+        itemsScrolling: 1,
+        buttonPosition: "bottomRight",
+        scrollInterval: 5000
+      });
+  });

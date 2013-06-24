@@ -10,58 +10,49 @@
       [#{@location_data[3].join(', ')}]
     );
   #results_container
-    .scroll_pane
-      .clear
-      #search_results
-        - @locations.each do |location|
-          - l = location.clone
-          %div.search_result[l]
-            %div.sub_nav_location[l, :show_location_detail]{:onmouseover => "$(this).addClass('location_summary_image_mouseover');", :onmouseout => "$(this).removeClass('location_summary_image_mouseover');", :onclick => "showLocationDetail(#{l.id});"}
+    #search_results
+      - @locations.each do |location|
+        - l = location.clone
+        %div.search_result[l]
+          %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id});"}
+            %ul
+              %li.name= l.name
+              - if (l.location_type)
+                %li.location_type= " (#{l.location_type.name})"
+              .clear
+              %li.address
+                %span.address_name[l, :location_summary] #{[l.street, l.city].join(' | ')}
+                .clear
+              %li.machine_names
+                #{[l.machine_names].join('<br />').html_safe}
+          .clear
+          %div.location_detail[l, :location_detail]{:style => 'display:none'}
+            %div.location_name{:onclick => "toggleArrows('location_detail', #{l.id}); locationLookupMapCenter(#{l.id});"}
               %ul
                 %li.name= l.name
                 - if (l.location_type)
                   %li.location_type= " (#{l.location_type.name})"
                 .clear
-                %li
-                  %span.address_name[l, :location_summary] #{[l.street, l.city].join(' | ')}
+                %li.address= [l.street, l.city, l.state + " " + l.zip].join(', ')
+                .clear
+                %li.address= l.phone
+                .clear
+                - if l.website
+                  %li= link_to l.website, l.website, :class => 'address', :target => 'blank'
                   .clear
-                %li.machine_names
-                  #{[l.machine_names].join('<br />').html_safe}
-            .clear
-            %div.location_detail[l, :location_detail]{:style => 'display:none'}
-              %div.location_name{:onclick => "toggleArrows('location_detail', #{l.id}); locationLookupMapCenter(#{l.id});"}
-                %ul
-                  %li.name= l.name
-                  - if (l.location_type)
-                    %li.location_type= " (#{l.location_type.name})"
-                  .clear
-                  %li.address= l.street
-                  .clear
-                  %li.address= [l.city, l.state + " " + l.zip].join(', ')
-                  .clear
-                  %li.address= l.phone
-                  .clear
-                  - if l.website
-                    %li= link_to l.website, l.website, :class => 'address', :target => 'blank'
-                    .clear
-                  %div[l, :desc]
-                    = render :partial => 'locations/render_desc', :locals => {:l => l}
-                  .clear
-              = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
-              %div.location_link 
-                =link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
-              = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
-              = render :partial => 'locations/add_machine', :locals => {:location => l}
-              = render :partial => 'locations/show_machines', :locals => {:location => l}
-          - l = nil
+                %div[l, :desc]
+                  = render :partial => 'locations/render_desc', :locals => {:l => l}
+                .clear
+            = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
+            %div.location_link 
+              =link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
+            = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
+            = render :partial => 'locations/add_machine', :locals => {:location => l}
+            = render :partial => 'locations/show_machines', :locals => {:location => l}
+        - l = nil
 
     - if (@locations.size == 1)
       :javascript
         $(function() {
           singleLocationLoad('#{@region.name.downcase}', #{@locations.first.id});
         });
-
-:javascript
-  $(function () {
-    $('.scroll_pane').jScrollPane({showArrows: true, autoReinitialise: true});
-  });

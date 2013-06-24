@@ -70,16 +70,22 @@ class PagesController < ApplicationController
   end
 
   def about
-    render "#{@region.name}/about" if (lookup_context.find_all("#{@region.name}/about").any?)
-  end
-
-  def links
     @links = Hash.new
     @region.region_link_xrefs.each do |rlx|
       (@links[rlx.category || 'Uncategorized'] ||= []) << rlx
     end
 
-    render "#{@region.name}/links" if (lookup_context.find_all("#{@region.name}/links").any?)
+    render "#{@region.name}/about" if (lookup_context.find_all("#{@region.name}/about").any?)
+  end
+
+  def links
+    redirect_to about_path
+    # @links = Hash.new
+    # @region.region_link_xrefs.each do |rlx|
+    #   (@links[rlx.category || 'Uncategorized'] ||= []) << rlx
+    # end
+
+    # render "#{@region.name}/links" if (lookup_context.find_all("#{@region.name}/links").any?)
   end
 
   def high_rollers
@@ -88,7 +94,7 @@ class PagesController < ApplicationController
 
   def submitted_new_location
     if (verify_recaptcha)
-      flash.now[:notice] = "Thanks for entering that location. We'll get it in the system as soon as possible."
+      flash.now[:alert] = "Thanks for entering that location. We'll get it in the system as soon as possible."
       Pony.mail(
         :to => @region.users.collect {|u| u.email},
         :from => 'admin@pinballmap.com',
@@ -128,6 +134,7 @@ class PagesController < ApplicationController
   end
 
   def contact
+    redirect_to about_path
   end
 
   def home
