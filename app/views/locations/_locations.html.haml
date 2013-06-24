@@ -14,13 +14,13 @@
       - @locations.each do |location|
         - l = location.clone
         %div.search_result[l]
-          %div.sub_nav_location[l, :show_location_detail]{:onmouseover => "$(this).addClass('location_summary_image_mouseover');", :onmouseout => "$(this).removeClass('location_summary_image_mouseover');", :onclick => "showLocationDetail(#{l.id});"}
+          %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id});"}
             %ul
               %li.name= l.name
               - if (l.location_type)
                 %li.location_type= " (#{l.location_type.name})"
               .clear
-              %li
+              %li.address
                 %span.address_name[l, :location_summary] #{[l.street, l.city].join(' | ')}
                 .clear
               %li.machine_names
@@ -56,8 +56,3 @@
         $(function() {
           singleLocationLoad('#{@region.name.downcase}', #{@locations.first.id});
         });
-
-:javascript
-  $(function () {
-    $('.scroll_pane').jScrollPane({showArrows: true, autoReinitialise: true});
-  });

@@ -1,22 +1,22 @@
-%p.yellowb Top 10 Rollers
-.left_column{:style => 'margin-top:30px;margin-left:20px;min-height:100px'}
-  %p 
-    Here's a list of the rippers who are putting up the most scores in town. In this list, Grand Champ scores are NOT worth more than a 1st place score.
-  %p
-    This list is about who has the most overall inits. Check the details of each one to find out where you can take them down!
-.clear
+#page_body
+  .left_column.high
+    %p.yellowb Top 10 Rollers
+    %p.regular_text
+      Here's a list of the rippers who are putting up the most scores in town. In this list, Grand Champ scores are NOT worth more than a 1st place score.
+    %p.regular_text
+      This list is about who has the most overall inits. Check the details of each one to find out where you can take them down!
+  .clear
 
-- if (@high_rollers)
-  - rank = 1
-  - count = 1
-  - @high_rollers.sort{|a,b| b[1].size <=> a[1].size}.each do |roller|
-    .score_result
-      %h1= rank
-      %p.regular_text= "#{roller[0]}: with #{roller[1].size} scores"
-      = banner("user_#{count}", 'Show Score Detail')
-      %div{:style => 'display:none', :id => "user_#{count}"}
-        - roller[1].each do |msx|
-          %span #{MachineScoreXref::ENGLISH_SCORES[msx.rank]} on #{msx.location_machine_xref.location.name}'s #{msx.location_machine_xref.machine.name} with #{msx.score} on #{msx.created_at}
-          %br/
-    - rank += 1
-    - count += 1
+  - if (@high_rollers)
+    - rank = 1
+    - count = 1
+    - @high_rollers.sort{|a,b| b[1].size <=> a[1].size}.each do |roller|
+      .score_result
+        %p.yellowb{:style => 'display:inline;'}= rank
+        %p.regular_text= "#{roller[0]}: with #{roller[1].size} scores"
+        = banner("user_#{count}", 'Show Score Detail')
+        %div{:style => 'display:none', :id => "user_#{count}"}
+          - roller[1].each do |msx|
+            %p.score_list #{MachineScoreXref::ENGLISH_SCORES[msx.rank]} on #{msx.location_machine_xref.location.name}'s #{msx.location_machine_xref.machine.name} with #{msx.score} on #{msx.created_at}
+      - rank += 1
+      - count += 1

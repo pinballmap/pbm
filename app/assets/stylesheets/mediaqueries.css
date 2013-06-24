@@ -1,11 +1,11 @@
-@media (max-width: 1050px) { 
+@media (max-width: 915px) { 
 
 #form {
-  left: 573px;
+  left: 438px;
 }
 
-#lookup {
-  left: 578px;
+#lookup, .scrollerWrapper {
+  left: 443px;
   float: left;
 }
 }
