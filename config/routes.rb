@@ -76,4 +76,6 @@ Pbm::Application.routes.draw do
   match '4sq_export.xml' => 'regions#four_square_export', :format => 'xml'
   get 'pages/home'
   root :to => 'pages#home'
+
+  match "/blog", :to => 'pages#blog'
 end
