@@ -139,8 +139,4 @@ class PagesController < ApplicationController
 
   def home
   end
-
-  def blog
-    render :layout => "layouts/blog"
-  end
 end
