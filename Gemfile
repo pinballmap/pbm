@@ -36,8 +36,6 @@ gem 'dalli'
 gem 'jquery-ui-rails'
 gem 'jbuilder'
 gem 'rakismet'
-gem 'twitter'
-gem 'rails_autolink'
 
 group :test do
   gem 'cucumber-rails', :require => false

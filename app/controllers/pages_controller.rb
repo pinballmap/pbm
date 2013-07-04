@@ -138,6 +138,5 @@ class PagesController < ApplicationController
   end
 
   def home
-    @tweets = Twitter.user_timeline("pinballmapcom", :count => 5)
   end
 end

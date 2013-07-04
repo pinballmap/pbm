@@ -59,7 +59,7 @@ Pbm::Application.routes.draw do
     match '/contact_sent' => 'pages#contact_sent'
     match '/links' => 'pages#links'
     match '/high_rollers' => 'pages#high_rollers'
-    match '/suggest' => 'pages#suggest_new_location'
+    match '/suggest_new_location' => 'pages#suggest_new_location'
     match '/submitted_new_location' => 'pages#submitted_new_location'
 
     match 'iphone.html', :to => 'locations#mobile'

@@ -10,19 +10,7 @@
 }
 }
 
-@media (max-width: 973px) {
-
-.home_intro_right {
-  left: 650px;
-}
-
-#welcome {
-  width: 960px;
-}
-
-}
-
-/*@media (max-width: 650px) {
+@media (max-width: 650px) {
 
 #container {
   width: 600px;
@@ -143,5 +131,5 @@ div.pick_a_map {
   padding-left: 10%;
 }
 
-}*/
+}
 
