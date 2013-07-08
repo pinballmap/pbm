@@ -9,7 +9,7 @@ module NavigationHelpers
       "/#{$1.downcase}"
 
     when /"(.*)"'s suggest new location page/
-      "/#{$1.downcase}/suggest_new_location"
+      "/#{$1.downcase}/suggest"
 
     when /"(.*)"'s about page/
       "/#{$1.downcase}/about"
