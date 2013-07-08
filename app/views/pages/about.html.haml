@@ -18,7 +18,6 @@
         Contact the 
         = @region.full_name 
         regional administrator.
-        If you have a tip or feedback, please give us a ring. When describing problems, try to be as specific as possible.
       #contact_maker
         = form_tag contact_sent_path, :method => 'get' do
           %ul
@@ -31,6 +30,8 @@
             %li.msg
               %label{:for => "contact_msg"} Message: 
               %textarea{:type => "text", :name => "contact_msg", :params => "contact_msg", :class => "text"}
+            %li.recaptcha{:style => "clear:both;"}
+              %div= recaptcha_tags
             %li.submit{:style => "clear:both;"}
               %input{:type => "submit", :value => "Submit Comment", :class => "submit_button"}
   .right_column.links_column
