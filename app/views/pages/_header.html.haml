@@ -7,7 +7,9 @@
         %ul.other_regions_list= other_regions_html(@region)
   =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}"), root_path
   %div{:class => "#{@region ? 'dont_pick_a_map' : 'pick_a_map'}"}
-    %p.pick_a_map Play Public Pinball!
+    %span.pick_a_map
+      = link_to 'Check out our new blog', 'http://blog.pinballmap.com'
+    //%span.pick_a_map Play Public Pinball!
   - if (@region)
     %ul
       %li.first_header_link=link_to 'About', about_path
