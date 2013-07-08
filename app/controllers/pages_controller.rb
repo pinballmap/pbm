@@ -60,13 +60,17 @@ class PagesController < ApplicationController
 
   def contact_sent
       return unless params['contact_msg']
-
-      Pony.mail(
-        :to => @region.users.collect {|u| u.email},
-        :from => 'admin@pinballmap.com',
-        :subject => "Message from #{@region.full_name} pinball map",
-        :body => [params['contact_name'], params['contact_email'], params['contact_msg']].join("\n")
-      )
+      if (verify_recaptcha)
+        flash.now[:alert] = "Thanks for contacting us!"
+        Pony.mail(
+          :to => @region.users.collect {|u| u.email},
+          :from => 'admin@pinballmap.com',
+          :subject => "Message from #{@region.full_name} pinball map",
+          :body => [params['contact_name'], params['contact_email'], params['contact_msg']].join("\n")
+        )
+      else
+        flash.now[:alert] = "Your captcha entering skills have failed you. Please go back and try again."
+    end
   end
 
   def about

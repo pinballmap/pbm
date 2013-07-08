@@ -122,7 +122,7 @@ body {
 
 #header.header_home {
   position: relative !important;
-  z-index: -1 !important;
+/*  z-index: -1 !important;*/
   padding-top: 5px;
   min-width:960px;
 }
@@ -345,6 +345,7 @@ body {
 .left_second_column {
   float: left;
   margin-top: 70px;
+  margin-bottom: 30px;
   width: 460px;
 }
 
@@ -591,14 +592,15 @@ span.machine_year_man {
   background-color: #f4d1af;
 }
 
-div.pick_a_map {
+div.pick_a_map, div.pick_a_map a {
   color: #FFFFCC;
-  display: inline;
+  /*display: inline;*/
   font-size: 28px;
   text-align: center;
+  padding-top: 5px;
 }
 
-p.pick_a_map {
+span.pick_a_map {
 margin: 0;
 padding: 10px 14px 10px 14px;
 text-shadow: 0.1em 0.1em 0.2em black;
@@ -933,7 +935,8 @@ input.search:hover, input#add:hover, input#location_picture_xref_submit:hover, i
   margin: 0;
 }
 
-#location_maker li.machines, #location_maker li.recaptcha, #contact_maker li.msg {
+#location_maker li.machines, #location_maker li.recaptcha, 
+#contact_maker li.recaptcha, #contact_maker li.msg {
   height: auto;
 }
 
