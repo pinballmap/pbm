@@ -7,9 +7,9 @@
         %ul.other_regions_list= other_regions_html(@region)
   =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}"), root_path
   %div{:class => "#{@region ? 'dont_pick_a_map' : 'pick_a_map'}"}
-    %span.pick_a_map
-      = link_to 'Check out our new blog', 'http://blog.pinballmap.com'
-    //%span.pick_a_map Play Public Pinball!
+    %span.yellowb.new_blog
+      = link_to 'Check out our new blog!', 'http://blog.pinballmap.com'
+    %span.pick_a_map Play Public Pinball!
   - if (@region)
     %ul
       %li.first_header_link=link_to 'About', about_path
@@ -23,7 +23,6 @@
             =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
       %li=link_to 'High Rollers', high_rollers_path
 %p.notice= notice
-//%p.alert= alert
 
 :javascript
   $().ready(function() {

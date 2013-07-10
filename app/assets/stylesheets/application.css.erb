@@ -98,8 +98,6 @@ a.apps_link:hover {
 
 a:active { outline: none }
 
-/*html, body {height:100%;overflow:auto;}
-*/
 body {
   margin: 0 auto;
   padding: 0px;
@@ -122,7 +120,6 @@ body {
 
 #header.header_home {
   position: relative !important;
-/*  z-index: -1 !important;*/
   padding-top: 5px;
   min-width:960px;
 }
@@ -359,7 +356,6 @@ body {
   box-shadow: 0 4px 5px rgba(90, 100, 117, 0.3);
   display: inline;
   float: right;
-/*    height: 100%;*/
   padding: 10px 10px 60px 10px;
   width: 430px;
   z-index: 50;
@@ -592,9 +588,8 @@ span.machine_year_man {
   background-color: #f4d1af;
 }
 
-div.pick_a_map, div.pick_a_map a {
+div.pick_a_map {
   color: #FFFFCC;
-  /*display: inline;*/
   font-size: 28px;
   text-align: center;
   padding-top: 5px;
@@ -608,6 +603,17 @@ text-shadow: 0.1em 0.1em 0.2em black;
 
 div.dont_pick_a_map {
   display:none;
+}
+
+.new_blog {
+  float: left;
+  line-height: 14px;
+  margin: 10px 10px 0 20px;
+  width: 110px;
+}
+
+.yellowb.new_blog a:hover {
+  text-decoration: none;
 }
 
 .landing_logo {
@@ -697,7 +703,6 @@ br.clear {
 #welcome {
   padding-top: 5px;
   margin: 0 auto;
-/*  min-width: 960px;*/
   width: 100%;
   height: 100%;
 }
@@ -743,10 +748,6 @@ br.clear {
   /* For IE 8*/
   -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#90f4eee7, endColorstr=#90f4eee7);
 }
-
-/*.map_summary_info {
-  padding-left: 10px;
-}*/
 
 .infowindow {
   color: black;
@@ -841,8 +842,6 @@ input#add {
 #add_score, #add, #location_picture_xref_submit, .new_location_picture_xref input.submit_picture {
   font-style:normal;
   color:#303030;
-  /*background:#f9fc9f;
-  border:2px solid #b0b0b0;*/
   background-color: #FCFCF3;
   border: 1px solid #D56C24;
   text-shadow:1px 1px 0px #fcfcfc;
@@ -859,7 +858,6 @@ input#add {
   box-shadow:1px 1px 1px #2a2b27;
   -moz-box-shadow:1px 1px 1px #2a2b27;
   -webkit-box-shadow:1px 1px 1px #2a2b27;
-  /*margin: 1px 0 0 1px;*/
   transform: translate(1px, 1px);
   background: #f8f8a1;
 }
@@ -1138,7 +1136,6 @@ background-image: -webkit-gradient(
 
 .arrow {
   float: right;
-/*  border: 1px solid #827c75; */
   height: 14px;
   width: 14px;
 }
@@ -1495,7 +1492,6 @@ p.score_list {
 
 #results_container {
   color:#180e03;
-  /*height: 100%;*/
   width:440px;
   z-index: 50;
 }
@@ -1505,12 +1501,6 @@ p.score_list {
   width: 350px;
   padding-left: 20px;
 }
-
-/*.location_summary_image_mouseover {
-  background-image: url(<%= asset_path 'coincard.png' %>);
-  background-repeat: no-repeat;
-  background-position: center;
-}*/
 
 .show_location_detail_location {
   padding: 0;
@@ -1549,7 +1539,6 @@ p.score_list {
   border-left: 1px solid #987673;
   border-radius: 5px;
   -moz-border-radius: 5px;
-  /*margin-bottom: 5px;*/
 }
 
 .location_name {
