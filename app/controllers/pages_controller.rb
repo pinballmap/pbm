@@ -60,6 +60,7 @@ class PagesController < ApplicationController
 
   def contact_sent
       return unless params['contact_msg']
+
       if (verify_recaptcha)
         flash.now[:alert] = "Thanks for contacting us!"
         Pony.mail(
@@ -70,7 +71,7 @@ class PagesController < ApplicationController
         )
       else
         flash.now[:alert] = "Your captcha entering skills have failed you. Please go back and try again."
-    end
+      end
   end
 
   def about
@@ -84,12 +85,6 @@ class PagesController < ApplicationController
 
   def links
     redirect_to about_path
-    # @links = Hash.new
-    # @region.region_link_xrefs.each do |rlx|
-    #   (@links[rlx.category || 'Uncategorized'] ||= []) << rlx
-    # end
-
-    # render "#{@region.name}/links" if (lookup_context.find_all("#{@region.name}/links").any?)
   end
 
   def high_rollers
@@ -142,6 +137,10 @@ class PagesController < ApplicationController
   end
 
   def home
-    @tweets = Twitter.user_timeline("pinballmapcom", :count => 5)
+    if (ENV['TWITTER_CONSUMER_KEY'] && ENV['TWITTER_CONSUMER_SECRET'] && ENV['TWITTER_OAUTH_TOKEN_SECRET'] && ENV['TWITTER_OAUTH_TOKEN'])
+      @tweets = Twitter.user_timeline("pinballmapcom", :count => 5)
+    else
+      @tweets = []
+    end
   end
 end
