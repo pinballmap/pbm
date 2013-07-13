@@ -94,8 +94,12 @@ class PagesController < ApplicationController
   def submitted_new_location
     if (verify_recaptcha)
       flash.now[:alert] = "Thanks for entering that location. We'll get it in the system as soon as possible."
+
+      recipients = @region.users.collect {|u| u.email}
+      recipients.push(User.all.select { |u| u.is_super_admin }.collect { |u| u.email })
+
       Pony.mail(
-        :to => @region.users.collect {|u| u.email},
+        :to => recipients.flatten!,
         :from => 'admin@pinballmap.com',
         :subject => "Someone suggested a new location for #{@region.name}",
         :body => "
