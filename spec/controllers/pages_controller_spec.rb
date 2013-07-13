@@ -41,7 +41,8 @@ describe PagesController do
     it 'should send an email' do
       Pony.should_receive(:mail) do |mail|
         mail.should == {
-          :to => ["foo@bar.com", "super_admin@bar.com"],
+          :to => ["foo@bar.com"],
+          :bcc => ["super_admin@bar.com"],
           :from =>"admin@pinballmap.com",
           :subject => "Someone suggested a new location for portland",
           :body => "
