@@ -66,7 +66,7 @@ class PagesController < ApplicationController
         Pony.mail(
           :to => @region.users.collect {|u| u.email},
           :from => 'admin@pinballmap.com',
-          :subject => "Message from #{@region.full_name} pinball map",
+          :subject => "PBM - Message from the #{@region.full_name} pinball map",
           :body => [params['contact_name'], params['contact_email'], params['contact_msg']].join("\n")
         )
       else
@@ -99,7 +99,7 @@ class PagesController < ApplicationController
         :to => @region.users.collect {|u| u.email},
         :bcc => User.all.select {|u| u.is_super_admin }.collect {|u| u.email},
         :from => 'admin@pinballmap.com',
-        :subject => "Someone suggested a new location for #{@region.name}",
+        :subject => "PBM - Someone suggested a new location for the #{@region.name} pinball map",
         :body => "
           Location Name: #{params['location_name']}\n
           Street: #{params['location_street']}\n
