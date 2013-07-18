@@ -17,7 +17,7 @@ describe PagesController do
         mail.should == {
           :to => ["foo@bar.com"],
           :from =>"admin@pinballmap.com",
-          :subject => "Message from Portland pinball map",
+          :subject => "PBM - Message from the Portland pinball map",
           :body => "foo\nbar\nbaz",
         }
       end
@@ -29,7 +29,7 @@ describe PagesController do
         mail.should == {
           :to => ["foo@bar.com"],
           :from =>"admin@pinballmap.com",
-          :subject => "Message from Portland pinball map",
+          :subject => "PBM - Message from the Portland pinball map",
           :body => "foo\nbar\nbaz",
         }
       end
@@ -44,7 +44,7 @@ describe PagesController do
           :to => ["foo@bar.com"],
           :bcc => ["super_admin@bar.com"],
           :from =>"admin@pinballmap.com",
-          :subject => "Someone suggested a new location for portland",
+          :subject => "PBM - Someone suggested a new location for the portland pinball map",
           :body => "
           Location Name: name\n
           Street: street\n
