@@ -44,7 +44,7 @@ describe PagesController do
           :to => ["foo@bar.com"],
           :bcc => ["super_admin@bar.com"],
           :from =>"admin@pinballmap.com",
-          :subject => "PBM - New suggested location for the portland pinball map",
+          :subject => "PBM - New location suggested for the portland pinball map",
           :body => "
           Location Name: name\n
           Street: street\n

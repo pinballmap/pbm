@@ -99,7 +99,7 @@ class PagesController < ApplicationController
         :to => @region.users.collect {|u| u.email},
         :bcc => User.all.select {|u| u.is_super_admin }.collect {|u| u.email},
         :from => 'admin@pinballmap.com',
-        :subject => "PBM - New suggested location for the #{@region.name} pinball map",
+        :subject => "PBM - New location suggested for the #{@region.name} pinball map",
         :body => "
           Location Name: #{params['location_name']}\n
           Street: #{params['location_street']}\n
