@@ -608,8 +608,10 @@ div.dont_pick_a_map {
 .new_blog {
   float: left;
   line-height: 14px;
-  margin: 10px 10px 0 20px;
   width: 110px;
+  padding: 10px 10px 12px;
+  background-color: #e9ded0;
+  border-right: 3px solid #D8C6AE;
 }
 
 .yellowb.new_blog a:hover {
@@ -712,26 +714,25 @@ br.clear {
 }
 
 .map_summary {
-  height: 135px;
-  width: 140px;
+  height: 160px;
+  width: 145px;
   text-align: center;
-  border: 1px solid #d8c6ae;
+  border: 5px solid #DECEB9;
   float: left;
-  padding: 20px 5px 5px;
   margin-top: 14px;
   margin-right: 10px;
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  background-color:rgba(255,244,231,0.7);
+  background-color:rgba(255,244,231,0.4);
   /* Fallback for web browsers that doesn't support RGBa */
   background: rgb(255,244,231) transparent;
   /* RGBa with 0.7 opacity */
-  background: rgba(255,244,231,0.7);
+  background: rgba(255,244,231,0.4);
   /* For IE 5.5 - 7*/
-  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#70fff4e7, endColorstr=#70fff4e7);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#40fff4e7, endColorstr=#40fff4e7);
   /* For IE 8*/
-  -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#70fff4e7, endColorstr=#70fff4e7);
+  -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#40fff4e7, endColorstr=#40fff4e7);
 }
 
 .map_summary:hover {
@@ -1211,6 +1212,11 @@ a.active_section_link:hover {
   text-align: center;
   border-radius: 0;
   display: block;
+}
+
+.region_name {
+  background-color: #FFFCF8;
+  padding: 10px 0;
 }
 
 #header li span.region_name_page a:hover {
