@@ -35,6 +35,8 @@ class LocationMachineXrefsController < InheritedResources::Base
   end
 
   def destroy
+    expire_action :action => :index, :format => :rss
+
     lmx = LocationMachineXref.find_by_id(params[:id])
     lmx.destroy unless lmx.nil?
 
