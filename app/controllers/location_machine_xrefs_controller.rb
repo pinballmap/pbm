@@ -31,7 +31,6 @@ class LocationMachineXrefsController < InheritedResources::Base
   end
 
   def create_confirmation
-    expire_action :action => :index, :format => :rss
     @lmx = LocationMachineXref.find(params[:id])
   end
 
@@ -66,6 +65,5 @@ class LocationMachineXrefsController < InheritedResources::Base
   end
 
   def remove_confirmation
-    expire_action :action => :index, :format => :rss
   end
 end

@@ -80,6 +80,8 @@ class LocationsController < InheritedResources::Base
 
       redirect_to "/#{region}/location_machine_xrefs/#{lmx.id}/condition_update_confirmation.xml"
     elsif (location_id = params[:modify_location])
+      expire_action :controller => '/location_machine_xrefs', :action => :index, :format => :rss
+
       # unfortunately, the mobile devices are sending us a parameter called 'action'...until I figure out a way to handle this,
       # I assume if a machine doesn't exist at a location, create it..if it does, destroy it
       machine = params[:machine_no] ? Machine.find(params[:machine_no]) : Machine.find_by_name(params[:machine_name])
