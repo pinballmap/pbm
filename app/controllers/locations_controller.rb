@@ -90,6 +90,8 @@ class LocationsController < InheritedResources::Base
         send_new_machine_notification(machine, Location.find(params[:modify_location]))
       end
 
+      expire_action :controller => 'location_machine_xrefs', :action => :index, :format => :rss
+
       if (lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine.id))
         id = lmx.id
         lmx.destroy
