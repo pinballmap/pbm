@@ -1,13 +1,10 @@
 require 'pony'
 
 class LocationMachineXrefsController < InheritedResources::Base
-  caches_action :index, :format => :rss
   respond_to :xml, :json, :html, :js, :rss
   has_scope :region
 
   def create
-    expire_action :action => :index, :format => :rss
-
     machine = nil
     if(!params[:add_machine_by_id].empty?)
       machine = Machine.find(params[:add_machine_by_id])
@@ -35,8 +32,6 @@ class LocationMachineXrefsController < InheritedResources::Base
   end
 
   def destroy
-    expire_action :action => :index, :format => :rss
-
     lmx = LocationMachineXref.find_by_id(params[:id])
     lmx.destroy unless lmx.nil?
 
