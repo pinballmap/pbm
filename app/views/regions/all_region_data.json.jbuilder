@@ -33,6 +33,8 @@ json.data do
       json.machine do
         json.id machine.id
         json.name machine.name
+        json.manufacturer machine.manufacturer.nil? ? '' : machine.manufacturer
+        json.year machine.year.nil? ? '' : machine.year
         json.numLocations LocationMachineXref.count_by_sql "select count(*) from location_machine_xrefs lmx inner join locations l on (lmx.location_id = l.id) where l.region_id=#{@region.id} and lmx.machine_id=#{machine.id}"
       end
     end
