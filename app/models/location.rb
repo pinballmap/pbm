@@ -18,7 +18,8 @@ class Location < ActiveRecord::Base
   after_validation :geocode, :unless => ENV['SKIP_GEOCODE'] || (:lat && :lon)
 
   scope :region, lambda {|name|
-    r = Region.find_by_name(name)
+    r = Region.find_by_name(name) || Region.where(name: 'portland').first
+
     where(:region_id => r.id)
   }
   scope :by_type_id, lambda {|id| where(:location_type_id => id)}
