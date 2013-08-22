@@ -1087,10 +1087,6 @@ background-image: -webkit-gradient(
   margin-left:200px;
   position: relative;
   top: -3px;
-  transition: padding 250ms ease-out;
-  -moz-transition: padding 250ms ease-ou; /* Firefox 4 */
-  -webkit-transition: padding 250ms ease-ou; /* Safari and Chrome */
-  -o-transition: padding 250ms ease-ou; /* Opera */
    border-top: 1px solid #d9d6d2;
    background: #484848;
    background: -webkit-gradient(linear, left top, left bottom, from(#c7b79b), to(#484848));
@@ -1116,10 +1112,6 @@ background-image: -webkit-gradient(
     background: -moz-linear-gradient(top, #c7b79b, #242324);
     background: -ms-linear-gradient(top, #c7b79b, #242324);
     background: -o-linear-gradient(top, #c7b79b, #242324);
-    -webkit-transition: all 0.2s ease;
-  -moz-transition:    all 0.2s ease;
-  -ms-transition:     all 0.2s ease;
-  -o-transition:      all 0.2s ease;
 }
 
 #other_search_options_link:active {
@@ -1201,7 +1193,7 @@ a.active_section_link:hover {
 }
 
 .region_name, .region_name_page, 
-#header li span.region_name_page a {
+#header span.region_name_page a {
   text-shadow: .05em .05em 0 #e8fd4b, .1em .1em 0 #c719e3;
   -webkit-text-shadow: .05em .05em 0 #e8fd4b, .1em .1em 0 #c719e3;
   color: #58266f;
@@ -1218,7 +1210,7 @@ a.active_section_link:hover {
   padding: 10px 0;
 }
 
-#header li span.region_name_page a:hover {
+#header span.region_name_page a:hover {
   box-shadow: none;
   text-decoration: none;
   border: none;
@@ -1230,10 +1222,6 @@ a.active_section_link:hover {
   font-weight: bold;
   position: relative;
   display: inline;
-  -webkit-transition: all 0.2s ease;
-  -moz-transition:    all 0.2s ease;
-  -ms-transition:     all 0.2s ease;
-  -o-transition:      all 0.2s ease;
 }
 
 #header a img {
@@ -1279,7 +1267,7 @@ li.first_header_link {
     width: 285px;
 }
 
-#header ul.region_logo_dropdown {
+#header .region_logo_dropdown {
     width: 160px;
     height: 50px;
     position: relative;
@@ -1287,9 +1275,9 @@ li.first_header_link {
     margin: 5px 0 0;
 }
 
-#header li:hover ul, li.over ul, #header li ul li { display: block; }
+#header li:hover ul, li.over ul, #header li ul li, #header .region_logo_dropdown ul li { display: block; }
 
-#header li ul {
+#header li ul, #header .region_logo_dropdown ul {
   display: none;
   z-index: 100;
   line-height: 100%;
@@ -1320,11 +1308,12 @@ span.region_name_page {
   vertical-align: middle;
 }
 
-#header li ul.other_regions_list {
+#header ul.other_regions_list {
   font-size: 14px;
   position: absolute;
   top: 45px;
-  left: -152px;
+  left: 0;
+  margin-left: -2px;
   width: 155px;
   max-height: 400px;
   overflow: auto;
@@ -1334,7 +1323,7 @@ span.region_name_page {
   -webkit-box-shadow: 0 3px 4px rgba(0, 0, 0, 0.5);
 }
 
-#header li ul.other_links_dropdown {
+#header ul.other_links_dropdown {
   position: absolute;
   right: 3px;
   top: 15px;
@@ -1346,7 +1335,7 @@ span.region_name_page {
   -webkit-box-shadow: 0 -1px 1px #79736d inset, 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-#header li ul a {
+#header ul.other_regions_list a {
 	text-decoration: none;
 	border: none;
 	background: transparent;
@@ -1358,7 +1347,7 @@ span.region_name_page {
 	box-shadow: none;
 }
 
-#header li ul a:hover {
+#header ul.other_regions_list a:hover {
 	border: none;
 	background: transparent;
 	padding: 0;
