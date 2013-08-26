@@ -167,6 +167,7 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    memcachier (0.0.2)
     mime-types (1.19)
     mini_magick (3.4)
       subexec (~> 0.2.1)
@@ -351,6 +352,7 @@ DEPENDENCIES
   jquery-ui-rails
   kaminari
   launchy
+  memcachier
   mini_magick
   newrelic_rpm
   paperclip (= 3.4.1)
