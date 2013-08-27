@@ -67,7 +67,7 @@ class Location < ActiveRecord::Base
     content = "'<div class=\"infowindow\">"
     content += "<div class=\"gm_location_name\">#{self.name.gsub("'", "\\\\'")}</div>"
     content += "<div class=\"gm_address\">#{[self.street.gsub("'", "\\\\'"), [self.city.gsub("'", "\\\\'"), self.state, self.zip].join(', '), self.phone].join('<br />')}</div>"
-    content += '<br /><hr /><br />'
+    content += '<hr />'
 
     machines = self.machines.sort_by(&:massaged_name).map {|m| m.name.gsub("'", "\\\\'") + '<br />'}
 
