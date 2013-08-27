@@ -22,11 +22,11 @@
         = form_tag contact_sent_path, :method => 'get' do
           %ul
             %li
-              %label{:for => "contant_name"} Your Name:
+              %label{:for => "contact_name"} Your Name:
               %input{:type => "text", :name => "contact_name", :params => "contact_name", :class => "text"}
             %li
-              %label{:for => "contant_email"} Your Email:
-              %input{:type => "text", :name => "contant_email", :params => "contant_email", :class => "text"}
+              %label{:for => "contact_email"} Your Email:
+              %input{:type => "text", :name => "contact_email", :params => "contact_email", :class => "text"}
             %li.msg
               %label{:for => "contact_msg"} Message: 
               %textarea{:type => "text", :name => "contact_msg", :params => "contact_msg", :class => "text"}
