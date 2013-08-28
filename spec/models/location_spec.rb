@@ -68,7 +68,7 @@ describe Location do
       l = FactoryGirl.create(:location)
       ['Foo', 'Bar', 'Baz', "Beans'"].each {|name| FactoryGirl.create(:location_machine_xref, :location => l, :machine => FactoryGirl.create(:machine, :name => name)) }
 
-      l.content_for_infowindow.chomp.should == "'<div class=\"infowindow\">Test Location Name<br />303 Southeast 3rd Avenue<br />Portland, OR, 97214<br /><br /><hr /><br />Bar<br />Baz<br />Beans\\'<br />Foo<br /></div>'"
+      l.content_for_infowindow.chomp.should == "'<div class=\"infowindow\"><div class=\"gm_location_name\">Test Location Name</div><div class=\"gm_address\">303 Southeast 3rd Avenue<br />Portland, OR, 97214<br /></div><hr /><div class=\"gm_machines\">Bar<br />Baz<br />Beans\\'<br />Foo<br /></div></div>'"
     end
   end
 end
