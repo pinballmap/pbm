@@ -45,6 +45,7 @@ module Pbm
 
     # unfortunate inability to use wildcards because of a bug in rails admin
     config.assets.precompile += %w(
+      mobile-application.css
       mediaqueries.css
       highslide-ie6.css
       highslide.css
