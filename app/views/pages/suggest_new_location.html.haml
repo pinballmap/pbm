@@ -4,7 +4,7 @@
     #location_maker
       = form_tag submitted_new_location_path, :method => 'get' do
         %form#submit_location
-          %ul{:style => "width:600px;padding-left:15px"}
+          %ul
             %li{:class => "first"}
               %label{:for => "location_name"} Location Name:
               %input{:type => "text", :name => "location_name", :params => "location_name", :class => "text"}
