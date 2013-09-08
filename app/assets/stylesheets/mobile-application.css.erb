@@ -1,6 +1,6 @@
 #lookup_map, #container {
     margin: 0 auto;
-    width: auto;
+    max-width: 480px;
     min-width: 320px;
 }
 
@@ -169,7 +169,7 @@ div.pick_a_map {
   margin: 0 10px;
 }
 
-.location_link a {
+.location_link {
   font-size: 16px;
   height: 18px;
   padding: 6px 0;
@@ -373,13 +373,17 @@ input#score, input#initials {
   clear: both;
 }
 
-.first {
+#location_maker li {
   clear: both;
   margin-right: 0;
 }
 
 #location_maker ul, #contact_maker ul {
   padding-left: 0;
+}
+
+#location_maker ul {
+  width: 280px;
 }
 
 #location_maker li, #contact_maker li {
