@@ -22,6 +22,14 @@
 
 }
 
+@media (max-width: 1045px) {
+
+.new_blog_region {
+  display: none;
+}
+
+}
+
 /*@media (max-width: 650px) {
 
 #container {
