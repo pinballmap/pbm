@@ -35,10 +35,10 @@
                 .clear
                 %li.address= [l.street, l.city, l.state + " " + l.zip].join(', ')
                 .clear
-                - if mobile_device?             
+                - if mobile_device? && !l.phone.nil?
                   %li.address= link_to l.phone, "tel:" + l.phone, :type => 'tel'
                 - else
-                  %li.address= l.phone        
+                  %li.address= l.phone
                 .clear
                 - if l.website
                   %li= link_to l.website, l.website, :class => 'address', :target => 'blank'
