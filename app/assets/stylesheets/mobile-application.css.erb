@@ -10,6 +10,7 @@
   width: auto;
   min-width: 320px;
   height: auto;
+  text-align: center;
 }
 
 #header a img {
@@ -20,20 +21,33 @@
 }
 
 #header ul {
-  margin-left: 0;
-  float: left;
-  width: 320px;
+  margin: 5px auto;
+  float: none;
+  width: 100%;
   min-width: 320px;
   font-size: 16px;
+  background-color: #D0CDD0;
+  text-align: center;
 }
 
 #header ul.other_regions_list, #header ul.other_links_dropdown {
   display: none !important;
 }
 
+.other_regions {
+    margin: 0 auto;
+    width: 100%;
+}
+
 #header.header_home {
   min-width: 320px;
   padding: 0;
+}
+
+#header .region_logo_dropdown {
+    float: none;
+    background: #D0CDD0;
+    width: auto;
 }
 
 .pick_a_map span.pick_a_map {
@@ -43,12 +57,14 @@
 div.pick_a_map {
   padding-top: 0;
   text-align: left;
-  background: #E9DED0;
+  background: #ffecd6;
   height: 36px;
 }
 
 .new_blog {
-  width: auto;
+  width: 100%;
+  padding: 10px 0 12px;
+  text-align: center;
 }
 
 .map_summary {
@@ -77,7 +93,7 @@ div.pick_a_map {
 }
 
 .home_intro {
-  margin: 15px 0 0;
+  margin: 15px 10px 0;
   width: auto;
 }
 
@@ -155,6 +171,8 @@ div.pick_a_map {
 }
 
 #other_search_options {
+  text-align: center;
+  padding: 0 0 4px 0;
   width: auto;
   float: none;
 }
@@ -315,12 +333,12 @@ input#score, input#initials {
 
 #other_search_options a {
   line-height: 48px;
-  padding: 0 5% 2px;
 }
 
 #other_search_options span {
     display: block;
     font-size: 18px;
+    margin-top: 5px;
 }
 
 #operator_section_link, #zone_section_link, #machine_section_link, 
@@ -349,7 +367,7 @@ input#score, input#initials {
 }
 
 .left_column_about {
-  margin: 0;
+  margin-left: 0;
 }
 
 #page_body {
@@ -380,6 +398,11 @@ input#score, input#initials {
 
 #location_maker ul, #contact_maker ul {
   padding-left: 0;
+}
+
+#contact_maker textarea, #contact_maker input.submit_button {
+  width: 260px;
+  max-width: 260px;
 }
 
 #location_maker ul {
