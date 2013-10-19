@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130713014626) do
+ActiveRecord::Schema.define(:version => 20131019021843) do
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"
@@ -22,9 +22,10 @@ ActiveRecord::Schema.define(:version => 20130713014626) do
     t.date     "start_date"
     t.date     "end_date"
     t.integer  "location_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
     t.string   "category"
+    t.string   "external_location_name"
   end
 
   create_table "location_machine_xrefs", :force => true do |t|

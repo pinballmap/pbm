@@ -84,12 +84,14 @@ RailsAdmin.config do |config|
     list do
       field :name, :string 
       field :location, :belongs_to_association
+      field :external_location_name, :string
       field :start_date, :date 
       field :end_date, :date 
     end
     show do
       field :name, :string 
       field :location, :belongs_to_association
+      field :external_location_name, :string
       field :long_desc, :text 
       field :external_link, :string 
       field :category_no, :integer 
@@ -105,6 +107,7 @@ RailsAdmin.config do |config|
           bindings[:view].render :partial => 'location_select', :locals => {:object_type => 'event', :location_id => bindings[:object].location_id}
         end
       end
+      field :external_location_name, :string 
       field :long_desc, :text 
       field :external_link, :string 
       field :category_no, :integer 
@@ -119,6 +122,7 @@ RailsAdmin.config do |config|
           bindings[:view].render :partial => 'location_select', :locals => {:object_type => 'event', :location_id => nil}
         end
       end
+      field :external_location_name, :string 
       field :long_desc, :text 
       field :external_link, :string 
       field :category_no, :integer 
