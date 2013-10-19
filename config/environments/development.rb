@@ -26,6 +26,5 @@ Pbm::Application.configure do
     Bullet.enable = false #enable this if you need some N+1 work, but note that it will slow your dev environment down...a lot
     Bullet.bullet_logger = true
     Bullet.rails_logger = true
-    Bullet.disable_browser_cache = true
   end
 end
