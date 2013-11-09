@@ -15,7 +15,7 @@ describe LocationMachineXref do
     @lmx = FactoryGirl.create(:location_machine_xref, :location => @l, :machine => @m)
     @lmx_no_email = FactoryGirl.create(:location_machine_xref, :location => @l_no_email, :machine => @m)
 
-    Pony.stub!(:mail)
+    Pony.stub(:mail)
   end
 
   describe '#update_condition' do

@@ -1,4 +1,5 @@
 source 'http://rubygems.org'
+ruby "1.9.3"
 
 gem 'rails', '3.2.11'
 gem 'arel'
@@ -8,7 +9,7 @@ gem 'rack'
 
 gem 'puma'
 
-gem 'paperclip', '3.4.1'
+gem 'paperclip'
 gem 'devise'
 gem 'devise-encryptable'
 gem 'inherited_resources'
@@ -51,13 +52,11 @@ group :test do
   gem 'cucumber'
   gem 'launchy'
   gem 'capybara'
-  gem 'autotest'
-  gem 'autotest-rails'
   gem 'selenium'
   gem 'selenium-client'
   gem "selenium-webdriver", "~> 2.33.0"
-  gem 'autotest-growl'
   gem 'timecop'
+  gem 'poltergeist'
 end
 
 group :development, :test do

@@ -1,3 +1,4 @@
+# ALERT DIALOGS ARE NOT SUPPORTED IN POLTERGEIST YET, SO THIS TEST HAS TO STICK AROUND
 Feature: Remove Machine for Location
   In order to remove machines from locations
   As a guest
