@@ -1,5 +1,5 @@
 # geocoding service:
-Geocoder::Configuration.lookup = :geocoder_ca
+Geocoder::Configuration.lookup = :google
 
 # to use an API key:
 #Geocoder::Configuration.api_key = "..."
