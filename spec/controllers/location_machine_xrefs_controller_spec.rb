@@ -14,7 +14,7 @@ describe LocationMachineXrefsController do
         mail.should == {
           :to => ["foo@bar.com"],
           :from =>"admin@pinballmap.com",
-          :subject => "PBM - Someone entered a new machine name",
+          :subject => "PBM - New machine name",
           :body => "foo\nTest Location Name\nportland\n(entered via #{request.user_agent})",
         }
       end
