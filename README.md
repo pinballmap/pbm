@@ -50,3 +50,5 @@ cucumber:
 * `ln -s /Projects-Path/pbm`
 * Edit config.ru: change `run Pbm::Application` to `self.run Pbm::Application` (Workaround: so Pow can run the site.)
 * `open http://pbm.dev`
+
+If the site loads properly it will be an empty version of pinballmap.com, then ask Scott for a data dump so you can have a full set of data to work with.
