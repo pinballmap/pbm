@@ -10,6 +10,7 @@ Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhan
 * `rvm --default use ruby-1.9.3`
 * `bundle install`
 * `selenium install`
+* `brew update && brew install phantomjs`
 * Create config/database.yml with the following:
 
 ```
