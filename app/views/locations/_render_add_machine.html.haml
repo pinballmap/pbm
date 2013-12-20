@@ -1,3 +1,5 @@
+%div#dialog-message{:title => "Share this update:"}
+  = social_share_button_tag("I updated the #{@region.name} pinball map! <div id='machine-name'></div> was added to #{l.name} #pinball", :url => "http://pinballmap.com/#{@region.name.downcase}/?by_location_id=#{l.id}")
 %span.info Select a machine and then click the Add button.
 = form_tag location_machine_xrefs_path, :method => 'post', :id => "add_new_machine_#{l.id}" do
   = hidden_field_tag :location_id, l.id
@@ -8,12 +10,26 @@
 
 :javascript
   $(function () {
+    $("#dialog-message").css("display","none");
     $('#add_machine_by_name').autocomplete({source: '#{autocomplete_machines_path}'});
   });
 
   $('#add_new_machine_#{l.id}').submit(function () {
     $('#show_machines_location_#{l.id}').html(loadingHTML());
-    $.post(this.action, $(this).serialize(), function (data) { $('#show_machines_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machines') });
+    $.post(this.action, $(this).serialize(), function (data) { console.log(data); $('#show_machines_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machines') });
+
+    $('#dialog-message').dialog({
+      modal: true,
+      height: 75,
+      width: 50,
+      bgiframe: true,
+      resizable: false,
+      open: function(){
+        jQuery('.ui-widget-overlay').bind('click', function(){
+          jQuery('#dialog-message').dialog('close');
+        })
+      }
+    });
 
     return false;
   });
