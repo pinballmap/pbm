@@ -9,6 +9,15 @@ describe LocationsController do
     FactoryGirl.create(:user, :email => 'foo@bar.com', :region => region)
   end
 
+  describe '#newest_machine_name' do
+    it 'should tell you the name of the newest machine added to the location' do
+      FactoryGirl.create(:location_machine_xref, :location => @location, :machine => FactoryGirl.create(:machine, :name => 'cool'))
+      get 'newest_machine_name', :region => 'portland', :id => @location.id
+
+      response.body.should == 'cool'
+    end
+  end
+
   describe ':region/iphone.html' do
     it 'should route legacy mobile requests' do
       {:get => '/portland/iphone.html'}.should route_to(:controller => 'locations', :action => 'mobile', :region => 'portland')

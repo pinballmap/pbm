@@ -40,6 +40,7 @@ gem 'jbuilder'
 gem 'rakismet'
 gem 'twitter'
 gem 'rails_autolink'
+gem 'social-share-button'
 
 group :test do
   gem 'cucumber-rails', :require => false

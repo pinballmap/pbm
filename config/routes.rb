@@ -31,6 +31,9 @@ Pbm::Application.routes.draw do
         get :update_desc
         get :autocomplete
       end
+      member do
+        get :newest_machine_name
+      end
     end
 
     match 'locations/:id/locations_for_machine' => 'locations#locations_for_machine'

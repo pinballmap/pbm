@@ -277,6 +277,7 @@ GEM
       actionpack (~> 3.0)
       activemodel (~> 3.0)
     simple_oauth (0.2.0)
+    social-share-button (0.1.5)
     spork (0.9.2)
     sprockets (2.2.2)
       hike (~> 1.2)
@@ -368,6 +369,7 @@ DEPENDENCIES
   selenium-client
   selenium-webdriver (~> 2.33.0)
   simple_form
+  social-share-button
   spork
   timecop
   twitter

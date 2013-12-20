@@ -1,3 +1,5 @@
+%div#dialog-message{:title => "Share this update:"}
+  = social_share_button_tag('', :url => "http://pinballmap.com/#{@region.name.downcase}/?by_location_id=#{l.id}")
 %span.info Select a machine and then click the Add button.
 = form_tag location_machine_xrefs_path, :method => 'post', :id => "add_new_machine_#{l.id}" do
   = hidden_field_tag :location_id, l.id
@@ -8,12 +10,37 @@
 
 :javascript
   $(function () {
+    $("#dialog-message").css("display","none");
     $('#add_machine_by_name').autocomplete({source: '#{autocomplete_machines_path}'});
   });
 
   $('#add_new_machine_#{l.id}').submit(function () {
     $('#show_machines_location_#{l.id}').html(loadingHTML());
-    $.post(this.action, $(this).serialize(), function (data) { $('#show_machines_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machines') });
+
+    $.post(this.action, $(this).serialize(), function (data) {
+      $('#show_machines_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machines', function() {
+        $.get('/#{params[:region]}/locations/#{l.id}/newest_machine_name', function(data) {
+          $('#dialog-message .social-share-button').data('title', "I updated the #{@region.name} pinball map! " + data + " was added to #{l.name} #pinball");
+
+          $('#dialog-message').dialog({
+            modal: true,
+            height: 75,
+            width: 50,
+            bgiframe: true,
+            resizable: false,
+            open: function() {
+              $('.ui-widget-overlay').bind('click', function(){
+                $('#dialog-message').dialog('close');
+              })
+            },
+            close: function() {
+              $(this).dialog("destroy");
+              $('#dialog-message .social-share-button').attr('data-title', "");
+            }
+          });
+        });
+      });
+    });
 
     return false;
   });
