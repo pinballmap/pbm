@@ -5,7 +5,7 @@ class LocationMachineXref < ActiveRecord::Base
   has_many :machine_score_xrefs
 
   scope :region, lambda {|name|
-    r = Region.find_by_name(name)
+    r = Region.find_by_name(name.downcase)
     joins(:location).where('locations.region_id = ?', r.id)
   }
 

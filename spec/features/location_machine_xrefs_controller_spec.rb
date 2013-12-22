@@ -225,6 +225,19 @@ describe LocationMachineXrefsController do
       end
     end
 
+    it 'allows case insensive searches of a region' do
+      chicago_region = FactoryGirl.create(:region, :name => 'chicago')
+      FactoryGirl.create(:location, :region => chicago_region, :name => 'Chicago Location')
+
+      visit "/CHICAGO"
+
+      page.find("input#location_search_button").click
+
+      within('div.search_result') do
+        page.should have_content('Chicago Location')
+      end
+    end
+
     it 'lets you search by machine name from select' do
       visit "/#{@region.name}"
 
