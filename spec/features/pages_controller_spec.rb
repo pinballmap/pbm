@@ -24,6 +24,14 @@ describe PagesController do
       page.should have_content('event 1 @ Test Location Name 2011-01-30')
       page.should have_content('event 2 @ Test Location Name')
     end
+    it 'is case insensitive for region name' do
+      chicago_region = FactoryGirl.create(:region, :name => 'chicago')
+      FactoryGirl.create(:event, :region => chicago_region, :name => 'event 1')
+
+      visit '/CHICAGO/events'
+
+      page.should have_content('event 1')
+    end
   end
 
   describe 'High roller list', :type => :feature, :js => true do
