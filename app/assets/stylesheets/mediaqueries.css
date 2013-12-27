@@ -1,155 +1,54 @@
-@media (max-width: 915px) { 
+@media (max-width: 767px) { 
 
-#form {
-  left: 438px;
+  #form {
+    left: 291px;
+  }
+
+  #lookup, .scrollerWrapper {
+    left: 296px;
+    float: left;
+  }
+
+  #welcome {
+    width: 755px;
+  }
+
+  .home_intro_right {
+    left: 503px;
+  }
+
 }
 
-#lookup, .scrollerWrapper {
-  left: 443px;
-  float: left;
-}
+@media (max-width: 850px) { 
+
+  #intro .regular_text, #intro .light_blue, #intro .stufflike, #intro .list,
+  #intro .yellowb {
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .hello {
+    font-size: 18px;
+  }
+
+  #intro {
+    padding: 20px;
+  }
+
 }
 
-@media (max-width: 973px) {
+@media (max-width: 950px) {
 
-.home_intro_right {
-  left: 650px;
-}
-
-#welcome {
-  width: 960px;
-}
+  #header ul, span.pick_a_map {
+    display: none;
+  }
 
 }
 
 @media (max-width: 1045px) {
 
-.new_blog_region {
-  display: none;
-}
+  .new_blog_region {
+    display: none;
+  }
 
 }
-
-/*@media (max-width: 650px) {
-
-#container {
-  width: 600px;
-  margin: -20px auto 20px auto;
-}
-
-#header {
-  width: 600px;
-  height: 120px;
-}
-
-#header a img {
-  float: none;
-}
-
-#header ul {
-  margin: 5px auto;
-  width: 550px;
-}
-
-#page_body {
-  width: 600px;
-}
-
-#lookup, .left_column, #left_column {
-  float: none;
-  margin: 20px auto;
-  display: block;
-}
-
-#map, .right_column, #right_column {
-  margin: 20px auto;
-  width: 500px;
-  height: 550px;
-  display: block;
-  float: none;
-}
-
-.home_intro {
-  width: 550px;
-  margin: 5px auto;
-  float: none;
-  margin-top: 10px;
-}
-
-#welcome {
-  padding: 0;
-}
-
-div.pick_a_map {
-  top: 82px;
-  float: none;
-  margin-left: 180px;
-}
-
-#map_summaries {
-  padding-left: 20%;
-}
-
-.scrollerWrapper {
-  display: none;
-}
-
-#lookup, #left_column, .left_column, #map, .right_column, #right_column {
-  height: 100%;
-}
-
-.intro_image, #map_canvas img {
-  max-width: 500px;
-  max-height: 300px;
-}
-
-}
-
-@media only screen and (max-width: 479px) {
-
-#header {
-  width: 450px;
-  height: 100px;
-}
-
-#header ul {
-  width: 450px;
-  margin-left: -25px;
-  font-size: 9px;
-}
-
-#container {
-  width: 450px;
-  margin: -20px auto 20px auto;
-}
-
-#page_body, .home_intro {
-  width: 400px;
-}
-
-#map, .right_column, #right_column {
-  width: 400px;
-  padding: 5px;
-}
-
-#header a img {
-  max-width: 350px;
-}
-
-.intro_image, #map_canvas img {
-  max-width: 350px;
-  max-height: 200px;
-}
-
-div.pick_a_map {
-  top: 62px;
-  float: none;
-  margin-left: 100px;
-}
-
-#map_summaries {
-  padding-left: 10%;
-}
-
-}*/
-
