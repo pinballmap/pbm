@@ -5,6 +5,8 @@ class Location < ActiveRecord::Base
 
   validates_presence_of :name, :street, :city, :state, :zip
   validates :website, format: { with: /^http:\/\//, message: "must begin with http://" }, :if => :website?
+  validates :name, :street, :city, :state, format: { with: /^\S.*/, message: "Can't start with a blank" }
+
   belongs_to :location_type
   belongs_to :zone
   belongs_to :region
