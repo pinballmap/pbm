@@ -120,4 +120,8 @@ class LocationsController < InheritedResources::Base
 
     [ids, lats, lons, contents]
   end
+
+  def newest_machine_name
+    render :text => Location.find(params[:id]).newest_machine_xref.machine.name
+  end
 end

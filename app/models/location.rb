@@ -80,4 +80,8 @@ class Location < ActiveRecord::Base
   def full_street_address
     [self.street, self.city, self.state, self.zip].join(', ')
   end
+
+  def newest_machine_xref
+    self.location_machine_xrefs.sort_by(&:created_at).last
+  end
 end
