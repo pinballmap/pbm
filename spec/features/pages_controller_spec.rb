@@ -126,7 +126,13 @@ describe PagesController do
       page.should have_content('2 locations and 2 machines')
     end
 
-    it 'shows high scores' do
+    it 'does not show high scores when none exist' do
+      visit "/portland"
+
+      page.should_not have_selector("#ticker")
+    end
+
+    it 'shows high scores when they exist' do
       lmx = FactoryGirl.create(:location_machine_xref, :location => @location, :machine => FactoryGirl.create(:machine))
       FactoryGirl.create(:machine_score_xref, :location_machine_xref => lmx, :initials => 'cap', :score => 1234, :rank => 1)
 
