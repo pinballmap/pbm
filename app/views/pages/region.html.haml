@@ -1,6 +1,6 @@
 #region_page_body
   #map
-    = render :partial => 'locations/map' 
+    = render :partial => 'locations/map'
   #form
     = render :partial => 'locations/form'
   #lookup
@@ -10,9 +10,11 @@
           %span.yellowb Message of the Day:
           = @region.motd 
       = yield :presearch_sidebar
-  #ticker
-    - @region.n_recent_scores(20).each do |msx|
-      %span= "#{msx.location.name}'s #{msx.machine.name}: #{MachineScoreXref::ENGLISH_SCORES[msx.rank]} with #{number_with_delimiter(msx.score, :delimiter => ",")} by #{msx.initials}"
+  - recent_scores = @region.n_recent_scores(20)
+  - if recent_scores.any?
+    #ticker
+      - recent_scores.each do |msx|
+        %span= "#{msx.location.name}'s #{msx.machine.name}: #{MachineScoreXref::ENGLISH_SCORES[msx.rank]} with #{number_with_delimiter(msx.score, :delimiter => ",")} by #{msx.initials}"
 
 :javascript
   $().ready(function(){
