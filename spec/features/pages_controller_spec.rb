@@ -8,9 +8,9 @@ describe PagesController do
 
   describe 'Events', :type => :feature, :js => true do
     it 'handles basic event displaying' do
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => '2011-01-20')
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 2', :start_date => '2011-01-30')
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 3', :start_date => '2011-01-10')
+      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => Date.today)
+      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 2', :start_date => Date.today + 1)
+      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 3', :start_date => Date.today - 1)
       FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 4')
       FactoryGirl.create(:event, :region => @region, :location => @location, :external_location_name => 'External location', :name => 'event 5')
       FactoryGirl.create(:event, :region => @region, :external_location_name => 'External location', :name => 'event 6')
@@ -19,11 +19,12 @@ describe PagesController do
 
       page.should have_content('event 6 @ External location')
       page.should have_content('event 5 @ Test Location Name')
-      page.should have_content('event 4 @ Test Location Name 2011-01-10')
-      page.should have_content('event 3 @ Test Location Name 2011-01-20')
-      page.should have_content('event 1 @ Test Location Name 2011-01-30')
+      page.should have_content("event 4 @ Test Location Name #{Date.today - 1}")
+      page.should have_content("event 3 @ Test Location Name #{Date.today}")
+      page.should have_content("event 1 @ Test Location Name #{Date.today + 1}")
       page.should have_content('event 2 @ Test Location Name')
     end
+
     it 'is case insensitive for region name' do
       chicago_region = FactoryGirl.create(:region, :name => 'chicago')
       FactoryGirl.create(:event, :region => chicago_region, :name => 'event 1')
@@ -31,6 +32,26 @@ describe PagesController do
       visit '/CHICAGO/events'
 
       page.should have_content('event 1')
+    end
+
+    it 'does not display events that are a week older than their end date' do
+      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => Date.today, :end_date => Date.today)
+      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 2', :start_date => Date.today - 8, :end_date => Date.today - 8)
+
+      visit '/portland/events'
+
+      page.should have_content('event 1')
+      page.should_not have_content('event 2')
+    end
+
+    it 'does not display events that are a week older than start date if there is no end date' do
+      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => Date.today)
+      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 2', :start_date => Date.today - 8)
+
+      visit '/portland/events'
+
+      page.should have_content('event 1')
+      page.should_not have_content('event 2')
     end
   end
 
