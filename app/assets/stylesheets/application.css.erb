@@ -39,7 +39,7 @@ body {
   padding: 0px;
   background-image: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>);
   background-color: #FFFFFF;
-  color: #180E03;
+  color: #58266F;
   font-family: 'Open Sans',Helvetica,Arial,sans-serif;
   font-size: 11px;
   -webkit-font-smoothing: antialiased;
@@ -151,21 +151,10 @@ a.apps_link:hover {
   margin: -5px auto 0;
   width: 100%;
   min-width: 768px;
-  height: 55px;
-  background: #D0CDD0;
+  height: 54px;
+  background: #FFFFFF;
   box-shadow: 0 0 25px rgba(90, 100, 117, 0.5);
-  border-bottom: 5px solid transparent;
-    -moz-background-clip: border;     /* Firefox 3.6 */
-        -webkit-background-clip: border;  /* Safari 4? Chrome 6? */
-        background-clip: border-box;      /* Firefox 4, Safari 5, Opera 10, IE 9 */
-
-        -moz-background-clip: padding;     /* Firefox 3.6 */
-        -webkit-background-clip: padding;  /* Safari 4? Chrome 6? */
-        background-clip: padding-box;      /* Firefox 4, Safari 5, Opera 10, IE 9 */
-
-        -moz-background-clip: content;     /* Firefox 3.6 */
-        -webkit-background-clip: content;  /* Safari 4? Chrome 6? */
-        background-clip: content-box;      /* Firefox 4, Safari 5, Opera 10, IE 9 */
+  border-bottom: 5px solid #D8C6AE;
 }
 
 #operator_section_link, #zone_section_link, #machine_section_link, #city_section_link, #location_section_link, #type_section_link {
@@ -173,9 +162,6 @@ a.apps_link:hover {
 	background: #FBFBFB;
 	border-top: #ffeedd;
 	color: black;
-	border-radius:5px;
-	-moz-border-radius:5px;
-	-webkit-border-radius:5px;
 }
 
 #other_search_options a {
@@ -206,11 +192,11 @@ a.apps_link:hover {
   height: 100%;
   z-index: -1;
   border: 1px solid #e3d6c5;
-  background-color:rgba(255,244,231,0.7);
+  background-color:rgba(253,252,254,0.7);
 	/* Fallback for web browsers that doesn't support RGBa */
-	background: rgb(255,244,231) transparent;
+	background: rgb(253,252,254) transparent;
 	/* RGBa with 0.9 opacity */
-	background: rgba(255,244,231,0.7);
+	background: rgba(253,252,254,0.7);
 	/* For IE 5.5 - 7*/
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7fff4e7, endColorstr=#7fff4e7);
 	/* For IE 8*/
@@ -333,7 +319,7 @@ a.apps_link:hover {
 }
 
 #left_column, .left_column, .left_column_about {
-  background-color: #DBD9D7;
+  background-color: #ece2d8;
   border: 1px solid #CBC8C5;
   box-shadow: 0 4px 5px rgba(90, 100, 117, 0.3);
   -moz-box-shadow: 0 4px 5px rgba(90, 100, 117, 0.3);
@@ -371,7 +357,7 @@ a.apps_link:hover {
 }
 
 #lookup {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(197, 168, 135, 0.2);
   border: 2px solid #513D27;
   box-shadow: 0 4px 5px rgba(90, 100, 117, 0.3);
   display: inline;
@@ -608,16 +594,15 @@ span.machine_year_man {
 }
 
 div.pick_a_map {
-  color: #FFFFCC;
   font-size: 28px;
+  line-height: 42px;
   text-align: center;
   padding-top: 5px;
 }
 
 span.pick_a_map {
 margin: 0;
-padding: 10px 14px 10px 14px;
-text-shadow: 0.1em 0.1em 0.2em black;
+text-shadow: 1px 1px 5px #CCCCCC;
 }
 
 div.dont_pick_a_map {
@@ -626,18 +611,19 @@ div.dont_pick_a_map {
 
 .new_blog {
   float: left;
-  line-height: 14px;
+  line-height: 16px;
   width: 90px;
   padding: 10px 10px 12px;
-  background-color: #ffecd6;
+  background-color: #f6effa;
   border-right: 3px solid #D8C6AE;
 }
 
 .new_blog_region {
-float: right;
-line-height: 16px;
-padding: 13px 10px 10px;
-text-align: center;
+  border-right: 3px solid #D8C6AE;
+  float: right;
+  line-height: 16px;
+  padding: 12px 10px 10px;
+  text-align: center;
 }
 
 .yellowb.new_blog a:hover {
@@ -746,9 +732,6 @@ br.clear {
   float: left;
   margin-top: 14px;
   margin-right: 10px;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
   background-color:rgba(255,244,231,0.4);
   /* Fallback for web browsers that doesn't support RGBa */
   background: rgb(255,244,231) transparent;
@@ -761,9 +744,6 @@ br.clear {
 }
 
 .map_summary:hover {
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
   background-color:rgba(244,238,231,0.9);
   /* Fallback for web browsers that doesn't support RGBa */
   background: rgb(244,238,231) transparent;
@@ -1306,7 +1286,7 @@ li.first_header_link {
   list-style: none;
   padding: 8px 5px 5px;
   border-top: none;
-  background: #D0CDD0;
+  background: #FFFFFF;
   border: 1px solid rgb(102,102,102);
   border-bottom-left-radius: 5px;
   -webkit-border-bottom-left-radius: 5px;
@@ -1333,16 +1313,13 @@ span.region_name_page {
 #header ul.other_regions_list {
   font-size: 14px;
   position: absolute;
-  top: 45px;
+  top: 44px;
   left: 0;
   margin-left: -2px;
   width: 155px;
   max-height: 400px;
   overflow: auto;
   border-top: none;
-  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 0 3px 4px rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: 0 3px 4px rgba(0, 0, 0, 0.5);
 }
 
 #header ul.other_links_dropdown {
@@ -1350,11 +1327,12 @@ span.region_name_page {
   right: 3px;
   top: 15px;
   border:none;
-  background-color: #D0CDD0;
+  background-color: #FFFFFF;
   width: 93px;
 }
 
-#header ul.other_regions_list a {
+#header ul.other_regions_list a,
+#header ul.other_regions_list a:hover {
 	text-decoration: none;
 	border: none;
 	background: transparent;
@@ -1367,14 +1345,7 @@ span.region_name_page {
 }
 
 #header ul.other_regions_list a:hover {
-	border: none;
-	background: transparent;
-	padding: 0;
 	color: #725755;
-	vertical-align: middle;
-	-webkit-box-shadow: none;
-	-moz-box-shadow: none;
-	box-shadow: none;
 }
 
 .subpage_text {
@@ -1399,11 +1370,8 @@ a.light_blue:active, .regular_text a:active {color: #58266F; text-decoration: un
 
 .home_intro, .home_intro_right {
   padding: 6px;
-  background-color: #e3e1e0;
-  border-radius:5px;
-  -moz-border-radius:5px;
-  -webkit-border-radius:5px;
-  border: 2px solid #d3d0ce;
+  background-color: #fdfcfe;
+  border: 2px solid #efe2f5;
   width: 280px;
   line-height: 120%;
   margin: 15px 10px 0 10px;
