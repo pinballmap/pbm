@@ -39,6 +39,7 @@ body {
   padding: 0px;
   background-image: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>);
   background-color: #FFFFFF;
+  background-size: 4px auto;
   color: #58266F;
   font-family: 'Open Sans',Helvetica,Arial,sans-serif;
   font-size: 11px;
@@ -60,6 +61,7 @@ input {
 
 #location_maker label, #contact_maker label {
   display: block;
+  color: #2E2322;
 }
 
 #location_maker ul {
@@ -142,6 +144,7 @@ a.apps_link:hover {
   position: relative !important;
   padding-top: 5px;
   min-width: 755px;
+  height: 54px;
 }
 
 #header {
@@ -151,9 +154,9 @@ a.apps_link:hover {
   margin: -5px auto 0;
   width: 100%;
   min-width: 768px;
-  height: 54px;
+  height: 55px;
   background: #FFFFFF;
-  box-shadow: 0 0 25px rgba(90, 100, 117, 0.5);
+  box-shadow: 0 0 15px rgba(90, 100, 117, 0.5);
   border-bottom: 5px solid #D8C6AE;
 }
 
@@ -194,7 +197,7 @@ a.apps_link:hover {
 #map, .right_column, #right_column, .score_result {
   height: 100%;
   z-index: -1;
-  border: 1px solid #e3d6c5;
+  border: 2px solid #E3D6C5;
   background-color:rgba(253,252,254,0.7);
 	/* Fallback for web browsers that doesn't support RGBa */
 	background: rgb(253,252,254) transparent;
@@ -209,7 +212,7 @@ a.apps_link:hover {
 #map {
     position: fixed;
     bottom: 0;
-    top: 55px;
+    top: 53px;
     right: 470px;
     left: 0;
     min-width: 296px;
@@ -323,7 +326,7 @@ a.apps_link:hover {
 
 #left_column, .left_column, .left_column_about {
   background-color: #ece2d8;
-  border: 1px solid #CBC8C5;
+  border: 2px solid #FDFCFE;
   box-shadow: 0 4px 5px rgba(90, 100, 117, 0.3);
   -moz-box-shadow: 0 4px 5px rgba(90, 100, 117, 0.3);
   -webkit-box-shadow: 0 4px 5px rgba(90, 100, 117, 0.3);
@@ -625,7 +628,7 @@ div.dont_pick_a_map {
   border-right: none;
   float: right;
   line-height: 16px;
-  padding: 12px 10px 10px;
+  padding: 12px 10px 11px;
   text-align: center;
 }
 
@@ -893,7 +896,7 @@ input.search:hover, input#add:hover, input#location_picture_xref_submit:hover, i
 #contact_maker input.text, #contact_maker textarea, .location_detail input, 
 #form input.lookup_search_input, .edit_mode{
   background-color: #fcfcf3;
-  border: 1px solid #d56c24;
+  border: 2px solid #D0B89F;
   border-radius:0;
   -moz-border-radius:0;
   -webkit-border-radius:0;
@@ -1043,7 +1046,7 @@ input#score {
   margin-top: 27px;
   border: 2px solid #513D27;
   border-top: none;
-  background-color: #d0cdd0;
+  background-color: #f2eae3;
   box-shadow: 0 10px 10px rgba(90, 100, 117, 0.5);
 }
 
@@ -1421,6 +1424,22 @@ ul.stufflike li, ul.list li {
   text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
   margin: 0;
 }
+
+.search_arrow {
+  font-size: 24px;
+  color: #8A3CAE;
+  /*-webkit-transition: 1s ease-in-out; 
+  -moz-transition: 1s ease-in-out; 
+  -o-transition: 1s ease-in-out; 
+  transition: 1s ease-in-out;
+}
+.search_arrow:hover {
+  -webkit-transform: translate(3em,0); 
+  -moz-transform: translate(3em,0); 
+  -o-transform: translate(3em,0); 
+  -ms-transform: translate(3em,0); 
+  transform: translate(3em,0);
+}*/
 
 .high_roller_right_column {
   float:right;

@@ -4,7 +4,7 @@
     %p.regular_text
       %span.yellowb Welcome to the #{@region.full_name} Pinball Map!. This map is best maintained with the help of YOU.
       Please "add" and "remove" machines to/from locations to keep things up to date.
-    %p.regular_text To begin: Search!
+    %p.regular_text To begin: Search! 
     %p.regular_text
       We currently are tracking
       %span.yellow #{@location_count} locations
@@ -13,6 +13,10 @@
   - else
     %p.yellow.hello
       Welcome to the #{@region.full_name} Pinball Map!
+    %p.regular_text{:style => "margin-top:10px;"}
+      To begin: Search! 
+      %span.search_arrow 
+        &rarr;
     %p.regular_text
       %span.yellowb This map is best maintained with the help of YOU.
       Please
@@ -30,14 +34,10 @@
       %li Search or browse for machines throughout your town
       %li Comment on a machine's condition
       %li Add photos of locations
-      %li Input your high scores
+      %li Share your high scores
     %p.regular_text
       We currently are tracking
       %span.yellow #{@location_count} locations
       and 
       %span.yellow #{@lmx_count} machines.
       Backups are made nightly. So if something bad happens, the site can be replenished.
-    %p.regular_text
-      And be sure to check out the
-      =link_to 'Links page', links_path
-      for more pinball resources.
