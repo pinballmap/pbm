@@ -45,23 +45,28 @@ describe PagesController do
           :bcc => ["super_admin@bar.com"],
           :from =>"admin@pinballmap.com",
           :subject => "PBM - New location suggested for the portland pinball map",
-          :body => "
-          Location Name: name\n
-          Street: street\n
-          City: city\n
-          State: state\n
-          Zip: zip\n
-          Phone: phone\n
-          Website: website\n
-          Operator: operator\n
-          Machines: machines\n
-          Their Name: subname\n
-          Their Email: subemail\n
-        "
+          :body => <<HERE
+Location Name: name\n
+Street: street\n
+City: city\n
+State: state\n
+Zip: zip\n
+Phone: phone\n
+Website: website\n
+Operator: operator\n
+Machines: machines\n
+Their Name: subname\n
+Their Email: subemail\n
+HERE
         }
       end
 
       post 'submitted_new_location', :region => 'portland', :location_name => 'name', :location_street => 'street', :location_city => 'city', :location_state => 'state', :location_zip => 'zip', :location_phone => 'phone', :location_website => 'website', :location_operator => 'operator', :location_machines => 'machines', :submitter_name => 'subname', :submitter_email => 'subemail'
+    end
+    it 'should not send an email with http:// in location_machines name' do
+      Pony.should_not_receive(:mail)
+
+      post 'submitted_new_location', :region => 'portland', :location_name => 'name', :location_street => 'street', :location_city => 'city', :location_state => 'state', :location_zip => 'zip', :location_phone => 'phone', :location_website => 'website', :location_operator => 'operator', :location_machines => 'http://machines', :submitter_name => 'subname', :submitter_email => 'subemail'
     end
   end
 end
