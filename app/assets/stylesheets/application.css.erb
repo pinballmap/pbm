@@ -39,11 +39,14 @@ body {
   font-size: 11px;
   -webkit-font-smoothing: antialiased;
 }
-input {
+input, textarea {
   -webkit-appearance: none;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
 }
 .subpage_text {
   font-size: 14px;
@@ -641,9 +644,13 @@ span.machine_year_man {
 br.clear {
   margin-top: 10px;
 }
+.sub_nav_item img {
+  padding: 2px 0;
+  background: #DDDDDD;
+}
 .sub_nav_item {
-  height: 14px;
-  line-height: 14px;
+  height: 18px;
+  line-height: 18px;
   padding-left: 2px;
   cursor: pointer;
   font-size: 10px;
@@ -653,8 +660,8 @@ br.clear {
 }
 .sub_nav_item, .sub_nav_location {
   cursor: pointer;
-  font-size: 12px;
-  line-height: 13px;
+  font-size: 14px;
+  line-height: 16px;
   font-weight: normal;
   width: 405px;
   color: #f9f9f9;
@@ -712,8 +719,8 @@ input#add {
 .new_location_picture_xref input.submit_picture {
   font-style:normal;
   color:#303030;
-  background-color: #FCFCF3;
-  border: 1px solid #D56C24;
+  background-color: #F6EFFA;
+  border: 2px solid #D0B89F;
   text-shadow:1px 1px 0px #fcfcfc;
   box-shadow:2px 2px 3px #2a2b27;
   -moz-box-shadow:2px 2px 3px #2a2b27;
@@ -721,6 +728,7 @@ input#add {
   padding:0 4px;
   cursor:pointer;
   margin-right: 4px;
+  font-size: 14px;
 }
 .search:active, 
 .search:focus, 
@@ -774,7 +782,7 @@ input.submit_button:hover,
 }
 #form input.lookup_search_input {
   width: 200px;
-  height: 18px;
+  height: 22px;
   font-size: 14px;
 }
 .location_detail input {
@@ -913,6 +921,8 @@ input#score {
 #file_chooser_button {
   padding-left: 10px;
   width: 220px;
+  border: none;
+  background: inherit;
 }
 
 /** High Scores **/
@@ -1255,7 +1265,7 @@ img.header_image {
 
 #location_maker input.text, #contact_maker input.text {
   width: 270px;
-  height: 20px;
+  height: 24px;
   margin: 0;
   font-size: 14px;
 }
