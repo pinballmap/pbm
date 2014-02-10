@@ -7,7 +7,7 @@
     %meta{:name => "description", :content => "Find local places to play pinball! The #{(defined? @region) ? @region.full_name : ''} Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area." }
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
     = stylesheet_link_tag 'application', 'jquery.jscrollpane', 'mediaqueries', 'http://fonts.googleapis.com/css?family=Montserrat:400,700', 'http://fonts.googleapis.com/css?family=Open+Sans:400,600'
-    = stylesheet_link_tag 'http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css'
+    / = stylesheet_link_tag 'http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css'
     - if mobile_device?
       = stylesheet_link_tag 'mobile-application'
     = javascript_include_tag 'application', 'jQuery.scrollSomething-1.0.0', 'jquery.form', 'jquery.remotipart', 'jquery.mousewheel', 'highslide.min'

@@ -1666,3 +1666,56 @@ a.social-share-button-google_plus {
   background: none repeat scroll 0 0 #FFECD6;
   border: 1px solid #D56C24;
 }
+
+/** Bootstrap autocomplete **/
+
+*:before, *:after {
+    -moz-box-sizing: border-box;
+}
+
+.dropdown-menu {
+  background-clip: padding-box;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
+  display: none;
+  float: left;
+  font-size: 14px;
+  left: 0;
+  list-style: none outside none;
+  margin: 2px 0 0;
+  min-width: 160px;
+  max-width: 300px;
+  max-height: 400px;
+  overflow-x: auto;
+  padding: 5px 0;
+  position: absolute;
+  top: 100%;
+  z-index: 1000;
+}
+.dropdown-menu li {
+  padding: 2px 4px;
+}
+.dropdown-menu {
+  font-size: 14px;
+  list-style: none outside none;
+}
+.dropdown-menu > li > a {
+  clear: both;
+  color: #333333;
+  display: block;
+  font-weight: 400;
+  line-height: 1;
+  padding: 3px 10px;
+  white-space: normal;
+}
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    background-color: #F5F5F5;
+    text-decoration: none;
+}
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+    background-color: #428BCA;
+    outline: 0 none;
+    text-decoration: none;
+}
