@@ -17,8 +17,8 @@
         %span= "#{msx.location.name}'s #{msx.machine.name}: #{MachineScoreXref::ENGLISH_SCORES[msx.rank]} with #{number_with_delimiter(msx.score, :delimiter => ",")} by #{msx.initials}"
 
 :javascript
-  $().ready(function(){
-      $("#ticker").scrollSomething({
+  jQuery().ready(function(){
+      jQuery("#ticker").scrollSomething({
         scrollerWidth: 445,
         scrollerHeight: 50,
         buttonSettings: "show",

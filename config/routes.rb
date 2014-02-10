@@ -7,17 +7,22 @@ end
 Pbm::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
+  namespace :api do
+    namespace :v1 do
+      resources :regions do
+        member do
+          get :location_names
+          get :machine_names
+        end
+      end
+    end
+  end
+
   scope ':region', :constraints => { :region => /#{regions}|!admin/i } do
     resources :pages
     resources :events
     resources :regions
-
-    resources :machines do
-      collection do
-        get :autocomplete
-      end
-    end
-
+    resources :machines
     resources :machine_score_xrefs
 
     resources :location_machine_xrefs do
@@ -29,7 +34,6 @@ Pbm::Application.routes.draw do
     resources :locations do
       collection do
         get :update_desc
-        get :autocomplete
       end
       member do
         get :newest_machine_name

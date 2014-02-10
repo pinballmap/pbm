@@ -8,27 +8,23 @@
         /%span.info or use the text box
       = select_tag "by_#{key}_id", options_for_select([['All', '']]) + options_from_collection_for_select(@search_options[key]['search_collection'], @search_options[key]['id'], @search_options[key]['name'], params["by_#{key}"])
       - if @search_options[key]['autocomplete']
-        = text_field_tag "by_#{key}_name", params["by_#{key}_name"], :class => 'lookup_search_input'
+        = text_field_tag "by_#{key}_name", params["by_#{key}_name"], :class => 'lookup_search_input', "ng-controller"=>"AutocompleteController", "ng-model"=>"autocompleteModel", "typeahead"=>"name.value as name.label for name in getNames(#{@region.id}, '#{key}', $viewValue) | filter:$viewValue", "typeahead-loading"=>"loadingNames"
+        %i{"ng-show"=>"loadingNames", :class=>"glyphicon glyphicon-refresh"}
       - if (['city', 'zone', 'type'].include? key)
         %span.info Limit results by
         = select_tag "by_at_least_n_machines_#{key}", "<option></option><option value=\"2\">2</option><option value=\"3\">3</option><option value=\"4\">4</option><option value=\"5\">5</option>".html_safe
         %span.info or more machines.
       = submit_tag 'Search', :class => 'search', :id => "#{key}_search_button"
-      - if @search_options[key]['autocomplete']
-        :javascript
-          $(function () {
-            $('#by_#{key}_name').autocomplete({source: '/#{@region.name}/#{key}s/autocomplete?region_level_search=1'});
-          });
 :javascript
-  $(function () {
-    $('.location_search').on('submit', function(e) {
+  jQuery(function () {
+    jQuery('.location_search').on('submit', function(e) {
       e.preventDefault();
-      var form = $(this);
+      var form = jQuery(this);
 
-      $('#locations').html(loadingHTML());
+      jQuery('#locations').html(loadingHTML());
 
-      $.get(form.attr('action'), form.serialize(), function(data, textStatus, jqxhr) {
-        $('#locations').html(data);
+      jQuery.get(form.attr('action'), form.serialize(), function(data, textStatus, jqxhr) {
+        jQuery('#locations').html(data);
       });
 
       return false;

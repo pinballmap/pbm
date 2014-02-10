@@ -56,6 +56,6 @@
 
     - if (@locations.size == 1)
       :javascript
-        $(function() {
+        jQuery(function() {
           singleLocationLoad('#{@region.name.downcase}', #{@locations.first.id});
         });

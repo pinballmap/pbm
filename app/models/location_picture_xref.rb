@@ -16,6 +16,8 @@ class LocationPictureXref < ActiveRecord::Base
       :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
     }
 
+  validates_attachment_content_type :photo, :content_type => %w(image/jpeg image/jpg image/png image/gif)
+
   def rails_admin_default_object_label_method
   end
 end

@@ -2,6 +2,11 @@
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require social-share-button
+//= require angular.min
+//= require angular-resource.min
+//= require angular-main
+//= ui-bootstrap-tpls-0.10.0
+//= require_tree .
 
 var map;
 var markers = new Array();
@@ -13,14 +18,14 @@ function toggleArrows(name, id) {
   var open = '_open_arrow' + (id ? '_' + id : '');
   var closed = '_closed_arrow' + (id ? '_' + id : '');
 
-  $('#' + name + open).toggle();
-  $('#' + name + closed).toggle();
+  jQuery('#' + name + open).toggle();
+  jQuery('#' + name + closed).toggle();
 }
 
 function toggleData(name, id) {
   var main = id ? '_' + id : '';
 
-  $('#' + name + main).toggle();
+  jQuery('#' + name + main).toggle();
   toggleArrows(name, id);
 }
 
@@ -91,38 +96,38 @@ function setOtherSearchOptions(newSection) {
       html += "  <a href='#' id='" + searchSections[section] + "_section_link' onclick='switchSection(\"" + searchSections[section] + "\");'>" + searchSections[section] + "</a>\n"
   }
 
-  $('#other_search_options').html(html);
+  jQuery('#other_search_options').html(html);
 }
 
 function switchSection(newSection) {
   setOtherSearchOptions(newSection);
-  $("div .section:visible").hide();
-  $('#by_' + newSection).toggle();
-  $("#" + newSection + "_section_link").toggleClass("active_section_link");
+  jQuery("div .section:visible").hide();
+  jQuery('#by_' + newSection).toggle();
+  jQuery("#" + newSection + "_section_link").toggleClass("active_section_link");
 }
 
 function initSearchLocation(region, locationID) {
   var url = '/' + region + '/locations?by_location_id=' + locationID;
 
-  $('#locations').html(loadingHTML());
-  $.get(url, function(data) {
-    $('#locations').html(data);
+  jQuery('#locations').html(loadingHTML());
+  jQuery.get(url, function(data) {
+    jQuery('#locations').html(data);
   });
 }
 
 function initSearchCity(region, city) {
   var url = '/' + region + '/locations?by_city_id=' + city;
 
-  $('#locations').html(loadingHTML());
-  $.get(url, function(data) {
-    $('#locations').html(data);
+  jQuery('#locations').html(loadingHTML());
+  jQuery.get(url, function(data) {
+    jQuery('#locations').html(data);
   });
 }
 
 function showLocationDetail(locationID) {
   locationLookupMapCenter(locationID);
 
-  $('#show_location_detail_location_' + locationID).toggle();
+  jQuery('#show_location_detail_location_' + locationID).toggle();
   toggleData('location_detail_location', locationID);
   toggleArrows('location_detail', locationID);
 }
@@ -131,9 +136,9 @@ function singleLocationLoad(region, locationID) {
   showLocationDetail(locationID);
   toggleData('show_machines_location', locationID);
 
-  $('#show_machines_location_' + locationID).html(loadingHTML());
-  $.get('/' + region + '/locations/' + locationID + '/render_machines', function(data) {
-    $('#show_machines_location_' + locationID).html(data);
+  jQuery('#show_machines_location_' + locationID).html(loadingHTML());
+  jQuery.get('/' + region + '/locations/' + locationID + '/render_machines', function(data) {
+    jQuery('#show_machines_location_' + locationID).html(data);
   });
 }
 

@@ -24,22 +24,22 @@
           %li.other_links_list
             =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
       %li=link_to 'High Rollers', high_rollers_path
+    :javascript
+      jQuery().ready(function() {
+
+        jQuery(".region_logo_dropdown").hover(function () {
+            jQuery(".other_regions_list").show();
+          },function(){
+            jQuery(".other_regions_list").hide();
+        });
+        jQuery(".other_links").hover(function () {
+            jQuery(".other_links_dropdown").show();
+          },function(){
+            jQuery(".other_links_dropdown").hide();
+        });
+        jQuery(document).click(function () {
+            jQuery(".other_regions_list,.other_links_dropdown").hide();
+        });
+      });
+
 %p.notice= notice
-
-:javascript
-  $().ready(function() {
-
-    $(".region_logo_dropdown").hover(function () {
-        $(".other_regions_list").show();
-      },function(){
-        $(".other_regions_list").hide();
-    });
-    $(".other_links").hover(function () {
-        $(".other_links_dropdown").show();
-      },function(){
-        $(".other_links_dropdown").hide();
-    });
-    $(document).click(function () {
-        $(".other_regions_list,.other_links_dropdown").hide();
-    });
-  });

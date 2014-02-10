@@ -127,7 +127,7 @@ describe LocationMachineXrefsController do
     end
   end
 
-  describe 'machine name autocomplete', :type => :feature, :js => true do
+  describe 'autocomplete search', :type => :feature, :js => true do
     before(:each) do
       FactoryGirl.create(:location_machine_xref, :location => @location, :machine => FactoryGirl.create(:machine))
     end
@@ -145,8 +145,8 @@ describe LocationMachineXrefsController do
 
       fill_in("add_machine_by_name", :with => 'sassy')
 
-      page.execute_script %Q{ $('#add_machine_by_name').trigger('focus') }
-      page.execute_script %Q{ $('#add_machine_by_name').trigger('keydown') }
+      page.execute_script %Q{ jQuery('#add_machine_by_name').trigger('focus') }
+      page.execute_script %Q{ jQuery('#add_machine_by_name').trigger('keydown') }
 
       page.should have_xpath('//a[contains(text(), "Sassy From The Black Lagoon")]')
       page.should have_xpath('//a[contains(text(), "Sassy Madness")]')
@@ -162,13 +162,11 @@ describe LocationMachineXrefsController do
 
       page.find("div#other_search_options a#machine_section_link").click
 
+      page.execute_script "jQuery('#by_machine_name').unbind('blur')"
       fill_in("by_machine_name", :with => 'test')
 
-      page.execute_script %Q{ $('#by_machine_name').trigger('focus') }
-      page.execute_script %Q{ $('#by_machine_name').trigger('keydown') }
-
-      page.should have_xpath('//a[contains(text(), "Another Test Machine")]')
-      page.should have_xpath('//a[contains(text(), "Test Machine Name")]')
+      page.should have_xpath('//a[contains(text(), "Another")]')
+      page.should have_xpath('//a[contains(text(), "Machine Name")]')
       page.should_not have_xpath('//a[contains(text(), "Cleo")]')
     end
 
@@ -182,13 +180,11 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
+      page.execute_script "jQuery('#by_location_name').unbind('blur')"
       fill_in("by_location_name", :with => 'cleo')
 
-      page.execute_script %Q{ $('#by_location_name').trigger('focus') }
-      page.execute_script %Q{ $('#by_location_name').trigger('keydown') }
-
-      page.should have_xpath('//a[contains(text(), "Cleo North")]')
-      page.should have_xpath('//a[contains(text(), "Cleo South")]')
+      page.should have_xpath('//a[contains(text(), "North")]')
+      page.should have_xpath('//a[contains(text(), "South")]')
       page.should_not have_xpath('//a[contains(text(), "Cleo West")]')
       page.should_not have_xpath('//a[contains(text(), "Sassy")]')
     end

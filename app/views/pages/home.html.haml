@@ -30,18 +30,17 @@
       %ul.twitter
         - @tweets.each do |t|
           %li= auto_link(t.text)
-  #map_summaries.intro
-    - count = 1
-    - Region.order('full_name').each do |r|
-      =link_to "/#{r.name}" do
+  #map_summaries.intro{"ng-controller"=>"HomeController"}
+    %div.intro
+      =link_to "/{{region.name}}", "ng-repeat"=>"region in regions | orderBy:['full_name']" do
         %span.map_summary
-          %span.region_name #{r.full_name}
+          %span.region_name {{region.full_name}}
           %br/
           %span.map_summary_info
             %span.yellow Tracking:
             %br/
-            = "#{r.locations_count} Locations"
+            = "{{region.locations_count}} Locations"
             %br/
-            = "#{r.machines_count} Machines"
+            = "{{region.machines_count}} Machines"
   .clear
   %br/

@@ -60,6 +60,10 @@ module Pbm
       rails.js
       rails_admin.js
       rails_admin/rails_admin.js
+      angular.min.js
+      angular-route.min.js
+      angular-resource.min.js
+      ui-bootstrap-tpls-0.10.0.js
     )
 
     config.rakismet.key = ENV['RAKISMET_KEY']

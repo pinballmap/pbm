@@ -5,10 +5,10 @@
 = button_to "remove",  location_machine_xref_path(:region => @region.name, :id => lmx.id), :id => "remove_machine_#{lmx.id}", :method => 'delete', :remote => true, :class => "remove_machine_button"
 
 :javascript
-  $('#remove_machine_#{lmx.id}').click(function () {
+  jQuery('#remove_machine_#{lmx.id}').click(function () {
     if (confirm("Remove this machine?")) {
-      $('#machine_lmx_#{lmx.id}').fadeOut('slow', function() {});
-      $(this).callRemote();
+      jQuery('#machine_lmx_#{lmx.id}').fadeOut('slow', function() {});
+      jQuery(this).callRemote();
     }
 
     return false;

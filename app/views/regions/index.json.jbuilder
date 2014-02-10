@@ -1,4 +1,4 @@
-json.regions @regions.each do |json, region|
+json.regions @regions.each do |region|
   json.region do
     json.id region.id
     json.name region.name

@@ -2,9 +2,9 @@
 %div[location, :show_machines]{:style => 'display:none'}
 
 :javascript
-  $(function() {
-    $('#show_machines_location_banner_#{location.id}').click(function () {
-      $('#show_machines_location_#{location.id}').html(loadingHTML());
-      $('#show_machines_location_#{location.id}').load('/#{params[:region]}/locations/#{location.id}/render_machines');
+  jQuery(function() {
+    jQuery('#show_machines_location_banner_#{location.id}').click(function () {
+      jQuery('#show_machines_location_#{location.id}').html(loadingHTML());
+      jQuery('#show_machines_location_#{location.id}').load('/#{params[:region]}/locations/#{location.id}/render_machines');
     });
   });

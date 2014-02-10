@@ -15,14 +15,14 @@
       = submit_tag 'Add Score', :id => 'add_score'
 
     :javascript
-      $('#add_high_score_#{lmx.id}').submit(function () {
-        $('#score_container_lmx_#{lmx.id}').css('visibility', 'visible');
-        $('#score_container_lmx_#{lmx.id}').css('display', 'block');
-        $('#show_scores_lmx_#{lmx.id}').html(loadingHTML());
+      jQuery('#add_high_score_#{lmx.id}').submit(function () {
+        jQuery('#score_container_lmx_#{lmx.id}').css('visibility', 'visible');
+        jQuery('#score_container_lmx_#{lmx.id}').css('display', 'block');
+        jQuery('#show_scores_lmx_#{lmx.id}').html(loadingHTML());
 
-        var form = $(this);
-        $.post(form.attr('action'), form.serialize(), function (data) {
-          $('#show_scores_lmx_#{lmx.id}').load('/#{params[:region]}/locations/#{lmx.id}/render_scores')
+        var form = jQuery(this);
+        jQuery.post(form.attr('action'), form.serialize(), function (data) {
+          jQuery('#show_scores_lmx_#{lmx.id}').load('/#{params[:region]}/locations/#{lmx.id}/render_scores')
         });
 
         return false;

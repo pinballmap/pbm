@@ -5,37 +5,37 @@
   = hidden_field_tag :location_id, l.id
   = select_tag :add_machine_by_id, options_for_select(['']) + options_from_collection_for_select(Machine.all.sort_by(&:massaged_name), 'id', 'name_and_year', params[:add_machine_by_id]), :class => 'lookup_search_select'
   %span or
-  = text_field_tag :add_machine_by_name, params[:add_machine_by_name], :class => 'lookup_search_input'
+  = text_field_tag :add_machine_by_name, params[:add_machine_by_name], :class => 'lookup_search_input', "ng-controller"=>"AutocompleteController", "ng-model"=>"autocompleteModel", "typeahead"=>"name.value as name.label for name in getNames(#{@region.id}, 'machine', $viewValue) | filter:$viewValue", "typeahead-loading"=>"loadingNames"
+  %i{"ng-show"=>"loadingNames", :class=>"glyphicon glyphicon-refresh"}
   = submit_tag 'Add', :id => 'add'
 
 :javascript
-  $(function () {
-    $("#dialog-message").css("display","none");
-    $('#add_machine_by_name').autocomplete({source: '#{autocomplete_machines_path}'});
+  jQuery(function () {
+    jQuery("#dialog-message").css("display","none");
   });
 
-  $('#add_new_machine_#{l.id}').submit(function () {
-    $('#show_machines_location_#{l.id}').html(loadingHTML());
+  jQuery('#add_new_machine_#{l.id}').submit(function () {
+    jQuery('#show_machines_location_#{l.id}').html(loadingHTML());
 
-    $.post(this.action, $(this).serialize(), function (data) {
-      $('#show_machines_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machines', function() {
-        $.get('/#{params[:region]}/locations/#{l.id}/newest_machine_name', function(data) {
-          $('#dialog-message .social-share-button').data('title', "I updated the #{@region.name} pinball map! " + data + " was added to #{l.name} #pinball");
+    jQuery.post(this.action, jQuery(this).serialize(), function (data) {
+      jQuery('#show_machines_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machines', function() {
+        jQuery.get('/#{params[:region]}/locations/#{l.id}/newest_machine_name', function(data) {
+          jQuery('#dialog-message .social-share-button').data('title', "I updated the #{@region.name} pinball map! " + data + " was added to #{l.name} #pinball");
 
-          $('#dialog-message').dialog({
+          jQuery('#dialog-message').dialog({
             modal: true,
             height: 75,
             width: 50,
             bgiframe: true,
             resizable: false,
             open: function() {
-              $('.ui-widget-overlay').bind('click', function(){
-                $('#dialog-message').dialog('close');
+              jQuery('.ui-widget-overlay').bind('click', function(){
+                jQuery('#dialog-message').dialog('close');
               })
             },
             close: function() {
-              $(this).dialog("destroy");
-              $('#dialog-message .social-share-button').attr('data-title', "");
+              jQuery(this).dialog("destroy");
+              jQuery('#dialog-message .social-share-button').attr('data-title', "");
             }
           });
         });

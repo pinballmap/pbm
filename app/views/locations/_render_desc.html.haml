@@ -9,18 +9,18 @@
   = submit_tag 'Cancel', :id => "desc_cancel_#{l.id}", :class => "cancel_button"
 
 :javascript
-  $('#update_desc_#{l.id}').submit(function () {
-    $('#desc_location_#{l.id}').html(loadingHTML());
+  jQuery('#update_desc_#{l.id}').submit(function () {
+    jQuery('#desc_location_#{l.id}').html(loadingHTML());
 
-    var form = $(this);
-    $.get(form.attr('action'), form.serialize(), function (data) {
-      $('#desc_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_desc');
+    var form = jQuery(this);
+    jQuery.get(form.attr('action'), form.serialize(), function (data) {
+      jQuery('#desc_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_desc');
     });
 
     return false;
   });
 
-  $('#desc_cancel_#{l.id}, #desc_show_location_#{l.id}').click(function () {
-    $('#desc_show_location_#{l.id}').toggle();
-    $('#desc_edit_location_#{l.id}').toggle();
+  jQuery('#desc_cancel_#{l.id}, #desc_show_location_#{l.id}').click(function () {
+    jQuery('#desc_show_location_#{l.id}').toggle();
+    jQuery('#desc_edit_location_#{l.id}').toggle();
   });
