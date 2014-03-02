@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
       :to => Region.find_by_name('portland').users.collect {|u| u.email},
       :from => 'admin@pinballmap.com',
       :subject => "PBM - New machine name",
-      :body => [machine.name, location.name, location.region.name, "(entered via #{request.user_agent})"].join("\n")
+      :body => [machine.name, location.name, location.region.name, "(entered from #{request.remote_ip} via #{request.user_agent})"].join("\n")
     )
   end
 

@@ -1,5 +1,3 @@
-require 'pony'
-
 class LocationMachineXrefsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   has_scope :region
@@ -33,7 +31,7 @@ class LocationMachineXrefsController < InheritedResources::Base
 
   def destroy
     lmx = LocationMachineXref.find_by_id(params[:id])
-    lmx.destroy unless lmx.nil?
+    lmx.destroy({:remote_ip => request.remote_ip}) unless lmx.nil?
 
     render :nothing => true
   end
@@ -42,7 +40,7 @@ class LocationMachineXrefsController < InheritedResources::Base
     id = params[:id]
     lmx = LocationMachineXref.find(id)
 
-    lmx.update_condition(params["new_machine_condition_#{id}".to_sym])
+    lmx.update_condition(params["new_machine_condition_#{id}".to_sym], {:remote_ip => request.remote_ip})
 
     render :nothing => true
   end

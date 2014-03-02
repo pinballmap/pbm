@@ -29,7 +29,7 @@ describe LocationsController do
           :to => ["foo@bar.com"],
           :from =>"admin@pinballmap.com",
           :subject => "PBM - New machine name",
-          :body => "foo\nTest Location Name\nportland\n(entered via #{request.user_agent})",
+          :body => "foo\nTest Location Name\nportland\n(entered from 0.0.0.0 via #{request.user_agent})",
         }
       end
 

@@ -22,7 +22,7 @@ describe LocationMachineXref do
     it 'should update the condition of the lmx, timestamp it, and email the admins of the region' do
       Pony.should_receive(:mail) do |mail|
         mail.should == {
-          :body => "foo\nSassy\nCool Bar\nPortland",
+          :body => "foo\nSassy\nCool Bar\nPortland\n(entered from )",
           :subject => "PBM - Someone entered a machine condition",
           :to => ["foo@bar.com"],
           :from =>"admin@pinballmap.com"
@@ -33,6 +33,17 @@ describe LocationMachineXref do
 
       @lmx.condition.should == 'foo'
       @lmx.condition_date.to_s.should == Time.now.to_s
+
+      Pony.should_receive(:mail) do |mail|
+        mail.should == {
+          :body => "bar\nSassy\nCool Bar\nPortland\n(entered from 0.0.0.0)",
+          :subject => "PBM - Someone entered a machine condition",
+          :to => ["foo@bar.com"],
+          :from =>"admin@pinballmap.com"
+        }
+      end
+
+      @lmx.update_condition('bar', {:remote_ip => '0.0.0.0'})
     end
   end
 
@@ -40,7 +51,7 @@ describe LocationMachineXref do
     it 'should remove the lmx, and email admins if appropriate' do
       Pony.should_receive(:mail) do |mail|
         mail.should == {
-          :body => "Cool Bar\nSassy\nPortland",
+          :body => "Cool Bar\nSassy\nPortland\n(entered from )",
           :subject => "PBM - Someone removed a machine from a location",
           :to => ["foo@bar.com"],
           :from =>"admin@pinballmap.com"
@@ -48,6 +59,17 @@ describe LocationMachineXref do
       end
 
       @lmx.destroy
+
+      Pony.should_receive(:mail) do |mail|
+        mail.should == {
+          :body => "Cool Bar\nSassy\nPortland\n(entered from 0.0.0.0)",
+          :subject => "PBM - Someone removed a machine from a location",
+          :to => ["foo@bar.com"],
+          :from =>"admin@pinballmap.com"
+        }
+      end
+
+      @lmx.destroy({:remote_ip => '0.0.0.0'})
 
       Pony.should_not_receive(:mail) do |mail|
         mail.should == {
