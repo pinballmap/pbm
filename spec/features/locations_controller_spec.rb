@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe LocationsController do
   before(:each) do
-    @region = FactoryGirl.create(:region, :name => 'portland', :full_name => 'portland', :lat => 1, :lon => 2, :motd => 'This is a MOTD', :n_search_no => 4)
+    @region = FactoryGirl.create(:region, :name => 'portland', :full_name => 'portland', :lat => 1, :lon => 2, :motd => 'This is a MOTD', :n_search_no => 4, :should_email_machine_removal => 1)
   end
 
   describe 'mobile', :type => :feature, :js => true do
@@ -281,6 +281,15 @@ XML
       machine = FactoryGirl.create(:machine, :name => "Cleo's Adventure")
       FactoryGirl.create(:location_machine_xref, :location => sasston, :machine => machine, :condition => 'foo')
 
+      Pony.should_receive(:mail) do |mail|
+        mail.should == {
+          :body => "bar\nCleo's Adventure\nSasston\nportland\n(entered from 127.0.0.1)",
+          :subject => "PBM - Someone entered a machine condition",
+          :to => [],
+          :from =>"admin@pinballmap.com"
+        }
+      end
+
       visit '/iphone.html?condition=bar;location_no=1;machine_no=1'
 
       page_contents = <<XML
@@ -341,10 +350,18 @@ XML
     end
 
     it 'lets you remove a machine' do
-      sasston = FactoryGirl.create(:location, :region => @region)
+      sasston = FactoryGirl.create(:location, :name => 'sasston', :region => @region)
       machine = FactoryGirl.create(:machine, :name => "Cleo")
       FactoryGirl.create(:location_machine_xref, :location => sasston, :machine => machine)
 
+      Pony.should_receive(:mail) do |mail|
+        mail.should == {
+          :body => "sasston\nCleo\nportland\n(entered from 127.0.0.1)",
+          :subject => "PBM - Someone removed a machine from a location",
+          :to => [],
+          :from =>"admin@pinballmap.com"
+        }
+      end
 
       visit '/iphone.html?modify_location=1;machine_no=1'
 

@@ -103,6 +103,15 @@ describe LocationMachineXrefsController do
     end
 
     it 'should let me add a new machine description' do
+      Pony.should_receive(:mail) do |mail|
+        mail.should == {
+          :body => "This is a new condition\n#{@lmx.machine.name}\n#{@lmx.location.name}\nportland\n(entered from 127.0.0.1)",
+          :subject => "PBM - Someone entered a machine condition",
+          :to => [],
+          :from =>"admin@pinballmap.com"
+        }
+      end
+
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx").click

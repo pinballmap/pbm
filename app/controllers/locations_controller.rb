@@ -76,7 +76,7 @@ class LocationsController < InheritedResources::Base
     elsif (location_id = params[:error])
     elsif (condition = params[:condition])
       lmx = LocationMachineXref.find_by_location_id_and_machine_id(params[:location_no], params[:machine_no])
-      lmx.update_condition(condition)
+      lmx.update_condition(condition, {:remote_ip => request.remote_ip})
 
       redirect_to "/#{region}/location_machine_xrefs/#{lmx.id}/condition_update_confirmation.xml"
     elsif (location_id = params[:modify_location])
@@ -92,7 +92,7 @@ class LocationsController < InheritedResources::Base
 
       if (lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine.id))
         id = lmx.id
-        lmx.destroy
+        lmx.destroy({:remote_ip => request.remote_ip})
 
         redirect_to "/#{region}/location_machine_xrefs/#{id}/remove_confirmation.xml"
       else
