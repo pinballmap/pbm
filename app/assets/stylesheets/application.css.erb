@@ -56,14 +56,17 @@ a.light_blue:link,
 .regular_text a:link, 
 li a:link,
 a.light_blue:visited, 
-.regular_text a:visited {
+.regular_text a:visited,
+.location_detail a.address {
   color: #8A3CAE;
+  text-decoration: none;
 }
 a.light_blue:hover, 
 .regular_text a:hover, 
 .yellowb a:hover,
 a.light_blue:active, 
-.regular_text a:active {
+.regular_text a:active,
+.location_detail a.address:hover {
   color: #58266F; 
   text-decoration: underline;
 }
@@ -552,13 +555,12 @@ li.address {
   background-color: #e79e55;
 }
 .machine_names {
-  color: #999999;
+  color: #433A3A;
   font-size: 14px;
   padding: 4px 0 8px 10px !important;
   line-height: 18px;
 }
 .address_name {
-  color: #000000;
   font-size: 12px;
   line-height: 14px;
 }
@@ -692,6 +694,9 @@ br.clear {
   height: 100%;
   padding: 2px 0 1px 2px;
 }
+.sub_nav_location li.address {
+  color: #666666;
+}
 .search_result {
   height: 100%;
   width: 430px;
@@ -792,7 +797,9 @@ input.submit_button:hover,
 #contact_maker textarea, 
 .location_detail input, 
 #form input.lookup_search_input, 
-.edit_mode {
+.edit_mode,
+#new_user input[type="email"],
+#new_user input[type="password"] {
   background-color: #fcfcf3;
   border: 2px solid #D0B89F;
   border-radius: 0;
@@ -857,8 +864,10 @@ input#score, input#initials {
 }
 .location_type {
   color: #666666;
+  font-size: 12px;
   padding: 2px 0;
   line-height: 16px;
+  font-weight: normal !important;
 }
 .edit_mode {
   background-color: #fcfcf3;
@@ -891,6 +900,9 @@ input#score {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
 }
+.location_detail .address {
+  color: #333333;
+}
 .location_name {
   background-color: #e7dfdf;
   width: 430px;
@@ -909,7 +921,7 @@ input#score {
 }
 .location_description {
   font-style: italic;
-  color: #888888;
+  color: #666666;
   padding: 0 10px;
   display: block;
 }
@@ -1375,10 +1387,10 @@ p.score_list {
   font-size: 14px !important;
 }
 .gm_address {
-    margin-bottom: 8px !important;
+  margin-bottom: 8px !important;
 }
 .gm_machines {
-    font-weight: 600 !important;
+  font-weight: 600 !important;
 }
 .infowindow hr {
   color: #58266F;
