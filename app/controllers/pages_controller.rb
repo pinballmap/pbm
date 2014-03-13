@@ -144,7 +144,11 @@ END
 
   def home
     if (ENV['TWITTER_CONSUMER_KEY'] && ENV['TWITTER_CONSUMER_SECRET'] && ENV['TWITTER_OAUTH_TOKEN_SECRET'] && ENV['TWITTER_OAUTH_TOKEN'])
-      @tweets = Twitter.user_timeline("pinballmapcom", :count => 5)
+      begin
+        @tweets = Twitter.user_timeline("pinballmapcom", :count => 5)
+      rescue Twitter::Error
+        @tweets = []
+      end
     else
       @tweets = []
     end
