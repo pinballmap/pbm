@@ -7,7 +7,7 @@ class LocationMachineXrefsController < InheritedResources::Base
     if(!params[:add_machine_by_id].empty?)
       machine = Machine.find(params[:add_machine_by_id])
     elsif (!params[:add_machine_by_name].empty?)
-      machine = Machine.find_by_name(params[:add_machine_by_name])
+      machine = Machine.find(:first, :conditions => ["lower(name) = ?", params[:add_machine_by_name].downcase])
 
       if (machine.nil?)
         machine = Machine.new

@@ -40,6 +40,19 @@ describe LocationMachineXrefsController do
       @location.machines.first.should == @machine_to_add
 
       find("#show_machines_location_#{@location.id}").should have_content(@machine_to_add.name)
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+
+      find("#add_machine_location_banner_#{@location.id}").click
+      fill_in('add_machine_by_name', :with => @machine_to_add.name.downcase)
+      click_on 'add'
+
+      sleep 1
+
+      @location.machines.size.should == 1
+      @location.machines.first.should == @machine_to_add
+
+      find("#show_machines_location_#{@location.id}").should have_content(@machine_to_add.name)
     end
 
     it 'Should add by name of new machine' do
