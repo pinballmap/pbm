@@ -20,7 +20,7 @@
     $.post(this.action, $(this).serialize(), function (data) {
       $('#show_machines_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machines', function() {
         $.get('/#{params[:region]}/locations/#{l.id}/newest_machine_name', function(data) {
-          $('#dialog-message .social-share-button').data('title', "I updated the #{@region.name} pinball map! " + data + " was added to #{l.name} #pinball");
+          $('#dialog-message .social-share-button').data('title', "I updated the #{@region.full_name} Pinball Map! " + data + " was added to #{l.name} #pinball");
 
           $('#dialog-message').dialog({
             modal: true,
