@@ -461,6 +461,7 @@ RailsAdmin.config do |config|
         pretty_value do
           bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object].location_machine_xref_id}
         end
+        searchable [Location => :name]
       end
       field :rank
       field :score
