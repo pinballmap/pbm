@@ -11,7 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131019021843) do
+ActiveRecord::Schema.define(:version => 20140329174930) do
+
+  create_table "banned_ips", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "ip_address"
+  end
 
   create_table "events", :force => true do |t|
     t.integer  "region_id"

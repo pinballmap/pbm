@@ -192,6 +192,8 @@ GEM
     puma (2.6.0)
       rack (>= 1.1, < 2.0)
     rack (1.4.5)
+    rack-attack (3.0.0)
+      rack
     rack-cache (1.2)
       rack (>= 0.4)
     rack-pjax (0.7.0)
@@ -355,6 +357,7 @@ DEPENDENCIES
   pony
   puma
   rack
+  rack-attack
   rails (= 3.2.11)
   rails_admin
   rails_autolink

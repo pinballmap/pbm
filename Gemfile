@@ -27,7 +27,6 @@ gem 'mini_magick'
 gem 'remotipart'
 gem 'pony'
 gem 'recaptcha', :require => 'recaptcha/rails'
-gem 'newrelic_rpm'
 gem 'capistrano'
 gem 'geocoder'
 gem 'exception_notification_rails3', :require => 'exception_notifier'
@@ -41,6 +40,7 @@ gem 'rakismet'
 gem 'twitter'
 gem 'rails_autolink'
 gem 'social-share-button'
+gem 'rack-attack'
 
 group :test do
   gem 'cucumber-rails', :require => false
