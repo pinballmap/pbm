@@ -6,6 +6,7 @@ class Location < ActiveRecord::Base
   validates_presence_of :name, :street, :city, :state, :zip
   validates :website, format: { with: /^http:\/\//, message: "must begin with http://" }, :if => :website?
   validates :name, :street, :city, :state, format: { with: /^\S.*/, message: "Can't start with a blank" }
+  validates :lat, :lon, :presence => {:message => "Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon" }
 
   belongs_to :location_type
   belongs_to :zone
@@ -17,7 +18,7 @@ class Location < ActiveRecord::Base
   has_many :location_picture_xrefs
 
   geocoded_by :full_street_address, :latitude  => :lat, :longitude => :lon
-  after_validation :geocode, :unless => ENV['SKIP_GEOCODE'] || (:lat && :lon)
+  before_validation :geocode, :unless => ENV['SKIP_GEOCODE'] || (:lat && :lon)
 
   scope :region, lambda {|name|
     r = Region.find_by_name(name.downcase) || Region.where(name: 'portland').first

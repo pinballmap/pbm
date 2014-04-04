@@ -1,4 +1,4 @@
-#  the lat/lon of this address is (45.5207, -122.6628)
+#  the real lat/lon of this address is (45.5207, -122.6628)
 FactoryGirl.define do
   factory :location do
     name 'Test Location Name'
@@ -6,6 +6,8 @@ FactoryGirl.define do
     city 'Portland'
     state 'OR'
     zip '97214'
+    lat '11.11'
+    lon '-11.11'
     association :region, :name => 'portland'
     association :location_type
   end
