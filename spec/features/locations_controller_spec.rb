@@ -243,8 +243,8 @@ XML
           <zoneNo/>
           <zone/>
           <neighborhood/>
-          <lat/>
-          <lon/>
+          <lat>11.11</lat>
+          <lon>-11.11</lon>
           <street1>303 Southeast 3rd Avenue</street1>
           <street2/>
           <city>Portland</city>
@@ -259,8 +259,8 @@ XML
           <zoneNo/>
           <zone/>
           <neighborhood/>
-          <lat/>
-          <lon/>
+          <lat>11.11</lat>
+          <lon>-11.11</lon>
           <street1>303 Southeast 3rd Avenue</street1>
           <street2/>
           <city>Portland</city>
