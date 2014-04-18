@@ -1,8 +1,13 @@
-class API::V1::MachinesController < InheritedResources::Base
-  respond_to :xml
+module Api
+  module V1
+    class MachinesController < InheritedResources::Base
 
-  def index
-    respond_with apply_scopes(Machine)
+      respond_to :xml
+
+      def index
+        respond_with Machine.all
+      end
+
+    end
   end
-
 end
