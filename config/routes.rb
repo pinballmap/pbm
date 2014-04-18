@@ -7,6 +7,12 @@ end
 Pbm::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
+  namespace :api do
+    namespace :v1 do
+      resources :machines
+    end
+  end
+
   scope ':region', :constraints => { :region => /#{regions}|!admin/i } do
     resources :pages
     resources :events
