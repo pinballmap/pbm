@@ -46,6 +46,14 @@ class Region < ActiveRecord::Base
     @high_rollers
   end
 
+  def all_admin_email_addresses
+    if (self.users.empty?)
+      [ 'email_not_found@noemailfound.noemail' ]
+    else
+      self.users.collect {|u| u.email}
+    end
+  end
+
   def primary_email_contact
     if (self.users.empty?)
       'email_not_found@noemailfound.noemail'

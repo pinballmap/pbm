@@ -82,4 +82,16 @@ describe Region do
       @r.machines_count.should == 4
     end
   end
+
+  describe '#all_admin_email_addresses' do
+    it 'should return a default email address if no users are in region' do
+      @r.all_admin_email_addresses.should == [ 'email_not_found@noemailfound.noemail' ]
+    end
+    it 'should return all admin email addresses' do
+      FactoryGirl.create(:user, :region => @r, :email => 'not@primary.com')
+      FactoryGirl.create(:user, :region => @r, :email => 'is@primary.com', :is_primary_email_contact => 1)
+
+      @r.all_admin_email_addresses.should == [ 'not@primary.com', 'is@primary.com' ]
+    end
+  end
 end

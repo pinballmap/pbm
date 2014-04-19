@@ -10,6 +10,7 @@ Pbm::Application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :machines
+      resources :regions
     end
   end
 
