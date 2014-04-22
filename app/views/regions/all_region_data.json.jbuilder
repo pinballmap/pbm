@@ -8,6 +8,7 @@ json.data do
       json.location do
         json.id location.id
         json.name location.name
+        json.description location.description
         json.lat location.lat
         json.lon location.lon
         json.street location.street
