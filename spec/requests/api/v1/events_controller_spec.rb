@@ -1,0 +1,67 @@
+require 'spec_helper'
+
+describe Api::V1::EventsController do
+
+  describe '#index' do
+    before(:each) do
+      @region = FactoryGirl.create(:region, :name => 'portland')
+      @location = FactoryGirl.create(:location, :region => @region, :state => 'OR')
+    end
+
+    it 'handles basic event displaying' do
+      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => Date.today)
+      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 2', :start_date => Date.today + 1)
+
+      get '/api/v1/region/portland/events.json'
+      expect(response).to be_success
+
+      parsed_body = JSON.parse(response.body)
+      parsed_body.size.should == 2
+
+      expect(parsed_body[0]['event']['name']).to eq('event 1')
+      expect(parsed_body[1]['event']['name']).to eq('event 2')
+    end
+
+    it 'handles the sorted param appropriately' do
+      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => Date.today, :end_date => Date.today)
+      FactoryGirl.create(:event, :region => @region, :location => @location, :category => 'Foo', :name => 'event 2', :start_date => Date.today, :end_date => Date.today)
+      FactoryGirl.create(:event, :region => @region, :location => @location, :category => 'Foo', :name => 'event 3', :start_date => Date.today, :end_date => Date.today)
+
+      get '/api/v1/region/portland/events.json?sorted=true'
+      expect(response).to be_success
+
+      parsed_body = JSON.parse(response.body)
+      parsed_body.size.should == 1
+
+      expect(parsed_body[0]['General'][0]['event']['name']).to eq('event 1')
+      expect(parsed_body[0]['Foo'][0]['event']['name']).to eq('event 2')
+      expect(parsed_body[0]['Foo'][1]['event']['name']).to eq('event 3')
+    end
+
+    it 'does not display events that are a week older than their end date' do
+      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => Date.today, :end_date => Date.today)
+      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 2', :start_date => Date.today - 8, :end_date => Date.today - 8)
+
+      get '/api/v1/region/portland/events.json'
+      expect(response).to be_success
+
+      parsed_body = JSON.parse(response.body)
+      parsed_body.size.should == 1
+
+      expect(parsed_body[0]['event']['name']).to eq('event 1')
+    end
+
+    it 'does not display events that are a week older than start date if there is no end date' do
+      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => Date.today)
+      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 2', :start_date => Date.today - 8)
+
+      get '/api/v1/region/portland/events.json'
+      expect(response).to be_success
+
+      parsed_body = JSON.parse(response.body)
+      parsed_body.size.should == 1
+
+      expect(parsed_body[0]['event']['name']).to eq('event 1')
+    end
+  end
+end

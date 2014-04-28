@@ -18,6 +18,12 @@ describe LocationsController do
     end
   end
 
+  describe ':region/mobile' do
+    it 'should route to correct controller' do
+      {:get => '/portland/mobile'}.should route_to(:controller => 'locations', :action => 'mobile', :region => 'portland')
+    end
+  end
+
   describe ':region/iphone.html' do
     it 'should route legacy mobile requests' do
       {:get => '/portland/iphone.html'}.should route_to(:controller => 'locations', :action => 'mobile', :region => 'portland')
