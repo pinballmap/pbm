@@ -11,7 +11,7 @@ Pbm::Application.routes.draw do
     namespace :v1 do
       resources :machines
       scope 'region/:region', :constraints => { :region => /#{regions}|!admin/i } do 
-        resources :events, shallow: true
+        resources :events
       end
     end
   end
