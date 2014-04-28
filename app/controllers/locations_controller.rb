@@ -55,30 +55,31 @@ class LocationsController < InheritedResources::Base
 
   def mobile
     region = params[:region] || 'portland'
+    format = params[:format] || 'xml'
 
     if (params[:init])
       case params[:init].to_i
       when 1 then
-        redirect_to "/#{region}/locations.xml"
+        redirect_to "/#{region}/locations.#{format}"
       when 2 then
-        redirect_to "/#{region}/regions.xml"
+        redirect_to "/#{region}/regions.#{format}"
       when 3 then
-        redirect_to "/#{region}/events.xml"
+        redirect_to "/#{region}/events.#{format}"
       when 4 then
-        redirect_to "/#{region}/machines.xml"
+        redirect_to "/#{region}/machines.#{format}"
       when 5 then
         redirect_to "/#{region}/all_region_data.json"
       end
     elsif (location_id = params[:get_location])
-      redirect_to "/#{region}/locations/#{location_id}.xml"
+      redirect_to "/#{region}/locations/#{location_id}.#{format}"
     elsif (machine_id = params[:get_machine])
-      redirect_to "/#{region}/locations/#{machine_id}/locations_for_machine.xml"
+      redirect_to "/#{region}/locations/#{machine_id}/locations_for_machine.#{format}"
     elsif (location_id = params[:error])
     elsif (condition = params[:condition])
       lmx = LocationMachineXref.find_by_location_id_and_machine_id(params[:location_no], params[:machine_no])
       lmx.update_condition(condition, {:remote_ip => request.remote_ip})
 
-      redirect_to "/#{region}/location_machine_xrefs/#{lmx.id}/condition_update_confirmation.xml"
+      redirect_to "/#{region}/location_machine_xrefs/#{lmx.id}/condition_update_confirmation.#{format}"
     elsif (location_id = params[:modify_location])
       # unfortunately, the mobile devices are sending us a parameter called 'action'...until I figure out a way to handle this,
       # I assume if a machine doesn't exist at a location, create it..if it does, destroy it
@@ -94,10 +95,10 @@ class LocationsController < InheritedResources::Base
         id = lmx.id
         lmx.destroy({:remote_ip => request.remote_ip})
 
-        redirect_to "/#{region}/location_machine_xrefs/#{id}/remove_confirmation.xml"
+        redirect_to "/#{region}/location_machine_xrefs/#{id}/remove_confirmation.#{format}"
       else
         lmx = LocationMachineXref.create(:location_id => location_id, :machine_id => machine.id)
-        redirect_to "/#{region}/location_machine_xrefs/#{lmx.id}/create_confirmation.xml"
+        redirect_to "/#{region}/location_machine_xrefs/#{lmx.id}/create_confirmation.#{format}"
       end
     end
   end
