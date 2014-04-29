@@ -13,6 +13,7 @@ Pbm::Application.routes.draw do
       resources :regions
       scope 'region/:region', :constraints => { :region => /#{regions}|!admin/i } do 
         resources :events
+        resources :locations
       end
     end
   end
