@@ -21,6 +21,14 @@ describe LocationsController do
       current_url.should =~ /\/toronto\/locations.xml/
     end
 
+    it 'takes an optional format parameter' do
+      FactoryGirl.create(:region, :name => 'toronto')
+
+      visit '/iphone.html?init=1;region=toronto;format=json'
+
+      current_url.should =~ /\/toronto\/locations.json/
+    end
+
     it 'respects all region data init param' do
       FactoryGirl.create(:region, :name => 'toronto')
 
