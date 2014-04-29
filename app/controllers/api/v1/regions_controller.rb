@@ -5,7 +5,7 @@ module Api
       respond_to :xml,:json
 
       def index
-        respond_with(@regions = Region.all,:methods=>[ :primary_email_contact, :all_admin_email_addresses ])
+        respond_with(Region.all,:methods=>[ :primary_email_contact, :all_admin_email_addresses ],:root => false)
       end
 
     end
