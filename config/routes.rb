@@ -11,8 +11,9 @@ Pbm::Application.routes.draw do
     namespace :v1 do
       resources :machines
       resources :location_types
-      scope 'region/:region', :constraints => { :region => /#{regions}|!admin/i } do 
+      scope 'region/:region', :constraints => { :region => /#{regions}|!admin/i } do
         resources :events
+        resources :region_link_xrefs
       end
     end
   end
