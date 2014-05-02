@@ -2,10 +2,10 @@ module Api
   module V1
     class RegionsController < InheritedResources::Base
 
-      respond_to :xml
+      respond_to :xml,:json
 
       def index
-        render xml: Region.all.to_xml(methods: [ :primary_email_contact, :all_admin_email_addresses ])
+        respond_with(Region.all,:methods=>[ :primary_email_contact, :all_admin_email_addresses ],:root => false)
       end
 
     end
