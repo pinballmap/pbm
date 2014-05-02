@@ -18,8 +18,8 @@ describe Api::V1::EventsController do
       parsed_body = JSON.parse(response.body)
       parsed_body.size.should == 2
 
-      expect(parsed_body[0]['event']['name']).to eq('event 1')
-      expect(parsed_body[1]['event']['name']).to eq('event 2')
+      expect(parsed_body[0]['name']).to eq('event 1')
+      expect(parsed_body[1]['name']).to eq('event 2')
     end
 
     it 'handles the sorted param appropriately' do
@@ -33,9 +33,9 @@ describe Api::V1::EventsController do
       parsed_body = JSON.parse(response.body)
       parsed_body.size.should == 1
 
-      expect(parsed_body[0]['General'][0]['event']['name']).to eq('event 1')
-      expect(parsed_body[0]['Foo'][0]['event']['name']).to eq('event 2')
-      expect(parsed_body[0]['Foo'][1]['event']['name']).to eq('event 3')
+      expect(parsed_body[0]['General'][0]['name']).to eq('event 1')
+      expect(parsed_body[0]['Foo'][0]['name']).to eq('event 2')
+      expect(parsed_body[0]['Foo'][1]['name']).to eq('event 3')
     end
 
     it 'does not display events that are a week older than their end date' do
@@ -48,7 +48,7 @@ describe Api::V1::EventsController do
       parsed_body = JSON.parse(response.body)
       parsed_body.size.should == 1
 
-      expect(parsed_body[0]['event']['name']).to eq('event 1')
+      expect(parsed_body[0]['name']).to eq('event 1')
     end
 
     it 'does not display events that are a week older than start date if there is no end date' do
@@ -61,7 +61,7 @@ describe Api::V1::EventsController do
       parsed_body = JSON.parse(response.body)
       parsed_body.size.should == 1
 
-      expect(parsed_body[0]['event']['name']).to eq('event 1')
+      expect(parsed_body[0]['name']).to eq('event 1')
     end
   end
 end
