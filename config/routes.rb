@@ -16,6 +16,7 @@ Pbm::Application.routes.draw do
         resources :events, :only => [:index, :show]
         resources :locations, :only => [:index, :show]
         resources :region_link_xrefs, :only => [:index, :show]
+        resources :zones, :only => [:index, :show]
       end
     end
   end
