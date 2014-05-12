@@ -108,6 +108,38 @@ a.light_blue:active,
 
 /** END Core **/
 
+/** Login **/
+
+#login {
+  background: none repeat scroll 0 0 rgba(253, 252, 254, 0.7);
+  border: 2px solid #E3D6C5;
+  margin: 10px auto 0;
+  padding: 0 20px 20px;
+  width: 270px;
+}
+#login label.password,
+#login label.email {
+  display: block;
+}
+#login label.boolean {
+  font-size: 12px;
+}
+#login input.boolean {
+  height: 16px;
+}
+form.new_user {
+  font-size: 16px;
+}
+#login input {
+  height: 25px;
+}
+#login .form-actions {
+  line-height: 40px;
+}
+#login abbr {
+  border: none;
+}
+
 /** Home **/
 
 ul.twitter {
@@ -742,7 +774,8 @@ input#add {
 #add_score, 
 #add, 
 #location_picture_xref_submit, 
-.new_location_picture_xref input.submit_picture {
+.new_location_picture_xref input.submit_picture,
+#login .button {
   font-style: normal;
   color: #303030;
   background-color: #F6EFFA;
@@ -763,7 +796,8 @@ input#add {
 .cancel_button:active, 
 #add_score:active, 
 #add:active, 
-#location_picture_xref_submit:active {
+#location_picture_xref_submit:active,
+#login .button:active {
   box-shadow: 1px 1px 1px #2a2b27;
   -moz-box-shadow: 1px 1px 1px #2a2b27;
   -webkit-box-shadow: 1px 1px 1px #2a2b27;
