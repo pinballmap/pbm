@@ -5,7 +5,7 @@ module Api
       respond_to :xml, :json
 
       def index
-        respond_with Machine.all, :root => false
+        return_response(Machine.all,'machines')
       end
 
     end

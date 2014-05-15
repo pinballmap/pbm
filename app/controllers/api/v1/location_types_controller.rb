@@ -5,7 +5,7 @@ module Api
       respond_to :xml, :json
 
       def index
-        respond_with LocationType.all
+        return_response(LocationType.all,'location_types')
       end
 
     end

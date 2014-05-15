@@ -5,7 +5,7 @@ module Api
       has_scope :region
 
       def index
-        respond_with apply_scopes(RegionLinkXref)
+        return_response(apply_scopes(RegionLinkXref),'regionlinks')
       end
 
     end

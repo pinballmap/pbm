@@ -16,8 +16,8 @@ class ApplicationController < ActionController::Base
     )
   end
 
-  def return_response(data,root,includes=[])
-    render :json => {root=>data.all.as_json(include: includes,root:false)}
+  def return_response(data,root,includes=[],methods=[])
+    render :json => {root=>data.as_json(include: includes,methods: methods,root:false)}
   end
 
   private

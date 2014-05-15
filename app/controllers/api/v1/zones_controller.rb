@@ -6,7 +6,7 @@ module Api
 
       def index
         zones = apply_scopes(Zone)
-        respond_with zones, root: false
+        return_response(zones,'zones')
       end
     end
   end
