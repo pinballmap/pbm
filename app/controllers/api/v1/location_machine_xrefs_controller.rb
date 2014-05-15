@@ -17,22 +17,14 @@ module Api
         if (condition)
           lmx.update_condition(condition, {:remote_ip => request.remote_ip})
         end
-
-        respond_with(lmx) do |format|
-          format.json{render json: lmx}
-          format.xml{render xml: lmx}
-        end
-        
+        return_response(lmx,'location_machine')        
       end
 
       def update
         lmx = LocationMachineXref.find(params[:id])
         lmx.update_condition(params[:condition], {:remote_ip => request.remote_ip})
 
-        respond_with(lmx) do |format|
-          format.json{render json: lmx}
-          format.xml{render xml: lmx}
-        end
+        return_response(lmx,'location_machine')
       end
 
     end
