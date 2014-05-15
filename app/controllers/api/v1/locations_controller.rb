@@ -6,7 +6,7 @@ module Api
 
       def index
       	locations = apply_scopes(Location).order('locations.name')
-        respond_with(locations,:include => [{:location_machine_xrefs => {:only => [:condition,:condition_date,:machine_id], :include=> [{:machine => {:only => [:name]}}] }}],:root => false)
+        return_response(locations,'locations',[:location_machine_xrefs])
       end
 
     end
