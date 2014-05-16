@@ -1,7 +1,7 @@
 module Api
   module V1
     class LocationMachineXrefsController < InheritedResources::Base
-      respond_to :xml, :json
+      respond_to :json
 
       def create
         location = params[:location_id]

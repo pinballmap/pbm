@@ -2,7 +2,7 @@ module Api
   module V1
     class MachinesController < InheritedResources::Base
 
-      respond_to :xml, :json
+      respond_to :json
 
       def index
         return_response(Machine.all,'machines')

@@ -2,7 +2,7 @@ module Api
   module V1
     class RegionsController < InheritedResources::Base
 
-      respond_to :xml,:json
+      respond_to :json
 
       def index
       	regions = Region.all

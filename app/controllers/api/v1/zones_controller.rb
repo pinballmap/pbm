@@ -1,7 +1,7 @@
 module Api
   module V1
     class ZonesController < InheritedResources::Base
-      respond_to :xml, :json
+      respond_to :json
       has_scope :region
 
       def index
