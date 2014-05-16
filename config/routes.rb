@@ -9,7 +9,7 @@ Pbm::Application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :machines, :only => [:index, :show]
+      resources :machines, :only => [:index, :show, :create]
       resources :location_types, :only => [:index, :show]
       resources :regions, :only => [:index,:show]
       resources :location_machine_xrefs, :only => [:create,:update]
