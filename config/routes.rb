@@ -13,6 +13,7 @@ Pbm::Application.routes.draw do
       resources :location_types, :only => [:index, :show]
       resources :regions, :only => [:index,:show]
       resources :location_machine_xrefs, :only => [:create,:update]
+      resources :locations, :only => [:update]
       scope 'region/:region', :constraints => { :region => /#{regions}|!admin/i } do
         resources :events, :only => [:index, :show]
         resources :locations, :only => [:index, :show]

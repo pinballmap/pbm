@@ -9,6 +9,32 @@ module Api
         return_response(locations,'locations',[:location_machine_xrefs])
       end
 
+      def update
+        location = Location.find(params[:id])
+
+        description = params[:description]
+        website = params[:website]
+        phone = params[:phone]
+
+        if (description)
+          location.description = description
+        end
+
+        if (website)
+          location.website = website
+        end
+
+        if (phone)
+          location.phone = phone
+        end
+
+        if (location.save)
+          return_response(location,'location')
+        else
+          return_response(location.errors.full_messages,'errors')
+        end
+      end
+
     end
   end
 end
