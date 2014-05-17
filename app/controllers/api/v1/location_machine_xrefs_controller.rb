@@ -25,6 +25,9 @@ module Api
         lmx.update_condition(params[:condition], {:remote_ip => request.remote_ip})
 
         return_response(lmx,'location_machine')
+        
+        rescue ActiveRecord::RecordNotFound
+          return_response('Failed to find machine','errors')
       end
 
     end

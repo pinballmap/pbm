@@ -33,6 +33,9 @@ module Api
         else
           return_response(location.errors.full_messages,'errors')
         end
+
+        rescue ActiveRecord::RecordNotFound
+          return_response('Failed to find location','errors')
       end
 
     end
