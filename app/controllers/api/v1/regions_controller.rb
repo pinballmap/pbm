@@ -5,8 +5,9 @@ module Api
       respond_to :json
 
       def index
-      	regions = Region.all
-      	return_response(regions,'regions',[],[:primary_email_contact,:all_admin_email_addresses])
+        regions = Region.all
+
+        return_response(regions, 'regions', [], [:primary_email_contact,:all_admin_email_addresses])
       end
 
     end
