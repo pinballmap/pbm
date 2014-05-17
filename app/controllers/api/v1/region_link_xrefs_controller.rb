@@ -1,11 +1,11 @@
 module Api
   module V1
     class RegionLinkXrefsController < InheritedResources::Base
-      respond_to :xml, :json
+      respond_to :json
       has_scope :region
 
       def index
-        respond_with apply_scopes(RegionLinkXref)
+        return_response(apply_scopes(RegionLinkXref),'regionlinks')
       end
 
     end

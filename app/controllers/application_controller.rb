@@ -16,6 +16,10 @@ class ApplicationController < ActionController::Base
     )
   end
 
+  def return_response(data,root,includes=[],methods=[])
+    render :json => {root=>data.as_json(include: includes,methods: methods,root:false)}
+  end
+
   private
     def mobile_device?
       if session[:mobile_param]

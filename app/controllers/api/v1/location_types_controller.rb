@@ -2,10 +2,10 @@ module Api
   module V1
     class LocationTypesController < InheritedResources::Base
 
-      respond_to :xml, :json
+      respond_to :json
 
       def index
-        respond_with LocationType.all
+        return_response(LocationType.all,'location_types')
       end
 
     end

@@ -1,7 +1,7 @@
 module Api
   module V1
     class EventsController < InheritedResources::Base
-      respond_to :xml, :json
+      respond_to :json
       has_scope :region
 
       def index
@@ -16,9 +16,9 @@ module Api
             category = e.category.blank? ? 'General' : e.category
             (sorted_events[category] ||= []) << e
           }
-          respond_with [sorted_events], root: false
+          return_response([sorted_events],'events')
         else
-          respond_with events, root: false
+          return_response(events,'events')
         end
       end
 
