@@ -6,7 +6,11 @@ class MachineScoreXref < ActiveRecord::Base
 
   scope :region, lambda {|name|
     r = Region.find_by_name(name)
-    joins(:location_machine_xref).joins(:location).where('location_machine_xrefs.id = machine_score_xrefs.location_machine_xref_id and locations.id = location_machine_xrefs.location_id')
+    joins(:location_machine_xref).joins(:location).where("
+      location_machine_xrefs.id = machine_score_xrefs.location_machine_xref_id
+      and locations.id = location_machine_xrefs.location_id
+      and locations.region_id = #{r.id}
+    ")
   }
 
   ENGLISH_SCORES = {
