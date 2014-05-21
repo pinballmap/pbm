@@ -45,6 +45,22 @@ describe MachineScoreXrefsController do
   end
 
   describe 'feeds', :type => :feature, :js => true do
+    it 'Should only display scores from the region in scope' do
+      region_machine = FactoryGirl.create(:machine, :name => 'Spider-Man')
+      out_of_region_machine = FactoryGirl.create(:machine, :name => 'Twilight Zone')
+
+      chicago = FactoryGirl.create(:region, :name => 'Chicago')
+      chicago_location = FactoryGirl.create(:location, :name => 'Chicago Location', :region => chicago)
+
+      FactoryGirl.create(:machine_score_xref, :location_machine_xref => FactoryGirl.create(:location_machine_xref, :location => @location, :machine => region_machine))
+      FactoryGirl.create(:machine_score_xref, :location_machine_xref => FactoryGirl.create(:location_machine_xref, :location => chicago_location, :machine => out_of_region_machine))
+
+      visit "/#{@region.name}/machine_score_xrefs.rss"
+
+      page.body.should have_content('Spider-Man')
+      page.body.should_not have_content('Twilight Zone')
+    end
+
     it 'Should only display the last 50 scores in the feed' do
       old_machine = FactoryGirl.create(:machine, :name => 'Spider-Man')
       recent_machine = FactoryGirl.create(:machine, :name => 'Twilight Zone')
