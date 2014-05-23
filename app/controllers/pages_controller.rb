@@ -104,6 +104,7 @@ class PagesController < ApplicationController
           :from => 'admin@pinballmap.com',
           :subject => "PBM - New location suggested for the #{@region.name} pinball map",
           :body => <<END
+(A new pinball spot has been submitted for your region. Please look up and verify the address on http://maps.google.com and then paste the Google Maps address into http://pinballmap.com/admin. Thanks!)
 Location Name: #{params['location_name']}\n
 Street: #{params['location_street']}\n
 City: #{params['location_city']}\n
