@@ -8,7 +8,7 @@ module Api
         region = Region.find(params['region_id'])
 
         Pony.mail(
-          :to => @region.users.collect {|u| u.email},
+          :to => region.users.collect {|u| u.email},
           :bcc => User.all.select {|u| u.is_super_admin }.collect {|u| u.email},
           :from => 'admin@pinballmap.com',
           :subject => "PBM - New location suggested for #{region.name} the pinball map",
@@ -29,7 +29,7 @@ END
         return_response("Thanks for entering that location. We'll get it in the system as soon as possible.",'response')
         
         rescue ActiveRecord::RecordNotFound
-          return_response('Failed to find location', 'errors')
+          return_response('Failed to find region', 'errors')
       end
 
       def index
