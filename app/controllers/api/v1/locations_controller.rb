@@ -15,6 +15,7 @@ module Api
         description = params[:description]
         website = params[:website]
         phone = params[:phone]
+        location_type = params[:location_type]
 
         if (description)
           location.description = description
@@ -26,6 +27,11 @@ module Api
 
         if (phone)
           location.phone = phone
+        end
+
+        if (location_type)
+          type = LocationType.find(location_type)
+          location.location_type = type
         end
 
         if (location.save)
