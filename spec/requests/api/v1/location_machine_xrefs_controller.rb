@@ -1,16 +1,15 @@
 require 'spec_helper'
 
 describe Api::V1::LocationMachineXrefsController do
+  before(:each) do
+    @region = FactoryGirl.create(:region, :name => 'portland')
+    @location = FactoryGirl.create(:location, :name => 'Ground Kontrol', :region => @region)
+    @machine = FactoryGirl.create(:machine, :name => 'Cleo')
+
+    @lmx = FactoryGirl.create(:location_machine_xref, :machine_id => @machine.id, :location_id => @location.id)
+  end
 
   describe '#index' do
-    before(:each) do
-      @region = FactoryGirl.create(:region, :name => 'portland')
-      @location = FactoryGirl.create(:location, :name => 'Ground Kontrol', :region => @region)
-      @machine = FactoryGirl.create(:machine, :name => 'Cleo')
-
-      @lmx = FactoryGirl.create(:location_machine_xref, :machine_id => @machine.id, :location_id => @location.id)
-    end
-
     it 'sends all lmxes in region' do
       chicago = FactoryGirl.create(:region, :name => 'chicago')
       FactoryGirl.create(:location_machine_xref, :machine => @machine, :location => FactoryGirl.create(:location, :name => 'Chicago Location', :region => chicago))
@@ -28,14 +27,6 @@ describe Api::V1::LocationMachineXrefsController do
   end
 
   describe '#create' do
-    before(:each) do
-      @region = FactoryGirl.create(:region, :name => 'Portland')
-      @location = FactoryGirl.create(:location, :name => 'Ground Kontrol', :region => @region)
-      @machine = FactoryGirl.create(:machine, :name => 'Cleo')
-
-      @lmx = FactoryGirl.create(:location_machine_xref, :machine_id => @machine.id, :location_id => @location.id)
-    end
-
     it 'updates condition on existing lmx' do
       post '/api/v1/location_machine_xrefs.json?machine_id=' + @machine.id.to_s + ';location_id=' + @location.id.to_s + ';condition=foo'
       expect(response).to be_success
