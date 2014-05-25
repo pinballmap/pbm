@@ -2,6 +2,12 @@ module Api
   module V1
     class LocationMachineXrefsController < InheritedResources::Base
       respond_to :json
+      has_scope :region
+
+      def index
+        lmxes = apply_scopes(LocationMachineXref)
+        return_response(lmxes, 'location_machine_xrefs')
+      end
 
       def create
         location = params[:location_id]
