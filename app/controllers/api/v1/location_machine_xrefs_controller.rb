@@ -2,10 +2,10 @@ module Api
   module V1
     class LocationMachineXrefsController < InheritedResources::Base
       respond_to :json
-      has_scope :region
+      has_scope :region, :limit
 
       def index
-        lmxes = apply_scopes(LocationMachineXref)
+        lmxes = apply_scopes(LocationMachineXref).order('id desc')
         return_response(lmxes, 'location_machine_xrefs')
       end
 
@@ -31,6 +31,16 @@ module Api
         lmx.update_condition(params[:condition], {:remote_ip => request.remote_ip})
 
         return_response(lmx, 'location_machine')
+
+        rescue ActiveRecord::RecordNotFound
+          return_response('Failed to find machine', 'errors')
+      end
+
+      def destroy
+        lmx = LocationMachineXref.find(params[:id])
+        lmx.destroy
+
+        return_response('Successfully deleted lmx #' + lmx.id.to_s, 'msg')
 
         rescue ActiveRecord::RecordNotFound
           return_response('Failed to find machine', 'errors')

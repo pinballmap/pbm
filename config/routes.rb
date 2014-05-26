@@ -12,7 +12,7 @@ Pbm::Application.routes.draw do
       resources :machines, :only => [:index, :show, :create]
       resources :location_types, :only => [:index, :show]
       resources :regions, :only => [:index,:show]
-      resources :location_machine_xrefs, :only => [:create,:update]
+      resources :location_machine_xrefs, :only => [:create, :destroy, :update]
       resources :locations, :only => [:update]
       post '/locations/suggest' => 'locations#suggest', :as => 'suggest'
       scope 'region/:region', :constraints => { :region => /#{regions}|!admin/i } do
