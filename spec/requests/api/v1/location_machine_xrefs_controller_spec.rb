@@ -57,7 +57,7 @@ describe Api::V1::LocationMachineXrefsController do
       lmxes.size.should == 1
 
       lmxes[0]['location_id'].should == @location.id
-      lmxes[0]['machine_id'].should == @location.id
+      lmxes[0]['machine_id'].should == @machine.id
     end
 
     it 'respects limit scope' do

@@ -16,6 +16,29 @@ class ApplicationController < ActionController::Base
     )
   end
 
+  def send_new_location_notification(params, region)
+    Pony.mail(
+      :to => region.users.collect {|u| u.email},
+      :bcc => User.all.select {|u| u.is_super_admin }.collect {|u| u.email},
+      :from => 'admin@pinballmap.com',
+      :subject => "PBM - New location suggested for the #{region.name} pinball map",
+      :body => <<END
+(A new pinball spot has been submitted for your region! Please verify the address on http://maps.google.com and then paste that Google Maps address into http://pinballmap.com/admin. Thanks!)\n
+Location Name: #{params['location_name']}\n
+Street: #{params['location_street']}\n
+City: #{params['location_city']}\n
+State: #{params['location_state']}\n
+Zip: #{params['location_zip']}\n
+Phone: #{params['location_phone']}\n
+Website: #{params['location_website']}\n
+Operator: #{params['location_operator']}\n
+Machines: #{params['location_machines']}\n
+Their Name: #{params['submitter_name']}\n
+Their Email: #{params['submitter_email']}\n
+END
+    )
+  end
+
   def return_response(data,root,includes=[],methods=[])
     render :json => {root=>data.as_json(include: includes,methods: methods,root:false)}
   end
