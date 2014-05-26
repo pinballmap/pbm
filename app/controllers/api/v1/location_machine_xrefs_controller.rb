@@ -2,7 +2,7 @@ module Api
   module V1
     class LocationMachineXrefsController < InheritedResources::Base
       respond_to :json
-      has_scope :region
+      has_scope :region, :limit
 
       def index
         lmxes = apply_scopes(LocationMachineXref)

@@ -59,6 +59,16 @@ describe Api::V1::LocationMachineXrefsController do
       lmxes[0]['location_id'].should == @location.id
       lmxes[0]['machine_id'].should == @location.id
     end
+
+    it 'respects limit scope' do
+      newest_lmx = FactoryGirl.create(:location_machine_xref, :machine => FactoryGirl.create(:machine, :name => 'Barb'), :location => @location);
+
+      get '/api/v1/region/portland/location_machine_xrefs.json?limit=1'
+      expect(response).to be_success
+
+      JSON.parse(response.body)['location_machine_xrefs'].size.should == 1
+      JSON.parse(response.body)['location_machine_xrefs'][0]['id'].should == newest_lmx.id
+    end
   end
 
   describe '#create' do
