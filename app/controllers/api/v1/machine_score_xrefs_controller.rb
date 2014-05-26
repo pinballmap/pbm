@@ -13,7 +13,6 @@ module Api
         msx.initials = params[:initials]
         if (msx.save) 
           msx.sanitize_scores
-          return_response('Added your score!', 'response')
           return_response('Added your score!', 'msg')
         else
           return_response(msx.errors.full_messages, 'errors')
