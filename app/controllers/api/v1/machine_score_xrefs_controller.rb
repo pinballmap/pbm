@@ -22,6 +22,15 @@ module Api
           return_response('Failed to find machine', 'errors')
       end
 
+      def show
+        msx = MachineScoreXref.where(location_machine_xref_id: params[:id])
+        return_response(msx, 'machine_scores')
+
+        rescue ActiveRecord::RecordNotFound
+          return_response('Failed to find machine', 'errors')
+
+      end
+
     end
   end
 end
