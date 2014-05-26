@@ -5,7 +5,7 @@ module Api
       has_scope :region, :limit
 
       def index
-        lmxes = apply_scopes(LocationMachineXref)
+        lmxes = apply_scopes(LocationMachineXref).order('id desc')
         return_response(lmxes, 'location_machine_xrefs')
       end
 
