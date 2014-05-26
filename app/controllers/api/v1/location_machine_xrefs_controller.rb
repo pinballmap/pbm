@@ -36,6 +36,16 @@ module Api
           return_response('Failed to find machine', 'errors')
       end
 
+      def destroy
+        lmx = LocationMachineXref.find(params[:id])
+        lmx.destroy
+
+        return_response('Successfully deleted lmx #' + lmx.id.to_s, 'msg')
+
+        rescue ActiveRecord::RecordNotFound
+          return_response('Failed to find machine', 'errors')
+      end
+
     end
   end
 end
