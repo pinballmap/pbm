@@ -46,7 +46,7 @@ describe PagesController do
           :from =>"admin@pinballmap.com",
           :subject => "PBM - New location suggested for the portland pinball map",
           :body => <<HERE
-(A new pinball spot has been submitted for your region. Please look up and verify the address on http://maps.google.com and then paste the Google Maps address into http://pinballmap.com/admin. Thanks!)
+(A new pinball spot has been submitted for your region! Please verify the address on http://maps.google.com and then paste that Google Maps address into http://pinballmap.com/admin. Thanks!)\n
 Location Name: name\n
 Street: street\n
 City: city\n
