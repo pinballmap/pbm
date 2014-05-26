@@ -26,7 +26,7 @@ Their Name: #{params['submitter_name']}\n
 Their Email: #{params['submitter_email']}\n
 END
         )
-        return_response("Thanks for entering that location. We'll get it in the system as soon as possible.",'response')
+        return_response("Thanks for entering that location. We'll get it in the system as soon as possible.", 'msg')
         
         rescue ActiveRecord::RecordNotFound
           return_response('Failed to find region', 'errors')
