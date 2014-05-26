@@ -14,6 +14,7 @@ Pbm::Application.routes.draw do
       resources :regions, :only => [:index,:show]
       resources :location_machine_xrefs, :only => [:create, :destroy, :update]
       resources :locations, :only => [:update]
+      resources :machine_score_xrefs, :only => [:create]
       post '/locations/suggest' => 'locations#suggest', :as => 'suggest'
       scope 'region/:region', :constraints => { :region => /#{regions}|!admin/i } do
         resources :location_machine_xrefs, :only => [:index]
