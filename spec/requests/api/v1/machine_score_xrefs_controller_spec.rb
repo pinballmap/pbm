@@ -11,6 +11,31 @@ describe Api::V1::MachineScoreXrefsController do
     @score_rank_2 = FactoryGirl.create(:machine_score_xref, :location_machine_xref => @lmx, :rank => 2, :score => 100, :initials => 'def')
   end
 
+  describe '#index' do
+    it 'shows all scores for region' do
+      chicago = FactoryGirl.create(:region, :name => 'Chicago')
+      chicago_location = FactoryGirl.create(:location, :name => 'Barb', :region => chicago)
+      chicago_lmx = FactoryGirl.create(:location_machine_xref, :location => chicago_location, :machine => @machine)
+      chicago_msx = FactoryGirl.create(:machine_score_xref, :location_machine_xref => chicago_lmx, :score => 567)
+
+      get '/api/v1/region/portland/machine_score_xrefs.json'
+      expect(response).to be_success
+
+      scores = JSON.parse(response.body)['machine_score_xrefs']
+
+      scores.size.should == 2
+    end
+
+    it 'respects limit scope' do
+      get '/api/v1/region/portland/machine_score_xrefs.json?limit=1'
+      expect(response).to be_success
+
+      scores = JSON.parse(response.body)['machine_score_xrefs']
+
+      scores.size.should == 1
+    end
+  end
+
   describe '#show' do
     it 'shows all scores for lmx' do
       get '/api/v1/machine_score_xrefs/' + @lmx.id.to_s + '.json'

@@ -2,7 +2,12 @@ module Api
   module V1
     class MachineScoreXrefsController < InheritedResources::Base
       respond_to :json
-      has_scope :region
+      has_scope :region, :limit
+
+      def index
+        scores = apply_scopes(MachineScoreXref).order('id desc')
+        return_response(scores, 'machine_score_xrefs')
+      end
 
       def create
         lmx = LocationMachineXref.find(params[:location_machine_xref_id])
