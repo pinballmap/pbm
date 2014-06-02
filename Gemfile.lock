@@ -29,6 +29,9 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     addressable (2.3.5)
+    apipie-rails (0.2.1)
+      json
+      rails (>= 3.0.10)
     arel (3.0.2)
     atomic (1.1.14)
     aws-sdk (1.11.1)
@@ -317,6 +320,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  apipie-rails
   arel
   aws-sdk
   bullet

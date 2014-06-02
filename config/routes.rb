@@ -5,6 +5,8 @@ if (Region.table_exists? && Region.all.size > 0)
 end
 
 Pbm::Application.routes.draw do
+  apipie
+
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   namespace :api do

@@ -1,13 +1,20 @@
 module Api
   module V1
     class MachinesController < InheritedResources::Base
-
       respond_to :json
 
+      api :GET, '/api/v1/machines.json', "Fetch all machines"
+      description 'These are the canonical machine descriptions, not the location-centric ones'
+      formats [ 'json' ]
       def index
         return_response(Machine.all, 'machines')
       end
 
+      api :POST, '/api/v1/machines.json', "Create a new canonical machine"
+      description 'This does not create a machine at a location, it just creates the new canonical machine unless it already exists in the system'
+      param :machine_name, String, :desc => 'Name of the new canonical machine', :required => false
+      param :location_id, Integer, :desc => 'Location ID of where the machine was added', :required => false
+      formats [ 'json' ]
       def create
         machine_name = params[:machine_name]
 
