@@ -41,6 +41,7 @@ gem 'twitter'
 gem 'rails_autolink'
 gem 'social-share-button'
 gem 'rack-attack'
+gem 'apipie-rails'
 
 group :test do
   gem 'cucumber-rails', :require => false

@@ -1,9 +1,9 @@
 module Api
   module V1
     class RegionsController < InheritedResources::Base
-
       respond_to :json
 
+      api :GET, '/api/v1/regions.json', 'Fetch all regions'
       def index
         regions = Region.all
 
