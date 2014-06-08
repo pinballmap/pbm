@@ -80,4 +80,18 @@ class Region < ActiveRecord::Base
   def machines_count
     LocationMachineXref.count_by_sql "select count(*) from location_machine_xrefs lmx inner join locations l on (lmx.location_id = l.id) where l.region_id=#{self.id}"
   end
+
+  def available_search_sections
+    sections = [ 'city', 'location', 'machine', 'type' ]
+
+    if (self.operators.size > 0)
+      sections.push('operator')
+    end
+
+    if (self.zones.size > 0)
+      sections.push('zone')
+    end
+
+    '[' + sections.collect {|s| "'" + s + "'"}.join(', ') + ']'
+  end
 end

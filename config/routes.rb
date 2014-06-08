@@ -89,7 +89,7 @@ Pbm::Application.routes.draw do
 
     match 'iphone.html', :to => 'locations#mobile'
     match 'mobile', :to => 'locations#mobile'
-    
+
     match 'all_region_data.json', :to => 'regions#all_region_data', :format => 'json'
 
     match '*page', :to => 'locations#unknown_route'

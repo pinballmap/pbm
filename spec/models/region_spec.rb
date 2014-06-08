@@ -94,4 +94,29 @@ describe Region do
       @r.all_admin_email_addresses.should == [ 'not@primary.com', 'is@primary.com' ]
     end
   end
+
+  describe '#available_search_sections' do
+    it 'should not return zone as a search section if the region has no zones' do
+      @r.available_search_sections.should == "['city', 'location', 'machine', 'type']"
+
+      FactoryGirl.create(:location, :region => @r, :name => 'Cleo', :zone => FactoryGirl.create(:zone, :region => @r, :name => 'Alberta'))
+
+      Region.find(@r.id).available_search_sections.should == "['city', 'location', 'machine', 'type', 'zone']"
+    end
+
+    it 'should not return operator as a search section if the region has no operators' do
+      @r.available_search_sections.should == "['city', 'location', 'machine', 'type']"
+
+      FactoryGirl.create(:location, :region => @r, :name => 'Cleo', :operator => FactoryGirl.create(:operator, :name => 'Quarter Bean', :region => @r))
+
+      Region.find(@r.id).available_search_sections.should == "['city', 'location', 'machine', 'type', 'operator']"
+    end
+
+    it 'should display all search sections when an operator and zone are present' do
+      FactoryGirl.create(:location, :region => @r, :name => 'Cleo', :zone => FactoryGirl.create(:zone, :region => @r, :name => 'Alberta'))
+      FactoryGirl.create(:location, :region => @r, :name => 'Cleo', :operator => FactoryGirl.create(:operator, :name => 'Quarter Bean', :region => @r))
+
+      Region.find(@r.id).available_search_sections.should == "['city', 'location', 'machine', 'type', 'operator', 'zone']"
+    end
+  end
 end
