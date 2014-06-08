@@ -1,5 +1,9 @@
 *sweet pinballin' brah*
 
+##API Documentation
+
+Available here: [http://pinballmap.com/api/v1/docs](http://pinballmap.com/api/v1/docs)
+
 ##Mac Enviroment Setup
 Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhanifin) undertook to get the site up and running on OS X 10.9. If you would like to contribute, and have any trouble, please ask.
 

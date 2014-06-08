@@ -221,6 +221,30 @@ describe LocationMachineXrefsController do
       FactoryGirl.create(:location_machine_xref, :location => @location, :machine => FactoryGirl.create(:machine, :name => 'Test Machine Name'))
     end
 
+    it 'hides zone option when no zones in region' do
+      visit "/#{@region.name}"
+
+      page.should_not have_css("a#zone_section_link")
+
+      FactoryGirl.create(:location, :region => @region, :name => 'Cleo', :zone => FactoryGirl.create(:zone, :region => @region, :name => 'Alberta'))
+
+      visit "/#{@region.name}"
+
+      page.should have_css("a#zone_section_link")
+    end
+
+    it 'hides operator option when no operators in region' do
+      visit "/#{@region.name}"
+
+      page.should_not have_css("a#operator_section_link")
+
+      FactoryGirl.create(:location, :region => @region, :name => 'Cleo', :operator => FactoryGirl.create(:operator, :name => 'Quarter Bean', :region => @region))
+
+      visit "/#{@region.name}"
+
+      page.should have_css("a#operator_section_link")
+    end
+
     it 'lets you change navigation types' do
       visit "/#{@region.name}"
 

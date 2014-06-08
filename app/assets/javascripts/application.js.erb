@@ -7,7 +7,7 @@ var map;
 var markers = new Array();
 var infoWindows = new Array();
 var locationIDs = new Array();
-var searchSections = new Array('city', 'location', 'machine', 'type', 'operator', 'zone');
+var searchSections = new Array();
 
 function toggleArrows(name, id) {
   var open = '_open_arrow' + (id ? '_' + id : '');
@@ -142,4 +142,8 @@ function locationLookupMapCenter(locationID) {
   clearInfoWindows();
   map.panTo(markers[index].getPosition());
   infoWindows[index].open(map, markers[index]);
+}
+
+function setSearchSections(newSearchSections) {
+  searchSections = newSearchSections;
 }
