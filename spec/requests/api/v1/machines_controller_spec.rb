@@ -16,12 +16,20 @@ describe Api::V1::MachinesController do
       JSON.parse(response.body)['errors'].should == 'Failed to find location'
     end
 
-    it 'handles creation by machine name.. machine exists with same name' do
+    it 'handles creation by machine name.. machine exists with same name.. case insensitive' do
       post '/api/v1/machines.json?machine_name=Cleo;location_id=' + @location.id.to_s
       expect(response).to be_success
       JSON.parse(response.body)['errors'].should == 'Machine already exists'
 
       post '/api/v1/machines.json?machine_name=cleo;location_id=' + @location.id.to_s
+      expect(response).to be_success
+      JSON.parse(response.body)['errors'].should == 'Machine already exists'
+
+      Machine.all.size.should == 1
+    end
+
+    it 'handles creation by machine name.. machine exists with same name.. ignores preceeding and trailing whitespace' do
+      post '/api/v1/machines.json?machine_name=%20Cleo%20;location_id=' + @location.id.to_s
       expect(response).to be_success
       JSON.parse(response.body)['errors'].should == 'Machine already exists'
 

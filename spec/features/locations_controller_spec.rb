@@ -355,6 +355,26 @@ XML
 </data>
 XML
       page.html.gsub(/\s/,'').downcase.should include(page_contents.gsub(/\s/,'').downcase)
+
+      Machine.all.count.should == 2
+    end
+
+    it 'lets you add existing machines to a location by machine_name ignores preceeding and trailing whitespace' do
+      sasston = FactoryGirl.create(:location, :region => @region)
+      FactoryGirl.create(:machine, :name => "Cleo")
+      FactoryGirl.create(:machine, :name => "Bawb's Adventure")
+
+      visit '/iphone.html?modify_location=1;machine_name=%20cleo%20'
+
+      page_contents = <<XML
+<data>
+  <msg>add successful</msg>
+  <id>1</id>
+</data>
+XML
+      page.html.gsub(/\s/,'').downcase.should include(page_contents.gsub(/\s/,'').downcase)
+
+      Machine.all.count.should == 2
     end
 
     it 'lets you add machines that are not in the system' do
