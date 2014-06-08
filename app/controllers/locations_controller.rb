@@ -83,10 +83,16 @@ class LocationsController < InheritedResources::Base
     elsif (location_id = params[:modify_location])
       # unfortunately, the mobile devices are sending us a parameter called 'action'...until I figure out a way to handle this,
       # I assume if a machine doesn't exist at a location, create it..if it does, destroy it
-      machine = params[:machine_no] ? Machine.find(params[:machine_no]) : Machine.find(:first, :conditions => ["lower(name) = ?", params[:machine_name].downcase])
+      machine_name = params[:machine_name]
+
+      if (!machine_name.nil?)
+        machine_name.strip!
+      end
+
+      machine = params[:machine_no] ? Machine.find(params[:machine_no]) : Machine.find(:first, :conditions => ["lower(name) = ?", machine_name.downcase])
 
       if (machine.nil?)
-        machine = Machine.create(:name => params[:machine_name])
+        machine = Machine.create(:name => machine_name)
 
         send_new_machine_notification(machine, Location.find(params[:modify_location]))
       end

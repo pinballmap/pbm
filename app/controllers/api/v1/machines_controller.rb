@@ -17,6 +17,7 @@ module Api
       formats [ 'json' ]
       def create
         machine_name = params[:machine_name]
+        machine_name.strip!
 
         machine = Machine.find(:first, :conditions => ["lower(name)= ?", machine_name.downcase])
         location = Location.find(params[:location_id])
