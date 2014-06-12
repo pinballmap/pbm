@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140329174930) do
+ActiveRecord::Schema.define(:version => 20140612173934) do
 
   create_table "banned_ips", :force => true do |t|
     t.datetime "created_at", :null => false
@@ -144,12 +144,12 @@ ActiveRecord::Schema.define(:version => 20140329174930) do
 
   create_table "regions", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
+    t.datetime "created_at",                                                   :null => false
+    t.datetime "updated_at",                                                   :null => false
     t.string   "full_name"
     t.string   "motd"
-    t.float    "lat"
-    t.float    "lon"
+    t.decimal  "lat",                          :precision => 18, :scale => 12
+    t.decimal  "lon",                          :precision => 18, :scale => 12
     t.integer  "n_search_no"
     t.string   "default_search_type"
     t.boolean  "should_email_machine_removal"
