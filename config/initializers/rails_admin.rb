@@ -321,8 +321,8 @@ RailsAdmin.config do |config|
       field :updated_at, :datetime 
       field :full_name, :string 
       field :motd, :string 
-      field :lat, :float 
-      field :lon, :float 
+      field :lat, :decimal
+      field :lon, :decimal 
       field :n_search_no, :integer 
       field :default_search_type, :string 
       field :should_email_machine_removal, :boolean
@@ -336,8 +336,8 @@ RailsAdmin.config do |config|
         end
       end
       field :motd, :string 
-      field :lat, :float 
-      field :lon, :float 
+      field :lat, :decimal 
+      field :lon, :decimal 
       field :n_search_no, :integer 
       field :default_search_type, :string 
       field :should_email_machine_removal, :boolean
@@ -347,8 +347,8 @@ RailsAdmin.config do |config|
       field :updated_at, :datetime 
       field :full_name, :string 
       field :motd, :string 
-      field :lat, :float 
-      field :lon, :float 
+      field :lat, :decimal 
+      field :lon, :decimal 
       field :n_search_no, :integer 
       field :default_search_type, :string 
       field :should_email_machine_removal, :boolean
