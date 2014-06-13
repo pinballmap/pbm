@@ -13,17 +13,17 @@ describe Api::V1::MachinesController do
     it 'errors with missing location_id' do
       post '/api/v1/machines.json?machine_name=Bawb;location_id='
       expect(response).to be_success
-      JSON.parse(response.body)['errors'].should == 'Failed to find location'
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find location')
     end
 
     it 'handles creation by machine name.. machine exists with same name.. case insensitive' do
       post '/api/v1/machines.json?machine_name=Cleo;location_id=' + @location.id.to_s
       expect(response).to be_success
-      JSON.parse(response.body)['errors'].should == 'Machine already exists'
+      expect(JSON.parse(response.body)['errors']).to eq('Machine already exists')
 
       post '/api/v1/machines.json?machine_name=cleo;location_id=' + @location.id.to_s
       expect(response).to be_success
-      JSON.parse(response.body)['errors'].should == 'Machine already exists'
+      expect(JSON.parse(response.body)['errors']).to eq('Machine already exists')
 
       Machine.all.size.should == 1
     end
@@ -31,7 +31,7 @@ describe Api::V1::MachinesController do
     it 'handles creation by machine name.. machine exists with same name.. ignores preceeding and trailing whitespace' do
       post '/api/v1/machines.json?machine_name=%20Cleo%20;location_id=' + @location.id.to_s
       expect(response).to be_success
-      JSON.parse(response.body)['errors'].should == 'Machine already exists'
+      expect(JSON.parse(response.body)['errors']).to eq('Machine already exists')
 
       Machine.all.size.should == 1
     end
@@ -48,7 +48,7 @@ describe Api::V1::MachinesController do
 
       post '/api/v1/machines.json?machine_name=Bawb;location_id=' + @location.id.to_s
       expect(response).to be_success
-      JSON.parse(response.body)['machine']['name'].should == 'Bawb'
+      expect(JSON.parse(response.body)['machine']['name']).to eq('Bawb')
     end
   end
 end

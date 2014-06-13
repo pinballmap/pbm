@@ -13,7 +13,7 @@ describe Api::V1::LocationsController do
       post '/api/v1/locations/suggest.json?region_id=-1'
       expect(response).to be_success
 
-      JSON.parse(response.body)['errors']['Failed to find region']
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find region')
     end
 
     it 'emails admins on new location submission' do
@@ -43,7 +43,7 @@ HERE
       post '/api/v1/locations/suggest.json', :region_id => @region.id.to_s, :location_name => 'name', :location_street => 'street', :location_city => 'city', :location_state => 'state', :location_zip => 'zip', :location_phone => 'phone', :location_website => 'website', :location_operator => 'operator', :location_machines => 'machines', :submitter_name => 'subname', :submitter_email => 'subemail'
       expect(response).to be_success
 
-      JSON.parse(response.body)['msg']["Thanks for entering that location. We'll get it in the system as soon as possible."]
+      expect(JSON.parse(response.body)['msg']).to eq("Thanks for entering that location. We'll get it in the system as soon as possible.")
     end
   end
 
