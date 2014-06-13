@@ -14,7 +14,7 @@ describe Api::V1::LocationMachineXrefsController do
       delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json'
       expect(response).to be_success
 
-      JSON.parse(response.body)['msg']['Successfully deleted lmx #' + @lmx.id.to_s]
+      expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
       LocationMachineXref.all.size.should == 0
     end
 
@@ -31,7 +31,7 @@ describe Api::V1::LocationMachineXrefsController do
       delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json'
       expect(response).to be_success
 
-      JSON.parse(response.body)['msg']['Successfully deleted lmx #' + @lmx.id.to_s]
+      expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
       LocationMachineXref.all.size.should == 0
     end
 
@@ -39,7 +39,7 @@ describe Api::V1::LocationMachineXrefsController do
       delete '/api/v1/location_machine_xrefs/-1.json'
       expect(response).to be_success
 
-      JSON.parse(response.body)['errors']['Failed to find lmx']
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
       LocationMachineXref.all.size.should == 1
     end
   end
@@ -75,7 +75,7 @@ describe Api::V1::LocationMachineXrefsController do
     it 'updates condition on existing lmx' do
       post '/api/v1/location_machine_xrefs.json?machine_id=' + @machine.id.to_s + ';location_id=' + @location.id.to_s + ';condition=foo'
       expect(response).to be_success
-      JSON.parse(response.body)['location_machine']['condition'].should == 'foo'
+      expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
 
       updated_lmx = LocationMachineXref.find(@lmx)
       updated_lmx.condition.should == 'foo'
@@ -88,7 +88,7 @@ describe Api::V1::LocationMachineXrefsController do
 
       post '/api/v1/location_machine_xrefs.json?machine_id=' + new_machine.id.to_s + ';location_id=' + @location.id.to_s + ';condition=foo'
       expect(response).to be_success
-      JSON.parse(response.body)['location_machine']['condition'].should == 'foo'
+      expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
 
       new_lmx = LocationMachineXref.last
       new_lmx.condition.should == 'foo'
@@ -118,7 +118,7 @@ describe Api::V1::LocationMachineXrefsController do
 
       put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '?condition=foo'
       expect(response).to be_success
-      JSON.parse(response.body)['location_machine']['condition'].should == 'foo'
+      expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
     end
   end
 end

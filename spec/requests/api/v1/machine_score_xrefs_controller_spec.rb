@@ -58,7 +58,7 @@ describe Api::V1::MachineScoreXrefsController do
       get '/api/v1/machine_score_xrefs/-1.json'
       expect(response).to be_success
 
-      JSON.parse(response.body)['errors'].should == 'Failed to find machine'
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
     end
   end
 
@@ -74,7 +74,7 @@ describe Api::V1::MachineScoreXrefsController do
       post '/api/v1/machine_score_xrefs.json?location_machine_xref_id=' + @lmx.id.to_s + ';score=1,234;initials=abc;rank=1'
       expect(response).to be_success
 
-      JSON.parse(response.body)['msg'].should == 'Added your score!'
+      expect(JSON.parse(response.body)['msg']).to eq('Added your score!')
 
       new_score = MachineScoreXref.last
 
