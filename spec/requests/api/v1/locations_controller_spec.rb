@@ -49,14 +49,14 @@ HERE
 
   describe '#update' do
     it 'only allows you to update description, website, and phone' do
-      put '/api/v1/locations/' + @location.id.to_s + '.json?description=foo;website=http://bar;phone=baz;zip=97777'
+      put '/api/v1/locations/' + @location.id.to_s + '.json?description=foo;website=http://bar;phone=5555555555;zip=97777'
       expect(response).to be_success
 
       updated_location = Location.find(@location.id)
 
       updated_location.description.should == 'foo'
       updated_location.website.should == 'http://bar'
-      updated_location.phone.should == 'baz'
+      updated_location.phone.should == '555-555-5555'
       updated_location.zip.should == '97203'
 
       parsed_body = JSON.parse(response.body)
@@ -66,8 +66,28 @@ HERE
 
       expect(location['description']).to eq('foo')
       expect(location['website']).to eq('http://bar')
-      expect(location['phone']).to eq('baz')
+      expect(location['phone']).to eq('555-555-5555')
       expect(location['zip']).to eq('97203')
+    end
+
+    it 'responds with an error if an invalid phone number is sent' do
+      put '/api/v1/locations/' + @location.id.to_s + '.json?phone=baz'
+
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq(['Phone format invalid, please use ###-###-####'])
+
+      put '/api/v1/locations/' + @location.id.to_s + '.json?phone=444-4444'
+
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq(['Phone format invalid, please use ###-###-####'])
+
+      put '/api/v1/locations/' + @location.id.to_s + '.json?phone=11-444-4444'
+
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq(['Phone format invalid, please use ###-###-####'])
     end
   end
 end
