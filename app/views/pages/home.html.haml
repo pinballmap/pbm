@@ -23,7 +23,7 @@
         =link_to image_tag('sol-icon.jpeg'), 'https://twitter.com/pinballmapcom', :class => 'twitter_icon'
         Follow
         =link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
-        on Twitter for map updates from across all 41 regions on the site!
+        on Twitter for map updates from across all #{Region.all.size} regions on the site!
         %br/
         %br/
         The five most recent updates:
