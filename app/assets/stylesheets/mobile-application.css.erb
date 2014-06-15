@@ -11,23 +11,26 @@
   min-width: 320px;
   height: auto;
   text-align: center;
+  background-color: #f6effa;
 }
 
 #header a img {
   float: none;
   padding: 5px 0 0 0;
   width: 100%;
+  margin-bottom: -10px;
   max-width: 460px;
 }
 
 #header ul {
   display: inline-block;
-  margin: 5px auto;
+  margin: 0 auto;
+  padding-bottom: 10px;
   float: none;
   width: 100%;
   min-width: 320px;
   font-size: 16px;
-  background-color: #D0CDD0;
+  background-color: #f6effa;
   text-align: center;
 }
 
@@ -47,7 +50,7 @@
 
 #header .region_logo_dropdown {
     float: none;
-    background: #D0CDD0;
+    background: #f6effa;
     width: auto;
 }
 
@@ -89,7 +92,11 @@ div.pick_a_map {
   border: none;
 }
 
-#map_summaries, #locations {
+#map_summaries {
+  margin: 0 0 0 10px;
+}
+
+#locations {
   margin: 0;
 }
 
@@ -188,26 +195,30 @@ div.pick_a_map {
   margin: 10px 0;
 }
 
-#search_results {
-  margin: 0 10px;
-}
-
 .location_link {
   font-size: 16px;
   height: 18px;
+  line-height: 18px;
   padding: 6px 0;
   border: 1px solid #494949;
-  margin: 10px 0;
+  border-left: none;
+  border-right: none;
+  margin: 0;
 }
 
 .search_result ul {
   border: none;
+  border-radius: 0;
+}
+
+.search_result .show_location_detail_location ul {
+  margin-top: 0;
 }
 
 .name {
   font-size: 20px;
   line-height: 24px;
-  border-radius: 5px 5px 0 0;
+  border-radius: 0;
 }
 
 .address, .address_name {
@@ -233,11 +244,17 @@ div.pick_a_map {
   width: 100px;
 }
 
+.search_result {
+  border-radius: 0;
+  padding: 0;
+  border: 2px solid #987673;
+}
+
 .location_detail {
   padding: 0;
-  margin-top: 10px;
   font-size: 14px;
-  border: 1px solid #987673;
+  border: none;
+  width: 98%;
 }
 
 .desc_location {
@@ -271,8 +288,13 @@ div.pick_a_map {
   width: 100%;
 }
 
+#search_results {
+  margin: -5px 14px 10px 10px;
+  width: auto;
+}
+
 .location_name {
-  margin: 0;
+  margin: -14px 0 0;
 }
 
 .high_score > .sub_nav_item, .score_container_lmx > .sub_nav_item {
@@ -305,7 +327,7 @@ div.pick_a_map {
 #location_picture_xref_submit, .new_location_picture_xref input.submit_picture, input#add {
   width: 100%;
   font-size: 16px;
-  height: 28px;
+  height: 30px;
   padding: 0;
   margin: 10px 0;
 }
@@ -357,9 +379,9 @@ input#score, input#initials {
   box-shadow: none;
   display: block;
   float: none;
-  width: auto;
+  width: 100%;
   min-width: 320px;
-  position: relative;
+  position: absolute;
   margin-top: 10px;
   padding: 0;
   margin-right: 0;
@@ -407,9 +429,13 @@ input#score, input#initials {
   padding-left: 0;
 }
 
-#contact_maker textarea, #contact_maker input.submit_button {
-  width: 260px;
-  max-width: 260px;
+#contact_maker textarea {
+  width: 98%;
+  max-width: 98%;
+}
+
+#contact_maker textarea {
+  min-height: 100px;
 }
 
 #location_maker ul {
@@ -424,12 +450,16 @@ input#score, input#initials {
 #location_maker input.text, #contact_maker input.text {
   font-size: 16px;
   height: 28px;
-  width: 260px;
+  width: 98%;
+}
+
+#location_maker li.submit, #contact_maker li.submit {
+  margin-bottom: 30px;
 }
 
 #location_maker textarea.machines {
-  max-width: 260px;
-  width: 260px;
+  width: 98%;
+  min-height: 100px;
 }
 
 @media (max-width: 915px) { 
