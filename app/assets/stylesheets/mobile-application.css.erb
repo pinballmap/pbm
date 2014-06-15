@@ -11,23 +11,26 @@
   min-width: 320px;
   height: auto;
   text-align: center;
+  background-color: #f6effa;
 }
 
 #header a img {
   float: none;
   padding: 5px 0 0 0;
   width: 100%;
+  margin-bottom: -10px;
   max-width: 460px;
 }
 
 #header ul {
   display: inline-block;
-  margin: 5px auto;
+  margin: 0 auto;
+  padding-bottom: 10px;
   float: none;
   width: 100%;
   min-width: 320px;
   font-size: 16px;
-  background-color: #D0CDD0;
+  background-color: #f6effa;
   text-align: center;
 }
 
@@ -47,7 +50,7 @@
 
 #header .region_logo_dropdown {
     float: none;
-    background: #D0CDD0;
+    background: #f6effa;
     width: auto;
 }
 
@@ -89,7 +92,11 @@ div.pick_a_map {
   border: none;
 }
 
-#map_summaries, #locations {
+#map_summaries {
+  margin: 0 0 0 10px;
+}
+
+#locations {
   margin: 0;
 }
 
@@ -412,6 +419,10 @@ input#score, input#initials {
   max-width: 260px;
 }
 
+#contact_maker textarea {
+  min-height: 100px;
+}
+
 #location_maker ul {
   width: 280px;
 }
@@ -427,9 +438,14 @@ input#score, input#initials {
   width: 260px;
 }
 
+#location_maker li.submit, #contact_maker li.submit {
+  margin-bottom: 30px;
+}
+
 #location_maker textarea.machines {
   max-width: 260px;
   width: 260px;
+  min-height: 100px;
 }
 
 @media (max-width: 915px) { 
