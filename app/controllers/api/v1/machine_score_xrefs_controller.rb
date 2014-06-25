@@ -48,7 +48,7 @@ module Api
       def show
         lmx = LocationMachineXref.find(params[:id])
 
-        msxes = MachineScoreXref.where(location_machine_xref_id: lmx.id)
+        msxes = MachineScoreXref.where(location_machine_xref_id: lmx.id).order(:rank)
         return_response(msxes, 'machine_scores')
 
         rescue ActiveRecord::RecordNotFound

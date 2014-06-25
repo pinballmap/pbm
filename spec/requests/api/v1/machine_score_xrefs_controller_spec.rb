@@ -45,13 +45,13 @@ describe Api::V1::MachineScoreXrefsController do
 
       scores.size.should == 2
 
-      scores[0]['rank'].should == 2
-      scores[0]['initials'].should == 'def'
-      scores[0]['score'].should == 100
+      scores[0]['rank'].should == 1
+      scores[0]['initials'].should == 'abc'
+      scores[0]['score'].should == 123
 
-      scores[1]['rank'].should == 1
-      scores[1]['initials'].should == 'abc'
-      scores[1]['score'].should == 123
+      scores[1]['rank'].should == 2
+      scores[1]['initials'].should == 'def'
+      scores[1]['score'].should == 100
     end
 
     it 'errors for unknown lmx' do
