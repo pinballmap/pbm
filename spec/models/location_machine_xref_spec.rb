@@ -32,7 +32,7 @@ describe LocationMachineXref do
       @lmx.update_condition('foo')
 
       @lmx.condition.should == 'foo'
-      @lmx.condition_date.to_s.should == Time.now.to_s
+      @lmx.condition_date.to_s.should == Time.now.strftime("%Y-%m-%d")
 
       Pony.should_receive(:mail) do |mail|
         mail.should == {
