@@ -133,7 +133,7 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      find("#machine_condition_lmx_#{@lmx.id}").should have_content("This is a new condition Updated: #{@lmx.created_at.strftime("%d-%b-%Y")}")
+      find("#machine_condition_lmx_#{@lmx.id}").should have_content("This is a new condition Updated: #{Time.now.strftime("%d-%b-%Y")}")
     end
 
     it 'should let me cancel adding a new machine description' do

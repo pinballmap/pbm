@@ -79,6 +79,7 @@ describe Api::V1::LocationMachineXrefsController do
 
       updated_lmx = LocationMachineXref.find(@lmx)
       updated_lmx.condition.should == 'foo'
+      updated_lmx.condition_date.to_s.should == Time.now.strftime("%Y-%m-%d")
 
       LocationMachineXref.all.size.should == 1
     end

@@ -15,7 +15,7 @@ class LocationMachineXref < ActiveRecord::Base
 
   def update_condition(condition, options = {})
     self.condition = condition
-    self.condition_date = Time.now
+    self.condition_date = Time.now.strftime("%Y-%m-%d")
     self.save
 
     Pony.mail(
