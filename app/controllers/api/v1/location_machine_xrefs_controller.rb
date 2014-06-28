@@ -35,8 +35,8 @@ module Api
         return_response(lmx, 'location_machine')
       end
 
-      api :PUT, '/api/v1/location_machine_xref/:id.json', "Update a machine's condition at a location"
-      param :location_machine_xref_id, Integer, :desc => 'Machine at location ID', :required => true
+      api :PUT, '/api/v1/location_machine_xrefs/:id.json', "Update a machine's condition at a location"
+      param :id, Integer, :desc => 'LMX id', :required => true
       param :condition, String, :desc => "Notes on machine's condition", :required => true
       formats [ 'json' ]
       def update
