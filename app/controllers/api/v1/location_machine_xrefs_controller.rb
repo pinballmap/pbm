@@ -4,7 +4,7 @@ module Api
       respond_to :json
       has_scope :region, :limit
 
-      api :GET, '/api/v1/region/:region/location_machine_xref.json', "Get all machines at locations in a single region"
+      api :GET, '/api/v1/region/:region/location_machine_xrefs.json', "Get all machines at locations in a single region"
       param :region, String, :desc => 'Name of the Region you want to see events for', :required => true
       param :limit, Integer, :desc => 'Limit the number of results that are returned', :required => false
       formats [ 'json' ]
@@ -13,7 +13,7 @@ module Api
         return_response(lmxes, 'location_machine_xrefs')
       end
 
-      api :POST, '/api/v1/location_machine_xref.json', "Find or create a machine at a location"
+      api :POST, '/api/v1/location_machine_xrefs.json', "Find or create a machine at a location"
       param :location_id, Integer, :desc => 'Location ID to add machine to', :required => true
       param :machine_id, Integer, :desc => 'Machine ID to add to location', :required => true
       param :condition, String, :desc => "Notes on machine's condition", :required => false
@@ -49,8 +49,8 @@ module Api
           return_response('Failed to find machine', 'errors')
       end
 
-      api :DESTROY, '/api/v1/location_machine_xref/:id.json', "Remove a machine from a location"
-      param :location_machine_xref_id, Integer, :desc => 'Machine at location ID', :required => true
+      api :DESTROY, '/api/v1/location_machine_xrefs/:id.json', "Remove a machine from a location"
+      param :id, Integer, :desc => 'LMX id', :required => true
       formats [ 'json' ]
       def destroy
         lmx = LocationMachineXref.find(params[:id])
