@@ -214,6 +214,32 @@ describe LocationMachineXrefsController do
       page.should_not have_xpath('//a[contains(text(), "Cleo West")]')
       page.should_not have_xpath('//a[contains(text(), "Sassy")]')
     end
+
+    it 'escape input' do
+      FactoryGirl.create(
+        :location_machine_xref,
+        :location => FactoryGirl.create(:location, :region => @region, :name => 'Test[]Location'),
+        :machine => FactoryGirl.create(:machine, :name => 'Test[]Machine')
+      )
+
+      visit "/#{@region.name}"
+
+      fill_in("by_location_name", :with => 'test[')
+
+      page.execute_script %Q{ $('#by_location_name').trigger('focus') }
+      page.execute_script %Q{ $('#by_location_name').trigger('keydown') }
+
+      page.should have_xpath('//a[contains(text(), "Test[]Location")]')
+
+      page.find("div#other_search_options a#machine_section_link").click
+
+      fill_in("by_machine_name", :with => 'test[')
+
+      page.execute_script %Q{ $('#by_machine_name').trigger('focus') }
+      page.execute_script %Q{ $('#by_machine_name').trigger('keydown') }
+
+      page.should have_xpath('//a[contains(text(), "Test[]Machine")]')
+    end
   end
 
   describe 'main page filtering', :type => :feature, :js => true do

@@ -6,7 +6,7 @@ class LocationsController < InheritedResources::Base
   def autocomplete
     term = params[:term] || ''
 
-    render :json => @region.locations.map{|l| l.name}.grep(/#{params[:term]}/i).sort
+    render :json => @region.locations.map{|l| l.name}.grep(/#{Regexp.escape params[:term]}/i).sort
   end
 
   def index
