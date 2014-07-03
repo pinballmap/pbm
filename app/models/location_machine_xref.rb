@@ -18,12 +18,14 @@ class LocationMachineXref < ActiveRecord::Base
     self.condition_date = Time.now.strftime("%Y-%m-%d")
     self.save
 
-    Pony.mail(
-      :to => self.location.region.users.collect {|u| u.email},
-      :from => 'admin@pinballmap.com',
-      :subject => "PBM - Someone entered a machine condition",
-      :body => [self.condition, self.machine.name, self.location.name, self.location.region.name, "(entered from #{options[:remote_ip]})"].join("\n")
-    )
+    if (!condition.nil? && !condition.blank?)
+      Pony.mail(
+        :to => self.location.region.users.collect {|u| u.email},
+        :from => 'admin@pinballmap.com',
+        :subject => "PBM - Someone entered a machine condition",
+        :body => [self.condition, self.machine.name, self.location.name, self.location.region.name, "(entered from #{options[:remote_ip]})"].join("\n")
+      )
+    end
   end
 
   def destroy(options = {})

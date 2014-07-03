@@ -25,14 +25,7 @@ describe PagesController do
       post 'contact_sent', :region => 'portland', :contact_name => 'foo', :contact_email => 'bar', :contact_msg => 'baz'
     end
     it 'should not send an email if the body is blank' do
-      Pony.should_not_receive(:mail) do |mail|
-        mail.should == {
-          :to => ["foo@bar.com"],
-          :from =>"admin@pinballmap.com",
-          :subject => "PBM - Message from the Portland pinball map",
-          :body => "foo\nbar\nbaz",
-        }
-      end
+      Pony.should_not_receive(:mail)
 
       post 'contact_sent', :region => 'portland', :contact_name => 'foo', :contact_email => 'bar', :contact_msg => nil
     end

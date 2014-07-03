@@ -45,6 +45,11 @@ describe LocationMachineXref do
 
       @lmx.update_condition('bar', {:remote_ip => '0.0.0.0'})
     end
+    it 'should not send an email for blank condition updates' do
+      Pony.should_not_receive(:mail)
+
+      @lmx.update_condition('')
+    end
   end
 
   describe '#destroy' do
@@ -71,14 +76,8 @@ describe LocationMachineXref do
 
       @lmx.destroy({:remote_ip => '0.0.0.0'})
 
-      Pony.should_not_receive(:mail) do |mail|
-        mail.should == {
-          :body => "Cool Bar\nSassy\nPortland",
-          :subject => "PBM - Someone removed a machine from a location",
-          :to => ["foo@bar.com"],
-          :from =>"admin@pinballmap.com"
-        }
-      end
+      Pony.should_not_receive(:mail)
+
       @lmx_no_email.destroy
 
       LocationMachineXref.all.should == []
