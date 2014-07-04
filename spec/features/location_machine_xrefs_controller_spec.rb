@@ -149,7 +149,7 @@ describe LocationMachineXrefsController do
     end
   end
 
-  describe 'machine name autocomplete', :type => :feature, :js => true do
+  describe 'autocomplete', :type => :feature, :js => true do
     before(:each) do
       FactoryGirl.create(:location_machine_xref, :location => @location, :machine => FactoryGirl.create(:machine))
     end
@@ -221,6 +221,10 @@ describe LocationMachineXrefsController do
         :location => FactoryGirl.create(:location, :region => @region, :name => 'Test[]Location'),
         :machine => FactoryGirl.create(:machine, :name => 'Test[]Machine')
       )
+
+      # verify that a nil search doesn't raise an exception
+      visit "/#{@region.name}/machines/autocomplete"
+      visit "/#{@region.name}/locations/autocomplete"
 
       visit "/#{@region.name}"
 
