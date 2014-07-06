@@ -5,7 +5,7 @@ module Api
       respond_to :json
       has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_zone_id, :by_operator_id, :by_type_id, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region
 
-      api :POST, '/api/v1/suggest.json', 'Suggest a new location to add to the map'
+      api :POST, '/api/v1/locations/suggest.json', 'Suggest a new location to add to the map'
       description "This doesn't actually create a new location, it just sends location information to region admins"
       param :region_id, Integer, :desc => 'ID of the region that the location belongs in', :required => true
       param :location_name, String, :desc => 'Name of new location', :required => false
