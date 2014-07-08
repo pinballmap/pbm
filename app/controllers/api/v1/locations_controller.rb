@@ -5,6 +5,8 @@ module Api
       respond_to :json
       has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_zone_id, :by_operator_id, :by_type_id, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region
 
+      MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION = 50
+
       api :POST, '/api/v1/locations/suggest.json', 'Suggest a new location to add to the map'
       description "This doesn't actually create a new location, it just sends location information to region admins"
       param :region_id, Integer, :desc => 'ID of the region that the location belongs in', :required => true
@@ -92,6 +94,21 @@ module Api
 
         rescue ActiveRecord::RecordNotFound
           return_response('Failed to find region', 'errors')
+      end
+
+      api :GET, '/api/v1/locations/closest_by_lat_lon.json', "Returns the closest location to transmitted lat/lon"
+      description "This sends you the closest location to your lat/lon (within #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles). It includes a list of machines at the location."
+      param :lat, String, :desc => 'Latitude', :required => true
+      param :lon, String, :desc => 'Longitude', :required => true
+      formats [ 'json' ]
+      def closest_by_lat_lon
+        closest_location = Location.near([params[:lat], params[:lon]], MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION).first
+
+        if (closest_location)
+          return_response(closest_location, 'location', [], [:machine_names])
+        else
+          return_response("No locations within #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles.", 'errors')
+        end
       end
 
     end

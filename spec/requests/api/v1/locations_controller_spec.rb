@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Api::V1::LocationsController do
   before(:each) do
     @region = FactoryGirl.create(:region, :name => 'portland')
-    @location = FactoryGirl.create(:location, :region => @region, :state => 'OR', :zip => '97203')
+    @location = FactoryGirl.create(:location, :region => @region, :state => 'OR', :zip => '97203', :lat => 42.18, :lon => -71.18)
     FactoryGirl.create(:user, :email => 'foo@bar.com', :region => @region)
     FactoryGirl.create(:user, :email => 'super_admin@bar.com', :region => nil, :is_super_admin => 1)
   end
@@ -88,6 +88,36 @@ HERE
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq(['Phone format invalid, please use ###-###-####'])
+    end
+  end
+
+  describe '#closest_by_lat_lon' do
+    it 'sends you the closest location to you, along with machines at the location' do
+      get "/api/v1/locations/closest_by_lat_lon.json?lat=45.49;lon=-122.63"
+
+      expect(JSON.parse(response.body)['errors']).to eq('No locations within 50 miles.')
+
+      closest_location = FactoryGirl.create(:location, :region => @region, :name => 'Closest Location', :street => '123 pine', :city => 'portland', :phone => '555-555-5555', :state => 'OR', :zip => '97203', :lat => 45.49, :lon => -122.63)
+      FactoryGirl.create(:location_machine_xref, :location => closest_location, :machine => FactoryGirl.create(:machine, :name => 'Cleo'))
+      FactoryGirl.create(:location_machine_xref, :location => closest_location, :machine => FactoryGirl.create(:machine, :name => 'Bawb'))
+      FactoryGirl.create(:location_machine_xref, :location => closest_location, :machine => FactoryGirl.create(:machine, :name => 'Sassy'))
+
+      get "/api/v1/locations/closest_by_lat_lon.json?lat=#{closest_location.lat};lon=#{closest_location.lon}"
+
+      parsed_body = JSON.parse(response.body)
+      parsed_body.size.should == 1
+
+      location = parsed_body['location']
+
+      expect(location['name']).to eq('Closest Location')
+      expect(location['street']).to eq('123 pine')
+      expect(location['city']).to eq('portland')
+      expect(location['state']).to eq('OR')
+      expect(location['zip']).to eq('97203')
+      expect(location['phone']).to eq('555-555-5555')
+      expect(location['lat']).to eq('45.49')
+      expect(location['lon']).to eq('-122.63')
+      expect(location['machine_names']).to eq(['Bawb', 'Cleo', 'Sassy'])
     end
   end
 end
