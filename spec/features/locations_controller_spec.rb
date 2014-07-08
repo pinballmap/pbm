@@ -5,6 +5,27 @@ describe LocationsController do
     @region = FactoryGirl.create(:region, :name => 'portland', :full_name => 'portland', :lat => 1, :lon => 2, :motd => 'This is a MOTD', :n_search_no => 4, :should_email_machine_removal => 1)
   end
 
+  describe 'update_desc', :type => :feature, :js => true do
+    before(:each) do
+      @location = FactoryGirl.create(:location, :region => @region, :name => 'Cleo')
+    end
+
+    it 'allows users to update a location description - skips validation' do
+      @location.phone = '555'
+      @location.save(:validate => false)
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find("#desc_show_location_#{@location.id}").click
+      fill_in("new_desc_#{@location.id}", :with => "COOL DESC")
+      click_on 'Save'
+
+      sleep 1
+
+      Location.find(@location.id).description.should == 'COOL DESC'
+    end
+  end
+
   describe 'mobile', :type => :feature, :js => true do
 
     it 'defaults to portland if no region is given' do

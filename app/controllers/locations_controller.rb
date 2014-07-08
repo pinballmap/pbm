@@ -43,9 +43,15 @@ class LocationsController < InheritedResources::Base
     l.description = params["new_desc_#{id}".to_sym]
 
     if (ENV['RAKISMET_KEY'])
-      l.spam? ? nil : l.save
+      if (l.spam?)
+        nil
+      else
+        l.save(:validate => false)
+      end
+      l
     else
-      l.save
+      l.save(:validate => false)
+      l
     end
 
     render :nothing => true
