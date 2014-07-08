@@ -7,8 +7,11 @@
 
 :javascript
   $('#new_location_picture_xref_#{location.id}').submit(function () {
-    window.alert("Thanks for uploading that picture! It'll show up on the site as soon as an admin approves it.");
-    toggleData('add_picture_location', #{location.id});
+    var form = $(this);
+    $.post(form.attr('action'), form.serialize(), function (data) {
+      window.alert("Thanks for uploading that picture! It'll show up on the site as soon as an admin approves it.");
+      toggleData('add_picture_location', #{location.id});
+    });
 
     return false;
   });
