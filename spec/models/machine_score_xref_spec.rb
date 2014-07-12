@@ -15,7 +15,7 @@ describe MachineScoreXref do
         new_gc.sanitize_scores
 
         scores = MachineScoreXref.find(:all).sort {|a,b| a.rank <=> b.rank}
-        scores.should == [ new_gc, @second ]
+        expect(scores).to eq([ new_gc, @second ])
       end
 
       it 'should remove scores that are no longer possible' do
@@ -23,7 +23,7 @@ describe MachineScoreXref do
         new_first.sanitize_scores
 
         scores = MachineScoreXref.find(:all).sort {|a,b| a.rank <=> b.rank}
-        scores.should == [ new_first, @second ]
+        expect(scores).to eq([ new_first, @second ])
       end
     end
   end

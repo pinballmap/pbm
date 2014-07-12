@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe PagesController do
+describe PagesController, :type => :controller do
   before(:each) do
-    ApplicationController.any_instance.stub(:set_current_user).and_return(nil)
+    expect_any_instance_of(ApplicationController).to receive(:set_current_user).and_return(nil)
 
     region = FactoryGirl.create(:region, :name => 'portland', :full_name => 'Portland')
     @location = FactoryGirl.create(:location, :region => region)
@@ -13,34 +13,27 @@ describe PagesController do
 
   describe 'contact_sent' do
     it 'should send an email if the body is not blank' do
-      Pony.should_receive(:mail) do |mail|
-        mail.should == {
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
           :to => ["foo@bar.com"],
           :from =>"admin@pinballmap.com",
           :subject => "PBM - Message from the Portland pinball map",
           :body => "foo\nbar\nbaz",
-        }
+        )
       end
 
       post 'contact_sent', :region => 'portland', :contact_name => 'foo', :contact_email => 'bar', :contact_msg => 'baz'
     end
     it 'should not send an email if the body is blank' do
-      Pony.should_not_receive(:mail) do |mail|
-        mail.should == {
-          :to => ["foo@bar.com"],
-          :from =>"admin@pinballmap.com",
-          :subject => "PBM - Message from the Portland pinball map",
-          :body => "foo\nbar\nbaz",
-        }
-      end
+      expect(Pony).to_not receive(:mail)
 
       post 'contact_sent', :region => 'portland', :contact_name => 'foo', :contact_email => 'bar', :contact_msg => nil
     end
   end
   describe 'submitted_new_location' do
     it 'should send an email' do
-      Pony.should_receive(:mail) do |mail|
-        mail.should == {
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
           :to => ["foo@bar.com"],
           :bcc => ["super_admin@bar.com"],
           :from =>"admin@pinballmap.com",
@@ -59,13 +52,13 @@ Machines: machines\n
 Their Name: subname\n
 Their Email: subemail\n
 HERE
-        }
+        )
       end
 
       post 'submitted_new_location', :region => 'portland', :location_name => 'name', :location_street => 'street', :location_city => 'city', :location_state => 'state', :location_zip => 'zip', :location_phone => 'phone', :location_website => 'website', :location_operator => 'operator', :location_machines => 'machines', :submitter_name => 'subname', :submitter_email => 'subemail'
     end
     it 'should not send an email with http:// in location_machines name' do
-      Pony.should_not_receive(:mail)
+      expect(Pony).to_not receive(:mail)
 
       post 'submitted_new_location', :region => 'portland', :location_name => 'name', :location_street => 'street', :location_city => 'city', :location_state => 'state', :location_zip => 'zip', :location_phone => 'phone', :location_website => 'website', :location_operator => 'operator', :location_machines => 'http://machines', :submitter_name => 'subname', :submitter_email => 'subemail'
     end

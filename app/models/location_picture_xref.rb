@@ -16,6 +16,8 @@ class LocationPictureXref < ActiveRecord::Base
       :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
     }
 
+  do_not_validate_attachment_file_type :photo
+
   def rails_admin_default_object_label_method
   end
 end

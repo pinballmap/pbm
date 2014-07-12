@@ -14,33 +14,31 @@ describe LocationMachineXref do
 
     @lmx = FactoryGirl.create(:location_machine_xref, :location => @l, :machine => @m)
     @lmx_no_email = FactoryGirl.create(:location_machine_xref, :location => @l_no_email, :machine => @m)
-
-    Pony.stub(:mail)
   end
 
   describe '#update_condition' do
     it 'should update the condition of the lmx, timestamp it, and email the admins of the region' do
-      Pony.should_receive(:mail) do |mail|
-        mail.should == {
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
           :body => "foo\nSassy\nCool Bar\nPortland\n(entered from )",
           :subject => "PBM - Someone entered a machine condition",
           :to => ["foo@bar.com"],
           :from =>"admin@pinballmap.com"
-        }
+        )
       end
 
       @lmx.update_condition('foo')
 
-      @lmx.condition.should == 'foo'
-      @lmx.condition_date.to_s.should == Time.now.to_s
+      expect(@lmx.condition).to eq('foo')
+      expect(@lmx.condition_date.to_s).to eq(Time.now.to_s)
 
-      Pony.should_receive(:mail) do |mail|
-        mail.should == {
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
           :body => "bar\nSassy\nCool Bar\nPortland\n(entered from 0.0.0.0)",
           :subject => "PBM - Someone entered a machine condition",
           :to => ["foo@bar.com"],
           :from =>"admin@pinballmap.com"
-        }
+        )
       end
 
       @lmx.update_condition('bar', {:remote_ip => '0.0.0.0'})
@@ -49,39 +47,33 @@ describe LocationMachineXref do
 
   describe '#destroy' do
     it 'should remove the lmx, and email admins if appropriate' do
-      Pony.should_receive(:mail) do |mail|
-        mail.should == {
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
           :body => "Cool Bar\nSassy\nPortland\n(entered from )",
           :subject => "PBM - Someone removed a machine from a location",
           :to => ["foo@bar.com"],
           :from =>"admin@pinballmap.com"
-        }
+        )
       end
 
       @lmx.destroy
 
-      Pony.should_receive(:mail) do |mail|
-        mail.should == {
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
           :body => "Cool Bar\nSassy\nPortland\n(entered from 0.0.0.0)",
           :subject => "PBM - Someone removed a machine from a location",
           :to => ["foo@bar.com"],
           :from =>"admin@pinballmap.com"
-        }
+        )
       end
 
       @lmx.destroy({:remote_ip => '0.0.0.0'})
 
-      Pony.should_not_receive(:mail) do |mail|
-        mail.should == {
-          :body => "Cool Bar\nSassy\nPortland",
-          :subject => "PBM - Someone removed a machine from a location",
-          :to => ["foo@bar.com"],
-          :from =>"admin@pinballmap.com"
-        }
-      end
+      expect(Pony).to_not receive(:mail)
+
       @lmx_no_email.destroy
 
-      LocationMachineXref.all.should == []
+      expect(LocationMachineXref.all).to eq([])
     end
   end
 end

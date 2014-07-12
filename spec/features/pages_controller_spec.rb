@@ -17,12 +17,12 @@ describe PagesController do
 
       visit '/portland/events'
 
-      page.should have_content('event 6 @ External location')
-      page.should have_content('event 5 @ Test Location Name')
-      page.should have_content("event 4 @ Test Location Name #{Date.today - 1}")
-      page.should have_content("event 3 @ Test Location Name #{Date.today}")
-      page.should have_content("event 1 @ Test Location Name #{Date.today + 1}")
-      page.should have_content('event 2 @ Test Location Name')
+      expect(page).to have_content('event 6 @ External location')
+      expect(page).to have_content('event 5 @ Test Location Name')
+      expect(page).to have_content("event 4 @ Test Location Name #{Date.today - 1}")
+      expect(page).to have_content("event 3 @ Test Location Name #{Date.today}")
+      expect(page).to have_content("event 1 @ Test Location Name #{Date.today + 1}")
+      expect(page).to have_content('event 2 @ Test Location Name')
     end
 
     it 'is case insensitive for region name' do
@@ -31,7 +31,7 @@ describe PagesController do
 
       visit '/CHICAGO/events'
 
-      page.should have_content('event 1')
+      expect(page).to have_content('event 1')
     end
 
     it 'does not display events that are a week older than their end date' do
@@ -40,8 +40,8 @@ describe PagesController do
 
       visit '/portland/events'
 
-      page.should have_content('event 1')
-      page.should_not have_content('event 2')
+      expect(page).to have_content('event 1')
+      expect(page).to_not have_content('event 2')
     end
 
     it 'does not display events that are a week older than start date if there is no end date' do
@@ -50,8 +50,8 @@ describe PagesController do
 
       visit '/portland/events'
 
-      page.should have_content('event 1')
-      page.should_not have_content('event 2')
+      expect(page).to have_content('event 1')
+      expect(page).to_not have_content('event 2')
     end
   end
 
@@ -73,8 +73,8 @@ describe PagesController do
 
       visit '/portland/high_rollers'
 
-      page.should have_content('ssw: with 2 scores')
-      page.should have_content('rtgt: with 1 scores')
+      expect(page).to have_content('ssw: with 2 scores')
+      expect(page).to have_content('rtgt: with 1 scores')
     end
   end
 
@@ -88,7 +88,7 @@ describe PagesController do
 
       visit '/chicago/about'
 
-      page.should have_content('cool links cool link 1 desc2 main links chicago link 1 desc1')
+      expect(page).to have_content('cool links cool link 1 desc2 main links chicago link 1 desc1')
     end
 
     it 'sort order does not cause headers to display twice' do
@@ -98,7 +98,7 @@ describe PagesController do
 
       visit "/#{@region.name}/about"
 
-      page.should have_content('main links link 2 desc link 1 desc other category link 3 desc')
+      expect(page).to have_content('main links link 2 desc link 1 desc other category link 3 desc')
     end
   end
 
@@ -111,7 +111,7 @@ describe PagesController do
 
       visit "/#{@region.name}/suggest"
 
-      page.should have_select('location_state', :options => ['OR', 'WA'])
+      expect(page).to have_select('location_state', :options => ['OR', 'WA'])
     end
   end
 
@@ -127,8 +127,8 @@ describe PagesController do
 
       visit "/"
 
-      page.should have_css('div#map_summaries')
-      page.should have_content('Tracking: 2 Locations 2 Machines Tracking: 1 Locations 1 Machines')
+      expect(page).to have_css('div#map_summaries')
+      expect(page).to have_content('Tracking: 2 Locations 2 Machines Tracking: 1 Locations 1 Machines')
     end
   end
 
@@ -144,13 +144,13 @@ describe PagesController do
 
       visit "/portland"
 
-      page.should have_content('2 locations and 2 machines')
+      expect(page).to have_content('2 locations and 2 machines')
     end
 
     it 'does not show high scores when none exist' do
       visit "/portland"
 
-      page.should_not have_selector("#ticker")
+      expect(page).to_not have_selector("#ticker")
     end
 
     it 'shows high scores when they exist' do
@@ -159,7 +159,7 @@ describe PagesController do
 
       visit "/portland"
 
-      page.should have_content("Test Location Name's Test Machine Name: GC with 1,234 by cap")
+      expect(page).to have_content("Test Location Name's Test Machine Name: GC with 1,234 by cap")
     end
   end
 end

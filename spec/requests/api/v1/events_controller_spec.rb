@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::V1::EventsController do
+describe Api::V1::EventsController, :type => :request do
 
   describe '#index' do
     before(:each) do
@@ -16,10 +16,10 @@ describe Api::V1::EventsController do
       expect(response).to be_success
 
       parsed_body = JSON.parse(response.body)
-      parsed_body.size.should == 1
+      expect(parsed_body.size).to eq(1)
 
       events = parsed_body['events']
-      events.size.should == 2
+      expect(events.size).to eq(2)
 
       expect(events[0]['name']).to eq('event 1')
       expect(events[1]['name']).to eq('event 2')
@@ -34,10 +34,10 @@ describe Api::V1::EventsController do
       expect(response).to be_success
 
       parsed_body = JSON.parse(response.body)
-      parsed_body.size.should == 1
+      expect(parsed_body.size).to eq(1)
 
       events = parsed_body['events']
-      events.size.should == 1
+      expect(events.size).to eq(1)
 
       expect(events[0]['General'][0]['name']).to eq('event 1')
       expect(events[0]['Foo'][0]['name']).to eq('event 2')
@@ -52,10 +52,10 @@ describe Api::V1::EventsController do
       expect(response).to be_success
 
       parsed_body = JSON.parse(response.body)
-      parsed_body.size.should == 1
+      expect(parsed_body.size).to eq(1)
 
       events = parsed_body['events']
-      events.size.should == 1
+      expect(events.size).to eq(1)
 
       expect(events[0]['name']).to eq('event 1')
     end
@@ -68,10 +68,10 @@ describe Api::V1::EventsController do
       expect(response).to be_success
 
       parsed_body = JSON.parse(response.body)
-      parsed_body.size.should == 1
+      expect(parsed_body.size).to eq(1)
 
       events = parsed_body['events']
-      events.size.should == 1
+      expect(events.size).to eq(1)
 
       expect(events[0]['name']).to eq('event 1')
     end

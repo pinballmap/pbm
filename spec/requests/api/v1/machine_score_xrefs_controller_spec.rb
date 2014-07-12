@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::V1::MachineScoreXrefsController do
+describe Api::V1::MachineScoreXrefsController, :type => :request do
   before(:each) do
     @region = FactoryGirl.create(:region, :name => 'portland', :should_email_machine_removal => 1)
     @location = FactoryGirl.create(:location, :name => 'Ground Kontrol', :region => @region)
@@ -23,7 +23,7 @@ describe Api::V1::MachineScoreXrefsController do
 
       scores = JSON.parse(response.body)['machine_score_xrefs']
 
-      scores.size.should == 2
+      expect(scores.size).to eq(2)
     end
 
     it 'respects limit scope' do
@@ -32,7 +32,7 @@ describe Api::V1::MachineScoreXrefsController do
 
       scores = JSON.parse(response.body)['machine_score_xrefs']
 
-      scores.size.should == 1
+      expect(scores.size).to eq(1)
     end
   end
 
@@ -43,22 +43,22 @@ describe Api::V1::MachineScoreXrefsController do
 
       scores = JSON.parse(response.body)['machine_scores']
 
-      scores.size.should == 2
+      expect(scores.size).to eq(2)
 
-      scores[0]['rank'].should == 2
-      scores[0]['initials'].should == 'def'
-      scores[0]['score'].should == 100
+      expect(scores[0]['rank']).to eq(2)
+      expect(scores[0]['initials']).to eq('def')
+      expect(scores[0]['score']).to eq(100)
 
-      scores[1]['rank'].should == 1
-      scores[1]['initials'].should == 'abc'
-      scores[1]['score'].should == 123
+      expect(scores[1]['rank']).to eq(1)
+      expect(scores[1]['initials']).to eq('abc')
+      expect(scores[1]['score']).to eq(123)
     end
 
     it 'errors for unknown lmx' do
       get '/api/v1/machine_score_xrefs/-1.json'
       expect(response).to be_success
 
-      JSON.parse(response.body)['errors'].should == 'Failed to find machine'
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
     end
   end
 
@@ -67,24 +67,24 @@ describe Api::V1::MachineScoreXrefsController do
       post '/api/v1/machine_score_xrefs.json?location_machine_xref_id=-1'
       expect(response).to be_success
 
-      JSON.parse(response.body)['errors'].should == 'Failed to find machine'
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
     end
 
     it 'creates a new score' do
       post '/api/v1/machine_score_xrefs.json?location_machine_xref_id=' + @lmx.id.to_s + ';score=1,234;initials=abc;rank=1'
       expect(response).to be_success
 
-      JSON.parse(response.body)['msg'].should == 'Added your score!'
+      expect(JSON.parse(response.body)['msg']).to eq('Added your score!')
 
       new_score = MachineScoreXref.last
 
-      new_score.initials.should == 'abc'
-      new_score.rank.should == 1
-      new_score.score.should == 1234
-      new_score.location_machine_xref_id.should == @lmx.id
+      expect(new_score.initials).to eq('abc')
+      expect(new_score.rank).to eq(1)
+      expect(new_score.score).to eq(1234)
+      expect(new_score.location_machine_xref_id).to eq(@lmx.id)
 
       first_score = MachineScoreXref.first
-      first_score.rank.should == 2
+      expect(first_score.rank).to eq(2)
     end
   end
 end

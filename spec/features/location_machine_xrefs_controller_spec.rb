@@ -21,10 +21,10 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      @location.machines.size.should == 1
-      @location.machines.first.should == @machine_to_add
+      expect(@location.machines.size).to eq(1)
+      expect(@location.machines.first).to eq(@machine_to_add)
 
-      find("#show_machines_location_#{@location.id}").should have_content(@machine_to_add.name)
+      expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
     end
 
     it 'Should add by name of existing machine' do
@@ -36,10 +36,10 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      @location.machines.size.should == 1
-      @location.machines.first.should == @machine_to_add
+      expect(@location.machines.size).to eq(1)
+      expect(@location.machines.first).to eq (@machine_to_add)
 
-      find("#show_machines_location_#{@location.id}").should have_content(@machine_to_add.name)
+      expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
@@ -49,10 +49,10 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      @location.machines.size.should == 1
-      @location.machines.first.should == @machine_to_add
+      expect(@location.machines.size).to eq(1)
+      expect(@location.machines.first).to eq(@machine_to_add)
 
-      find("#show_machines_location_#{@location.id}").should have_content(@machine_to_add.name)
+      expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
     end
 
     it 'Should add by name of new machine' do
@@ -64,10 +64,10 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      @location.machines.size.should == 1
-      @location.machines.first.name.should == 'New Machine Name'
+      expect(@location.machines.size).to eq(1)
+      expect(@location.machines.first.name).to eq('New Machine Name')
 
-      find("#show_machines_location_#{@location.id}").should have_content('New Machine Name')
+      expect(find("#show_machines_location_#{@location.id}")).to have_content('New Machine Name')
     end
 
     it 'should display year/manufacturer where appropriate in dropdown' do
@@ -80,7 +80,7 @@ describe LocationMachineXrefsController do
 
       find("#add_machine_location_banner_#{@location.id}").click
 
-      page.should have_select('add_machine_by_id', :with_options => [
+      expect(page).to have_select('add_machine_by_id', :with_options => [
         'Wizard of Oz',
         'X-Men (stern)',
         'Dirty Harry (2001)',
@@ -99,8 +99,8 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}/location_machine_xrefs.rss"
 
-      page.body.should have_content('Twilight Zone')
-      page.body.should_not have_content('Spider-Man')
+      expect(page.body).to have_content('Twilight Zone')
+      expect(page.body).to_not have_content('Spider-Man')
     end
   end
 
@@ -112,17 +112,17 @@ describe LocationMachineXrefsController do
     it 'should default machine description text' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      find("#machine_condition_lmx_#{@lmx.id}").should have_content('Click to enter machine description')
+      expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content('Click to enter machine description')
     end
 
     it 'should let me add a new machine description' do
-      Pony.should_receive(:mail) do |mail|
-        mail.should == {
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
           :body => "This is a new condition\n#{@lmx.machine.name}\n#{@lmx.location.name}\nportland\n(entered from 127.0.0.1)",
           :subject => "PBM - Someone entered a machine condition",
           :to => [],
           :from =>"admin@pinballmap.com"
-        }
+        )
       end
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
@@ -133,7 +133,7 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      find("#machine_condition_lmx_#{@lmx.id}").should have_content("This is a new condition Updated: #{@lmx.created_at.strftime("%d-%b-%Y")}")
+      expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{@lmx.created_at.strftime("%d-%b-%Y")}")
     end
 
     it 'should let me cancel adding a new machine description' do
@@ -145,7 +145,7 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      find("#machine_condition_lmx_#{@lmx.id}").should have_content('Click to enter machine description')
+      expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content('Click to enter machine description')
     end
   end
 
@@ -170,9 +170,9 @@ describe LocationMachineXrefsController do
       page.execute_script %Q{ $('#add_machine_by_name').trigger('focus') }
       page.execute_script %Q{ $('#add_machine_by_name').trigger('keydown') }
 
-      page.should have_xpath('//a[contains(text(), "Sassy From The Black Lagoon")]')
-      page.should have_xpath('//a[contains(text(), "Sassy Madness")]')
-      page.should_not have_xpath('//a[contains(text(), "Cleo Game")]')
+      expect(page).to have_xpath('//a[contains(text(), "Sassy From The Black Lagoon")]')
+      expect(page).to have_xpath('//a[contains(text(), "Sassy Madness")]')
+      expect(page).to_not have_xpath('//a[contains(text(), "Cleo Game")]')
     end
 
     it 'searches by machine name from input' do
@@ -189,9 +189,9 @@ describe LocationMachineXrefsController do
       page.execute_script %Q{ $('#by_machine_name').trigger('focus') }
       page.execute_script %Q{ $('#by_machine_name').trigger('keydown') }
 
-      page.should have_xpath('//a[contains(text(), "Another Test Machine")]')
-      page.should have_xpath('//a[contains(text(), "Test Machine Name")]')
-      page.should_not have_xpath('//a[contains(text(), "Cleo")]')
+      expect(page).to have_xpath('//a[contains(text(), "Another Test Machine")]')
+      expect(page).to have_xpath('//a[contains(text(), "Test Machine Name")]')
+      expect(page).to_not have_xpath('//a[contains(text(), "Cleo")]')
     end
 
     it 'searches by location name from input' do
@@ -209,10 +209,10 @@ describe LocationMachineXrefsController do
       page.execute_script %Q{ $('#by_location_name').trigger('focus') }
       page.execute_script %Q{ $('#by_location_name').trigger('keydown') }
 
-      page.should have_xpath('//a[contains(text(), "Cleo North")]')
-      page.should have_xpath('//a[contains(text(), "Cleo South")]')
-      page.should_not have_xpath('//a[contains(text(), "Cleo West")]')
-      page.should_not have_xpath('//a[contains(text(), "Sassy")]')
+      expect(page).to have_xpath('//a[contains(text(), "Cleo North")]')
+      expect(page).to have_xpath('//a[contains(text(), "Cleo South")]')
+      expect(page).to_not have_xpath('//a[contains(text(), "Cleo West")]')
+      expect(page).to_not have_xpath('//a[contains(text(), "Sassy")]')
     end
   end
 
@@ -224,37 +224,37 @@ describe LocationMachineXrefsController do
     it 'hides zone option when no zones in region' do
       visit "/#{@region.name}"
 
-      page.should_not have_css("a#zone_section_link")
+      expect(page).to_not have_css("a#zone_section_link")
 
       FactoryGirl.create(:location, :region => @region, :name => 'Cleo', :zone => FactoryGirl.create(:zone, :region => @region, :name => 'Alberta'))
 
       visit "/#{@region.name}"
 
-      page.should have_css("a#zone_section_link")
+      expect(page).to have_css("a#zone_section_link")
     end
 
     it 'hides operator option when no operators in region' do
       visit "/#{@region.name}"
 
-      page.should_not have_css("a#operator_section_link")
+      expect(page).to_not have_css("a#operator_section_link")
 
       FactoryGirl.create(:location, :region => @region, :name => 'Cleo', :operator => FactoryGirl.create(:operator, :name => 'Quarter Bean', :region => @region))
 
       visit "/#{@region.name}"
 
-      page.should have_css("a#operator_section_link")
+      expect(page).to have_css("a#operator_section_link")
     end
 
     it 'lets you change navigation types' do
       visit "/#{@region.name}"
 
-      page.should have_css("a#location_section_link.active_section_link")
-      page.should_not have_css("a#machine_section_link.active_section_link")
+      expect(page).to have_css("a#location_section_link.active_section_link")
+      expect(page).to_not have_css("a#machine_section_link.active_section_link")
 
       page.find("div#other_search_options a#machine_section_link").click
 
-      page.should_not have_css("a#location_section_link.active_section_link")
-      page.should have_css("a#machine_section_link.active_section_link")
+      expect(page).to_not have_css("a#location_section_link.active_section_link")
+      expect(page).to have_css("a#machine_section_link.active_section_link")
     end
 
     it 'automatically limits searching to region' do
@@ -266,8 +266,8 @@ describe LocationMachineXrefsController do
       page.find("input#location_search_button").click
 
       within('div.search_result') do
-        page.should have_content('Test Location Name')
-        page.should_not have_content('Chicago Location')
+        expect(page).to have_content('Test Location Name')
+        expect(page).to_not have_content('Chicago Location')
       end
     end
 
@@ -280,7 +280,7 @@ describe LocationMachineXrefsController do
       page.find("input#location_search_button").click
 
       within('div.search_result') do
-        page.should have_content('Chicago Location')
+        expect(page).to have_content('Chicago Location')
       end
     end
 
@@ -294,7 +294,7 @@ describe LocationMachineXrefsController do
       page.find("input#machine_search_button").click
 
       within('div.search_result') do
-        page.should have_content('Test Location Name')
+        expect(page).to have_content('Test Location Name')
       end
     end
 
@@ -304,19 +304,19 @@ describe LocationMachineXrefsController do
 
       page.find("div#other_search_options a#machine_section_link").click
 
-      page.should have_select('by_machine_id', :with_options => ['Test Machine Name'])
+      expect(page).to have_select('by_machine_id', :with_options => ['Test Machine Name'])
     end
 
     it 'automatically loads with machine detail visible on a single location search' do
       visit "/#{@region.name}"
       page.find("input#location_search_button").click
 
-      page.should have_content('Test Location Name')
-      page.should have_content('303 Southeast 3rd Avenue, Portland, OR 97214')
-      page.should have_content('ADD A PICTURE')
-      page.should have_content('ADD NEW MACHINE TO THIS LOCATION')
-      page.should have_content('SHOW MACHINES AT THIS LOCATION')
-      page.should have_content('Click to enter machine description')
+      expect(page).to have_content('Test Location Name')
+      expect(page).to have_content('303 Southeast 3rd Avenue, Portland, OR 97214')
+      expect(page).to have_content('ADD A PICTURE')
+      expect(page).to have_content('ADD NEW MACHINE TO THIS LOCATION')
+      expect(page).to have_content('SHOW MACHINES AT THIS LOCATION')
+      expect(page).to have_content('Click to enter machine description')
     end
 
     it 'searches by city' do
@@ -330,8 +330,8 @@ describe LocationMachineXrefsController do
       page.find("input#city_search_button").click
 
       within('div.search_result') do
-        page.should have_content('Bawb')
-        page.should_not have_content('Cleo')
+        expect(page).to have_content('Bawb')
+        expect(page).to_not have_content('Cleo')
       end
     end
 
@@ -346,8 +346,8 @@ describe LocationMachineXrefsController do
       page.find("input#zone_search_button").click
 
       within('div.search_result') do
-        page.should have_content('Cleo')
-        page.should_not have_content('Bawb')
+        expect(page).to have_content('Cleo')
+        expect(page).to_not have_content('Bawb')
       end
     end
 
@@ -364,9 +364,9 @@ describe LocationMachineXrefsController do
       page.find("input#type_search_button").click
 
       within('div.search_result') do
-        page.should have_content('Cleo')
-        page.should_not have_content('Bawb')
-        page.should_not have_content('Sass')
+        expect(page).to have_content('Cleo')
+        expect(page).to_not have_content('Bawb')
+        expect(page).to_not have_content('Sass')
       end
     end
 
@@ -381,8 +381,8 @@ describe LocationMachineXrefsController do
       page.find("input#operator_search_button").click
 
       within('div.search_result') do
-        page.should have_content('Cleo')
-        page.should_not have_content('Bawb')
+        expect(page).to have_content('Cleo')
+        expect(page).to_not have_content('Bawb')
       end
     end
 
@@ -394,28 +394,28 @@ describe LocationMachineXrefsController do
 
       page.find("input#location_search_button").click
 
-      page.should have_content('Cleo (bar)')
-      page.should have_content('Bawb')
+      expect(page).to have_content('Cleo (bar)')
+      expect(page).to have_content('Bawb')
     end
 
     it 'displays appropriate values in location description' do
       visit "/#{@region.name}"
       page.find("input#location_search_button").click
 
-      page.should have_content('Click to enter location description/hours/etc')
+      expect(page).to have_content('Click to enter location description/hours/etc')
 
       page.find("div#desc_show_location_#{@location.id}.desc_show_location").click
       fill_in("new_desc_#{@location.id}", :with => 'New Condition')
       click_on("save_desc_#{@location.id}")
 
-      page.should have_content('New Condition')
+      expect(page).to have_content('New Condition')
     end
 
     it 'honors default search types for region' do
       FactoryGirl.create(:region, :name => 'chicago', :default_search_type => 'city')
       visit "/chicago"
 
-      page.should have_css("a#city_section_link.active_section_link")
+      expect(page).to have_css("a#city_section_link.active_section_link")
     end
 
     it 'sorts searches by location name' do
@@ -429,10 +429,10 @@ describe LocationMachineXrefsController do
       sleep(1)
 
       actual_order = page.all('div.search_result').collect(&:text)
-      actual_order[0].should match /Bawb/
-      actual_order[1].should match /Cleo/
-      actual_order[2].should match /Test Machine Name/
-      actual_order[3].should match /Zelda/
+      expect(actual_order[0]).to match /Bawb/
+      expect(actual_order[1]).to match /Cleo/
+      expect(actual_order[2]).to match /Test Machine Name/
+      expect(actual_order[3]).to match /Zelda/
     end
 
     it 'honor N or more machines' do
@@ -450,8 +450,8 @@ describe LocationMachineXrefsController do
       select(2, :from => 'by_at_least_n_machines_zone')
       page.find("input#zone_search_button").click
 
-      page.should have_content('Cleo')
-      page.should_not have_content('Bawb')
+      expect(page).to have_content('Cleo')
+      expect(page).to_not have_content('Bawb')
     end
 
     it 'honors direct link for location' do
@@ -459,7 +459,7 @@ describe LocationMachineXrefsController do
       sleep(1)
 
       within('div.search_result') do
-        page.should have_content('Test Location Name')
+        expect(page).to have_content('Test Location Name')
       end
     end
 
@@ -471,8 +471,8 @@ describe LocationMachineXrefsController do
       sleep(1)
 
       within('div.search_result') do
-        page.should have_content('Cleo')
-        page.should_not have_content('Bawb')
+        expect(page).to have_content('Cleo')
+        expect(page).to_not have_content('Bawb')
       end
     end
 
@@ -483,8 +483,8 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}/?by_location_id=#{screen_location.id}"
 
       within('div.search_result') do
-        page.should have_content('The Screen')
-        page.should have_content('cool machine description')
+        expect(page).to have_content('The Screen')
+        expect(page).to have_content('cool machine description')
       end
     end
 
@@ -496,7 +496,7 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}"
       page.find("div#other_search_options a#machine_section_link").click
 
-      page.should have_select('by_machine_id', :with_options => ['foo (stern)', 'bar (bally, 2000)', 'baz (2001)'])
+      expect(page).to have_select('by_machine_id', :with_options => ['foo (stern)', 'bar (bally, 2000)', 'baz (2001)'])
     end
 
     it 'has location summary info that shows machine metadata when available' do
@@ -507,9 +507,9 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}"
       page.find("input#location_search_button").click
 
-      page.should have_content('foo (stern)')
-      page.should have_content('bar (bally, 2000)')
-      page.should have_content('baz (2001)')
+      expect(page).to have_content('foo (stern)')
+      expect(page).to have_content('bar (bally, 2000)')
+      expect(page).to have_content('baz (2001)')
     end
 
     it 'has ipdb links with generic or specific info when appropriate' do
@@ -521,8 +521,8 @@ describe LocationMachineXrefsController do
 
       sleep(1)
 
-      URI.parse(page.find_link('foo')['href']).to_s.should == 'http://foo.com'
-      URI.parse(page.find_link('bar')['href']).to_s.should == 'http://ipdb.org/search.pl?name=bar;qh=checked;searchtype=advanced'
+      expect(URI.parse(page.find_link('foo')['href']).to_s).to eq('http://foo.com')
+      expect(URI.parse(page.find_link('bar')['href']).to_s).to eq('http://ipdb.org/search.pl?name=bar;qh=checked;searchtype=advanced')
     end
   end
 end
