@@ -132,10 +132,6 @@ class PagesController < ApplicationController
             config.consumer_secret = ENV['TWITTER_CONSUMER_SECRET']
             config.oauth_token = ENV['TWITTER_OAUTH_TOKEN']
             config.oauth_token_secret = ENV['TWITTER_OAUTH_TOKEN_SECRET']
-            config.connection_options = Twitter::Default::CONNECTION_OPTIONS.merge(:request => {
-              :open_timeout => 10,
-              :timeout => 15,
-            })
         end
         @tweets = client.user_timeline("pinballmapcom", :count => 5)
       rescue Twitter::Error
