@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::V1::MachinesController do
+describe Api::V1::MachinesController, :type => :request do
 
   describe '#create' do
     before(:each) do
@@ -25,7 +25,7 @@ describe Api::V1::MachinesController do
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Machine already exists')
 
-      Machine.all.size.should == 1
+      expect(Machine.all.size).to eq(1)
     end
 
     it 'handles creation by machine name.. machine exists with same name.. ignores preceeding and trailing whitespace' do
@@ -33,17 +33,17 @@ describe Api::V1::MachinesController do
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Machine already exists')
 
-      Machine.all.size.should == 1
+      expect(Machine.all.size).to eq(1)
     end
 
     it 'handles creation by machine name.. new machine name' do
-      Pony.should_receive(:mail) do |mail|
-        mail.should == {
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
           :body => "Bawb\nGround Kontrol\nportland\n(entered from 127.0.0.1 via )",
           :subject => "PBM - New machine name",
           :to => [],
           :from =>"admin@pinballmap.com"
-        }
+        )
       end
 
       post '/api/v1/machines.json?machine_name=Bawb;location_id=' + @location.id.to_s

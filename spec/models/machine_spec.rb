@@ -12,9 +12,9 @@ describe Machine do
     it 'should clean up location_machine_xrefs, events, location_picture_xrefs' do
       @m.destroy
 
-      Machine.all.should == []
-      LocationMachineXref.all.should == []
-      MachineScoreXref.all.should == []
+      expect(Machine.all).to eq([])
+      expect(LocationMachineXref.all).to eq([])
+      expect(MachineScoreXref.all).to eq([])
     end
   end
 end

@@ -3,10 +3,10 @@ require 'spec_helper'
 describe GoogleAnalyticsHelper do
   describe '#analytics_js' do
     it 'should output js for google analytics' do
-      helper.analytics_js.should == nil
+      expect(helper.analytics_js).to eq(nil)
 
       Rails.env = 'production'
-      helper.analytics_js.should == <<HERE
+      expect(helper.analytics_js).to eq(<<HERE)
       var ga = document.createElement('script');
       ga.type = 'text/javascript'; ga.async = true;
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';

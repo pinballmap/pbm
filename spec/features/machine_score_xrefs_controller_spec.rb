@@ -20,9 +20,9 @@ describe MachineScoreXrefsController do
 
       sleep(1)
 
-      lmx.machine_score_xrefs.first.score.should == 1234
-      lmx.machine_score_xrefs.first.initials.should eq 'cap'
-      lmx.machine_score_xrefs.first.rank.should == 1
+      expect(lmx.machine_score_xrefs.first.score).to eq(1234)
+      expect(lmx.machine_score_xrefs.first.initials).to eq('cap')
+      expect(lmx.machine_score_xrefs.first.rank).to eq(1)
     end
 
     it 'removes non-digit characters from high scores' do
@@ -38,9 +38,9 @@ describe MachineScoreXrefsController do
 
       sleep(1)
 
-      lmx.machine_score_xrefs.first.score.should == 1234
-      lmx.machine_score_xrefs.first.initials.should eq 'cap'
-      lmx.machine_score_xrefs.first.rank.should == 1
+      expect(lmx.machine_score_xrefs.first.score).to eq(1234)
+      expect(lmx.machine_score_xrefs.first.initials).to eq('cap')
+      expect(lmx.machine_score_xrefs.first.rank).to eq(1)
     end
   end
 
@@ -57,8 +57,8 @@ describe MachineScoreXrefsController do
 
       visit "/#{@region.name}/machine_score_xrefs.rss"
 
-      page.body.should have_content('Spider-Man')
-      page.body.should_not have_content('Twilight Zone')
+      expect(page.body).to have_content('Spider-Man')
+      expect(page.body).to_not have_content('Twilight Zone')
     end
 
     it 'Should only display the last 50 scores in the feed' do
@@ -71,8 +71,8 @@ describe MachineScoreXrefsController do
 
       visit "/#{@region.name}/machine_score_xrefs.rss"
 
-      page.body.should have_content('Twilight Zone')
-      page.body.should_not have_content('Spider-Man')
+      expect(page.body).to have_content('Twilight Zone')
+      expect(page.body).to_not have_content('Spider-Man')
     end
   end
 
@@ -82,7 +82,7 @@ describe MachineScoreXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.should_not have_css("div#show_scores_lmx_banner_#{lmx.id}")
+      expect(page).to_not have_css("div#show_scores_lmx_banner_#{lmx.id}")
 
       page.find("div#add_scores_lmx_banner_#{lmx.id}").click
       fill_in('score', :with => 1234)
@@ -92,7 +92,7 @@ describe MachineScoreXrefsController do
 
       sleep(1)
 
-      page.should have_css("div#show_scores_lmx_banner_#{lmx.id}")
+      expect(page).to have_css("div#show_scores_lmx_banner_#{lmx.id}")
     end
   end
 end

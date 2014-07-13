@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::V1::LocationMachineXrefsController do
+describe Api::V1::LocationMachineXrefsController, :type => :request do
   before(:each) do
     @region = FactoryGirl.create(:region, :name => 'portland', :should_email_machine_removal => 1)
     @location = FactoryGirl.create(:location, :name => 'Ground Kontrol', :region => @region)
@@ -15,24 +15,24 @@ describe Api::V1::LocationMachineXrefsController do
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
-      LocationMachineXref.all.size.should == 0
+      expect(LocationMachineXref.all.size).to eq(0)
     end
 
     it 'sends a deletion email when appropriate' do
-      Pony.should_receive(:mail) do |mail|
-        mail.should == {
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
           :body => "#{@location.name}\n#{@machine.name}\n#{@location.region.name}\n(entered from )",
           :subject => "PBM - Someone removed a machine from a location",
           :to => [],
           :from =>"admin@pinballmap.com"
-        }
+        )
       end
 
       delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
-      LocationMachineXref.all.size.should == 0
+      expect(LocationMachineXref.all.size).to eq(0)
     end
 
     it 'errors if lmx id does not exist' do
@@ -40,7 +40,7 @@ describe Api::V1::LocationMachineXrefsController do
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
-      LocationMachineXref.all.size.should == 1
+      expect(LocationMachineXref.all.size).to eq(1)
     end
   end
 
@@ -54,10 +54,10 @@ describe Api::V1::LocationMachineXrefsController do
 
       lmxes = JSON.parse(response.body)['location_machine_xrefs']
 
-      lmxes.size.should == 1
+      expect(lmxes.size).to eq(1)
 
-      lmxes[0]['location_id'].should == @location.id
-      lmxes[0]['machine_id'].should == @machine.id
+      expect(lmxes[0]['location_id']).to eq(@location.id)
+      expect(lmxes[0]['machine_id']).to eq(@machine.id)
     end
 
     it 'respects limit scope' do
@@ -66,8 +66,8 @@ describe Api::V1::LocationMachineXrefsController do
       get '/api/v1/region/portland/location_machine_xrefs.json?limit=1'
       expect(response).to be_success
 
-      JSON.parse(response.body)['location_machine_xrefs'].size.should == 1
-      JSON.parse(response.body)['location_machine_xrefs'][0]['id'].should == newest_lmx.id
+      expect(JSON.parse(response.body)['location_machine_xrefs'].size).to eq(1)
+      expect(JSON.parse(response.body)['location_machine_xrefs'][0]['id']).to eq(newest_lmx.id)
     end
   end
 
@@ -78,10 +78,10 @@ describe Api::V1::LocationMachineXrefsController do
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
 
       updated_lmx = LocationMachineXref.find(@lmx)
-      updated_lmx.condition.should == 'foo'
-      updated_lmx.condition_date.to_s.should == Time.now.strftime("%Y-%m-%d")
 
-      LocationMachineXref.all.size.should == 1
+      expect(updated_lmx.condition).to eq('foo')
+      expect(updated_lmx.condition_date.to_s).to eq(Time.now.strftime("%Y-%m-%d"))
+      expect(LocationMachineXref.all.size).to eq(1)
     end
 
     it 'creates new lmx when appropriate' do
@@ -92,9 +92,9 @@ describe Api::V1::LocationMachineXrefsController do
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
 
       new_lmx = LocationMachineXref.last
-      new_lmx.condition.should == 'foo'
+      expect(new_lmx.condition).to eq('foo')
 
-      LocationMachineXref.all.size.should == 2
+      expect(LocationMachineXref.all.size).to eq(2)
     end
   end
 
@@ -108,13 +108,13 @@ describe Api::V1::LocationMachineXrefsController do
     end
 
     it 'updates condition' do
-      Pony.should_receive(:mail) do |mail|
-        mail.should == {
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
           :body => "foo\nCleo\nGround Kontrol\nPortland\n(entered from 127.0.0.1)",
           :subject => "PBM - Someone entered a machine condition",
           :to => [],
           :from =>"admin@pinballmap.com"
-        }
+        )
       end
 
       put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '?condition=foo'

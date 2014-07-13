@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::V1::LocationsController do
+describe Api::V1::LocationsController, :type => :request do
   before(:each) do
     @region = FactoryGirl.create(:region, :name => 'portland')
     @location = FactoryGirl.create(:location, :region => @region, :state => 'OR', :zip => '97203', :lat => 42.18, :lon => -71.18)
@@ -17,8 +17,8 @@ describe Api::V1::LocationsController do
     end
 
     it 'emails admins on new location submission' do
-      Pony.should_receive(:mail) do |mail|
-        mail.should == {
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
           :to => ["foo@bar.com"],
           :bcc => ["super_admin@bar.com"],
           :from =>"admin@pinballmap.com",
@@ -37,7 +37,7 @@ Machines: machines\n
 Their Name: subname\n
 Their Email: subemail\n
 HERE
-        }
+        )
       end
 
       post '/api/v1/locations/suggest.json', :region_id => @region.id.to_s, :location_name => 'name', :location_street => 'street', :location_city => 'city', :location_state => 'state', :location_zip => 'zip', :location_phone => 'phone', :location_website => 'website', :location_operator => 'operator', :location_machines => 'machines', :submitter_name => 'subname', :submitter_email => 'subemail'
@@ -54,13 +54,13 @@ HERE
 
       updated_location = Location.find(@location.id)
 
-      updated_location.description.should == 'foo'
-      updated_location.website.should == 'http://bar'
-      updated_location.phone.should == '555-555-5555'
-      updated_location.zip.should == '97203'
+      expect(updated_location.description).to eq('foo')
+      expect(updated_location.website).to eq('http://bar')
+      expect(updated_location.phone).to eq('555-555-5555')
+      expect(updated_location.zip).to eq('97203')
 
       parsed_body = JSON.parse(response.body)
-      parsed_body.size.should == 1
+      expect(parsed_body.size).to eq(1)
 
       location = parsed_body['location']
 
@@ -105,7 +105,7 @@ HERE
       get "/api/v1/locations/closest_by_lat_lon.json?lat=#{closest_location.lat};lon=#{closest_location.lon}"
 
       parsed_body = JSON.parse(response.body)
-      parsed_body.size.should == 1
+      expect(parsed_body.size).to eq(1)
 
       location = parsed_body['location']
 

@@ -22,7 +22,7 @@ describe LocationsController do
 
       sleep 1
 
-      Location.find(@location.id).description.should == 'COOL DESC'
+      expect(Location.find(@location.id).description).to eq('COOL DESC')
     end
   end
 
@@ -31,7 +31,7 @@ describe LocationsController do
     it 'defaults to portland if no region is given' do
       visit '/iphone.html?init=1'
 
-      current_url.should =~ /\/portland\/locations.xml/
+      expect(current_url).to match(/\/portland\/locations.xml/)
     end
 
     it 'honors region param' do
@@ -39,7 +39,7 @@ describe LocationsController do
 
       visit '/iphone.html?init=1;region=toronto'
 
-      current_url.should =~ /\/toronto\/locations.xml/
+      expect(current_url).to match(/\/toronto\/locations.xml/)
     end
 
     it 'takes an optional format parameter' do
@@ -47,7 +47,7 @@ describe LocationsController do
 
       visit '/iphone.html?init=1;region=toronto;format=json'
 
-      current_url.should =~ /\/toronto\/locations.json/
+      expect(current_url).to match(/\/toronto\/locations.json/)
     end
 
     it 'respects all region data init param' do
@@ -55,7 +55,7 @@ describe LocationsController do
 
       visit '/iphone.html?init=5;region=toronto'
 
-      current_url.should =~ /\/toronto\/all_region_data.json/
+      expect(current_url).to match(/\/toronto\/all_region_data.json/)
     end
 
     it 'handles init=1' do
@@ -66,7 +66,7 @@ describe LocationsController do
 
       visit '/iphone.html?init=1'
 
-      current_url.should =~ /\/portland\/locations.xml/
+      expect(current_url).to match(/\/portland\/locations.xml/)
 
       page_contents = <<XML
 <data>
@@ -98,7 +98,7 @@ describe LocationsController do
     </zones>
 </data>
 XML
-      page.html.gsub(/\s/,'').downcase.should include(page_contents.gsub(/\s/,'').downcase)
+      expect(page.html.gsub(/\s/,'').downcase).to include(page_contents.gsub(/\s/,'').downcase)
     end
 
     it 'works for 4sq' do
@@ -170,7 +170,7 @@ XML
     </regions>
 </data>
 XML
-      page.html.gsub(/\s/,'').downcase.should include(page_contents.gsub(/\s/,'').downcase)
+      expect(page.html.gsub(/\s/,'').downcase).to include(page_contents.gsub(/\s/,'').downcase)
     end
 
     it 'region initialization' do
@@ -208,8 +208,8 @@ XML
 </data>
 XML
 
-      page.html.gsub(/\s/,'').downcase.should include(page_contents.gsub(/\s/,'').downcase)
-      current_url.should =~ /\/portland\/regions.xml/
+      expect(page.html.gsub(/\s/,'').downcase).to include(page_contents.gsub(/\s/,'').downcase)
+      expect(current_url).to match(/\/portland\/regions.xml/)
     end
 
     it 'handles location detail' do
@@ -247,8 +247,8 @@ XML
   </locations>
 </data>
 XML
-      page.html.gsub(/\s/,'').downcase.should include(page_contents.gsub(/\s/,'').downcase)
-      current_url.should =~ /\/portland\/locations\/1.xml/
+      expect(page.html.gsub(/\s/,'').downcase).to include(page_contents.gsub(/\s/,'').downcase)
+      expect(current_url).to match(/\/portland\/locations\/1.xml/)
     end
 
     it 'handles locations for machine' do
@@ -301,8 +301,8 @@ XML
   </locations>
 </data>
 XML
-      current_url.should =~ /\/portland\/locations\/1\/locations_for_machine.xml/
-      page.html.gsub(/\s/,'').downcase.should include(page_contents.gsub(/\s/,'').downcase)
+      expect(current_url).to match(/\/portland\/locations\/1\/locations_for_machine.xml/)
+      expect(page.html.gsub(/\s/,'').downcase).to include(page_contents.gsub(/\s/,'').downcase)
     end
 
     it 'updates conditions' do
@@ -310,13 +310,13 @@ XML
       machine = FactoryGirl.create(:machine, :name => "Cleo's Adventure")
       FactoryGirl.create(:location_machine_xref, :location => sasston, :machine => machine, :condition => 'foo')
 
-      Pony.should_receive(:mail) do |mail|
-        mail.should == {
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
           :body => "bar\nCleo's Adventure\nSasston\nportland\n(entered from 127.0.0.1)",
           :subject => "PBM - Someone entered a machine condition",
           :to => [],
           :from =>"admin@pinballmap.com"
-        }
+        )
       end
 
       visit '/iphone.html?condition=bar;location_no=1;machine_no=1'
@@ -326,8 +326,8 @@ XML
   <msg>add successful</msg>
 </data>
 XML
-      page.html.gsub(/\s/,'').downcase.should include(page_contents.gsub(/\s/,'').downcase)
-      current_url.should =~ /\/portland\/location_machine_xrefs\/1\/condition_update_confirmation.xml/
+      expect(page.html.gsub(/\s/,'').downcase).to include(page_contents.gsub(/\s/,'').downcase)
+      expect(current_url).to match(/\/portland\/location_machine_xrefs\/1\/condition_update_confirmation.xml/)
     end
 
     it 'lets you add existing machines to a location by machine_no' do
@@ -343,7 +343,7 @@ XML
   <id>2</id>
 </data>
 XML
-      page.html.gsub(/\s/,'').downcase.should include(page_contents.gsub(/\s/,'').downcase)
+      expect(page.html.gsub(/\s/,'').downcase).to include(page_contents.gsub(/\s/,'').downcase)
     end
 
     it 'lets you add existing machines to a location by machine_name' do
@@ -359,7 +359,7 @@ XML
   <id>1</id>
 </data>
 XML
-      page.html.gsub(/\s/,'').downcase.should include(page_contents.gsub(/\s/,'').downcase)
+      expect(page.html.gsub(/\s/,'').downcase).to include(page_contents.gsub(/\s/,'').downcase)
     end
 
     it 'lets you add existing machines to a location by machine_name case insensitive' do
@@ -375,9 +375,9 @@ XML
   <id>1</id>
 </data>
 XML
-      page.html.gsub(/\s/,'').downcase.should include(page_contents.gsub(/\s/,'').downcase)
+      expect(page.html.gsub(/\s/,'').downcase).to include(page_contents.gsub(/\s/,'').downcase)
 
-      Machine.all.count.should == 2
+      expect(Machine.all.count).to eq(2)
     end
 
     it 'lets you add existing machines to a location by machine_name ignores preceeding and trailing whitespace' do
@@ -393,9 +393,9 @@ XML
   <id>1</id>
 </data>
 XML
-      page.html.gsub(/\s/,'').downcase.should include(page_contents.gsub(/\s/,'').downcase)
+      expect(page.html.gsub(/\s/,'').downcase).to include(page_contents.gsub(/\s/,'').downcase)
 
-      Machine.all.count.should == 2
+      expect(Machine.all.count).to eq(2)
     end
 
     it 'lets you add machines that are not in the system' do
@@ -410,8 +410,8 @@ XML
   <id>2</id>
 </data>
 XML
-      page.html.gsub(/\s/,'').downcase.should include(page_contents.gsub(/\s/,'').downcase)
-      sasston.machines.first.name.should == 'Satchmo'
+      expect(page.html.gsub(/\s/,'').downcase).to include(page_contents.gsub(/\s/,'').downcase)
+      expect(sasston.machines.first.name).to eq('Satchmo')
     end
 
     it 'lets you remove a machine' do
@@ -419,13 +419,13 @@ XML
       machine = FactoryGirl.create(:machine, :name => "Cleo")
       FactoryGirl.create(:location_machine_xref, :location => sasston, :machine => machine)
 
-      Pony.should_receive(:mail) do |mail|
-        mail.should == {
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
           :body => "sasston\nCleo\nportland\n(entered from 127.0.0.1)",
           :subject => "PBM - Someone removed a machine from a location",
           :to => [],
           :from =>"admin@pinballmap.com"
-        }
+        )
       end
 
       visit '/iphone.html?modify_location=1;machine_no=1'
@@ -435,9 +435,9 @@ XML
   <msg>remove successful</msg>
 </data>
 XML
-      page.html.gsub(/\s/,'').downcase.should include(page_contents.gsub(/\s/,'').downcase)
-      current_url.should =~ /\/portland\/location_machine_xrefs\/1\/remove_confirmation.xml/
-      sasston.machines.size.should == 0
+      expect(page.html.gsub(/\s/,'').downcase).to include(page_contents.gsub(/\s/,'').downcase)
+      expect(current_url).to match(/\/portland\/location_machine_xrefs\/1\/remove_confirmation.xml/)
+      expect(sasston.machines.size).to eq(0)
     end
 
   end

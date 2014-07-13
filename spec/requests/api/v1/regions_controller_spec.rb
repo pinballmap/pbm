@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::V1::LocationsController do
+describe Api::V1::LocationsController, :type => :request do
 
   describe '#index' do
     before(:each) do
@@ -16,10 +16,10 @@ describe Api::V1::LocationsController do
       expect(response).to be_success
 
       parsed_body = JSON.parse(response.body)
-      parsed_body.size.should == 1
+      expect(parsed_body.size).to eq(1)
 
       regions = parsed_body['regions']
-      regions.size.should == 2
+      expect(regions.size).to eq(2)
 
       expect(regions[0]['name']).to eq('portland')
       expect(regions[0]['primary_email_contact']).to eq('is@primary.com')
