@@ -101,22 +101,15 @@ function switchSection(newSection) {
   $("#" + newSection + "_section_link").toggleClass("active_section_link");
 }
 
-function initSearchLocation(region, locationID) {
-  var url = '/' + region + '/locations?by_location_id=' + locationID;
+function initSearch(region, locationIDs, locationTypeIDs, zoneIDs, machineIDs, cityName) {
+  if (locationIDs || locationTypeIDs || zoneIDs || machineIDs || cityName) {
+    var url = '/' + region + '/locations?by_location_id=' + locationIDs + ';by_type_id=' + locationTypeIDs + ';by_zone_id=' + zoneIDs + ';by_machine_id=' + machineIDs + ';by_city_id=' + cityName;
 
-  $('#locations').html(loadingHTML());
-  $.get(url, function(data) {
-    $('#locations').html(data);
-  });
-}
-
-function initSearchCity(region, city) {
-  var url = '/' + region + '/locations?by_city_id=' + city;
-
-  $('#locations').html(loadingHTML());
-  $.get(url, function(data) {
-    $('#locations').html(data);
-  });
+    $('#locations').html(loadingHTML());
+    $.get(url, function(data) {
+      $('#locations').html(data);
+    });
+  }
 }
 
 function showLocationDetail(locationID) {
