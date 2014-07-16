@@ -25,6 +25,7 @@ describe LocationMachineXrefsController do
       expect(@location.machines.first).to eq(@machine_to_add)
 
       expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
+      expect(find("#gm_machines_#{@location.id}")).to have_content(@machine_to_add.name)
     end
 
     it 'Should add by name of existing machine' do

@@ -59,7 +59,9 @@ function showLocations(ids, lats, lons, contents) {
 
     markers.push(marker);
     bounds.extend(latlng);
-    infoWindows.push(new google.maps.InfoWindow({ content: contents[i] }));
+
+    var infoWindow = new google.maps.InfoWindow({ content: contents[i] });
+    infoWindows.push(infoWindow);
 
     attachMarkerClick(marker, i)
   }
@@ -139,4 +141,10 @@ function locationLookupMapCenter(locationID) {
 
 function setSearchSections(newSearchSections) {
   searchSections = newSearchSections;
+}
+
+function resetInfoWindowHeights() {
+  for (i in infoWindows) {
+    infoWindows[i].setContent($('#infowindow_' + locationIDs[i]).html());
+  }
 }

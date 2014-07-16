@@ -62,6 +62,7 @@ Pbm::Application.routes.draw do
     match 'locations/:id/locations_for_machine' => 'locations#locations_for_machine'
     match 'locations/:id/render_scores'   => 'locations#render_scores'
     match 'locations/:id/render_machines' => 'locations#render_machines'
+    match 'locations/:id/render_machine_names_for_infowindow' => 'locations#render_machine_names_for_infowindow'
     match 'locations/:id/render_add_machine' => 'locations#render_add_machine'
     match 'locations/:id/render_desc' => 'locations#render_desc'
 

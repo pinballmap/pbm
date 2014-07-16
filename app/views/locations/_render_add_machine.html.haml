@@ -19,24 +19,28 @@
 
     $.post(this.action, $(this).serialize(), function (data) {
       $('#show_machines_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machines', function() {
-        $.get('/#{params[:region]}/locations/#{l.id}/newest_machine_name', function(data) {
-          $('#dialog-message .social-share-button').data('title', "I updated the #{@region.full_name} Pinball Map! " + data + " was added to #{l.name} #pinball");
+        $('#gm_machines_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machine_names_for_infowindow', function() {
+          $.get('/#{params[:region]}/locations/#{l.id}/newest_machine_name', function(data) {
+            resetInfoWindowHeights();
 
-          $('#dialog-message').dialog({
-            modal: true,
-            height: 75,
-            width: 50,
-            bgiframe: true,
-            resizable: false,
-            open: function() {
-              $('.ui-widget-overlay').bind('click', function(){
-                $('#dialog-message').dialog('close');
-              })
-            },
-            close: function() {
-              $(this).dialog("destroy");
-              $('#dialog-message .social-share-button').attr('data-title', "");
-            }
+            $('#dialog-message .social-share-button').data('title', "I updated the #{@region.full_name} Pinball Map! " + data + " was added to #{l.name} #pinball");
+
+            $('#dialog-message').dialog({
+              modal: true,
+              height: 75,
+              width: 50,
+              bgiframe: true,
+              resizable: false,
+              open: function() {
+                $('.ui-widget-overlay').bind('click', function(){
+                  $('#dialog-message').dialog('close');
+                })
+              },
+              close: function() {
+                $(this).dialog("destroy");
+                $('#dialog-message .social-share-button').attr('data-title', "");
+              }
+            });
           });
         });
       });
