@@ -22,3 +22,4 @@ Feature: Remove Machine for Location
     And I accept the "Remove this machine?" alert
     And I wait for 1 seconds
     Then location_machine_xref should not exist
+    And the infowindow should be blank

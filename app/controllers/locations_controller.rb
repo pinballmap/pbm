@@ -24,6 +24,10 @@ class LocationsController < InheritedResources::Base
     render :partial => 'locations/render_machines', :locals => {:location_machine_xrefs => Location.find(params[:id]).location_machine_xrefs}
   end
 
+  def render_machine_names_for_infowindow
+    render :text => Location.find(params[:id]).machine_names.join('<br />')
+  end
+
   def render_scores
     render :partial => 'locations/render_scores', :locals => {:lmx => LocationMachineXref.find(params[:id])}
   end

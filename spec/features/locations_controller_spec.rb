@@ -5,6 +5,96 @@ describe LocationsController do
     @region = FactoryGirl.create(:region, :name => 'portland', :full_name => 'portland', :lat => 1, :lon => 2, :motd => 'This is a MOTD', :n_search_no => 4, :should_email_machine_removal => 1)
   end
 
+  describe 'initial search by passed in param', :type => :feature, :js => true do
+    before(:each) do
+      @type = FactoryGirl.create(:location_type, :name => 'Bar')
+      @zone = FactoryGirl.create(:zone, :region => @region, :name => 'DT')
+      @location = FactoryGirl.create(:location, :region => @region, :city => 'Portland', :name => 'Cleo', :zone => @zone, :location_type => @type)
+      @machine = FactoryGirl.create(:machine, :name => 'Barb')
+      FactoryGirl.create(:location_machine_xref, :location => @location, :machine => @machine)
+
+      FactoryGirl.create(:location, :region => @region, :name => 'Sass', :city => 'Beaverton')
+    end
+
+    it 'by_city_id' do
+      visit '/portland/?by_city_id=' + @location.city
+
+      expect(page).to have_content('Cleo')
+      expect(page).to_not have_content('Sass')
+    end
+
+    it 'by_location_id' do
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      expect(page).to have_content('Cleo')
+      expect(page).to_not have_content('Sass')
+    end
+
+    it 'by_location_id -- multiple ids' do
+      other_location = FactoryGirl.create(:location, :region => @region, :name => 'Zelda')
+
+      visit '/portland/?by_location_id=' + @location.id.to_s + '_' + other_location.id.to_s
+
+      expect(page).to have_content('Cleo')
+      expect(page).to have_content('Zelda')
+      expect(page).to_not have_content('Sass')
+    end
+
+    it 'by_zone_id' do
+      visit '/portland/?by_zone_id=' + @zone.id.to_s
+
+      expect(page).to have_content('Cleo')
+      expect(page).to_not have_content('Sass')
+    end
+
+    it 'by_zone_id -- multiple ids' do
+      other_zone = FactoryGirl.create(:zone, :name => 'NE')
+      FactoryGirl.create(:location, :region => @region, :name => 'Zelda', :zone => other_zone)
+      visit '/portland/?by_zone_id=' + @zone.id.to_s + '_' + other_zone.id.to_s
+
+      expect(page).to have_content('Cleo')
+      expect(page).to have_content('Zelda')
+      expect(page).to_not have_content('Sass')
+    end
+
+    it 'by_type_id' do
+      visit '/portland/?by_location_type_id=' + @type.id.to_s
+
+      expect(page).to have_content('Cleo')
+      expect(page).to_not have_content('Sass')
+    end
+
+    it 'by_type_id -- multiple ids' do
+      other_type = FactoryGirl.create(:location_type, :name => 'PUB')
+      FactoryGirl.create(:location, :region => @region, :name => 'Zelda', :location_type => other_type)
+
+      visit '/portland/?by_location_type_id=' + @type.id.to_s + '_' + other_type.id.to_s
+
+      expect(page).to have_content('Cleo')
+      expect(page).to have_content('Zelda')
+      expect(page).to_not have_content('Sass')
+    end
+
+    it 'by_machine_id' do
+      visit '/portland/?by_machine_id=' + @machine.id.to_s
+
+      expect(page).to have_content('Cleo')
+      expect(page).to_not have_content('Sass')
+    end
+
+    it 'by_machine_id -- multiple ids' do
+      other_machine = FactoryGirl.create(:machine, :name => 'Cool')
+      other_location = FactoryGirl.create(:location, :region => @region, :name => 'Zelda')
+      FactoryGirl.create(:location_machine_xref, :location => other_location, :machine => other_machine)
+
+      visit '/portland/?by_machine_id=' + @machine.id.to_s + '_' + other_machine.id.to_s
+
+      expect(page).to have_content('Cleo')
+      expect(page).to have_content('Zelda')
+      expect(page).to_not have_content('Sass')
+    end
+  end
+
   describe 'update_desc', :type => :feature, :js => true do
     before(:each) do
       @location = FactoryGirl.create(:location, :region => @region, :name => 'Cleo')

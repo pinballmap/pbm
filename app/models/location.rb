@@ -26,14 +26,14 @@ class Location < ActiveRecord::Base
 
     where(:region_id => r.id)
   }
-  scope :by_type_id, lambda {|id| where(:location_type_id => id)}
+  scope :by_type_id, lambda {|id| where('location_type_id in (?)', id.split('_').map(&:to_i))}
   scope :by_operator_id, lambda {|id| where(:operator_id => id)}
-  scope :by_location_id, lambda {|id| where(:id => id)}
-  scope :by_zone_id, lambda {|id| where(:zone_id => id)}
+  scope :by_location_id, lambda {|id| where('id in (?)', id.split('_').map(&:to_i))}
+  scope :by_zone_id, lambda {|id| where('zone_id in (?)', id.split('_').map(&:to_i))}
   scope :by_city_id, lambda {|city| where(:city => city)}
   scope :by_location_name, lambda {|name| where(:name => name)}
   scope :by_machine_id, lambda {|id|
-    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id = ?', id)
+    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in(?)', id.split('_').map(&:to_i))
   }
   scope :by_machine_name, lambda {|name|
     machine = Machine.find_by_name(name)
@@ -68,14 +68,14 @@ class Location < ActiveRecord::Base
   end
 
   def content_for_infowindow
-    content = "'<div class=\"infowindow\">"
+    content = "'<div class=\"infowindow\" id=\"infowindow_#{self.id}\">"
     content += "<div class=\"gm_location_name\">#{self.name.gsub("'", "\\\\'")}</div>"
     content += "<div class=\"gm_address\">#{[self.street.gsub("'", "\\\\'"), [self.city.gsub("'", "\\\\'"), self.state, self.zip].join(', '), self.phone].join('<br />')}</div>"
     content += '<hr />'
 
-    machines = self.machines.sort_by(&:massaged_name).map {|m| m.name.gsub("'", "\\\\'") + '<br />'}
+    machines = self.machine_names.map {|m| m.gsub("'", "\\\\'") + '<br />'}
 
-    content += "<div class=\"gm_machines\">#{machines.join}</div>"
+    content += "<div class=\"gm_machines\" id=\"gm_machines_#{self.id}\">#{machines.join}</div>"
     content += "</div>'"
 
     content.html_safe
