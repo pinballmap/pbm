@@ -134,7 +134,7 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{@lmx.created_at.strftime("%d-%b-%Y")}")
+      expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{Time.now.strftime("%d-%b-%Y")}")
     end
 
     it 'should let me cancel adding a new machine description' do
