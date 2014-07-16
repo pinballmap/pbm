@@ -25,6 +25,7 @@ describe LocationMachineXrefsController do
       expect(@location.machines.first).to eq(@machine_to_add)
 
       expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
+      expect(find("#gm_machines_#{@location.id}")).to have_content(@machine_to_add.name)
     end
 
     it 'Should add by name of existing machine' do
@@ -133,7 +134,7 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{@lmx.created_at.strftime("%d-%b-%Y")}")
+      expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{Time.now.strftime("%d-%b-%Y")}")
     end
 
     it 'should let me cancel adding a new machine description' do

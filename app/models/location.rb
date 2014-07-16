@@ -68,14 +68,14 @@ class Location < ActiveRecord::Base
   end
 
   def content_for_infowindow
-    content = "'<div class=\"infowindow\">"
+    content = "'<div class=\"infowindow\" id=\"infowindow_#{self.id}\">"
     content += "<div class=\"gm_location_name\">#{self.name.gsub("'", "\\\\'")}</div>"
     content += "<div class=\"gm_address\">#{[self.street.gsub("'", "\\\\'"), [self.city.gsub("'", "\\\\'"), self.state, self.zip].join(', '), self.phone].join('<br />')}</div>"
     content += '<hr />'
 
-    machines = self.machines.sort_by(&:massaged_name).map {|m| m.name.gsub("'", "\\\\'") + '<br />'}
+    machines = self.machine_names.map {|m| m.gsub("'", "\\\\'") + '<br />'}
 
-    content += "<div class=\"gm_machines\">#{machines.join}</div>"
+    content += "<div class=\"gm_machines\" id=\"gm_machines_#{self.id}\">#{machines.join}</div>"
     content += "</div>'"
 
     content.html_safe
