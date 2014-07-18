@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe PagesController do
   before(:each) do
-    @region = FactoryGirl.create(:region, :name => 'portland')
+    @region = FactoryGirl.create(:region, :name => 'portland', :full_name => 'Portland')
     @location = FactoryGirl.create(:location, :region => @region, :state => 'OR')
   end
 
@@ -117,7 +117,7 @@ describe PagesController do
 
   describe 'Homepage', :type => :feature, :js => true do
     it 'shows the proper number of locations and machines per region' do
-      chicago = FactoryGirl.create(:region, :name => 'chicago')
+      chicago = FactoryGirl.create(:region, :name => 'chicago', :full_name => 'Chicago')
       machine = FactoryGirl.create(:machine)
 
       FactoryGirl.create(:location_machine_xref, :location => @location, :machine => machine)
@@ -128,7 +128,7 @@ describe PagesController do
       visit "/"
 
       expect(page).to have_css('div#map_summaries')
-      expect(page).to have_content('Tracking: 2 Locations 2 Machines Tracking: 1 Locations 1 Machines')
+      expect(page).to have_content('Chicago Tracking: 1 Locations 1 Machines Portland Tracking: 2 Locations 2 Machines')
     end
   end
 

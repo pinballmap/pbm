@@ -140,5 +140,27 @@ class PagesController < ApplicationController
     else
       @tweets = []
     end
+
+    @all_regions = Region.order('full_name')
+    @region_data = regions_javascript_data(@all_regions)
+  end
+
+  def regions_javascript_data(regions)
+    ids = Array.new
+    lats = Array.new
+    lons = Array.new
+    contents = Array.new
+
+    regions.each do |r|
+      cloned_region = r.clone
+      ids      << cloned_region.id
+      lats     << cloned_region.lat
+      lons     << cloned_region.lon
+      contents << cloned_region.content_for_infowindow
+
+      cloned_region = nil
+    end
+
+    [ids, lats, lons, contents]
   end
 end

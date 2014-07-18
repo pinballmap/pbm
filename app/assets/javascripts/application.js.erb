@@ -63,9 +63,8 @@ function showLocations(ids, lats, lons, contents) {
     var infoWindow = new google.maps.InfoWindow({ content: contents[i] });
     infoWindows.push(infoWindow);
 
-    attachMarkerClick(marker, i)
+    attachMarkerClick(map, marker, infoWindow)
   }
-
 
   if (contents.length === 1) {
     map.setZoom(18);
@@ -75,11 +74,11 @@ function showLocations(ids, lats, lons, contents) {
   }
 }
 
-function attachMarkerClick(marker, index) {
+function attachMarkerClick(mapForMarker, marker, infoWindow) {
   google.maps.event.addListener(marker, 'click', function() {
     clearInfoWindows();
-    map.panTo(marker.getPosition());
-    infoWindows[index].open(map, marker);
+    mapForMarker.panTo(marker.getPosition());
+    infoWindow.open(mapForMarker, marker);
   });
 }
 
@@ -147,4 +146,30 @@ function resetInfoWindowHeights() {
   for (i in infoWindows) {
     infoWindows[i].setContent($('#infowindow_' + locationIDs[i]).html());
   }
+}
+
+function initializeRegionMap(ids, lats, lons, contents) {
+    infoWindows = new Array();
+
+    var bounds = new google.maps.LatLngBounds();
+    var regionMap = new google.maps.Map(document.getElementById("region_map"), { mapTypeId: google.maps.MapTypeId.ROADMAP });
+
+    for (i in ids) {
+      var latlng = new google.maps.LatLng(lats[i], lons[i]);
+
+      var marker = new google.maps.Marker({
+        animation: google.maps.Animation.DROP,
+        position: latlng,
+        map: regionMap,
+      });
+
+      bounds.extend(latlng);
+
+      var infoWindow = new google.maps.InfoWindow({ content: contents[i] });
+      infoWindows.push(infoWindow);
+
+      attachMarkerClick(regionMap, marker, infoWindow)
+    }
+
+    regionMap.fitBounds(bounds);
 }

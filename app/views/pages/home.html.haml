@@ -23,7 +23,7 @@
         =link_to image_tag('sol-icon.jpeg'), 'https://twitter.com/pinballmapcom', :class => 'twitter_icon'
         Follow
         =link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
-        on Twitter for map updates from across all #{Region.all.size} regions on the site!
+        on Twitter for map updates from across all #{@all_regions.size} regions on the site!
         %br/
         %br/
         The five most recent updates:
@@ -32,7 +32,7 @@
           %li= auto_link(t.text)
   #map_summaries.intro
     - count = 1
-    - Region.order('full_name').each do |r|
+    - @all_regions.each do |r|
       =link_to "/#{r.name}" do
         %span.map_summary
           %span.region_name #{r.full_name}
@@ -45,3 +45,16 @@
             = "#{r.machines_count} Machines"
   .clear
   %br/
+  #region_map
+  .clear
+  %br/
+
+:javascript
+  $().ready(function(){
+    initializeRegionMap(
+      [#{@region_data[0].join(', ')}],
+      [#{@region_data[1].join(', ')}],
+      [#{@region_data[2].join(', ')}],
+      [#{@region_data[3].join(', ')}]
+    );
+  });
