@@ -186,21 +186,20 @@ span.pick_a_map {
 div.dont_pick_a_map {
   display: none;
 }
-.home_intro, .home_intro_right {
-  padding: 6px;
+.home_intro {
+  padding: 3px 6px 6px;
   background-color: #fdfcfe;
-  border: 3px solid #efe2f5;
-  width: 280px;
+  border: 5px solid #efe2f5;
+  width: 300px;
   line-height: 120%;
-  margin: 14px 10px 0;
+  margin: 10px 10px 0;
   font-size: 16px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .home_intro_container {
   float: left;
-}
-.home_intro_right {
-  right: 0;
-  margin-left: 0;
 }
 
 /** END Home **/
@@ -1171,7 +1170,7 @@ a.apps_link:hover {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   margin-right: 5px;
-  margin-top: 5px;
+  margin-top: 3px;
 }
 .question {
   font-size:14px;
@@ -1205,7 +1204,17 @@ a.apps_link:hover {
 	/* For IE 8*/
 	-ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7fff4e7, endColorstr=#7fff4e7);
 }
-#region_map { width:500px; height:300px; display:none; }
+#region_map { 
+  width: 485px; 
+  height: 350px;
+  float: left;
+  margin: 10px 10px 0 0;
+  border: 5px solid #fdfcfe;
+  box-shadow: 1px 2px 7px rgba(90, 100, 117, 0.3);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
 #map {
   position: fixed;
   bottom: 0;
@@ -1239,6 +1248,8 @@ a.apps_link:hover {
 #welcome {
   margin: 0 auto;
   width: 100%;
+  min-width: 819px;
+  max-width: 100%;
   height: 100%;
 }
 ul.stufflike li, ul.list li {
@@ -1281,7 +1292,7 @@ img.header_image {
   text-align: center;
   border: 5px solid #DECEB9;
   float: left;
-  margin-top: 14px;
+  margin-top: 10px;
   margin-right: 10px;
   background-color:rgba(255,244,231,0.4);
   /* Fallback for web browsers that doesn't support RGBa */

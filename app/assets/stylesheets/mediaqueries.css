@@ -9,14 +9,22 @@
     float: left;
   }
 
-  #welcome {
-    width: 755px;
+}
+
+@media (max-width: 820px) { 
+
+  #welcome, 
+  #header.header_home {
+    min-width: 755px;
   }
 
-  .home_intro_right {
-    left: 503px;
+  .home_intro {
+    width: 235px;
   }
 
+  #map_summaries {
+    margin: 0 0 0 255px;
+  }
 }
 
 @media (max-width: 850px) { 
@@ -32,7 +40,7 @@
   }
 
   #intro {
-    padding: 20px;
+    padding: 10px;
   }
 
 }

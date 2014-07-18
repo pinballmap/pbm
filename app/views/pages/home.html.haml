@@ -31,6 +31,8 @@
         - @tweets.each do |t|
           %li= auto_link(t.text)
   #map_summaries.intro
+    - if !mobile_device?
+      #region_map
     - count = 1
     - @all_regions.each do |r|
       =link_to "/#{r.name}" do
@@ -43,9 +45,6 @@
             = "#{r.locations_count} Locations"
             %br/
             = "#{r.machines_count} Machines"
-  .clear
-  %br/
-  #region_map
   .clear
   %br/
 
