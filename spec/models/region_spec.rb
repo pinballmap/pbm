@@ -119,4 +119,13 @@ describe Region do
       expect(Region.find(@r.id).available_search_sections).to eq("['city', 'location', 'machine', 'type', 'operator', 'zone']")
     end
   end
+
+  describe '#content_for_infowindow' do
+    it 'generate the html that the infowindow wants to use' do
+      r = FactoryGirl.create(:region, :full_name => 'Portland')
+      ['Foo', 'Bar', 'Baz', "Beans'"].each {|name| FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => r, :name => name), :machine => FactoryGirl.create(:machine, :name => name)) }
+
+      expect(r.content_for_infowindow.chomp).to eq("'<div class=\"infowindow\" id=\"infowindow_#{r.id}\"><div class=\"gm_region_name\">Portland</div><hr /><div class=\"gm_location_count\">4 Locations</div><div class=\"gm_machine_count\">4 Machines</div></div>'")
+    end
+  end
 end

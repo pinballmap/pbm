@@ -94,4 +94,15 @@ class Region < ActiveRecord::Base
 
     '[' + sections.collect {|s| "'" + s + "'"}.join(', ') + ']'
   end
+
+  def content_for_infowindow
+    content = "'<div class=\"infowindow\" id=\"infowindow_#{self.id}\">"
+    content += "<div class=\"gm_region_name\">#{self.full_name.gsub("'", "\\\\'")}</div>"
+    content += '<hr />'
+    content += "<div class=\"gm_location_count\">#{self.locations.size} Locations</div>"
+    content += "<div class=\"gm_machine_count\">#{self.machines.size} Machines</div>"
+    content += "</div>'"
+
+    content.html_safe
+  end
 end
