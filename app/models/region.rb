@@ -97,7 +97,7 @@ class Region < ActiveRecord::Base
 
   def content_for_infowindow
     content = "'<div class=\"infowindow\" id=\"infowindow_#{self.id}\">"
-    content += "<div class=\"gm_region_name\">#{self.full_name.gsub("'", "\\\\'")}</div>"
+    content += "<div class=\"gm_region_name\"><a href=\"#{self.name}\">#{self.full_name.gsub("'", "\\\\'")}</a></div>"
     content += '<hr />'
     content += "<div class=\"gm_location_count\">#{self.locations.size} Locations</div>"
     content += "<div class=\"gm_machine_count\">#{self.machines.size} Machines</div>"

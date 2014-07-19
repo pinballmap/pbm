@@ -125,7 +125,7 @@ describe Region do
       r = FactoryGirl.create(:region, :full_name => 'Portland')
       ['Foo', 'Bar', 'Baz', "Beans'"].each {|name| FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => r, :name => name), :machine => FactoryGirl.create(:machine, :name => name)) }
 
-      expect(r.content_for_infowindow.chomp).to eq("'<div class=\"infowindow\" id=\"infowindow_#{r.id}\"><div class=\"gm_region_name\">Portland</div><hr /><div class=\"gm_location_count\">4 Locations</div><div class=\"gm_machine_count\">4 Machines</div></div>'")
+      expect(r.content_for_infowindow.chomp).to eq("'<div class=\"infowindow\" id=\"infowindow_#{r.id}\"><div class=\"gm_region_name\"><a href=\"#{r.name}\">Portland</a></div><hr /><div class=\"gm_location_count\">4 Locations</div><div class=\"gm_machine_count\">4 Machines</div></div>'")
     end
   end
 end
