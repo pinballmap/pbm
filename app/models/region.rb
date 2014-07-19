@@ -100,7 +100,7 @@ class Region < ActiveRecord::Base
     content += "<div class=\"gm_region_name\"><a href=\"#{self.name}\">#{self.full_name.gsub("'", "\\\\'")}</a></div>"
     content += '<hr />'
     content += "<div class=\"gm_location_count\">#{self.locations.size} Locations</div>"
-    content += "<div class=\"gm_machine_count\">#{self.machines.size} Machines</div>"
+    content += "<div class=\"gm_machine_count\">#{self.location_machine_xrefs.size} Machines</div>"
     content += "</div>'"
 
     content.html_safe
