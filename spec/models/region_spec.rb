@@ -123,9 +123,18 @@ describe Region do
   describe '#content_for_infowindow' do
     it 'generate the html that the infowindow wants to use' do
       r = FactoryGirl.create(:region, :full_name => 'Portland')
-      ['Foo', 'Bar', 'Baz', "Beans'"].each {|name| FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => r, :name => name), :machine => FactoryGirl.create(:machine, :name => name)) }
 
-      expect(r.content_for_infowindow.chomp).to eq("'<div class=\"infowindow\" id=\"infowindow_#{r.id}\"><div class=\"gm_region_name\"><a href=\"#{r.name}\">Portland</a></div><hr /><div class=\"gm_location_count\">4 Locations</div><div class=\"gm_machine_count\">4 Machines</div></div>'")
+      location = FactoryGirl.create(:location, :region => r, :name => 'Sassy')
+      another_location = FactoryGirl.create(:location, :region => r, :name => 'Cleo')
+
+      machine = FactoryGirl.create(:machine, :name => 'Sassy')
+      another_machine = FactoryGirl.create(:machine, :name => 'Cleo')
+
+      FactoryGirl.create(:location_machine_xref, :location => location, :machine => machine)
+      FactoryGirl.create(:location_machine_xref, :location => another_location, :machine => machine)
+      FactoryGirl.create(:location_machine_xref, :location => another_location, :machine => another_machine)
+
+      expect(r.content_for_infowindow.chomp).to eq("'<div class=\"infowindow\" id=\"infowindow_#{r.id}\"><div class=\"gm_region_name\"><a href=\"#{r.name}\">Portland</a></div><hr /><div class=\"gm_location_count\">2 Locations</div><div class=\"gm_machine_count\">3 Machines</div></div>'")
     end
   end
 end
