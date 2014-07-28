@@ -1,6 +1,7 @@
 module Api
   module V1
     class MachinesController < InheritedResources::Base
+      before_filter :allow_cors
       respond_to :json
 
       api :GET, '/api/v1/machines.json', "Fetch all machines"
