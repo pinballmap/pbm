@@ -57,7 +57,7 @@
   .left_column_about {
     float: none;
   }
-  .right_column, #right_column {
+  .right_column, #right_column, .right_column.secondary {
     margin: 0 auto;
     display: block;
     float: none;
