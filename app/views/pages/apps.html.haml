@@ -1,29 +1,28 @@
 #page_body
-  #apps
-    .left_column.secondary
-      %p{:style => 'margin-top:7%;'}
-        =link_to image_tag('App_Store.png'), "http://itunes.apple.com/us/app/portland-pinball-map/id359275713?mt=8", :class => 'pic', :target => '_blank'
-      %p
-        =link_to image_tag('android_market.png'), "https://market.android.com/details?id=com.pbm&feature=search_result#?t=W251bGwsMSwxLDEsImNvbS5wYm0iXQ..", :class => 'pic', :target => '_blank'
-      %p
-        =image_tag 'appLoadingPortland.jpg', :style => 'height:340px;width:226px;'
-    .right_column.right_column_apps
-      %p.yellow Pinball Map Apps
-      %p.regular_text 
-        Our mobile apps come in two varieties: iPhone/iPad, and Android. And both are totally FREE! Use them to find spots with pinball while you're on-the-go! Start by opening the app and then choosing a regional map.
-        %span.yellow (If you don't have a device that supports these apps, just use our mobile-optimized website.)
-      %p.regular_text
-        Featuring splash artwork by
-        =link_to 'Drew Marshall', 'http://workbydrew.com', :target => '_blank'
-      %p.regular_text
-        =link_to 'Click here for iPhone/iPad app support (and to see some screenshots).', apps_support_path
-      %p.regular_text
-        %span.yellow Some app features:
-      %ul.list
-        %li Add/Remove machines from locations (to help keep the map up to date)
-        %li Find locations by proximity
-        %li Submit new locations to be added
-        %li Filter locations by your favorite machines
-        %li Add comments about machines
-        %li View upcoming events
-        %li Add in your high scores
+  .left_column.secondary
+    %p{:style => 'margin-top:7%;'}
+      =link_to image_tag('App_Store.png'), "http://itunes.apple.com/us/app/portland-pinball-map/id359275713?mt=8", :class => 'pic', :target => '_blank'
+    %p
+      =link_to image_tag('android_market.png'), "https://market.android.com/details?id=com.pbm&feature=search_result#?t=W251bGwsMSwxLDEsImNvbS5wYm0iXQ..", :class => 'pic', :target => '_blank'
+    %p
+      =image_tag 'appLoadingPortland.jpg', :style => 'height:340px;width:226px;'
+  .right_column.right_column_apps
+    %p.yellow Pinball Map Apps
+    %p.regular_text 
+      Our mobile apps come in two varieties: iPhone/iPad, and Android. And both are totally FREE! Use them to find spots with pinball while you're on-the-go! Start by opening the app and then choosing a regional map.
+      %span.yellow (If you don't have a device that supports these apps, just use our mobile-optimized website.)
+    %p.regular_text
+      Featuring splash artwork by
+      =link_to 'Drew Marshall', 'http://workbydrew.com', :target => '_blank'
+    %p.regular_text
+      =link_to 'Click here for iPhone/iPad app support (and to see some screenshots).', apps_support_path
+    %p.regular_text
+      %span.yellow Some app features:
+    %ul.list
+      %li Add/Remove machines from locations (to help keep the map up to date)
+      %li Find locations by proximity
+      %li Submit new locations to be added
+      %li Filter locations by your favorite machines
+      %li Add comments about machines
+      %li View upcoming events
+      %li Add in your high scores
