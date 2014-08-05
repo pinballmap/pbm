@@ -431,7 +431,7 @@ input#score, input#initials {
 
 .right_column.secondary .ios img,
 .right_column.secondary .ipad img {
-  width: 310px;
+  width: 98%;
   height: auto;
 }
 
@@ -495,12 +495,20 @@ input#score, input#initials {
 
 @media (max-width: 973px) {
 
-.home_intro_right {
-  left: 0;
+  .home_intro_right {
+    left: 0;
+  }
+
+  #welcome {
+    width: auto;
+  }
+
 }
 
-#welcome {
-  width: auto;
-}
+@media (max-width: 320px) {
+
+  .map_summary {
+    width: 137px;
+  }
 
 }
