@@ -2,7 +2,7 @@
 %html
   %head
     %meta{:charset => "UTF-8"}
-    %title #{(defined? @region) ? @region.full_name : ''} Pinball Map
+    %title #{(defined? @region) ? @region.full_name : ''} Pinball Map #{(current_page? apps_path or apps_support_path) ? 'Apps' : ''}
     %meta{:name => "keywords", :content => "pinball, map, google map, locator" }
     %meta{:name => "description", :content => "Find local places to play pinball! The #{(defined? @region) ? @region.full_name : ''} Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area." }
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}

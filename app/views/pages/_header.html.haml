@@ -11,6 +11,8 @@
   %div{:class => "#{@region ? 'dont_pick_a_map' : 'pick_a_map'}"}
     %span.yellowb.new_blog
       = link_to 'Check out our blog!', 'http://blog.pinballmap.com'
+    %span.yellowb.new_blog
+      = link_to 'Pinball Map Apps', apps_path
     %span.pick_a_map Play Public Pinball!
   - if (@region)
     %ul
