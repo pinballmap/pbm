@@ -391,7 +391,7 @@ input#score, input#initials {
 
 .links_column, #left_column, .left_column,
 .left_column.suggest, .left_column.high, .left_column.secondary,
-.right_column, #right_column, .left_second_column {
+.right_column, #right_column, .left_second_column, .right_column.secondary {
   margin: 10px;
 }
 
@@ -407,7 +407,7 @@ input#score, input#initials {
 #left_column, .left_column, .left_column_about, 
 #region_page_body, .links_column, .links_category, .left_second_column,
 .left_column.suggest, .left_column.high, .left_column.secondary,
-.right_column, #right_column, .right_column.right_column_apps {
+.right_column, #right_column, .right_column.right_column_apps, .right_column.secondary {
   width: auto;
   min-width: 0;
   min-height: 0;
@@ -418,6 +418,12 @@ input#score, input#initials {
   float: none;
   display: block;
   clear: both;
+}
+
+.right_column.secondary .ios img,
+.right_column.secondary .ipad img {
+  width: 310px;
+  height: auto;
 }
 
 #location_maker li {
