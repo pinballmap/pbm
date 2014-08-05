@@ -120,6 +120,9 @@ class PagesController < ApplicationController
   def app_support
   end
 
+  def privacy
+  end
+
   def contact
     redirect_to about_path
   end

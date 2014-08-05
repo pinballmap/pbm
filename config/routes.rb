@@ -80,8 +80,6 @@ Pbm::Application.routes.draw do
 
     match '/' => "pages#region", :as => 'region_homepage'
     match '/about' => 'pages#about'
-    match '/apps' => 'pages#apps'
-    match '/app_support' => 'pages#app_support'
     match '/contact' => 'pages#contact'
     match '/contact_sent' => 'pages#contact_sent'
     match '/links' => 'pages#links'
@@ -100,6 +98,10 @@ Pbm::Application.routes.draw do
   resources :location_picture_xrefs
 
   devise_for :users
+
+  match '/apps' => 'pages#apps'
+  match '/apps/app_support' => 'pages#app_support'
+  match '/apps/privacy' => 'pages#privacy'
 
   match 'iphone.html', :to => 'locations#mobile'
   match '4sq_export.xml' => 'regions#four_square_export', :format => 'xml'
