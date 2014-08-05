@@ -100,7 +100,7 @@ Pbm::Application.routes.draw do
   devise_for :users
 
   match '/apps' => 'pages#apps'
-  match '/apps/app_support' => 'pages#app_support'
+  match '/apps/support' => 'pages#app_support'
   match '/apps/privacy' => 'pages#privacy'
 
   match 'iphone.html', :to => 'locations#mobile'
