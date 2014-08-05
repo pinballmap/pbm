@@ -2,10 +2,19 @@
 %html
   %head
     %meta{:charset => "UTF-8"}
-    %title #{(defined? @region) ? @region.full_name : ''} Pinball Map #{(current_page? apps_path or apps_support_path) ? 'Apps' : ''}
-    %meta{:name => "keywords", :content => "pinball, map, google map, locator" }
-    %meta{:name => "description", :content => "Find local places to play pinball! The #{(defined? @region) ? @region.full_name : ''} Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area." }
+    %title #{(defined? @region) ? @region.full_name + ' ' : ''}Pinball Map#{(current_page? (apps_path or apps_support_path)) ? ' Apps' : ''}
+    %meta{:property => "og:title", :content => "#{(defined? @region) ? @region.full_name + ' ' : ''}Pinball Map#{(current_page? (apps_path or apps_support_path)) ? ' Apps' : ''}"}
+    %meta{:name => "keywords", :content => "pinball, map, google map, locator, arcade, tournaments, league" }
+    - if (current_page? (apps_path or apps_support_path))
+      %meta{:name => "description", :content => "Pinball Map Apps for iOS and Android. They're FREE." }
+      %meta{:property => "og:description", :content => "Pinball Map Apps for iOS and Android. They're FREE." }
+    - else
+      %meta{:name => "description", :content => "Find local places to play pinball! #{(defined? @region) ? 'The ' + @region.full_name + ' ' : ''}Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area." }
+      %meta{:property => "og:description", :content => "Find local places to play pinball! #{(defined? @region) ? 'The ' + @region.full_name + ' ' : ''}Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."}
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
+    %meta{property: "og:site_name", :content => "Pinball Map"}
+    %meta{property: "og:url", :content => "http://#{request.host+request.fullpath}" }
+    %meta{property: "og:image", :content => image_path("pbm-og-image.png")}
     = stylesheet_link_tag 'application', 'mediaqueries', 'http://fonts.googleapis.com/css?family=Montserrat:400,700', 'http://fonts.googleapis.com/css?family=Open+Sans:400,600'
     - if mobile_device?
       = stylesheet_link_tag 'mobile-application'
