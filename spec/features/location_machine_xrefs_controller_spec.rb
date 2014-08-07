@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe LocationMachineXrefsController do
   before(:each) do
-    @region = FactoryGirl.create(:region, :name => 'portland')
+    @region = FactoryGirl.create(:region, :name => 'portland', :full_name => 'Portland')
     @location = FactoryGirl.create(:location, :region => @region)
   end
 
@@ -303,7 +303,7 @@ describe LocationMachineXrefsController do
     end
 
     it 'allows case insensive searches of a region' do
-      chicago_region = FactoryGirl.create(:region, :name => 'chicago')
+      chicago_region = FactoryGirl.create(:region, :name => 'chicago', :full_name => 'Chicago')
       FactoryGirl.create(:location, :region => chicago_region, :name => 'Chicago Location')
 
       visit "/CHICAGO"
@@ -443,7 +443,7 @@ describe LocationMachineXrefsController do
     end
 
     it 'honors default search types for region' do
-      FactoryGirl.create(:region, :name => 'chicago', :default_search_type => 'city')
+      FactoryGirl.create(:region, :name => 'chicago', :default_search_type => 'city', :full_name => 'Chicago')
       visit "/chicago"
 
       expect(page).to have_css("a#city_section_link.active_section_link")

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe MachineScoreXrefsController do
   before(:each) do
-    @region = FactoryGirl.create(:region, :name => 'portland')
+    @region = FactoryGirl.create(:region, :name => 'portland', :full_name => 'Portland')
     @location = FactoryGirl.create(:location, :region => @region)
   end
 
