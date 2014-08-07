@@ -2,10 +2,10 @@
 %html
   %head
     %meta{:charset => "UTF-8"}
-    %title #{(defined? @region) ? @region.full_name + ' ' : ''}Pinball Map#{(current_page? (apps_path or apps_support_path)) ? ' Apps' : ''}
-    %meta{:property => "og:title", :content => "#{(defined? @region) ? @region.full_name + ' ' : ''}Pinball Map#{(current_page? (apps_path or apps_support_path)) ? ' Apps' : ''}"}
+    %title #{(defined? @region) ? @region.full_name + ' ' : ''}Pinball Map#{(current_page?(apps_path)) || (current_page?(apps_support_path)) ? ' Apps' : ''}
+    %meta{:property => "og:title", :content => "#{(defined? @region) ? @region.full_name + ' ' : ''}Pinball Map#{(current_page?(apps_path)) || (current_page?(apps_support_path)) ? ' Apps' : ''}"}
     %meta{:name => "keywords", :content => "pinball, map, google map, locator, arcade, tournaments, league" }
-    - if (current_page? (apps_path or apps_support_path))
+    - if (current_page?(apps_path)) || (current_page?(apps_support_path))
       %meta{:name => "description", :content => "Pinball Map Apps for iOS and Android. They're FREE." }
       %meta{:property => "og:description", :content => "Pinball Map Apps for iOS and Android. They're FREE." }
     - else
