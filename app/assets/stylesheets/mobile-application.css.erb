@@ -59,7 +59,6 @@
 }
 
 div.pick_a_map {
-  padding-top: 0;
   text-align: left;
   background: #ffecd6;
   height: 36px;
@@ -67,8 +66,9 @@ div.pick_a_map {
 
 .new_blog {
   width: 100%;
-  padding: 10px 0 12px;
+  padding: 12px 0 12px;
   text-align: center;
+  border-bottom: 2px solid #fdfcfe;
 }
 
 .map_summary {
@@ -78,6 +78,7 @@ div.pick_a_map {
 #welcome {
   width: auto;
   min-width: 320px;
+  margin-top: 10px;
 }
 
 #map {
@@ -101,7 +102,7 @@ div.pick_a_map {
 }
 
 .home_intro {
-  margin: 15px 10px 0;
+  margin: 0 10px 10px 10px;
   width: auto;
 }
 
@@ -332,6 +333,14 @@ div.pick_a_map {
   margin: 10px 0;
 }
 
+.submit_button {
+  width: 98%;
+}
+
+.thanks, p.alert {
+  margin: 0 auto;
+}
+
 #file_chooser_button {
   width: auto;
 }
@@ -422,7 +431,7 @@ input#score, input#initials {
 
 .right_column.secondary .ios img,
 .right_column.secondary .ipad img {
-  width: 310px;
+  width: 98%;
   height: auto;
 }
 
@@ -445,7 +454,7 @@ input#score, input#initials {
 }
 
 #location_maker ul {
-  width: 280px;
+  width: 100%;
 }
 
 #location_maker li, #contact_maker li {
@@ -461,6 +470,10 @@ input#score, input#initials {
 
 #location_maker li.submit, #contact_maker li.submit {
   margin-bottom: 30px;
+}
+
+#location_maker .first {
+  float: none;
 }
 
 #location_maker textarea.machines {
@@ -482,12 +495,20 @@ input#score, input#initials {
 
 @media (max-width: 973px) {
 
-.home_intro_right {
-  left: 0;
+  .home_intro_right {
+    left: 0;
+  }
+
+  #welcome {
+    width: auto;
+  }
+
 }
 
-#welcome {
-  width: auto;
-}
+@media (max-width: 320px) {
+
+  .map_summary {
+    width: 137px;
+  }
 
 }
