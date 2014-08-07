@@ -26,7 +26,7 @@ describe PagesController do
     end
 
     it 'is case insensitive for region name' do
-      chicago_region = FactoryGirl.create(:region, :name => 'chicago')
+      chicago_region = FactoryGirl.create(:region, :name => 'chicago', :full_name => 'Chicago')
       FactoryGirl.create(:event, :region => chicago_region, :name => 'event 1')
 
       visit '/CHICAGO/events'
@@ -80,7 +80,7 @@ describe PagesController do
 
   describe 'Links', :type => :feature, :js => true do
     it 'shows links in a region' do
-      chicago = FactoryGirl.create(:region, :name => 'chicago')
+      chicago = FactoryGirl.create(:region, :name => 'chicago', :full_name => 'Chicago')
 
       FactoryGirl.create(:region_link_xref, :region => @region, :description => 'foo')
       FactoryGirl.create(:region_link_xref, :region => chicago, :name => 'chicago link 1', :category => 'main links', :sort_order => 2, :description => 'desc1')
