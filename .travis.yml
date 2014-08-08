@@ -2,3 +2,7 @@ language: ruby
 rvm:
   - "2.1.2"
 script: bundle exec rspec
+addons:
+  postgresql: "9.3"
+before_script:
+  - cp config/database.yml.travis config/database.yml
