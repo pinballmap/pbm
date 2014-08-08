@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/scottwainstock/pbm.svg?branch=master)](https://travis-ci.org/scottwainstock/pbm)
+
 *sweet pinballin' brah*
 
 ##API Documentation
