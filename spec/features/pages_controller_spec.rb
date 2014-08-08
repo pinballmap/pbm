@@ -128,7 +128,26 @@ describe PagesController do
       visit "/"
 
       expect(page).to have_css('div#map_summaries')
-      expect(page).to have_content('Chicago Tracking: 1 Locations 1 Machines Portland Tracking: 2 Locations 2 Machines')
+      expect(page).to have_content('Chicago Tracking: 1 Locations 1 Machines Portland Tracking: 2 Locations 2 Machines')    
+    end
+
+    it 'shows the proper page title' do
+
+      visit "/"
+
+      expect(page).to have_title("Pinball Map")
+      expect(page).not_to have_title("Apps")
+    end
+  end
+
+  describe 'Apps pages', :type => :feature, :js => true do
+    it 'shows the proper page title' do
+
+      visit "/apps"
+      expect(page).to have_title("Apps")
+
+      visit "/apps/support"
+      expect(page).to have_title("Apps")
     end
   end
 
@@ -160,6 +179,14 @@ describe PagesController do
       visit "/portland"
 
       expect(page).to have_content("Test Location Name's Test Machine Name: GC with 1,234 by cap")
+    end
+
+    it 'shows the proper page title' do
+
+      visit "/portland"
+
+      expect(page).to have_title("Portland Pinball Map")
+      expect(page).not_to have_title("Apps")
     end
   end
 end
