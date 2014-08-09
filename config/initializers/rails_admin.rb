@@ -140,50 +140,50 @@ RailsAdmin.config do |config|
   end
   config.model Location do
     list do
-      field :city, :string 
       field :name, :string 
-      field :operator, :belongs_to_association 
-      field :phone, :string 
-      field :state, :string 
       field :street, :string 
+      field :city, :string 
+      field :state, :string 
       field :zip, :string 
+      field :phone, :string 
       field :zone, :belongs_to_association 
+      field :operator, :belongs_to_association 
     end
     show do
+      field :name, :string 
+      field :zone, :belongs_to_association 
+      field :location_type, :belongs_to_association 
+      field :operator, :belongs_to_association 
+      field :street, :string 
       field :city, :string 
-      field :description, :string 
+      field :state, :string 
+      field :zip, :string 
+      field :phone, :string 
       field :lat, :decimal 
       field :lon, :decimal 
-      field :location_type, :belongs_to_association 
-      field :name, :string 
-      field :operator, :belongs_to_association 
-      field :phone, :string 
-      field :state, :string 
-      field :street, :string 
-      field :updated_at, :datetime 
       field :website, :string 
-      field :zip, :string 
-      field :zone, :belongs_to_association 
+      field :updated_at, :datetime 
+      field :description, :string 
     end
     edit do
-      field :city, :string 
-      field :description, :string 
-      field :lat, :decimal 
-      field :lon, :decimal 
-      field :location_type, :belongs_to_association 
       field :name, :string 
-      field :operator, :belongs_to_association 
-      field :phone, :string 
-      field :state, :string 
-      field :street, :string 
-      field :updated_at, :datetime 
-      field :website, :string 
-      field :zip, :string 
       field :zone_id do
         render do
           bindings[:view].render :partial => 'zone_select', :locals => {:object_type => 'location', :zone_id => bindings[:object].zone_id}
         end
       end
+      field :location_type, :belongs_to_association 
+      field :operator, :belongs_to_association 
+      field :street, :string 
+      field :city, :string 
+      field :state, :string 
+      field :zip, :string 
+      field :phone, :string 
+      field :lat, :decimal 
+      field :lon, :decimal 
+      field :website, :string 
+      field :updated_at, :datetime 
+      field :description, :string 
     end
     create do
       field :name, :string 
@@ -192,22 +192,22 @@ RailsAdmin.config do |config|
           bindings[:view].render :partial => 'zone_select', :locals => {:object_type => 'location', :zone_id => nil}
         end
       end
-      field :city, :string 
-      field :description, :string 
-      field :lat, :decimal 
-      field :lon, :decimal 
       field :location_type, :belongs_to_association 
       field :operator, :belongs_to_association 
+      field :street, :string 
+      field :city, :string 
+      field :state, :string 
+      field :zip, :string 
       field :phone, :string 
+      field :lat, :decimal 
+      field :lon, :decimal 
+      field :website, :string 
+      field :description, :string 
       field :region_id do
         render do
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.region_id, :object_type => 'location'}
         end
       end
-      field :state, :string 
-      field :street, :string 
-      field :website, :string 
-      field :zip, :string 
     end
     export do; end
     update do; end
