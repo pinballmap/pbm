@@ -30,7 +30,15 @@ Pbm::Application.routes.draw do
     end
   end
 
+  match '/apps' => 'pages#apps'
+  match '/apps/support' => 'pages#app_support'
+  match '/apps/privacy' => 'pages#privacy'
+
   scope ':region', :constraints => { :region => /#{regions}|!admin/i } do
+    get 'apps' => redirect('/apps')
+    get 'apps/support' => redirect('/apps/support')
+    get 'apps/privacy' => redirect('/apps/privacy')
+
     resources :pages
     resources :events
     resources :regions
@@ -98,10 +106,6 @@ Pbm::Application.routes.draw do
   resources :location_picture_xrefs
 
   devise_for :users
-
-  match '/apps' => 'pages#apps'
-  match '/apps/support' => 'pages#app_support'
-  match '/apps/privacy' => 'pages#privacy'
 
   match 'iphone.html', :to => 'locations#mobile'
   match '4sq_export.xml' => 'regions#four_square_export', :format => 'xml'
