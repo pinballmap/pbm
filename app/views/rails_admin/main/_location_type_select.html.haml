@@ -1,0 +1,4 @@
+%select{:name => "#{object_type}[location_type_id]"}
+  <option value=""></option>
+  - LocationType.all.each do |lt|
+    <option value="#{lt.id}" #{lt.id == location_type_id ? 'selected=select' : ''} >#{lt.name}</option>

@@ -172,7 +172,11 @@ RailsAdmin.config do |config|
           bindings[:view].render :partial => 'zone_select', :locals => {:object_type => 'location', :zone_id => bindings[:object].zone_id}
         end
       end
-      field :location_type, :belongs_to_association 
+      field :location_type_id do
+        render do
+          bindings[:view].render :partial => 'location_type_select', :locals => {:object_type => 'location', :location_type_id => bindings[:object].location_type_id}
+        end
+      end
       field :operator, :belongs_to_association 
       field :street, :string 
       field :city, :string 
@@ -192,7 +196,11 @@ RailsAdmin.config do |config|
           bindings[:view].render :partial => 'zone_select', :locals => {:object_type => 'location', :zone_id => nil}
         end
       end
-      field :location_type, :belongs_to_association 
+      field :location_type_id do
+        render do
+          bindings[:view].render :partial => 'location_type_select', :locals => {:object_type => 'location', :location_type_id => nil}
+        end
+      end
       field :operator, :belongs_to_association 
       field :street, :string 
       field :city, :string 
