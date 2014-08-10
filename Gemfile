@@ -65,6 +65,8 @@ group :test do
   gem "selenium-webdriver", "~> 2.33.0"
   gem 'timecop'
   gem 'poltergeist'
+  gem 'simplecov', :require => false
+  gem 'coveralls', :require => false
 end
 
 group :development, :test do
