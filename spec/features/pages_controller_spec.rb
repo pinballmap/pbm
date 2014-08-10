@@ -82,7 +82,7 @@ describe PagesController do
     it 'shows the top 10 machine counts on the about page' do
       11.times do |machine_name_counter|
         machine_name_counter.times do
-          FactoryGirl.create(:location_machine_xref, :location => @location, :machine => Machine.find_or_create_by_name(name: "Machine#{machine_name_counter}"))
+          FactoryGirl.create(:location_machine_xref, :location => @location, :machine => Machine.where(:name => "Machine#{machine_name_counter}").first_or_create)
         end
       end
 

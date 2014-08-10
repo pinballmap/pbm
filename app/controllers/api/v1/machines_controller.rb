@@ -20,7 +20,7 @@ module Api
         machine_name = params[:machine_name]
         machine_name.strip!
 
-        machine = Machine.find(:first, :conditions => ["lower(name)= ?", machine_name.downcase])
+        machine = Machine.where(["lower(name)= ?", machine_name.downcase]).first
         location = Location.find(params[:location_id])
 
         if (machine.nil?)

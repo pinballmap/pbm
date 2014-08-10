@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 ruby "2.1.2"
 
-gem 'rails', '3.2.11'
+gem 'rails', '4.1'
 gem 'arel'
 gem 'pg'
 gem 'rake'
@@ -42,6 +42,7 @@ gem 'rails_autolink'
 gem 'social-share-button'
 gem 'rack-attack'
 gem 'apipie-rails'
+gem 'protected_attributes'
 
 group :test do
   gem 'cucumber-rails', :require => false

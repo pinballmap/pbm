@@ -30,9 +30,9 @@ Pbm::Application.routes.draw do
     end
   end
 
-  match '/apps' => 'pages#apps'
-  match '/apps/support' => 'pages#app_support'
-  match '/apps/privacy' => 'pages#privacy'
+  get '/apps' => 'pages#apps'
+  get '/apps/support' => 'pages#app_support'
+  get '/apps/privacy' => 'pages#privacy'
 
   scope ':region', :constraints => { :region => /#{regions}|!admin/i } do
     get 'apps' => redirect('/apps')
@@ -55,6 +55,12 @@ Pbm::Application.routes.draw do
       collection do
         get :update_machine_condition
       end
+      member do
+        get :condition_update_confirmation
+        get :create_confirmation
+        get :remove_confirmation
+        get :render_machine_condition
+      end
     end
 
     resources :locations do
@@ -63,52 +69,47 @@ Pbm::Application.routes.draw do
         get :autocomplete
       end
       member do
+        get :locations_for_machine
         get :newest_machine_name
+        get :render_add_machine
+        get :render_desc
+        get :render_machine_names_for_infowindow
+        get :render_machines
+        get :render_scores
       end
     end
 
-    match 'locations/:id/locations_for_machine' => 'locations#locations_for_machine'
-    match 'locations/:id/render_scores'   => 'locations#render_scores'
-    match 'locations/:id/render_machines' => 'locations#render_machines'
-    match 'locations/:id/render_machine_names_for_infowindow' => 'locations#render_machine_names_for_infowindow'
-    match 'locations/:id/render_add_machine' => 'locations#render_add_machine'
-    match 'locations/:id/render_desc' => 'locations#render_desc'
-
-    match 'location_machine_xrefs/:id/create_confirmation' => 'location_machine_xrefs#create_confirmation'
-    match 'location_machine_xrefs/:id/remove_confirmation' => 'location_machine_xrefs#remove_confirmation'
-    match 'location_machine_xrefs/:id/render_machine_condition' => 'location_machine_xrefs#render_machine_condition'
-    match 'location_machine_xrefs/:id/condition_update_confirmation' => 'location_machine_xrefs#condition_update_confirmation'
-
     # xml/rss mismatch to support rss-formatted output with $region.xml urls, $region.rss is already expected by mobile devices, and is expected to be formatted without hrefs
-    match ':region' + '.xml' => 'location_machine_xrefs#index', :format => 'rss'
+    get ':region' + '.xml' => 'location_machine_xrefs#index', :format => 'rss'
 
-    match ':region' + '.rss' => 'location_machine_xrefs#index', :format => 'xml'
-    match ':region' + '_scores.rss' => 'machine_score_xrefs#index', :format => 'xml'
-    match '/robots.txt', :to => 'pages#robots'
+    get ':region' + '.rss' => 'location_machine_xrefs#index', :format => 'xml'
+    get ':region' + '_scores.rss' => 'machine_score_xrefs#index', :format => 'xml'
+    get '/robots.txt', :to => 'pages#robots'
 
-    match '/' => "pages#region", :as => 'region_homepage'
-    match '/about' => 'pages#about'
-    match '/contact' => 'pages#contact'
-    match '/contact_sent' => 'pages#contact_sent'
-    match '/links' => 'pages#links'
-    match '/high_rollers' => 'pages#high_rollers'
-    match '/suggest' => 'pages#suggest_new_location'
-    match '/submitted_new_location' => 'pages#submitted_new_location'
+    get '/' => "pages#region", :as => 'region_homepage'
+    get '/about' => 'pages#about'
+    get '/contact' => 'pages#contact'
+    get '/contact_sent' => 'pages#contact_sent'
+    get '/links' => 'pages#links'
+    get '/high_rollers' => 'pages#high_rollers'
+    get '/suggest' => 'pages#suggest_new_location'
+    get '/submitted_new_location' => 'pages#submitted_new_location'
 
-    match 'iphone.html', :to => 'locations#mobile'
-    match 'mobile', :to => 'locations#mobile'
+    get 'iphone.html', :to => 'locations#mobile'
+    get 'mobile', :to => 'locations#mobile'
 
-    match 'all_region_data.json', :to => 'regions#all_region_data', :format => 'json'
+    get 'all_region_data.json', :to => 'regions#all_region_data', :format => 'json'
 
-    match '*page', :to => 'locations#unknown_route'
+    get '*page', :to => 'locations#unknown_route'
   end
 
   resources :location_picture_xrefs
 
   devise_for :users
 
-  match 'iphone.html', :to => 'locations#mobile'
-  match '4sq_export.xml' => 'regions#four_square_export', :format => 'xml'
+  get 'iphone.html', :to => 'locations#mobile'
+  get '4sq_export.xml' => 'regions#four_square_export', :format => 'xml'
   get 'pages/home'
+
   root :to => 'pages#home'
 end
