@@ -43,6 +43,7 @@ gem 'social-share-button'
 gem 'rack-attack'
 gem 'apipie-rails'
 gem 'protected_attributes'
+gem "sass-rails", "4.0.2"
 
 group :production do
   gem 'rails_12factor'
