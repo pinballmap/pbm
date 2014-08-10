@@ -14,7 +14,7 @@ describe MachineScoreXref do
         new_gc = FactoryGirl.create(:machine_score_xref, :location_machine_xref => @lmx, :rank => 1, :score => 400)
         new_gc.sanitize_scores
 
-        scores = MachineScoreXref.find(:all).sort {|a,b| a.rank <=> b.rank}
+        scores = MachineScoreXref.all.sort {|a,b| a.rank <=> b.rank}
         expect(scores).to eq([ new_gc, @second ])
       end
 
@@ -22,7 +22,7 @@ describe MachineScoreXref do
         new_first = FactoryGirl.create(:machine_score_xref, :location_machine_xref => @lmx, :rank => 2, :score => 1100)
         new_first.sanitize_scores
 
-        scores = MachineScoreXref.find(:all).sort {|a,b| a.rank <=> b.rank}
+        scores = MachineScoreXref.all.sort {|a,b| a.rank <=> b.rank}
         expect(scores).to eq([ new_first, @second ])
       end
     end

@@ -97,10 +97,10 @@ class LocationsController < InheritedResources::Base
         machine_name.strip!
       end
 
-      machine = params[:machine_no] ? Machine.find(params[:machine_no]) : Machine.find(:first, :conditions => ["lower(name) = ?", machine_name.downcase])
+      machine = params[:machine_no] ? Machine.find(params[:machine_no]) : Machine.where(["lower(name) = ?", machine_name.downcase]).first
 
       if (machine.nil?)
-        machine = Machine.create(:name => machine_name)
+        machine = Machine.create(name: machine_name)
 
         send_new_machine_notification(machine, Location.find(params[:modify_location]))
       end

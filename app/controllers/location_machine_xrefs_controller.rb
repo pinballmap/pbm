@@ -7,7 +7,7 @@ class LocationMachineXrefsController < InheritedResources::Base
     if(!params[:add_machine_by_id].empty?)
       machine = Machine.find(params[:add_machine_by_id])
     elsif (!params[:add_machine_by_name].empty?)
-      machine = Machine.find(:first, :conditions => ["lower(name) = ?", params[:add_machine_by_name].downcase])
+      machine = Machine.where(["lower(name) = ?", params[:add_machine_by_name].downcase]).first
 
       if (machine.nil?)
         machine = Machine.new
@@ -21,8 +21,8 @@ class LocationMachineXrefsController < InheritedResources::Base
       return
     end
 
-    LocationMachineXref.where(:location_id => params[:location_id], :machine_id => machine.id).first ||
-      LocationMachineXref.create(:location_id => params[:location_id], :machine_id => machine.id)
+    LocationMachineXref.where(['location_id = ? and machine_id = ?', params[:location_id], machine.id]).first ||
+      LocationMachineXref.create(location_id: params[:location_id], machine_id: machine.id)
   end
 
   def create_confirmation

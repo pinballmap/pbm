@@ -5,8 +5,8 @@ class Location < ActiveRecord::Base
 
   validates_presence_of :name, :street, :city, :state, :zip
   validates :phone, format: { with: /\d{3}-\d{3}-\d{4}/, message: "format invalid, please use ###-###-####" }, :if => :phone?
-  validates :website, format: { with: /^http:\/\//, message: "must begin with http://" }, :if => :website?
-  validates :name, :street, :city, :state, format: { with: /^\S.*/, message: "Can't start with a blank" }
+  validates :website, format: { with: /^http:\/\//, message: "must begin with http://", :multiline => true }, :if => :website?
+  validates :name, :street, :city, :state, format: { with: /^\S.*/, message: "Can't start with a blank", :multiline => true }
   validates :lat, :lon, :presence => {:message => "Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon" }
 
   belongs_to :location_type
@@ -51,6 +51,8 @@ class Location < ActiveRecord::Base
   scope :by_at_least_n_machines_type, lambda {|n|
     where(Location.by_at_least_n_machines_sql(n))
   }
+
+  attr_accessible :website
 
   before_destroy do |record|
     Event.destroy_all "location_id = #{record.id}"
