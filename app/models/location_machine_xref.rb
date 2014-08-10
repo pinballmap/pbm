@@ -4,7 +4,7 @@ class LocationMachineXref < ActiveRecord::Base
   belongs_to :user
   has_many :machine_score_xrefs
 
-  attr_accessible :machine_id, :location_id
+  attr_accessible :machine_id, :location_id, :condition, :condition_date, :ip, :user_id
 
   scope :region, lambda {|name|
     r = Region.find_by_name(name.downcase)
