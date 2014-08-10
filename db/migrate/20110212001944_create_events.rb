@@ -1,7 +1,6 @@
 class CreateEvents < ActiveRecord::Migration
   def self.up
     create_table :events do |t|
-      t.integer :id
       t.integer :region_id
       t.string :name
       t.text :long_desc
