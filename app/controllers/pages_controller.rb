@@ -80,6 +80,8 @@ class PagesController < ApplicationController
       (@links[rlx.category || 'Uncategorized'] ||= []) << rlx
     end
 
+    @top_machines = LocationMachineXref.region(@region.name).select("machine_id, count(*) as machine_count").group(:machine_id).order('machine_count desc').limit(10)
+
     render "#{@region.name}/about" if (lookup_context.find_all("#{@region.name}/about").any?)
   end
 

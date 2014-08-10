@@ -78,6 +78,20 @@ describe PagesController do
     end
   end
 
+  describe 'Top 10 Machine Counts', :type => :feature, :js => true do
+    it 'shows the top 10 machine counts on the about page' do
+      11.times do |machine_name_counter|
+        machine_name_counter.times do
+          FactoryGirl.create(:location_machine_xref, :location => @location, :machine => Machine.find_or_create_by_name(name: "Machine#{machine_name_counter}"))
+        end
+      end
+
+      visit '/portland/about'
+
+      expect(page).to have_content('Machine10: with 10 machines Machine9: with 9 machines Machine8: with 8 machines Machine7: with 7 machines Machine6: with 6 machines Machine5: with 5 machines Machine4: with 4 machines Machine3: with 3 machines Machine2: with 2 machines Machine1: with 1 machines')
+    end
+  end
+
   describe 'Links', :type => :feature, :js => true do
     it 'shows links in a region' do
       chicago = FactoryGirl.create(:region, :name => 'chicago', :full_name => 'Chicago')
