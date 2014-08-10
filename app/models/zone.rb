@@ -3,6 +3,8 @@ class Zone < ActiveRecord::Base
   belongs_to :region
   has_many :locations
 
+  attr_accessible :name, :region_id, :short_name, :is_primary
+
   default_scope { order 'name' }
 
   scope :region, lambda {|name| where(:region_id => Region.find_by_name(name.downcase).id) }

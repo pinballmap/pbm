@@ -52,7 +52,7 @@ class Location < ActiveRecord::Base
     where(Location.by_at_least_n_machines_sql(n))
   }
 
-  attr_accessible :website
+  attr_accessible :name, :street, :city, :state, :zip, :phone, :lat, :lon, :website, :zone_id, :region_id, :location_type_id, :description, :operator_id
 
   before_destroy do |record|
     Event.destroy_all "location_id = #{record.id}"
