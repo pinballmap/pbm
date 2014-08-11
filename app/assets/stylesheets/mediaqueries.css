@@ -50,14 +50,14 @@
 
 @media (max-width: 950px) {
 
-  .left_column.secondary, .left_second_column, .left_column {
+  .left_column.secondary, .left_column_outer, .left_column {
     float: none;
     margin: 70px auto 10px;
   }
   .left_column_about {
     float: none;
   }
-  .right_column, #right_column, .right_column.secondary {
+  .right_column, #right_column, .right_column.secondary, .right_column_outer {
     margin: 0 auto;
     display: block;
     float: none;
