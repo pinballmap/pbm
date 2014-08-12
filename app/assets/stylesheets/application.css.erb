@@ -13,7 +13,7 @@
 body {
   margin: 0 auto;
   padding: 0px;
-  background-image: image-url("PPM-SplashTile-BW-Inverted.png");
+  background-image: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>);
   background-color: #FFFFFF;
   background-size: 4px auto;
   color: #58266F;
@@ -334,7 +334,7 @@ li.first_header_link {
 }
 .other_regions_arrow:after {
   content:"";
-    background-image: image-url("arrow-sprite-dark.png") no-repeat;
+    background: url(<%= asset_path 'arrow-sprite-dark.png' %>) no-repeat;
     display: inline-block;
     height: 7px;
     margin-left: 2px;
@@ -344,7 +344,7 @@ li.first_header_link {
 }
 .feed_icon:before {
   content:"";
-  background-image: image-url("feed-icon-10x10.png") no-repeat;
+  background: url(<%= asset_path 'feed-icon-10x10.png' %>) no-repeat;
   display: inline-block;
   height: 10px;
   margin-left: 1px;
@@ -1015,9 +1015,8 @@ input#score {
   height: 16px;
   position: absolute;
   display: none;
-  background-image: image-url('arrow_prev.png') no-repeat center center;
+  background: #d0b99e url(<%= asset_path 'arrow_prev.png' %>) no-repeat center center;
   cursor: pointer;
-  cursor: hand;
   border: solid 1px #444444;
   -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
@@ -1025,7 +1024,7 @@ input#score {
 }
 .scrollerNext {
   display: block;
-  background-image: image-url('arrow_next.png') no-repeat center center;
+  background: #d0b99e url(<%= asset_path 'arrow_next.png' %>) no-repeat center center;
 }
 
 /** Sub Pages **/ 
@@ -1065,7 +1064,6 @@ a.apps_link:hover {
 .right_column, #right_column {
   float: left;
   display: inline;
-  margin-top: 70px;
   margin-bottom: 10px;
   padding: 0 10px;
   min-height: 575px;
@@ -1084,6 +1082,11 @@ a.apps_link:hover {
   margin-top: 70px;
   width: 490px;
 }
+.right_column_outer {
+  float: left;
+  margin: 70px 0 0 40px;
+  width: 399px;
+}
 .right_column.secondary img {
   border: 2px solid #e8d6f1;
 }
@@ -1095,9 +1098,11 @@ a.apps_link:hover {
 }
 .right_column.right_column_apps {
   width: 560px;
+  margin-top: 70px;
 }
 .event_column {
   min-height: 150px;
+  margin-top: 70px;
   height: 100%;
 }
 .event_date {
@@ -1139,7 +1144,7 @@ a.apps_link:hover {
   margin: 70px auto 10px;
   float: none;
 }
-.left_second_column {
+.left_column_outer {
   float: left;
   margin-top: 70px;
   margin-bottom: 30px;
@@ -1148,10 +1153,10 @@ a.apps_link:hover {
 .location_search {
   margin-left: 5px;
 }
-.links_column {
-  min-height: 285px;
+.right_column_outer .links_column {
+  min-height: 50px;
   width: 375px;
-  margin-left: 40px;
+  margin-bottom: 10px;
 }
 .links_category {
   background-color: #e3e1e0;
@@ -1244,7 +1249,7 @@ a.apps_link:hover {
   max-width: 920px;
 }
 #welcome {
-  margin: 80px auto 0;
+  margin: 90px auto 0;
   width: 100%;
   min-width: 819px;
   max-width: 100%;
