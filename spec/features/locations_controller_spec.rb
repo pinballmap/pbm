@@ -5,6 +5,60 @@ describe LocationsController do
     @region = FactoryGirl.create(:region, :name => 'portland', :full_name => 'portland', :lat => 1, :lon => 2, :motd => 'This is a MOTD', :n_search_no => 4, :should_email_machine_removal => 1)
   end
 
+  describe 'remove machine', :type => :feature, :js => true do
+    before(:each) do
+      @location = FactoryGirl.create(:location, :region_id => @region.id, :name => 'Cleo')
+      @machine = FactoryGirl.create(:machine, :name => 'Bawb')
+    end
+
+    def handle_js_confirm
+      page.evaluate_script 'window.confirmMsg = null'
+      page.evaluate_script 'window.confirm = function(msg) { window.confirmMsg = msg; return true; }'
+      yield
+      page.evaluate_script 'window.confirmMsg'
+    end
+
+    it 'removes a machine from a location' do
+      FactoryGirl.create(:location_machine_xref, :location => @location, :machine => @machine)
+
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          :body => "Cleo\nBawb\nportland\n(entered from 127.0.0.1)",
+          :subject => "PBM - Someone removed a machine from a location",
+          :to => [],
+          :from =>"admin@pinballmap.com"
+        )
+      end
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      handle_js_confirm do
+        click_button 'remove'
+      end
+
+      sleep 1
+
+      expect(LocationMachineXref.all).to eq([])
+    end
+
+    it 'removes a machine from a location - allows you to cancel out of remove' do
+      lmx = FactoryGirl.create(:location_machine_xref, :location => @location, :machine => @machine)
+
+      expect(Pony).to_not receive(:mail)
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      handle_js_confirm do
+        click_button 'remove'
+      end
+
+      sleep 1
+
+      expect(LocationMachineXref.all).to eq([lmx])
+    end
+  end
+
+
   describe 'initial search by passed in param', :type => :feature, :js => true do
     before(:each) do
       @type = FactoryGirl.create(:location_type, :name => 'Bar')
