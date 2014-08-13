@@ -6,6 +6,7 @@ describe LocationsController, :type => :controller do
     @location = FactoryGirl.create(:location, :region => region)
     FactoryGirl.create(:user, :email => 'foo@bar.com', :region => region)
   end
+
   describe '#newest_machine_name' do
     it 'should tell you the name of the newest machine added to the location' do
       expect_any_instance_of(ApplicationController).to receive(:set_current_user).and_return(nil)
