@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
   rescue_from ActionView::MissingTemplate do |exception|
   end
 
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to '/users/sign_in', :alert => exception.message
+  end
+
   def send_new_machine_notification(machine, location)
     Pony.mail(
       :to => Region.find_by_name('portland').users.collect {|u| u.email},

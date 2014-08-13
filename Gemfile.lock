@@ -41,7 +41,7 @@ GEM
     bullet (4.13.0)
       activesupport (>= 3.0.0)
       uniform_notifier (>= 1.6.0)
-    cancan (1.6.10)
+    cancancan (1.9.2)
     capistrano (3.2.1)
       i18n
       rake (>= 10.0.0)
@@ -361,7 +361,7 @@ DEPENDENCIES
   arel
   aws-sdk
   bullet
-  cancan
+  cancancan
   capistrano
   capybara
   coveralls
