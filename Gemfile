@@ -19,7 +19,7 @@ gem 'kaminari'
 gem 'escape_utils'
 gem 'jquery-rails'
 gem 'rails_admin'
-gem "cancan"
+gem "cancancan"
 gem 'declarative_authorization'
 gem 'haml'
 gem 'haml-rails'
