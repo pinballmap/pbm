@@ -57,6 +57,10 @@ END
   end
 
   private
+    def after_sign_in_path_for(resource)
+      '/admin'
+    end
+
     def mobile_device?
       if session[:mobile_param]
         session[:mobile_param] == "1"
