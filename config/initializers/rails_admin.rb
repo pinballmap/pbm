@@ -177,7 +177,11 @@ RailsAdmin.config do |config|
           bindings[:view].render :partial => 'location_type_select', :locals => {:object_type => 'location', :location_type_id => bindings[:object].location_type_id}
         end
       end
-      field :operator, :belongs_to_association 
+      field :operator_id do
+        render do
+          bindings[:view].render :partial => 'operator_select', :locals => {:object_type => 'location', :operator_id => bindings[:object].operator_id}
+        end
+      end
       field :street, :string 
       field :city, :string 
       field :state, :string 
