@@ -11,6 +11,13 @@ describe PagesController, :type => :controller do
     FactoryGirl.create(:user, :email => 'super_admin@bar.com', :region => nil, :is_super_admin => 1)
   end
 
+  describe '#links' do
+    it 'should redirect you to the about page' do
+      get 'links', :region => 'portland'
+      expect(response).to redirect_to about_path
+    end
+  end
+
   describe '#contact' do
     it 'should redirect you to the about page' do
       get 'contact', :region => 'portland'

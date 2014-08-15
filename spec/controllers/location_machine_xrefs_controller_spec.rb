@@ -21,5 +21,13 @@ describe LocationMachineXrefsController, :type => :controller do
 
       post 'create', :region => 'portland', :add_machine_by_name => 'foo', :add_machine_by_id => '', :location_id => @location.id
     end
+
+    it "should return undef if you don't supply a machine name or id" do
+      expect(Pony).to_not receive(:mail)
+
+      post 'create', :region => 'portland', :add_machine_by_id => '', :add_machine_by_name => '', :location_id => @location.id
+
+      expect(LocationMachineXref.all.size).to eq(0)
+    end
   end
 end

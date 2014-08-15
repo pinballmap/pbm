@@ -48,7 +48,7 @@ module Api
       formats [ 'json' ]
       def index
         locations = apply_scopes(Location).order('locations.name')
-        return_response(locations,'locations',[:location_machine_xrefs])
+        return_response(locations, 'locations', [:location_machine_xrefs])
       end
 
       api :PUT, '/api/v1/locations/:id.json', 'Update attributes on a location'
@@ -94,7 +94,7 @@ module Api
         end
 
         rescue ActiveRecord::RecordNotFound
-          return_response('Failed to find region', 'errors')
+          return_response('Failed to find location', 'errors')
       end
 
       api :GET, '/api/v1/locations/closest_by_lat_lon.json', "Returns the closest location to transmitted lat/lon"
