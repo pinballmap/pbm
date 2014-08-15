@@ -70,6 +70,15 @@ describe Api::V1::MachineScoreXrefsController, :type => :request do
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
     end
 
+    it 'errors for failed saves' do
+      expect_any_instance_of(MachineScoreXref).to receive(:save).twice.and_return(false)
+
+      post '/api/v1/machine_score_xrefs.json?location_machine_xref_id=' + @lmx.id.to_s + ';score=1234'
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq([])
+    end
+
     it 'creates a new score' do
       post '/api/v1/machine_score_xrefs.json?location_machine_xref_id=' + @lmx.id.to_s + ';score=1,234;initials=abc;rank=1'
       expect(response).to be_success

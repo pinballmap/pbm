@@ -121,5 +121,11 @@ describe Api::V1::LocationMachineXrefsController, :type => :request do
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
     end
+
+    it 'returns an error message if the lmx does not exist' do
+      put '/api/v1/location_machine_xrefs/666?condition=foo'
+      expect(response).to be_success
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
+    end
   end
 end
