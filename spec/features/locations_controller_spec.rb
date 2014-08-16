@@ -154,6 +154,38 @@ describe LocationsController do
       @location = FactoryGirl.create(:location, :region => @region, :name => 'Cleo')
     end
 
+    it 'does not save spam' do
+      stub_const('ENV', {'RAKISMET_KEY' => 'asdf'})
+
+      expect(Rakismet).to receive(:akismet_call).and_return('true')
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find("#desc_show_location_#{@location.id}").click
+      fill_in("new_desc_#{@location.id}", :with => "THIS IS SPAM")
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).description).to eq(nil)
+    end
+
+    it 'allows users to update a location description - stubbed out spam detection' do
+      stub_const('ENV', {'RAKISMET_KEY' => 'asdf'})
+
+      expect(Rakismet).to receive(:akismet_call).and_return('false')
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find("#desc_show_location_#{@location.id}").click
+      fill_in("new_desc_#{@location.id}", :with => "COOL DESC")
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).description).to eq('COOL DESC')
+    end
+
     it 'allows users to update a location description - skips validation' do
       @location.phone = '555'
       @location.save(:validate => false)

@@ -11,6 +11,32 @@ describe PagesController, :type => :controller do
     FactoryGirl.create(:user, :email => 'super_admin@bar.com', :region => nil, :is_super_admin => 1)
   end
 
+  describe '#home - twitter' do
+    it 'should return no tweets without env variables set' do
+      get 'home'
+
+      expect(assigns(:tweets)).to eq([])
+    end
+
+    it 'should error on invalid ENV data' do
+      stub_const('ENV', { 'TWITTER_CONSUMER_KEY' => '1',  'TWITTER_CONSUMER_SECRET' => '1', 'TWITTER_OAUTH_TOKEN_SECRET' => '1', 'TWITTER_OAUTH_TOKEN' => '1', })
+
+      get 'home'
+
+      expect(assigns(:tweets)).to eq([])
+    end
+
+    it 'should return no tweets with env variables set, because i am stubbing things out' do
+      stub_const('ENV', { 'TWITTER_CONSUMER_KEY' => '1',  'TWITTER_CONSUMER_SECRET' => '1', 'TWITTER_OAUTH_TOKEN_SECRET' => '1', 'TWITTER_OAUTH_TOKEN' => '1', })
+      expect(Twitter::REST::Client).to receive(:new).and_return(Twitter::REST::Client)
+      expect(Twitter::REST::Client).to receive(:user_timeline).and_return({ 'tweet' => 'twoot' })
+
+      get 'home'
+
+      expect(assigns(:tweets)).to eq({ 'tweet' => 'twoot' })
+    end
+  end
+
   describe '#links' do
     it 'should redirect you to the about page' do
       get 'links', :region => 'portland'
