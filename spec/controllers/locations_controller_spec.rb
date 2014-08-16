@@ -29,6 +29,22 @@ describe LocationsController, :type => :controller do
       expect({:get => '/portland/iphone.html'}).to route_to(:controller => 'locations', :action => 'mobile', :region => 'portland')
     end
 
+    it 'redirects to events index with init param 3' do
+      expect_any_instance_of(ApplicationController).to receive(:set_current_user).and_return(nil)
+
+      get 'mobile', :region => 'portland', :init => 3
+
+      expect(response).to redirect_to '/portland/events.xml'
+    end
+
+    it 'redirects to machines index with init param 4' do
+      expect_any_instance_of(ApplicationController).to receive(:set_current_user).and_return(nil)
+
+      get 'mobile', :region => 'portland', :init => 4
+
+      expect(response).to redirect_to '/portland/machines.xml'
+    end
+
     it 'should send email on new machine creation' do
       expect_any_instance_of(ApplicationController).to receive(:set_current_user).and_return(nil)
 
