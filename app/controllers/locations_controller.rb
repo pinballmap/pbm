@@ -1,4 +1,3 @@
-
 class LocationsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_zone_id, :by_operator_id, :by_type_id, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region
@@ -97,10 +96,10 @@ class LocationsController < InheritedResources::Base
         machine_name.strip!
       end
 
-      machine = params[:machine_no] ? Machine.find(params[:machine_no]) : Machine.find(:first, :conditions => ["lower(name) = ?", machine_name.downcase])
+      machine = params[:machine_no] ? Machine.find(params[:machine_no]) : Machine.where(["lower(name) = ?", machine_name.downcase]).first
 
       if (machine.nil?)
-        machine = Machine.create(:name => machine_name)
+        machine = Machine.create(name: machine_name)
 
         send_new_machine_notification(machine, Location.find(params[:modify_location]))
       end

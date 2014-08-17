@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 ruby "2.1.2"
 
-gem 'rails', '3.2.11'
+gem 'rails', '4.1'
 gem 'arel'
 gem 'pg'
 gem 'rake'
@@ -19,7 +19,7 @@ gem 'kaminari'
 gem 'escape_utils'
 gem 'jquery-rails'
 gem 'rails_admin'
-gem "cancan"
+gem "cancancan"
 gem 'declarative_authorization'
 gem 'haml'
 gem 'haml-rails'
@@ -42,6 +42,12 @@ gem 'rails_autolink'
 gem 'social-share-button'
 gem 'rack-attack'
 gem 'apipie-rails'
+gem 'protected_attributes'
+gem "sass-rails", "4.0.2"
+
+group :production do
+  gem 'rails_12factor'
+end
 
 group :test do
   gem 'cucumber-rails', :require => false
@@ -59,6 +65,8 @@ group :test do
   gem "selenium-webdriver", "~> 2.33.0"
   gem 'timecop'
   gem 'poltergeist'
+  gem 'simplecov', :require => false
+  gem 'coveralls', :require => false
 end
 
 group :development, :test do

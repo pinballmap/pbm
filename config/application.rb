@@ -29,9 +29,7 @@ module Pbm
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-
-    # JavaScript files you want as :defaults (application.js is always included).
-    config.action_view.javascript_expansions[:defaults] = %w()
+    config.i18n.enforce_available_locales = true
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
@@ -40,6 +38,7 @@ module Pbm
     config.filter_parameters += [:password]
 
     config.assets.enabled = true
+    config.serve_static_assets = true
     config.assets.initialize_on_precompile = false
     config.assets.version = '1.3'
 

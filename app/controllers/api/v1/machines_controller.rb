@@ -1,6 +1,7 @@
 module Api
   module V1
     class MachinesController < InheritedResources::Base
+      before_filter :allow_cors
       respond_to :json
 
       api :GET, '/api/v1/machines.json', "Fetch all machines"
@@ -19,7 +20,7 @@ module Api
         machine_name = params[:machine_name]
         machine_name.strip!
 
-        machine = Machine.find(:first, :conditions => ["lower(name)= ?", machine_name.downcase])
+        machine = Machine.where(["lower(name)= ?", machine_name.downcase]).first
         location = Location.find(params[:location_id])
 
         if (machine.nil?)

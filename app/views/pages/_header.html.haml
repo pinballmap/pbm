@@ -11,6 +11,8 @@
   %div{:class => "#{@region ? 'dont_pick_a_map' : 'pick_a_map'}"}
     %span.yellowb.new_blog
       = link_to 'Check out our blog!', 'http://blog.pinballmap.com'
+    %span.yellowb.new_blog
+      = link_to 'Pinball Map Apps', apps_path
     %span.pick_a_map Play Public Pinball!
   - if (@region)
     %ul
@@ -24,7 +26,6 @@
           %li.other_links_list
             =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
       %li=link_to 'High Rollers', high_rollers_path
-%p.notice= notice
 
 :javascript
   $().ready(function() {

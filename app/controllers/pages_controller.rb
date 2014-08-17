@@ -80,6 +80,8 @@ class PagesController < ApplicationController
       (@links[rlx.category || 'Uncategorized'] ||= []) << rlx
     end
 
+    @top_machines = LocationMachineXref.region(@region.name).select("machine_id, count(*) as machine_count").group(:machine_id).order('machine_count desc').limit(10)
+
     render "#{@region.name}/about" if (lookup_context.find_all("#{@region.name}/about").any?)
   end
 
@@ -106,7 +108,7 @@ class PagesController < ApplicationController
   end
 
   def suggest_new_location
-    @states = Location.find_all_by_region_id(@region.id).collect {|r| r.state}.uniq.sort
+    @states = Location.where(['region_id = ?', @region.id]).collect {|r| r.state}.uniq.sort
   end
 
   def robots
@@ -120,6 +122,9 @@ class PagesController < ApplicationController
   def app_support
   end
 
+  def privacy
+  end
+
   def contact
     redirect_to about_path
   end
@@ -130,8 +135,8 @@ class PagesController < ApplicationController
         client = Twitter::REST::Client.new do |config|
             config.consumer_key = ENV['TWITTER_CONSUMER_KEY']
             config.consumer_secret = ENV['TWITTER_CONSUMER_SECRET']
-            config.oauth_token = ENV['TWITTER_OAUTH_TOKEN']
-            config.oauth_token_secret = ENV['TWITTER_OAUTH_TOKEN_SECRET']
+            config.access_token = ENV['TWITTER_OAUTH_TOKEN']
+            config.access_token_secret = ENV['TWITTER_OAUTH_TOKEN_SECRET']
         end
         @tweets = client.user_timeline("pinballmapcom", :count => 5)
       rescue Twitter::Error

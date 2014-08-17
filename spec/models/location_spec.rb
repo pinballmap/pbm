@@ -53,7 +53,7 @@ describe Location do
 
   describe '#location_machine_xrefs' do
     it 'should return all machines for this location' do
-      expect(@l.location_machine_xrefs).to eq([@lmx2, @lmx1])
+      expect(@l.location_machine_xrefs.order(:id)).to eq([@lmx1, @lmx2])
     end
   end
 

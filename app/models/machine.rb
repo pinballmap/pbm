@@ -4,6 +4,8 @@ class Machine < ActiveRecord::Base
 
   validates_presence_of :name
 
+  attr_accessible :name, :ipdb_link, :year, :manufacturer
+
   def name_and_year
     name + year_and_manufacturer
   end

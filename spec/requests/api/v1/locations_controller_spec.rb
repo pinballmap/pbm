@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Api::V1::LocationsController, :type => :request do
   before(:each) do
     @region = FactoryGirl.create(:region, :name => 'portland')
-    @location = FactoryGirl.create(:location, :region => @region, :state => 'OR', :zip => '97203', :lat => 42.18, :lon => -71.18)
+    @location = FactoryGirl.create(:location, :region => @region, :name => 'Satchmo', :state => 'OR', :zip => '97203', :lat => 42.18, :lon => -71.18)
     FactoryGirl.create(:user, :email => 'foo@bar.com', :region => @region)
     FactoryGirl.create(:user, :email => 'super_admin@bar.com', :region => nil, :is_super_admin => 1)
   end
@@ -47,9 +47,27 @@ HERE
     end
   end
 
+  describe '#index' do
+    it 'returns all regions within scope along with lmx data' do
+      FactoryGirl.create(:location_machine_xref, :location => @location, :machine => FactoryGirl.create(:machine, :id => 777, :name => 'Cleo'))
+      get "/api/v1/region/#{@region.name}/locations.json"
+
+      expect(response.body).to include('Satchmo')
+      expect(response.body).to include('777')
+    end
+  end
+
   describe '#update' do
-    it 'only allows you to update description, website, and phone' do
-      put '/api/v1/locations/' + @location.id.to_s + '.json?description=foo;website=http://bar;phone=5555555555;zip=97777'
+    it 'throws an error if the location does not exist' do
+      put '/api/v1/locations/666'
+
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find location')
+    end
+
+    it 'only allows you to update description, website, type, and phone' do
+      type = FactoryGirl.create(:location_type, :name => 'bar')
+
+      put '/api/v1/locations/' + @location.id.to_s + '.json?description=foo;website=http://bar;phone=5555555555;zip=97777;location_type=' + type.id.to_s
       expect(response).to be_success
 
       updated_location = Location.find(@location.id)
@@ -58,6 +76,7 @@ HERE
       expect(updated_location.website).to eq('http://bar')
       expect(updated_location.phone).to eq('555-555-5555')
       expect(updated_location.zip).to eq('97203')
+      expect(updated_location.location_type_id).to eq(type.id)
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
@@ -68,6 +87,7 @@ HERE
       expect(location['website']).to eq('http://bar')
       expect(location['phone']).to eq('555-555-5555')
       expect(location['zip']).to eq('97203')
+      expect(location['location_type_id']).to eq(type.id)
     end
 
     it 'responds with an error if an invalid phone number is sent' do

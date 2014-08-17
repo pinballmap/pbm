@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
   rescue_from ActionView::MissingTemplate do |exception|
   end
 
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to '/users/sign_in', :alert => exception.message
+  end
+
   def send_new_machine_notification(machine, location)
     Pony.mail(
       :to => Region.find_by_name('portland').users.collect {|u| u.email},
@@ -43,7 +47,20 @@ END
     render :json => {root=>data.as_json(include: includes,methods: methods,root:false)}
   end
 
+  def allow_cors
+    headers["Access-Control-Allow-Origin"] = "*"
+    headers['Access-Control-Request-Method'] = '*'
+    headers["Access-Control-Allow-Methods"] = %w{GET POST PUT DELETE OPTIONS}.join(",")
+    headers["Access-Control-Allow-Headers"] = %w{Origin Accept Content-Type X-Requested-With X-CSRF-Token}.join(",")
+
+    head(:ok) if request.request_method == "OPTIONS"
+  end
+
   private
+    def after_sign_in_path_for(resource)
+      '/admin'
+    end
+
     def mobile_device?
       if session[:mobile_param]
         session[:mobile_param] == "1"

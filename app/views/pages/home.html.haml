@@ -1,4 +1,5 @@
 #welcome
+  %p.notice= notice
   %div.home_intro_container
     %div.home_intro.yellow{:style => 'left:0;'}
       %span.yellowb Welcome to PinballMap.com!
@@ -11,7 +12,7 @@
         You can also comment on a machine’s condition, upload photos of locations, add your high scores on a machine, check out upcoming events, and so on.
       %p
         We have free
-        = link_to 'mobile apps for iPhone and Android', 'portland/apps', :class => 'apps_link'
+        = link_to 'mobile apps for iPhone and Android', apps_path, :class => 'apps_link'
       %p
         If you'd like to see your city on this site,
         =link_to 'contact us!', 'portland/about', :class => 'apps_link'

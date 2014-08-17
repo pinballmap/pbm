@@ -1,6 +1,7 @@
 module Api
   module V1
     class ZonesController < InheritedResources::Base
+      before_filter :allow_cors
       respond_to :json
       has_scope :region
 

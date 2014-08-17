@@ -59,7 +59,6 @@
 }
 
 div.pick_a_map {
-  padding-top: 0;
   text-align: left;
   background: #ffecd6;
   height: 36px;
@@ -67,8 +66,9 @@ div.pick_a_map {
 
 .new_blog {
   width: 100%;
-  padding: 10px 0 12px;
+  padding: 12px 0 12px;
   text-align: center;
+  border-bottom: 2px solid #fdfcfe;
 }
 
 .map_summary {
@@ -78,6 +78,7 @@ div.pick_a_map {
 #welcome {
   width: auto;
   min-width: 320px;
+  margin-top: 10px;
 }
 
 #map {
@@ -101,7 +102,7 @@ div.pick_a_map {
 }
 
 .home_intro {
-  margin: 15px 10px 0;
+  margin: 0 10px 10px 10px;
   width: auto;
 }
 
@@ -332,6 +333,14 @@ div.pick_a_map {
   margin: 10px 0;
 }
 
+.submit_button {
+  width: 98%;
+}
+
+.thanks, p.alert {
+  margin: 0 auto;
+}
+
 #file_chooser_button {
   width: auto;
 }
@@ -389,9 +398,9 @@ input#score, input#initials {
   background-color: transparent;
 }
 
-.links_column, #left_column, .left_column,
+.links_column, #left_column, .left_column, .right_column_outer
 .left_column.suggest, .left_column.high, .left_column.secondary,
-.right_column, #right_column, .left_second_column {
+.right_column, #right_column, .left_column_outer, .right_column.secondary {
   margin: 10px;
 }
 
@@ -405,9 +414,9 @@ input#score, input#initials {
 }
 
 #left_column, .left_column, .left_column_about, 
-#region_page_body, .links_column, .links_category, .left_second_column,
+#region_page_body, .links_column, .right_column_outer .links_column, .links_category, .left_column_outer, .right_column_outer,
 .left_column.suggest, .left_column.high, .left_column.secondary,
-.right_column, #right_column, .right_column.right_column_apps {
+.right_column, #right_column, .right_column.right_column_apps, .right_column.secondary {
   width: auto;
   min-width: 0;
   min-height: 0;
@@ -418,6 +427,12 @@ input#score, input#initials {
   float: none;
   display: block;
   clear: both;
+}
+
+.right_column.secondary .ios img,
+.right_column.secondary .ipad img {
+  width: 98%;
+  height: auto;
 }
 
 #location_maker li {
@@ -439,7 +454,7 @@ input#score, input#initials {
 }
 
 #location_maker ul {
-  width: 280px;
+  width: 100%;
 }
 
 #location_maker li, #contact_maker li {
@@ -457,9 +472,21 @@ input#score, input#initials {
   margin-bottom: 30px;
 }
 
+#location_maker .first {
+  float: none;
+}
+
 #location_maker textarea.machines {
   width: 98%;
   min-height: 100px;
+}
+
+#login {
+  margin: 10px auto 0;
+}
+
+p.notice {
+  margin: 10px auto 10px;
 }
 
 @media (max-width: 915px) { 
@@ -476,12 +503,20 @@ input#score, input#initials {
 
 @media (max-width: 973px) {
 
-.home_intro_right {
-  left: 0;
+  .home_intro_right {
+    left: 0;
+  }
+
+  #welcome {
+    width: auto;
+  }
+
 }
 
-#welcome {
-  width: auto;
-}
+@media (max-width: 320px) {
+
+  .map_summary {
+    width: 137px;
+  }
 
 }

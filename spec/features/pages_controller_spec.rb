@@ -26,7 +26,7 @@ describe PagesController do
     end
 
     it 'is case insensitive for region name' do
-      chicago_region = FactoryGirl.create(:region, :name => 'chicago')
+      chicago_region = FactoryGirl.create(:region, :name => 'chicago', :full_name => 'Chicago')
       FactoryGirl.create(:event, :region => chicago_region, :name => 'event 1')
 
       visit '/CHICAGO/events'
@@ -78,9 +78,23 @@ describe PagesController do
     end
   end
 
+  describe 'Top 10 Machine Counts', :type => :feature, :js => true do
+    it 'shows the top 10 machine counts on the about page' do
+      11.times do |machine_name_counter|
+        machine_name_counter.times do
+          FactoryGirl.create(:location_machine_xref, :location => @location, :machine => Machine.where(:name => "Machine#{machine_name_counter}").first_or_create)
+        end
+      end
+
+      visit '/portland/about'
+
+      expect(page).to have_content('Machine10: with 10 machines Machine9: with 9 machines Machine8: with 8 machines Machine7: with 7 machines Machine6: with 6 machines Machine5: with 5 machines Machine4: with 4 machines Machine3: with 3 machines Machine2: with 2 machines Machine1: with 1 machines')
+    end
+  end
+
   describe 'Links', :type => :feature, :js => true do
     it 'shows links in a region' do
-      chicago = FactoryGirl.create(:region, :name => 'chicago')
+      chicago = FactoryGirl.create(:region, :name => 'chicago', :full_name => 'Chicago')
 
       FactoryGirl.create(:region_link_xref, :region => @region, :description => 'foo')
       FactoryGirl.create(:region_link_xref, :region => chicago, :name => 'chicago link 1', :category => 'main links', :sort_order => 2, :description => 'desc1')
@@ -128,7 +142,26 @@ describe PagesController do
       visit "/"
 
       expect(page).to have_css('div#map_summaries')
-      expect(page).to have_content('Chicago Tracking: 1 Locations 1 Machines Portland Tracking: 2 Locations 2 Machines')
+      expect(page).to have_content('Chicago Tracking: 1 Locations 1 Machines Portland Tracking: 2 Locations 2 Machines')    
+    end
+
+    it 'shows the proper page title' do
+
+      visit "/"
+
+      expect(page).to have_title("Pinball Map")
+      expect(page).not_to have_title("Apps")
+    end
+  end
+
+  describe 'Apps pages', :type => :feature, :js => true do
+    it 'shows the proper page title' do
+
+      visit "/apps"
+      expect(page).to have_title("Apps")
+
+      visit "/apps/support"
+      expect(page).to have_title("Apps")
     end
   end
 
@@ -160,6 +193,14 @@ describe PagesController do
       visit "/portland"
 
       expect(page).to have_content("Test Location Name's Test Machine Name: GC with 1,234 by cap")
+    end
+
+    it 'shows the proper page title' do
+
+      visit "/portland"
+
+      expect(page).to have_title("Portland Pinball Map")
+      expect(page).not_to have_title("Apps")
     end
   end
 end

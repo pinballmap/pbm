@@ -13,14 +13,14 @@
   .right_column.regular_text.event_column
     - if (@sorted_events.size > 0)
       - @sorted_events.keys.sort.each do |key|
-        %p.yellowb.event_category #{key}
+        %p.yellowb.links_category #{key}
         %ul.event_info
           - @sorted_events[key].sort{|a,b| a.start_date.to_s <=> b.start_date.to_s}.each do |e|
             %li
               %span.event_date #{e.start_date.to_s}
               - if e.end_date
                 %span.event_date - #{e.end_date.to_s}:
-              = link_to e.name, e.external_link, :class => 'event_link'
+              = link_to e.name, e.external_link, :class => 'event_link', :target => '_blank'
               - if (e.location)
                 %span @ 
                 = link_to e.location.name, "http://pinballmap.com/#{@region.name}/?by_location_id=#{e.location_id}", :class => 'event_link'
