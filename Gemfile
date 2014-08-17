@@ -39,11 +39,11 @@ gem 'jbuilder'
 gem 'rakismet'
 gem 'twitter'
 gem 'rails_autolink'
-gem 'social-share-button'
 gem 'rack-attack'
 gem 'apipie-rails'
 gem 'protected_attributes'
 gem "sass-rails", "4.0.2"
+gem 'sanitize'
 
 group :production do
   gem 'rails_12factor'
