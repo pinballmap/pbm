@@ -9,6 +9,7 @@ task :import_ifpa_tournaments => :environment do
 
   IFPA_API_ROOT = 'https://api.ifpapinball.com/v1/'
   IFPA_API_KEY = ENV['IFPA_API_KEY']
+  NUM_MILES_TO_SEARCH = 50
 
   event_info_by_state = Hash.new {|h,k| h[k]=[]}
 
@@ -36,7 +37,12 @@ task :import_ifpa_tournaments => :environment do
         long_desc << "\n#{cd['address1']}, #{cd['city']}, #{cd['state']}, #{cd['zipcode']}"
       end
 
-      Location.where('lower(state) = ?', state).pluck(:region_id).uniq.each do |region_id|
+      region_ids_to_add_event_to = Array.new
+      Location.near([cd['latitude'].to_f, cd['longitude'].to_f], NUM_MILES_TO_SEARCH).each do |l|
+        region_ids_to_add_event_to.push(l.region_id)
+      end
+
+      region_ids_to_add_event_to.uniq.each do |region_id|
         Event.create(
           ifpa_tournament_id: c['tournament_id'].to_i,
           ifpa_calendar_id: c['calendar_id'].to_i,
