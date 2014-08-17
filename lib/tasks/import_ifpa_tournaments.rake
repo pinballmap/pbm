@@ -50,7 +50,6 @@ task :import_ifpa_tournaments => :environment do
         )
       end
 
-      break
     end
   end
 end
