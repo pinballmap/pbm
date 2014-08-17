@@ -28,7 +28,7 @@ task :import_ifpa_tournaments => :environment do
       end
 
       location_id = nil
-      long_desc = cd['details']
+      long_desc = Sanitize.clean(cd['details']).truncate(300)
 
       if (associated_location)
         location_id = associated_location.id
@@ -41,15 +41,14 @@ task :import_ifpa_tournaments => :environment do
           ifpa_tournament_id: c['tournament_id'].to_i,
           ifpa_calendar_id: c['calendar_id'].to_i,
           name: c['tournament_name'],
-          long_desc: long_desc,
           external_link: cd['website'],
+          long_desc: long_desc,
           start_date: c['start_date'],
           end_date: c['end_date'],
           location_id: location_id,
           region_id: region_id
         )
       end
-
     end
   end
 end
