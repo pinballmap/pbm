@@ -9,8 +9,31 @@ describe Api::V1::LocationsController, :type => :request do
   end
 
   describe '#suggest' do
+    it 'errors when required fields are not sent' do
+      expect(Pony).to_not receive(:mail)
+
+      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
+
+      expect(Pony).to_not receive(:mail)
+
+      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s, location_machines: 'foo'
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
+
+      expect(Pony).to_not receive(:mail)
+
+      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s, location_name: 'baz'
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
+    end
+
     it 'errors when region is not available' do
-      post '/api/v1/locations/suggest.json?region_id=-1'
+      post '/api/v1/locations/suggest.json', region_id: -1, location_machines: 'foo', location_name: 'bar'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find region')
