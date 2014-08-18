@@ -43,6 +43,51 @@ END
     )
   end
 
+  def send_new_region_notification(params)
+    Pony.mail(
+      :to => Region.where('lower(name) = ?', 'portland').first.users.collect {|u| u.email},
+      :from => 'admin@pinballmap.com',
+      :subject => "PBM - New region suggestion",
+      :body => <<END
+Their Name: #{params['name']}\n
+Their Email: #{params['email']}\n
+Region Name: #{params['region_name']}\n
+Region Comments: #{params['comments']}\n
+END
+    )
+  end
+
+  def send_admin_notification(params, region)
+    Pony.mail(
+      :to => region.users.collect {|u| u.email},
+      :bcc => User.all.select {|u| u.is_super_admin }.collect {|u| u.email},
+      :from => 'admin@pinballmap.com',
+      :subject => "PBM - New message from #{region.name} region",
+      :body => <<END
+Their Email: #{params['email']}\n
+Message: #{params['message']}\n
+END
+    )
+  end
+
+  def send_app_comment(params, region)
+    Pony.mail(
+      :to => 'pinballmap@outlook.com',
+      :bcc => User.all.select {|u| u.is_super_admin }.collect {|u| u.email},
+      :from => 'admin@pinballmap.com',
+      :subject => "PBM - App feedback",
+      :body => <<END
+OS: #{params['os']}\n
+OS Version: #{params['os_version']}\n
+Device Type: #{params['device_type']}\n
+App Version: #{params['app_version']}\n
+Region: #{region.name}\n
+Their Email: #{params['email']}\n
+Message: #{params['message']}\n
+END
+    )
+  end
+
   def return_response(data,root,includes=[],methods=[])
     render :json => {root=>data.as_json(include: includes,methods: methods,root:false)}
   end

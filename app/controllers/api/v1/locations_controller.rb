@@ -11,7 +11,7 @@ module Api
       api :POST, '/api/v1/locations/suggest.json', 'Suggest a new location to add to the map'
       description "This doesn't actually create a new location, it just sends location information to region admins"
       param :region_id, Integer, :desc => 'ID of the region that the location belongs in', :required => true
-      param :location_name, String, :desc => 'Name of new location', :required => false
+      param :location_name, String, :desc => 'Name of new location', :required => true
       param :location_street, String, :desc => 'Street address of new location', :required => false
       param :location_city, String, :desc => 'City of new location', :required => false
       param :location_state, String, :desc => 'State of new location', :required => false
@@ -19,11 +19,16 @@ module Api
       param :location_phone, String, :desc => 'Phone number of new location', :required => false
       param :location_website, String, :desc => 'Website of new location', :required => false
       param :location_operator, String, :desc => 'Machine operator of new location', :required => false
-      param :location_machines, String, :desc => 'List of machines at new location', :required => false
+      param :location_machines, String, :desc => 'List of machines at new location', :required => true
       param :submitter_name, String, :desc => 'Name of submitter', :required => false
       param :submitter_email, String, :desc => 'Email address of submitter', :required => false
       formats [ 'json' ]
       def suggest
+        if (!params['region_id'] || !params['location_machines'] || !params['location_name'])
+          return_response('Region, location name, and a list of machines are required', 'errors')
+          return
+        end
+
         region = Region.find(params['region_id'])
 
         send_new_location_notification(params, region)
