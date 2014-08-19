@@ -163,4 +163,32 @@ HERE
       expect(location['machine_names']).to eq(['Bawb', 'Cleo', 'Sassy'])
     end
   end
+
+  describe '#machine_details' do
+    it 'throws an error if the location does not exist' do
+      put '/api/v1/locations/666'
+
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find location')
+    end
+
+    it 'displays details of machines at location' do
+      FactoryGirl.create(:location_machine_xref, :location => @location, :machine => FactoryGirl.create(:machine, name: 'Cleo', year: 1980, manufacturer: 'Stern', ipdb_link: 'http://www.foo.com'))
+      FactoryGirl.create(:location_machine_xref, :location => @location, :machine => FactoryGirl.create(:machine, name: 'Sass', year: 1960, manufacturer: 'Bally', ipdb_link: 'http://www.bar.com'))
+
+      get '/api/v1/locations/' + @location.id.to_s + '/machine_details.json'
+      expect(response).to be_success
+
+      machines = JSON.parse(response.body)['machines']
+
+      expect(machines[0]['name']).to eq('Sass')
+      expect(machines[0]['year']).to eq(1960)
+      expect(machines[0]['manufacturer']).to eq('Bally')
+      expect(machines[0]['ipdb_link']).to eq('http://www.bar.com')
+
+      expect(machines[1]['name']).to eq('Cleo')
+      expect(machines[1]['year']).to eq(1980)
+      expect(machines[1]['manufacturer']).to eq('Stern')
+      expect(machines[1]['ipdb_link']).to eq('http://www.foo.com')
+    end
+  end
 end

@@ -13,16 +13,26 @@ Pbm::Application.routes.draw do
     namespace :v1 do
       resources :machines, :only => [:index, :show, :create]
       resources :location_types, :only => [:index, :show]
-      resources :regions, :only => [:index,:show]
       resources :location_machine_xrefs, :only => [:create, :destroy, :update]
       resources :locations, :only => [:update]
       resources :machine_score_xrefs, :only => [:create, :show]
 
-      get '/locations/closest_by_lat_lon' => 'locations#closest_by_lat_lon', :as => 'closest_by_lat_lon'
-      post '/locations/suggest' => 'locations#suggest', :as => 'location_suggest'
-      post '/regions/suggest' => 'regions#suggest', :as => 'region_suggest'
-      post '/regions/contact' => 'regions#contact', :as => 'region_contact'
-      post '/regions/app_comment' => 'regions#app_comment', :as => 'app_comment'
+      resources :regions do
+        collection do
+          post :suggest
+          post :contact
+          post :app_comment
+        end
+      end
+      resources :locations do
+        member do
+          get :machine_details
+        end
+        collection do
+          get :closest_by_lat_lon
+          post :suggest
+        end
+      end
 
       scope 'region/:region', :constraints => { :region => /#{regions}|!admin/i } do
         resources :machine_score_xrefs, :only => [:index]
