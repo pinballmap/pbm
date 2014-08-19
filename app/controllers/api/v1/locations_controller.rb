@@ -117,6 +117,28 @@ module Api
         end
       end
 
+      api :GET, '/api/v1/locations/:id/machine_details.json', 'Display the details of the machines at this location'
+      param :id, Integer, :desc => 'ID of location', :required => true
+      formats [ 'json' ]
+      def machine_details
+        location = Location.find(params[:id])
+
+        machines = Array.new
+        location.machines.each do |m|
+          machines.push({
+            "name" => m.name,
+            "year" => m.year,
+            "manufacturer" => m.manufacturer,
+            "ipdb_link" => m.ipdb_link
+          })
+        end
+
+        return_response(machines, 'machines')
+
+        rescue ActiveRecord::RecordNotFound
+          return_response('Failed to find location', 'errors')
+      end
+
     end
   end
 end
