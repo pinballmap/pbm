@@ -166,7 +166,7 @@ HERE
 
   describe '#machine_details' do
     it 'throws an error if the location does not exist' do
-      put '/api/v1/locations/666'
+      get '/api/v1/locations/666/machine_details.json'
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find location')
     end
