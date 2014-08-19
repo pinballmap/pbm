@@ -15,7 +15,7 @@ task :import_ifpa_tournaments => :environment do
 
   pbm_states = Location.uniq.pluck(:state).collect {|s| s.downcase!}.uniq!
 
-  JSON.parse(Net::HTTP.get URI(IFPA_API_ROOT + '/calendar/active?api_key=' + IFPA_API_KEY.to_s + '&country=United%20States'))['calendar'].each do |c|
+  JSON.parse(Net::HTTP.get URI(IFPA_API_ROOT + '/calendar/active?api_key=' + IFPA_API_KEY.to_s))['calendar'].each do |c|
     state = c['state'].downcase
 
     if (pbm_states.include?(state) && !Event.exists?(ifpa_tournament_id: c['tournament_id'], ifpa_calendar_id: c['calendar_id']))
