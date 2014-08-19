@@ -14,17 +14,16 @@ Pbm::Application.routes.draw do
       resources :machines, :only => [:index, :show, :create]
       resources :location_types, :only => [:index, :show]
       resources :location_machine_xrefs, :only => [:create, :destroy, :update]
-      resources :locations, :only => [:update]
       resources :machine_score_xrefs, :only => [:create, :show]
 
-      resources :regions do
+      resources :regions, :only => [:index,:show] do
         collection do
           post :suggest
           post :contact
           post :app_comment
         end
       end
-      resources :locations do
+      resources :locations, :only => [:update] do
         member do
           get :machine_details
         end
