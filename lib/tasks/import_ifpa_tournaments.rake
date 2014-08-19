@@ -42,6 +42,8 @@ task :import_ifpa_tournaments => :environment do
         region_ids_to_add_event_to.push(l.region_id)
       end
 
+      end_date = (c['start_date'] != c['end_date']) ? c['end_date'] : nil
+
       region_ids_to_add_event_to.uniq.each do |region_id|
         Event.create(
           ifpa_tournament_id: c['tournament_id'].to_i,
@@ -50,9 +52,10 @@ task :import_ifpa_tournaments => :environment do
           external_link: cd['website'],
           long_desc: long_desc,
           start_date: c['start_date'],
-          end_date: c['end_date'],
+          end_date: end_date,
           location_id: location_id,
-          region_id: region_id
+          region_id: region_id,
+          category: 'IFPA Sanctioned Events'
         )
       end
     end
