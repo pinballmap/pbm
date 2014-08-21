@@ -124,7 +124,7 @@ module Api
         location = Location.find(params[:id])
 
         machines = Array.new
-        location.machines.each do |m|
+        location.machines.sort{ |x,y| x.name <=> y.name }.each do |m|
           machines.push({
             "name" => m.name,
             "year" => m.year,
