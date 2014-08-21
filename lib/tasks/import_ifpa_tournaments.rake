@@ -9,12 +9,13 @@ task :import_ifpa_tournaments => :environment do
 
   IFPA_API_ROOT = 'https://api.ifpapinball.com/v1/'
   IFPA_API_KEY = ENV['IFPA_API_KEY']
+  NUM_MILES_TO_SEARCH = 50
 
   event_info_by_state = Hash.new {|h,k| h[k]=[]}
 
   pbm_states = Location.uniq.pluck(:state).collect {|s| s.downcase!}.uniq!
 
-  JSON.parse(Net::HTTP.get URI(IFPA_API_ROOT + '/calendar/active?api_key=' + IFPA_API_KEY.to_s + '&country=United%20States'))['calendar'].each do |c|
+  JSON.parse(Net::HTTP.get URI(IFPA_API_ROOT + '/calendar/active?api_key=' + IFPA_API_KEY.to_s))['calendar'].each do |c|
     state = c['state'].downcase
 
     if (pbm_states.include?(state) && !Event.exists?(ifpa_tournament_id: c['tournament_id'], ifpa_calendar_id: c['calendar_id']))
@@ -28,7 +29,7 @@ task :import_ifpa_tournaments => :environment do
       end
 
       location_id = nil
-      long_desc = cd['details']
+      long_desc = Sanitize.clean(cd['details']).truncate(300)
 
       if (associated_location)
         location_id = associated_location.id
@@ -36,20 +37,27 @@ task :import_ifpa_tournaments => :environment do
         long_desc << "\n#{cd['address1']}, #{cd['city']}, #{cd['state']}, #{cd['zipcode']}"
       end
 
-      Location.where('lower(state) = ?', state).pluck(:region_id).uniq.each do |region_id|
+      region_ids_to_add_event_to = Array.new
+      Location.near([cd['latitude'].to_f, cd['longitude'].to_f], NUM_MILES_TO_SEARCH).each do |l|
+        region_ids_to_add_event_to.push(l.region_id)
+      end
+
+      end_date = (c['start_date'] != c['end_date']) ? c['end_date'] : nil
+
+      region_ids_to_add_event_to.uniq.each do |region_id|
         Event.create(
           ifpa_tournament_id: c['tournament_id'].to_i,
           ifpa_calendar_id: c['calendar_id'].to_i,
           name: c['tournament_name'],
-          long_desc: long_desc,
           external_link: cd['website'],
+          long_desc: long_desc,
           start_date: c['start_date'],
-          end_date: c['end_date'],
+          end_date: end_date,
           location_id: location_id,
-          region_id: region_id
+          region_id: region_id,
+          category: 'IFPA Sanctioned Events'
         )
       end
-
     end
   end
 end

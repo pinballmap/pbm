@@ -9,8 +9,31 @@ describe Api::V1::LocationsController, :type => :request do
   end
 
   describe '#suggest' do
+    it 'errors when required fields are not sent' do
+      expect(Pony).to_not receive(:mail)
+
+      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
+
+      expect(Pony).to_not receive(:mail)
+
+      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s, location_machines: 'foo'
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
+
+      expect(Pony).to_not receive(:mail)
+
+      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s, location_name: 'baz'
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
+    end
+
     it 'errors when region is not available' do
-      post '/api/v1/locations/suggest.json?region_id=-1'
+      post '/api/v1/locations/suggest.json', region_id: -1, location_machines: 'foo', location_name: 'bar'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find region')
@@ -138,6 +161,34 @@ HERE
       expect(location['lat']).to eq('45.49')
       expect(location['lon']).to eq('-122.63')
       expect(location['machine_names']).to eq(['Bawb', 'Cleo', 'Sassy'])
+    end
+  end
+
+  describe '#machine_details' do
+    it 'throws an error if the location does not exist' do
+      get '/api/v1/locations/666/machine_details.json'
+
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find location')
+    end
+
+    it 'displays details of machines at location' do
+      FactoryGirl.create(:location_machine_xref, :location => @location, :machine => FactoryGirl.create(:machine, name: 'Cleo', year: 1980, manufacturer: 'Stern', ipdb_link: 'http://www.foo.com'))
+      FactoryGirl.create(:location_machine_xref, :location => @location, :machine => FactoryGirl.create(:machine, name: 'Sass', year: 1960, manufacturer: 'Bally', ipdb_link: 'http://www.bar.com'))
+
+      get '/api/v1/locations/' + @location.id.to_s + '/machine_details.json'
+      expect(response).to be_success
+
+      machines = JSON.parse(response.body)['machines']
+
+      expect(machines[0]['name']).to eq('Cleo')
+      expect(machines[0]['year']).to eq(1980)
+      expect(machines[0]['manufacturer']).to eq('Stern')
+      expect(machines[0]['ipdb_link']).to eq('http://www.foo.com')
+
+      expect(machines[1]['name']).to eq('Sass')
+      expect(machines[1]['year']).to eq(1960)
+      expect(machines[1]['manufacturer']).to eq('Bally')
+      expect(machines[1]['ipdb_link']).to eq('http://www.bar.com')
     end
   end
 end
