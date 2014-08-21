@@ -180,15 +180,15 @@ HERE
 
       machines = JSON.parse(response.body)['machines']
 
-      expect(machines[0]['name']).to eq('Sass')
-      expect(machines[0]['year']).to eq(1960)
-      expect(machines[0]['manufacturer']).to eq('Bally')
-      expect(machines[0]['ipdb_link']).to eq('http://www.bar.com')
+      expect(machines[0]['name']).to eq('Cleo')
+      expect(machines[0]['year']).to eq(1980)
+      expect(machines[0]['manufacturer']).to eq('Stern')
+      expect(machines[0]['ipdb_link']).to eq('http://www.foo.com')
 
-      expect(machines[1]['name']).to eq('Cleo')
-      expect(machines[1]['year']).to eq(1980)
-      expect(machines[1]['manufacturer']).to eq('Stern')
-      expect(machines[1]['ipdb_link']).to eq('http://www.foo.com')
+      expect(machines[1]['name']).to eq('Sass')
+      expect(machines[1]['year']).to eq(1960)
+      expect(machines[1]['manufacturer']).to eq('Bally')
+      expect(machines[1]['ipdb_link']).to eq('http://www.bar.com')
     end
   end
 end
