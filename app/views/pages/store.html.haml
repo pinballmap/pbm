@@ -1,0 +1,68 @@
+#page_body  
+  .left_column{:style => 'margin-bottom:15px;'}
+    %p.store_title.pick_a_map Pinball Map T-Shirts!
+    %p.regular_text
+      Hey folks! We're selling 
+      %b Pinball Map t-shirts, 
+      featuring our original app logo by
+      = link_to "Drew Marshall.", "http://workbydrew.com"
+    %p.regular_text
+      Any money made from them will go toward keeping the site running well! Thanks for your support.
+    %p.regular_text
+      The shirts are $20, with FREE shipping for domestic orders. However, shipping costs are way more for international purchases. So if you're not in the US, please order via the
+      %b International 
+      button so we can calculate the shipping.
+    %div.store_wrapper.store_bg
+      %span{:style => "font-size: 18px;"} Pinball Map T-Shirt - Domestic
+      %form{:action => "https://www.paypal.com/cgi-bin/webscr", :method => "post", :target => "paypal"}
+        %input{:name => "cmd", :type => "hidden", :value => "_s-xclick"}/
+        %table.paypal_bg
+          %tr
+            %td
+              %input{:name => "on0", :type => "hidden", :value => "Sizes"}/
+              %span{:style => "font-size: 14px;font-style:italic;"} Sizes
+          %tr
+            %td
+              %select{:name => "os0", :style => "width: 158px;"}
+                %option{:value => "Small"} Small $20.00 USD
+                %option{:value => "Medium"} Medium $20.00 USD
+                %option{:value => "Large"} Large $20.00 USD
+                %option{:value => "X-Large"} X-Large $20.00 USD
+        %input{:name => "currency_code", :type => "hidden", :value => "USD"}/
+        %input{:name => "encrypted", :type => "hidden", :value => "-----BEGIN PKCS7-----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-----END PKCS7-----\r\n"}/
+        %input{:style => "margin:10px 0;", :alt => "PayPal - The safer, easier way to pay online!", :border => "0", :name => "submit", :src => "https://www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif", :type => "image"}/
+        %img{:alt => "", :border => "0", :height => "1", :src => "https://www.paypalobjects.com/en_US/i/scr/pixel.gif", :width => "1"}/
+      %form{:action => "https://www.paypal.com/cgi-bin/webscr", :method => "post", :target => "paypal"}
+        %input{:name => "cmd", :type => "hidden", :value => "_s-xclick"}/
+        %input{:name => "encrypted", :type => "hidden", :value => "-----BEGIN PKCS7-----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-----END PKCS7-----\r\n"}/
+        %input{:alt => "PayPal - The safer, easier way to pay online!", :border => "0", :name => "submit", :src => "https://www.paypalobjects.com/en_US/i/btn/btn_viewcart_LG.gif", :type => "image"}/
+        %img{:alt => "", :border => "0", :height => "1", :src => "https://www.paypalobjects.com/en_US/i/scr/pixel.gif", :width => "1"}/
+    %div.store_wrapper.store_bg
+      %span{:style => "font-size: 18px;"} Pinball Map T-Shirt - International
+      %form{:action => "https://www.paypal.com/cgi-bin/webscr", :method => "post", :target => "paypal"}
+        %input{:name => "cmd", :type => "hidden", :value => "_s-xclick"}/
+        %table
+          %tr
+            %td
+              %input{:name => "on0", :type => "hidden", :value => "Sizes"}>/
+              %span{:style => "font-size: 14px;font-style:italic;"} Sizes
+          %tr
+            %td
+              %select{:name => "os0", :style => "width: 158px;"}
+                %option{:value => "Small"} Small $20.00 USD
+                %option{:value => "Medium"} Medium $20.00 USD
+                %option{:value => "Large"} Large $20.00 USD
+                %option{:value => "X-Large"} X-Large $20.00 USD
+        %input{:name => "currency_code", :type => "hidden", :value => "USD"}/
+        %input{:name => "encrypted", :type => "hidden", :value => "-----BEGIN PKCS7-----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-----END PKCS7-----\r\n"}/
+        %input{:style => "margin:10px 0;", :alt => "PayPal - The safer, easier way to pay online!", :border => "0", :name => "submit", :src => "https://www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif", :type => "image"}/
+        %img{:alt => "", :border => "0", :height => "1", :src => "https://www.paypalobjects.com/en_US/i/scr/pixel.gif", :width => "1"}/
+
+    %p.regular_text
+      Quantities are limited, so orders yours now! If you don't see your size listed in the dropdown, that means we don't have it in stock. If we make more, we'll be basing the order off your feedback. 
+      = link_to = link_to 'So hit us up.', 'http://pinballmap.com/portland/about'
+  .right_column.regular_text.event_column
+    %p{:style => 'text-align:center;'}
+      =image_tag 'pbm-shirt-web.jpg', :class => 'store_shirt'
+
+    
