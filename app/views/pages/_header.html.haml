@@ -25,6 +25,7 @@
         %ul.other_links_dropdown
           %li.other_links_list
             =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
+            =link_to 'Event Feed', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
       %li=link_to 'High Rollers', high_rollers_path
 
 :javascript
