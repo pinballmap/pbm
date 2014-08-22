@@ -66,14 +66,43 @@
 
 }
 
-@media (max-width: 980px) {
+@media (max-width: 840px) {
   
-  #header ul, span.pick_a_map {
+  #header ul {
     display: none;
   }
 }
 
-@media (max-width: 1045px) {
+@media (max-width: 900px) {
+  
+  #header ul {
+    font-size: 10px;
+    width: 220px;
+  }
+  #header li a {
+    padding: 2px;
+  }
+  #header .region_logo_dropdown {
+    width: 150px;
+  }
+
+}
+
+@media (max-width: 980px) {
+
+  .store_buy {
+    display: none;
+  }
+}
+
+@media (max-width: 1015px) {
+  
+  span.pick_a_map {
+    display: none;
+  }
+}
+
+@media (max-width: 1070px) {
 
   .new_blog_region {
     display: none;
