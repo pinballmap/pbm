@@ -178,7 +178,7 @@ div.pick_a_map {
   text-align: center;
   padding-top: 5px;
 }
-span.pick_a_map {
+span.pick_a_map, .store_title {
   margin: 0;
   text-shadow: 1px 1px 5px #CCCCCC;
 }
@@ -202,6 +202,30 @@ div.dont_pick_a_map {
 }
 
 /** END Home **/
+
+/** Store **/
+
+.store_wrapper {
+  border: 3px solid #58266f; 
+  box-sizing: border-box;
+  text-align:center;
+  width: 190px;
+  margin: 0 auto 15px;
+  padding: 10px;
+}
+.store_title {
+  font-size: 28px;
+  line-height: 26px;
+  padding: 0;
+  margin: 15px 0;
+  text-align: center;
+}
+.store_shirt {
+  width: 420px;
+  height: 578px;
+  margin-top: 5px;
+  border: 2px solid #e8d6f1;
+}
 
 /** Header **/
 
@@ -267,9 +291,6 @@ div.dont_pick_a_map {
 }
 #header li:nth-child(3):after { 
   content: '\a'; white-space:pre; 
-}
-li.first_header_link {
-  padding: 2px 0 6px 4px;
 }
 #header .region_logo_dropdown {
     width: 160px;
@@ -354,16 +375,17 @@ li.first_header_link {
   margin-bottom: 2px;
 }
 .new_blog {
+  font-size: 15px;
   float: left;
   line-height: 18px;
-  width: 90px;
-  padding: 5px 10px 8px;
+  width: 80px;
+  padding: 5px 6px 8px;
   background-color: #f6effa;
 }
-.new_blog_region {
+.new_blog_region, .store_buy {
   border-right: none;
   float: right;
-  padding: 10px 10px 8px;
+  padding: 10px 6px 8px;
   text-align: center;
 }
 .new_blog:hover {
@@ -1197,6 +1219,8 @@ a.apps_link:hover {
   height: 100%;
   z-index: -1;
   border: 2px solid #E3D6C5;
+}
+#map, .right_column, #right_column, .score_result, .store_bg {
   background-color:rgba(253,252,254,0.7);
 	/* Fallback for web browsers that doesn't support RGBa */
 	background: rgb(253,252,254) transparent;

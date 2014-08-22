@@ -47,6 +47,7 @@ Pbm::Application.routes.draw do
   get '/apps' => 'pages#apps'
   get '/apps/support' => 'pages#app_support'
   get '/apps/privacy' => 'pages#privacy'
+  get '/store' => 'pages#store'
 
   scope ':region', :constraints => { :region => /#{regions}|!admin/i } do
     get 'apps' => redirect('/apps')
