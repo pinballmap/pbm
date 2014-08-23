@@ -54,16 +54,16 @@ Pbm::Application.routes.draw do
     get 'apps/support' => redirect('/apps/support')
     get 'apps/privacy' => redirect('/apps/privacy')
 
-    resources :pages
-    resources :events
-    resources :regions
+    resources :events, :only => [:index, :show]
+    resources :regions, :only => [:index, :show]
 
-    resources :machines do
+    resources :machines, :only => [:index, :show] do
       collection do
         get :autocomplete
       end
     end
 
+    resources :pages
     resources :machine_score_xrefs
 
     resources :location_machine_xrefs do
@@ -78,7 +78,7 @@ Pbm::Application.routes.draw do
       end
     end
 
-    resources :locations do
+    resources :locations, :only => [:index, :show] do
       collection do
         get :update_desc
         get :autocomplete
