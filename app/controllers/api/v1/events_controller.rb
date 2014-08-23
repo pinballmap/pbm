@@ -23,7 +23,8 @@ module Api
           }
           return_response([sorted_events],'events')
         else
-          return_response(events,'events')
+          events.sort!{|x,y| x.start_date && y.start_date ? x.start_date <=> y.start_date : x.start_date ? -1 : 1}
+          return_response(events, 'events')
         end
       end
 

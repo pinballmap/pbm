@@ -11,6 +11,7 @@ describe Api::V1::EventsController, :type => :request do
     it 'handles basic event displaying' do
       FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => Date.today)
       FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 2', :start_date => Date.today + 1)
+      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 3')
 
       get '/api/v1/region/portland/events.json'
       expect(response).to be_success
@@ -19,10 +20,11 @@ describe Api::V1::EventsController, :type => :request do
       expect(parsed_body.size).to eq(1)
 
       events = parsed_body['events']
-      expect(events.size).to eq(2)
+      expect(events.size).to eq(3)
 
       expect(events[0]['name']).to eq('event 1')
       expect(events[1]['name']).to eq('event 2')
+      expect(events[2]['name']).to eq('event 3')
     end
 
     it 'handles the sorted param appropriately' do
