@@ -37,25 +37,26 @@ describe Api::V1::LocationsController, :type => :request do
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/suggest.json'
       expect(response).to be_success
-
       expect(JSON.parse(response.body)['errors']).to eq('Your name, email address, and name of the region you want added are required fields.')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/suggest.json', name: 'foo'
       expect(response).to be_success
-
       expect(JSON.parse(response.body)['errors']).to eq('Your name, email address, and name of the region you want added are required fields.')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/suggest.json', name: 'foo', email: 'bar'
       expect(response).to be_success
-
       expect(JSON.parse(response.body)['errors']).to eq('Your name, email address, and name of the region you want added are required fields.')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/suggest.json', name: 'foo', region_name: 'bar'
       expect(response).to be_success
+      expect(JSON.parse(response.body)['errors']).to eq('Your name, email address, and name of the region you want added are required fields.')
 
+      expect(Pony).to_not receive(:mail)
+      post '/api/v1/regions/suggest.json', name: 'foo', region_name: 'bar', email: ''
+      expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Your name, email address, and name of the region you want added are required fields.')
     end
 
@@ -92,7 +93,11 @@ HERE
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/contact.json', region_id: @la.id.to_s
       expect(response).to be_success
+      expect(JSON.parse(response.body)['errors']).to eq('A message is required.')
 
+      expect(Pony).to_not receive(:mail)
+      post '/api/v1/regions/contact.json', region_id: @la.id.to_s, message: ''
+      expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('A message is required.')
     end
 
@@ -128,13 +133,16 @@ HERE
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/app_comment.json', region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email'
       expect(response).to be_success
-
       expect(JSON.parse(response.body)['errors']).to eq('OS, OS Version, Device Type, App Version, Email, and Message are all required.')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/app_comment.json', region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', message: 'message'
       expect(response).to be_success
+      expect(JSON.parse(response.body)['errors']).to eq('OS, OS Version, Device Type, App Version, Email, and Message are all required.')
 
+      expect(Pony).to_not receive(:mail)
+      post '/api/v1/regions/app_comment.json', region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', message: 'message', email: ''
+      expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('OS, OS Version, Device Type, App Version, Email, and Message are all required.')
     end
 

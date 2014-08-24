@@ -11,24 +11,23 @@ describe Api::V1::LocationsController, :type => :request do
   describe '#suggest' do
     it 'errors when required fields are not sent' do
       expect(Pony).to_not receive(:mail)
-
       post '/api/v1/locations/suggest.json', region_id: @region.id.to_s
       expect(response).to be_success
-
       expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
 
       expect(Pony).to_not receive(:mail)
-
       post '/api/v1/locations/suggest.json', region_id: @region.id.to_s, location_machines: 'foo'
       expect(response).to be_success
-
       expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
 
       expect(Pony).to_not receive(:mail)
-
       post '/api/v1/locations/suggest.json', region_id: @region.id.to_s, location_name: 'baz'
       expect(response).to be_success
+      expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
 
+      expect(Pony).to_not receive(:mail)
+      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s, location_name: 'baz', location_machines: ''
+      expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
     end
 
