@@ -19,7 +19,7 @@ module Api
       param :comments, String, :desc => 'Things we should know about this region', :required => false
       formats [ 'json' ]
       def suggest
-        if (!params['name'] || !params['email'] || !params['region_name'])
+        if (params['name'].blank? || params['email'].blank? || params['region_name'].blank?)
           return_response('Your name, email address, and name of the region you want added are required fields.', 'errors')
           return
         end
@@ -37,7 +37,7 @@ module Api
       def contact
         region = Region.find(params['region_id'])
 
-        if (!params['message'])
+        if (params['message'].blank?)
           return_response('A message is required.', 'errors')
           return
         end
@@ -62,7 +62,7 @@ module Api
       def app_comment
         region = Region.find(params['region_id'])
 
-        if ( !params['region_id'] || !params['os'] || !params['os_version'] || !params['device_type'] || !params['app_version'] || !params['email'] || !params['message'])
+        if (params['region_id'].blank? || params['os'].blank? || params['os_version'].blank? || params['device_type'].blank? || params['app_version'].blank? || params['email'].blank? || params['message'].blank?)
           return_response('OS, OS Version, Device Type, App Version, Email, and Message are all required.', 'errors')
           return
         end

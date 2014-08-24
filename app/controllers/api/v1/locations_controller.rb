@@ -24,7 +24,7 @@ module Api
       param :submitter_email, String, :desc => 'Email address of submitter', :required => false
       formats [ 'json' ]
       def suggest
-        if (!params['region_id'] || !params['location_machines'] || !params['location_name'])
+        if (params[:region_id].blank? || params[:location_machines].blank? || params[:location_name].blank?)
           return_response('Region, location name, and a list of machines are required', 'errors')
           return
         end
