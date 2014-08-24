@@ -2,10 +2,34 @@ require 'spec_helper'
 
 describe Api::V1::LocationsController, :type => :request do
   before(:each) do
-    @portland = FactoryGirl.create(:region, :name => 'portland')
+    @portland = FactoryGirl.create(:region, :name => 'portland', :motd => 'foo', :full_name => 'Portland', :lat => 12, :lon => 13)
     @la = FactoryGirl.create(:region, :name => 'la')
+
     FactoryGirl.create(:user, :region => @portland, :email => 'portland@admin.com', :is_super_admin => 1)
     FactoryGirl.create(:user, :region => @la, :email => 'la@admin.com')
+  end
+
+  describe '#show' do
+    it 'sends back region metadata' do
+      get "/api/v1/regions/#{@portland.id}.json"
+      expect(response).to be_success
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      region = parsed_body['region']
+
+      expect(region['name']).to eq('portland')
+      expect(region['motd']).to eq('foo')
+      expect(region['lat']).to eq('12.0')
+      expect(region['lon']).to eq('13.0')
+      expect(region['full_name']).to eq('Portland')
+    end
+
+    it 'throws an error if the region does not exist' do
+      get '/api/v1/regions/-123.json'
+
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find region')
+    end
   end
 
   describe '#index' do

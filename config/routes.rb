@@ -16,7 +16,7 @@ Pbm::Application.routes.draw do
       resources :location_machine_xrefs, :only => [:create, :destroy, :update]
       resources :machine_score_xrefs, :only => [:create, :show]
 
-      resources :regions, :only => [:index,:show] do
+      resources :regions, :only => [:index, :show] do
         collection do
           post :suggest
           post :contact

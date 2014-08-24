@@ -5,10 +5,23 @@ module Api
       respond_to :json
 
       api :GET, '/api/v1/regions.json', 'Fetch all regions'
+      description "Fetch data about all regions"
       def index
         regions = Region.all
 
         return_response(regions, 'regions', [], [:primary_email_contact,:all_admin_email_addresses])
+      end
+
+      api :GET, '/api/v1/regions/:id.json', 'Fetch information for a single region'
+      description "Returns detail about a single region"
+      param :id, String, :desc => 'ID of the Region you want to see details about', :required => true
+      def show
+        region = Region.find(params[:id])
+
+        return_response(region, 'region')
+
+        rescue ActiveRecord::RecordNotFound
+          return_response('Failed to find region', 'errors')
       end
 
       api :POST, '/api/v1/regions/suggest.json', 'Suggest a new region to add to the map'
