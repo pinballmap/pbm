@@ -79,12 +79,14 @@ module Api
           location.website = website
         end
 
-        if (phone)
+        if (phone && !phone.blank?)
           phone.gsub!(/\s+/, "")
           phone.gsub!(/[^0-9]/, "")
 
           phone = phone.empty? ? 'empty' : number_to_phone(phone)
           location.phone = phone
+        elsif (phone && phone.blank?)
+          location.phone = nil
         end
 
         if (location_type)
