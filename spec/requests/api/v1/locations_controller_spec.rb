@@ -131,6 +131,18 @@ HERE
 
       expect(JSON.parse(response.body)['errors']).to eq(['Phone format invalid, please use ###-###-####'])
     end
+
+    it 'blank phone number deletes phone number' do
+      @location.phone = '555-555-5555'
+
+      put '/api/v1/locations/' + @location.id.to_s + '.json?phone='
+      expect(response).to be_success
+
+      parsed_body = JSON.parse(response.body)
+      location = parsed_body['location']
+
+      expect(location['phone']).to eq(nil)
+    end
   end
 
   describe '#closest_by_lat_lon' do
