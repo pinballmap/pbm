@@ -1,11 +1,11 @@
 #page_body
   .left_column.secondary
     %p{:style => 'margin-top:7%;'}
-      =link_to image_tag('App_Store.png'), "http://itunes.apple.com/us/app/portland-pinball-map/id359275713?mt=8", :class => 'pic', :target => '_blank'
+      =link_to image_tag('App_Store.png', :alt => 'iTunes App Store Link'), "http://itunes.apple.com/us/app/portland-pinball-map/id359275713?mt=8", :class => 'pic', :target => '_blank'
     %p
-      =link_to image_tag('android_market.png'), "https://market.android.com/details?id=com.pbm&feature=search_result#?t=W251bGwsMSwxLDEsImNvbS5wYm0iXQ..", :class => 'pic', :target => '_blank'
+      =link_to image_tag('android_market.png', :alt => 'Google Play Store Link'), "https://market.android.com/details?id=com.pbm&feature=search_result#?t=W251bGwsMSwxLDEsImNvbS5wYm0iXQ..", :class => 'pic', :target => '_blank'
     %p
-      =image_tag 'appLoadingPortland.jpg', :style => 'height:340px;width:226px;'
+      =image_tag 'appLoadingPortland.jpg', :style => 'height:340px;width:226px;', :alt => 'Pinball Map App Image'
   .right_column.right_column_apps
     %p.yellow Pinball Map Apps
     %p.regular_text 

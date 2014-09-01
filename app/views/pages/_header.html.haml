@@ -1,5 +1,5 @@
 #header{:class => "#{@region ? '' : 'header_home'}"}
-  =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}"), root_path
+  =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
   - if (@region)
     %span.yellowb.new_blog.new_blog_region
       = link_to 'Pinball Map Blog', 'http://blog.pinballmap.com'
