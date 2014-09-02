@@ -67,6 +67,7 @@ group :test do
   gem 'poltergeist'
   gem 'simplecov', :require => false
   gem 'coveralls', :require => false
+  gem 'rubocop', require: false
 end
 
 group :development, :test do

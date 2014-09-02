@@ -1,6 +1,6 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
-ENV["RAILS_ENV"] ||= 'test'
-require File.expand_path("../../config/environment", __FILE__)
+ENV['RAILS_ENV'] ||= 'test'
+require File.expand_path('../../config/environment', __FILE__)
 require 'factory_girl_rails'
 require 'rspec/rails'
 require 'capybara/rspec'
@@ -15,12 +15,12 @@ Coveralls.wear! 'rails'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
   Capybara.javascript_driver = :poltergeist
   Capybara.register_driver :poltergeist do |app|
-    Capybara::Poltergeist::Driver.new(app, { :js_errors => false, :timeout => 60 })
+    Capybara::Poltergeist::Driver.new(app, js_errors: false, timeout: 60)
   end
 
   # == Mock Framework
@@ -48,7 +48,7 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :transaction
   end
 
-  config.before(:each, :js => true) do
+  config.before(:each, js: true) do
     DatabaseCleaner.strategy = :truncation
   end
 
