@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-describe Api::V1::EventsController, :type => :request do
+describe Api::V1::EventsController, type: :request do
 
   describe '#index' do
     before(:each) do
-      @region = FactoryGirl.create(:region, :name => 'portland')
-      @location = FactoryGirl.create(:location, :region => @region, :state => 'OR')
+      @region = FactoryGirl.create(:region, name: 'portland')
+      @location = FactoryGirl.create(:location, region: @region, state: 'OR')
     end
 
     it 'handles basic event displaying' do
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => Date.today)
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 2', :start_date => Date.today + 1)
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 3')
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today + 1)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 3')
 
       get '/api/v1/region/portland/events.json'
       expect(response).to be_success
@@ -28,9 +28,9 @@ describe Api::V1::EventsController, :type => :request do
     end
 
     it 'handles the sorted param appropriately' do
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => Date.today, :end_date => Date.today)
-      FactoryGirl.create(:event, :region => @region, :location => @location, :category => 'Foo', :name => 'event 2', :start_date => Date.today, :end_date => Date.today)
-      FactoryGirl.create(:event, :region => @region, :location => @location, :category => 'Foo', :name => 'event 3', :start_date => Date.today, :end_date => Date.today)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today, end_date: Date.today)
+      FactoryGirl.create(:event, region: @region, location: @location, category: 'Foo', name: 'event 2', start_date: Date.today, end_date: Date.today)
+      FactoryGirl.create(:event, region: @region, location: @location, category: 'Foo', name: 'event 3', start_date: Date.today, end_date: Date.today)
 
       get '/api/v1/region/portland/events.json?sorted=true'
       expect(response).to be_success
@@ -47,8 +47,8 @@ describe Api::V1::EventsController, :type => :request do
     end
 
     it 'does not display events that are a week older than their end date' do
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => Date.today, :end_date => Date.today)
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 2', :start_date => Date.today - 8, :end_date => Date.today - 8)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today, end_date: Date.today)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today - 8, end_date: Date.today - 8)
 
       get '/api/v1/region/portland/events.json'
       expect(response).to be_success
@@ -63,8 +63,8 @@ describe Api::V1::EventsController, :type => :request do
     end
 
     it 'does not display events that are a week older than start date if there is no end date' do
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => Date.today)
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 2', :start_date => Date.today - 8)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today - 8)
 
       get '/api/v1/region/portland/events.json'
       expect(response).to be_success

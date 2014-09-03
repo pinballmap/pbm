@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe LocationsHelper, :type => :helper do
+describe LocationsHelper, type: :helper do
   describe '#open_closed_arrows' do
     it 'should give me some open and closed arrows' do
       l = FactoryGirl.create(:location)
@@ -32,7 +32,7 @@ HERE
 
   describe '#search_banner' do
     it 'should give me a banner' do
-      l = FactoryGirl.create(:location)
+      FactoryGirl.create(:location)
       expect(helper.search_banner('by_cool_type', 'This is a cool type, bro')).to eq(<<HERE)
 <div id="by_cool_type_banner" class="search_banner">
   <span>This is a cool type, bro</span>
