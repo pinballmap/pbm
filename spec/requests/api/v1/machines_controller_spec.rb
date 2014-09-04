@@ -1,27 +1,27 @@
 require 'spec_helper'
 
-describe Api::V1::MachinesController, :type => :request do
+describe Api::V1::MachinesController, type: :request do
 
   describe '#index' do
     before(:each) do
-      FactoryGirl.create(:machine, :name => 'Cleo')
-      FactoryGirl.create(:machine, :name => 'Bawb')
+      FactoryGirl.create(:machine, name: 'Cleo')
+      FactoryGirl.create(:machine, name: 'Bawb')
     end
 
     it 'returns all machines in the database' do
       get '/api/v1/machines.json'
 
-      expect(response.body).to include("Cleo")
-      expect(response.body).to include("Bawb")
+      expect(response.body).to include('Cleo')
+      expect(response.body).to include('Bawb')
     end
   end
 
   describe '#create' do
     before(:each) do
-      @region = FactoryGirl.create(:region, :name => 'Portland')
-      @location = FactoryGirl.create(:location, :name => 'Ground Kontrol')
+      @region = FactoryGirl.create(:region, name: 'Portland')
+      @location = FactoryGirl.create(:location, name: 'Ground Kontrol')
 
-      FactoryGirl.create(:machine, :name => 'Cleo')
+      FactoryGirl.create(:machine, name: 'Cleo')
     end
 
     it 'errors with missing location_id' do
@@ -53,10 +53,10 @@ describe Api::V1::MachinesController, :type => :request do
     it 'handles creation by machine name.. new machine name' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          :body => "Bawb\nGround Kontrol\nportland\n(entered from 127.0.0.1 via )",
-          :subject => "PBM - New machine name",
-          :to => [],
-          :from =>"admin@pinballmap.com"
+          body: "Bawb\nGround Kontrol\nportland\n(entered from 127.0.0.1 via )",
+          subject: 'PBM - New machine name',
+          to: [],
+          from: 'admin@pinballmap.com'
         )
       end
 
