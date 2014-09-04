@@ -2,18 +2,18 @@ require 'spec_helper'
 
 describe PagesController do
   before(:each) do
-    @region = FactoryGirl.create(:region, :name => 'portland', :full_name => 'Portland')
-    @location = FactoryGirl.create(:location, :region => @region, :state => 'OR')
+    @region = FactoryGirl.create(:region, name: 'portland', full_name: 'Portland')
+    @location = FactoryGirl.create(:location, region: @region, state: 'OR')
   end
 
-  describe 'Events', :type => :feature, :js => true do
+  describe 'Events', type: :feature, js: true do
     it 'handles basic event displaying' do
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => Date.today)
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 2', :start_date => Date.today + 1)
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 3', :start_date => Date.today - 1)
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 4')
-      FactoryGirl.create(:event, :region => @region, :location => @location, :external_location_name => 'External location', :name => 'event 5')
-      FactoryGirl.create(:event, :region => @region, :external_location_name => 'External location', :name => 'event 6')
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today + 1)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 3', start_date: Date.today - 1)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 4')
+      FactoryGirl.create(:event, region: @region, location: @location, external_location_name: 'External location', name: 'event 5')
+      FactoryGirl.create(:event, region: @region, external_location_name: 'External location', name: 'event 6')
 
       visit '/portland/events'
 
@@ -26,8 +26,8 @@ describe PagesController do
     end
 
     it 'is case insensitive for region name' do
-      chicago_region = FactoryGirl.create(:region, :name => 'chicago', :full_name => 'Chicago')
-      FactoryGirl.create(:event, :region => chicago_region, :name => 'event 1')
+      chicago_region = FactoryGirl.create(:region, name: 'chicago', full_name: 'Chicago')
+      FactoryGirl.create(:event, region: chicago_region, name: 'event 1')
 
       visit '/CHICAGO/events'
 
@@ -35,8 +35,8 @@ describe PagesController do
     end
 
     it 'does not display events that are a week older than their end date' do
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => Date.today, :end_date => Date.today)
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 2', :start_date => Date.today - 8, :end_date => Date.today - 8)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today, end_date: Date.today)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today - 8, end_date: Date.today - 8)
 
       visit '/portland/events'
 
@@ -45,8 +45,8 @@ describe PagesController do
     end
 
     it 'does not display events that are a week older than start date if there is no end date' do
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 1', :start_date => Date.today)
-      FactoryGirl.create(:event, :region => @region, :location => @location, :name => 'event 2', :start_date => Date.today - 8)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today - 8)
 
       visit '/portland/events'
 
@@ -55,21 +55,21 @@ describe PagesController do
     end
   end
 
-  describe 'High roller list', :type => :feature, :js => true do
+  describe 'High roller list', type: :feature, js: true do
     it 'should have intro text that displays correct number of locations and machines for a region' do
-      chicago_region = FactoryGirl.create(:region, :name => 'chicago')
-      portland_location = FactoryGirl.create(:location, :region => @region)
-      chicago_location = FactoryGirl.create(:location, :region => chicago_region)
+      chicago_region = FactoryGirl.create(:region, name: 'chicago')
+      portland_location = FactoryGirl.create(:location, region: @region)
+      chicago_location = FactoryGirl.create(:location, region: chicago_region)
 
       machine = FactoryGirl.create(:machine)
 
-      portland_lmx = FactoryGirl.create(:location_machine_xref, :location => @location, :machine => machine)
-      another_portland_lmx = FactoryGirl.create(:location_machine_xref, :location => portland_location, :machine => machine)
-      FactoryGirl.create(:location_machine_xref, :location => chicago_location, :machine => machine)
+      portland_lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: machine)
+      another_portland_lmx = FactoryGirl.create(:location_machine_xref, location: portland_location, machine: machine)
+      FactoryGirl.create(:location_machine_xref, location: chicago_location, machine: machine)
 
-      FactoryGirl.create(:machine_score_xref, :location_machine_xref => portland_lmx, :score => 100, :initials => 'ssw', :rank => 1)
-      FactoryGirl.create(:machine_score_xref, :location_machine_xref => portland_lmx, :score => 90, :initials => 'rtgt', :rank => 2)
-      FactoryGirl.create(:machine_score_xref, :location_machine_xref => another_portland_lmx, :score => 200, :initials => 'ssw', :rank => 1)
+      FactoryGirl.create(:machine_score_xref, location_machine_xref: portland_lmx, score: 100, initials: 'ssw', rank: 1)
+      FactoryGirl.create(:machine_score_xref, location_machine_xref: portland_lmx, score: 90, initials: 'rtgt', rank: 2)
+      FactoryGirl.create(:machine_score_xref, location_machine_xref: another_portland_lmx, score: 200, initials: 'ssw', rank: 1)
 
       visit '/portland/high_rollers'
 
@@ -78,11 +78,11 @@ describe PagesController do
     end
   end
 
-  describe 'Top 10 Machine Counts', :type => :feature, :js => true do
+  describe 'Top 10 Machine Counts', type: :feature, js: true do
     it 'shows the top 10 machine counts on the about page' do
       11.times do |machine_name_counter|
         machine_name_counter.times do
-          FactoryGirl.create(:location_machine_xref, :location => @location, :machine => Machine.where(:name => "Machine#{machine_name_counter}").first_or_create)
+          FactoryGirl.create(:location_machine_xref, location: @location, machine: Machine.where(name: "Machine#{machine_name_counter}").first_or_create)
         end
       end
 
@@ -92,13 +92,13 @@ describe PagesController do
     end
   end
 
-  describe 'Links', :type => :feature, :js => true do
+  describe 'Links', type: :feature, js: true do
     it 'shows links in a region' do
-      chicago = FactoryGirl.create(:region, :name => 'chicago', :full_name => 'Chicago')
+      chicago = FactoryGirl.create(:region, name: 'chicago', full_name: 'Chicago')
 
-      FactoryGirl.create(:region_link_xref, :region => @region, :description => 'foo')
-      FactoryGirl.create(:region_link_xref, :region => chicago, :name => 'chicago link 1', :category => 'main links', :sort_order => 2, :description => 'desc1')
-      FactoryGirl.create(:region_link_xref, :region => chicago, :name => 'cool link 1', :category => 'cool links', :sort_order => 1, :description => 'desc2')
+      FactoryGirl.create(:region_link_xref, region: @region, description: 'foo')
+      FactoryGirl.create(:region_link_xref, region: chicago, name: 'chicago link 1', category: 'main links', sort_order: 2, description: 'desc1')
+      FactoryGirl.create(:region_link_xref, region: chicago, name: 'cool link 1', category: 'cool links', sort_order: 1, description: 'desc2')
 
       visit '/chicago/about'
 
@@ -106,9 +106,9 @@ describe PagesController do
     end
 
     it 'sort order does not cause headers to display twice' do
-      FactoryGirl.create(:region_link_xref, :region => @region, :description => 'desc', :name => 'link 1', :category => 'main links', :sort_order => 2)
-      FactoryGirl.create(:region_link_xref, :region => @region, :description => 'desc', :name => 'link 2', :category => 'main links', :sort_order => 1)
-      FactoryGirl.create(:region_link_xref, :region => @region, :description => 'desc', :name => 'link 3', :category => 'other category')
+      FactoryGirl.create(:region_link_xref, region: @region, description: 'desc', name: 'link 1', category: 'main links', sort_order: 2)
+      FactoryGirl.create(:region_link_xref, region: @region, description: 'desc', name: 'link 2', category: 'main links', sort_order: 1)
+      FactoryGirl.create(:region_link_xref, region: @region, description: 'desc', name: 'link 3', category: 'other category')
 
       visit "/#{@region.name}/about"
 
@@ -116,91 +116,91 @@ describe PagesController do
     end
   end
 
-  describe 'Location suggestions', :type => :feature, :js => true do
+  describe 'Location suggestions', type: :feature, js: true do
     it 'limits state dropdown to unique states within a region' do
-      chicago = FactoryGirl.create(:region, :name => 'chicago')
+      chicago = FactoryGirl.create(:region, name: 'chicago')
 
-      FactoryGirl.create(:location, :region => @region, :state => 'WA')
-      FactoryGirl.create(:location, :region => chicago, :state => 'IL')
+      FactoryGirl.create(:location, region: @region, state: 'WA')
+      FactoryGirl.create(:location, region: chicago, state: 'IL')
 
       visit "/#{@region.name}/suggest"
 
-      expect(page).to have_select('location_state', :options => ['OR', 'WA'])
+      expect(page).to have_select('location_state', options: %w(OR WA))
     end
   end
 
-  describe 'Homepage', :type => :feature, :js => true do
+  describe 'Homepage', type: :feature, js: true do
     it 'shows the proper number of locations and machines per region' do
-      chicago = FactoryGirl.create(:region, :name => 'chicago', :full_name => 'Chicago')
+      chicago = FactoryGirl.create(:region, name: 'chicago', full_name: 'Chicago')
       machine = FactoryGirl.create(:machine)
 
-      FactoryGirl.create(:location_machine_xref, :location => @location, :machine => machine)
-      FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => @region), :machine => machine)
+      FactoryGirl.create(:location_machine_xref, location: @location, machine: machine)
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: @region), machine: machine)
 
-      FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => chicago), :machine => machine)
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: chicago), machine: machine)
 
-      visit "/"
+      visit '/'
 
       expect(page).to have_css('div#map_summaries')
-      expect(page).to have_content('Chicago Tracking: 1 Locations 1 Machines Portland Tracking: 2 Locations 2 Machines')    
+      expect(page).to have_content('Chicago Tracking: 1 Locations 1 Machines Portland Tracking: 2 Locations 2 Machines')
     end
 
     it 'shows the proper page title' do
 
-      visit "/"
+      visit '/'
 
-      expect(page).to have_title("Pinball Map")
-      expect(page).not_to have_title("Apps")
+      expect(page).to have_title('Pinball Map')
+      expect(page).not_to have_title('Apps')
     end
   end
 
-  describe 'Apps pages', :type => :feature, :js => true do
+  describe 'Apps pages', type: :feature, js: true do
     it 'shows the proper page title' do
 
-      visit "/apps"
-      expect(page).to have_title("Apps")
+      visit '/apps'
+      expect(page).to have_title('Apps')
 
-      visit "/apps/support"
-      expect(page).to have_title("Apps")
+      visit '/apps/support'
+      expect(page).to have_title('Apps')
     end
   end
 
-  describe 'Landing page for a region', :type => :feature, :js => true do
+  describe 'Landing page for a region', type: :feature, js: true do
     it 'shows the proper location and machine counts in the intro text' do
-      chicago = FactoryGirl.create(:region, :name => 'chicago')
+      chicago = FactoryGirl.create(:region, name: 'chicago')
       machine = FactoryGirl.create(:machine)
 
-      FactoryGirl.create(:location_machine_xref, :location => @location, :machine => machine)
-      FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => @region), :machine => machine)
+      FactoryGirl.create(:location_machine_xref, location: @location, machine: machine)
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: @region), machine: machine)
 
-      FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location, :region => chicago), :machine => machine)
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: chicago), machine: machine)
 
-      visit "/portland"
+      visit '/portland'
 
       expect(page).to have_content('2 locations and 2 machines')
     end
 
     it 'does not show high scores when none exist' do
-      visit "/portland"
+      visit '/portland'
 
-      expect(page).to_not have_selector("#ticker")
+      expect(page).to_not have_selector('#ticker')
     end
 
     it 'shows high scores when they exist' do
-      lmx = FactoryGirl.create(:location_machine_xref, :location => @location, :machine => FactoryGirl.create(:machine))
-      FactoryGirl.create(:machine_score_xref, :location_machine_xref => lmx, :initials => 'cap', :score => 1234, :rank => 1)
+      lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
+      FactoryGirl.create(:machine_score_xref, location_machine_xref: lmx, initials: 'cap', score: 1234, rank: 1)
 
-      visit "/portland"
+      visit '/portland'
 
       expect(page).to have_content("Test Location Name's Test Machine Name: GC with 1,234 by cap")
     end
 
     it 'shows the proper page title' do
 
-      visit "/portland"
+      visit '/portland'
 
-      expect(page).to have_title("Portland Pinball Map")
-      expect(page).not_to have_title("Apps")
+      expect(page).to have_title('Portland Pinball Map')
+      expect(page).not_to have_title('Apps')
     end
   end
 end
