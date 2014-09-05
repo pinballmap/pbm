@@ -28,12 +28,10 @@
 }
 
 @media (max-width: 850px) {
-
-  #intro .regular_text, 
-  #intro .light_blue, 
+ 
   #intro .stufflike, 
   #intro .list,
-  #intro .yellowb {
+  #intro .darkb {
     font-size: 14px;
     line-height: 16px;
   }

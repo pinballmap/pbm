@@ -6,8 +6,8 @@
   #lookup
     #locations
       - if !@region.motd.blank?
-        %p.regular_text
-          %span.yellowb Message of the Day:
+        %p
+          %span.darkb Message of the Day:
           = @region.motd 
       = yield :presearch_sidebar
   - recent_scores = @region.n_recent_scores(20)

@@ -1,9 +1,9 @@
 #page_body
   .left_column.high
-    %p.yellowb Top 10 Rollers
-    %p.regular_text
+    %p.darkb Top 10 Rollers
+    %p
       Here's a list of the rippers who are putting up the most scores in town. In this list, Grand Champ scores are NOT worth more than a 1st place score.
-    %p.regular_text
+    %p
       This list is about who has the most overall inits. Check the details of each one to find out where you can take them down!
   .clear
 
@@ -12,8 +12,8 @@
     - count = 1
     - @high_rollers.sort{|a,b| b[1].size <=> a[1].size}.each do |roller|
       .score_result
-        %p.yellowb{:style => 'display:inline;'}= rank
-        %p.regular_text= "#{roller[0]}: with #{roller[1].size} scores"
+        %p.darkb{:style => 'display:inline;'}= rank
+        %p= "#{roller[0]}: with #{roller[1].size} scores"
         = banner("user_#{count}", 'Show Score Detail')
         %div{:style => 'display:none', :id => "user_#{count}"}
           - roller[1].each do |msx|
