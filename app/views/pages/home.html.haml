@@ -1,8 +1,8 @@
 #welcome
   %p.notice= notice
   %div.home_intro_container
-    %div.home_intro.yellow{:style => 'left:0;'}
-      %span.yellowb Welcome to PinballMap.com!
+    %div.home_intro.dark{:style => 'left:0;'}
+      %span.darkb Welcome to PinballMap.com!
       %p
         PinballMap.com is a pinball locator, showing all the public pinball machines in select regions of North America.
         Each regional map is curated by a local administrator, often with the support of a league.
@@ -20,7 +20,7 @@
         Also, the code for this site is open source and
         = link_to 'on github', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
     %div.home_intro
-      %span.yellowb
+      %span.darkb
         =link_to image_tag('sol-icon.jpeg', :alt => 'Pinball Map Twitter Icon'), 'https://twitter.com/pinballmapcom', :class => 'twitter_icon'
         Follow
         =link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
@@ -41,7 +41,7 @@
           %span.region_name #{r.full_name}
           %br/
           %span.map_summary_info
-            %span.yellow Tracking:
+            %span.dark Tracking:
             %br/
             = "#{r.locations_count} Locations"
             %br/

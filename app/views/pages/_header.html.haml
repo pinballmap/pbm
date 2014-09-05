@@ -1,9 +1,9 @@
 #header{:class => "#{@region ? '' : 'header_home'}"}
   =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
   - if (@region)
-    %span.yellowb.new_blog.new_blog_region
+    %span.darkb.new_blog.new_blog_region
       = link_to 'Pinball Map Blog', 'http://blog.pinballmap.com'
-    %span.yellowb.new_blog.store_buy
+    %span.darkb.new_blog.store_buy
       = link_to 'T-Shirts For Sale!', store_path
     %div.region_logo_dropdown
       %div.other_regions
@@ -12,11 +12,11 @@
       %ul.other_regions_list= other_regions_html(@region) 
   - else  
     %div{:class => "pick_a_map"}
-      %span.yellowb.new_blog
+      %span.darkb.new_blog
         = link_to 'Pinball Map Blog', 'http://blog.pinballmap.com'
-      %span.yellowb.new_blog
+      %span.darkb.new_blog
         = link_to 'Pinball Map Apps', apps_path
-      %span.yellowb.new_blog
+      %span.darkb.new_blog
         = link_to 'T-Shirts For Sale!', store_path
       %span.pick_a_map Play Public Pinball!
   - if (@region)

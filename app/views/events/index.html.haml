@@ -2,7 +2,7 @@
   - if content_for?(:events_extra)
     = yield :events_extra
   - else
-    .left_column.regular_text
+    .left_column
       %p
         Here's a list of the upcoming pinball events in the #{@region.full_name} area.
       %p 
@@ -10,10 +10,10 @@
         = link_to 'about page', about_path, :class => 'intro'
         to give us the info.
 
-  .right_column.regular_text.event_column
+  .right_column.event_column
     - if (@sorted_events.size > 0)
       - @sorted_events.keys.sort.each do |key|
-        %p.yellowb.links_category #{key}
+        %p.darkb.links_category #{key}
         %ul.event_info
           - @sorted_events[key].sort{|a,b| a.start_date.to_s <=> b.start_date.to_s}.each do |e|
             %li

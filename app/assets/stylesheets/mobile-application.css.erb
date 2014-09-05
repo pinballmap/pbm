@@ -1,9 +1,10 @@
-#lookup_map, #container {
-    margin: 0 auto;
-    width: auto;
-    min-width: 320px;
-}
+/** Core **/
 
+#lookup_map, #container {
+  margin: 0 auto;
+  width: auto;
+  min-width: 320px;
+}
 #header {
   position: relative;
   box-shadow: none;
@@ -13,7 +14,6 @@
   text-align: center;
   background-color: #f6effa;
 }
-
 #header a img {
   float: none;
   padding: 5px 0 0 0;
@@ -21,7 +21,6 @@
   margin-bottom: -10px;
   max-width: 460px;
 }
-
 #header ul {
   display: inline-block;
   margin: 0 auto;
@@ -115,7 +114,7 @@ div.pick_a_map {
   max-width: 100%;
 }
 
-#intro p.regular_text, #intro .yellow, #intro .yellowb {
+#intro p, #intro .dark, #intro .darkb {
   font-size: 18px;
   line-height: 22px;
 }
@@ -124,7 +123,7 @@ div.pick_a_map {
   border-right: none;
 }
 
-.scrollerWrapper, #lookup img, #lookup .regular_text {
+.scrollerWrapper, #lookup img, #lookup  {
   display: none;
 }
 
@@ -401,7 +400,7 @@ input#score, input#initials {
 .links_column, #left_column, .left_column, .right_column_outer
 .left_column.suggest, .left_column.high, .left_column.secondary,
 .right_column, #right_column, .left_column_outer, .right_column.secondary {
-  margin: 10px;
+  margin: 10px !important;
 }
 
 .left_column_about {
