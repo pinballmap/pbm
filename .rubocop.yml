@@ -16,3 +16,4 @@ AllCops:
     - 'db/**/*'
     - 'config/**/*'
     - 'autotest/**/*'
+    - 'vendor/**/*'
