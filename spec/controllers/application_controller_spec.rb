@@ -1,21 +1,20 @@
 require 'spec_helper'
 
-describe ApplicationController, :type => :controller do
+describe ApplicationController, type: :controller do
   controller do
     def index
-      if (mobile_device?)
-        return ""
-      end
-      raise CanCan::AccessDenied
+      return '' if mobile_device?
+
+      fail CanCan::AccessDenied
     end
 
     def after_sign_in_path_for(resource)
-        super resource
+      super resource
     end
   end
 
   before(:each) do
-    region = FactoryGirl.create(:region, :name => 'portland', :full_name => 'Portland')
+    FactoryGirl.create(:region, name: 'portland', full_name: 'Portland')
   end
 
   describe 'CanCan AccessDenied' do
@@ -32,7 +31,7 @@ describe ApplicationController, :type => :controller do
     it 'sets 1 to mobile param session when true' do
       expect_any_instance_of(ApplicationController).to receive(:set_current_user).and_return(nil)
 
-      session[:mobile_param] = "1"
+      session[:mobile_param] = '1'
 
       get :index
 

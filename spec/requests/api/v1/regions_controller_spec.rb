@@ -157,17 +157,17 @@ HERE
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/app_comment.json', region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email'
       expect(response).to be_success
-      expect(JSON.parse(response.body)['errors']).to eq('OS, OS Version, Device Type, App Version, Email, and Message are all required.')
+      expect(JSON.parse(response.body)['errors']).to eq('region_id, os, os_version, device_type, app_version, email, message are all required.')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/app_comment.json', region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', message: 'message'
       expect(response).to be_success
-      expect(JSON.parse(response.body)['errors']).to eq('OS, OS Version, Device Type, App Version, Email, and Message are all required.')
+      expect(JSON.parse(response.body)['errors']).to eq('region_id, os, os_version, device_type, app_version, email, message are all required.')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/app_comment.json', region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', message: 'message', email: ''
       expect(response).to be_success
-      expect(JSON.parse(response.body)['errors']).to eq('OS, OS Version, Device Type, App Version, Email, and Message are all required.')
+      expect(JSON.parse(response.body)['errors']).to eq('region_id, os, os_version, device_type, app_version, email, message are all required.')
     end
 
     it 'emails app support address with feedback' do

@@ -20,6 +20,6 @@ class Machine < ActiveRecord::Base
   end
 
   def massaged_name
-    name.sub(/^the /i,"")
+    name.sub(/^the /i, '')
   end
 end

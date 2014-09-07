@@ -8,7 +8,7 @@ FactoryGirl.define do
     zip '97214'
     lat '11.11'
     lon '-11.11'
-    association :region, :name => 'portland'
+    association :region, name: 'portland'
     association :location_type
   end
 
@@ -48,7 +48,7 @@ FactoryGirl.define do
 
   factory :user do
     initials 'cap'
-    sequence(:email) {|n| "captainamerica#{n}@foo.bar"}
+    sequence(:email) { |n| "captainamerica#{n}@foo.bar" }
     password 'password'
   end
 
@@ -58,7 +58,7 @@ FactoryGirl.define do
     photo File.open(File.join(Rails.root, '/app/assets/images/favicon.ico'))
   end
 
-  factory :region_link_xref do 
+  factory :region_link_xref do
     name 'Test Link Name'
     description 'This is a test link'
     url 'http://www.foo.com'
