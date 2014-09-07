@@ -17,26 +17,26 @@ class LocationMachineXref < ActiveRecord::Base
 
   def update_condition(condition, options = {})
     self.condition = condition
-    self.condition_date = Time.now.strftime("%Y-%m-%d")
-    self.save
+    self.condition_date = Time.now.strftime('%Y-%m-%d')
+    save
 
-    if (!condition.nil? && !condition.blank?)
-      Pony.mail(
-        :to => self.location.region.users.collect {|u| u.email},
-        :from => 'admin@pinballmap.com',
-        :subject => "PBM - Someone entered a machine condition",
-        :body => [self.condition, self.machine.name, self.location.name, self.location.region.name, "(entered from #{options[:remote_ip]})"].join("\n")
-      )
-    end
+    return if condition.nil? || condition.blank?
+
+    Pony.mail(
+      to: location.region.users.map { |u| u.email },
+      from: 'admin@pinballmap.com',
+      subject: 'PBM - Someone entered a machine condition',
+      body: [condition, machine.name, location.name, location.region.name, "(entered from #{options[:remote_ip]})"].join("\n")
+    )
   end
 
   def destroy(options = {})
-    if (self.location.region.should_email_machine_removal)
+    if location.region.should_email_machine_removal
       Pony.mail(
-          :to => self.location.region.users.collect {|u| u.email},
-          :from => 'admin@pinballmap.com',
-          :subject => "PBM - Someone removed a machine from a location",
-          :body => [self.location.name, self.machine.name, self.location.region.name, "(entered from #{options[:remote_ip]})"].join("\n")
+          to: location.region.users.map { |u| u.email },
+          from: 'admin@pinballmap.com',
+          subject: 'PBM - Someone removed a machine from a location',
+          body: [location.name, machine.name, location.region.name, "(entered from #{options[:remote_ip]})"].join("\n")
       )
     end
 

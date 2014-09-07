@@ -1,0 +1,19 @@
+LineLength:
+  Enabled: false
+Documentation:
+  Enabled: false
+MethodLength:
+  Enabled: false
+ClassLength:
+  Enabled: false
+CyclomaticComplexity:
+  Max: 10
+PerceivedComplexity:
+  Max: 10
+
+AllCops:
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'autotest/**/*'
+    - 'vendor/**/*'

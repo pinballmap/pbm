@@ -1,7 +1,7 @@
 json.data do
   json.locations do
-    if (@locations)
-      for location in @locations
+    if @locations
+      @locations.each do |location|
         cloned_location = location.clone
         json.location do
           json.id cloned_location.id

@@ -4,12 +4,12 @@ class LocationMachineXrefsController < InheritedResources::Base
 
   def create
     machine = nil
-    if(!params[:add_machine_by_id].empty?)
+    if !params[:add_machine_by_id].empty?
       machine = Machine.find(params[:add_machine_by_id])
-    elsif (!params[:add_machine_by_name].empty?)
-      machine = Machine.where(["lower(name) = ?", params[:add_machine_by_name].downcase]).first
+    elsif !params[:add_machine_by_name].empty?
+      machine = Machine.where(['lower(name) = ?', params[:add_machine_by_name].downcase]).first
 
-      if (machine.nil?)
+      if machine.nil?
         machine = Machine.new
         machine.name = params[:add_machine_by_name]
         machine.save
@@ -17,7 +17,7 @@ class LocationMachineXrefsController < InheritedResources::Base
         send_new_machine_notification(machine, Location.find(params[:location_id]))
       end
     else
-      #blank submit
+      # blank submit
       return
     end
 
@@ -31,22 +31,22 @@ class LocationMachineXrefsController < InheritedResources::Base
 
   def destroy
     lmx = LocationMachineXref.find_by_id(params[:id])
-    lmx.destroy({:remote_ip => request.remote_ip}) unless lmx.nil?
+    lmx.destroy(remote_ip: request.remote_ip) unless lmx.nil?
 
-    render :nothing => true
+    render nothing: true
   end
 
   def update_machine_condition
     id = params[:id]
     lmx = LocationMachineXref.find(id)
 
-    lmx.update_condition(params["new_machine_condition_#{id}".to_sym], {:remote_ip => request.remote_ip})
+    lmx.update_condition(params["new_machine_condition_#{id}".to_sym], remote_ip: request.remote_ip)
 
-    render :nothing => true
+    render nothing: true
   end
 
   def render_machine_condition
-    render :partial => 'location_machine_xrefs/update_machine_condition', :locals => {:lmx => LocationMachineXref.find(params[:id])}
+    render partial: 'location_machine_xrefs/update_machine_condition', locals: { lmx: LocationMachineXref.find(params[:id]) }
   end
 
   def index

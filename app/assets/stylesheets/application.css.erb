@@ -16,10 +16,14 @@ body {
   background-image: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>);
   background-color: #FFFFFF;
   background-size: 4px auto;
-  color: #58266F;
-  font-family: 'Open Sans',Helvetica,Arial,sans-serif;
+  color: #2e2322;
   font-size: 11px;
+  font-family: 'Open Sans',Helvetica,Arial,sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+p {
+  font-size: 16px;
+  line-height: 20px;
 }
 img {
   border: 0;
@@ -28,9 +32,13 @@ h1 {
   font-size: 36px;
 }
 a {
-  color: #5c462c;
+  color: #8A3CAE;
   text-decoration: none;
   border: 0;
+}
+a:hover {
+  text-decoration: underline;
+  color: #58266F;
 }
 input, textarea {
   -webkit-appearance: none;
@@ -40,6 +48,9 @@ input, textarea {
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
+}
+ul {
+  font-size: 16px;
 }
 li {
   padding: 2px 0 6px 4px;
@@ -51,56 +62,28 @@ li a:hover {
   font-size: 14px;
   letter-spacing: .3px;
 }
-a.light_blue:link, 
-.regular_text a:link, 
-li a:link,
-a.light_blue:visited, 
-.regular_text a:visited,
-.location_detail a.address {
-  color: #8A3CAE;
-  text-decoration: none;
-}
-a.light_blue:hover, 
-.regular_text a:hover, 
-.yellowb a:hover,
-a.light_blue:active, 
-.regular_text a:active,
-.location_detail a.address:hover {
-  color: #58266F; 
-  text-decoration: underline;
-}
-
-/* Unused? +.light_blue */
-
 .pink {
   color: #ffcc00;
   font-size: 14px;
   font-weight: bold;
 }
-/* */
-.intro {
-  font-size: 16px;
-}
 
 /* Text */
 
-.regular_text, .light_blue, .stufflike, .list {
-  font-size: 16px;
-  color: #2e2322;
-  line-height: 20px;
-}
-.yellow {
-  color:#706b65;
+.intro {
   font-size: 16px;
 }
-.yellowb {
+.dark {
   color: #706b65;
-  font-size: 16px;
+}
+.darkb {
+  color: #706b65;
   font-weight: bold;
   text-shadow: 0.1px 0.1px 0.1px white;
 }
 .hello {
   font-size: 28px;
+  line-height: 36px;
   text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
   margin: 0;
 }
@@ -179,6 +162,7 @@ div.pick_a_map {
   padding-top: 5px;
 }
 span.pick_a_map, .store_title {
+  color: #58266f;
   margin: 0;
   text-shadow: 1px 1px 5px #CCCCCC;
 }
@@ -271,9 +255,6 @@ div.dont_pick_a_map {
   display: inline;
 }
 #header li a {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
   padding: 2px 4px;
   color: #55413f;
   text-decoration: none;
@@ -391,7 +372,7 @@ div.dont_pick_a_map {
 .new_blog:hover {
   background-color: #efe2f6;
 }
-.yellowb.new_blog a:hover {
+.darkb.new_blog a:hover {
   text-decoration: none;
 }
 .region_name, .region_name_page, 
@@ -467,6 +448,7 @@ span.region_name_page {
 #other_search_options a:hover {
   background: #6e5335;
   border-top-color: #70706a;
+  text-decoration: none;
   color: #FFFFCC;
 }
 #locations p {
@@ -1011,6 +993,8 @@ input#score {
 /** High Scores **/
 
 .scrollerWrapper {
+  font-size: 11px;
+  line-height: 16px;
   margin: -2px 0 0;
   padding: 5px 10px 0 0;
   overflow: hidden;
@@ -1079,6 +1063,7 @@ input#score {
 }
 a.apps_link {
   text-decoration: underline;
+  color: #5c462c;
 }
 a.apps_link:hover {
   color: #55514d;
@@ -1094,6 +1079,7 @@ a.apps_link:hover {
 .left_column.secondary {
   text-align:center;
   float: left;
+  line-height: 14px;
   margin-top: 70px;
   width: 300px;
   min-height: 575px;
@@ -1139,9 +1125,6 @@ a.apps_link:hover {
   font-size: 12px;
   font-weight: normal;
   color: #55413F;
-}
-.event_link {
-  color: #FFC;
 }
 #left_column, .left_column, .left_column_about {
   background-color: #ece2d8;
@@ -1317,6 +1300,7 @@ img.header_image {
   height: 160px;
   width: 145px;
   text-align: center;
+  color: #5c462c;
   border: 5px solid #DECEB9;
   float: left;
   margin: 0 10px 10px 0;
@@ -1345,6 +1329,7 @@ img.header_image {
   display: none;
 }
 .info {
+  font-size: 11px;
   font-style: italic;
   color: #675a5a;
 }
@@ -1416,7 +1401,7 @@ img.header_image {
 .score_result {
   width: 610px;
   margin: 15px auto 0;
-  padding: 5px 5px 10px;
+  padding: 5px 5px 15px;
 }
 .score_result span {
   font-size: 14px;
@@ -1427,10 +1412,6 @@ img.header_image {
 }
 .score_result .sub_nav_item {
   width: 600px;
-}
-.score_result .yellowb {
-  font-size: 18px;
-  font-weight: bold;
 }
 .score_result p {
   display: inline;
@@ -1507,4 +1488,14 @@ padding: 0.5em 1em 0 !important;
 .ui-widget-header {
 background: none repeat scroll 0 0 #FFECD6;
 border: 1px solid #D56C24;
+}
+
+/** Autofill Override **/
+
+.ui-menu .ui-menu-item a {
+  font-size: 12px;
+}
+.ui-menu .ui-menu-item a:hover {
+  border: none;
+  margin: 0;
 }

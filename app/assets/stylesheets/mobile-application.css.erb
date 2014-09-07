@@ -1,9 +1,8 @@
 #lookup_map, #container {
-    margin: 0 auto;
-    width: auto;
-    min-width: 320px;
+  margin: 0 auto;
+  width: auto;
+  min-width: 320px;
 }
-
 #header {
   position: relative;
   box-shadow: none;
@@ -12,16 +11,15 @@
   height: auto;
   text-align: center;
   background-color: #f6effa;
+  margin: 0 auto;
 }
-
 #header a img {
   float: none;
-  padding: 5px 0 0 0;
+  padding: 0;
   width: 100%;
-  margin-bottom: -10px;
+  /*margin-bottom: -10px;*/
   max-width: 460px;
 }
-
 #header ul {
   display: inline-block;
   margin: 0 auto;
@@ -34,13 +32,20 @@
   text-align: center;
 }
 
-#header ul.other_regions_list, #header ul.other_links_dropdown {
-  display: none !important;
-}
-
 .other_regions {
     margin: 0 auto;
     width: 100%;
+    font-size: 20px;
+}
+
+.new_blog_region, .store_buy {
+  display: block;
+  float: none;
+  font-size: 18px;
+}
+
+#header span.region_name_page a {
+  font-size: 30px;
 }
 
 #header.header_home {
@@ -59,9 +64,7 @@
 }
 
 div.pick_a_map {
-  text-align: left;
-  background: #ffecd6;
-  height: 36px;
+  padding-top: 0;
 }
 
 .new_blog {
@@ -69,6 +72,7 @@ div.pick_a_map {
   padding: 12px 0 12px;
   text-align: center;
   border-bottom: 2px solid #fdfcfe;
+  font-size: 18px;
 }
 
 .map_summary {
@@ -115,7 +119,7 @@ div.pick_a_map {
   max-width: 100%;
 }
 
-#intro p.regular_text, #intro .yellow, #intro .yellowb {
+#intro p, #intro .dark, #intro .darkb {
   font-size: 18px;
   line-height: 22px;
 }
@@ -124,7 +128,7 @@ div.pick_a_map {
   border-right: none;
 }
 
-.scrollerWrapper, #lookup img, #lookup .regular_text {
+.scrollerWrapper, #lookup img, #lookup  {
   display: none;
 }
 
@@ -362,6 +366,11 @@ div.pick_a_map {
   width: auto;
 }
 
+.score_result span {
+  float: left;
+  padding-bottom: 0;
+}
+
 input#score, input#initials {
     width: 170px;
     font-size: 16px;
@@ -400,8 +409,9 @@ input#score, input#initials {
 
 .links_column, #left_column, .left_column, .right_column_outer
 .left_column.suggest, .left_column.high, .left_column.secondary,
-.right_column, #right_column, .left_column_outer, .right_column.secondary {
-  margin: 10px;
+.right_column, #right_column, .left_column_outer, .right_column.secondary,
+.score_result {
+  margin: 10px !important;
 }
 
 .left_column_about {

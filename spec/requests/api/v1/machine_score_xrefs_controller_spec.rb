@@ -1,22 +1,22 @@
 require 'spec_helper'
 
-describe Api::V1::MachineScoreXrefsController, :type => :request do
+describe Api::V1::MachineScoreXrefsController, type: :request do
   before(:each) do
-    @region = FactoryGirl.create(:region, :name => 'portland', :should_email_machine_removal => 1)
-    @location = FactoryGirl.create(:location, :name => 'Ground Kontrol', :region => @region)
-    @machine = FactoryGirl.create(:machine, :name => 'Cleo')
-    @lmx = FactoryGirl.create(:location_machine_xref, :machine_id => @machine.id, :location_id => @location.id)
+    @region = FactoryGirl.create(:region, name: 'portland', should_email_machine_removal: 1)
+    @location = FactoryGirl.create(:location, name: 'Ground Kontrol', region: @region)
+    @machine = FactoryGirl.create(:machine, name: 'Cleo')
+    @lmx = FactoryGirl.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
 
-    @score_rank_1 = FactoryGirl.create(:machine_score_xref, :location_machine_xref => @lmx, :rank => 1, :score => 123, :initials => 'abc')
-    @score_rank_2 = FactoryGirl.create(:machine_score_xref, :location_machine_xref => @lmx, :rank => 2, :score => 100, :initials => 'def')
+    @score_rank_1 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, rank: 1, score: 123, initials: 'abc')
+    @score_rank_2 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, rank: 2, score: 100, initials: 'def')
   end
 
   describe '#index' do
     it 'shows all scores for region' do
-      chicago = FactoryGirl.create(:region, :name => 'Chicago')
-      chicago_location = FactoryGirl.create(:location, :name => 'Barb', :region => chicago)
-      chicago_lmx = FactoryGirl.create(:location_machine_xref, :location => chicago_location, :machine => @machine)
-      chicago_msx = FactoryGirl.create(:machine_score_xref, :location_machine_xref => chicago_lmx, :score => 567)
+      chicago = FactoryGirl.create(:region, name: 'Chicago')
+      chicago_location = FactoryGirl.create(:location, name: 'Barb', region: chicago)
+      chicago_lmx = FactoryGirl.create(:location_machine_xref, location: chicago_location, machine: @machine)
+      FactoryGirl.create(:machine_score_xref, location_machine_xref: chicago_lmx, score: 567)
 
       get '/api/v1/region/portland/machine_score_xrefs.json'
       expect(response).to be_success
