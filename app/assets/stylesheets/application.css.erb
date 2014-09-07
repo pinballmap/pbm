@@ -16,11 +16,14 @@ body {
   background-image: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>);
   background-color: #FFFFFF;
   background-size: 4px auto;
-  font-size: 16px;
-  line-height: 20px;
   color: #2e2322;
+  font-size: 11px;
   font-family: 'Open Sans',Helvetica,Arial,sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+p {
+  font-size: 16px;
+  line-height: 20px;
 }
 img {
   border: 0;
@@ -45,6 +48,9 @@ input, textarea {
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
+}
+ul {
+  font-size: 16px;
 }
 li {
   padding: 2px 0 6px 4px;
@@ -249,9 +255,6 @@ div.dont_pick_a_map {
   display: inline;
 }
 #header li a {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
   padding: 2px 4px;
   color: #55413f;
   text-decoration: none;
@@ -1398,7 +1401,7 @@ img.header_image {
 .score_result {
   width: 610px;
   margin: 15px auto 0;
-  padding: 5px 5px 10px;
+  padding: 5px 5px 15px;
 }
 .score_result span {
   font-size: 14px;
@@ -1486,6 +1489,8 @@ padding: 0.5em 1em 0 !important;
 background: none repeat scroll 0 0 #FFECD6;
 border: 1px solid #D56C24;
 }
+
+/** Autofill Override **/
 
 .ui-menu .ui-menu-item a {
   font-size: 12px;

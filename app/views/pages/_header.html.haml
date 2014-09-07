@@ -9,7 +9,8 @@
       %div.other_regions
         %span.region_name_page
           =link_to "#{@region.full_name}", region_homepage_path
-      %ul.other_regions_list= other_regions_html(@region) 
+      - if !mobile_device?
+        %ul.other_regions_list= other_regions_html(@region) 
   - else  
     %div{:class => "pick_a_map"}
       %span.darkb.new_blog
@@ -32,7 +33,7 @@
             =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
           %li.other_links_list
             =link_to 'Event Feed', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
-      %li=link_to 'High Rollers', high_rollers_path
+      %li=link_to 'High Scores', high_rollers_path
 
 :javascript
   $().ready(function() {
