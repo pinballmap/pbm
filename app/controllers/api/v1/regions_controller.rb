@@ -45,6 +45,7 @@ module Api
       description 'Send a message to the admins for a region'
       param :region_id, Integer, desc: 'ID of the region to send a message to', required: true
       param :message, String, desc: 'Message to admins', required: true
+      param :name, String, desc: "Sender's name", required: false
       param :email, String, desc: "Sender's email address", required: false
       formats ['json']
       def contact
@@ -70,6 +71,7 @@ module Api
       param :device_type, String, desc: 'Device Type', required: true
       param :app_version, String, desc: 'App version', required: true
       param :email, String, desc: 'Your email address', required: true
+      param :name, String, desc: 'Your name', required: false
       param :message, String, desc: 'Message to app maintainer', required: true
       formats ['json']
       def app_comment
