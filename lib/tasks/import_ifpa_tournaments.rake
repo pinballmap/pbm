@@ -1,5 +1,5 @@
-desc "Imports new IFPA tournaments into the pbm database"
-task :import_ifpa_tournaments => :environment do
+desc 'Imports new IFPA tournaments into the pbm database'
+task import_ifpa_tournaments: :environment do
   require 'net/http'
   require 'json'
   require 'openssl'
@@ -11,27 +11,27 @@ task :import_ifpa_tournaments => :environment do
   IFPA_API_KEY = ENV['IFPA_API_KEY']
   NUM_MILES_TO_SEARCH = 50
 
-  event_info_by_state = Hash.new {|h,k| h[k]=[]}
+  Hash.new { |h, k| h[k] = [] }
 
-  pbm_states = Location.uniq.pluck(:state).collect {|s| s.downcase!}.uniq!
+  pbm_states = Location.uniq.pluck(:state).map { |s| s.downcase! }.uniq!
 
-  JSON.parse(Net::HTTP.get URI(IFPA_API_ROOT + '/calendar/active?api_key=' + IFPA_API_KEY.to_s))['calendar'].each do |c|
+  JSON.parse(Net::HTTP.get URI(IFPA_API_ROOT + '/calendar/active?api_key=' + IFPA_API_KEY.to_s))['calendar'].next do |c|
     state = c['state'].downcase
 
-    if (pbm_states.include?(state) && !Event.exists?(ifpa_tournament_id: c['tournament_id'], ifpa_calendar_id: c['calendar_id']))
+    if pbm_states.include?(state) && !Event.exists?(ifpa_tournament_id: c['tournament_id'], ifpa_calendar_id: c['calendar_id'])
       p 'Adding: ' + c['tournament_name']
 
       cd = JSON.parse(Net::HTTP.get URI(IFPA_API_ROOT + '/calendar/' + c['calendar_id'] + '?api_key=' + IFPA_API_KEY.to_s))['calendar'].first
 
       associated_location = nil
-      if (cd['latitude'] && cd['longitude'] && cd['zipcode'])
-        associated_location = Location.where('zip = ?', cd['zipcode'].to_s).select {|l| l.lat.to_f.round(4).to_s == cd['latitude'] && l.lon.to_f.round(4).to_s == cd['longitude']}.first
+      if cd['latitude'] && cd['longitude'] && cd['zipcode']
+        associated_location = Location.where('zip = ?', cd['zipcode'].to_s).select { |l| l.lat.to_f.round(4).to_s == cd['latitude'] && l.lon.to_f.round(4).to_s == cd['longitude'] }.first
       end
 
       location_id = nil
       long_desc = Sanitize.clean(cd['details']).truncate(300)
 
-      if (associated_location)
+      if associated_location
         location_id = associated_location.id
       else
         long_desc << "\n#{cd['address1']}, #{cd['city']}, #{cd['state']}, #{cd['zipcode']}"

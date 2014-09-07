@@ -1,29 +1,29 @@
 regions = 'portland|chicago|toronto'
 
-if (Region.table_exists? && Region.all.size > 0)
-  regions = Region.all.each.collect {|r| r.name}.join('|')
+if Region.table_exists? && Region.all.size > 0
+  regions = Region.all.each.map { |r| r.name }.join('|')
 end
 
 Pbm::Application.routes.draw do
   apipie
 
-  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
   namespace :api do
     namespace :v1 do
-      resources :machines, :only => [:index, :show, :create]
-      resources :location_types, :only => [:index, :show]
-      resources :location_machine_xrefs, :only => [:create, :destroy, :update]
-      resources :machine_score_xrefs, :only => [:create, :show]
+      resources :machines, only: [:index, :show, :create]
+      resources :location_types, only: [:index, :show]
+      resources :location_machine_xrefs, only: [:create, :destroy, :update]
+      resources :machine_score_xrefs, only: [:create, :show]
 
-      resources :regions, :only => [:index, :show] do
+      resources :regions, only: [:index, :show] do
         collection do
           post :suggest
           post :contact
           post :app_comment
         end
       end
-      resources :locations, :only => [:update] do
+      resources :locations, only: [:update] do
         member do
           get :machine_details
         end
@@ -33,13 +33,13 @@ Pbm::Application.routes.draw do
         end
       end
 
-      scope 'region/:region', :constraints => { :region => /#{regions}|!admin/i } do
-        resources :machine_score_xrefs, :only => [:index]
-        resources :location_machine_xrefs, :only => [:index]
-        resources :events, :only => [:index, :show]
-        resources :locations, :only => [:index, :show]
-        resources :region_link_xrefs, :only => [:index, :show]
-        resources :zones, :only => [:index, :show]
+      scope 'region/:region', constraints: { region: /#{regions}|!admin/i } do
+        resources :machine_score_xrefs, only: [:index]
+        resources :location_machine_xrefs, only: [:index]
+        resources :events, only: [:index, :show]
+        resources :locations, only: [:index, :show]
+        resources :region_link_xrefs, only: [:index, :show]
+        resources :zones, only: [:index, :show]
       end
     end
   end
@@ -49,15 +49,15 @@ Pbm::Application.routes.draw do
   get '/apps/privacy' => 'pages#privacy'
   get '/store' => 'pages#store'
 
-  scope ':region', :constraints => { :region => /#{regions}|!admin/i } do
+  scope ':region', constraints: { region: /#{regions}|!admin/i } do
     get 'apps' => redirect('/apps')
     get 'apps/support' => redirect('/apps/support')
     get 'apps/privacy' => redirect('/apps/privacy')
 
-    resources :events, :only => [:index, :show]
-    resources :regions, :only => [:index, :show]
+    resources :events, only: [:index, :show]
+    resources :regions, only: [:index, :show]
 
-    resources :machines, :only => [:index, :show] do
+    resources :machines, only: [:index, :show] do
       collection do
         get :autocomplete
       end
@@ -78,7 +78,7 @@ Pbm::Application.routes.draw do
       end
     end
 
-    resources :locations, :only => [:index, :show] do
+    resources :locations, only: [:index, :show] do
       collection do
         get :update_desc
         get :autocomplete
@@ -95,13 +95,13 @@ Pbm::Application.routes.draw do
     end
 
     # xml/rss mismatch to support rss-formatted output with $region.xml urls, $region.rss is already expected by mobile devices, and is expected to be formatted without hrefs
-    get ':region' + '.xml' => 'location_machine_xrefs#index', :format => 'rss'
+    get ':region' + '.xml' => 'location_machine_xrefs#index', format: 'rss'
 
-    get ':region' + '.rss' => 'location_machine_xrefs#index', :format => 'xml'
-    get ':region' + '_scores.rss' => 'machine_score_xrefs#index', :format => 'xml'
-    get '/robots.txt', :to => 'pages#robots'
+    get ':region' + '.rss' => 'location_machine_xrefs#index', format: 'xml'
+    get ':region' + '_scores.rss' => 'machine_score_xrefs#index', format: 'xml'
+    get '/robots.txt', to: 'pages#robots'
 
-    get '/' => "pages#region", :as => 'region_homepage'
+    get '/' => 'pages#region', as: 'region_homepage'
     get '/about' => 'pages#about'
     get '/contact' => 'pages#contact'
     get '/contact_sent' => 'pages#contact_sent'
@@ -110,21 +110,21 @@ Pbm::Application.routes.draw do
     get '/suggest' => 'pages#suggest_new_location'
     get '/submitted_new_location' => 'pages#submitted_new_location'
 
-    get 'iphone.html', :to => 'locations#mobile'
-    get 'mobile', :to => 'locations#mobile'
+    get 'iphone.html', to: 'locations#mobile'
+    get 'mobile', to: 'locations#mobile'
 
-    get 'all_region_data.json', :to => 'regions#all_region_data', :format => 'json'
+    get 'all_region_data.json', to: 'regions#all_region_data', format: 'json'
 
-    get '*page', :to => 'locations#unknown_route'
+    get '*page', to: 'locations#unknown_route'
   end
 
   resources :location_picture_xrefs
 
   devise_for :users
 
-  get 'iphone.html', :to => 'locations#mobile'
-  get '4sq_export.xml' => 'regions#four_square_export', :format => 'xml'
+  get 'iphone.html', to: 'locations#mobile'
+  get '4sq_export.xml' => 'regions#four_square_export', format: 'xml'
   get 'pages/home'
 
-  root :to => 'pages#home'
+  root to: 'pages#home'
 end

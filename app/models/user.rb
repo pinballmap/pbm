@@ -10,8 +10,8 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :region_id, :is_machine_admin, :is_primary_email_contact
 
   def role_symbols
-    roles = Array.new
-    roles << :admin if region_id != nil
+    roles = []
+    roles << :admin if region_id
     roles << :site_admin if (region_id == Region.find_by_name('portland').id)
 
     roles
