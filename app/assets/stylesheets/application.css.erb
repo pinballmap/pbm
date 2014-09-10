@@ -237,7 +237,7 @@ div.dont_pick_a_map {
   border: none;
   background: transparent;
 }
-#header ul {
+#header ul.region_links, #header ul.other_regions_list, #header ul.other_links_dropdown {
   font-size: 12px;
   font-weight: bold;
   line-height: 22px;
@@ -247,19 +247,19 @@ div.dont_pick_a_map {
   text-align: left;
   width: 285px;
 }
-#header li {
+#header ul.region_links li {
   list-style-type: none;
   font-weight: bold;
   position: relative;
   display: inline;
 }
-#header li a {
+#header ul.region_links li a {
   padding: 2px 4px;
   color: #55413f;
   text-decoration: none;
   vertical-align: middle;
 }
-#header li a:hover {
+#header ul.region_links li a:hover {
   color: #8A3CAE;
 }
 #header a img {
@@ -269,7 +269,7 @@ div.dont_pick_a_map {
     padding: 5px 13px 0 0;
     width: 464px;
 }
-#header li:nth-child(3):after { 
+#header ul.region_links li:nth-child(3):after { 
   content: '\a'; white-space:pre; 
 }
 #header .region_logo_dropdown {

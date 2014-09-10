@@ -19,9 +19,9 @@
         = link_to 'Pinball Map Apps', apps_path
       %span.darkb.new_blog
         = link_to 'T-Shirts For Sale!', store_path
-      %span.pick_a_map Play Public Pinball!
+      %span.pick_a_map Play Location Pinball!
   - if (@region)
-    %ul
+    %ul.region_links
       %li.first_header_link=link_to 'About', about_path
       %li=link_to 'Suggest A New Location', suggest_path
       %li=link_to 'Apps', apps_path

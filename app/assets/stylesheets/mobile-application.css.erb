@@ -17,21 +17,38 @@
   float: none;
   padding: 0;
   width: 100%;
-  /*margin-bottom: -10px;*/
   max-width: 460px;
 }
-#header ul {
+#header ul.region_links {
   display: inline-block;
   margin: 0 auto;
-  padding-bottom: 10px;
+  padding: 0 0 10px 0;
   float: none;
   width: 100%;
   min-width: 320px;
-  font-size: 16px;
   background-color: #f6effa;
   text-align: center;
+  visibility: visible;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  width: auto !important;
+  font-size: 16px !important;
 }
-
+#header ul.region_links:before {
+  display: none;
+}
+#header ul.region_links li {
+  display: inline;
+  padding: 4px 0 0 6px !important;
+  line-height: 18px;
+}
+#header ul.other_links_dropdown {
+  display: inline !important;
+  background: none;
+  font-size: 16px;
+  width: auto;
+}
 .other_regions {
     margin: 0 auto;
     width: 100%;
