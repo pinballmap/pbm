@@ -72,7 +72,7 @@ class PagesController < ApplicationController
   def about
     @links = {}
     @region.region_link_xrefs.each do |rlx|
-      (@links[rlx.category || 'Uncategorized'] ||= []) << rlx
+      (@links[(rlx.category && !rlx.category.blank?) ? rlx.category : 'Links'] ||= []) << rlx
     end
 
     @top_machines = LocationMachineXref.region(@region.name).select('machine_id, count(*) as machine_count').group(:machine_id).order('machine_count desc').limit(10)
