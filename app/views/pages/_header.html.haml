@@ -1,10 +1,10 @@
 #header{:class => "#{@region ? '' : 'header_home'}"}
   =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
   - if (@region)
-    %span.darkb.new_blog.new_blog_region
-      = link_to 'Pinball Map Blog', 'http://blog.pinballmap.com'
-    %span.darkb.new_blog.store_buy
-      = link_to 'T-Shirts For Sale!', store_path
+    %span.darkb.blog_header.blog_header_region
+      = link_to 'Blog', 'http://blog.pinballmap.com'
+    %span.darkb.store_header.store_header_region
+      = link_to 'T-Shirts', store_path
     %div.region_logo_dropdown
       %div.other_regions
         %span.region_name_page
@@ -13,13 +13,12 @@
         %ul.other_regions_list= other_regions_html(@region) 
   - else  
     %div{:class => "pick_a_map"}
-      %span.darkb.new_blog
-        = link_to 'Pinball Map Blog', 'http://blog.pinballmap.com'
-      %span.darkb.new_blog
-        = link_to 'Pinball Map Apps', apps_path
-      %span.darkb.new_blog
-        = link_to 'T-Shirts For Sale!', store_path
-      %span.pick_a_map Play Location Pinball!
+      %span.darkb.blog_header
+        = link_to 'Blog', 'http://blog.pinballmap.com'
+      %span.darkb.apps_header
+        = link_to 'Apps', apps_path
+      %span.darkb.store_header
+        = link_to 'T-Shirts', store_path
   - if (@region)
     %ul.region_links
       %li.first_header_link=link_to 'About', about_path

@@ -47,10 +47,10 @@
     display: block;
   }
   #header ul.region_links:before {
-    content: "(menu)";
+    content: "menu";
     background-color: #f6effa;
     width: 130px;
-    font-size: 24px;
+    font-size: 18px;
     line-height: 49px;
     visibility: visible;
     position: absolute;
@@ -134,21 +134,14 @@
 
 @media (max-width: 990px) {
 
-  .store_buy {
-    display: none;
-  }
-}
-
-@media (max-width: 1045px) {
-  
-  span.pick_a_map {
+  .store_header_region {
     display: none;
   }
 }
 
 @media (max-width: 1080px) {
 
-  .new_blog_region {
+  .blog_header_region {
     display: none;
   }
 
