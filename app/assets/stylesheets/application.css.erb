@@ -17,7 +17,6 @@ body {
   background-color: #FFFFFF;
   background-size: 4px auto;
   color: #2e2322;
-  font-size: 11px;
   font-family: 'Open Sans',Helvetica,Arial,sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -922,8 +921,8 @@ input#score {
   line-height: 12px;
   font-weight: normal;
   height: 100%;
-  width: 408px;
-  padding: 10px;
+  width: 428px;
+  /*padding: 10px;*/
   border-bottom: 2px solid #987673;
   border-right: 2px solid #B59C9A;
   border-left: 1px solid #987673;
@@ -934,6 +933,9 @@ input#score {
 .location_detail .address {
   color: #333333;
 }
+.location_detail_sub {
+  padding: 10px;
+}
 .location_name {
   background-color: #e7dfdf;
   width: 430px;
@@ -943,7 +945,7 @@ input#score {
   border-radius: 5px 5px 0 0;
   -moz-border-radius: 5px 5px 0 0;
   -webkit-border-radius: 5px 5px 0 0;
-  margin: -20px 0 0 -10px;
+  /*margin: -27px 0 0 -10px;*/
 }
 .location_detail_location ul {
   border-radius: 5px 0 0 0;
@@ -955,6 +957,8 @@ input#score {
   color: #666666;
   padding: 0 10px;
   display: block;
+  font-size: 11px;
+  line-height: 14px;
 }
 .desc_show_location {
   padding-top: 5px;
@@ -1083,6 +1087,9 @@ a.apps_link:hover {
   margin-top: 70px;
   width: 300px;
   min-height: 575px;
+}
+.left_column.secondary img {
+  padding-bottom: 10px;
 }
 .right_column.secondary {
   text-align:center;
@@ -1493,7 +1500,7 @@ border: 1px solid #D56C24;
 /** Autofill Override **/
 
 .ui-menu .ui-menu-item a {
-  font-size: 12px;
+  font-size: 11px;
 }
 .ui-menu .ui-menu-item a:hover {
   border: none;
