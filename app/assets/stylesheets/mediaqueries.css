@@ -51,11 +51,14 @@
     background-color: #f6effa;
     width: 130px;
     font-size: 18px;
+    text-shadow: 1px 1px 5px #CCCCCC;
     line-height: 49px;
     visibility: visible;
     position: absolute;
     text-align: center;
     margin: -50px 0 0 0;
+    border-left: 1px solid #efe2f6;
+    border-right: 1px solid #efe2f6;
   }
   #header ul.region_links:hover {
     visibility: visible;
@@ -132,14 +135,14 @@
 
 }
 
-@media (max-width: 990px) {
+@media (max-width: 965px) {
 
   .store_header_region {
     display: none;
   }
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1055px) {
 
   .blog_header_region {
     display: none;
