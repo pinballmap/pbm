@@ -17,28 +17,45 @@
   float: none;
   padding: 0;
   width: 100%;
-  /*margin-bottom: -10px;*/
   max-width: 460px;
 }
-#header ul {
+#header ul.region_links {
   display: inline-block;
   margin: 0 auto;
-  padding-bottom: 10px;
+  padding: 0 0 10px 0;
   float: none;
   width: 100%;
   min-width: 320px;
-  font-size: 16px;
   background-color: #f6effa;
   text-align: center;
+  visibility: visible;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  width: auto !important;
+  font-size: 16px !important;
 }
-
+#header ul.region_links:before {
+  display: none;
+}
+#header ul.region_links li {
+  display: inline;
+  padding: 4px 0 0 6px !important;
+  line-height: 18px;
+}
+#header ul.other_links_dropdown {
+  display: inline !important;
+  background: none;
+  font-size: 16px;
+  width: auto;
+}
 .other_regions {
-    margin: 0 auto;
-    width: 100%;
-    font-size: 20px;
+  margin: 0 auto;
+  width: 100%;
+  font-size: 20px;
 }
 
-.new_blog_region, .store_buy {
+.blog_header_region, .store_header_region {
   display: block;
   float: none;
   font-size: 18px;
@@ -48,9 +65,14 @@
   font-size: 30px;
 }
 
-#header.header_home {
+#header.header_home, #header.header_image_home {
   min-width: 320px;
   padding: 0;
+  height: auto;
+}
+
+.header_image_a {
+  display: block;
 }
 
 #header .region_logo_dropdown {
@@ -66,13 +88,18 @@
 div.pick_a_map {
   padding-top: 0;
 }
-
-.new_blog {
+.blog_header {
+  margin-top: -5px;
+}
+.apps_header, .blog_header, .store_header {
   width: 100%;
-  padding: 12px 0 12px;
+  padding: 4px 0 4px;
   text-align: center;
   border-bottom: 2px solid #fdfcfe;
+  border-left: none;
+  border-right: none;
   font-size: 18px;
+  line-height: 24px;
 }
 
 .map_summary {
@@ -125,10 +152,6 @@ div.pick_a_map {
 #intro p, #intro .dark, #intro .darkb {
   font-size: 18px;
   line-height: 22px;
-}
-
-.new_blog {
-  border-right: none;
 }
 
 .scrollerWrapper, #lookup img, #lookup  {
