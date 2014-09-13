@@ -27,6 +27,62 @@
   }
 }
 
+@media (max-width: 840px) {
+  
+  #header ul.region_links {
+    visibility: hidden;
+    font-size: 14px !important;
+    width: 130px !important;
+    margin: 50px 160px;
+    background: #FFFFFF;
+    font-weight: bold;
+    color: #55413F;
+    line-height: 18px;
+    padding-top: 5px;
+    box-shadow: 0 5px 10px rgba(90, 100, 117, 0.5);
+    -webkit-shadow: 0 5px 10px rgba(90, 100, 117, 0.5);
+    -moz-box-shadow: 0 5px 10px rgba(90, 100, 117, 0.5);
+  }
+  #header ul.region_links li {
+    display: block;
+  }
+  #header ul.region_links:before {
+    content: "menu";
+    background-color: #f6effa;
+    width: 130px;
+    font-size: 18px;
+    text-shadow: 1px 1px 5px #CCCCCC;
+    line-height: 49px;
+    visibility: visible;
+    position: absolute;
+    text-align: center;
+    margin: -50px 0 0 0;
+    border-left: 1px solid #efe2f6;
+    border-right: 1px solid #efe2f6;
+  }
+  #header ul.region_links:hover {
+    visibility: visible;
+  }
+  #header li.other_links {
+    padding-bottom: 0;
+  }
+  #header ul.other_links_dropdown {
+    position: relative;
+    top: 0;
+    display: block !important;
+    font-size: 14px;
+    margin: 0;
+    padding: 2px 0 2px 5px;
+  }
+  #header ul.other_links_dropdown li.other_links_list {
+    margin: 0;
+    padding: 4px 0 0;
+  }
+  #header ul.other_links_dropdown li.other_links_list a {
+    padding: 0;
+  }
+}
+
 @media (max-width: 850px) {
 
   #intro p, 
@@ -47,26 +103,18 @@
 
 }
 
-@media (max-width: 840px) {
-  
-  #header ul {
-    display: none;
-  }
-}
-
 @media (max-width: 900px) {
   
-  #header ul {
+  #header ul.region_links {
     font-size: 10px;
     width: 220px;
   }
-  #header li a {
+  #header ul.region_links li a {
     padding: 2px;
   }
   #header .region_logo_dropdown {
     width: 150px;
   }
-
 }
 
 @media (max-width: 950px) {
@@ -87,23 +135,16 @@
 
 }
 
-@media (max-width: 980px) {
+@media (max-width: 965px) {
 
-  .store_buy {
+  .store_header_region {
     display: none;
   }
 }
 
-@media (max-width: 1015px) {
-  
-  span.pick_a_map {
-    display: none;
-  }
-}
+@media (max-width: 1055px) {
 
-@media (max-width: 1070px) {
-
-  .new_blog_region {
+  .blog_header_region {
     display: none;
   }
 

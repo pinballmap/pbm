@@ -3,9 +3,6 @@
 - @search_options.each_key do |key|
   %div{:id => "by_#{key}", :class => 'section', :style => 'display:none;'}
     = form_tag locations_path, :method => 'get', :class => 'location_search' do
-      /%span.info Please select a #{key}
-      - if @search_options[key]['autocomplete']
-        /%span.info or use the text box
       = select_tag "by_#{key}_id", options_for_select([['All', '']]) + options_from_collection_for_select(@search_options[key]['search_collection'], @search_options[key]['id'], @search_options[key]['name'], params["by_#{key}"])
       - if @search_options[key]['autocomplete']
         = text_field_tag "by_#{key}_name", params["by_#{key}_name"], :class => 'lookup_search_input'

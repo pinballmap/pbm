@@ -42,7 +42,11 @@ class Region < ActiveRecord::Base
     end
 
     rollers.sort { |a, b| b[1].size <=> a[1].size }.each do |roller|
-      @high_rollers[roller[0]] = roller[1] unless @high_rollers.size == n
+      initials = roller[0]
+      scores = roller[1]
+      scores.sort! { |a, b| b.created_at <=> a.created_at }
+
+      @high_rollers[initials] = scores unless @high_rollers.size == n
     end
 
     @high_rollers

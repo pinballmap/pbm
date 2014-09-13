@@ -13,9 +13,10 @@
   - else
     %p.dark.hello
       Welcome to the #{@region.full_name} Pinball Map!
-    %p{:style => "margin-top:10px;"}
-      To begin: Search! 
-      %span.search_arrow 
+    %p.to_begin
+      %span.begin 
+        To begin: Search!
+      %span.search_arrow
         &rarr;
     %p
       %span.darkb This map is best maintained with the help of YOU.
@@ -29,15 +30,9 @@
       %span
         =link_to '"Suggest a New Location"', suggest_path
       link up top!
-    %p Use the tools at right to do stuff like:
-    %ul.list
-      %li Search or browse for machines throughout your town
-      %li Comment on a machine's condition
-      %li Add photos of locations
-      %li Share your high scores
     %p
       We currently are tracking
       %span.dark #{@location_count} locations
       and 
       %span.dark #{@lmx_count} machines.
-      Backups are made nightly. So if something bad happens, the site can be replenished.
+      

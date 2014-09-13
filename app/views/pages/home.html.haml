@@ -4,12 +4,11 @@
     %div.home_intro.dark{:style => 'left:0;'}
       %span.darkb Welcome to PinballMap.com!
       %p
-        PinballMap.com is a pinball locator, showing all the public pinball machines in select regions of North America.
+        PinballMap.com is a crowdsourced pinball locator, showing all the public pinball machines in select regions of North America.
+      %p
+        Pick a region to find pinball machines to play near you. And help keep your map up to date by adding and removing machines from locations, and by submitting new locations that aren't already listed!
+      %p
         Each regional map is curated by a local administrator, often with the support of a league.
-      %p
-        Use your region’s map to find machines, and keep the map up to date by adding and removing machines from locations, and by submitting new locations that aren't already on the map!
-      %p
-        You can also comment on a machine’s condition, upload photos of locations, add your high scores on a machine, check out upcoming events, and so on.
       %p
         We have free
         = link_to 'mobile apps for iPhone/iPad and Android', apps_path, :class => 'apps_link'
@@ -17,8 +16,8 @@
         If you'd like to see your city on this site,
         =link_to 'contact us!', 'portland/about', :class => 'apps_link'
       %p
-        Also, the code for this site is open source and
-        = link_to 'on github', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
+        = link_to 'Pinball Map open source code', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
+        = link_to 'Pinball Map API', 'http://blog.pinballmap.com/2014/08/19/using-the-pinball-map-api-to-list-machines-on-your-website', :class => 'apps_link'
     %div.home_intro
       %span.darkb
         =link_to image_tag('sol-icon.jpeg', :alt => 'Pinball Map Twitter Icon'), 'https://twitter.com/pinballmapcom', :class => 'twitter_icon'

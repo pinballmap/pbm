@@ -114,6 +114,17 @@ describe PagesController do
 
       expect(page).to have_content('main links link 2 desc link 1 desc other category link 3 desc')
     end
+
+    it 'makes a default link category called "Links"' do
+      FactoryGirl.create(:region_link_xref, region: @region, name: 'link 1', description: nil, category: nil)
+      FactoryGirl.create(:region_link_xref, region: @region, name: 'link 2', description: nil, category: '')
+      FactoryGirl.create(:region_link_xref, region: @region, name: 'link 3', description: nil, category: ' ')
+      FactoryGirl.create(:region_link_xref, region: @region, name: 'link 4', description: nil, category: 'other category')
+
+      visit "/#{@region.name}/about"
+
+      expect(page).to have_content('Links link 1 link 2 link 3 other category link 4')
+    end
   end
 
   describe 'Location suggestions', type: :feature, js: true do

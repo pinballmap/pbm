@@ -64,6 +64,7 @@ END
       from: 'admin@pinballmap.com',
       subject: "PBM - New message from #{region.name} region",
       body: <<END
+Their Name: #{params['name']}\n
 Their Email: #{params['email']}\n
 Message: #{params['message']}\n
 END
@@ -82,6 +83,7 @@ OS Version: #{params['os_version']}\n
 Device Type: #{params['device_type']}\n
 App Version: #{params['app_version']}\n
 Region: #{region.name}\n
+Their Name: #{params['name']}\n
 Their Email: #{params['email']}\n
 Message: #{params['message']}\n
 END

@@ -133,13 +133,14 @@ HERE
           from: 'admin@pinballmap.com',
           subject: 'PBM - New message from la region',
           body: <<HERE
+Their Name: name\n
 Their Email: email\n
 Message: message\n
 HERE
         )
       end
 
-      post '/api/v1/regions/contact.json', region_id: @la.id.to_s, email: 'email', message: 'message'
+      post '/api/v1/regions/contact.json', region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
@@ -183,13 +184,14 @@ OS Version: os version\n
 Device Type: device type\n
 App Version: app version\n
 Region: la\n
+Their Name: name\n
 Their Email: email\n
 Message: message\n
 HERE
         )
       end
 
-      post '/api/v1/regions/app_comment.json', region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email', message: 'message'
+      post '/api/v1/regions/app_comment.json', region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email', message: 'message', name: 'name'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
