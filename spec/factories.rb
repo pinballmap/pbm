@@ -14,6 +14,11 @@ FactoryGirl.define do
 
   factory :machine do
     name 'Test Machine Name'
+    association :machine_group
+  end
+
+  factory :machine_group do
+    name 'Test Machine Group'
   end
 
   factory :location_machine_xref do
