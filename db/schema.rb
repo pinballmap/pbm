@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140816200950) do
+ActiveRecord::Schema.define(version: 20140913204322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,6 +92,12 @@ ActiveRecord::Schema.define(version: 20140816200950) do
     t.integer  "operator_id"
   end
 
+  create_table "machine_groups", force: true do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "machine_score_xrefs", force: true do |t|
     t.integer  "location_machine_xref_id"
     t.integer  "score",                    limit: 8
@@ -108,11 +114,12 @@ ActiveRecord::Schema.define(version: 20140816200950) do
   create_table "machines", force: true do |t|
     t.string   "name"
     t.boolean  "is_active"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.string   "ipdb_link"
     t.integer  "year"
     t.string   "manufacturer"
+    t.integer  "machine_group_id"
   end
 
   create_table "operators", force: true do |t|
