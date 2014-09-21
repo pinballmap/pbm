@@ -21,7 +21,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'sends a deletion email when appropriate' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "#{@location.name}\n#{@machine.name}\n#{@location.region.name}\n(entered from )",
+          body: "#{@location.name}\n#{@machine.name}\n#{@location.region.name}\n(entered from 127.0.0.1)",
           subject: 'PBM - Someone removed a machine from a location',
           to: [],
           from: 'admin@pinballmap.com'
