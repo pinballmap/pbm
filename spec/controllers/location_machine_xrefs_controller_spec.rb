@@ -22,6 +22,18 @@ describe LocationMachineXrefsController, type: :controller do
       post 'create', region: 'portland', add_machine_by_name: 'foo', add_machine_by_id: '', location_id: @location.id
     end
 
+    it 'should send email on new machine creation - notifies if staging site origin' do
+      @request.host = 'pinballmapstaging.herokuapp.com'
+
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          subject: '(STAGING) PBM - New machine name'
+        )
+      end
+
+      post 'create', region: 'portland', add_machine_by_name: 'foo', add_machine_by_id: '', location_id: @location.id
+    end
+
     it "should return undef if you don't supply a machine name or id" do
       expect(Pony).to_not receive(:mail)
 

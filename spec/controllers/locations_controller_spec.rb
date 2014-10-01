@@ -4,6 +4,7 @@ describe LocationsController, type: :controller do
   before(:each) do
     region = FactoryGirl.create(:region, name: 'portland')
     @location = FactoryGirl.create(:location, region: region)
+    @machine = FactoryGirl.create(:machine)
     FactoryGirl.create(:user, email: 'foo@bar.com', region: region)
   end
 

@@ -74,6 +74,18 @@ HERE
       post 'contact_sent', region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz'
     end
 
+    it 'email should notify if it was sent from the staging server' do
+      @request.host = 'pinballmapstaging.herokuapp.com'
+
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          subject: '(STAGING) PBM - Message from the Portland pinball map'
+        )
+      end
+
+      post 'contact_sent', region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz'
+    end
+
     it 'should not send an email if the body is blank' do
       expect(Pony).to_not receive(:mail)
 
@@ -113,6 +125,18 @@ Machines: machines\n
 Their Name: subname\n
 Their Email: subemail\n
 HERE
+        )
+      end
+
+      post 'submitted_new_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_operator: 'operator', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail'
+    end
+
+    it 'should send an email - notifies if sent from the staging server' do
+      @request.host = 'pinballmapstaging.herokuapp.com'
+
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          subject: '(STAGING) PBM - New location suggested for the portland pinball map'
         )
       end
 

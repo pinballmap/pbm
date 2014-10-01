@@ -145,6 +145,16 @@ HERE
 
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
     end
+
+    it 'emails region admins with incoming message - notifies if sent from staging server' do
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          subject: '(STAGING) PBM - New message from la region'
+        )
+      end
+
+      post '/api/v1/regions/contact.json', { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name' }, HTTP_HOST: 'pinballmapstaging.herokuapp.com'
+    end
   end
 
   describe '#app_comment' do
@@ -195,6 +205,16 @@ HERE
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
+    end
+
+    it 'emails app support address with feedback - notifies if origin is staging server' do
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          subject: '(STAGING) PBM - App feedback'
+        )
+      end
+
+      post '/api/v1/regions/app_comment.json', { region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email', message: 'message', name: 'name' }, HTTP_HOST: 'pinballmapstaging.herokuapp.com'
     end
   end
 end
