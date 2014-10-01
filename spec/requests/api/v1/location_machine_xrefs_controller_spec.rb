@@ -35,6 +35,16 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(LocationMachineXref.all.size).to eq(0)
     end
 
+    it 'sends a deletion email when appropriate - notifies if origin was staging server' do
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          subject: '(STAGING) PBM - Someone removed a machine from a location'
+        )
+      end
+
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', {}, HTTP_HOST: 'pinballmapstaging.herokuapp.com'
+    end
+
     it 'errors if lmx id does not exist' do
       delete '/api/v1/location_machine_xrefs/-1.json'
       expect(response).to be_success
@@ -120,6 +130,16 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '?condition=foo'
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
+    end
+
+    it 'email notifies if origin was the staging server' do
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          subject: '(STAGING) PBM - Someone entered a machine condition'
+        )
+      end
+
+      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, { condition: 'foo' }, HTTP_HOST: 'pinballmapstaging.herokuapp.com'
     end
 
     it 'returns an error message if the lmx does not exist' do

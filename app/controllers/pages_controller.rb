@@ -61,7 +61,7 @@ class PagesController < ApplicationController
       Pony.mail(
         to: @region.users.map { |u| u.email },
         from: 'admin@pinballmap.com',
-        subject: "PBM - Message from the #{@region.full_name} pinball map",
+        subject: add_host_info_to_subject("PBM - Message from the #{@region.full_name} pinball map"),
         body: [params['contact_name'], params['contact_email'], params['contact_msg']].join("\n")
       )
     else

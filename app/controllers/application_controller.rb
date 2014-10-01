@@ -11,11 +11,17 @@ class ApplicationController < ActionController::Base
     redirect_to '/users/sign_in', alert: exception.message
   end
 
+  def add_host_info_to_subject(subject)
+    server_name = request.host =~ /pinballmapstaging/ ? '(STAGING) ' : ''
+
+    server_name + subject
+  end
+
   def send_new_machine_notification(machine, location)
     Pony.mail(
       to: Region.find_by_name('portland').users.map { |u| u.email },
       from: 'admin@pinballmap.com',
-      subject: 'PBM - New machine name',
+      subject: add_host_info_to_subject('PBM - New machine name'),
       body: [machine.name, location.name, location.region.name, "(entered from #{request.remote_ip} via #{request.user_agent})"].join("\n")
     )
   end
@@ -25,7 +31,7 @@ class ApplicationController < ActionController::Base
       to: region.users.map { |u| u.email },
       bcc: User.all.select { |u| u.is_super_admin }.map { |u| u.email },
       from: 'admin@pinballmap.com',
-      subject: "PBM - New location suggested for the #{region.name} pinball map",
+      subject: add_host_info_to_subject("PBM - New location suggested for the #{region.name} pinball map"),
       body: <<END
 (A new pinball spot has been submitted for your region! Please verify the address on http://maps.google.com and then paste that Google Maps address into http://pinballmap.com/admin. Thanks!)\n
 Location Name: #{params['location_name']}\n
@@ -47,7 +53,7 @@ END
     Pony.mail(
       to: Region.where('lower(name) = ?', 'portland').first.users.map { |u| u.email },
       from: 'admin@pinballmap.com',
-      subject: 'PBM - New region suggestion',
+      subject: add_host_info_to_subject('PBM - New region suggestion'),
       body: <<END
 Their Name: #{params['name']}\n
 Their Email: #{params['email']}\n
@@ -62,7 +68,7 @@ END
       to: region.users.map { |u| u.email },
       bcc: User.all.select { |u| u.is_super_admin }.map { |u| u.email },
       from: 'admin@pinballmap.com',
-      subject: "PBM - New message from #{region.name} region",
+      subject: add_host_info_to_subject("PBM - New message from #{region.name} region"),
       body: <<END
 Their Name: #{params['name']}\n
 Their Email: #{params['email']}\n
@@ -76,7 +82,7 @@ END
       to: 'pinballmap@outlook.com',
       bcc: User.all.select { |u| u.is_super_admin }.map { |u| u.email },
       from: 'admin@pinballmap.com',
-      subject: 'PBM - App feedback',
+      subject: add_host_info_to_subject('PBM - App feedback'),
       body: <<END
 OS: #{params['os']}\n
 OS Version: #{params['os_version']}\n
