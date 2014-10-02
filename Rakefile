@@ -8,7 +8,7 @@ Pbm::Application.load_tasks
 
 desc 'Email admins about empty locations'
 task report_empty_locations: :environment do
-  Region.all.next do |r|
+  Region.all.each do |r|
     machineless_locations = r.machineless_locations
     if machineless_locations.size > 0
       Pony.mail(
