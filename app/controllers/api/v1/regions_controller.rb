@@ -18,7 +18,7 @@ module Api
       def show
         region = Region.find(params[:id])
 
-        return_response(region, 'region')
+        return_response(region, 'region',[], [:primary_email_contact, :all_admin_email_addresses, :filtered_region_links, :n_high_rollers])
 
         rescue ActiveRecord::RecordNotFound
           return_response('Failed to find region', 'errors')
