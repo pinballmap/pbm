@@ -33,7 +33,7 @@ class Region < ActiveRecord::Base
     scores[0, n]
   end
 
-  def n_high_rollers(n=10)
+  def n_high_rollers(n = 10)
     rollers = {}
     @high_rollers = {}
 
@@ -113,7 +113,7 @@ class Region < ActiveRecord::Base
     region_link_xrefs.each do |rlx|
       (links[(rlx.category && !rlx.category.blank?) ? rlx.category : 'Links'] ||= []) << rlx
     end
-    return links
-  end
 
+    links
+  end
 end
