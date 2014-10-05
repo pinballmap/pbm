@@ -8,7 +8,9 @@ Pbm::Application.load_tasks
 
 desc 'Email admins about empty locations'
 task report_empty_locations: :environment do
-  Region.all.next do |r|
+  # rubocop wants you to use next, but next isn't available on an ActiveRecord::Relation, only each.. https://github.com/bbatsov/rubocop/issues/1238
+  # rubocop:disable Style/Next
+  Region.all.each do |r|
     machineless_locations = r.machineless_locations
     if machineless_locations.size > 0
       Pony.mail(

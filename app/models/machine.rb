@@ -1,10 +1,12 @@
 class Machine < ActiveRecord::Base
   belongs_to :location_machine_xref
+  belongs_to :machine_group
+
   scope :by_name, proc { |name| where(:name.matches => "%#{name}%") }
 
   validates_presence_of :name
 
-  attr_accessible :name, :ipdb_link, :year, :manufacturer
+  attr_accessible :name, :ipdb_link, :year, :manufacturer, :machine_group_id
 
   def name_and_year
     name + year_and_manufacturer
@@ -21,5 +23,9 @@ class Machine < ActiveRecord::Base
 
   def massaged_name
     name.sub(/^the /i, '')
+  end
+
+  def all_machines_in_machine_group
+    machine_group_id ? Machine.where('machine_group_id = ?', machine_group_id).to_a : [self]
   end
 end

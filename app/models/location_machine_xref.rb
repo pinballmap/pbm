@@ -15,6 +15,12 @@ class LocationMachineXref < ActiveRecord::Base
     'lmx'
   end
 
+  def add_host_info_to_subject(subject, host)
+    server_name = host =~ /pinballmapstaging/ ? '(STAGING) ' : ''
+
+    server_name + subject
+  end
+
   def update_condition(condition, options = {})
     self.condition = condition
     self.condition_date = Time.now.strftime('%Y-%m-%d')
@@ -25,7 +31,7 @@ class LocationMachineXref < ActiveRecord::Base
     Pony.mail(
       to: location.region.users.map { |u| u.email },
       from: 'admin@pinballmap.com',
-      subject: 'PBM - Someone entered a machine condition',
+      subject: add_host_info_to_subject('PBM - Someone entered a machine condition', options[:request_host]),
       body: [condition, machine.name, location.name, location.region.name, "(entered from #{options[:remote_ip]})"].join("\n")
     )
   end
@@ -35,7 +41,7 @@ class LocationMachineXref < ActiveRecord::Base
       Pony.mail(
           to: location.region.users.map { |u| u.email },
           from: 'admin@pinballmap.com',
-          subject: 'PBM - Someone removed a machine from a location',
+          subject: add_host_info_to_subject('PBM - Someone removed a machine from a location', options[:request_host]),
           body: [location.name, machine.name, location.region.name, "(entered from #{options[:remote_ip]})"].join("\n")
       )
     end

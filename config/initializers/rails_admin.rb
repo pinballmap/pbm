@@ -275,11 +275,13 @@ RailsAdmin.config do |config|
       field :manufacturer, :string
       field :year, :integer
       field :is_active, :boolean
+      field :machine_group, :belongs_to_association
     end
     show do
       field :name, :string
       field :is_active, :boolean
       field :updated_at, :datetime
+      field :machine_group, :belongs_to_association
     end
     edit do
       field :name, :string
@@ -287,6 +289,24 @@ RailsAdmin.config do |config|
       field :year, :integer
       field :ipdb_link, :string
       field :is_active, :boolean
+      field :machine_group, :belongs_to_association
+    end
+    export do; end
+    create do; end
+    update do; end
+  end
+  config.model MachineGroup do
+    list do
+      field :name, :string
+      field :updated_at, :datetime
+    end
+    show do
+      field :name, :string
+      field :updated_at, :datetime
+    end
+    edit do
+      field :name, :string
+      field :updated_at, :datetime
     end
     export do; end
     create do; end

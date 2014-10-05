@@ -249,7 +249,8 @@ describe LocationMachineXrefsController do
 
   describe 'main page filtering', type: :feature, js: true do
     before(:each) do
-      FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, name: 'Test Machine Name'))
+      @machine_group = FactoryGirl.create(:machine_group)
+      FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, name: 'Test Machine Name', machine_group: @machine_group))
     end
 
     it 'hides zone option when no zones in region' do
@@ -326,6 +327,56 @@ describe LocationMachineXrefsController do
 
       within('div.search_result') do
         expect(page).to have_content('Test Location Name')
+      end
+    end
+
+    it 'lets you search by machine name from select -- returns grouped machines' do
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, name: 'Grouped Location', region: @region), machine: FactoryGirl.create(:machine, name: 'Test Machine Name SE', machine_group: @machine_group))
+
+      visit "/#{@region.name}"
+
+      page.find('div#other_search_options a#machine_section_link').click
+
+      select('Test Machine Name', from: 'by_machine_id')
+
+      page.find('input#machine_search_button').click
+
+      within('div#search_results') do
+        expect(page).to have_content('Test Location Name')
+        expect(page).to have_content('Grouped Location')
+      end
+    end
+
+    it 'lets you search by machine name' do
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, name: 'UnGrouped Location', region: @region), machine: FactoryGirl.create(:machine, name: 'No Groups'))
+
+      visit "/#{@region.name}"
+
+      page.find('div#other_search_options a#machine_section_link').click
+
+      fill_in('by_machine_name', with: 'No Groups')
+
+      page.find('input#machine_search_button').click
+
+      within('div#search_results') do
+        expect(page).to have_content('UnGrouped Location')
+      end
+    end
+
+    it 'lets you search by machine name -- returns grouped machines' do
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, name: 'Grouped Location', region: @region), machine: FactoryGirl.create(:machine, name: 'Test Machine Name SE', machine_group: @machine_group))
+
+      visit "/#{@region.name}"
+
+      page.find('div#other_search_options a#machine_section_link').click
+
+      fill_in('by_machine_name', with: 'Test Machine Name')
+
+      page.find('input#machine_search_button').click
+
+      within('div#search_results') do
+        expect(page).to have_content('Test Location Name')
+        expect(page).to have_content('Grouped Location')
       end
     end
 

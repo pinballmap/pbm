@@ -31,7 +31,7 @@ class LocationMachineXrefsController < InheritedResources::Base
 
   def destroy
     lmx = LocationMachineXref.find_by_id(params[:id])
-    lmx.destroy(remote_ip: request.remote_ip) unless lmx.nil?
+    lmx.destroy(remote_ip: request.remote_ip, request_host: request.host) unless lmx.nil?
 
     render nothing: true
   end
@@ -40,7 +40,7 @@ class LocationMachineXrefsController < InheritedResources::Base
     id = params[:id]
     lmx = LocationMachineXref.find(id)
 
-    lmx.update_condition(params["new_machine_condition_#{id}".to_sym], remote_ip: request.remote_ip)
+    lmx.update_condition(params["new_machine_condition_#{id}".to_sym], remote_ip: request.remote_ip, request_host: request.host)
 
     render nothing: true
   end

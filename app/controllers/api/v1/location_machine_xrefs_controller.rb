@@ -29,7 +29,7 @@ module Api
         lmx = LocationMachineXref.create(location_id: location, machine_id: machine) unless lmx
 
         if condition
-          lmx.update_condition(condition, remote_ip: request.remote_ip)
+          lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host)
         end
 
         return_response(lmx, 'location_machine')
@@ -41,7 +41,7 @@ module Api
       formats ['json']
       def update
         lmx = LocationMachineXref.find(params[:id])
-        lmx.update_condition(params[:condition], remote_ip: request.remote_ip)
+        lmx.update_condition(params[:condition], remote_ip: request.remote_ip, request_host: request.host)
 
         return_response(lmx, 'location_machine')
 
@@ -54,7 +54,7 @@ module Api
       formats ['json']
       def destroy
         lmx = LocationMachineXref.find(params[:id])
-        lmx.destroy
+        lmx.destroy(remote_ip: request.remote_ip, request_host: request.host)
 
         return_response('Successfully deleted lmx #' + lmx.id.to_s, 'msg')
 
