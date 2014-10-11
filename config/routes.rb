@@ -126,5 +126,8 @@ Pbm::Application.routes.draw do
   get '4sq_export.xml' => 'regions#four_square_export', format: 'xml'
   get 'pages/home'
 
+  # legacy names for regions
+  get '/milwaukee' => redirect('/wisconsin')
+
   root to: 'pages#home'
 end
