@@ -20,7 +20,7 @@ describe LocationMachineXref do
     it 'should update the condition of the lmx, timestamp it, and email the admins of the region' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "foo\nSassy\nCool Bar\nPortland\n(entered from )",
+          body: "foo\nSassy\nCool Bar\nPortland\n(entered from  via )",
           subject: 'PBM - Someone entered a machine condition',
           to: ['foo@bar.com'],
           from: 'admin@pinballmap.com'
@@ -34,14 +34,14 @@ describe LocationMachineXref do
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "bar\nSassy\nCool Bar\nPortland\n(entered from 0.0.0.0)",
+          body: "bar\nSassy\nCool Bar\nPortland\n(entered from 0.0.0.0 via cleOS)",
           subject: 'PBM - Someone entered a machine condition',
           to: ['foo@bar.com'],
           from: 'admin@pinballmap.com'
         )
       end
 
-      @lmx.update_condition('bar', remote_ip: '0.0.0.0')
+      @lmx.update_condition('bar', remote_ip: '0.0.0.0', user_agent: 'cleOS')
     end
     it 'should not send an email for blank condition updates' do
       expect(Pony).to_not receive(:mail)

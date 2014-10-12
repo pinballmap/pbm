@@ -108,7 +108,7 @@ class LocationsController < InheritedResources::Base
 
   def update_condition_mobile(region, format, params)
     lmx = LocationMachineXref.find_by_location_id_and_machine_id(params[:location_no], params[:machine_no])
-    lmx.update_condition(params[:condition], remote_ip: request.remote_ip, request_host: request.host)
+    lmx.update_condition(params[:condition], remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
 
     redirect_to "/#{region}/location_machine_xrefs/#{lmx.id}/condition_update_confirmation.#{format}"
   end

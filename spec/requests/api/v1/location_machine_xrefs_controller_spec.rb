@@ -120,14 +120,14 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'updates condition' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "foo\nCleo\nGround Kontrol\nPortland\n(entered from 127.0.0.1)",
+          body: "foo\nCleo\nGround Kontrol\nPortland\n(entered from 127.0.0.1 via cleOS)",
           subject: 'PBM - Someone entered a machine condition',
           to: [],
           from: 'admin@pinballmap.com'
         )
       end
 
-      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '?condition=foo'
+      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '?condition=foo', {}, HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
     end

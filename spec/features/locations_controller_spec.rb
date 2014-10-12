@@ -485,9 +485,11 @@ XML
       machine = FactoryGirl.create(:machine, name: "Cleo's Adventure")
       FactoryGirl.create(:location_machine_xref, location: sasston, machine: machine, condition: 'foo')
 
+      page.driver.headers = { 'User-Agent' => 'Mozilla/5.0 (cleOS)' }
+
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "bar\nCleo's Adventure\nSasston\nportland\n(entered from 127.0.0.1)",
+          body: "bar\nCleo's Adventure\nSasston\nportland\n(entered from 127.0.0.1 via Mozilla/5.0 (cleOS))",
           subject: 'PBM - Someone entered a machine condition',
           to: [],
           from: 'admin@pinballmap.com'
