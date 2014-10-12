@@ -15,7 +15,9 @@ task import_ifpa_tournaments: :environment do
 
   pbm_states = Location.uniq.pluck(:state).map { |s| s.downcase! }.uniq!
 
-  JSON.parse(Net::HTTP.get URI(IFPA_API_ROOT + '/calendar/active?api_key=' + IFPA_API_KEY.to_s))['calendar'].next do |c|
+  # rubocop wants you to use next, but next isn't available on an ActiveRecord::Relation, only each.. https://github.com/bbatsov/rubocop/issues/1238
+  # rubocop:disable Style/Next
+  JSON.parse(Net::HTTP.get URI(IFPA_API_ROOT + '/calendar/active?api_key=' + IFPA_API_KEY.to_s))['calendar'].each do |c|
     state = c['state'].downcase
 
     if pbm_states.include?(state) && !Event.exists?(ifpa_tournament_id: c['tournament_id'], ifpa_calendar_id: c['calendar_id'])
