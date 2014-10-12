@@ -32,7 +32,7 @@ class LocationMachineXref < ActiveRecord::Base
       to: location.region.users.map { |u| u.email },
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject('PBM - Someone entered a machine condition', options[:request_host]),
-      body: [condition, machine.name, location.name, location.region.name, "(entered from #{options[:remote_ip]})"].join("\n")
+      body: [condition, machine.name, location.name, location.region.name, "(entered from #{options[:remote_ip]} via #{options[:user_agent]})"].join("\n")
     )
   end
 

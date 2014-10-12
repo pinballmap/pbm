@@ -40,7 +40,7 @@ class LocationMachineXrefsController < InheritedResources::Base
     id = params[:id]
     lmx = LocationMachineXref.find(id)
 
-    lmx.update_condition(params["new_machine_condition_#{id}".to_sym], remote_ip: request.remote_ip, request_host: request.host)
+    lmx.update_condition(params["new_machine_condition_#{id}".to_sym], remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
 
     render nothing: true
   end

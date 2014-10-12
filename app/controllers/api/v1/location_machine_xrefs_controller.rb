@@ -29,7 +29,7 @@ module Api
         lmx = LocationMachineXref.create(location_id: location, machine_id: machine) unless lmx
 
         if condition
-          lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host)
+          lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
         end
 
         return_response(lmx, 'location_machine')
@@ -41,7 +41,7 @@ module Api
       formats ['json']
       def update
         lmx = LocationMachineXref.find(params[:id])
-        lmx.update_condition(params[:condition], remote_ip: request.remote_ip, request_host: request.host)
+        lmx.update_condition(params[:condition], remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
 
         return_response(lmx, 'location_machine')
 
