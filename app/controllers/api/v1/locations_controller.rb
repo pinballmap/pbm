@@ -73,7 +73,11 @@ module Api
 
         location.description = description if description
         location.website = website if website
-        location.location_type = LocationType.find(location_type) if location_type
+        if !location_type.blank? && !location_type.nil? && !location_type.empty?
+          location.location_type = LocationType.find(location_type)
+        else
+          location.location_type = nil
+        end
 
         update_phone(location, phone)
 
