@@ -112,6 +112,25 @@ HERE
       expect(location['location_type_id']).to eq(type.id)
     end
 
+    it 'allows a blank location type' do
+      type = FactoryGirl.create(:location_type, name: 'bar')
+      @location.location_type_id = type.id
+
+      put '/api/v1/locations/' + @location.id.to_s + '.json?description=foo;website=http://bar;phone=5555555555;zip=97777;location_type='
+      expect(response).to be_success
+
+      updated_location = Location.find(@location.id)
+
+      expect(updated_location.location_type_id).to be_nil
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      location = parsed_body['location']
+
+      expect(location['location_type_id']).to be_nil
+    end
+
     it 'responds with an error if an invalid phone number is sent' do
       put '/api/v1/locations/' + @location.id.to_s + '.json?phone=baz'
 
