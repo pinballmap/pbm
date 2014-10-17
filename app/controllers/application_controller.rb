@@ -45,6 +45,7 @@ Operator: #{params['location_operator']}\n
 Machines: #{params['location_machines']}\n
 Their Name: #{params['submitter_name']}\n
 Their Email: #{params['submitter_email']}\n
+(entered from #{request.remote_ip} via #{request.user_agent})\n
 END
     )
   end
