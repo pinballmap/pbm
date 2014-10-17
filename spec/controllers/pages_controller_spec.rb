@@ -124,6 +124,7 @@ Operator: operator\n
 Machines: machines\n
 Their Name: subname\n
 Their Email: subemail\n
+(entered from 0.0.0.0 via Rails Testing)\n
 HERE
         )
       end
