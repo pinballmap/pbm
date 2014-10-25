@@ -69,7 +69,7 @@ END
       to: region.users.map { |u| u.email },
       bcc: User.all.select { |u| u.is_super_admin }.map { |u| u.email },
       from: 'admin@pinballmap.com',
-      subject: add_host_info_to_subject("PBM - New message from #{region.name} region"),
+      subject: add_host_info_to_subject("PBM - New message from the #{region.full_name} region"),
       body: <<END
 Their Name: #{params['name']}\n
 Their Email: #{params['email']}\n

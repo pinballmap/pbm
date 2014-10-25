@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Api::V1::LocationsController, type: :request do
   before(:each) do
     @portland = FactoryGirl.create(:region, name: 'portland', motd: 'foo', full_name: 'Portland', lat: 12, lon: 13)
-    @la = FactoryGirl.create(:region, name: 'la')
+    @la = FactoryGirl.create(:region, name: 'la', full_name: 'Los Angeles')
 
     FactoryGirl.create(:user, region: @portland, email: 'portland@admin.com', is_super_admin: 1)
     FactoryGirl.create(:user, region: @la, email: 'la@admin.com')
@@ -131,7 +131,7 @@ HERE
           to: ['la@admin.com'],
           bcc: ['portland@admin.com'],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - New message from la region',
+          subject: 'PBM - New message from the Los Angeles region',
           body: <<HERE
 Their Name: name\n
 Their Email: email\n
@@ -149,7 +149,7 @@ HERE
     it 'emails region admins with incoming message - notifies if sent from staging server' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          subject: '(STAGING) PBM - New message from la region'
+          subject: '(STAGING) PBM - New message from the Los Angeles region'
         )
       end
 
