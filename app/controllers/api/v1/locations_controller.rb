@@ -71,6 +71,8 @@ module Api
         phone = params[:phone]
         location_type = params[:location_type]
 
+        location_type = location_type.to_s if location_type
+
         location.description = description if description
         location.website = website if website
         if !location_type.blank? && !location_type.nil? && !location_type.empty?
