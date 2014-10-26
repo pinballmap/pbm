@@ -132,6 +132,19 @@ HERE
       expect(location['location_type_id']).to be_nil
     end
 
+    it 'accepts location_type as a Fixnum' do
+      type = FactoryGirl.create(:location_type, name: 'bar')
+      new_type = FactoryGirl.create(:location_type, name: 'baz')
+      @location.location_type_id = type.id
+
+      put '/api/v1/locations/' + @location.id.to_s + '.json', location_type: new_type.id
+      expect(response).to be_success
+
+      updated_location = Location.find(@location.id)
+
+      expect(updated_location.location_type_id).to be(new_type.id)
+    end
+
     it 'responds with an error if an invalid phone number is sent' do
       put '/api/v1/locations/' + @location.id.to_s + '.json?phone=baz'
 
