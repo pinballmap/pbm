@@ -56,7 +56,7 @@ class Region < ActiveRecord::Base
     if users.empty?
       ['email_not_found@noemailfound.noemail']
     else
-      users.map { |u| u.email }
+      users.map { |u| u.email }.sort
     end
   end
 

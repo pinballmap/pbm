@@ -48,7 +48,7 @@ describe Api::V1::LocationsController, type: :request do
 
       expect(regions[0]['name']).to eq('portland')
       expect(regions[0]['primary_email_contact']).to eq('is@primary.com')
-      expect(regions[0]['all_admin_email_addresses']).to eq(['portland@admin.com', 'not@primary.com', 'is@primary.com'])
+      expect(regions[0]['all_admin_email_addresses']).to eq(['is@primary.com', 'not@primary.com', 'portland@admin.com'])
 
       expect(regions[1]['name']).to eq('la')
       expect(regions[1]['primary_email_contact']).to eq('la@admin.com')

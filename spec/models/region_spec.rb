@@ -91,7 +91,7 @@ describe Region do
       FactoryGirl.create(:user, region: @r, email: 'not@primary.com')
       FactoryGirl.create(:user, region: @r, email: 'is@primary.com', is_primary_email_contact: 1)
 
-      expect(@r.all_admin_email_addresses).to eq(['not@primary.com', 'is@primary.com'])
+      expect(@r.all_admin_email_addresses).to eq(['is@primary.com', 'not@primary.com'])
     end
   end
 
