@@ -24,6 +24,10 @@ module Api
         machine = params[:machine_id]
         condition = params[:condition]
 
+        if machine.nil? || location.nil?
+          return return_response('Failed to find machine', 'errors')
+        end
+
         lmx = LocationMachineXref.find_by_location_id_and_machine_id(location, machine)
 
         lmx = LocationMachineXref.create(location_id: location, machine_id: machine) unless lmx

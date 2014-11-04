@@ -106,6 +106,20 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       expect(LocationMachineXref.all.size).to eq(2)
     end
+
+    it 'returns an error unless the machine_id and location_id are both present' do
+      post '/api/v1/location_machine_xrefs.json'
+      expect(response).to be_success
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
+
+      post '/api/v1/location_machine_xrefs.json?machine_id=' + @machine.id.to_s
+      expect(response).to be_success
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
+
+      post '/api/v1/location_machine_xrefs.json?location_id=' + @location.id.to_s
+      expect(response).to be_success
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
+    end
   end
 
   describe '#update' do
