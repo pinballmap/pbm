@@ -171,9 +171,9 @@ describe LocationMachineXrefsController do
       page.execute_script %{ $('#add_machine_by_name').trigger('focus') }
       page.execute_script %{ $('#add_machine_by_name').trigger('keydown') }
 
-      expect(page).to have_xpath('//a[contains(text(), "Sassy From The Black Lagoon")]')
-      expect(page).to have_xpath('//a[contains(text(), "Sassy Madness")]')
-      expect(page).to_not have_xpath('//a[contains(text(), "Cleo Game")]')
+      expect(page).to have_xpath('//li[contains(text(), "Sassy From The Black Lagoon")]')
+      expect(page).to have_xpath('//li[contains(text(), "Sassy Madness")]')
+      expect(page).to_not have_xpath('//li[contains(text(), "Cleo Game")]')
     end
 
     it 'searches by machine name from input' do
@@ -190,9 +190,9 @@ describe LocationMachineXrefsController do
       page.execute_script %{ $('#by_machine_name').trigger('focus') }
       page.execute_script %{ $('#by_machine_name').trigger('keydown') }
 
-      expect(page).to have_xpath('//a[contains(text(), "Another Test Machine")]')
-      expect(page).to have_xpath('//a[contains(text(), "Test Machine Name")]')
-      expect(page).to_not have_xpath('//a[contains(text(), "Cleo")]')
+      expect(page).to have_xpath('//li[contains(text(), "Another Test Machine")]')
+      expect(page).to have_xpath('//li[contains(text(), "Test Machine Name")]')
+      expect(page).to_not have_xpath('//li[contains(text(), "Cleo")]')
     end
 
     it 'searches by location name from input' do
@@ -210,10 +210,10 @@ describe LocationMachineXrefsController do
       page.execute_script %{ $('#by_location_name').trigger('focus') }
       page.execute_script %{ $('#by_location_name').trigger('keydown') }
 
-      expect(page).to have_xpath('//a[contains(text(), "Cleo North")]')
-      expect(page).to have_xpath('//a[contains(text(), "Cleo South")]')
-      expect(page).to_not have_xpath('//a[contains(text(), "Cleo West")]')
-      expect(page).to_not have_xpath('//a[contains(text(), "Sassy")]')
+      expect(page).to have_xpath('//li[contains(text(), "Cleo North")]')
+      expect(page).to have_xpath('//li[contains(text(), "Cleo South")]')
+      expect(page).to_not have_xpath('//li[contains(text(), "Cleo West")]')
+      expect(page).to_not have_xpath('//li[contains(text(), "Sassy")]')
     end
 
     it 'escape input' do
@@ -234,7 +234,7 @@ describe LocationMachineXrefsController do
       page.execute_script %{ $('#by_location_name').trigger('focus') }
       page.execute_script %{ $('#by_location_name').trigger('keydown') }
 
-      expect(page).to have_xpath('//a[contains(text(), "Test[]Location")]')
+      expect(page).to have_xpath('//li[contains(text(), "Test[]Location")]')
 
       page.find('div#other_search_options a#machine_section_link').click
 
@@ -243,7 +243,7 @@ describe LocationMachineXrefsController do
       page.execute_script %{ $('#by_machine_name').trigger('focus') }
       page.execute_script %{ $('#by_machine_name').trigger('keydown') }
 
-      expect(page).to have_xpath('//a[contains(text(), "Test[]Machine")]')
+      expect(page).to have_xpath('//li[contains(text(), "Test[]Machine")]')
     end
   end
 
