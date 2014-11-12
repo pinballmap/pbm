@@ -50,6 +50,7 @@ module Pbm
       highslide.css
       jquery.jscrollpane.css
       rails_admin.css
+      rails_admin/rails_admin.css
       highslide.min.js
       jQuery.scrollSomething-1.0.0.js
       jquery.form.js
