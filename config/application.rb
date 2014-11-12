@@ -40,7 +40,7 @@ module Pbm
     config.assets.enabled = true
     config.serve_static_assets = true
     config.assets.initialize_on_precompile = false
-    config.assets.version = '1.3'
+    config.assets.version = '1.4'
 
     # unfortunate inability to use wildcards because of a bug in rails admin
     config.assets.precompile += %w(
