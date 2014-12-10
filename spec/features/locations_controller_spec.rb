@@ -21,9 +21,11 @@ describe LocationsController do
     it 'removes a machine from a location' do
       FactoryGirl.create(:location_machine_xref, location: @location, machine: @machine)
 
+      page.driver.headers = { 'User-Agent' => 'Mozilla/5.0 (cleOS)' }
+
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "Cleo\nBawb\nportland\n(entered from 127.0.0.1)",
+          body: "Cleo\nBawb\nportland\n(entered from 127.0.0.1 via Mozilla/5.0 (cleOS))",
           subject: 'PBM - Someone removed a machine from a location',
           to: [],
           from: 'admin@pinballmap.com'
@@ -596,9 +598,11 @@ XML
       machine = FactoryGirl.create(:machine, name: 'Cleo')
       FactoryGirl.create(:location_machine_xref, location: sasston, machine: machine)
 
+      page.driver.headers = { 'User-Agent' => 'Mozilla/5.0 (cleOS)' }
+
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "sasston\nCleo\nportland\n(entered from 127.0.0.1)",
+          body: "sasston\nCleo\nportland\n(entered from 127.0.0.1 via Mozilla/5.0 (cleOS))",
           subject: 'PBM - Someone removed a machine from a location',
           to: [],
           from: 'admin@pinballmap.com'

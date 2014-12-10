@@ -58,7 +58,7 @@ module Api
       formats ['json']
       def destroy
         lmx = LocationMachineXref.find(params[:id])
-        lmx.destroy(remote_ip: request.remote_ip, request_host: request.host)
+        lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
 
         return_response('Successfully deleted lmx #' + lmx.id.to_s, 'msg')
 

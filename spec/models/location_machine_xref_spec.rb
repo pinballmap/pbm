@@ -54,7 +54,7 @@ describe LocationMachineXref do
     it 'should remove the lmx, and email admins if appropriate' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "Cool Bar\nSassy\nPortland\n(entered from )",
+          body: "Cool Bar\nSassy\nPortland\n(entered from  via )",
           subject: 'PBM - Someone removed a machine from a location',
           to: ['foo@bar.com'],
           from: 'admin@pinballmap.com'
@@ -65,14 +65,14 @@ describe LocationMachineXref do
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "Cool Bar\nSassy\nPortland\n(entered from 0.0.0.0)",
+          body: "Cool Bar\nSassy\nPortland\n(entered from 0.0.0.0 via cleOS)",
           subject: 'PBM - Someone removed a machine from a location',
           to: ['foo@bar.com'],
           from: 'admin@pinballmap.com'
         )
       end
 
-      @lmx.destroy(remote_ip: '0.0.0.0')
+      @lmx.destroy(remote_ip: '0.0.0.0', user_agent: 'cleOS')
 
       expect(Pony).to_not receive(:mail)
 

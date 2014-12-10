@@ -31,7 +31,7 @@ class LocationMachineXrefsController < InheritedResources::Base
 
   def destroy
     lmx = LocationMachineXref.find_by_id(params[:id])
-    lmx.destroy(remote_ip: request.remote_ip, request_host: request.host) unless lmx.nil?
+    lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent) unless lmx.nil?
 
     render nothing: true
   end
