@@ -26,7 +26,7 @@ module Api
         if machine.nil?
           machine = Machine.create(name: machine_name)
           send_new_machine_notification(machine, location)
-          return_response(machine, 'machine')
+          return_response(machine, 'machine',[],[],201)
         else
           return_response('Machine already exists', 'errors')
         end
