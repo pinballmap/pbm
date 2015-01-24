@@ -62,6 +62,7 @@ describe Api::V1::MachinesController, type: :request do
 
       post '/api/v1/machines.json?machine_name=Bawb;location_id=' + @location.id.to_s
       expect(response).to be_success
+      expect(response.status).to eq(201)
       expect(JSON.parse(response.body)['machine']['name']).to eq('Bawb')
     end
   end

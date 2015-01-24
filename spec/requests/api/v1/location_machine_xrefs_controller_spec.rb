@@ -13,6 +13,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'deletes an lmx' do
       delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json'
       expect(response).to be_success
+      expect(response.status).to eq(200)
 
       expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
       expect(LocationMachineXref.all.size).to eq(0)
@@ -99,6 +100,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       post '/api/v1/location_machine_xrefs.json?machine_id=' + new_machine.id.to_s + ';location_id=' + @location.id.to_s + ';condition=foo'
       expect(response).to be_success
+      expect(response.status).to eq(201)
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
 
       new_lmx = LocationMachineXref.last
