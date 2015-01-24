@@ -34,7 +34,7 @@ module Api
 
         if msx.save
           msx.sanitize_scores
-          return_response('Added your score!', 'msg',[],[],201)
+          return_response('Added your score!', 'msg', [], [], 201)
         else
           return_response(msx.errors.full_messages, 'errors')
         end

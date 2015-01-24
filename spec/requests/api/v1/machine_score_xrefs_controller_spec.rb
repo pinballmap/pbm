@@ -82,6 +82,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     it 'creates a new score' do
       post '/api/v1/machine_score_xrefs.json?location_machine_xref_id=' + @lmx.id.to_s + ';score=1,234;initials=abc;rank=1'
       expect(response).to be_success
+      expect(response.status).to eq(201)
 
       expect(JSON.parse(response.body)['msg']).to eq('Added your score!')
 
