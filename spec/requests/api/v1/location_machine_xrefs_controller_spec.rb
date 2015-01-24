@@ -21,14 +21,14 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'sends a deletion email when appropriate' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "#{@location.name}\n#{@machine.name}\n#{@location.region.name}\n(entered from 127.0.0.1)",
+          body: "#{@location.name}\n#{@machine.name}\n#{@location.region.name}\n(entered from 127.0.0.1 via cleOS)",
           subject: 'PBM - Someone removed a machine from a location',
           to: [],
           from: 'admin@pinballmap.com'
         )
       end
 
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json'
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', {}, HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
