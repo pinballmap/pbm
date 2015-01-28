@@ -29,7 +29,7 @@ class LocationMachineXref < ActiveRecord::Base
 
     return if condition.nil? || condition.blank?
 
-    machineComment = MachineComment.create(comment: condition, location_machine_xref: self)
+    MachineCondition.create(comment: condition, location_machine_xref: self)
 
     Pony.mail(
       to: location.region.users.map { |u| u.email },
