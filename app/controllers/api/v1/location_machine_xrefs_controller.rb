@@ -11,7 +11,7 @@ module Api
       formats ['json']
       def index
         lmxes = apply_scopes(LocationMachineXref).order('id desc')
-        return_response(lmxes, 'location_machine_xrefs', [], [:location, :machine])
+        return_response(lmxes, 'location_machine_xrefs', [], [:location, :machine, :machine_comments])
       end
 
       api :POST, '/api/v1/location_machine_xrefs.json', 'Find or create a machine at a location'
