@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150128151820) do
+ActiveRecord::Schema.define(version: 20150128155902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,14 +92,14 @@ ActiveRecord::Schema.define(version: 20150128151820) do
     t.integer  "operator_id"
   end
 
-  create_table "machine_comments", force: true do |t|
+  create_table "machine_conditions", force: true do |t|
     t.text     "comment"
     t.integer  "location_machine_xref_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "machine_comments", ["location_machine_xref_id"], name: "index_machine_comments_on_location_machine_xref_id", using: :btree
+  add_index "machine_conditions", ["location_machine_xref_id"], name: "index_machine_conditions_on_location_machine_xref_id", using: :btree
 
   create_table "machine_groups", force: true do |t|
     t.string   "name",       null: false

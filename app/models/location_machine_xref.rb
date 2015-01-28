@@ -3,7 +3,7 @@ class LocationMachineXref < ActiveRecord::Base
   belongs_to :machine
   belongs_to :user
   has_many :machine_score_xrefs
-  has_many :machine_comments
+  has_many :machine_conditions
 
   attr_accessible :machine_id, :location_id, :condition, :condition_date, :ip, :user_id
 
