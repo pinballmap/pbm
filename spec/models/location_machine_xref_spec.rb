@@ -48,6 +48,12 @@ describe LocationMachineXref do
 
       @lmx.update_condition('')
     end
+    it 'should create LocationConditions' do
+      @lmx.update_condition('foo')
+
+      expect(MachineCondition.all.count).to eq(1)
+      expect(MachineCondition.first.comment).to eq('foo')
+    end
   end
 
   describe '#destroy' do
