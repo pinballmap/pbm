@@ -1,0 +1,4 @@
+- lmx.machine_conditions.collect! do |mcx|
+  %div.machine_condition_new_line
+    %span= "#{mcx.comment}; Date #{mcx.created_at ? mcx.created_at.strftime("%m-%d-%Y") : ''}"
+    
