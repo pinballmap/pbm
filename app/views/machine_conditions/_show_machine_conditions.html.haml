@@ -1,4 +1,4 @@
 %div[lmx, :machineconditions_container]{:style => "display:#{lmx.machine_conditions.empty? ? 'none' : 'block'}"}
   = banner('show_conditions_lmx','SHOW PAST CONDITIONS',lmx)
   %div[lmx, :show_conditions]{:style => 'display:none'}
-    = render :partial => 'locations/render_machine_conditions', :locals => {:lmx => lmx}
+    = render :partial => 'locations/render_machine_conditions', :locals => {:conditions => lmx.machine_conditions.first(6).sort { |x,y| y.created_at <=> x.created_at }}
