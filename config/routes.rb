@@ -119,6 +119,7 @@ Pbm::Application.routes.draw do
   end
 
   resources :location_picture_xrefs
+  resources :machine_conditions
 
   devise_for :users
 
