@@ -75,6 +75,7 @@ Pbm::Application.routes.draw do
         get :create_confirmation
         get :remove_confirmation
         get :render_machine_condition
+        get :render_machine_conditions
       end
     end
 
