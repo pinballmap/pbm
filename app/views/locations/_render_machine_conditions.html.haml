@@ -1,6 +1,6 @@
 - conditions.collect! do |mcx|
   %div.machine_condition_new_line{:id => "past_machine_condition_#{mcx.id}"}
-    %span{:style => "display:block;"}= "#{mcx.created_at ? mcx.created_at.strftime("%m-%d-%Y") : ''}"
+    %span{:style => "display:block;"}= "#{mcx.created_at ? mcx.created_at.strftime("%d-%b-%Y") : ''}"
     %span{:style => "display:block;"}= "#{mcx.comment}"
     = button_to "remove", machine_condition_path(:id => mcx.id), :id => "remove_machine_condition_#{mcx.id}", :method => 'delete', :remote => true, :form_class => "remove_machine_condition"
 
