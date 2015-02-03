@@ -7,5 +7,4 @@ class MachineConditionsController < InheritedResources::Base
 
     render nothing: true
   end
-
 end

@@ -51,7 +51,7 @@ class LocationMachineXrefsController < InheritedResources::Base
 
   def render_machine_conditions
     lmx = LocationMachineXref.find(params[:id])
-    render partial: 'locations/render_machine_conditions', locals: { conditions: lmx.machine_conditions.first(6).sort { |x,y| y.created_at <=> x.created_at } }
+    render partial: 'locations/render_machine_conditions', locals: { conditions: lmx.machine_conditions.first(6).sort { |x, y| y.created_at <=> x.created_at } }
   end
 
   def index
