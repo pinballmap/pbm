@@ -41,7 +41,7 @@ class LocationMachineXref < ActiveRecord::Base
 
   def sorted_machine_conditions
     # Offset by 1 so that we don't show the current machine condition
-    return self.machine_conditions.order('created_at DESC').offset(1)
+    machine_conditions.order('created_at DESC').offset(1)
   end
 
   def destroy(options = {})
