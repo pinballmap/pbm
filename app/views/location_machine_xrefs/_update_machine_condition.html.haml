@@ -7,7 +7,7 @@
 %div[lmx, :machine_condition_edit]{:style => 'display:none'}
   = form_tag update_machine_condition_location_machine_xrefs_path(:action => 'update_machine_condition', :id => lmx.id, :region => @region.name), :id => "update_machine_condition_#{lmx.id}", :method => 'get' do
     = hidden_field_tag :id, lmx.id
-    = text_area_tag "new_machine_condition_#{lmx.id}", (lmx.condition.to_s == '') ? '' : lmx.condition, :cols => 20, :rows => 3, :class => 'edit_mode', :placeholder => '(note: if this machine is gone, please just remove it. no need to leave a comment saying it is gone)'
+    = text_area_tag "new_machine_condition_#{lmx.id}", '', :cols => 20, :rows => 3, :class => 'edit_mode', :placeholder => '(note: if this machine is gone, please just remove it. no need to leave a comment saying it is gone)'
     %br/
     = submit_tag 'Save', :id => "save_machine_condition_#{lmx.id}", :class => "save_button"
   = submit_tag 'Cancel', :id => "cancel_machine_condition_#{lmx.id}", :class => "cancel_button"
