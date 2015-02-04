@@ -614,14 +614,39 @@ span.machine_year_man {
   padding: 5px;
   border-left: 5px solid #ae9390;
 }
-.machine_condition_display_lmx {
-  color: #888888;
+.machine_condition_new_line span {
+  display: block;
+}
+span.machine_condition_date {
+  color: #999999;
   font-size: 12px;
+}
+.machine_condition_new_line span.machine_condition_date,
+.machine_condition_display_lmx span.machine_condition_date {
+  margin: 8px 0 2px;
+  display: inline-block;
+}
+form.remove_machine_condition {
+  float: right;
+  padding-right: 5px;
+}
+.machine_condition_new_line,
+.machine_condition_display_lmx {
+  color: #777777;
+  font-size: 14px;
+  line-height: 16px;
   font-style: italic;
+}
+.machine_condition_new_line {
+  border-bottom: 1px solid #d0b89f;
+  margin-bottom: 8px;
+}
+.machine_condition_display_lmx {
   margin: 5px 0 5px 10px;
   padding: 2px;
-  line-height: 14px;
-  width: 281px;
+  width: 285px;
+  background: #fefbf8;
+  box-sizing: border-box;
 }
 .machine_condition_display_lmx .edit_mode {
   width: 261px;
@@ -630,25 +655,24 @@ span.machine_year_man {
 .machine_condition_display_lmx:hover {
   background-color: #dbd9d7;
 }
-.machine_condition_display_lmx span {
+.machine_condition_display_lmx span,
+.machine_condition_new_line span {
   white-space: pre-wrap;
+  display: block;
 }
 .machine_condition_edit_lmx {
-  width: 275px;
+  width: 285px;
+  box-sizing: border-box;
 }
 .machineconditions_container_lmx {
   margin-left: 10px;
-}
-.machine_condition_new_line {
-  display:block;
-  font-size:10px;
-  padding: 4px 0;
 }
 .high_score { 
   margin-left: 10px;  
 }
 .high_score > .sub_nav_item {
-  width: 283px;
+  width: 285px;
+  box-sizing: border-box;
   clear: both;
 }
 #add_machine_by_id {
@@ -686,11 +710,12 @@ span.machine_year_man {
 .button_to {
   float:right;
 }
-.location_detail input.remove_machine_button {
+.location_detail input.remove_machine_button,
+.location_detail input.remove_condition_button {
   margin: 0;
-  background-color:#fcf3ea;
-  border: 1px solid #999999;
-  color: #999999; 
+  background-color:#fcfcf3;
+  border: 1px solid #D0B89F;
+  color: #777777; 
   cursor: pointer;
   padding: 0 2px 2px;
   font-size: 12px;
@@ -698,10 +723,17 @@ span.machine_year_man {
   height: 23px;
   width: 60px;
 }
-.location_detail input.remove_machine_button:hover {
+.location_detail input.remove_machine_button:hover,
+.location_detail input.remove_condition_button:hover {
   border: 1px solid #3b3835;
   color: black;
   background-color: #f4d1af;
+}
+.location_detail input.remove_condition_button {
+  height: 20px;
+  line-height: 16px;
+  width: 50px;
+  background-color: #fcf3ea;
 }
 .machine_title {
   margin-top: 20px;
@@ -875,10 +907,14 @@ input#score, input#initials {
 .score_container_lmx {
   margin-left: 10px;
 }
+.show_conditions_lmx {
+  padding: 2px;
+}
 .add_scores_form, .show_scores_lmx, .show_conditions_lmx {
   padding: 5px 0 5px 10px;
   background-color: #FEFBF8;
-  width: 275px;
+  width: 285px;
+  box-sizing: border-box;
 }
 .add_picture_location_toggle {
   background-color: #ADC4F7;
@@ -917,7 +953,8 @@ input#score, input#initials {
 }
 .show_conditions_lmx_toggle {
   background-color: #f4d5bf;
-  width: 283px;
+  width: 285px;
+  box-sizing: border-box;
   color: #666666;
 }
 .show_conditions_lmx_toggle:hover{
