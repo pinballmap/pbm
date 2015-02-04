@@ -1,9 +1,7 @@
 %div[lmx, :machine_condition]
   %span= (lmx.condition.to_s == '') ? 'Click to enter machine description' : lmx.condition
   - if (!lmx.condition_date.nil?)
-    %br/
-    %br/
-    %span= 'Updated: ' + lmx.condition_date.strftime("%d-%b-%Y")
+    %span.machine_condition_date= 'Updated: ' + lmx.condition_date.strftime("%d-%b-%Y")
 %div[lmx, :machine_condition_edit]{:style => 'display:none'}
   = form_tag update_machine_condition_location_machine_xrefs_path(:action => 'update_machine_condition', :id => lmx.id, :region => @region.name), :id => "update_machine_condition_#{lmx.id}", :method => 'get' do
     = hidden_field_tag :id, lmx.id
