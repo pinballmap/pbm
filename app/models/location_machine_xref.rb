@@ -39,6 +39,11 @@ class LocationMachineXref < ActiveRecord::Base
     )
   end
 
+  def sorted_machine_conditions
+    # Offset by 1 so that we don't show the current machine condition
+    return self.machine_conditions.order('created_at DESC').offset(1)
+  end
+
   def destroy(options = {})
     if location.region.should_email_machine_removal
       Pony.mail(
