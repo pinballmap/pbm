@@ -1,3 +1,12 @@
+:javascript
+  $('#machineconditions_container_lmx#{lmx.id}').ready(function(){
+    if ('#{conditions.empty?}' == 'false'){
+      $('#machineconditions_container_lmx_#{lmx.id}').css('display', 'block');
+    }else{
+      $('#machineconditions_container_lmx_#{lmx.id}').css('display', 'none');
+    }
+  });
+
 - conditions.collect! do |mcx|
   %div.machine_condition_new_line{:id => "past_machine_condition_#{mcx.id}"}
     %span{:style => "display:block;"}= "#{mcx.created_at ? mcx.created_at.strftime("%d-%b-%Y") : ''}"

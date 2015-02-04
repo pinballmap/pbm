@@ -15,8 +15,6 @@
 :javascript
   $('#update_machine_condition_#{lmx.id}').submit(function () {
     $('#machine_condition_display_#{lmx.id}').html(loadingHTML());
-    $('#machineconditions_container_lmx_#{lmx.id}').css('visibility', 'visible');
-    $('#machineconditions_container_lmx_#{lmx.id}').css('display', 'block');
 
     var form = $(this);
     $.get(form.attr('action'), form.serialize(), function (data) {
