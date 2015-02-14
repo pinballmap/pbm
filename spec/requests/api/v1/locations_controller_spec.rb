@@ -72,11 +72,13 @@ HERE
 
   describe '#index' do
     it 'returns all regions within scope along with lmx data' do
-      FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, id: 777, name: 'Cleo'))
+      lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, id: 777, name: 'Cleo'))
+      FactoryGirl.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'foo bar')
       get "/api/v1/region/#{@region.name}/locations.json"
 
       expect(response.body).to include('Satchmo')
       expect(response.body).to include('777')
+      expect(response.body).to include('foo bar')
     end
   end
 
