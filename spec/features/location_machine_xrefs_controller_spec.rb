@@ -137,6 +137,51 @@ describe LocationMachineXrefsController do
       expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{Time.now.strftime('%d-%b-%Y')}")
     end
 
+    it 'should add past conditions when you add a new condition and a condition exists' do
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx").click
+      fill_in("new_machine_condition_#{@lmx.id}", with: 'test')
+      page.find("input#save_machine_condition_#{@lmx.id}").click
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx").click
+      fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
+      page.find("input#save_machine_condition_#{@lmx.id}").click
+
+      expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content('This is a new condition')
+
+      page.find("div#machineconditions_container_lmx_#{@lmx.id}.machineconditions_container_lmx").click
+      expect(find('.machine_condition_new_line')).to have_content('test')
+    end
+
+    it 'adding a new blank comment does not delete old comments' do
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx").click
+      fill_in("new_machine_condition_#{@lmx.id}", with: 'test')
+      page.find("input#save_machine_condition_#{@lmx.id}").click
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx").click
+      fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
+      page.find("input#save_machine_condition_#{@lmx.id}").click
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx").click
+      fill_in("new_machine_condition_#{@lmx.id}", with: '')
+      page.find("input#save_machine_condition_#{@lmx.id}").click
+
+      expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content('')
+
+      page.find("div#machineconditions_container_lmx_#{@lmx.id}.machineconditions_container_lmx").click
+      expect(find("div#show_conditions_lmx_#{@lmx.id}")).to have_content('test')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}")).to have_content('This is a new condition')
+    end
+
     it 'should let me cancel adding a new machine description' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
