@@ -27,9 +27,9 @@ class LocationMachineXref < ActiveRecord::Base
     self.condition_date = Time.now.strftime('%Y-%m-%d')
     save
 
-    return if condition.nil? || condition.blank?
-
     MachineCondition.create(comment: condition, location_machine_xref: self)
+
+    return if condition.nil? || condition.blank?
 
     Pony.mail(
       to: location.region.users.map { |u| u.email },
