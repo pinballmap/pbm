@@ -15,6 +15,7 @@ Pbm::Application.routes.draw do
       resources :location_types, only: [:index, :show]
       resources :location_machine_xrefs, only: [:create, :destroy, :update]
       resources :machine_score_xrefs, only: [:create, :show]
+      resources :machine_conditions, only: [:destroy]
 
       resources :regions, only: [:index, :show] do
         collection do
