@@ -1,4 +1,8 @@
 class LocationMachineXref < ActiveRecord::Base
+  include Rakismet::Model
+
+  rakismet_attrs content: :condition
+
   belongs_to :location
   belongs_to :machine
   belongs_to :user
