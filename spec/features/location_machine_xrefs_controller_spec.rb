@@ -110,6 +110,38 @@ describe LocationMachineXrefsController do
       @lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
     end
 
+    it 'does not save spam' do
+      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
+
+      expect(Rakismet).to receive(:akismet_call).and_return('true')
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx").click
+      fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS SPAM')
+      page.find("input#save_machine_condition_#{@lmx.id}").click
+
+      sleep 1
+
+      expect(LocationMachineXref.find(@lmx.id).condition).to eq(nil)
+    end
+
+    it 'allows users to update a location machine condition - stubbed out spam detection' do
+      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
+
+      expect(Rakismet).to receive(:akismet_call).and_return('false')
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx").click
+      fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS NOT SPAM')
+      page.find("input#save_machine_condition_#{@lmx.id}").click
+
+      sleep 1
+
+      expect(LocationMachineXref.find(@lmx.id).condition).to eq('THIS IS NOT SPAM')
+    end
+
     it 'should default machine description text' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
