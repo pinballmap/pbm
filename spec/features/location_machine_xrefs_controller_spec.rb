@@ -126,6 +126,18 @@ describe LocationMachineXrefsController do
       expect(LocationMachineXref.find(@lmx.id).condition).to eq(nil)
     end
 
+    it 'does not save conditions with <a href in it' do
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx").click
+      fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS SPAM <a href')
+      page.find("input#save_machine_condition_#{@lmx.id}").click
+
+      sleep 1
+
+      expect(LocationMachineXref.find(@lmx.id).condition).to eq(nil)
+    end
+
     it 'allows users to update a location machine condition - stubbed out spam detection' do
       stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
 

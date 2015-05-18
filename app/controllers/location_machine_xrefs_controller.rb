@@ -40,17 +40,20 @@ class LocationMachineXrefsController < InheritedResources::Base
     id = params[:id]
     lmx = LocationMachineXref.find(id)
 
-    lmx.condition = params["new_machine_condition_#{id}".to_sym]
+    condition = params["new_machine_condition_#{id}".to_sym]
 
-    if ENV['RAKISMET_KEY']
+    if condition =~ /<a href/
+      lmx
+    elsif ENV['RAKISMET_KEY']
+      lmx.condition = condition
       if lmx.spam?
         nil
       else
-        lmx.update_condition(params["new_machine_condition_#{id}".to_sym], remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
+        lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
       end
       lmx
     else
-      lmx.update_condition(params["new_machine_condition_#{id}".to_sym], remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
+      lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
       lmx
     end
 
