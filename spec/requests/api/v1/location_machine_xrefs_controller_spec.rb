@@ -134,6 +134,8 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'updates condition' do
+      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
+
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           body: "foo\nCleo\nGround Kontrol\nPortland\n(entered from 127.0.0.1 via cleOS)",
@@ -146,6 +148,8 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '?condition=foo', {}, HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
+      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('bar')
+      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][1]['comment']).to eq('foo')
     end
 
     it 'email notifies if origin was the staging server' do
