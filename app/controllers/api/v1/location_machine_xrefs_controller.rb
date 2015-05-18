@@ -51,7 +51,7 @@ module Api
         lmx = LocationMachineXref.find(params[:id])
         lmx.update_condition(params[:condition], remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
 
-        return_response(lmx, 'location_machine')
+        return_response(lmx, 'location_machine', [], [:machine_conditions])
 
         rescue ActiveRecord::RecordNotFound
           return_response('Failed to find machine', 'errors')
