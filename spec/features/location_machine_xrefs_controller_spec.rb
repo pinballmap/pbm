@@ -557,6 +557,17 @@ describe LocationMachineXrefsController do
       end
     end
 
+    it 'searches by operator - ignores operators with no locations' do
+      FactoryGirl.create(:location, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region))
+      FactoryGirl.create(:operator, name: 'Hope This Does Not Show Up', region: @region)
+
+      visit "/#{@region.name}"
+
+      page.find('div#other_search_options a#operator_section_link').click
+
+      expect(page).to have_select('by_operator_id', options: ['All', 'Quarter Bean'])
+    end
+
     it 'displays location type for a location, if it is available' do
       FactoryGirl.create(:location, region: @region, name: 'Cleo', location_type: FactoryGirl.create(:location_type, name: 'bar'))
       FactoryGirl.create(:location, region: @region, name: 'Bawb')

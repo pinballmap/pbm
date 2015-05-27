@@ -41,7 +41,7 @@ class PagesController < ApplicationController
       'operator' => {
         'id'   => 'id',
         'name' => 'name',
-        'search_collection' => Operator.where('region_id = ?', @region.id).order('name')
+        'search_collection' => Operator.where('operators.region_id = ?', @region.id).joins(:locations).group('operators.id').order('name')
       },
       'city' => {
         'id'   => 'city',
