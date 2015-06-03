@@ -625,9 +625,6 @@ span.machine_condition_date {
   color: #999999;
   font-size: 12px;
 }
-.machine_condition_display_lmx .machine_condition_lmx span.machine_condition_date {
-  margin-bottom: 8px;
-}
 .machine_condition_new_line span.machine_condition_date,
 .machine_condition_display_lmx span.machine_condition_date {
   margin: 8px 0 2px;
@@ -659,11 +656,7 @@ form.remove_machine_condition {
   width: 261px;
   max-width: 261px;
 }
-.machine_condition_display_lmx .condition_button {
-  width: 130px;
-  height: 18px;
-}
-.condition_button:hover {
+.machine_condition_display_lmx:hover {
   background-color: #dbd9d7;
 }
 .machine_condition_display_lmx span,
@@ -722,8 +715,7 @@ form.remove_machine_condition {
   float:right;
 }
 .location_detail input.remove_machine_button,
-.location_detail input.remove_condition_button,
-.condition_button {
+.location_detail input.remove_condition_button {
   margin: 0;
   background-color:#fcfcf3;
   border: 1px solid #D0B89F;
@@ -734,9 +726,6 @@ form.remove_machine_condition {
   line-height: 20px;
   height: 23px;
   width: 60px;
-}
-.location_detail input.remove_condition_button.most_recent_condition {
-  width: 120px;
 }
 .location_detail input.remove_machine_button:hover,
 .location_detail input.remove_condition_button:hover {
