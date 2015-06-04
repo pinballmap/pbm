@@ -33,6 +33,9 @@
                 - if (l.location_type)
                   %li.location_type= " (#{l.location_type.name})"
                 .clear
+                - if (l.operator_id)
+                  %li.location_type= "Operated by #{l.operator.name}"
+                .clear
                 %li.address= [l.street, l.city, l.state + " " + l.zip].join(', ')
                 .clear
                 - if mobile_device? && !l.phone.nil?

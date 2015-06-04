@@ -18,9 +18,8 @@
     = stylesheet_link_tag 'application', 'mediaqueries', 'http://fonts.googleapis.com/css?family=Montserrat:400,700', 'http://fonts.googleapis.com/css?family=Open+Sans:400,600'
     - if mobile_device?
       = stylesheet_link_tag 'mobile-application'
-    = javascript_include_tag 'application', 'jQuery.scrollSomething-1.0.0', 'jquery.form', 'jquery.remotipart', 'highslide.min'
+    = javascript_include_tag 'application', 'jQuery.scrollSomething-1.0.0', 'jquery.form', 'jquery.remotipart', 'highslide.min', 'http://maps.google.com/maps/api/js?sensor=true'
     = csrf_meta_tag
-    = javascript_include_tag 'http://maps.google.com/maps/api/js?sensor=true'
     = favicon_link_tag 'favicon.ico'
     = favicon_link_tag 'apple-touch-icon.png', rel: 'apple-touch-icon', type: 'image/png'
 
