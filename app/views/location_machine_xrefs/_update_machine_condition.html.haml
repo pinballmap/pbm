@@ -2,9 +2,10 @@
 - if (!lmx.condition_date.nil?)
   %span.machine_condition_date= 'Updated: ' + lmx.condition_date.strftime("%d-%b-%Y")
 %div[lmx, :machine_condition]  
-  %span.condition_button Add machine condition
-- if lmx.condition 
-  = button_to "remove condition", machine_condition_path(:id => lmx.id), :id => "remove_machine_condition_#{lmx.id}", :method => 'delete', :remote => true, :form_class => "remove_machine_condition", :class => "remove_condition_button most_recent_condition"
+  - if lmx.condition 
+    %span.condition_button.condition_button_new Add new machine condition
+  - else
+    %span.condition_button Add machine condition
 %div[lmx, :machine_condition_edit]{:style => 'display:none'}
   = form_tag update_machine_condition_location_machine_xrefs_path(:action => 'update_machine_condition', :id => lmx.id, :region => @region.name), :id => "update_machine_condition_#{lmx.id}", :method => 'get' do
     = hidden_field_tag :id, lmx.id
@@ -29,15 +30,4 @@
   $('#cancel_machine_condition_#{lmx.id}, #machine_condition_lmx_#{lmx.id}').click(function () {
     $('#machine_condition_edit_lmx_#{lmx.id}').toggle();
     $('#machine_condition_lmx_#{lmx.id}').toggle();
-  });
-
-  $('#remove_machine_condition_#{mcx.id}').click(function () {
-    if (confirm("Remove this machine condition?")){
-      $('#past_machine_condition_#{mcx.id}').fadeOut('slow',function(){
-        $('#show_conditions_lmx_#{mcx.location_machine_xref.id}').load('/#{mcx.location_machine_xref.location.region.name}/location_machine_xrefs/#{mcx.location_machine_xref.id}/render_machine_conditions');
-      });
-      $(this).callRemote();
-    }
-
-    return false;
   });

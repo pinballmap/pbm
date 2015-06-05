@@ -584,12 +584,12 @@ li.address {
   padding: 2px 0 2px 5px;
   font-weight: normal !important;
 }
-.machine_name { /* comment about where this is used */
+.machine_name {
   font-weight: bold;
   float: left;
-  background-color: #EBAF73;
-  color: #282222;
-  font-size: 16px;
+  background-color: #e49036;
+  color: #ffffff;
+  font-size: 18px;
   line-height: 20px;
   height: 100%;
   padding: 0 5px 3px;
@@ -609,7 +609,9 @@ li.address {
   line-height: 14px;
 }
 span.machine_year_man {
+  font-size: 16px;
   font-weight: normal;
+  font-style: italic;
   color: #433A3A;
 }
 .machine_lmx {
@@ -660,8 +662,12 @@ form.remove_machine_condition {
   max-width: 261px;
 }
 .machine_condition_display_lmx .condition_button {
-  width: 130px;
+  width: 158px;
   height: 18px;
+  box-shadow: 1px 1px 3px #a2a59b;
+}
+.machine_condition_display_lmx .condition_button_new {
+  width: 190px;
 }
 .condition_button:hover {
   background-color: #dbd9d7;
@@ -722,10 +728,9 @@ form.remove_machine_condition {
   float:right;
 }
 .location_detail input.remove_machine_button,
-.location_detail input.remove_condition_button,
-.condition_button {
+.location_detail input.remove_condition_button {
   margin: 0;
-  background-color:#fcfcf3;
+  background-color:#fedee4;
   border: 1px solid #D0B89F;
   color: #777777; 
   cursor: pointer;
@@ -734,6 +739,7 @@ form.remove_machine_condition {
   line-height: 20px;
   height: 23px;
   width: 60px;
+  text-transform: uppercase;
 }
 .location_detail input.remove_condition_button.most_recent_condition {
   width: 120px;
@@ -742,7 +748,7 @@ form.remove_machine_condition {
 .location_detail input.remove_condition_button:hover {
   border: 1px solid #3b3835;
   color: black;
-  background-color: #f4d1af;
+  background-color: #fc9cae;
 }
 .location_detail input.remove_condition_button {
   height: 20px;
@@ -841,7 +847,8 @@ input#add {
 #add, 
 #location_picture_xref_submit, 
 .new_location_picture_xref input.submit_picture,
-#login .button {
+#login .button,
+.condition_button {
   font-style: normal;
   color: #303030;
   background-color: #F6EFFA;
@@ -900,7 +907,7 @@ input.submit_button:hover,
 .edit_mode,
 #new_user input[type="email"],
 #new_user input[type="password"] {
-  background-color: #fcfcf3;
+  background-color: #F6EFFA;
   border: 2px solid #D0B89F;
   border-radius: 0;
   -moz-border-radius: 0;
@@ -1050,7 +1057,7 @@ input#score {
   width: 100%;
 } 
 .desc_show_location:hover {
-  background-color: #e3e1e0;
+  background-color: #f4f8f6;
 }
 .desc_edit_location {
   padding: 0 0 5px 5px;
