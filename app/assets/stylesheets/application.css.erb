@@ -431,39 +431,34 @@ span.region_name_page {
 #type_section_link {
   font-size: 15px;
   background: #FBFBFB;
-  border-top: #ffeedd;
-  color: black;
+  border: 1px solid #fda878;
+  color: #642501;
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
+  box-sizing: border-box ;
 }
 .section {
-  padding: 2px 5px 8px;
-  width: 446px;   
-  height: 25px;
-  margin-top: 27px;
-  border: 2px solid #513D27;
-  border-top: none;
-  background-color: #f2eae3;
-  box-shadow: 0 10px 10px rgba(90, 100, 117, 0.5);
+  padding: 2px 5px 3px;
+  margin-top: 30px;
+  height: 35px;
+  background-color: #fff3ed;
 }
 #other_search_options_link:active {
    border-top-color: #484848;
    background: #484848;
 }
 #other_search_options {
-  background: none repeat scroll 0 0 #FBFBFB;
-  padding: 0px 0px 4px 15px;
-  width: 445px;
+  padding: 0px 0px 4px 6px;
   float: left;
 }
 #other_search_options a {
   padding: 0px 6px 2px;
 } 
 #other_search_options a:hover {
-  background: #6e5335;
-  border-top-color: #70706a;
+  background: #853102;
   text-decoration: none;
+  border-color: #642501;
   color: #FFFFCC;
 }
 #locations p {
@@ -482,13 +477,15 @@ span.region_name_page {
   position: fixed;
   top: 49px;
   right: 13px;
-  width: 460px;
-  height: 25px;
+  width: 456px;
   z-index: 75;
-  border: 2px solid #513D27;
+  border: 4px solid #853102;
+  border-top: none;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   padding-top: 4px;
-  padding-bottom: 2px;
-  background-color: white;
+  background-color: #fffef2;
+  box-shadow: 0 10px 10px rgba(90, 100, 117, 0.5);
 }
 #lookup_map, #container {
   width: 100%;
@@ -533,13 +530,13 @@ span.region_name_page {
   background-color: #e3e1e0;
 }
 #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id {
-  margin-top: 5px;
+  margin-top: 7px;
   margin-bottom: 3px;
   width: 145px;
-  font-size: 14px;
+  font-size: 16px;
 }
 .active_section_link {
-  background-color: #A6A2A6 !important;
+  background-color: #fc9256 !important;
   color: #FFFFCC !important;
 }
 a.active_section_link:hover {
@@ -665,6 +662,20 @@ form.remove_machine_condition {
   width: 158px;
   height: 18px;
   box-shadow: 1px 1px 3px #a2a59b;
+  color: #333333;
+  background: -webkit-gradient(linear, left top, left bottom, from(#fee8dc), to(#fed3bb));
+  background: -webkit-linear-gradient(top, #fee8dc, #fed3bb);
+  background: -moz-linear-gradient(top, #fee8dc, #fed3bb);
+  background: -ms-linear-gradient(top, #fee8dc, #fed3bb);
+  background: -o-linear-gradient(top, #fee8dc, #fed3bb);
+  border: 1px solid #fdb289;
+}
+.machine_condition_display_lmx .condition_button:hover {
+  background: -webkit-gradient(linear, left top, left bottom, from(#fed3bb), to(#fed3bb));
+  background: -webkit-linear-gradient(top, #fed3bb, #fed3bb);
+  background: -moz-linear-gradient(top, #fed3bb, #fed3bb);
+  background: -ms-linear-gradient(top, #fed3bb, #fed3bb);
+  background: -o-linear-gradient(top, #fed3bb, #fed3bb);
 }
 .machine_condition_display_lmx .condition_button_new {
   width: 190px;
@@ -740,6 +751,7 @@ form.remove_machine_condition {
   height: 23px;
   width: 60px;
   text-transform: uppercase;
+  box-shadow: inset 1px 1px 3px #888;
 }
 .location_detail input.remove_condition_button.most_recent_condition {
   width: 120px;
@@ -819,16 +831,15 @@ br.clear {
 #form .search {
   float: right;
   font-size: 14px;
-  height: 22px;
+  height: 28px;
   line-height: 15px;
   margin-top: 4px;
-  margin-right: 0;
   padding: 0 2px;
   text-transform: uppercase;
 }
 #form select {
   border: 1px solid #b0b0b0;
-  background-color: #e9e7e9;
+  background-color: #f4f8f6;
 }
 input#add {
   width: 40px;
@@ -850,20 +861,24 @@ input#add {
 #login .button,
 .condition_button {
   font-style: normal;
-  color: #303030;
-  background-color: #F6EFFA;
-  border: 2px solid #D0B89F;
-  text-shadow: 1px 1px 0px #fcfcfc;
-  box-shadow: 2px 2px 3px #2a2b27;
-  -moz-box-shadow: 2px 2px 3px #2a2b27;
-  -webkit-box-shadow: 2px 2px 3px #2a2b27;
+  color: #000000;
+  background-color: #EBF1FD;
+  border: 2px solid #fc8746;
+  border-radius: 6px;
+  box-shadow: 1px 1px 3px #b7cfc1;
+  -moz-box-shadow: 1px 1px 3px #b7cfc1;
+  -webkit-box-shadow: 1px 1px 3px #b7cfc1;
   padding: 0 4px;
   cursor: pointer;
   margin-right: 4px;
   font-size: 14px;
+  background: -webkit-gradient(linear, left top, left bottom, from(#fedecb), to(#fdb289));
+  background: -webkit-linear-gradient(top, #fedecb, #fdb289);
+  background: -moz-linear-gradient(top, #fedecb, #fdb289);
+  background: -ms-linear-gradient(top, #fedecb, #fdb289);
+  background: -o-linear-gradient(top, #fedecb, #fdb289);
 }
 .search:active, 
-.search:focus, 
 .submit_button:active, 
 .save_button:active, 
 .cancel_button:active, 
@@ -871,11 +886,11 @@ input#add {
 #add:active, 
 #location_picture_xref_submit:active,
 #login .button:active {
-  box-shadow: 1px 1px 1px #2a2b27;
-  -moz-box-shadow: 1px 1px 1px #2a2b27;
-  -webkit-box-shadow: 1px 1px 1px #2a2b27;
+  box-shadow: 1px 1px 1px #fc9256;
+  -moz-box-shadow: 1px 1px 1px #fc9256;
+  -webkit-box-shadow: 1px 1px 1px #fc9256;
   transform: translate(1px, 1px);
-  background: #f8f8a1;
+  background: #fdb289;
 }
 .save_button {
   float: left;
@@ -892,10 +907,11 @@ input.submit_button:hover,
 .save_button:hover, 
 .cancel_button:hover, 
 #add_score:hover {
-  box-shadow: 2px 2px 4px #2a2b27;
-  -moz-box-shadow: 2px 2px 4px #2a2b27;
-  -webkit-box-shadow: 2px 2px 4px #2a2b27;
-  background: #f8f8a1;
+  box-shadow: 1px 1px 3px #b7cfc1;
+  -moz-box-shadow: 1px 1px 3px #b7cfc1;
+  -webkit-box-shadow: 1px 1px 3px #b7cfc1;
+  background: #fdb289;
+  color: #EBF1FD;
 }
 
 #location_maker input.text, 
@@ -906,22 +922,26 @@ input.submit_button:hover,
 #form input.lookup_search_input, 
 .edit_mode,
 #new_user input[type="email"],
-#new_user input[type="password"] {
-  background-color: #F6EFFA;
-  border: 2px solid #D0B89F;
-  border-radius: 0;
-  -moz-border-radius: 0;
-  -webkit-border-radius: 0;
+#new_user input[type="password"],
+.condition_button {
+  background-color: #ffffff;
+  border: 2px solid #853102;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
   margin: 4px 4px;
   width: 260px;
+  box-shadow: inset 1px 1px 3px #888;
 }
 #form input.lookup_search_input {
   width: 200px;
-  height: 22px;
-  font-size: 14px;
+  height: 28px;
+  font-size: 16px;
+  box-shadow: inset 1px 1px 3px #888;
 }
 .location_detail input {
   width: 80px;
+  box-shadow: 1px 1px 3px #888;
 }
 input#score, input#initials {
   width: 80%;
@@ -1267,7 +1287,7 @@ a.apps_link:hover {
   width: 475px;
 }
 .location_search {
-  margin-left: 5px;
+  margin-left: 2px;
 }
 .right_column_outer .links_column {
   min-height: 50px;
