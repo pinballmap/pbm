@@ -11,16 +11,3 @@
   %div.machine_condition_new_line{:id => "past_machine_condition_#{mcx.id}"}
     %span.machine_condition= "#{mcx.comment}"
     %span.machine_condition_date= "#{mcx.created_at ? mcx.created_at.strftime("%d-%b-%Y") : ''}"
-    = button_to "remove", machine_condition_path(:id => mcx.id), :id => "remove_machine_condition_#{mcx.id}", :method => 'delete', :remote => true, :form_class => "remove_machine_condition", :class => "remove_condition_button"
-
-    :javascript
-      $('#remove_machine_condition_#{mcx.id}').click(function () {
-        if (confirm("Remove this machine condition?")){
-          $('#past_machine_condition_#{mcx.id}').fadeOut('slow',function(){
-            $('#show_conditions_lmx_#{mcx.location_machine_xref.id}').load('/#{mcx.location_machine_xref.location.region.name}/location_machine_xrefs/#{mcx.location_machine_xref.id}/render_machine_conditions');
-          });
-          $(this).callRemote();
-        }
-
-        return false;
-      });
