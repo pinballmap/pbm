@@ -71,6 +71,22 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(lmxes[0]['machine_id']).to eq(@machine.id)
     end
 
+    it "only sends the #{MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY} most recent machine_conditions" do
+      chicago = FactoryGirl.create(:region, name: 'chicago')
+      lmx = FactoryGirl.create(:location_machine_xref, machine: @machine, location: FactoryGirl.create(:location, name: 'Chicago Location', region: chicago))
+
+      (MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY + 10).times do
+        FactoryGirl.create(:machine_condition, location_machine_xref: LocationMachineXref.find(lmx.id), comment: 'Foo')
+      end
+
+      get '/api/v1/region/chicago/location_machine_xrefs.json'
+      expect(response).to be_success
+
+      lmxes = JSON.parse(response.body)['location_machine_xrefs']
+
+      expect(lmxes[0]['machine_conditions'].size).to eq(MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY)
+    end
+
     it 'respects limit scope' do
       newest_lmx = FactoryGirl.create(:location_machine_xref, machine: FactoryGirl.create(:machine, name: 'Barb'), location: @location)
 
@@ -148,8 +164,8 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '?condition=foo', {}, HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
-      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('bar')
-      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][1]['comment']).to eq('foo')
+      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('foo')
+      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][1]['comment']).to eq('bar')
     end
 
     it 'email notifies if origin was the staging server' do
