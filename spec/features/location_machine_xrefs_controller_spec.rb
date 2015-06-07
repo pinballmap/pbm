@@ -181,6 +181,38 @@ describe LocationMachineXrefsController do
       expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{Time.now.strftime('%d-%b-%Y')}")
     end
 
+    it 'only displays the 6 most recent descriptions' do
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+
+      lmx = LocationMachineXref.find(@lmx.id)
+      lmx.condition = 'Condition 7'
+      lmx.save
+
+      7.times do |i|
+        FactoryGirl.create(:machine_condition, location_machine_xref: LocationMachineXref.find(@lmx.id), comment: "Condition #{i + 1}", created_at: "199#{i + 1}-01-01")
+      end
+
+      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
+
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 6')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 5')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 4')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 3')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 2')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 1')
+
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx").click
+      fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
+      page.find("input#save_machine_condition_#{@lmx.id}").click
+
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 7')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 6')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 5')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 4')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 3')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 2')
+    end
+
     it 'should add past conditions when you add a new condition and a condition exists' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
