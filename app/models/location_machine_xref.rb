@@ -43,9 +43,16 @@ class LocationMachineXref < ActiveRecord::Base
     )
   end
 
+  def as_json(options = {})
+    h = super(options)
+    h[:machine_conditions] = machine_conditions.limited
+
+    h
+  end
+
   def sorted_machine_conditions
     # Offset by 1 so that we don't show the current machine condition
-    machine_conditions.order('created_at DESC').offset(1)
+    machine_conditions.limited.offset(1)
   end
 
   def destroy(options = {})
