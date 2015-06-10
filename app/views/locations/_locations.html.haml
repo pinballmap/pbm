@@ -26,15 +26,27 @@
               %li.machine_names
                 #{[l.machine_names].join('<br />').html_safe}
           .clear
-          %div.location_detail[l, :location_detail]{:style => 'display:none'}
+          %div.location_detail[l, :location_detail]{:style => 'display:none;'}
             %div.location_name{:onclick => "toggleArrows('location_detail', #{l.id}); locationLookupMapCenter(#{l.id});"}
               %ul
                 %li.name= l.name
-                - if (l.location_type)
-                  %li.location_type= " (#{l.location_type.name})"
                 .clear
-                - if (l.operator_id)
-                  %li.location_type= "Operated by #{l.operator.name}"
+                %div.operator_type
+                  - if (l.operator_id)
+                    - if (l.operator.website.empty?)
+                      %li.operator
+                        %span.operator_type_italic Operated by: 
+                        %span.operator_type_bold #{l.operator.name}
+                    - else
+                      %li.operator
+                        %span.operator_type_italic Operated by: 
+                        %span.operator_type_bold
+                          =link_to "#{l.operator.name}", "#{l.operator.website}", :target => "_blank"
+                  .clear
+                  - if (l.location_type)
+                    %li.location_type
+                      %span.operator_type_italic Location Type: 
+                      %span.operator_type_bold #{l.location_type.name}
                 .clear
                 %li.address= [l.street, l.city, l.state + " " + l.zip].join(', ')
                 .clear
@@ -50,10 +62,9 @@
                   = render :partial => 'locations/render_desc', :locals => {:l => l}
                 %div.location_thumbs
                   = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
-                .clear
+                %div.location_link 
+                  =link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
             %div.location_detail_sub
-              %div.location_link 
-                =link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
               = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
               = render :partial => 'locations/add_machine', :locals => {:location => l}
               = render :partial => 'locations/show_machines', :locals => {:location => l}
