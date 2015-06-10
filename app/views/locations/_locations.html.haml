@@ -35,18 +35,18 @@
                   - if (l.operator_id)
                     - if (l.operator.website.empty?)
                       %li.operator
-                        %span.operator_type_italic Operated by: 
-                        %span.operator_type_bold #{l.operator.name}
+                        %span.italic Operated by: 
+                        %span.bold #{l.operator.name}
                     - else
                       %li.operator
-                        %span.operator_type_italic Operated by: 
-                        %span.operator_type_bold
+                        %span.italic Operated by: 
+                        %span.bold
                           =link_to "#{l.operator.name}", "#{l.operator.website}", :target => "_blank"
                   .clear
                   - if (l.location_type)
                     %li.location_type
-                      %span.operator_type_italic Location Type: 
-                      %span.operator_type_bold #{l.location_type.name}
+                      %span.italic Location Type: 
+                      %span.bold #{l.location_type.name}
                 .clear
                 %li.address= [l.street, l.city, l.state + " " + l.zip].join(', ')
                 .clear
