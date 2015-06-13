@@ -80,6 +80,12 @@ li a:hover {
   font-weight: bold;
   text-shadow: 0.1px 0.1px 0.1px white;
 }
+.italic {
+  font-style: italic;
+}
+.bold {
+  font-weight: bold;
+}
 .hello {
   font-size: 28px;
   line-height: 36px;
@@ -512,22 +518,16 @@ span.region_name_page {
   border-bottom: 1px solid white;
 }
 .location_link {
-  color: #999999;
   cursor: pointer;
   font-size: 11px;
   font-weight: normal;
-  border: 1px solid #494949;
-  border-bottom: none;
   padding: 1px 2px 2px;
-  margin-left: 275px;
   margin-top: 5px;
-  height: 10px;
   text-align: center;
   background-color: #f3f2f2;
 }
-.location_link:hover {
-  color: #cccccc;
-  background-color: #e3e1e0;
+.location_link a:hover {
+  text-decoration: underline;
 }
 #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id {
   margin-top: 7px;
@@ -562,13 +562,12 @@ a.active_section_link:hover {
   padding-left: 10px;
 }
 .name {
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 18px;
+  line-height: 18px;
   height: 100%;
   color: #433A3A;
-  background-color: #e7dfdf;
-  padding: 10px 5px 5px;
-  margin-bottom:3px;
+  background-color: #FCF3EA;
+  padding: 10px 5px;
   border-radius: 0 5px 0 0;
   -moz-border-radius: 0 5px 0 0;
   -webkit-border-radius: 0 5px 0 0;
@@ -813,6 +812,9 @@ br.clear {
 .sub_nav_location li.address {
   color: #666666;
 }
+.sub_nav_location .location_type {
+  background: transparent;
+}
 .search_result {
   height: 100%;
   width: 430px;
@@ -1003,12 +1005,16 @@ input#score, input#initials {
   background-color: #f2cbb1;
   color: #555555;
 }
-.location_type {
+.location_type, .operator {
   color: #666666;
   font-size: 12px;
   padding: 2px 0;
   line-height: 16px;
   font-weight: normal !important;
+  background-color: #F3F2F2;
+}
+.operator_type {
+  margin-bottom: 5px;
 }
 .edit_mode {
   background-color: #fcfcf3;
@@ -1048,7 +1054,7 @@ input#score {
   padding: 10px;
 }
 .location_name {
-  background-color: #e7dfdf;
+  background-color: #FEFBF8;
   width: 430px;
   box-shadow: 0 2px 10px rgba(90, 100, 117, 0.5);
   -moz-box-shadow: 0 2px 10px rgba(90, 100, 117, 0.5);
@@ -1056,7 +1062,6 @@ input#score {
   border-radius: 5px 5px 0 0;
   -moz-border-radius: 5px 5px 0 0;
   -webkit-border-radius: 5px 5px 0 0;
-  /*margin: -27px 0 0 -10px;*/
 }
 .location_detail_location ul {
   border-radius: 5px 0 0 0;
@@ -1087,11 +1092,12 @@ input#score {
   width: 430px;
 }
 .location_thumbs {
-  margin: 5px 0;
+  margin: 5px 6px;
 }
 .location_thumbs a {
-  padding: 0 5px 5px;
+  margin: 0 5px 5px;
   display: inline-block;
+  border: 2px solid #FEFBF8;
 }
 .search_option_selector a {
   color: #000;
