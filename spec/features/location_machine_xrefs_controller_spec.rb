@@ -589,6 +589,27 @@ describe LocationMachineXrefsController do
       end
     end
 
+    it 'searches by operator - displays website when available' do
+      l = FactoryGirl.create(:location, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region, website: 'website.com'))
+
+      visit "/#{@region.name}?by_location_id=#{Location.find(l.id).id}"
+
+      sleep(1)
+
+      expect(page).to have_content('Cleo')
+      expect(page).to have_link('Quarter Bean', 'website.com')
+
+      l = FactoryGirl.create(:location, region: @region, name: 'Sass', operator: FactoryGirl.create(:operator, name: 'Sass Bean', region: @region, website: nil))
+
+      visit "/#{@region.name}?by_location_id=#{Location.find(l.id).id}"
+
+      sleep(1)
+
+      expect(page).to have_content('Sass')
+      expect(page).to have_content('Sass Bean')
+      expect(page).to_not have_link('Sass Bean')
+    end
+
     it 'searches by operator - ignores operators with no locations' do
       FactoryGirl.create(:location, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region))
       FactoryGirl.create(:operator, name: 'Hope This Does Not Show Up', region: @region)

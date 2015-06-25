@@ -33,7 +33,7 @@
                 .clear
                 %div.operator_type
                   - if (l.operator_id)
-                    - if (l.operator.website.empty?)
+                    - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
                       %li.operator
                         %span.italic Operated by: 
                         %span.bold #{l.operator.name}
