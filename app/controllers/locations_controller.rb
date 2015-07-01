@@ -45,6 +45,10 @@ class LocationsController < InheritedResources::Base
     l = Location.find(id)
     l.description = params["new_desc_#{id}".to_sym]
 
+    if (l.description != nil)
+      l.description = l.description.slice(0, 254)
+    end
+
     if ENV['RAKISMET_KEY']
       if l.spam?
         nil

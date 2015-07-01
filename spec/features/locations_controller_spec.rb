@@ -201,6 +201,34 @@ describe LocationsController do
 
       expect(Location.find(@location.id).description).to eq('COOL DESC')
     end
+
+    it 'does not error on nil descriptions' do
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find("#desc_show_location_#{@location.id}").click
+      fill_in("new_desc_#{@location.id}", with: nil)
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).description).to eq('')
+    end
+
+    it 'truncates descriptions to 255 characters' do
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      string_that_is_too_large = <<HERE
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur porta dui vel eleifend. Maecenas pulvinar varius euismod. Curabitur luctus diam quis pulvinar facilisis. Suspendisse eu felis sit amet eros cursus aliquam. Proin sit amet posuere.
+HERE
+
+      find("#desc_show_location_#{@location.id}").click
+      fill_in("new_desc_#{@location.id}", with: string_that_is_too_large)
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).description).to eq('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur porta dui vel eleifend. Maecenas pulvinar varius euismod. Curabitur luctus diam quis pulvinar facilisis. Suspendisse eu felis sit amet eros cursus aliquam. Proin sit amet posuer')
+    end
   end
 
   describe 'mobile', type: :feature, js: true do
