@@ -21,6 +21,8 @@
         = link_to 'T-Shirts', store_path
   - if (@region)
     %ul.region_links
+      %span{:onclick => ""}
+        menu
       %li.first_header_link=link_to 'About', about_path
       %li=link_to 'Suggest A New Location', suggest_path
       %li=link_to 'Apps', apps_path
@@ -42,12 +44,7 @@
       },function(){
         $(".other_regions_list").hide();
     });
-    $(".other_links").hover(function () {
-        $(".other_links_dropdown").show();
-      },function(){
-        $(".other_links_dropdown").hide();
-    });
     $(document).click(function () {
-        $(".other_regions_list,.other_links_dropdown").hide();
+        $(".other_regions_list").hide();
     });
   });
