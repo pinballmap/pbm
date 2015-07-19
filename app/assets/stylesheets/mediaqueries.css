@@ -3,12 +3,10 @@
   #form {
     left: 291px;
   }
-
   #lookup, .scrollerWrapper {
     left: 296px;
     float: left;
   }
-
 }
 
 @media (max-width: 820px) { 
@@ -17,11 +15,9 @@
   #header.header_home {
     min-width: 755px;
   }
-
   .home_intro {
     width: 235px;
   }
-
   #map_summaries {
     margin: 0 0 0 255px;
   }
@@ -30,38 +26,37 @@
 @media (max-width: 840px) {
   
   #header ul.region_links {
-    visibility: hidden;
     font-size: 14px !important;
     width: 130px !important;
     margin: 50px 160px;
-    background: #FFFFFF;
     font-weight: bold;
     color: #55413F;
     line-height: 18px;
     padding-top: 5px;
-    box-shadow: 0 5px 10px rgba(90, 100, 117, 0.5);
-    -webkit-shadow: 0 5px 10px rgba(90, 100, 117, 0.5);
-    -moz-box-shadow: 0 5px 10px rgba(90, 100, 117, 0.5);
   }
-  #header ul.region_links li {
-    display: block;
-  }
-  #header ul.region_links:before {
-    content: "menu";
+ #header ul.region_links span {
     background-color: #f6effa;
     width: 130px;
     font-size: 18px;
     text-shadow: 1px 1px 5px #CCCCCC;
     line-height: 49px;
-    visibility: visible;
+    display: block;
     position: absolute;
     text-align: center;
     margin: -50px 0 0 0;
     border-left: 1px solid #efe2f6;
     border-right: 1px solid #efe2f6;
   }
-  #header ul.region_links:hover {
-    visibility: visible;
+  #header ul.region_links:hover,
+  #header ul.region_links:hover li {
+    display: block;
+  }
+  #header ul.region_links li {
+    display: none;
+    background: #ffffff;
+  }
+  #header ul.region_links span {
+    display: block;
   }
   #header li.other_links {
     padding-bottom: 0;
@@ -92,15 +87,12 @@
     font-size: 14px;
     line-height: 16px;
   }
-
   .hello {
     font-size: 18px;
   }
-
   #intro {
     padding: 10px;
   }
-
 }
 
 @media (max-width: 900px) {
@@ -132,10 +124,9 @@
     float: none;
     clear: both;
   }
-
 }
 
-@media (max-width: 965px) {
+@media (max-width: 975px) {
 
   .store_header_region {
     display: none;
@@ -147,5 +138,4 @@
   .blog_header_region {
     display: none;
   }
-
 }
