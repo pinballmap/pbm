@@ -182,8 +182,6 @@ describe LocationMachineXrefsController do
     end
 
     it 'only displays the 6 most recent descriptions' do
-      visit "/#{@region.name}/?by_location_id=#{@location.id}"
-
       lmx = LocationMachineXref.find(@lmx.id)
       lmx.condition = 'Condition 7'
       lmx.save
@@ -191,6 +189,8 @@ describe LocationMachineXrefsController do
       7.times do |i|
         FactoryGirl.create(:machine_condition, location_machine_xref: LocationMachineXref.find(@lmx.id), comment: "Condition #{i + 1}", created_at: "199#{i + 1}-01-01")
       end
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
