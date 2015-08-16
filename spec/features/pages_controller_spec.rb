@@ -125,6 +125,15 @@ describe PagesController do
 
       expect(page).to have_content('Links link 1 link 2 link 3 other category link 4')
     end
+
+    it 'Mixing sort_order and nil sort_order links does not error' do
+      FactoryGirl.create(:region_link_xref, region: @region, name: 'Minnesota Pinball - The "Pin Cities"', url: 'https://www.facebook.com/groups/minnesotapinball/', description: 'Your best source for everything pinball in Minnesota!  Events, leagues, locations, games and more!', category: 'Pinball Map Links', sort_order: 1)
+      FactoryGirl.create(:region_link_xref, region: @region, name: 'Pinball Map Store', url: 'http://blog.pinballmap.com', description: 'News, questions, feelings.', category: 'Pinball Map Links', sort_order: nil)
+
+      visit "/#{@region.name}/about"
+
+      expect(page).to have_content('Links Pinball Map Store News, questions, feelings. Minnesota Pinball - The "Pin Cities" Your best source for everything pinball in Minnesota! Events, leagues, locations, games and more!')
+    end
   end
 
   describe 'Location suggestions', type: :feature, js: true do
