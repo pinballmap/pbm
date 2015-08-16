@@ -21,8 +21,8 @@
 }
 #header ul.region_links {
   display: inline-block;
-  margin: 0 auto;
-  padding: 0 0 10px 0;
+  margin: 0 auto 10px;
+  padding: 0;
   float: none;
   width: 100%;
   min-width: 320px;
@@ -35,16 +35,25 @@
   width: auto !important;
   font-size: 16px !important;
 }
-#header ul.region_links:before {
+#header ul.region_links:before,
+#header ul.region_links span {
   display: none;
 }
 #header ul.region_links li {
   display: inline;
   padding: 4px 0 0 6px !important;
   line-height: 18px;
+  background: none;
 }
-#header ul.region_links li.other_links_list {
+#header ul.region_links li:nth-child(4):after { 
+  content: ''; white-space:normal; 
+}
+#header ul.region_links li.other_links_list,
+#header ul.region_links:hover li {
   display: inline;
+}
+#header ul.region_links:hover {
+  display: inline-block;
 }
 #header ul.other_links_dropdown {
   display: inline !important;
