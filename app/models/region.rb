@@ -9,6 +9,8 @@ class Region < ActiveRecord::Base
 
   attr_accessible :name, :full_name, :motd, :lat, :lon, :n_search_no, :default_search_type, :should_email_machine_removal
 
+  geocoded_by :lat_and_lon, latitude: :lat, longitude: :lon
+
   def machines
     machines = {}
     location_machine_xrefs.includes(:machine).each do |lmx|
@@ -115,5 +117,9 @@ class Region < ActiveRecord::Base
     end
 
     links
+  end
+
+  def lat_and_lon
+    [lat, lon].join(', ')
   end
 end

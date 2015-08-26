@@ -2,11 +2,37 @@ require 'spec_helper'
 
 describe Api::V1::LocationsController, type: :request do
   before(:each) do
-    @portland = FactoryGirl.create(:region, name: 'portland', motd: 'foo', full_name: 'Portland', lat: 12, lon: 13)
+    @portland = FactoryGirl.create(:region, id: 555, name: 'portland', motd: 'foo', full_name: 'Portland', lat: 12, lon: 13)
     @la = FactoryGirl.create(:region, name: 'la', full_name: 'Los Angeles')
 
     FactoryGirl.create(:user, region: @portland, email: 'portland@admin.com', is_super_admin: 1)
     FactoryGirl.create(:user, region: @la, email: 'la@admin.com')
+  end
+
+  describe '#closest_by_lat_lon' do
+    it 'sends back closest region' do
+      FactoryGirl.create(:region, name: 'not portland', lat: 122.0, lon: 13.0)
+
+      get '/api/v1/regions/closest_by_lat_lon.json', lat: 12.1, lon: 13.0
+      expect(response).to be_success
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      region = parsed_body['region']
+
+      expect(region['id']).to eq(555)
+      expect(region['name']).to eq('portland')
+      expect(region['motd']).to eq('foo')
+      expect(region['lat']).to eq('12.0')
+      expect(region['lon']).to eq('13.0')
+      expect(region['full_name']).to eq('Portland')
+    end
+
+    it 'throws an error if no regions are within 250 miles' do
+      get '/api/v1/regions/closest_by_lat_lon.json', lat: 120.0, lon: 13.0
+
+      expect(JSON.parse(response.body)['errors']).to eq('No regions within 250 miles.')
+    end
   end
 
   describe '#show' do
