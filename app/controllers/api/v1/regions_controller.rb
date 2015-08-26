@@ -6,7 +6,7 @@ module Api
 
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_REGION = 250
 
-      api :GET, '/api/v1/closest_by_lat_lon.json', 'Find closest region based on lat/lon'
+      api :GET, '/api/v1/regions/closest_by_lat_lon.json', 'Find closest region based on lat/lon'
       description 'Find closest region based on lat/lon'
       param :lat, String, desc: 'Lat', required: true
       param :lon, String, desc: 'Lon', required: true
