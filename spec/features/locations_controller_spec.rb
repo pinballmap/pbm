@@ -78,6 +78,22 @@ describe LocationsController do
       expect(page).to_not have_content('Sass')
     end
 
+    it 'by_machine_group_id' do
+      machine_group = FactoryGirl.create(:machine_group, id: 1001, name: 'Sass')
+      sass_reg_ed = FactoryGirl.create(:machine, name: 'Sass Reg Ed', machine_group_id: 1001)
+      sass_tourn_ed = FactoryGirl.create(:machine, name: 'Sass Tournament Ed', machine_group_id: 1001)
+      machine_group_location = FactoryGirl.create(:location, region: @region)
+
+      FactoryGirl.create(:location_machine_xref, location: machine_group_location, machine: sass_reg_ed)
+      FactoryGirl.create(:location_machine_xref, location: machine_group_location, machine: sass_tourn_ed)
+
+      visit '/portland/?by_machine_group_id=' + machine_group.id.to_s
+
+      expect(page).to have_content('Sass Reg Ed')
+      expect(page).to have_content('Sass Tournament Ed')
+      expect(page).to_not have_content('Barb')
+    end
+
     it 'by_location_id' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
