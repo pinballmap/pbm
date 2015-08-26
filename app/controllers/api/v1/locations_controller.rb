@@ -128,6 +128,7 @@ module Api
         machines = []
         location.machines.sort { |x, y| x.name <=> y.name }.each do |m|
           machines.push(
+            id: m.id,
             name: m.name,
             year: m.year,
             manufacturer: m.manufacturer,
