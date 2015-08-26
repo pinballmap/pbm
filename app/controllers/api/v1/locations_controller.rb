@@ -4,7 +4,7 @@ module Api
       include ActionView::Helpers::NumberHelper
       before_filter :allow_cors
       respond_to :json
-      has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_zone_id, :by_operator_id, :by_type_id, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region
+      has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_zone_id, :by_operator_id, :by_type_id, :by_machine_group_id, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region
 
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION = 50
 
@@ -46,6 +46,7 @@ module Api
       param :by_machine_id, Integer, desc: 'Machine ID to find in locations', required: false
       param :by_machine_name, String, desc: 'Find machine name in locations', required: false
       param :by_city_id, String, desc: 'City to search for', required: false
+      param :by_machine_group_id, String, desc: 'Machine Group to search for', required: false
       param :by_zone_id, Integer, desc: 'Zone ID to search by', required: false
       param :by_operator_id, Integer, desc: 'Operator ID to search by', required: false
       param :by_type_id, Integer, desc: 'Location type ID to search by', required: false
@@ -127,6 +128,7 @@ module Api
         machines = []
         location.machines.sort { |x, y| x.name <=> y.name }.each do |m|
           machines.push(
+            id: m.id,
             name: m.name,
             year: m.year,
             manufacturer: m.manufacturer,
