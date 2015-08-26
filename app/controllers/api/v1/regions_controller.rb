@@ -4,6 +4,23 @@ module Api
       before_filter :allow_cors
       respond_to :json
 
+      MAX_MILES_TO_SEARCH_FOR_CLOSEST_REGION = 250
+
+      api :GET, '/api/v1/closest_by_lat_lon.json', 'Find closest region based on lat/lon'
+      description 'Find closest region based on lat/lon'
+      param :lat, String, desc: 'Lat', required: true
+      param :lon, String, desc: 'Lon', required: true
+      formats ['json']
+      def closest_by_lat_lon
+        closest_region = Region.near([params[:lat], params[:lon]], MAX_MILES_TO_SEARCH_FOR_CLOSEST_REGION).first
+
+        if closest_region
+          return_response(closest_region, 'region', [], [:id])
+        else
+          return_response("No regions within #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_REGION} miles.", 'errors')
+        end
+      end
+
       api :GET, '/api/v1/regions.json', 'Fetch all regions'
       description 'Fetch data about all regions'
       def index
