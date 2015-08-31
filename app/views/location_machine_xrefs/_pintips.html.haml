@@ -1,0 +1,6 @@
+- if (lmx.machine.machine_group_id.blank?)
+  .pintips
+    = link_to "view playing tips on pintips.net", "http://pintips.net/pinmap/machine/#{lmx.machine_id}", :target => '_blank'
+- else
+  .pintips
+    = link_to "view playing tips on pintips.net", "http://pintips.net/pinmap/group/#{lmx.machine.machine_group_id}", :target => '_blank'
