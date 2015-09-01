@@ -275,9 +275,26 @@ div.pick_a_map {
 
 .machine_name {
   width: auto;
-  font-size: 20px;
+  font-size: 22px;
   line-height: 28px;
   float: none;
+}
+
+.pintips {
+  width: auto;
+  font-size: 15px;
+  line-height: 20px;
+  float: none;
+  margin-left: 0;
+}
+
+.pintips a {
+  padding-left: 8px;
+}
+
+.pintips a:after {
+  margin: 3px 5px 0 4px;
+  background-size: 20px 20px;
 }
 
 .machine_names {
@@ -288,7 +305,8 @@ div.pick_a_map {
 .location_detail input.remove_machine_button {
   font-size: 16px;
   height: 28px;
-  width: 100px;
+  margin: 5px 0;
+  width: 200px;
 }
 
 .search_result {
@@ -315,6 +333,7 @@ div.pick_a_map {
 .machine_condition_display_lmx {
   font-size: 15px;
   line-height: 20px;
+  margin: 5px 0 0px 0px;
 }
 
 .show_conditions_lmx span.machine_condition_date {
@@ -322,7 +341,7 @@ div.pick_a_map {
   font-size: 12px;
 }
 
-.sub_nav_item {
+.sub_nav_item, .pintips {
   height: auto;
   padding: 10px 0;
 }
@@ -380,6 +399,10 @@ div.pick_a_map {
     line-height: 16px;
 }
 
+.high_score, .machineconditions_container_lmx {
+  margin: 0;
+}
+
 .desc_edit_location .edit_mode, .machine_condition_display_lmx .edit_mode {
   max-width: 236px;
   min-width: 236px;
@@ -396,6 +419,9 @@ div.pick_a_map {
   line-height: 18px;
 }
 
+.show_machines_location span.info {
+  padding-top: 0;
+}
 .search, .submit_button, .save_button, .cancel_button, #add_score, #add, 
 #location_picture_xref_submit, .new_location_picture_xref input.submit_picture, input#add {
   width: 100%;
@@ -456,9 +482,19 @@ input#score, input#initials {
     padding-top: 5px;
 }
 
+.arrow {
+  display: none;
+}
+
 .machine_condition_display_lmx .condition_button {
   height: 28px;
   line-height: 28px;
+  box-shadow: none;
+  background: none;
+  text-transform: uppercase;
+  font-size: 15px;
+  border: none;
+  width: auto;
 }
 
 #operator_section_link, #zone_section_link, #machine_section_link, 
