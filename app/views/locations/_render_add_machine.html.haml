@@ -9,7 +9,12 @@
 :javascript
   $(function () {
     $("#dialog-message").css("display","none");
-    $('#add_machine_by_name').autocomplete({source: '#{autocomplete_machines_path}'});
+    $('#add_machine_by_name').autocomplete({ source: '#{autocomplete_machines_path}' });
+    $('#add_machine_by_name').bind('autocompleteselect', function(event, ui) {
+      event.preventDefault();
+      $(this).val('');
+      $('#add_machine_by_id').val(ui.item.id);
+    });
   });
 
   $('#add_new_machine_#{l.id}').submit(function () {

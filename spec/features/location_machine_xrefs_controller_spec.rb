@@ -273,12 +273,12 @@ describe LocationMachineXrefsController do
 
   describe 'autocomplete', type: :feature, js: true do
     before(:each) do
-      FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, year: 2010))
+      FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, year: 2010, manufacturer: 'Williams'))
     end
 
-    it 'adds by machine name from input -- selects correct machine when two versions of machine exist' do
-      FactoryGirl.create(:machine, id: 10, name: 'Sassy Madness', year: 1980)
-      FactoryGirl.create(:machine, id: 11, name: 'Sassy Madness', year: 2010)
+    it 'adds by machine name from input -- autocorrect picks via id' do
+      FactoryGirl.create(:machine, id: 10, name: 'Sassy Madness', year: 1980, manufacturer: 'Bally')
+      FactoryGirl.create(:machine, id: 11, name: 'Sassy Madness', year: 2010, manufacturer: 'Bally')
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
@@ -291,16 +291,16 @@ describe LocationMachineXrefsController do
       page.execute_script %{ $('#add_machine_by_name').trigger('focus') }
       page.execute_script %{ $('#add_machine_by_name').trigger('keydown') }
 
-      expect(page).to have_xpath('//li[contains(text(), "Sassy Madness (1980)")]')
-      expect(page).to have_xpath('//li[contains(text(), "Sassy Madness (2010)")]')
+      expect(page).to have_xpath('//li[contains(text(), "Sassy Madness (Bally, 1980)")]')
+      expect(page).to have_xpath('//li[contains(text(), "Sassy Madness (Bally, 2010)")]')
 
-      find(:xpath, '//li[contains(text(), "Sassy Madness (2010)")]').click
+      find(:xpath, '//li[contains(text(), "Sassy Madness (Bally, 2010)")]').click
 
       click_on 'add'
 
       sleep(1)
 
-      expect(Location.find(@location).machines.map { |m| m.name + '-' + m.year.to_s }).to eq(['Sassy Madness-2010', 'Test Machine Name-2010'])
+      expect(Location.find(@location).machines.map { |m| m.name + '-' + m.year.to_s + '-' + m.manufacturer.to_s }).to eq(['Sassy Madness-2010-Bally', 'Test Machine Name-2010-Williams'])
     end
 
     it 'adds by machine name from input' do
