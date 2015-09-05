@@ -60,6 +60,17 @@ describe LocationsController do
     end
   end
 
+  describe 'search locations', type: :feature, js: true do
+    before(:each) do
+    end
+
+    it 'displays a location not found message instead of the ocean' do
+      visit '/portland/?by_location_id=-1'
+
+      expect(page).to have_content('NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN.')
+    end
+  end
+
   describe 'initial search by passed in param', type: :feature, js: true do
     before(:each) do
       @type = FactoryGirl.create(:location_type, name: 'Bar')
