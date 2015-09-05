@@ -69,7 +69,7 @@ function showLocations(ids, lats, lons, contents) {
     map.setZoom(18);
     map.setCenter(new google.maps.LatLng(lats[0], lons[0]));
   } else if (contents.length === 0) {
-    document.getElementById("map_canvas").innerHTML="NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN.";
+    document.getElementById("map_canvas").innerHTML="<p id='intro' class='dark hello'>" + "NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN." + "</p>";
   } else {
     map.fitBounds(bounds);
   }
