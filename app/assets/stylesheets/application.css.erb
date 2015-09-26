@@ -372,7 +372,7 @@ div.dont_pick_a_map {
   vertical-align: middle;
   margin-bottom: 2px;
 }
-.apps_header, .blog_header, .store_header {
+.apps_header, .blog_header, .store_header, .geo_header {
   font-size: 15px;
   line-height: 36px;
   float: left;
@@ -386,7 +386,12 @@ div.dont_pick_a_map {
   box-sizing: border-box;
 }
 .store_header {
-  border-right: 1px solid #efe2f6;;
+  border-right: 1px solid #efe2f6;
+}
+.geo_header {
+  width: 250px;
+  float: right;
+  font-size: 20px;
 }
 .blog_header_region, .store_header_region {
   border-right: none;
@@ -396,12 +401,14 @@ div.dont_pick_a_map {
 }
 .blog_header:hover,
 .apps_header:hover,  
-.store_header:hover {
+.store_header:hover,
+.geo_header:hover {
   background-color: #efe2f6;
 }
 .darkb.blog_header a:hover,
 .darkb.apps_header a:hover, 
-.darkb.store_header a:hover {
+.darkb.store_header a:hover,
+.darkb.geo_header a:hover {
   text-decoration: none;
 }
 .region_name, .region_name_page, 

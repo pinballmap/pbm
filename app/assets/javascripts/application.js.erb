@@ -114,6 +114,23 @@ function initSearch(region, locationIDs, locationTypeIDs, zoneIDs, machineIDs, c
   }
 }
 
+function pinGeo(e) {
+  navigator.geolocation.getCurrentPosition(function(position) {
+    var dfd = $.getJSON('/api/v1/regions/closest_by_lat_lon.json', {lat: position.coords.latitude, lon: position.coords.longitude});
+    dfd.done(function(response) {
+      if (!response.region.name) {
+        // Couldn't get a region based on location.
+        window.alert("Sorry, there are no regions with 250 miles of you.");
+      } else {
+        // Found a region, redirect to it!
+        window.location.href = 'http://pinballmap.com/'+response.region.name;
+      }
+    });
+  }, function() {
+    // User has blocked access to their location or something else went wrong
+  });
+}
+
 function showLocationDetail(locationID) {
   locationLookupMapCenter(locationID);
 
