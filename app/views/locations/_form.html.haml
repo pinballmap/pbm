@@ -18,8 +18,6 @@
             $('#by_#{key}_name').bind('autocompleteselect', function(event, ui) {
               event.preventDefault();
               $(this).val('');
-              console.log('#by_#{key}_id');
-              console.log(ui.item.id);
               $('#by_#{key}_id').val(ui.item.id);
             });
           });
