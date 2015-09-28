@@ -23,6 +23,7 @@ describe LocationMachineXrefsController do
 
       expect(@location.machines.size).to eq(1)
       expect(@location.machines.first).to eq(@machine_to_add)
+      expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
 
       expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
       expect(find("#gm_machines_#{@location.id}")).to have_content(@machine_to_add.name)
@@ -179,6 +180,7 @@ describe LocationMachineXrefsController do
       sleep 1
 
       expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{Time.now.strftime('%d-%b-%Y')}")
+      expect(Location.find(@lmx.location.id).date_last_updated).to eq(Date.today)
     end
 
     it 'only displays the 6 most recent descriptions' do

@@ -11,14 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150128155902) do
+ActiveRecord::Schema.define(version: 20150926235940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "banned_ips", force: true do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "ip_address"
   end
 
@@ -31,8 +31,8 @@ ActiveRecord::Schema.define(version: 20150128155902) do
     t.date     "start_date"
     t.date     "end_date"
     t.integer  "location_id"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "category"
     t.string   "external_location_name"
     t.integer  "ifpa_calendar_id"
@@ -40,8 +40,8 @@ ActiveRecord::Schema.define(version: 20150128155902) do
   end
 
   create_table "location_machine_xrefs", force: true do |t|
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "location_id"
     t.integer  "machine_id"
     t.text     "condition"
@@ -56,8 +56,8 @@ ActiveRecord::Schema.define(version: 20150128155902) do
 
   create_table "location_picture_xrefs", force: true do |t|
     t.integer  "location_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "description"
     t.boolean  "approved"
     t.integer  "user_id"
@@ -68,8 +68,8 @@ ActiveRecord::Schema.define(version: 20150128155902) do
   end
 
   create_table "location_types", force: true do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "name"
   end
 
@@ -80,16 +80,17 @@ ActiveRecord::Schema.define(version: 20150128155902) do
     t.string   "state"
     t.string   "zip"
     t.string   "phone"
-    t.decimal  "lat",              precision: 18, scale: 12
-    t.decimal  "lon",              precision: 18, scale: 12
+    t.decimal  "lat",               precision: 18, scale: 12
+    t.decimal  "lon",               precision: 18, scale: 12
     t.string   "website"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "zone_id"
     t.integer  "region_id"
     t.integer  "location_type_id"
     t.string   "description"
     t.integer  "operator_id"
+    t.date     "date_last_updated"
   end
 
   create_table "machine_conditions", force: true do |t|
@@ -110,8 +111,8 @@ ActiveRecord::Schema.define(version: 20150128155902) do
   create_table "machine_score_xrefs", force: true do |t|
     t.integer  "location_machine_xref_id"
     t.integer  "score",                    limit: 8
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "rank"
     t.string   "ip"
     t.integer  "user_id"
@@ -123,8 +124,8 @@ ActiveRecord::Schema.define(version: 20150128155902) do
   create_table "machines", force: true do |t|
     t.string   "name"
     t.boolean  "is_active"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "ipdb_link"
     t.integer  "year"
     t.string   "manufacturer"
@@ -137,8 +138,8 @@ ActiveRecord::Schema.define(version: 20150128155902) do
     t.string   "email"
     t.string   "website"
     t.string   "phone"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "rails_admin_histories", force: true do |t|
@@ -148,11 +149,11 @@ ActiveRecord::Schema.define(version: 20150128155902) do
     t.string   "table"
     t.integer  "month",      limit: 2
     t.integer  "year",       limit: 8
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "rails_admin_histories", ["item", "table", "month", "year"], name: "index_histories_on_item_and_table_and_month_and_year", using: :btree
+  add_index "rails_admin_histories", ["item", "table", "month", "year"], name: "index_rails_admin_histories", using: :btree
 
   create_table "region_link_xrefs", force: true do |t|
     t.string  "name"
@@ -165,8 +166,8 @@ ActiveRecord::Schema.define(version: 20150128155902) do
 
   create_table "regions", force: true do |t|
     t.string   "name"
-    t.datetime "created_at",                                             null: false
-    t.datetime "updated_at",                                             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "full_name"
     t.string   "motd"
     t.decimal  "lat",                          precision: 18, scale: 12
@@ -184,8 +185,8 @@ ActiveRecord::Schema.define(version: 20150128155902) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "region_id"
     t.string   "initials"
     t.datetime "reset_password_sent_at"
@@ -199,8 +200,8 @@ ActiveRecord::Schema.define(version: 20150128155902) do
   create_table "zones", force: true do |t|
     t.string   "name"
     t.integer  "region_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "short_name"
     t.boolean  "is_primary"
   end

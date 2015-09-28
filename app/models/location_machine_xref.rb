@@ -11,6 +11,8 @@ class LocationMachineXref < ActiveRecord::Base
 
   attr_accessible :machine_id, :location_id, :condition, :condition_date, :ip, :user_id
 
+  after_initialize :update_location
+
   scope :region, lambda {|name|
     r = Region.find_by_name(name.downcase)
     joins(:location).where('locations.region_id = ?', r.id)
@@ -28,7 +30,10 @@ class LocationMachineXref < ActiveRecord::Base
 
   def update_condition(condition, options = {})
     self.condition = condition
-    self.condition_date = Time.now.strftime('%Y-%m-%d')
+    self.condition_date = Date.today
+    self.location.date_last_updated = Date.today
+    self.location.save
+
     save
 
     MachineCondition.create(comment: condition, location_machine_xref: self)
@@ -55,6 +60,11 @@ class LocationMachineXref < ActiveRecord::Base
     machine_conditions.limited.offset(1)
   end
 
+  def update_location
+    self.location.date_last_updated = Date.today
+    self.location.save
+  end
+
   def destroy(options = {})
     if location.region.should_email_machine_removal
       Pony.mail(
@@ -64,6 +74,9 @@ class LocationMachineXref < ActiveRecord::Base
           body: [location.name, machine.name, location.region.name, "(entered from #{options[:remote_ip]} via #{options[:user_agent]})"].join("\n")
       )
     end
+
+    self.location.date_last_updated = Date.today
+    self.location.save
 
     super()
   end

@@ -86,6 +86,7 @@ Pbm::Application.routes.draw do
         get :autocomplete
       end
       member do
+        get :confirm
         get :locations_for_machine
         get :newest_machine_name
         get :render_add_machine

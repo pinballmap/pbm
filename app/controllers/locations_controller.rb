@@ -51,10 +51,12 @@ class LocationsController < InheritedResources::Base
       if l.spam?
         nil
       else
+        l.date_last_updated = Date.today
         l.save(validate: false)
       end
       l
     else
+      l.date_last_updated = Date.today
       l.save(validate: false)
       l
     end
@@ -148,5 +150,12 @@ class LocationsController < InheritedResources::Base
 
   def newest_machine_name
     render text: Location.find(params[:id]).newest_machine_xref.machine.name
+  end
+
+  def confirm
+    l = Location.find(params[:id])
+    l.date_last_updated = Date.today
+    l.save(validate: false)
+    l
   end
 end
