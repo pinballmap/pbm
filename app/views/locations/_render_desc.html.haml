@@ -1,8 +1,9 @@
 %div[l, :desc_show]
-  %span.location_description= (l.description.to_s == '') ? 'Click to enter location description/hours/etc' : l.description
-%div{:id => "confirm_location_#{l.id}"}Click to confirm that this location's machine list is up to date
-- if l.date_last_updated
-  %span{:id => "last_updated_location_#{l.id}"} Last updated #{l.date_last_updated}
+  %span.location_description= (l.description.to_s == '') ? '' : l.description 
+  - if (l.description)
+    %span.location_description.desc_button Click to update location description/hours/etc
+  - else
+    %span.location_description.desc_button Click to enter location description/hours/etc
 %div[l, :desc_edit]{:style => 'display:none'}
   = form_tag update_desc_locations_path(:action => 'update_desc', :id => l.id, :region => @region.name), :id => "update_desc_#{l.id}", :method => 'get' do
     = hidden_field_tag :id, l.id
@@ -10,6 +11,10 @@
     %br/
     = submit_tag 'Save', :class => "save_button", :id => "save_desc_#{l.id}"
   = submit_tag 'Cancel', :id => "desc_cancel_#{l.id}", :class => "cancel_button"
+%div{:class => "confirm_location"}
+  - if l.date_last_updated
+    %span{:id => "last_updated_location_#{l.id}"} Location last updated: #{l.date_last_updated}
+  %div{:class => "confirm_location_button", :id => "confirm_location_#{l.id}"}Click to confirm that this location's machine list is up to date
 
 :javascript
   $('#confirm_location_#{l.id}').click(function () {

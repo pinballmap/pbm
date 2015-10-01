@@ -983,7 +983,8 @@ input.submit_button:hover,
   width: 260px;
   box-shadow: inset 1px 1px 3px #888;
 }
-.condition_button {
+.condition_button,
+.location_detail input {
   box-shadow: 1px 1px 3px #888;
 }
 #form input.lookup_search_input {
@@ -1074,8 +1075,26 @@ input#score, input#initials {
   padding: 5px;
 }
 .desc_edit_location .edit_mode {
-    max-width: 380px;
-    width: 380px;
+  max-width: 380px;
+  width: 380px;
+}
+.confirm_location {
+  padding: 10px;
+  background: #F3F2F2;
+  font-size: 12px;
+  line-height: 16px;
+  font-style: italic;
+  border-top: 1px solid #cac6c6;
+  border-bottom: 1px solid #cac6c6;
+  font-weight: normal;
+}
+.confirm_location span {
+  font-style: normal;
+  font-size: 14px;
+  font-weight: bold;
+}
+.confirm_location:hover {
+  cursor: pointer;
 }
 #rank {
   margin-left: 13px;
@@ -1120,11 +1139,18 @@ input#score {
 }
 .location_description {
   font-style: italic;
-  color: #666666;
+  color: #222222;
   padding: 0 10px;
   display: block;
   font-size: 11px;
   line-height: 14px;
+}
+.desc_button, .confirm_location_button {
+  color: #8A3CAE;
+  line-height: 20px;
+}
+.desc_button:hover, .confirm_location_button:hover {
+  text-decoration: underline;
 }
 .desc_show_location {
   padding-top: 5px;
