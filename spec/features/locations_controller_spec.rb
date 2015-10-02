@@ -5,6 +5,22 @@ describe LocationsController do
     @region = FactoryGirl.create(:region, name: 'portland', full_name: 'portland', lat: 1, lon: 2, motd: 'This is a MOTD', n_search_no: 4, should_email_machine_removal: 1)
   end
 
+  describe 'confirm location', type: :feature, js: true do
+    before(:each) do
+      @location = FactoryGirl.create(:location, region_id: @region.id, name: 'Cleo')
+      @machine = FactoryGirl.create(:machine, name: 'Bawb')
+    end
+
+    it 'lets you click a button to update the date_last_updated' do
+      visit '/portland/?by_location_id=' + @location.id.to_s
+      find("#confirm_location_#{@location.id}").click
+
+      sleep 1
+
+      expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
+    end
+  end
+
   describe 'remove machine', type: :feature, js: true do
     before(:each) do
       @location = FactoryGirl.create(:location, region_id: @region.id, name: 'Cleo')
@@ -41,6 +57,7 @@ describe LocationsController do
       sleep 1
 
       expect(LocationMachineXref.all).to eq([])
+      expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
     end
 
     it 'removes a machine from a location - allows you to cancel out of remove' do
@@ -239,6 +256,19 @@ describe LocationsController do
       sleep 1
 
       expect(Location.find(@location.id).description).to eq('')
+    end
+
+    it 'updates location last updated' do
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find("#desc_show_location_#{@location.id}").click
+      fill_in("new_desc_#{@location.id}", with: 'coooool')
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).description).to eq('coooool')
+      expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
     end
 
     it 'truncates descriptions to 255 characters' do
