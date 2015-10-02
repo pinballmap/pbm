@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150926235940) do
+ActiveRecord::Schema.define(version: 20150928221835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -130,6 +130,7 @@ ActiveRecord::Schema.define(version: 20150926235940) do
     t.integer  "year"
     t.string   "manufacturer"
     t.integer  "machine_group_id"
+    t.integer  "ipdb_id"
   end
 
   create_table "operators", force: true do |t|
