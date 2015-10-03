@@ -11,7 +11,7 @@ class LocationMachineXref < ActiveRecord::Base
 
   attr_accessible :machine_id, :location_id, :condition, :condition_date, :ip, :user_id
 
-  after_initialize :update_location
+  after_validation :update_location
 
   scope :region, lambda {|name|
     r = Region.find_by_name(name.downcase)
@@ -31,8 +31,8 @@ class LocationMachineXref < ActiveRecord::Base
   def update_condition(condition, options = {})
     self.condition = condition
     self.condition_date = Date.today
-    self.location.date_last_updated = Date.today
-    self.location.save
+    location.date_last_updated = Date.today
+    location.save
 
     save
 
@@ -61,8 +61,8 @@ class LocationMachineXref < ActiveRecord::Base
   end
 
   def update_location
-    self.location.date_last_updated = Date.today
-    self.location.save
+    location.date_last_updated = Date.today
+    location.save
   end
 
   def destroy(options = {})
@@ -75,8 +75,8 @@ class LocationMachineXref < ActiveRecord::Base
       )
     end
 
-    self.location.date_last_updated = Date.today
-    self.location.save
+    location.date_last_updated = Date.today
+    location.save
 
     super()
   end

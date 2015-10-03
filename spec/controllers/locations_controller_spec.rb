@@ -12,7 +12,7 @@ describe LocationsController, type: :controller do
     it 'should tell you the name of the newest machine added to the location' do
       expect_any_instance_of(ApplicationController).to receive(:set_current_user).and_return(nil)
 
-      FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, name: 'cool'))
+      FactoryGirl.create(:location_machine_xref, location_id: @location.id, machine: FactoryGirl.create(:machine, name: 'cool'))
       get 'newest_machine_name', region: 'portland', id: @location.id
 
       expect(response.body).to eq('cool')
