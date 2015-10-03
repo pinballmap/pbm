@@ -11,7 +11,7 @@ class LocationMachineXref < ActiveRecord::Base
 
   attr_accessible :machine_id, :location_id, :condition, :condition_date, :ip, :user_id
 
-  after_validation :update_location
+  after_create :update_location
 
   scope :region, lambda {|name|
     r = Region.find_by_name(name.downcase)
