@@ -80,6 +80,16 @@ HERE
       expect(response.body).to include('777')
       expect(response.body).to include('foo bar')
     end
+
+    it 'respects by_ipdb_id filter' do
+      lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, id: 777, name: 'Cleo', ipdb_id: 999))
+      FactoryGirl.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'foo bar')
+      get "/api/v1/region/#{@region.name}/locations.json?by_ipdb_id=999"
+
+      expect(response.body).to include('Satchmo')
+      expect(response.body).to include('777')
+      expect(response.body).to include('foo bar')
+    end
   end
 
   describe '#update' do
@@ -218,8 +228,8 @@ HERE
     end
 
     it 'displays details of machines at location' do
-      FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, id: 123, name: 'Cleo', year: 1980, manufacturer: 'Stern', ipdb_link: 'http://www.foo.com'))
-      FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, id: 456, name: 'Sass', year: 1960, manufacturer: 'Bally', ipdb_link: 'http://www.bar.com'))
+      FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, id: 123, name: 'Cleo', year: 1980, manufacturer: 'Stern', ipdb_link: 'http://www.foo.com', ipdb_id: nil))
+      FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, id: 456, name: 'Sass', year: 1960, manufacturer: 'Bally', ipdb_link: 'http://www.bar.com', ipdb_id: 123))
 
       get '/api/v1/locations/' + @location.id.to_s + '/machine_details.json'
       expect(response).to be_success
@@ -231,12 +241,14 @@ HERE
       expect(machines[0]['year']).to eq(1980)
       expect(machines[0]['manufacturer']).to eq('Stern')
       expect(machines[0]['ipdb_link']).to eq('http://www.foo.com')
+      expect(machines[0]['ipdb_id']).to be_nil
 
       expect(machines[1]['id']).to eq(456)
       expect(machines[1]['name']).to eq('Sass')
       expect(machines[1]['year']).to eq(1960)
       expect(machines[1]['manufacturer']).to eq('Bally')
       expect(machines[1]['ipdb_link']).to eq('http://www.bar.com')
+      expect(machines[1]['ipdb_id']).to eq(123)
     end
   end
 end

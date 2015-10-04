@@ -32,6 +32,11 @@ class Location < ActiveRecord::Base
   scope :by_zone_id, ->(id) { where('zone_id in (?)', id.split('_').map(&:to_i)) }
   scope :by_city_id, ->(city) { where(city: city) }
   scope :by_location_name, ->(name) { where(name: name) }
+  scope :by_ipdb_id, lambda { |id|
+    machines = Machine.where('ipdb_id in (?)', id.split('_').map(&:to_i)).map { |m| m.all_machines_in_machine_group }.flatten
+
+    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map { |m| m.id })
+  }
   scope :by_machine_id, lambda { |id|
     machines = Machine.where('id in (?)', id.split('_').map(&:to_i)).map { |m| m.all_machines_in_machine_group }.flatten
 
