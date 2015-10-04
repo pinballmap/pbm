@@ -93,7 +93,7 @@ describe LocationsController do
       @type = FactoryGirl.create(:location_type, name: 'Bar')
       @zone = FactoryGirl.create(:zone, region: @region, name: 'DT')
       @location = FactoryGirl.create(:location, region: @region, city: 'Portland', name: 'Cleo', zone: @zone, location_type: @type)
-      @machine = FactoryGirl.create(:machine, name: 'Barb')
+      @machine = FactoryGirl.create(:machine, name: 'Barb', ipdb_id: 777)
       FactoryGirl.create(:location_machine_xref, location: @location, machine: @machine)
 
       FactoryGirl.create(:location, region: @region, name: 'Sass', city: 'Beaverton')
@@ -171,6 +171,13 @@ describe LocationsController do
 
       expect(page).to have_content('Cleo')
       expect(page).to have_content('Zelda')
+      expect(page).to_not have_content('Sass')
+    end
+
+    it 'by_ipdb_id' do
+      visit '/portland/?by_ipdb_id=' + @machine.ipdb_id.to_s
+
+      expect(page).to have_content('Cleo')
       expect(page).to_not have_content('Sass')
     end
 
