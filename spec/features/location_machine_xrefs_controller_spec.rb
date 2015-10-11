@@ -27,6 +27,7 @@ describe LocationMachineXrefsController do
 
       expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
       expect(find("#gm_machines_#{@location.id}")).to have_content(@machine_to_add.name)
+      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
     end
 
     it 'Should add by name of existing machine' do
@@ -181,6 +182,7 @@ describe LocationMachineXrefsController do
 
       expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{Time.now.strftime('%d-%b-%Y')}")
       expect(Location.find(@lmx.location.id).date_last_updated).to eq(Date.today)
+      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
     end
 
     it 'only displays the 6 most recent descriptions' do

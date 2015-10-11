@@ -22,6 +22,7 @@
     $.get(form.attr('action'), form.serialize(), function (data) {
       $('#machine_condition_display_lmx_#{lmx.id}').load('/#{params[:region]}/location_machine_xrefs/#{lmx.id}/render_machine_condition');
       $('#show_conditions_lmx_#{lmx.id}').load('/#{params[:region]}/location_machine_xrefs/#{lmx.id}/render_machine_conditions');
+      updateLocationUpdatedText(#{lmx.location_id}, '#{params[:region]}');
     });
 
     return false;

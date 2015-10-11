@@ -23,6 +23,7 @@
     $.post(this.action, $(this).serialize(), function (data) {
       $('#show_machines_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machines', function() {
         $('#gm_machines_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machine_names_for_infowindow', function() {
+          updateLocationUpdatedText(#{l.id}, '#{params[:region]}');
           resetInfoWindowHeights();
         });
       });

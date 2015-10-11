@@ -94,6 +94,7 @@ Pbm::Application.routes.draw do
         get :render_machine_names_for_infowindow
         get :render_machines
         get :render_scores
+        get :render_last_updated
       end
     end
 

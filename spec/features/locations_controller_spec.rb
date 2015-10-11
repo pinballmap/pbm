@@ -18,6 +18,7 @@ describe LocationsController do
       sleep 1
 
       expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
+      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
     end
   end
 
@@ -58,6 +59,7 @@ describe LocationsController do
 
       expect(LocationMachineXref.all).to eq([])
       expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
+      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
     end
 
     it 'removes a machine from a location - allows you to cancel out of remove' do

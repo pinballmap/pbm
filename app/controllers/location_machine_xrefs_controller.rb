@@ -4,6 +4,8 @@ class LocationMachineXrefsController < InheritedResources::Base
 
   def create
     machine = nil
+    location = Location.find(params[:location_id])
+
     if !params[:add_machine_by_id].empty?
       machine = Machine.find(params[:add_machine_by_id])
     elsif !params[:add_machine_by_name].empty?
@@ -14,15 +16,18 @@ class LocationMachineXrefsController < InheritedResources::Base
         machine.name = params[:add_machine_by_name]
         machine.save
 
-        send_new_machine_notification(machine, Location.find(params[:location_id]))
+        send_new_machine_notification(machine, location)
       end
     else
       # blank submit
       return
     end
 
-    LocationMachineXref.where(['location_id = ? and machine_id = ?', params[:location_id], machine.id]).first ||
-      LocationMachineXref.create(location_id: params[:location_id], machine_id: machine.id)
+    location.date_last_updated = Date.today
+    location.save(validate: false)
+
+    LocationMachineXref.where(['location_id = ? and machine_id = ?', location.id, machine.id]).first ||
+      LocationMachineXref.create(location_id: location.id, machine_id: machine.id)
   end
 
   def create_confirmation
@@ -50,10 +55,16 @@ class LocationMachineXrefsController < InheritedResources::Base
         nil
       else
         lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
+        lmx.location.date_last_updated = Date.today
+        lmx.location.save(validate: false)
+        lmx.location
       end
       lmx
     else
       lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
+      lmx.location.date_last_updated = Date.today
+      lmx.location.save(validate: false)
+      lmx.location
       lmx
     end
 
