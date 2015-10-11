@@ -442,6 +442,7 @@ RailsAdmin.config do |config|
     end
     edit do
       field :email, :string 
+      field :password, :password 
       field :is_machine_admin, :boolean 
       field :is_primary_email_contact, :boolean 
       field :email, :string 
