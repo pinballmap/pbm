@@ -166,6 +166,12 @@ function resetInfoWindowHeights() {
   }
 }
 
+function updateLocationUpdatedText(id, region) {
+    $('#last_updated_location_' + id).load('/' + region + '/locations/' + id + '/render_last_updated');
+
+    return false;
+}
+
 function initializeRegionMap(ids, lats, lons, contents) {
     infoWindows = new Array();
 

@@ -32,7 +32,7 @@ class LocationMachineXref < ActiveRecord::Base
     self.condition = condition
     self.condition_date = Date.today
     location.date_last_updated = Date.today
-    location.save
+    location.save(validate: false)
 
     save
 
@@ -62,7 +62,7 @@ class LocationMachineXref < ActiveRecord::Base
 
   def update_location
     location.date_last_updated = Date.today
-    location.save
+    location.save(validate: false)
   end
 
   def destroy(options = {})
@@ -76,7 +76,8 @@ class LocationMachineXref < ActiveRecord::Base
     end
 
     location.date_last_updated = Date.today
-    location.save
+    location.save(validate: false)
+    location
 
     super()
   end

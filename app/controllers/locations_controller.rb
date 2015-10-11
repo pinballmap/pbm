@@ -35,6 +35,10 @@ class LocationsController < InheritedResources::Base
     render partial: 'locations/render_desc', locals: { l: Location.find(params[:id]) }
   end
 
+  def render_last_updated
+    render partial: 'locations/render_last_updated', locals: { l: Location.find(params[:id]) }
+  end
+
   def render_add_machine
     render partial: 'locations/render_add_machine', locals: { l: Location.find(params[:id]) }
   end
