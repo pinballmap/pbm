@@ -27,8 +27,8 @@ class Location < ActiveRecord::Base
     where(region_id: r.id)
   }
   scope :by_type_id, ->(id) { where('location_type_id in (?)', id.split('_').map(&:to_i)) }
-  scope :by_operator_id, ->(id) { where(operator_id: id) }
   scope :by_location_id, ->(id) { where('id in (?)', id.split('_').map(&:to_i)) }
+  scope :by_operator_id, ->(id) { where('operator_id in (?)', id.split('_').map(&:to_i)) }
   scope :by_zone_id, ->(id) { where('zone_id in (?)', id.split('_').map(&:to_i)) }
   scope :by_city_id, ->(city) { where(city: city) }
   scope :by_location_name, ->(name) { where(name: name) }

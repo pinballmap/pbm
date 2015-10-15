@@ -304,7 +304,7 @@ describe LocationMachineXrefsController do
 
       sleep(1)
 
-      expect(Location.find(@location).machines.map { |m| m.name + '-' + m.year.to_s + '-' + m.manufacturer.to_s }).to eq(['Sassy Madness-2010-Bally', 'Test Machine Name-2010-Williams'])
+      expect(Location.find(@location).machines.map { |m| m.name + '-' + m.year.to_s + '-' + m.manufacturer.to_s }.sort).to eq(['Sassy Madness-2010-Bally', 'Test Machine Name-2010-Williams'])
     end
 
     it 'adds by machine name from input' do

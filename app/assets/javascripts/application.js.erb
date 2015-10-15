@@ -103,9 +103,9 @@ function switchSection(newSection) {
   $("#" + newSection + "_section_link").toggleClass("active_section_link");
 }
 
-function initSearch(region, locationIDs, locationTypeIDs, zoneIDs, machineIDs, ipdbIDs, cityName, machineGroupId) {
-  if (locationIDs || locationTypeIDs || zoneIDs || machineIDs || ipdbIDs || cityName || machineGroupId) {
-    var url = '/' + region + '/locations?by_location_id=' + locationIDs + ';by_type_id=' + locationTypeIDs + ';by_zone_id=' + zoneIDs + ';by_machine_id=' + machineIDs + ';by_city_id=' + cityName + ';by_machine_group_id=' + machineGroupId + ';by_ipdb_id=' + ipdbIDs;
+function initSearch(region, operatorIDs, locationIDs, locationTypeIDs, zoneIDs, machineIDs, ipdbIDs, cityName, machineGroupId) {
+  if (operatorIDs || locationIDs || locationTypeIDs || zoneIDs || machineIDs || ipdbIDs || cityName || machineGroupId) {
+    var url = '/' + region + '/locations?by_location_id=' + locationIDs + ';by_operator_id=' + operatorIDs + ';by_type_id=' + locationTypeIDs + ';by_zone_id=' + zoneIDs + ';by_machine_id=' + machineIDs + ';by_city_id=' + cityName + ';by_machine_group_id=' + machineGroupId + ';by_ipdb_id=' + ipdbIDs;
 
     $('#locations').html(loadingHTML());
     $.get(url, function(data) {
