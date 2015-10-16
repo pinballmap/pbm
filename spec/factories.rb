@@ -17,6 +17,10 @@ FactoryGirl.define do
     association :machine_group
   end
 
+  factory :user_submission do
+    association :region
+  end
+
   factory :machine_condition do
     comment 'Test Comment'
     association :location_machine_xref

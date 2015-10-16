@@ -60,6 +60,11 @@ describe LocationsController do
       expect(LocationMachineXref.all).to eq([])
       expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
+
+      expect(Region.find(@location.region_id).user_submissions.count).to eq(1)
+      submission = Region.find(@location.region_id).user_submissions.first
+      expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
+      expect(submission.submission).to eq("Cleo\nBawb\nportland")
     end
 
     it 'removes a machine from a location - allows you to cancel out of remove' do

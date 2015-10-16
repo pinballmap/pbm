@@ -4,10 +4,10 @@ describe PagesController, type: :controller do
   before(:each) do
     expect_any_instance_of(ApplicationController).to receive(:set_current_user).and_return(nil)
 
-    region = FactoryGirl.create(:region, name: 'portland', full_name: 'Portland')
-    @location = FactoryGirl.create(:location, region: region)
+    @region = FactoryGirl.create(:region, name: 'portland', full_name: 'Portland')
+    @location = FactoryGirl.create(:location, region: @region)
 
-    FactoryGirl.create(:user, email: 'foo@bar.com', region: region)
+    FactoryGirl.create(:user, email: 'foo@bar.com', region: @region)
     FactoryGirl.create(:user, email: 'super_admin@bar.com', region: nil, is_super_admin: 1)
   end
 
@@ -72,6 +72,10 @@ HERE
       end
 
       post 'contact_sent', region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz'
+      expect(Region.find(@region.id).user_submissions.count).to eq(1)
+      submission = Region.find(@region.id).user_submissions.first
+      expect(submission.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
+      expect(submission.submission).to eq("foo\nbar\nbaz")
     end
 
     it 'email should notify if it was sent from the staging server' do
@@ -130,6 +134,24 @@ HERE
       end
 
       post 'submitted_new_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_operator: 'operator', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail'
+
+      expect(@region.user_submissions.count).to eq(1)
+      submission = @region.user_submissions.first
+      expect(submission.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
+      expect(submission.submission).to eq(<<HERE)
+Location Name: name\n
+Street: street\n
+City: city\n
+State: state\n
+Zip: zip\n
+Phone: phone\n
+Website: website\n
+Operator: operator\n
+Machines: machines\n
+Their Name: subname\n
+Their Email: subemail\n
+(entered from 0.0.0.0 via Rails Testing)\n
+HERE
     end
 
     it 'should send an email - notifies if sent from the staging server' do
