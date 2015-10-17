@@ -2,8 +2,59 @@ require 'spec_helper'
 
 describe Region do
   before(:each) do
-    @r = FactoryGirl.create(:region, name: 'portland')
+    @r = FactoryGirl.create(:region, name: 'portland', full_name: 'Portland')
     @other_region = FactoryGirl.create(:region, name: 'chicago')
+  end
+
+  describe '#generate_weekly_admin_email_body' do
+    it 'should generate a string containing metrics about the region condition' do
+      FactoryGirl.create(:location, region: @another_region)
+
+      FactoryGirl.create(:location, region: @r, name: 'Empty Location', city: 'Troy', state: 'OR')
+      FactoryGirl.create(:location, region: @r, name: 'Another Empty Location', city: 'Rochester', state: 'OR', created_at: Date.today - 2.week)
+
+      FactoryGirl.create(:user_submission, region: @r, submission_type: 'suggest_location')
+      FactoryGirl.create(:user_submission, region: @r, submission_type: 'suggest_location')
+
+      location_added_today = FactoryGirl.create(:location, region: @r)
+      FactoryGirl.create(:location_machine_xref, location: location_added_today, machine: FactoryGirl.create(:machine))
+
+      FactoryGirl.create(:user_submission, region: @r, submission_type: 'remove_machine')
+      FactoryGirl.create(:user_submission, region: @r, submission_type: 'remove_machine')
+
+      FactoryGirl.create(:location_machine_xref, location: location_added_today, machine: FactoryGirl.create(:machine), created_at: Date.today - 2.week)
+      FactoryGirl.create(:location_machine_xref, location: location_added_today, machine: FactoryGirl.create(:machine), created_at: Date.today - 2.week)
+
+      FactoryGirl.create(:event, region: @r, created_at: Date.today - 2.week)
+      FactoryGirl.create(:event, region: @r)
+      FactoryGirl.create(:event, region: @r)
+      FactoryGirl.create(:event, region: @r)
+
+      FactoryGirl.create(:user_submission, region: @r, submission_type: 'contact_us')
+      FactoryGirl.create(:user_submission, region: @r, submission_type: 'contact_us')
+      FactoryGirl.create(:user_submission, region: @r, submission_type: 'contact_us')
+      FactoryGirl.create(:user_submission, region: @r, submission_type: 'contact_us')
+      FactoryGirl.create(:user_submission, region: @r, submission_type: 'contact_us')
+
+      expect(@r.generate_weekly_admin_email_body).to eq(<<HERE)
+Here's an overview of your pinball map region! Thanks for keeping your region updated! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@posteo.org
+
+Portland Weekly Overview
+
+List of Empty Locations:
+Another Empty Location (Rochester, OR)
+Empty Location (Troy, OR)
+
+2 Location(s) were submitted to you this week
+2 Location(s) were added by you this week
+1 machines were added by users this week
+2 machines were removed by users this week
+Portland is listing 3 machines and 3 locations
+4 events are listed
+3 events were added this week
+5 "contact us" messages were sent to you
+HERE
+    end
   end
 
   describe '#n_recent_scores' do
