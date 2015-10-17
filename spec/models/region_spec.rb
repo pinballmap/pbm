@@ -2,8 +2,30 @@ require 'spec_helper'
 
 describe Region do
   before(:each) do
-    @r = FactoryGirl.create(:region, name: 'portland', full_name: 'Portland')
+    @r = FactoryGirl.create(:region, name: 'portland', full_name: 'Portland', should_auto_delete_empty_locations: 1)
     @other_region = FactoryGirl.create(:region, name: 'chicago')
+  end
+
+  describe '#delete_all_empty_locations' do
+    it 'should remove all empty locations if the region has opted in to this functionality' do
+      FactoryGirl.create(:location, region: @r)
+      not_empty = FactoryGirl.create(:location, region: @r, name: 'not empty')
+      FactoryGirl.create(:location_machine_xref, location: not_empty, machine: FactoryGirl.create(:machine))
+
+      @r.delete_all_empty_locations
+
+      expect(Location.all.count).to eq(1)
+      expect(Location.first.name).to eq('not empty')
+    end
+
+    it 'should not remove all empty locations if the region has opted in to this functionality' do
+      FactoryGirl.create(:location, region: @other_region, name: 'empty')
+
+      @other_region.delete_all_empty_locations
+
+      expect(Location.all.count).to eq(1)
+      expect(Location.first.name).to eq('empty')
+    end
   end
 
   describe '#generate_weekly_admin_email_body' do
