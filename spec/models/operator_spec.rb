@@ -22,13 +22,13 @@ describe Operator do
       expect(@o.recent_comments_email_body).to eq(<<HERE)
 Here's a list of comments made on your pinball machines that were posted today to #{@o.region.full_name}. We're sending this in the hope that it will help you identify, and fix, problems. If you don't want to receive these messages, please contact pinballmap@posteo.org.
 
-Comment: Cleo Comment
-Location: Cleo Corner - 303 Southeast 3rd Avenue, Portland, OR, 97214
-Machine: Cleo
-
 Comment: Sassy Comment
 Location: Cleo Corner - 303 Southeast 3rd Avenue, Portland, OR, 97214
 Machine: Sassy
+
+Comment: Cleo Comment
+Location: Cleo Corner - 303 Southeast 3rd Avenue, Portland, OR, 97214
+Machine: Cleo
 HERE
     end
   end

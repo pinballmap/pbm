@@ -146,4 +146,12 @@ List of Empty Locations:
 #{user_submissions.select { |us| us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::CONTACT_US_TYPE }.count} "contact us" messages were sent to you
 HERE
   end
+
+  def delete_all_empty_locations
+    return unless should_auto_delete_empty_locations
+
+    locations.each do |l|
+      l.destroy if (l.location_machine_xrefs.count == 0)
+    end
+  end
 end
