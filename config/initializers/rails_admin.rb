@@ -362,6 +362,7 @@ RailsAdmin.config do |config|
       field :n_search_no, :integer 
       field :default_search_type, :string 
       field :should_email_machine_removal, :boolean
+      field :should_auto_delete_empty_locations, :boolean
     end
     edit do
       field :updated_at, :datetime 
@@ -377,6 +378,7 @@ RailsAdmin.config do |config|
       field :n_search_no, :integer 
       field :default_search_type, :string 
       field :should_email_machine_removal, :boolean
+      field :should_auto_delete_empty_locations, :boolean
     end
     create do
       field :name, :string 
@@ -388,6 +390,7 @@ RailsAdmin.config do |config|
       field :n_search_no, :integer 
       field :default_search_type, :string 
       field :should_email_machine_removal, :boolean
+      field :should_auto_delete_empty_locations, :boolean
     end
     export do; end
     update do; end
