@@ -35,12 +35,54 @@ class LocationsController < InheritedResources::Base
     render partial: 'locations/render_desc', locals: { l: Location.find(params[:id]) }
   end
 
+  def render_update_metadata
+    render partial: 'locations/render_update_metadata', locals: { l: Location.find(params[:id]) }
+  end
+
   def render_last_updated
     render partial: 'locations/render_last_updated', locals: { l: Location.find(params[:id]) }
   end
 
   def render_add_machine
     render partial: 'locations/render_add_machine', locals: { l: Location.find(params[:id]) }
+  end
+
+  def update_metadata
+    id = params[:id]
+
+    l = Location.find(id)
+
+    l.operator_id = params["new_operator_#{id}".to_sym]
+    l.location_type_id = params["new_location_type_#{id}".to_sym]
+    l.save(validate: false)
+
+    old_phone = l.phone
+    l.phone = params["new_phone_#{id}".to_sym]
+    unless l.valid?
+      l.phone = old_phone
+      l.errors.clear
+    end
+
+    old_website = l.website
+    l.website = params["new_website_#{id}".to_sym]
+    unless l.valid?
+      l.website = old_website
+      l.errors.clear
+    end
+
+    if ENV['RAKISMET_KEY']
+      if l.spam?
+        nil
+      else
+        l.save(validate: false)
+      end
+      l
+    else
+      l.save(validate: false)
+      l
+    end
+
+    render nothing: true
   end
 
   def update_desc
