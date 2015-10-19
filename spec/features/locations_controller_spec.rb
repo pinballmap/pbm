@@ -216,6 +216,101 @@ describe LocationsController do
     end
   end
 
+  describe 'update_metadata', type: :feature, js: true do
+    before(:each) do
+      @location = FactoryGirl.create(:location, region: @region, name: 'Cleo')
+    end
+
+    it 'does not save data if any formats are invalid - website and phone' do
+      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
+
+      expect(Rakismet).to receive(:akismet_call).twice.and_return('false')
+
+      o = FactoryGirl.create(:operator, region: @location.region, name: 'Quarterworld')
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find("#metadata_show_location_#{@location.id}").click
+      fill_in("new_phone_#{@location.id}", with: 'THIS IS INVALID')
+      fill_in("new_website_#{@location.id}", with: 'http://www.pinballmap.com')
+      select('Quarterworld', from: "new_operator_#{@location.id}")
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).operator_id).to eq(o.id)
+      expect(Location.find(@location.id).phone).to eq(nil)
+      expect(Location.find(@location.id).website).to eq('http://www.pinballmap.com')
+
+      t = FactoryGirl.create(:location_type, name: 'Bar')
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find("#metadata_show_location_#{@location.id}").click
+      fill_in("new_phone_#{@location.id}", with: '555-555-5555')
+      fill_in("new_website_#{@location.id}", with: 'www.foo.com')
+      select('Bar', from: "new_location_type_#{@location.id}")
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).location_type_id).to eq(t.id)
+      expect(Location.find(@location.id).phone).to eq('555-555-5555')
+      expect(Location.find(@location.id).website).to eq('http://www.pinballmap.com')
+    end
+
+    it 'does not save spam - website and phone' do
+      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
+
+      expect(Rakismet).to receive(:akismet_call).twice.and_return('true')
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find("#metadata_show_location_#{@location.id}").click
+      fill_in("new_phone_#{@location.id}", with: 'THIS IS SPAM')
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).phone).to eq(nil)
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find("#metadata_show_location_#{@location.id}").click
+      fill_in("new_website_#{@location.id}", with: 'THIS IS SPAM')
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).website).to eq(nil)
+    end
+
+    it 'allows users to update a location metadata - stubbed out spam detection' do
+      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
+
+      expect(Rakismet).to receive(:akismet_call).and_return('false')
+
+      t = FactoryGirl.create(:location_type, name: 'Bar')
+      o = FactoryGirl.create(:operator, region: @location.region, name: 'Quarterworld')
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find("#metadata_show_location_#{@location.id}").click
+      fill_in("new_website_#{@location.id}", with: 'http://www.foo.com')
+      fill_in("new_phone_#{@location.id}", with: '555-555-5555')
+      select('Bar', from: "new_location_type_#{@location.id}")
+      select('Quarterworld', from: "new_operator_#{@location.id}")
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).website).to eq('http://www.foo.com')
+      expect(Location.find(@location.id).phone).to eq('555-555-5555')
+      expect(Location.find(@location.id).operator_id).to eq(o.id)
+      expect(Location.find(@location.id).location_type_id).to eq(t.id)
+    end
+  end
+
   describe 'update_desc', type: :feature, js: true do
     before(:each) do
       @location = FactoryGirl.create(:location, region: @region, name: 'Cleo')

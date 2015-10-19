@@ -33,33 +33,9 @@
               %ul
                 %li.name= l.name
                 .clear
-                %div.operator_type
-                  - if (l.operator_id)
-                    - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
-                      %li.operator
-                        %span.italic Operated by: 
-                        %span.bold #{l.operator.name}
-                    - else
-                      %li.operator
-                        %span.italic Operated by: 
-                        %span.bold
-                          =link_to "#{l.operator.name}", "#{l.operator.website}", :target => "_blank"
-                  .clear
-                  - if (l.location_type)
-                    %li.location_type
-                      %span.italic Location Type: 
-                      %span.bold #{l.location_type.name}
-                .clear
                 %li.address= [l.street, l.city, l.state + " " + l.zip].join(', ')
-                .clear
-                - if mobile_device? && !l.phone.nil?
-                  %li.address= link_to l.phone, "tel:" + l.phone, :type => 'tel'
-                - else
-                  %li.address= l.phone
-                .clear
-                - if l.website
-                  %li= link_to l.website, l.website, :class => 'address', :target => 'blank'
-                  .clear
+                %div[l, :metadata]
+                  = render :partial => 'locations/render_update_metadata', :locals => {:l => l}
                 %div[l, :desc]
                   = render :partial => 'locations/render_desc', :locals => {:l => l}
                 %div.location_thumbs
