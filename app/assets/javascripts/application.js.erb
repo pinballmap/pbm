@@ -103,9 +103,9 @@ function switchSection(newSection) {
   $("#" + newSection + "_section_link").toggleClass("active_section_link");
 }
 
-function initSearch(region, operatorIDs, locationIDs, locationTypeIDs, zoneIDs, machineIDs, ipdbIDs, cityName, machineGroupId) {
+function initSearch(region, operatorIDs, locationIDs, locationTypeIDs, zoneIDs, machineIDs, ipdbIDs, cityName, machineGroupId, showLocationDistance, lat, lon) {
   if (operatorIDs || locationIDs || locationTypeIDs || zoneIDs || machineIDs || ipdbIDs || cityName || machineGroupId) {
-    var url = '/' + region + '/locations?by_location_id=' + locationIDs + ';by_operator_id=' + operatorIDs + ';by_type_id=' + locationTypeIDs + ';by_zone_id=' + zoneIDs + ';by_machine_id=' + machineIDs + ';by_city_id=' + cityName + ';by_machine_group_id=' + machineGroupId + ';by_ipdb_id=' + ipdbIDs;
+    var url = '/' + region + '/locations?by_location_id=' + locationIDs + ';by_operator_id=' + operatorIDs + ';by_type_id=' + locationTypeIDs + ';by_zone_id=' + zoneIDs + ';by_machine_id=' + machineIDs + ';by_city_id=' + cityName + ';by_machine_group_id=' + machineGroupId + ';by_ipdb_id=' + ipdbIDs + ';show_location_distance=' + showLocationDistance + ';lat=' + lat + ';lon=' + lon;
 
     $('#locations').html(loadingHTML());
     $.get(url, function(data) {
@@ -114,7 +114,28 @@ function initSearch(region, operatorIDs, locationIDs, locationTypeIDs, zoneIDs, 
   }
 }
 
-function pinGeo(e) {
+function findClosestLocations(region) {
+  navigator.geolocation.getCurrentPosition(function(position) {
+    var dfd = $.getJSON('/api/v1/locations/closest_by_lat_lon.json', {lat: position.coords.latitude, lon: position.coords.longitude, max_distance: 5, send_all_within_distance: 1});
+    dfd.done(function(response) {
+      if (!response.locations) {
+        document.getElementById("map_canvas").innerHTML="<p id='intro' class='dark hello'>" + "No pinball found on this map within 5 miles of your location." + "</p>";
+      } else {
+          var locationIds = [];
+
+          for (var i = 0; i < response.locations.length; i++) {
+            locationIds.push(response.locations[i].id)
+          }
+
+          window.location.href = 'http://pinballmap.com/'+ region + '/?show_location_distance=1;lat=' + position.coords.latitude + ';lon=' + position.coords.longitude + ';by_location_id=' + locationIds.join('_');
+      }
+    });
+  }, function() {
+    // User has blocked access to their location or something else went wrong
+  });
+}
+
+function findClosestRegion(e) {
   navigator.geolocation.getCurrentPosition(function(position) {
     var dfd = $.getJSON('/api/v1/regions/closest_by_lat_lon.json', {lat: position.coords.latitude, lon: position.coords.longitude});
     dfd.done(function(response) {

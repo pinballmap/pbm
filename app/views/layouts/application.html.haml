@@ -23,7 +23,7 @@
     = favicon_link_tag 'favicon.ico'
     = favicon_link_tag 'apple-touch-icon.png', rel: 'apple-touch-icon', type: 'image/png'
 
-  %body{ :onload => defined?(@region) ? "setSearchSections(#{@region.available_search_sections}); switchSection('#{(@region.default_search_type && !@region.default_search_type.empty?) ? @region.default_search_type : 'location'}'); initSearch('#{@region.name.downcase}', '#{params['by_operator_id']}', '#{params['by_location_id']}', '#{params['by_location_type_id']}', '#{params['by_zone_id']}', '#{params['by_machine_id']}','#{params['by_ipdb_id']}','#{params['by_city_id']}', '#{params['by_machine_group_id']}');" : nil }
+  %body{ :onload => defined?(@region) ? "setSearchSections(#{@region.available_search_sections}); switchSection('#{(@region.default_search_type && !@region.default_search_type.empty?) ? @region.default_search_type : 'location'}'); initSearch('#{@region.name.downcase}', '#{params['by_operator_id']}', '#{params['by_location_id']}', '#{params['by_location_type_id']}', '#{params['by_zone_id']}', '#{params['by_machine_id']}','#{params['by_ipdb_id']}','#{params['by_city_id']}', '#{params['by_machine_group_id']}', '#{params['show_location_distance']}', '#{params['lat']}', '#{params['lon']}');" : nil }
     #container
       #page
         = render :partial => 'pages/header'

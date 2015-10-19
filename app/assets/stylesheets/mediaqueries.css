@@ -9,106 +9,6 @@
   }
 }
 
-@media (max-width: 820px) { 
-
-  #welcome, 
-  #header.header_home {
-    min-width: 755px;
-  }
-  .home_intro {
-    width: 235px;
-  }
-  #map_summaries {
-    margin: 0 0 0 255px;
-  }
-}
-
-@media (max-width: 840px) {
-  
-  #header ul.region_links {
-    font-size: 14px !important;
-    width: 130px !important;
-    margin: 50px 160px;
-    font-weight: bold;
-    color: #55413F;
-    line-height: 18px;
-    padding-top: 5px;
-  }
- #header ul.region_links span {
-    background-color: #f6effa;
-    width: 130px;
-    font-size: 18px;
-    text-shadow: 1px 1px 5px #CCCCCC;
-    line-height: 49px;
-    display: block;
-    position: absolute;
-    text-align: center;
-    margin: -50px 0 0 0;
-    border-left: 1px solid #efe2f6;
-    border-right: 1px solid #efe2f6;
-  }
-  #header ul.region_links:hover,
-  #header ul.region_links:hover li {
-    display: block;
-  }
-  #header ul.region_links li {
-    display: none;
-    background: #ffffff;
-  }
-  #header ul.region_links span {
-    display: block;
-  }
-  #header li.other_links {
-    padding-bottom: 0;
-  }
-  #header ul.other_links_dropdown {
-    position: relative;
-    top: 0;
-    display: block !important;
-    font-size: 14px;
-    margin: 0;
-    padding: 2px 0 2px 5px;
-  }
-  #header ul.other_links_dropdown li.other_links_list {
-    margin: 0;
-    padding: 4px 0 0;
-  }
-  #header ul.other_links_dropdown li.other_links_list a {
-    padding: 0;
-  }
-}
-
-@media (max-width: 850px) {
-
-  #intro p, 
-  #intro .stufflike, 
-  #intro .list,
-  #intro .darkb {
-    font-size: 14px;
-    line-height: 16px;
-  }
-  .hello {
-    font-size: 18px;
-  }
-  #intro {
-    padding: 10px;
-  }
-}
-
-@media (max-width: 900px) {
-  
-  #header ul.region_links {
-    font-size: 10px;
-    width: 220px;
-  }
-  #header ul.region_links li a {
-    padding: 2px;
-  }
-  #header .region_logo_dropdown {
-    width: 150px;
-  }
-}
-
 @media (max-width: 950px) {
 
   .left_column.secondary, .left_column_outer, .left_column {
@@ -124,21 +24,27 @@
     float: none;
     clear: both;
   }
-}
-
-@media (max-width: 975px) {
-
-  .store_header_region {
-    display: none;
+  .closest_locations {
+    font-size: 11px;
+    width: 75px;
+    line-height: 13px;
+    padding: 7px 6px;
+    text-align: center;
   }
+  #header ul.region_links span {
+    width: 47px !important;
+    font-size: 16px !important;
+  }
+
 }
 
 @media (max-width: 980px) {
-  .pick_a_map .apps_header, .pick_a_map .blog_header, .pick_a_map .store_header, .pick_a_map .geo_header {
+  div.pick_a_map .apps_header, div.pick_a_map .blog_header, 
+  div.pick_a_map .store_header, div.pick_a_map .geo_header {
     font-size: 12px;
     line-height: 11px;
   }
-  .pick_a_map .geo_header {
+  div.pick_a_map .geo_header {
     float: left;
     width: 240px;
     border-right: 1px solid #efe2f6;
@@ -150,5 +56,76 @@
 
   .blog_header_region {
     display: none;
+  }
+}
+
+@media (max-width: 1120px) {
+  #header ul.region_links li {
+    display: none;
+    background: #ffffff;
+  }
+  #header ul.region_links li.first_header_link {
+    margin-top: 51px;
+  }
+  #header ul.region_links span {
+    display: block;
+  }
+  #header ul.region_links {
+    font-size: 14px !important;
+    font-weight: bold;
+    color: #55413F;
+    line-height: 18px;
+  }
+  #header ul.region_links li a {
+    background: #ffffff;
+    float: none;
+    display: block;
+    border: none;
+  }
+  #header ul.region_links li:nth-child(5):after { 
+    content: '';  
+  }
+  #header ul.region_links span {
+    background-color: #f6effa;
+    width: 130px;
+    font-size: 18px;
+    text-shadow: 1px 1px 5px #CCCCCC;
+    line-height: 49px;
+    display: block;
+    position: absolute;
+    text-align: center;
+    border-left: 1px solid #efe2f6;
+    border-right: 1px solid #efe2f6;
+  }
+  #header ul.region_links li.blog_header_region a, 
+  #header ul.region_links li.store_header_region a {
+    text-align: left;
+  }
+  .store_header, .blog_header {
+    float: none;
+  }
+  #header ul.region_links:hover,
+  #header ul.region_links:hover li {
+    display: block;
+  }
+  #header li.other_links {
+    padding-bottom: 0;
+    height: 80px;
+  }
+  #header ul.other_links_dropdown {
+    position: relative;
+    top: 0;
+    right: 0;
+    display: block !important;
+    font-size: 14px;
+    margin: 0;
+    padding: 2px 0 2px 5px;
+  }
+  #header ul.other_links_dropdown li.other_links_list {
+    margin: 0;
+    padding: 4px 0 0;
+  }
+  #header ul.other_links_dropdown li.other_links_list a {
+    padding: 0;
   }
 }

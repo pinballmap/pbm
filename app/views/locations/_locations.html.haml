@@ -17,6 +17,8 @@
           %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id});"}
             %ul
               %li.name= l.name
+              - if (!params[:show_location_distance].blank? && !params[:lat].blank? && !params[:lon].blank?)
+                %li.location_type= " distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
               - if (l.location_type)
                 %li.location_type= " (#{l.location_type.name})"
               .clear

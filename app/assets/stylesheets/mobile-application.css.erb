@@ -36,7 +36,6 @@
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
   width: auto !important;
-  font-size: 16px !important;
 }
 #header ul.region_links:before,
 #header ul.region_links span {
@@ -45,11 +44,17 @@
 #header ul.region_links li {
   display: inline;
   padding: 4px 0 0 6px !important;
-  line-height: 18px;
+  line-height: 24px;
   background: none;
 }
+#header ul.region_links li a {
+  display: inline;
+  background: transparent;
+  font-size: 16px !important;
+}
 #header ul.region_links li:nth-child(4):after { 
-  content: ''; white-space:normal; 
+  content: ''; 
+  white-space:normal; 
 }
 #header ul.region_links li.other_links_list,
 #header ul.region_links:hover li {
@@ -69,7 +74,16 @@
   width: 100%;
   font-size: 20px;
 }
-
+.closest_locations {
+  font-size: 22px;
+  border: 1px solid #ccc;
+  background-color: #eee;
+  width: auto;
+  float: none !important;
+  display: block;
+  line-height: 13px;
+  padding: 10px 6px;
+}
 .blog_header_region, .store_header_region {
   display: block;
   float: none;
@@ -110,9 +124,8 @@ div.pick_a_map {
   width: 100% !important;
   padding: 4px 0 4px;
   text-align: center;
-  border-bottom: 2px solid #fdfcfe;
   border-left: none;
-  border-right: none;
+  border-right: none;   
   border-top: none;
   font-size: 18px !important;
   line-height: 24px !important;

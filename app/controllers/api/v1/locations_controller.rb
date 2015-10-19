@@ -108,12 +108,17 @@ module Api
       param :lat, String, desc: 'Latitude', required: true
       param :lon, String, desc: 'Longitude', required: true
       param :max_distance, String, desc: 'Closest location within "max_distance" miles', required: false
+      param :send_all_within_distance, String, desc: "Send all locations within max_distance param, or #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles.", required: false
       formats ['json']
       def closest_by_lat_lon
         max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
+
         closest_location = Location.near([params[:lat], params[:lon]], max_distance).first
 
-        if closest_location
+        if params[:send_all_within_distance]
+          closest_locations = Location.near([params[:lat], params[:lon]], max_distance)
+          return_response(closest_locations, 'locations', [], [:machine_names])
+        elsif closest_location
           return_response(closest_location, 'location', [], [:machine_names])
         else
           return_response("No locations within #{max_distance} miles.", 'errors')
