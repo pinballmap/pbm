@@ -887,7 +887,7 @@ br.clear {
   line-height: 15px;
   text-transform: uppercase;
 }
-#form select {
+#form select, form select {
   border: 1px solid #b0b0b0;
   background-color: #f4f8f6;
 }
@@ -973,7 +973,8 @@ input.submit_button:hover,
 .edit_mode,
 #new_user input[type="email"],
 #new_user input[type="password"],
-.condition_button {
+.condition_button,
+.metadata_edit_location input {
   background-color: #ffffff;
   border: 2px solid #853102;
   border-radius: 4px;
@@ -983,8 +984,11 @@ input.submit_button:hover,
   width: 260px;
   box-shadow: inset 1px 1px 3px #888;
 }
-.condition_button, .desc_edit_location input {
+.condition_button, .desc_edit_location input,
+.metadata_edit_location input.save_button, 
+.metadata_edit_location input.cancel_button {
   box-shadow: 1px 1px 3px #888;
+  border: 2px solid #FC8746;
 }
 #form input.lookup_search_input {
   width: 200px;
@@ -995,6 +999,18 @@ input.submit_button:hover,
 }
 .location_detail input {
   width: 80px;
+}
+.metadata_edit_location {
+  padding: 10px;
+  line-height: 30px;
+}
+.metadata_edit_location input.edit_mode {
+  width: 255px;
+  float: right;
+}
+.metadata_edit_location form select {
+  width: 260px;
+  float: right;
 }
 input#score, input#initials {
   width: 80%;
@@ -1150,6 +1166,7 @@ input#score {
 }
 .desc_button:hover, .confirm_location_button:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 .desc_show_location {
   padding-top: 5px;

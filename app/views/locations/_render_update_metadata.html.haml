@@ -39,9 +39,10 @@
     .clear
     = label_tag "Website: "
     = text_field_tag "new_website_#{l.id}", l.website, :class => 'edit_mode'
-    %br/
+    .clear
     = submit_tag 'Save', :class => "save_button", :id => "save_metadata_#{l.id}"
   = submit_tag 'Cancel', :id => "metadata_cancel_#{l.id}", :class => "cancel_button"
+  .clear
 
 :javascript
   $('#update_metadata_#{l.id}').submit(function () {
