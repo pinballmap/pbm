@@ -27,13 +27,21 @@
   .closest_locations {
     font-size: 11px;
     width: 75px;
+    margin-top: 0;
     line-height: 13px;
     padding: 7px 6px;
     text-align: center;
   }
-  #header ul.region_links span {
+  #header span.menu_link {
     width: 47px !important;
     font-size: 16px !important;
+  }
+  #header span.menu_link ul li a {
+    height: auto;
+  }
+  #header span.menu_link ul {
+    width: 140px;
+    background-color: #f6effa;
   }
 
 }
@@ -56,76 +64,5 @@
 
   .blog_header_region {
     display: none;
-  }
-}
-
-@media (max-width: 1120px) {
-  #header ul.region_links li {
-    display: none;
-    background: #ffffff;
-  }
-  #header ul.region_links li.first_header_link {
-    margin-top: 51px;
-  }
-  #header ul.region_links span {
-    display: block;
-  }
-  #header ul.region_links {
-    font-size: 14px !important;
-    font-weight: bold;
-    color: #55413F;
-    line-height: 18px;
-  }
-  #header ul.region_links li a {
-    background: #ffffff;
-    float: none;
-    display: block;
-    border: none;
-  }
-  #header ul.region_links li:nth-child(5):after { 
-    content: '';  
-  }
-  #header ul.region_links span {
-    background-color: #f6effa;
-    width: 130px;
-    font-size: 18px;
-    text-shadow: 1px 1px 5px #CCCCCC;
-    line-height: 49px;
-    display: block;
-    position: absolute;
-    text-align: center;
-    border-left: 1px solid #efe2f6;
-    border-right: 1px solid #efe2f6;
-  }
-  #header ul.region_links li.blog_header_region a, 
-  #header ul.region_links li.store_header_region a {
-    text-align: left;
-  }
-  .store_header, .blog_header {
-    float: none;
-  }
-  #header ul.region_links:hover,
-  #header ul.region_links:hover li {
-    display: block;
-  }
-  #header li.other_links {
-    padding-bottom: 0;
-    height: 80px;
-  }
-  #header ul.other_links_dropdown {
-    position: relative;
-    top: 0;
-    right: 0;
-    display: block !important;
-    font-size: 14px;
-    margin: 0;
-    padding: 2px 0 2px 5px;
-  }
-  #header ul.other_links_dropdown li.other_links_list {
-    margin: 0;
-    padding: 4px 0 0;
-  }
-  #header ul.other_links_dropdown li.other_links_list a {
-    padding: 0;
   }
 }

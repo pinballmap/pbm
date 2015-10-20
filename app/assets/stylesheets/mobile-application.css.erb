@@ -22,7 +22,13 @@
   width: 100%;
   max-width: 460px;
 }
-#header ul.region_links {
+#header span.menu_link {
+  width: auto !important;
+  position: relative;
+  visibility: hidden;
+  line-height: 0;
+}
+#header span.menu_link ul {
   display: inline-block;
   margin: 0 auto 10px;
   padding: 0;
@@ -37,30 +43,31 @@
   -webkit-box-shadow: none;
   width: auto !important;
 }
-#header ul.region_links:before,
-#header ul.region_links span {
+#header span.menu_link ul:before,
+#header span.menu_link ul span {
   display: none;
 }
-#header ul.region_links li {
+#header span.menu_link ul li {
   display: inline;
-  padding: 4px 0 0 6px !important;
   line-height: 24px;
   background: none;
 }
-#header ul.region_links li a {
+#header span.menu_link ul li a {
+  float: none;
   display: inline;
   background: transparent;
   font-size: 16px !important;
+  border: none;
 }
-#header ul.region_links li:nth-child(4):after { 
+#header span.menu_link ul li:nth-child(4):after { 
   content: ''; 
   white-space:normal; 
 }
-#header ul.region_links li.other_links_list,
-#header ul.region_links:hover li {
+#header span.menu_link ul li.other_links_list,
+#header span.menu_link ul:hover li {
   display: inline;
 }
-#header ul.region_links:hover {
+#header span.menu_link ul:hover {
   display: inline-block;
 }
 #header ul.other_links_dropdown {
@@ -84,12 +91,6 @@
   line-height: 13px;
   padding: 10px 6px;
 }
-.blog_header_region, .store_header_region {
-  display: block;
-  float: none;
-  font-size: 18px;
-}
-
 #header span.region_name_page a {
   font-size: 30px;
 }
@@ -117,11 +118,9 @@
 div.pick_a_map {
   padding-top: 0;
 }
-.blog_header {
-  margin-top: -5px;
-}
 .apps_header, .blog_header, .store_header, .geo_header {
   width: 100% !important;
+  float: none;
   padding: 4px 0 4px;
   text-align: center;
   border-left: none;
