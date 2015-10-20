@@ -51,12 +51,13 @@
   div.pick_a_map .store_header, div.pick_a_map .geo_header {
     font-size: 12px;
     line-height: 11px;
+    border-bottom: 4px solid #b3afaa;
   }
   div.pick_a_map .geo_header {
     float: left;
-    width: 240px;
-    border-right: 1px solid #efe2f6;
-    border-top: 1px solid #efe2f6;
+    padding: 6px 5px;
+    margin: 0 4px 0 0;
+    border-top: none;
   }
 }
 

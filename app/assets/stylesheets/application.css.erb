@@ -23,6 +23,7 @@ body {
   background-size: 4px auto;
   color: #2e2322;
   font-family: 'JohnDoe','Open Sans',Helvetica,Arial,sans-serif;
+  font-weight: bold;
   -webkit-font-smoothing: antialiased;
 }
 p {
@@ -82,7 +83,7 @@ li a:hover {
   font-size: 16px;
 }
 .dark {
-  color: #706b65;
+  color: #3a3835;
 }
 .darkb {
   color: #43403d;
@@ -185,15 +186,14 @@ div.dont_pick_a_map {
 }
 div.pick_a_map .apps_header, 
 div.pick_a_map .blog_header, 
-div.pick_a_map .store_header, 
-div.pick_a_map .geo_header {
+div.pick_a_map .store_header {
   font-size: 15px;
   line-height: 36px;
   float: left;
-  padding: 5px 10px 8px;
-  background-color: #f6effa;
+  padding: 5px 10px 7px;
+  background-color: #ebeae9;
   text-shadow: 1px 1px 5px #CCCCCC;
-  border-left: 1px solid #efe2f6;
+  border-left: 2px solid #B3AFAA;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -281,15 +281,17 @@ div.pick_a_map .geo_header {
   margin-top: 51px;
 }
 #header span.menu_link {
-  background-color: #f6effa;
-  width: 140px;
+  background-color: #ebeae9;
+  width: 144px;
   font-size: 24px;
   text-shadow: 1px 1px 5px #CCCCCC;
   line-height: 54px;
   position: absolute;
   text-align: center;
-  border-left: 1px solid #efe2f6;
-  border-right: 1px solid #efe2f6;
+  border: 4px solid #b3afaa;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 #header span.menu_link:hover {
   cursor: pointer;
@@ -333,11 +335,11 @@ div.pick_a_map .geo_header {
 }
 #header .region_logo_dropdown {
     width: 160px;
-    height: 50px;
+    height: 55px;
     position: relative;
     float: left;
     margin: 5px 0 0;
-    background: #F6EFFA;
+    background: #fbfbfb;
     margin-right: 10px;
 }
 #header li:hover ul, li.over ul, #header li ul li, #header .region_logo_dropdown ul li { 
@@ -407,33 +409,36 @@ div.pick_a_map .geo_header {
   vertical-align: middle;
   margin-bottom: 2px;
 }
-.apps_header, .blog_header, .store_header, .geo_header,
-#header .menu_link ul li a, .closest_locations {
+.apps_header, .blog_header, .store_header,
+#header .menu_link ul li a {
   font-size: 12px;
   line-height: 11px;
   float: left;
-  background-color: #f6effa;
+  background-color: #ebeae9;
   text-shadow: 1px 1px 5px #CCCCCC;
   border-left: 1px solid #efe2f6;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.store_header {
-  border-right: 1px solid #efe2f6;
+div.pick_a_map .blog_header {
+  border-left: 1px solid #B3AFAA;
 }
-div.pick_a_map .geo_header {
-  padding: 10px;
-  float: right;
-  font-size: 20px;
-  line-height: 29px;
-}
-.closest_locations {
+.closest_locations, .geo_header {
   font-size: 15px;
   line-height: 16px;
   padding: 10px 6px;
-  margin: 12px 5px;
-
+  margin: 7px 5px;
+  border: 4px solid #b3afaa;
+  background-color: #EBEAE9;
+  text-shadow: 1px 1px 5px #CCCCCC;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.geo_header {
+  margin: 2px 5px;
+  float: right;
 }
  #header .menu_link ul li.blog_header_region a, 
  #header .menu_link ul li.store_header_region a {
@@ -492,7 +497,7 @@ span.region_name_page {
 #city_section_link, 
 #location_section_link, 
 #type_section_link {
-  font-size: 15px;
+  font-size: 14px;
   background: #FBFBFB;
   border: 1px solid #fda878;
   color: #642501;
@@ -631,10 +636,10 @@ a.active_section_link:hover {
 .address {
   font-size: 14px;
   line-height: 16px;
+  font-weight: bold;
 }
 li.address {
   padding: 2px 0 2px 5px;
-  font-weight: normal !important;
   background: #FEFBF8;
 }
 .machine_name {
@@ -770,7 +775,7 @@ form.remove_machine_condition {
   background: -o-linear-gradient(top, #fed3bb, #fed3bb);
 }
 .machine_condition_display_lmx .condition_button_new {
-  width: 190px;
+  width: 198px;
 }
 .condition_button:hover {
   background-color: #dbd9d7;
@@ -1029,7 +1034,9 @@ input.submit_button:hover,
 }
 .condition_button, .desc_edit_location input,
 .metadata_edit_location input.save_button, 
-.metadata_edit_location input.cancel_button {
+.metadata_edit_location input.cancel_button,
+.location_detail input.cancel_button,
+.location_detail input.save_button {
   box-shadow: 1px 1px 3px #888;
   border: 2px solid #FC8746;
 }
@@ -1129,7 +1136,10 @@ input#score, input#initials {
   font-weight: normal !important;
   background-color: #F3F2F2;
 }
-.operator_type {
+.operator {
+  margin-top: 5px;
+}
+.operator_type, .location_type {
   margin-bottom: 5px;
 }
 .edit_mode {
@@ -1145,12 +1155,13 @@ input#score, input#initials {
 .confirm_location {
   padding: 10px;
   background: #F3F2F2;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 16px;
   font-style: italic;
-  border-top: 1px solid #cac6c6;
-  border-bottom: 1px solid #cac6c6;
   font-weight: normal;
+  border-top: 1px solid #CAC6C6;
+  border-bottom: 1px solid #CAC6C6;
+  text-align: right;
 }
 .confirm_location span {
   font-style: normal;
@@ -1182,6 +1193,7 @@ input#score {
 }
 .location_detail .address {
   color: #333333;
+  margin-bottom: 5px;
 }
 .location_detail_sub {
   padding: 10px;
@@ -1209,9 +1221,20 @@ input#score {
   font-size: 13px;
   line-height: 15px;
 }
-.desc_button, .confirm_location_button {
+.desc_button {
   color: #441e56;
   line-height: 20px;
+  background: #F3F2F2;
+  margin: 5px 0;
+  border-top: 1px solid #CAC6C6;
+  border-bottom: 1px solid #CAC6C6;
+  text-align: right;
+}
+.confirm_location_button {
+  color: #441e56;
+  line-height: 20px;
+  background: #F3F2F2;
+  margin: 5px 0;
 }
 .desc_button:hover, .confirm_location_button:hover {
   text-decoration: underline;
@@ -1274,6 +1297,8 @@ input#score {
   right: 18px;
   bottom: 0;
   z-index: 55;
+  font-family: 'Opens Sans';
+  font-weight: normal;
 }
 .scrollerScroller {
   margin: 0;
@@ -1436,6 +1461,11 @@ a.apps_link:hover {
 }
 .location_search {
   margin-left: 2px;
+}
+.location_search .info {
+  font-family: 'Open Sans';
+  font-weight: normal;
+  margin: 0 -5px;
 }
 .right_column_outer .links_column {
   min-height: 50px;
@@ -1604,7 +1634,7 @@ a.apps_link:hover {
 }
 span.begin {
     padding: 10px;
-    background-color: #f6effa;
+    background-color: #ebeae9;
 
     -webkit-animation-duration: 5s;
     -webkit-animation-name: colorChange;
@@ -1740,6 +1770,7 @@ img.header_image {
   width: 145px;
   text-align: center;
   color: #5c462c;
+  font-weight: bold;
   border: 5px solid #DECEB9;
   float: left;
   margin: 0 10px 10px 0;
@@ -1752,6 +1783,9 @@ img.header_image {
   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#40fff4e7, endColorstr=#40fff4e7);
   /* For IE 8*/
   -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#40fff4e7, endColorstr=#40fff4e7);
+}
+.map_summary .dark {
+  font-weight: normal;
 }
 .map_summary:hover {
   background-color:rgba(244,238,231,0.9);
