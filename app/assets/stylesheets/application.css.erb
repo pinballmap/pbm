@@ -499,7 +499,7 @@ span.region_name_page {
 #type_section_link {
   font-size: 14px;
   background: #FBFBFB;
-  border: 1px solid #fda878;
+  border: 1px solid #312f2d;
   color: #642501;
   border-radius: 5px;
   -moz-border-radius: 5px;
@@ -511,7 +511,7 @@ span.region_name_page {
   padding: 7px 5px 3px;
   margin-top: 30px;
   height: 33px;
-  background-color: #fff3ed;
+  background-color: #d3d1ce;
 }
 #other_search_options_link:active {
    border-top-color: #484848;
@@ -597,7 +597,7 @@ span.region_name_page {
   font-size: 16px;
 }
 .active_section_link {
-  background-color: #fc9256 !important;
+  background-color: #312f2d !important;
   color: #FFFFCC !important;
 }
 a.active_section_link:hover {
@@ -953,15 +953,13 @@ input#add {
 .save_button, 
 .cancel_button, 
 #add_score, 
-#add, 
+#add,
 #location_picture_xref_submit, 
 .new_location_picture_xref input.submit_picture,
-#login .button,
-.condition_button {
+#login .button {
   font-style: normal;
-  color: #000000;
-  background-color: #EBF1FD;
-  border: 2px solid #fc8746;
+  color: #FFFFFF !important;
+  border: 2px solid #a77e51;
   border-radius: 6px;
   box-shadow: 1px 1px 3px #b7cfc1;
   -moz-box-shadow: 1px 1px 3px #b7cfc1;
@@ -970,11 +968,7 @@ input#add {
   cursor: pointer;
   margin-right: 4px;
   font-size: 14px;
-  background: -webkit-gradient(linear, left top, left bottom, from(#fedecb), to(#fdb289));
-  background: -webkit-linear-gradient(top, #fedecb, #fdb289);
-  background: -moz-linear-gradient(top, #fedecb, #fdb289);
-  background: -ms-linear-gradient(top, #fedecb, #fdb289);
-  background: -o-linear-gradient(top, #fedecb, #fdb289);
+  background: #6E5335 !important; 
 }
 .search:active, 
 .submit_button:active, 
@@ -1008,7 +1002,7 @@ input.submit_button:hover,
   box-shadow: 1px 1px 3px #b7cfc1;
   -moz-box-shadow: 1px 1px 3px #b7cfc1;
   -webkit-box-shadow: 1px 1px 3px #b7cfc1;
-  background: #fdb289;
+  background: #4c3924;
   color: #EBF1FD;
 }
 
@@ -1016,15 +1010,16 @@ input.submit_button:hover,
 #location_maker textarea,
 #contact_maker input.text, 
 #contact_maker textarea, 
-.location_detail input, 
 #form input.lookup_search_input, 
 .edit_mode,
 #new_user input[type="email"],
 #new_user input[type="password"],
-.condition_button,
-.metadata_edit_location input {
-  background-color: #ffffff;
-  border: 2px solid #853102;
+.metadata_edit_location input,
+input#score,
+input#initials {
+  background: #ECE2D8;   
+  border: 2px solid #a77e51;
+  color: #000;
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
@@ -1038,7 +1033,6 @@ input.submit_button:hover,
 .location_detail input.cancel_button,
 .location_detail input.save_button {
   box-shadow: 1px 1px 3px #888;
-  border: 2px solid #FC8746;
 }
 #form input.lookup_search_input {
   width: 200px;
@@ -1046,6 +1040,8 @@ input.submit_button:hover,
   font-size: 16px;
   box-shadow: inset 1px 1px 3px #888;
   margin: 0 4px;
+  background: #ece2d8;
+  color: #000000;
 }
 .location_detail input {
   width: 80px;
@@ -1057,13 +1053,20 @@ input.submit_button:hover,
 .metadata_edit_location input.edit_mode {
   width: 255px;
   float: right;
+  background: #ece2d8;
+  color: #000000;
 }
 .metadata_edit_location form select {
   width: 260px;
   float: right;
 }
 input#score, input#initials {
-  width: 80%;
+  width: 75%;
+  background: #ece2d8;
+  color: #000000;
+}
+input#initials {
+  width: 69%;
 }
 .score_container_lmx {
   margin-left: 10px;
@@ -1143,7 +1146,6 @@ input#score, input#initials {
   margin-bottom: 5px;
 }
 .edit_mode {
-  background-color: #fcfcf3;
   font-size: 14px;
   font-family: inherit;
   padding: 5px;
@@ -1250,7 +1252,7 @@ input#score {
   background-color: #f4f8f6;
 }
 .desc_edit_location {
-  padding: 0 0 5px 5px;
+  padding: 0 0 5px 15px;
 }
 .show_location_detail_location {
   padding: 0;
@@ -1297,7 +1299,7 @@ input#score {
   right: 18px;
   bottom: 0;
   z-index: 55;
-  font-family: 'Opens Sans';
+  font-family: 'serif';
   font-weight: normal;
 }
 .scrollerScroller {
