@@ -748,7 +748,7 @@ form.remove_machine_condition {
   margin: 5px 0 5px 10px;
   padding: 2px;
   width: 285px;
-  background: #fefbf8;
+  background: #ECE2D8;
   box-sizing: border-box;
 }
 .machine_condition_display_lmx .edit_mode {
@@ -756,23 +756,19 @@ form.remove_machine_condition {
   max-width: 261px;
 }
 .machine_condition_display_lmx .condition_button {
-  width: 168px;
-  height: 18px;
-  box-shadow: 1px 1px 3px #a2a59b;
-  color: #333333;
-  background: -webkit-gradient(linear, left top, left bottom, from(#fee8dc), to(#fed3bb));
-  background: -webkit-linear-gradient(top, #fee8dc, #fed3bb);
-  background: -moz-linear-gradient(top, #fee8dc, #fed3bb);
-  background: -ms-linear-gradient(top, #fee8dc, #fed3bb);
-  background: -o-linear-gradient(top, #fee8dc, #fed3bb);
-  border: 1px solid #fdb289;
+  height: 20px;
+  line-height: 20px;
+  box-shadow: none;
+  background: none;
+  text-transform: uppercase;
+  font-size: 15px;
+  border: none;
+  width: auto;
+  background: #ECE2D8;
+  border: 2px solid #d6c1aa;
 }
 .machine_condition_display_lmx .condition_button:hover {
-  background: -webkit-gradient(linear, left top, left bottom, from(#fed3bb), to(#fed3bb));
-  background: -webkit-linear-gradient(top, #fed3bb, #fed3bb);
-  background: -moz-linear-gradient(top, #fed3bb, #fed3bb);
-  background: -ms-linear-gradient(top, #fed3bb, #fed3bb);
-  background: -o-linear-gradient(top, #fed3bb, #fed3bb);
+  background: #d6c1aa;
   cursor: pointer;
 }
 .machine_condition_display_lmx .condition_button_new {
@@ -809,7 +805,7 @@ form.remove_machine_condition {
 }
 #add_machine_by_name {
   width: 304px;
-  margin-left: 12px;
+  margin-left: 12px !important;
 }
 .add_picture_location span.info, .show_machines_location span.info, .add_machine_location span.info,
 .add_picture_location, .new_location_picture_xref, 
@@ -826,10 +822,10 @@ form.remove_machine_condition {
   padding: 0 0 10px 0;
 }
 .add_picture_location {
-  background-color: #DBE5FC;
+  background-color: #ECE2D8;
 }
 .add_machine_location {
-  background-color: #eaf1ed;
+  background-color: #ECE2D8;
 }
 .show_machines_location {
   background-color: #EEEEEE;
@@ -987,6 +983,7 @@ input#add {
 }
 .save_button {
   float: left;
+  margin-left: 5px;
 }
 input:focus { /* this is in need of an update */
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(249, 252, 159, 0.6);
@@ -1017,7 +1014,8 @@ input.submit_button:hover,
 #new_user input[type="password"],
 .metadata_edit_location input,
 input#score,
-input#initials {
+input#initials,
+#add_machine_by_name {
   background: #ECE2D8;   
   border: 2px solid #a77e51;
   color: #000;
@@ -1227,7 +1225,7 @@ input#score {
 .desc_button {
   color: #441e56;
   line-height: 20px;
-  background: #F3F2F2;
+  background: #ECE2D8;
   margin: 5px 0;
   border-top: 1px solid #CAC6C6;
   border-bottom: 1px solid #CAC6C6;
@@ -1295,12 +1293,13 @@ input#score {
   padding: 5px 10px 0 0;
   overflow: hidden;
   border: 1px solid #57422a;
-  background-color: #6e5335;
+  background-color: #43403d;
+  color: #FFFFFF;
   position: fixed;
   right: 18px;
   bottom: 0;
   z-index: 55;
-  font-family: 'serif';
+  font-family: 'Open Sans';
   font-weight: normal;
 }
 .scrollerScroller {
@@ -1311,7 +1310,7 @@ input#score {
 }
 #ticker span {
   padding: 0 2px 0 8px;
-  color: #d0b99e;
+  color: #FFFFFF;
 }
 .scrollerNext, .scrollerPrev {
   padding: 2px;
@@ -1687,7 +1686,7 @@ span.begin {
   -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#7fff4e7, endColorstr=#7fff4e7);
 }
 #region_map { 
-  width: 485px; 
+  width: 530px; 
   height: 350px;
   float: left;
   margin: 0 10px 10px 0;
@@ -1770,7 +1769,7 @@ img.header_image {
 }
 .map_summary {
   height: 160px;
-  width: 145px;
+  width: 160px;
   text-align: center;
   color: #5c462c;
   font-weight: bold;

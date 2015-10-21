@@ -24,14 +24,6 @@
     float: none;
     clear: both;
   }
-  .closest_locations {
-    font-size: 11px;
-    width: 75px;
-    margin-top: 0;
-    line-height: 13px;
-    padding: 7px 6px;
-    text-align: center;
-  }
   #header span.menu_link {
     width: 47px !important;
     font-size: 16px !important;
@@ -58,6 +50,17 @@
     padding: 6px 5px;
     margin: 0 4px 0 0;
     border-top: none;
+  }
+}
+
+@media (max-width: 1030px) { 
+  .closest_locations {
+    font-size: 11px;
+    width: 75px;
+    margin-top: 0;
+    line-height: 13px;
+    padding: 7px 6px;
+    text-align: center;
   }
 }
 
