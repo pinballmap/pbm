@@ -136,14 +136,14 @@ Here's an overview of your pinball map region! Thanks for keeping your region up
 List of Empty Locations:
 #{machineless_locations.each.map { |ml| ml.name + " (#{ml.city}, #{ml.state})" }.sort.join("\n")}
 
-#{user_submissions.select { |us| us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::SUGGEST_LOCATION_TYPE }.count} Location(s) were submitted to you this week
-#{locations.select { |l| l.created_at.between?(start_of_week, end_of_week) }.count} Location(s) were added by you this week
-#{location_machine_xrefs.select { |lmx| lmx.created_at.between?(start_of_week, end_of_week) }.count} machines were added by users this week
-#{user_submissions.select { |us| us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.count} machines were removed by users this week
+#{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::SUGGEST_LOCATION_TYPE }.count} Location(s) were submitted to you this week
+#{locations.select { |l| !l.created_at.nil? && l.created_at.between?(start_of_week, end_of_week) }.count} Location(s) were added by you this week
+#{location_machine_xrefs.select { |lmx| !lmx.created_at.nil? && lmx.created_at.between?(start_of_week, end_of_week) }.count} machines were added by users this week
+#{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.count} machines were removed by users this week
 #{full_name} is listing #{machines_count} machines and #{locations_count} locations
 #{events.count} events are listed
-#{events.select { |e| e.created_at.between?(start_of_week, end_of_week) }.count} events were added this week
-#{user_submissions.select { |us| us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::CONTACT_US_TYPE }.count} "contact us" messages were sent to you
+#{events.select { |e| !e.created_at.nil? && e.created_at.between?(start_of_week, end_of_week) }.count} events were added this week
+#{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::CONTACT_US_TYPE }.count} "contact us" messages were sent to you
 HERE
   end
 
