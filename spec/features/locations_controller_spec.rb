@@ -230,7 +230,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find("#metadata_show_location_#{@location.id}").click
+      find("#metadata_show_location_#{@location.id} .location_description").click
       fill_in("new_phone_#{@location.id}", with: 'THIS IS INVALID')
       fill_in("new_website_#{@location.id}", with: 'http://www.pinballmap.com')
       select('Quarterworld', from: "new_operator_#{@location.id}")
@@ -246,7 +246,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find("#metadata_show_location_#{@location.id}").click
+      find("#metadata_show_location_#{@location.id} .location_description").click
       fill_in("new_phone_#{@location.id}", with: '555-555-5555')
       fill_in("new_website_#{@location.id}", with: 'www.foo.com')
       select('Bar', from: "new_location_type_#{@location.id}")
@@ -266,7 +266,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find("#metadata_show_location_#{@location.id}").click
+      find("#metadata_show_location_#{@location.id} .location_description").click
       fill_in("new_phone_#{@location.id}", with: 'THIS IS SPAM')
       click_on 'Save'
 
@@ -276,7 +276,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find("#metadata_show_location_#{@location.id}").click
+      find("#metadata_show_location_#{@location.id} .location_description").click
       fill_in("new_website_#{@location.id}", with: 'THIS IS SPAM')
       click_on 'Save'
 
@@ -295,7 +295,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find("#metadata_show_location_#{@location.id}").click
+      find("#metadata_show_location_#{@location.id} .location_description").click
       fill_in("new_website_#{@location.id}", with: 'http://www.foo.com')
       fill_in("new_phone_#{@location.id}", with: '555-555-5555')
       select('Bar', from: "new_location_type_#{@location.id}")
