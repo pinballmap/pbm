@@ -1,8 +1,8 @@
 xml.instruct! :xml, :version => "1.0"
 xml.rss :version => "2.0" do
   xml.channel do
-    xml.title 'Pinball Map - Events List'
-    xml.description 'Find pinball events!'
+    xml.title "#{@region.full_name} Pinball Map - Events List"
+    xml.description "Find pinball events!"
     xml.link "http://#{request.host}"
 
     for event in @events
