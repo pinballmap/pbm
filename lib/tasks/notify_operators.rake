@@ -1,6 +1,6 @@
 desc 'Sends emails to operators with recent comments on their machines'
 task notify_operators: :environment do
-  Operators.select { |o| !o.email.blank? }.each do |o|
+  Operators.select { |o| !o.email.blank? }.next do |o|
     comments = o.recent_comments_email_body
 
     unless comments.nil?

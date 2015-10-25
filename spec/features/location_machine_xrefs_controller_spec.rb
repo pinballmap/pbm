@@ -159,7 +159,7 @@ describe LocationMachineXrefsController do
     it 'should default machine description text' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content('Add machine condition')
+      expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content('ADD MACHINE CONDITION')
     end
 
     it 'should let me add a new machine description' do
@@ -271,7 +271,7 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content('Add machine condition')
+      expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content('ADD MACHINE CONDITION')
     end
   end
 
@@ -550,7 +550,7 @@ describe LocationMachineXrefsController do
       expect(page).to have_content('ADD A PICTURE')
       expect(page).to have_content('ADD NEW MACHINE TO THIS LOCATION')
       expect(page).to have_content('SHOW MACHINES AT THIS LOCATION')
-      expect(page).to have_content('Add machine condition')
+      expect(page).to have_content('ADD MACHINE CONDITION')
     end
 
     it 'searches by city' do
