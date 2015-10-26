@@ -291,8 +291,6 @@ div.pick_a_map {
 
 .machine_name {
   width: auto;
-  font-size: 22px;
-  line-height: 22px;
   float: none;
 }
 
@@ -448,7 +446,9 @@ div.pick_a_map {
   line-height: 18px;
 }
 
-.show_machines_location span.info {
+.show_machines_location span.info,
+.add_machine_location span.info,
+.add_picture_location span.info {
   padding-top: 0;
 }
 .search, .submit_button, .save_button, .cancel_button, #add_score, #add, 
@@ -483,6 +483,10 @@ div.pick_a_map {
   font-size: 16px;
   height: 28px;
   margin: 0;
+}
+
+#add_machine_by_name {
+  margin-left: 0 !important;
 }
 
 .machine_condition_display_lmx, .score_result .sub_nav_item, .score_result {
@@ -524,6 +528,9 @@ input#score, input#initials {
   font-size: 15px;
   border: none;
   width: auto;
+  padding-left: 10px;
+  font-weight: bold;
+  color: #666666;
 }
 
 #operator_section_link, #zone_section_link, #machine_section_link, 
