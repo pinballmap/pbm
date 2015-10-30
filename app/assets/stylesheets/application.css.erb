@@ -2,7 +2,7 @@
  *= require jquery-ui
  */
 
-@import url(https://fonts.googleapis.com/css?family=Fira+Mono);
+@import url(https://fonts.googleapis.com/css?family=Fira+Mono:400,700);
 
 /** Core **/
 
@@ -91,6 +91,7 @@ li a:hover {
   color: #43403d;
   font-weight: bold;
   text-shadow: 0.1px 0.1px 0.1px white;
+  font-family: "JohnDoe";
 }
 .italic {
   font-style: italic;
@@ -211,6 +212,9 @@ div.pick_a_map .store_header {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+.home_intro p {
+  font-family: "Fira Mono";
 }
 .home_intro_container {
   float: left;
@@ -541,6 +545,7 @@ span.region_name_page {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border: 1px solid #9fa7ae;
+  font-family: "Fira Mono";
 }
 #locations {
   margin-top: 10px;
@@ -621,7 +626,6 @@ a.active_section_link:hover {
 }
 #search_results li {
   list-style-type: none;
-  font-weight: bold;
   padding-left: 10px;
 }
 .name {
@@ -634,15 +638,20 @@ a.active_section_link:hover {
   border-radius: 0 5px 0 0;
   -moz-border-radius: 0 5px 0 0;
   -webkit-border-radius: 0 5px 0 0;
+  margin-bottom: 5px;
+  font-weight: 700;
 }
 .address {
   font-size: 14px;
   line-height: 16px;
-  font-weight: bold;
+  font-family: "Fira Mono";
 }
 li.address {
   padding: 2px 0 2px 5px;
   background: #FEFBF8;
+}
+.website {
+  font-weight: bold;
 }
 .machine_name {
   font-weight: bold;
@@ -655,6 +664,7 @@ li.address {
   padding: 0 5px 3px;
   width: 81%;
   margin-left: -10px;
+  font-family: "JohnDoe";
 }
 .machine_name:hover {
   background-color: #e79e55;
@@ -695,7 +705,7 @@ span.machine_year_man {
   font-size: 12px;
   line-height: 18px;
   height: 100%;
-  padding: 0 5px 3px 2px;
+  padding: 0 5px 1px 2px;
   width: 285px;
   box-sizing: border-box;
   clear: both;
@@ -881,6 +891,7 @@ br.clear {
   color: #f9f9f9;
   cursor: pointer;
   width: 405px;
+  font-family: "JohnDoe";
 }
 .sub_nav_item:hover {
   color: #ffffff;
@@ -952,7 +963,10 @@ input#add {
 #add,
 #location_picture_xref_submit, 
 .new_location_picture_xref input.submit_picture,
-#login .button {
+#login .button,
+.metadata_edit_location input.save_button, 
+.metadata_edit_location input.cancel_button
+ {
   font-style: normal;
   color: #FFFFFF !important;
   border: 2px solid #a77e51;
@@ -1011,7 +1025,6 @@ input.submit_button:hover,
 .edit_mode,
 #new_user input[type="email"],
 #new_user input[type="password"],
-.metadata_edit_location input,
 input#score,
 input#initials,
 #add_machine_by_name {
@@ -1022,7 +1035,6 @@ input#initials,
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   margin: 4px 4px;
-  width: 260px;
   box-shadow: inset 1px 1px 3px #888;
 }
 .condition_button, .desc_edit_location input,
@@ -1040,9 +1052,6 @@ input#initials,
   margin: 0 4px;
   background: #ece2d8;
   color: #000000;
-}
-.location_detail input {
-  width: 80px;
 }
 .metadata_edit_location {
   padding: 10px;
@@ -1182,7 +1191,7 @@ input#score {
   font-weight: normal;
   height: 100%;
   width: 428px;
-  /*padding: 10px;*/
+  font-family: "Fira Mono";
   border-bottom: 2px solid #987673;
   border-right: 2px solid #B59C9A;
   border-left: 1px solid #987673;
@@ -1234,6 +1243,7 @@ input#score {
   line-height: 20px;
   background: #F3F2F2;
   margin: 5px 0;
+  font-size: 12px;
 }
 .desc_button:hover, .confirm_location_button:hover {
   text-decoration: underline;
@@ -1500,11 +1510,19 @@ a.apps_link:hover {
 
 /** Map/intro **/
 
-.hello, .name, #intro, .intro {
+.hello, .name, .intro {
   font-family: 'JohnDoe',Helvetica,Arial,sans-serif;
+}
+#intro {
+  font-family: "Fira Mono";
+}
+#intro .darkb {
+  font-family: "Fira Mono";
+  font-weight: 400;
 }
 .to_begin {
   margin-top: 10px;
+  font-family: 'JohnDoe';
 }
 @-webkit-keyframes leftToRight {
     0% {

@@ -22,7 +22,7 @@
     %li.address= l.phone
   .clear
   - if l.website
-    %li= link_to l.website, l.website, :class => 'address', :target => 'blank'
+    %li= link_to l.website, l.website, :class => 'address website', :target => 'blank'
     .clear
   %span.location_description.desc_button Update location metadata
 %div[l, :metadata_edit]{:style => 'display:none'}
