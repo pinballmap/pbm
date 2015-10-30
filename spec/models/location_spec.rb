@@ -31,13 +31,18 @@ describe Location do
         @l.save!
       end).to_not raise_error
     end
-    it 'should not update location with websites that do not start with http://' do
+    it 'should not update location with websites that do not start with http:// or https://' do
       @l.update_attributes(website: 'lol.com')
       expect(lambda do
         @l.save!
       end).to raise_error
 
       @l.update_attributes(website: 'http://lol.com')
+      expect(lambda do
+        @l.save!
+      end).to_not raise_error
+
+      @l.update_attributes(website: 'https://lol.com')
       expect(lambda do
         @l.save!
       end).to_not raise_error
