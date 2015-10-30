@@ -5,7 +5,7 @@ class Location < ActiveRecord::Base
 
   validates_presence_of :name, :street, :city, :state, :zip
   validates :phone, format: { with: /\d{3}-\d{3}-\d{4}/, message: 'format invalid, please use ###-###-####' }, if: :phone?
-  validates :website, format: { with: %r{^http:\/\/}, message: 'must begin with http://', multiline: true }, if: :website?
+  validates :website, format: { with: %r{^http[s]?:\/\/}, message: 'must begin with http:// or https://', multiline: true }, if: :website?
   validates :name, :street, :city, :state, format: { with: /^\S.*/, message: "Can't start with a blank", multiline: true }
   validates :lat, :lon, presence: { message: 'Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon' }
 
