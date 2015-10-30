@@ -668,7 +668,7 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}"
       page.find('input#location_search_button').click
 
-      expect(page).to have_content('Click to enter location description/hours/etc')
+      expect(page).to have_content('Enter location description/hours/etc')
 
       page.find("div#desc_show_location_#{@location.id}.desc_show_location").click
       fill_in("new_desc_#{@location.id}", with: 'New Condition')
