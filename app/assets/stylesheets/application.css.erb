@@ -2,6 +2,8 @@
  *= require jquery-ui
  */
 
+@import url(https://fonts.googleapis.com/css?family=Fira+Mono);
+
 /** Core **/
 
 @font-face {
@@ -53,7 +55,7 @@ input, textarea {
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
-  font-family: Helvetica,Arial,sans-serif;
+  font-family: "Fira Mono",Helvetica,Arial,sans-serif;
 }
 select {
 	font-family: Helvetica,Arial,sans-serif;
@@ -147,7 +149,7 @@ ul.twitter {
 .twitter li {
   padding: 5px 0;
   border-bottom: 1px solid #DECEB9;
-  font-family: Helvetica;
+  font-family: "Fira Mono";
   color: #452809;
   font-size: 15px;
 }
@@ -703,6 +705,7 @@ span.machine_year_man {
 }
 .pintips a {
   color: #ffffff;
+  font-family: "Fira Mono";
 }
 .pintips a:after {
   content: "";
@@ -720,6 +723,7 @@ span.machine_year_man {
 span.machine_condition_date {
   color: #999999;
   font-size: 12px;
+  font-family: "JohnDoe";
 }
 .machine_condition_display_lmx .machine_condition_lmx span.machine_condition_date {
   margin-bottom: 8px;
@@ -753,6 +757,7 @@ form.remove_machine_condition {
 .machine_condition_display_lmx .edit_mode {
   width: 261px;
   max-width: 261px;
+  font-family: "Fira Mono";
 }
 .machine_condition_display_lmx .condition_button {
   height: 20px;
@@ -767,6 +772,8 @@ form.remove_machine_condition {
   border-top: 2px solid #d6c1aa;
   border-bottom: 2px solid #d6c1aa;
   margin-top: 5px;
+  font-family: 'JohnDoe';
+  font-weight: normal;
 }
 .machine_condition_display_lmx .condition_button:hover {
   background: #d6c1aa;
@@ -779,6 +786,10 @@ form.remove_machine_condition {
 .machine_condition_new_line span {
   white-space: pre-wrap;
   display: block;
+}
+
+.machine_condition_display_lmx span {
+  font-family: 'Fira Mono';
 }
 .machine_condition_edit_lmx {
   width: 285px;
@@ -1093,7 +1104,7 @@ input#initials {
 }
 .add_scores_lmx_toggle {
   background-color: #d5d5d5;
-  color: #666666;
+  color: #444444;
 }
 .add_scores_lmx_toggle:hover {
   background-color: #d6c1aa;
@@ -1102,18 +1113,18 @@ input#initials {
 .show_scores_lmx_toggle {
   background-color: #c4c4c4;
   width: 283px;
-  color: #555555;
+  color: #333333;
 }
 .show_scores_lmx_toggle:hover,
 .show_conditions_lmx_toggle:hover  {
   background-color: #d6c1aa;
-  color: #555555;
+  color: #333333;
 }
 .show_conditions_lmx_toggle {
   background-color: #d5d5d5;
   width: 285px;
   box-sizing: border-box;
-  color: #555555;
+  color: #333333;
 }
 .location_type, .operator {
   color: #666666;
@@ -1286,7 +1297,7 @@ input#score {
   right: 18px;
   bottom: 0;
   z-index: 55;
-  font-family: Helvetica;
+  font-family: "Fira Mono";
   font-weight: normal;
 }
 .scrollerScroller {
