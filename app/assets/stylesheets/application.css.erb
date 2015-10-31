@@ -104,6 +104,7 @@ li a:hover {
   line-height: 36px;
   text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
   margin: 0;
+  font-weight: 700;
 }
 
 /** END Core **/
@@ -238,6 +239,7 @@ div.pick_a_map .store_header {
   padding: 0;
   margin: 15px 0;
   text-align: center;
+  font-family: "JohnDoe";
 }
 .store_shirt {
   width: 420px;
@@ -546,6 +548,7 @@ span.region_name_page {
   -webkit-border-radius: 5px;
   border: 1px solid #9fa7ae;
   font-family: "Fira Mono";
+  font-weight: normal;
 }
 #locations {
   margin-top: 10px;
@@ -1346,6 +1349,7 @@ input#score {
 #location_maker label, #contact_maker label {
   display: block;
   color: #2E2322;
+  font-family: "JohnDoe";
 }
 #location_maker ul {
   width: 600px;
@@ -1380,6 +1384,7 @@ a.apps_link:hover {
   padding: 0 10px;
   min-height: 575px;
   width: 486px;
+  font-family: "Fira Mono";
 }
 .left_column.secondary {
   text-align:center;
@@ -1434,11 +1439,13 @@ a.apps_link:hover {
   font-size: 16px;
   padding-left: 10px;
   list-style-type: none;
+  font-family: "JohnDoe";
 }
 .event_description {
   font-size: 12px;
   font-weight: normal;
   color: #55413F;
+  font-family: "Fira Mono";
 }
 #left_column, .left_column, .left_column_about {
   background-color: #ece2d8;
@@ -1453,6 +1460,7 @@ a.apps_link:hover {
   width: 375px;
   margin-top: 70px;
   float: left;
+  font-family: "Fira Mono";
 }
 .left_column_about {
   width: 450px;
@@ -1510,19 +1518,27 @@ a.apps_link:hover {
 
 /** Map/intro **/
 
-.hello, .name, .intro {
+.hello, .name, .intro, #intro .hello {
   font-family: 'JohnDoe',Helvetica,Arial,sans-serif;
 }
 #intro {
   font-family: "Fira Mono";
 }
+#intro p {
+  font-weight: 400;
+}
 #intro .darkb {
   font-family: "Fira Mono";
-  font-weight: 400;
+  font-weight: 700;
+}
+#intro .hello,
+#intro .to_begin{
+  font-weight: bold;
 }
 .to_begin {
   margin-top: 10px;
   font-family: 'JohnDoe';
+  font-weight: bold;
 }
 @-webkit-keyframes leftToRight {
     0% {
@@ -1949,6 +1965,12 @@ p.score_list {
 
 /** Rails Admin **/
 
+.form-inputs input {
+  width: 260px;
+}
+.form-inputs #user_remember_me {
+  width: auto;
+}
 .ui-dialog .ui-dialog-titlebar-close {
 top: 35px !important;
 margin-right: -5px !important;
