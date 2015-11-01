@@ -48,6 +48,7 @@ class LocationsController < InheritedResources::Base
   end
 
   def update_metadata
+    validation_error = false
     id = params[:id]
 
     l = Location.find(id)
@@ -60,6 +61,7 @@ class LocationsController < InheritedResources::Base
     l.phone = params["new_phone_#{id}".to_sym]
     unless l.valid?
       l.phone = old_phone
+      validation_error = l.errors.full_messages.join('    ')
       l.errors.clear
     end
 
@@ -67,6 +69,7 @@ class LocationsController < InheritedResources::Base
     l.website = params["new_website_#{id}".to_sym]
     unless l.valid?
       l.website = old_website
+      validation_error = l.errors.full_messages.join('    ')
       l.errors.clear
     end
 
@@ -82,7 +85,11 @@ class LocationsController < InheritedResources::Base
       l
     end
 
-    render nothing: true
+    if validation_error
+      render json: { error: validation_error }
+    else
+      render nothing: true
+    end
   end
 
   def update_desc

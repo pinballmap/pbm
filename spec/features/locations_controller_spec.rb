@@ -241,6 +241,7 @@ describe LocationsController do
       expect(Location.find(@location.id).operator_id).to eq(o.id)
       expect(Location.find(@location.id).phone).to eq(nil)
       expect(Location.find(@location.id).website).to eq('http://www.pinballmap.com')
+      expect(page).to have_content('format invalid, please use ###-###-####')
 
       t = FactoryGirl.create(:location_type, name: 'Bar')
 
@@ -257,6 +258,7 @@ describe LocationsController do
       expect(Location.find(@location.id).location_type_id).to eq(t.id)
       expect(Location.find(@location.id).phone).to eq('555-555-5555')
       expect(Location.find(@location.id).website).to eq('http://www.pinballmap.com')
+      expect(page).to have_content('must begin with http:// or https://')
     end
 
     it 'does not save spam - website and phone' do

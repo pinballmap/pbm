@@ -28,6 +28,9 @@
       #page
         = render :partial => 'pages/header'
         .clear
+        #flash-message
+          - flash.each do |name, msg|
+            = content_tag :div, msg, :id => "flash_#{name}"
 
       = yield
       :javascript
