@@ -141,8 +141,8 @@ List of Empty Locations:
 #{location_machine_xrefs.select { |lmx| !lmx.created_at.nil? && lmx.created_at.between?(start_of_week, end_of_week) }.count} machines were added by users this week
 #{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.count} machines were removed by users this week
 #{full_name} is listing #{machines_count} machines and #{locations_count} locations
-#{events.count} events are listed
-#{events.select { |e| !e.created_at.nil? && e.created_at.between?(start_of_week, end_of_week) }.count} events were added this week
+#{events.select {|e| (e.end_date.nil? || e.end_date >= Date.today) }.count } events are listed
+#{events.select { |e| !e.created_at.nil? && e.created_at.between?(start_of_week, end_of_week) && (e.end_date.nil? || e.end_date >= Date.today) }.count} events were added this week
 #{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::CONTACT_US_TYPE }.count} "contact us" messages were sent to you
 HERE
   end
