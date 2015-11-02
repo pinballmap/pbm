@@ -50,6 +50,10 @@
 
     var form = $(this);
     $.get(form.attr('action'), form.serialize(), function (data) {
+      if (typeof data["error"] !== 'undefined') {
+        show_ajax_message(JSON.stringify(data["error"]), 'error');
+      }
+
       $('#metadata_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_update_metadata');
     });
 
