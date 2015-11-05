@@ -85,8 +85,8 @@ class LocationsController < InheritedResources::Base
       l
     end
 
-    if validation_error
-      render json: { error: validation_error.join('<br />') }
+    if validation_error.length > 0
+      render json: { error: validation_error.uniq.join('<br />') }
     else
       render nothing: true
     end

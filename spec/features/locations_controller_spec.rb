@@ -310,6 +310,29 @@ describe LocationsController do
       expect(Location.find(@location.id).phone).to eq('555-555-5555')
       expect(Location.find(@location.id).operator_id).to eq(o.id)
       expect(Location.find(@location.id).location_type_id).to eq(t.id)
+      expect(page).to_not have_css('div#flash_error')
+    end
+
+    it 'location type update with existing invalid phone number only displays one phone error message - stubbed out spam detection' do
+      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
+      @location.phone = '(503)-555-5555'
+      @location.save(validate: false)
+
+      expect(Rakismet).to receive(:akismet_call).and_return('false')
+
+      t = FactoryGirl.create(:location_type, name: 'Bar')
+      o = FactoryGirl.create(:operator, region: @location.region, name: 'Quarterworld')
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find("#metadata_show_location_#{@location.id} .location_description").click
+      select('Bar', from: "new_location_type_#{@location.id}")
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).location_type_id).to eq(t.id)
+      expect(page).to have_content('format invalid, please use ###-###-####', count: 1)
     end
   end
 
