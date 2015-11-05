@@ -321,7 +321,7 @@ describe LocationsController do
       expect(Rakismet).to receive(:akismet_call).and_return('false')
 
       t = FactoryGirl.create(:location_type, name: 'Bar')
-      o = FactoryGirl.create(:operator, region: @location.region, name: 'Quarterworld')
+      FactoryGirl.create(:operator, region: @location.region, name: 'Quarterworld')
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 

@@ -7,9 +7,9 @@ MethodLength:
 ClassLength:
   Enabled: false
 CyclomaticComplexity:
-  Max: 10
+  Max: 15
 PerceivedComplexity:
-  Max: 10
+  Max: 15
 
 AllCops:
   Exclude:
