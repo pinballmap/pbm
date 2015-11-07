@@ -67,6 +67,8 @@ HERE
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq("Thanks for entering that location. We'll get it in the system as soon as possible.")
+      expect(UserSubmission.all.count).to eq(1)
+      expect(UserSubmission.first.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
     end
   end
 

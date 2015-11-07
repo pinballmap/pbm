@@ -56,18 +56,9 @@ class PagesController < ApplicationController
   def contact_sent
     return unless params['contact_msg']
 
-    body = [params['contact_name'], params['contact_email'], params['contact_msg']].join("\n")
-
     if verify_recaptcha
       flash.now[:alert] = 'Thanks for contacting us!'
-      Pony.mail(
-        to: @region.users.map { |u| u.email },
-        from: 'admin@pinballmap.com',
-        subject: add_host_info_to_subject("PBM - Message from the #{@region.full_name} pinball map"),
-        body: body
-      )
-
-      UserSubmission.create(region_id: @region.id, submission_type: UserSubmission::CONTACT_US_TYPE, submission: body)
+      send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region)
     else
       flash.now[:alert] = 'Your captcha entering skills have failed you. Please go back and try again.'
     end
@@ -100,20 +91,6 @@ class PagesController < ApplicationController
         flash.now[:alert] = "Thanks for entering that location. We'll get it in the system as soon as possible."
 
         send_new_location_notification(params, @region)
-        UserSubmission.create(region_id: @region.id, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE, submission: <<HERE)
-Location Name: #{params['location_name']}\n
-Street: #{params['location_street']}\n
-City: #{params['location_city']}\n
-State: #{params['location_state']}\n
-Zip: #{params['location_zip']}\n
-Phone: #{params['location_phone']}\n
-Website: #{params['location_website']}\n
-Operator: #{params['location_operator']}\n
-Machines: #{params['location_machines']}\n
-Their Name: #{params['submitter_name']}\n
-Their Email: #{params['submitter_email']}\n
-(entered from #{request.remote_ip} via #{request.user_agent})\n
-HERE
       end
     else
       flash.now[:alert] = 'Your captcha entering skills have failed you. Please go back and try again.'
