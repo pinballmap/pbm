@@ -30,8 +30,8 @@ module Api
         end
 
         region = Region.find(params['region_id'])
-
         send_new_location_notification(params, region)
+
         return_response("Thanks for entering that location. We'll get it in the system as soon as possible.", 'msg')
 
         rescue ActiveRecord::RecordNotFound

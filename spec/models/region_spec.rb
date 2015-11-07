@@ -48,7 +48,7 @@ describe Region do
       FactoryGirl.create(:location_machine_xref, location: location_added_today, machine: FactoryGirl.create(:machine), created_at: Date.today - 2.week)
 
       FactoryGirl.create(:event, region: @r, created_at: Date.today - 2.week)
-      FactoryGirl.create(:event, region: @r, end_date: Date.today - 3.day)
+      FactoryGirl.create(:event, region: @r, end_date: Date.today - 2.week)
       FactoryGirl.create(:event, region: @r)
       FactoryGirl.create(:event, region: @r)
       FactoryGirl.create(:event, region: @r)

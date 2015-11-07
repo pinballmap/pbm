@@ -4,9 +4,7 @@ class EventsController < InheritedResources::Base
 
   def index
     @events = apply_scopes(Event)
-
-    @events.select! { |e| e.end_date ? (e.end_date >= Date.today - 7) : e }
-    @events.select! { |e| (e.start_date && !e.end_date) ? (e.start_date >= Date.today - 7) : e }
+    @events.select! { |e| e.active? }
 
     respond_to do |format|
       format.html do

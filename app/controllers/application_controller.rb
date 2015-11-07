@@ -37,12 +37,7 @@ class ApplicationController < ActionController::Base
   end
 
   def send_new_location_notification(params, region)
-    Pony.mail(
-      to: region.users.map { |u| u.email },
-      bcc: User.all.select { |u| u.is_super_admin }.map { |u| u.email },
-      from: 'admin@pinballmap.com',
-      subject: add_host_info_to_subject("PBM - New location suggested for the #{region.name} pinball map"),
-      body: <<END
+    body = <<END
 (A new pinball spot has been submitted for your region! Please verify the address on http://maps.google.com and then paste that Google Maps address into http://pinballmap.com/admin. Thanks!)\n
 Location Name: #{params['location_name']}\n
 Street: #{params['location_street']}\n
@@ -57,7 +52,14 @@ Their Name: #{params['submitter_name']}\n
 Their Email: #{params['submitter_email']}\n
 (entered from #{request.remote_ip} via #{request.user_agent})\n
 END
+    Pony.mail(
+      to: region.users.map { |u| u.email },
+      bcc: User.all.select { |u| u.is_super_admin }.map { |u| u.email },
+      from: 'admin@pinballmap.com',
+      subject: add_host_info_to_subject("PBM - New location suggested for the #{region.name} pinball map"),
+      body: body
     )
+    UserSubmission.create(region_id: region.id, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE, submission: body)
   end
 
   def send_new_region_notification(params)
@@ -75,17 +77,20 @@ END
   end
 
   def send_admin_notification(params, region)
+    body = <<END
+Their Name: #{params[:name]}\n
+Their Email: #{params[:email]}\n
+Message: #{params[:message]}\n
+END
     Pony.mail(
       to: region.users.map { |u| u.email },
       bcc: User.all.select { |u| u.is_super_admin }.map { |u| u.email },
       from: 'admin@pinballmap.com',
-      subject: add_host_info_to_subject("PBM - New message from the #{region.full_name} region"),
-      body: <<END
-Their Name: #{params['name']}\n
-Their Email: #{params['email']}\n
-Message: #{params['message']}\n
-END
+      subject: add_host_info_to_subject("PBM - Message from the #{region.full_name} region"),
+      body: body
     )
+
+    UserSubmission.create(region_id: region.id, submission_type: UserSubmission::CONTACT_US_TYPE, submission: body)
   end
 
   def send_app_comment(params, region)

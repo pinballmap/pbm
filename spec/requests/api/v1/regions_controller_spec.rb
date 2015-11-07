@@ -157,7 +157,7 @@ HERE
           to: ['la@admin.com'],
           bcc: ['portland@admin.com'],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - New message from the Los Angeles region',
+          subject: 'PBM - Message from the Los Angeles region',
           body: <<HERE
 Their Name: name\n
 Their Email: email\n
@@ -170,12 +170,14 @@ HERE
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
+      expect(UserSubmission.all.count).to eq(1)
+      expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
     end
 
     it 'emails region admins with incoming message - notifies if sent from staging server' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          subject: '(STAGING) PBM - New message from the Los Angeles region'
+          subject: '(STAGING) PBM - Message from the Los Angeles region'
         )
       end
 

@@ -65,9 +65,10 @@ HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: ['foo@bar.com'],
+          bcc: ['super_admin@bar.com'],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - Message from the Portland pinball map',
-          body: "foo\nbar\nbaz"
+          subject: 'PBM - Message from the Portland region',
+          body: "Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\n"
         )
       end
 
@@ -75,7 +76,7 @@ HERE
       expect(Region.find(@region.id).user_submissions.count).to eq(1)
       submission = Region.find(@region.id).user_submissions.first
       expect(submission.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
-      expect(submission.submission).to eq("foo\nbar\nbaz")
+      expect(submission.submission).to eq("Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\n")
     end
 
     it 'email should notify if it was sent from the staging server' do
@@ -83,7 +84,7 @@ HERE
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          subject: '(STAGING) PBM - Message from the Portland pinball map'
+          subject: '(STAGING) PBM - Message from the Portland region'
         )
       end
 
@@ -109,13 +110,7 @@ HERE
 
   describe 'submitted_new_location' do
     it 'should send an email' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['foo@bar.com'],
-          bcc: ['super_admin@bar.com'],
-          from: 'admin@pinballmap.com',
-          subject: 'PBM - New location suggested for the portland pinball map',
-          body: <<HERE
+      body = <<HERE
 (A new pinball spot has been submitted for your region! Please verify the address on http://maps.google.com and then paste that Google Maps address into http://pinballmap.com/admin. Thanks!)\n
 Location Name: name\n
 Street: street\n
@@ -130,6 +125,14 @@ Their Name: subname\n
 Their Email: subemail\n
 (entered from 0.0.0.0 via Rails Testing)\n
 HERE
+
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          to: ['foo@bar.com'],
+          bcc: ['super_admin@bar.com'],
+          from: 'admin@pinballmap.com',
+          subject: 'PBM - New location suggested for the portland pinball map',
+          body: body
         )
       end
 
@@ -138,20 +141,7 @@ HERE
       expect(@region.user_submissions.count).to eq(1)
       submission = @region.user_submissions.first
       expect(submission.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
-      expect(submission.submission).to eq(<<HERE)
-Location Name: name\n
-Street: street\n
-City: city\n
-State: state\n
-Zip: zip\n
-Phone: phone\n
-Website: website\n
-Operator: operator\n
-Machines: machines\n
-Their Name: subname\n
-Their Email: subemail\n
-(entered from 0.0.0.0 via Rails Testing)\n
-HERE
+      expect(submission.submission).to eq(body)
     end
 
     it 'should send an email - notifies if sent from the staging server' do

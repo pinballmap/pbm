@@ -11,9 +11,7 @@ module Api
       formats ['json']
       def index
         events = apply_scopes(Event)
-
-        events.select! { |e| e.end_date ? (e.end_date >= Date.today - 7) : e }
-        events.select! { |e| (e.start_date && !e.end_date) ? (e.start_date >= Date.today - 7) : e }
+        events.select! { |e| e.active? }
 
         if params[:sorted] && events.size > 0
           apply_special_sort_and_respond(events)
