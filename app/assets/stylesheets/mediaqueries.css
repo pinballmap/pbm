@@ -9,6 +9,13 @@
   }
 }
 
+@media (max-width: 855px) {
+    div.pick_a_map .geo_header {
+    border-left: 5px solid #D6C0AA !important;
+    border-right: 5px solid #D6C0AA !important;
+  }
+}
+
 @media (max-width: 900px) { 
 
   #header span.menu_link {
@@ -49,13 +56,15 @@
   div.pick_a_map .store_header, div.pick_a_map .geo_header {
     font-size: 12px;
     line-height: 11px;
-    border-bottom: 4px solid #b3afaa;
+    border-right: 2px solid #d6c0aa;
+    border-bottom: 2px solid #d6c0aa;
+    border-top: none;
   }
   div.pick_a_map .geo_header {
     float: left;
     padding: 6px 5px;
     margin: 0 4px 0 0;
-    border-top: none;
+    border-left: none;
   }
 }
 
