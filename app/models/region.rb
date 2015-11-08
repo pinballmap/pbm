@@ -1,10 +1,10 @@
 class Region < ActiveRecord::Base
   has_many :locations
   has_many :zones
-  has_many :users
-  has_many :events
+  has_many :users, -> { order 'users.id' }
+  has_many :events, -> { order 'events.id' }
   has_many :operators
-  has_many :region_link_xrefs
+  has_many :region_link_xrefs, -> { order 'region_link_xrefs.id' }
   has_many :user_submissions
   has_many :location_machine_xrefs, through: :locations
 
@@ -64,22 +64,23 @@ class Region < ActiveRecord::Base
   end
 
   def primary_email_contact
-    if users.empty?
+    case
+    when users.empty?
       'email_not_found@noemailfound.noemail'
-    elsif users.any? { |u| u.is_primary_email_contact }
-      primary_email_contact = users.find { |u| u.is_primary_email_contact }
-      primary_email_contact.email
+    when users.where(is_primary_email_contact: true).any?
+      users
+        .where(is_primary_email_contact: true)
+        .first
+        .email
     else
-      users[0].email
+      users
+        .first
+        .email
     end
   end
 
   def machineless_locations
-    machineless_locations = []
-
-    locations.each { |l| machineless_locations.push(l) unless l.machines.size > 0 }
-
-    machineless_locations
+    locations.select{|location| location.machines.size == 0}
   end
 
   def locations_count

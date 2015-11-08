@@ -131,7 +131,7 @@ HERE
       l = FactoryGirl.create(:location, region: @r)
       l2 = FactoryGirl.create(:location, region: @r)
 
-      expect(@r.machineless_locations).to eq([l, l2])
+      expect(@r.machineless_locations).to include(l, l2)
     end
   end
 
