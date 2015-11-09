@@ -23,7 +23,7 @@ describe Machine do
     it 'should return this machine and all machines group together with it' do
       sassy_champ = FactoryGirl.create(:machine, name: 'Sassy Championship Edition', machine_group: @machine_group)
 
-      expect(@m.all_machines_in_machine_group).to eq([@m, sassy_champ])
+      expect(@m.all_machines_in_machine_group).to include(@m, sassy_champ)
     end
   end
 end

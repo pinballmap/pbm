@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151017212853) do
+ActiveRecord::Schema.define(version: 20151102053730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,11 @@ ActiveRecord::Schema.define(version: 20151017212853) do
     t.integer  "ifpa_tournament_id"
   end
 
+  add_index "events", ["ifpa_calendar_id"], name: "index_events_on_ifpa_calendar_id", using: :btree
+  add_index "events", ["ifpa_tournament_id"], name: "index_events_on_ifpa_tournament_id", using: :btree
+  add_index "events", ["location_id"], name: "index_events_on_location_id", using: :btree
+  add_index "events", ["region_id"], name: "index_events_on_region_id", using: :btree
+
   create_table "location_machine_xrefs", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -53,6 +58,7 @@ ActiveRecord::Schema.define(version: 20151017212853) do
 
   add_index "location_machine_xrefs", ["location_id"], name: "index_location_machine_xrefs_on_location_id", using: :btree
   add_index "location_machine_xrefs", ["machine_id"], name: "index_location_machine_xrefs_on_machine_id", using: :btree
+  add_index "location_machine_xrefs", ["user_id"], name: "index_location_machine_xrefs_on_user_id", using: :btree
 
   create_table "location_picture_xrefs", force: true do |t|
     t.integer  "location_id"
@@ -66,6 +72,9 @@ ActiveRecord::Schema.define(version: 20151017212853) do
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
   end
+
+  add_index "location_picture_xrefs", ["location_id"], name: "index_location_picture_xrefs_on_location_id", using: :btree
+  add_index "location_picture_xrefs", ["user_id"], name: "index_location_picture_xrefs_on_user_id", using: :btree
 
   create_table "location_types", force: true do |t|
     t.datetime "created_at"
@@ -92,6 +101,11 @@ ActiveRecord::Schema.define(version: 20151017212853) do
     t.integer  "operator_id"
     t.date     "date_last_updated"
   end
+
+  add_index "locations", ["location_type_id"], name: "index_locations_on_location_type_id", using: :btree
+  add_index "locations", ["operator_id"], name: "index_locations_on_operator_id", using: :btree
+  add_index "locations", ["region_id"], name: "index_locations_on_region_id", using: :btree
+  add_index "locations", ["zone_id"], name: "index_locations_on_zone_id", using: :btree
 
   create_table "machine_conditions", force: true do |t|
     t.text     "comment"
@@ -120,6 +134,7 @@ ActiveRecord::Schema.define(version: 20151017212853) do
   end
 
   add_index "machine_score_xrefs", ["location_machine_xref_id"], name: "index_machine_score_xrefs_on_location_machine_xref_id", using: :btree
+  add_index "machine_score_xrefs", ["user_id"], name: "index_machine_score_xrefs_on_user_id", using: :btree
 
   create_table "machines", force: true do |t|
     t.string   "name"
@@ -133,6 +148,8 @@ ActiveRecord::Schema.define(version: 20151017212853) do
     t.integer  "ipdb_id"
   end
 
+  add_index "machines", ["machine_group_id"], name: "index_machines_on_machine_group_id", using: :btree
+
   create_table "operators", force: true do |t|
     t.string   "name"
     t.integer  "region_id"
@@ -142,6 +159,8 @@ ActiveRecord::Schema.define(version: 20151017212853) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "operators", ["region_id"], name: "index_operators_on_region_id", using: :btree
 
   create_table "rails_admin_histories", force: true do |t|
     t.string   "message"
@@ -164,6 +183,8 @@ ActiveRecord::Schema.define(version: 20151017212853) do
     t.integer "region_id"
     t.integer "sort_order"
   end
+
+  add_index "region_link_xrefs", ["region_id"], name: "index_region_link_xrefs_on_region_id", using: :btree
 
   create_table "regions", force: true do |t|
     t.string   "name"
@@ -208,6 +229,7 @@ ActiveRecord::Schema.define(version: 20151017212853) do
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["region_id"], name: "index_users_on_region_id", using: :btree
 
   create_table "zones", force: true do |t|
     t.string   "name"
@@ -217,5 +239,7 @@ ActiveRecord::Schema.define(version: 20151017212853) do
     t.string   "short_name"
     t.boolean  "is_primary"
   end
+
+  add_index "zones", ["region_id"], name: "index_zones_on_region_id", using: :btree
 
 end
