@@ -80,7 +80,7 @@ class Region < ActiveRecord::Base
   end
 
   def machineless_locations
-    locations.select{|location| location.machines.size == 0}
+    locations.select { |location| location.machines.size == 0 }
   end
 
   def locations_count
