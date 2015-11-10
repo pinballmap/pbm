@@ -200,21 +200,6 @@ describe PagesController do
       expect(page).to have_content('2 locations and 2 machines')
     end
 
-    it 'does not show high scores when none exist' do
-      visit '/portland'
-
-      expect(page).to_not have_selector('#ticker')
-    end
-
-    it 'shows high scores when they exist' do
-      lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
-      FactoryGirl.create(:machine_score_xref, location_machine_xref: lmx, initials: 'cap', score: 1234, rank: 1)
-
-      visit '/portland'
-
-      expect(page).to have_content("Test Location Name's Test Machine Name: GC with 1,234 by cap")
-    end
-
     it 'shows the proper page title' do
 
       visit '/portland'

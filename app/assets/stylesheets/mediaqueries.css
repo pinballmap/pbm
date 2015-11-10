@@ -14,6 +14,33 @@
     border-left: 5px solid #D6C0AA !important;
     border-right: 5px solid #D6C0AA !important;
   }
+    .pintips, .machine_condition_display_lmx, .machine_condition_edit_lmx, 
+    .high_score > .sub_nav_item, .score_container_lmx > .sub_nav_item,
+    .add_scores_form, .show_scores_lmx, .show_conditions_lmx, .show_conditions_lmx_toggle
+    { width: 285px;}
+
+    #lookup, .show_location_detail_location, #location_maker ul, .score_result .sub_nav_item
+    { width: 430px;}
+
+    #form { width: 456px;}
+
+    #operator_section_link, #zone_section_link, #machine_section_link, #city_section_link, #location_section_link, #type_section_link
+    { margin-left: -5px; }
+
+    #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id
+    { width: 145px; }
+
+    #form input.lookup_search_input
+    { width: 200px; }
+
+    .machine_name 
+    { width: 305px; }
+
+    .machine_condition_display_lmx .edit_mode
+    { width: 261px;
+      max-width: 261px;
+      min-width: 261px; 
+    }
 }
 
 @media (max-width: 900px) { 
