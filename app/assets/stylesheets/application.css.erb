@@ -268,7 +268,7 @@ div.pick_a_map .store_header {
   width: 100%;
   min-width: 768px;
   height: 54px;
-  background: #777777;
+  background: #675032;
   box-shadow: 0 0 15px rgba(90, 100, 117, 0.5);
   border-bottom: 5px solid #7e623d;
 }
@@ -522,7 +522,6 @@ span.region_name_page {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   box-sizing: border-box;
-  margin-right: -5px;
 }
 .section {
   padding: 7px 5px 3px;
@@ -564,9 +563,9 @@ span.region_name_page {
 }
 #form {
   position: fixed;
-  top: 49px;
+  top: 54px;
   right: 13px;
-  width: 456px;
+  width: 630px;
   z-index: 75;
   border: 4px solid #853102;
   border-top: none;
@@ -585,8 +584,8 @@ span.region_name_page {
   box-shadow: 0 4px 5px rgba(90, 100, 117, 0.3);
   display: inline;
   float: right;
-  padding: 130px 10px 60px 10px;
-  width: 430px;
+  padding: 130px 10px 10px 10px;
+  width: 600px;
   z-index: 50;
   margin-right: 18px;
   position: relative;
@@ -612,7 +611,7 @@ span.region_name_page {
   text-decoration: underline;
 }
 #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id {
-  width: 145px;
+  width: 200px;
   font-size: 16px;
 }
 .active_section_link {
@@ -674,7 +673,7 @@ li.address {
   line-height: 26px;
   height: 100%;
   padding: 0 5px 3px;
-  width: 81%;
+  width: 445px;
   margin-left: -10px;
   font-family: "JohnDoe";
 }
@@ -708,6 +707,9 @@ span.machine_year_man {
   padding: 5px;
   border-left: 5px solid #ae9390;
 }
+.machine_sub_items {
+  width: 400px;
+}
 .pintips {
   text-align: left;
   font-style: italic;
@@ -715,11 +717,11 @@ span.machine_year_man {
   font-weight: bold;
   background-color: #bbb;
   color: #ffffff;
-  font-size: 12px;
+  font-size: 16px;
   line-height: 18px;
   height: 100%;
   padding: 0 5px 1px 2px;
-  width: 285px;
+  width: 435px;
   box-sizing: border-box;
   clear: both;
   margin-left: 10px;
@@ -773,13 +775,14 @@ form.remove_machine_condition {
 .machine_condition_display_lmx {
   margin: 5px 0 5px 10px;
   padding: 2px;
-  width: 285px;
   background: #ECE2D8;
   box-sizing: border-box;
+  width: 435px;
 }
 .machine_condition_display_lmx .edit_mode {
-  width: 261px;
-  max-width: 261px;
+  width: 400px;
+  max-width: 400px;
+  min-width: 400px;
   font-family: "Fira Mono";
 }
 .machine_condition_display_lmx .condition_button {
@@ -810,12 +813,13 @@ form.remove_machine_condition {
   white-space: pre-wrap;
   display: block;
 }
-
 .machine_condition_display_lmx span {
   font-family: 'Fira Mono';
+  padding: 5px;
 }
 .machine_condition_edit_lmx {
-  width: 285px;
+  width: 435px;
+  margin: 5px;
   box-sizing: border-box;
 }
 .machineconditions_container_lmx {
@@ -826,9 +830,13 @@ form.remove_machine_condition {
 }
 .high_score > .sub_nav_item,
 .score_container_lmx > .sub_nav_item {
-  width: 285px;
+  width: 435px;
   box-sizing: border-box;
   clear: both;
+  border: none;
+  font-size: 18px;
+  line-height: 22px;
+  height: 24px;
 }
 #add_machine_by_id {
   margin-bottom: 5px;
@@ -846,11 +854,9 @@ form.remove_machine_condition {
   font-size: 11px;
   line-height: 14px;
   margin-left: 13px;
-  width: 380px;
   padding: 5px 0px;
 }
 .add_picture_location span.info, .show_machines_location span.info, .add_machine_location span.info {
-  width: 360px;
   padding: 0 0 10px 0;
 }
 .add_picture_location {
@@ -896,15 +902,15 @@ br.clear {
   background: #DDDDDD;
 }
 .sub_nav_item {
-  height: 18px;
-  line-height: 18px;
-  padding-left: 2px;
-  font-size: 14px;
+  height: 28px;
+  line-height: 28px;
+  padding-left: 5px;
+  font-size: 18px;
   font-weight: normal;
   color: #f9f9f9;
   cursor: pointer;
-  width: 405px;
   font-family: "JohnDoe";
+  border: 1px solid #5c472c;
 }
 .sub_nav_item:hover {
   color: #ffffff;
@@ -935,7 +941,6 @@ br.clear {
 }
 .search_result {
   height: 100%;
-  width: 430px;
   background-color: #DDDDDD;
   border-radius: 5px;
   -moz-border-radius: 5px;
@@ -1058,7 +1063,7 @@ input#initials,
   box-shadow: 1px 1px 3px #888;
 }
 #form input.lookup_search_input {
-  width: 200px;
+  width: 300px;
   height: 28px;
   font-size: 16px;
   box-shadow: inset 1px 1px 3px #888;
@@ -1098,9 +1103,9 @@ input#initials {
   padding: 2px;
 }
 .add_scores_form, .show_scores_lmx, .show_conditions_lmx {
-  padding: 5px 0 5px 10px;
+  padding: 5px 0 5px 5px;
   background-color: #FEFBF8;
-  width: 285px;
+  width: 435px;
   box-sizing: border-box;
 }
 .add_picture_location_toggle {
@@ -1147,9 +1152,13 @@ input#initials {
 }
 .show_conditions_lmx_toggle {
   background-color: #d5d5d5;
-  width: 285px;
+  width: 435px;
   box-sizing: border-box;
   color: #333333;
+  border: none;
+  font-size: 18px;
+  line-height: 22px;
+  height: 24px;
 }
 .location_type, .operator {
   color: #666666;
@@ -1172,6 +1181,7 @@ input#initials {
 }
 .desc_edit_location .edit_mode {
   max-width: 380px;
+  min-width: 380px;
   width: 380px;
 }
 .confirm_location {
@@ -1206,7 +1216,6 @@ input#score {
   line-height: 12px;
   font-weight: normal;
   height: 100%;
-  width: 428px;
   font-family: "Fira Mono";
   border-bottom: 2px solid #987673;
   border-right: 2px solid #B59C9A;
@@ -1224,7 +1233,6 @@ input#score {
 }
 .location_name {
   background-color: #FEFBF8;
-  width: 430px;
   box-shadow: 0 2px 10px rgba(90, 100, 117, 0.5);
   -moz-box-shadow: 0 2px 10px rgba(90, 100, 117, 0.5);
   -webkit-box-shadow: 0 2px 10px rgba(90, 100, 117, 0.5);
@@ -1275,11 +1283,11 @@ input#score {
   background-color: #f4f8f6;
 }
 .desc_edit_location {
-  padding: 0 0 5px 15px;
+  padding: 0 0 5px 10px;
 }
 .show_location_detail_location {
   padding: 0;
-  width: 430px;
+  width: 600px;
 }
 .location_thumbs {
   margin: 5px 6px;
@@ -1745,7 +1753,7 @@ span.begin {
   position: fixed;
   bottom: 0;
   top: 53px;
-  right: 470px;
+  right: 640px;
   left: 0;
   min-width: 296px;
 }
@@ -1788,7 +1796,7 @@ ul.stufflike li, ul.list li {
 /** Region-Specific Elements **/
 
 .portland_region_image {
-  margin-left: 20%;
+  margin-left: 30%;
   border: 1px solid #FFEEDD;
 }
 .landing_logo {

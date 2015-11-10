@@ -10,21 +10,3 @@
           %span.darkb Message of the Day:
           = @region.motd 
       = yield :presearch_sidebar
-  - recent_scores = @region.n_recent_scores(20)
-  - if recent_scores.any?
-    #ticker
-      - recent_scores.each do |msx|
-        %span= "#{msx.location.name}'s #{msx.machine.name}: #{MachineScoreXref::ENGLISH_SCORES[msx.rank]} with #{number_with_delimiter(msx.score, :delimiter => ",")} by #{msx.initials}"
-
-:javascript
-  $().ready(function(){
-      $("#ticker").scrollSomething({
-        scrollerWidth: 445,
-        scrollerHeight: 50,
-        buttonSettings: "show",
-        itemsVisible: 2,
-        itemsScrolling: 1,
-        buttonPosition: "bottomRight",
-        scrollInterval: 5000
-      });
-  });
