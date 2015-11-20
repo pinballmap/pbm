@@ -59,3 +59,16 @@
               %span #{l.description}
       - else
         %p Links coming soon...
+    - if (@region.operators.size > 0)
+      .right_column.links_column
+        %p.darkb.links_category 
+          Operators in this Region
+          - @region.operators.each do |o|
+            - if o.locations 
+              %p.links_content
+                - if ((o.website && o.website.empty?) || (!o.website))
+                  #{o.name}
+                - else
+                  =link_to "#{o.name}", "#{o.website}", :target => "_blank"
+
+               

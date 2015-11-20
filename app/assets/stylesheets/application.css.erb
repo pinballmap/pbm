@@ -880,14 +880,14 @@ form.remove_machine_condition {
   cursor: pointer;
   padding: 0 2px 2px;
   font-size: 12px;
-  line-height: 24px;
+  line-height: 30px;
   height: 28px;
   width: 60px;
   text-transform: uppercase;
   box-shadow: inset 1px 1px 2px #888;
 }
 .location_detail input.remove_machine_button:hover {
-  border: 1px solid #3b3835;
+  border: 1px solid #bbbbbb;
   color: black;
   background-color: #fc9cae;
 }
@@ -998,17 +998,18 @@ input#add {
   font-size: 14px;
   background: #6E5335 !important; 
 }
-.search:active, 
+input.search:active, 
 .submit_button:active, 
 .save_button:active, 
 .cancel_button:active, 
 #add_score:active, 
 #add:active, 
 #location_picture_xref_submit:active,
+.new_location_picture_xref input.submit_picture:active,
 #login .button:active {
-  box-shadow: 1px 1px 1px #fc9256;
-  -moz-box-shadow: 1px 1px 1px #fc9256;
-  -webkit-box-shadow: 1px 1px 1px #fc9256;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
   transform: translate(1px, 1px);
   background: #fdb289;
 }
@@ -1016,7 +1017,7 @@ input#add {
   float: left;
   margin-left: 5px;
 }
-input:focus { /* this is in need of an update */
+input:focus {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(249, 252, 159, 0.6);
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(249, 252, 159, 0.6);
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(249, 252, 159, 0.6);
@@ -1027,14 +1028,15 @@ input#location_picture_xref_submit:hover,
 input.submit_button:hover,
 .save_button:hover, 
 .cancel_button:hover, 
-#add_score:hover {
-  box-shadow: 1px 1px 3px #b7cfc1;
-  -moz-box-shadow: 1px 1px 3px #b7cfc1;
-  -webkit-box-shadow: 1px 1px 3px #b7cfc1;
+#add_score:hover,
+.new_location_picture_xref input.submit_picture:hover {
+  box-shadow: 1px 1px 3px #888;
+  -moz-box-shadow: 1px 1px 3px #888;
+  -webkit-box-shadow: 1px 1px 3px #888;
   background: #4c3924;
   color: #EBF1FD;
+  background: #40301f !important;
 }
-
 #location_maker input.text, 
 #location_maker textarea,
 #contact_maker input.text, 
@@ -1055,6 +1057,7 @@ input#initials,
   margin: 4px 4px;
   box-shadow: inset 1px 1px 3px #888;
 }
+input.search,
 .condition_button, .desc_edit_location input,
 .metadata_edit_location input.save_button, 
 .metadata_edit_location input.cancel_button,
