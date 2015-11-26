@@ -68,14 +68,14 @@ List of Empty Locations:
 Another Empty Location (Rochester, OR)
 Empty Location (Troy, OR)
 
-2 Location(s) were submitted to you this week
-2 Location(s) were added by you this week
-1 machines were added by users this week
-2 machines were removed by users this week
+2 Location(s) submitted to you this week
+2 Location(s) added by you this week
+1 machine(s) added by users this week
+2 machine(s) removed by users this week
 Portland is listing 3 machines and 3 locations
-4 events are listed
-3 events were added this week
-5 "contact us" messages were sent to you
+4 event(s) listed
+3 event(s) added this week
+5 "contact us" message(s) sent to you
 HERE
     end
   end
