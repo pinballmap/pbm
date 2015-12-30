@@ -73,7 +73,7 @@ class LocationMachineXref < ActiveRecord::Base
           to: location.region.users.map { |u| u.email },
           from: 'admin@pinballmap.com',
           subject: add_host_info_to_subject('PBM - Someone removed a machine from a location', options[:request_host]),
-          body: [location.name, machine.name, location.region.name, "(entered from #{options[:remote_ip]} via #{options[:user_agent]})"].join("\n")
+          body: [location.name, machine.name, location.region.name, "(user_id: #{options[:user_id]}) (entered from #{options[:remote_ip]} via #{options[:user_agent]})"].join("\n")
       )
     end
 
