@@ -6,10 +6,22 @@ describe LocationMachineXrefsController do
     @location = FactoryGirl.create(:location, id: 1, region: @region)
   end
 
+  describe 'add machines - not authed', type: :feature, js: true do
+    it 'Should not allow you to add machines if you are not logged in' do
+      sleep 1
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+
+      expect(page).to_not have_selector("#add_machine_location_banner_#{Location.find(@location.id).id}")
+    end
+  end
+
   describe 'add machines', type: :feature, js: true do
     before(:each) do
+      @user = FactoryGirl.create(:user)
       @machine_to_add = FactoryGirl.create(:machine, name: 'Medieval Madness')
       FactoryGirl.create(:machine, name: 'Star Wars')
+
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
     end
 
     it 'Should add by id' do
@@ -28,6 +40,8 @@ describe LocationMachineXrefsController do
       expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
       expect(find("#gm_machines_#{@location.id}")).to have_content(@machine_to_add.name)
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
+
+      expect(LocationMachineXref.where(location_id: @location.id, machine_id: @machine_to_add.id).first.user_id).to eq(@user.id)
     end
 
     it 'Should add by name of existing machine' do
@@ -107,9 +121,24 @@ describe LocationMachineXrefsController do
     end
   end
 
+  describe 'machine descriptions - no auth', type: :feature, js: true do
+    before(:each) do
+      @lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
+    end
+
+    it 'does not let you edit machine descriptions' do
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      expect(page).to_not have_selector('span.condition_button.condition_button_new')
+    end
+  end
+
   describe 'machine descriptions', type: :feature, js: true do
     before(:each) do
       @lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
+      @user = FactoryGirl.create(:user)
+
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
     end
 
     it 'does not save spam' do
@@ -273,6 +302,9 @@ describe LocationMachineXrefsController do
     end
 
     it 'adds by machine name from input -- autocorrect picks via id' do
+      @user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+
       FactoryGirl.create(:machine, id: 10, name: 'Sassy Madness', year: 1980, manufacturer: 'Bally')
       FactoryGirl.create(:machine, id: 11, name: 'Sassy Madness', year: 2010, manufacturer: 'Bally')
 
@@ -300,6 +332,9 @@ describe LocationMachineXrefsController do
     end
 
     it 'adds by machine name from input' do
+      @user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+
       FactoryGirl.create(:machine, name: 'Sassy Madness')
       FactoryGirl.create(:machine, name: 'Sassy From The Black Lagoon')
       FactoryGirl.create(:machine, name: 'Cleo Game')
@@ -534,6 +569,9 @@ describe LocationMachineXrefsController do
     end
 
     it 'automatically loads with machine detail visible on a single location search' do
+      @user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+
       visit "/#{@region.name}"
       page.find('input#location_search_button').click
 
@@ -656,6 +694,9 @@ describe LocationMachineXrefsController do
     end
 
     it 'displays appropriate values in location description' do
+      @user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+
       visit "/#{@region.name}"
       page.find('input#location_search_button').click
 

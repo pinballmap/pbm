@@ -77,4 +77,5 @@ group :development, :test do
   gem 'pickle'
   gem 'bullet'
   gem 'email_spec'
+  gem 'rack_session_access'
 end
