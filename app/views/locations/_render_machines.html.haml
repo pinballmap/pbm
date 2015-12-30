@@ -1,9 +1,8 @@
 %span.info Add a machine condition; add a high score; remove a machine if it's no longer at this location.
 - location_machine_xrefs.sort{|a,b| a.machine.massaged_name <=> b.machine.massaged_name}.each do |lmx|
   %div.machine_names[lmx, :machine]
-    - if user_signed_in?
-      = render :partial => 'location_machine_xrefs/remove_machine', :locals => {:lmx => lmx}
-      .clear
+    = render :partial => 'location_machine_xrefs/remove_machine', :locals => {:lmx => lmx}
+    .clear
     %div[lmx, :machine_condition_display]
       = render :partial => 'location_machine_xrefs/update_machine_condition', :locals => {:lmx => lmx}
     = render :partial => 'machine_conditions/show_machine_conditions', :locals => {:lmx => lmx}

@@ -6,7 +6,22 @@ describe MachineScoreXrefsController do
     @location = FactoryGirl.create(:location, region: @region)
   end
 
+  describe 'add machine scores - no auth', type: :feature, js: true do
+    it 'does not allow you to enter a score if you are not logged in' do
+      lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+
+      expect(page).to_not have_selector("div#add_scores_lmx_banner_#{lmx.id}")
+    end
+  end
+
   describe 'add machine scores', type: :feature, js: true do
+    before(:each) do
+      @user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+    end
+
     it 'adds a score' do
       lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
 
@@ -78,6 +93,9 @@ describe MachineScoreXrefsController do
 
   describe 'displays scores correctly', type: :feature, js: true do
     it 'honors the hide/show of the display area' do
+      @user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+
       lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"

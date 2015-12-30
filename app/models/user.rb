@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_many :location_machine_xrefs
   has_many :machine_score_xrefs
   has_many :location_picture_xrefs
+  has_many :user_submissions
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable

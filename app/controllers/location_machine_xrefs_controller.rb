@@ -26,8 +26,10 @@ class LocationMachineXrefsController < InheritedResources::Base
     location.date_last_updated = Date.today
     location.save(validate: false)
 
+    user_id = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user.id
+
     LocationMachineXref.where(['location_id = ? and machine_id = ?', location.id, machine.id]).first ||
-      LocationMachineXref.create(location_id: location.id, machine_id: machine.id)
+      LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user_id)
   end
 
   def create_confirmation
@@ -37,8 +39,10 @@ class LocationMachineXrefsController < InheritedResources::Base
   def destroy
     lmx = LocationMachineXref.find_by_id(params[:id])
 
-    UserSubmission.create(region_id: lmx.location.region_id, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: [lmx.location.name, lmx.machine.name, lmx.location.region.name].join("\n"))
-    lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent) unless lmx.nil?
+    user_id = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user.id
+
+    UserSubmission.create(region_id: lmx.location.region_id, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: [lmx.location.name, lmx.machine.name, lmx.location.region.name].join("\n"), user_id: user_id)
+    lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: user_id) unless lmx.nil?
 
     render nothing: true
   end

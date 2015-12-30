@@ -7,6 +7,9 @@ describe LocationsController do
 
   describe 'confirm location', type: :feature, js: true do
     before(:each) do
+      @user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+
       @location = FactoryGirl.create(:location, region_id: @region.id, name: 'Cleo')
       @machine = FactoryGirl.create(:machine, name: 'Bawb')
     end
@@ -21,9 +24,26 @@ describe LocationsController do
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
     end
   end
+  describe 'remove machine - not authed', type: :feature, js: true do
+    before(:each) do
+      @location = FactoryGirl.create(:location, region_id: @region.id, name: 'Cleo')
+      @machine = FactoryGirl.create(:machine, name: 'Bawb')
+    end
+
+    it 'removes a machine from a location' do
+      FactoryGirl.create(:location_machine_xref, location: @location, machine: @machine)
+
+      visit '/portland/?by_location_id=' + Location.find(@location.id).id.to_s
+
+      expect(page).to_not have_selector("input#remove_machine_#{LocationMachineXref.where(location_id: @location.id, machine_id: @machine.id).first.id}")
+    end
+  end
 
   describe 'remove machine', type: :feature, js: true do
     before(:each) do
+      @user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+
       @location = FactoryGirl.create(:location, region_id: @region.id, name: 'Cleo')
       @machine = FactoryGirl.create(:machine, name: 'Bawb')
     end
@@ -42,7 +62,7 @@ describe LocationsController do
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "Cleo\nBawb\nportland\n(entered from 127.0.0.1 via Mozilla/5.0 (cleOS))",
+          body: "Cleo\nBawb\nportland\n(user_id: #{@user.id}) (entered from 127.0.0.1 via Mozilla/5.0 (cleOS))",
           subject: 'PBM - Someone removed a machine from a location',
           to: [],
           from: 'admin@pinballmap.com'
@@ -65,6 +85,7 @@ describe LocationsController do
       submission = Region.find(@location.region_id).user_submissions.first
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
       expect(submission.submission).to eq("Cleo\nBawb\nportland")
+      expect(submission.user_id).to eq(@user.id)
     end
 
     it 'removes a machine from a location - allows you to cancel out of remove' do
@@ -218,6 +239,9 @@ describe LocationsController do
 
   describe 'update_metadata', type: :feature, js: true do
     before(:each) do
+      @user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+
       @location = FactoryGirl.create(:location, region: @region, name: 'Cleo')
     end
 
@@ -829,7 +853,7 @@ XML
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "sasston\nCleo\nportland\n(entered from 127.0.0.1 via Mozilla/5.0 (cleOS))",
+          body: "sasston\nCleo\nportland\n(user_id: ) (entered from 127.0.0.1 via Mozilla/5.0 (cleOS))",
           subject: 'PBM - Someone removed a machine from a location',
           to: [],
           from: 'admin@pinballmap.com'
