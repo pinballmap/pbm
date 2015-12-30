@@ -7,6 +7,7 @@ require 'capybara/rspec'
 require 'capybara/poltergeist'
 require 'simplecov'
 require 'coveralls'
+require 'rack_session_access/capybara'
 
 include Sprockets::Rails::Helper
 
