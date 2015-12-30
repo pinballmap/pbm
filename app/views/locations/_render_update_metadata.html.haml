@@ -25,6 +25,8 @@
   - if l.website
     %li.address_full= link_to l.website, l.website, :class => 'website', :target => 'blank'
   .clear
+  - if user_signed_in?
+    %span.location_description.desc_button Update location metadata
 %div[l, :metadata_edit]{:style => 'display:none'}
   = form_tag update_metadata_locations_path(:action => 'update_metadata', :id => l.id, :region => @region.name), :id => "update_metadata_#{l.id}", :method => 'get' do
     = hidden_field_tag :id, l.id
