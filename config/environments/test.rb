@@ -35,4 +35,6 @@ Pbm::Application.configure do
   config.active_support.deprecation = :stderr
 
   config.eager_load = false
+
+  config.middleware.use RackSessionAccess::Middleware
 end
