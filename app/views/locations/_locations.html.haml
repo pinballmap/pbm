@@ -43,8 +43,9 @@
                 %div.location_link 
                   =link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
             %div.location_detail_sub
-              = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
-              = render :partial => 'locations/add_machine', :locals => {:location => l}
+              - if user_signed_in?
+                = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
+                = render :partial => 'locations/add_machine', :locals => {:location => l}
               = render :partial => 'locations/show_machines', :locals => {:location => l}
         - l = nil
 
