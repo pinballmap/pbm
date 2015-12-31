@@ -446,7 +446,7 @@ div.pick_a_map .store_header {
 div.pick_a_map .blog_header {
   border-left: 1px solid #d6c0aa;
 }
-.closest_locations, .geo_header {
+.closest_locations, .geo_header, .login {
   font-size: 15px;
   line-height: 16px;
   padding: 10px 6px;
@@ -457,6 +457,23 @@ div.pick_a_map .blog_header {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+.login {
+  float: right;
+}
+.login_home {
+  margin: 2px 5px;
+  float: right;
+}
+.login_alert {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.login_alert a {
+  color: red;
+}
+div.login_alert {
+  padding: 3px;
 }
 .geo_header {
   margin: 2px 5px;
@@ -605,9 +622,9 @@ span.region_name_page {
 }
 .location_link {
   cursor: pointer;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: normal;
-  padding: 1px 2px 2px;
+  padding: 2px 2px 2px;
   margin-top: 5px;
   text-align: center;
   background-color: #f3f2f2;
@@ -695,7 +712,7 @@ li.address_full {
 .machine_names {
   color: #433A3A;
   font-size: 14px;
-  padding: 4px 0 8px 10px !important;
+  padding: 4px 0 25px 10px !important;
   line-height: 18px;
   background: #FEFBF8;
   font-weight: bold;
