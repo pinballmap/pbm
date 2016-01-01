@@ -2,6 +2,9 @@
   =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
   - if (@region)
     %div{:class => "header_buttons"}
+      %div.login.login_region
+        %span.darkb
+          = link_to 'Sign Up / Log In', 'http://pinballmap.com/users/sign_in'
       %span.darkb.closest_locations{:style => "float:right;", :onclick => "findClosestLocations('#{@region.name}')"}
         = link_to 'Show Closest Locations', '#', {:id => 'find_closest_locations'}
       %div.region_logo_dropdown
@@ -26,7 +29,7 @@
             = link_to 'T-Shirts', store_path
           %li.darkb.blog_header_region
             =link_to 'App', apps_path
-  - else  
+  - else
     %div{:class => "pick_a_map"}
       %span.darkb.blog_header
         = link_to 'Blog', 'http://blog.pinballmap.com'
@@ -34,6 +37,9 @@
         = link_to 'App', apps_path
       %span.darkb.store_header
         = link_to 'T-Shirts', store_path
+      %div.login.login_home
+        %span.darkb
+          = link_to 'Sign Up / Log In', 'http://pinballmap.com/users/sign_in'
       %span.darkb.geo_header{:onclick => "findClosestRegion()"}
         = link_to 'Find Your Closest Map', '#'
 

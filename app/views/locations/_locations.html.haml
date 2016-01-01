@@ -42,6 +42,8 @@
                   = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
                 %div.location_link 
                   =link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
+                %div.login_alert
+                  = link_to 'To update this location, you must login!', 'http://pinballmap.com/users/sign_in'
             %div.location_detail_sub
               - if user_signed_in?
                 = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
