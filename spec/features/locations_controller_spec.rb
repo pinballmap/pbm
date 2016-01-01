@@ -362,6 +362,9 @@ describe LocationsController do
 
   describe 'update_desc', type: :feature, js: true do
     before(:each) do
+      @user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+
       @location = FactoryGirl.create(:location, region: @region, name: 'Cleo')
     end
 
