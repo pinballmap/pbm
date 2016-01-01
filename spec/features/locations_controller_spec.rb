@@ -16,6 +16,9 @@ describe LocationsController do
 
     it 'lets you click a button to update the date_last_updated' do
       visit '/portland/?by_location_id=' + @location.id.to_s
+
+      sleep 1
+
       find("#confirm_location_#{@location.id}").click
 
       sleep 1
@@ -362,6 +365,9 @@ describe LocationsController do
 
   describe 'update_desc', type: :feature, js: true do
     before(:each) do
+      @user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+
       @location = FactoryGirl.create(:location, region: @region, name: 'Cleo')
     end
 

@@ -129,7 +129,11 @@ describe LocationMachineXrefsController do
     it 'does not let you edit machine descriptions' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
+      sleep 1
+
       expect(page).to_not have_selector('span.condition_button.condition_button_new')
+      page.find("div#desc_show_location_#{@location.id}").click
+      expect(page).to_not have_content('Cancel')
     end
   end
 
