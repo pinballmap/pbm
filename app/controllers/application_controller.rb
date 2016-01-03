@@ -2,6 +2,7 @@ require 'pony'
 
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  before_action :configure_permitted_parameters, if: :devise_controller?
   before_filter :detect_region, :set_current_user
   after_filter :flash_to_headers
 
@@ -154,6 +155,12 @@ END
   helper_method :mobile_device?
 
   protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me) }
+    devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
+    devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
+  end
 
   def detect_region
     @region = Region.find_by_name(params[:region].downcase) if params[:region] && (params[:region].is_a? String)
