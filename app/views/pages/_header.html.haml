@@ -4,7 +4,10 @@
     %div{:class => "header_buttons"}
       %div.login.login_region
         %span.darkb
-          = link_to 'Sign Up / Log In', 'http://pinballmap.com/users/sign_in'
+          - if !user_signed_in?
+            = link_to 'Sign Up / Log In', "http://#{request.host}/users/sign_in"
+          - else 
+            = link_to 'Log Out', 'http://pinballmap.com/users/sign_out'
       %span.darkb.closest_locations{:style => "float:right;", :onclick => "findClosestLocations('#{@region.name}')"}
         = link_to 'Show Closest Locations', '#', {:id => 'find_closest_locations'}
       %div.region_logo_dropdown
@@ -39,7 +42,10 @@
         = link_to 'T-Shirts', store_path
       %div.login.login_home
         %span.darkb
-          = link_to 'Sign Up / Log In', 'http://pinballmap.com/users/sign_in'
+          - if !user_signed_in?
+            = link_to 'Sign Up / Log In', "http://#{request.host}/users/sign_in"
+          - else 
+            = link_to 'Log Out', 'http://pinballmap.com/users/sign_out'
       %span.darkb.geo_header{:onclick => "findClosestRegion()"}
         = link_to 'Find Your Closest Map', '#'
 
