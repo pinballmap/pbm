@@ -10,6 +10,7 @@ describe LocationMachineXrefsController do
     it 'Should not allow you to add machines if you are not logged in' do
       sleep 1
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
+      sleep 1
 
       expect(page).to_not have_selector("#add_machine_location_banner_#{Location.find(@location.id).id}")
     end
