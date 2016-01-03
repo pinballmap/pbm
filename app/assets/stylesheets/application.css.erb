@@ -461,6 +461,17 @@ div.pick_a_map .blog_header {
 .login {
   float: right;
 }
+.login a, .login_new a, .login_alert a {
+  color: #aa0803;
+}
+.login_new {
+  padding: 6px 6px;
+  margin: 7px 5px;
+  border: 4px solid #D6C0AA;
+  background-color: #ECE2D8;
+  text-shadow: 1px 1px 5px #CCC;
+  box-sizing: border-box;
+}
 .login_home {
   margin: 2px 5px;
   float: right;
@@ -468,12 +479,13 @@ div.pick_a_map .blog_header {
 .login_alert {
   text-transform: uppercase;
   font-weight: bold;
-}
-.login_alert a {
-  color: red;
+  background: #fff1f1;
 }
 div.login_alert {
   padding: 3px;
+}
+.location_detail .login_alert {
+  text-align: center;
 }
 .geo_header {
   margin: 2px 5px;
@@ -1104,6 +1116,7 @@ input.submit_button:hover,
 .edit_mode,
 #new_user input[type="email"],
 #new_user input[type="password"],
+#new_user .user_username textarea,
 input#score,
 input#initials,
 #add_machine_by_name,
