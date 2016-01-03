@@ -7,6 +7,9 @@ Devise.setup do |config|
   Devise.reset_password_within = 6.hours
   config.mailer_sender = "pbm@pinballmap.com"
 
+  config.reset_password_keys = [ :username ]
+  config.confirmation_keys = [ :username ]
+
   # Configure the class responsible to send e-mails.
   # config.mailer = "Devise::Mailer"
 
@@ -22,7 +25,7 @@ Devise.setup do |config|
   # authenticating an user, both parameters are required. Remember that those
   # parameters are used only when authenticating and not when retrieving from
   # session. If you need permissions, you should implement that in a before filter.
-  # config.authentication_keys = [ :email ]
+  config.authentication_keys = [ :login ]
 
   # Tell if authentication through request.params is enabled. True by default.
   # config.params_authenticatable = true
