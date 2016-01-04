@@ -1,7 +1,8 @@
 %span.info 
   Add a machine condition; add a high score; remove a machine if it's no longer at this location. 
   %span.login_alert
-    = link_to 'To update this location, you must login!', 'http://pinballmap.com/users/sign_in'
+    - if !user_signed_in?
+      = link_to link_to 'To update this location, you must login!', "http://#{request.host}/users/sign_in"
 - location_machine_xrefs.sort{|a,b| a.machine.massaged_name <=> b.machine.massaged_name}.each do |lmx|
   %div.machine_names[lmx, :machine]
     = render :partial => 'location_machine_xrefs/remove_machine', :locals => {:lmx => lmx}
