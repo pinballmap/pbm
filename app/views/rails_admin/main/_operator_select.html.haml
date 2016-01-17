@@ -1,4 +1,10 @@
-%select{:name => "#{object_type}[operator_id]"}
-  <option value=""></option>
-  - Operator.all.select {|o| o.region_id == Authorization.current_user.region_id}.each do |o|
-    <option value="#{o.id}" #{o.id == operator_id ? 'selected=select' : ''} >#{o.name}</option>
+- if Authorization.current_user.is_super_admin
+  %select{:name => "#{object_type}[operator_id]"}
+    <option value=""></option>
+    - Operator.all.sort {|a, b| a.region.full_name <=> b.region.full_name }.each do |o|
+      <option value="#{o.id}" #{o.id == operator_id ? 'selected=select' : ''} >#{o.region ? o.region.full_name : 'NO REGION'} - #{o.name}</option>
+- else
+  %select{:name => "#{object_type}[operator_id]"}
+    <option value=""></option>
+    - Operator.all.select {|o| o.region_id == Authorization.current_user.region_id}.each do |o|
+      <option value="#{o.id}" #{o.id == operator_id ? 'selected=select' : ''} >#{o.name}</option>
