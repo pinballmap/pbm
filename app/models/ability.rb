@@ -14,9 +14,9 @@ class Ability
     can [:update, :read, :destroy], [MachineScoreXref], location: { region_id: user.region_id }
 
     if user.is_super_admin
-        can :manage, [Location]
+      can :manage, [Location]
     else
-        can :manage, [Location], region_id: user.region_id
+      can :manage, [Location], region_id: user.region_id
     end
 
     if user.region.name == 'portland'

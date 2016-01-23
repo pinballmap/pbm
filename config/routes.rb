@@ -42,6 +42,7 @@ Pbm::Application.routes.draw do
         resources :locations, only: [:index, :show]
         resources :region_link_xrefs, only: [:index, :show]
         resources :zones, only: [:index, :show]
+        resources :user_submissions, only: [:index, :show]
       end
     end
   end
