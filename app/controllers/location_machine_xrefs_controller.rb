@@ -37,7 +37,6 @@ class LocationMachineXrefsController < InheritedResources::Base
   def destroy
     lmx = LocationMachineXref.find_by_id(params[:id])
 
-    UserSubmission.create(region_id: lmx.location.region_id, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: [lmx.location.name, lmx.machine.name, lmx.location.region.name].join("\n"))
     lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent) unless lmx.nil?
 
     render nothing: true

@@ -36,6 +36,17 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(LocationMachineXref.all.size).to eq(0)
     end
 
+    it 'creates a user submission for the deletion' do
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', {}, HTTP_USER_AGENT: 'cleOS'
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
+
+      submission = Region.find(@lmx.location.region_id).user_submissions.first
+      expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
+      expect(submission.submission).to eq("Ground Kontrol\nCleo\nportland")
+    end
+
     it 'sends a deletion email when appropriate - notifies if origin was staging server' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
