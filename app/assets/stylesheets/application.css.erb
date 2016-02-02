@@ -720,12 +720,11 @@ span.machine_year_man {
   font-style: italic;
   float: left;
   font-weight: bold;
-  background-color: #bbb;
-  color: #ffffff;
+  color: #000000;
   font-size: 16px;
   line-height: 18px;
   height: 100%;
-  padding: 0 5px 1px 2px;
+  padding: 5px 5px 3px 2px;
   width: 435px;
   box-sizing: border-box;
   clear: both;
@@ -734,15 +733,14 @@ span.machine_year_man {
   border-bottom: 1px solid #888;
 }
 .pintips a {
-  color: #ffffff;
   font-family: "Fira Mono";
 }
 .pintips a:after {
   content: "";
-  background: url(<%= asset_path 'open-in-new.png' %>) no-repeat center center;
+  background: url(<%= asset_path 'open-in-new-black.png' %>) no-repeat center center;
   float: right;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   display: inline;
   background-size: 16px 16px;
   margin: 2px 0 0 4px;
@@ -1148,17 +1146,16 @@ input#initials {
   color: #eaa863;
 }
 .add_scores_lmx_toggle {
-  background-color: #d5d5d5;
   color: #444444;
 }
 .add_scores_lmx_toggle:hover {
-  background-color: #d6c1aa;
+  background-color: #F3F2F2;
   color: #777777;
 }
 .show_scores_lmx_toggle {
-  background-color: #c4c4c4;
   width: 283px;
   color: #333333;
+  border-bottom: 1px solid #888 !important;
 }
 .show_scores_lmx_toggle:hover,
 .show_conditions_lmx_toggle:hover  {
@@ -1305,7 +1302,6 @@ input#score {
   cursor: pointer;
 }
 .desc_show_location {
-  padding-top: 5px;
   padding-bottom: 5px;
   width: 100%;
   cursor: pointer;
