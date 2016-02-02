@@ -747,6 +747,11 @@ span.machine_year_man {
   background-size: 16px 16px;
   margin: 2px 0 0 4px;
 }
+.machine_condition img {
+  float: left;
+  cursor: pointer;
+  height: 40px;
+}
 .machine_condition_new_line span {
   display: block;
 }
@@ -780,7 +785,6 @@ form.remove_machine_condition {
 .machine_condition_display_lmx {
   margin: 5px 0 5px 10px;
   padding: 2px;
-  background: #ECE2D8;
   box-sizing: border-box;
   width: 435px;
 }
@@ -1079,6 +1083,9 @@ input.search,
   background: #ece2d8;
   color: #000000;
 }
+.metadata li {
+  float: left;
+}
 .metadata_edit_location {
   padding: 10px;
   line-height: 30px;
@@ -1193,22 +1200,23 @@ input#initials {
   width: 380px;
 }
 .confirm_location {
-  padding: 5px 10px;
+  padding: 0 10px;
   background: #F3F2F2;
   font-size: 13px;
   line-height: 16px;
+  height: 50px;
   font-style: italic;
   font-weight: normal;
   border-top: 1px solid #CAC6C6;
   border-bottom: 1px solid #CAC6C6;
-  text-align: right;
 }
 .confirm_location span {
   font-style: normal;
   font-size: 14px;
   font-weight: bold;
   display: block;
-  margin-top: 5px;
+  padding: 15px 5px;
+  text-align: right;
 }
 .confirm_location:hover {
   cursor: pointer;
@@ -1253,13 +1261,16 @@ input#score {
   -moz-border-radius: 5px 0 0 0;
   -webkit-border-radius: 5px 0 0 0;
 }
-.location_description {
+.location_description, .location_actual_description {
   font-style: italic;
   color: #222222;
   padding: 0 10px;
   display: block;
   font-size: 13px;
   line-height: 15px;
+}
+.location_actual_description {
+  float: left;
 }
 .desc_button {
   color: #441e56;
@@ -1270,12 +1281,24 @@ input#score {
   border-bottom: 1px solid #CAC6C6;
   text-align: right;
 }
+.location_description img {
+  height: 40px;
+  float: right;
+  cursor: pointer;
+  margin: 0 5px;
+}
 .confirm_location_button {
   color: #441e56;
   line-height: 20px;
   background: #F3F2F2;
   margin: 5px 0;
   font-size: 12px;
+}
+.confirm_location_button img {
+  height: 40px;
+  float: left;
+  cursor: pointer;
+  margin: 0 5px;
 }
 .desc_button:hover, .confirm_location_button:hover {
   text-decoration: underline;
@@ -1287,9 +1310,6 @@ input#score {
   width: 100%;
   cursor: pointer;
 } 
-.desc_show_location:hover {
-  background-color: #f4f8f6;
-}
 .desc_edit_location {
   padding: 0 0 5px 10px;
 }
@@ -1846,6 +1866,12 @@ img.header_image {
   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#40fff4e7, endColorstr=#40fff4e7);
   /* For IE 8*/
   -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#40fff4e7, endColorstr=#40fff4e7);
+}
+.map_summary_info {
+  background-image: url(<%= asset_path 'treasure-map-opacity.png' %>);
+  background-size: 150px;
+  background-repeat: no-repeat;
+  height: 100%;
 }
 .map_summary .dark {
   font-weight: normal;

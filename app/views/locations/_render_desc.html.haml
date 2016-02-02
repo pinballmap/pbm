@@ -1,16 +1,19 @@
 %div[l, :desc_show]
-  %span.location_description= (l.description.to_s == '') ? '' : l.description 
-  %span.location_description.desc_button #{l.description ? 'Update' : 'Enter'} location description/hours/etc
+  %span.location_actual_description= (l.description.to_s == '') ? '' : l.description 
+  %span.location_description
+    =image_tag('comment-3.png', :alt => 'Update Location Description/Hours/Etc')
+  .clear
 %div[l, :desc_edit]{:style => 'display:none'}
   = form_tag update_desc_locations_path(:action => 'update_desc', :id => l.id, :region => @region.name), :id => "update_desc_#{l.id}", :method => 'get' do
     = hidden_field_tag :id, l.id
-    = text_area_tag "new_desc_#{l.id}", (l.description.to_s == '') ? 'No Description' : l.description, :cols => 20, :rows => 3, :class => 'edit_mode'
+    = text_area_tag "new_desc_#{l.id}", (l.description.to_s == '') ? 'Update location description/hours/etc' : l.description, :cols => 20, :rows => 3, :class => 'edit_mode'
     %br/
     = submit_tag 'Save', :class => "save_button", :id => "save_desc_#{l.id}"
   = submit_tag 'Cancel', :id => "desc_cancel_#{l.id}", :class => "cancel_button"
 %div{id: "confirm_location_#{l.id}", :class => "confirm_location"}
+  %div{:class => "confirm_location_button", :id => "confirm_location_button_#{l.id}"}
+    =image_tag('confirm.png', :alt => 'Confirm Location is Up To Date')
   %span{:id => "last_updated_location_#{l.id}"} #{l.date_last_updated ? "Location last updated: #{l.date_last_updated}" : ''}
-  %div{:class => "confirm_location_button", :id => "confirm_location_button_#{l.id}"}Confirm that this location's machine list is up to date
 
 :javascript
   $('#confirm_location_button_#{l.id}').click(function () {

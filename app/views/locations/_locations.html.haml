@@ -34,6 +34,7 @@
                 %li.name= l.name
                 .clear
                 %li.address= [l.street, l.city, l.state + " " + l.zip].join(', ')
+                .clear
                 %div[l, :metadata]
                   = render :partial => 'locations/render_update_metadata', :locals => {:l => l}
                 %div[l, :desc]

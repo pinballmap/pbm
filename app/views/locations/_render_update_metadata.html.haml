@@ -1,9 +1,9 @@
-%div[l, :metadata_show]
+%div.metadata[l, :metadata_show]
   %div.operator_type
     - if (l.operator_id)
       - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
         %li.operator
-          %span.italic Operated by: 
+          %span.italic Operated by:
           %span.bold #{l.operator.name}
       - else
         %li.operator
@@ -23,8 +23,9 @@
   .clear
   - if l.website
     %li= link_to l.website, l.website, :class => 'address website', :target => 'blank'
-    .clear
-  %span.location_description.desc_button Update location metadata
+  .clear
+  %span.location_description
+    =image_tag('tools.png', :alt => 'Update Location Metadata')
 %div[l, :metadata_edit]{:style => 'display:none'}
   = form_tag update_metadata_locations_path(:action => 'update_metadata', :id => l.id, :region => @region.name), :id => "update_metadata_#{l.id}", :method => 'get' do
     = hidden_field_tag :id, l.id

@@ -547,9 +547,9 @@ describe LocationMachineXrefsController do
 
       expect(page).to have_content('Test Location Name')
       expect(page).to have_content('303 Southeast 3rd Avenue, Portland, OR 97214')
-      expect(page).to have_content('ADD A PICTURE')
-      expect(page).to have_content('ADD NEW MACHINE TO THIS LOCATION')
-      expect(page).to have_content('SHOW MACHINES AT THIS LOCATION')
+      expect(page).to have_content('UPLOAD PICTURE')
+      expect(page).to have_content('ADD MACHINE')
+      expect(page).to have_content('SHOW MACHINES')
       expect(page).to have_content('ADD MACHINE CONDITION')
     end
 
