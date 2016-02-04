@@ -1218,6 +1218,28 @@ input#initials {
 .confirm_location:hover {
   cursor: pointer;
 }
+.confirm_location_button {
+  color: #441e56;
+  line-height: 20px;
+  background: #F3F2F2;
+  margin: 5px 0;
+  font-size: 12px;
+}
+.confirm_location_button img {
+  height: 40px;
+  float: left;
+  cursor: pointer;
+  margin: 0 5px;
+
+}
+.confirm_location_button:hover:after {
+  content: "Confirm location is up to date";
+  position: absolute;
+  height: 40px;
+  line-height: 14px;
+  font-size: 16px;
+  margin-left: 10px;
+}
 #rank {
   margin-left: 13px;
 }
@@ -1281,19 +1303,6 @@ input#score {
 .location_description img {
   height: 40px;
   float: right;
-  cursor: pointer;
-  margin: 0 5px;
-}
-.confirm_location_button {
-  color: #441e56;
-  line-height: 20px;
-  background: #F3F2F2;
-  margin: 5px 0;
-  font-size: 12px;
-}
-.confirm_location_button img {
-  height: 40px;
-  float: left;
   cursor: pointer;
   margin: 0 5px;
 }
@@ -1863,11 +1872,14 @@ img.header_image {
   /* For IE 8*/
   -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#40fff4e7, endColorstr=#40fff4e7);
 }
-.map_summary_info {
-  background-image: url(<%= asset_path 'treasure-map-opacity.png' %>);
-  background-size: 150px;
-  background-repeat: no-repeat;
-  height: 100%;
+div.map_summary_info img {
+  position: relative;
+  height: 60px;
+}
+span.map_summary_info {
+  position: absolute;
+  margin-top: -60px;
+  margin-left: 20px;
 }
 .map_summary .dark {
   font-weight: normal;
