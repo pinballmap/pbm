@@ -10,9 +10,8 @@
             =link_to "#{@region.full_name}", region_homepage_path
         - if !mobile_device?
           %ul.other_regions_list= other_regions_html(@region) 
-      %span.menu_link{:onclick => ""}
-        menu
-        %ul
+      %span.menu_link
+        %ul#nav
           %li.first_header_link=link_to 'About', about_path
           %li=link_to 'Events', events_path
           %li=link_to 'Suggest Location', suggest_path
@@ -47,6 +46,10 @@
     });
     $(document).click(function () {
         $(".other_regions_list").hide();
+    });
+    $("#nav").addClass("js").before('<div id="menu">&#9776;</div>');
+    $("#menu").click(function(){
+      $("#nav").toggle();
     });
   });
 
