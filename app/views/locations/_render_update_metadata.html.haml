@@ -24,8 +24,9 @@
   - if l.website
     %li= link_to l.website, l.website, :class => 'address website', :target => 'blank'
   .clear
-  %span.location_description
-    =image_tag('tools.png', :alt => 'Update Location Metadata')
+  %span.location_meta
+    %span.meta_image
+      =image_tag('tools.png', :alt => 'Update Location Metadata')
 %div[l, :metadata_edit]{:style => 'display:none'}
   = form_tag update_metadata_locations_path(:action => 'update_metadata', :id => l.id, :region => @region.name), :id => "update_metadata_#{l.id}", :method => 'get' do
     = hidden_field_tag :id, l.id
@@ -61,7 +62,7 @@
     return false;
   });
 
-  $('#metadata_cancel_#{l.id}, #metadata_show_location_#{l.id} .location_description').click(function () {
+  $('#metadata_cancel_#{l.id}, #metadata_show_location_#{l.id} .location_meta').click(function () {
     $('#metadata_show_location_#{l.id}').toggle();
     $('#metadata_edit_location_#{l.id}').toggle();
   });
