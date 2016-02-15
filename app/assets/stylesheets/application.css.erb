@@ -745,16 +745,22 @@ span.machine_year_man {
   background-size: 16px 16px;
   margin: 2px 0 0 4px;
 }
-.machine_condition .comment_image {
+div.comment_image {
+  width: 50px;
+  height: 40px;
+  float: left;
+  margin-bottom: 5px;
+}
+div.comment_image span.comment_image {
   width: 40px;
 }
-.machine_condition .comment_image img {
+div.comment_image span.comment_image img {
   float: left;
   cursor: pointer;
   height: 40px;
   margin-top: -15px;
 }
-.machine_condition .comment_image:hover:after {
+div.comment_image span.comment_image:hover:after {
   content: "Leave a comment!";
   position: absolute;
   margin-top: -25px;
@@ -770,18 +776,23 @@ span.machine_year_man {
 .machine_condition_new_line span {
   display: block;
 }
-span.machine_condition_date {
+.machine_condition_display_lmx span.machine_condition_date {
   color: #999999;
   font-size: 12px;
-  font-family: "JohnDoe";
+  margin: 8px 0 2px 50px;
+  display: inline-block;
+}
+span.machine_condition_text {
+  margin-left: 50px;
 }
 .machine_condition_display_lmx .machine_condition_lmx span.machine_condition_date {
   margin-bottom: 8px;
 }
-.machine_condition_new_line span.machine_condition_date,
-.machine_condition_display_lmx span.machine_condition_date {
+.machine_condition_new_line span.machine_condition_date {
   margin: 8px 0 2px;
   display: inline-block;
+  color: #999999;
+  font-size: 12px;
 }
 form.remove_machine_condition {
   float: right;
