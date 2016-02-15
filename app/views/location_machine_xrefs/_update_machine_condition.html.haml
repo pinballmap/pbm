@@ -1,10 +1,11 @@
-%div.comment_image
-  %span.comment_image
-    =image_tag('comment-3.png', :alt => 'Leave a machine comment')
-%span.machine_condition_text= (lmx.condition.to_s == '') ? '' : lmx.condition
-- if (!lmx.condition_date.nil?)
-  %span.machine_condition_date= 'Updated: ' + lmx.condition_date.strftime("%d-%b-%Y")
+%div.machine_condition_text
+  %span.machine_condition_text= (lmx.condition.to_s == '') ? '' : lmx.condition
+  - if (!lmx.condition_date.nil?)
+    %span.machine_condition_date= 'Updated: ' + lmx.condition_date.strftime("%d-%b-%Y")
 %div[lmx, :machine_condition]
+  %div.comment_image
+    %span.comment_image
+      =image_tag('comment-3.png', :alt => 'Leave a machine comment')
   .clear
 %div[lmx, :machine_condition_edit]{:style => 'display:none'}
   = form_tag update_machine_condition_location_machine_xrefs_path(:action => 'update_machine_condition', :id => lmx.id, :region => @region.name), :id => "update_machine_condition_#{lmx.id}", :method => 'get' do
