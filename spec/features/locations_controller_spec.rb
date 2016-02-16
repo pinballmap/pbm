@@ -13,7 +13,7 @@ describe LocationsController do
 
     it 'lets you click a button to update the date_last_updated' do
       visit '/portland/?by_location_id=' + @location.id.to_s
-      find("#confirm_location_#{@location.id}").click
+      find("#confirm_location_#{@location.id} img").click
 
       sleep 1
 
