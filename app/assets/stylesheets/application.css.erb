@@ -657,7 +657,7 @@ a.active_section_link:hover {
   -webkit-border-radius: 0 5px 0 0;
   font-weight: 700;
 }
-.address {
+.address, .address_full {
   font-size: 14px;
   line-height: 16px;
   font-family: "Fira Mono";
@@ -666,8 +666,15 @@ li.address {
   padding: 2px 0 2px 5px;
   background: #FEFBF8;
 }
+li.address_full {
+  padding: 0 0 0 5px;
+  background: #FEFBF8;
+  width: 435px;
+}
 .website {
   font-weight: bold;
+  float: left;
+  width: 450px;
 }
 .machine_name {
   font-weight: bold;
@@ -678,7 +685,7 @@ li.address {
   line-height: 26px;
   height: 100%;
   padding: 0 5px 3px;
-  width: 445px;
+  width: 100%;
   margin-left: -10px;
   font-family: "JohnDoe";
 }
@@ -904,26 +911,21 @@ form.remove_machine_condition {
 .show_machines_location {
   background-color: #EEEEEE;
 }
-.button_to {
-  float:right;
-}
-.location_detail input.remove_machine_button,
-.location_detail input.remove_condition_button {
-  margin: 0;
-  background-color:#fedee4;
-  border: 1px solid #DDDDDD;
-  color: #777777; 
+.location_detail input.remove_machine_button {
+  margin: 0 10px;
+  background-color: #fedee4;
+  border-top: 1px solid #DDDDDD;
+  border: none;
+  color: #999999; 
   cursor: pointer;
   padding: 0 2px 2px;
-  font-size: 12px;
+  font-size: 16px;
   line-height: 30px;
   height: 28px;
-  width: 60px;
+  width: 435px;
   text-transform: uppercase;
-  box-shadow: inset 1px 1px 2px #888;
 }
 .location_detail input.remove_machine_button:hover {
-  border: 1px solid #bbbbbb;
   color: black;
   background-color: #fc9cae;
 }
@@ -1117,6 +1119,9 @@ input.search,
   padding: 10px;
   line-height: 30px;
 }
+.metadata_edit_location {
+  margin-top: 20px;
+}
 .metadata_edit_location .save_button {
   margin-top: 5px;
 }
@@ -1208,12 +1213,6 @@ input#initials {
   font-weight: normal !important;
   background-color: #F3F2F2;
 }
-.operator {
-  margin-top: 5px;
-}
-.operator_type, .location_type {
-  margin-bottom: 5px;
-}
 .edit_mode {
   font-size: 14px;
   font-family: inherit;
@@ -1290,7 +1289,7 @@ input#score {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
 }
-.location_detail .address {
+.location_detail .address_full {
   color: #333333;
   margin: 5px 0;
 }
@@ -1314,7 +1313,7 @@ input#score {
 .location_description, .location_actual_description {
   font-style: italic;
   color: #222222;
-  padding: 0 10px;
+  padding: 5px 10px 0;
   display: block;
   font-size: 13px;
   line-height: 15px;
@@ -1338,6 +1337,7 @@ input#score {
   float: right;
   cursor: pointer;
   margin: 0 5px;
+  width: 40px;
 }
 .location_description .comment_image:hover:after,
 .location_meta .meta_image:hover:after {

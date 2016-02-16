@@ -93,7 +93,7 @@
 }
 .location_actual_description {
   float: left;
-  width: 60%;
+  width: auto;
 }
 .confirm_location_button img {
   height: 40px;
@@ -350,10 +350,6 @@ div.remove_button {
 div.machine_condition_text {
   width: 80%;
 }
-div.comment_image {
-  height: auto;
-}
-
 .search_result {
   border-radius: 0;
   padding: 0;
@@ -362,12 +358,20 @@ div.comment_image {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-
+#search_results li.address_full {
+  width: auto;
+}
+.website {
+  word-wrap: break-word;
+}
 .location_detail {
   padding: 0;
   font-size: 14px;
   border: none;
   width: 98%;
+}
+.metadata_location {
+  margin-top: 0;
 }
 
 .metadata_edit_location input.edit_mode {
@@ -465,7 +469,7 @@ div.comment_image {
 .desc_edit_location .edit_mode, .machine_condition_display_lmx .edit_mode {
   max-width: 98%;
   min-width: 236px;
-  width: 280px;
+  width: 98%;
   height: 80px;
 }
 
@@ -495,7 +499,8 @@ div.comment_image {
   padding-top: 0;
 }
 .search, .submit_button, .save_button, .cancel_button, #add_score, #add, 
-#location_picture_xref_submit, .new_location_picture_xref input.submit_picture, input#add {
+#location_picture_xref_submit, .new_location_picture_xref input.submit_picture, input#add,
+.metadata_edit_location input.cancel_button, .metadata_edit_location input.save_button {
   width: 100%;
   font-size: 16px;
   height: 30px;

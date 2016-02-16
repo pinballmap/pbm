@@ -1,8 +1,5 @@
-= link_to lmx.machine.ipdb_link.blank? ? "http://ipdb.org/search.pl?name=#{lmx.machine.name};qh=checked;searchtype=advanced" : lmx.machine.ipdb_link, :target => '_blank' do
-  .machine_name 
-    #{lmx.machine.name} 
-    %span.machine_year_man #{lmx.machine.year_and_manufacturer}
-= button_to "remove",  location_machine_xref_path(:region => @region.name, :id => lmx.id), :id => "remove_machine_#{lmx.id}", :method => 'delete', :remote => true, :class => "remove_machine_button"
+%div.remove_button
+  = button_to "remove machine",  location_machine_xref_path(:region => @region.name, :id => lmx.id), :id => "remove_machine_#{lmx.id}", :method => 'delete', :remote => true, :class => "remove_machine_button"
 
 :javascript
   $('#remove_machine_#{lmx.id}').click(function () {

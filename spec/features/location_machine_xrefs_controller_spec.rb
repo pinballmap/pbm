@@ -156,12 +156,6 @@ describe LocationMachineXrefsController do
       expect(LocationMachineXref.find(@lmx.id).condition).to eq('THIS IS NOT SPAM')
     end
 
-    it 'should default machine description text' do
-      visit "/#{@region.name}/?by_location_id=#{@location.id}"
-
-      expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content('ADD MACHINE CONDITION')
-    end
-
     it 'should let me add a new machine description' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
@@ -270,8 +264,6 @@ describe LocationMachineXrefsController do
       page.find("input#cancel_machine_condition_#{@lmx.id}").click
 
       sleep 1
-
-      expect(find("#machine_condition_lmx_#{@lmx.id}")).to have_content('ADD MACHINE CONDITION')
     end
   end
 
@@ -547,10 +539,9 @@ describe LocationMachineXrefsController do
 
       expect(page).to have_content('Test Location Name')
       expect(page).to have_content('303 Southeast 3rd Avenue, Portland, OR 97214')
-      expect(page).to have_content('UPLOAD PICTURE')
+      expect(page).to have_content('UPLOAD A PICTURE')
       expect(page).to have_content('ADD MACHINE')
       expect(page).to have_content('SHOW MACHINES')
-      expect(page).to have_content('ADD MACHINE CONDITION')
     end
 
     it 'searches by city' do
@@ -667,8 +658,6 @@ describe LocationMachineXrefsController do
     it 'displays appropriate values in location description' do
       visit "/#{@region.name}"
       page.find('input#location_search_button').click
-
-      expect(page).to have_content('Enter location description/hours/etc')
 
       page.find("div#desc_show_location_#{@location.id}.desc_show_location").click
       fill_in("new_desc_#{@location.id}", with: 'New Condition')
