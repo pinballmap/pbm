@@ -1,4 +1,4 @@
-= banner('add_picture_location', 'ADD A PICTURE OF THIS LOCATION', location)
+= banner('add_picture_location', 'UPLOAD A PICTURE', location)
 %div[location, :add_picture]{:style => 'display:none;'}
   %span.info If you want to show others how this location looks and feels, feel free to upload a picture of it. Choose a file from your computer, then click 'upload'. Once the photo is approved, it will show up!
   = render :partial => 'location_picture_xrefs/form',  :locals => {:location => location}

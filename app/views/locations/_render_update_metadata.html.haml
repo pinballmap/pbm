@@ -1,30 +1,27 @@
-%div[l, :metadata_show]
+%div.metadata[l, :metadata_show]
   %div.operator_type
     - if (l.operator_id)
       - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
-        %li.operator
-          %span.italic Operated by: 
+        %li.operator{:style => 'margin-top: 5px;margin-bottom: 5px;'}
+          %span.italic Operated by:
           %span.bold #{l.operator.name}
       - else
-        %li.operator
+        %li.operator{:style => 'margin-top: 5px;margin-bottom: 5px;'}
           %span.italic Operated by: 
           %span.bold
             =link_to "#{l.operator.name}", "#{l.operator.website}", :target => "_blank"
-    .clear
     - if (l.location_type)
-      %li.location_type
+      %li.location_type{:style => 'margin-bottom: 5px;'}
         %span.italic Location Type: 
         %span.bold #{l.location_type.name}
-  .clear
   - if mobile_device? && !l.phone.nil?
-    %li.address= link_to l.phone, "tel:" + l.phone, :type => 'tel'
+    %li.address_full= link_to l.phone, "tel:" + l.phone, :type => 'tel'
   - else
-    %li.address= l.phone
+    %li.address_full= l.phone
   .clear
   - if l.website
-    %li= link_to l.website, l.website, :class => 'address website', :target => 'blank'
-    .clear
-  %span.location_description.desc_button Update location metadata
+    %li.address_full= link_to l.website, l.website, :class => 'website', :target => 'blank'
+  .clear
 %div[l, :metadata_edit]{:style => 'display:none'}
   = form_tag update_metadata_locations_path(:action => 'update_metadata', :id => l.id, :region => @region.name), :id => "update_metadata_#{l.id}", :method => 'get' do
     = hidden_field_tag :id, l.id
@@ -60,7 +57,7 @@
     return false;
   });
 
-  $('#metadata_cancel_#{l.id}, #metadata_show_location_#{l.id} .location_description').click(function () {
+  $('#metadata_cancel_#{l.id}, #metadata_show_location_#{l.id} .location_meta, .location_meta .meta_image').click(function () {
     $('#metadata_show_location_#{l.id}').toggle();
     $('#metadata_edit_location_#{l.id}').toggle();
   });

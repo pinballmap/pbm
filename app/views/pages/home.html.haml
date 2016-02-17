@@ -38,12 +38,14 @@
       =link_to "/#{r.name}" do
         %span.map_summary
           %span.region_name #{r.full_name}
-          %span.map_summary_info
-            %span.dark Tracking:
-            %br/
-            = "#{r.locations_count} Locations"
-            %br/
-            = "#{r.machines_count} Machines"
+          %div.map_summary_info
+            =image_tag 'treasure-map-opacity.png', :alt => ''
+            %span.map_summary_info
+              %span.dark Tracking:
+              %br/
+              = "#{r.locations_count} Locations"
+              %br/
+              = "#{r.machines_count} Machines"
   .clear
   %br/
 

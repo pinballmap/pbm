@@ -98,6 +98,19 @@
   line-height: 13px;
   padding: 10px 6px;
 }
+.location_actual_description {
+  float: left;
+  width: auto;
+}
+.confirm_location_button img {
+  height: 40px;
+  float: left;
+  cursor: pointer;
+  margin: 0;
+}
+.confirm_location span {
+  font-size: 12px;
+}
 #header span.region_name_page a {
   font-size: 30px;
 }
@@ -194,7 +207,7 @@ div.pick_a_map .geo_header {
   line-height: 22px;
 }
 
-.scrollerWrapper, #lookup img, #lookup  {
+.scrollerWrapper, .intro_image, .arrow img {
   display: none;
 }
 
@@ -323,7 +336,7 @@ div.pick_a_map .geo_header {
 }
 
 .pintips a:after {
-  margin: 3px 5px 0 4px;
+  margin: 0 5px 0 4px;
   background-size: 20px 20px;
 }
 
@@ -332,13 +345,18 @@ div.pick_a_map .geo_header {
   line-height: 24px;
 }
 
+div.remove_button {
+  width: 100%;
+}
 .location_detail input.remove_machine_button {
   font-size: 16px;
   height: 28px;
   margin: 5px 0;
-  width: 200px;
+  width: 100%;
 }
-
+div.machine_condition_text {
+  width: 80%;
+}
 .search_result {
   border-radius: 0;
   padding: 0;
@@ -347,12 +365,20 @@ div.pick_a_map .geo_header {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-
+#search_results li.address_full {
+  width: auto;
+}
+.website {
+  word-wrap: break-word;
+}
 .location_detail {
   padding: 0;
   font-size: 14px;
   border: none;
   width: 98%;
+}
+.metadata_location {
+  margin-top: 0;
 }
 
 .metadata_edit_location input.edit_mode {
@@ -450,7 +476,7 @@ div.pick_a_map .geo_header {
 .desc_edit_location .edit_mode, .machine_condition_display_lmx .edit_mode {
   max-width: 98%;
   min-width: 236px;
-  width: 280px;
+  width: 98%;
   height: 80px;
 }
 
@@ -480,7 +506,8 @@ div.pick_a_map .geo_header {
   padding-top: 0;
 }
 .search, .submit_button, .save_button, .cancel_button, #add_score, #add, 
-#location_picture_xref_submit, .new_location_picture_xref input.submit_picture, input#add {
+#location_picture_xref_submit, .new_location_picture_xref input.submit_picture, input#add,
+.metadata_edit_location input.cancel_button, .metadata_edit_location input.save_button {
   width: 100%;
   font-size: 16px;
   height: 30px;
