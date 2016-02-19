@@ -5,11 +5,13 @@
         %li.operator{:style => 'margin-top: 5px;margin-bottom: 5px;'}
           %span.italic Operated by:
           %span.bold #{l.operator.name}
+        .clear
       - else
         %li.operator{:style => 'margin-top: 5px;margin-bottom: 5px;'}
           %span.italic Operated by: 
           %span.bold
             =link_to "#{l.operator.name}", "#{l.operator.website}", :target => "_blank"
+        .clear
     - if (l.location_type)
       %li.location_type{:style => 'margin-bottom: 5px;'}
         %span.italic Location Type: 
