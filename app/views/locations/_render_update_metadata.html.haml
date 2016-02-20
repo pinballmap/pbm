@@ -16,6 +16,7 @@
       %li.location_type{:style => 'margin-bottom: 5px;'}
         %span.italic Location Type: 
         %span.bold #{l.location_type.name}
+      .clear
   - if mobile_device? && !l.phone.nil?
     %li.address_full= link_to l.phone, "tel:" + l.phone, :type => 'tel'
   - else
