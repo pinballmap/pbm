@@ -100,17 +100,21 @@ class LocationsController < InheritedResources::Base
 
     l.description = l.description.slice(0, 254) unless l.description.nil?
 
-    if ENV['RAKISMET_KEY']
-      if l.spam?
-        nil
+    if l.description !~ %r{http:\/\/}
+      if ENV['RAKISMET_KEY']
+        if l.spam?
+          nil
+        else
+          l.date_last_updated = Date.today
+          l.save(validate: false)
+        end
+        l
       else
         l.date_last_updated = Date.today
         l.save(validate: false)
+        l
       end
-      l
     else
-      l.date_last_updated = Date.today
-      l.save(validate: false)
       l
     end
 
