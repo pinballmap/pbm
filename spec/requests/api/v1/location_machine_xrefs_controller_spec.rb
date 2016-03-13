@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe Api::V1::LocationMachineXrefsController, type: :request do
   before(:each) do
-    @region = FactoryGirl.create(:region, name: 'portland', should_email_machine_removal: 1)
-    @location = FactoryGirl.create(:location, name: 'Ground Kontrol', region: @region)
-    @machine = FactoryGirl.create(:machine, name: 'Cleo')
+    @region = FactoryGirl.create(:region, id: 3, name: 'portland', should_email_machine_removal: 1)
+    @location = FactoryGirl.create(:location, id: 1, name: 'Ground Kontrol', region: @region)
+    @machine = FactoryGirl.create(:machine, id: 2, name: 'Cleo')
 
     @lmx = FactoryGirl.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
   end
@@ -44,7 +44,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       submission = Region.find(@lmx.location.region_id).user_submissions.first
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
-      expect(submission.submission).to eq("Ground Kontrol\nCleo\nportland")
+      expect(submission.submission).to eq("Ground Kontrol (1)\nCleo (2)\nportland (3)")
     end
 
     it 'sends a deletion email when appropriate - notifies if origin was staging server' do
