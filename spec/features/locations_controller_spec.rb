@@ -64,7 +64,7 @@ describe LocationsController do
       expect(Region.find(@location.region_id).user_submissions.count).to eq(1)
       submission = Region.find(@location.region_id).user_submissions.first
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
-      expect(submission.submission).to eq("Cleo\nBawb\nportland")
+      expect(submission.submission).to eq("Cleo (1)\nBawb (1)\nportland (1)")
     end
 
     it 'removes a machine from a location - allows you to cancel out of remove' do
