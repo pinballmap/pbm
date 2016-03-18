@@ -1,19 +1,19 @@
 %span.info Select a machine and then click the Add button.
 = form_tag location_machine_xrefs_path, :method => 'post', :id => "add_new_machine_#{l.id}" do
   = hidden_field_tag :location_id, l.id
-  = select_tag :add_machine_by_id, options_for_select(['']) + options_from_collection_for_select(Machine.all.sort_by(&:massaged_name), 'id', 'name_and_year', params[:add_machine_by_id]), :class => 'lookup_search_select'
+  = select_tag "add_machine_by_id_#{l.id}", options_for_select(['']) + options_from_collection_for_select(Machine.all.sort_by(&:massaged_name), 'id', 'name_and_year', params["add_machine_by_id_#{l.id}"]), :class => 'lookup_search_select'
   %span or
-  = text_field_tag :add_machine_by_name, params[:add_machine_by_name], :class => 'lookup_search_input'
+  = text_field_tag "add_machine_by_name_#{l.id}", params["add_machine_by_name_#{l.id}"], :class => 'lookup_search_input'
   = submit_tag 'Add', :id => 'add'
 
 :javascript
   $(function () {
     $("#dialog-message").css("display","none");
-    $('#add_machine_by_name').autocomplete({ source: '#{autocomplete_machines_path}' });
-    $('#add_machine_by_name').bind('autocompleteselect', function(event, ui) {
+    $('#add_machine_by_name_#{l.id}').autocomplete({ source: '#{autocomplete_machines_path}' });
+    $('#add_machine_by_name_#{l.id}').bind('autocompleteselect', function(event, ui) {
       event.preventDefault();
       $(this).val('');
-      $('#add_machine_by_id').val(ui.item.id);
+      $('#add_machine_by_id_#{l.id}').val(ui.item.id);
     });
   });
 

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe LocationMachineXrefsController do
   before(:each) do
     @region = FactoryGirl.create(:region, name: 'portland', full_name: 'Portland')
-    @location = FactoryGirl.create(:location, region: @region)
+    @location = FactoryGirl.create(:location, id: 1, region: @region)
   end
 
   describe 'add machines', type: :feature, js: true do
@@ -16,7 +16,7 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       find("#add_machine_location_banner_#{@location.id}").click
-      select(@machine_to_add.name, from: 'add_machine_by_id')
+      select(@machine_to_add.name, from: 'add_machine_by_id_1')
       click_on 'add'
 
       sleep 1
@@ -34,7 +34,7 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       find("#add_machine_location_banner_#{@location.id}").click
-      fill_in('add_machine_by_name', with: @machine_to_add.name)
+      fill_in('add_machine_by_name_1', with: @machine_to_add.name)
       click_on 'add'
 
       sleep 1
@@ -47,7 +47,7 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       find("#add_machine_location_banner_#{@location.id}").click
-      fill_in('add_machine_by_name', with: @machine_to_add.name.downcase)
+      fill_in('add_machine_by_name_1', with: @machine_to_add.name.downcase)
       click_on 'add'
 
       sleep 1
@@ -62,7 +62,7 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       find("#add_machine_location_banner_#{@location.id}").click
-      fill_in('add_machine_by_name', with: 'New Machine Name')
+      fill_in('add_machine_by_name_1', with: 'New Machine Name')
       click_on 'add'
 
       sleep 1
@@ -83,7 +83,7 @@ describe LocationMachineXrefsController do
 
       find("#add_machine_location_banner_#{@location.id}").click
 
-      expect(page).to have_select('add_machine_by_id', with_options: [
+      expect(page).to have_select('add_machine_by_id_1', with_options: [
         'Wizard of Oz',
         'X-Men (stern)',
         'Dirty Harry (2001)',
@@ -282,10 +282,10 @@ describe LocationMachineXrefsController do
 
       sleep(1)
 
-      fill_in('add_machine_by_name', with: 'sassy')
+      fill_in('add_machine_by_name_1', with: 'sassy')
 
-      page.execute_script %{ $('#add_machine_by_name').trigger('focus') }
-      page.execute_script %{ $('#add_machine_by_name').trigger('keydown') }
+      page.execute_script %{ $('#add_machine_by_name_1').trigger('focus') }
+      page.execute_script %{ $('#add_machine_by_name_1').trigger('keydown') }
 
       expect(page).to have_xpath('//li[contains(text(), "Sassy Madness (Bally, 1980)")]')
       expect(page).to have_xpath('//li[contains(text(), "Sassy Madness (Bally, 2010)")]')
@@ -310,10 +310,10 @@ describe LocationMachineXrefsController do
 
       sleep(1)
 
-      fill_in('add_machine_by_name', with: 'sassy')
+      fill_in('add_machine_by_name_1', with: 'sassy')
 
-      page.execute_script %{ $('#add_machine_by_name').trigger('focus') }
-      page.execute_script %{ $('#add_machine_by_name').trigger('keydown') }
+      page.execute_script %{ $('#add_machine_by_name_1').trigger('focus') }
+      page.execute_script %{ $('#add_machine_by_name_1').trigger('keydown') }
 
       expect(page).to have_xpath('//li[contains(text(), "Sassy From The Black Lagoon")]')
       expect(page).to have_xpath('//li[contains(text(), "Sassy Madness")]')
@@ -342,10 +342,10 @@ describe LocationMachineXrefsController do
     it 'searches by location name from input' do
       chicago_region = FactoryGirl.create(:region, name: 'chicago')
 
-      FactoryGirl.create(:location, region: @region, name: 'Cleo North')
-      FactoryGirl.create(:location, region: @region, name: 'Cleo South')
-      FactoryGirl.create(:location, region: @region, name: 'Sassy')
-      FactoryGirl.create(:location, region: chicago_region, name: 'Cleo West')
+      FactoryGirl.create(:location, id: 11, region: @region, name: 'Cleo North')
+      FactoryGirl.create(:location, id: 12, region: @region, name: 'Cleo South')
+      FactoryGirl.create(:location, id: 13, region: @region, name: 'Sassy')
+      FactoryGirl.create(:location, id: 14, region: chicago_region, name: 'Cleo West')
 
       visit "/#{@region.name}"
 
@@ -363,7 +363,7 @@ describe LocationMachineXrefsController do
     it 'escape input' do
       FactoryGirl.create(
         :location_machine_xref,
-        location: FactoryGirl.create(:location, region: @region, name: 'Test[]Location'),
+        location: FactoryGirl.create(:location, id: 15, region: @region, name: 'Test[]Location'),
         machine: FactoryGirl.create(:machine, name: 'Test[]Machine')
       )
 
@@ -402,7 +402,7 @@ describe LocationMachineXrefsController do
 
       expect(page).to_not have_css('a#zone_section_link')
 
-      FactoryGirl.create(:location, region: @region, name: 'Cleo', zone: FactoryGirl.create(:zone, region: @region, name: 'Alberta'))
+      FactoryGirl.create(:location, id: 20, region: @region, name: 'Cleo', zone: FactoryGirl.create(:zone, region: @region, name: 'Alberta'))
 
       visit "/#{@region.name}"
 
@@ -414,7 +414,7 @@ describe LocationMachineXrefsController do
 
       expect(page).to_not have_css('a#operator_section_link')
 
-      FactoryGirl.create(:location, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region))
+      FactoryGirl.create(:location, id: 21, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region))
 
       visit "/#{@region.name}"
 
@@ -435,7 +435,7 @@ describe LocationMachineXrefsController do
 
     it 'automatically limits searching to region' do
       chicago_region = FactoryGirl.create(:region, name: 'chicago')
-      FactoryGirl.create(:location, region: chicago_region, name: 'Chicago Location')
+      FactoryGirl.create(:location, id: 22, region: chicago_region, name: 'Chicago Location')
 
       visit "/#{@region.name}"
 
@@ -449,7 +449,7 @@ describe LocationMachineXrefsController do
 
     it 'allows case insensive searches of a region' do
       chicago_region = FactoryGirl.create(:region, name: 'chicago', full_name: 'Chicago')
-      FactoryGirl.create(:location, region: chicago_region, name: 'Chicago Location')
+      FactoryGirl.create(:location, id: 23, region: chicago_region, name: 'Chicago Location')
 
       visit '/CHICAGO'
 
@@ -475,7 +475,7 @@ describe LocationMachineXrefsController do
     end
 
     it 'lets you search by machine name from select -- returns grouped machines' do
-      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, name: 'Grouped Location', region: @region), machine: FactoryGirl.create(:machine, name: 'Test Machine Name SE', machine_group: @machine_group))
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, id: 30, name: 'Grouped Location', region: @region), machine: FactoryGirl.create(:machine, name: 'Test Machine Name SE', machine_group: @machine_group))
 
       visit "/#{@region.name}"
 
@@ -492,7 +492,7 @@ describe LocationMachineXrefsController do
     end
 
     it 'lets you search by machine name' do
-      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, name: 'UnGrouped Location', region: @region), machine: FactoryGirl.create(:machine, name: 'No Groups'))
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, id: 31, name: 'UnGrouped Location', region: @region), machine: FactoryGirl.create(:machine, name: 'No Groups'))
 
       visit "/#{@region.name}"
 
@@ -508,7 +508,7 @@ describe LocationMachineXrefsController do
     end
 
     it 'lets you search by machine name -- returns grouped machines' do
-      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, name: 'Grouped Location', region: @region), machine: FactoryGirl.create(:machine, name: 'Test Machine Name SE', machine_group: @machine_group))
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, id: 32, name: 'Grouped Location', region: @region), machine: FactoryGirl.create(:machine, name: 'Test Machine Name SE', machine_group: @machine_group))
 
       visit "/#{@region.name}"
 
@@ -545,8 +545,8 @@ describe LocationMachineXrefsController do
     end
 
     it 'searches by city' do
-      FactoryGirl.create(:location, region: @region, name: 'Cleo', city: 'Portland')
-      FactoryGirl.create(:location, region: @region, name: 'Bawb', city: 'Beaverton')
+      FactoryGirl.create(:location, id: 34, region: @region, name: 'Cleo', city: 'Portland')
+      FactoryGirl.create(:location, id: 35, region: @region, name: 'Bawb', city: 'Beaverton')
 
       visit "/#{@region.name}"
 
@@ -561,8 +561,8 @@ describe LocationMachineXrefsController do
     end
 
     it 'searches by zone' do
-      FactoryGirl.create(:location, region: @region, name: 'Cleo', zone: FactoryGirl.create(:zone, region: @region, name: 'Alberta'))
-      FactoryGirl.create(:location, region: @region, name: 'Bawb')
+      FactoryGirl.create(:location, id: 36, region: @region, name: 'Cleo', zone: FactoryGirl.create(:zone, region: @region, name: 'Alberta'))
+      FactoryGirl.create(:location, id: 37, region: @region, name: 'Bawb')
 
       visit "/#{@region.name}"
 
@@ -578,9 +578,9 @@ describe LocationMachineXrefsController do
 
     it 'searches by location type' do
       bar_type = FactoryGirl.create(:location_type, name: 'bar')
-      FactoryGirl.create(:location, region: @region, name: 'Cleo', location_type: bar_type)
-      FactoryGirl.create(:location, region: @region, name: 'Bawb')
-      FactoryGirl.create(:location, region: FactoryGirl.create(:region), name: 'Sass', location_type: bar_type)
+      FactoryGirl.create(:location, id: 38, region: @region, name: 'Cleo', location_type: bar_type)
+      FactoryGirl.create(:location, id: 39, region: @region, name: 'Bawb')
+      FactoryGirl.create(:location, id: 40, region: FactoryGirl.create(:region), name: 'Sass', location_type: bar_type)
 
       visit "/#{@region.name}"
 
@@ -596,8 +596,8 @@ describe LocationMachineXrefsController do
     end
 
     it 'searches by operator' do
-      FactoryGirl.create(:location, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region))
-      FactoryGirl.create(:location, region: @region, name: 'Bawb')
+      FactoryGirl.create(:location, id: 41, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region))
+      FactoryGirl.create(:location, id: 42, region: @region, name: 'Bawb')
 
       visit "/#{@region.name}"
 
@@ -612,7 +612,7 @@ describe LocationMachineXrefsController do
     end
 
     it 'searches by operator - displays website when available' do
-      l = FactoryGirl.create(:location, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region, website: 'website.com'))
+      l = FactoryGirl.create(:location, id: 43, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region, website: 'website.com'))
 
       visit "/#{@region.name}?by_location_id=#{Location.find(l.id).id}"
 
@@ -621,7 +621,7 @@ describe LocationMachineXrefsController do
       expect(page).to have_content('Cleo')
       expect(page).to have_link('Quarter Bean', 'website.com')
 
-      l = FactoryGirl.create(:location, region: @region, name: 'Sass', operator: FactoryGirl.create(:operator, name: 'Sass Bean', region: @region, website: nil))
+      l = FactoryGirl.create(:location, id: 44, region: @region, name: 'Sass', operator: FactoryGirl.create(:operator, name: 'Sass Bean', region: @region, website: nil))
 
       visit "/#{@region.name}?by_location_id=#{Location.find(l.id).id}"
 
@@ -633,7 +633,7 @@ describe LocationMachineXrefsController do
     end
 
     it 'searches by operator - ignores operators with no locations' do
-      FactoryGirl.create(:location, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region))
+      FactoryGirl.create(:location, id: 45, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region))
       FactoryGirl.create(:operator, name: 'Hope This Does Not Show Up', region: @region)
 
       visit "/#{@region.name}"
@@ -644,8 +644,8 @@ describe LocationMachineXrefsController do
     end
 
     it 'displays location type for a location, if it is available' do
-      FactoryGirl.create(:location, region: @region, name: 'Cleo', location_type: FactoryGirl.create(:location_type, name: 'bar'))
-      FactoryGirl.create(:location, region: @region, name: 'Bawb')
+      FactoryGirl.create(:location, id: 46, region: @region, name: 'Cleo', location_type: FactoryGirl.create(:location_type, name: 'bar'))
+      FactoryGirl.create(:location, id: 47, region: @region, name: 'Bawb')
 
       visit "/#{@region.name}"
 
@@ -674,9 +674,9 @@ describe LocationMachineXrefsController do
     end
 
     it 'sorts searches by location name' do
-      FactoryGirl.create(:location, region: @region, name: 'Zelda')
-      FactoryGirl.create(:location, region: @region, name: 'Cleo')
-      FactoryGirl.create(:location, region: @region, name: 'Bawb')
+      FactoryGirl.create(:location, id: 48, region: @region, name: 'Zelda')
+      FactoryGirl.create(:location, id: 49, region: @region, name: 'Cleo')
+      FactoryGirl.create(:location, id: 50, region: @region, name: 'Bawb')
 
       visit "/#{@region.name}"
       page.find('input#location_search_button').click
@@ -693,8 +693,8 @@ describe LocationMachineXrefsController do
     it 'honor N or more machines' do
       zone = FactoryGirl.create(:zone, region: @region)
 
-      cleo = FactoryGirl.create(:location, region: @region, name: 'Cleo', zone: zone)
-      FactoryGirl.create(:location, region: @region, name: 'Bawb', zone: zone)
+      cleo = FactoryGirl.create(:location, id: 51, region: @region, name: 'Cleo', zone: zone)
+      FactoryGirl.create(:location, id: 52, region: @region, name: 'Bawb', zone: zone)
 
       3.times do
         FactoryGirl.create(:location_machine_xref, location: cleo, machine: FactoryGirl.create(:machine))
@@ -719,8 +719,8 @@ describe LocationMachineXrefsController do
     end
 
     it 'honors direct link for city' do
-      FactoryGirl.create(:location, region: @region, name: 'Cleo', city: 'Beaverton')
-      FactoryGirl.create(:location, region: @region, name: 'Bawb', city: 'Portland')
+      FactoryGirl.create(:location, id: 52, region: @region, name: 'Cleo', city: 'Beaverton')
+      FactoryGirl.create(:location, id: 53, region: @region, name: 'Bawb', city: 'Portland')
 
       visit "/#{@region.name}/?by_city_id=Beaverton"
       sleep(1)
@@ -732,7 +732,7 @@ describe LocationMachineXrefsController do
     end
 
     it 'escapes characters in location address for infowindow' do
-      screen_location = FactoryGirl.create(:location, region: @region, name: 'The Screen', street: "1600 St. Michael's Drive", city: "Sassy's Ville")
+      screen_location = FactoryGirl.create(:location, id: 54, region: @region, name: 'The Screen', street: "1600 St. Michael's Drive", city: "Sassy's Ville")
       FactoryGirl.create(:location_machine_xref, location: screen_location, machine: FactoryGirl.create(:machine), condition: 'cool machine description')
 
       visit "/#{@region.name}/?by_location_id=#{screen_location.id}"
@@ -744,9 +744,9 @@ describe LocationMachineXrefsController do
     end
 
     it 'has a machine dropdown with year and manufacturer if available' do
-      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: @region), machine: FactoryGirl.create(:machine, name: 'foo', manufacturer: 'stern'))
-      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: @region), machine: FactoryGirl.create(:machine, name: 'bar', year: 2000, manufacturer: 'bally'))
-      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: @region), machine: FactoryGirl.create(:machine, name: 'baz', year: 2001))
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, id: 55, region: @region), machine: FactoryGirl.create(:machine, name: 'foo', manufacturer: 'stern'))
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, id: 56, region: @region), machine: FactoryGirl.create(:machine, name: 'bar', year: 2000, manufacturer: 'bally'))
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, id: 57, region: @region), machine: FactoryGirl.create(:machine, name: 'baz', year: 2001))
 
       visit "/#{@region.name}"
       page.find('div#other_search_options a#machine_section_link').click
@@ -755,9 +755,9 @@ describe LocationMachineXrefsController do
     end
 
     it 'has location summary info that shows machine metadata when available' do
-      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: @region), machine: FactoryGirl.create(:machine, name: 'foo', manufacturer: 'stern'))
-      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: @region), machine: FactoryGirl.create(:machine, name: 'bar', year: 2000, manufacturer: 'bally'))
-      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: @region), machine: FactoryGirl.create(:machine, name: 'baz', year: 2001))
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, id: 58, region: @region), machine: FactoryGirl.create(:machine, name: 'foo', manufacturer: 'stern'))
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, id: 59, region: @region), machine: FactoryGirl.create(:machine, name: 'bar', year: 2000, manufacturer: 'bally'))
+      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, id: 60, region: @region), machine: FactoryGirl.create(:machine, name: 'baz', year: 2001))
 
       visit "/#{@region.name}"
       page.find('input#location_search_button').click
