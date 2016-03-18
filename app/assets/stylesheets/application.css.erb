@@ -1086,7 +1086,8 @@ input.submit_button:hover,
 #new_user input[type="password"],
 input#score,
 input#initials,
-#add_machine_by_name {
+#add_machine_by_name,
+.lookup_search_input {
   background: #ECE2D8;   
   border: 2px solid #a77e51;
   color: #000;
@@ -1104,7 +1105,8 @@ input.search,
 .location_detail input.save_button {
   box-shadow: 1px 1px 3px #888;
 }
-#form input.lookup_search_input {
+#form input.lookup_search_input,
+.lookup_search_input {
   width: 300px;
   height: 28px;
   font-size: 16px;
@@ -1112,6 +1114,15 @@ input.search,
   margin: 0 4px;
   background: #ece2d8;
   color: #000000;
+}
+.lookup_search_select {
+  width: 450px;
+  margin: 0 10px 10px 10px;
+}
+.lookup_search_input {
+  margin: 0 0 5px 10px;
+  width: 450px;
+  background: #f7f3ef;
 }
 .metadata li {
   float: left;
