@@ -371,6 +371,20 @@ describe LocationsController do
       expect(Location.find(@location.id).description).to eq(nil)
     end
 
+    it 'does not allow descs with https://- stubbed out spam detection' do
+      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find("#desc_show_location_#{@location.id}").click
+      fill_in("new_desc_#{@location.id}", with: 'https://hopethisdoesntwork.com foo bar baz')
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).description).to eq(nil)
+    end
+
     it 'allows users to update a location description - stubbed out spam detection' do
       stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
 
