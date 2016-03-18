@@ -100,7 +100,7 @@ class LocationsController < InheritedResources::Base
 
     l.description = l.description.slice(0, 254) unless l.description.nil?
 
-    if l.description !~ %r{http:\/\/}
+    if l.description !~ %r{http[s]?:\/\/}
       if ENV['RAKISMET_KEY']
         if l.spam?
           nil
