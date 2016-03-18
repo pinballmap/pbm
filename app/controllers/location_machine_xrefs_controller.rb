@@ -6,14 +6,14 @@ class LocationMachineXrefsController < InheritedResources::Base
     machine = nil
     location = Location.find(params[:location_id])
 
-    if !params[:add_machine_by_id].empty?
-      machine = Machine.find(params[:add_machine_by_id])
-    elsif !params[:add_machine_by_name].empty?
-      machine = Machine.where(['lower(name) = ?', params[:add_machine_by_name].downcase]).first
+    if !params["add_machine_by_id_#{location.id}"].empty?
+      machine = Machine.find(params["add_machine_by_id_#{location.id}"])
+    elsif !params["add_machine_by_name_#{location.id}"].empty?
+      machine = Machine.where(['lower(name) = ?', params["add_machine_by_name_#{location.id}"].downcase]).first
 
       if machine.nil?
         machine = Machine.new
-        machine.name = params[:add_machine_by_name]
+        machine.name = params["add_machine_by_name_#{location.id}"]
         machine.save
 
         send_new_machine_notification(machine, location)
