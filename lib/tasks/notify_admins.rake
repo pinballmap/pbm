@@ -4,6 +4,7 @@ task notify_admins: :environment do
     email_subject = "PBM - Weekly admin digest for #{r.full_name} - #{Date.today.strftime('%m/%d/%Y')}"
     email_body = r.generate_weekly_admin_email_body
     email_to = r.users.map { |u| u.email }
+    email_to = (email_to + User.where(is_super_admin: 'Y').map { |u| u.email }).uniq
 
     Pony.mail(
       to: email_to,
