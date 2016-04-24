@@ -131,9 +131,6 @@ li a:hover {
 form.new_user {
   font-size: 16px;
 }
-#login input {
-  height: 25px;
-}
 #login .form-actions {
   line-height: 40px;
 }
@@ -464,13 +461,24 @@ div.pick_a_map .blog_header {
 .login a, .login_new a, .login_alert a {
   color: #aa0803;
 }
-.login_new {
+.login_new, #login .button {
   padding: 6px 6px;
   margin: 7px 5px;
   border: 4px solid #D6C0AA;
   background-color: #ECE2D8;
   text-shadow: 1px 1px 5px #CCC;
   box-sizing: border-box;
+  box-shadow: 3px 03px 3px #aaa;
+}
+#login .reset-password .button {
+  cursor: pointer;
+  width: 260px;
+  font-size: 11px;
+  font-weight: bold;
+}
+#login .error {
+  font-style: italic;
+  color: red;
 }
 .login_home {
   margin: 2px 5px;
@@ -1052,7 +1060,6 @@ input#add {
 #add,
 #location_picture_xref_submit, 
 .new_location_picture_xref input.submit_picture,
-#login .button,
 .metadata_edit_location input.save_button, 
 .metadata_edit_location input.cancel_button
  {
