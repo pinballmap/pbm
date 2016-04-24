@@ -11,7 +11,7 @@ class Ability
     can :manage, [Event, Operator, RegionLinkXref, Zone], region_id: user.region_id
     can :manage, [LocationMachineXref], location: { region_id: user.region_id }
     can [:update, :read], [LocationPictureXref], location: { region_id: user.region_id }
-    can [:update, :read, :destroy], [MachineScoreXref], location: { region_id: user.region_id }
+    can [:update, :read, :destroy], [MachineCondition, MachineScoreXref], location: { region_id: user.region_id }
 
     if user.is_super_admin
       can :manage, [Location]
