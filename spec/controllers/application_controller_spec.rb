@@ -40,10 +40,10 @@ describe ApplicationController, type: :controller do
   end
 
   describe '#after_sign_in_path_for' do
-    it 'redirects you to the admin page' do
+    it 'redirects you to the main page' do
       user = FactoryGirl.create(:user)
 
-      expect(controller.after_sign_in_path_for(user)).to eq('/admin')
+      expect(controller.after_sign_in_path_for(user)).to eq('/')
     end
   end
 end
