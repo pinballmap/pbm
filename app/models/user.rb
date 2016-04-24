@@ -7,13 +7,14 @@ class User < ActiveRecord::Base
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :region_id, :is_machine_admin, :is_primary_email_contact, :is_super_admin, :username
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, multiline: true
+  validates :username, length: { maximum: 6 }
 
   validate :validate_username
 
-  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, authentication_keys: [:login]
+  devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :trackable, :validatable, authentication_keys: [:login]
 
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :region_id, :is_machine_admin, :is_primary_email_contact, :username, :is_disabled, :is_super_admin
   attr_accessor :login
 
   def role_symbols
@@ -32,23 +33,12 @@ class User < ActiveRecord::Base
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
-    if login == conditions.delete(:login)
-      where(conditions.to_hash).where(['lower(username) = :value OR lower(email) = :value', { value: login.downcase }]).first
-    else
-      where(conditions.to_hash).first
-    end
-  end
+    login = conditions.delete(:login)
 
-  def self.find_first_by_auth_conditions(warden_conditions)
-    conditions = warden_conditions.dup
-    if login == conditions.delete(:login)
-      where(conditions).where(['lower(username) = :value OR lower(email) = :value', { value: login.downcase }]).first
-    else
-      if conditions[:username].nil?
-        where(conditions).first
-      else
-        where(username: conditions[:username]).first
-      end
+    if login
+      where(conditions.to_hash).where(['lower(username) = :value OR lower(email) = :value', value: login.downcase]).first
+    elsif conditions.key?(:username) || conditions.key?(:email)
+      where(conditions.to_hash).first
     end
   end
 end
