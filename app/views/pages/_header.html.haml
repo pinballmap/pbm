@@ -5,9 +5,9 @@
       %div.login.login_region
         %span.darkb
           - if !user_signed_in?
-            = link_to 'Sign Up / Log In', "http://#{request.host}/users/sign_in"
+            = link_to 'Sign Up / Log In', "http://#{request.host_with_port}/users/sign_in"
           - else 
-            = link_to 'Log Out', 'http://pinballmap.com/users/sign_out'
+            = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out"
       %span.darkb.closest_locations{:style => "float:right;", :onclick => "findClosestLocations('#{@region.name}')"}
         = link_to 'Show Closest Locations', '#', {:id => 'find_closest_locations'}
       %div.region_logo_dropdown
@@ -44,9 +44,9 @@
       %div.login.login_home
         %span.darkb
           - if !user_signed_in?
-            = link_to 'Sign Up / Log In', "http://#{request.host}/users/sign_in"
+            = link_to 'Sign Up / Log In', "http://#{request.host_with_port}/users/sign_in"
           - else 
-            = link_to 'Log Out', 'http://pinballmap.com/users/sign_out'
+            = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out"
       %span.darkb.geo_header{:onclick => "findClosestRegion()"}
         = link_to 'Find Your Closest Map', '#'
 
