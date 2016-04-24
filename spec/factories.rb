@@ -65,6 +65,8 @@ FactoryGirl.define do
     sequence(:username) { |n| "cap#{n}" }
     sequence(:email) { |n| "captainamerica#{n}@foo.bar" }
     password 'password'
+    password_confirmation 'password'
+    confirmed_at Date.today
   end
 
   factory :location_picture_xref do

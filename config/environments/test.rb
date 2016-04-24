@@ -37,4 +37,6 @@ Pbm::Application.configure do
   config.eager_load = false
 
   config.middleware.use RackSessionAccess::Middleware
+
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 end
