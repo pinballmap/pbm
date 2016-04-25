@@ -365,16 +365,19 @@ RailsAdmin.config do |config|
   end
   config.model User do
     list do
+      field :username, :string 
       field :email, :string 
       field :region, :belongs_to_association
       field :last_sign_in_at, :datetime
     end
     show do
+      field :username, :string 
       field :email, :string 
       field :region, :belongs_to_association
       field :last_sign_in_at, :datetime
     end
     edit do
+      field :username, :string 
       field :email, :string 
       field :password, :password 
       field :is_machine_admin, :boolean 
@@ -387,6 +390,7 @@ RailsAdmin.config do |config|
       end
     end
     create do
+      field :username, :string 
       field :email, :string 
       field :password, :password 
       field :region_id do
