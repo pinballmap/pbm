@@ -15,6 +15,7 @@ class Ability
 
     if user.is_super_admin
       can :manage, [Location]
+      can :manage, [UserSubmission]
     else
       can :manage, [Location], region_id: user.region_id
     end
