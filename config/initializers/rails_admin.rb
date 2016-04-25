@@ -367,11 +367,13 @@ RailsAdmin.config do |config|
     list do
       field :email, :string 
       field :region, :belongs_to_association
+      field :is_disabled, :boolean
       field :last_sign_in_at, :datetime
     end
     show do
       field :email, :string 
       field :region, :belongs_to_association
+      field :is_disabled, :boolean
       field :last_sign_in_at, :datetime
     end
     edit do
@@ -380,6 +382,7 @@ RailsAdmin.config do |config|
       field :is_machine_admin, :boolean 
       field :is_primary_email_contact, :boolean 
       field :email, :string 
+      field :is_disabled, :boolean
       field :region_id do
         render do
           bindings[:view].render :partial => 'region_user', :locals => {:region_id => bindings[:object].region_id}
