@@ -131,9 +131,6 @@ li a:hover {
 form.new_user {
   font-size: 16px;
 }
-#login .form-actions {
-  line-height: 40px;
-}
 #login abbr {
   border: none;
 }
@@ -156,10 +153,11 @@ ul.twitter {
   border: none;
 }
 p.notice {
+  color: #e04f1a;
   font-size: 18px;
   text-align: center;
   margin: -10px auto 10px;
-  width: 60%;
+  width: 100%;
 }
 .thanks, p.alert {
   font-size: 28px;
@@ -187,6 +185,10 @@ p.notice {
 #flash_recaptcha_error {
   display: none;
 }
+#flash_message,
+#flash_notice {
+  display: none;
+}
 div.pick_a_map {
   font-size: 28px;
   line-height: 42px;
@@ -210,6 +212,7 @@ div.pick_a_map .store_header {
   padding: 5px 10px 7px;
   background-color: #ece2d8;
   border-right: 2px solid #d6c0aa;
+  border-left: 2px solid #d6c0aa;
   text-shadow: 1px 1px 5px #CCCCCC;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -459,8 +462,11 @@ div.pick_a_map .blog_header {
 .login {
   float: right;
 }
+.login:hover, .login_alert a:hover {
+  background: #fbe4dc;
+}
 .login a, .login_new a, .login_alert a {
-  color: #aa0803;
+  color: #e04f1a;
 }
 .why_login {
   font-size: 14px;
@@ -480,8 +486,7 @@ div.pick_a_map .blog_header {
   cursor: pointer;
   background: #fbe4dc;
 }
-#login .reset-password .button,
-#login .confirmation .button {
+#login .reset-password .button {
   cursor: pointer;
   width: 260px;
   font-size: 11px;
@@ -491,7 +496,7 @@ div.pick_a_map .blog_header {
   font-style: italic;
   color: red;
 }
-.login_home {
+div.pick_a_map .login_home {
   margin: 2px 5px;
   float: right;
 }
@@ -1140,6 +1145,7 @@ input#initials,
 #add_machine_by_name,
 .lookup_search_input {
   background: #ECE2D8;   
+  height: 28px;
   border: 2px solid #a77e51;
   color: #000;
   border-radius: 4px;
@@ -1929,7 +1935,7 @@ span.begin {
   max-width: 920px;
 }
 #welcome {
-  margin: 90px auto 0;
+  margin: 70px auto 0;
   width: 100%;
   min-width: 819px;
   max-width: 100%;
