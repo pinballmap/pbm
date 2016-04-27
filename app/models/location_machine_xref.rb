@@ -75,7 +75,7 @@ class LocationMachineXref < ActiveRecord::Base
       )
     end
 
-    UserSubmission.create(region_id: location.region_id, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: ["#{location.name} (#{location.id})", "#{machine.name} (#{machine.id})", "#{location.region.name} (#{location.region.id})"].join("\n"))
+    UserSubmission.create(region_id: location.region_id, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: ["#{location.name} (#{location.id})", "#{machine.name} (#{machine.id})", "#{location.region.name} (#{location.region.id})"].join("\n"), user_id: options[:user_id])
 
     location.date_last_updated = Date.today
     location.save(validate: false)

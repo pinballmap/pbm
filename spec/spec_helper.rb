@@ -42,6 +42,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
 
   config.include ControllerHelpers, type: :controller
+  config.include FeatureHelpers, type: :feature
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
