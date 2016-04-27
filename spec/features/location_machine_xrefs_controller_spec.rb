@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe LocationMachineXrefsController do
   before(:each) do
+    login
+
     @region = FactoryGirl.create(:region, name: 'portland', full_name: 'Portland')
     @location = FactoryGirl.create(:location, id: 1, region: @region)
   end
@@ -214,6 +216,8 @@ describe LocationMachineXrefsController do
     end
 
     it 'only displays the 6 most recent descriptions' do
+      login
+
       lmx = LocationMachineXref.find(@lmx.id)
       lmx.condition = 'Condition 7'
       lmx.save
