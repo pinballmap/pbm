@@ -157,7 +157,7 @@ p.notice {
   font-size: 18px;
   text-align: center;
   margin: -10px auto 10px;
-  width: 100%;
+  width: 60%;
 }
 .thanks, p.alert {
   font-size: 28px;
@@ -230,7 +230,7 @@ div.pick_a_map .store_header {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.home_intro p {
+.home_intro p, .why_login {
   font-family: "Fira Mono";
 }
 .home_intro_container {
@@ -468,6 +468,11 @@ div.pick_a_map .blog_header {
 .login a, .login_new a, .login_alert a {
   color: #e04f1a;
 }
+.why_login {
+  font-size: 14px;
+  color: #725755;
+  line-height: 16px;
+}
 #login .button {
   padding: 6px 6px;
   margin: 7px 5px;
@@ -481,7 +486,8 @@ div.pick_a_map .blog_header {
   cursor: pointer;
   background: #fbe4dc;
 }
-#login .reset-password .button {
+#login .reset-password .button,
+#login .confirmation .button {
   cursor: pointer;
   width: 260px;
   font-size: 11px;
