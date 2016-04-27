@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe LocationsController do
   before(:each) do
+    login
+
     @region = FactoryGirl.create(:region, name: 'portland', full_name: 'portland', lat: 1, lon: 2, motd: 'This is a MOTD', n_search_no: 4, should_email_machine_removal: 1)
   end
 
@@ -31,6 +33,8 @@ describe LocationsController do
     end
 
     it 'removes a machine from a location' do
+      logout
+
       FactoryGirl.create(:location_machine_xref, location: @location, machine: @machine)
 
       visit '/portland/?by_location_id=' + Location.find(@location.id).id.to_s
@@ -81,11 +85,11 @@ describe LocationsController do
       expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
 
-      expect(Region.find(@location.region_id).user_submissions.count).to eq(1)
-      submission = Region.find(@location.region_id).user_submissions.first
+      expect(UserSubmission.count).to eq(1)
+      submission = UserSubmission.first
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
       expect(submission.submission).to eq("Cleo (1)\nBawb (1)\nportland (1)")
-      expect(submission.user_id).to eq(@user.id)
+      expect(submission.user_id).to eq(User.last.id)
     end
 
     it 'removes a machine from a location - allows you to cancel out of remove' do
