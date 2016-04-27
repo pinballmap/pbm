@@ -41,7 +41,6 @@ class LocationMachineXrefsController < InheritedResources::Base
 
     user_id = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user.id
 
-    UserSubmission.create(region_id: lmx.location.region_id, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: [lmx.location.name, lmx.machine.name, lmx.location.region.name].join("\n"), user_id: user_id)
     lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: user_id) unless lmx.nil?
 
     render nothing: true
