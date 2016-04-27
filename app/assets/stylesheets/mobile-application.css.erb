@@ -118,27 +118,27 @@
 div.pick_a_map {
   padding-top: 0;
 }
-.apps_header, .blog_header, .store_header, .geo_header, .login_home {
+.apps_header, .blog_header, .store_header, .geo_header, .login_home, .closest_locations {
   width: 100% !important;
   float: none;
   padding: 4px 0 4px;
-  text-align: center;
-  border-left: none;
-  border-right: none;   
+  border-right: 2px solid #d6c0aa;
+  border-left: 2px solid #d6c0aa;
+  text-align: center;  
   border-top: none;
   font-size: 18px !important;
   line-height: 24px !important;
 }
-.login_home {
-  border-left: none;
-  border-right: none;   
-  border-top: none;
-  border-bottom: 2px solid #d6c0aa;
+
+div.pick_a_map .login_home {
+  margin: 0;
+}
+div.pick_a_map .blog_header {
+    border-left: 2px solid #d6c0aa;
 }
 
-div.pick_a_map .geo_header {
-  border-left: none !important;
-  border-right: none !important;
+.closest_locations, .geo_header, .login_home {
+  border-bottom: 2px solid #d6c0aa;
 }
 
 .map_summary {
@@ -680,8 +680,13 @@ input#score, input#initials {
   margin: 10px auto 0;
 }
 
+.login { 
+  margin: 0;
+}
+
 p.notice {
   margin: 10px auto 10px;
+  width: 100%;
 }
 
 @media (max-width: 915px) { 
