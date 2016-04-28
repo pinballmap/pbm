@@ -1,7 +1,8 @@
-%span.info Add a machine condition; add a high score; remove a machine if it's no longer at this location.
 - if !user_signed_in?
   %span.login_alert
     = link_to link_to 'To update this location, you must login!', "http://#{request.host_with_port}/users/sign_in"
+- if user_signed_in?
+  %span.info Add a machine condition; add a high score; remove a machine if it's no longer at this location.
 - location_machine_xrefs.sort{|a,b| a.machine.massaged_name <=> b.machine.massaged_name}.each do |lmx|
   %div.machine_names[lmx, :machine]
     = render :partial => 'location_machine_xrefs/list_machine', :locals => {:lmx => lmx}

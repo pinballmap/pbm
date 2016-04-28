@@ -58,7 +58,7 @@ input, textarea {
   font-family: "Fira Mono",Helvetica,Arial,sans-serif;
 }
 select {
-	font-family: Helvetica,Arial,sans-serif;
+  font-family: Helvetica,Arial,sans-serif;
 }
 ul {
   font-size: 16px;
@@ -748,7 +748,7 @@ li.address_full {
 .machine_names {
   color: #433A3A;
   font-size: 14px;
-  padding: 4px 0 25px 10px !important;
+  padding: 4px 0 15px 10px !important;
   line-height: 18px;
   background: #FEFBF8;
   font-weight: bold;
@@ -771,13 +771,13 @@ span.machine_year_man {
   font-size: 12px;
   padding: 5px;
   border-left: 5px solid #ae9390;
+  min-height: 90px;
 }
 .machine_sub_items {
   width: 400px;
 }
 .pintips {
   text-align: left;
-  float: left;
   font-weight: normal;
   color: #000000;
   font-size: 16px;
@@ -807,7 +807,7 @@ span.machine_year_man {
 div.comment_image {
   width: 50px;
   height: 40px;
-  float: left;
+  float: right;
   margin-bottom: 5px;
 }
 div.comment_image span.comment_image {
@@ -822,7 +822,7 @@ div.comment_image span.comment_image img {
 div.comment_image span.comment_image:hover:after {
   content: "Leave a comment!";
   position: absolute;
-  margin-top: -25px;
+  margin-top: -30px;
   line-height: 14px;
   font-size: 16px;
   margin-left: 10px;
@@ -831,6 +831,7 @@ div.comment_image span.comment_image:hover:after {
   padding: 5px;
   font-weight: bold;
   font-style: italic;
+  width: 80px;
 }
 .machine_condition_new_line span {
   display: block;
@@ -842,7 +843,7 @@ div.comment_image span.comment_image:hover:after {
   display: inline-block;
 }
 div.machine_condition_text {
-  float: right;
+  float: left;
   width: 380px;
 }
 .machine_condition_display_lmx .machine_condition_lmx span.machine_condition_date {
@@ -873,6 +874,7 @@ form.remove_machine_condition {
   padding: 2px;
   box-sizing: border-box;
   width: 435px;
+  min-height: 30px;
 }
 .machine_condition_display_lmx .edit_mode {
   width: 400px;
@@ -920,6 +922,7 @@ form.remove_machine_condition {
 }
 .machineconditions_container_lmx {
   margin-left: 10px;
+  clear: both;
 }
 .high_score { 
   margin-left: 10px;  
@@ -1153,6 +1156,9 @@ input#initials,
   -webkit-border-radius: 4px;
   margin: 4px 4px;
   box-shadow: inset 1px 1px 3px #888;
+}
+.edit_mode {
+  height: auto;
 }
 input.search,
 .condition_button, .desc_edit_location input,
