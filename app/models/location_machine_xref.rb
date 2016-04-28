@@ -38,7 +38,7 @@ class LocationMachineXref < ActiveRecord::Base
 
     save
 
-    MachineCondition.create(comment: condition, location_machine_xref: self)
+    MachineCondition.create(comment: condition, location_machine_xref: self, user_id: options[:user_id])
 
     return if condition.nil? || condition.blank?
 
@@ -84,5 +84,9 @@ class LocationMachineXref < ActiveRecord::Base
     location
 
     super()
+  end
+
+  def current_condition
+    machine_conditions.last
   end
 end

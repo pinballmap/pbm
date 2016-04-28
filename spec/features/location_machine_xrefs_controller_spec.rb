@@ -210,9 +210,17 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{Time.now.strftime('%d-%b-%Y')}")
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{(Date.today + 1).strftime('%d-%b-%Y')}")
       expect(Location.find(@lmx.location.id).date_last_updated).to eq(Date.today)
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
+    end
+
+    it 'displays who updated a machine if that data is available' do
+      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, user: FactoryGirl.create(:user, username: 'ssw'))
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("Test Comment Updated: #{(Date.today + 1).strftime('%d-%b-%Y')} by ssw")
     end
 
     it 'only displays the 6 most recent descriptions' do
@@ -783,7 +791,8 @@ describe LocationMachineXrefsController do
 
     it 'escapes characters in location address for infowindow' do
       screen_location = FactoryGirl.create(:location, id: 54, region: @region, name: 'The Screen', street: "1600 St. Michael's Drive", city: "Sassy's Ville")
-      FactoryGirl.create(:location_machine_xref, location: screen_location, machine: FactoryGirl.create(:machine), condition: 'cool machine description')
+      lmx = FactoryGirl.create(:location_machine_xref, location: screen_location, machine: FactoryGirl.create(:machine))
+      FactoryGirl.create(:machine_condition, location_machine_xref: lmx, comment: 'cool machine description')
 
       visit "/#{@region.name}/?by_location_id=#{screen_location.id}"
 
