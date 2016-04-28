@@ -59,14 +59,14 @@ class LocationMachineXrefsController < InheritedResources::Base
       if lmx.spam?
         nil
       else
-        lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
+        lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: Authorization.current_user ? Authorization.current_user.id : nil)
         lmx.location.date_last_updated = Date.today
         lmx.location.save(validate: false)
         lmx.location
       end
       lmx
     else
-      lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
+      lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: Authorization.current_user ? Authorization.current_user.id : nil)
       lmx.location.date_last_updated = Date.today
       lmx.location.save(validate: false)
       lmx.location
