@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160425025650) do
+ActiveRecord::Schema.define(version: 20160428022137) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 20160425025650) do
     t.integer  "location_machine_xref_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
 
   add_index "machine_conditions", ["location_machine_xref_id"], name: "index_machine_conditions_on_location_machine_xref_id", using: :btree
