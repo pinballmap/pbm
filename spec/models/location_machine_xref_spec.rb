@@ -100,4 +100,19 @@ describe LocationMachineXref do
       expect(LocationMachineXref.all).to eq([])
     end
   end
+
+  describe '#current_condition' do
+    it 'should return the most recent machine condition' do
+      @r = FactoryGirl.create(:region, name: 'Portland', should_email_machine_removal: 1)
+      @l = FactoryGirl.create(:location, region: @r, name: 'Cool Bar')
+      @m = FactoryGirl.create(:machine, name: 'Sassy')
+      @lmx = FactoryGirl.create(:location_machine_xref, location: @l, machine: @m)
+
+      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'foo')
+      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
+      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'baz')
+
+      @lmx.current_condition.comment = 'baz'
+    end
+  end
 end
