@@ -1,1 +1,4 @@
-Location last updated: #{l.date_last_updated} #{l.last_updated_by_user ? "by #{l.last_updated_by_user.username}" : ''}
+Location last updated: #{l.date_last_updated} 
+#{l.last_updated_by_user ? "by " : ''}
+%span.last_updated_username
+  #{l.last_updated_by_user ? "#{l.last_updated_by_user.username}" : ''}
