@@ -5,6 +5,7 @@ class LocationMachineXrefsController < InheritedResources::Base
   def create
     machine = nil
     location = Location.find(params[:location_id])
+    user = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user
 
     if !params["add_machine_by_id_#{location.id}"].empty?
       machine = Machine.find(params["add_machine_by_id_#{location.id}"])
@@ -16,21 +17,19 @@ class LocationMachineXrefsController < InheritedResources::Base
         machine.name = params["add_machine_by_name_#{location.id}"]
         machine.save
 
-        send_new_machine_notification(machine, location)
+        send_new_machine_notification(machine, location, user)
       end
     else
       # blank submit
       return
     end
 
-    user_id = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user.id
-
     location.date_last_updated = Date.today
-    location.last_updated_by_user_id = user_id
+    location.last_updated_by_user_id = user.id
     location.save(validate: false)
 
     LocationMachineXref.where(['location_id = ? and machine_id = ?', location.id, machine.id]).first ||
-      LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user_id)
+      LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user.id)
   end
 
   def create_confirmation
