@@ -58,7 +58,8 @@ class PagesController < ApplicationController
 
     if verify_recaptcha
       flash.now[:alert] = 'Thanks for contacting us!'
-      send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region)
+      user = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user
+      send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
     else
       flash.now[:alert] = 'Your captcha entering skills have failed you. Please go back and try again.'
     end
@@ -95,7 +96,8 @@ class PagesController < ApplicationController
       else
         flash.now[:alert] = "Thanks for entering that location. We'll get it in the system as soon as possible."
 
-        send_new_location_notification(params, @region)
+        user = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user
+        send_new_location_notification(params, @region, user)
       end
     else
       flash.now[:alert] = 'Your captcha entering skills have failed you. Please go back and try again.'
