@@ -100,17 +100,20 @@ class LocationsController < InheritedResources::Base
 
     l.description = l.description.slice(0, 254) unless l.description.nil?
 
+    user_id = Authorization.current_user ? Authorization.current_user.id : nil
     if l.description !~ %r{http[s]?:\/\/}
       if ENV['RAKISMET_KEY']
         if l.spam?
           nil
         else
           l.date_last_updated = Date.today
+          l.last_updated_by_user_id = user_id
           l.save(validate: false)
         end
         l
       else
         l.date_last_updated = Date.today
+        l.last_updated_by_user_id = user_id
         l.save(validate: false)
         l
       end
@@ -214,6 +217,7 @@ class LocationsController < InheritedResources::Base
   def confirm
     l = Location.find(params[:id])
     l.date_last_updated = Date.today
+    l.last_updated_by_user_id = Authorization.current_user ? Authorization.current_user.id : nil
     l.save(validate: false)
     l
   end
