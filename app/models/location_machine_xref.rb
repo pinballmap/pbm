@@ -32,6 +32,7 @@ class LocationMachineXref < ActiveRecord::Base
     self.condition = condition
     self.condition_date = Date.today
     location.date_last_updated = Date.today
+    location.last_updated_by_user_id = options[:user_id]
     location.save(validate: false)
 
     save
@@ -78,6 +79,7 @@ class LocationMachineXref < ActiveRecord::Base
     UserSubmission.create(region_id: location.region_id, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: ["#{location.name} (#{location.id})", "#{machine.name} (#{machine.id})", "#{location.region.name} (#{location.region.id})"].join("\n"), user_id: options[:user_id])
 
     location.date_last_updated = Date.today
+    location.last_updated_by_user_id = options[:user_id]
     location.save(validate: false)
     location
 

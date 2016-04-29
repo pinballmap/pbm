@@ -23,10 +23,11 @@ class LocationMachineXrefsController < InheritedResources::Base
       return
     end
 
-    location.date_last_updated = Date.today
-    location.save(validate: false)
-
     user_id = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user.id
+
+    location.date_last_updated = Date.today
+    location.last_updated_by_user_id = user_id
+    location.save(validate: false)
 
     LocationMachineXref.where(['location_id = ? and machine_id = ?', location.id, machine.id]).first ||
       LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user_id)
@@ -61,6 +62,7 @@ class LocationMachineXrefsController < InheritedResources::Base
       else
         lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: Authorization.current_user ? Authorization.current_user.id : nil)
         lmx.location.date_last_updated = Date.today
+        lmx.location.last_updated_by_user_id = Authorization.current_user ? Authorization.current_user.id : nil
         lmx.location.save(validate: false)
         lmx.location
       end
@@ -68,6 +70,7 @@ class LocationMachineXrefsController < InheritedResources::Base
     else
       lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: Authorization.current_user ? Authorization.current_user.id : nil)
       lmx.location.date_last_updated = Date.today
+      lmx.location.last_updated_by_user_id = Authorization.current_user ? Authorization.current_user.id : nil
       lmx.location.save(validate: false)
       lmx.location
       lmx
