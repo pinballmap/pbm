@@ -1309,13 +1309,19 @@ input#initials {
   border-top: 1px solid #CAC6C6;
   border-bottom: 1px solid #CAC6C6;
 }
-.confirm_location span {
+.confirm_location span.last_updated {
   font-style: normal;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
   display: block;
   padding: 15px 5px;
   text-align: right;
+  color: #6E5335;
+}
+.confirm_location span .last_updated_username {
+  color: #441e56;
+  font-family: 'JohnDoe',Helvetica,Arial,sans-serif;
+  font-size: 15px;
 }
 .confirm_location:hover {
   cursor: pointer;
@@ -1324,14 +1330,14 @@ input#initials {
   color: #441e56;
   line-height: 20px;
   background: #F3F2F2;
-  margin: 5px 0;
+  margin: 0;
   font-size: 12px;
 }
 .confirm_location_button img {
   height: 40px;
   float: left;
   cursor: pointer;
-  margin: 0 5px;
+  margin: 5px 5px;
 }
 .confirm_location_button:hover:after {
   content: "Confirm location is up to date";
