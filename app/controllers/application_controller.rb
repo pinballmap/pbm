@@ -28,16 +28,20 @@ class ApplicationController < ActionController::Base
     server_name + subject
   end
 
-  def send_new_machine_notification(machine, location)
+  def send_new_machine_notification(machine, location, user)
+    user_info = user ? " by #{user.username} (#{user.email})" : ''
+
     Pony.mail(
       to: Region.find_by_name('portland').users.map { |u| u.email },
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject('PBM - New machine name'),
-      body: [machine.name, location.name, location.region.name, "(entered from #{request.remote_ip} via #{request.user_agent})"].join("\n")
+      body: [machine.name, location.name, location.region.name, "(entered from #{request.remote_ip} via #{request.user_agent}#{user_info})"].join("\n")
     )
   end
 
-  def send_new_location_notification(params, region)
+  def send_new_location_notification(params, region, user = nil)
+    user_info = user ? " by #{user.username} (#{user.email})" : ''
+
     body = <<END
 (A new pinball spot has been submitted for your region! Please verify the address on http://maps.google.com and then paste that Google Maps address into http://pinballmap.com/admin. Thanks!)\n
 Location Name: #{params['location_name']}\n
@@ -51,7 +55,7 @@ Operator: #{params['location_operator']}\n
 Machines: #{params['location_machines']}\n
 Their Name: #{params['submitter_name']}\n
 Their Email: #{params['submitter_email']}\n
-(entered from #{request.remote_ip} via #{request.user_agent})\n
+(entered from #{request.remote_ip} via #{request.user_agent}#{user_info})\n
 END
     Pony.mail(
       to: region.users.map { |u| u.email },
@@ -60,7 +64,8 @@ END
       subject: add_host_info_to_subject("PBM - New location suggested for the #{region.name} pinball map"),
       body: body
     )
-    UserSubmission.create(region_id: region.id, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE, submission: body)
+
+    UserSubmission.create(region_id: region.id, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE, submission: body, user_id: user ? user.id : nil)
   end
 
   def send_new_region_notification(params)
@@ -77,11 +82,14 @@ END
     )
   end
 
-  def send_admin_notification(params, region)
+  def send_admin_notification(params, region, user = nil)
+    user_info = user ? "Username: #{user.username}\n\nSite Email: #{user.email}" : ''
+
     body = <<END
 Their Name: #{params[:name]}\n
 Their Email: #{params[:email]}\n
 Message: #{params[:message]}\n
+#{user_info}
 END
     Pony.mail(
       to: region.users.map { |u| u.email },
@@ -91,7 +99,7 @@ END
       body: body
     )
 
-    UserSubmission.create(region_id: region.id, submission_type: UserSubmission::CONTACT_US_TYPE, submission: body)
+    UserSubmission.create(region_id: region.id, submission_type: UserSubmission::CONTACT_US_TYPE, submission: body, user_id: user ? user.id : nil)
   end
 
   def send_app_comment(params, region)
