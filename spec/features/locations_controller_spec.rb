@@ -9,7 +9,7 @@ describe LocationsController do
 
   describe 'confirm location', type: :feature, js: true do
     before(:each) do
-      @user = FactoryGirl.create(:user)
+      @user = FactoryGirl.create(:user, username: 'ssw')
       page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
 
       @location = FactoryGirl.create(:location, region_id: @region.id, name: 'Cleo')
@@ -23,6 +23,15 @@ describe LocationsController do
       sleep 1
 
       expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
+      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')} by ssw")
+    end
+
+    it 'displays no username when it was last updated by a non-user' do
+      @location.date_last_updated = Date.today
+      @location.save(validate: false)
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
     end
   end

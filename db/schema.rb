@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160428022137) do
+ActiveRecord::Schema.define(version: 20160428033749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,8 +89,8 @@ ActiveRecord::Schema.define(version: 20160428022137) do
     t.string   "state"
     t.string   "zip"
     t.string   "phone"
-    t.decimal  "lat",               precision: 18, scale: 12
-    t.decimal  "lon",               precision: 18, scale: 12
+    t.decimal  "lat",                     precision: 18, scale: 12
+    t.decimal  "lon",                     precision: 18, scale: 12
     t.string   "website"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 20160428022137) do
     t.string   "description"
     t.integer  "operator_id"
     t.date     "date_last_updated"
+    t.integer  "last_updated_by_user_id"
   end
 
   add_index "locations", ["location_type_id"], name: "index_locations_on_location_type_id", using: :btree

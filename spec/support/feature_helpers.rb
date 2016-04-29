@@ -1,8 +1,7 @@
 include Warden::Test::Helpers
 
 module FeatureHelpers
-  def login
-    user = FactoryGirl.create(:user)
+  def login(user = FactoryGirl.create(:user))
     Authorization.current_user = user
     user
   end
