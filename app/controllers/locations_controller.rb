@@ -156,7 +156,7 @@ class LocationsController < InheritedResources::Base
     if machine.nil?
       machine = Machine.create(name: machine_name)
 
-      send_new_machine_notification(machine, Location.find(params[:modify_location]))
+      send_new_machine_notification(machine, Location.find(params[:modify_location]), nil)
     end
 
     if (lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine.id))
