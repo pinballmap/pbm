@@ -161,7 +161,7 @@ HERE
           body: <<HERE
 Their Name: name\n
 Their Email: email\n
-Message: message\n
+Message: message\n\n
 HERE
         )
       end

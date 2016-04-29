@@ -43,11 +43,13 @@ class LocationMachineXref < ActiveRecord::Base
 
     return if condition.nil? || condition.blank?
 
+    user_info = location.last_updated_by_user ? " by #{location.last_updated_by_user.username} (#{location.last_updated_by_user.email})" : ''
+
     Pony.mail(
       to: location.region.users.map { |u| u.email },
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject('PBM - Someone entered a machine condition', options[:request_host]),
-      body: [condition, machine.name, location.name, location.region.name, "(entered from #{options[:remote_ip]} via #{options[:user_agent]})"].join("\n")
+      body: [condition, machine.name, location.name, location.region.name, "(entered from #{options[:remote_ip]} via #{options[:user_agent]}#{user_info})"].join("\n")
     )
   end
 
@@ -70,11 +72,17 @@ class LocationMachineXref < ActiveRecord::Base
 
   def destroy(options = {})
     if location.region.should_email_machine_removal
+      user_info = nil
+      if options[:user_id]
+        user = User.find(options[:user_id])
+        user_info = " by #{user.username} (#{user.email})"
+      end
+
       Pony.mail(
           to: location.region.users.map { |u| u.email },
           from: 'admin@pinballmap.com',
           subject: add_host_info_to_subject('PBM - Someone removed a machine from a location', options[:request_host]),
-          body: [location.name, machine.name, location.region.name, "(user_id: #{options[:user_id]}) (entered from #{options[:remote_ip]} via #{options[:user_agent]})"].join("\n")
+          body: [location.name, machine.name, location.region.name, "(user_id: #{options[:user_id]}) (entered from #{options[:remote_ip]} via #{options[:user_agent]}#{user_info})"].join("\n")
       )
     end
 
