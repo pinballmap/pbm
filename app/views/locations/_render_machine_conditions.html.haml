@@ -10,4 +10,4 @@
 - conditions.collect! do |mcx|
   %div.machine_condition_new_line{:id => "past_machine_condition_#{mcx.id}"}
     %span.machine_condition= "#{mcx.comment}"
-    %span.machine_condition_date= "#{mcx.created_at ? mcx.created_at.strftime("%d-%b-%Y") : ''}"
+    %span.machine_condition_date= "#{mcx.created_at ? mcx.created_at.strftime("%d-%b-%Y") : ''}" + ((mcx.user_id) ? " by #{mcx.user.username}" : '')
