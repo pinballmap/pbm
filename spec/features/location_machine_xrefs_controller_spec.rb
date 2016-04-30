@@ -143,7 +143,7 @@ describe LocationMachineXrefsController do
   describe 'machine descriptions', type: :feature, js: true do
     before(:each) do
       @lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
-      @user = FactoryGirl.create(:user)
+      @user = FactoryGirl.create(:user, username: 'ssw')
 
       page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
     end
@@ -210,17 +210,17 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{(Date.today).strftime('%d-%b-%Y')}")
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{(Date.today).strftime('%d-%b-%Y')} by ssw")
       expect(Location.find(@lmx.location.id).date_last_updated).to eq(Date.today)
-      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
+      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')} by ssw")
     end
 
     it 'displays who updated a machine if that data is available' do
-      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, user: FactoryGirl.create(:user, username: 'ssw'))
+      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, user: FactoryGirl.create(:user, username: 'cibw'))
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("Test Comment Updated: #{(Date.today).strftime('%d-%b-%Y')} by ssw")
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("Test Comment Updated: #{(Date.today).strftime('%d-%b-%Y')} by cibw")
     end
 
     it 'only displays the 6 most recent descriptions' do
@@ -271,9 +271,11 @@ describe LocationMachineXrefsController do
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content('This is a new condition')
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content('by ssw')
 
       page.find("div#machineconditions_container_lmx_#{@lmx.id}.machineconditions_container_lmx").click
       expect(find('.machine_condition_new_line')).to have_content('test')
+      expect(find('.machine_condition_new_line')).to have_content('by ssw')
     end
 
     it 'adding a new blank comment does not delete old comments' do

@@ -6,7 +6,7 @@ class MachineCondition < ActiveRecord::Base
   has_one :location, through: :location_machine_xref
   has_one :machine, through: :location_machine_xref
 
-  attr_accessible :comment, :location_machine_xref, :user
+  attr_accessible :comment, :location_machine_xref, :user, :user_id
 
   scope :limited, -> { order('created_at DESC').limit(MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY) }
 end
