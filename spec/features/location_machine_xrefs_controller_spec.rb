@@ -210,7 +210,7 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{(Date.today + 1).strftime('%d-%b-%Y')}")
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{(Date.today).strftime('%d-%b-%Y')}")
       expect(Location.find(@lmx.location.id).date_last_updated).to eq(Date.today)
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
     end
@@ -220,7 +220,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("Test Comment Updated: #{(Date.today + 1).strftime('%d-%b-%Y')} by ssw")
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("Test Comment Updated: #{(Date.today).strftime('%d-%b-%Y')} by ssw")
     end
 
     it 'only displays the 6 most recent descriptions' do
