@@ -45,6 +45,12 @@ describe LocationMachineXrefsController do
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
 
       expect(LocationMachineXref.where(location_id: @location.id, machine_id: @machine_to_add.id).first.user_id).to eq(@user.id)
+
+      user_submission = UserSubmission.first
+      expect(user_submission.user_id).to eq(@user.id)
+      expect(user_submission.region).to eq(@region)
+      expect(user_submission.submission_type).to eq(UserSubmission::NEW_LMX_TYPE)
+      expect(user_submission.submission).to eq("User #{@user.username} (#{@user.email}) added #{@machine_to_add.name} to #{@location.name}")
     end
 
     it 'Should add by name of existing machine' do
