@@ -47,10 +47,17 @@
   .closest_locations {
     display:none;
   }
-  .login_home {
+  div.pick_a_map .login_home {
     font-size: 12px;
     width: 75px;
     margin-top: 0;
+    line-height: 21px;
+  }
+  .login {
+    padding: 2px 2px;
+  }
+  .login_slash {
+    display: none;
   }
 }
 
