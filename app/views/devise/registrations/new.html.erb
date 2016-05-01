@@ -5,9 +5,10 @@
 	  <%= f.error_notification %>
 
 	  <div class="form-inputs">
-	  	<span class="why_login">(For your username, how about your initials?)</span><br /><br />
+	  	<span class="why_login">(For your username, how about your initials?)</span><br />
 	    <%= f.input :username, :required => true, :autofocus => true, as: :string %>
 	    <%= f.input :email, :required => true, :autofocus => true %>
+	    <span class="why_login">(For your password, choose one that you don't use elsewhere)</span><br />
 	    <%= f.input :password, :required => true %>
 	    <%= f.input :password_confirmation, :required => true %>
 	  </div>
