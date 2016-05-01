@@ -94,8 +94,8 @@ describe LocationsController do
       expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
 
-      expect(UserSubmission.count).to eq(1)
-      submission = UserSubmission.first
+      expect(UserSubmission.count).to eq(2)
+      submission = UserSubmission.second
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
       expect(submission.submission).to eq("Cleo (1)\nBawb (1)\nportland (1)")
       expect(submission.user_id).to eq(User.last.id)
