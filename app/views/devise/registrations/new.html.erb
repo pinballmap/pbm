@@ -1,22 +1,33 @@
-<div id="login">
-	<h2>Sign up</h2>
+<div class="login_why_outer">
+	<div class="login_why_inner">
+		<p>
+			Why sign up?
+		</p>
+		<p style="font-family: 'Fira Mono';">
+			If you're not signed in, the maps are read-only. So you need to sign up and login to add and remove machines from places, add comments about machines, etc. The maps are kept up to date because of you! So please sign up and help out.
+		</p>
+	</div>
+	<div id="login" class="login_new_div">
+		<h2>Sign up</h2>
 
-	<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-	  <%= f.error_notification %>
+		<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+		  <%= f.error_notification %>
 
-	  <div class="form-inputs">
-	  	<span class="why_login">(For your username, how about your initials?)</span><br />
-	    <%= f.input :username, :required => true, :autofocus => true, as: :string %>
-	    <%= f.input :email, :required => true, :autofocus => true %>
-	    <span class="why_login">(For your password, choose one that you don't use elsewhere)</span><br />
-	    <%= f.input :password, :required => true %>
-	    <%= f.input :password_confirmation, :required => true %>
-	  </div>
+		  <div class="form-inputs">
+		  	<span class="why_login">(For your username, how about your initials?)</span><br />
+		    <%= f.input :username, :required => true, :autofocus => true, as: :string %>
+		    <%= f.input :email, :required => true, :autofocus => true %>
+		    <span class="why_login">(For your password, choose one that you don't use elsewhere)</span><br />
+		    <%= f.input :password, :required => true %>
+		    <%= f.input :password_confirmation, :required => true %>
+		  </div>
 
-	  <div class="form-actions">
-	    <%= f.button :submit, "Sign up" %>
-	  </div>
-	<% end %>
+		  <div class="form-actions">
+		    <%= f.button :submit, "Sign up" %>
+		  </div>
+		<% end %>
 
-	<%= render "devise/shared/links" %>
+		<%= render "devise/shared/links" %>
+	</div>
 </div>
+
