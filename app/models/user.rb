@@ -45,4 +45,8 @@ class User < ActiveRecord::Base
   def active_for_authentication?
     super && !self.is_disabled?
   end
+
+  def name
+    username
+  end
 end
