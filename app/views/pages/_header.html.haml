@@ -6,6 +6,8 @@
         %span.darkb
           - if !user_signed_in?
             = link_to 'Log In', "http://#{request.host_with_port}/users/sign_in"
+            %span.login_slash /
+            = link_to 'Sign Up', "http://#{request.host_with_port}/users/sign_up"
           - else 
             = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out"
       %span.darkb.closest_locations{:style => "float:right;", :onclick => "findClosestLocations('#{@region.name}')"}
@@ -43,6 +45,8 @@
         %span.darkb
           - if !user_signed_in?
             = link_to 'Log In', "http://#{request.host_with_port}/users/sign_in"
+            %span.login_slash /
+            = link_to 'Sign Up', "http://#{request.host_with_port}/users/sign_up"
           - else 
             = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out"
       %span.darkb.geo_header{:onclick => "findClosestRegion()"}
