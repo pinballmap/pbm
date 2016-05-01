@@ -11,7 +11,7 @@ class LocationMachineXref < ActiveRecord::Base
 
   attr_accessible :machine_id, :location_id, :condition, :condition_date, :ip, :user_id
 
-  after_create :update_location
+  after_create :update_location, :create_user_submission
 
   scope :region, lambda {|name|
     r = Region.find_by_name(name.downcase)
@@ -94,6 +94,12 @@ class LocationMachineXref < ActiveRecord::Base
     location
 
     super()
+  end
+
+  def create_user_submission
+    user_info = user ? "User #{user.username} (#{user.email})" : 'UNKNOWN USER'
+
+    UserSubmission.create(region_id: location.region_id, submission_type: UserSubmission::NEW_LMX_TYPE, submission: "#{user_info} added #{machine.name} to #{location.name}", user: user)
   end
 
   def current_condition
