@@ -505,4 +505,28 @@ RailsAdmin.config do |config|
       end
     end
   end
+  config.model UserSubmission do
+    list do
+      field :id, :integer 
+      field :submission_type, :string 
+      field :submission, :string 
+      field :region, :belongs_to_association
+      field :user, :belongs_to_association
+      field :user_email, :string
+      field :created_at, :date 
+    end
+    show do
+      field :id, :integer 
+      field :submission_type, :string 
+      field :submission, :string 
+      field :region, :belongs_to_association
+      field :user, :belongs_to_association
+      field :user_email, :string
+      field :created_at, :date 
+    end
+    edit do; end
+    create do; end
+    export do; end
+    update do; end
+  end
 end
