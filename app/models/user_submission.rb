@@ -9,6 +9,7 @@ class UserSubmission < ActiveRecord::Base
   SUGGEST_LOCATION_TYPE = 'suggest_location'
   REMOVE_MACHINE_TYPE = 'remove_machine'
   CONTACT_US_TYPE = 'contact_us'
+  NEW_LMX_TYPE = 'new_lmx'
 
   def user_email
     user ? user.email : ''

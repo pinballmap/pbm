@@ -42,7 +42,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
 
-      submission = Region.find(@lmx.location.region_id).user_submissions.first
+      submission = Region.find(@lmx.location.region_id).user_submissions.second
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
       expect(submission.submission).to eq("Ground Kontrol (1)\nCleo (2)\nportland (3)")
     end
@@ -68,8 +68,8 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
   describe '#index' do
     it 'sends all lmxes in region' do
-      chicago = FactoryGirl.create(:region, name: 'chicago')
-      FactoryGirl.create(:location_machine_xref, machine: @machine, location: FactoryGirl.create(:location, name: 'Chicago Location', region: chicago))
+      chicago = FactoryGirl.create(:region, id: 11, name: 'chicago')
+      FactoryGirl.create(:location_machine_xref, machine: @machine, location: FactoryGirl.create(:location, id: 11, name: 'Chicago Location', region: chicago))
 
       get '/api/v1/region/portland/location_machine_xrefs.json'
       expect(response).to be_success
@@ -84,7 +84,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
     it "only sends the #{MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY} most recent machine_conditions" do
       chicago = FactoryGirl.create(:region, name: 'chicago')
-      lmx = FactoryGirl.create(:location_machine_xref, machine: @machine, location: FactoryGirl.create(:location, name: 'Chicago Location', region: chicago))
+      lmx = FactoryGirl.create(:location_machine_xref, machine: @machine, location: FactoryGirl.create(:location, id: 12, name: 'Chicago Location', region: chicago))
 
       (MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY + 10).times do
         FactoryGirl.create(:machine_condition, location_machine_xref: LocationMachineXref.find(lmx.id), comment: 'Foo')
@@ -123,7 +123,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'creates new lmx when appropriate' do
-      new_machine = FactoryGirl.create(:machine, name: 'sass')
+      new_machine = FactoryGirl.create(:machine, id: 11, name: 'sass')
 
       post '/api/v1/location_machine_xrefs.json?machine_id=' + new_machine.id.to_s + ';location_id=' + @location.id.to_s + ';condition=foo'
       expect(response).to be_success
@@ -153,9 +153,9 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
   describe '#update' do
     before(:each) do
-      @region = FactoryGirl.create(:region, name: 'Portland')
-      @location = FactoryGirl.create(:location, name: 'Ground Kontrol', region: @region)
-      @machine = FactoryGirl.create(:machine, name: 'Cleo')
+      @region = FactoryGirl.create(:region, id: 22, name: 'Portland')
+      @location = FactoryGirl.create(:location, id: 3, name: 'Ground Kontrol', region: @region)
+      @machine = FactoryGirl.create(:machine, id: 4, name: 'Cleo')
 
       @lmx = FactoryGirl.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
     end
