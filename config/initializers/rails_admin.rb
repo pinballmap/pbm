@@ -402,7 +402,15 @@ RailsAdmin.config do |config|
           bindings[:view]._current_user.is_super_admin
         end
       end
-      field :is_disabled, :boolean
+      field :is_disabled, :boolean do
+        visible do
+          if bindings[:object].region_id
+            bindings[:view]._current_user.is_super_admin
+          else
+            true
+          end
+        end
+      end
       field :region_id do
         visible do
           bindings[:view]._current_user.is_super_admin
