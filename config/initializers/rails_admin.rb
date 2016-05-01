@@ -379,14 +379,36 @@ RailsAdmin.config do |config|
       field :last_sign_in_at, :datetime
     end
     edit do
-      field :username, :string 
-      field :email, :string 
-      field :password, :password 
-      field :is_machine_admin, :boolean 
-      field :is_primary_email_contact, :boolean 
-      field :email, :string 
+      field :username, :string do
+        visible do
+          bindings[:view]._current_user.is_super_admin
+        end
+      end
+      field :email, :string do
+        visible do
+          bindings[:view]._current_user.is_super_admin
+        end
+      end
+      field :password, :password do
+        visible do
+          bindings[:view]._current_user.is_super_admin
+        end
+      end
+      field :is_machine_admin, :boolean do
+        visible do
+          bindings[:view]._current_user.is_super_admin
+        end
+      end
+      field :is_primary_email_contact, :boolean do
+        visible do
+          bindings[:view]._current_user.is_super_admin
+        end
+      end
       field :is_disabled, :boolean
       field :region_id do
+        visible do
+          bindings[:view]._current_user.is_super_admin
+        end
         render do
           bindings[:view].render :partial => 'region_user', :locals => {:region_id => bindings[:object].region_id}
         end
