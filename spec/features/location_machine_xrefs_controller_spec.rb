@@ -149,7 +149,7 @@ describe LocationMachineXrefsController do
   describe 'machine descriptions', type: :feature, js: true do
     before(:each) do
       @lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
-      @user = FactoryGirl.create(:user, username: 'ssw')
+      @user = FactoryGirl.create(:user, username: 'ssw', email: 'foo@bar.com')
 
       page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
     end
@@ -196,6 +196,12 @@ describe LocationMachineXrefsController do
       sleep 1
 
       expect(LocationMachineXref.find(@lmx.id).condition).to eq('THIS IS NOT SPAM')
+
+      user_submission = UserSubmission.second
+      expect(user_submission.user_id).to eq(@user.id)
+      expect(user_submission.region).to eq(@region)
+      expect(user_submission.submission_type).to eq(UserSubmission::NEW_CONDITION_TYPE)
+      expect(user_submission.submission).to eq("User #{@user.username} (#{@user.email}) commented on #{@lmx.machine.name} at #{@lmx.location.name}. They said: THIS IS NOT SPAM")
     end
 
     it 'should let me add a new machine description' do
