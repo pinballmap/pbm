@@ -136,6 +136,10 @@ END
 
   private
 
+  def after_sign_out_path_for(resource_or_scope)
+    request.referrer
+  end
+
   def flash_message
     [:error, :warning, :notice].each do |type|
       return flash[type] unless flash[type].blank?
