@@ -109,4 +109,73 @@ class Location < ActiveRecord::Base
   def massaged_name
     name.sub(/^the /i, '')
   end
+
+  def update_description(new_description)
+    old_description = description
+    self.description = new_description.slice(0, 254)
+
+    if description !~ %r{http[s]?:\/\/}
+      if ENV['RAKISMET_KEY'] && self.spam?
+        self.description = old_description
+        @validation_errors.push('This description was flagged as spam.')
+      end
+    else
+      self.description = old_description
+      @validation_errors.push('This description was flagged as spam.')
+    end
+  end
+
+  def update_phone(new_phone)
+    old_phone = phone
+    if new_phone && !new_phone.blank?
+      new_phone.gsub!(/\s+/, '')
+      new_phone.gsub!(/[^0-9]/, '')
+
+      self.phone = new_phone.empty? ? 'empty' : ActionController::Base.helpers.number_to_phone(new_phone)
+
+      unless valid?
+        self.phone = old_phone
+        @validation_errors.push('Phone format invalid, please use ###-###-####')
+      end
+    elsif new_phone && new_phone.blank?
+      self.phone = nil
+    end
+  end
+
+  def update_website(new_website)
+    old_website = website
+    self.website = new_website
+
+    return if self.valid?
+
+    self.website = old_website
+    @validation_errors.push('Website must begin with http:// or https://')
+  end
+
+  def update_metadata(user, options = {})
+    @validation_errors = []
+
+    update_description(options[:description]) if options[:description]
+    update_phone(options[:phone]) if options[:phone]
+    update_website(options[:website]) if options[:website]
+
+    self.operator_id = options[:operator_id] if options[:operator_id]
+    self.location_type_id = options[:location_type_id] if options[:location_type_id]
+
+    if ENV['RAKISMET_KEY'] && self.spam?
+      @validation_errors.push('This update was flagged as spam.')
+    end
+
+    @validation_errors.push('Invalid') unless self.valid?
+
+    if save && errors.count == 0 && @validation_errors.empty?
+      self.date_last_updated = Date.today
+      self.last_updated_by_user_id = user ? user.id : nil
+      save
+
+      [self, 'location']
+    else
+      [(@validation_errors + errors.full_messages).uniq, 'errors']
+    end
+  end
 end
