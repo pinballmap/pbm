@@ -69,47 +69,18 @@ module Api
       def update
         location = Location.find(params[:id])
 
-        description = params[:description]
-        website = params[:website]
-        phone = params[:phone]
-        location_type = params[:location_type]
-        operator_id = params[:operator_id]
+        values, message_type = location.update_metadata(
+          nil,
+          description: params[:description],
+          website: params[:website],
+          phone: params[:phone],
+          location_type_id: params[:location_type]
+        )
 
-        location_type = location_type.to_s if location_type
-        operator_id = operator_id.to_s if operator_id
-
-        location.description = description if description
-        location.website = website if website
-        if !location_type.blank? && !location_type.nil? && !location_type.empty?
-          location.location_type = LocationType.find(location_type)
-        else
-          location.location_type = nil
-        end
-
-        if !operator_id.blank? && !operator_id.nil? && !operator_id.empty?
-          location.operator = Operator.find(operator_id)
-        else
-          location.operator_id = nil
-        end
-
-        update_phone(location, phone)
-
-        location.save ? return_response(location, 'location') : return_response(location.errors.full_messages, 'errors')
+        return_response(values, message_type)
 
         rescue ActiveRecord::RecordNotFound
           return_response('Failed to find location', 'errors')
-      end
-
-      def update_phone(location, phone)
-        if phone && !phone.blank?
-          phone.gsub!(/\s+/, '')
-          phone.gsub!(/[^0-9]/, '')
-
-          phone = phone.empty? ? 'empty' : number_to_phone(phone)
-          location.phone = phone
-        elsif phone && phone.blank?
-          location.phone = nil
-        end
       end
 
       api :GET, '/api/v1/locations/closest_by_lat_lon.json', 'Returns the closest location to transmitted lat/lon'
