@@ -316,19 +316,16 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.location_meta .meta_image img').click
+      fill_in("new_phone_#{@location.id}", with: '')
       fill_in("new_website_#{@location.id}", with: 'THIS IS SPAM')
       click_on 'Save'
 
       sleep 1
 
-      expect(Location.find(@location.id).website).to eq(nil)
+      expect(Location.find(@location.id).website).to eq('')
     end
 
     it 'allows users to update a location metadata - stubbed out spam detection' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
-
-      expect(Rakismet).to receive(:akismet_call).and_return('false')
-
       t = FactoryGirl.create(:location_type, name: 'Bar')
       o = FactoryGirl.create(:operator, region: @location.region, name: 'Quarterworld')
 
@@ -348,28 +345,6 @@ describe LocationsController do
       expect(Location.find(@location.id).operator_id).to eq(o.id)
       expect(Location.find(@location.id).location_type_id).to eq(t.id)
       expect(page).to_not have_css('div#flash_error')
-    end
-
-    it 'location type update with existing invalid phone number only displays one phone error message - stubbed out spam detection' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
-      @location.phone = '(503)-555-5555'
-      @location.save(validate: false)
-
-      expect(Rakismet).to receive(:akismet_call).and_return('false')
-
-      t = FactoryGirl.create(:location_type, name: 'Bar')
-      FactoryGirl.create(:operator, region: @location.region, name: 'Quarterworld')
-
-      visit '/portland/?by_location_id=' + @location.id.to_s
-
-      find('.location_meta .meta_image img').click
-      select('Bar', from: 'new_location_type_' + @location.id.to_s)
-      click_on 'Save'
-
-      sleep 1
-
-      expect(Location.find(@location.id).location_type_id).to eq(t.id)
-      expect(page).to have_content('format invalid, please use ###-###-####', count: 1)
     end
   end
 
@@ -398,8 +373,6 @@ describe LocationsController do
     end
 
     it 'does not allow descs with http://- stubbed out spam detection' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
-
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find("#desc_show_location_#{@location.id}").click
@@ -412,8 +385,6 @@ describe LocationsController do
     end
 
     it 'does not allow descs with https://- stubbed out spam detection' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
-
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find("#desc_show_location_#{@location.id}").click
@@ -426,10 +397,6 @@ describe LocationsController do
     end
 
     it 'allows users to update a location description - stubbed out spam detection' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
-
-      expect(Rakismet).to receive(:akismet_call).and_return('false')
-
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find("#desc_show_location_#{@location.id}").click
@@ -442,9 +409,6 @@ describe LocationsController do
     end
 
     it 'allows users to update a location description - skips validation' do
-      @location.phone = '555'
-      @location.save(validate: false)
-
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find("#desc_show_location_#{@location.id}").click
