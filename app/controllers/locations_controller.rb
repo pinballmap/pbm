@@ -48,78 +48,30 @@ class LocationsController < InheritedResources::Base
   end
 
   def update_metadata
-    validation_error = []
-    id = params[:id]
+    l = Location.find(params[:id])
 
-    l = Location.find(id)
+    values, message_type = l.update_metadata(
+      Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user,
+      phone: params["new_phone_#{l.id}"],
+      website: params["new_website_#{l.id}"],
+      operator_id: params["new_operator_#{l.id}"],
+      location_type_id: params["new_location_type_#{l.id}"]
+    )
 
-    l.operator_id = params["new_operator_#{id}".to_sym]
-    l.location_type_id = params["new_location_type_#{id}".to_sym]
-    l.save(validate: false)
-
-    old_phone = l.phone
-    l.phone = params["new_phone_#{id}".to_sym]
-    unless l.valid?
-      l.phone = old_phone
-      validation_error.push(l.errors.full_messages.join(''))
-      l.errors.clear
-    end
-
-    old_website = l.website
-    l.website = params["new_website_#{id}".to_sym]
-    unless l.valid?
-      l.website = old_website
-      validation_error.push(l.errors.full_messages.join(''))
-      l.errors.clear
-    end
-
-    if ENV['RAKISMET_KEY']
-      if l.spam?
-        nil
-      else
-        l.save(validate: false)
-      end
-      l
-    else
-      l.save(validate: false)
-      l
-    end
-
-    if validation_error.length > 0
-      render json: { error: validation_error.uniq.join('<br />') }
+    if message_type == 'errors'
+      render json: { error: values.uniq.join('<br />') }
     else
       render nothing: true
     end
   end
 
   def update_desc
-    id = params[:id]
+    l = Location.find(params[:id])
 
-    l = Location.find(id)
-    l.description = params["new_desc_#{id}".to_sym]
-
-    l.description = l.description.slice(0, 254) unless l.description.nil?
-
-    user_id = Authorization.current_user ? Authorization.current_user.id : nil
-    if l.description !~ %r{http[s]?:\/\/}
-      if ENV['RAKISMET_KEY']
-        if l.spam?
-          nil
-        else
-          l.date_last_updated = Date.today
-          l.last_updated_by_user_id = user_id
-          l.save(validate: false)
-        end
-        l
-      else
-        l.date_last_updated = Date.today
-        l.last_updated_by_user_id = user_id
-        l.save(validate: false)
-        l
-      end
-    else
-      l
-    end
+    l.update_metadata(
+      Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user,
+      description: params["new_desc_#{l.id}"]
+    )
 
     render nothing: true
   end
