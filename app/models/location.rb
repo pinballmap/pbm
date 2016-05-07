@@ -118,6 +118,8 @@ class Location < ActiveRecord::Base
       if ENV['RAKISMET_KEY'] && self.spam?
         self.description = old_description
         @validation_errors.push('This description was flagged as spam.')
+      else
+        @updates.push('Changed location description to ' + description)
       end
     else
       self.description = old_description
@@ -133,7 +135,9 @@ class Location < ActiveRecord::Base
 
       self.phone = new_phone.empty? ? 'empty' : ActionController::Base.helpers.number_to_phone(new_phone)
 
-      unless valid?
+      if valid?
+        @updates.push('Changed phone # to ' + phone)
+      else
         self.phone = old_phone
         @validation_errors.push('Phone format invalid, please use ###-###-####')
       end
@@ -146,21 +150,33 @@ class Location < ActiveRecord::Base
     old_website = website
     self.website = new_website
 
-    return if self.valid?
+    if self.valid?
+      @updates.push('Changed website to ' + website)
+    else
+      self.website = old_website
+      @validation_errors.push('Website must begin with http:// or https://')
+    end
+  end
 
-    self.website = old_website
-    @validation_errors.push('Website must begin with http:// or https://')
+  def update_operator(operator_id)
+    @updates.push("Changed operator to #{!operator_id.blank? ? Operator.find(operator_id).name : 'BLANK'}")
+    self.operator_id = operator_id
+  end
+
+  def update_location_type(location_type_id)
+    @updates.push("Changed location type to #{!location_type_id.blank? ? LocationType.find(location_type_id).name : 'BLANK'}")
+    self.location_type_id = location_type_id
   end
 
   def update_metadata(user, options = {})
+    @updates = []
     @validation_errors = []
 
     update_description(options[:description]) if options[:description]
     update_phone(options[:phone]) if options[:phone]
     update_website(options[:website]) if options[:website]
-
-    self.operator_id = options[:operator_id] if options[:operator_id]
-    self.location_type_id = options[:location_type_id] if options[:location_type_id]
+    update_operator(options[:operator_id]) if options[:operator_id]
+    update_location_type(options[:location_type_id]) if options[:location_type_id]
 
     if ENV['RAKISMET_KEY'] && self.spam?
       @validation_errors.push('This update was flagged as spam.')
@@ -172,6 +188,8 @@ class Location < ActiveRecord::Base
       self.date_last_updated = Date.today
       self.last_updated_by_user_id = user ? user.id : nil
       save
+
+      UserSubmission.create(region_id: region.id, submission_type: UserSubmission::LOCATION_METADATA_TYPE, submission: @updates.join("\n"), user_id: user ? user.id : nil)
 
       [self, 'location']
     else
