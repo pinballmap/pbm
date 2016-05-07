@@ -80,6 +80,45 @@ describe Location do
     it 'ignores "the" in names' do
       the_location = FactoryGirl.create(:location, name: 'The Hilt')
       expect(the_location.massaged_name).to eq('Hilt')
+  end
+
+  describe '#update_metadata' do
+    it 'creates a user submission for updated metadata' do
+      u = FactoryGirl.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      @l.update_metadata(u, description: 'foo')
+
+      user_submission = UserSubmission.third
+
+      expect(user_submission.user_id).to eq(u.id)
+      expect(user_submission.submission).to eq('Changed location description to foo')
+    end
+
+    it 'creates a user submission for updated metadata -- no user sent' do
+      @l.update_metadata(nil, description: 'foo')
+
+      user_submission = UserSubmission.third
+
+      expect(user_submission.user_id).to eq(nil)
+      expect(user_submission.submission).to eq('Changed location description to foo')
+    end
+
+    it 'creates a user submission for updated metadata -- all fields' do
+      u = FactoryGirl.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      FactoryGirl.create(:operator, id: 1, name: 'operator')
+      FactoryGirl.create(:location_type, id: 1, name: 'bar')
+
+      @l.update_metadata(u, description: 'foo', phone: '555-555-5555', website: 'http://www.goo.com', operator_id: 1, location_type_id: 1)
+
+      user_submission = UserSubmission.third
+
+      expect(user_submission.user_id).to eq(u.id)
+      expect(user_submission.submission).to eq(<<-HERE.strip)
+Changed location description to foo
+Changed phone # to 555-555-5555
+Changed website to http://www.goo.com
+Changed operator to operator
+Changed location type to bar
+HERE
     end
   end
 end

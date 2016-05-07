@@ -11,6 +11,7 @@ class UserSubmission < ActiveRecord::Base
   NEW_CONDITION_TYPE = 'new_condition'
   REMOVE_MACHINE_TYPE = 'remove_machine'
   SUGGEST_LOCATION_TYPE = 'suggest_location'
+  LOCATION_METADATA_TYPE = 'location_metadata'
 
   def user_email
     user ? user.email : ''
