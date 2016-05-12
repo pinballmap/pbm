@@ -1,5 +1,6 @@
 - content_for :presearch_sidebar do  
-  = image_tag 'portland/sassy.jpg', :class => 'portland_region_image'
+  %p.local_logo
+    = image_tag 'portland/sassy.jpg'
   #findapinball{:style => 'display:none'}
     %p Looking for pinball machines in Europe?
     = link_to image_tag('findapinball.png'), 'http://findapinball.com', :style => 'border-style: none'

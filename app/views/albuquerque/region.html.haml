@@ -1,7 +1,8 @@
 - content_for :presearch_sidebar do
-  = image_tag 'albuquerque/dukecitypinball-logo.png', :style => 'margin-left:12%;'
-  %br/
-  %p 
-    This regional map is maintained with the help of
+  %p.local_logo
+    =link_to image_tag('albuquerque/dukecitypinball-logo.png'), 'http://www.dukecitypinball.blogspot.com/', :target => '_blank'
+    %br/
+    %br/
+    The Albuquerque Pinball Map is maintained with the help of
     =link_to 'Duke City Pinball', 'http://www.dukecitypinball.blogspot.com/', :target => '_blank'
 = render :file => 'pages/region'

@@ -1,7 +1,8 @@
 - content_for :presearch_sidebar do
-  = image_tag 'champaign/ipa-logo.jpg', :style => 'margin-left:9%;'
-  %br/
-  %p 
+  %p.local_logo
+    =link_to image_tag('champaign/ipa-logo.jpg'), 'http://illinipinball.org', :target => '_blank'
+    %br/
+    %br/
     This regional map is maintained with the help of the
     =link_to 'Illini Pinball Association', 'http://illinipinball.org', :target => '_blank'
 = render :file => 'pages/region'
