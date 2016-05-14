@@ -1,6 +1,8 @@
 - content_for :presearch_sidebar do
-  = image_tag 'nyc/pinballnyc.png', :style => 'margin-left:15%;'
-  %p 
+  %p.local_logo
+    =link_to image_tag('nyc/pinballnyc.png'), 'http://www.pinballnyc.com/', :target => '_blank'
+    %br/
+    %br/
     Visit
     =link_to 'Pinball NYC', 'http://www.pinballnyc.com/', :target => '_blank'
     for league news, events, and more.
