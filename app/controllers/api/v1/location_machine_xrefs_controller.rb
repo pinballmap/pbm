@@ -30,14 +30,21 @@ module Api
         end
 
         lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine_id)
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
 
         if lmx.nil?
           status_code = 201
-          lmx = LocationMachineXref.create(location_id: location_id, machine_id: machine_id)
+          lmx = LocationMachineXref.create(location_id: location_id, machine_id: machine_id, user_id: user ? user.id : nil)
         end
 
         if condition
-          lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
+          lmx.update_condition(
+            condition,
+            remote_ip: request.remote_ip,
+            request_host: request.host,
+            user_agent: request.user_agent,
+            user_id: user ? user.id : nil
+          )
         end
 
         return_response(lmx, 'location_machine', [], [], status_code)
@@ -49,7 +56,15 @@ module Api
       formats ['json']
       def update
         lmx = LocationMachineXref.find(params[:id])
-        lmx.update_condition(params[:condition], remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+
+        lmx.update_condition(
+          params[:condition],
+          remote_ip: request.remote_ip,
+          request_host: request.host,
+          user_agent: request.user_agent,
+          user_id: user ? user.id : nil
+        )
 
         return_response(lmx, 'location_machine', [], [:machine_conditions])
 
@@ -62,7 +77,14 @@ module Api
       formats ['json']
       def destroy
         lmx = LocationMachineXref.find(params[:id])
-        lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+
+        lmx.destroy(
+          remote_ip: request.remote_ip,
+          request_host: request.host,
+          user_agent: request.user_agent,
+          user_id: user ? user.id : nil
+        )
 
         return_response('Successfully deleted lmx #' + lmx.id.to_s, 'msg')
 

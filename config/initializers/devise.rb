@@ -28,7 +28,7 @@ Devise.setup do |config|
   config.authentication_keys = [ :login ]
 
   # Tell if authentication through request.params is enabled. True by default.
-  # config.params_authenticatable = true
+  config.params_authenticatable = true
 
   # Tell if authentication through HTTP Basic Auth is enabled. True by default.
   config.http_authenticatable = true
@@ -68,10 +68,10 @@ Devise.setup do |config|
   # config.remember_for = 2.weeks
 
   # If true, a valid remember token can be re-used between multiple browsers.
-  # config.remember_across_browsers = true
+  #config.remember_across_browsers = true
 
   # If true, extends the user's remember period when remembered via cookie.
-  # config.extend_remember_period = false
+  config.extend_remember_period = true
 
   # ==> Configuration for :validatable
   # Range for password length
@@ -83,7 +83,7 @@ Devise.setup do |config|
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again.
-  # config.timeout_in = 10.minutes
+  config.timeout_in = 10.years
 
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.
