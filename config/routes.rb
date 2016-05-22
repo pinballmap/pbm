@@ -17,6 +17,11 @@ Pbm::Application.routes.draw do
       resources :machine_score_xrefs, only: [:create, :show]
       resources :machine_conditions, only: [:destroy]
 
+      resources :users, only: [:auth_details] do
+        collection do
+          get  :auth_details
+        end
+      end
       resources :regions, only: [:index, :show] do
         collection do
           get  :closest_by_lat_lon
