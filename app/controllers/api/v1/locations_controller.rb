@@ -30,7 +30,7 @@ module Api
         end
 
         region = Region.find(params['region_id'])
-        send_new_location_notification(params, region)
+        send_new_location_notification(params, region, Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user)
 
         return_response("Thanks for entering that location. We'll get it in the system as soon as possible.", 'msg')
 
@@ -70,7 +70,7 @@ module Api
         location = Location.find(params[:id])
 
         values, message_type = location.update_metadata(
-          nil,
+          Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user,
           description: params[:description],
           website: params[:website],
           phone: params[:phone],

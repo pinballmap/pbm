@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  acts_as_token_authenticatable
+
   belongs_to :region
   has_many :location_machine_xrefs
   has_many :machine_score_xrefs
