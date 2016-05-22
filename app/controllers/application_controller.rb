@@ -139,7 +139,7 @@ END
   private
 
   def after_sign_out_path_for(*)
-    request.referrer
+    request.referrer =~ /admin/ ? root_path : request.referrer
   end
 
   def flash_message
