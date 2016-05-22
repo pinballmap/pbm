@@ -73,7 +73,7 @@ module Api
           return
         end
 
-        send_admin_notification(params, region)
+        send_admin_notification(params, region, Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user)
         return_response('Thanks for the message.', 'msg')
 
         rescue ActiveRecord::RecordNotFound

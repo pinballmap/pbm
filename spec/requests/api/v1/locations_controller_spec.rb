@@ -4,7 +4,7 @@ describe Api::V1::LocationsController, type: :request do
   before(:each) do
     @region = FactoryGirl.create(:region, name: 'portland')
     @location = FactoryGirl.create(:location, region: @region, name: 'Satchmo', state: 'OR', zip: '97203', lat: 42.18, lon: -71.18)
-    FactoryGirl.create(:user, email: 'foo@bar.com', region: @region)
+    FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', region: @region, authentication_token: '1G8_s7P-V-4MGojaKD7a')
     FactoryGirl.create(:user, email: 'super_admin@bar.com', region: nil, is_super_admin: 1)
   end
 
@@ -70,9 +70,26 @@ HERE
       expect(UserSubmission.all.count).to eq(1)
       expect(UserSubmission.first.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
     end
+
+    it 'tags a user when appropriate' do
+      post '/api/v1/locations/suggest.json', { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_operator: 'operator', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+
+      expect(response).to be_success
+      expect(UserSubmission.first.user_id).to eq(111)
+    end
   end
 
   describe '#index' do
+    it 'allows token authentication via request headers' do
+      get "/api/v1/region/#{@region.name}/locations.json", user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      assert_response :success
+    end
+
+    it 'allows token authentication via query params' do
+      get "/api/v1/region/#{@region.name}/locations.json", nil, 'X-User-Email' => 'foo@bar.com', 'X-User-Token' => '1G8_s7P-V-4MGojaKD7a'
+      assert_response :success
+    end
+
     it 'returns all regions within scope along with lmx data' do
       lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, id: 777, name: 'Cleo'))
       FactoryGirl.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'foo bar')
@@ -192,6 +209,16 @@ HERE
       location = parsed_body['location']
 
       expect(location['phone']).to eq(nil)
+    end
+
+    it 'tags update with user_id when authenticating' do
+      put '/api/v1/locations/' + @location.id.to_s + '.json', description: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      expect(response).to be_success
+
+      updated_location = Location.find(@location.id)
+
+      expect(updated_location.description).to eq('foo')
+      expect(updated_location.last_updated_by_user_id).to eq(111)
     end
   end
 
