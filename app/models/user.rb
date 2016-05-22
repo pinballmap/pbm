@@ -55,4 +55,8 @@ class User < ActiveRecord::Base
   def name
     username
   end
+
+  def as_json(_options = {})
+    super(only: [:id, :username, :email, :authentication_token])
+  end
 end
