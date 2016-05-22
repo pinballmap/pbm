@@ -44,6 +44,7 @@ gem 'apipie-rails'
 gem 'protected_attributes'
 gem 'sass-rails', '4.0.2'
 gem 'sanitize'
+gem 'simple_token_authentication', '~> 1.0'
 
 group :production do
   gem 'rails_12factor'
