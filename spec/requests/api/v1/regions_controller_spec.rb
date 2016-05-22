@@ -7,6 +7,7 @@ describe Api::V1::LocationsController, type: :request do
 
     FactoryGirl.create(:user, region: @portland, email: 'portland@admin.com', is_super_admin: 1)
     FactoryGirl.create(:user, region: @la, email: 'la@admin.com')
+    FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
   end
 
   describe '#closest_by_lat_lon' do
@@ -172,6 +173,32 @@ HERE
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
       expect(UserSubmission.all.count).to eq(1)
       expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
+    end
+
+    it 'emails region admins with incoming message - authed' do
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          to: ['la@admin.com'],
+          bcc: ['portland@admin.com'],
+          from: 'admin@pinballmap.com',
+          subject: 'PBM - Message from the Los Angeles region',
+          body: <<HERE
+Their Name: name\n
+Their Email: email\n
+Message: message\n
+Username: ssw\n
+Site Email: foo@bar.com
+HERE
+        )
+      end
+
+      post '/api/v1/regions/contact.json', region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
+      expect(UserSubmission.all.count).to eq(1)
+      expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
+      expect(UserSubmission.first.user_id).to eq(111)
     end
 
     it 'emails region admins with incoming message - notifies if sent from staging server' do

@@ -7,6 +7,8 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     @machine = FactoryGirl.create(:machine, id: 2, name: 'Cleo')
 
     @lmx = FactoryGirl.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
+
+    FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
   end
 
   describe '#delete' do
@@ -36,6 +38,23 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(LocationMachineXref.all.size).to eq(0)
     end
 
+    it 'sends a deletion email when appropriate - authed' do
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          body: "#{@location.name}\n#{@machine.name}\n#{@location.region.name}\n(user_id: 111) (entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
+          subject: 'PBM - Someone removed a machine from a location',
+          to: [],
+          from: 'admin@pinballmap.com'
+        )
+      end
+
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
+      expect(LocationMachineXref.all.size).to eq(0)
+    end
+
     it 'creates a user submission for the deletion' do
       delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', {}, HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
@@ -45,6 +64,18 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       submission = Region.find(@lmx.location.region_id).user_submissions.second
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
       expect(submission.submission).to eq("Ground Kontrol (1)\nCleo (2)\nportland (3)")
+    end
+
+    it 'creates a user submission for the deletion - authed' do
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
+
+      submission = Region.find(@lmx.location.region_id).user_submissions.second
+      expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
+      expect(submission.submission).to eq("Ground Kontrol (1)\nCleo (2)\nportland (3)")
+      expect(submission.user_id).to eq(111)
     end
 
     it 'sends a deletion email when appropriate - notifies if origin was staging server' do
@@ -122,6 +153,18 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(LocationMachineXref.all.size).to eq(1)
     end
 
+    it 'updates condition on existing lmx - authed' do
+      post '/api/v1/location_machine_xrefs.json', machine_id: @machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      expect(response).to be_success
+      expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
+
+      updated_lmx = LocationMachineXref.find(@lmx)
+      expect(updated_lmx.condition).to eq('foo')
+      expect(updated_lmx.condition_date.to_s).to eq(Time.now.strftime('%Y-%m-%d'))
+      expect(updated_lmx.location.last_updated_by_user.id).to eq(111)
+      expect(LocationMachineXref.all.size).to eq(1)
+    end
+
     it 'creates new lmx when appropriate' do
       new_machine = FactoryGirl.create(:machine, id: 11, name: 'sass')
 
@@ -132,6 +175,21 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       new_lmx = LocationMachineXref.last
       expect(new_lmx.condition).to eq('foo')
+
+      expect(LocationMachineXref.all.size).to eq(2)
+    end
+
+    it 'creates new lmx when appropriate - authed' do
+      new_machine = FactoryGirl.create(:machine, id: 22, name: 'sass')
+
+      post '/api/v1/location_machine_xrefs.json', machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      expect(response).to be_success
+      expect(response.status).to eq(201)
+      expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
+
+      new_lmx = LocationMachineXref.last
+      expect(new_lmx.condition).to eq('foo')
+      expect(new_lmx.user_id).to eq(111)
 
       expect(LocationMachineXref.all.size).to eq(2)
     end
@@ -177,6 +235,19 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
       expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('foo')
       expect(JSON.parse(response.body)['location_machine']['machine_conditions'][1]['comment']).to eq('bar')
+    end
+
+    it 'updates condition - authed' do
+      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
+
+      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS'
+      expect(response).to be_success
+      expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
+      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('foo')
+      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][1]['comment']).to eq('bar')
+
+      @lmx.reload
+      expect(@lmx.location.last_updated_by_user.id).to eq(111)
     end
 
     it 'email notifies if origin was the staging server' do

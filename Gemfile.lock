@@ -317,6 +317,10 @@ GEM
       actionpack (~> 4.0)
       activemodel (~> 4.0)
     simple_oauth (0.2.0)
+    simple_token_authentication (1.13.0)
+      actionmailer (>= 3.2.6, < 5)
+      actionpack (>= 3.2.6, < 5)
+      devise (>= 3.2, < 5)
     simplecov (0.9.0)
       docile (~> 1.1.0)
       multi_json
@@ -440,6 +444,7 @@ DEPENDENCIES
   selenium-client
   selenium-webdriver (~> 2.33.0)
   simple_form
+  simple_token_authentication (~> 1.0)
   simplecov
   spork
   timecop
