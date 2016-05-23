@@ -6,6 +6,8 @@ MethodLength:
   Enabled: false
 ClassLength:
   Enabled: false
+GuardClause:
+  Enabled: false
 CyclomaticComplexity:
   Max: 15
 PerceivedComplexity:

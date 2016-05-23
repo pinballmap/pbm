@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_filter :detect_region, :set_current_user
-  after_filter :flash_to_headers
+  after_filter :flash_to_headers, :store_location
 
   rescue_from ActionView::MissingTemplate do
   end
@@ -140,6 +140,23 @@ END
 
   def after_sign_out_path_for(*)
     request.referrer =~ /admin/ ? root_path : request.referrer
+  end
+
+  def store_location
+    return unless request.get?
+    if request.path != '/users/sign_in' &&
+       request.path != '/users/sign_up' &&
+       request.path != '/users/password/new' &&
+       request.path != '/users/password/edit' &&
+       request.path != '/users/confirmation' &&
+       request.path != '/users/sign_out' &&
+       !request.xhr?
+      session[:previous_url] = request.fullpath
+    end
+  end
+
+  def after_sign_in_path_for(*)
+    session[:previous_url] || root_path
   end
 
   def flash_message
