@@ -4,19 +4,33 @@
 #page {
   height: auto;
 }
+#page.page_home {
+  height: 80px;
+}
 #lookup_map, #container {
   margin: 0 auto;
   width: auto;
   min-width: 320px;
 }
 #header {
-  position: relative;
+  position: fixed;
   box-shadow: none;
-  width: auto;
+  width: 100%;
   min-width: 320px;
   height: auto;
   background-color: #ece2d8;
   margin: 0 auto;
+  padding-top: 2px;
+  z-index: 600;
+}
+#header_lower {
+  position: relative;
+  box-shadow: none;
+  width: 100%;
+  min-width: 320px;
+  height: auto;
+  background-color: #ece2d8;
+  margin: 30px auto 0;
 }
 #header a img {
   float: none;
@@ -31,31 +45,31 @@
   line-height: 18px;
 }
 #menu {
-  margin: 0 0 5px;
-  display: block;
+  margin: 2px 5px 0;
+  float: left;
   height: 25px;
   font-size: 24px;
-  text-align: center;
+  text-align: left;
 }
 #header #nav {
   display: block;
+  float: left;
 }
 #header #nav.js {
   display: none;
 }
 #header span.menu_link ul {
   display: inline-block;
+  text-align: left;
   margin: 0 auto 10px;
-  padding: 0 10px;
+  padding: 0;
   float: none;
   width: 100%;
-  min-width: 320px;
   background-color: #ece2d8;
   visibility: visible;
   box-shadow: none;
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
-  width: auto !important;
 }
 #header span.menu_link ul:before,
 #header span.menu_link ul span {
@@ -90,10 +104,11 @@
   margin: 0 auto;
   width: 100%;
   font-size: 20px;
+  display: block;
+  position: relative !important;
 }
 .closest_locations, .login_region {
   font-size: 22px;
-  border: 2px solid #d6c0aa;
   background-color: #f7f3ef;
   width: auto;
   float: none !important;
@@ -117,14 +132,27 @@
 .confirm_location span.last_updated {
   padding: 8px 5px;
 }
-#header span.region_name_page a {
+span.region_name_page a {
   font-size: 30px;
+}
+span.region_name_page {
+  background: #ece2d8;
 }
 
 #header.header_home, #header.header_image_home {
   min-width: 320px;
   padding: 0;
   height: auto;
+}
+
+#header a img.header_image {
+  float: right;
+  margin: 2px 0 0;
+  width: 180px;
+}
+
+#header a img.header_image_login {
+  width: 200px;
 }
 
 .header_image_a {
@@ -144,31 +172,53 @@
 div.pick_a_map {
   padding-top: 0;
 }
-.apps_header, .blog_header, .store_header, .geo_header, .login_home, .closest_locations {
+.apps_header, .blog_header, .store_header, .closest_locations {
   width: 100% !important;
   float: none;
   padding: 4px 0 4px;
-  border-right: 2px solid #d6c0aa;
-  border-left: 2px solid #d6c0aa;
   text-align: center;  
   border-top: none;
+  border-right: none;
+  border-left: none;
   font-size: 18px !important;
   line-height: 24px !important;
+}
+
+.login_home, .geo_header_wrapper {
+  width: auto;
+  float: right;
+  font-size: 14px !important;
+  border: none !important;
+  padding: 0;
+  margin: 3px 8px;
+}
+
+.login_home a {
+  border: 1px solid #c2a681;
+  padding: 3px;
+  background: #f9f7f3;
+}
+
+.geo_header_wrapper {
+  margin: 2px 0;
+}
+
+.geo_header_wrapper a {
+  border: 1px solid #c2a681;
+  padding: 3px;
+  background: #f9f7f3;
 }
 
 div.pick_a_map .login_home {
   margin: 0;
 }
+
 div.pick_a_map .blog_header {
     border-left: 2px solid #d6c0aa;
 }
 
 .closest_locations {
   margin: 0;
-}
-
-.closest_locations, .geo_header, .login_home {
-  border-bottom: 2px solid #d6c0aa;
 }
 
 .map_summary {
@@ -178,7 +228,7 @@ div.pick_a_map .blog_header {
 #welcome {
   width: auto;
   min-width: 320px;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 #map {
@@ -221,6 +271,10 @@ div.pick_a_map .blog_header {
 #intro p, #intro .dark, #intro .darkb {
   font-size: 18px;
   line-height: 22px;
+}
+
+#intro p {
+  margin-top: 0;
 }
 
 .local_logo img {
@@ -566,12 +620,15 @@ div.machine_condition_text {
   right: 0;
 }
 
-#flash-message {
-  float: none;
-}
-#flash-message #flash_notice {
+#flash-message #flash_notice, #flash-message #flash_alert {
   width: auto;
-  margin: 10px auto 10px;
+  max-width: 100%;
+  margin: 70px auto 10px;
+}
+#flash-message.flash_region #flash_notice,
+#flash-message.flash_region #flash_alert {
+  margin: 0px auto 10px;
+  position: relative;
 }
 
 #file_chooser_button {
@@ -750,16 +807,12 @@ input#score, input#initials {
 }
 
 #login {
-  margin: 10px auto 0;
-}
-
-.login { 
-  margin: 0;
+  margin: 5px auto 0;
   width: auto;
 }
 
-.login_slash {
-  display: inline;
+#login h2 {
+  margin-top: 10px;
 }
 
 .login_why_outer {
@@ -770,6 +823,11 @@ input#score, input#initials {
 .login_why_inner {
   width: auto;
   float: none;
+}
+
+.login_why_inner p {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .login_new_div {
@@ -811,8 +869,36 @@ p.notice {
 
 @media (max-width: 320px) {
 
+  #header {
+    width: auto;
+  }
   .map_summary {
     width: 137px;
+  }
+  #header a img.header_image {
+    float: right;
+    margin: 2px 0 0;
+    width: 160px;
+  }
+  #header a img.header_image_login {
+    width: 220px;
+    margin: 0;
+  }
+  .login_home, .geo_header_wrapper {
+    font-size: 12px !important;
+    margin: 3px 3px;
+  }
+  .geo_header_wrapper {
+    margin-top: 2px;
+  }
+  #intro p {
+    font-size: 16px;
+  }
+  #header #nav {
+    float: none;
+  }
+  #header .menu_link ul li.first_header_link {
+    margin-top: 30px;
   }
 
 }
