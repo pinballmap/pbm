@@ -50,7 +50,7 @@
   div.pick_a_map .login_home {
     font-size: 12px;
     width: 75px;
-    margin-top: 0;
+    margin-top: -5px;
     line-height: 21px;
   }
   .login {
@@ -96,7 +96,7 @@
 
 }
 
-@media (max-width: 1120px) {
+@media (max-width: 1130px) {
   div.pick_a_map .apps_header, div.pick_a_map .blog_header, 
   div.pick_a_map .store_header, div.pick_a_map .geo_header {
     font-size: 12px;
@@ -126,7 +126,7 @@
   .login_region a {
     font-size: 12px;
     line-height: 23px;
-    padding: 3px;
+    padding: 0;
     text-align: center;
   }
   .login_region {
@@ -134,7 +134,7 @@
     width: 65px;
     padding: 0;
     line-height: 20px;
-    text-align: right;
+    text-align: center;
   }
   .login_slash {
     display: none;
