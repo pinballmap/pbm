@@ -80,6 +80,7 @@ describe Location do
     it 'ignores "the" in names' do
       the_location = FactoryGirl.create(:location, name: 'The Hilt')
       expect(the_location.massaged_name).to eq('Hilt')
+    end
   end
 
   describe '#update_metadata' do
