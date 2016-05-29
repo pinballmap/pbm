@@ -75,4 +75,11 @@ describe Location do
       expect(@l.newest_machine_xref).to eq(@lmx2)
     end
   end
+
+  describe '#massaged_name' do
+    it 'ignores "the" in names' do
+      the_location = FactoryGirl.create(:location, name: 'The Hilt')
+      expect(the_location.massaged_name).to eq('Hilt')
+    end
+  end
 end

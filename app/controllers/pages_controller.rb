@@ -24,7 +24,7 @@ class PagesController < ApplicationController
       'location' => {
         'id'   => 'id',
         'name' => 'name',
-        'search_collection' => @locations.sort_by(&:name),
+        'search_collection' => @locations.sort_by(&:massaged_name),
         'autocomplete' => 1
       },
       'machine' => {

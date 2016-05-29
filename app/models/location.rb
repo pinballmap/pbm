@@ -104,4 +104,8 @@ class Location < ActiveRecord::Base
   def newest_machine_xref
     location_machine_xrefs.sort_by(&:created_at).last
   end
+
+  def massaged_name
+    name.sub(/^the /i, '')
+  end
 end
