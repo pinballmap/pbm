@@ -50,6 +50,7 @@ Pbm::Application.routes.draw do
   get '/apps' => 'pages#apps'
   get '/apps/support' => 'pages#app_support'
   get '/privacy' => 'pages#privacy'
+  get '/faq' => 'pages#faq'
   get '/store' => 'pages#store'
 
   scope ':region', constraints: { region: /#{regions}|!admin/i } do
