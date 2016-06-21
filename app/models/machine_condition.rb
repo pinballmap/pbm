@@ -17,4 +17,8 @@ class MachineCondition < ActiveRecord::Base
 
     UserSubmission.create(region_id: location.region_id, submission_type: UserSubmission::NEW_CONDITION_TYPE, submission: "#{user_info} commented on #{machine.name} at #{location.name}. They said: #{comment}", user: user)
   end
+
+  def username
+    user ? user.username : ''
+  end
 end
