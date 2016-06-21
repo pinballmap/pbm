@@ -109,6 +109,15 @@ HERE
       expect(response.body).to include('777')
       expect(response.body).to include('foo bar')
     end
+
+    it 'returns username' do
+      ssw = FactoryGirl.create(:user, username: 'ssw')
+      lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, id: 777, name: 'Cleo'), user: ssw)
+      FactoryGirl.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'baz', user: ssw)
+      get "/api/v1/region/#{@region.name}/locations.json"
+
+      expect(response.body).to include('ssw')
+    end
   end
 
   describe '#update' do
