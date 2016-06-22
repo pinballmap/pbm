@@ -11,11 +11,12 @@ Pbm::Application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :machines, only: [:index, :show, :create]
-      resources :location_types, only: [:index, :show]
       resources :location_machine_xrefs, only: [:create, :destroy, :update]
-      resources :machine_score_xrefs, only: [:create, :show]
+      resources :location_types, only: [:index, :show]
       resources :machine_conditions, only: [:destroy]
+      resources :machine_score_xrefs, only: [:create, :show]
+      resources :machines, only: [:index, :show, :create]
+      resources :operators, only: [:show]
 
       resources :users, only: [:auth_details] do
         collection do
@@ -41,13 +42,14 @@ Pbm::Application.routes.draw do
       end
 
       scope 'region/:region', constraints: { region: /#{regions}|!admin/i } do
-        resources :machine_score_xrefs, only: [:index]
-        resources :location_machine_xrefs, only: [:index]
         resources :events, only: [:index, :show]
+        resources :location_machine_xrefs, only: [:index]
         resources :locations, only: [:index, :show]
+        resources :machine_score_xrefs, only: [:index]
+        resources :operators, only: [:index]
         resources :region_link_xrefs, only: [:index, :show]
-        resources :zones, only: [:index, :show]
         resources :user_submissions, only: [:index, :show]
+        resources :zones, only: [:index, :show]
       end
     end
   end
