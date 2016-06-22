@@ -4,6 +4,8 @@ class Operator < ActiveRecord::Base
 
   attr_accessible :name, :region_id, :email, :website, :phone
 
+  scope :region, ->(name) { where(region_id: Region.find_by_name(name.downcase).id) }
+
   def send_recent_comments
     return if email.to_s == ''
 
