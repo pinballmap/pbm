@@ -20,20 +20,20 @@ module Api
       param :condition, String, desc: "Notes on machine's condition", required: false
       formats ['json']
       def create
-        location = params[:location_id]
-        machine = params[:machine_id]
+        location_id = params[:location_id]
+        machine_id = params[:machine_id]
         condition = params[:condition]
         status_code = 200
 
-        if machine.nil? || location.nil?
+        if machine_id.nil? || location_id.nil? || !Machine.exists?(machine_id) || !Location.exists?(location_id)
           return return_response('Failed to find machine', 'errors')
         end
 
-        lmx = LocationMachineXref.find_by_location_id_and_machine_id(location, machine)
+        lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine_id)
 
         if lmx.nil?
           status_code = 201
-          lmx = LocationMachineXref.create(location_id: location, machine_id: machine)
+          lmx = LocationMachineXref.create(location_id: location_id, machine_id: machine_id)
         end
 
         if condition
