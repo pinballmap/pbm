@@ -101,10 +101,11 @@ HERE
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find location')
     end
 
-    it 'only allows you to update description, website, type, and phone' do
+    it 'only allows you to update description, website, type, operator, and phone' do
       type = FactoryGirl.create(:location_type, name: 'bar')
+      operator = FactoryGirl.create(:operator, name: 'CleoWorld')
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json?description=foo;website=http://bar;phone=5555555555;zip=97777;location_type=' + type.id.to_s
+      put '/api/v1/locations/' + @location.id.to_s + '.json?description=foo;website=http://bar;phone=5555555555;zip=97777;location_type=' + type.id.to_s + ';operator_id=' + operator.id.to_s
       expect(response).to be_success
 
       updated_location = Location.find(@location.id)
@@ -114,6 +115,7 @@ HERE
       expect(updated_location.phone).to eq('555-555-5555')
       expect(updated_location.zip).to eq('97203')
       expect(updated_location.location_type_id).to eq(type.id)
+      expect(updated_location.operator_id).to eq(operator.id)
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
@@ -125,6 +127,7 @@ HERE
       expect(location['phone']).to eq('555-555-5555')
       expect(location['zip']).to eq('97203')
       expect(location['location_type_id']).to eq(type.id)
+      expect(location['operator_id']).to eq(operator.id)
     end
 
     it 'allows a blank location type' do
