@@ -74,7 +74,8 @@ module Api
           description: params[:description],
           website: params[:website],
           phone: params[:phone],
-          location_type_id: params[:location_type]
+          location_type_id: params[:location_type],
+          operator_id: params[:operator_id]
         )
 
         return_response(values, message_type)
