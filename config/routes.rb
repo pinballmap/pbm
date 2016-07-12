@@ -136,7 +136,7 @@ Pbm::Application.routes.draw do
   resources :location_picture_xrefs
   resources :machine_conditions
 
-  devise_for :users
+  devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}
 
   get 'iphone.html', to: 'locations#mobile'
   get '4sq_export.xml' => 'regions#four_square_export', format: 'xml'
