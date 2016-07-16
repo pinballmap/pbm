@@ -196,4 +196,8 @@ class Location < ActiveRecord::Base
       [(@validation_errors + errors.full_messages).uniq, 'errors']
     end
   end
+
+  def last_updated_by_username
+    last_updated_by_user ? last_updated_by_user.username : ''
+  end
 end
