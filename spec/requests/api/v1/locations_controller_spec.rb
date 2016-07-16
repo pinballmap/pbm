@@ -4,7 +4,7 @@ describe Api::V1::LocationsController, type: :request do
   before(:each) do
     @region = FactoryGirl.create(:region, name: 'portland')
     @location = FactoryGirl.create(:location, region: @region, name: 'Satchmo', state: 'OR', zip: '97203', lat: 42.18, lon: -71.18)
-    FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', region: @region, authentication_token: '1G8_s7P-V-4MGojaKD7a')
+    @user = FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', region: @region, authentication_token: '1G8_s7P-V-4MGojaKD7a')
     FactoryGirl.create(:user, email: 'super_admin@bar.com', region: nil, is_super_admin: 1)
   end
 
@@ -307,6 +307,27 @@ HERE
       expect(machines[1]['manufacturer']).to eq('Bally')
       expect(machines[1]['ipdb_link']).to eq('http://www.bar.com')
       expect(machines[1]['ipdb_id']).to eq(123)
+    end
+  end
+
+  describe '#confirm_location' do
+    it 'sets date_last_updated on location' do
+      Timecop.travel(Time.zone.local(2010, 6, 1, 13, 0, 0)) do
+        put '/api/v1/locations/' + @location.id.to_s + '/confirm.json', user_token: '1G8_s7P-V-4MGojaKD7a', user_email: 'foo@bar.com'
+      end
+      expect(response).to be_success
+
+      updated_location = Location.find(@location.id)
+      expect(updated_location.last_updated_by_user).to eq(@user)
+      expect(updated_location.date_last_updated.to_s).to eq('2010-06-01')
+
+      expect(JSON.parse(response.body)['msg']).to eq('Thanks for confirming that location.')
+    end
+
+    it 'throws an error if the location does not exist' do
+      put '/api/v1/locations/666/confirm.json', user_token: '1G8_s7P-V-4MGojaKD7a', user_email: 'foo@bar.com'
+
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find location')
     end
   end
 end

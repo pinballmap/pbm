@@ -34,6 +34,7 @@ Pbm::Application.routes.draw do
       resources :locations, only: [:update] do
         member do
           get :machine_details
+          put :confirm
         end
         collection do
           get :closest_by_lat_lon

@@ -129,6 +129,23 @@ module Api
         rescue ActiveRecord::RecordNotFound
           return_response('Failed to find location', 'errors')
       end
+
+      api :PUT, '/api/v1/locations/:id/confirm.json', 'Confirm location information'
+      formats ['json']
+      def confirm
+        location = Location.find(params[:id])
+
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+
+        location.date_last_updated = Date.today
+        location.last_updated_by_user_id = user ? user.id : nil
+        location.save
+
+        return_response('Thanks for confirming that location.', 'msg')
+
+        rescue ActiveRecord::RecordNotFound
+          return_response('Failed to find location', 'errors')
+      end
     end
   end
 end
