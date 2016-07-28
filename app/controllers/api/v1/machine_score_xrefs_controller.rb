@@ -11,7 +11,7 @@ module Api
       formats ['json']
       def index
         scores = apply_scopes(MachineScoreXref).order('id desc')
-        return_response(scores, 'machine_score_xrefs')
+        return_response(scores, 'machine_score_xrefs', [], [:username])
       end
 
       api :POST, '/api/v1/machine_score_xrefs.json', 'Enter a new high score for a machine'
@@ -50,7 +50,7 @@ module Api
         lmx = LocationMachineXref.find(params[:id])
 
         msxes = MachineScoreXref.where(location_machine_xref_id: lmx.id).order(:rank)
-        return_response(msxes, 'machine_scores')
+        return_response(msxes, 'machine_scores', [], [:username])
 
         rescue ActiveRecord::RecordNotFound
           return_response('Failed to find machine', 'errors')

@@ -7,8 +7,8 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     @machine = FactoryGirl.create(:machine, name: 'Cleo')
     @lmx = FactoryGirl.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
 
-    @score_rank_1 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, rank: 1, score: 123, initials: 'abc')
-    @score_rank_2 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, rank: 2, score: 100, initials: 'def')
+    @score_rank_1 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, rank: 1, score: 123, initials: 'abc', user_id: FactoryGirl.create(:user, :username => 'ssw').id)
+    @score_rank_2 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, rank: 2, score: 100, initials: 'def', user_id: nil)
   end
 
   describe '#index' do
@@ -48,10 +48,12 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
       expect(scores[0]['rank']).to eq(1)
       expect(scores[0]['initials']).to eq('abc')
       expect(scores[0]['score']).to eq(123)
+      expect(scores[0]['username']).to eq('ssw')
 
       expect(scores[1]['rank']).to eq(2)
       expect(scores[1]['initials']).to eq('def')
       expect(scores[1]['score']).to eq(100)
+      expect(scores[1]['username']).to eq('')
     end
 
     it 'errors for unknown lmx' do
