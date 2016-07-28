@@ -30,4 +30,8 @@ class MachineScoreXref < ActiveRecord::Base
       MachineScoreXref.delete_all(['location_machine_xref_id = ? and rank = ? and id != ?', location_machine_xref_id, rank, id])
     end
   end
+
+  def username
+    return user ? user.username : ''
+  end
 end
