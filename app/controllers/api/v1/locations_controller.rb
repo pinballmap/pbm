@@ -139,7 +139,7 @@ module Api
 
         location.date_last_updated = Date.today
         location.last_updated_by_user_id = user ? user.id : nil
-        location.save(:validate => false)
+        location.save(validate: false)
 
         return_response('Thanks for confirming that location.', 'msg')
 
