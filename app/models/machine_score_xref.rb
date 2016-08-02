@@ -32,6 +32,6 @@ class MachineScoreXref < ActiveRecord::Base
   end
 
   def username
-    return user ? user.username : ''
+    user ? user.username : ''
   end
 end
