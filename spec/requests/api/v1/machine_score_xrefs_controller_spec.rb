@@ -7,7 +7,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     @machine = FactoryGirl.create(:machine, name: 'Cleo')
     @lmx = FactoryGirl.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
 
-    @score_rank_1 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, rank: 1, score: 123, initials: 'abc', user_id: FactoryGirl.create(:user, :username => 'ssw').id)
+    @score_rank_1 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, rank: 1, score: 123, initials: 'abc', user_id: FactoryGirl.create(:user, username: 'ssw').id)
     @score_rank_2 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, rank: 2, score: 100, initials: 'def', user_id: nil)
   end
 
@@ -81,12 +81,14 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
       expect(JSON.parse(response.body)['errors']).to eq([])
     end
 
-    it 'creates a new score' do
-      post '/api/v1/machine_score_xrefs.json?location_machine_xref_id=' + @lmx.id.to_s + ';score=1,234;initials=abc;rank=1'
+    it 'creates a new score -- authed' do
+      user = FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a')
+
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 1234, initials: 'abc', rank: 1, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
       expect(response.status).to eq(201)
 
-      expect(JSON.parse(response.body)['msg']).to eq('Added your score!')
+      expect(JSON.parse(response.body)['machine_score_xref']['score']).to eq(1234)
 
       new_score = MachineScoreXref.last
 
@@ -94,6 +96,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
       expect(new_score.rank).to eq(1)
       expect(new_score.score).to eq(1234)
       expect(new_score.location_machine_xref_id).to eq(@lmx.id)
+      expect(new_score.user_id).to eq(user.id)
 
       first_score = MachineScoreXref.first
       expect(first_score.rank).to eq(2)

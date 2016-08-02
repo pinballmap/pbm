@@ -25,16 +25,19 @@ module Api
 
         msx = MachineScoreXref.create(location_machine_xref_id: lmx.id)
 
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+
         score = params[:score]
         score.gsub!(/[^0-9]/, '')
 
         msx.score = score
         msx.rank = params[:rank]
         msx.initials = params[:initials]
+        msx.user = user
 
         if msx.save
           msx.sanitize_scores
-          return_response('Added your score!', 'msg', [], [], 201)
+          return_response(msx, 'machine_score_xref', [], [:username], 201)
         else
           return_response(msx.errors.full_messages, 'errors')
         end
