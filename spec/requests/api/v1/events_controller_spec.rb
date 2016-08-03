@@ -32,7 +32,7 @@ describe Api::V1::EventsController, type: :request do
       FactoryGirl.create(:event, region: @region, location: @location, category: 'Foo', name: 'event 2', start_date: Date.today, end_date: Date.today)
       FactoryGirl.create(:event, region: @region, location: @location, category: 'Foo', name: 'event 3', start_date: Date.today, end_date: Date.today)
 
-      get '/api/v1/region/portland/events.json?sorted=true'
+      get '/api/v1/region/portland/events.json', sorted: 'true'
       expect(response).to be_success
 
       parsed_body = JSON.parse(response.body)
