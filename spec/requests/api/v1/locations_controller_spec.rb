@@ -103,7 +103,7 @@ HERE
     it 'respects by_ipdb_id filter' do
       lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, id: 777, name: 'Cleo', ipdb_id: 999))
       FactoryGirl.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'foo bar')
-      get "/api/v1/region/#{@region.name}/locations.json?by_ipdb_id=999"
+      get "/api/v1/region/#{@region.name}/locations.json", by_ipdb_id: 999
 
       expect(response.body).to include('Satchmo')
       expect(response.body).to include('777')
@@ -131,7 +131,7 @@ HERE
       type = FactoryGirl.create(:location_type, name: 'bar')
       operator = FactoryGirl.create(:operator, name: 'CleoWorld')
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json?description=foo;website=http://bar;phone=5555555555;zip=97777;location_type=' + type.id.to_s + ';operator_id=' + operator.id.to_s
+      put '/api/v1/locations/' + @location.id.to_s + '.json', description: 'foo', website: 'http://bar', phone: '5555555555', zip: '97777', location_type: type.id.to_s, operator_id: operator.id.to_s
       expect(response).to be_success
 
       updated_location = Location.find(@location.id)
@@ -160,7 +160,7 @@ HERE
       type = FactoryGirl.create(:location_type, name: 'bar')
       @location.location_type_id = type.id
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json?description=foo;website=http://bar;phone=5555555555;zip=97777;location_type='
+      put '/api/v1/locations/' + @location.id.to_s + '.json', description: 'foo', website: 'http://bar', phone: '5555555555', zip: '97777', location_type: ''
       expect(response).to be_success
 
       updated_location = Location.find(@location.id)
@@ -189,19 +189,19 @@ HERE
     end
 
     it 'responds with an error if an invalid phone number is sent' do
-      put '/api/v1/locations/' + @location.id.to_s + '.json?phone=baz'
+      put '/api/v1/locations/' + @location.id.to_s + '.json', phone: 'baz'
 
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq(['Phone format invalid, please use ###-###-####'])
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json?phone=444-4444'
+      put '/api/v1/locations/' + @location.id.to_s + '.json', phone: '444-4444'
 
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq(['Phone format invalid, please use ###-###-####'])
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json?phone=11-444-4444'
+      put '/api/v1/locations/' + @location.id.to_s + '.json', phone: '11-444-4444'
 
       expect(response).to be_success
 
@@ -211,7 +211,7 @@ HERE
     it 'blank phone number deletes phone number' do
       @location.phone = '555-555-5555'
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json?phone='
+      put '/api/v1/locations/' + @location.id.to_s + '.json', phone: nil
       expect(response).to be_success
 
       parsed_body = JSON.parse(response.body)
@@ -233,7 +233,7 @@ HERE
 
   describe '#closest_by_lat_lon' do
     it 'sends you the closest location to you, along with machines at the location' do
-      get '/api/v1/locations/closest_by_lat_lon.json?lat=45.49;lon=-122.63'
+      get '/api/v1/locations/closest_by_lat_lon.json', lat: 45.49, lon: -122.63
 
       expect(JSON.parse(response.body)['errors']).to eq('No locations within 50 miles.')
 
@@ -242,7 +242,7 @@ HERE
       FactoryGirl.create(:location_machine_xref, location: closest_location, machine: FactoryGirl.create(:machine, name: 'Bawb'))
       FactoryGirl.create(:location_machine_xref, location: closest_location, machine: FactoryGirl.create(:machine, name: 'Sassy'))
 
-      get "/api/v1/locations/closest_by_lat_lon.json?lat=#{closest_location.lat};lon=#{closest_location.lon}"
+      get '/api/v1/locations/closest_by_lat_lon.json', lat: closest_location.lat, lon: closest_location.lon
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
@@ -266,7 +266,7 @@ HERE
       close_location_3 = FactoryGirl.create(:location, region: @region, lat: 45.491, lon: -122.63)
       FactoryGirl.create(:location, region: @region, lat: 5.49, lon: 22.63)
 
-      get "/api/v1/locations/closest_by_lat_lon.json?lat=#{close_location_1.lat};lon=#{close_location_1.lon};send_all_within_distance=1"
+      get '/api/v1/locations/closest_by_lat_lon.json', lat: close_location_1.lat, lon: close_location_1.lon, send_all_within_distance: 1
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)

@@ -142,7 +142,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
   describe '#create' do
     it 'updates condition on existing lmx' do
-      post '/api/v1/location_machine_xrefs.json?machine_id=' + @machine.id.to_s + ';location_id=' + @location.id.to_s + ';condition=foo'
+      post '/api/v1/location_machine_xrefs.json', machine_id: @machine.id.to_s, location_id: @location.id.to_s, condition: 'foo'
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
 
@@ -168,7 +168,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'creates new lmx when appropriate' do
       new_machine = FactoryGirl.create(:machine, id: 11, name: 'sass')
 
-      post '/api/v1/location_machine_xrefs.json?machine_id=' + new_machine.id.to_s + ';location_id=' + @location.id.to_s + ';condition=foo'
+      post '/api/v1/location_machine_xrefs.json', machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: 'foo'
       expect(response).to be_success
       expect(response.status).to eq(201)
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
@@ -180,7 +180,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it "doesn't let you add machines that don't exist" do
-      post '/api/v1/location_machine_xrefs.json?machine_id=-666;location_id=' + @location.id.to_s + ';condition=foo'
+      post '/api/v1/location_machine_xrefs.json', machine_id: -666, location_id: @location.id.to_s, condition: 'foo'
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
 
@@ -207,11 +207,11 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
 
-      post '/api/v1/location_machine_xrefs.json?machine_id=' + @machine.id.to_s
+      post '/api/v1/location_machine_xrefs.json', machine_id: @machine.id.to_s
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
 
-      post '/api/v1/location_machine_xrefs.json?location_id=' + @location.id.to_s
+      post '/api/v1/location_machine_xrefs.json', location_id: @location.id.to_s
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
     end
