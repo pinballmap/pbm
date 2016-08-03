@@ -26,17 +26,17 @@ describe Api::V1::MachinesController, type: :request do
     end
 
     it 'errors with missing location_id' do
-      post '/api/v1/machines.json?machine_name=Bawb;location_id='
+      post '/api/v1/machines.json', machine_name: 'Bawb', location_id: nil
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find location')
     end
 
     it 'handles creation by machine name.. machine exists with same name.. case insensitive' do
-      post '/api/v1/machines.json?machine_name=Cleo;location_id=' + @location.id.to_s
+      post '/api/v1/machines.json', machine_name: 'Cleo', location_id: @location.id.to_s
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Machine already exists')
 
-      post '/api/v1/machines.json?machine_name=cleo;location_id=' + @location.id.to_s
+      post '/api/v1/machines.json', machine_name: 'cleo', location_id: @location.id.to_s
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Machine already exists')
 
@@ -44,7 +44,7 @@ describe Api::V1::MachinesController, type: :request do
     end
 
     it 'handles creation by machine name.. machine exists with same name.. ignores preceeding and trailing whitespace' do
-      post '/api/v1/machines.json?machine_name=%20Cleo%20;location_id=' + @location.id.to_s
+      post '/api/v1/machines.json', machine_name: ' Cleo ', location_id: @location.id.to_s
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Machine already exists')
 
@@ -61,7 +61,7 @@ describe Api::V1::MachinesController, type: :request do
         )
       end
 
-      post '/api/v1/machines.json?machine_name=Bawb;location_id=' + @location.id.to_s
+      post '/api/v1/machines.json', machine_name: 'Bawb', location_id: @location.id.to_s
       expect(response).to be_success
       expect(response.status).to eq(201)
       expect(JSON.parse(response.body)['machine']['name']).to eq('Bawb')

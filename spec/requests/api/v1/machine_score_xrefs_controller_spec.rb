@@ -27,7 +27,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     end
 
     it 'respects limit scope' do
-      get '/api/v1/region/portland/machine_score_xrefs.json?limit=1'
+      get '/api/v1/region/portland/machine_score_xrefs.json', limit: 1
       expect(response).to be_success
 
       scores = JSON.parse(response.body)['machine_score_xrefs']
@@ -66,7 +66,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
   describe '#create' do
     it 'errors for unknown lmx' do
-      post '/api/v1/machine_score_xrefs.json?location_machine_xref_id=-1'
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: -1
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
@@ -75,7 +75,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     it 'errors for failed saves' do
       expect_any_instance_of(MachineScoreXref).to receive(:save).twice.and_return(false)
 
-      post '/api/v1/machine_score_xrefs.json?location_machine_xref_id=' + @lmx.id.to_s + ';score=1234'
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 1234
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq([])
