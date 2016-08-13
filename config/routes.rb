@@ -21,6 +21,7 @@ Pbm::Application.routes.draw do
       resources :users, only: [:auth_details] do
         collection do
           get  :auth_details
+          post :signup
         end
       end
       resources :regions, only: [:index, :show] do
