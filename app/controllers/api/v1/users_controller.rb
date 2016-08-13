@@ -28,6 +28,44 @@ module Api
 
         return_response(user, 'user')
       end
+
+      api :POST, '/api/v1/users/signup.json', 'Signup a new user'
+      description 'Signup a new user for the PBM'
+      param :username, String, desc: 'New username', required: true
+      param :email, String, desc: 'New email address', required: true
+      param :password, String, desc: 'New password', required: true
+      param :confirm_password, String, desc: 'New password confirmation', required: true
+      def signup
+        if params[:password].blank? || params[:confirm_password].blank?
+          return_response('password can not be blank', 'errors')
+          return
+        end
+
+        if params[:username].blank? || params[:email].blank?
+          return_response('username and email are required fields', 'errors')
+          return
+        end
+
+        if params[:password] != params[:confirm_password]
+          return_response('your entered passwords do not match', 'errors')
+          return
+        end
+
+        user = User.find_by_username(params[:username])
+        if user
+          return_response('This username already exists', 'errors')
+          return
+        end
+
+        user = User.find_by_email(params[:email])
+        if user
+          return_response('This email address already exists', 'errors')
+          return
+        end
+
+        user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:confirm_password], username: params[:username])
+        user.save ? return_response(user, 'user') : return_response(user.errors.full_messages.join(','), 'errors')
+      end
     end
   end
 end
