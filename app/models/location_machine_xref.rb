@@ -33,6 +33,8 @@ class LocationMachineXref < ActiveRecord::Base
 
     self.condition = condition
     self.condition_date = Date.today
+    self.user_id = options[:user_id]
+
     location.date_last_updated = Date.today
     location.last_updated_by_user_id = options[:user_id]
     location.save(validate: false)
