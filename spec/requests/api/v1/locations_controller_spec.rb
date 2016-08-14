@@ -116,7 +116,7 @@ HERE
       FactoryGirl.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'baz', user: ssw)
       get "/api/v1/region/#{@region.name}/locations.json"
 
-      expect(response.body).to include('ssw')
+      expect(response.body.scan('ssw').size).to eq(2)
     end
   end
 

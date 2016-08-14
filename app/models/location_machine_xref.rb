@@ -105,4 +105,8 @@ class LocationMachineXref < ActiveRecord::Base
   def current_condition
     machine_conditions.last
   end
+
+  def last_updated_by_username
+    user ? user.username : ''
+  end
 end
