@@ -55,7 +55,12 @@ module Api
       formats ['json']
       def index
         locations = apply_scopes(Location).order('locations.name')
-        return_response(locations, 'locations', [location_machine_xrefs: { include: { machine_conditions: { methods: :username } } }], [:last_updated_by_username])
+        return_response(
+          locations,
+          'locations',
+          [location_machine_xrefs: { include: { machine_conditions: { methods: :username } }, methods: :last_updated_by_username }],
+          [:last_updated_by_username]
+        )
       end
 
       api :PUT, '/api/v1/locations/:id.json', 'Update attributes on a location'

@@ -112,7 +112,19 @@ describe LocationMachineXref do
       FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
       FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'baz')
 
-      @lmx.current_condition.comment = 'baz'
+      expect(@lmx.current_condition.comment).to eq('baz')
+    end
+  end
+
+  describe '#last_updated_by_username' do
+    it 'should return the most recent comments username' do
+      lmx = FactoryGirl.create(:location_machine_xref)
+
+      expect(lmx.last_updated_by_username).to eq('')
+
+      lmx = FactoryGirl.create(:location_machine_xref, user: FactoryGirl.create(:user, id: 666, username: 'foo'))
+
+      expect(lmx.last_updated_by_username).to eq('foo')
     end
   end
 end
