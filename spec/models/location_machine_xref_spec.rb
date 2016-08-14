@@ -61,11 +61,18 @@ describe LocationMachineXref do
       expect(@lmx.condition_date).to be_nil
     end
 
-    it 'should create LocationConditions' do
+    it 'should create MachineConditions' do
       @lmx.update_condition('foo')
 
       expect(MachineCondition.all.count).to eq(1)
       expect(MachineCondition.first.comment).to eq('foo')
+    end
+
+    it 'should tag update with a user when given' do
+      @lmx.update_condition('foo', user_id: FactoryGirl.create(:user, id: 10, username: 'foo').id)
+
+      expect(@lmx.user_id).to eq(10)
+      expect(@lmx.last_updated_by_username).to eq('foo')
     end
   end
 
