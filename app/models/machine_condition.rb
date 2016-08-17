@@ -21,4 +21,9 @@ class MachineCondition < ActiveRecord::Base
   def username
     user ? user.username : ''
   end
+
+  def as_json(options = {})
+    options[:methods] = [:username]
+    super
+  end
 end
