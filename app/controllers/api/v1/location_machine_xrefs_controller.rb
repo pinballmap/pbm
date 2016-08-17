@@ -66,7 +66,7 @@ module Api
           user_id: user ? user.id : nil
         )
 
-        return_response(lmx, 'location_machine', [], [:machine_conditions])
+        return_response(lmx, 'location_machine', [], [:last_updated_by_username, :machine_conditions])
 
         rescue ActiveRecord::RecordNotFound
           return_response('Failed to find machine', 'errors')

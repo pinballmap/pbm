@@ -238,7 +238,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
         )
       end
 
-      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '?condition=foo', {}, HTTP_USER_AGENT: 'cleOS'
+      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, 'condition=foo', HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
       expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('foo')
@@ -251,6 +251,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
+      expect(JSON.parse(response.body)['location_machine']['last_updated_by_username']).to eq('ssw')
       expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('foo')
       expect(JSON.parse(response.body)['location_machine']['machine_conditions'][1]['comment']).to eq('bar')
 
