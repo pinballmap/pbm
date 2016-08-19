@@ -43,11 +43,24 @@ describe LocationMachineXref do
 
       @lmx.update_condition('bar', remote_ip: '0.0.0.0', user_agent: 'cleOS')
     end
+
     it 'should not send an email for blank condition updates' do
       expect(Pony).to_not receive(:mail)
 
       @lmx.update_condition('')
     end
+
+    it 'should do nothing if your condition is the same as the previous condition' do
+      expect(Pony).to_not receive(:mail)
+
+      @lmx.condition = 'baz'
+
+      @lmx.update_condition('baz')
+
+      expect(MachineCondition.all.count).to eq(0)
+      expect(@lmx.condition_date).to be_nil
+    end
+
     it 'should create LocationConditions' do
       @lmx.update_condition('foo')
 

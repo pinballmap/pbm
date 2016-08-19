@@ -29,6 +29,8 @@ class LocationMachineXref < ActiveRecord::Base
   end
 
   def update_condition(condition, options = {})
+    return if condition == self.condition
+
     self.condition = condition
     self.condition_date = Date.today
     location.date_last_updated = Date.today
