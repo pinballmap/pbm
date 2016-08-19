@@ -51,10 +51,14 @@ class LocationMachineXrefsController < InheritedResources::Base
     if condition =~ /<a href/
       lmx
     elsif ENV['RAKISMET_KEY']
+      old_condition = lmx.condition
+
       lmx.condition = condition
       if lmx.spam?
+        lmx.condition = old_condition
         nil
       else
+        lmx.condition = old_condition
         lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
         lmx.location.date_last_updated = Date.today
         lmx.location.save(validate: false)
