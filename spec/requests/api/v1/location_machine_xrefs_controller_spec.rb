@@ -194,6 +194,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(response).to be_success
       expect(response.status).to eq(201)
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
+      expect(JSON.parse(response.body)['location_machine']['last_updated_by_username']).to eq('ssw')
 
       new_lmx = LocationMachineXref.last
       expect(new_lmx.condition).to eq('foo')
