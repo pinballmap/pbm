@@ -21,9 +21,9 @@
             %ul.other_regions_list= other_regions_html(@region) 
         %span.menu_link
           %ul#nav
-            %li.first_header_link=link_to 'About', about_path
+            %li.first_header_link=link_to 'Suggest Location', suggest_path
+            %li=link_to 'About', about_path
             %li=link_to 'Events', events_path
-            %li=link_to 'Suggest Location', suggest_path
             %li=link_to 'High Scores', high_rollers_path
             %li=link_to 'Location RSS', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
             %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
@@ -87,9 +87,9 @@
         - else 
           =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
         %ul#nav
-          %li.first_header_link=link_to 'About', about_path
+          %li.first_header_link=link_to 'Suggest Location', suggest_path
+          %li=link_to 'About', about_path
           %li=link_to 'Events', events_path
-          %li=link_to 'Suggest Location', suggest_path
           %li=link_to 'High Scores', high_rollers_path
           %li=link_to 'Location RSS', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
           %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
