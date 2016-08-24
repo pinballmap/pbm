@@ -47,7 +47,7 @@ module Api
           )
         end
 
-        return_response(lmx, 'location_machine', [], [], status_code)
+        return_response(lmx, 'location_machine', [], [:last_updated_by_username], status_code)
       end
 
       api :PUT, '/api/v1/location_machine_xrefs/:id.json', "Update a machine's condition at a location"
