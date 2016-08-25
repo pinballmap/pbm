@@ -22,7 +22,7 @@
     #form { width: 456px;}
 
     #operator_section_link, #zone_section_link, #machine_section_link, #city_section_link, #location_section_link, #type_section_link
-    { margin-left: -5px; }
+    { margin-left: 0px; }
 
     #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id
     { width: 145px; }
