@@ -14,10 +14,6 @@
   font-family: 'Freight-MedSC';
   src: url(<%= asset_path "freight-sans-medium-sc-opentype.otf" %>);
 }
-@font-face {
-  font-family: 'Freight-Med';
-  src: url(<%= asset_path "freight-sans-medium-opentype.otf" %>);
-}
 * {
   outline: none;  
 }
@@ -61,7 +57,7 @@ input, textarea {
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
-  font-family: "Fira Mono",Helvetica,Arial,sans-serif;
+  font-family: "Fira Mono",Courier,serif;
 }
 select {
   font-family: Helvetica,Arial,sans-serif;
@@ -102,7 +98,7 @@ ul li li {
 .darkb {
   color: #43403d;
   text-shadow: 0.1px 0.1px 0.1px white;
-  font-family: "Freight";
+  font-family: "Freight",Helvetica,Arial,sans-serif;
   font-size: 18px;
 }
 .italic {
@@ -174,7 +170,7 @@ ul.twitter {
 .twitter li {
   padding: 5px 0;
   border-bottom: 1px solid #DECEB9;
-  font-family: "Fira Mono";
+  font-family: "Fira Mono",Courier,serif;
   color: #452809;
   font-size: 15px;
 }
@@ -281,7 +277,7 @@ div.pick_a_map .store_header {
   box-sizing: border-box;
 }
 .home_intro p, .why_login {
-  font-family: "Fira Mono";
+  font-family: "Fira Mono",Courier,serif;
 }
 .home_intro_container {
   float: left;
@@ -305,7 +301,7 @@ div.pick_a_map .store_header {
   padding: 0;
   margin: 15px 0;
   text-align: center;
-  font-family: "Freight";
+  font-family: "Freight",Helvetica,Arial,sans-serif;
 }
 .store_shirt {
   width: 420px;
@@ -356,12 +352,12 @@ div.pick_a_map .store_header {
   margin-top: 51px;
 }
 #header span.menu_link {
-  width: 144px;
+  width: 50px;
   font-size: 32px;
   text-shadow: 1px 1px 5px #CCCCCC;
   line-height: 60px;
-  position: absolute;
   text-align: center;
+  float: left;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -383,6 +379,7 @@ div.pick_a_map .store_header {
   font-size: 14px !important;
   color: #55413F;
   line-height: 18px;
+  width: 144px;
 }
 #header .menu_link ul li a {
   text-align: left !important;
@@ -417,7 +414,7 @@ div.pick_a_map .store_header {
     width: 164px;
     height: 49px;
     position: relative;
-    float: left;
+    float: right;
     margin: 5px 0 0;
     margin-right: 10px;
 }
@@ -446,12 +443,12 @@ div.pick_a_map .store_header {
   position: absolute;
   top: 44px;
   left: 0;
-  margin-left: -2px;
   margin-top: 5px;
-  width: 155px;
+  width: 160px;
   max-height: 400px;
   overflow: auto;
   border-top: none;
+  z-index: 100;
 }
 #header ul.other_regions_list a,
 #header ul.other_regions_list a:hover {
@@ -514,8 +511,8 @@ div.pick_a_map .blog_header {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.login {
-  float: right;
+span.closest_locations, .login {
+  float: left;
 }
 .login:hover, .login_alert a:hover {
   background: #fbe4dc;
@@ -669,7 +666,7 @@ span.region_name_page {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border: 1px solid #9fa7ae;
-  font-family: "Fira Mono";
+  font-family: "Fira Mono",Courier,serif;
   font-weight: normal;
 }
 #locations .darkb {
@@ -683,7 +680,7 @@ span.region_name_page {
   top: 54px;
   right: 13px;
   width: 630px;
-  z-index: 75;
+  z-index: 20;
   border: 4px solid #853102;
   border-top: none;
   border-bottom-left-radius: 5px;
@@ -703,7 +700,6 @@ span.region_name_page {
   float: right;
   padding: 70px 10px 10px 10px;
   width: 600px;
-  z-index: 50;
   margin-right: 18px;
   position: relative;
   -webkit-transform: translateZ(0);
@@ -771,7 +767,7 @@ a.active_section_link:hover {
 .address, .address_full {
   font-size: 16px;
   line-height: 16px;
-  font-family: "Freight-MedSC";
+  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
 }
 li.address {
   padding: 2px 0 2px 5px;
@@ -785,7 +781,7 @@ li.address_full {
 .website {
   float: left;
   width: 450px;
-  font-family: "Freight-Med";
+  font-family: "Fira Mono",Courier,serif;
 }
 .machine_name {
   float: left;
@@ -797,7 +793,7 @@ li.address_full {
   padding: 3px 15px 3px 5px;
   width: 100%;
   margin-left: -20px;
-  font-family: "Freight";
+  font-family: "Freight",Helvetica,Arial,sans-serif;
 }
 .machine_name:hover {
   background-color: #e79e55;
@@ -848,7 +844,7 @@ span.machine_year_man {
   border-bottom: 1px solid #888;
 }
 .pintips a {
-  font-family: "Freight-MedSC";
+  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
   font-size: 18px;
 }
 .pintips a:after {
@@ -937,7 +933,7 @@ form.remove_machine_condition {
   width: 400px;
   max-width: 400px;
   min-width: 400px;
-  font-family: "Fira Mono";
+  font-family: "Fira Mono",Courier,serif;
 }
 .machine_condition_display_lmx .condition_button {
   height: 20px;
@@ -952,7 +948,7 @@ form.remove_machine_condition {
   border-top: 2px solid #d6c1aa;
   border-bottom: 2px solid #d6c1aa;
   margin-top: 5px;
-  font-family: 'Freight';
+  font-family: 'Freight',Helvetica,Arial,sans-serif;
   font-weight: normal;
 }
 .machine_condition_display_lmx .condition_button:hover {
@@ -968,7 +964,7 @@ form.remove_machine_condition {
   display: block;
 }
 .machine_condition_display_lmx span {
-  font-family: 'Fira Mono';
+  font-family: 'Fira Mono',Courier,serif;
   padding: 0 5px;
   color: #666666;
 }
@@ -1060,7 +1056,7 @@ br.clear {
   font-weight: normal;
   color: #f9f9f9;
   cursor: pointer;
-  font-family: "Freight-MedSC";
+  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
   border-top: 1px solid #5c472c;
   border-bottom: 1px solid #5c472c;
 }
@@ -1422,7 +1418,7 @@ input#score {
   line-height: 14px;
   font-weight: normal;
   height: 100%;
-  font-family: "Freight-MedSC";
+  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
   border-bottom: 2px solid #987673;
   border-right: 2px solid #B59C9A;
   border-left: 1px solid #987673;
@@ -1458,7 +1454,7 @@ input#score {
   display: block;
   font-size: 13px;
   line-height: 15px;
-  font-family: "Fira Mono"
+  font-family: "Fira Mono",Courier,serif;
 }
 .location_actual_description {
   float: left;
@@ -1559,7 +1555,7 @@ input#score {
   right: 18px;
   bottom: 0;
   z-index: 55;
-  font-family: "Fira Mono";
+  font-family: "Fira Mono",Courier,serif;
   font-weight: normal;
 }
 .scrollerScroller {
@@ -1598,7 +1594,7 @@ input#score {
 #location_maker label, #contact_maker label {
   display: block;
   color: #2E2322;
-  font-family: "Freight";
+  font-family: "Freight",Helvetica,Arial,sans-serif;
 }
 #location_maker ul {
   width: 600px;
@@ -1633,7 +1629,7 @@ a.apps_link:hover {
   padding: 0 10px;
   min-height: 575px;
   width: 486px;
-  font-family: "Fira Mono";
+  font-family: "Fira Mono",Courier,serif;
 }
 .left_column.secondary {
   text-align:center;
@@ -1688,13 +1684,13 @@ a.apps_link:hover {
   font-size: 18px;
   padding-left: 10px;
   list-style-type: none;
-  font-family: "Freight";
+  font-family: "Freight",Helvetica,Arial,sans-serif;
 }
 .event_description {
   font-size: 12px;
   font-weight: normal;
   color: #55413F;
-  font-family: "Fira Mono";
+  font-family: "Fira Mono",Courier,serif;
 }
 #left_column, .left_column, .left_column_about {
   background-color: #ece2d8;
@@ -1709,7 +1705,7 @@ a.apps_link:hover {
   width: 375px;
   margin-top: 10px;
   float: left;
-  font-family: "Fira Mono";
+  font-family: "Fira Mono",Courier,serif;
 }
 .left_column_about {
   width: 450px;
@@ -1770,19 +1766,19 @@ a.apps_link:hover {
   font-family: 'Freight',Helvetica,Arial,sans-serif;
 }
 #intro {
-  font-family: "Fira Mono";
+  font-family: "Fira Mono",Courier,serif;
 }
 #intro p {
   font-weight: 400;
 }
 #intro .darkb {
-  font-family: "Fira Mono";
+  font-family: "Fira Mono",Courier,serif;
   font-weight: 700;
   font-size: 16px;
 }
 .to_begin {
   margin-top: 10px;
-  font-family: 'Freight';
+  font-family: 'Freight',Helvetica,Arial,sans-serif;
 }
 @-webkit-keyframes leftToRight {
     0% {
@@ -2072,6 +2068,7 @@ div.map_summary_info img {
 }
 span.map_summary_info {
   margin-top: -35px;
+  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
 }
 .map_summary_info {
   display: block;
