@@ -13,28 +13,38 @@
 
     .pintips, .machine_condition_display_lmx, .machine_condition_edit_lmx, 
     .high_score > .sub_nav_item, .score_container_lmx > .sub_nav_item,
-    .add_scores_form, .show_scores_lmx, .show_conditions_lmx, .show_conditions_lmx_toggle
-    { width: 285px;}
+    .add_scores_form, .show_scores_lmx, .show_conditions_lmx, .show_conditions_lmx_toggle { 
+      width: 285px;
+    }
 
-    #lookup, .show_location_detail_location, #location_maker ul, .score_result .sub_nav_item
-    { width: 430px;}
+    #lookup, .show_location_detail_location, #location_maker ul, .score_result .sub_nav_item { 
+      width: 430px;
+    }
 
-    #form { width: 456px;}
+    #form { 
+      width: 456px;
+    }
 
-    #operator_section_link, #zone_section_link, #machine_section_link, #city_section_link, #location_section_link, #type_section_link
-    { margin-left: 0px; }
+    #operator_section_link, #zone_section_link, #machine_section_link, #city_section_link, #location_section_link, #type_section_link { 
+      margin-left: 0px;
+      font-size: 14px; 
+    }
 
-    #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id
-    { width: 145px; }
+    #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id { 
+      width: 145px; 
+    }
 
-    #form input.lookup_search_input
-    { width: 200px; }
+    #form input.lookup_search_input { 
+      width: 200px; 
+    }
 
-    .machine_name 
-    { width: 305px; }
+    .machine_name { 
+      width: 305px; 
+    }
 
     .machine_condition_display_lmx .edit_mode
-    { width: 261px;
+    { 
+      width: 261px;
       max-width: 261px;
       min-width: 261px; 
     }
@@ -50,31 +60,16 @@
   div.pick_a_map .login_home {
     font-size: 12px;
     width: 75px;
-    margin-top: -5px;
+    margin-top: 0px;
     line-height: 21px;
+    border: none;
+    background: none;
+  }
+  .login_slash {
+    display: none;
   }
   .login {
     padding: 2px 2px;
-  }
-}
-
-@media (max-width: 965px) { 
-
-  #header span.menu_link {
-    line-height: 46px;
-    width: 45px !important;
-    font-size: 14px !important;
-    border-right: 4px solid #D6C0AA;
-    border-bottom: 4px solid #D6C0AA;
-  }
-  #header span.menu_link ul li a {
-    height: auto;
-    line-height: 14px;
-  }
-  #header span.menu_link ul {
-    width: 120px;
-    background-color: #EBEAE9;
-    margin-bottom: 0;
   }
 }
 
@@ -93,23 +88,20 @@
     float: none;
     clear: both;
   }
-
 }
 
 @media (max-width: 1130px) {
   div.pick_a_map .apps_header, div.pick_a_map .blog_header, 
   div.pick_a_map .store_header, div.pick_a_map .geo_header {
-    font-size: 12px;
+    font-size: 13px;
     line-height: 11px;
-    border-right: 2px solid #d6c0aa;
-    border-bottom: 2px solid #d6c0aa;
+    border: none;
     border-top: none;
   }
   div.pick_a_map .geo_header {
     float: left;
-    padding: 6px 5px;
+    padding: 5px 10px 8px;
     margin: 0 4px 0 0;
-    border-left: 2px solid #d6c0aa;
   }
   div.pick_a_map .geo_header {
     padding-left: 10px;
@@ -120,8 +112,7 @@
 @media (max-width: 1065px) {
   .login_region a.loggedin {
     font-size: 15px;
-    line-height: 26px;
-    padding-top: 10px;
+    line-height: 46px;
   }
   .login_region a {
     font-size: 12px;
@@ -130,18 +121,16 @@
     text-align: center;
   }
   .login_region {
-    margin-top: 0;
-    width: 65px;
+    margin-top: 5px;
+    width: 55px;
     padding: 0;
     line-height: 20px;
     text-align: center;
+    border: none;
   }
-  .login_slash {
+  .login_region .login_slash {
     display: none;
   }
-}
-
-@media (max-width: 1220px) { 
   .closest_locations {
     font-size: 11px;
     width: 75px;
@@ -149,6 +138,8 @@
     line-height: 13px;
     padding: 3px 4px 4px;
     text-align: center;
+    border: none;
+    margin-top: 7px;
   }
 }
 

@@ -162,7 +162,7 @@ describe PagesController do
       visit '/'
 
       expect(page).to have_css('div#map_summaries')
-      expect(page).to have_content('Chicago Tracking: 1 Locations 1 Machines Portland Tracking: 2 Locations 2 Machines')
+      expect(page).to have_content('Chicago 1 Locations 1 Machines Portland 2 Locations 2 Machines')
     end
 
     it 'shows the proper page title' do
