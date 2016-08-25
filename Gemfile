@@ -4,9 +4,6 @@ ruby '2.1.2'
 gem 'rails', '4.1'
 gem 'arel'
 gem 'pg'
-gem 'rake'
-gem 'rack'
-
 gem 'puma'
 
 gem 'paperclip'

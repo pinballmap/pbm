@@ -423,14 +423,12 @@ DEPENDENCIES
   pony
   protected_attributes
   puma
-  rack
   rack-attack
   rack_session_access
   rails (= 4.1)
   rails_12factor
   rails_admin
   rails_autolink
-  rake
   rakismet
   recaptcha
   remotipart
