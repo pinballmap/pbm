@@ -1,26 +1,27 @@
 %div.metadata[l, :metadata_show]
+  - if mobile_device? && !l.phone.nil?
+    %li.address_full= link_to l.phone, "tel:" + l.phone, :type => 'tel'
+    .clear
+  - else
+    %li.address_full= l.phone
+    .clear
   %div.operator_type
     - if (l.operator_id)
       - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
-        %li.operator{:style => 'margin-top: 5px;margin-bottom: 5px;'}
+        %li.operator
           %span.italic Operated by:
           %span.bold #{l.operator.name}
         .clear
       - else
-        %li.operator{:style => 'margin-top: 5px;margin-bottom: 5px;'}
+        %li.operator
           %span.italic Operated by: 
           %span.bold
             =link_to "#{l.operator.name}", "#{l.operator.website}", :target => "_blank"
         .clear
     - if (l.location_type)
-      %li.location_type{:style => 'margin-bottom: 5px;'}
+      %li.location_type
         %span.italic Location Type: 
         %span.bold #{l.location_type.name}
-      .clear
-  - if mobile_device? && !l.phone.nil?
-    %li.address_full= link_to l.phone, "tel:" + l.phone, :type => 'tel'
-  - else
-    %li.address_full= l.phone
   .clear
   - if l.website
     %li.address_full= link_to l.website, l.website, :class => 'website', :target => 'blank'

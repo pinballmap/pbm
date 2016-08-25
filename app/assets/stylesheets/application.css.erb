@@ -7,10 +7,17 @@
 /** Core **/
 
 @font-face {
-  font-family: 'JohnDoe';
-  src: url(<%= asset_path "JohnDoe.otf" %>);
+  font-family: 'Freight';
+  src: url(<%= asset_path "freight-sans-bold-sc-opentype.otf" %>);
 }
-
+@font-face {
+  font-family: 'Freight-MedSC';
+  src: url(<%= asset_path "freight-sans-medium-sc-opentype.otf" %>);
+}
+@font-face {
+  font-family: 'Freight-Med';
+  src: url(<%= asset_path "freight-sans-medium-opentype.otf" %>);
+}
 * {
   outline: none;  
 }
@@ -21,8 +28,7 @@ body {
   background-color: #FFFFFF;
   background-size: 4px auto;
   color: #2e2322;
-  font-family: 'JohnDoe',Helvetica,Arial,sans-serif;
-  font-weight: bold;
+  font-family: 'Freight',Helvetica,Arial,sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 p {
@@ -88,16 +94,16 @@ ul li li {
 /* Text */
 
 .intro {
-  font-size: 16px;
+  font-size: 18px;
 }
 .dark {
   color: #3a3835;
 }
 .darkb {
   color: #43403d;
-  font-weight: bold;
   text-shadow: 0.1px 0.1px 0.1px white;
-  font-family: "JohnDoe";
+  font-family: "Freight";
+  font-size: 18px;
 }
 .italic {
   font-style: italic;
@@ -254,10 +260,9 @@ div.pick_a_map .store_header {
   font-size: 15px;
   line-height: 36px;
   float: left;
-  padding: 5px 10px 7px;
+  padding: 5px 10px 8px;
   background-color: #ece2d8;
   border-right: 2px solid #d6c0aa;
-  border-left: 2px solid #d6c0aa;
   text-shadow: 1px 1px 5px #CCCCCC;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -270,7 +275,7 @@ div.pick_a_map .store_header {
   width: 300px;
   line-height: 120%;
   margin: 0 10px 10px 10px;
-  font-size: 16px;
+  font-size: 18px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -300,7 +305,7 @@ div.pick_a_map .store_header {
   padding: 0;
   margin: 15px 0;
   text-align: center;
-  font-family: "JohnDoe";
+  font-family: "Freight";
 }
 .store_shirt {
   width: 420px;
@@ -319,7 +324,7 @@ div.pick_a_map .store_header {
   width: 100%;
   min-width: 768px;
   height: 54px;
-  background: #675032;
+  background: #ece2d8;
   box-shadow: 0 0 15px rgba(90, 100, 117, 0.5);
   border-bottom: 5px solid #7e623d;
 }
@@ -341,10 +346,8 @@ div.pick_a_map .store_header {
 }
 #header .menu_link ul, #header ul.other_regions_list {
   font-size: 12px;
-  font-weight: bold;
   line-height: 24px;
-  margin-top: 5px;
-  float: left;
+  margin-top: -6px;
   padding-left: 0;
   text-align: left;
   display: none;
@@ -353,17 +356,16 @@ div.pick_a_map .store_header {
   margin-top: 51px;
 }
 #header span.menu_link {
-  background-color: #ece2d8;
   width: 144px;
-  font-size: 24px;
+  font-size: 32px;
   text-shadow: 1px 1px 5px #CCCCCC;
-  line-height: 46px;
+  line-height: 60px;
   position: absolute;
   text-align: center;
-  border: 4px solid #d6c0aa;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  height: 54px;
 }
 #header span.menu_link:hover {
   cursor: pointer;
@@ -373,14 +375,12 @@ div.pick_a_map .store_header {
 }
 #header .menu_link ul li {
   list-style-type: none;
-  font-weight: bold;
   position: relative;
   display: inline;
   padding: 0;
 }
 #header .menu_link ul {
   font-size: 14px !important;
-  font-weight: bold;
   color: #55413F;
   line-height: 18px;
 }
@@ -394,8 +394,8 @@ div.pick_a_map .store_header {
   vertical-align: middle;
   height: 24.5px;
   width: auto !important;
-  font-size: 12px;
-  line-height: 11px;
+  font-size: 15px;
+  line-height: 18px;
   background-color: #ece2d8;
   text-shadow: 1px 1px 5px #CCCCCC;
   -webkit-box-sizing: border-box;
@@ -415,11 +415,10 @@ div.pick_a_map .store_header {
 }
 #header .region_logo_dropdown {
     width: 164px;
-    height: 55px;
+    height: 49px;
     position: relative;
     float: left;
     margin: 5px 0 0;
-    background: #fbfbfb;
     margin-right: 10px;
 }
 #header li:hover ul, li.over ul, #header li ul li, #header .region_logo_dropdown ul li { 
@@ -448,6 +447,7 @@ div.pick_a_map .store_header {
   top: 44px;
   left: 0;
   margin-left: -2px;
+  margin-top: 5px;
   width: 155px;
   max-height: 400px;
   overflow: auto;
@@ -595,7 +595,7 @@ div.pick_a_map .geo_header:hover, div.pick_a_map .geo_header:active {
   color: #58266f;
   font-size: 20px;
   line-height: 22px;
-  font-family: 'JohnDoe',Helvetica,Arial,sans-serif;
+  font-family: 'Freight',Helvetica,Arial,sans-serif;
   text-align: center;
   border-radius: 0;
   display: block;
@@ -627,7 +627,7 @@ span.region_name_page {
 #city_section_link, 
 #location_section_link, 
 #type_section_link {
-  font-size: 14px;
+  font-size: 18px;
   background: #FBFBFB;
   border: 1px solid #312f2d;
   color: #642501;
@@ -635,24 +635,25 @@ span.region_name_page {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   box-sizing: border-box;
+  margin-left: 5px;
 }
 .section {
   padding: 7px 5px 3px;
   margin-top: 30px;
   height: 33px;
-  background-color: #d3d1ce;
+  background-color: #dbc9b6;
 }
 #other_search_options_link:active {
    border-top-color: #484848;
    background: #484848;
 }
 #other_search_options {
-  padding: 0px 0px 4px 6px;
+  padding: 2px 0px 4px 6px;
   float: left;
   width: 100%;
 }
 #other_search_options a {
-  padding: 0px 3px 2px;
+  padding: 0px 6px 2px;
 } 
 #other_search_options a:hover {
   background: #853102;
@@ -671,6 +672,9 @@ span.region_name_page {
   font-family: "Fira Mono";
   font-weight: normal;
 }
+#locations .darkb {
+  font-size: 18px;
+}
 #locations {
   margin-top: 10px;
 }
@@ -685,7 +689,7 @@ span.region_name_page {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   padding-top: 4px;
-  background-color: #fffef2;
+  background-color: #ece2d8;
   box-shadow: 0 10px 10px rgba(90, 100, 117, 0.5);
 }
 #lookup_map, #container {
@@ -713,7 +717,7 @@ span.region_name_page {
 }
 .location_link {
   cursor: pointer;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: normal;
   padding: 2px 2px 2px;
   margin-top: 5px;
@@ -754,8 +758,8 @@ a.active_section_link:hover {
   padding-right: 5px;
 }
 .name {
-  font-size: 18px;
-  line-height: 18px;
+  font-size: 24px;
+  line-height: 24px;
   height: 100%;
   color: #433A3A;
   background-color: #FCF3EA;
@@ -763,12 +767,11 @@ a.active_section_link:hover {
   border-radius: 0 5px 0 0;
   -moz-border-radius: 0 5px 0 0;
   -webkit-border-radius: 0 5px 0 0;
-  font-weight: 700;
 }
 .address, .address_full {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 16px;
-  font-family: "Fira Mono";
+  font-family: "Freight-MedSC";
 }
 li.address {
   padding: 2px 0 2px 5px;
@@ -780,43 +783,41 @@ li.address_full {
   width: 435px;
 }
 .website {
-  font-weight: bold;
   float: left;
   width: 450px;
+  font-family: "Freight-Med";
 }
 .machine_name {
-  font-weight: bold;
   float: left;
   background-color: #e49036;
   color: #ffffff;
-  font-size: 22px;
-  line-height: 26px;
+  font-size: 26px;
+  line-height: 28px;
   height: 100%;
-  padding: 0 5px 3px;
+  padding: 3px 15px 3px 5px;
   width: 100%;
-  margin-left: -10px;
-  font-family: "JohnDoe";
+  margin-left: -20px;
+  font-family: "Freight";
 }
 .machine_name:hover {
   background-color: #e79e55;
 }
 .machine_names {
   color: #433A3A;
-  font-size: 14px;
-  padding: 0 0 15px 0 !important;
-  line-height: 18px;
+  font-size: 18px;
+  padding: 0 0 15px 10px !important;
+  line-height: 20px;
   background: #FEFBF8;
-  font-weight: bold;
 }
 .machine_names:hover { 
   background-color: #fcf3ea;
 }
 .address_name {
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 16px;
+  line-height: 16px;
 }
 span.machine_year_man {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: normal;
   font-style: italic;
   color: #433A3A;
@@ -847,7 +848,8 @@ span.machine_year_man {
   border-bottom: 1px solid #888;
 }
 .pintips a {
-  font-family: "Fira Mono";
+  font-family: "Freight-MedSC";
+  font-size: 18px;
 }
 .pintips a:after {
   content: "";
@@ -950,7 +952,7 @@ form.remove_machine_condition {
   border-top: 2px solid #d6c1aa;
   border-bottom: 2px solid #d6c1aa;
   margin-top: 5px;
-  font-family: 'JohnDoe';
+  font-family: 'Freight';
   font-weight: normal;
 }
 .machine_condition_display_lmx .condition_button:hover {
@@ -1058,7 +1060,7 @@ br.clear {
   font-weight: normal;
   color: #f9f9f9;
   cursor: pointer;
-  font-family: "JohnDoe";
+  font-family: "Freight-MedSC";
   border-top: 1px solid #5c472c;
   border-bottom: 1px solid #5c472c;
 }
@@ -1094,7 +1096,7 @@ br.clear {
 }
 .search_result {
   height: 100%;
-  background-color: #DDDDDD;
+  background-color: #ece2d8;
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -1337,11 +1339,14 @@ input#initials {
 }
 .location_type, .operator {
   color: #666666;
-  font-size: 14px;
-  padding: 2px 0;
+  font-size: 16px;
+  padding: 0 0 2px;
   line-height: 16px;
   font-weight: normal !important;
   background-color: #F3F2F2;
+}
+.location_type li {
+  margin-top: 5px;
 }
 .edit_mode {
   font-size: 14px;
@@ -1357,7 +1362,7 @@ input#initials {
   padding: 0 10px;
   background: #F3F2F2;
   font-size: 13px;
-  line-height: 16px;
+  line-height: 18px;
   height: 50px;
   font-style: italic;
   font-weight: normal;
@@ -1366,7 +1371,7 @@ input#initials {
 }
 .confirm_location span.last_updated {
   font-style: normal;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: bold;
   display: block;
   padding: 15px 5px;
@@ -1375,7 +1380,7 @@ input#initials {
 }
 .confirm_location span .last_updated_username {
   color: #441e56;
-  font-family: 'JohnDoe',Helvetica,Arial,sans-serif;
+  font-family: 'Freight',Helvetica,Arial,sans-serif;
   font-size: 15px;
 }
 .confirm_location:hover {
@@ -1413,11 +1418,11 @@ input#score {
   margin-left: 9px;
 }
 .location_detail {
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 12px;
+  line-height: 14px;
   font-weight: normal;
   height: 100%;
-  font-family: "Fira Mono";
+  font-family: "Freight-MedSC";
   border-bottom: 2px solid #987673;
   border-right: 2px solid #B59C9A;
   border-left: 1px solid #987673;
@@ -1453,6 +1458,7 @@ input#score {
   display: block;
   font-size: 13px;
   line-height: 15px;
+  font-family: "Fira Mono"
 }
 .location_actual_description {
   float: left;
@@ -1505,7 +1511,7 @@ input#score {
   cursor: pointer;
 } 
 .desc_edit_location {
-  padding: 0 0 5px 10px;
+  padding: 0 10px 5px 10px;
 }
 .show_location_detail_location {
   padding: 0;
@@ -1592,7 +1598,7 @@ input#score {
 #location_maker label, #contact_maker label {
   display: block;
   color: #2E2322;
-  font-family: "JohnDoe";
+  font-family: "Freight";
 }
 #location_maker ul {
   width: 600px;
@@ -1679,10 +1685,10 @@ a.apps_link:hover {
   background-color: #f4eee8;
 }
 .event_info {
-  font-size: 16px;
+  font-size: 18px;
   padding-left: 10px;
   list-style-type: none;
-  font-family: "JohnDoe";
+  font-family: "Freight";
 }
 .event_description {
   font-size: 12px;
@@ -1726,7 +1732,6 @@ a.apps_link:hover {
 .location_search .info {
   font-family: Helvetica;
   font-weight: normal;
-  margin: 0 -5px;
 }
 .right_column_outer .links_column {
   min-height: 50px;
@@ -1762,7 +1767,7 @@ a.apps_link:hover {
 /** Map/intro **/
 
 .hello, .name, .intro, #intro .hello {
-  font-family: 'JohnDoe',Helvetica,Arial,sans-serif;
+  font-family: 'Freight',Helvetica,Arial,sans-serif;
 }
 #intro {
   font-family: "Fira Mono";
@@ -1773,15 +1778,11 @@ a.apps_link:hover {
 #intro .darkb {
   font-family: "Fira Mono";
   font-weight: 700;
-}
-#intro .hello,
-#intro .to_begin{
-  font-weight: bold;
+  font-size: 16px;
 }
 .to_begin {
   margin-top: 10px;
-  font-family: 'JohnDoe';
-  font-weight: bold;
+  font-family: 'Freight';
 }
 @-webkit-keyframes leftToRight {
     0% {
@@ -2041,19 +2042,17 @@ img.header_image {
 }
 .black_text {
   color: #383838;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 16px;
   margin-top: 0;
 }
 #map_summaries {
   margin: 0 0 0 320px;
 }
 .map_summary {
-  height: 160px;
+  height: 100px;
   width: 160px;
   text-align: center;
-  color: #5c462c;
-  font-weight: bold;
+  color: #735737;
   border: 5px solid #DECEB9;
   float: left;
   margin: 0 10px 10px 0;
@@ -2069,12 +2068,14 @@ img.header_image {
 }
 div.map_summary_info img {
   position: relative;
-  height: 60px;
+  height: 30px;
 }
 span.map_summary_info {
-  position: absolute;
-  margin-top: -60px;
-  margin-left: 20px;
+  margin-top: -35px;
+}
+.map_summary_info {
+  display: block;
+  margin-top: 5px;
 }
 .map_summary .dark {
   font-weight: normal;
@@ -2089,10 +2090,6 @@ span.map_summary_info {
   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#90f4eee7, endColorstr=#90f4eee7);
   /* For IE 8*/
   -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#90f4eee7, endColorstr=#90f4eee7);
-}
-.map_summary_info {
-  display: block;
-  margin-top: 10px;
 }
 .itemBackground, .itemLink {
   display: none;
