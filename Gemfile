@@ -50,19 +50,11 @@ end
 group :test do
   gem 'capybara'
   gem 'coveralls', require: false
-  gem 'cucumber'
-  gem 'cucumber_factory'
-  gem 'cucumber-rails', require: false
-  gem 'factory_girl'
   gem 'factory_girl_rails', require: false
   gem 'launchy'
   gem 'poltergeist', '~> 1.10'
-  gem 'rspec'
   gem 'rspec-rails'
   gem 'rubocop', require: false
-  gem 'selenium'
-  gem 'selenium-client'
-  gem 'selenium-webdriver', '~> 2.33.0'
   gem 'simplecov', require: false
   gem 'spork'
   gem 'timecop'
@@ -72,8 +64,6 @@ group :development, :test do
   gem 'bullet'
   gem 'database_cleaner'
   gem 'email_spec'
-  gem 'gherkin'
-  gem 'pickle'
   gem 'rack_session_access'
   gem 'ruby-growl'
 end
