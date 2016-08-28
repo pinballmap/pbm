@@ -7,8 +7,8 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     @machine = FactoryGirl.create(:machine, name: 'Cleo')
     @lmx = FactoryGirl.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
 
-    @score_rank_1 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, rank: 1, score: 123, user_id: FactoryGirl.create(:user, username: 'ssw').id)
-    @score_rank_2 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, rank: 2, score: 100, user_id: nil)
+    @score_1 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, score: 123, user_id: FactoryGirl.create(:user, username: 'ssw').id)
+    @score_2 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user_id: nil)
   end
 
   describe '#index' do
@@ -45,11 +45,9 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
       expect(scores.size).to eq(2)
 
-      expect(scores[0]['rank']).to eq(1)
       expect(scores[0]['score']).to eq(123)
       expect(scores[0]['username']).to eq('ssw')
 
-      expect(scores[1]['rank']).to eq(2)
       expect(scores[1]['score']).to eq(100)
       expect(scores[1]['username']).to eq('')
     end
@@ -82,7 +80,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     it 'creates a new score -- authed' do
       user = FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a')
 
-      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 1234, rank: 1, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 1234, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
       expect(response.status).to eq(201)
 
@@ -90,13 +88,12 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
       new_score = MachineScoreXref.last
 
-      expect(new_score.rank).to eq(1)
       expect(new_score.score).to eq(1234)
       expect(new_score.location_machine_xref_id).to eq(@lmx.id)
       expect(new_score.user_id).to eq(user.id)
 
       first_score = MachineScoreXref.first
-      expect(first_score.rank).to eq(2)
+      expect(first_score.score).to eq(123)
     end
   end
 end
