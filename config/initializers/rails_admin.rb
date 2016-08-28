@@ -271,7 +271,7 @@ RailsAdmin.config do |config|
       field :phone, :string 
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.region_id, :object_type => 'operator'}
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.is_super_admin ? nil : Authorization.current_user.region_id, :object_type => 'operator'}
         end
       end
     end
