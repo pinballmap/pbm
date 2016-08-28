@@ -41,15 +41,15 @@ class Region < ActiveRecord::Base
     @high_rollers = {}
 
     machine_score_xrefs.each do |msx|
-      (rollers[msx.initials] ||= []) << msx
+      (rollers[msx.user ? msx.user.username : ''] ||= []) << msx
     end
 
     rollers.sort { |a, b| b[1].size <=> a[1].size }.each do |roller|
-      initials = roller[0]
+      username = roller[0]
       scores = roller[1]
       scores.sort! { |a, b| b.created_at <=> a.created_at }
 
-      @high_rollers[initials] = scores unless @high_rollers.size == n
+      @high_rollers[username] = scores unless @high_rollers.size == n
     end
 
     @high_rollers

@@ -4,7 +4,7 @@ class MachineScoreXref < ActiveRecord::Base
   has_one :location, through: :location_machine_xref
   has_one :machine, through: :location_machine_xref
 
-  attr_accessible :initials, :rank, :score, :location_machine_xref_id
+  attr_accessible :rank, :score, :location_machine_xref_id
 
   scope :region, lambda {|name|
     r = Region.find_by_name(name)

@@ -18,7 +18,6 @@ module Api
       param :location_machine_xref_id, Integer, desc: 'Location machine identifier for high score', required: true
       param :score, String, desc: 'A pinball machine high score', required: false
       param :rank, Integer, desc: 'The rank on the machine, GC is 1, 1st is 2, etc.', required: false
-      param :initials, String, desc: 'Initials of the high score holder', required: false
       formats ['json']
       def create
         lmx = LocationMachineXref.find(params[:location_machine_xref_id])
@@ -32,7 +31,6 @@ module Api
 
         msx.score = score
         msx.rank = params[:rank]
-        msx.initials = params[:initials]
         msx.user = user
 
         if msx.save

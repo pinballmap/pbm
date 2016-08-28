@@ -67,9 +67,11 @@ describe PagesController do
       another_portland_lmx = FactoryGirl.create(:location_machine_xref, location: portland_location, machine: machine)
       FactoryGirl.create(:location_machine_xref, location: chicago_location, machine: machine)
 
-      FactoryGirl.create(:machine_score_xref, location_machine_xref: portland_lmx, score: 100, initials: 'ssw', rank: 1)
-      FactoryGirl.create(:machine_score_xref, location_machine_xref: portland_lmx, score: 90, initials: 'rtgt', rank: 2)
-      FactoryGirl.create(:machine_score_xref, location_machine_xref: another_portland_lmx, score: 200, initials: 'ssw', rank: 1)
+      ssw_user = FactoryGirl.create(:user, username: 'ssw')
+      rtgt_user = FactoryGirl.create(:user, username: 'rtgt')
+      FactoryGirl.create(:machine_score_xref, location_machine_xref: portland_lmx, score: 100, user: ssw_user, rank: 1)
+      FactoryGirl.create(:machine_score_xref, location_machine_xref: portland_lmx, score: 90, user: rtgt_user, rank: 2)
+      FactoryGirl.create(:machine_score_xref, location_machine_xref: another_portland_lmx, score: 200, user: ssw_user, rank: 1)
 
       visit '/portland/high_rollers'
 
