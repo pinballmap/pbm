@@ -17,7 +17,6 @@ module Api
       api :POST, '/api/v1/machine_score_xrefs.json', 'Enter a new high score for a machine'
       param :location_machine_xref_id, Integer, desc: 'Location machine identifier for high score', required: true
       param :score, String, desc: 'A pinball machine high score', required: false
-      param :rank, Integer, desc: 'The rank on the machine, GC is 1, 1st is 2, etc.', required: false
       formats ['json']
       def create
         lmx = LocationMachineXref.find(params[:location_machine_xref_id])
@@ -30,11 +29,9 @@ module Api
         score.gsub!(/[^0-9]/, '')
 
         msx.score = score
-        msx.rank = params[:rank]
         msx.user = user
 
         if msx.save
-          msx.sanitize_scores
           return_response(msx, 'machine_score_xref', [], [:username], 201)
         else
           return_response(msx.errors.full_messages, 'errors')
@@ -50,7 +47,7 @@ module Api
       def show
         lmx = LocationMachineXref.find(params[:id])
 
-        msxes = MachineScoreXref.where(location_machine_xref_id: lmx.id).order(:rank)
+        msxes = MachineScoreXref.where(location_machine_xref_id: lmx.id).order('score desc')
         return_response(msxes, 'machine_scores', [], [:username])
 
         rescue ActiveRecord::RecordNotFound

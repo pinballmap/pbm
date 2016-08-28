@@ -4,7 +4,7 @@ class MachineScoreXref < ActiveRecord::Base
   has_one :location, through: :location_machine_xref
   has_one :machine, through: :location_machine_xref
 
-  attr_accessible :rank, :score, :location_machine_xref_id
+  attr_accessible :score, :location_machine_xref_id
 
   scope :region, lambda {|name|
     r = Region.find_by_name(name)
@@ -14,22 +14,6 @@ class MachineScoreXref < ActiveRecord::Base
       and locations.region_id = #{r.id}
     ")
   }
-
-  ENGLISH_SCORES = {
-    1 => 'GC',
-    2 => '1st',
-    3 => '2nd',
-    4 => '3rd',
-    5 => '4th'
-  }
-
-  def sanitize_scores
-    location_machine_xref.machine_score_xrefs.each do
-      MachineScoreXref.delete_all(['location_machine_xref_id = ? and rank < ? and score < ?', location_machine_xref_id, rank, score])
-      MachineScoreXref.delete_all(['location_machine_xref_id = ? and rank > ? and score > ?', location_machine_xref_id, rank, score])
-      MachineScoreXref.delete_all(['location_machine_xref_id = ? and rank = ? and id != ?', location_machine_xref_id, rank, id])
-    end
-  end
 
   def username
     user ? user.username : ''
