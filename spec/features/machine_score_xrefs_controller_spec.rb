@@ -18,7 +18,7 @@ describe MachineScoreXrefsController do
 
   describe 'add machine scores', type: :feature, js: true do
     before(:each) do
-      @user = FactoryGirl.create(:user)
+      @user = FactoryGirl.create(:user, username: 'cap')
       page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
     end
 
@@ -29,14 +29,13 @@ describe MachineScoreXrefsController do
 
       page.find("div#add_scores_lmx_banner_#{lmx.id}").click
       fill_in('score', with: 1234)
-      fill_in('initials', with: 'cap')
       select('GC', from: 'rank')
       click_on('Add Score')
 
       sleep(1)
 
       expect(lmx.machine_score_xrefs.first.score).to eq(1234)
-      expect(lmx.machine_score_xrefs.first.initials).to eq('cap')
+      expect(lmx.machine_score_xrefs.first.username).to eq('cap')
       expect(lmx.machine_score_xrefs.first.rank).to eq(1)
     end
 
@@ -47,14 +46,13 @@ describe MachineScoreXrefsController do
 
       page.find("div#add_scores_lmx_banner_#{lmx.id}").click
       fill_in('score', with: '1,234')
-      fill_in('initials', with: 'cap')
       select('GC', from: 'rank')
       click_on('Add Score')
 
       sleep(1)
 
       expect(lmx.machine_score_xrefs.first.score).to eq(1234)
-      expect(lmx.machine_score_xrefs.first.initials).to eq('cap')
+      expect(lmx.machine_score_xrefs.first.username).to eq('cap')
       expect(lmx.machine_score_xrefs.first.rank).to eq(1)
     end
   end
@@ -93,7 +91,7 @@ describe MachineScoreXrefsController do
 
   describe 'displays scores correctly', type: :feature, js: true do
     it 'honors the hide/show of the display area' do
-      @user = FactoryGirl.create(:user)
+      @user = FactoryGirl.create(:user, username: 'cap')
       page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
 
       lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
@@ -104,7 +102,6 @@ describe MachineScoreXrefsController do
 
       page.find("div#add_scores_lmx_banner_#{lmx.id}").click
       fill_in('score', with: 1234)
-      fill_in('initials', with: 'cap')
       select('GC', from: 'rank')
       click_on('Add Score')
 

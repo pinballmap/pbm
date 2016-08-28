@@ -9,9 +9,6 @@
       = label_tag :rank, 'Rank: '
       = select_tag :rank, options_for_select({'' => '', 'GC' => 1, '1st' => 2, '2nd' => 3, '3rd' => 4, '4th' => 5}.sort {|a,b| a[1].to_i <=> b[1].to_i })
       %br/
-      = label_tag :initials, 'Initials: '
-      = text_field_tag :initials
-      %br/
       = submit_tag 'Add Score', :id => 'add_score'
 
     :javascript
