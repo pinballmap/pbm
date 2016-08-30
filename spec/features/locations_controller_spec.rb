@@ -23,7 +23,7 @@ describe LocationsController do
       sleep 1
 
       expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
-      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')} by ssw")
+      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')} by ssw")
     end
 
     it 'displays no username when it was last updated by a non-user' do
@@ -32,7 +32,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
+      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')}")
     end
   end
   describe 'remove machine - not authed', type: :feature, js: true do
@@ -92,7 +92,7 @@ describe LocationsController do
 
       expect(LocationMachineXref.all).to eq([])
       expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
-      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
+      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')}")
 
       expect(UserSubmission.count).to eq(2)
       submission = UserSubmission.second
