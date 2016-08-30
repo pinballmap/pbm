@@ -17,17 +17,14 @@ describe PagesController do
 
       visit '/portland/events'
 
-      expect(page).to have_content('event 6 @ External location')
-      expect(page).to have_content('event 5 @ Test Location Name')
-      expect(page).to have_content("event 4 @ Test Location Name #{Date.today - 1}")
-      expect(page).to have_content("event 3 @ Test Location Name #{Date.today}")
-      expect(page).to have_content("event 1 @ Test Location Name #{Date.today + 1}")
+      expect(page).to have_content("event 3 @ Test Location Name #{Date.today.strftime('%b-%d-%Y')}")
+      expect(page).to have_content("event 1 @ Test Location Name #{(Date.today + 1).strftime('%b-%d-%Y')}")
       expect(page).to have_content('event 2 @ Test Location Name')
     end
 
     it 'is case insensitive for region name' do
       chicago_region = FactoryGirl.create(:region, name: 'chicago', full_name: 'Chicago')
-      FactoryGirl.create(:event, region: chicago_region, name: 'event 1')
+      FactoryGirl.create(:event, region: chicago_region, name: 'event 1', start_date: Date.today)
 
       visit '/CHICAGO/events'
 
