@@ -1,2 +1,2 @@
 - lmx.machine_score_xrefs.collect! do |msx|
-  %span.high_score_new_line= "User: #{msx.user ? msx.user.username : 'Unknown'}; Score #{number_with_delimiter(msx.score, :delimiter => ",")}; Date #{msx.created_at ? msx.created_at.strftime("%m-%d-%Y") : ''}"
+  %span.high_score_new_line= "User: #{msx.user ? msx.user.username : 'Unknown'}; Score: #{number_with_delimiter(msx.score, :delimiter => ",")}; Date: #{msx.created_at ? msx.created_at.strftime("%b-%d-%Y") : ''}"
