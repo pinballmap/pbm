@@ -15,5 +15,5 @@
         = banner("user_#{count}", 'Show Score Detail')
         %div{:style => 'display:none', :id => "user_#{count}"}
           - roller[1].each do |msx|
-            %p.score_list #{msx.location_machine_xref.location.name}'s #{msx.location_machine_xref.machine.name} with #{msx.score} on #{msx.created_at}
+            %p.score_list #{msx.location_machine_xref.location.name}'s #{msx.location_machine_xref.machine.name} with #{msx.score} on #{msx.created_at.strftime("%b-%d-%Y")}
       - count += 1
