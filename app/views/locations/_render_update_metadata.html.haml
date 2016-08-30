@@ -3,7 +3,7 @@
     %li.address_full= link_to l.phone, "tel:" + l.phone, :type => 'tel'
     .clear
   - else
-    %li.address_full= l.phone
+    %li.phone= l.phone
     .clear
   %div.operator_type
     - if (l.operator_id)
@@ -24,7 +24,7 @@
         %span.bold #{l.location_type.name}
   .clear
   - if l.website
-    %li.address_full= link_to l.website, l.website, :class => 'website', :target => 'blank'
+    %li.website= link_to l.website, l.website, :class => 'website', :target => 'blank'
   .clear
 %div[l, :metadata_edit]{:style => 'display:none'}
   = form_tag update_metadata_locations_path(:action => 'update_metadata', :id => l.id, :region => @region.name), :id => "update_metadata_#{l.id}", :method => 'get' do

@@ -1,7 +1,7 @@
 %div.machine_condition_text
   %span.machine_condition_text= lmx.current_condition ? lmx.current_condition.comment.to_s : ''
   - if (lmx.current_condition && !lmx.current_condition.created_at.nil?)
-    %span.machine_condition_date= 'Updated: ' + lmx.current_condition.created_at.strftime("%d-%b-%Y") + ((lmx.current_condition.user_id) ? " by #{lmx.current_condition.user.username}" : '')
+    %span.machine_condition_date= 'Updated: ' + lmx.current_condition.created_at.strftime("%b-%d-%Y") + ((lmx.current_condition.user_id) ? " by #{lmx.current_condition.user.username}" : '')
 - if user_signed_in?
   %div[lmx, :machine_condition]
     %div.comment_image

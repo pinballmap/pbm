@@ -14,7 +14,7 @@
     - if user_signed_in?
       =image_tag('confirm.png', :alt => 'Confirm Location is Up To Date')
   %span.last_updated{:id => "last_updated_location_#{l.id}"} 
-    #{l.date_last_updated ? "Location last updated: #{l.date_last_updated}" : ''} 
+    #{l.date_last_updated ? "Location last updated: #{l.date_last_updated.strftime("%b-%d-%Y")}" : ''} 
     #{l.last_updated_by_user ? "by " : ''}
     %span.last_updated_username
       #{l.last_updated_by_user ? "#{l.last_updated_by_user.username}" : ''}
