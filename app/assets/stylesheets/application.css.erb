@@ -14,6 +14,10 @@
   font-family: 'Freight-MedSC';
   src: url(<%= asset_path "freight-sans-medium-sc-opentype.otf" %>);
 }
+@font-face {
+  font-family: 'Maitree';
+  src: url(<%= asset_path "Maitree-400.otf" %>);
+}
 * {
   outline: none;  
 }
@@ -29,7 +33,7 @@ body {
 }
 p {
   font-size: 16px;
-  line-height: 20px;
+  line-height: 22px;
 }
 p a {
   background-color: #ebeae9;
@@ -57,7 +61,7 @@ input, textarea {
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
-  font-family: "Fira Mono",Courier,serif;
+  font-family: "Maitree","Times New Roman", Times,serif;
 }
 select {
   font-family: Helvetica,Arial,sans-serif;
@@ -170,12 +174,15 @@ ul.twitter {
 .twitter li {
   padding: 5px 0;
   border-bottom: 1px solid #DECEB9;
-  font-family: "Fira Mono",Courier,serif;
+  font-family: "Maitree","Times New Roman", Times,serif;
   color: #452809;
   font-size: 15px;
 }
 .twitter li:nth-child(5) { 
   border: none;
+}
+.home_intro .twitter_box {
+  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
 }
 p.notice {
   color: #e04f1a;
@@ -253,7 +260,7 @@ div.dont_pick_a_map {
 div.pick_a_map .apps_header, 
 div.pick_a_map .blog_header, 
 div.pick_a_map .store_header {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 36px;
   float: left;
   padding: 5px 10px 8px;
@@ -277,7 +284,7 @@ div.pick_a_map .store_header {
   box-sizing: border-box;
 }
 .home_intro p, .why_login {
-  font-family: "Fira Mono",Courier,serif;
+  font-family: "Maitree","Times New Roman", Times,serif;
 }
 .home_intro_container {
   float: left;
@@ -500,11 +507,10 @@ div.pick_a_map .blog_header {
   border-left: 1px solid #d6c0aa;
 }
 .closest_locations, .geo_header, .login {
-  font-size: 15px;
+  font-size: 18px;
   line-height: 16px;
   padding: 10px 6px;
-  margin: 7px 5px;
-  border: 4px solid #d6c0aa;
+  margin: 11px 5px 0;
   background-color: #ece2d8;
   text-shadow: 1px 1px 5px #CCCCCC;
   -webkit-box-sizing: border-box;
@@ -550,7 +556,7 @@ span.closest_locations, .login {
   color: red;
 }
 div.pick_a_map .login_home {
-  margin: 2px 5px;
+  margin: 6px 5px;
   float: right;
 }
 .login_alert {
@@ -564,7 +570,7 @@ div.login_alert {
   text-align: center;
 }
 .geo_header {
-  margin: 2px 5px;
+  margin: 6px 5px;
   float: right;
 }
  #header .menu_link ul li.blog_header_region a, 
@@ -575,14 +581,12 @@ div.login_alert {
 }
 div.pick_a_map .blog_header:hover, div.pick_a_map .blog_header:active,
 div.pick_a_map .apps_header:hover, div.pick_a_map .apps_header:active,
-div.pick_a_map .store_header:hover, div.pick_a_map .store_header:active,
-div.pick_a_map .geo_header:hover, div.pick_a_map .geo_header:active {
+div.pick_a_map .store_header:hover, div.pick_a_map .store_header:active {
   background-color: #dbc9b6;
 }
 .darkb.blog_header a:hover,
 .darkb.apps_header a:hover, 
-.darkb.store_header a:hover,
-.darkb.geo_header a:hover {
+.darkb.store_header a:hover {
   text-decoration: none;
 }
 .region_name, .region_name_page, 
@@ -597,9 +601,24 @@ div.pick_a_map .geo_header:hover, div.pick_a_map .geo_header:active {
   border-radius: 0;
   display: block;
 }
+.region_name_container {
+  height: 45px !important;
+  height: 170px;
+  position: relative;
+}
+.region_name_inner {
+  display: table !important; 
+  position: absolute !important; 
+  height: 45px;
+  width: 160px;
+  margin-left: 5px;
+}
 .region_name {
-  background-color: #FFFCF8;
-  padding: 6px 0;
+  padding: 12px 0 6px;
+  height: 45px;
+  display: table-cell !important;
+  text-align: center;
+  vertical-align: middle;
 }
 .other_regions {
   display: table !important;
@@ -666,7 +685,7 @@ span.region_name_page {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border: 1px solid #9fa7ae;
-  font-family: "Fira Mono",Courier,serif;
+  font-family: "Maitree","Times New Roman", Times,serif;
   font-weight: normal;
 }
 #locations .darkb {
@@ -781,7 +800,7 @@ li.address_full {
 .website {
   float: left;
   width: 450px;
-  font-family: "Fira Mono",Courier,serif;
+  font-family: "Maitree","Times New Roman", Times,serif;
 }
 .machine_name {
   float: left;
@@ -816,7 +835,7 @@ span.machine_year_man {
   font-size: 20px;
   font-weight: normal;
   font-style: italic;
-  color: #433A3A;
+  color: #735737;
 }
 .machine_lmx {
   color: #180e03;
@@ -891,9 +910,10 @@ div.comment_image span.comment_image:hover:after {
 }
 .machine_condition_display_lmx span.machine_condition_date {
   color: #999999;
-  font-size: 12px;
-  margin: 8px 0 2px 0;
+  font-size: 14px;
+  margin: 6px 0;
   display: inline-block;
+  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
 }
 div.machine_condition_text {
   float: left;
@@ -922,6 +942,9 @@ form.remove_machine_condition {
   border-bottom: 1px solid #d0b89f;
   margin-bottom: 8px;
 }
+.machine_condition_new_line .machine_condition {
+  font-family: "Maitree","Times New Roman", Times,serif;
+}
 .machine_condition_display_lmx {
   margin: 5px 0 5px 10px;
   padding: 2px;
@@ -933,7 +956,7 @@ form.remove_machine_condition {
   width: 400px;
   max-width: 400px;
   min-width: 400px;
-  font-family: "Fira Mono",Courier,serif;
+  font-family: "Maitree","Times New Roman", Times,serif;
 }
 .machine_condition_display_lmx .condition_button {
   height: 20px;
@@ -964,7 +987,7 @@ form.remove_machine_condition {
   display: block;
 }
 .machine_condition_display_lmx span {
-  font-family: 'Fira Mono',Courier,serif;
+  font-family: 'Maitree',"Times New Roman", Times,serif;
   padding: 0 5px;
   color: #666666;
 }
@@ -1377,7 +1400,8 @@ input#initials {
 .confirm_location span .last_updated_username {
   color: #441e56;
   font-family: 'Freight',Helvetica,Arial,sans-serif;
-  font-size: 15px;
+  font-size: 20px;
+  font-weight: normal;
 }
 .confirm_location:hover {
   cursor: pointer;
@@ -1428,7 +1452,7 @@ input#score {
 }
 .location_detail .address_full {
   color: #333333;
-  margin: 5px 0;
+  margin: 0 0 5px 0;
 }
 .location_detail_sub {
   padding: 10px;
@@ -1454,7 +1478,7 @@ input#score {
   display: block;
   font-size: 13px;
   line-height: 15px;
-  font-family: "Fira Mono",Courier,serif;
+  font-family: "Maitree","Times New Roman", Times,serif;
 }
 .location_actual_description {
   float: left;
@@ -1555,7 +1579,7 @@ input#score {
   right: 18px;
   bottom: 0;
   z-index: 55;
-  font-family: "Fira Mono",Courier,serif;
+  font-family: "Maitree","Times New Roman", Times,serif;
   font-weight: normal;
 }
 .scrollerScroller {
@@ -1629,7 +1653,7 @@ a.apps_link:hover {
   padding: 0 10px;
   min-height: 575px;
   width: 486px;
-  font-family: "Fira Mono",Courier,serif;
+  font-family: "Maitree","Times New Roman", Times,serif;
 }
 .left_column.secondary {
   text-align:center;
@@ -1690,7 +1714,7 @@ a.apps_link:hover {
   font-size: 12px;
   font-weight: normal;
   color: #55413F;
-  font-family: "Fira Mono",Courier,serif;
+  font-family: "Maitree","Times New Roman", Times,serif;
 }
 #left_column, .left_column, .left_column_about {
   background-color: #ece2d8;
@@ -1705,7 +1729,7 @@ a.apps_link:hover {
   width: 375px;
   margin-top: 10px;
   float: left;
-  font-family: "Fira Mono",Courier,serif;
+  font-family: "Maitree","Times New Roman", Times,serif;
 }
 .left_column_about {
   width: 450px;
@@ -1766,13 +1790,13 @@ a.apps_link:hover {
   font-family: 'Freight',Helvetica,Arial,sans-serif;
 }
 #intro {
-  font-family: "Fira Mono",Courier,serif;
+  font-family: "Maitree","Times New Roman", Times,serif;
 }
 #intro p {
   font-weight: 400;
 }
 #intro .darkb {
-  font-family: "Fira Mono",Courier,serif;
+  font-family: "Maitree","Times New Roman", Times,serif;
   font-weight: 700;
   font-size: 16px;
 }
@@ -2044,49 +2068,36 @@ img.header_image {
 #map_summaries {
   margin: 0 0 0 320px;
 }
+
 .map_summary {
-  height: 100px;
-  width: 160px;
+  height: 120px;
+  width: 170px;
   text-align: center;
-  color: #735737;
-  border: 5px solid #DECEB9;
   float: left;
-  margin: 0 10px 10px 0;
-  background-color:rgba(255,244,231,0.4);
-  /* Fallback for web browsers that doesn't support RGBa */
-  background: rgb(255,244,231) transparent;
-  /* RGBa with 0.7 opacity */
-  background: rgba(255,244,231,0.4);
-  /* For IE 5.5 - 7*/
-  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#40fff4e7, endColorstr=#40fff4e7);
-  /* For IE 8*/
-  -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#40fff4e7, endColorstr=#40fff4e7);
+  margin: 0 10px 0 0;
+  background-image: url(<%= asset_path 'treasure-map.png' %>);
 }
 div.map_summary_info img {
   position: relative;
   height: 30px;
+  margin-top: -10px;
 }
 span.map_summary_info {
-  margin-top: -35px;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: "Maitree","Times New Roman", Times,serif;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: bold;
+  color: #735737;
 }
 .map_summary_info {
   display: block;
-  margin-top: 5px;
+  margin-top: 15px;
 }
 .map_summary .dark {
   font-weight: normal;
 }
 .map_summary:hover {
-  background-color:rgba(244,238,231,0.9);
-  /* Fallback for web browsers that doesn't support RGBa */
-  background: rgb(244,238,231) transparent;
-  /* RGBa with 0.7 opacity */
-  background: rgba(244,238,231,0.9);
-  /* For IE 5.5 - 7*/
-  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#90f4eee7, endColorstr=#90f4eee7);
-  /* For IE 8*/
-  -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#90f4eee7, endColorstr=#90f4eee7);
+  background-image: url(<%= asset_path 'treasure-map-hover.png' %>);
 }
 .itemBackground, .itemLink {
   display: none;
