@@ -42,7 +42,7 @@ describe LocationMachineXrefsController do
 
       expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
       expect(find("#gm_machines_#{@location.id}")).to have_content(@machine_to_add.name)
-      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
+      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')}")
 
       expect(LocationMachineXref.where(location_id: @location.id, machine_id: @machine_to_add.id).first.user_id).to eq(@user.id)
 
@@ -222,9 +222,9 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{(Date.today).strftime('%d-%b-%Y')} by ssw")
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{(Date.today).strftime('%b-%d-%Y')} by ssw")
       expect(Location.find(@lmx.location.id).date_last_updated).to eq(Date.today)
-      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')} by ssw")
+      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')} by ssw")
     end
 
     it 'displays who updated a machine if that data is available' do
@@ -232,7 +232,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("Test Comment Updated: #{(Date.today).strftime('%d-%b-%Y')} by cibw")
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("Test Comment Updated: #{(Date.today).strftime('%b-%d-%Y')} by cibw")
     end
 
     it 'only displays the 6 most recent descriptions' do
