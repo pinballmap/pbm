@@ -33,6 +33,10 @@
         #flash-message{:class => "#{@region ? 'flash_region' : 'flash_home'}"}
           - flash.each do |name, msg|
             = content_tag :div, msg, :id => "flash_#{name}"
+            :javascript
+              $(function () {
+                $("#flash_#{name}").delay(5000).fadeOut("slow");
+              });
 
       = yield
       :javascript
