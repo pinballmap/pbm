@@ -62,7 +62,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
   describe '#create' do
     it 'errors for unknown lmx' do
-      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: -1
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: -1, score: 1234
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
@@ -75,6 +75,13 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq([])
+    end
+
+    it 'return an error if you enter a non-integer score' do
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 'fword', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq('Score can not be blank and must be a numeric value')
     end
 
     it 'creates a new score -- authed' do
