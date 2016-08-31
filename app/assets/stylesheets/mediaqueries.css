@@ -61,19 +61,33 @@
   .closest_locations {
     display:none;
   }
-  div.pick_a_map .login_home {
+}
+
+@media (max-width: 900px) {
+  .login_home a {
     font-size: 12px;
-    width: 75px;
-    margin-top: 0px;
-    line-height: 21px;
-    border: none;
-    background: none;
+    line-height: 12px;
+    padding: 0;
+    text-align: center;
   }
-  .login_slash {
+  .login_home {
+    margin-top: 0px;
+    width: 60px;
+    padding: 0;
+    line-height: 19px;
+    text-align: center;
+    border: none;
+  }
+  .login_home .login_slash {
     display: none;
   }
-  .login {
-    padding: 2px 2px;
+  .geo_header {
+    font-size: 12px;
+    width: 85px;
+    margin-top: 8px;
+    line-height: 13px;
+    padding: 3px 4px 4px;
+    text-align: center;
   }
 }
 
@@ -82,7 +96,7 @@
   .left_column.secondary, .left_column_outer, .left_column {
     float: none;
     margin: 0px auto 10px;
-    padding: 1px 0 10px;
+    padding: 1px 10px 10px;
     min-height: auto;
   }
   .left_column_about {
@@ -100,28 +114,19 @@
   .right_column_outer .links_column {
     width: 450px;
   }
-}
-
-@media (max-width: 1130px) {
-  div.pick_a_map .apps_header, div.pick_a_map .blog_header, 
-  div.pick_a_map .store_header, div.pick_a_map .geo_header {
-    font-size: 13px;
-    line-height: 11px;
-    border: none;
-    border-top: none;
-  }
-  div.pick_a_map .geo_header {
-    float: left;
-    padding: 5px 10px 8px;
-    margin: 0 4px 0 0;
-  }
-  div.pick_a_map .geo_header {
-    padding-left: 10px;
-    padding-right: 10px;
+  .event_column {
+    width: 395px;
   }
 }
 
-@media (max-width: 1065px) {
+@media (max-width: 1055px) {
+
+  .blog_header_region {
+    display: none;
+  }
+}
+
+@media (max-width: 1085px) {
   .login_region a.loggedin {
     font-size: 15px;
   }
@@ -135,7 +140,7 @@
     margin-top: 5px;
     width: 60px;
     padding: 0;
-    line-height: 20px;
+    line-height: 19px;
     text-align: center;
     border: none;
   }
@@ -149,19 +154,6 @@
     line-height: 13px;
     padding: 3px 4px 4px;
     text-align: center;
-    border: none;
-    margin-top: 7px;
-  }
-  .header_buttons .closest_locations, 
-  .header_buttons .geo_header, 
-  .header_buttons .login {
-    padding: 4px 6px;
   }
 }
 
-@media (max-width: 1055px) {
-
-  .blog_header_region {
-    display: none;
-  }
-}
