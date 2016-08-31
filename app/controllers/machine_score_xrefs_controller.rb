@@ -3,10 +3,15 @@ class MachineScoreXrefsController < InheritedResources::Base
   has_scope :region
 
   def create
-    msx = MachineScoreXref.create(location_machine_xref_id: params[:location_machine_xref_id])
-
     score = params[:score]
+
+    return if score.nil? || score.empty?
+
     score.gsub!(/[^0-9]/, '')
+
+    return if score.nil? || score.empty? || (score.to_i == 0)
+
+    msx = MachineScoreXref.create(location_machine_xref_id: params[:location_machine_xref_id])
 
     msx.score = score
     msx.user = current_user

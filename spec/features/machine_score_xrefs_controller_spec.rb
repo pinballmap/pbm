@@ -51,6 +51,20 @@ describe MachineScoreXrefsController do
       expect(lmx.machine_score_xrefs.first.score).to eq(1234)
       expect(lmx.machine_score_xrefs.first.username).to eq('cap')
     end
+
+    it 'ignores non-numeric scores' do
+      lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+
+      page.find("div#add_scores_lmx_banner_#{lmx.id}").click
+      fill_in('score', with: 'fword')
+      click_on('Add Score')
+
+      sleep(1)
+
+      expect(lmx.machine_score_xrefs.size).to eq(0)
+    end
   end
 
   describe 'feeds', type: :feature, js: true do

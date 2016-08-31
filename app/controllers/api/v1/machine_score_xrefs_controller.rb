@@ -19,14 +19,24 @@ module Api
       param :score, String, desc: 'A pinball machine high score', required: false
       formats ['json']
       def create
+        score = params[:score]
+
+        if score.nil? || score.empty?
+          return_response('Score can not be blank and must be a numeric value', 'errors')
+          return
+        end
+
+        score.gsub!(/[^0-9]/, '')
+
+        if score.nil? || score.empty? || (score.to_i == 0)
+          return_response('Score can not be blank and must be a numeric value', 'errors')
+          return
+        end
+
         lmx = LocationMachineXref.find(params[:location_machine_xref_id])
-
-        msx = MachineScoreXref.create(location_machine_xref_id: lmx.id)
-
         user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
 
-        score = params[:score]
-        score.gsub!(/[^0-9]/, '')
+        msx = MachineScoreXref.create(location_machine_xref_id: lmx.id)
 
         msx.score = score
         msx.user = user
