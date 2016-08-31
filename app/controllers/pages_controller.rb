@@ -165,4 +165,8 @@ class PagesController < ApplicationController
 
     [ids, lats, lons, contents]
   end
+
+  def letsencrypt
+    render text: "g0Rv9SWhRcOnEsurGS_3ij3kR_hULHGIJSWy6G3a8a4.lVnmXXRLAFfhzkcpSTs8X89vkGiRN6NNNKNCtXNinJg"
+  end
 end
