@@ -43,6 +43,17 @@
               %div= recaptcha_tags
             %li.submit{:style => "clear:both;"}
               %input{:type => "submit", :value => "Submit Comment", :class => "submit_button"}
+    - if (@region.operators.size > 0)
+      .left_column_about.operators
+        %p.darkb.links_category 
+          Operators in this Region
+          - @region.operators.each do |o|
+            - if o.locations 
+              %p.links_content
+                - if ((o.website && o.website.empty?) || (!o.website))
+                  #{o.name}
+                - else
+                  =link_to "#{o.name}", "#{o.website}", :target => "_blank"
   .right_column_outer
     .right_column.links_column
       %p.darkb.links_category Top 10 Machines
@@ -61,16 +72,5 @@
               %span #{l.description}
       - else
         %p Links coming soon...
-    - if (@region.operators.size > 0)
-      .right_column.links_column
-        %p.darkb.links_category 
-          Operators in this Region
-          - @region.operators.each do |o|
-            - if o.locations 
-              %p.links_content
-                - if ((o.website && o.website.empty?) || (!o.website))
-                  #{o.name}
-                - else
-                  =link_to "#{o.name}", "#{o.website}", :target => "_blank"
 
                
