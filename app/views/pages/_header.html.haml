@@ -1,6 +1,6 @@
 - if !mobile_device?
   #header{:class => "#{@region ? '' : 'header_home'}"}
-    =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
+    =link_to image_tag('pinballmapcom_bluetext.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
     - if (@region)
       %div{:class => "header_buttons"}
         %span.menu_link
@@ -55,7 +55,7 @@
 - else
   #header{:class => "#{@region ? '' : 'header_home'}"}
     - if !(@region)
-      =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
+      =link_to image_tag('pinballmapcom_bluetext.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
       %span.menu_link
         %div.login.login_home
           %span.darkb
@@ -83,9 +83,9 @@
             - else 
               = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out"
         - if user_signed_in?
-          =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'} header_image_login", :alt => 'Pinball Map Logo'), root_path
+          =link_to image_tag('pinballmapcom_bluetext.png', :class => "#{@region ? 'header_image' : 'header_image_home'} header_image_login", :alt => 'Pinball Map Logo'), root_path
         - else 
-          =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
+          =link_to image_tag('pinballmapcom_bluetext.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
         %ul#nav
           %li.first_header_link=link_to 'Suggest Location', suggest_path
           %li=link_to 'About', about_path
