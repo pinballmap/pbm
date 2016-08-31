@@ -148,4 +148,6 @@ Pbm::Application.routes.draw do
   get '/milwaukee' => redirect('/wisconsin')
 
   root to: 'pages#home'
+
+  get '/.well-known/acme-challenge/:id' => 'pages#letsencrypt'
 end
