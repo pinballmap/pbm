@@ -81,16 +81,20 @@
 
   .left_column.secondary, .left_column_outer, .left_column {
     float: none;
-    margin: 70px auto 10px;
+    margin: 0px auto 10px;
+    padding: 20px 0 20px;
+    min-height: auto;
   }
   .left_column_about {
     float: none;
   }
   .right_column, #right_column, .right_column.secondary, .right_column_outer {
-    margin: 0 auto;
+    margin: 0 auto 10px;
     display: block;
     float: none;
     clear: both;
+    padding: 10px;
+    min-height: auto;
   }
 }
 
