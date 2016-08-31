@@ -82,19 +82,23 @@
   .left_column.secondary, .left_column_outer, .left_column {
     float: none;
     margin: 0px auto 10px;
-    padding: 20px 0 20px;
+    padding: 1px 0 10px;
     min-height: auto;
   }
   .left_column_about {
     float: none;
+    padding: 10px;
   }
   .right_column, #right_column, .right_column.secondary, .right_column_outer {
     margin: 0 auto 10px;
     display: block;
     float: none;
     clear: both;
-    padding: 10px;
     min-height: auto;
+    width: 475px;
+  }
+  .right_column_outer .links_column {
+    width: 450px;
   }
 }
 
@@ -120,17 +124,16 @@
 @media (max-width: 1065px) {
   .login_region a.loggedin {
     font-size: 15px;
-    line-height: 46px;
   }
   .login_region a {
     font-size: 12px;
-    line-height: 23px;
+    line-height: 12px;
     padding: 0;
     text-align: center;
   }
   .login_region {
     margin-top: 5px;
-    width: 55px;
+    width: 60px;
     padding: 0;
     line-height: 20px;
     text-align: center;
@@ -148,6 +151,11 @@
     text-align: center;
     border: none;
     margin-top: 7px;
+  }
+  .header_buttons .closest_locations, 
+  .header_buttons .geo_header, 
+  .header_buttons .login {
+    padding: 4px 6px;
   }
 }
 

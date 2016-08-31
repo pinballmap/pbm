@@ -1,9 +1,9 @@
 <div class="login_why_outer">
 	<div class="login_why_inner">
-		<p>
+		<p class="why_login">
 			Why sign up?
 		</p>
-		<p style="font-family: 'Fira Mono';">
+		<p style="font-family: 'Palatino';">
 			If you're not signed in, the maps are read-only. So you need to sign up and login to add and remove machines from places, add comments about machines, etc. The maps are kept up to date because of you! So please sign up and help out.
 		</p>
 	</div>
@@ -14,10 +14,10 @@
 		  <%= f.error_notification %>
 
 		  <div class="form-inputs">
-		  	<span class="why_login">(For your username, how about your initials?)</span><br />
+		  	<span class="why_login">(For your username, how about your initials?)</span>
 		    <%= f.input :username, :required => true, :autofocus => true, as: :string %>
 		    <%= f.input :email, :required => true, :autofocus => true %>
-		    <span class="why_login">(For your password, choose one that you don't use elsewhere)</span><br />
+		    <span class="why_login">(For your password, choose one that you don't use elsewhere)</span>
 		    <%= f.input :password, :required => true %>
 		    <%= f.input :password_confirmation, :required => true %>
 		  </div>
