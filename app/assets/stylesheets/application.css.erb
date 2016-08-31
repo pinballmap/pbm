@@ -7,16 +7,8 @@
 /** Core **/
 
 @font-face {
-  font-family: 'Freight';
-  src: url(<%= asset_path "freight-sans-bold-sc-opentype.otf" %>);
-}
-@font-face {
   font-family: 'Freight-MedSC';
   src: url(<%= asset_path "freight-sans-medium-sc-opentype.otf" %>);
-}
-@font-face {
-  font-family: 'JohnDoe';
-  src: url(<%= asset_path "JohnDoe.otf" %>);
 }
 * {
   outline: none;  
@@ -26,16 +18,13 @@ body {
   padding: 0px;
   background-color: #FFFFFF;
   background-size: 4px auto;
-  color: #2e2322;
-  font-family: 'Freight',Helvetica,Arial,sans-serif;
+  color: #171717;
+  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 p {
   font-size: 16px;
   line-height: 22px;
-}
-p a {
-  background-color: #d8f0f5;
 }
 img {
   border: 0;
@@ -44,8 +33,8 @@ h1 {
   font-size: 36px;
 }
 a {
-  color: #303030;
-  text-decoration: none;
+  color: #383838;
+  text-decoration: underline;
   border: 0;
 }
 a:hover {
@@ -101,8 +90,9 @@ ul li li {
 .darkb {
   color: #F53240;
   text-shadow: 0.1px 0.1px 0.1px white;
-  font-family: "Freight",Helvetica,Arial,sans-serif;
+  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
   font-size: 18px;
+  font-weight: bold;
 }
 .italic {
   font-style: italic;
@@ -134,6 +124,7 @@ ul li li {
 #login label.email,
 #login label.string {
   display: block;
+  font-size: 20px;
 }
 #login label.boolean {
   font-size: 12px;
@@ -154,10 +145,14 @@ form.new_user {
 .login_why_inner {
   width: 210px;
   background-color: #EFEFEF;
-  border: 2px solid #d8f0f5;
+  border: 2px solid #d3ecff;
   float: left;
   padding: 10px;
   margin-top: 10px;
+}
+.login_why_inner p.why_login {
+  font-size: 18px;
+  font-weight: bold;
 }
 .login_new_div {
   float: right;
@@ -198,7 +193,7 @@ p.notice {
   margin: 50px auto 0; 
   text-shadow: 0.1em 0.1em 0.2em black;
   color: #FFFFCC;
-  background: #d8f0f5;
+  background: #d3ecff;
   border-bottom: 1px solid #c3c0bc;
   border-top: 1px solid #c3c0bc;
   padding: 10px;
@@ -243,27 +238,18 @@ p.notice {
   max-width: 60%;
   background: #fdf0eb;
 }
-div.pick_a_map {
-  font-size: 28px;
-  line-height: 42px;
-  text-align: center;
-  padding-top: 5px;
-}
-span.pick_a_map, .store_title {
-  color: #58266f;
-  margin: 0;
-  text-shadow: 1px 1px 5px #CCCCCC;
-}
+
 div.dont_pick_a_map {
   display: none;
 }
 div.pick_a_map .apps_header, 
 div.pick_a_map .blog_header, 
 div.pick_a_map .store_header {
-  font-size: 16px;
-  line-height: 36px;
+  padding: 11px 6px;
   float: left;
-  padding: 5px 10px 8px;
+  margin: 11px 5px 0;
+  font-size: 18px;
+  line-height: 16px;
   text-shadow: 1px 1px 5px #CCCCCC;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -281,7 +267,7 @@ div.pick_a_map .store_header {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.home_intro p, .why_login {
+.home_intro p, span.why_login {
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
 }
 .home_intro_container {
@@ -306,7 +292,8 @@ div.pick_a_map .store_header {
   padding: 0;
   margin: 15px 0;
   text-align: center;
-  font-family: "Freight",Helvetica,Arial,sans-serif;
+  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-weight: bold;
 }
 .store_shirt {
   width: 420px;
@@ -325,8 +312,11 @@ div.pick_a_map .store_header {
   width: 100%;
   min-width: 768px;
   height: 54px;
-  background: #EFEFEF;
-  border-bottom: 3px solid #d8f0f5;
+  background: #d3ecff;
+  border-bottom: 3px solid #d3ecff;
+}
+#header a {
+  text-decoration: none;
 }
 #page_home {
   width: 800px;
@@ -397,6 +387,7 @@ div.pick_a_map .store_header {
   width: auto !important;
   font-size: 15px;
   line-height: 18px;
+  font-weight: bold;
   background-color: #EFEFEF;
   text-shadow: 1px 1px 5px #CCCCCC;
   -webkit-box-sizing: border-box;
@@ -405,7 +396,7 @@ div.pick_a_map .store_header {
 }
 #header .menu_link ul li a:hover {
   color: #303030;
-  background-color: #d8f0f5;
+  background-color: #d3ecff;
 }
 #header a img {
     border: 0 none;
@@ -490,65 +481,68 @@ div.pick_a_map .store_header {
   vertical-align: middle;
   margin-bottom: 2px;
 }
-.apps_header, .blog_header, .store_header {
-  font-size: 12px;
-  line-height: 11px;
-  float: left;
-  text-shadow: 1px 1px 5px #CCCCCC;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-div.pick_a_map .blog_header {
-  border-left: 1px solid #d8f0f5;
-}
 .closest_locations, .geo_header, .login {
   font-size: 18px;
   line-height: 16px;
-  padding: 10px 6px;
+  padding: 16px 6px;
   margin: 11px 5px 0;
   text-shadow: 1px 1px 5px #CCCCCC;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+.header_buttons .closest_locations,
+.header_buttons .geo_header,
+.header_buttons .login {
+  padding: 10px 6px;
+}
 span.closest_locations, .login {
   float: left;
 }
-.login:hover, .login_alert a:hover {
-  background: #fbe4dc;
+.login_alert a {
+  text-decoration: none;
+}
+#header .login a:hover, #header .login_new a:hover, .login_alert a:hover {
+  text-decoration: underline;
 }
 .login a, .login_new a, .login_alert a {
   color: #F53240;
 }
-.why_login {
+span.why_login {
   font-size: 14px;
-  color: #725755;
+  color: #6b6b6b;
   line-height: 16px;
+  display: block;
+  padding: 5px 0 0;
 }
 #login .button {
   padding: 6px 6px;
   margin: 7px 5px;
-  border: 4px solid #d8f0f5;
+  border: 4px solid #d3ecff;
   background-color: #EFEFEF;
   text-shadow: 1px 1px 5px #CCC;
   box-sizing: border-box;
   box-shadow: 3px 03px 3px #aaa;
+  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
+  text-transform: uppercase;
 }
 #login .button:hover {
   cursor: pointer;
-  background: #d8f0f5;
+  background: #d3ecff;
 }
 #login .reset-password .button,
 #login .confirmation .button {
   cursor: pointer;
   width: 260px;
-  font-size: 11px;
-  font-weight: bold;
+  font-size: 12px;
 }
 #login .error {
   font-style: italic;
   color: red;
+}
+#login a {
+  font-weight: bold;
+  font-size: 18px;
 }
 div.pick_a_map .login_home {
   margin: 6px 5px;
@@ -574,7 +568,7 @@ div.pick_a_map .login_home {
 div.pick_a_map .blog_header:hover, div.pick_a_map .blog_header:active,
 div.pick_a_map .apps_header:hover, div.pick_a_map .apps_header:active,
 div.pick_a_map .store_header:hover, div.pick_a_map .store_header:active {
-  background-color: #d8f0f5;
+  background-color: #d3ecff;
 }
 .darkb.blog_header a:hover,
 .darkb.apps_header a:hover, 
@@ -586,7 +580,7 @@ div.pick_a_map .store_header:hover, div.pick_a_map .store_header:active {
   color: #F53240;
   font-size: 20px;
   line-height: 22px;
-  font-family: 'JohnDoe',Helvetica,Arial,sans-serif;
+  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
   text-align: center;
   border-radius: 0;
   display: block;
@@ -660,6 +654,7 @@ span.region_name_page {
 }
 #other_search_options a {
   padding: 0px 6px 2px;
+  text-decoration: none;
 } 
 #other_search_options a:hover {
   background: #303030;
@@ -724,12 +719,16 @@ span.region_name_page {
   font-size: 18px;
   font-weight: normal;
   padding: 2px 2px 2px;
-  margin-top: 5px;
+  margin: 5px 0;
   text-align: center;
   background-color: #f3f2f2;
 }
+.location_link a {
+  text-decoration: none;
+}
 .location_link a:hover {
   text-decoration: underline;
+  color: #303030;
 }
 #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id {
   width: 200px;
@@ -737,7 +736,7 @@ span.region_name_page {
 }
 .active_section_link {
   background-color: #303030 !important;
-  color: #d8f0f5 !important;
+  color: #d3ecff !important;
 }
 a.active_section_link:hover {
   background: #1C150B !important;
@@ -766,7 +765,7 @@ a.active_section_link:hover {
   line-height: 24px;
   height: 100%;
   color: #433A3A;
-  background-color: #d8f0f5;
+  background-color: #d3ecff;
   padding: 10px 5px;
   border-radius: 0 5px 0 0;
   -moz-border-radius: 0 5px 0 0;
@@ -793,7 +792,7 @@ a.website {
 }
 .machine_name {
   float: left;
-  background-color: #113d46;
+  background-color: #303030;
   color: #ffffff;
   font-size: 26px;
   line-height: 28px;
@@ -801,17 +800,19 @@ a.website {
   padding: 3px 15px 3px 5px;
   width: 100%;
   margin-left: -20px;
-  font-family: "Freight",Helvetica,Arial,sans-serif;
+  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-weight: bold;
 }
 .machine_name:hover {
-  background-color: #185561;
+  background-color: #414141;
 }
 .machine_names {
-  color: #433A3A;
+  color: #171717;
   font-size: 18px;
   padding: 0 0 15px 10px !important;
   line-height: 20px;
   background: #EFEFEF;
+  font-weight: bold;
 }
 .address_name {
   font-size: 16px;
@@ -851,6 +852,7 @@ span.machine_year_man {
 .pintips a {
   font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
   font-size: 18px;
+  text-decoration: none;
 }
 .pintips a:after {
   content: "";
@@ -958,8 +960,8 @@ form.remove_machine_condition {
   border-top: 2px solid #d6c1aa;
   border-bottom: 2px solid #d6c1aa;
   margin-top: 5px;
-  font-family: 'Freight',Helvetica,Arial,sans-serif;
-  font-weight: normal;
+  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
+  font-weight: bold;
 }
 .machine_condition_display_lmx .condition_button:hover {
   background: #d6c1aa;
@@ -1059,16 +1061,13 @@ br.clear {
   background: #DDDDDD;
 }
 .sub_nav_item {
-  height: 28px;
-  line-height: 28px;
+  line-height: 26px;
   padding-left: 5px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: normal;
   color: #f9f9f9;
   cursor: pointer;
   font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
-  border-top: 1px solid #303030;
-  border-bottom: 1px solid #303030;
 }
 .sub_nav_item:hover {
   color: #ffffff;
@@ -1295,28 +1294,28 @@ input#initials {
   box-sizing: border-box;
 }
 .add_picture_location_toggle {
-  color: #CAEBF2;
+  color: #303030;
   font-weight: bold;
-  background: #303030;
+  background: #dadada;
 }
 .add_picture_location_toggle:hover {
-  color: #ADC4F7;
+  background: #9e9e9e;
 }
 .add_machine_location_toggle {
-  color: #EFEFEF;
+  color: #303030;
   font-weight: bold;
-  background: #303030;
+  background: #dadada;
 }
 .add_machine_location_toggle:hover {
-  color: #ADC8B8;
+  background: #9e9e9e;
 }
 .show_machines_location_toggle {
-  color: #A9A9A9;
+  color: #303030;
   font-weight: bold;
-  background: #303030;
+  background: #dadada;
 }
 .show_machines_location_toggle:hover {
-  color: #fedee4;
+  background: #9e9e9e;
 }
 .add_scores_lmx_toggle {
   color: #444444;
@@ -1332,7 +1331,7 @@ input#initials {
 }
 .show_scores_lmx_toggle:hover,
 .show_conditions_lmx_toggle:hover  {
-  background-color: #d8f0f5;
+  background-color: #d3ecff;
   color: #333333;
 }
 .show_conditions_lmx_toggle {
@@ -1367,7 +1366,7 @@ input#initials {
 }
 .confirm_location {
   padding: 0 10px;
-  background: #F3F2F2;
+  background: #FFFFFF;
   font-size: 13px;
   line-height: 18px;
   height: 50px;
@@ -1387,9 +1386,9 @@ input#initials {
 }
 .confirm_location span .last_updated_username {
   color: #F53240;
-  font-family: 'Freight',Helvetica,Arial,sans-serif;
+  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
   font-size: 20px;
-  font-weight: normal;
+  font-weight: bold;
 }
 .confirm_location:hover {
   cursor: pointer;
@@ -1610,7 +1609,8 @@ location_detail .phone {
 #location_maker label, #contact_maker label {
   display: block;
   color: #2E2322;
-  font-family: "Freight",Helvetica,Arial,sans-serif;
+  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-weight: bold;
 }
 #location_maker ul {
   width: 600px;
@@ -1631,13 +1631,6 @@ location_detail .phone {
 .text_column_portland {
   width: 440px;
 }
-a.apps_link {
-  text-decoration: underline;
-  color: #370306;
-}
-a.apps_link:hover {
-  color: #F53240;
-}
 .right_column, #right_column {
   float: left;
   display: inline;
@@ -1645,19 +1638,7 @@ a.apps_link:hover {
   padding: 0 10px;
   min-height: 575px;
   width: 486px;
-  background: #EFEFEF;
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
-}
-.right_column p a, #right_column p a,
-.right_column p, #right_column p {
-  color: #0b252b;
-}
-.right_column p a, #right_column p a, .left_column_about p a {
-  color: #67050c;
-  background: none;
-}
-.right_column p a:hover, #right_column p a:hover, .left_column_about p a:hover {
-  color: #F53240;
 }
 .left_column.secondary {
   text-align:center;
@@ -1709,7 +1690,8 @@ a.apps_link:hover {
   font-size: 18px;
   padding-left: 10px;
   list-style-type: none;
-  font-family: "Freight",Helvetica,Arial,sans-serif;
+  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-weight: bold;
 }
 .event_info a {
   text-decoration: underline;
@@ -1721,7 +1703,7 @@ a.apps_link:hover {
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
 }
 #left_column, .left_column, .left_column_about {
-  background-color: #d8f0f5;
+  background-color: #d3ecff;
   height: 100%;
   min-height: 150px;
   padding: 0 10px;
@@ -1735,7 +1717,8 @@ a.apps_link:hover {
   margin: 0 0 15px 0;
 }
 .left_column_about.operators {
-  background: #EFEFEF;
+  background: none;
+  padding-bottom: 0;
 }
 .left_column.suggest, .left_column.high {
   width: 620px;
@@ -1766,11 +1749,21 @@ a.apps_link:hover {
   width: 375px;
   margin-bottom: 10px;
 }
+.top_machines a {
+  text-decoration: none;
+}
+.top_machines p.links_category {
+  margin-top: 0;
+}
+.right_column_outer .top_machines {
+  margin-bottom: 0;
+}
+.machine_quantity {
+  padding-left: 10px;
+}
 .links_category {
-  background-color: #d8f0f5;
+  background-color: #d3ecff;
   padding: 5px;
-  border-top: 1px solid #c3c0bc;
-  border-bottom: 1px solid #c3c0bc;
   color: #F53240 !important;
 }
 .links_content {
@@ -1796,7 +1789,8 @@ a.apps_link:hover {
 /** Map/intro **/
 
 .hello, .name, .intro, #intro .hello {
-  font-family: 'Freight',Helvetica,Arial,sans-serif;
+  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
+  font-weight: bold;
 }
 #intro {
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
@@ -1811,7 +1805,8 @@ a.apps_link:hover {
 }
 .to_begin {
   margin-top: 10px;
-  font-family: 'Freight',Helvetica,Arial,sans-serif;
+  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
+  font-weight: bold;
 }
 @-webkit-keyframes leftToRight {
     0% {
@@ -1894,7 +1889,7 @@ a.apps_link:hover {
     50% {
         color: #303030;
         text-shadow: 1px 1px 5px #CCCCCC;
-        background-color: #bce6ef;
+        background-color: #d3ecff;
     }
     100% {
         color: #2e2322;
@@ -1907,7 +1902,7 @@ a.apps_link:hover {
     50% {
         color: #303030;
         text-shadow: 1px 1px 5px #CCCCCC;
-        background-color: #bce6ef;
+        background-color: #d3ecff;
     }
     100% {
         color: #2e2322;
@@ -1920,7 +1915,7 @@ a.apps_link:hover {
     50% {
         color: #303030;
         text-shadow: 1px 1px 5px #CCCCCC;
-        background-color: #bce6ef;
+        background-color: #d3ecff;
     }
     100% {
         color: #2e2322;
@@ -1933,7 +1928,7 @@ a.apps_link:hover {
     50% {
         color: #303030;
         text-shadow: 1px 1px 5px #CCCCCC;
-        background-color: #bce6ef;
+        background-color: #d3ecff;
     }
     100% {
         color: #2e2322;
@@ -1986,7 +1981,7 @@ span.begin {
   height: 350px;
   float: left;
   margin: 0 10px 10px 0;
-  border: 5px solid #d8f0f5;
+  border: 5px solid #d3ecff;
   box-shadow: 1px 2px 7px rgba(90, 100, 117, 0.3);
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -2086,8 +2081,9 @@ span.map_summary_info {
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
   font-size: 16px;
   line-height: 26px;
-  color: #030304;
+  color: #303030;
   margin-top: 25px;
+  font-weight: normal;
 }
 .map_summary_info {
   display: block;
@@ -2097,7 +2093,7 @@ span.map_summary_info {
   font-weight: normal;
 }
 .map_summary:hover {
-  background: #f3fafc;
+  background: #f0f9ff;
 }
 .itemBackground, .itemLink {
   display: none;
