@@ -1,6 +1,6 @@
 - if !mobile_device?
   #header{:class => "#{@region ? '' : 'header_home'}"}
-    =link_to image_tag('pinballmapcom_bluetext.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
+    =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
     - if (@region)
       %div{:class => "header_buttons"}
         %span.menu_link
@@ -12,12 +12,13 @@
             %li=link_to 'Location RSS', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
             %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
             %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
-            %li.darkb.blog_header_region
-              = link_to 'Blog', 'http://blog.pinballmap.com'
-            %li.darkb.store_header_region
-              = link_to 'T-Shirts', store_path
-            %li.darkb.blog_header_region
-              =link_to 'App', apps_path
+            %li.first_global_link
+              =link_to 'Blog', 'http://blog.pinballmap.com'
+            %li=link_to 'T-Shirts', store_path
+            %li=link_to 'App', apps_path
+            %li=link_to 'FAQ', faq_path
+            %li.last_header_link
+              =link_to 'Donate', donate_path
         %div.login.login_region
           %span.darkb
             - if !user_signed_in?
@@ -35,13 +36,16 @@
           - if !mobile_device?
             %ul.other_regions_list= other_regions_html(@region) 
     - else
-      %div{:class => "pick_a_map"}
-        %span.darkb.blog_header
-          = link_to 'Blog', 'http://blog.pinballmap.com'
-        %span.darkb.apps_header
-          = link_to 'App', apps_path
-        %span.darkb.store_header
-          = link_to 'T-Shirts', store_path
+      %div{:class => "header_buttons"}
+        %span.menu_link.menu_home
+          %ul#nav
+            %li.first_header_link
+              =link_to 'Blog', 'http://blog.pinballmap.com'
+            %li=link_to 'T-Shirts', store_path
+            %li=link_to 'App', apps_path
+            %li=link_to 'FAQ', faq_path
+            %li.last_header_link
+              =link_to 'Donate', donate_path
         %div.login.login_home
           %span.darkb
             - if !user_signed_in?
@@ -55,7 +59,7 @@
 - else
   #header{:class => "#{@region ? '' : 'header_home'}"}
     - if !(@region)
-      =link_to image_tag('pinballmapcom_bluetext.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
+      =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
       %span.menu_link
         %div.login.login_home
           %span.darkb
@@ -69,12 +73,16 @@
           %span.darkb{:onclick => "findClosestRegion()"}
           = link_to 'Find Your Closest Map', '#'
         %ul#nav
-          %li.first_header_link= link_to 'Blog', 'http://blog.pinballmap.com'
-          %li.first_header_link= link_to 'App', apps_path
-          %li.first_header_link= link_to 'T-Shirts', store_path
+          %li.first_header_link
+            =link_to 'Blog', 'http://blog.pinballmap.com'
+          %li=link_to 'T-Shirts', store_path
+          %li=link_to 'App', apps_path
+          %li=link_to 'FAQ', faq_path
+          %li.last_header_link
+            =link_to 'Donate', donate_path
     - else
       %span.menu_link
-        %div.login.login_home
+        %div.login.login_region
           %span.darkb
             - if !user_signed_in?
               = link_to 'Log In', "http://#{request.host_with_port}/users/sign_in"
@@ -83,9 +91,9 @@
             - else 
               = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out"
         - if user_signed_in?
-          =link_to image_tag('pinballmapcom_bluetext.png', :class => "#{@region ? 'header_image' : 'header_image_home'} header_image_login", :alt => 'Pinball Map Logo'), root_path
+          =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'} header_image_login", :alt => 'Pinball Map Logo'), root_path
         - else 
-          =link_to image_tag('pinballmapcom_bluetext.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
+          =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
         %ul#nav
           %li.first_header_link=link_to 'Suggest Location', suggest_path
           %li=link_to 'About', about_path
@@ -94,14 +102,13 @@
           %li=link_to 'Location RSS', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
           %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
           %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
-          %li.darkb.blog_header_region
-            = link_to 'Blog', 'http://blog.pinballmap.com'
-          %li.darkb.store_header_region
-            = link_to 'T-Shirts', store_path
-          %li.darkb.blog_header_region
-            =link_to 'App', apps_path
-          %li.darkb.blog_header_region
-            =link_to 'FAQ', 'http://pinballmap.com/faq'
+          %li.first_global_link
+            =link_to 'Blog', 'http://blog.pinballmap.com'
+          %li=link_to 'T-Shirts', store_path
+          %li=link_to 'App', apps_path
+          %li=link_to 'FAQ', faq_path
+          %li.last_header_link
+            =link_to 'Donate', donate_path
 
   - if (@region)
     #header_lower
