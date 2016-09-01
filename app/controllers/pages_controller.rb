@@ -125,6 +125,12 @@ class PagesController < ApplicationController
   def store
   end
 
+  def faq
+  end
+
+  def donate
+  end
+
   def contact
     redirect_to about_path
   end
