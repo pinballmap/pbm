@@ -53,7 +53,7 @@
               %span.login_slash /
               = link_to 'Sign Up', "http://#{request.host_with_port}/users/sign_up"
             - else 
-              = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out"
+              = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out", :class => "loggedin"
         %span.darkb.geo_header{:onclick => "findClosestRegion()"}
           = link_to 'Find Your Closest Map', '#'
 - else

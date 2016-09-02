@@ -16,7 +16,7 @@
     %meta{:property => "og:type", :content => "website"}
     %meta{:property => "og:url", :content => "http://#{request.host+request.fullpath}" }
     %meta{:property => "og:image", :content => image_path("pbm-og-image.png")}
-    = stylesheet_link_tag 'application', 'mediaqueries', 'https://fonts.googleapis.com/css?family=Fira+Mono:400,700'
+    = stylesheet_link_tag 'application', 'mediaqueries'
     - if mobile_device?
       = stylesheet_link_tag 'mobile-application'
     = javascript_include_tag 'application', 'jQuery.scrollSomething-1.0.0', 'jquery.form', 'jquery.remotipart', 'highslide.min', 'http://maps.google.com/maps/api/js?sensor=true'
