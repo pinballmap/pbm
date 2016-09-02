@@ -169,7 +169,7 @@ describe PagesController do
       visit '/'
 
       expect(page).to have_title('Pinball Map')
-      expect(page).not_to have_title('Apps')
+      expect(page).not_to have_title('App')
     end
   end
 
@@ -190,6 +190,18 @@ describe PagesController do
 
       visit '/faq'
       expect(page).to have_title('FAQ')
+
+      visit "/#{@region.name}/about"
+      expect(page).to have_title('About')
+
+      visit "/#{@region.name}/suggest"
+      expect(page).to have_title('Suggest')
+
+      visit "/#{@region.name}/events"
+      expect(page).to have_title('Events')
+
+      visit "/#{@region.name}/high_rollers"
+      expect(page).to have_title('High Scores')
     end
   end
 
