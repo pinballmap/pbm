@@ -173,14 +173,23 @@ describe PagesController do
     end
   end
 
-  describe 'Apps pages', type: :feature, js: true do
-    it 'shows the proper page title' do
+  describe 'Pages', type: :feature, js: true do
+    it 'show the proper page title' do
 
       visit '/apps'
-      expect(page).to have_title('Apps')
+      expect(page).to have_title('App')
 
       visit '/apps/support'
-      expect(page).to have_title('Apps')
+      expect(page).to have_title('App')
+
+      visit '/donate'
+      expect(page).to have_title('Donate to')
+
+      visit '/store'
+      expect(page).to have_title('Store')
+
+      visit '/faq'
+      expect(page).to have_title('FAQ')
     end
   end
 
