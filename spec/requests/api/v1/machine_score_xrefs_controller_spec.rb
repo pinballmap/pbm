@@ -68,6 +68,13 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
     end
 
+    it 'errors for blank scores' do
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq('Score can not be blank and must be a numeric value')
+    end
+
     it 'errors for failed saves' do
       expect_any_instance_of(MachineScoreXref).to receive(:save).twice.and_return(false)
 
