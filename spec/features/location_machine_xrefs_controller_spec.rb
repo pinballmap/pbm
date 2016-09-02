@@ -14,7 +14,7 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
       sleep 1
 
-      expect(page).to_not have_selector("#add_machine_location_banner_#{Location.find(@location.id).id}")
+      expect(page).to_not have_selector("#add_machine_location_banner_#{@location.reload.id}")
     end
   end
 
@@ -38,7 +38,7 @@ describe LocationMachineXrefsController do
 
       expect(@location.machines.size).to eq(1)
       expect(@location.machines.first).to eq(@machine_to_add)
-      expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
+      expect(@location.reload.date_last_updated).to eq(Date.today)
 
       expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
       expect(find("#gm_machines_#{@location.id}")).to have_content(@machine_to_add.name)
@@ -167,7 +167,7 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(LocationMachineXref.find(@lmx.id).condition).to eq(nil)
+      expect(@lmx.reload.condition).to eq(nil)
     end
 
     it 'does not save conditions with <a href in it' do
@@ -179,7 +179,7 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(LocationMachineXref.find(@lmx.id).condition).to eq(nil)
+      expect(@lmx.reload.condition).to eq(nil)
     end
 
     it 'allows users to update a location machine condition - stubbed out spam detection' do
@@ -195,7 +195,7 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(LocationMachineXref.find(@lmx.id).condition).to eq('THIS IS NOT SPAM')
+      expect(@lmx.reload.condition).to eq('THIS IS NOT SPAM')
 
       user_submission = UserSubmission.second
       expect(user_submission.user_id).to eq(@user.id)
@@ -222,9 +222,9 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{(Date.today).strftime('%b-%d-%Y')} by ssw")
-      expect(Location.find(@lmx.location.id).date_last_updated).to eq(Date.today)
-      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')} by ssw")
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{@lmx.current_condition.created_at.strftime('%b-%d-%Y')} by ssw")
+      expect(@lmx.reload.location.date_last_updated).to eq(Date.today)
+      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{@location.date_last_updated.strftime('%b-%d-%Y')} by ssw")
     end
 
     it 'displays who updated a machine if that data is available' do
@@ -232,18 +232,18 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("Test Comment Updated: #{(Date.today).strftime('%b-%d-%Y')} by cibw")
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("Test Comment Updated: #{@lmx.current_condition.created_at.strftime('%b-%d-%Y')} by cibw")
     end
 
     it 'only displays the 6 most recent descriptions' do
       login
 
-      lmx = LocationMachineXref.find(@lmx.id)
+      lmx = @lmx.reload
       lmx.condition = 'Condition 7'
       lmx.save
 
       7.times do |i|
-        FactoryGirl.create(:machine_condition, location_machine_xref: LocationMachineXref.find(@lmx.id), comment: "Condition #{i + 1}", created_at: "199#{i + 1}-01-01")
+        FactoryGirl.create(:machine_condition, location_machine_xref: @lmx.reload, comment: "Condition #{i + 1}", created_at: "199#{i + 1}-01-01")
       end
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
@@ -359,7 +359,7 @@ describe LocationMachineXrefsController do
 
       sleep(1)
 
-      expect(Location.find(@location).machines.map { |m| m.name + '-' + m.year.to_s + '-' + m.manufacturer.to_s }.sort).to eq(['Sassy Madness-2010-Bally', 'Test Machine Name-2010-Williams'])
+      expect(@location.reload.machines.map { |m| m.name + '-' + m.year.to_s + '-' + m.manufacturer.to_s }.sort).to eq(['Sassy Madness-2010-Bally', 'Test Machine Name-2010-Williams'])
     end
 
     it 'adds by machine name from input' do
@@ -683,7 +683,7 @@ describe LocationMachineXrefsController do
     it 'searches by operator - displays website when available' do
       l = FactoryGirl.create(:location, id: 43, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region, website: 'website.com'))
 
-      visit "/#{@region.name}?by_location_id=#{Location.find(l.id).id}"
+      visit "/#{@region.name}?by_location_id=#{l.reload.id}"
 
       sleep(1)
 
@@ -692,7 +692,7 @@ describe LocationMachineXrefsController do
 
       l = FactoryGirl.create(:location, id: 44, region: @region, name: 'Sass', operator: FactoryGirl.create(:operator, name: 'Sass Bean', region: @region, website: nil))
 
-      visit "/#{@region.name}?by_location_id=#{Location.find(l.id).id}"
+      visit "/#{@region.name}?by_location_id=#{l.reload.id}"
 
       sleep(1)
 

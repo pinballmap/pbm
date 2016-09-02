@@ -134,7 +134,7 @@ HERE
       put '/api/v1/locations/' + @location.id.to_s + '.json', description: 'foo', website: 'http://bar', phone: '5555555555', zip: '97777', location_type: type.id.to_s, operator_id: operator.id.to_s
       expect(response).to be_success
 
-      updated_location = Location.find(@location.id)
+      updated_location = @location.reload
 
       expect(updated_location.description).to eq('foo')
       expect(updated_location.website).to eq('http://bar')
@@ -163,7 +163,7 @@ HERE
       put '/api/v1/locations/' + @location.id.to_s + '.json', description: 'foo', website: 'http://bar', phone: '5555555555', zip: '97777', location_type: ''
       expect(response).to be_success
 
-      updated_location = Location.find(@location.id)
+      updated_location = @location.reload
 
       expect(updated_location.location_type_id).to be_nil
 
@@ -183,7 +183,7 @@ HERE
       put '/api/v1/locations/' + @location.id.to_s + '.json', location_type: new_type.id
       expect(response).to be_success
 
-      updated_location = Location.find(@location.id)
+      updated_location = @location.reload
 
       expect(updated_location.location_type_id).to be(new_type.id)
     end
@@ -224,7 +224,7 @@ HERE
       put '/api/v1/locations/' + @location.id.to_s + '.json', description: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
 
-      updated_location = Location.find(@location.id)
+      updated_location = @location.reload
 
       expect(updated_location.description).to eq('foo')
       expect(updated_location.last_updated_by_user_id).to eq(111)
@@ -317,7 +317,7 @@ HERE
       end
       expect(response).to be_success
 
-      updated_location = Location.find(@location.id)
+      updated_location = @location.reload
       expect(updated_location.last_updated_by_user).to eq(@user)
       expect(updated_location.date_last_updated.to_s).to eq('2010-06-01')
 
