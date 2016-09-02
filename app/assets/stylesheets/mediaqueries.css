@@ -64,6 +64,9 @@
 }
 
 @media (max-width: 900px) {
+  .login_home a.loggedin {
+    font-size: 15px;
+  }
   .login_home a {
     font-size: 12px;
     line-height: 12px;
@@ -137,7 +140,7 @@
     text-align: center;
   }
   .login_region {
-    margin-top: 5px;
+    margin-top: 0px;
     width: 60px;
     padding: 0;
     line-height: 19px;
