@@ -229,32 +229,18 @@ p.notice {
   max-width: 100%;
 }
 #flash-message #flash_notice,
-#flash-message #flash_alert {
+#flash-message #flash_alert,
+#flash-message.flash_region #flash_notice,
+#flash-message.flash_region #flash_alert {
   color: #F53240;
   font-size: 18px;
   text-align: center;
   margin: 60px auto 10px;
   padding: 5px 0;
-  width: auto;
-  max-width: 60%;
+  width: 100%;
   background: #fdf0eb;
-}
-
-div.dont_pick_a_map {
-  display: none;
-}
-div.pick_a_map .apps_header, 
-div.pick_a_map .blog_header, 
-div.pick_a_map .store_header {
-  padding: 11px 6px;
-  float: left;
-  margin: 11px 5px 0;
-  font-size: 18px;
-  line-height: 16px;
-  text-shadow: 1px 1px 5px #CCCCCC;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  position: absolute;
+  z-index: 150;
 }
 .home_intro {
   padding: 3px 6px 6px;
@@ -497,7 +483,7 @@ div.pick_a_map .store_header {
   font-size: 18px;
   line-height: 16px;
   padding: 16px 6px;
-  margin: 11px 5px 0;
+  margin: 12px 5px 0;
   text-shadow: 1px 1px 5px #CCCCCC;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
