@@ -61,11 +61,12 @@ describe LocationsController do
       @machine = FactoryGirl.create(:machine, name: 'Bawb')
     end
 
-    def handle_js_confirm
-      page.evaluate_script 'window.confirmMsg = null'
-      page.evaluate_script 'window.confirm = function(msg) { window.confirmMsg = msg; return true; }'
+    def handle_js_confirm(accept=true)
+      page.evaluate_script "window.original_confirm_function = window.confirm"
+      page.evaluate_script "window.confirm = function(msg) { return #{!!accept}; }"
       yield
-      page.evaluate_script 'window.confirmMsg'
+    ensure
+      page.evaluate_script "window.confirm = window.original_confirm_function"
     end
 
     it 'removes a machine from a location' do
@@ -108,7 +109,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      handle_js_confirm do
+      handle_js_confirm(false) do
         click_button 'remove'
       end
 
