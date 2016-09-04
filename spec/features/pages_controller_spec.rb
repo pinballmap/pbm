@@ -169,18 +169,39 @@ describe PagesController do
       visit '/'
 
       expect(page).to have_title('Pinball Map')
-      expect(page).not_to have_title('Apps')
+      expect(page).not_to have_title('App')
     end
   end
 
-  describe 'Apps pages', type: :feature, js: true do
-    it 'shows the proper page title' do
+  describe 'Pages', type: :feature, js: true do
+    it 'show the proper page title' do
 
       visit '/apps'
-      expect(page).to have_title('Apps')
+      expect(page).to have_title('App')
 
       visit '/apps/support'
-      expect(page).to have_title('Apps')
+      expect(page).to have_title('App')
+
+      visit '/donate'
+      expect(page).to have_title('Donate to')
+
+      visit '/store'
+      expect(page).to have_title('Store')
+
+      visit '/faq'
+      expect(page).to have_title('FAQ')
+
+      visit "/#{@region.name}/about"
+      expect(page).to have_title('About')
+
+      visit "/#{@region.name}/suggest"
+      expect(page).to have_title('Suggest')
+
+      visit "/#{@region.name}/events"
+      expect(page).to have_title('Events')
+
+      visit "/#{@region.name}/high_rollers"
+      expect(page).to have_title('High Scores')
     end
   end
 
