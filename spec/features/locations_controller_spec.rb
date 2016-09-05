@@ -46,8 +46,9 @@ describe LocationsController do
 
       FactoryGirl.create(:location_machine_xref, location: @location, machine: @machine)
 
+      @location.reload
       visit '/portland/?by_location_id=' + @location.id.to_s
-      
+
       expect(page).to_not have_selector("input#remove_machine_#{LocationMachineXref.where(location_id: @location.id, machine_id: @machine.id).first.id}")
     end
   end
