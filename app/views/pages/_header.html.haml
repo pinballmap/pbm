@@ -53,7 +53,7 @@
               %span.login_slash /
               = link_to 'Sign Up', "http://#{request.host_with_port}/users/sign_up"
             - else 
-              = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out"
+              = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out", :class => "loggedin"
         %span.darkb.geo_header{:onclick => "findClosestRegion()"}
           = link_to 'Find Your Closest Map', '#'
 - else
@@ -71,7 +71,7 @@
               = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out"
         %div.geo_header_wrapper
           %span.darkb{:onclick => "findClosestRegion()"}
-          = link_to 'Find Your Closest Map', '#'
+            = link_to 'Find Your Closest Map', '#'
         %ul#nav
           %li.first_header_link
             =link_to 'Blog', 'http://blog.pinballmap.com'
@@ -109,7 +109,6 @@
           %li=link_to 'FAQ', faq_path
           %li.last_header_link
             =link_to 'Donate', donate_path
-
   - if (@region)
     #header_lower
       %span.darkb.closest_locations{:style => "float:right;", :onclick => "findClosestLocations('#{@region.name}')"}
@@ -119,22 +118,31 @@
           %span.region_name_page
             =link_to "#{@region.full_name}", region_homepage_path
 
+- if !mobile_device?
+  :javascript
+    $().ready(function() {
+
+      $(".region_logo_dropdown").hover(function () {
+          $(".other_regions_list").show();
+        },function(){
+          $(".other_regions_list").hide();
+      });
+      $(document).click(function () {
+          $(".other_regions_list").hide();
+      });
+      $("#nav").addClass("js").before('<div id="menu">&#9776;</div>');
         
-
-:javascript
-  $().ready(function() {
-
-    $(".region_logo_dropdown").hover(function () {
-        $(".other_regions_list").show();
-      },function(){
-        $(".other_regions_list").hide();
     });
-    $(document).click(function () {
-        $(".other_regions_list").hide();
-    });
+
+- else
+  :javascript
     $("#nav").addClass("js").before('<div id="menu">&#9776;</div>');
-    $("#menu").click(function(){
-      $("#nav").toggle();
+    $(document).on('click', function(event) {
+      if (!$(event.target).closest('#menu').length) {
+        $("#nav").css('display', 'none');
+      }
     });
-  });
 
+    $("#menu").click(function(){
+          $("#nav").toggle();
+    });

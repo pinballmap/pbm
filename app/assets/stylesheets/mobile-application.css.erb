@@ -45,12 +45,15 @@
   float: none;
 }
 #menu {
-  margin: 2px 5px 0;
-  padding: 2px 0 2px 0;
+  margin: 3px 5px 0;
+  padding: 2px 0 0 0;
   float: left;
   height: 20px;
   font-size: 24px;
   text-align: left;
+}
+.header_home #menu {
+  margin: 0 5px;
 }
 #header #nav {
   display: block;
@@ -62,7 +65,7 @@
 #header span.menu_link ul {
   display: inline-block;
   text-align: left;
-  margin: 0 auto 10px;
+  margin: 0 auto;
   padding: 0;
   float: none;
   width: 100%;
@@ -162,7 +165,7 @@ span.region_name_page {
 #header a img.header_image {
   float: right;
   margin: 2px 0 0;
-  width: 180px;
+  width: 185px;
 }
 
 #header a img.header_image_login {
@@ -204,33 +207,27 @@ div.pick_a_map {
   font-size: 18px !important;
   border: none !important;
   padding: 0;
-  margin: 4px 8px 3px;
+  margin: 5px 8px 0px;
+}
+
+.login_home {
+  margin: 3px 8px 0px;
 }
 
 .login_home a, .login_region a {
-  border: 1px solid #A9A9A9;
   padding: 1px 3px;
   font-size: 22px;
 }
  .login_region a {
   border: none;
- }
+}
 
 .geo_header_wrapper {
   margin: 2px 0;
 }
 
 .geo_header_wrapper a {
-  border: 1px solid #A9A9A9;
   padding: 3px;
-}
-
-div.pick_a_map .login_home {
-  margin: 0;
-}
-
-div.pick_a_map .blog_header {
-    border-left: 2px solid #d6c0aa;
 }
 
 .map_summary {
@@ -627,9 +624,9 @@ div.machine_condition_text {
 }
 
 #flash-message #flash_notice, #flash-message #flash_alert {
-  width: auto;
+  width: 100%;
   max-width: 100%;
-  margin: 70px auto 10px;
+  margin: 75px auto 10px;
 }
 #flash-message.flash_region #flash_notice,
 #flash-message.flash_region #flash_alert {

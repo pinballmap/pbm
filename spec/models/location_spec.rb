@@ -121,5 +121,12 @@ Changed operator to operator
 Changed location type to bar
 HERE
     end
+
+    it 'truncates location description to 254 characters' do
+      u = FactoryGirl.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      @l.update_metadata(u, description: '1' * 300)
+
+      expect(@l.description.size).to eq(254)
+    end
   end
 end
