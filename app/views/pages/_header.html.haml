@@ -13,7 +13,8 @@
             %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
             %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
             %li.first_global_link
-              =link_to 'Blog', 'http://blog.pinballmap.com'
+              =link_to 'Home', root_path
+            %li=link_to 'Blog', 'http://blog.pinballmap.com'
             %li=link_to 'T-Shirts', store_path
             %li=link_to 'App', apps_path
             %li=link_to 'FAQ', faq_path
@@ -103,7 +104,8 @@
           %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
           %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
           %li.first_global_link
-            =link_to 'Blog', 'http://blog.pinballmap.com'
+            =link_to 'Home', root_path
+          %li=link_to 'Blog', 'http://blog.pinballmap.com'
           %li=link_to 'T-Shirts', store_path
           %li=link_to 'App', apps_path
           %li=link_to 'FAQ', faq_path
