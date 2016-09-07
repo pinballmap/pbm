@@ -946,7 +946,7 @@ div.comment_image span.comment_image:hover:after {
   display: block;
 }
 .machine_condition_display_lmx span.machine_condition_date {
-  color: #999999;
+  color: #666666;
   font-size: 14px;
   margin: 6px 0;
   display: inline-block;
@@ -962,7 +962,7 @@ div.machine_condition_text {
 .machine_condition_new_line span.machine_condition_date {
   margin: 8px 0 2px;
   display: inline-block;
-  color: #999999;
+  color: #666666;
   font-size: 12px;
 }
 form.remove_machine_condition {
@@ -1090,7 +1090,7 @@ form.remove_machine_condition {
   background-color: #fedee4;
   border-top: 1px solid #DDDDDD;
   border: none;
-  color: #999999; 
+  color: #666666; 
   cursor: pointer;
   padding: 0 2px 2px;
   font-size: 16px;
@@ -2203,10 +2203,10 @@ span.map_summary_info {
 /** High Rollers **/
 
 .high_roller_right_column {
-  float:right;
-  width:400px;
-  margin-left:550px;
-  padding:1em;
+  float: right;
+  width: 400px;
+  margin-left: 550px;
+  padding: 1em;
 }
 .high_score_new_line {
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
@@ -2214,33 +2214,64 @@ span.map_summary_info {
   display: block;
   font-size: 10px;
   line-height: 12px;
-  padding: 4px 0;
+  padding: 4px 0 0 0;
   font-size: 14px;
   font-weight: normal;
+}
+.high_score_date {
+  margin: 2px 0;
+  display: inline-block;
+  color: #666666;
+  font-size: 12px;
+  border-bottom: 1px solid #d3ecff;
 }
 .score_result {
   width: 610px;
   margin: 15px auto 0;
   padding: 5px 5px 15px;
 }
-.score_result span {
-  font-size: 14px;
-  color: #433A3A;
-  padding-bottom: 15px;
-  line-height: 20px;
-  font-style: italic;
-}
 .score_result .sub_nav_item {
   width: 600px;
+  background: #A9A9A9;
+}
+.score_result .sub_nav_item img {
+  height: 22px;
+  margin-left: -3px;
 }
 .score_result p {
   display: inline;
 }
-p.score_list {
+div.score_list span {
   line-height: 20px;
-  font-size: 14px;
-  color: #58266F;
+  font-size: 16px;
+  color: #303030;
   display: block;
+  font-weight: bold;
+}
+div.score_list span.score_meta {
+  padding-bottom: 10px;
+  font-size: 14px;
+  font-style: italic;
+  color: #666;
+  font-weight: normal;
+  display: inline;
+  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+}
+div.score_list span.score_meta_gen {
+  display: inline;
+  color: #666;
+  font-size: 14px;
+}
+div.score_list span.score_location {
+  text-decoration: underline;
+  background: #EFEFEF;
+}
+div.score_list span.score_score {
+  padding-top: 5px;
+}
+div.score_list {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #d3ecff;
 }
 
 /** Find a Pinball notice **/
