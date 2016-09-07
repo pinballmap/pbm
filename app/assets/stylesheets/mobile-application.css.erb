@@ -315,7 +315,7 @@ div.pick_a_map {
   width: auto;
   height: auto;
   border: none;
-  padding: 5px 8px;
+  padding: 0 8px 5px;
   margin-top: 0;
 }
 
@@ -380,20 +380,28 @@ div.pick_a_map {
 #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id {
   font-size: 18px;
   width: 100%;
-  margin: 10px 0;
+  margin: 5px 0 10px;
 }
 
-.search_field_container {
+.search_field_container, .search_other_button {
   width: auto;
   float: none;
-  height: 54px;
+  height: 70px;
+  border: none;
+  background: transparent;
+}
+.search_other_button {
+  height: 40px;
 }
 #form .search_field_container input.lookup_search_input {
   padding-left: 0;
+  border: 2px solid #A9A9A9;
+  background: #FFFFFF;
+  height: 28px;
 }
 #form .search_field_container .search,
 #form .search_other_button input {
-  margin: 0;
+  margin: 10px 0 0 0;
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
