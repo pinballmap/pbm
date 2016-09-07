@@ -147,6 +147,14 @@
 .confirm_location span.last_updated {
   padding: 8px 5px;
 }
+.confirm_location {
+  position: relative;
+  width: auto;
+}
+.confirm_inner {
+  width: auto;
+  margin-right: 10px;
+}
 span.region_name_page a {
   font-size: 30px;
   color: #F53240;
@@ -375,6 +383,21 @@ div.pick_a_map {
   margin: 10px 0;
 }
 
+.search_field_container {
+  width: auto;
+  float: none;
+  height: 54px;
+}
+#form .search_field_container input.lookup_search_input {
+  padding-left: 0;
+}
+#form .search_field_container .search,
+#form .search_other_button input {
+  margin: 0;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
 .location_link {
   font-size: 16px;
   height: 18px;
@@ -553,8 +576,8 @@ div.machine_condition_text {
 }
 
 .high_score span, .score_container_lmx span {
-    font-size: 16px;
-    line-height: 16px;
+  font-size: 14px;
+  line-height: 16px;
 }
 
 .high_score, .machineconditions_container_lmx {
@@ -727,6 +750,9 @@ input#score, input#initials {
   margin: 10px !important;
 }
 
+.left_column_outer {
+  padding: 0;
+}
 .left_column_about {
   margin-left: 0;
 }
@@ -761,6 +787,10 @@ input#score, input#initials {
 
 .location_detail_sub {
   padding: 0;
+}
+
+#location_maker {
+  width: 100%;
 }
 
 #location_maker li {
@@ -805,7 +835,9 @@ input#score, input#initials {
 }
 
 #location_maker textarea.machines {
-  width: 98%;
+  max-width: 100%;
+  min-width: 100%;
+  width: 100%;
   min-height: 100px;
 }
 

@@ -13,8 +13,9 @@
 
     .pintips, .machine_condition_display_lmx, .machine_condition_edit_lmx, 
     .high_score > .sub_nav_item, .score_container_lmx > .sub_nav_item,
-    .add_scores_form, .show_scores_lmx, .show_conditions_lmx, .show_conditions_lmx_toggle { 
-      width: 285px;
+    .add_scores_form, .show_scores_lmx, .show_conditions_lmx, .show_conditions_lmx_toggle,
+    .location_detail input.remove_machine_button { 
+      width: 360px;
     }
 
     #lookup, .show_location_detail_location, #location_maker ul, .score_result .sub_nav_item { 
@@ -24,10 +25,13 @@
     #form { 
       width: 456px;
     }
+    input#score, input#initials {
+      width: 290px;
+    }
 
     #operator_section_link, #zone_section_link, #machine_section_link, #city_section_link, #location_section_link, #type_section_link { 
-      margin-left: 0px;
-      font-size: 14px; 
+      margin-left: 2px;
+      font-size: 17px; 
     }
 
     #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id { 
@@ -39,14 +43,17 @@
     }
 
     .machine_name { 
-      width: 305px; 
+      width: 380px; 
+    }
+    div.machine_condition_text {
+      width: 300px;
     }
 
     .machine_condition_display_lmx .edit_mode
     { 
-      width: 261px;
-      max-width: 261px;
-      min-width: 261px; 
+      width: 300px;
+      max-width: 300px;
+      min-width: 300px; 
     }
     #map {
       right: 470px;
@@ -55,6 +62,39 @@
     li.address_full, a.website, li.phone {
       width: auto;
     }
+    .search_field_container {
+      width: 290px;
+    }
+    .lookup_search_select,
+    .lookup_search_input {
+      width: 350px;
+    }
+    .new_location_picture_xref input.submit_picture {
+      margin-top: 10px;
+    }
+    #add {
+      margin-left: 10px;
+    }
+    div.comment_image span.comment_image:hover:after {
+      margin-left: -140px;
+    }
+    .confirm_location {
+      width: 402px;
+    }
+    .confirm_inner {
+      width: 400px;
+    }
+    #location_maker .first {
+      float: none;
+    }
+    #location_maker textarea.machines {
+      height: 50px;
+      width: 300px;
+      max-width: 300px;
+      min-width: 300px;
+      max-height: 200px;
+      margin: 0;
+}
 }
 
 @media (max-width: 865px) {
