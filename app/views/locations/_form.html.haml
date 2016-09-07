@@ -3,14 +3,22 @@
 - @search_options.each_key do |key|
   %div{:id => "by_#{key}", :class => 'section', :style => 'display:none;'}
     = form_tag locations_path, :method => 'get', :class => 'location_search' do
-      = select_tag "by_#{key}_id", options_for_select([['All', '']]) + options_from_collection_for_select(@search_options[key]['search_collection'], @search_options[key]['id'], @search_options[key]['name'], params["by_#{key}"])
       - if @search_options[key]['autocomplete']
-        = text_field_tag "by_#{key}_name", params["by_#{key}_name"], :class => 'lookup_search_input'
+        = select_tag "by_#{key}_id", options_for_select([['All', '']]) + options_from_collection_for_select(@search_options[key]['search_collection'], @search_options[key]['id'], @search_options[key]['name'], params["by_#{key}"])
+        %div.search_field_container
+          = text_field_tag "by_#{key}_name", params["by_#{key}_name"], :class => 'lookup_search_input'
+          = submit_tag 'Search', :class => 'search', :id => "#{key}_search_button"
       - if (['city', 'zone', 'type'].include? key)
+        = select_tag "by_#{key}_id", options_for_select([['All', '']]) + options_from_collection_for_select(@search_options[key]['search_collection'], @search_options[key]['id'], @search_options[key]['name'], params["by_#{key}"])
         %span.info.limit Limit results to
         = select_tag "by_at_least_n_machines_#{key}", "<option></option><option value=\"2\">2</option><option value=\"3\">3</option><option value=\"4\">4</option><option value=\"5\">5</option>".html_safe
         %span.info or more machines.
-      = submit_tag 'Search', :class => 'search', :id => "#{key}_search_button"
+        %div.search_other_button
+          = submit_tag 'Search', :class => 'search', :id => "#{key}_search_button"
+      - if (['operator'].include? key)
+        = select_tag "by_#{key}_id", options_for_select([['All', '']]) + options_from_collection_for_select(@search_options[key]['search_collection'], @search_options[key]['id'], @search_options[key]['name'], params["by_#{key}"])
+        %div.search_other_button
+          = submit_tag 'Search', :class => 'search', :id => "#{key}_search_button"
       - if @search_options[key]['autocomplete']
         :javascript
           $(function () {
