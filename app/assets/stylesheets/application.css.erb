@@ -85,12 +85,22 @@ ul li li {
 .dark {
   color: #0b252b;
 }
-.darkb {
+.darkb, .darkbl {
   color: #F53240;
   text-shadow: 0.1px 0.1px 0.1px white;
   font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
   font-size: 18px;
   font-weight: bold;
+}
+.darkbl {
+  color: #303030;
+}
+span.stats {
+  background: #EFEFEF;
+  font-size: 22px; 
+  line-height: 18px;
+  padding: 2px 2px 6px 2px;
+  float: right;
 }
 .italic {
   font-style: italic;
@@ -133,13 +143,13 @@ ul li li {
   border: 1px solid #303030;
   margin: 0 5px 0 0;
 }
-form.new_user {
+form.new_user, form.edit_user {
   font-size: 16px;
 }
-form.new_user .input {
+form.new_user .input, form.edit_user .input {
   margin-top: 10px;
 }
-form.new_user .form-actions {
+form.new_user .form-actions, form.edit_user .form-actions {
   margin-top: 10px;
 }
 #login abbr {
@@ -167,6 +177,14 @@ form.new_user .form-actions {
 }
 .login_slash {
   color: #303030;
+}
+
+/** Stats **/
+
+p.stats {
+  line-height: 22px;
+  border-bottom: 1px solid #d3ecff;
+  padding-bottom: 15px;
 }
 
 /** Home **/
@@ -1289,6 +1307,7 @@ input.submit_button:hover,
 #new_user input[type="email"],
 #new_user input[type="password"],
 #new_user input[type="text"],
+#edit_user input,
 input#score,
 input#initials,
 #add_machine_by_name,
@@ -1756,7 +1775,7 @@ location_detail .phone {
 .right_column.secondary .ipad img {
   width: 485px;
 }
-.right_column.right_column_apps {
+.right_column.right_column_apps, .right_column_profile {
   width: 560px;
   margin-top: -8px;
 }
