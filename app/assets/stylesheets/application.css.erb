@@ -129,9 +129,18 @@ ul li li {
 }
 #login input.boolean {
   height: 16px;
+  width: 16px;
+  border: 1px solid #303030;
+  margin: 0 5px 0 0;
 }
 form.new_user {
   font-size: 16px;
+}
+form.new_user .input {
+  margin-top: 10px;
+}
+form.new_user .form-actions {
+  margin-top: 10px;
 }
 #login abbr {
   border: none;
@@ -223,7 +232,7 @@ p.notice {
 #flash-message.flash_region #flash_notice,
 #flash-message.flash_region #flash_alert {
   position: absolute;
-  bottom: 0;
+  top: 0;
   margin: 0;
   width: 100%;
   max-width: 100%;
@@ -235,7 +244,7 @@ p.notice {
   color: #F53240;
   font-size: 18px;
   text-align: center;
-  margin: 60px auto 10px;
+  margin: 0px auto 10px;
   padding: 5px 0;
   width: 100%;
   background: #fdf0eb;
@@ -267,13 +276,16 @@ p.notice {
 
 .store_wrapper {
   border: 3px solid #F53240; 
+  -webkit-box-sizing: border-box; 
+  -moz-box-sizing: border-box;    
   box-sizing: border-box;
   text-align:center;
   width: 190px;
   margin: 0 auto 15px;
   padding: 10px;
 }
-.store_title {
+.store_title, .question.darkb, .donate.darkb,
+.suggest p.darkb, .high p.darkb {
   font-size: 28px;
   line-height: 26px;
   padding: 0;
@@ -423,7 +435,7 @@ p.notice {
   list-style: none;
   padding: 8px 5px 5px;
   border-top: none;
-  background: #FFFFFF;
+  background: #EFEFEF;
   border: 1px solid rgb(102,102,102);
   border-bottom-left-radius: 5px;
   -webkit-border-bottom-left-radius: 5px;
@@ -433,16 +445,17 @@ p.notice {
   -moz-border-bottom-right-radius: 5px;
 }
 #header ul.other_regions_list {
-  font-size: 14px;
+  font-size: 16px;
   position: absolute;
   top: 46px;
   left: 0;
-  margin-top: 5px;
+  margin-top: 4px;
   width: 160px;
   max-height: 400px;
   overflow: auto;
   border-top: none;
   z-index: 100;
+  font-weight: bold;
 }
 #header ul.other_regions_list a,
 #header ul.other_regions_list a:hover {
@@ -450,14 +463,14 @@ p.notice {
   border: none;
   background: transparent;
   padding: 0;
-  color: #55413F;
+  color: #303030;
   vertical-align: middle;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
 }
 #header ul.other_regions_list a:hover {
-  color: #725755;
+  color: #F53240;
 }
 .other_regions_arrow:after {
   content:"";
@@ -515,19 +528,28 @@ span.why_login {
   padding: 5px 0 0;
 }
 #login .button {
+  color: #EFEFEF;
+  font-size: 18px;
+  line-height: 15px;
+  height: 36px;
+  font-weight: bold;
   padding: 6px 6px;
-  margin: 7px 5px;
-  border: 4px solid #d3ecff;
-  background-color: #EFEFEF;
-  text-shadow: 1px 1px 5px #CCC;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  margin: 7px 0px;
+  border: 2px solid #A9A9A9;
+  background-color: #303030;
+  -webkit-box-sizing: border-box; 
+  -moz-box-sizing: border-box;    
   box-sizing: border-box;
-  box-shadow: 3px 03px 3px #aaa;
+  box-shadow: 1px 1px 3px #888;
   font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
   text-transform: uppercase;
 }
 #login .button:hover {
   cursor: pointer;
-  background: #d3ecff;
+  background: #A9A9A9;
 }
 #login .reset-password .button,
 #login .confirmation .button {
@@ -564,6 +586,8 @@ div.pick_a_map .login_home {
   line-height: 22px;
   font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
   text-align: center;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
   border-radius: 0;
   display: block;
   font-weight: bold;
@@ -617,6 +641,8 @@ span.region_name_page {
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
+  -webkit-box-sizing: border-box; 
+  -moz-box-sizing: border-box;    
   box-sizing: border-box;
   margin-left: 5px;
 }
@@ -646,6 +672,8 @@ span.region_name_page {
   box-sizing: border-box;
   height: 28px;
   margin: -2px -2px 0 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
   border-radius: 0;
   padding: 0 5px;
   background: #303030;
@@ -655,6 +683,10 @@ span.region_name_page {
   box-shadow: none;
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px;
+  -moz-border-bottom-right-radius: 2px;
+  -moz-border-top-right-radius: 2px;
+  -webkit-border-bottom-right-radius: 2px;
+  -webkit-border-top-right-radius: 2px;
 }
 .search_other_button {
   float: right;
@@ -723,6 +755,10 @@ span.region_name_page {
   border-top: none;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  -moz-border-bottom-left-radius: 5px;
+  -moz-border-bottom-right-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
   padding-top: 4px;
   background-color: #EFEFEF;
   box-shadow: 0 5px 10px rgba(90, 100, 117, 0.5);
@@ -877,6 +913,8 @@ span.machine_year_man {
   height: 24px;
   padding-left: 5px;
   width: 435px;
+  -webkit-box-sizing: border-box; 
+  -moz-box-sizing: border-box;    
   box-sizing: border-box;
   clear: both;
   margin-left: 10px;
@@ -932,7 +970,7 @@ div.comment_image span.comment_image:hover:after {
   display: block;
 }
 .machine_condition_display_lmx span.machine_condition_date {
-  color: #999999;
+  color: #666666;
   font-size: 14px;
   margin: 6px 0;
   display: inline-block;
@@ -948,7 +986,7 @@ div.machine_condition_text {
 .machine_condition_new_line span.machine_condition_date {
   margin: 8px 0 2px;
   display: inline-block;
-  color: #999999;
+  color: #666666;
   font-size: 12px;
 }
 form.remove_machine_condition {
@@ -972,6 +1010,8 @@ form.remove_machine_condition {
 .machine_condition_display_lmx {
   margin: 5px 0 5px 10px;
   padding: 2px;
+  -webkit-box-sizing: border-box; 
+  -moz-box-sizing: border-box;    
   box-sizing: border-box;
   width: 435px;
   min-height: 30px;
@@ -1014,13 +1054,16 @@ form.remove_machine_condition {
   display: block;
 }
 .machine_condition_display_lmx span {
-  font-family: 'Georgia',"Times New Roman", Times,serif;
+  font-family: 'Palatino','Georgia',"Times New Roman", Times,serif;
   padding: 0 5px;
-  color: #666666;
+  color: #333333;
+  font-weight: normal;
 }
 .machine_condition_edit_lmx {
   width: 435px;
   margin: 5px;
+  -webkit-box-sizing: border-box; 
+  -moz-box-sizing: border-box;    
   box-sizing: border-box;
 }
 .machineconditions_container_lmx {
@@ -1033,6 +1076,8 @@ form.remove_machine_condition {
 .high_score > .sub_nav_item,
 .score_container_lmx > .sub_nav_item {
   width: 435px;
+  -webkit-box-sizing: border-box; 
+  -moz-box-sizing: border-box;    
   box-sizing: border-box;
   clear: both;
   border: none;
@@ -1075,7 +1120,7 @@ form.remove_machine_condition {
   background-color: #fedee4;
   border-top: 1px solid #DDDDDD;
   border: none;
-  color: #999999; 
+  color: #666666; 
   cursor: pointer;
   padding: 0 2px 2px;
   font-size: 16px;
@@ -1177,6 +1222,8 @@ br.clear {
 .metadata_edit_location input.save_button, 
 .metadata_edit_location input.cancel_button {
   border: 2px solid #A9A9A9;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
   border-radius: 6px;
   box-shadow: 1px 1px 3px #b7cfc1;
   -moz-box-shadow: 1px 1px 3px #b7cfc1;
@@ -1246,7 +1293,8 @@ input#score,
 input#initials,
 #add_machine_by_name,
 .lookup_search_input {
-  background: #FFFFFF;   
+  background: #FFFFFF;
+  padding: 0 5px;
   height: 28px;
   border: 2px solid #A9A9A9;
   color: #000;
@@ -1319,6 +1367,8 @@ input#initials {
   padding: 5px 0 5px 5px;
   background-color: #faf9fa;
   width: 435px;
+  -webkit-box-sizing: border-box; 
+  -moz-box-sizing: border-box;    
   box-sizing: border-box;
 }
 .add_picture_location_toggle,
@@ -1352,11 +1402,13 @@ input#initials {
 }
 .show_conditions_lmx_toggle {
   width: 435px;
+  -webkit-box-sizing: border-box; 
+  -moz-box-sizing: border-box;    
   box-sizing: border-box;
   color: #333333;
   border: none;
   font-size: 18px;
-  line-height: 22px;
+  line-height: 24px;
   height: 24px;
 }
 .location_type, .operator {
@@ -1709,6 +1761,8 @@ location_detail .phone {
   margin-top: -8px;
 }
 .left_column.secondary .pebble img {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
   border-radius: 10px;
   padding-bottom: 0;
   width: 220px;
@@ -1803,9 +1857,13 @@ location_detail .phone {
   margin-top: 3px;
 }
 .question {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
-  color: #58266F;
+  color: #F53240;
+  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
+}
+.question.darkb {
+  text-align: center;
 }
 .answer {
   font-size: 16px;
@@ -2187,10 +2245,10 @@ span.map_summary_info {
 /** High Rollers **/
 
 .high_roller_right_column {
-  float:right;
-  width:400px;
-  margin-left:550px;
-  padding:1em;
+  float: right;
+  width: 400px;
+  margin-left: 550px;
+  padding: 1em;
 }
 .high_score_new_line {
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
@@ -2198,33 +2256,64 @@ span.map_summary_info {
   display: block;
   font-size: 10px;
   line-height: 12px;
-  padding: 4px 0;
+  padding: 4px 0 0 0;
   font-size: 14px;
   font-weight: normal;
+}
+.high_score_date {
+  margin: 2px 0;
+  display: inline-block;
+  color: #666666;
+  font-size: 12px;
+  border-bottom: 1px solid #d3ecff;
 }
 .score_result {
   width: 610px;
   margin: 15px auto 0;
   padding: 5px 5px 15px;
 }
-.score_result span {
-  font-size: 14px;
-  color: #433A3A;
-  padding-bottom: 15px;
-  line-height: 20px;
-  font-style: italic;
-}
 .score_result .sub_nav_item {
   width: 600px;
+  background: #A9A9A9;
+}
+.score_result .sub_nav_item img {
+  height: 22px;
+  margin-left: -3px;
 }
 .score_result p {
   display: inline;
 }
-p.score_list {
+div.score_list span {
   line-height: 20px;
-  font-size: 14px;
-  color: #58266F;
+  font-size: 16px;
+  color: #303030;
   display: block;
+  font-weight: bold;
+}
+div.score_list span.score_meta {
+  padding-bottom: 10px;
+  font-size: 14px;
+  font-style: italic;
+  color: #666;
+  font-weight: normal;
+  display: inline;
+  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+}
+div.score_list span.score_meta_gen {
+  display: inline;
+  color: #666;
+  font-size: 14px;
+}
+div.score_list span.score_location {
+  text-decoration: underline;
+  background: #EFEFEF;
+}
+div.score_list span.score_score {
+  padding-top: 5px;
+}
+div.score_list {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #d3ecff;
 }
 
 /** Find a Pinball notice **/
