@@ -131,6 +131,9 @@ class PagesController < ApplicationController
   def donate
   end
 
+  def profile
+  end
+
   def contact
     redirect_to about_path
   end
