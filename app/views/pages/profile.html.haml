@@ -1,0 +1,37 @@
+#page_body
+  .left_column.secondary
+    - if user_signed_in?
+      %p.donate.darkb [Username]
+      %p Member since: [Account Creation Date]
+      %p 
+        =link_to "Update email or password", "http://#{request.host_with_port}/users/edit"
+    - else
+      %p.darkb 
+        Please
+        = link_to 'Log In', "http://#{request.host_with_port}/users/sign_in"
+        to view your profile!     
+  .right_column.right_column_profile
+    - if user_signed_in?
+      %p.darkbl.stats 
+        Number of machines added:
+        %span.stats
+          [# of machines added]
+      %p.darkbl.stats 
+        Number of machines removed:
+        %span.stats
+          [# of machines removed]
+      %p.darkbl.stats
+        Number of locations edited:
+        %span.stats
+          [# of locations edited]
+      %p.darkbl.stats
+        List of locations edited:
+        %span.stats
+          [list of locations edited w/ link]
+      %p.darkbl.stats 
+        High scores:
+        %span.stats
+          [list of high scores: location, machine, date]
+    - else
+      %p Oh what cool stats you'll see here once you've signed in and updated your pinball map. But until then...
+      

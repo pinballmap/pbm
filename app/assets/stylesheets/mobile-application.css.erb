@@ -147,6 +147,14 @@
 .confirm_location span.last_updated {
   padding: 8px 5px;
 }
+.confirm_location {
+  position: relative;
+  width: auto;
+}
+.confirm_inner {
+  width: auto;
+  margin-right: 10px;
+}
 span.region_name_page a {
   font-size: 30px;
   color: #F53240;
@@ -228,6 +236,7 @@ div.pick_a_map {
 
 .geo_header_wrapper a {
   padding: 3px;
+  font-size: 20px;
 }
 
 .map_summary {
@@ -307,7 +316,7 @@ div.pick_a_map {
   width: auto;
   height: auto;
   border: none;
-  padding: 5px 8px;
+  padding: 0 8px 5px;
   margin-top: 0;
 }
 
@@ -372,7 +381,30 @@ div.pick_a_map {
 #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id {
   font-size: 18px;
   width: 100%;
-  margin: 10px 0;
+  margin: 5px 0 10px;
+}
+
+.search_field_container, .search_other_button {
+  width: auto;
+  float: none;
+  height: 70px;
+  border: none;
+  background: transparent;
+}
+.search_other_button {
+  height: 40px;
+}
+#form .search_field_container input.lookup_search_input {
+  padding-left: 0;
+  border: 2px solid #A9A9A9;
+  background: #FFFFFF;
+  height: 28px;
+}
+#form .search_field_container .search,
+#form .search_other_button input {
+  margin: 10px 0 0 0;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
 }
 
 .location_link {
@@ -418,8 +450,8 @@ div.pick_a_map {
 }
 
 .pintips a {
-  padding-left: 8px;
-  font-size: 16px;
+  padding-left: 10px;
+  font-size: 18px;
 }
 
 .pintips a:after {
@@ -448,7 +480,7 @@ div.machine_condition_text {
 .search_result {
   border-radius: 0;
   padding: 0;
-  border: 2px solid #987673;
+  border: 2px solid #303030;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -470,11 +502,8 @@ div.machine_condition_text {
   margin-top: 0;
 }
 
-.metadata_edit_location input.edit_mode {
-  width: 195px;
-  float: right;
-}
-.metadata_edit_location form select {
+.metadata_edit_location form select,
+.metadata_edit_location input.edit_mode  {
   width: 200px;
   float: right;
 }
@@ -495,8 +524,9 @@ div.machine_condition_text {
 }
 
 .show_conditions_lmx span.machine_condition_date {
-  color: #999999;
-  font-size: 12px;
+  color: #666666;
+  font-size: 15px;
+  font-weight: normal;
 }
 
 .sub_nav_item, .pintips {
@@ -541,9 +571,9 @@ div.machine_condition_text {
   width: auto;
 }
 
-.machine_condition_new_line span, .machineconditions_container_lmx > .sub_nav_item {
-    font-size: 16px;
-    line-height: 16px;
+.machine_condition_new_line span {
+  font-size: 16px;
+  line-height: 16px;
 }
 
 .high_score > .sub_nav_item, .score_container_lmx > .sub_nav_item {
@@ -552,9 +582,20 @@ div.machine_condition_text {
   height: auto;
 }
 
-.high_score span, .score_container_lmx span {
-    font-size: 16px;
-    line-height: 16px;
+.high_score span, .score_container_lmx span,
+.machineconditions_container_lmx > .sub_nav_item {
+  font-size: 18px;
+  line-height: 16px;
+}
+
+.score_container_lmx span.high_score_date {
+  font-size: 15px;
+  font-weight: normal;
+  color: #666;
+}
+
+.score_container_lmx span.high_score_new_line {
+  font-size: 15px;
 }
 
 .high_score, .machineconditions_container_lmx {
@@ -562,9 +603,9 @@ div.machine_condition_text {
 }
 
 .desc_edit_location .edit_mode, .machine_condition_display_lmx .edit_mode {
-  max-width: 98%;
-  min-width: 236px;
-  width: 98%;
+  max-width: 100%;
+  min-width: 100%;
+  width: 100%;
   height: 80px;
 }
 
@@ -575,6 +616,10 @@ div.machine_condition_text {
 
 .metadata_edit_location {
   font-size: 13px;
+}
+
+.machine_condition_edit_lmx {
+  width: auto;
 }
 
 .add_picture_location span.info, .show_machines_location span.info, 
@@ -608,6 +653,9 @@ div.machine_condition_text {
   padding: 0;
   margin: 10px 0;
 }
+#add_score {
+  width: 98%;
+}
 
 .submit_button {
   width: 98%;
@@ -626,12 +674,13 @@ div.machine_condition_text {
 #flash-message #flash_notice, #flash-message #flash_alert {
   width: 100%;
   max-width: 100%;
-  margin: 75px auto 10px;
+  margin: 0px auto 10px;
+  z-index: 5000;
 }
 #flash-message.flash_region #flash_notice,
 #flash-message.flash_region #flash_alert {
   margin: 0px auto 10px;
-  position: relative;
+  position: absolute;
 }
 
 #file_chooser_button {
@@ -660,14 +709,22 @@ div.machine_condition_text {
   width: auto;
 }
 
+.score_result .sub_nav_item {
+  height: 20px;
+}
+
 .score_result span {
   float: left;
   padding-bottom: 0;
 }
 
+div.score_list span {
+  float: none;
+}
+
 input#score, input#initials {
-    width: 170px;
-    font-size: 16px;
+  width: 200px;
+  font-size: 16px;
   line-height: 24px;
 }
 
@@ -677,9 +734,9 @@ input#score, input#initials {
 }
 
 #other_search_options span {
-    display: block;
-    font-size: 18px;
-    padding-top: 5px;
+  display: block;
+  font-size: 18px;
+  padding-top: 5px;
 }
 
 .arrow {
@@ -727,6 +784,9 @@ input#score, input#initials {
   margin: 10px !important;
 }
 
+.left_column_outer {
+  padding: 0;
+}
 .left_column_about {
   margin-left: 0;
 }
@@ -761,6 +821,10 @@ input#score, input#initials {
 
 .location_detail_sub {
   padding: 0;
+}
+
+#location_maker, #new_user input {
+  width: 100%;
 }
 
 #location_maker li {
@@ -805,13 +869,23 @@ input#score, input#initials {
 }
 
 #location_maker textarea.machines {
-  width: 98%;
+  max-width: 100%;
+  min-width: 100%;
+  width: 100%;
   min-height: 100px;
 }
 
 #login {
-  margin: 5px auto 0;
+  margin: 5px auto;
   width: auto;
+}
+
+#login .button {
+  line-height: 18px;
+}
+#login .reset-password .button, #login .confirmation .button {
+  width: 100%;
+  font-size: 16px;
 }
 
 #login h2 {
