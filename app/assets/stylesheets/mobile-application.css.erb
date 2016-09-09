@@ -171,13 +171,18 @@ span.region_name_page {
 }
 
 #header a img.header_image {
-  float: right;
+  float: none;
   margin: 2px 0 0;
   width: 185px;
 }
 
 #header a img.header_image_login {
   width: 200px;
+}
+
+.login_region .login_slash,
+.login_home .login_slash {
+  display: inline;
 }
 
 .header_image_a {
@@ -215,19 +220,80 @@ div.pick_a_map {
   font-size: 18px !important;
   border: none !important;
   padding: 0;
-  margin: 5px 8px 0px;
+  margin: 5px 8px 0;
 }
 
 .login_home {
-  margin: 3px 8px 0px;
+  margin: 3px 8px;
 }
 
 .login_home a, .login_region a {
   padding: 1px 3px;
-  font-size: 22px;
+  font-size: 20px;
 }
  .login_region a {
   border: none;
+}
+@media only screen and (min-device-width: 320px) and (max-device-width: 370px) and (-webkit-device-pixel-ratio: 2) and (device-aspect-ratio: 2/3)
+{
+  .login_home a, .login_region a {
+    padding: 1px 3px;
+    font-size: 16px;
+  }
+  .geo_header_wrapper a {
+    padding: 3px;
+    font-size: 16px !important;
+  }
+  .login_home {
+    margin: 2px 2px 0 0;
+  }
+  #header a img.header_image {
+    width: 185px;
+    margin-top: 0;
+  }
+}
+@media only screen and (min-device-width: 320px) and (max-device-width: 359px)
+{
+  .login_home a, .login_region a {
+    padding: 1px 3px;
+    font-size: 18px !important;
+  }
+  .geo_header_wrapper a {
+    padding: 3px;
+    font-size: 16px !important;
+  }
+  .login_home {
+    margin: 2px 2px 0 0;
+  }
+}
+
+@media only screen and (max-width: 320px)
+{ 
+  .login_home, .geo_header_wrapper, .login_region {
+    margin: 5px 0;
+  }
+  #header a img.header_image {
+    width: 165px;
+    margin-top: 4px;
+  }
+  .pintips a {
+    font-size: 16px;
+  }
+}
+
+@media only screen and (min-device-width: 360px) and (max-device-width: 360px)
+{
+  .login_home a, .login_region a {
+    padding: 1px 3px;
+    font-size: 18px !important;
+  }
+  .geo_header_wrapper a {
+    padding: 3px;
+    font-size: 18px !important;
+  }
+  .login_home {
+    margin: 2px 6px 0 6px;
+  }
 }
 
 .geo_header_wrapper {
@@ -393,6 +459,7 @@ div.pick_a_map {
 }
 .search_other_button {
   height: 40px;
+  margin: 0;
 }
 #form .search_field_container input.lookup_search_input {
   padding-left: 0;
@@ -940,42 +1007,6 @@ p.notice {
 
   #welcome {
     width: auto;
-  }
-
-}
-
-@media (max-width: 320px) {
-
-  #header {
-    width: auto;
-  }
-  .map_summary {
-    width: 137px;
-  }
-  #header a img.header_image {
-    float: right;
-    margin: 2px 0 0;
-    width: 160px;
-  }
-  #header a img.header_image_login {
-    width: 220px;
-    margin: 0;
-  }
-  .login_home, .geo_header_wrapper {
-    font-size: 12px !important;
-    margin: 3px 3px;
-  }
-  .geo_header_wrapper {
-    margin-top: 2px;
-  }
-  #intro p {
-    font-size: 16px;
-  }
-  #header #nav {
-    float: none;
-  }
-  #header .menu_link ul li.first_header_link {
-    margin-top: 30px;
   }
 
 }
