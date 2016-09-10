@@ -13,7 +13,7 @@
   %div.confirm_inner
     %div{:class => "confirm_location_button", :id => "confirm_location_button_#{l.id}"}
       - if user_signed_in?
-        =image_tag('confirm-1.png', :class => 'confirm_button', :alt => 'Confirm Location is Up To Date')
+        %span.confirm_button
     %span.last_updated{:id => "last_updated_location_#{l.id}"} 
       #{l.date_last_updated ? "Location last updated: #{l.date_last_updated.strftime("%b-%d-%Y")}" : ''} 
       #{l.last_updated_by_user ? "by " : ''}
@@ -37,19 +37,6 @@
     });
 
     return false;
-  });
-
-  var confirm_image = new Image();
-  confirm_image.src = 'assets/confirm-1-hover.png';
-
-  $(function() {
-    $(".confirm_button")
-      .mouseover(function() {
-        $(this).attr("src", "assets/confirm-1-hover.png");
-      })
-      .mouseout(function() {
-        $(this).attr("src", "assets/confirm-1.png");
-      });
   });
 
 - if user_signed_in?

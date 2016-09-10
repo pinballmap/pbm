@@ -1496,7 +1496,7 @@ input#initials {
 .confirm_location_button {
   color: #303030;
   line-height: 20px;
-  margin: 0;
+  margin: 5px 0 0;
   font-size: 12px;
 }
 .confirm_location_button img {
@@ -1505,13 +1505,25 @@ input#initials {
   cursor: pointer;
   margin: 5px 5px;
 }
+.confirm_button {
+  height: 40px;
+  width: 40px;
+  display: inline-block;
+  background: url(<%= asset_path 'confirm-sprites-40.png' %>) no-repeat 0px -80px;
+}
+.confirm_button:hover {
+  background-position: 0px -40px;
+}
+.confirm_button:active {
+  background-position: top;
+}
 .confirm_location_button:hover:after {
   content: "Confirm location is up to date";
   position: absolute;
   line-height: 14px;
   font-size: 16px;
   margin-left: 5px;
-  margin-top: 12px;
+  margin-top: 8px;
   background: #444444;
   color: #EFEFEF;
   padding: 5px;
