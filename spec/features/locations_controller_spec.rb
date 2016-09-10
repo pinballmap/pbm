@@ -18,7 +18,7 @@ describe LocationsController do
 
     it 'lets you click a button to update the date_last_updated' do
       visit '/portland/?by_location_id=' + @location.id.to_s
-      find("#confirm_location_#{@location.id} img").click
+      find("#confirm_location_#{@location.id} span").click
 
       sleep 1
 
@@ -267,7 +267,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find('.location_meta .meta_image img').click
+      find('.location_meta span.meta_image').click
       fill_in('new_phone_' + @location.id.to_s, with: 'THIS IS INVALID')
       fill_in('new_website_' + @location.id.to_s, with: 'http://www.pinballmap.com')
       select('Quarterworld', from: "new_operator_#{@location.id}")
@@ -284,7 +284,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find('.location_meta .meta_image img').click
+      find('.location_meta span.meta_image').click
       fill_in("new_phone_#{@location.id}", with: '555-555-5555')
       fill_in("new_website_#{@location.id}", with: 'www.foo.com')
       select('Bar', from: "new_location_type_#{@location.id}")
@@ -305,7 +305,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find('.location_meta .meta_image img').click
+      find('.location_meta span.meta_image').click
       fill_in("new_phone_#{@location.id}", with: 'THIS IS SPAM')
       click_on 'Save'
 
@@ -315,7 +315,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find('.location_meta .meta_image img').click
+      find('.location_meta span.meta_image').click
       fill_in("new_phone_#{@location.id}", with: '')
       fill_in("new_website_#{@location.id}", with: 'THIS IS SPAM')
       click_on 'Save'
@@ -331,7 +331,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find('.location_meta .meta_image img').click
+      find('.location_meta span..meta_image').click
       fill_in("new_website_#{@location.id}", with: 'http://www.foo.com')
       fill_in("new_phone_#{@location.id}", with: '555-555-5555')
       select('Bar', from: "new_location_type_#{@location.id}")
