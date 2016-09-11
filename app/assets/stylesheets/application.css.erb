@@ -548,7 +548,7 @@ span.why_login {
 #login .button {
   color: #EFEFEF;
   font-size: 18px;
-  line-height: 15px;
+  line-height: 18px;
   height: 36px;
   font-weight: bold;
   padding: 6px 6px;
@@ -663,6 +663,7 @@ span.region_name_page {
   -moz-box-sizing: border-box;    
   box-sizing: border-box;
   margin-left: 5px;
+  font-weight: bold;
 }
 .section {
   padding: 7px 5px 3px;
@@ -708,9 +709,7 @@ span.region_name_page {
 }
 .search_other_button {
   float: right;
-}
-.search_other_button input {
-  margin: 0;
+  margin: 2px 2px 0 0;
 }
 #form .search_field_container input.lookup_search_input {
   border: none;
@@ -737,7 +736,7 @@ span.region_name_page {
   width: 100%;
 }
 #other_search_options a {
-  padding: 0px 6px 2px;
+  padding: 2px 6px;
   text-decoration: none;
 } 
 #other_search_options a:hover {
@@ -803,13 +802,12 @@ span.region_name_page {
   border-bottom: 1px solid white;
 }
 .location_link {
-  cursor: pointer;
   font-size: 18px;
   font-weight: normal;
   padding: 2px 2px 2px;
-  margin: 5px 0;
+  margin: 0;
   text-align: center;
-  background-color: #f3f2f2;
+  background-color: #FFFFFF;
 }
 .location_link a {
   text-decoration: none;
@@ -836,7 +834,7 @@ a.active_section_link:hover {
   color: #180e03;
 }
 .search_result ul {
-  border-left: 8px solid #303030;
+  border-left: 8px solid #A9A9A9;
   padding-left: 0px;
   margin-bottom: 0px;
   border-radius: 5px 0 0 5px;
@@ -955,27 +953,23 @@ span.machine_year_man {
   margin: 0 0 0 4px;
 }
 div.comment_image {
-  width: 50px;
+  width: 40px;
   height: 40px;
   float: right;
   margin-bottom: 5px;
 }
 div.comment_image span.comment_image {
-  width: 40px;
-}
-div.comment_image span.comment_image img {
   float: left;
   cursor: pointer;
   height: 40px;
-  margin-top: -15px;
 }
 div.comment_image span.comment_image:hover:after {
   content: "Leave a comment!";
   position: absolute;
-  margin-top: -30px;
+  margin-top: -5px;
   line-height: 14px;
   font-size: 16px;
-  margin-left: 10px;
+  margin-left: 45px;
   background: #444444;
   color: #EFEFEF;
   padding: 5px;
@@ -1498,8 +1492,7 @@ input#initials {
 .confirm_location_button {
   color: #303030;
   line-height: 20px;
-  background: #F3F2F2;
-  margin: 0;
+  margin: 5px 0 0;
   font-size: 12px;
 }
 .confirm_location_button img {
@@ -1508,13 +1501,25 @@ input#initials {
   cursor: pointer;
   margin: 5px 5px;
 }
+.confirm_button {
+  height: 40px;
+  width: 40px;
+  display: inline-block;
+  background: url(<%= asset_path 'confirm-sprites.png' %>) no-repeat 0px -80px;
+}
+.confirm_button:hover {
+  background-position: 0px -40px;
+}
+.confirm_button:active {
+  background-position: top;
+}
 .confirm_location_button:hover:after {
   content: "Confirm location is up to date";
   position: absolute;
   line-height: 14px;
   font-size: 16px;
   margin-left: 5px;
-  margin-top: 12px;
+  margin-top: 8px;
   background: #444444;
   color: #EFEFEF;
   padding: 5px;
@@ -1550,9 +1555,6 @@ location_detail .phone {
 }
 .location_name {
   background-color: #EFEFEF;
-  box-shadow: 0 2px 10px rgba(90, 100, 117, 0.5);
-  -moz-box-shadow: 0 2px 10px rgba(90, 100, 117, 0.5);
-  -webkit-box-shadow: 0 2px 10px rgba(90, 100, 117, 0.5);
   border-radius: 5px 5px 0 0;
   -moz-border-radius: 5px 5px 0 0;
   -webkit-border-radius: 5px 5px 0 0;
@@ -1584,17 +1586,53 @@ location_detail .phone {
   border-bottom: 1px solid #CAC6C6;
   text-align: right;
 }
-.location_description .comment_image img,
-.location_meta .meta_image img {
+.location_description .comment_image,
+.location_meta .meta_image {
   height: 40px;
   float: right;
   cursor: pointer;
   margin: 0 0 0 5px;
   width: 40px;
 }
+.location_description .comment_image {
+  height: 40px;
+  width: 40px;
+  display: inline-block;
+  background: url(<%= asset_path 'comment-sprites.png' %>) no-repeat top;
+}
+.location_description .comment_image:hover {
+  background-position: 0px -40px;
+}
+.location_description .comment_image:active {
+  background-position: 0px -80px;
+}
+div.comment_image .comment_image {
+  height: 40px;
+  width: 40px;
+  display: inline-block;
+  background: url(<%= asset_path 'comment-sprites.png' %>) no-repeat 0 -80px;
+}
+div.comment_image .comment_image:hover {
+  background-position: 0px -40px;
+}
+div.comment_image .comment_image:active {
+  background-position: top;
+}
+.meta_image {
+  height: 40px;
+  width: 40px;
+  display: inline-block;
+  background: url(<%= asset_path 'meta-sprites.png' %>) no-repeat 0px -80px;
+}
+.meta_image:hover {
+  background-position: 0px -40px;
+}
+.meta_image:active {
+  background-position: top;
+}
 .location_description .comment_image:hover:after,
 .location_meta .meta_image:hover:after {
-  content: "Update Location Description/Hours/Etc.";
+  content: "Update Location Description/Hours/Etc";
   position: absolute;
   line-height: 12px;
   font-size: 14px;
@@ -1611,7 +1649,7 @@ location_detail .phone {
   font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
 }
 .location_meta .meta_image:hover:after {
-  content: "Update Location Metadata.";
+  content: "Update Location Info";
   font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
 }
 .desc_button:hover, .confirm_location_button:hover {

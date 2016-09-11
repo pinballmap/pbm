@@ -36,10 +36,8 @@
                 - if user_signed_in?
                   %span.location_description
                     %span.comment_image
-                      =image_tag('comment-3.png', :alt => 'Update Location Description/Hours/Etc')
                     %span.location_meta
                       %span.meta_image
-                        =image_tag('tools.png', :alt => 'Update Location Metadata')
                 %li.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
                 %div[l, :metadata]
                   = render :partial => 'locations/render_update_metadata', :locals => {:l => l}
