@@ -16,12 +16,12 @@
         %div{:style => 'display:none', :id => "user_#{count}"}
           - roller[1].each do |msx|
             %div.score_list
-              %span.score_location #{msx.location_machine_xref.machine.name}
+              %span.score_machine #{msx.location_machine_xref.machine.name}
               %span.score_score #{number_with_delimiter(msx.score, :delimiter => ",")}
-              %span.score_meta at 
+              %span.score_meta at
               %span.score_meta_gen
-                #{msx.location_machine_xref.location.name} 
-              %span.score_meta on 
+                #{msx.location_machine_xref.location.name}
+              %span.score_meta on
               %span.score_meta_gen
                 #{msx.created_at.strftime("%b-%d-%Y")}
       - count += 1
