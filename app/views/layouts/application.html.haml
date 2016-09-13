@@ -30,12 +30,12 @@
       #page{:class => "#{@region ? '' : 'page_home'}"}
         = render :partial => 'pages/header'
         .clear
-        #flash-message{:class => "#{@region ? 'flash_region' : 'flash_home'}"}
+        #flash-message
           - flash.each do |name, msg|
             = content_tag :div, msg, :id => "flash_#{name}"
             :javascript
               $(function () {
-                $("#flash_#{name}").delay(5000).fadeOut("slow");
+                $("#flash_#{name}").delay(4000).fadeOut("slow");
               });
 
       = yield

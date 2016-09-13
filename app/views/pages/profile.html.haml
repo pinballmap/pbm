@@ -1,41 +1,46 @@
 #page_body
-  .left_column.secondary
+  .left_column.secondary.profile
     - if user_signed_in?
       %p.donate.darkb #{Authorization.current_user.username}
-      %p Member since: #{Authorization.current_user.created_at.strftime('%m-%d-%Y')}
-      %p 
+      %p.darkbl{:style => "font-size:16px;"} Member since: #{Authorization.current_user.created_at.strftime('%b-%d-%Y')}
+      %p
         =link_to "Update email or password", "http://#{request.host_with_port}/users/edit"
     - else
-      %p.darkb 
+      %p.darkb
         Please
         = link_to 'Log In', "http://#{request.host_with_port}/users/sign_in"
-        to view your profile!     
+        to view your profile!
   .right_column.right_column_profile
     - if user_signed_in?
-      %p.darkbl.stats 
-        Number of machines added:
-        %span.stats
-          #{Authorization.current_user.num_machines_added}
-      %p.darkbl.stats 
-        Number of machines removed:
-        %span.stats
-          #{Authorization.current_user.num_machines_removed}
-      %p.darkbl.stats 
-        Number of locations suggested:
-        %span.stats
-          #{Authorization.current_user.num_locations_suggested}
-      %p.darkbl.stats
-        Number of locations edited:
-        %span.stats
-          #{Authorization.current_user.num_locations_edited}
-      %p.darkbl.stats
-        List of locations edited:
-        %span.stats
-          #{raw(Authorization.current_user.profile_list_of_edited_locations(request.host_with_port))}
-      %p.darkbl.stats 
-        High scores:
-        %span.stats
-          #{raw(Authorization.current_user.profile_list_of_high_scores)}
+      %div.darkbl.stats
+        %div.stat_num_o
+          %span.stats
+            #{Authorization.current_user.num_machines_added}
+        %span.stats_text Machines Added
+      %div.darkbl.stats
+        %div.stat_num_o
+          %span.stats
+            #{Authorization.current_user.num_machines_removed}
+        %span.stats_text Machines Removed
+      %div.darkbl.stats
+        %div.stat_num_o
+          %span.stats
+            #{Authorization.current_user.num_locations_suggested}
+        %span.stats_text Locations Suggested
+      %div.darkbl.stats
+        %div.stat_num_o
+          %span.stats
+            #{Authorization.current_user.num_locations_edited}
+        %span.stats_text Locations Edited
+      %div.darkbl.stats
+        %div.stats_o
+          List of Locations Edited:
+          %span.stats_list
+            #{raw(Authorization.current_user.profile_list_of_edited_locations(request.host_with_port))}
+      %div.darkbl.stats
+        %div.stats_o
+          High Scores:
+          %span.stats_list
+            #{raw(Authorization.current_user.profile_list_of_high_scores)}
     - else
-      %p Oh what cool stats you'll see here once you've signed in and updated your pinball map. But until then...
-      
+      %p Oh what cool stats you'll see here once you've signed in and updated some pinball maps. But until then...
