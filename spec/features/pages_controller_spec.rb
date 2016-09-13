@@ -257,7 +257,7 @@ describe PagesController do
       expect(page).to have_content('2 Machines Removed')
       expect(page).to have_content('3 Locations Suggested')
       expect(page).to have_content('5 Locations Edited')
-      expect(page).to have_content('High scores: Test Machine Name 2 at Test Location Name on Jan-01-2016, Test Machine Name 1 at Test Location Name on Jan-02-2016')
+      expect(page).to have_content('High Scores: Test Machine Name 2 at Test Location Name on Jan-01-2016, Test Machine Name 1 at Test Location Name on Feb-02-2016')
     end
   end
 end
