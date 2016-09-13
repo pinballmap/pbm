@@ -1,8 +1,8 @@
 #page_body
   .left_column.secondary
     - if user_signed_in?
-      %p.donate.darkb [Username]
-      %p Member since: [Account Creation Date]
+      %p.donate.darkb #{Authorization.current_user.username}
+      %p Member since: #{Authorization.current_user.created_at.strftime('%m-%d-%Y')}
       %p 
         =link_to "Update email or password", "http://#{request.host_with_port}/users/edit"
     - else
@@ -15,23 +15,27 @@
       %p.darkbl.stats 
         Number of machines added:
         %span.stats
-          [# of machines added]
+          #{Authorization.current_user.num_machines_added}
       %p.darkbl.stats 
         Number of machines removed:
         %span.stats
-          [# of machines removed]
+          #{Authorization.current_user.num_machines_removed}
+      %p.darkbl.stats 
+        Number of locations suggested:
+        %span.stats
+          #{Authorization.current_user.num_locations_suggested}
       %p.darkbl.stats
         Number of locations edited:
         %span.stats
-          [# of locations edited]
+          #{Authorization.current_user.num_locations_edited}
       %p.darkbl.stats
         List of locations edited:
         %span.stats
-          [list of locations edited w/ link]
+          #{raw(Authorization.current_user.profile_list_of_edited_locations(request.host_with_port))}
       %p.darkbl.stats 
         High scores:
         %span.stats
-          [list of high scores: location, machine, date]
+          #{raw(Authorization.current_user.profile_list_of_high_scores)}
     - else
       %p Oh what cool stats you'll see here once you've signed in and updated your pinball map. But until then...
       

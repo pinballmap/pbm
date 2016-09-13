@@ -228,4 +228,36 @@ describe PagesController do
       expect(page).not_to have_title('Apps')
     end
   end
+
+  describe 'User profile', type: :feature, js: true do
+    it 'display metrics about the users account' do
+      @user = FactoryGirl.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+
+      FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 100), submission_type: UserSubmission::NEW_LMX_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 200), submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 300), submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 400), submission_type: UserSubmission::LOCATION_METADATA_TYPE)
+      msx = FactoryGirl.create(:machine_score_xref, user: @user, location_machine_xref: FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, id: 500)), score: 1, created_at: '01-02-2016')
+      msx.create_user_submission
+
+      FactoryGirl.create(:user_submission, user: @user, location: Location.find(400), submission_type: UserSubmission::LOCATION_METADATA_TYPE)
+      msx = FactoryGirl.create(:machine_score_xref, user: @user, location_machine_xref: FactoryGirl.create(:location_machine_xref, location: Location.find(500)), score: 2, created_at: '01-01-2016')
+      msx.create_user_submission
+
+      login
+      visit '/profile'
+
+      expect(page).to have_content('ssw')
+      expect(page).to have_content('Member since: 02-02-2016')
+      expect(page).to have_content('Number of machines added: 1')
+      expect(page).to have_content('Number of machines removed: 2')
+      expect(page).to have_content('Number of locations suggested: 3')
+      expect(page).to have_content('Number of locations edited: 5')
+      expect(page).to have_content('High scores: Test Location Name, Test Machine Name, 01-01-2016, 2 points Test Location Name, Test Machine Name, 01-02-2016, 1 points')
+    end
+  end
 end
