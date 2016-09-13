@@ -83,6 +83,32 @@ describe Location do
     end
   end
 
+  describe '#confirm' do
+    it 'sets date_last_updated and last_updated_by_user_id' do
+      user = FactoryGirl.create(:user, username: 'ssw')
+
+      @l.confirm(user)
+
+      expect(@l.last_updated_by_user_id).to eq(user.id)
+      expect(@l.date_last_updated).to eq(Date.today)
+    end
+
+    it 'auto-creates user submissions' do
+      user = FactoryGirl.create(:user, username: 'ssw')
+      location = FactoryGirl.create(:location, name: 'foo')
+
+      location.confirm(user)
+
+      submission = UserSubmission.last
+
+      expect(submission.user).to eq(user)
+      expect(submission.region).to eq(location.region)
+      expect(submission.location).to eq(location)
+      expect(submission.submission).to eq('User ssw confirmed the lineup at foo')
+      expect(submission.submission_type).to eq(UserSubmission::CONFIRM_LOCATION_TYPE)
+    end
+  end
+
   describe '#update_metadata' do
     it 'creates a user submission for updated metadata' do
       u = FactoryGirl.create(:user, username: 'ssw', email: 'yeah@ok.com')
@@ -92,6 +118,7 @@ describe Location do
 
       expect(user_submission.user_id).to eq(u.id)
       expect(user_submission.submission).to eq('Changed location description to foo')
+      expect(user_submission.location).to eq(@l)
     end
 
     it 'creates a user submission for updated metadata -- no user sent' do

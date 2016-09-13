@@ -18,4 +18,10 @@ class MachineScoreXref < ActiveRecord::Base
   def username
     user ? user.username : ''
   end
+
+  def create_user_submission
+    user_info = user ? "User #{user.username} (#{user.email})" : 'UNKNOWN USER'
+
+    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: "#{user_info} added a score for #{machine.name} to #{location.name}", user: user)
+  end
 end

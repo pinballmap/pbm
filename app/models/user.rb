@@ -59,4 +59,59 @@ class User < ActiveRecord::Base
   def as_json(_options = {})
     super(only: [:id, :username, :email, :authentication_token])
   end
+
+  def num_machines_added
+    UserSubmission.where(user: self, submission_type: UserSubmission::NEW_LMX_TYPE).size
+  end
+
+  def num_machines_removed
+    UserSubmission.where(user: self, submission_type: UserSubmission::REMOVE_MACHINE_TYPE).size
+  end
+
+  def num_locations_edited
+    unique_edited_location_ids = edited_location_submissions.map { |s| s.location_id }.uniq!
+
+    unique_edited_location_ids ? unique_edited_location_ids.size : 0
+  end
+
+  def num_locations_suggested
+    UserSubmission.where('user_id = ? and submission_type = ?', id, UserSubmission::SUGGEST_LOCATION_TYPE).size
+  end
+
+  def profile_list_of_high_scores
+    msxes = MachineScoreXref.where(user: self).order(:created_at)
+
+    formatted_score_data = []
+    msxes.each do |msx|
+      formatted_score_data.push([msx.location.name, msx.machine.name, msx.created_at.strftime('%d-%m-%Y'), "#{msx.score} points"].join(', '))
+    end
+
+    formatted_score_data.join('<br />')
+  end
+
+  def profile_list_of_edited_locations(host_with_port)
+    submissions = edited_location_submissions
+
+    unique_edited_locations_that_exist = []
+    submissions.each do |s|
+      next unless s.location_id && Location.exists?(id: s.location_id)
+
+      unique_edited_locations_that_exist.push(s.location)
+    end
+
+    unique_edited_locations_that_exist.uniq.map { |l| "<a href='http://#{host_with_port}/#{l.region.name}/?by_location_id=#{l.id}'>#{l.name}</a>" }.join('<br />')
+  end
+
+  def edited_location_submissions
+    UserSubmission.where(
+      'location_id is not null and user_id = ? and submission_type in (?,?,?,?,?,?)',
+      id,
+      UserSubmission::NEW_CONDITION_TYPE,
+      UserSubmission::LOCATION_METADATA_TYPE,
+      UserSubmission::NEW_LMX_TYPE,
+      UserSubmission::REMOVE_MACHINE_TYPE,
+      UserSubmission::NEW_SCORE_TYPE,
+      UserSubmission::CONFIRM_LOCATION_TYPE
+    )
+  end
 end

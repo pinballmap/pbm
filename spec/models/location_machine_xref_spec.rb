@@ -106,6 +106,20 @@ describe LocationMachineXref do
 
       expect(LocationMachineXref.all).to eq([])
     end
+
+    it 'auto-creates a user submission' do
+      user = User.find(1)
+      @lmx.destroy(user_id: user.id)
+
+      submission = UserSubmission.third
+
+      expect(submission.region).to eq(@l.region)
+      expect(submission.user).to eq(user)
+      expect(submission.location).to eq(@lmx.location)
+      expect(submission.machine).to eq(@lmx.machine)
+      expect(submission.submission).to eq(["#{@l.name} (#{@l.id})", "#{@m.name} (#{@m.id})", "#{@l.region.name} (#{@l.region.id})"].join("\n"))
+      expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
+    end
   end
 
   describe '#current_condition' do
@@ -132,6 +146,23 @@ describe LocationMachineXref do
       lmx = FactoryGirl.create(:location_machine_xref, user: FactoryGirl.create(:user, id: 666, username: 'foo'))
 
       expect(lmx.last_updated_by_username).to eq('foo')
+    end
+  end
+
+  describe '#create' do
+    it 'auto-creates a user submission' do
+      user = FactoryGirl.create(:user, id: 777)
+
+      FactoryGirl.create(:location_machine_xref, location: @l, machine: @m, user: user)
+
+      submission = UserSubmission.third
+
+      expect(submission.region).to eq(@l.region)
+      expect(submission.user).to eq(user)
+      expect(submission.location).to eq(@l)
+      expect(submission.machine).to eq(@m)
+      expect(submission.submission).to eq("User #{user.username} (#{user.email}) added #{@m.name} to #{@l.name}")
+      expect(submission.submission_type).to eq(UserSubmission::NEW_LMX_TYPE)
     end
   end
 end

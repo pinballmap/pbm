@@ -139,12 +139,7 @@ module Api
       formats ['json']
       def confirm
         location = Location.find(params[:id])
-
-        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
-
-        location.date_last_updated = Date.today
-        location.last_updated_by_user_id = user ? user.id : nil
-        location.save(validate: false)
+        location.confirm(Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user)
 
         return_response('Thanks for confirming that location.', 'msg')
 
