@@ -49,7 +49,7 @@ group :test do
   gem 'launchy', '~> 2.4'
   gem 'poltergeist', '~> 1.10'
   gem 'rspec-rails', '~> 3.5'
-  gem 'rubocop', '~> 0.42', require: false
+  gem 'rubocop', '0.26', require: false
   gem 'simplecov', '~> 0.12', require: false
   gem 'spork', '~> 0.9'
   gem 'timecop', '~> 0.8'

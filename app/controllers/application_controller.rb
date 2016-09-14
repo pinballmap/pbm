@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
     user_info = user ? " by #{user.username} (#{user.email})" : ''
 
     Pony.mail(
-      to: Region.find_by_name('portland').users.map { |u| u.email },
+      to: Region.find_by_name('portland').users.map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject('PBM - New machine name'),
       body: [machine.name, location.name, location.region.name, "(entered from #{request.remote_ip} via #{request.user_agent}#{user_info})"].join("\n")
@@ -60,8 +60,8 @@ Their Email: #{params['submitter_email']}\n
 (entered from #{request.remote_ip} via #{request.user_agent}#{user_info})\n
 END
     Pony.mail(
-      to: region.users.map { |u| u.email },
-      bcc: User.all.select { |u| u.is_super_admin }.map { |u| u.email },
+      to: region.users.map(&:email),
+      bcc: User.all.select(&:is_super_admin).map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject("PBM - New location suggested for the #{region.name} pinball map"),
       body: body
@@ -72,7 +72,7 @@ END
 
   def send_new_region_notification(params)
     Pony.mail(
-      to: Region.where('lower(name) = ?', 'portland').first.users.map { |u| u.email },
+      to: Region.where('lower(name) = ?', 'portland').first.users.map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject('PBM - New region suggestion'),
       body: <<END
@@ -94,8 +94,8 @@ Message: #{params[:message]}\n
 #{user_info}
 END
     Pony.mail(
-      to: region.users.map { |u| u.email },
-      bcc: User.all.select { |u| u.is_super_admin }.map { |u| u.email },
+      to: region.users.map(&:email),
+      bcc: User.all.select(&:is_super_admin).map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject("PBM - Message from the #{region.full_name} region"),
       body: body
@@ -107,7 +107,7 @@ END
   def send_app_comment(params, region)
     Pony.mail(
       to: 'pinballmap@outlook.com',
-      bcc: User.all.select { |u| u.is_super_admin }.map { |u| u.email },
+      bcc: User.all.select(&:is_super_admin).map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject('PBM - App feedback'),
       body: <<END

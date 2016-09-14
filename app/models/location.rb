@@ -34,28 +34,28 @@ class Location < ActiveRecord::Base
   scope :by_city_id, ->(city) { where(city: city) }
   scope :by_location_name, ->(name) { where(name: name) }
   scope :by_ipdb_id, lambda { |id|
-    machines = Machine.where('ipdb_id in (?)', id.split('_').map(&:to_i)).map { |m| m.all_machines_in_machine_group }.flatten
+    machines = Machine.where('ipdb_id in (?)', id.split('_').map(&:to_i)).map(&:all_machines_in_machine_group).flatten
 
-    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map { |m| m.id })
+    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
   }
   scope :by_machine_id, lambda { |id|
-    machines = Machine.where('id in (?)', id.split('_').map(&:to_i)).map { |m| m.all_machines_in_machine_group }.flatten
+    machines = Machine.where('id in (?)', id.split('_').map(&:to_i)).map(&:all_machines_in_machine_group).flatten
 
-    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map { |m| m.id })
+    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
   }
   scope :by_machine_group_id, lambda { |id|
     machines = Machine.where('machine_group_id in (?)', id).flatten
 
-    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map { |m| m.id })
+    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
   }
   scope :by_machine_name, lambda { |name|
     machine = Machine.find_by_name(name)
 
     return nil if machine.nil?
 
-    machines = machine.machine_group_id ? Machine.where('machine_group_id = ?', machine.machine_group_id).map { |m| m.all_machines_in_machine_group }.flatten : [machine]
+    machines = machine.machine_group_id ? Machine.where('machine_group_id = ?', machine.machine_group_id).map(&:all_machines_in_machine_group).flatten : [machine]
 
-    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map { |m| m.id })
+    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
   }
   scope :by_at_least_n_machines_city, lambda { |n|
     where(Location.by_at_least_n_machines_sql(n))
@@ -81,7 +81,7 @@ class Location < ActiveRecord::Base
   end
 
   def machine_names
-    machines.sort_by(&:massaged_name).map { |m| m.name_and_year }
+    machines.sort_by(&:massaged_name).map(&:name_and_year)
   end
 
   def content_for_infowindow

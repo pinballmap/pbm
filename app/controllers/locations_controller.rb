@@ -16,7 +16,7 @@ class LocationsController < InheritedResources::Base
   end
 
   def locations_for_machine
-    @locations = @region.location_machine_xrefs.reject { |lmx| lmx.machine_id.to_s != params[:id] }.map { |lmx| lmx.location }.sort_by(&:name)
+    @locations = @region.location_machine_xrefs.reject { |lmx| lmx.machine_id.to_s != params[:id] }.map(&:location).sort_by(&:name)
   end
 
   def render_machines
