@@ -79,13 +79,14 @@ class User < ActiveRecord::Base
   end
 
   def profile_list_of_high_scores
-    msxes = MachineScoreXref.where(user: self).order(:created_at)
+    msx_submissions = UserSubmission.where(user: self, submission_type: UserSubmission::NEW_SCORE_TYPE).order(:created_at)
 
     formatted_score_data = []
-    msxes.each do |msx|
-      formatted_score_data.push(["<span class='score_machine'>#{msx.machine.name}</span>",
-        "<span class='score_score'>#{msx.score}</span>",
-        "<span class='score_meta'>at </span><span class='score_meta_gen'>#{msx.location.name}</span> <span class='score_meta'> on </span><span class='score_meta_gen'>#{msx.created_at.strftime('%b-%d-%Y')}</span>"].join(''))
+    msx_submissions.each do |msx_sub|
+      score = 'UNKNOWN'
+      score = $1 if msx_sub.submission =~ /added a score of (.*) for.*/i
+
+      formatted_score_data.push([msx_sub.location.name, msx_sub.machine.name, msx_sub.created_at.strftime('%m-%d-%Y'), "#{score} points"].join(', '))
     end
 
     formatted_score_data.join('<br /><br />')
