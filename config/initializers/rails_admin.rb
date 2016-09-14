@@ -468,7 +468,6 @@ RailsAdmin.config do |config|
         end
         searchable [Location => :name]
       end
-      field :rank
       field :score
     end
     show do
@@ -478,7 +477,6 @@ RailsAdmin.config do |config|
           bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object].location_machine_xref_id}
         end
       end
-      field :rank
       field :score
     end
     edit do
@@ -489,7 +487,6 @@ RailsAdmin.config do |config|
           bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object].location_machine_xref_id}
         end
       end
-      field :rank
       field :score
     end
     export do; end
