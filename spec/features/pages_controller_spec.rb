@@ -252,12 +252,12 @@ describe PagesController do
       visit '/profile'
 
       expect(page).to have_content('ssw')
-      expect(page).to have_content('Member since: 02-02-2016')
-      expect(page).to have_content('Number of machines added: 1')
-      expect(page).to have_content('Number of machines removed: 2')
-      expect(page).to have_content('Number of locations suggested: 3')
-      expect(page).to have_content('Number of locations edited: 5')
-      expect(page).to have_content('High scores: Test Location Name, Test Machine Name, 01-01-2016, 2 points Test Location Name, Test Machine Name, 01-02-2016, 1 points')
+      expect(page).to have_content('Member since: Feb-02-2016')
+      expect(page).to have_content('1 Machines Added')
+      expect(page).to have_content('2 Machines Removed')
+      expect(page).to have_content('3 Locations Suggested')
+      expect(page).to have_content('5 Locations Edited')
+      expect(page).to have_content('High Scores: Test Machine Name 2 at Test Location Name on Jan-01-2016 Test Machine Name 1 at Test Location Name on Feb-01-2016')
     end
   end
 end
