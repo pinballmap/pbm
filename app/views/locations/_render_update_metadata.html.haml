@@ -3,17 +3,18 @@
     %li.address_full= link_to l.phone, "tel:" + l.phone, :type => 'tel'
     .clear
   - else
-    %li.phone= l.phone
-    .clear
-  - if l.website
+    - if l.phone?
+      %li.phone= l.phone
+      .clear
+  - if l.website?
     %li.website= link_to l.website, l.website, :class => 'website', :target => 'blank'
-  .clear
+    .clear
   %div.operator_type
     - if (l.operator_id)
       - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
         %li.operator
           %span.italic Operated by:
-          %span.bold #{l.operator.name}
+          %span.bold &nbsp;#{l.operator.name}
         .clear
       - else
         %li.operator
@@ -24,7 +25,7 @@
     - if (l.location_type)
       %li.location_type
         %span.italic Location Type:
-        %span.bold #{l.location_type.name}
+        %span.bold &nbsp;#{l.location_type.name}
   .clear
 %div[l, :metadata_edit]{:style => 'display:none'}
   = form_tag update_metadata_locations_path(:action => 'update_metadata', :id => l.id, :region => @region.name), :id => "update_metadata_#{l.id}", :method => 'get' do
