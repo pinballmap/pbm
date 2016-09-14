@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
   end
 
   def inactive_message
-    'Your account has been disabled. Please contact our support team if you think this was a mistake.'
+    'Your account is not active. Please contact our support team if you think this was a mistake.'
   end
 
   def name
@@ -86,10 +86,14 @@ class User < ActiveRecord::Base
       score = 'UNKNOWN'
       score = $1 if msx_sub.submission =~ /added a score of (.*) for.*/i
 
-      formatted_score_data.push([msx_sub.location.name, msx_sub.machine.name, msx_sub.created_at.strftime('%m-%d-%Y'), "#{score} points"].join(', '))
+      formatted_score_data.push([
+        "<span class='score_machine'>#{msx_sub.machine.name}</span>",
+        "<span class='score_score'>#{score}</span>",
+        "<span class='score_meta'>at </span><span class='score_meta_gen'>#{msx_sub.location.name}</span> <span class='score_meta'> on </span><span class='score_meta_gen'>#{msx_sub.created_at.strftime('%b-%d-%Y')}</span>"
+      ].join(''))
     end
 
-    formatted_score_data.join('<br />')
+    formatted_score_data.join('<br /><br />')
   end
 
   def profile_list_of_edited_locations(host_with_port)
@@ -102,7 +106,7 @@ class User < ActiveRecord::Base
       unique_edited_locations_that_exist.push(s.location)
     end
 
-    unique_edited_locations_that_exist.uniq.map { |l| "<a href='http://#{host_with_port}/#{l.region.name}/?by_location_id=#{l.id}'>#{l.name}</a>" }.join('<br />')
+    unique_edited_locations_that_exist.uniq.map { |l| "<span class='location_edited'><a href='http://#{host_with_port}/#{l.region.name}/?by_location_id=#{l.id}'>#{l.name}</a></span>" }.join('<br />')
   end
 
   def edited_location_submissions
