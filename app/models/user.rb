@@ -88,9 +88,15 @@ class User < ActiveRecord::Base
     formatted_score_data = []
     msx_submissions.each do |msx_sub|
       score = 'UNKNOWN'
-      score = $1 if msx_sub.submission =~ /added a score of (.*) for.*/i
+      score, machine_name, location_name = $1, $2, $3 if msx_sub.submission =~ /added a score of (.*) for (.*) to (.*)$/i
 
-      formatted_score_data.push([msx_sub.location.name, msx_sub.machine.name, msx_sub.created_at.strftime('%m-%d-%Y'), "#{score} points"].join(', '))
+      next unless score && machine_name && location_name
+
+      formatted_score_data.push([
+        "<span class='score_machine'>#{machine_name}</span>",
+        "<span class='score_score'>#{score}</span>",
+        "<span class='score_meta'>at </span><span class='score_meta_gen'>#{location_name}</span> <span class='score_meta'> on </span><span class='score_meta_gen'>#{msx_sub.created_at.strftime('%b-%d-%Y')}</span>"
+      ].join(''))
     end
 
     formatted_score_data.join('<br /><br />')
