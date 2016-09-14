@@ -241,12 +241,10 @@ describe PagesController do
       FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
       FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
       FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 400), submission_type: UserSubmission::LOCATION_METADATA_TYPE)
-      msx = FactoryGirl.create(:machine_score_xref, user: @user, location_machine_xref: FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, id: 500)), score: 1, created_at: '01-02-2016')
-      msx.create_user_submission
+      FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 500, name: 'Location One'), machine: FactoryGirl.create(:machine, name: 'Machine One'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 1 for Machine One to Location One', created_at: '2016-01-02')
 
       FactoryGirl.create(:user_submission, user: @user, location: Location.find(400), submission_type: UserSubmission::LOCATION_METADATA_TYPE)
-      msx = FactoryGirl.create(:machine_score_xref, user: @user, location_machine_xref: FactoryGirl.create(:location_machine_xref, location: Location.find(500)), score: 2, created_at: '01-01-2016')
-      msx.create_user_submission
+      FactoryGirl.create(:user_submission, user: @user, location: Location.find(500), machine: FactoryGirl.create(:machine, name: 'Machine Two'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 2 for Machine Two to Location One', created_at: '2016-01-01')
 
       login
       visit '/profile'
@@ -257,7 +255,7 @@ describe PagesController do
       expect(page).to have_content('Number of machines removed: 2')
       expect(page).to have_content('Number of locations suggested: 3')
       expect(page).to have_content('Number of locations edited: 5')
-      expect(page).to have_content('High scores: Test Location Name, Test Machine Name, 01-01-2016, 2 points Test Location Name, Test Machine Name, 01-02-2016, 1 points')
+      expect(page).to have_content('High scores: Location One, Machine Two, 01-01-2016, 2 points Location One, Machine One, 01-02-2016, 1 points')
     end
   end
 end

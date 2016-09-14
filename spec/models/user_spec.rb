@@ -31,14 +31,12 @@ describe User do
 
   describe '#profile_list_of_high_scores' do
     it "should return a formatted list of the user's high scores for their profile page" do
-      lmx1 = FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, name: 'First Location'), machine: FactoryGirl.create(:machine, name: 'First Machine'))
-      lmx2 = FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, name: 'Second Location'), machine: FactoryGirl.create(:machine, name: 'Second Machine'))
-      lmx3 = FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, name: 'Third Location'), machine: FactoryGirl.create(:machine, name: 'Third Machine'))
-      FactoryGirl.create(:machine_score_xref, user: @user, score: 100, location_machine_xref: lmx1, created_at: '01-01-2016')
-      FactoryGirl.create(:machine_score_xref, user: @user, score: 200, location_machine_xref: lmx2, created_at: '01-02-2016')
-      FactoryGirl.create(:machine_score_xref, user: @user, score: 300, location_machine_xref: lmx3, created_at: '01-03-2016')
+      region = FactoryGirl.create(:region)
 
-      expect(@user.profile_list_of_high_scores).to eq('First Location, First Machine, 01-01-2016, 100 points<br />Second Location, Second Machine, 01-02-2016, 200 points<br />Third Location, Third Machine, 01-03-2016, 300 points')
+      FactoryGirl.create(:user_submission, region: region, location: FactoryGirl.create(:location, name: 'First Location'), machine: FactoryGirl.create(:machine, name: 'First Machine'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 100 for First Machine to First Location', user: @user, created_at: '2016-01-01')
+      FactoryGirl.create(:user_submission, region: region, location: FactoryGirl.create(:location, name: 'Second Location'), machine: FactoryGirl.create(:machine, name: 'Second Machine'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 200 for Second Machine to Second Location', user: @user, created_at: '2016-01-02')
+
+      expect(@user.profile_list_of_high_scores).to eq('First Location, First Machine, 01-01-2016, 100 points<br />Second Location, Second Machine, 01-02-2016, 200 points')
     end
   end
 
