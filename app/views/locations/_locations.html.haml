@@ -36,8 +36,8 @@
                 - if user_signed_in?
                   %span.location_description
                     %span.comment_image
-                    %span.location_meta
-                      %span.meta_image
+                  %span.location_meta
+                    %span.meta_image
                 %li.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
                 %div[l, :metadata]
                   = render :partial => 'locations/render_update_metadata', :locals => {:l => l}
@@ -45,7 +45,7 @@
                   = render :partial => 'locations/render_desc', :locals => {:l => l}
                 %div.location_thumbs
                   = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
-                %div.location_link 
+                %div.location_link
                   =link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
                 %div.login_alert
                   - if !user_signed_in?
@@ -62,4 +62,3 @@
         $(function() {
           singleLocationLoad('#{@region.name.downcase}', #{@locations.first.id});
         });
-
