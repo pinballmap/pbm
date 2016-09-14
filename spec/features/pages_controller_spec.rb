@@ -235,6 +235,7 @@ describe PagesController do
       page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
 
       FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 100), submission_type: UserSubmission::NEW_LMX_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, location: Location.find(100), submission_type: UserSubmission::NEW_CONDITION_TYPE)
       FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 200), submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
       FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 300), submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
       FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
@@ -253,6 +254,7 @@ describe PagesController do
       expect(page).to have_content('Member since: Feb-02-2016')
       expect(page).to have_content('1 Machines Added')
       expect(page).to have_content('2 Machines Removed')
+      expect(page).to have_content('1 Conditions Left')
       expect(page).to have_content('3 Locations Suggested')
       expect(page).to have_content('5 Locations Edited')
       expect(page).to have_content('High Scores: Machine Two 2 at Location One on Jan-01-2016 Machine One 1 at Location One on Jan-02-2016')

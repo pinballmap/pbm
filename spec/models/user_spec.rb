@@ -93,4 +93,16 @@ describe User do
       expect(@user.num_locations_suggested).to eq(2)
     end
   end
+
+  describe '#num_lmx_comments_left' do
+    it 'should return the number of comments a user has made on lmxes' do
+      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+
+      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      FactoryGirl.create(:user_submission, user: nil, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+
+      expect(@user.num_lmx_comments_left).to eq(2)
+    end
+  end
 end

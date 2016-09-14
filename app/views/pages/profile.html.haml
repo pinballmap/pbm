@@ -25,6 +25,11 @@
       %div.darkbl.stats
         %div.stat_num_o
           %span.stats
+            #{Authorization.current_user.num_lmx_comments_left}
+        %span.stats_text Conditions Left
+      %div.darkbl.stats
+        %div.stat_num_o
+          %span.stats
             #{Authorization.current_user.num_locations_suggested}
         %span.stats_text Locations Suggested
       %div.darkbl.stats

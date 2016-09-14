@@ -78,6 +78,10 @@ class User < ActiveRecord::Base
     UserSubmission.where('user_id = ? and submission_type = ?', id, UserSubmission::SUGGEST_LOCATION_TYPE).size
   end
 
+  def num_lmx_comments_left
+    UserSubmission.where('user_id = ? and submission_type = ?', id, UserSubmission::NEW_CONDITION_TYPE).size
+  end
+
   def profile_list_of_high_scores
     msx_submissions = UserSubmission.where(user: self, submission_type: UserSubmission::NEW_SCORE_TYPE).order(:created_at)
 
