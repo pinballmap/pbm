@@ -62,7 +62,7 @@
     return false;
   });
 
-  $('#metadata_cancel_#{l.id}, #location_detail_location_#{l.id} .location_meta .meta_image').click(function () {
+  $('#metadata_cancel_#{l.id}, #location_detail_location_#{l.id} .location_meta .meta_image').unbind('click').click(function () {
     $('#metadata_show_location_#{l.id}').toggle();
     $('#metadata_edit_location_#{l.id}').toggle();
   });
