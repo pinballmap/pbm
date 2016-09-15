@@ -41,7 +41,7 @@
 
 - if user_signed_in?
   :javascript
-    $('#desc_cancel_#{l.id}, #location_detail_location_#{l.id} .location_description .comment_image').click(function () {
+    $('#desc_cancel_#{l.id}, #location_detail_location_#{l.id} .location_description .comment_image').unbind('click').click(function () {
       $('#desc_show_location_#{l.id}').toggle();
       $('#desc_edit_location_#{l.id}').toggle();
     });

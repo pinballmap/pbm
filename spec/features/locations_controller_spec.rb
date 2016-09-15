@@ -346,6 +346,32 @@ describe LocationsController do
       expect(Location.find(@location.id).location_type_id).to eq(t.id)
       expect(page).to_not have_css('div#flash_error')
     end
+
+    it 'allows users to update a location metadata - TWICE' do
+      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
+
+      expect(Rakismet).to receive(:akismet_call).twice.and_return('false')
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find('.location_meta span.meta_image').click
+      fill_in("new_website_#{@location.id}", with: 'http://www.foo.com')
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).website).to eq('http://www.foo.com')
+      expect(page).to_not have_css('div#flash_error')
+
+      find('.location_meta span.meta_image').click
+      fill_in("new_website_#{@location.id}", with: 'http://www.bar.com')
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).website).to eq('http://www.bar.com')
+      expect(page).to_not have_css('div#flash_error')
+    end
   end
 
   describe 'update_desc', type: :feature, js: true do
@@ -406,6 +432,26 @@ describe LocationsController do
       sleep 1
 
       expect(Location.find(@location.id).description).to eq('COOL DESC')
+    end
+
+    it 'allows users to update a location description - TWICE' do
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find("#location_detail_location_#{@location.id} span.comment_image").click
+      fill_in("new_desc_#{@location.id}", with: 'COOL DESC')
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).description).to eq('COOL DESC')
+
+      find("#location_detail_location_#{@location.id} span.comment_image").click
+      fill_in("new_desc_#{@location.id}", with: 'COOLER DESC')
+      click_on 'Save'
+
+      sleep 1
+
+      expect(Location.find(@location.id).description).to eq('COOLER DESC')
     end
 
     it 'allows users to update a location description - skips validation' do
