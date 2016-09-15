@@ -731,7 +731,7 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}"
       page.find('input#location_search_button').click
 
-      page.find("div#desc_show_location_#{@location.id}.desc_show_location").click
+      page.find("#location_detail_location_#{@location.id} .location_description .comment_image").click
       fill_in("new_desc_#{@location.id}", with: 'New Condition')
       click_on("save_desc_#{@location.id}")
 
