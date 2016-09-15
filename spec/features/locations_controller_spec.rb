@@ -315,7 +315,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find('.location_meta span.meta_image').click
+      find('.location_meta .meta_image').click
       fill_in("new_phone_#{@location.id}", with: '')
       fill_in("new_website_#{@location.id}", with: 'THIS IS SPAM')
       click_on 'Save'
@@ -363,7 +363,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find("#desc_show_location_#{@location.id}").click
+      find("#location_detail_location_#{@location.id} .location_description .comment_image").click
       fill_in("new_desc_#{@location.id}", with: 'THIS IS SPAM')
       click_on 'Save'
 
@@ -375,7 +375,7 @@ describe LocationsController do
     it 'does not allow descs with http://- stubbed out spam detection' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find("#desc_show_location_#{@location.id}").click
+      find("#location_detail_location_#{@location.id} .location_description .comment_image").click
       fill_in("new_desc_#{@location.id}", with: 'http://hopethisdoesntwork.com foo bar baz')
       click_on 'Save'
 
@@ -387,7 +387,7 @@ describe LocationsController do
     it 'does not allow descs with https://- stubbed out spam detection' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find("#desc_show_location_#{@location.id}").click
+      find("#location_detail_location_#{@location.id} .location_description .comment_image").click
       fill_in("new_desc_#{@location.id}", with: 'https://hopethisdoesntwork.com foo bar baz')
       click_on 'Save'
 
@@ -399,7 +399,7 @@ describe LocationsController do
     it 'allows users to update a location description - stubbed out spam detection' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find("#desc_show_location_#{@location.id}").click
+      find("#location_detail_location_#{@location.id} .location_description .comment_image").click
       fill_in("new_desc_#{@location.id}", with: 'COOL DESC')
       click_on 'Save'
 
@@ -411,7 +411,7 @@ describe LocationsController do
     it 'allows users to update a location description - skips validation' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find("#desc_show_location_#{@location.id}").click
+      find("#location_detail_location_#{@location.id} .location_description .comment_image").click
       fill_in("new_desc_#{@location.id}", with: 'COOL DESC')
       click_on 'Save'
 
@@ -423,7 +423,7 @@ describe LocationsController do
     it 'does not error on nil descriptions' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find("#desc_show_location_#{@location.id}").click
+      find("#location_detail_location_#{@location.id} .location_description .comment_image").click
       fill_in("new_desc_#{@location.id}", with: nil)
       click_on 'Save'
 
@@ -435,7 +435,7 @@ describe LocationsController do
     it 'updates location last updated' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      find("#desc_show_location_#{@location.id}").click
+      find("#location_detail_location_#{@location.id} .location_description .comment_image").click
       fill_in("new_desc_#{@location.id}", with: 'coooool')
       click_on 'Save'
 
@@ -452,7 +452,7 @@ describe LocationsController do
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur porta dui vel eleifend. Maecenas pulvinar varius euismod. Curabitur luctus diam quis pulvinar facilisis. Suspendisse eu felis sit amet eros cursus aliquam. Proin sit amet posuere.
 HERE
 
-      find("#desc_show_location_#{@location.id}").click
+      find("#location_detail_location_#{@location.id} .location_description .comment_image").click
       fill_in("new_desc_#{@location.id}", with: string_that_is_too_large)
       click_on 'Save'
 

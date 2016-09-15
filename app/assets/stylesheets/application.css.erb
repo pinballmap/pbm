@@ -719,8 +719,9 @@ span.region_name_page {
 #form .search_field_container input.lookup_search_input {
   border: none;
   margin: 0;
-  height: auto;
+  height: 24px;
   padding-left: 4px;
+  font-family: Helvetica;
 }
 .location_search {
   margin-left: 2px;
@@ -823,7 +824,7 @@ span.region_name_page {
 }
 #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id {
   width: 200px;
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .active_section_link {
   background-color: #303030 !important;
@@ -1124,11 +1125,11 @@ form.remove_machine_condition {
 .add_picture_location span.info, .show_machines_location span.info, .add_machine_location span.info {
   padding: 0 0 5px 0;
 }
-.add_picture_location {
+.add_picture_location, .add_machine_location {
   background-color: #EFEFEF;
 }
-.add_machine_location {
-  background-color: #EFEFEF;
+.add_machine_location form select option {
+  font-size: 16px;
 }
 .show_machines_location {
   background-color: #EEEEEE;
@@ -1221,6 +1222,7 @@ br.clear {
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
+  font-size: 15px;
 }
 .add_picture_location input.submit_picture {
   width: auto;
@@ -1340,6 +1342,7 @@ input.search,
   margin: 0 0 0 4px;
   background: #FFFFFF;
   color: #000000;
+  font-family: Helvetica;
 }
 .lookup_search_select {
   width: 450px;
@@ -1430,18 +1433,20 @@ input#initials {
   line-height: 24px;
   height: 24px;
 }
-.location_type, .operator {
+.location_type, .operator, .operator a {
   color: #666666;
   font-size: 16px;
   padding: 2px 0 6px 4px;
   line-height: 16px;
-  font-weight: normal !important;
+}
+.operator a:hover {
+  color: #F53240;
 }
 .location_type li {
   margin-top: 5px;
 }
 .edit_mode {
-  font-size: 16px;
+  font-size: 15px;
   font-family: Helvetica,Arial,sans-serif;
 }
 .desc_edit_location .edit_mode {
@@ -1663,7 +1668,6 @@ div.comment_image .comment_image:active {
 .desc_show_location {
   padding-bottom: 5px;
   width: 100%;
-  cursor: pointer;
 }
 .desc_edit_location {
   padding: 0 10px 5px 10px;
@@ -2456,9 +2460,15 @@ border: 1px solid #D56C24;
 /** Autofill Override **/
 
 .ui-menu .ui-menu-item {
-  font-size: 11px;
+  font-size: 16px;
+  padding: 1px 1em 1px .4em;
+  font-family: Helvetica;
 }
 .ui-menu .ui-menu-item:hover {
   border: none;
   margin: 0;
+}
+.ui-autocomplete {
+  max-height: 300px;
+  overflow-y: scroll;
 }
