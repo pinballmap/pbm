@@ -1,54 +1,60 @@
-#page_body  
+#page_body
   .left_column.suggest
     %p.darkb Suggest a New Location
-    %p Add a new location to the database. Fill in this form. We'll review it to make sure the data works... so don't expect it to show up just yet. Thanks for helping out!
-    #location_maker
-      = form_tag submitted_new_location_path, :method => 'get' do
-        %form#submit_location
-          %ul
-            %li{:class => "first"}
-              %label{:for => "location_name"} Location Name:
-              %input{:type => "text", :name => "location_name", :params => "location_name", :class => "text"}
-            %li
-              %label{:for => "location_street"} Street:
-              %input{:type => "text", :name => "location_street", :params => "location_street", :class => "text"}
-            %li{:class => "first"}
-              %label{:for => "location_city"} City:
-              %input{:type => "text", :name => "location_city", :params => "location_city", :class => "text"}
-            %li
-              %label{:for => "location_state"} State:
-              = select_tag :location_state, options_for_select(@states)
-            %li{:class => "first"}
-              %label{:for => "location_zip"} Zip:
-              %input{:type => "text", :name => "location_zip", :params => "location_zip", :class => "text"}
-            %li
-              %label{:for => "location_phone"} Phone:
-              %input{:type => "text", :name => "location_phone", :params => "location_phone", :class => "text"}
-            %li{:class => "first"}
-              %label{:for => "location_website"} Website:
-              %input{:type => "text", :name => "location_website", :params => "location_website", :class => "text"}
-            %li
-              %label{:for => "location_operator"} Operator:
-              %input{:type => "text", :name => "location_operator", :params => "location_operator", :class => "text"}
-            %li{:class => "first"}
-              %label{:for => "submitter_name"} Your name (optional):
-              %input{:type => "text", :name => "submitter_name", :params => "submitter_name", :class => "text"}
-            %li
-              %label{:for => "submitter_email"} Your email (optional):
-              %input{:type => "text", :name => "submitter_email", :params => "submitter_email", :class => "text"}
-            %li.machines{:class => "first"}
-              %label{:for => "location_machines"} Machines:
-              %textarea{:type => "text", :name => "location_machines", :params => "location_machines", :class => "text machines"}  
-            %li.recaptcha{:style => "clear:both;"}
-              %div= recaptcha_tags
-            %li.submit{:style => "clear:both;"}
-              %input{:type => "submit", :value => "Submit New Location", :class => "submit_button"}
+    - if user_signed_in?
+      %p Add a new location to the database. Fill in this form. We'll review it to make sure the data works... so don't expect it to show up just yet. Thanks for helping out!
+      #location_maker
+        = form_tag submitted_new_location_path, :method => 'get' do
+          %form#submit_location
+            %ul
+              %li{:class => "first"}
+                %label{:for => "location_name"} Location Name:
+                %input{:type => "text", :name => "location_name", :params => "location_name", :class => "text"}
+              %li
+                %label{:for => "location_street"} Street:
+                %input{:type => "text", :name => "location_street", :params => "location_street", :class => "text"}
+              %li{:class => "first"}
+                %label{:for => "location_city"} City:
+                %input{:type => "text", :name => "location_city", :params => "location_city", :class => "text"}
+              %li
+                %label{:for => "location_state"} State:
+                = select_tag :location_state, options_for_select(@states)
+              %li{:class => "first"}
+                %label{:for => "location_zip"} Zip:
+                %input{:type => "text", :name => "location_zip", :params => "location_zip", :class => "text"}
+              %li
+                %label{:for => "location_phone"} Phone:
+                %input{:type => "text", :name => "location_phone", :params => "location_phone", :class => "text"}
+              %li{:class => "first"}
+                %label{:for => "location_website"} Website:
+                %input{:type => "text", :name => "location_website", :params => "location_website", :class => "text"}
+              %li
+                %label{:for => "location_operator"} Operator:
+                %input{:type => "text", :name => "location_operator", :params => "location_operator", :class => "text"}
+              %li{:class => "first"}
+                %label{:for => "submitter_name"} Your name (optional):
+                %input{:type => "text", :name => "submitter_name", :params => "submitter_name", :class => "text"}
+              %li
+                %label{:for => "submitter_email"} Your email (optional):
+                %input{:type => "text", :name => "submitter_email", :params => "submitter_email", :class => "text"}
+              %li.machines{:class => "first"}
+                %label{:for => "location_machines"} Machines:
+                %textarea{:type => "text", :name => "location_machines", :params => "location_machines", :class => "text machines"}
+              %li.recaptcha{:style => "clear:both;"}
+                %div= recaptcha_tags
+              %li.submit{:style => "clear:both;"}
+                %input{:type => "submit", :value => "Submit New Location", :class => "submit_button"}
 
-    %p
-      Remember, only use this form if you are adding a new 
-      %em
-        location
-      to the map. If you want to add/remove a 
-      %em
-        machine 
-      to/from a location, just bring up that location on the map and then use the add/remove functions.
+      %p
+        Remember, only use this form if you are adding a new
+        %em
+          location
+        to the map. If you want to add/remove a
+        %em
+          machine
+        to/from a location, just bring up that location on the map and then use the add/remove functions.
+    - else
+      %p
+        But first! We ask that you
+        = link_to 'Log In.', "http://#{request.host_with_port}/users/sign_in", :class => "darkbl"
+        Thank you!
