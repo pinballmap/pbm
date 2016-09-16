@@ -137,13 +137,15 @@ describe PagesController do
 
   describe 'Location suggestions', type: :feature, js: true do
     it 'limits state dropdown to unique states within a region' do
+      @user = FactoryGirl.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
       chicago = FactoryGirl.create(:region, name: 'chicago')
 
       FactoryGirl.create(:location, region: @region, state: 'WA')
       FactoryGirl.create(:location, region: chicago, state: 'IL')
+      login
 
       visit "/#{@region.name}/suggest"
-
       expect(page).to have_select('location_state', options: %w(OR WA))
     end
   end
