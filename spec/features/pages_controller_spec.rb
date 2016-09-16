@@ -150,7 +150,6 @@ describe PagesController do
     end
 
     it 'does not show form if not logged in' do
-      chicago = FactoryGirl.create(:region, name: 'chicago')
 
       visit "/#{@region.name}/suggest"
       expect(page).to have_content('But first! We ask that you Log In. Thank you!')
