@@ -148,6 +148,13 @@ describe PagesController do
       visit "/#{@region.name}/suggest"
       expect(page).to have_select('location_state', options: %w(OR WA))
     end
+
+    it 'does not show form if not logged in' do
+      chicago = FactoryGirl.create(:region, name: 'chicago')
+
+      visit "/#{@region.name}/suggest"
+      expect(page).to have_content('But first! We ask that you Log In. Thank you!')
+    end
   end
 
   describe 'Homepage', type: :feature, js: true do
@@ -192,6 +199,9 @@ describe PagesController do
 
       visit '/faq'
       expect(page).to have_title('FAQ')
+
+      visit '/profile'
+      expect(page).to have_title('Your Profile')
 
       visit "/#{@region.name}/about"
       expect(page).to have_title('About')
