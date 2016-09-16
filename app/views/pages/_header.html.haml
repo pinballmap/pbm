@@ -29,7 +29,7 @@
               %span.login_slash
                 |
               = link_to 'Sign Up', "http://#{request.host_with_port}/users/sign_up"
-            - else 
+            - else
               = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out", :class => "loggedin"
         %span.darkb.closest_locations{:onclick => "findClosestLocations('#{@region.name}')"}
           = link_to 'Show Closest Locations', '#', {:id => 'find_closest_locations'}
@@ -38,7 +38,7 @@
             %span.region_name_page
               =link_to "#{@region.full_name}", region_homepage_path
           - if !mobile_device?
-            %ul.other_regions_list= other_regions_html(@region) 
+            %ul.other_regions_list= other_regions_html(@region)
     - else
       %div{:class => "header_buttons"}
         %span.menu_link.menu_home
@@ -59,7 +59,7 @@
               %span.login_slash
                 |
               = link_to 'Sign Up', "http://#{request.host_with_port}/users/sign_up"
-            - else 
+            - else
               = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out", :class => "loggedin"
         %span.darkb.geo_header{:onclick => "findClosestRegion()"}
           = link_to 'Find Your Closest Map', '#'
@@ -75,7 +75,7 @@
               %span.login_slash
                 |
               = link_to 'Sign Up', "http://#{request.host_with_port}/users/sign_up"
-            - else 
+            - else
               = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out"
         %div.geo_header_wrapper
           %span.darkb{:onclick => "findClosestRegion()"}
@@ -99,11 +99,11 @@
               %span.login_slash
                 |
               = link_to 'Sign Up', "http://#{request.host_with_port}/users/sign_up"
-            - else 
+            - else
               = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out"
         - if user_signed_in?
           =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'} header_image_login", :alt => 'Pinball Map Logo'), root_path
-        - else 
+        - else
           =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
         %ul#nav
           %li.first_header_link=link_to 'Suggest Location', suggest_path
@@ -145,7 +145,7 @@
           $(".other_regions_list").hide();
       });
       $("#nav").addClass("js").before('<div id="menu">&#9776;</div>');
-        
+
     });
 
 - else
