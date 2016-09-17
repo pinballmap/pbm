@@ -45,6 +45,7 @@
               - location = Location.find(location_array[0])
               %span.location_edited
                 <a href="http://#{request.host_with_port}/#{location.region.name}/?by_location_id=#{location.id}">#{location.name}</a>
+              %br/
       %div.darkbl.stats
         %div.stats_o
           High Scores:
