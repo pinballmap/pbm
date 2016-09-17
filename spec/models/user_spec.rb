@@ -34,9 +34,9 @@ describe User do
       region = FactoryGirl.create(:region)
 
       FactoryGirl.create(:user_submission, region: region, location: FactoryGirl.create(:location, name: 'First Location'), machine: FactoryGirl.create(:machine, name: 'First Machine'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 100 for First Machine to First Location', user: @user, created_at: '2016-01-01')
-      FactoryGirl.create(:user_submission, region: region, location: FactoryGirl.create(:location, name: 'Second Location'), machine: FactoryGirl.create(:machine, name: 'Second Machine'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 200 for Second Machine to Second Location', user: @user, created_at: '2016-01-02')
+      FactoryGirl.create(:user_submission, region: region, location: FactoryGirl.create(:location, name: 'Second Location'), machine: FactoryGirl.create(:machine, name: 'Second Machine'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 2000 for Second Machine to Second Location', user: @user, created_at: '2016-01-02')
 
-      expect(@user.profile_list_of_high_scores).to eq('First Location, First Machine, 01-01-2016, 100 points<br />Second Location, Second Machine, 01-02-2016, 200 points')
+      expect(@user.profile_list_of_high_scores).to eq("<span class='score_machine'>First Machine</span><span class='score_score'>100</span><span class='score_meta'>at </span><span class='score_meta_gen'>First Location</span> <span class='score_meta'> on </span><span class='score_meta_gen'>Jan-01-2016</span><br /><br /><span class='score_machine'>Second Machine</span><span class='score_score'>2,000</span><span class='score_meta'>at </span><span class='score_meta_gen'>Second Location</span> <span class='score_meta'> on </span><span class='score_meta_gen'>Jan-02-2016</span>")
     end
   end
 

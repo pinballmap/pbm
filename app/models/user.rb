@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  include ActionView::Helpers::NumberHelper
   acts_as_token_authenticatable
 
   belongs_to :region
@@ -94,7 +95,7 @@ class User < ActiveRecord::Base
 
       formatted_score_data.push([
         "<span class='score_machine'>#{machine_name}</span>",
-        "<span class='score_score'>#{score}</span>",
+        "<span class='score_score'>#{number_with_precision(score, precision: 0, delimiter: ',')}</span>",
         "<span class='score_meta'>at </span><span class='score_meta_gen'>#{location_name}</span> <span class='score_meta'> on </span><span class='score_meta_gen'>#{msx_sub.created_at.strftime('%b-%d-%Y')}</span>"
       ].join(''))
     end

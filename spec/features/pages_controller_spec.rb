@@ -241,10 +241,12 @@ describe PagesController do
   end
 
   describe 'User profile', type: :feature, js: true do
-    it 'display metrics about the users account' do
+    before(:each) do
       @user = FactoryGirl.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
       page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+    end
 
+    it 'display metrics about the users account' do
       FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 100), submission_type: UserSubmission::NEW_LMX_TYPE)
       FactoryGirl.create(:user_submission, user: @user, location: Location.find(100), submission_type: UserSubmission::NEW_CONDITION_TYPE)
       FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 200), submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
@@ -269,6 +271,15 @@ describe PagesController do
       expect(page).to have_content('3 Locations Suggested')
       expect(page).to have_content('5 Locations Edited')
       expect(page).to have_content('High Scores: Test Machine Name 2 at Test Location Name on Jan-01-2016 Test Machine Name 1 at Test Location Name on Feb-01-2016')
+    end
+
+    it 'adds commas to high scores' do
+      FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 500, name: 'Location One'), machine: FactoryGirl.create(:machine, name: 'Machine One'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 1000000 for Machine One to Location One', created_at: '2016-01-02')
+
+      login
+      visit '/profile'
+
+      expect(page).to have_content('High Scores: Machine One 1,000,000 at Location One on Jan-02-2016')
     end
   end
 end
