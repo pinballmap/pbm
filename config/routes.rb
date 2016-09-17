@@ -19,6 +19,9 @@ Pbm::Application.routes.draw do
       resources :operators, only: [:show]
 
       resources :users, only: [:auth_details] do
+        member do
+          get  :profile_info
+        end
         collection do
           get  :auth_details
           post :signup

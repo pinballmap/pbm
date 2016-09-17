@@ -41,11 +41,21 @@
         %div.stats_o
           List of Locations Edited:
           %span.stats_list
-            #{raw(Authorization.current_user.profile_list_of_edited_locations(request.host_with_port))}
+            - Authorization.current_user.profile_list_of_edited_locations.each do |location_array|
+              - location = Location.find(location_array[0])
+              %span.location_edited
+                <a href="http://#{request.host_with_port}/#{location.region.name}/?by_location_id=#{location.id}">#{location.name}</a>
       %div.darkbl.stats
         %div.stats_o
           High Scores:
           %span.stats_list
-            #{raw(Authorization.current_user.profile_list_of_high_scores)}
+            - Authorization.current_user.profile_list_of_high_scores.each do |score_array|
+              - location_name, machine_name, score, date_created = score_array
+              %span.score_machine
+                #{machine_name}
+              %span.score_score
+                #{number_with_precision(score, precision: 0, delimiter: ',')}
+              %span.score_meta
+                at <span class='score_meta_gen'>#{location_name}</span> <span class='score_meta'> on </span><span class='score_meta_gen'>#{date_created}
     - else
       %p Oh what cool stats you'll see here once you've signed in and updated some pinball maps. But until then...
