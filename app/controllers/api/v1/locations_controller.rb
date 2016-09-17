@@ -20,8 +20,6 @@ module Api
       param :location_website, String, desc: 'Website of new location', required: false
       param :location_operator, String, desc: 'Machine operator of new location', required: false
       param :location_machines, String, desc: 'List of machines at new location', required: true
-      param :submitter_name, String, desc: 'Name of submitter', required: false
-      param :submitter_email, String, desc: 'Email address of submitter', required: false
       formats ['json']
       def suggest
         if params[:region_id].blank? || params[:location_machines].blank? || params[:location_name].blank?
