@@ -14,27 +14,43 @@ describe PagesHelper, type: :helper do
   describe '#title_for_path' do
     describe 'without region' do
       it 'displays the correct app title' do
-        expect(helper.title_for_path(apps_path)).to eq('App')
+        expect(helper.title_for_path(apps_path)).to eq('App - Pinball Map')
       end
 
       it 'displays the correct app support title' do
-        expect(helper.title_for_path(apps_support_path)).to eq('App')
+        expect(helper.title_for_path(apps_support_path)).to eq('App Support - Pinball Map')
       end
 
       it 'displays the correct faq title' do
-        expect(helper.title_for_path(faq_path)).to eq('FAQ')
+        expect(helper.title_for_path(faq_path)).to eq('FAQ - Pinball Map')
       end
 
       it 'displays the correct store title ' do
-        expect(helper.title_for_path(store_path)).to eq('Store - T-Shirts for Sale!')
+        expect(helper.title_for_path(store_path)).to eq('Store - T-Shirts for Sale! - Pinball Map')
       end
 
       it 'displays the profile title' do
-        expect(helper.title_for_path(profile_user_path(11))).to eq('User Profile')
+        expect(helper.title_for_path(profile_user_path(11))).to eq('User Profile - Pinball Map')
       end
 
       it 'displays the donate title' do
-        expect(helper.title_for_path(donate_path)).to eq('Donate')
+        expect(helper.title_for_path(donate_path)).to eq('Donate - Pinball Map')
+      end
+
+      it 'displays the login title' do
+        expect(helper.title_for_path('/sign_in')).to eq('Login - Pinball Map')
+      end
+
+      it 'displays the sign up title' do
+        expect(helper.title_for_path('/sign_up')).to eq('Sign Up - Pinball Map')
+      end
+
+      it 'displays the forgot password title' do
+        expect(helper.title_for_path('/password')).to eq('Forgot Password - Pinball Map')
+      end
+
+      it 'displays the confirmation instructions title' do
+        expect(helper.title_for_path('/confirmation')).to eq('Confirmation Instructions - Pinball Map')
       end
 
       it 'displays the default title' do

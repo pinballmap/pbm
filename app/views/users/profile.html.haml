@@ -50,5 +50,7 @@
               #{machine_name}
             %span.score_score
               #{number_with_precision(score, precision: 0, delimiter: ',')}
-            %span.score_meta
-              at <span class='score_meta_gen'>#{location_name}</span> <span class='score_meta'> on </span><span class='score_meta_gen'>#{date_created}
+            %span.score_meta at
+            %span.score_meta_gen #{location_name}
+            %span.score_meta on
+            %span.score_meta_gen #{date_created}

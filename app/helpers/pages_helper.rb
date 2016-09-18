@@ -9,19 +9,31 @@ module PagesHelper
     title = ''
 
     if region.nil?
-      if path == apps_path || path == apps_support_path
-        title = 'App'
+      if path == apps_path
+        title = 'App - '
+      elsif path == apps_support_path
+        title = 'App Support - '
       elsif path == faq_path
-        title = 'FAQ'
+        title = 'FAQ - '
       elsif path == store_path
-        title = 'Store - T-Shirts for Sale!'
+        title = 'Store - T-Shirts for Sale! - '
       elsif path == donate_path
-        title = 'Donate'
+        title = 'Donate - '
       elsif path =~ /profile/
-        title = 'User Profile'
+        title = 'User Profile - '
+      elsif path =~ /sign_in/
+        title = 'Login - '
+      elsif path =~ /sign_up/
+        title = 'Sign Up - '
+      elsif path =~ /password/
+        title = 'Forgot Password - '
+      elsif path =~ /confirmation/
+        title = 'Confirmation Instructions - '
       else
-        title = 'Pinball Map'
+        title = ''
       end
+
+      title += "Pinball Map"
     else
       if path == suggest_path(@region.name)
         title = 'Suggest a New Location to the '
