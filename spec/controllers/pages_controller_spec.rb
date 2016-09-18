@@ -145,8 +145,6 @@ Phone: phone\n
 Website: website\n
 Operator: operator\n
 Machines: machines\n
-Their Name: subname\n
-Their Email: subemail\n
 (entered from 0.0.0.0 via Rails Testing)\n
 HERE
 
@@ -182,8 +180,6 @@ Phone: phone\n
 Website: website\n
 Operator: operator\n
 Machines: machines\n
-Their Name: subname\n
-Their Email: subemail\n
 (entered from 0.0.0.0 via Rails Testing by ssw (yeah@ok.com))\n
 HERE
       expect(Pony).to receive(:mail) do |mail|

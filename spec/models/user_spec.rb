@@ -30,13 +30,13 @@ describe User do
   end
 
   describe '#profile_list_of_high_scores' do
-    it "should return a formatted list of the user's high scores for their profile page" do
+    it "should return a list of the user's high scores for their profile page" do
       region = FactoryGirl.create(:region)
 
       FactoryGirl.create(:user_submission, region: region, location: FactoryGirl.create(:location, name: 'First Location'), machine: FactoryGirl.create(:machine, name: 'First Machine'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 100 for First Machine to First Location', user: @user, created_at: '2016-01-01')
       FactoryGirl.create(:user_submission, region: region, location: FactoryGirl.create(:location, name: 'Second Location'), machine: FactoryGirl.create(:machine, name: 'Second Machine'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 2000 for Second Machine to Second Location', user: @user, created_at: '2016-01-02')
 
-      expect(@user.profile_list_of_high_scores).to eq("<span class='score_machine'>First Machine</span><span class='score_score'>100</span><span class='score_meta'>at </span><span class='score_meta_gen'>First Location</span> <span class='score_meta'> on </span><span class='score_meta_gen'>Jan-01-2016</span><br /><br /><span class='score_machine'>Second Machine</span><span class='score_score'>2,000</span><span class='score_meta'>at </span><span class='score_meta_gen'>Second Location</span> <span class='score_meta'> on </span><span class='score_meta_gen'>Jan-02-2016</span>")
+      expect(@user.profile_list_of_high_scores).to eq([['First Location', 'First Machine', '100', 'Jan-01-2016'], ['Second Location', 'Second Machine', '2,000', 'Jan-02-2016']])
     end
   end
 
@@ -60,7 +60,7 @@ describe User do
   end
 
   describe '#profile_list_of_edited_locations' do
-    it "should return a formatted list of the user's list of edited locations for their profile page" do
+    it 'should return a list of edited locations for their profile page' do
       location = FactoryGirl.create(:location, id: 1, name: 'foo')
       another_location = FactoryGirl.create(:location, id: 2, name: 'bar')
 
@@ -69,7 +69,7 @@ describe User do
 
       FactoryGirl.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
 
-      expect(@user.profile_list_of_edited_locations('localhost:8080')).to eq("<span class='location_edited'><a href='http://localhost:8080/portland/?by_location_id=1'>foo</a></span><br /><span class='location_edited'><a href='http://localhost:8080/portland/?by_location_id=2'>bar</a></span>")
+      expect(@user.profile_list_of_edited_locations).to eq([[location.id, location.name], [another_location.id, another_location.name]])
     end
 
     it 'should not return locations that no longer exist' do
@@ -78,7 +78,7 @@ describe User do
       FactoryGirl.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
       FactoryGirl.create(:user_submission, user: @user, location_id: -1, submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(@user.profile_list_of_edited_locations('localhost:8080')).to eq("<span class='location_edited'><a href='http://localhost:8080/portland/?by_location_id=1'>foo</a></span>")
+      expect(@user.profile_list_of_edited_locations).to eq([[location.id, location.name]])
     end
   end
 
@@ -103,6 +103,16 @@ describe User do
       FactoryGirl.create(:user_submission, user: nil, submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
       expect(@user.num_lmx_comments_left).to eq(2)
+    end
+  end
+
+  describe '#as_json' do
+    it 'should default to only return id' do
+      expect(@user.to_json).to eq("{\"id\":#{@user.id}}")
+    end
+
+    it 'should allow you to include additional methods' do
+      expect(@user.to_json(methods: [:num_machines_added])).to eq("{\"id\":#{@user.id},\"num_machines_added\":0}")
     end
   end
 end

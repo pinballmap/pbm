@@ -183,6 +183,7 @@ describe PagesController do
 
   describe 'Pages', type: :feature, js: true do
     it 'show the proper page title' do
+      FactoryGirl.create(:user, id: 111)
 
       visit '/apps'
       expect(page).to have_title('App')
@@ -191,7 +192,7 @@ describe PagesController do
       expect(page).to have_title('App')
 
       visit '/donate'
-      expect(page).to have_title('Donate to')
+      expect(page).to have_title('Donate')
 
       visit '/store'
       expect(page).to have_title('Store')
@@ -199,8 +200,8 @@ describe PagesController do
       visit '/faq'
       expect(page).to have_title('FAQ')
 
-      visit '/profile'
-      expect(page).to have_title('Your Profile')
+      visit '/users/111/profile'
+      expect(page).to have_title('User Profile')
 
       visit "/#{@region.name}/about"
       expect(page).to have_title('About')
@@ -237,49 +238,6 @@ describe PagesController do
 
       expect(page).to have_title('Portland Pinball Map')
       expect(page).not_to have_title('Apps')
-    end
-  end
-
-  describe 'User profile', type: :feature, js: true do
-    before(:each) do
-      @user = FactoryGirl.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
-      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
-    end
-
-    it 'display metrics about the users account' do
-      FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 100), submission_type: UserSubmission::NEW_LMX_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, location: Location.find(100), submission_type: UserSubmission::NEW_CONDITION_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 200), submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 300), submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 400), submission_type: UserSubmission::LOCATION_METADATA_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 500, name: 'Location One'), machine: FactoryGirl.create(:machine, name: 'Machine One'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 1 for Machine One to Location One', created_at: '2016-01-02')
-
-      FactoryGirl.create(:user_submission, user: @user, location: Location.find(400), submission_type: UserSubmission::LOCATION_METADATA_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, location: Location.find(500), machine: FactoryGirl.create(:machine, name: 'Machine Two'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 2 for Machine Two to Location One', created_at: '2016-01-01')
-
-      login
-      visit '/profile'
-
-      expect(page).to have_content('ssw')
-      expect(page).to have_content('Member since: Feb-02-2016')
-      expect(page).to have_content('1 Machines Added')
-      expect(page).to have_content('2 Machines Removed')
-      expect(page).to have_content('1 Conditions Left')
-      expect(page).to have_content('3 Locations Suggested')
-      expect(page).to have_content('5 Locations Edited')
-      expect(page).to have_content('High Scores: Machine Two 2 at Location One on Jan-01-2016 Machine One 1 at Location One on Jan-02-2016')
-    end
-
-    it 'adds commas to high scores' do
-      FactoryGirl.create(:user_submission, user: @user, location: FactoryGirl.create(:location, id: 500, name: 'Location One'), machine: FactoryGirl.create(:machine, name: 'Machine One'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 1000000 for Machine One to Location One', created_at: '2016-01-02')
-
-      login
-      visit '/profile'
-
-      expect(page).to have_content('High Scores: Machine One 1,000,000 at Location One on Jan-02-2016')
     end
   end
 end

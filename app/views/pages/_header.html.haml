@@ -14,7 +14,8 @@
             %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
             %li.first_global_link
               =link_to 'Home', root_path
-            %li=link_to 'Your Profile', profile_path
+            - if Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)
+              %li=link_to 'Your Profile', profile_user_path(Authorization.current_user.id)
             %li=link_to 'Blog', 'http://blog.pinballmap.com'
             %li=link_to 'T-Shirts', store_path
             %li=link_to 'App', apps_path
@@ -43,8 +44,9 @@
       %div{:class => "header_buttons"}
         %span.menu_link.menu_home
           %ul#nav
-            %li.first_header_link
-              =link_to 'Your Profile', profile_path
+            - if Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)
+              %li.first_header_link
+                =link_to 'Your Profile', profile_user_path(Authorization.current_user.id)
             %li=link_to 'Blog', 'http://blog.pinballmap.com'
             %li=link_to 'T-Shirts', store_path
             %li=link_to 'App', apps_path
@@ -81,8 +83,9 @@
           %span.darkb{:onclick => "findClosestRegion()"}
             = link_to 'Find Your Closest Map', '#'
         %ul#nav
-          %li.first_header_link
-            =link_to 'Your Profile', profile_path
+          - if Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)
+            %li.first_header_link
+              =link_to 'Your Profile', profile_user_path
           %li=link_to 'Blog', 'http://blog.pinballmap.com'
           %li=link_to 'T-Shirts', store_path
           %li=link_to 'App', apps_path
@@ -100,6 +103,7 @@
                 |
               = link_to 'Sign Up', "http://#{request.host_with_port}/users/sign_up"
             - else
+              = link_to 'Your Profile', profile_user_path(Authorization.current_user.id)
               = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out"
         - if user_signed_in?
           =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'} header_image_login", :alt => 'Pinball Map Logo'), root_path
@@ -115,7 +119,6 @@
           %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
           %li.first_global_link
             =link_to 'Home', root_path
-          %li=link_to 'Your Profile', profile_path
           %li=link_to 'Blog', 'http://blog.pinballmap.com'
           %li=link_to 'T-Shirts', store_path
           %li=link_to 'App', apps_path

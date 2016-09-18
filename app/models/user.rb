@@ -57,10 +57,6 @@ class User < ActiveRecord::Base
     username
   end
 
-  def as_json(_options = {})
-    super(only: [:id, :username, :email, :authentication_token])
-  end
-
   def num_machines_added
     UserSubmission.where(user: self, submission_type: UserSubmission::NEW_LMX_TYPE).size
   end
@@ -93,17 +89,13 @@ class User < ActiveRecord::Base
 
       next unless score && machine_name && location_name
 
-      formatted_score_data.push([
-        "<span class='score_machine'>#{machine_name}</span>",
-        "<span class='score_score'>#{number_with_precision(score, precision: 0, delimiter: ',')}</span>",
-        "<span class='score_meta'>at </span><span class='score_meta_gen'>#{location_name}</span> <span class='score_meta'> on </span><span class='score_meta_gen'>#{msx_sub.created_at.strftime('%b-%d-%Y')}</span>"
-      ].join(''))
+      formatted_score_data.push([location_name, machine_name, number_with_precision(score, precision: 0, delimiter: ','), msx_sub.created_at.strftime('%b-%d-%Y')])
     end
 
-    formatted_score_data.join('<br /><br />')
+    formatted_score_data
   end
 
-  def profile_list_of_edited_locations(host_with_port)
+  def profile_list_of_edited_locations
     submissions = edited_location_submissions
 
     unique_edited_locations_that_exist = []
@@ -113,7 +105,7 @@ class User < ActiveRecord::Base
       unique_edited_locations_that_exist.push(s.location)
     end
 
-    unique_edited_locations_that_exist.uniq.map { |l| "<span class='location_edited'><a href='http://#{host_with_port}/#{l.region.name}/?by_location_id=#{l.id}'>#{l.name}</a></span>" }.join('<br />')
+    unique_edited_locations_that_exist.uniq.map { |l| [l.id, l.name] }
   end
 
   def edited_location_submissions
@@ -127,5 +119,9 @@ class User < ActiveRecord::Base
       UserSubmission::NEW_SCORE_TYPE,
       UserSubmission::CONFIRM_LOCATION_TYPE
     )
+  end
+
+  def as_json(options = {})
+    super({ only: [:id] }.merge(options))
   end
 end

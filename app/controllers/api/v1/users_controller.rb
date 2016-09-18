@@ -26,7 +26,7 @@ module Api
           return
         end
 
-        return_response(user, 'user')
+        return_response(user, 'user', [], [:username, :email, :authentication_token])
       end
 
       api :POST, '/api/v1/users/signup.json', 'Signup a new user'
@@ -64,7 +64,24 @@ module Api
         end
 
         user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:confirm_password], username: params[:username])
-        user.save ? return_response(user, 'user') : return_response(user.errors.full_messages.join(','), 'errors')
+        user.save ? return_response(user, 'user', [], [:username, :email, :authentication_token]) : return_response(user.errors.full_messages.join(','), 'errors')
+      end
+
+      api :GET, '/api/v1/users/:id/profile_info.json', 'Fetch profile info for a user'
+      param :id, Integer, desc: 'ID of location', required: true
+      formats ['json']
+      def profile_info
+        user = User.find(params[:id])
+
+        return_response(
+          user,
+          'profile_info',
+          [],
+          [:num_machines_added, :num_machines_removed, :num_locations_edited, :num_locations_suggested, :num_lmx_comments_left, :profile_list_of_edited_locations, :profile_list_of_high_scores]
+        )
+
+        rescue ActiveRecord::RecordNotFound
+          return_response('Failed to find user', 'errors')
       end
     end
   end

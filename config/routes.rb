@@ -19,6 +19,9 @@ Pbm::Application.routes.draw do
       resources :operators, only: [:show]
 
       resources :users, only: [:auth_details] do
+        member do
+          get  :profile_info
+        end
         collection do
           get  :auth_details
           post :signup
@@ -62,7 +65,6 @@ Pbm::Application.routes.draw do
   get '/faq' => 'pages#faq'
   get '/store' => 'pages#store'
   get '/donate' => 'pages#donate'
-  get '/profile' => 'pages#profile'
 
   scope ':region', constraints: { region: /#{regions}|!admin/i } do
     get 'apps' => redirect('/apps')
@@ -71,7 +73,6 @@ Pbm::Application.routes.draw do
     get 'faq' => redirect('/faq')
     get 'store' => redirect('/store')
     get 'donate' => redirect('/donate')
-    get 'profile' => redirect('/profile')
 
     resources :events, only: [:index, :show]
     resources :regions, only: [:index, :show]
@@ -146,6 +147,11 @@ Pbm::Application.routes.draw do
   resources :machine_conditions
 
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}
+  resources :users, only: [:profile] do
+    member do
+      get :profile
+    end
+  end
 
   get 'iphone.html', to: 'locations#mobile'
   get '4sq_export.xml' => 'regions#four_square_export', format: 'xml'
