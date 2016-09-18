@@ -1,6 +1,7 @@
 #page_body
   .left_column.secondary.profile
-    %p.donate.darkb #{@user.username}
+    %p.donate.darkb
+      =link_to @user.username, "http://#{request.host_with_port}/users/#{@user.id}/profile"
     %p.darkbl{:style => "font-size:16px;"} Member since: #{@user.created_at.strftime('%b-%d-%Y')}
     - if !Authorization.current_user.is_a?(Authorization::AnonymousUser) && (@user.id == Authorization.current_user.id)
       %p

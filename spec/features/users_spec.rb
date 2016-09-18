@@ -24,7 +24,7 @@ describe UsersController do
       login
       visit "/users/#{@user.id}/profile"
 
-      expect(page).to have_content('ssw')
+      expect(page).to have_link('ssw')
       expect(page).to have_content('Member since: Feb-02-2016')
       expect(page).to have_content('1 Machines Added')
       expect(page).to have_content('2 Machines Removed')
