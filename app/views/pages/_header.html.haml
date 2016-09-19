@@ -14,7 +14,7 @@
             %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
             %li.first_global_link
               =link_to 'Home', root_path
-            %li=link_to 'Your Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : get_a_profile_path
+            %li=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : get_a_profile_path
             %li=link_to 'Blog', 'http://blog.pinballmap.com'
             %li=link_to 'T-Shirts', store_path
             %li=link_to 'App', apps_path
@@ -44,7 +44,7 @@
         %span.menu_link.menu_home
           %ul#nav
             %li.first_header_link
-              =link_to 'Your Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : get_a_profile_path
+              =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : get_a_profile_path
             %li=link_to 'Blog', 'http://blog.pinballmap.com'
             %li=link_to 'T-Shirts', store_path
             %li=link_to 'App', apps_path
@@ -82,7 +82,7 @@
             = link_to 'Find Your Closest Map', '#'
         %ul#nav
           %li.first_header_link
-            =link_to 'Your Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : get_a_profile_path
+            =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : get_a_profile_path
           %li=link_to 'Blog', 'http://blog.pinballmap.com'
           %li=link_to 'T-Shirts', store_path
           %li=link_to 'App', apps_path
@@ -94,7 +94,7 @@
       %span.menu_link
         %div.login.login_region
           %span.darkb
-            = link_to 'Your Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : get_a_profile_path
+            = link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : get_a_profile_path
             - if !user_signed_in?
               = link_to 'Log In', "http://#{request.host_with_port}/users/sign_in"
               %span.login_slash
