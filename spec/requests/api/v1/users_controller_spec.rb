@@ -110,8 +110,8 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'returns all profile stats for a given user' do
-      location = FactoryGirl.create(:location, id: 100, name: 'location')
-      another_location = FactoryGirl.create(:location, id: 101, name: 'another location')
+      location = FactoryGirl.create(:location, id: 100, region_id: 1000, name: 'location')
+      another_location = FactoryGirl.create(:location, id: 101, region_id: 1001, name: 'another location')
 
       FactoryGirl.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_LMX_TYPE)
       FactoryGirl.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
@@ -139,8 +139,8 @@ describe Api::V1::UsersController, type: :request do
       expect(json['num_locations_edited']).to eq(2)
       expect(json['created_at']).to eq('2016-01-01T00:00:00.000Z')
       expect(json['profile_list_of_edited_locations']).to eq([
-        [100, 'location'],
-        [101, 'another location']
+        [100, 'location', 1000],
+        [101, 'another location', 1001]
       ])
       expect(json['profile_list_of_high_scores']).to eq([
         ['Bottles', 'Cheetah', '1,234', 'Jan-01-2016'],
