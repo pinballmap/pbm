@@ -77,7 +77,7 @@ module Api
           user,
           'profile_info',
           [],
-          [:num_machines_added, :num_machines_removed, :num_locations_edited, :num_locations_suggested, :num_lmx_comments_left, :profile_list_of_edited_locations, :profile_list_of_high_scores]
+          [:num_machines_added, :num_machines_removed, :num_locations_edited, :num_locations_suggested, :num_lmx_comments_left, :profile_list_of_edited_locations, :profile_list_of_high_scores, :created_at]
         )
 
         rescue ActiveRecord::RecordNotFound
