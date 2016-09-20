@@ -1,8 +1,53 @@
 #page_body
   .left_column.secondary.profile
-    %p.darkb
-      Please
-      = link_to 'Log In', "http://#{request.host_with_port}/users/sign_in"
-      to view your profile!
-  .right_column.right_column_profile
-  %p Oh what cool stats you'll see here once you've signed in and updated some pinball maps. But until then...
+    %p.profile.darkb
+      Create an Account
+    %p.darkbl
+      =link_to "Sign Up", "http://#{request.host_with_port}/users/sign_up"
+      and then update Pinball Map! Then you can check this page to see an overview of your contributions.
+    %p
+      Already have an account?
+      =link_to "Log In", "http://#{request.host_with_port}/users/sign_in"
+  .right_column.right_column_profile.get_profile
+    %div.darkbl.stats
+      %div.stat_num_o
+        %span.stats
+          ??
+      %span.stats_text Machines Added
+    %div.darkbl.stats
+      %div.stat_num_o
+        %span.stats
+          ???
+      %span.stats_text Machines Removed
+    %div.darkbl.stats
+      %div.stat_num_o
+        %span.stats
+          ??
+      %span.stats_text Conditions Left
+    %div.darkbl.stats
+      %div.stat_num_o
+        %span.stats
+          ???
+      %span.stats_text Locations Suggested
+    %div.darkbl.stats
+      %div.stat_num_o
+        %span.stats
+          ??
+      %span.stats_text Locations Edited
+    %div.darkbl.stats
+      %div.stats_o
+        List of Locations Edited:
+        %span.stats_list
+          %span.location_edited Cleo's Arcade
+    %div.darkbl.stats
+      %div.stats_o
+        High Scores:
+        %span.stats_list
+          %span.score_machine
+            Some Machine You Love
+          %span.score_score
+            999,888,777
+          %span.score_meta at
+          %span.score_meta_gen Cleo's Arcade
+          %span.score_meta on
+          %span.score_meta_gen Mar-11-2016
