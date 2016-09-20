@@ -240,4 +240,19 @@ describe PagesController do
       expect(page).not_to have_title('Apps')
     end
   end
+
+  describe 'get_a_profile', type: :feature, js: true do
+    it 'redirects you to your user profile page if you are logged in' do
+      visit '/encourage_profile'
+
+      expect(current_path).to eql(encourage_profile_path)
+
+      user = FactoryGirl.create(:user, id: 10)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(user).unshift('User'))
+
+      visit '/encourage_profile'
+
+      expect(current_path).to eql(profile_user_path(user.id))
+    end
+  end
 end
