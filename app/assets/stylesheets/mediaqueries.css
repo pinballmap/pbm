@@ -9,7 +9,7 @@
   }
 }
 
-@media (max-width: 965px), only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+@media (max-width: 965px), only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
     .pintips, .machine_condition_display_lmx, .machine_condition_edit_lmx,
     .high_score > .sub_nav_item, .score_container_lmx > .sub_nav_item,
     .add_scores_form, .show_scores_lmx, .show_conditions_lmx, .show_conditions_lmx_toggle,
