@@ -56,8 +56,6 @@ Phone: phone\n
 Website: website\n
 Operator: operator\n
 Machines: machines\n
-Their Name: subname\n
-Their Email: subemail\n
 (entered from 127.0.0.1 via cleOS)\n
 HERE
         )

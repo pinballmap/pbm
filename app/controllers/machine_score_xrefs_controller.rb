@@ -16,6 +16,7 @@ class MachineScoreXrefsController < InheritedResources::Base
     msx.score = score
     msx.user = current_user
     msx.save
+    msx.create_user_submission
 
     render nothing: true
   end

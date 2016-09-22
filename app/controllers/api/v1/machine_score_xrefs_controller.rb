@@ -42,6 +42,7 @@ module Api
         msx.user = user
 
         if msx.save
+          msx.create_user_submission
           return_response(msx, 'machine_score_xref', [], [:username], 201)
         else
           return_response(msx.errors.full_messages, 'errors')

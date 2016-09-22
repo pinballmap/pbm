@@ -103,4 +103,56 @@ describe Api::V1::UsersController, type: :request do
       expect(JSON.parse(response.body)['errors']).to eq('This email address already exists')
     end
   end
+
+  describe '#profile_info' do
+    before(:each) do
+      @user = FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw', created_at: '2016-01-01')
+    end
+
+    it 'returns all profile stats for a given user' do
+      location = FactoryGirl.create(:location, id: 100, region_id: 1000, name: 'location')
+      another_location = FactoryGirl.create(:location, id: 101, region_id: 1001, name: 'another location')
+
+      FactoryGirl.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_LMX_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, location: another_location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+
+      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (scott.wainstock@gmail.com) added a score of 1234 for Cheetah to Bottles')
+      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-02', submission: 'User ssw (scott.wainstock@gmail.com) added a score of 12 for Machine to Location')
+
+      get '/api/v1/users/111/profile_info.json', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+
+      expect(response).to be_success
+      json = JSON.parse(response.body)['profile_info']
+
+      expect(json['num_machines_added']).to eq(1)
+      expect(json['num_machines_removed']).to eq(2)
+      expect(json['num_lmx_comments_left']).to eq(3)
+      expect(json['num_locations_suggested']).to eq(4)
+      expect(json['num_locations_edited']).to eq(2)
+      expect(json['created_at']).to eq('2016-01-01T00:00:00.000Z')
+      expect(json['profile_list_of_edited_locations']).to eq([
+        [100, 'location', 1000],
+        [101, 'another location', 1001]
+      ])
+      expect(json['profile_list_of_high_scores']).to eq([
+        ['Bottles', 'Cheetah', '1,234', 'Jan-01-2016'],
+        ['Location', 'Machine', '12', 'Jan-02-2016']
+      ])
+    end
+
+    it 'tells you if this user does not exist' do
+      get '/api/v1/users/-1/profile_info.json', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+
+      expect(response).to be_success
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find user')
+    end
+  end
 end
