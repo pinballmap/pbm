@@ -1,5 +1,5 @@
 %div[l, :desc_show]
-  %span.location_actual_description= (l.description.to_s == '') ? '' : l.description 
+  %span.location_actual_description= (l.description.to_s == '') ? '' : l.description
   .clear
 %div[l, :desc_edit]{:style => 'display:none'}
   - if user_signed_in?
@@ -13,9 +13,9 @@
   %div.confirm_inner
     %div{:class => "confirm_location_button", :id => "confirm_location_button_#{l.id}"}
       - if user_signed_in?
-        =image_tag('confirm.png', :alt => 'Confirm Location is Up To Date')
-    %span.last_updated{:id => "last_updated_location_#{l.id}"} 
-      #{l.date_last_updated ? "Location last updated: #{l.date_last_updated.strftime("%b-%d-%Y")}" : ''} 
+        %span.confirm_button
+    %span.last_updated{:id => "last_updated_location_#{l.id}"}
+      #{l.date_last_updated ? "Location last updated: #{l.date_last_updated.strftime("%b-%d-%Y")}" : ''}
       #{l.last_updated_by_user ? "by " : ''}
       %span.last_updated_username
         #{l.last_updated_by_user ? "#{l.last_updated_by_user.username}" : ''}
@@ -41,7 +41,7 @@
 
 - if user_signed_in?
   :javascript
-    $('#desc_cancel_#{l.id}, #desc_show_location_#{l.id}, .location_description .comment_image').click(function () {
+    $('#desc_cancel_#{l.id}, #location_detail_location_#{l.id} .location_description .comment_image').unbind('click').click(function () {
       $('#desc_show_location_#{l.id}').toggle();
       $('#desc_edit_location_#{l.id}').toggle();
     });

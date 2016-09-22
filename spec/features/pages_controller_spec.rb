@@ -137,14 +137,22 @@ describe PagesController do
 
   describe 'Location suggestions', type: :feature, js: true do
     it 'limits state dropdown to unique states within a region' do
+      @user = FactoryGirl.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
       chicago = FactoryGirl.create(:region, name: 'chicago')
 
       FactoryGirl.create(:location, region: @region, state: 'WA')
       FactoryGirl.create(:location, region: chicago, state: 'IL')
+      login
 
       visit "/#{@region.name}/suggest"
-
       expect(page).to have_select('location_state', options: %w(OR WA))
+    end
+
+    it 'does not show form if not logged in' do
+
+      visit "/#{@region.name}/suggest"
+      expect(page).to have_content('But first! We ask that you Log In. Thank you!')
     end
   end
 
@@ -175,7 +183,7 @@ describe PagesController do
 
   describe 'Pages', type: :feature, js: true do
     it 'show the proper page title' do
-
+      FactoryGirl.create(:user, id: 111)
       visit '/apps'
       expect(page).to have_title('App')
 
@@ -183,13 +191,16 @@ describe PagesController do
       expect(page).to have_title('App')
 
       visit '/donate'
-      expect(page).to have_title('Donate to')
+      expect(page).to have_title('Donate')
 
       visit '/store'
       expect(page).to have_title('Store')
 
       visit '/faq'
       expect(page).to have_title('FAQ')
+
+      visit '/users/111/profile'
+      expect(page).to have_title('User Profile')
 
       visit "/#{@region.name}/about"
       expect(page).to have_title('About')
@@ -226,6 +237,21 @@ describe PagesController do
 
       expect(page).to have_title('Portland Pinball Map')
       expect(page).not_to have_title('Apps')
+    end
+  end
+
+  describe 'get_a_profile', type: :feature, js: true do
+    it 'redirects you to your user profile page if you are logged in' do
+      visit '/encourage_profile'
+
+      expect(current_path).to eql(encourage_profile_path)
+
+      user = FactoryGirl.create(:user, id: 10)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(user).unshift('User'))
+
+      visit '/encourage_profile'
+
+      expect(current_path).to eql(profile_user_path(user.id))
     end
   end
 end

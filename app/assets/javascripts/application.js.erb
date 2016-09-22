@@ -221,9 +221,9 @@ function initializeRegionMap(ids, lats, lons, contents) {
 
 // FLASH NOTICE ANIMATION
 var fade_flash = function() {
-    $("#flash_notice").delay(5000).fadeOut("slow");
-    $("#flash_alert").delay(5000).fadeOut("slow");
-    $("#flash_error").delay(5000).fadeOut("slow");
+    $("#flash_notice").delay(4000).fadeOut("slow");
+    $("#flash_alert").delay(4000).fadeOut("slow");
+    $("#flash_error").delay(4000).fadeOut("slow");
 };
 fade_flash();
 
@@ -231,4 +231,3 @@ var show_ajax_message = function(msg, type) {
     $("#flash-message").html('<div id="flash_'+type+'">'+msg+'</div>');
     fade_flash();
 };
-

@@ -168,9 +168,7 @@ class LocationsController < InheritedResources::Base
 
   def confirm
     l = Location.find(params[:id])
-    l.date_last_updated = Date.today
-    l.last_updated_by_user_id = Authorization.current_user ? Authorization.current_user.id : nil
-    l.save(validate: false)
+    l.confirm(Authorization.current_user ? Authorization.current_user : nil)
     l
   end
 end

@@ -5,7 +5,7 @@ Geocoder::Configuration.lookup = :google
 #Geocoder::Configuration.api_key = "..."
 
 # geocoding service request timeout, in seconds (default 3):
-Geocoder::Configuration.timeout = 5
+Geocoder::Configuration.timeout = 20
 
 # use HTTPS for geocoding service connections:
 Geocoder::Configuration.use_https = false

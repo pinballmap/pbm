@@ -14,7 +14,7 @@
             %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
             %li.first_global_link
               =link_to 'Home', root_path
-            %li=link_to 'Your Profile', profile_path
+            %li=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : encourage_profile_path
             %li=link_to 'Blog', 'http://blog.pinballmap.com'
             %li=link_to 'T-Shirts', store_path
             %li=link_to 'App', apps_path
@@ -26,9 +26,10 @@
           %span.darkb
             - if !user_signed_in?
               = link_to 'Log In', "http://#{request.host_with_port}/users/sign_in"
-              %span.login_slash /
+              %span.login_slash
+                |
               = link_to 'Sign Up', "http://#{request.host_with_port}/users/sign_up"
-            - else 
+            - else
               = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out", :class => "loggedin"
         %span.darkb.closest_locations{:onclick => "findClosestLocations('#{@region.name}')"}
           = link_to 'Show Closest Locations', '#', {:id => 'find_closest_locations'}
@@ -37,13 +38,13 @@
             %span.region_name_page
               =link_to "#{@region.full_name}", region_homepage_path
           - if !mobile_device?
-            %ul.other_regions_list= other_regions_html(@region) 
+            %ul.other_regions_list= other_regions_html(@region)
     - else
       %div{:class => "header_buttons"}
         %span.menu_link.menu_home
           %ul#nav
             %li.first_header_link
-              =link_to 'Your Profile', profile_path
+              =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : encourage_profile_path
             %li=link_to 'Blog', 'http://blog.pinballmap.com'
             %li=link_to 'T-Shirts', store_path
             %li=link_to 'App', apps_path
@@ -55,9 +56,10 @@
           %span.darkb
             - if !user_signed_in?
               = link_to 'Log In', "http://#{request.host_with_port}/users/sign_in"
-              %span.login_slash /
+              %span.login_slash
+                |
               = link_to 'Sign Up', "http://#{request.host_with_port}/users/sign_up"
-            - else 
+            - else
               = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out", :class => "loggedin"
         %span.darkb.geo_header{:onclick => "findClosestRegion()"}
           = link_to 'Find Your Closest Map', '#'
@@ -70,16 +72,17 @@
           %span.darkb
             - if !user_signed_in?
               = link_to 'Log In', "http://#{request.host_with_port}/users/sign_in"
-              %span.login_slash /
+              %span.login_slash
+                |
               = link_to 'Sign Up', "http://#{request.host_with_port}/users/sign_up"
-            - else 
+            - else
               = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out"
         %div.geo_header_wrapper
           %span.darkb{:onclick => "findClosestRegion()"}
             = link_to 'Find Your Closest Map', '#'
         %ul#nav
           %li.first_header_link
-            =link_to 'Your Profile', profile_path
+            =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : encourage_profile_path
           %li=link_to 'Blog', 'http://blog.pinballmap.com'
           %li=link_to 'T-Shirts', store_path
           %li=link_to 'App', apps_path
@@ -91,15 +94,17 @@
       %span.menu_link
         %div.login.login_region
           %span.darkb
+            = link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : encourage_profile_path
             - if !user_signed_in?
               = link_to 'Log In', "http://#{request.host_with_port}/users/sign_in"
-              %span.login_slash /
+              %span.login_slash
+                |
               = link_to 'Sign Up', "http://#{request.host_with_port}/users/sign_up"
-            - else 
+            - else
               = link_to 'Log Out', "http://#{request.host_with_port}/users/sign_out"
         - if user_signed_in?
           =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'} header_image_login", :alt => 'Pinball Map Logo'), root_path
-        - else 
+        - else
           =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
         %ul#nav
           %li.first_header_link=link_to 'Suggest Location', suggest_path
@@ -111,7 +116,6 @@
           %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
           %li.first_global_link
             =link_to 'Home', root_path
-          %li=link_to 'Your Profile', profile_path
           %li=link_to 'Blog', 'http://blog.pinballmap.com'
           %li=link_to 'T-Shirts', store_path
           %li=link_to 'App', apps_path
@@ -131,7 +135,6 @@
 - if !mobile_device?
   :javascript
     $().ready(function() {
-
       $(".region_logo_dropdown").hover(function () {
           $(".other_regions_list").show();
         },function(){
@@ -141,7 +144,6 @@
           $(".other_regions_list").hide();
       });
       $("#nav").addClass("js").before('<div id="menu">&#9776;</div>');
-        
     });
 
 - else

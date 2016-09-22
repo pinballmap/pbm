@@ -88,7 +88,7 @@ class LocationMachineXref < ActiveRecord::Base
       )
     end
 
-    UserSubmission.create(region_id: location.region_id, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: ["#{location.name} (#{location.id})", "#{machine.name} (#{machine.id})", "#{location.region.name} (#{location.region.id})"].join("\n"), user_id: options[:user_id])
+    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: ["#{location.name} (#{location.id})", "#{machine.name} (#{machine.id})", "#{location.region.name} (#{location.region.id})"].join("\n"), user_id: options[:user_id])
 
     location.date_last_updated = Date.today
     location.last_updated_by_user_id = options[:user_id]
@@ -101,7 +101,7 @@ class LocationMachineXref < ActiveRecord::Base
   def create_user_submission
     user_info = user ? "User #{user.username} (#{user.email})" : 'UNKNOWN USER'
 
-    UserSubmission.create(region_id: location.region_id, submission_type: UserSubmission::NEW_LMX_TYPE, submission: "#{user_info} added #{machine.name} to #{location.name}", user: user)
+    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_LMX_TYPE, submission: "#{user_info} added #{machine.name} to #{location.name}", user: user)
   end
 
   def current_condition

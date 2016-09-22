@@ -20,8 +20,6 @@ module Api
       param :location_website, String, desc: 'Website of new location', required: false
       param :location_operator, String, desc: 'Machine operator of new location', required: false
       param :location_machines, String, desc: 'List of machines at new location', required: true
-      param :submitter_name, String, desc: 'Name of submitter', required: false
-      param :submitter_email, String, desc: 'Email address of submitter', required: false
       formats ['json']
       def suggest
         if params[:region_id].blank? || params[:location_machines].blank? || params[:location_name].blank?
@@ -139,12 +137,7 @@ module Api
       formats ['json']
       def confirm
         location = Location.find(params[:id])
-
-        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
-
-        location.date_last_updated = Date.today
-        location.last_updated_by_user_id = user ? user.id : nil
-        location.save(validate: false)
+        location.confirm(Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user)
 
         return_response('Thanks for confirming that location.', 'msg')
 

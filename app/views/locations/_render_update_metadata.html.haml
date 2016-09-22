@@ -3,43 +3,44 @@
     %li.address_full= link_to l.phone, "tel:" + l.phone, :type => 'tel'
     .clear
   - else
-    %li.phone= l.phone
+    - if l.phone?
+      %li.phone= l.phone
+      .clear
+  - if l.website?
+    %li.website= link_to l.website, l.website, :class => 'website', :target => 'blank'
     .clear
   %div.operator_type
     - if (l.operator_id)
       - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
         %li.operator
           %span.italic Operated by:
-          %span.bold #{l.operator.name}
+          %span.bold &nbsp;#{l.operator.name}
         .clear
       - else
         %li.operator
-          %span.italic Operated by: 
+          %span.italic Operated by:
           %span.bold
             =link_to "#{l.operator.name}", "#{l.operator.website}", :target => "_blank"
         .clear
     - if (l.location_type)
       %li.location_type
-        %span.italic Location Type: 
-        %span.bold #{l.location_type.name}
-  .clear
-  - if l.website
-    %li.website= link_to l.website, l.website, :class => 'website', :target => 'blank'
+        %span.italic Location Type:
+        %span.bold &nbsp;#{l.location_type.name}
   .clear
 %div[l, :metadata_edit]{:style => 'display:none'}
   = form_tag update_metadata_locations_path(:action => 'update_metadata', :id => l.id, :region => @region.name), :id => "update_metadata_#{l.id}", :method => 'get' do
     = hidden_field_tag :id, l.id
-    = label_tag "Operator: "
-    = select_tag "new_operator_#{l.id}", options_for_select([['']]) + options_from_collection_for_select(Operator.select { |o| o.region_id == l.region_id }, 'id', 'name', l.operator_id)
-    .clear
-    = label_tag "Location Type: "
-    = select_tag "new_location_type_#{l.id}", options_for_select([['']]) + options_from_collection_for_select(LocationType.all, 'id', 'name', l.location_type_id)
-    .clear
     = label_tag "Phone #: "
     = text_field_tag "new_phone_#{l.id}", l.phone, :class => 'edit_mode'
     .clear
     = label_tag "Website: "
     = text_field_tag "new_website_#{l.id}", l.website, :class => 'edit_mode'
+    .clear
+    = label_tag "Operator: "
+    = select_tag "new_operator_#{l.id}", options_for_select([['']]) + options_from_collection_for_select(Operator.select { |o| o.region_id == l.region_id }, 'id', 'name', l.operator_id)
+    .clear
+    = label_tag "Location Type: "
+    = select_tag "new_location_type_#{l.id}", options_for_select([['']]) + options_from_collection_for_select(LocationType.all, 'id', 'name', l.location_type_id)
     .clear
     = submit_tag 'Save', :class => "save_button", :id => "save_metadata_#{l.id}"
   = submit_tag 'Cancel', :id => "metadata_cancel_#{l.id}", :class => "cancel_button"
@@ -61,7 +62,7 @@
     return false;
   });
 
-  $('#metadata_cancel_#{l.id}, #metadata_show_location_#{l.id} .location_meta, .location_meta .meta_image').click(function () {
+  $('#metadata_cancel_#{l.id}, #location_detail_location_#{l.id} .location_meta .meta_image').unbind('click').click(function () {
     $('#metadata_show_location_#{l.id}').toggle();
     $('#metadata_edit_location_#{l.id}').toggle();
   });
