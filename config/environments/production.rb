@@ -53,6 +53,7 @@ Pbm::Application.configure do
   config.action_mailer.default_url_options = { :host => 'pinballmap.com' }
 
   config.middleware.use ExceptionNotification::Rack,
+    :deliver_with => :deliver, # Rails >= 4.2.1 do not need this option since it defaults to :deliver_now
     :email_prefix => "[PBM Exception] ",
     :sender_address => %{"PBM Exceptions" <exceptions@pinballmap.com>},
     :exception_recipients => %w{scott.wainstock@gmail.com}
