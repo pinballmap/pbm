@@ -417,3 +417,9 @@ DEPENDENCIES
   spork (~> 0.9)
   timecop (~> 0.8)
   twitter (~> 5.16)
+
+RUBY VERSION
+   ruby 2.1.2p95
+
+BUNDLED WITH
+   1.13.1

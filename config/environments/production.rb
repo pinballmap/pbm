@@ -57,5 +57,4 @@ Pbm::Application.configure do
     :email_prefix => "[PBM Exception] ",
     :sender_address => %{"PBM Exceptions" <exceptions@pinballmap.com>},
     :exception_recipients => %w{scott.wainstock@gmail.com}
-  }
 end
