@@ -147,6 +147,7 @@ Pbm::Application.routes.draw do
   resources :machine_conditions
 
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}
+
   resources :users, only: [:profile] do
     member do
       get :profile

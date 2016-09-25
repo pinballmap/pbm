@@ -89,8 +89,8 @@ describe MachineScoreXrefsController do
       recent_machine = FactoryGirl.create(:machine, name: 'Twilight Zone')
 
       FactoryGirl.create(:location_machine_xref, id: 1, location: @location, machine: old_machine)
-      (1 .. 50).each { |i| FactoryGirl.create(:location_machine_xref, id: i + 1, location: @location, machine: recent_machine) }
-      (1 .. 50).each { |i| FactoryGirl.create(:machine_score_xref, location_machine_xref: LocationMachineXref.find(i + 1)) }
+      (1..50).each { |i| FactoryGirl.create(:location_machine_xref, id: i + 1, location: @location, machine: recent_machine) }
+      (1..50).each { |i| FactoryGirl.create(:machine_score_xref, location_machine_xref: LocationMachineXref.find(i + 1)) }
 
       visit "/#{@region.name}/machine_score_xrefs.rss"
 

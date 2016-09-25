@@ -14,7 +14,7 @@ task report_empty_locations: :environment do
     machineless_locations = r.machineless_locations
     if machineless_locations.size > 0
       Pony.mail(
-        to: r.users.map { |u| u.email },
+        to: r.users.map(&:email),
         from: 'admin@pinballmap.com',
         subject: 'PBM - List of empty locations',
         body: "The following locations don't have machines at them anymore. You may want to consider removing them from the map. This check will happen again, automatically, in one week.\n\n" + machineless_locations.each.map { |ml| ml.name + " (#{ml.city}, #{ml.state})" }.sort.join("\n")

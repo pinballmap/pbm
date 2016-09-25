@@ -22,7 +22,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
+      expect(@location.reload.date_last_updated).to eq(Date.today)
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')} by ssw")
     end
 
@@ -46,7 +46,8 @@ describe LocationsController do
 
       FactoryGirl.create(:location_machine_xref, location: @location, machine: @machine)
 
-      visit '/portland/?by_location_id=' + Location.find(@location.id).id.to_s
+      @location.reload
+      visit '/portland/?by_location_id=' + @location.id.to_s
 
       expect(page).to_not have_selector("input#remove_machine_#{LocationMachineXref.where(location_id: @location.id, machine_id: @machine.id).first.id}")
     end
@@ -61,11 +62,12 @@ describe LocationsController do
       @machine = FactoryGirl.create(:machine, name: 'Bawb')
     end
 
-    def handle_js_confirm
-      page.evaluate_script 'window.confirmMsg = null'
-      page.evaluate_script 'window.confirm = function(msg) { window.confirmMsg = msg; return true; }'
+    def handle_js_confirm(accept = true)
+      page.evaluate_script 'window.original_confirm_function = window.confirm'
+      page.evaluate_script "window.confirm = function(msg) { return #{accept}; }"
       yield
-      page.evaluate_script 'window.confirmMsg'
+    ensure
+      page.evaluate_script 'window.confirm = window.original_confirm_function'
     end
 
     it 'removes a machine from a location' do
@@ -91,7 +93,7 @@ describe LocationsController do
       sleep 1
 
       expect(LocationMachineXref.all).to eq([])
-      expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
+      expect(@location.reload.date_last_updated).to eq(Date.today)
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')}")
 
       expect(UserSubmission.count).to eq(2)
@@ -108,7 +110,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      handle_js_confirm do
+      handle_js_confirm(false) do
         click_button 'remove'
       end
 
@@ -275,9 +277,9 @@ describe LocationsController do
 
       sleep 1
 
-      expect(Location.find(@location.id).operator_id).to eq(o.id)
-      expect(Location.find(@location.id).phone).to eq(nil)
-      expect(Location.find(@location.id).website).to eq('http://www.pinballmap.com')
+      expect(@location.reload.operator_id).to eq(o.id)
+      expect(@location.phone).to eq(nil)
+      expect(@location.website).to eq('http://www.pinballmap.com')
       expect(page).to have_content('format invalid, please use ###-###-####')
 
       t = FactoryGirl.create(:location_type, name: 'Bar')
@@ -292,9 +294,9 @@ describe LocationsController do
 
       sleep 1
 
-      expect(Location.find(@location.id).location_type_id).to eq(t.id)
-      expect(Location.find(@location.id).phone).to eq('555-555-5555')
-      expect(Location.find(@location.id).website).to eq('http://www.pinballmap.com')
+      expect(@location.reload.location_type_id).to eq(t.id)
+      expect(@location.phone).to eq('555-555-5555')
+      expect(@location.website).to eq('http://www.pinballmap.com')
       expect(page).to have_content('must begin with http:// or https://')
     end
 
@@ -311,7 +313,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(Location.find(@location.id).phone).to eq(nil)
+      expect(@location.reload.phone).to eq(nil)
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
@@ -322,7 +324,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(Location.find(@location.id).website).to eq('')
+      expect(@location.reload.website).to eq('')
     end
 
     it 'allows users to update a location metadata - stubbed out spam detection' do
@@ -340,10 +342,10 @@ describe LocationsController do
 
       sleep 1
 
-      expect(Location.find(@location.id).website).to eq('http://www.foo.com')
-      expect(Location.find(@location.id).phone).to eq('555-555-5555')
-      expect(Location.find(@location.id).operator_id).to eq(o.id)
-      expect(Location.find(@location.id).location_type_id).to eq(t.id)
+      expect(@location.reload.website).to eq('http://www.foo.com')
+      expect(@location.phone).to eq('555-555-5555')
+      expect(@location.operator_id).to eq(o.id)
+      expect(@location.location_type_id).to eq(t.id)
       expect(page).to_not have_css('div#flash_error')
     end
 
@@ -395,7 +397,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(Location.find(@location.id).description).to eq(nil)
+      expect(@location.reload.description).to eq(nil)
     end
 
     it 'does not allow descs with http://- stubbed out spam detection' do
@@ -407,7 +409,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(Location.find(@location.id).description).to eq(nil)
+      expect(@location.reload.description).to eq(nil)
     end
 
     it 'does not allow descs with https://- stubbed out spam detection' do
@@ -419,7 +421,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(Location.find(@location.id).description).to eq(nil)
+      expect(@location.reload.description).to eq(nil)
     end
 
     it 'allows users to update a location description - stubbed out spam detection' do
@@ -463,7 +465,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(Location.find(@location.id).description).to eq('COOL DESC')
+      expect(@location.reload.description).to eq('COOL DESC')
     end
 
     it 'does not error on nil descriptions' do
@@ -475,7 +477,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(Location.find(@location.id).description).to eq('')
+      expect(@location.reload.description).to eq('')
     end
 
     it 'updates location last updated' do
@@ -487,8 +489,8 @@ describe LocationsController do
 
       sleep 1
 
-      expect(Location.find(@location.id).description).to eq('coooool')
-      expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
+      expect(@location.reload.description).to eq('coooool')
+      expect(@location.date_last_updated).to eq(Date.today)
     end
 
     it 'truncates descriptions to 255 characters' do
@@ -504,7 +506,7 @@ HERE
 
       sleep 1
 
-      expect(Location.find(@location.id).description).to eq('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur porta dui vel eleifend. Maecenas pulvinar varius euismod. Curabitur luctus diam quis pulvinar facilisis. Suspendisse eu felis sit amet eros cursus aliquam. Proin sit amet posuer')
+      expect(@location.reload.description).to eq('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur porta dui vel eleifend. Maecenas pulvinar varius euismod. Curabitur luctus diam quis pulvinar facilisis. Suspendisse eu felis sit amet eros cursus aliquam. Proin sit amet posuer')
     end
   end
 

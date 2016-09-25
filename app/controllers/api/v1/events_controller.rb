@@ -11,7 +11,7 @@ module Api
       formats ['json']
       def index
         events = apply_scopes(Event)
-        events.select! { |e| e.active? }
+        events.select!(&:active?)
 
         if params[:sorted] && events.size > 0
           apply_special_sort_and_respond(events)

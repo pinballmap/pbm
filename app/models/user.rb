@@ -66,7 +66,7 @@ class User < ActiveRecord::Base
   end
 
   def num_locations_edited
-    unique_edited_location_ids = edited_location_submissions.map { |s| s.location_id }.uniq!
+    unique_edited_location_ids = edited_location_submissions.map(&:location_id).uniq!
 
     unique_edited_location_ids ? unique_edited_location_ids.size : 0
   end

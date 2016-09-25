@@ -75,8 +75,8 @@ HERE
       end
 
       post 'contact_sent', region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz'
-      expect(Region.find(@region.id).user_submissions.count).to eq(1)
-      submission = Region.find(@region.id).user_submissions.first
+      expect(@region.reload.user_submissions.count).to eq(1)
+      submission = @region.user_submissions.first
       expect(submission.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
       expect(submission.submission).to eq("Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\n\n")
     end
@@ -96,7 +96,7 @@ HERE
       end
 
       post 'contact_sent', region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz'
-      submission = Region.find(@region.id).user_submissions.first
+      submission = @region.reload.user_submissions.first
       expect(submission.user).to eq(user)
       expect(submission.submission).to eq("Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\nUsername: ssw\n\nSite Email: yeah@ok.com\n")
     end

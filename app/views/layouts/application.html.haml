@@ -30,7 +30,7 @@
       #page{:class => "#{@region ? '' : (defined? @region) and current_page?(submitted_new_location_path) ? 'page_home submitted' : 'page_home'}"}
         = render :partial => 'pages/header'
         .clear
-        #flash-message
+        #flash-message{:class => "#{@region ? 'flash_region' : 'flash_home'}"}
           - flash.each do |name, msg|
             = content_tag :div, msg, :id => "flash_#{name}"
             :javascript

@@ -18,33 +18,7 @@ Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhan
 * `bundle install`
 * `selenium install`
 * `brew update && brew install phantomjs`
-* Create config/database.yml with the following:
-
-```
-development:
-    adapter: postgresql
-    encoding: utf8
-    database: pbm_dev
-    template: template0
-    host: localhost
-
-test: &test
-    adapter: postgresql
-    encoding: utf8
-    database: pbm_test
-    template: template0
-
-production:
-    adapter: postgresql
-    encoding: utf8
-    database: pbm
-    username: root
-    password:
-    template: template0
-
-cucumber:
-    <<: *test
-```
+* `cp config/database.yml.example config/database.yml` to create your database.yml for development
 
 * `brew install postgresql`
 * `initdb /usr/local/var/postres -E utf8`
