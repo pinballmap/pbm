@@ -9,17 +9,18 @@
       %br/
       = submit_tag 'Save', :class => "save_button", :id => "save_desc_#{l.id}"
     = submit_tag 'Cancel', :id => "desc_cancel_#{l.id}", :class => "cancel_button"
-%div{id: "confirm_location_#{l.id}", :class => "confirm_location"}
-  %div.confirm_inner
-    %div{:class => "confirm_location_button", :id => "confirm_location_button_#{l.id}"}
-      - if user_signed_in?
-        %span.confirm_button
-    %span.last_updated{:id => "last_updated_location_#{l.id}"}
-      #{l.date_last_updated ? "Location last updated: #{l.date_last_updated.strftime("%b-%d-%Y")}" : ''}
-      #{l.last_updated_by_user ? "by " : ''}
-      %span.last_updated_username
-        #{l.last_updated_by_user ? "#{l.last_updated_by_user.username}" : ''}
-
+- if !user_signed_in? && (l.date_last_updated.blank?)
+- else
+  %div{id: "confirm_location_#{l.id}", :class => "confirm_location #{user_signed_in? ? 'confirm_logged' : ''}"}
+    %div.confirm_inner
+      %div{:class => "confirm_location_button", :id => "confirm_location_button_#{l.id}"}
+        - if user_signed_in?
+          %span.confirm_button
+      %span.last_updated{:id => "last_updated_location_#{l.id}"}
+        #{l.date_last_updated ? "Location last updated: #{l.date_last_updated.strftime("%b-%d-%Y")}" : ''}
+        #{l.last_updated_by_user ? "by " : ''}
+        %span.last_updated_username
+          #{l.last_updated_by_user ? "#{l.last_updated_by_user.username}" : ''}
 
 :javascript
   $('#confirm_location_button_#{l.id}').click(function () {

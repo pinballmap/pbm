@@ -1,6 +1,6 @@
 %div.metadata[l, :metadata_show]
   - if mobile_device? && !l.phone.nil?
-    %li.address_full= link_to l.phone, "tel:" + l.phone, :type => 'tel'
+    %li.phone= link_to l.phone, "tel:" + l.phone, :type => 'tel'
     .clear
   - else
     - if l.phone?
