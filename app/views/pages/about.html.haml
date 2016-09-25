@@ -2,30 +2,30 @@
   .left_column_outer
     .left_column_about
       %p
-        This map lists all the pinball machines in the 
+        This map lists all the pinball machines in the
         %span.darkb= @region.full_name
         region. The data is kept up to date by YOU (and you and you, too).
       %p
-        = link_to 'pinballmap.com', 'http://pinballmap.com'
+        = link_to 'pinballmap.com', root_path
         was developed by Scott and Ryan. If you live in a region with pinball and would like to see it added to this site, AND you would like to serve as the regional administrator of the data, please
         - if (@region.name == 'portland')
-          contact us via the form below. For more details about the criteria we use for adding regions, 
+          contact us via the form below. For more details about the criteria we use for adding regions,
           = link_to 'see this blog post,', 'http://blog.pinballmap.com/2014/07/21/criteria-for-adding-a-new-pinball-map', :target => '_blank'
-          or read the 
-          = link_to 'FAQ.', 'http://pinballmap.com/faq'
+          or read the
+          = link_to 'FAQ.', faq_path
         - else
           = link_to 'contact us via the Portland region page.', 'http://pinballmap.com/portland/about'
-      %p  
+      %p
         Follow
         = link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
         on Twitter for updates and news!
-      %p 
+      %p
         View the
         =link_to 'Pinball Map Privacy Policy', privacy_path
     .left_column_about
-      %p.dark 
-        Contact the 
-        = @region.full_name 
+      %p.dark
+        Contact the
+        = @region.full_name
         regional administrator:
       #contact_maker
         = form_tag contact_sent_path, :method => 'get' do
@@ -37,7 +37,7 @@
               %label{:for => "contact_email"} Your Email:
               %input{:type => "text", :name => "contact_email", :params => "contact_email", :class => "text"}
             %li.msg
-              %label{:for => "contact_msg"} Message: 
+              %label{:for => "contact_msg"} Message:
               %textarea{:type => "text", :name => "contact_msg", :params => "contact_msg", :class => "text"}
             %li.recaptcha{:style => "clear:both;"}
               %div= recaptcha_tags
@@ -45,10 +45,10 @@
               %input{:type => "submit", :value => "Submit Comment", :class => "submit_button"}
     - if (@region.operators.size > 0)
       .left_column_about.operators
-        %p.darkb.links_category 
+        %p.darkb.links_category
           Operators in this Region
           - @region.operators.each do |o|
-            - if o.locations 
+            - if o.locations
               %p.links_content
                 - if ((o.website && o.website.empty?) || (!o.website))
                   #{o.name}
@@ -72,5 +72,3 @@
               %span #{l.description}
       - else
         %p Links coming soon...
-
-               

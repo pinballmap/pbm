@@ -94,7 +94,6 @@
       %span.menu_link
         %div.login.login_region
           %span.darkb
-            = link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : encourage_profile_path
             - if !user_signed_in?
               = link_to 'Log In', "http://#{request.host_with_port}/users/sign_in"
               %span.login_slash
@@ -116,6 +115,7 @@
           %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
           %li.first_global_link
             =link_to 'Home', root_path
+          %li=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : encourage_profile_path
           %li=link_to 'Blog', 'http://blog.pinballmap.com'
           %li=link_to 'T-Shirts', store_path
           %li=link_to 'App', apps_path
@@ -132,29 +132,23 @@
           %span.region_name_page
             =link_to "#{@region.full_name}", region_homepage_path
 
-- if !mobile_device?
-  :javascript
-    $().ready(function() {
-      $(".region_logo_dropdown").hover(function () {
-          $(".other_regions_list").show();
-        },function(){
-          $(".other_regions_list").hide();
-      });
-      $(document).click(function () {
-          $(".other_regions_list").hide();
-      });
-      $("#nav").addClass("js").before('<div id="menu">&#9776;</div>');
+:javascript
+  $().ready(function() {
+    $(".region_logo_dropdown").hover(function() {
+        $(".other_regions_list").show();
+      },function(){
+        $(".other_regions_list").hide();
     });
-
-- else
-  :javascript
+    $(document).click(function () {
+        $(".other_regions_list").hide();
+    });
     $("#nav").addClass("js").before('<div id="menu">&#9776;</div>');
+    $("#menu").click(function() {
+      $("#nav").toggle();
+    });
     $(document).on('click', function(event) {
       if (!$(event.target).closest('#menu').length) {
         $("#nav").css('display', 'none');
       }
     });
-
-    $("#menu").click(function(){
-          $("#nav").toggle();
-    });
+  });
