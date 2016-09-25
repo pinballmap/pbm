@@ -5,7 +5,7 @@ gem 'rails', '4.1'
 gem 'pg', '~> 0.18'
 
 gem 'apipie-rails', '~> 0.3'
-gem 'aws-sdk', '~> 2.5'
+gem 'aws-sdk', '< 2.0'
 gem 'cancancan', '~> 1.15'
 gem 'dalli', '~> 2.7'
 gem 'declarative_authorization', '0.5.7'
