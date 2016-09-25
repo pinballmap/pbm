@@ -48,7 +48,7 @@ class LocationMachineXref < ActiveRecord::Base
     user_info = location.last_updated_by_user ? " by #{location.last_updated_by_user.username} (#{location.last_updated_by_user.email})" : ''
 
     Pony.mail(
-      to: location.region.users.map { |u| u.email },
+      to: location.region.users.map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject('PBM - Someone entered a machine condition', options[:request_host]),
       body: [condition, machine.name, location.name, location.region.name, "(entered from #{options[:remote_ip]} via #{options[:user_agent]}#{user_info})"].join("\n")
@@ -81,7 +81,7 @@ class LocationMachineXref < ActiveRecord::Base
       end
 
       Pony.mail(
-          to: location.region.users.map { |u| u.email },
+          to: location.region.users.map(&:email),
           from: 'admin@pinballmap.com',
           subject: add_host_info_to_subject('PBM - Someone removed a machine from a location', options[:request_host]),
           body: [location.name, machine.name, location.region.name, "(user_id: #{options[:user_id]}) (entered from #{options[:remote_ip]} via #{options[:user_agent]}#{user_info})"].join("\n")

@@ -118,7 +118,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       lmx = FactoryGirl.create(:location_machine_xref, machine: @machine, location: FactoryGirl.create(:location, id: 12, name: 'Chicago Location', region: chicago))
 
       (MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY + 10).times do
-        FactoryGirl.create(:machine_condition, location_machine_xref: LocationMachineXref.find(lmx.id), comment: 'Foo')
+        FactoryGirl.create(:machine_condition, location_machine_xref: lmx.reload, comment: 'Foo')
       end
 
       get '/api/v1/region/chicago/location_machine_xrefs.json'
@@ -146,7 +146,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
 
-      updated_lmx = LocationMachineXref.find(@lmx)
+      updated_lmx = @lmx.reload
 
       expect(updated_lmx.condition).to eq('foo')
       expect(updated_lmx.condition_date.to_s).to eq(Time.now.strftime('%Y-%m-%d'))
@@ -158,7 +158,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
 
-      updated_lmx = LocationMachineXref.find(@lmx)
+      updated_lmx = @lmx.reload
       expect(updated_lmx.condition).to eq('foo')
       expect(updated_lmx.condition_date.to_s).to eq(Time.now.strftime('%Y-%m-%d'))
       expect(updated_lmx.location.last_updated_by_user.id).to eq(111)

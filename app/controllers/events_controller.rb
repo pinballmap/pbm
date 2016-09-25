@@ -4,7 +4,7 @@ class EventsController < InheritedResources::Base
 
   def index
     @events = apply_scopes(Event)
-    @events.select! { |e| e.active? }
+    @events.select!(&:active?)
 
     respond_to do |format|
       format.html do

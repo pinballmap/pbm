@@ -19,7 +19,7 @@ class PagesController < ApplicationController
       'type' => {
         'id'   => 'id',
         'name' => 'name',
-        'search_collection' => location_types.values.map { |l| l.location_type }.sort { |a, b| a.name <=> b.name }
+        'search_collection' => location_types.values.map(&:location_type).sort { |a, b| a.name <=> b.name }
       },
       'location' => {
         'id'   => 'id',
@@ -105,7 +105,7 @@ class PagesController < ApplicationController
   end
 
   def suggest_new_location
-    @states = Location.where(['region_id = ?', @region.id]).map { |r| r.state }.uniq.sort
+    @states = Location.where(['region_id = ?', @region.id]).map(&:state).uniq.sort
   end
 
   def robots

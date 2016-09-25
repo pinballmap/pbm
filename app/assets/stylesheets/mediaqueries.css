@@ -1,4 +1,4 @@
-@media (max-width: 767px) { 
+@media (max-width: 767px) {
 
   #form {
     left: 291px;
@@ -11,50 +11,50 @@
 
 @media (max-width: 965px) {
 
-    .pintips, .machine_condition_display_lmx, .machine_condition_edit_lmx, 
+    .pintips, .machine_condition_display_lmx, .machine_condition_edit_lmx,
     .high_score > .sub_nav_item, .score_container_lmx > .sub_nav_item,
     .add_scores_form, .show_scores_lmx, .show_conditions_lmx, .show_conditions_lmx_toggle,
-    .location_detail input.remove_machine_button { 
+    .location_detail input.remove_machine_button {
       width: 360px;
     }
 
-    #lookup, .show_location_detail_location, #location_maker ul, .score_result .sub_nav_item { 
+    #lookup, .show_location_detail_location, #location_maker ul, .score_result .sub_nav_item {
       width: 430px;
     }
 
-    #form { 
+    #form {
       width: 456px;
     }
     input#score, input#initials {
       width: 290px;
     }
 
-    #operator_section_link, #zone_section_link, #machine_section_link, #city_section_link, #location_section_link, #type_section_link { 
+    #operator_section_link, #zone_section_link, #machine_section_link, #city_section_link, #location_section_link, #type_section_link {
       margin-left: 2px;
-      font-size: 17px; 
+      font-size: 17px;
       font-weight: normal;
     }
 
-    #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id { 
-      width: 145px; 
+    #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id {
+      width: 145px;
     }
 
-    #form input.lookup_search_input { 
-      width: 200px; 
+    #form input.lookup_search_input {
+      width: 200px;
     }
 
-    .machine_name { 
-      width: 380px; 
+    .machine_name {
+      width: 380px;
     }
     div.machine_condition_text {
       width: 300px;
     }
 
     .machine_condition_display_lmx .edit_mode
-    { 
+    {
       width: 300px;
       max-width: 300px;
-      min-width: 300px; 
+      min-width: 300px;
     }
     #map {
       right: 470px;
@@ -200,4 +200,3 @@
     text-align: center;
   }
 }
-

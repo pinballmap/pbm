@@ -165,4 +165,31 @@ describe LocationMachineXref do
       expect(submission.submission_type).to eq(UserSubmission::NEW_LMX_TYPE)
     end
   end
+
+  describe '#current_condition' do
+    it 'should return the most recent machine condition' do
+      @r = FactoryGirl.create(:region, name: 'Portland', should_email_machine_removal: 1)
+      @l = FactoryGirl.create(:location, region: @r, name: 'Cool Bar')
+      @m = FactoryGirl.create(:machine, name: 'Sassy')
+      @lmx = FactoryGirl.create(:location_machine_xref, location: @l, machine: @m)
+
+      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'foo')
+      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
+      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'baz')
+
+      expect(@lmx.current_condition.comment).to eq('baz')
+    end
+  end
+
+  describe '#last_updated_by_username' do
+    it 'should return the most recent comments username' do
+      lmx = FactoryGirl.create(:location_machine_xref)
+
+      expect(lmx.last_updated_by_username).to eq('')
+
+      lmx = FactoryGirl.create(:location_machine_xref, user: FactoryGirl.create(:user, id: 666, username: 'foo'))
+
+      expect(lmx.last_updated_by_username).to eq('foo')
+    end
+  end
 end
