@@ -43,15 +43,19 @@ module Api
 
       api :POST, '/api/v1/regions/suggest.json', 'Suggest a new region to add to the map'
       description "This doesn't actually create a new region, it just sends region information to pdx admins"
-      param :name, String, desc: "Region suggestor's name", required: true
-      param :email, String, desc: "Region suggestor's email address", required: true
       param :region_name, String, desc: 'Region name', required: true
       param :comments, String, desc: 'Things we should know about this region', required: false
       formats ['json']
       def suggest
-        if params['name'].blank? || params['email'].blank? || params['region_name'].blank?
-          return_response('Your name, email address, and name of the region you want added are required fields.', 'errors')
+        if params['region_name'].blank?
+          return_response('The name of the region you want added is a required field.', 'errors')
           return
+        end
+
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+        unless user.nil?
+          params['name'] = user.username
+          params['email'] = user.email
         end
 
         send_new_region_notification(params)

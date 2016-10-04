@@ -88,27 +88,7 @@ describe Api::V1::LocationsController, type: :request do
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/suggest.json'
       expect(response).to be_success
-      expect(JSON.parse(response.body)['errors']).to eq('Your name, email address, and name of the region you want added are required fields.')
-
-      expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/suggest.json', name: 'foo'
-      expect(response).to be_success
-      expect(JSON.parse(response.body)['errors']).to eq('Your name, email address, and name of the region you want added are required fields.')
-
-      expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/suggest.json', name: 'foo', email: 'bar'
-      expect(response).to be_success
-      expect(JSON.parse(response.body)['errors']).to eq('Your name, email address, and name of the region you want added are required fields.')
-
-      expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/suggest.json', name: 'foo', region_name: 'bar'
-      expect(response).to be_success
-      expect(JSON.parse(response.body)['errors']).to eq('Your name, email address, and name of the region you want added are required fields.')
-
-      expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/suggest.json', name: 'foo', region_name: 'bar', email: ''
-      expect(response).to be_success
-      expect(JSON.parse(response.body)['errors']).to eq('Your name, email address, and name of the region you want added are required fields.')
+      expect(JSON.parse(response.body)['errors']).to eq('The name of the region you want added is a required field.')
     end
 
     it 'emails portland admins on new region submission' do
@@ -118,15 +98,15 @@ describe Api::V1::LocationsController, type: :request do
           from: 'admin@pinballmap.com',
           subject: 'PBM - New region suggestion',
           body: <<HERE
-Their Name: name\n
-Their Email: email\n
+Their Name: ssw\n
+Their Email: foo@bar.com\n
 Region Name: region name\n
 Region Comments: region comments\n
 HERE
         )
       end
 
-      post '/api/v1/regions/suggest.json', name: 'name', email: 'email', region_name: 'region name', comments: 'region comments'
+      post '/api/v1/regions/suggest.json', region_name: 'region name', comments: 'region comments', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq("Thanks for suggesting that region. We'll be in touch.")
