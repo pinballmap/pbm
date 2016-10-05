@@ -156,7 +156,7 @@ Pbm::Application.routes.draw do
 
   get 'iphone.html', to: 'locations#mobile'
   get '4sq_export.xml' => 'regions#four_square_export', format: 'xml'
-  get 'get_profile' => 'pages#get_profile'
+  get 'inspire_profile' => 'pages#inspire_profile'
   get 'pages/home'
 
   # legacy names for regions

@@ -175,7 +175,7 @@ class PagesController < ApplicationController
     [ids, lats, lons, contents]
   end
 
-  def get_profile
+  def inspire_profile
     user = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user
 
     redirect_to profile_user_path(user.id) if user
