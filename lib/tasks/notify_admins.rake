@@ -23,7 +23,8 @@ task notify_admins: :environment do
       to: u.email,
       from: 'admin@pinballmap.com',
       subject: "PBM - Weekly admin digest for all regions - #{Date.today.strftime('%m/%d/%Y')}",
-      body: email_bodies.join("\n\n")
+      body: 'CHECK THE ATTACHMENT, BROH',
+      attachments: { 'all_region_info.txt' => email_bodies.join("\n\n") }
     )
   end
 end
