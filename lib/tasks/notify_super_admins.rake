@@ -3,8 +3,6 @@ task notify_super_admins: :environment do
   email_bodies = []
 
   Region.all.each do |r|
-    email_subject = "PBM - Weekly admin digest for #{r.full_name} - #{Date.today.strftime('%m/%d/%Y')}"
-
     email_body = r.generate_weekly_admin_email_body
     email_bodies.push(email_body)
   end
