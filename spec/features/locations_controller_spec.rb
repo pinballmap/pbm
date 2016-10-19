@@ -24,6 +24,7 @@ describe LocationsController do
 
       expect(@location.reload.date_last_updated).to eq(Date.today)
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')} by ssw")
+      expect(URI.parse(page.find_link('ssw')['href']).to_s).to match(%r{\/users\/#{@user.id}\/profile})
     end
 
     it 'displays no username when it was last updated by a non-user' do

@@ -117,6 +117,12 @@ describe MachineScoreXrefsController do
       sleep(1)
 
       expect(page).to have_css("div#show_scores_lmx_banner_#{lmx.id}")
+
+      page.find("div#show_scores_lmx_banner_#{lmx.id}").click
+
+      sleep(1)
+
+      expect(URI.parse(page.find_link('cap')['href']).to_s).to match(%r{\/users\/#{@user.id}\/profile})
     end
   end
 end

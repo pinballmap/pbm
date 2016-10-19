@@ -149,7 +149,7 @@ describe LocationMachineXrefsController do
   describe 'machine descriptions', type: :feature, js: true do
     before(:each) do
       @lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
-      @user = FactoryGirl.create(:user, username: 'ssw', email: 'foo@bar.com')
+      @user = FactoryGirl.create(:user, id: 11, username: 'ssw', email: 'foo@bar.com')
 
       page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
     end
@@ -225,14 +225,16 @@ describe LocationMachineXrefsController do
       expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{@lmx.current_condition.created_at.strftime('%b-%d-%Y')} by ssw")
       expect(@lmx.reload.location.date_last_updated).to eq(Date.today)
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{@location.date_last_updated.strftime('%b-%d-%Y')} by ssw")
+      expect(URI.parse(page.find_link('ssw', match: :first)['href']).to_s).to match(%r{\/users\/11\/profile})
     end
 
     it 'displays who updated a machine if that data is available' do
-      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, user: FactoryGirl.create(:user, username: 'cibw'))
+      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, user: FactoryGirl.create(:user, id: 10, username: 'cibw'))
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("Test Comment Updated: #{@lmx.current_condition.created_at.strftime('%b-%d-%Y')} by cibw")
+      expect(URI.parse(page.find_link('cibw')['href']).to_s).to match(%r{\/users\/10\/profile})
     end
 
     it 'only displays the 6 most recent descriptions' do

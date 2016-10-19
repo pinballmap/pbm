@@ -18,9 +18,10 @@
           %span.confirm_button
       %span.last_updated{:id => "last_updated_location_#{l.id}"}
         #{l.date_last_updated ? "Location last updated: #{l.date_last_updated.strftime("%b-%d-%Y")}" : ''}
-        #{l.last_updated_by_user ? "by " : ''}
-        %span.last_updated_username
-          #{l.last_updated_by_user ? "#{l.last_updated_by_user.username}" : ''}
+        - if l.last_updated_by_user
+          by
+          %span.last_updated_username
+            = link_to l.last_updated_by_user.username, "http://#{request.host_with_port}/users/#{l.last_updated_by_user.id}/profile"
 
 :javascript
   $('#confirm_location_button_#{l.id}').click(function () {

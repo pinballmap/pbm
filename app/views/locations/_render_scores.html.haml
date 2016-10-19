@@ -1,3 +1,6 @@
 - lmx.machine_score_xrefs.collect! do |msx|
   %span.high_score_new_line="#{number_with_delimiter(msx.score, :delimiter => ",")}"
-  %span.high_score_date="#{msx.created_at ? msx.created_at.strftime("%b-%d-%Y") : ''} by #{msx.user ? msx.user.username : 'Unknown'}"
+  %span.high_score_date=msx.created_at ? msx.created_at.strftime("%b-%d-%Y") : ''
+  - if msx.user
+    by
+    = link_to msx.user.username, "http://#{request.host_with_port}/users/#{msx.user.id}/profile"
