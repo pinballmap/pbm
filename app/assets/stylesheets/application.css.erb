@@ -49,6 +49,9 @@ input, textarea {
   box-sizing: border-box;         /* Opera/IE 8+ */
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
 }
+.palatino {
+  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+}
 select {
   font-family: Helvetica,Arial,sans-serif;
 }
@@ -158,6 +161,10 @@ form.new_user .form-actions, form.edit_user .form-actions {
 .login_why_inner p.why_login {
   font-size: 18px;
   font-weight: bold;
+}
+.login_why_inner p {
+  margin-top: 10px;
+  margin-bottom: 5px;
 }
 .login_new_div {
   float: right;
@@ -585,7 +592,7 @@ span.why_login {
 #login .reset-password .button,
 #login .confirmation .button {
   cursor: pointer;
-  width: 260px;
+  width: 100%;
   font-size: 12px;
 }
 #login .error {
@@ -795,6 +802,12 @@ span.region_name_page {
   -moz-border-bottom-right-radius: 5px;
   -webkit-border-bottom-left-radius: 5px;
   -webkit-border-bottom-right-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  -moz-border-top-left-radius: 0;
+  -moz-border-top-right-radius: 0;
+  -webkit-border-top-left-radius: 0;
+  -webkit-border-top-right-radius: 0;
   padding-top: 4px;
   background-color: #EFEFEF;
   box-shadow: 0 5px 10px rgba(90, 100, 117, 0.5);
@@ -1179,7 +1192,8 @@ br.clear {
   background: #DDDDDD;
 }
 .sub_nav_item {
-  line-height: 26px;
+  line-height: 28px;
+  height: 26px;
   padding-left: 5px;
   font-size: 16px;
   font-weight: normal;
@@ -2445,7 +2459,7 @@ div.score_list {
 /** Rails Admin **/
 
 .form-inputs input {
-  width: 260px;
+  width: 100%;
 }
 .form-inputs #user_remember_me {
   width: auto;
