@@ -17,14 +17,4 @@ task notify_admins: :environment do
       body: email_body
     )
   end
-
-  User.where(is_super_admin: 'Y').each do |u|
-    Pony.mail(
-      to: u.email,
-      from: 'admin@pinballmap.com',
-      subject: "PBM - Weekly admin digest for all regions - #{Date.today.strftime('%m/%d/%Y')}",
-      body: 'CHECK THE ATTACHMENT, BROH',
-      attachments: { 'all_region_info.txt' => email_bodies.join("\n\n") }
-    )
-  end
 end
