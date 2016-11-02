@@ -11,6 +11,10 @@
 * {
   outline: none;
 }
+button::-moz-focus-inner {
+  padding: 0 0 2px 0 !important;
+  border: 0 none !important;
+}
 body {
   margin: 0 auto;
   padding: 0px;
@@ -672,8 +676,8 @@ span.region_name_page {
 #city_section_link,
 #location_section_link,
 #type_section_link {
-  font-size: 18px;
-  background: #FBFBFB;
+  font-size: 16px;
+  line-height: 16px;
   border: 1px solid #312f2d;
   color: #303030;
   border-radius: 5px;
@@ -686,7 +690,6 @@ span.region_name_page {
 }
 .section {
   padding: 7px 5px 3px;
-  margin-top: 30px;
   height: 33px;
 }
 .search_field_container {
@@ -742,9 +745,6 @@ span.region_name_page {
   padding-left: 4px;
   font-family: Helvetica;
 }
-.location_search {
-  margin-left: 2px;
-}
 .location_search .info {
   font-family: Helvetica;
   font-weight: normal;
@@ -756,20 +756,24 @@ span.region_name_page {
    background: #484848;
 }
 #other_search_options {
-  padding: 6px 0px 4px 6px;
-  float: left;
-  width: 100%;
+  padding: 6px 0;
+  text-align: center;
+  width: 630px;
 }
-#other_search_options a {
-  padding: 2px 6px;
+#other_search_options .black_text {
+  text-decoration: underline;
+}
+#other_search_options button {
+  padding: 3px 6px;
   text-decoration: none;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
-#other_search_options a:hover {
+#other_search_options button:hover {
   background: #303030;
   text-decoration: none;
   border-color: #642501;
   color: #F53240 !important;
+  cursor: pointer;
 }
 #locations p {
   margin-top: 20px;
@@ -790,12 +794,11 @@ span.region_name_page {
 }
 #form {
   position: fixed;
-  top: 49px;
-  right: 13px;
+  top: 52px;
+  right: 9px;
   width: 630px;
   z-index: 20;
-  border: 4px solid #EFEFEF;
-  border-top: none;
+  border: 3px solid #A9A9A9;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   -moz-border-bottom-left-radius: 5px;
@@ -808,15 +811,15 @@ span.region_name_page {
   -moz-border-top-right-radius: 0;
   -webkit-border-top-left-radius: 0;
   -webkit-border-top-right-radius: 0;
-  padding-top: 4px;
-  background-color: #EFEFEF;
+  padding: 4px;
+  background-color: #ffffff;
   box-shadow: 0 5px 10px rgba(90, 100, 117, 0.5);
 }
 #lookup_map, #container {
   width: 100%;
 }
 #lookup {
-  border: 2px solid #303030;
+  border: 3px solid #A9A9A9;
   box-shadow: 0 4px 5px rgba(90, 100, 117, 0.3);
   display: inline;
   float: right;

@@ -31,8 +31,12 @@
     }
     #operator_section_link, #zone_section_link, #machine_section_link, #city_section_link, #location_section_link, #type_section_link {
       margin-left: 2px;
-      font-size: 14px;
+      font-size: 13px;
+      line-height: 13px;
       font-weight: normal;
+    }
+    #other_search_options {
+      width: 456px;
     }
     #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id {
       width: 145px;
