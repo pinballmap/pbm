@@ -25,7 +25,7 @@
         %div.login.login_region
           %span.darkb
             - if !user_signed_in?
-              = link_to 'login', "http://#{request.host_with_port}/users/login"
+              = link_to 'Login', "http://#{request.host_with_port}/users/login"
               %span.login_slash
                 |
               = link_to 'Join', "http://#{request.host_with_port}/users/join"
@@ -55,12 +55,12 @@
         %div.login.login_home
           %span.darkb
             - if !user_signed_in?
-              = link_to 'login', "http://#{request.host_with_port}/users/login"
+              = link_to 'Login', "http://#{request.host_with_port}/users/login"
               %span.login_slash
                 |
               = link_to 'Join', "http://#{request.host_with_port}/users/join"
             - else
-              = link_to 'logout', "http://#{request.host_with_port}/users/logout", :class => "loggedin"
+              = link_to 'Logout', "http://#{request.host_with_port}/users/logout", :class => "loggedin"
         %span.darkb.geo_header{:onclick => "findClosestRegion()"}
           = link_to 'Find Your Closest Map', '#'
 - else
@@ -71,12 +71,12 @@
         %div.login.login_home
           %span.darkb
             - if !user_signed_in?
-              = link_to 'login', "http://#{request.host_with_port}/users/login"
+              = link_to 'Login', "http://#{request.host_with_port}/users/login"
               %span.login_slash
                 |
               = link_to 'Join', "http://#{request.host_with_port}/users/join"
             - else
-              = link_to 'logout', "http://#{request.host_with_port}/users/logout"
+              = link_to 'Logout', "http://#{request.host_with_port}/users/logout"
         %div.geo_header_wrapper
           %span.darkb{:onclick => "findClosestRegion()"}
             = link_to 'Find Your Closest Map', '#'
@@ -95,12 +95,12 @@
         %div.login.login_region
           %span.darkb
             - if !user_signed_in?
-              = link_to 'login', "http://#{request.host_with_port}/users/login"
+              = link_to 'Login', "http://#{request.host_with_port}/users/login"
               %span.login_slash
                 |
               = link_to 'Join', "http://#{request.host_with_port}/users/join"
             - else
-              = link_to 'logout', "http://#{request.host_with_port}/users/logout"
+              = link_to 'Logout', "http://#{request.host_with_port}/users/logout"
         - if user_signed_in?
           =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'} header_image_login", :alt => 'Pinball Map Logo'), root_path
         - else
