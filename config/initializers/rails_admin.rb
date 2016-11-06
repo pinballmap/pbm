@@ -13,52 +13,52 @@ RailsAdmin.config do |config|
 
   config.model Event do
     list do
-      field :name, :string 
+      field :name, :string
       field :location, :belongs_to_association
       field :external_location_name, :string
-      field :start_date, :date 
-      field :end_date, :date 
+      field :start_date, :date
+      field :end_date, :date
     end
     show do
-      field :name, :string 
+      field :name, :string
       field :location, :belongs_to_association
       field :external_location_name, :string
-      field :long_desc, :text 
-      field :external_link, :string 
-      field :category_no, :integer 
-      field :start_date, :date 
-      field :end_date, :date 
-      field :updated_at, :datetime 
+      field :long_desc, :text
+      field :external_link, :string
+      field :category_no, :integer
+      field :start_date, :date
+      field :end_date, :date
+      field :updated_at, :datetime
       field :category, :string
     end
     edit do
-      field :name, :string 
+      field :name, :string
       field :location_id do
         render do
           bindings[:view].render :partial => 'location_select', :locals => {:object_type => 'event', :location_id => bindings[:object].location_id}
         end
       end
-      field :external_location_name, :string 
-      field :long_desc, :text 
-      field :external_link, :string 
-      field :category_no, :integer 
-      field :start_date, :date 
-      field :end_date, :date 
+      field :external_location_name, :string
+      field :long_desc, :text
+      field :external_link, :string
+      field :category_no, :integer
+      field :start_date, :date
+      field :end_date, :date
       field :category, :string
     end
     create do
-      field :name, :string 
+      field :name, :string
       field :location_id do
         render do
           bindings[:view].render :partial => 'location_select', :locals => {:object_type => 'event', :location_id => nil}
         end
       end
-      field :external_location_name, :string 
-      field :long_desc, :text 
-      field :external_link, :string 
-      field :category_no, :integer 
-      field :start_date, :date 
-      field :end_date, :date 
+      field :external_location_name, :string
+      field :long_desc, :text
+      field :external_link, :string
+      field :category_no, :integer
+      field :start_date, :date
+      field :end_date, :date
       field :category, :string
       field :region_id do
         render do
@@ -71,33 +71,33 @@ RailsAdmin.config do |config|
   end
   config.model Location do
     list do
-      field :name, :string 
-      field :street, :string 
-      field :city, :string 
-      field :state, :string 
-      field :zip, :string 
-      field :phone, :string 
-      field :zone, :belongs_to_association 
-      field :operator, :belongs_to_association 
+      field :name, :string
+      field :street, :string
+      field :city, :string
+      field :state, :string
+      field :zip, :string
+      field :phone, :string
+      field :zone, :belongs_to_association
+      field :operator, :belongs_to_association
     end
     show do
-      field :name, :string 
-      field :zone, :belongs_to_association 
-      field :location_type, :belongs_to_association 
-      field :operator, :belongs_to_association 
-      field :street, :string 
-      field :city, :string 
-      field :state, :string 
-      field :zip, :string 
-      field :phone, :string 
-      field :lat, :decimal 
-      field :lon, :decimal 
-      field :website, :string 
-      field :updated_at, :datetime 
-      field :description, :string 
+      field :name, :string
+      field :zone, :belongs_to_association
+      field :location_type, :belongs_to_association
+      field :operator, :belongs_to_association
+      field :street, :string
+      field :city, :string
+      field :state, :string
+      field :zip, :string
+      field :phone, :string
+      field :lat, :decimal
+      field :lon, :decimal
+      field :website, :string
+      field :updated_at, :datetime
+      field :description, :string
     end
     edit do
-      field :name, :string 
+      field :name, :string
       field :zone_id do
         render do
           bindings[:view].render :partial => 'zone_select', :locals => {:object_type => 'location', :zone_id => bindings[:object].zone_id}
@@ -113,19 +113,19 @@ RailsAdmin.config do |config|
           bindings[:view].render :partial => 'operator_select', :locals => {:object_type => 'location', :operator_id => bindings[:object].operator_id}
         end
       end
-      field :street, :string 
-      field :city, :string 
-      field :state, :string 
-      field :zip, :string 
-      field :phone, :string 
-      field :lat, :decimal 
-      field :lon, :decimal 
-      field :website, :string 
-      field :updated_at, :datetime 
-      field :description, :string 
+      field :street, :string
+      field :city, :string
+      field :state, :string
+      field :zip, :string
+      field :phone, :string
+      field :lat, :decimal
+      field :lon, :decimal
+      field :website, :string
+      field :updated_at, :datetime
+      field :description, :string
     end
     create do
-      field :name, :string 
+      field :name, :string
       field :zone_id do
         render do
           bindings[:view].render :partial => 'zone_select', :locals => {:object_type => 'location', :zone_id => nil}
@@ -141,15 +141,15 @@ RailsAdmin.config do |config|
           bindings[:view].render :partial => 'operator_select', :locals => {:object_type => 'location', :operator_id => bindings[:object].operator_id}
         end
       end
-      field :street, :string 
-      field :city, :string 
-      field :state, :string 
-      field :zip, :string 
-      field :phone, :string 
-      field :lat, :decimal 
-      field :lon, :decimal 
-      field :website, :string 
-      field :description, :string 
+      field :street, :string
+      field :city, :string
+      field :state, :string
+      field :zip, :string
+      field :phone, :string
+      field :lat, :decimal
+      field :lon, :decimal
+      field :website, :string
+      field :description, :string
       field :region_id do
         render do
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.is_super_admin ? nil : Authorization.current_user.region_id, :object_type => 'location'}
@@ -161,26 +161,26 @@ RailsAdmin.config do |config|
   end
   config.model LocationPictureXref do
     list do
-      field :location, :belongs_to_association 
-      field :created_at, :datetime 
-      field :description, :text 
-      field :approved, :boolean 
+      field :location, :belongs_to_association
+      field :created_at, :datetime
+      field :description, :text
+      field :approved, :boolean
     end
     show do
-      field :location, :belongs_to_association 
-      field :created_at, :datetime 
-      field :description, :text 
+      field :location, :belongs_to_association
+      field :created_at, :datetime
+      field :description, :text
       field :photo, :paperclip
-      field :approved, :boolean 
+      field :approved, :boolean
     end
     edit do
       field :location, :belongs_to_association do
         read_only true
       end
-      field :created_at, :datetime 
-      field :description, :text 
+      field :created_at, :datetime
+      field :description, :text
       field :photo, :paperclip
-      field :approved, :boolean 
+      field :approved, :boolean
     end
     export do; end
     create do; end
@@ -245,30 +245,30 @@ RailsAdmin.config do |config|
   end
   config.model Operator do
     list do
-      field :name, :string 
-      field :email, :string 
-      field :website, :string 
-      field :phone, :string 
+      field :name, :string
+      field :email, :string
+      field :website, :string
+      field :phone, :string
     end
     show do
-      field :name, :string 
+      field :name, :string
       field :locations, :has_many_association
-      field :email, :string 
-      field :website, :string 
-      field :phone, :string 
+      field :email, :string
+      field :website, :string
+      field :phone, :string
       field :updated_at, :datetime
     end
     edit do
-      field :name, :string 
-      field :email, :string 
-      field :website, :string 
-      field :phone, :string 
+      field :name, :string
+      field :email, :string
+      field :website, :string
+      field :phone, :string
     end
     create do
-      field :name, :string 
-      field :email, :string 
-      field :website, :string 
-      field :phone, :string 
+      field :name, :string
+      field :email, :string
+      field :website, :string
+      field :phone, :string
       field :region_id do
         render do
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.is_super_admin ? nil : Authorization.current_user.region_id, :object_type => 'operator'}
@@ -280,46 +280,46 @@ RailsAdmin.config do |config|
   end
   config.model Region do
     list do
-      field :name, :string 
-      field :full_name, :string 
+      field :name, :string
+      field :full_name, :string
     end
     show do
-      field :name, :string 
-      field :updated_at, :datetime 
-      field :full_name, :string 
-      field :motd, :string 
+      field :name, :string
+      field :updated_at, :datetime
+      field :full_name, :string
+      field :motd, :string
       field :lat, :decimal
-      field :lon, :decimal 
-      field :n_search_no, :integer 
-      field :default_search_type, :string 
+      field :lon, :decimal
+      field :n_search_no, :integer
+      field :default_search_type, :string
       field :should_email_machine_removal, :boolean
       field :should_auto_delete_empty_locations, :boolean
     end
     edit do
-      field :updated_at, :datetime 
-      field :full_name, :string 
+      field :updated_at, :datetime
+      field :full_name, :string
       field :name do
         render do
           bindings[:view].render :partial => 'region_name_edit', :locals => {:region => bindings[:object]}
         end
       end
-      field :motd, :string 
-      field :lat, :decimal 
-      field :lon, :decimal 
-      field :n_search_no, :integer 
-      field :default_search_type, :string 
+      field :motd, :string
+      field :lat, :decimal
+      field :lon, :decimal
+      field :n_search_no, :integer
+      field :default_search_type, :string
       field :should_email_machine_removal, :boolean
       field :should_auto_delete_empty_locations, :boolean
     end
     create do
-      field :name, :string 
-      field :updated_at, :datetime 
-      field :full_name, :string 
-      field :motd, :string 
-      field :lat, :decimal 
-      field :lon, :decimal 
-      field :n_search_no, :integer 
-      field :default_search_type, :string 
+      field :name, :string
+      field :updated_at, :datetime
+      field :full_name, :string
+      field :motd, :string
+      field :lat, :decimal
+      field :lon, :decimal
+      field :n_search_no, :integer
+      field :default_search_type, :string
       field :should_email_machine_removal, :boolean
       field :should_auto_delete_empty_locations, :boolean
     end
@@ -328,31 +328,31 @@ RailsAdmin.config do |config|
   end
   config.model RegionLinkXref do
     list do
-      field :name, :string 
-      field :url, :string 
-      field :description, :string 
-      field :category, :string 
+      field :name, :string
+      field :url, :string
+      field :description, :string
+      field :category, :string
       field :sort_order, :integer
     end
     show do
-      field :name, :string 
-      field :url, :string 
-      field :description, :string 
-      field :category, :string 
+      field :name, :string
+      field :url, :string
+      field :description, :string
+      field :category, :string
       field :sort_order, :integer
     end
     edit do
-      field :name, :string 
-      field :url, :string 
-      field :description, :string 
-      field :category, :string 
+      field :name, :string
+      field :url, :string
+      field :description, :string
+      field :category, :string
       field :sort_order, :integer
     end
     create do
-      field :name, :string 
-      field :url, :string 
-      field :description, :string 
-      field :category, :string 
+      field :name, :string
+      field :url, :string
+      field :description, :string
+      field :category, :string
       field :sort_order, :integer
       field :region_id do
         render do
@@ -365,16 +365,16 @@ RailsAdmin.config do |config|
   end
   config.model User do
     list do
-      field :email, :string 
+      field :email, :string
       field :region, :belongs_to_association
       field :is_disabled, :boolean
-      field :last_sign_in_at, :datetime
+      field :last_login_at, :datetime
     end
     show do
-      field :email, :string 
+      field :email, :string
       field :region, :belongs_to_association
       field :is_disabled, :boolean
-      field :last_sign_in_at, :datetime
+      field :last_login_at, :datetime
     end
     edit do
       field :username, :string do
@@ -421,8 +421,8 @@ RailsAdmin.config do |config|
       end
     end
     create do
-      field :email, :string 
-      field :password, :password 
+      field :email, :string
+      field :password, :password
       field :region_id do
         render do
           bindings[:view].render :partial => 'region_user', :locals => {:region_id => nil}
@@ -434,21 +434,21 @@ RailsAdmin.config do |config|
   end
   config.model Zone do
     list do
-      field :name, :string 
+      field :name, :string
       field :is_primary, :boolean
     end
     show do
-      field :name, :string 
-      field :updated_at, :datetime 
+      field :name, :string
+      field :updated_at, :datetime
       field :is_primary, :boolean
     end
     edit do
-      field :name, :string 
-      field :updated_at, :datetime 
+      field :name, :string
+      field :updated_at, :datetime
       field :is_primary, :boolean
     end
     create do
-      field :name, :string 
+      field :name, :string
       field :is_primary, :boolean
       field :region_id do
         render do
@@ -509,22 +509,22 @@ RailsAdmin.config do |config|
   end
   config.model UserSubmission do
     list do
-      field :id, :integer 
-      field :submission_type, :string 
-      field :submission, :string 
+      field :id, :integer
+      field :submission_type, :string
+      field :submission, :string
       field :region, :belongs_to_association
       field :user, :belongs_to_association
       field :user_email, :string
-      field :created_at, :date 
+      field :created_at, :date
     end
     show do
-      field :id, :integer 
-      field :submission_type, :string 
-      field :submission, :string 
+      field :id, :integer
+      field :submission_type, :string
+      field :submission, :string
       field :region, :belongs_to_association
       field :user, :belongs_to_association
       field :user_email, :string
-      field :created_at, :date 
+      field :created_at, :date
     end
     edit do; end
     create do; end

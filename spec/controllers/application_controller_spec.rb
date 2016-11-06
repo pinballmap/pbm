@@ -8,11 +8,11 @@ describe ApplicationController, type: :controller do
       fail CanCan::AccessDenied
     end
 
-    def after_sign_in_path_for(resource)
+    def after_login_path_for(resource)
       super resource
     end
 
-    def after_sign_out_path_for(resource)
+    def after_logout_path_for(resource)
       super resource
     end
   end
@@ -22,12 +22,12 @@ describe ApplicationController, type: :controller do
   end
 
   describe 'CanCan AccessDenied' do
-    it 'redirects to sign in page when you access a page that needs authorization' do
+    it 'redirects to login page when you access a page that needs authorization' do
       expect_any_instance_of(ApplicationController).to receive(:set_current_user).and_return(nil)
 
       get :index
 
-      expect(response).to redirect_to '/users/sign_in'
+      expect(response).to redirect_to '/users/login'
     end
   end
 
@@ -43,21 +43,21 @@ describe ApplicationController, type: :controller do
     end
   end
 
-  describe '#after_sign_in_path_for' do
+  describe '#after_login_path_for' do
     it 'redirects you to the main page' do
       user = FactoryGirl.create(:user)
 
-      expect(controller.after_sign_in_path_for(user)).to eq('/')
+      expect(controller.after_login_path_for(user)).to eq('/')
     end
   end
 
-  describe '#after_sign_out_path_for' do
+  describe '#after_logout_path_for' do
     it 'returns root path of you came from admin' do
       request.env['HTTP_REFERER'] = 'admin'
 
       user = FactoryGirl.create(:user)
 
-      expect(controller.after_sign_out_path_for(user)).to eq('/')
+      expect(controller.after_logout_path_for(user)).to eq('/')
     end
 
     it 'returns you to referrer page if it was not admin' do
@@ -65,7 +65,7 @@ describe ApplicationController, type: :controller do
 
       user = FactoryGirl.create(:user)
 
-      expect(controller.after_sign_out_path_for(user)).to eq('portland')
+      expect(controller.after_logout_path_for(user)).to eq('portland')
     end
   end
 end

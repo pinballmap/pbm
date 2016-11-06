@@ -41,10 +41,10 @@ module PagesHelper
       title = 'Donate - '
     elsif path =~ /profile/
       title = 'User Profile - '
-    elsif path =~ /sign_in/
+    elsif path =~ /login/
       title = 'Login - '
-    elsif path =~ /sign_up/
-      title = 'Sign Up - '
+    elsif path =~ /join/
+      title = 'Join - '
     elsif path =~ /password/
       title = 'Forgot Password - '
     elsif path =~ /confirmation/
