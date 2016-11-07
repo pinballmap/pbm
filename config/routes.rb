@@ -137,6 +137,7 @@ Pbm::Application.routes.draw do
 
   # legacy names for regions
   get '/milwaukee' => redirect('/wisconsin')
+  get '/burlington' => redirect('/vermont')
 
   root to: 'pages#home'
 end
