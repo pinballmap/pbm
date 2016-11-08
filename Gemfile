@@ -62,4 +62,5 @@ group :development, :test do
   gem 'pry', '~> 0.10'
   gem 'rack_session_access', '0.1.1'
   gem 'ruby-growl', '4.1'
+  gem 'rails_real_favicon'
 end

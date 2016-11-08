@@ -172,6 +172,7 @@ GEM
     multipart-post (2.0.0)
     naught (1.1.0)
     nested_form (0.3.2)
+    netrc (0.11.0)
     newrelic_rpm (3.16.2.321)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
@@ -244,6 +245,11 @@ GEM
       sass-rails (>= 4.0, < 6)
     rails_autolink (1.1.6)
       rails (> 3.1)
+    rails_real_favicon (0.0.6)
+      json (>= 1.7, < 3)
+      rails (>= 3.1)
+      rest-client (~> 2.0)
+      rubyzip (~> 1)
     rails_serve_static_assets (0.0.5)
     rails_stdout_logging (0.0.5)
     railties (4.1.0)
@@ -259,6 +265,10 @@ GEM
     remotipart (1.2.1)
     responders (1.1.2)
       railties (>= 3.2, < 4.2)
+    rest-client (2.0.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     rspec-core (3.5.2)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
@@ -287,6 +297,7 @@ GEM
     ruby-progressbar (1.8.1)
     ruby_parser (3.8.2)
       sexp_processor (~> 4.1)
+    rubyzip (1.2.0)
     safe_yaml (1.0.4)
     sanitize (4.2.0)
       crass (~> 1.0.2)
@@ -403,6 +414,7 @@ DEPENDENCIES
   rails_12factor
   rails_admin (~> 0.8)
   rails_autolink
+  rails_real_favicon
   rakismet (~> 1.5)
   recaptcha (~> 3.3)
   remotipart (= 1.2.1)
@@ -422,4 +434,4 @@ RUBY VERSION
    ruby 2.1.2p95
 
 BUNDLED WITH
-   1.13.1
+   1.13.5
