@@ -207,20 +207,5 @@ HERE
       post 'submitted_new_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_operator: 'operator', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail'
     end
 
-    it 'should not send an email with http:// in location_machines name' do
-      expect(Pony).to_not receive(:mail)
-
-      post 'submitted_new_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_operator: 'operator', location_machines: 'http://machines', submitter_name: 'subname', submitter_email: 'subemail'
-    end
-
-    it 'should flash an error message if captcha fails' do
-      expect(controller).to receive(:verify_recaptcha).and_return(nil)
-
-      expect(Pony).to_not receive(:mail)
-
-      post 'submitted_new_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_operator: 'operator', location_machines: 'cool machine', submitter_name: 'subname', submitter_email: 'subemail'
-
-      expect(request.flash[:alert]).to eq('Your captcha entering skills have failed you. Please go back and try again.')
-    end
   end
 end

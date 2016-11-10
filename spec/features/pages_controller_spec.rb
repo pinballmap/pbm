@@ -152,7 +152,7 @@ describe PagesController do
     it 'does not show form if not logged in' do
 
       visit "/#{@region.name}/suggest"
-      expect(page).to have_content('But first! We ask that you Log In. Thank you!')
+      expect(page).to have_content('But first! We ask that you Login. Thank you!')
     end
   end
 

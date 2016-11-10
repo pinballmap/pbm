@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to '/users/sign_in', alert: exception.message
+    redirect_to '/users/login', alert: exception.message
   end
 
   def flash_to_headers
@@ -104,7 +104,7 @@ END
 
   def send_app_comment(params, region)
     Pony.mail(
-      to: 'pinballmap@outlook.com',
+      to: 'pinballmap@posteo.org',
       bcc: User.all.select(&:is_super_admin).map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject('PBM - App feedback'),
@@ -136,24 +136,24 @@ END
 
   private
 
-  def after_sign_out_path_for(*)
+  def after_logout_path_for(*)
     request.referrer =~ /admin/ ? root_path : request.referrer
   end
 
   def store_location
     return unless request.get?
-    if request.path != '/users/sign_in' &&
-       request.path != '/users/sign_up' &&
+    if request.path != '/users/login' &&
+       request.path != '/users/join' &&
        request.path != '/users/password/new' &&
        request.path != '/users/password/edit' &&
        request.path != '/users/confirmation' &&
-       request.path != '/users/sign_out' &&
+       request.path != '/users/logout' &&
        !request.xhr?
       session[:previous_url] = request.fullpath
     end
   end
 
-  def after_sign_in_path_for(*)
+  def after_login_path_for(*)
     session[:previous_url] || root_path
   end
 
@@ -182,8 +182,8 @@ END
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me) }
-    devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
+    devise_parameter_sanitizer.for(:join) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me) }
+    devise_parameter_sanitizer.for(:login) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
   end
 

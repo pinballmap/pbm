@@ -34,8 +34,6 @@
               %li.machines{:class => "first"}
                 %label{:for => "location_machines"} Machines:
                 %textarea{:type => "text", :name => "location_machines", :params => "location_machines", :class => "text machines"}
-              %li.recaptcha{:style => "clear:both;"}
-                %div= recaptcha_tags
               %li.submit{:style => "clear:both;"}
                 %input{:type => "submit", :value => "Submit New Location", :class => "submit_button"}
 
@@ -50,5 +48,5 @@
     - else
       %p
         But first! We ask that you
-        = link_to 'Log In.', "http://#{request.host_with_port}/users/sign_in", :class => "darkbl"
+        = link_to 'Login.', "http://#{request.host_with_port}/users/login", :class => "darkbl"
         Thank you!

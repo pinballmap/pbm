@@ -38,11 +38,11 @@ describe PagesHelper, type: :helper do
       end
 
       it 'displays the login title' do
-        expect(helper.title_for_path('/sign_in')).to eq('Login - Pinball Map')
+        expect(helper.title_for_path('/login')).to eq('Login - Pinball Map')
       end
 
-      it 'displays the sign up title' do
-        expect(helper.title_for_path('/sign_up')).to eq('Sign Up - Pinball Map')
+      it 'displays the join title' do
+        expect(helper.title_for_path('/join')).to eq('Join - Pinball Map')
       end
 
       it 'displays the forgot password title' do

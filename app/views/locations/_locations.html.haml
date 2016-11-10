@@ -49,7 +49,7 @@
                   =link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
                 %div.login_alert
                   - if !user_signed_in?
-                    = link_to link_to 'To update this location, you must login! Click here', "http://#{request.host_with_port}/users/sign_in"
+                    = link_to link_to 'To update this location, you must login! Click here', "http://#{request.host_with_port}/users/login"
             %div.location_detail_sub
               - if user_signed_in?
                 = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}

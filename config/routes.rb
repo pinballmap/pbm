@@ -146,7 +146,7 @@ Pbm::Application.routes.draw do
   resources :location_picture_xrefs
   resources :machine_conditions
 
-  devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}
+  devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}, path: '/users', path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'join'}
 
   resources :users, only: [:profile] do
     member do
@@ -161,6 +161,7 @@ Pbm::Application.routes.draw do
 
   # legacy names for regions
   get '/milwaukee' => redirect('/wisconsin')
+  get '/burlington' => redirect('/vermont')
 
   root to: 'pages#home'
 end

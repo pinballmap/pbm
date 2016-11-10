@@ -90,18 +90,10 @@ class PagesController < ApplicationController
   end
 
   def submitted_new_location
-    if verify_recaptcha
-      if params['location_machines'].match('http://')
-        flash.now[:alert] = "This sort of seems like you are sending us spam. If that's not the case, please contact us via the about page."
-      else
-        flash.now[:alert] = "Thanks for entering that location. We'll get it in the system as soon as possible."
+    flash.now[:alert] = "Thanks for entering that location. We'll get it in the system as soon as possible."
 
-        user = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user
-        send_new_location_notification(params, @region, user)
-      end
-    else
-      flash.now[:alert] = 'Your captcha entering skills have failed you. Please go back and try again.'
-    end
+    user = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user
+    send_new_location_notification(params, @region, user)
   end
 
   def suggest_new_location

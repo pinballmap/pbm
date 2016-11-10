@@ -12,7 +12,7 @@ mn:
       locked: 'Таны бүртгэл түгжигдсэн байна.'
       invalid: 'Э-мэйл эсвэл Нууц код буруу байна.'
       invalid_token: 'Шалгах тэмдэг тохирсонгүй.'
-      timeout: 'Your session expired, please sign in again to continue.'
+      timeout: 'Your session expired, please login again to continue.'
       inactive: 'Your account was not activated yet.'
     sessions:
       signed_in: 'Signed in successfully.'

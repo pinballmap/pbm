@@ -4,7 +4,7 @@
       %p
         This map lists all the pinball machines in the
         %span.darkb= @region.full_name
-        region. The data is kept up to date by YOU (and you and you, too).
+        region. The data is kept up to date by YOU!
       %p
         = link_to 'pinballmap.com', root_path
         was developed by Scott and Ryan. If you live in a region with pinball and would like to see it added to this site, AND you would like to serve as the regional administrator of the data, please
@@ -30,12 +30,13 @@
       #contact_maker
         = form_tag contact_sent_path, :method => 'get' do
           %ul
-            %li
-              %label{:for => "contact_name"} Your Name:
-              %input{:type => "text", :name => "contact_name", :params => "contact_name", :class => "text"}
-            %li
-              %label{:for => "contact_email"} Your Email:
-              %input{:type => "text", :name => "contact_email", :params => "contact_email", :class => "text"}
+            - if !user_signed_in?
+              %li
+                %label{:for => "contact_name"} Your Name:
+                %input{:type => "text", :name => "contact_name", :params => "contact_name", :class => "text"}
+              %li
+                %label{:for => "contact_email"} Your Email:
+                %input{:type => "text", :name => "contact_email", :params => "contact_email", :class => "text"}
             %li.msg
               %label{:for => "contact_msg"} Message:
               %textarea{:type => "text", :name => "contact_msg", :params => "contact_msg", :class => "text"}

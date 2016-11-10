@@ -395,7 +395,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       fill_in('by_machine_name', with: 'test')
 
@@ -448,7 +448,7 @@ describe LocationMachineXrefsController do
 
       expect(page).to have_xpath('//li[contains(text(), "Test[]Location")]')
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       fill_in('by_machine_name', with: 'test[')
 
@@ -468,37 +468,37 @@ describe LocationMachineXrefsController do
     it 'hides zone option when no zones in region' do
       visit "/#{@region.name}"
 
-      expect(page).to_not have_css('a#zone_section_link')
+      expect(page).to_not have_css('button#zone_section_link')
 
       FactoryGirl.create(:location, id: 20, region: @region, name: 'Cleo', zone: FactoryGirl.create(:zone, region: @region, name: 'Alberta'))
 
       visit "/#{@region.name}"
 
-      expect(page).to have_css('a#zone_section_link')
+      expect(page).to have_css('button#zone_section_link')
     end
 
     it 'hides operator option when no operators in region' do
       visit "/#{@region.name}"
 
-      expect(page).to_not have_css('a#operator_section_link')
+      expect(page).to_not have_css('button#operator_section_link')
 
       FactoryGirl.create(:location, id: 21, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region))
 
       visit "/#{@region.name}"
 
-      expect(page).to have_css('a#operator_section_link')
+      expect(page).to have_css('button#operator_section_link')
     end
 
     it 'lets you change navigation types' do
       visit "/#{@region.name}"
 
-      expect(page).to have_css('a#location_section_link.active_section_link')
-      expect(page).to_not have_css('a#machine_section_link.active_section_link')
+      expect(page).to have_css('button#location_section_link.active_section_link')
+      expect(page).to_not have_css('button#machine_section_link.active_section_link')
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
-      expect(page).to_not have_css('a#location_section_link.active_section_link')
-      expect(page).to have_css('a#machine_section_link.active_section_link')
+      expect(page).to_not have_css('button#location_section_link.active_section_link')
+      expect(page).to have_css('button#machine_section_link.active_section_link')
     end
 
     it 'automatically limits searching to region' do
@@ -531,7 +531,7 @@ describe LocationMachineXrefsController do
     it 'lets you search by machine name from select' do
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       select('Test Machine Name', from: 'by_machine_id')
 
@@ -547,7 +547,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       select('Test Machine Name', from: 'by_machine_id')
 
@@ -564,7 +564,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       fill_in('by_machine_name', with: 'No Groups')
 
@@ -580,7 +580,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       fill_in('by_machine_name', with: 'Test Machine Name')
 
@@ -596,7 +596,7 @@ describe LocationMachineXrefsController do
       FactoryGirl.create(:machine, name: 'does not exist in region')
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       expect(page).to have_select('by_machine_id', with_options: ['Test Machine Name'])
     end
@@ -621,7 +621,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#city_section_link').click
+      page.find('div#other_search_options button#city_section_link').click
       select('Beaverton', from: 'by_city_id')
       page.find('input#city_search_button').click
 
@@ -637,7 +637,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#zone_section_link').click
+      page.find('div#other_search_options button#zone_section_link').click
       select('Alberta', from: 'by_zone_id')
       page.find('input#zone_search_button').click
 
@@ -655,7 +655,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#type_section_link').click
+      page.find('div#other_search_options button#type_section_link').click
       select('bar', from: 'by_type_id')
       page.find('input#type_search_button').click
 
@@ -672,7 +672,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#operator_section_link').click
+      page.find('div#other_search_options button#operator_section_link').click
       select('Quarter Bean', from: 'by_operator_id')
       page.find('input#operator_search_button').click
 
@@ -709,7 +709,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#operator_section_link').click
+      page.find('div#other_search_options button#operator_section_link').click
 
       expect(page).to have_select('by_operator_id', options: ['All', 'Quarter Bean'])
     end
@@ -744,7 +744,7 @@ describe LocationMachineXrefsController do
       FactoryGirl.create(:region, name: 'chicago', default_search_type: 'city', full_name: 'Chicago')
       visit '/chicago'
 
-      expect(page).to have_css('a#city_section_link.active_section_link')
+      expect(page).to have_css('button#city_section_link.active_section_link')
     end
 
     it 'sorts searches by location name' do
@@ -775,7 +775,7 @@ describe LocationMachineXrefsController do
       end
 
       visit "/#{@region.name}"
-      page.find('div#other_search_options a#zone_section_link').click
+      page.find('div#other_search_options button#zone_section_link').click
       select(2, from: 'by_at_least_n_machines_zone')
       page.find('input#zone_search_button').click
 
@@ -824,7 +824,7 @@ describe LocationMachineXrefsController do
       FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, id: 57, region: @region), machine: FactoryGirl.create(:machine, name: 'baz', year: 2001))
 
       visit "/#{@region.name}"
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       expect(page).to have_select('by_machine_id', with_options: ['foo (stern)', 'bar (bally, 2000)', 'baz (2001)'])
     end
