@@ -40,8 +40,9 @@
             %li.msg
               %label{:for => "contact_msg"} Message:
               %textarea{:type => "text", :name => "contact_msg", :params => "contact_msg", :class => "text"}
-            %li.recaptcha{:style => "clear:both;"}
-              %div= recaptcha_tags
+            - if !user_signed_in?
+              %li.recaptcha{:style => "clear:both;"}
+                %div= recaptcha_tags
             %li.submit{:style => "clear:both;"}
               %input{:type => "submit", :value => "Submit Comment", :class => "submit_button"}
     - if (@region.operators.size > 0)
