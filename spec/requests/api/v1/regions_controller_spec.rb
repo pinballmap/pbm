@@ -219,7 +219,7 @@ HERE
     it 'emails app support address with feedback' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          to: 'pinballmap@outlook.com',
+          to: 'pinballmap@posteo.org',
           bcc: ['portland@admin.com'],
           from: 'admin@pinballmap.com',
           subject: 'PBM - App feedback',
