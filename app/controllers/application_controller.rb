@@ -136,7 +136,7 @@ END
 
   private
 
-  def after_logout_path_for(*)
+  def after_sign_out_path_for(*)
     request.referrer =~ /admin/ ? root_path : request.referrer
   end
 
@@ -153,7 +153,7 @@ END
     end
   end
 
-  def after_login_path_for(*)
+  def after_sign_in_path_for(*)
     session[:previous_url] || root_path
   end
 
