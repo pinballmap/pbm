@@ -48,14 +48,10 @@ module Pbm
       mediaqueries.css
       highslide-ie6.css
       highslide.css
-      jquery.jscrollpane.css
       rails_admin.css
       rails_admin/rails_admin.css
       highslide.min.js
-      jQuery.scrollSomething-1.0.0.js
       jquery.form.js
-      jquery.jscrollpane.js
-      jquery.mousewheel.js
       jquery.remotipart.js
       rails.js
       rails_admin.js
