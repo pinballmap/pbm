@@ -120,6 +120,7 @@ HERE
     end
 
     it 'should flash an error message if captcha fails' do
+      logout
       expect(controller).to receive(:verify_recaptcha).and_return(nil)
 
       expect(Pony).to_not receive(:mail)

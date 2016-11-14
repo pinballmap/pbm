@@ -55,13 +55,19 @@ class PagesController < ApplicationController
 
   def contact_sent
     return unless params['contact_msg']
+    user = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user
 
-    if verify_recaptcha
+    if user
       flash.now[:alert] = 'Thanks for contacting us!'
-      user = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user
       send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
     else
-      flash.now[:alert] = 'Your captcha entering skills have failed you. Please go back and try again.'
+      if verify_recaptcha
+        flash.now[:alert] = 'Thanks for contacting us!'
+        send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
+      else
+        flash.now[:alert] = 'Your captcha entering skills have failed you. Please go back and try again.'
+      end
+
     end
   end
 
