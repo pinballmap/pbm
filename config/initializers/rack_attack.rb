@@ -1,5 +1,5 @@
 if Rails.env.production?
-    blacklist('block admin identified IPs') do |req|
+    Rack::Attack.blacklist('block admin identified IPs') do |req|
       should_ban = nil
 
       BannedIp.all.each do |banned_ip|
