@@ -92,7 +92,7 @@ class Region < ActiveRecord::Base
   end
 
   def available_search_sections
-    sections = %w(city location machine type)
+    sections = %w(location city machine type)
 
     sections.push('operator') if operators.size > 0
 

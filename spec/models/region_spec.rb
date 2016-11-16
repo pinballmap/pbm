@@ -171,26 +171,26 @@ HERE
 
   describe '#available_search_sections' do
     it 'should not return zone as a search section if the region has no zones' do
-      expect(@region.available_search_sections).to eq("['city', 'location', 'machine', 'type']")
+      expect(@region.available_search_sections).to eq("['location', 'city', 'machine', 'type']")
 
       FactoryGirl.create(:location, region: @region, name: 'Cleo', zone: FactoryGirl.create(:zone, region: @region, name: 'Alberta'))
 
-      expect(@region.reload.available_search_sections).to eq("['city', 'location', 'machine', 'type', 'zone']")
+      expect(@region.reload.available_search_sections).to eq("['location', 'city', 'machine', 'type', 'zone']")
     end
 
     it 'should not return operator as a search section if the region has no operators' do
-      expect(@region.available_search_sections).to eq("['city', 'location', 'machine', 'type']")
+      expect(@region.available_search_sections).to eq("['location', 'city', 'machine', 'type']")
 
       FactoryGirl.create(:location, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region))
 
-      expect(@region.reload.available_search_sections).to eq("['city', 'location', 'machine', 'type', 'operator']")
+      expect(@region.reload.available_search_sections).to eq("['location', 'city', 'machine', 'type', 'operator']")
     end
 
     it 'should display all search sections when an operator and zone are present' do
       FactoryGirl.create(:location, region: @region, name: 'Cleo', zone: FactoryGirl.create(:zone, region: @region, name: 'Alberta'))
       FactoryGirl.create(:location, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region))
 
-      expect(@region.reload.available_search_sections).to eq("['city', 'location', 'machine', 'type', 'operator', 'zone']")
+      expect(@region.reload.available_search_sections).to eq("['location', 'city', 'machine', 'type', 'operator', 'zone']")
     end
   end
 
