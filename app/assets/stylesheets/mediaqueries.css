@@ -57,7 +57,7 @@
       min-width: 300px;
     }
     #map {
-      right: 470px;
+      left: 470px;
     }
     li.address_full, a.website, li.phone {
       width: auto;
