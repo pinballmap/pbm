@@ -366,12 +366,14 @@ RailsAdmin.config do |config|
   config.model User do
     list do
       field :email, :string
+      field :username, :string
       field :region, :belongs_to_association
       field :is_disabled, :boolean
       field :last_sign_in_at, :datetime
     end
     show do
       field :email, :string
+      field :username, :string
       field :region, :belongs_to_association
       field :is_disabled, :boolean
       field :last_sign_in_at, :datetime
