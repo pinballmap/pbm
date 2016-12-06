@@ -368,13 +368,13 @@ RailsAdmin.config do |config|
       field :email, :string
       field :region, :belongs_to_association
       field :is_disabled, :boolean
-      field :last_login_at, :datetime
+      field :last_sign_in_at, :datetime
     end
     show do
       field :email, :string
       field :region, :belongs_to_association
       field :is_disabled, :boolean
-      field :last_login_at, :datetime
+      field :last_sign_in_at, :datetime
     end
     edit do
       field :username, :string do
