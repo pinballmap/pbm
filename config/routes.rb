@@ -161,7 +161,6 @@ Pbm::Application.routes.draw do
 
   # legacy names for regions
   get '/milwaukee' => redirect('/wisconsin')
-  get '/burlington' => redirect('/vermont')
   get '/apps' => redirect('/app')
   get '/apps/support' => redirect('/app/support')
 
