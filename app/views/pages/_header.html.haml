@@ -17,7 +17,7 @@
             %li=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
             %li=link_to 'Blog', 'http://blog.pinballmap.com'
             %li=link_to 'T-Shirts', store_path
-            %li=link_to 'App', apps_path
+            %li=link_to 'App', app_path
             %li=link_to 'FAQ', faq_path
             %li=link_to 'Contact', 'http://pinballmap.com/portland/about'
             %li.last_header_link
@@ -47,7 +47,7 @@
               =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
             %li=link_to 'Blog', 'http://blog.pinballmap.com'
             %li=link_to 'T-Shirts', store_path
-            %li=link_to 'App', apps_path
+            %li=link_to 'App', app_path
             %li=link_to 'FAQ', faq_path
             %li=link_to 'Contact', 'http://pinballmap.com/portland/about'
             %li.last_header_link
@@ -85,7 +85,7 @@
             =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
           %li=link_to 'Blog', 'http://blog.pinballmap.com'
           %li=link_to 'T-Shirts', store_path
-          %li=link_to 'App', apps_path
+          %li=link_to 'App', app_path
           %li=link_to 'FAQ', faq_path
           %li=link_to 'Contact', 'http://pinballmap.com/portland/about'
           %li.last_header_link
@@ -118,7 +118,7 @@
           %li=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
           %li=link_to 'Blog', 'http://blog.pinballmap.com'
           %li=link_to 'T-Shirts', store_path
-          %li=link_to 'App', apps_path
+          %li=link_to 'App', app_path
           %li=link_to 'FAQ', faq_path
           %li=link_to 'Contact', 'http://pinballmap.com/portland/about'
           %li.last_header_link

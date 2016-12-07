@@ -111,7 +111,7 @@ class PagesController < ApplicationController
     render text: robots, layout: false, content_type: 'text/plain'
   end
 
-  def apps
+  def app
   end
 
   def app_support

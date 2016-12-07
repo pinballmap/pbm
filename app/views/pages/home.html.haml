@@ -10,7 +10,7 @@
         Each regional map is curated by a local administrator, often with the support of a league.
       %p
         We have a free
-        = link_to 'mobile app for iPhone/iPad and Android', apps_path, :class => 'apps_link'
+        = link_to 'mobile app for iPhone/iPad and Android', app_path, :class => 'apps_link'
       %p
         If you'd like to see your city on this site,
         =link_to 'contact us!', 'portland/about', :class => 'apps_link'
@@ -41,7 +41,7 @@
               %span.region_name
                 #{r.full_name}
           %div.map_summary_info
-            
+
             %span.map_summary_info
               = "#{r.locations_count} Locations"
               %br/
