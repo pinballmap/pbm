@@ -163,6 +163,7 @@ Pbm::Application.routes.draw do
   get '/milwaukee' => redirect('/wisconsin')
   get '/apps' => redirect('/app')
   get '/apps/support' => redirect('/app/support')
+  get '/profile' => redirect('/inspire_profile')
 
   root to: 'pages#home'
 end
