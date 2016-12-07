@@ -5,7 +5,7 @@
     %title #{title_for_path(request.path, @region)}
     %meta{:property => "og:title", :content => "#{title_for_path(request.path, @region)}"}
     %meta{:name => "keywords", :content => "pinball, map, google map, locator, arcade, tournaments, league" }
-    - if (current_page?(apps_path)) || (current_page?(apps_support_path))
+    - if (current_page?(app_path)) || (current_page?(app_support_path))
       %meta{:name => "description", :content => "Pinball Map App for iOS and Android. Find pinball machines to play near you! Update the app like the true champ you are." }
       %meta{:property => "og:description", :content => "Pinball Map App for iOS and Android. Find pinball machines to play near you! Update the app like the true champ you are." }
     - else

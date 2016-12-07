@@ -29,9 +29,9 @@ module PagesHelper
   def title_for_regionless_path(path)
     title = ''
 
-    if path == apps_path
+    if path == app_path
       title = 'App - '
-    elsif path == apps_support_path
+    elsif path == app_support_path
       title = 'App Support - '
     elsif path == faq_path
       title = 'FAQ - '

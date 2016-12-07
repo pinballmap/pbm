@@ -59,16 +59,16 @@ Pbm::Application.routes.draw do
     end
   end
 
-  get '/apps' => 'pages#apps'
-  get '/apps/support' => 'pages#app_support'
+  get '/app' => 'pages#app'
+  get '/app/support' => 'pages#app_support'
   get '/privacy' => 'pages#privacy'
   get '/faq' => 'pages#faq'
   get '/store' => 'pages#store'
   get '/donate' => 'pages#donate'
 
   scope ':region', constraints: { region: /#{regions}|!admin/i } do
-    get 'apps' => redirect('/apps')
-    get 'apps/support' => redirect('/apps/support')
+    get 'app' => redirect('/app')
+    get 'app/support' => redirect('/app/support')
     get 'privacy' => redirect('/privacy')
     get 'faq' => redirect('/faq')
     get 'store' => redirect('/store')
@@ -161,7 +161,8 @@ Pbm::Application.routes.draw do
 
   # legacy names for regions
   get '/milwaukee' => redirect('/wisconsin')
-  get '/burlington' => redirect('/vermont')
+  get '/apps' => redirect('/app')
+  get '/apps/support' => redirect('/app/support')
 
   root to: 'pages#home'
 end

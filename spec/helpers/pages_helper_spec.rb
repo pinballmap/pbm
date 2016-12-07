@@ -14,11 +14,11 @@ describe PagesHelper, type: :helper do
   describe '#title_for_path' do
     describe 'without region' do
       it 'displays the correct app title' do
-        expect(helper.title_for_path(apps_path)).to eq('App - Pinball Map')
+        expect(helper.title_for_path(app_path)).to eq('App - Pinball Map')
       end
 
       it 'displays the correct app support title' do
-        expect(helper.title_for_path(apps_support_path)).to eq('App Support - Pinball Map')
+        expect(helper.title_for_path(app_support_path)).to eq('App Support - Pinball Map')
       end
 
       it 'displays the correct faq title' do

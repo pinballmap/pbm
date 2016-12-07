@@ -184,10 +184,10 @@ describe PagesController do
   describe 'Pages', type: :feature, js: true do
     it 'show the proper page title' do
       FactoryGirl.create(:user, id: 111)
-      visit '/apps'
+      visit '/app'
       expect(page).to have_title('App')
 
-      visit '/apps/support'
+      visit '/app/support'
       expect(page).to have_title('App')
 
       visit '/donate'
