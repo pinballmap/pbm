@@ -95,6 +95,15 @@
       max-height: 200px;
       margin: 0;
     }
+    .first {
+      margin-right: 0;
+    }
+    #location_maker input.text, #contact_maker input.text {
+      width: 100%;
+    }
+    #location_maker ul, #location_maker ul li {
+      padding-left: 0;
+    }
 }
 
 @media (max-width: 865px) {
