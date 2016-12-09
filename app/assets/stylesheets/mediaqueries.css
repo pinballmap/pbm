@@ -1,10 +1,10 @@
 @media (max-width: 768px) {
   #form {
-    left: 291px;
+    right: 291px;
   }
   #lookup, .scrollerWrapper {
-    left: 296px;
-    float: left;
+    right: 296px;
+    float: right;
   }
 }
 
@@ -107,7 +107,7 @@
 }
 
 @media (max-width: 865px) {
-  .closest_locations {
+  .closest_locations, #header .closest_locations_outer {
     display:none;
   }
   #region_map {
@@ -117,17 +117,20 @@
 }
 
 @media (max-width: 900px) {
+  #header .login_home {
+    width: 40px;
+  }
   .login_home a.loggedin {
     font-size: 15px;
   }
   .login_home a {
-    font-size: 12px;
-    line-height: 12px;
+    font-size: 14px;
+    line-height: 20px;
     padding: 0;
     text-align: center;
   }
   .login_home {
-    margin-top: 0px;
+    margin-top: -2px !important;
     width: 60px;
     padding: 0;
     line-height: 19px;
@@ -137,11 +140,14 @@
   .login_home .login_slash {
     display: none;
   }
+  #header .geo_header_outer {
+    width: 90px;
+  }
   .geo_header {
     font-size: 12px;
     width: 90px;
     margin-top: 8px;
-    line-height: 13px;
+    line-height: 14px;
     padding: 3px 4px 4px;
     text-align: center;
   }
@@ -176,38 +182,46 @@
 }
 
 @media (max-width: 1055px) {
-
   .blog_header_region {
     display: none;
   }
-}
-
-@media (max-width: 1085px) {
   .login_region a.loggedin {
     font-size: 15px;
   }
   .login_region a {
-    font-size: 12px;
-    line-height: 12px;
+    font-size: 14px;
     padding: 0;
     text-align: center;
   }
-  .login_region {
-    margin-top: 0px;
-    width: 60px;
+  .login_region.logged_no {
+    margin-top: -2px !important;
     padding: 0;
-    line-height: 19px;
+    text-align: center;
+    border: none;
+  }
+  .login_region.logged_yes {
+    margin-top: 0 !important;
+    padding: 0;
     text-align: center;
     border: none;
   }
   .login_region .login_slash {
     display: none;
   }
+  .logged_no {
+    width: 40px;
+  }
+  .logged_yes {
+    width: 55px;
+  }
+  #header .closest_locations_outer {
+    width: 70px;
+  }
   .closest_locations {
-    font-size: 11px;
+    font-size: 12px;
     width: 75px;
     margin-top: 0;
-    line-height: 13px;
+    line-height: 14px;
     padding: 3px 4px 4px;
     text-align: center;
   }

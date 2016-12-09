@@ -46,7 +46,7 @@
 }
 #menu {
   margin: 3px 5px 0;
-  padding: 2px 0 0 0;
+  padding: 1px 0 0 0;
   float: left;
   height: 20px;
   font-size: 24px;
@@ -186,6 +186,17 @@ span.region_name_page {
   display: inline;
 }
 
+#header .login_region,
+#header .login_home,
+#header .closest_locations_outer,
+#header .geo_header_outer {
+  height: auto;
+  float: right;
+}
+#header .login_home {
+  width: auto;
+}
+
 .header_image_a {
   display: block;
 }
@@ -206,7 +217,7 @@ div.pick_a_map {
 .apps_header, .blog_header, .store_header, .closest_locations {
   width: 100% !important;
   float: none;
-  padding: 8px 0 4px;
+  padding: 4px 0;
   text-align: center;
   border-top: none;
   border-right: none;
@@ -221,7 +232,7 @@ div.pick_a_map {
   font-size: 18px !important;
   border: none !important;
   padding: 0;
-  margin: 5px 8px 0;
+  margin: 0;
 }
 
 .login_home {
@@ -229,9 +240,9 @@ div.pick_a_map {
 }
 
 .login_home a, .login_region a {
-  padding: 1px 3px;
+  padding: 0 4px 0 3px;
   font-size: 20px;
-  line-height: 18px;
+  line-height: 22px;
 }
  .login_region a {
   border: none;
@@ -259,8 +270,8 @@ div.pick_a_map {
 {
   .login_home a, .login_region a {
     padding: 1px 3px;
-    font-size: 18px !important;
-    line-height: 18px;
+    font-size: 17px !important;
+    line-height: 21px;
   }
   .geo_header_wrapper a {
     padding: 3px;
@@ -293,7 +304,6 @@ div.pick_a_map {
   .login_home a, .login_region a {
     padding: 1px 3px;
     font-size: 18px !important;
-    line-height: 18px;
   }
   .geo_header_wrapper a {
     padding: 3px;
@@ -305,7 +315,7 @@ div.pick_a_map {
 }
 
 .login_home, .geo_header_wrapper, .login_region {
-  margin: 2px 0;
+  margin: 0;
 }
 
 .geo_header_wrapper a {
@@ -328,7 +338,7 @@ div.pick_a_map {
   width: auto;
   min-width: 300px;
   height: 300px;
-  right: 0;
+  left: 0;
   margin: 0 10px 10px;
   top: 0;
   z-index: 500;
@@ -850,6 +860,7 @@ input#score, input#initials {
   min-width: 320px;
   position: absolute;
   margin-top: 0;
+  margin-left: 0;
   padding: 0;
   margin-right: 0;
   border: none;
