@@ -342,12 +342,11 @@ p.notice {
   z-index: 60;
   position: fixed;
   top: 0;
-  margin: -5px auto 0;
+  margin: 0 auto 0;
   width: 100%;
   min-width: 768px;
-  height: 54px;
+  height: 52px;
   background: #d3ecff;
-  border-bottom: 3px solid #d3ecff;
 }
 #header a {
   text-decoration: none;
@@ -371,7 +370,7 @@ p.notice {
 #header .menu_link ul, #header ul.other_regions_list {
   font-size: 12px;
   line-height: 24px;
-  margin-top: -6px;
+  margin-top: -2px;
   padding-left: 0;
   text-align: left;
   display: none;
@@ -400,20 +399,17 @@ p.notice {
 #header span.menu_link {
   width: 50px;
   font-size: 32px;
-  line-height: 63px;
+  line-height: 54px;
+  height: 50px;
   text-align: center;
   float: left;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  height: 54px;
 }
 #header span.menu_link:hover {
   cursor: pointer;
 }
-/*#header span.menu_link:hover ul {
-  display: block;
-}*/
 #header .menu_link ul li {
   list-style-type: none;
   position: relative;
@@ -455,8 +451,8 @@ p.notice {
 #header a img {
   border: 0 none;
   float: right;
-  margin: 0 auto;
-  padding: 5px 13px 0 0;
+  margin: 1px 0 auto;
+  padding: 0 13px 0 0;
   width: 464px;
 }
 #header .region_logo_dropdown {
@@ -464,7 +460,7 @@ p.notice {
   height: 49px;
   position: relative;
   float: right;
-  margin: 5px 0 0;
+  margin: 0;
 }
 #header li:hover ul, li.over ul, #header li ul li, #header .region_logo_dropdown ul li {
   display: block;
@@ -537,9 +533,6 @@ p.notice {
 }
 .closest_locations, .geo_header, .login {
   font-size: 18px;
-  line-height: 16px;
-  padding: 16px 6px;
-  margin: 12px 5px 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -547,9 +540,9 @@ p.notice {
 .header_buttons .closest_locations,
 .header_buttons .geo_header,
 .header_buttons .login {
-  padding: 10px 6px;
+  margin: 0 10px;
 }
-span.closest_locations, .login {
+.login {
   float: left;
 }
 .login_alert a {
@@ -617,9 +610,6 @@ div.pick_a_map .login_home {
 .location_detail .login_alert {
   text-align: center;
 }
-.geo_header {
-  float: left;
-}
 .region_name, .region_name_page,
 #header span.region_name_page a {
   color: #F53240;
@@ -635,7 +625,7 @@ div.pick_a_map .login_home {
 }
 .region_name_container {
   height: 45px !important;
-  height: 170px;
+  width: 170px;
   position: relative;
 }
 .region_name_inner {
@@ -659,10 +649,37 @@ div.pick_a_map .login_home {
   width: 164px;
   padding-top: 0;
 }
-span.region_name_page {
+span.region_name_page, #header span.login_inner, #header span.closest_locations,
+#header span.geo_header {
   display: table-cell !important;
   text-align: center;
   vertical-align: middle;
+}
+#header .login_region, #header .login_home, #header .closest_locations_outer,
+#header .geo_header_outer {
+  height: 52px;
+  position: relative;
+  float: left;
+  line-height: 20px;
+}
+#header .closest_locations_outer {
+  width: 210px;
+}
+#header .geo_header_outer {
+  width: 190px;
+}
+#header div.login_inner, #header div.closest_locations_inner,
+#header div.geo_header_inner {
+  display: table !important;
+  position: absolute !important;
+  height: 52px;
+  padding-top: 0;
+}
+.logged_yes {
+  width: 70px;
+}
+.logged_no {
+  width: 100px;
 }
 
 /** END Header **/
@@ -1951,6 +1968,9 @@ div.comment_image .comment_image:active {
   justify-content:         center;
   -webkit-justify-content: center;       /* Safari 8 */
   float: none;
+}
+.suggest p.darkb {
+  margin: 15px 30px;
 }
 .left_column_outer {
   float: left;
