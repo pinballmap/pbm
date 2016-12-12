@@ -962,7 +962,6 @@ a.website {
   padding: 0 0 15px 10px !important;
   line-height: 20px;
   background: #EFEFEF;
-  font-weight: bold;
 }
 .address_name {
   font-size: 16px;
@@ -1043,9 +1042,10 @@ div.comment_image span.comment_image:hover:after {
   font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
 }
 .machine_condition_new_line span {
-  display: block;
+  display: inline;
 }
-.machine_condition_display_lmx span.machine_condition_date {
+.machine_condition_display_lmx span.machine_condition_date,
+.machine_condition_display_lmx span.machine_condition_name  {
   color: #666666;
   font-size: 14px;
   margin: 6px 0 0;
@@ -1056,27 +1056,39 @@ div.machine_condition_text {
   float: left;
   width: 380px;
   margin-bottom: 6px;
+  font-size: 15px;
 }
-.machine_condition_display_lmx .machine_condition_lmx span.machine_condition_date {
-  margin-bottom: 8px;
+span.machine_condition_text {
+  font-size: 15px;
+  line-height: 16px;
+  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-weight: normal;
+  display: block;
+  color: #333333;
+}
+.machine_condition_display_lmx span.machine_condition_name {
+  font-weight: bold;
+  line-height: 14px;
+  margin: 0;
+  display: inline;
 }
 .machine_condition_new_line span.machine_condition_date {
   margin: 8px 0 2px;
   display: inline-block;
   color: #666666;
-  font-size: 12px;
+  font-size: 13px;
+}
+div.machine_condition_meta {
+  display: inline;
 }
 form.remove_machine_condition {
   float: right;
   padding-right: 5px;
 }
-.machine_condition_new_line,
-.machine_condition_display_lmx {
-  color: #333333;
-  font-size: 15px;
-  line-height: 16px;
-}
 .machine_condition_new_line {
+  color: #333333;
+  font-size: 14px;
+  line-height: 16px;
   border-bottom: 1px solid #d3ecff;
   margin-bottom: 8px;
 }
@@ -1086,6 +1098,7 @@ form.remove_machine_condition {
 }
 .machine_condition_display_lmx {
   margin: 5px 0 5px 10px;
+  color: #666666;
   padding: 2px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -1124,17 +1137,6 @@ form.remove_machine_condition {
 }
 .condition_button:hover {
   background-color: #dbd9d7;
-}
-.machine_condition_display_lmx span,
-.machine_condition_new_line span {
-  white-space: pre-wrap;
-  display: block;
-}
-.machine_condition_display_lmx span {
-  font-family: 'Palatino','Georgia',"Times New Roman", Times,serif;
-  padding: 0;
-  color: #333333;
-  font-weight: normal;
 }
 .machine_condition_edit_lmx {
   width: 435px;

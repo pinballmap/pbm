@@ -76,7 +76,7 @@
       margin-left: 10px;
     }
     div.comment_image span.comment_image:hover:after {
-      margin-left: -140px;
+      margin-left: -100px;
     }
     .confirm_inner,
     .confirm_location {
