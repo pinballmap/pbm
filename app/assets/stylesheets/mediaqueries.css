@@ -78,11 +78,12 @@
     div.comment_image span.comment_image:hover:after {
       margin-left: -140px;
     }
+    .confirm_inner,
     .confirm_location {
-      width: 402px;
-    }
-    .confirm_inner {
       width: 400px;
+    }
+    .location_link {
+      width: 416px;
     }
     #location_maker .first {
       float: none;

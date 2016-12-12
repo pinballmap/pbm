@@ -147,10 +147,16 @@
 }
 .confirm_location span.last_updated {
   padding: 8px 5px;
+  font-size: 16px;
+}
+.confirm_location span .last_updated_username {
+  font-size: 16px;
 }
 .confirm_location {
   position: relative;
   width: auto;
+  border-right: 0;
+  border-bottom: 0;
 }
 .confirm_inner {
   width: auto;
@@ -560,7 +566,10 @@ div.remove_button {
   width: 100%;
 }
 div.machine_condition_text {
-  width: 80%;
+  width: 85%;
+}
+span.machine_condition_text {
+  line-height: 20px;
 }
 .search_result {
   border-radius: 0;
@@ -600,7 +609,7 @@ div.machine_condition_text {
 
 .machine_condition_display_lmx {
   font-size: 15px;
-  line-height: 20px;
+  line-height: 15px;
   margin: 5px 0 0px 0px;
 }
 
@@ -726,8 +735,7 @@ div.machine_condition_text {
   font-size: 13px;
 }
 .location_detail .login_alert {
-  line-height: 18px;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .search, .submit_button, .save_button, .cancel_button, #add_score, #add,
@@ -1018,6 +1026,12 @@ p.notice {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  -moz-border-bottom-left-radius: 0;
+  -moz-border-bottom-right-radius: 0;
+  -webkit-border-bottom-left-radius: 0;
+  -webkit-border-bottom-right-radius: 0;
 }
 
 #lookup, .scrollerWrapper {

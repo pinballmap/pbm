@@ -45,6 +45,8 @@
                   = render :partial => 'locations/render_desc', :locals => {:l => l}
                 %div.location_thumbs
                   = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
+                %div.location_confirm
+                  = render :partial => 'locations/render_confirm', :locals => {:l => l}
                 %div.location_link
                   =link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
                 %div.login_alert
