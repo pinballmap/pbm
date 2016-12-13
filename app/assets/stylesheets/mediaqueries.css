@@ -186,27 +186,27 @@
   .blog_header_region {
     display: none;
   }
-  .login_region a.loggedin {
+  .login_region a.loggedin, .login_home a.loggedin {
     font-size: 15px;
   }
-  .login_region a {
+  .login_region a, .login_home a {
     font-size: 14px;
     padding: 0;
     text-align: center;
   }
-  .login_region.logged_no {
+  .login_region.logged_no, .login_home.logged_no {
     margin-top: -2px !important;
     padding: 0;
     text-align: center;
     border: none;
   }
-  .login_region.logged_yes {
+  .login_region.logged_yes, .login_home.logged_yes {
     margin-top: 0 !important;
     padding: 0;
     text-align: center;
     border: none;
   }
-  .login_region .login_slash {
+  .login_region .login_slash, .login_home .login_slash {
     display: none;
   }
   .logged_no {
