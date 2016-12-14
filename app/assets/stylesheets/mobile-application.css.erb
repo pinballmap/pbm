@@ -2,7 +2,7 @@
   height: 100% !important;
 }
 #page {
-  height: 80px;
+  height: 70px;
 }
 #page.page_home {
   height: auto;
@@ -43,10 +43,11 @@
   line-height: 18px;
   height: auto;
   float: none;
+  text-align: left;
 }
 #menu {
   margin: 3px 5px 0;
-  padding: 1px 0 0 0;
+  padding: 0;
   float: left;
   height: 20px;
   font-size: 24px;
@@ -100,16 +101,6 @@
   border: none;
   line-height: 28px;
   text-shadow: none;
-}
-#header div.menu_link ul li:nth-child(4):after {
-  content: '';
-  white-space:normal;
-}
-#header ul.other_links_dropdown {
-  display: inline !important;
-  background: none;
-  font-size: 16px;
-  width: auto;
 }
 .other_regions {
   margin: 0 auto;
@@ -179,7 +170,7 @@ span.region_name_page {
 
 #header a img.header_image {
   float: none;
-  margin: 2px 0 0;
+  margin: 0;
   width: 185px;
 }
 
@@ -293,15 +284,21 @@ div.pick_a_map {
 
 @media only screen and (max-width: 320px)
 {
-  .login_home, .geo_header_wrapper, .login_region {
-    margin: 5px 0;
-  }
   #header a img.header_image {
     width: 165px;
-    margin-top: 4px;
+    margin-top: 2px;
   }
   .pintips a {
     font-size: 16px !important;
+  }
+  .region_name_inner {
+    margin-left: 0;
+  }
+  .region_name_container, .map_summary, .region_name_inner {
+    width: 150px;
+  }
+  .region_name {
+    font-size: 18px;
   }
 }
 
@@ -318,10 +315,6 @@ div.pick_a_map {
   .login_home {
     margin: 2px 6px 0 6px;
   }
-}
-
-.login_home, .geo_header_wrapper, .login_region {
-  margin: 0;
 }
 
 .geo_header_wrapper a {
@@ -387,9 +380,10 @@ div.pick_a_map {
 
 .local_logo img {
     max-width: 310px;
+    width: 100%;
 }
 
-.scrollerWrapper, .intro_image, .arrow img {
+.intro_image, .arrow img {
   display: none;
 }
 
@@ -1019,23 +1013,23 @@ p.notice {
 
 @media (max-width: 915px) {
 
-#form {
-  left: 0;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  -moz-border-bottom-left-radius: 0;
-  -moz-border-bottom-right-radius: 0;
-  -webkit-border-bottom-left-radius: 0;
-  -webkit-border-bottom-right-radius: 0;
-}
+  #form {
+    left: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    -moz-border-bottom-left-radius: 0;
+    -moz-border-bottom-right-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+  }
 
-#lookup, .scrollerWrapper {
-  left: 0;
-  float: none;
-}
+  #lookup {
+    left: 0;
+    float: none;
+  }
 }
 
 @media (max-width: 973px) {
