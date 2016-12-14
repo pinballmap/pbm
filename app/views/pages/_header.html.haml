@@ -3,7 +3,7 @@
     =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
     - if (@region)
       %div{:class => "header_buttons"}
-        %span.menu_link
+        %div.menu_link
           %ul#nav
             %li.first_header_link=link_to 'Suggest Location', suggest_path
             %li=link_to 'About', about_path
@@ -47,7 +47,7 @@
             %ul.other_regions_list= other_regions_html(@region)
     - else
       %div{:class => "header_buttons"}
-        %span.menu_link.menu_home
+        %div.menu_link.menu_home
           %ul#nav
             %li.first_header_link
               =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
@@ -79,7 +79,7 @@
   #header{:class => "#{@region ? '' : 'header_home'}"}
     - if !(@region)
       =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
-      %span.menu_link
+      %div.menu_link
         %div.login.login_home
           %span.darkb
             - if !user_signed_in?
@@ -103,7 +103,7 @@
           %li.last_header_link
             =link_to 'Donate', donate_path
     - else
-      %span.menu_link
+      %span.div.menu_link
         %div.login.login_region
           %span.darkb
             - if !user_signed_in?
