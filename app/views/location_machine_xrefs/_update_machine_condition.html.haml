@@ -4,7 +4,8 @@
     %span.machine_condition_date= 'Updated: ' + lmx.current_condition.created_at.strftime("%b-%d-%Y")
     - if lmx.current_condition.user_id
       by
-      = link_to lmx.current_condition.user.username, "http://#{request.host_with_port}/users/#{lmx.current_condition.user.id}/profile"
+      %span.machine_condition_name
+        = link_to lmx.current_condition.user.username, "http://#{request.host_with_port}/users/#{lmx.current_condition.user.id}/profile"
 - if user_signed_in?
   %div[lmx, :machine_condition]
     %div.comment_image

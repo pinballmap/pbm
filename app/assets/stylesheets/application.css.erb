@@ -133,7 +133,7 @@ ul li li {
   font-size: 12px;
 }
 #login input.boolean {
-  height: 16px;
+  height: 16px !important;
   width: 16px;
   border: 1px solid #303030;
   margin: 0 5px 0 0;
@@ -396,7 +396,7 @@ p.notice {
 #header .menu_link ul li.last_header_link a {
   padding-bottom: 10px;
 }
-#header span.menu_link {
+#header div.menu_link {
   width: 50px;
   font-size: 32px;
   line-height: 54px;
@@ -407,7 +407,7 @@ p.notice {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-#header span.menu_link:hover {
+#header div.menu_link:hover {
   cursor: pointer;
 }
 #header .menu_link ul li {
@@ -554,6 +554,14 @@ p.notice {
 .login a, .login_new a, .login_alert a {
   color: #F53240;
 }
+.login_alert {
+  font-style: italic;
+  background: #fff1f1;
+  line-height: 22px;
+}
+.location_detail .login_alert {
+  text-align: center;
+}
 span.why_login {
   font-size: 14px;
   color: #6b6b6b;
@@ -602,13 +610,6 @@ span.why_login {
 div.pick_a_map .login_home {
   margin: 6px 5px;
   float: right;
-}
-.login_alert {
-  text-transform: uppercase;
-  background: #fff1f1;
-}
-.location_detail .login_alert {
-  text-align: center;
 }
 .region_name, .region_name_page,
 #header span.region_name_page a {
@@ -863,12 +864,13 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
   margin: 0;
   text-align: center;
   background-color: #FFFFFF;
+  border-right: 1px solid #CAC6C6;
+  width: 586px;
 }
 .location_link a {
   text-decoration: none;
-}
-.location_link a {
-  text-decoration: none;
+  font-style: italic;
+  color: #5D5D5D;
 }
 .location_link a:hover {
   text-decoration: underline;
@@ -960,7 +962,9 @@ a.website {
   padding: 0 0 15px 10px !important;
   line-height: 20px;
   background: #EFEFEF;
-  font-weight: bold;
+}
+.machine_names a {
+  text-decoration: none;
 }
 .address_name {
   font-size: 16px;
@@ -1021,7 +1025,7 @@ div.comment_image {
   margin-bottom: 5px;
 }
 div.comment_image span.comment_image {
-  float: left;
+  float: right;
   cursor: pointer;
   height: 40px;
 }
@@ -1041,39 +1045,53 @@ div.comment_image span.comment_image:hover:after {
   font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
 }
 .machine_condition_new_line span {
-  display: block;
+  display: inline;
 }
-.machine_condition_display_lmx span.machine_condition_date {
+.machine_condition_display_lmx span.machine_condition_date,
+.machine_condition_display_lmx span.machine_condition_name  {
   color: #666666;
   font-size: 14px;
-  margin: 6px 0;
+  margin: 6px 0 0;
   display: inline-block;
   font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
 }
 div.machine_condition_text {
   float: left;
   width: 380px;
+  margin-bottom: 6px;
+  font-size: 15px;
 }
-.machine_condition_display_lmx .machine_condition_lmx span.machine_condition_date {
-  margin-bottom: 8px;
+span.machine_condition_text {
+  font-size: 15px;
+  line-height: 16px;
+  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-weight: normal;
+  display: block;
+  color: #333333;
+}
+.machine_condition_display_lmx span.machine_condition_name {
+  font-weight: bold;
+  line-height: 14px;
+  margin: 0;
+  display: inline;
 }
 .machine_condition_new_line span.machine_condition_date {
   margin: 8px 0 2px;
   display: inline-block;
   color: #666666;
-  font-size: 12px;
+  font-size: 13px;
+}
+div.machine_condition_meta {
+  display: inline;
 }
 form.remove_machine_condition {
   float: right;
   padding-right: 5px;
 }
-.machine_condition_new_line,
-.machine_condition_display_lmx {
-  color: #333333;
-  font-size: 15px;
-  line-height: 16px;
-}
 .machine_condition_new_line {
+  color: #333333;
+  font-size: 14px;
+  line-height: 16px;
   border-bottom: 1px solid #d3ecff;
   margin-bottom: 8px;
 }
@@ -1083,6 +1101,7 @@ form.remove_machine_condition {
 }
 .machine_condition_display_lmx {
   margin: 5px 0 5px 10px;
+  color: #666666;
   padding: 2px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -1121,17 +1140,6 @@ form.remove_machine_condition {
 }
 .condition_button:hover {
   background-color: #dbd9d7;
-}
-.machine_condition_display_lmx span,
-.machine_condition_new_line span {
-  white-space: pre-wrap;
-  display: block;
-}
-.machine_condition_display_lmx span {
-  font-family: 'Palatino','Georgia',"Times New Roman", Times,serif;
-  padding: 0 5px;
-  color: #333333;
-  font-weight: normal;
 }
 .machine_condition_edit_lmx {
   width: 435px;
@@ -1528,7 +1536,8 @@ input#initials {
   font-weight: normal;
   border-top: 1px solid #CAC6C6;
   border-bottom: 1px solid #CAC6C6;
-  width: 572px;
+  border-right: 1px solid #CAC6C6;
+  width: 570px;
   position: relative;
 }
 .confirm_location span.last_updated {
@@ -1763,52 +1772,6 @@ div.comment_image .comment_image:active {
   border: none;
   background: inherit;
   font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
-}
-
-/** High Scores **/
-
-.scrollerWrapper {
-  font-size: 11px;
-  line-height: 16px;
-  margin: -2px 0 0;
-  padding: 5px 10px 0 0;
-  overflow: hidden;
-  border: 1px solid #57422a;
-  background-color: #43403d;
-  color: #FFFFFF;
-  position: fixed;
-  right: 18px;
-  bottom: 0;
-  z-index: 55;
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
-  font-weight: normal;
-}
-.scrollerScroller {
-  margin: 0;
-  padding: 0;
-  position: relative;
-  overflow: hidden;
-}
-#ticker span {
-  padding: 0 2px 0 8px;
-  color: #FFFFFF;
-}
-.scrollerNext, .scrollerPrev {
-  padding: 2px;
-  width: 16px;
-  height: 16px;
-  position: absolute;
-  display: none;
-  background: #d0b99e url(<%= asset_path 'arrow_prev.png' %>) no-repeat center center;
-  cursor: pointer;
-  border: solid 1px #444444;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
-  -border-radius: 8px;
-}
-.scrollerNext {
-  display: block;
-  background: #d0b99e url(<%= asset_path 'arrow_next.png' %>) no-repeat center center;
 }
 
 /** Sub Pages **/
@@ -2046,80 +2009,6 @@ div.comment_image .comment_image:active {
   font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
   font-weight: bold;
 }
-@-webkit-keyframes leftToRight {
-    0% {
-        margin-left: 10px;
-        -webkit-transform: scale(1);
-    }
-    50% {
-        margin-left: 150px;
-        -webkit-transform: scale(2);
-    }
-    100% {
-        margin-left: 10px;
-        -webkit-transform: scale(1);
-    }
-}
-@-moz-keyframes leftToRight {
-    0% {
-        margin-left: 10px;
-        -moz-transform: scale(1);
-    }
-    50% {
-        margin-left: 150px;
-        -moz-transform: scale(2);
-    }
-    100% {
-        margin-left: 10px;
-        -moz-transform: scale(1);
-    }
-}
-@keyframes leftToRight {
-    0% {
-        margin-left: 10px;
-        transform: scale(1);
-    }
-    50% {
-        margin-left: 150px;
-        transform: scale(2);
-    }
-    100% {
-        margin-left: 10px;
-        transform: scale(1);
-    }
-}
-@-o-keyframes leftToRight {
-    0% {
-        margin-left: 10px;
-    }
-    50% {
-        margin-left: 150px;
-    }
-    100% {
-        margin-left: 10px;
-    }
-}
-.to_begin .search_arrow {
-    -webkit-animation-duration: 5s;
-    -webkit-animation-name: leftToRight;
-    -webkit-animation-delay: 1s;
-    -webkit-animation-timing-function: ease-in-out;
-
-    -moz-animation-duration: 5s;
-    -moz-animation-name: leftToRight;
-    -moz-animation-delay: 1s;
-    -moz-animation-timing-function: ease-in-out;
-
-    -o-animation-duration: 5s;
-    -o-animation-name: leftToRight;
-    -o-animation-delay: 1s;
-    -o-animation-timing-function: ease-in-out;
-
-    animation-duration: 5s;
-    animation-name: leftToRight;
-    animation-delay: 1s;
-    animation-timing-function: ease-in-out;
-}
 @-webkit-keyframes colorChange {
     0% {
         color: #2e2322;
@@ -2199,13 +2088,6 @@ span.begin {
     animation-delay: 1s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
-}
-.search_arrow {
-  font-size: 24px;
-  line-height: 16px;
-  color: #303030;
-  position: absolute;
-  margin-left: 10px;
 }
 #map, .right_column, #right_column, .score_result {
   height: 100%;
@@ -2315,7 +2197,7 @@ div.map_summary_info img {
   height: 30px;
   margin-top: -10px;
 }
-span.map_summary_info {
+div.map_summary_info {
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
   font-size: 16px;
   line-height: 26px;

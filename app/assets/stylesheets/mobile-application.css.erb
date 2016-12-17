@@ -2,7 +2,7 @@
   height: 100% !important;
 }
 #page {
-  height: 80px;
+  height: 70px;
 }
 #page.page_home {
   height: auto;
@@ -36,17 +36,18 @@
   width: 100%;
   max-width: 460px;
 }
-#header span.menu_link {
+#header div.menu_link {
   width: auto !important;
   position: relative;
   border: none;
   line-height: 18px;
   height: auto;
   float: none;
+  text-align: left;
 }
 #menu {
   margin: 3px 5px 0;
-  padding: 1px 0 0 0;
+  padding: 0;
   float: left;
   height: 20px;
   font-size: 24px;
@@ -62,7 +63,7 @@
 #header #nav.js {
   display: none;
 }
-#header span.menu_link ul {
+#header div.menu_link ul {
   display: inline-block;
   text-align: left;
   margin: 0 auto;
@@ -75,8 +76,8 @@
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
 }
-#header span.menu_link ul:before,
-#header span.menu_link ul span {
+#header div.menu_link ul:before,
+#header div.menu_link ul span {
   display: none;
 }
 #header .menu_link ul li.first_header_link {
@@ -86,13 +87,13 @@
   margin: 0 10px;
   width: 95%;
 }
-#header span.menu_link ul li {
+#header div.menu_link ul li {
   display: block;
   line-height: 24px;
   background: none;
   background: #d3ecff;
 }
-#header span.menu_link ul li a {
+#header div.menu_link ul li a {
   float: none;
   display: inline;
   background: transparent;
@@ -100,16 +101,6 @@
   border: none;
   line-height: 28px;
   text-shadow: none;
-}
-#header span.menu_link ul li:nth-child(4):after {
-  content: '';
-  white-space:normal;
-}
-#header ul.other_links_dropdown {
-  display: inline !important;
-  background: none;
-  font-size: 16px;
-  width: auto;
 }
 .other_regions {
   margin: 0 auto;
@@ -147,10 +138,16 @@
 }
 .confirm_location span.last_updated {
   padding: 8px 5px;
+  font-size: 16px;
+}
+.confirm_location span .last_updated_username {
+  font-size: 16px;
 }
 .confirm_location {
   position: relative;
   width: auto;
+  border-right: 0;
+  border-bottom: 0;
 }
 .confirm_inner {
   width: auto;
@@ -173,7 +170,7 @@ span.region_name_page {
 
 #header a img.header_image {
   float: none;
-  margin: 2px 0 0;
+  margin: 0;
   width: 185px;
 }
 
@@ -287,15 +284,21 @@ div.pick_a_map {
 
 @media only screen and (max-width: 320px)
 {
-  .login_home, .geo_header_wrapper, .login_region {
-    margin: 5px 0;
-  }
   #header a img.header_image {
     width: 165px;
-    margin-top: 4px;
+    margin-top: 2px;
   }
   .pintips a {
     font-size: 16px !important;
+  }
+  .region_name_inner {
+    margin-left: 0;
+  }
+  .region_name_container, .map_summary, .region_name_inner {
+    width: 150px;
+  }
+  .region_name {
+    font-size: 18px;
   }
 }
 
@@ -312,10 +315,6 @@ div.pick_a_map {
   .login_home {
     margin: 2px 6px 0 6px;
   }
-}
-
-.login_home, .geo_header_wrapper, .login_region {
-  margin: 0;
 }
 
 .geo_header_wrapper a {
@@ -381,9 +380,10 @@ div.pick_a_map {
 
 .local_logo img {
     max-width: 310px;
+    width: 100%;
 }
 
-.scrollerWrapper, .intro_image, .arrow img {
+.intro_image, .arrow img {
   display: none;
 }
 
@@ -436,7 +436,7 @@ div.pick_a_map {
 .lookup_search_select {
   margin-left: 0;
   font-size: 18px;
-  height: 28px;
+  height: 32px;
   width: 100%;
 }
 .lookup_search_select {
@@ -480,10 +480,9 @@ div.pick_a_map {
   margin: 0;
 }
 #form .search_field_container input.lookup_search_input {
-  padding-left: 0;
   border: 2px solid #A9A9A9;
   background: #FFFFFF;
-  height: 28px;
+  height: 32px;
 }
 #form .search_field_container .search,
 #form .search_other_button input {
@@ -501,6 +500,7 @@ div.pick_a_map {
   border-left: none;
   border-right: none;
   margin: 0;
+  width: auto;
 }
 
 .search_result ul {
@@ -524,8 +524,8 @@ div.pick_a_map {
 }
 
 .machine_name {
-  width: auto;
-  float: none;
+  width: 100%;
+  line-height: 26px;
 }
 
 .pintips {
@@ -547,9 +547,6 @@ div.pick_a_map {
   font-size: 18px;
   line-height: 24px;
 }
-.machine_names a {
-  text-decoration: none;
-}
 div.remove_button {
   width: 100%;
 }
@@ -560,12 +557,15 @@ div.remove_button {
   width: 100%;
 }
 div.machine_condition_text {
-  width: 80%;
+  width: 82%;
+}
+span.machine_condition_text {
+  line-height: 20px;
 }
 .search_result {
   border-radius: 0;
   padding: 0;
-  border: 2px solid #303030;
+  border: 3px solid #303030;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -600,7 +600,7 @@ div.machine_condition_text {
 
 .machine_condition_display_lmx {
   font-size: 15px;
-  line-height: 20px;
+  line-height: 15px;
   margin: 5px 0 0px 0px;
 }
 
@@ -714,7 +714,7 @@ div.machine_condition_text {
   margin: 0;
   padding: 10px;
   font-size: 14px;
-  line-height: 18px;
+  line-height: 14px;
 }
 
 .show_machines_location span.info,
@@ -726,8 +726,7 @@ div.machine_condition_text {
   font-size: 13px;
 }
 .location_detail .login_alert {
-  line-height: 18px;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .search, .submit_button, .save_button, .cancel_button, #add_score, #add,
@@ -812,6 +811,7 @@ input#score, input#initials {
   width: 200px;
   font-size: 16px;
   line-height: 24px;
+  height: 32px;
 }
 
 #other_search_options a {
@@ -927,7 +927,6 @@ input#score, input#initials {
 #location_maker ul li {
   clear: both;
   margin-right: 0;
-  padding-left: 4px;
 }
 
 #location_maker ul, #contact_maker ul {
@@ -935,8 +934,8 @@ input#score, input#initials {
 }
 
 #contact_maker textarea {
-  width: 98%;
-  max-width: 98%;
+  width: 100%;
+  max-width: 100%;
 }
 
 #contact_maker textarea {
@@ -950,12 +949,13 @@ input#score, input#initials {
 #location_maker li, #contact_maker li {
   margin-bottom: 10px;
   height: 50px;
+  padding: 2px 0 6px 0px;
 }
 
-#location_maker input.text, #contact_maker input.text {
+#location_maker input.text, #contact_maker input.text, #new_user input {
   font-size: 16px;
-  height: 28px;
-  width: 98%;
+  height: 32px !important;
+  width: 100%;
 }
 
 #location_maker li.submit, #contact_maker li.submit {
@@ -983,7 +983,7 @@ input#score, input#initials {
 }
 #login .reset-password .button, #login .confirmation .button {
   width: 100%;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 #login h2 {
@@ -1013,17 +1013,23 @@ p.notice {
 
 @media (max-width: 915px) {
 
-#form {
-  left: 0;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
+  #form {
+    left: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    -moz-border-bottom-left-radius: 0;
+    -moz-border-bottom-right-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+  }
 
-#lookup, .scrollerWrapper {
-  left: 0;
-  float: none;
-}
+  #lookup {
+    left: 0;
+    float: none;
+  }
 }
 
 @media (max-width: 973px) {
