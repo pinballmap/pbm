@@ -7,7 +7,6 @@ class Ability
     can :access, :rails_admin
     can :dashboard
     can :history
-    can :manage, [LocationType]
     can :manage, [Event, Operator, RegionLinkXref, Zone], region_id: user.region_id
     can :manage, [LocationMachineXref], location: { region_id: user.region_id }
     can [:update, :read], [LocationPictureXref], location: { region_id: user.region_id }
@@ -21,7 +20,7 @@ class Ability
     end
 
     if user.region.name == 'portland'
-      can :manage, [Region, Machine, MachineGroup, User, BannedIp]
+      can :manage, [Region, Machine, MachineGroup, User, BannedIp, LocationType]
     elsif user.is_machine_admin
       can [:update, :read], [Region], id: user.region_id
       can :manage, [Machine, MachineGroup]
