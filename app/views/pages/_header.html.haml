@@ -4,7 +4,8 @@
     - if (@region)
       %div{:class => "header_buttons"}
         %div.menu_link
-          %ul#nav
+          #menu &#9776;
+          %ul#nav.js
             %li.first_header_link=link_to 'Suggest Location', suggest_path
             %li=link_to 'About', about_path
             %li=link_to 'Events', events_path
@@ -48,7 +49,8 @@
     - else
       %div{:class => "header_buttons"}
         %div.menu_link.menu_home
-          %ul#nav
+          #menu &#9776;
+          %ul#nav.js
             %li.first_header_link
               =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
             %li=link_to 'Blog', 'http://blog.pinballmap.com'
@@ -92,7 +94,8 @@
         %div.geo_header_wrapper
           %span.darkb{:onclick => "findClosestRegion()"}
             = link_to 'Find Your Closest Map', '#'
-        %ul#nav
+        #menu &#9776;
+        %ul#nav.js
           %li.first_header_link
             =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
           %li=link_to 'Blog', 'http://blog.pinballmap.com'
@@ -117,7 +120,8 @@
           =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'} header_image_login", :alt => 'Pinball Map Logo'), root_path
         - else
           =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
-        %ul#nav
+        #menu &#9776;
+        %ul#nav.js
           %li.first_header_link=link_to 'Suggest Location', suggest_path
           %li=link_to 'About', about_path
           %li=link_to 'Events', events_path
@@ -154,7 +158,6 @@
     $(document).click(function () {
         $(".other_regions_list").hide();
     });
-    $("#nav").addClass("js").before('<div id="menu">&#9776;</div>');
     $("#menu").click(function() {
       $("#nav").toggle();
     });
