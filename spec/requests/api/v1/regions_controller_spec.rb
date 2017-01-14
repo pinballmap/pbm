@@ -10,6 +10,32 @@ describe Api::V1::LocationsController, type: :request do
     FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
   end
 
+  describe '#does_region_exist' do
+    it 'tells you if name is a valid region' do
+      FactoryGirl.create(:region, id: 6, name: 'clark', motd: 'mine', lat: 12.0, lon: 13.0, full_name: 'Clarky')
+
+      get '/api/v1/regions/does_region_exist.json', name: 'clark'
+      expect(response).to be_success
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      region = parsed_body['region']
+
+      expect(region['id']).to eq(6)
+      expect(region['name']).to eq('clark')
+      expect(region['motd']).to eq('mine')
+      expect(region['lat']).to eq('12.0')
+      expect(region['lon']).to eq('13.0')
+      expect(region['full_name']).to eq('Clarky')
+    end
+
+    it 'throws an error if name does not correspond to a region' do
+      get '/api/v1/regions/does_region_exist.json', name: 'foo'
+
+      expect(JSON.parse(response.body)['errors']).to eq('This is not a valid region.')
+    end
+  end
+
   describe '#closest_by_lat_lon' do
     it 'sends back closest region' do
       FactoryGirl.create(:region, name: 'not portland', lat: 122.0, lon: 13.0)

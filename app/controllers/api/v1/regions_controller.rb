@@ -6,6 +6,20 @@ module Api
 
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_REGION = 250
 
+      api :GET, '/api/v1/regions/does_region_exist.json', 'Find if name corresponds to a known region'
+      description 'Find if name corresponds to a known region'
+      param :name, String, desc: 'name of region', required: true
+      formats ['json']
+      def does_region_exist
+        region = Region.find_by(name: params[:name])
+
+        if region
+          return_response(region, 'region', [], [:id])
+        else
+          return_response("This is not a valid region.", 'errors')
+        end
+      end
+
       api :GET, '/api/v1/regions/closest_by_lat_lon.json', 'Find closest region based on lat/lon'
       description 'Find closest region based on lat/lon'
       param :lat, String, desc: 'Lat', required: true

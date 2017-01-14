@@ -30,6 +30,7 @@ Pbm::Application.routes.draw do
       resources :regions, only: [:index, :show] do
         collection do
           get  :closest_by_lat_lon
+          get  :does_region_exist
           post :suggest
           post :contact
           post :app_comment
