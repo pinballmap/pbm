@@ -5,8 +5,9 @@
     = render :partial => 'locations/form'
   #lookup
     #locations
+      = render :partial => 'pages/intro'
       - if !@region.motd.blank?
         %p
           %span.darkb Message of the Day:
-          = @region.motd 
+          = @region.motd
       = yield :presearch_sidebar
