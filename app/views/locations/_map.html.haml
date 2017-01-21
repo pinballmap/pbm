@@ -1,2 +1,8 @@
 #map_canvas
-  = render :partial => lookup_context.find_all("#{@region.name}/_intro").any? ? "#{@region.name}/intro" : 'pages/intro'
+  = render :partial => 'pages/intro'
+:javascript
+  map = new google.maps.Map(document.getElementById("map_canvas"), {
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    center: {lat: #{@region.lat}, lng: #{@region.lon}},
+    zoom: 12
+  });
