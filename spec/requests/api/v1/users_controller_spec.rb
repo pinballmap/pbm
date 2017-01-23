@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Api::V1::UsersController, type: :request do
   describe '#auth_details' do
     before(:each) do
-      FactoryGirl.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc123')
+      @user = FactoryGirl.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc123')
     end
 
     it 'returns all app-centric user data' do
@@ -32,6 +32,15 @@ describe Api::V1::UsersController, type: :request do
 
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('login and password are required fields')
+    end
+
+    it 'tells you if your user is not confirmed' do
+      FactoryGirl.create(:user, id: 333, username: 'unconfirmed', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc456', confirmed_at: nil)
+
+      get '/api/v1/users/auth_details.json', login: 'unconfirmed', password: 'okokok'
+
+      expect(response).to be_success
+      expect(JSON.parse(response.body)['errors']).to eq('User is not yet confirmed. Please follow emailed confirmation instructions.')
     end
 
     it 'tells you if you enter the wrong password' do
