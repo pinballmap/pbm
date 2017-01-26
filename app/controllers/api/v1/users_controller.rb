@@ -26,6 +26,11 @@ module Api
           return
         end
 
+        unless user.confirmed_at
+          return_response('User is not yet confirmed. Please follow emailed confirmation instructions.', 'errors')
+          return
+        end
+
         return_response(user, 'user', [], [:username, :email, :authentication_token])
       end
 
