@@ -50,6 +50,9 @@ module Api
 
         rescue ActiveRecord::RecordNotFound
           return_response('Failed to find machine', 'errors')
+
+        rescue ActiveRecord::StatementInvalid
+          return_response('Number is too large. Please enter a valid score.', 'errors')
       end
 
       api :GET, '/api/v1/machine_score_xrefs/:id.json', "View all high scores for a location's machine"

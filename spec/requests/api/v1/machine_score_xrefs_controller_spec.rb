@@ -84,6 +84,13 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
       expect(JSON.parse(response.body)['errors']).to eq([])
     end
 
+    it 'errors when numbers are larger than bigints (>9223372036854775807)' do
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 9223372036854775808
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq('Number is too large. Please enter a valid score.')
+    end
+
     it 'return an error if you enter a non-integer score' do
       post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 'fword', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
