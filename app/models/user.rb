@@ -49,10 +49,6 @@ class User < ActiveRecord::Base
     super && !self.is_disabled?
   end
 
-  def inactive_message
-    'Your account is not active. Please contact our support team if you think this was a mistake.'
-  end
-
   def name
     username
   end
