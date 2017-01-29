@@ -9,12 +9,13 @@
         = link_to 'pinballmap.com', root_path
         was developed by Scott and Ryan. If you live in a region with pinball and would like to see it added to this site, AND you would like to serve as the regional administrator of the data, please
         - if (@region.name == 'portland')
-          contact us via the form below. For more details about the criteria we use for adding regions,
-          = link_to 'see this blog post,', 'http://blog.pinballmap.com/2014/07/21/criteria-for-adding-a-new-pinball-map', :target => '_blank'
-          or read the
-          = link_to 'FAQ.', faq_path
+          contact us via the form below.
         - else
           = link_to 'contact us via the Portland region page.', 'http://pinballmap.com/portland/about'
+        For more details about the criteria we use for adding regions,
+        = link_to 'see this blog post,', 'http://blog.pinballmap.com/2014/07/21/criteria-for-adding-a-new-pinball-map', :target => '_blank'
+        or read the
+        = link_to 'FAQ.', faq_path
       %p
         Follow
         = link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
