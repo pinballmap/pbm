@@ -258,7 +258,7 @@ p.notice {
   font-size: 16px;
   margin-top: 120px;
   position: fixed;
-  background: pink none repeat scroll 0% 0%;
+  background: #fdf0eb none repeat scroll 0% 0%;
   padding: 10px;
   right: 20px;
   z-index: 4000;
@@ -273,14 +273,22 @@ p.notice {
 }
 #flash-message #flash_notice,
 #flash-message #flash_alert {
-  color: #F53240;
-  font-size: 18px;
+  color: #d3ecff;
+  font-size: 28px;
   text-align: center;
-  margin: 0px auto 10px;
-  padding: 5px 0;
-  width: 100%;
-  background: #fdf0eb;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100px;
+  width: 475px;
+  margin: auto;
+  padding: 5px;
+  background: #322a32;
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 150;
 }
 #page.submitted #flash-message #flash_alert {
