@@ -515,7 +515,9 @@ RailsAdmin.config do |config|
       field :submission_type, :string
       field :submission, :string
       field :region, :belongs_to_association
-      field :user, :belongs_to_association
+      field :user do
+        searchable :username
+      end
       field :user_email, :string
       field :created_at, :date
     end
