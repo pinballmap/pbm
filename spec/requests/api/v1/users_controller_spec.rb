@@ -43,6 +43,15 @@ describe Api::V1::UsersController, type: :request do
       expect(JSON.parse(response.body)['errors']).to eq('User is not yet confirmed. Please follow emailed confirmation instructions.')
     end
 
+    it 'tells you if your user is disabled' do
+      FactoryGirl.create(:user, id: 334, username: 'disabled', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc456', is_disabled: true)
+
+      get '/api/v1/users/auth_details.json', login: 'disabled', password: 'okokok'
+
+      expect(response).to be_success
+      expect(JSON.parse(response.body)['errors']).to eq('Your account is disabled. Please contact us if you think this is a mistake.')
+    end
+
     it 'tells you if you enter the wrong password' do
       get '/api/v1/users/auth_details.json', login: 'ssw', password: 'NOT_okokok'
 

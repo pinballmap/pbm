@@ -31,6 +31,11 @@ module Api
           return
         end
 
+        if user.is_disabled
+          return_response('Your account is disabled. Please contact us if you think this is a mistake.', 'errors')
+          return
+        end
+
         return_response(user, 'user', [], [:username, :email, :authentication_token])
       end
 
