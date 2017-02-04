@@ -11,7 +11,7 @@ Pbm::Application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :location_machine_xrefs, only: [:create, :destroy, :update]
+      resources :location_machine_xrefs, only: [:create, :destroy, :update, :show]
       resources :location_types, only: [:index, :show]
       resources :machine_conditions, only: [:destroy]
       resources :machine_score_xrefs, only: [:create, :show]

@@ -14,6 +14,15 @@ module Api
         return_response(lmxes, 'location_machine_xrefs', [], [:location, :machine, :machine_conditions])
       end
 
+      api :GET, '/api/v1/region/:region/location_machine_xrefs/:id.json', 'Get info about a single lmx'
+      param :region, String, desc: 'Name of the Region you want to see events for', required: true
+      param :id, Integer, desc: 'LMX id', required: true
+      formats ['json']
+      def show
+        lmx = LocationMachineXref.find(params[:id])
+        return_response(lmx, 'location_machine', [], [:last_updated_by_username, :machine_conditions])
+      end
+
       api :POST, '/api/v1/location_machine_xrefs.json', 'Find or create a machine at a location'
       param :location_id, Integer, desc: 'Location ID to add machine to', required: true
       param :machine_id, Integer, desc: 'Machine ID to add to location', required: true

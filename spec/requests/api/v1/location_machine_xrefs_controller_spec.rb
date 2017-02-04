@@ -277,4 +277,25 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
     end
   end
+
+  describe '#get' do
+    it 'sends all detail about this lmx (including machine conditions)' do
+      chicago = FactoryGirl.create(:region, id: 11, name: 'chicago')
+      lmx = FactoryGirl.create(:location_machine_xref, id: 100, machine: @machine, location: FactoryGirl.create(:location, id: 11, name: 'Chicago Location', region: chicago), condition: 'condition')
+      FactoryGirl.create(:machine_condition, id: 1, location_machine_xref: lmx.reload, comment: 'foo')
+      FactoryGirl.create(:machine_condition, id: 2, location_machine_xref: lmx.reload, comment: 'bar')
+
+      get '/api/v1/location_machine_xrefs/' + lmx.id.to_s + '.json'
+      expect(response).to be_success
+
+      lmx = JSON.parse(response.body)['location_machine']
+      machine_conditions = lmx['machine_conditions']
+
+      expect(lmx['condition']).to eq('condition')
+
+      expect(machine_conditions.size).to eq(2)
+      expect(machine_conditions[0]['comment']).to eq('bar')
+      expect(machine_conditions[1]['comment']).to eq('foo')
+    end
+  end
 end
