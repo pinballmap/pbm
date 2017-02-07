@@ -528,7 +528,9 @@ RailsAdmin.config do |config|
       field :region, :belongs_to_association
       field :user, :belongs_to_association
       field :user_email, :string
-      field :created_at, :date
+      field :created_at do
+        date_format :long
+      end
     end
     edit do; end
     create do; end
