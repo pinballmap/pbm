@@ -45,7 +45,15 @@ function showLocations(ids, lats, lons, contents) {
   markers = new Array();
 
   var bounds = new google.maps.LatLngBounds();
-  map = new google.maps.Map(document.getElementById("map_canvas"), { mapTypeId: google.maps.MapTypeId.ROADMAP });
+  map = new google.maps.Map(document.getElementById("map_canvas"), {
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    mapTypeControl: true,
+    mapTypeControlOptions: {
+        style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+        position: google.maps.ControlPosition.BOTTOM_LEFT
+    }
+
+  });
 
   for (i in ids) {
     var latlng = new google.maps.LatLng(lats[i], lons[i]);
@@ -54,6 +62,7 @@ function showLocations(ids, lats, lons, contents) {
       animation: google.maps.Animation.DROP,
       position: latlng,
       map: map,
+
     });
 
     markers.push(marker);
