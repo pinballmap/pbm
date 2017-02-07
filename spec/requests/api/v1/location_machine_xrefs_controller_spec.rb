@@ -203,6 +203,16 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(LocationMachineXref.all.size).to eq(2)
     end
 
+    it 'does not create a machine condition if you pass a blank condition' do
+      new_machine = FactoryGirl.create(:machine, id: 22, name: 'sass')
+
+      post '/api/v1/location_machine_xrefs.json', machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      expect(response).to be_success
+      expect(response.status).to eq(201)
+
+      expect(MachineCondition.all.size).to eq(0)
+    end
+
     it 'returns an error unless the machine_id and location_id are both present' do
       post '/api/v1/location_machine_xrefs.json'
       expect(response).to be_success

@@ -30,6 +30,7 @@ class LocationMachineXref < ActiveRecord::Base
 
   def update_condition(condition, options = {})
     return if condition == self.condition
+    return if condition.blank?
 
     self.condition = condition
     self.condition_date = Date.today

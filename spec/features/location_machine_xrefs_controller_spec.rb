@@ -315,7 +315,7 @@ describe LocationMachineXrefsController do
 
       page.find("div#machineconditions_container_lmx_#{@lmx.id}.machineconditions_container_lmx").click
       expect(find("div#show_conditions_lmx_#{@lmx.id}")).to have_content('test')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}")).to have_content('This is a new condition')
+      expect(page).to have_content('This is a new condition')
     end
 
     it 'should let me cancel adding a new machine description' do
