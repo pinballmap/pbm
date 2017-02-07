@@ -4,7 +4,7 @@
     .high_score > .sub_nav_item, .score_container_lmx > .sub_nav_item,
     .add_scores_form, .show_scores_lmx, .show_conditions_lmx, .show_conditions_lmx_toggle,
     .location_detail input.remove_machine_button {
-      width: 360px;
+      width: 370px;
     }
     .location_search .info {
       font-size: 11px;
@@ -38,13 +38,13 @@
       width: 380px;
     }
     div.machine_condition_text {
-      width: 300px;
+      width: 320px;
     }
     .machine_condition_display_lmx .edit_mode
     {
-      width: 300px;
-      max-width: 300px;
-      min-width: 300px;
+      width: 340px;
+      max-width: 340px;
+      min-width: 340px;
     }
     #map {
       left: 470px;
