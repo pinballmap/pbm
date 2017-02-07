@@ -1,13 +1,3 @@
-@media (max-width: 768px) {
-  #form {
-    right: 291px;
-  }
-  #lookup, .scrollerWrapper {
-    right: 296px;
-    float: right;
-  }
-}
-
 @media (max-width: 965px), only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
 
     .pintips, .machine_condition_display_lmx, .machine_condition_edit_lmx,
@@ -21,7 +11,7 @@
       margin: 0 2px;
     }
     #lookup, .show_location_detail_location, #location_maker ul, .score_result .sub_nav_item {
-      width: 430px;
+      width: 450px;
     }
     #form {
       width: 456px;
@@ -80,10 +70,10 @@
     }
     .confirm_inner,
     .confirm_location {
-      width: 400px;
+      width: 420px;
     }
     .location_link {
-      width: 416px;
+      width: 436px;
     }
     #location_maker .first {
       float: none;
