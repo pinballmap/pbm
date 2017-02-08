@@ -42,129 +42,141 @@ function clearMarkers() {
 var homeMap =
 [
   {
-      "featureType": "administrative",
-      "elementType": "all",
-      "stylers": [
-          {
-              "saturation": "-100"
-          }
-      ]
+    "featureType": "administrative",
+    "stylers": [
+      {
+        "saturation": "-100"
+      }
+    ]
   },
   {
-      "featureType": "administrative.province",
-      "elementType": "all",
-      "stylers": [
-          {
-              "visibility": "off"
-          }
-      ]
+    "featureType": "administrative",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "color": "#f53240"
+      },
+      {
+        "weight": 0.5
+      }
+    ]
   },
   {
-      "featureType": "landscape",
-      "elementType": "all",
-      "stylers": [
-          {
-              "saturation": -100
-          },
-          {
-              "lightness": 65
-          },
-          {
-              "visibility": "on"
-          }
-      ]
+    "featureType": "administrative.locality",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "color": "#f53240"
+      }
+    ]
   },
   {
-      "featureType": "poi",
-      "elementType": "all",
-      "stylers": [
-          {
-              "saturation": -100
-          },
-          {
-              "lightness": "50"
-          },
-          {
-              "visibility": "simplified"
-          }
-      ]
+    "featureType": "administrative.neighborhood",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "color": "#fa939b"
+      }
+    ]
   },
   {
-      "featureType": "road",
-      "elementType": "all",
-      "stylers": [
-          {
-              "saturation": "-100"
-          }
-      ]
+    "featureType": "administrative.province",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
   },
   {
-      "featureType": "road.highway",
-      "elementType": "all",
-      "stylers": [
-          {
-              "visibility": "simplified"
-          }
-      ]
+    "featureType": "administrative.province",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "color": "#ff3b78"
+      }
+    ]
   },
   {
-      "featureType": "road.arterial",
-      "elementType": "all",
-      "stylers": [
-          {
-              "lightness": "30"
-          }
-      ]
+    "featureType": "landscape",
+    "stylers": [
+      {
+        "saturation": -100
+      },
+      {
+        "lightness": 65
+      },
+      {
+        "visibility": "on"
+      }
+    ]
   },
   {
-      "featureType": "road.local",
-      "elementType": "all",
-      "stylers": [
-          {
-              "lightness": "40"
-          }
-      ]
+    "featureType": "poi",
+    "stylers": [
+      {
+        "saturation": -100
+      },
+      {
+        "lightness": 50
+      },
+      {
+        "visibility": "simplified"
+      }
+    ]
   },
   {
-      "featureType": "transit",
-      "elementType": "all",
-      "stylers": [
-          {
-              "saturation": -100
-          },
-          {
-              "visibility": "simplified"
-          }
-      ]
+    "featureType": "road",
+    "stylers": [
+      {
+        "saturation": "-100"
+      }
+    ]
   },
   {
-      "featureType": "water",
-      "elementType": "geometry",
-      "stylers": [
-          {
-              "hue": "#ffff00"
-          },
-          {
-              "lightness": -25
-          },
-          {
-              "saturation": -97
-          }
-      ]
+    "featureType": "road.arterial",
+    "stylers": [
+      {
+        "lightness": "30"
+      }
+    ]
   },
   {
-      "featureType": "water",
-      "elementType": "labels",
-      "stylers": [
-          {
-              "lightness": -25
-          },
-          {
-              "saturation": -100
-          }
-      ]
+    "featureType": "road.highway",
+    "stylers": [
+      {
+        "visibility": "simplified"
+      }
+    ]
+  },
+  {
+    "featureType": "road.local",
+    "stylers": [
+      {
+        "lightness": "40"
+      }
+    ]
+  },
+  {
+    "featureType": "transit",
+    "stylers": [
+      {
+        "saturation": -100
+      },
+      {
+        "visibility": "simplified"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#d3ecff"
+      }
+    ]
   }
-];
+]
 
 function showLocations(ids, lats, lons, contents) {
   locationIDs = ids;
