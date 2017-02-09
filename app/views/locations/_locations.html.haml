@@ -18,9 +18,9 @@
             %ul
               %li.name= l.name
               - if (!params[:show_location_distance].blank? && !params[:lat].blank? && !params[:lon].blank?)
-                %li.location_type= " distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
+                %li.location_types= " distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
               - if (l.location_type)
-                %li.location_type= " (#{l.location_type.name})"
+                %li.location_types= " (#{l.location_type.name})"
               .clear
               %li.address
                 %span.address_name[l, :location_summary] #{[l.street, l.city].join(' | ')}

@@ -4,17 +4,20 @@
     .high_score > .sub_nav_item, .score_container_lmx > .sub_nav_item,
     .add_scores_form, .show_scores_lmx, .show_conditions_lmx, .show_conditions_lmx_toggle,
     .location_detail input.remove_machine_button {
-      width: 370px;
+      width: 400px;
     }
     .location_search .info {
       font-size: 11px;
       margin: 0 2px;
     }
-    #lookup, .show_location_detail_location, #location_maker ul, .score_result .sub_nav_item {
+    #lookup, #location_maker ul, .score_result .sub_nav_item {
+      width: 470px;
+    }
+    .show_location_detail_location {
       width: 450px;
     }
     #form {
-      width: 456px;
+      width: 470px;
     }
     input#score, input#initials {
       width: 290px;
@@ -26,7 +29,7 @@
       font-weight: normal;
     }
     #other_search_options {
-      width: 456px;
+      width: 460px;
     }
     #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id {
       width: 145px;
@@ -35,10 +38,17 @@
       width: 200px;
     }
     .machine_name {
-      width: 380px;
+      width: 405px;
+      margin-left: -10px;
+    }
+    .machine_names {
+      padding: 0 0 10px 0px !important;
+    }
+    .search_result ul li.machine_names {
+      padding: 0 0 10px 10px !important;
     }
     div.machine_condition_text {
-      width: 320px;
+      width: 350px;
     }
     .machine_condition_display_lmx .edit_mode
     {
@@ -66,14 +76,16 @@
       margin-left: 10px;
     }
     div.comment_image span.comment_image:hover:after {
-      margin-left: -100px;
+      margin-left: -50px;
+
     }
     .confirm_inner,
     .confirm_location {
-      width: 420px;
+      width: 419px;
+      padding-right: 10px;
     }
     .location_link {
-      width: 436px;
+      width: 435px;
     }
     #location_maker .first {
       float: none;
