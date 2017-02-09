@@ -521,12 +521,6 @@ function setSearchSections(newSearchSections) {
   searchSections = newSearchSections;
 }
 
-function resetInfoWindowHeights() {
-  for (i in infoWindows) {
-    infoWindows[i].setContent($('#infowindow_' + locationIDs[i]).html());
-  }
-}
-
 function updateLocationUpdatedText(id, region) {
     $('#last_updated_location_' + id).load('/' + region + '/locations/' + id + '/render_last_updated');
 
