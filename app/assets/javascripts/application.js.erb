@@ -409,7 +409,7 @@ function showLocations(ids, lats, lons, contents) {
     map.setZoom(18);
     map.setCenter(new google.maps.LatLng(lats[0], lons[0]));
   } else if (contents.length === 0) {
-    document.getElementById("map_canvas").innerHTML="<p id='intro' class='dark hello'>" + "NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN." + "</p>";
+    document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN." + "</p>";
   } else {
     map.fitBounds(bounds);
   }
@@ -459,7 +459,7 @@ function findClosestLocations(region) {
     var dfd = $.getJSON('/api/v1/locations/closest_by_lat_lon.json', {lat: position.coords.latitude, lon: position.coords.longitude, max_distance: 5, send_all_within_distance: 1});
     dfd.done(function(response) {
       if (!response.locations) {
-        document.getElementById("map_canvas").innerHTML="<p id='intro' class='dark hello'>" + "No pinball found on this map within 5 miles of your location." + "</p>";
+        document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "No pinball found on this map within 5 miles of your location." + "</p>";
       } else {
           var locationIds = [];
 
