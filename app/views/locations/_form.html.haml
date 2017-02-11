@@ -10,9 +10,10 @@
           = submit_tag 'Search', :class => 'search', :id => "#{key}_search_button"
       - if (['city', 'zone', 'type'].include? key)
         = select_tag "by_#{key}_id", options_for_select([['All', '']]) + options_from_collection_for_select(@search_options[key]['search_collection'], @search_options[key]['id'], @search_options[key]['name'], params["by_#{key}"])
-        %span.info.limit Limit results to
-        = select_tag "by_at_least_n_machines_#{key}", "<option></option><option value=\"2\">2</option><option value=\"3\">3</option><option value=\"4\">4</option><option value=\"5\">5</option>".html_safe
-        %span.info or more machines.
+        %div.limit
+          %span.info Limit results to
+          = select_tag "by_at_least_n_machines_#{key}", "<option></option><option value=\"2\">2</option><option value=\"3\">3</option><option value=\"4\">4</option><option value=\"5\">5</option>".html_safe
+          %span.info or more machines.
         %div.search_other_button
           = submit_tag 'Search', :class => 'search', :id => "#{key}_search_button"
       - if (['operator'].include? key)
@@ -33,12 +34,14 @@
   $(function () {
     $('.location_search').on('submit', function(e) {
       e.preventDefault();
+      search_string = $( this ).serialize();
       var form = $(this);
 
       $('#locations').html(loadingHTML());
 
       $.get(form.attr('action'), form.serialize(), function(data, textStatus, jqxhr) {
         $('#locations').html(data);
+
       });
 
       return false;

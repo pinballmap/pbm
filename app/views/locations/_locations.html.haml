@@ -3,12 +3,25 @@
     clearMarkers()
     clearInfoWindows();
 
+    var linky = document.getElementById("search_link");
+    var hrefOrig = linky.href;
+    var def_value = window.location.href;
+
+    if (typeof(search_string) == "undefined") {
+      search_string = def_value;
+      document.getElementById("search_link").href=search_string;
+    } else {
+      document.getElementById("search_link").href=hrefOrig + search_string;
+    }
+
     showLocations(
       [#{@location_data[0].join(', ')}],
       [#{@location_data[1].join(', ')}],
       [#{@location_data[2].join(', ')}],
       [#{@location_data[3].join(', ')}]
     );
+  #search_link_wrapper
+    =link_to "Link to this Search Result", "http://#{request.host_with_port}/#{@region.name.downcase}?", :id => "search_link"
   #results_container
     #search_results
       - @locations.each do |location|
@@ -18,9 +31,9 @@
             %ul
               %li.name= l.name
               - if (!params[:show_location_distance].blank? && !params[:lat].blank? && !params[:lon].blank?)
-                %li.location_type= " distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
+                %li.location_types= " distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
               - if (l.location_type)
-                %li.location_type= " (#{l.location_type.name})"
+                %li.location_types= " (#{l.location_type.name})"
               .clear
               %li.address
                 %span.address_name[l, :location_summary] #{[l.street, l.city].join(' | ')}
@@ -48,7 +61,7 @@
                 %div.location_confirm
                   = render :partial => 'locations/render_confirm', :locals => {:l => l}
                 %div.location_link
-                  =link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
+                  =link_to 'Link to this location', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
                 %div.login_alert
                   - if !user_signed_in?
                     = link_to link_to 'To update this location, you must login! Click here', "http://#{request.host_with_port}/users/login"

@@ -1,30 +1,23 @@
-@media (max-width: 768px) {
-  #form {
-    right: 291px;
-  }
-  #lookup, .scrollerWrapper {
-    right: 296px;
-    float: right;
-  }
-}
-
 @media (max-width: 965px), only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
 
     .pintips, .machine_condition_display_lmx, .machine_condition_edit_lmx,
     .high_score > .sub_nav_item, .score_container_lmx > .sub_nav_item,
     .add_scores_form, .show_scores_lmx, .show_conditions_lmx, .show_conditions_lmx_toggle,
     .location_detail input.remove_machine_button {
-      width: 360px;
+      width: 400px;
     }
     .location_search .info {
       font-size: 11px;
       margin: 0 2px;
     }
-    #lookup, .show_location_detail_location, #location_maker ul, .score_result .sub_nav_item {
-      width: 430px;
+    #lookup, #location_maker ul, .score_result .sub_nav_item {
+      width: 470px;
+    }
+    .show_location_detail_location {
+      width: 450px;
     }
     #form {
-      width: 456px;
+      width: 470px;
     }
     input#score, input#initials {
       width: 290px;
@@ -36,25 +29,38 @@
       font-weight: normal;
     }
     #other_search_options {
-      width: 456px;
+      width: 460px;
     }
-    #by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id {
+    #by_type_id, #by_operator_id, #by_zone_id, #by_city_id {
+      width: 155px;
+    }
+    #by_location_id, #by_machine_id {
       width: 145px;
     }
     #form input.lookup_search_input {
       width: 200px;
     }
+    #search_link_wrapper {
+      left: 470px;
+    }
     .machine_name {
-      width: 380px;
+      width: 405px;
+      margin-left: -10px;
+    }
+    .machine_names {
+      padding: 0 0 10px 0px !important;
+    }
+    .search_result ul li.machine_names {
+      padding: 0 0 10px 10px !important;
     }
     div.machine_condition_text {
-      width: 300px;
+      width: 350px;
     }
     .machine_condition_display_lmx .edit_mode
     {
-      width: 300px;
-      max-width: 300px;
-      min-width: 300px;
+      width: 340px;
+      max-width: 340px;
+      min-width: 340px;
     }
     #map {
       left: 470px;
@@ -76,14 +82,16 @@
       margin-left: 10px;
     }
     div.comment_image span.comment_image:hover:after {
-      margin-left: -100px;
+      margin-left: -50px;
+
     }
     .confirm_inner,
     .confirm_location {
-      width: 400px;
+      width: 419px;
+      padding-right: 10px;
     }
     .location_link {
-      width: 416px;
+      width: 435px;
     }
     #location_maker .first {
       float: none;

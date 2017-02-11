@@ -3,6 +3,7 @@
 //= require jquery-ui
 
 var map;
+var search_string;
 var markers = new Array();
 var infoWindows = new Array();
 var locationIDs = new Array();
@@ -39,13 +40,352 @@ function clearMarkers() {
   }
 }
 
+var homeMap =
+[
+  {
+    "featureType": "administrative",
+    "stylers": [
+      {
+        "saturation": "-100"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "color": "#f53240"
+      },
+      {
+        "weight": 0.5
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.locality",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "color": "#f53240"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.neighborhood",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "color": "#f9838b"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.province",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.province",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "color": "#ff3b78"
+      }
+    ]
+  },
+  {
+    "featureType": "landscape",
+    "stylers": [
+      {
+        "saturation": -100
+      },
+      {
+        "lightness": 65
+      },
+      {
+        "visibility": "on"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "stylers": [
+      {
+        "saturation": -100
+      },
+      {
+        "lightness": 50
+      },
+      {
+        "visibility": "simplified"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "stylers": [
+      {
+        "saturation": "-100"
+      }
+    ]
+  },
+  {
+    "featureType": "road.arterial",
+    "stylers": [
+      {
+        "lightness": "30"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "stylers": [
+      {
+        "visibility": "simplified"
+      }
+    ]
+  },
+  {
+    "featureType": "road.local",
+    "stylers": [
+      {
+        "lightness": "40"
+      }
+    ]
+  },
+  {
+    "featureType": "transit",
+    "stylers": [
+      {
+        "saturation": -100
+      },
+      {
+        "visibility": "simplified"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "color": "#d3ecff"
+      }
+    ]
+  }
+]
+
 function showLocations(ids, lats, lons, contents) {
   locationIDs = ids;
   infoWindows = new Array();
   markers = new Array();
 
+  var nightMap = new google.maps.StyledMapType(
+    [
+      {
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#242f3e"
+          }
+        ]
+      },
+      {
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#746855"
+          }
+        ]
+      },
+      {
+        "elementType": "labels.text.stroke",
+        "stylers": [
+          {
+            "color": "#242f3e"
+          }
+        ]
+      },
+      {
+        "featureType": "administrative.locality",
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#d59563"
+          }
+        ]
+      },
+      {
+        "featureType": "poi",
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#d59563"
+          }
+        ]
+      },
+      {
+        "featureType": "poi.park",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#263c3f"
+          }
+        ]
+      },
+      {
+        "featureType": "poi.park",
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#6b9a76"
+          }
+        ]
+      },
+      {
+        "featureType": "road",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#38414e"
+          }
+        ]
+      },
+      {
+        "featureType": "road",
+        "elementType": "geometry.stroke",
+        "stylers": [
+          {
+            "color": "#212a37"
+          }
+        ]
+      },
+      {
+        "featureType": "road",
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#9ca5b3"
+          }
+        ]
+      },
+      {
+        "featureType": "road.highway",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#746855"
+          }
+        ]
+      },
+      {
+        "featureType": "road.highway",
+        "elementType": "geometry.stroke",
+        "stylers": [
+          {
+            "color": "#1f2835"
+          }
+        ]
+      },
+      {
+        "featureType": "road.highway",
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#f3d19c"
+          }
+        ]
+      },
+      {
+        "featureType": "transit",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#2f3948"
+          }
+        ]
+      },
+      {
+        "featureType": "transit.station",
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#d59563"
+          }
+        ]
+      },
+      {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#17263c"
+          }
+        ]
+      },
+      {
+        "featureType": "water",
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#515c6d"
+          }
+        ]
+      },
+      {
+        "featureType": "water",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+          {
+            "color": "#17263c"
+          }
+        ]
+      }
+    ],
+    {name: 'Night Map'});
+
+  var today = new Date();
+  var curHr = today.getHours();
   var bounds = new google.maps.LatLngBounds();
-  map = new google.maps.Map(document.getElementById("map_canvas"), { mapTypeId: google.maps.MapTypeId.ROADMAP });
+
+  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    map = new google.maps.Map(document.getElementById("map_canvas"), {
+      mapTypeControl: true,
+      mapTypeControlOptions: {
+          style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+          mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
+                      'styled_map']
+          }
+    });
+  } else {
+    map = new google.maps.Map(document.getElementById("map_canvas"), {
+      mapTypeControl: true,
+      mapTypeControlOptions: {
+          style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+          position: google.maps.ControlPosition.LEFT_BOTTOM,
+          mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
+                      'styled_map']
+          }
+    });
+  }
+
+  map.mapTypes.set('styled_map', nightMap);
+
+  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    if (curHr > 18) {
+      map.setMapTypeId('styled_map');
+    } else if (curHr < 6) {
+      map.setMapTypeId('styled_map');
+    } else {
+      map.setMapTypeId('roadmap');
+    }
+  } else {
+      map.setMapTypeId('roadmap');
+  }
 
   for (i in ids) {
     var latlng = new google.maps.LatLng(lats[i], lons[i]);
@@ -54,6 +394,7 @@ function showLocations(ids, lats, lons, contents) {
       animation: google.maps.Animation.DROP,
       position: latlng,
       map: map,
+
     });
 
     markers.push(marker);
@@ -69,7 +410,7 @@ function showLocations(ids, lats, lons, contents) {
     map.setZoom(18);
     map.setCenter(new google.maps.LatLng(lats[0], lons[0]));
   } else if (contents.length === 0) {
-    document.getElementById("map_canvas").innerHTML="<p id='intro' class='dark hello'>" + "NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN." + "</p>";
+    document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN." + "</p>";
   } else {
     map.fitBounds(bounds);
   }
@@ -119,7 +460,7 @@ function findClosestLocations(region) {
     var dfd = $.getJSON('/api/v1/locations/closest_by_lat_lon.json', {lat: position.coords.latitude, lon: position.coords.longitude, max_distance: 5, send_all_within_distance: 1});
     dfd.done(function(response) {
       if (!response.locations) {
-        document.getElementById("map_canvas").innerHTML="<p id='intro' class='dark hello'>" + "No pinball found on this map within 5 miles of your location." + "</p>";
+        document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "No pinball found on this map within 5 miles of your location." + "</p>";
       } else {
           var locationIds = [];
 
@@ -179,12 +520,6 @@ function locationLookupMapCenter(locationID) {
 
 function setSearchSections(newSearchSections) {
   searchSections = newSearchSections;
-}
-
-function resetInfoWindowHeights() {
-  for (i in infoWindows) {
-    infoWindows[i].setContent($('#infowindow_' + locationIDs[i]).html());
-  }
 }
 
 function updateLocationUpdatedText(id, region) {
