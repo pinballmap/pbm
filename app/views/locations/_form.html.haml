@@ -34,12 +34,14 @@
   $(function () {
     $('.location_search').on('submit', function(e) {
       e.preventDefault();
+      search_string = $( this ).serialize();
       var form = $(this);
 
       $('#locations').html(loadingHTML());
 
       $.get(form.attr('action'), form.serialize(), function(data, textStatus, jqxhr) {
         $('#locations').html(data);
+
       });
 
       return false;
