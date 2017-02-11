@@ -2,26 +2,14 @@
   :javascript
     clearMarkers()
     clearInfoWindows();
-
-    var linky = document.getElementById("search_link");
-    var hrefOrig = linky.href;
-    var def_value = window.location.href;
-
-    if (typeof(search_string) == "undefined") {
-      search_string = def_value;
-      document.getElementById("search_link").href=search_string;
-    } else {
-      document.getElementById("search_link").href=hrefOrig + search_string;
-    }
-
+    $("#search_link_wrapper").removeClass("hide_search_link");
     showLocations(
       [#{@location_data[0].join(', ')}],
       [#{@location_data[1].join(', ')}],
       [#{@location_data[2].join(', ')}],
       [#{@location_data[3].join(', ')}]
     );
-  #search_link_wrapper
-    =link_to "Link to this Search Result", "http://#{request.host_with_port}/#{@region.name.downcase}?", :id => "search_link"
+
   #results_container
     #search_results
       - @locations.each do |location|

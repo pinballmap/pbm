@@ -30,6 +30,9 @@
               $('#by_#{key}_id').val(ui.item.id);
             });
           });
+#search_link_wrapper.hide_search_link
+  =link_to "Link to this Search Result", "", :id => "search_link"
+
 :javascript
   $(function () {
     $('.location_search').on('submit', function(e) {
@@ -37,11 +40,19 @@
       search_string = $( this ).serialize();
       var form = $(this);
 
+      var hrefOrig = 'http://#{request.host_with_port}/#{@region.name.downcase}?';
+      var def_value = window.location.href + 'fff';
+      if (typeof(search_string) == "undefined") {
+        search_string = def_value;
+        document.getElementById("search_link").href=search_string;
+      } else {
+        document.getElementById("search_link").href=hrefOrig + search_string;
+      }
+
       $('#locations').html(loadingHTML());
 
       $.get(form.attr('action'), form.serialize(), function(data, textStatus, jqxhr) {
         $('#locations').html(data);
-
       });
 
       return false;
