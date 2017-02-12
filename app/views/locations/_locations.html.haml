@@ -3,6 +3,16 @@
     clearMarkers()
     clearInfoWindows();
     $("#search_link_wrapper").removeClass("hide_search_link");
+
+    var hrefOrig = 'http://#{request.host_with_port}/#{@region.name.downcase}?';
+    var def_value = window.location.href;
+    if (typeof(search_string) == "undefined") {
+      search_string = def_value;
+      document.getElementById("search_link").href=search_string;
+    } else {
+      document.getElementById("search_link").href=hrefOrig + search_string;
+    }
+
     showLocations(
       [#{@location_data[0].join(', ')}],
       [#{@location_data[1].join(', ')}],
