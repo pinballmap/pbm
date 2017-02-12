@@ -2,11 +2,10 @@
   :javascript
     clearMarkers()
     clearInfoWindows();
+    $("#search_link_wrapper").removeClass("hide_search_link");
 
-    var linky = document.getElementById("search_link");
-    var hrefOrig = linky.href;
+    var hrefOrig = 'http://#{request.host_with_port}/#{@region.name.downcase}?';
     var def_value = window.location.href;
-
     if (typeof(search_string) == "undefined") {
       search_string = def_value;
       document.getElementById("search_link").href=search_string;
@@ -20,8 +19,7 @@
       [#{@location_data[2].join(', ')}],
       [#{@location_data[3].join(', ')}]
     );
-  #search_link_wrapper
-    =link_to "Link to this Search Result", "http://#{request.host_with_port}/#{@region.name.downcase}?", :id => "search_link"
+
   #results_container
     #search_results
       - @locations.each do |location|

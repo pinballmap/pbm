@@ -869,19 +869,31 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
   color: #ebebeb;
   border-bottom: 1px solid white;
 }
+.hide_search_link {
+  display: none;
+}
 #search_link_wrapper {
-  position: absolute;
+  position: fixed;
   left: 640px;
-  top: -12px;
-  background: #dadada;
+  top: 150px;
+  width: 110px;
+  border: 3px solid #dadada;
+  border-left: none;
+  background: #ffffff;
   text-align: center;
-  padding: 5px 10px 10px;
+  padding: 5px;
+  border-top-right-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -moz-border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -moz-border-bottom-right-radius: 5px;
 }
 #search_link_wrapper a {
   color: #303030;
   text-decoration: none;
 }
-#search_link_wrapper a:hover {
+#search_link_wrapper a:hover  {
   text-decoration: underline;
 }
 .location_link {
