@@ -8,6 +8,7 @@ gem 'rake'
 gem 'rack'
 
 gem 'puma'
+gem 'puma_worker_killer'
 
 gem 'paperclip'
 gem 'devise'
