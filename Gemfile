@@ -78,4 +78,5 @@ group :development, :test do
   gem 'pickle'
   gem 'bullet'
   gem 'email_spec'
+  gem 'derailed'
 end
