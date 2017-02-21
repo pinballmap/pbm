@@ -9,7 +9,7 @@
           %span.region_name_page
             =link_to "#{@region.full_name}", region_homepage_path
         - if !mobile_device?
-          %ul.other_regions_list= other_regions_html(@region) 
+          %ul.other_regions_list= other_regions_html(@region)
       %span.menu_link
         %ul#nav
           %li.first_header_link=link_to 'About', about_path
@@ -20,17 +20,17 @@
           %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
           %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
           %li.darkb.blog_header_region
-            = link_to 'Blog', 'http://blog.pinballmap.com'
+            = link_to 'Blog', '//blog.pinballmap.com'
           %li.darkb.store_header_region
             = link_to 'T-Shirts', store_path
           %li.darkb.blog_header_region
             =link_to 'App', apps_path
           %li.darkb.blog_header_region
-            =link_to 'FAQ', 'http://pinballmap.com/faq'
-  - else  
+            =link_to 'FAQ', '//pinballmap.com/faq'
+  - else
     %div{:class => "pick_a_map"}
       %span.darkb.blog_header
-        = link_to 'Blog', 'http://blog.pinballmap.com'
+        = link_to 'Blog', '//blog.pinballmap.com'
       %span.darkb.apps_header
         = link_to 'App', apps_path
       %span.darkb.store_header
@@ -54,4 +54,3 @@
       $("#nav").toggle();
     });
   });
-

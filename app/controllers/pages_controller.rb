@@ -90,7 +90,7 @@ class PagesController < ApplicationController
 
   def submitted_new_location
     if verify_recaptcha
-      if params['location_machines'].match('http://')
+      if params['location_machines'].match('//')
         flash.now[:alert] = "This sort of seems like you are sending us spam. If that's not the case, please contact us via the about page."
       else
         flash.now[:alert] = "Thanks for entering that location. We'll get it in the system as soon as possible."
