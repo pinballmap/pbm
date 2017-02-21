@@ -16,26 +16,26 @@
             %hr/
             %li=link_to 'Home', root_path
             %li=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
-            %li=link_to 'Blog', 'http://blog.pinballmap.com'
+            %li=link_to 'Blog', '//blog.pinballmap.com'
             %li=link_to 'T-Shirts', store_path
             %li=link_to 'App', app_path
             %li=link_to 'FAQ', faq_path
-            %li=link_to 'Contact', 'http://pinballmap.com/portland/about'
+            %li=link_to 'Contact', '//pinballmap.com/portland/about'
             %li.last_header_link
               =link_to 'Donate', donate_path
         - if !user_signed_in?
           %div.login.login_region.logged_no
             %div.login_inner
               %span.darkb.login_inner
-                = link_to 'Login', "http://#{request.host_with_port}/users/login"
+                = link_to 'Login', "//#{request.host_with_port}/users/login"
                 %span.login_slash
                   |
-                = link_to 'Join', "http://#{request.host_with_port}/users/join"
+                = link_to 'Join', "//#{request.host_with_port}/users/join"
         - else
           %div.login.login_region.logged_yes
             %div.login_inner
               %span.darkb.login_inner
-                = link_to 'Logout', "http://#{request.host_with_port}/users/logout", :class => "loggedin"
+                = link_to 'Logout', "//#{request.host_with_port}/users/logout", :class => "loggedin"
         %div.closest_locations_outer
           %div.closest_locations_inner
             %span.darkb.closest_locations{:onclick => "findClosestLocations('#{@region.name}')"}
@@ -53,26 +53,26 @@
           %ul#nav.js
             %li.first_header_link
               =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
-            %li=link_to 'Blog', 'http://blog.pinballmap.com'
+            %li=link_to 'Blog', '//blog.pinballmap.com'
             %li=link_to 'T-Shirts', store_path
             %li=link_to 'App', app_path
             %li=link_to 'FAQ', faq_path
-            %li=link_to 'Contact', 'http://pinballmap.com/portland/about'
+            %li=link_to 'Contact', '//pinballmap.com/portland/about'
             %li.last_header_link
               =link_to 'Donate', donate_path
         - if !user_signed_in?
           %div.login.login_home.logged_no
             %div.login_inner
               %span.darkb.login_inner
-                = link_to 'Login', "http://#{request.host_with_port}/users/login"
+                = link_to 'Login', "//#{request.host_with_port}/users/login"
                 %span.login_slash
                   |
-                = link_to 'Join', "http://#{request.host_with_port}/users/join"
+                = link_to 'Join', "//#{request.host_with_port}/users/join"
         - else
           %div.login.login_home.logged_yes
             %div.login_inner
               %span.darkb.login_inner
-                = link_to 'Logout', "http://#{request.host_with_port}/users/logout", :class => "loggedin"
+                = link_to 'Logout', "//#{request.host_with_port}/users/logout", :class => "loggedin"
         %div.geo_header_outer
           %div.geo_header_inner
             %span.darkb.geo_header{:onclick => "findClosestRegion()"}
@@ -85,12 +85,12 @@
         %div.login.login_home
           %span.darkb
             - if !user_signed_in?
-              = link_to 'Login', "http://#{request.host_with_port}/users/login"
+              = link_to 'Login', "//#{request.host_with_port}/users/login"
               %span.login_slash
                 |
-              = link_to 'Join', "http://#{request.host_with_port}/users/join"
+              = link_to 'Join', "//#{request.host_with_port}/users/join"
             - else
-              = link_to 'Logout', "http://#{request.host_with_port}/users/logout"
+              = link_to 'Logout', "//#{request.host_with_port}/users/logout"
         %div.geo_header_wrapper
           %span.darkb{:onclick => "findClosestRegion()"}
             = link_to 'Find Your Closest Map', '#'
@@ -98,11 +98,11 @@
         %ul#nav.js
           %li.first_header_link
             =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
-          %li=link_to 'Blog', 'http://blog.pinballmap.com'
+          %li=link_to 'Blog', '//blog.pinballmap.com'
           %li=link_to 'T-Shirts', store_path
           %li=link_to 'App', app_path
           %li=link_to 'FAQ', faq_path
-          %li=link_to 'Contact', 'http://pinballmap.com/portland/about'
+          %li=link_to 'Contact', '//pinballmap.com/portland/about'
           %li.last_header_link
             =link_to 'Donate', donate_path
     - else
@@ -110,12 +110,12 @@
         %div.login.login_region
           %span.darkb
             - if !user_signed_in?
-              = link_to 'Login', "http://#{request.host_with_port}/users/login"
+              = link_to 'Login', "//#{request.host_with_port}/users/login"
               %span.login_slash
                 |
-              = link_to 'Join', "http://#{request.host_with_port}/users/join"
+              = link_to 'Join', "//#{request.host_with_port}/users/join"
             - else
-              = link_to 'Logout', "http://#{request.host_with_port}/users/logout"
+              = link_to 'Logout', "//#{request.host_with_port}/users/logout"
         - if user_signed_in?
           =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'} header_image_login", :alt => 'Pinball Map Logo'), root_path
         - else
@@ -132,11 +132,11 @@
           %hr/
           %li=link_to 'Home', root_path
           %li=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
-          %li=link_to 'Blog', 'http://blog.pinballmap.com'
+          %li=link_to 'Blog', '//blog.pinballmap.com'
           %li=link_to 'T-Shirts', store_path
           %li=link_to 'App', app_path
           %li=link_to 'FAQ', faq_path
-          %li=link_to 'Contact', 'http://pinballmap.com/portland/about'
+          %li=link_to 'Contact', '//pinballmap.com/portland/about'
           %li.last_header_link
             =link_to 'Donate', donate_path
   - if (@region)
