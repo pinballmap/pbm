@@ -14,7 +14,7 @@
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
     %meta{:property => "og:site_name", :content => "Pinball Map"}
     %meta{:property => "og:type", :content => "website"}
-    %meta{:property => "og:url", :content => "//#{request.host+request.fullpath}" }
+    %meta{:property => "og:url", :content => "https://#{request.host+request.fullpath}" }
     %meta{:property => "og:image", :content => image_path("pbm-og-image.png")}
     = stylesheet_link_tag 'application', 'mediaqueries'
     - if mobile_device?

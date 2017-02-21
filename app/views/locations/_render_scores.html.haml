@@ -3,4 +3,4 @@
   %span.high_score_date=msx.created_at ? msx.created_at.strftime("%b-%d-%Y") : ''
   - if msx.user
     by
-    = link_to msx.user.username, "http://#{request.host_with_port}/users/#{msx.user.id}/profile"
+    = link_to msx.user.username, "https://#{request.host_with_port}/users/#{msx.user.id}/profile"
