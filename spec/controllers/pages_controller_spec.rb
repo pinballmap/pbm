@@ -159,7 +159,7 @@ HERE
         )
       end
 
-      post '_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_operator: 'operator', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail'
+      post 'submitted_new_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_operator: 'operator', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail'
 
       expect(@region.user_submissions.count).to eq(1)
       submission = @region.user_submissions.first
