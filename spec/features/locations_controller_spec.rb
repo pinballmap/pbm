@@ -232,7 +232,7 @@ describe LocationsController do
 
       find('.location_meta .meta_image img').click
       fill_in('new_phone_' + @location.id.to_s, with: 'THIS IS INVALID')
-      fill_in('new_website_' + @location.id.to_s, with: '//www.pinballmap.com')
+      fill_in('new_website_' + @location.id.to_s, with: 'http://www.pinballmap.com')
       select('Quarterworld', from: "new_operator_#{@location.id}")
       click_on 'Save'
 
@@ -240,7 +240,7 @@ describe LocationsController do
 
       expect(Location.find(@location.id).operator_id).to eq(o.id)
       expect(Location.find(@location.id).phone).to eq(nil)
-      expect(Location.find(@location.id).website).to eq('//www.pinballmap.com')
+      expect(Location.find(@location.id).website).to eq('http://www.pinballmap.com')
       expect(page).to have_content('format invalid, please use ###-###-####')
 
       t = FactoryGirl.create(:location_type, name: 'Bar')
@@ -257,7 +257,7 @@ describe LocationsController do
 
       expect(Location.find(@location.id).location_type_id).to eq(t.id)
       expect(Location.find(@location.id).phone).to eq('555-555-5555')
-      expect(Location.find(@location.id).website).to eq('//www.pinballmap.com')
+      expect(Location.find(@location.id).website).to eq('http://www.pinballmap.com')
       expect(page).to have_content('must begin with http:// or https://')
     end
 
@@ -298,7 +298,7 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.location_meta .meta_image img').click
-      fill_in("new_website_#{@location.id}", with: '//www.foo.com')
+      fill_in("new_website_#{@location.id}", with: 'http://www.foo.com')
       fill_in("new_phone_#{@location.id}", with: '555-555-5555')
       select('Bar', from: "new_location_type_#{@location.id}")
       select('Quarterworld', from: "new_operator_#{@location.id}")
@@ -306,7 +306,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(Location.find(@location.id).website).to eq('//www.foo.com')
+      expect(Location.find(@location.id).website).to eq('http://www.foo.com')
       expect(Location.find(@location.id).phone).to eq('555-555-5555')
       expect(Location.find(@location.id).operator_id).to eq(o.id)
       expect(Location.find(@location.id).location_type_id).to eq(t.id)
