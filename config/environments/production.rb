@@ -52,7 +52,7 @@ Pbm::Application.configure do
 
   config.action_mailer.default_url_options = { :host => 'pinballmap.com' }
 
-  config.force_ssl = true
+#  config.force_ssl = true
 
   config.middleware.use ExceptionNotifier,
     :email_prefix => "[PBM Exception] ",
