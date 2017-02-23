@@ -38,6 +38,9 @@ Pbm::Application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_deliveries = true
 
+  # Route traffic to ssl
+  config.force_ssl = true
+  
   # Enable threaded mode
   # config.threadsafe!
 
