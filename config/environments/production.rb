@@ -52,7 +52,7 @@ Pbm::Application.configure do
 
   config.action_mailer.default_url_options = { :host => 'pinballmap.com' }
 
-  config.middleware.use ExceptionNotifier,
+  config.middleware.use ExceptionNotification::Rack,
     :email_prefix => "[PBM Exception] ",
     :sender_address => %{"PBM Exceptions" <exceptions@pinballmap.com>},
     :exception_recipients => %w{scott.wainstock@gmail.com}
