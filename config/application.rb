@@ -59,7 +59,7 @@ module Pbm
     )
 
     config.rakismet.key = ENV['RAKISMET_KEY']
-    config.rakismet.url = 'http://pinballmap.com/'
+    config.rakismet.url = 'https://pinballmap.com/'
 
     config.middleware.use Rack::Attack
   end

@@ -468,7 +468,7 @@ function findClosestLocations(region) {
             locationIds.push(response.locations[i].id)
           }
 
-          window.location.href = 'http://pinballmap.com/'+ region + '/?show_location_distance=1;lat=' + position.coords.latitude + ';lon=' + position.coords.longitude + ';by_location_id=' + locationIds.join('_');
+          window.location.href = 'https://pinballmap.com/'+ region + '/?show_location_distance=1;lat=' + position.coords.latitude + ';lon=' + position.coords.longitude + ';by_location_id=' + locationIds.join('_');
       }
     });
   }, function() {
@@ -485,7 +485,7 @@ function findClosestRegion(e) {
         window.alert("Sorry, there are no regions with 250 miles of you.");
       } else {
         // Found a region, redirect to it!
-        window.location.href = 'http://pinballmap.com/'+response.region.name;
+        window.location.href = 'https://pinballmap.com/'+response.region.name;
       }
     });
   }, function() {

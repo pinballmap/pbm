@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
     user_info = user ? " by #{user.username} (#{user.email})" : ''
 
     body = <<END
-(A new pinball spot has been submitted for your region! Please verify the address on http://maps.google.com and then paste that Google Maps address into http://pinballmap.com/admin. Thanks!)\n
+(A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into https://pinballmap.com/admin. Thanks!)\n
 Location Name: #{params['location_name']}\n
 Street: #{params['location_street']}\n
 City: #{params['location_city']}\n

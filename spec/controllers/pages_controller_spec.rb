@@ -136,7 +136,7 @@ HERE
       logout
 
       body = <<HERE
-(A new pinball spot has been submitted for your region! Please verify the address on http://maps.google.com and then paste that Google Maps address into http://pinballmap.com/admin. Thanks!)\n
+(A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into https://pinballmap.com/admin. Thanks!)\n
 Location Name: name\n
 Street: street\n
 City: city\n
@@ -171,7 +171,7 @@ HERE
       login(FactoryGirl.create(:user, username: 'ssw', email: 'yeah@ok.com'))
 
       body = <<HERE
-(A new pinball spot has been submitted for your region! Please verify the address on http://maps.google.com and then paste that Google Maps address into http://pinballmap.com/admin. Thanks!)\n
+(A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into https://pinballmap.com/admin. Thanks!)\n
 Location Name: name\n
 Street: street\n
 City: city\n
