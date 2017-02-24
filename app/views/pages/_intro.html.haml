@@ -2,9 +2,9 @@
 #intro
   - if mobile_device?
     %p
-      %span.darkb Welcome to the #{@region.full_name} Pinball Map! 
+      %span.darkb Welcome to the #{@region.full_name} Pinball Map!
       This map is best maintained with the help of YOU. Please "add" and "remove" machines to/from locations to keep things up to date.
-    %p To begin: Search! 
+    %p To begin: Search!
     %p
       We currently are tracking
       %span.dark #{@location_count} locations
@@ -14,25 +14,21 @@
     %p.dark.hello
       Welcome to the #{@region.full_name} Pinball Map!
     %p.to_begin
-      %span.begin 
+      %span.begin
         To begin: Search!
-      %span.search_arrow
-        &rarr;
     %p
       %span.darkb This map is best maintained with the help of YOU.
       Please
       %span.darkb "add"
-      and 
+      and
       %span.darkb "remove"
       machines to/from locations to keep things up to date. And if you know of a location with machines that
       %span{:style => "font-style:italic;"} isn't on the map,
-      use the
       %span
-        =link_to '"Suggest a New Location"', suggest_path
-      link up top!
+        =link_to 'submit a new location.', suggest_path
+
     %p
-      We currently are tracking
+      We are tracking
       %span.dark #{@location_count} locations
-      and 
+      and
       %span.dark #{@lmx_count} machines.
-      

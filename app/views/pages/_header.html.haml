@@ -1,47 +1,156 @@
-#header{:class => "#{@region ? '' : 'header_home'}"}
-  =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
+- if !mobile_device?
+  #header{:class => "#{@region ? '' : 'header_home'}"}
+    =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
+    - if (@region)
+      %div{:class => "header_buttons"}
+        %div.menu_link
+          #menu &#9776;
+          %ul#nav.js
+            %li.first_header_link=link_to 'Suggest Location', suggest_path
+            %li=link_to 'About', about_path
+            %li=link_to 'Events', events_path
+            %li=link_to 'High Scores', high_rollers_path
+            %li=link_to 'Location RSS', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
+            %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
+            %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
+            %hr/
+            %li=link_to 'Home', root_path
+            %li=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
+            %li=link_to 'Blog', 'https://blog.pinballmap.com'
+            %li=link_to 'T-Shirts', store_path
+            %li=link_to 'App', app_path
+            %li=link_to 'FAQ', faq_path
+            %li=link_to 'Contact', 'https://pinballmap.com/portland/about'
+            %li.last_header_link
+              =link_to 'Donate', donate_path
+        - if !user_signed_in?
+          %div.login.login_region.logged_no
+            %div.login_inner
+              %span.darkb.login_inner
+                = link_to 'Login', "https://#{request.host_with_port}/users/login"
+                %span.login_slash
+                  |
+                = link_to 'Join', "https://#{request.host_with_port}/users/join"
+        - else
+          %div.login.login_region.logged_yes
+            %div.login_inner
+              %span.darkb.login_inner
+                = link_to 'Logout', "https://#{request.host_with_port}/users/logout", :class => "loggedin"
+        %div.closest_locations_outer
+          %div.closest_locations_inner
+            %span.darkb.closest_locations{:onclick => "findClosestLocations('#{@region.name}')"}
+              = link_to 'Show Closest Locations', '#', {:id => 'find_closest_locations'}
+        %div.region_logo_dropdown
+          %div.other_regions
+            %span.region_name_page
+              =link_to "#{@region.full_name}", region_homepage_path
+          - if !mobile_device?
+            %ul.other_regions_list= other_regions_html(@region)
+    - else
+      %div{:class => "header_buttons"}
+        %div.menu_link.menu_home
+          #menu &#9776;
+          %ul#nav.js
+            %li.first_header_link
+              =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
+            %li=link_to 'Blog', 'https://blog.pinballmap.com'
+            %li=link_to 'T-Shirts', store_path
+            %li=link_to 'App', app_path
+            %li=link_to 'FAQ', faq_path
+            %li=link_to 'Contact', 'https://pinballmap.com/portland/about'
+            %li.last_header_link
+              =link_to 'Donate', donate_path
+        - if !user_signed_in?
+          %div.login.login_home.logged_no
+            %div.login_inner
+              %span.darkb.login_inner
+                = link_to 'Login', "https://#{request.host_with_port}/users/login"
+                %span.login_slash
+                  |
+                = link_to 'Join', "https://#{request.host_with_port}/users/join"
+        - else
+          %div.login.login_home.logged_yes
+            %div.login_inner
+              %span.darkb.login_inner
+                = link_to 'Logout', "https://#{request.host_with_port}/users/logout", :class => "loggedin"
+        %div.geo_header_outer
+          %div.geo_header_inner
+            %span.darkb.geo_header{:onclick => "findClosestRegion()"}
+              = link_to 'Find Your Closest Map', '#'
+- else
+  #header{:class => "#{@region ? '' : 'header_home'}"}
+    - if !(@region)
+      =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
+      %div.menu_link
+        %div.login.login_home
+          %span.darkb
+            - if !user_signed_in?
+              = link_to 'Login', "https://#{request.host_with_port}/users/login"
+              %span.login_slash
+                |
+              = link_to 'Join', "https://#{request.host_with_port}/users/join"
+            - else
+              = link_to 'Logout', "https://#{request.host_with_port}/users/logout"
+        %div.geo_header_wrapper
+          %span.darkb{:onclick => "findClosestRegion()"}
+            = link_to 'Find Your Closest Map', '#'
+        #menu &#9776;
+        %ul#nav.js
+          %li.first_header_link
+            =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
+          %li=link_to 'Blog', 'https://blog.pinballmap.com'
+          %li=link_to 'T-Shirts', store_path
+          %li=link_to 'App', app_path
+          %li=link_to 'FAQ', faq_path
+          %li=link_to 'Contact', 'https://pinballmap.com/portland/about'
+          %li.last_header_link
+            =link_to 'Donate', donate_path
+    - else
+      %div.menu_link
+        %div.login.login_region
+          %span.darkb
+            - if !user_signed_in?
+              = link_to 'Login', "https://#{request.host_with_port}/users/login"
+              %span.login_slash
+                |
+              = link_to 'Join', "https://#{request.host_with_port}/users/join"
+            - else
+              = link_to 'Logout', "https://#{request.host_with_port}/users/logout"
+        - if user_signed_in?
+          =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'} header_image_login", :alt => 'Pinball Map Logo'), root_path
+        - else
+          =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
+        #menu &#9776;
+        %ul#nav.js
+          %li.first_header_link=link_to 'Suggest Location', suggest_path
+          %li=link_to 'About', about_path
+          %li=link_to 'Events', events_path
+          %li=link_to 'High Scores', high_rollers_path
+          %li=link_to 'Location RSS', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
+          %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
+          %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
+          %hr/
+          %li=link_to 'Home', root_path
+          %li=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
+          %li=link_to 'Blog', 'https://blog.pinballmap.com'
+          %li=link_to 'T-Shirts', store_path
+          %li=link_to 'App', app_path
+          %li=link_to 'FAQ', faq_path
+          %li=link_to 'Contact', 'https://pinballmap.com/portland/about'
+          %li.last_header_link
+            =link_to 'Donate', donate_path
   - if (@region)
-    %div{:class => "header_buttons"}
+    #header_lower
       %span.darkb.closest_locations{:style => "float:right;", :onclick => "findClosestLocations('#{@region.name}')"}
         = link_to 'Show Closest Locations', '#', {:id => 'find_closest_locations'}
       %div.region_logo_dropdown
         %div.other_regions
           %span.region_name_page
             =link_to "#{@region.full_name}", region_homepage_path
-        - if !mobile_device?
-          %ul.other_regions_list= other_regions_html(@region) 
-      %span.menu_link
-        %ul#nav
-          %li.first_header_link=link_to 'About', about_path
-          %li=link_to 'Events', events_path
-          %li=link_to 'Suggest Location', suggest_path
-          %li=link_to 'High Scores', high_rollers_path
-          %li=link_to 'Location RSS', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
-          %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
-          %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
-          %li.darkb.blog_header_region
-            = link_to 'Blog', 'http://blog.pinballmap.com'
-          %li.darkb.store_header_region
-            = link_to 'T-Shirts', store_path
-          %li.darkb.blog_header_region
-            =link_to 'App', apps_path
-          %li.darkb.blog_header_region
-            =link_to 'FAQ', 'http://pinballmap.com/faq'
-  - else  
-    %div{:class => "pick_a_map"}
-      %span.darkb.blog_header
-        = link_to 'Blog', 'http://blog.pinballmap.com'
-      %span.darkb.apps_header
-        = link_to 'App', apps_path
-      %span.darkb.store_header
-        = link_to 'T-Shirts', store_path
-      %span.darkb.geo_header{:onclick => "findClosestRegion()"}
-        = link_to 'Find Your Closest Map', '#'
 
 :javascript
   $().ready(function() {
-
-    $(".region_logo_dropdown").hover(function () {
+    $(".region_logo_dropdown").hover(function() {
         $(".other_regions_list").show();
       },function(){
         $(".other_regions_list").hide();
@@ -49,9 +158,12 @@
     $(document).click(function () {
         $(".other_regions_list").hide();
     });
-    $("#nav").addClass("js").before('<div id="menu">&#9776;</div>');
-    $("#menu").click(function(){
+    $("#menu").click(function() {
       $("#nav").toggle();
     });
+    $(document).on('click', function(event) {
+      if (!$(event.target).closest('#menu').length) {
+        $("#nav").css('display', 'none');
+      }
+    });
   });
-

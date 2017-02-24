@@ -1,12 +1,13 @@
-#page_body  
+#page_body
   - if content_for?(:events_extra)
     = yield :events_extra
   - else
     .left_column
+      %p.donate.darkb Upcoming Events
       %p
         Here's a list of the upcoming pinball events in the #{@region.full_name} area.
-      %p 
-        If you have a pinball event that you'd like included on this page, use the contact form on the 
+      %p
+        If you have a pinball event that you'd like included on this page, use the contact form on the
         = link_to 'about page', about_path, :class => 'intro'
         to give us the info.
 
@@ -17,16 +18,17 @@
         %ul.event_info
           - @sorted_events[key].sort{|a,b| a.start_date.to_s <=> b.start_date.to_s}.each do |e|
             %li
-              %span.event_date #{e.start_date.to_s}
-              - if e.end_date
-                %span.event_date - #{e.end_date.to_s}:
-              = link_to e.name, e.external_link, :class => 'event_link', :target => '_blank'
-              - if (e.location)
-                %span @ 
-                = link_to e.location.name, "http://pinballmap.com/#{e.location.region.name}/?by_location_id=#{e.location_id}", :class => 'event_link'
-              - elsif (e.external_location_name && !e.external_location_name.blank?)
-                %span @ #{e.external_location_name}
-              %br/
-              %span.event_description #{e.long_desc}
+              - if e.start_date
+                %span.event_date #{e.start_date.strftime("%b-%d-%Y").to_s}
+                - if e.end_date
+                  %span.event_date - #{e.end_date.strftime("%b-%d-%Y").to_s}:
+                = link_to e.name, e.external_link, :class => 'event_link', :target => '_blank'
+                - if (e.location)
+                  %span @
+                  = link_to e.location.name, "http://pinballmap.com/#{e.location.region.name}/?by_location_id=#{e.location_id}", :class => 'event_link'
+                - elsif (e.external_location_name && !e.external_location_name.blank?)
+                  %span @ #{e.external_location_name}
+                %br/
+                %span.event_description #{e.long_desc}
     - else
       %p Events coming soon...

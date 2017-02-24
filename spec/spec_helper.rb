@@ -7,6 +7,7 @@ require 'capybara/rspec'
 require 'capybara/poltergeist'
 require 'simplecov'
 require 'coveralls'
+require 'rack_session_access/capybara'
 
 include Sprockets::Rails::Helper
 
@@ -39,6 +40,9 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = false
+
+  config.include ControllerHelpers, type: :controller
+  config.include FeatureHelpers, type: :feature
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)

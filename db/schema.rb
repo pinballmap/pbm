@@ -11,14 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151102053730) do
+ActiveRecord::Schema.define(version: 20160912054027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "banned_ips", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string   "ip_address"
   end
 
@@ -89,8 +89,8 @@ ActiveRecord::Schema.define(version: 20151102053730) do
     t.string   "state"
     t.string   "zip"
     t.string   "phone"
-    t.decimal  "lat",               precision: 18, scale: 12
-    t.decimal  "lon",               precision: 18, scale: 12
+    t.decimal  "lat",                     precision: 18, scale: 12
+    t.decimal  "lon",                     precision: 18, scale: 12
     t.string   "website"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 20151102053730) do
     t.string   "description"
     t.integer  "operator_id"
     t.date     "date_last_updated"
+    t.integer  "last_updated_by_user_id"
   end
 
   add_index "locations", ["location_type_id"], name: "index_locations_on_location_type_id", using: :btree
@@ -112,6 +113,7 @@ ActiveRecord::Schema.define(version: 20151102053730) do
     t.integer  "location_machine_xref_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
 
   add_index "machine_conditions", ["location_machine_xref_id"], name: "index_machine_conditions_on_location_machine_xref_id", using: :btree
@@ -127,10 +129,8 @@ ActiveRecord::Schema.define(version: 20151102053730) do
     t.integer  "score",                    limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "rank"
     t.string   "ip"
     t.integer  "user_id"
-    t.string   "initials"
   end
 
   add_index "machine_score_xrefs", ["location_machine_xref_id"], name: "index_machine_score_xrefs_on_location_machine_xref_id", using: :btree
@@ -167,13 +167,13 @@ ActiveRecord::Schema.define(version: 20151102053730) do
     t.string   "username"
     t.integer  "item"
     t.string   "table"
-    t.integer  "month",      limit: 2
+    t.integer  "month"
     t.integer  "year",       limit: 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "rails_admin_histories", ["item", "table", "month", "year"], name: "index_rails_admin_histories", using: :btree
+  add_index "rails_admin_histories", ["item", "table", "month", "year"], name: "index_histories_on_item_and_table_and_month_and_year", using: :btree
 
   create_table "region_link_xrefs", force: true do |t|
     t.string  "name"
@@ -206,14 +206,21 @@ ActiveRecord::Schema.define(version: 20151102053730) do
     t.integer  "region_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
+    t.integer  "location_id"
+    t.integer  "machine_id"
   end
 
   add_index "user_submissions", ["region_id"], name: "index_user_submissions_on_region_id", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "email"
-    t.string   "encrypted_password"
-    t.integer  "sign_in_count"
+    t.string   "email",                                default: "", null: false
+    t.string   "encrypted_password",       limit: 128, default: "", null: false
+    t.string   "password_salt",                        default: "", null: false
+    t.string   "reset_password_token"
+    t.string   "remember_token"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",                        default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -226,10 +233,19 @@ ActiveRecord::Schema.define(version: 20151102053730) do
     t.boolean  "is_machine_admin"
     t.boolean  "is_primary_email_contact"
     t.boolean  "is_super_admin"
+    t.text     "username"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.boolean  "is_disabled"
+    t.string   "authentication_token",     limit: 30
   end
 
+  add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["region_id"], name: "index_users_on_region_id", using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   create_table "zones", force: true do |t|
     t.string   "name"

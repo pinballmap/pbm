@@ -16,7 +16,7 @@ class LocationsController < InheritedResources::Base
   end
 
   def locations_for_machine
-    @locations = @region.location_machine_xrefs.reject { |lmx| lmx.machine_id.to_s != params[:id] }.map { |lmx| lmx.location }.sort_by(&:name)
+    @locations = @region.location_machine_xrefs.reject { |lmx| lmx.machine_id.to_s != params[:id] }.map(&:location).sort_by(&:name)
   end
 
   def render_machines
@@ -48,75 +48,30 @@ class LocationsController < InheritedResources::Base
   end
 
   def update_metadata
-    validation_error = []
-    id = params[:id]
+    l = Location.find(params[:id])
 
-    l = Location.find(id)
+    values, message_type = l.update_metadata(
+      Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user,
+      phone: params["new_phone_#{l.id}"],
+      website: params["new_website_#{l.id}"],
+      operator_id: params["new_operator_#{l.id}"],
+      location_type_id: params["new_location_type_#{l.id}"]
+    )
 
-    l.operator_id = params["new_operator_#{id}".to_sym]
-    l.location_type_id = params["new_location_type_#{id}".to_sym]
-    l.save(validate: false)
-
-    old_phone = l.phone
-    l.phone = params["new_phone_#{id}".to_sym]
-    unless l.valid?
-      l.phone = old_phone
-      validation_error.push(l.errors.full_messages.join(''))
-      l.errors.clear
-    end
-
-    old_website = l.website
-    l.website = params["new_website_#{id}".to_sym]
-    unless l.valid?
-      l.website = old_website
-      validation_error.push(l.errors.full_messages.join(''))
-      l.errors.clear
-    end
-
-    if ENV['RAKISMET_KEY']
-      if l.spam?
-        nil
-      else
-        l.save(validate: false)
-      end
-      l
-    else
-      l.save(validate: false)
-      l
-    end
-
-    if validation_error.length > 0
-      render json: { error: validation_error.uniq.join('<br />') }
+    if message_type == 'errors'
+      render json: { error: values.uniq.join('<br />') }
     else
       render nothing: true
     end
   end
 
   def update_desc
-    id = params[:id]
+    l = Location.find(params[:id])
 
-    l = Location.find(id)
-    l.description = params["new_desc_#{id}".to_sym]
-
-    l.description = l.description.slice(0, 254) unless l.description.nil?
-
-    if l.description !~ %r{http[s]?:\/\/}
-      if ENV['RAKISMET_KEY']
-        if l.spam?
-          nil
-        else
-          l.date_last_updated = Date.today
-          l.save(validate: false)
-        end
-        l
-      else
-        l.date_last_updated = Date.today
-        l.save(validate: false)
-        l
-      end
-    else
-      l
-    end
+    l.update_metadata(
+      Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user,
+      description: params["new_desc_#{l.id}"]
+    )
 
     render nothing: true
   end
@@ -153,12 +108,14 @@ class LocationsController < InheritedResources::Base
     if machine.nil?
       machine = Machine.create(name: machine_name)
 
-      send_new_machine_notification(machine, Location.find(params[:modify_location]))
+      send_new_machine_notification(machine, Location.find(params[:modify_location]), nil)
     end
 
     if (lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine.id))
       id = lmx.id
-      lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
+
+      user_id = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user.id
+      lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: user_id)
 
       redirect_to "/#{region}/location_machine_xrefs/#{id}/remove_confirmation.#{format}"
     else
@@ -211,8 +168,7 @@ class LocationsController < InheritedResources::Base
 
   def confirm
     l = Location.find(params[:id])
-    l.date_last_updated = Date.today
-    l.save(validate: false)
+    l.confirm(Authorization.current_user ? Authorization.current_user : nil)
     l
   end
 end

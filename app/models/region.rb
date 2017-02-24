@@ -41,15 +41,15 @@ class Region < ActiveRecord::Base
     @high_rollers = {}
 
     machine_score_xrefs.each do |msx|
-      (rollers[msx.initials] ||= []) << msx
+      (rollers[msx.user ? msx.user.username : ''] ||= []) << msx
     end
 
     rollers.sort { |a, b| b[1].size <=> a[1].size }.each do |roller|
-      initials = roller[0]
+      username = roller[0]
       scores = roller[1]
       scores.sort! { |a, b| b.created_at <=> a.created_at }
 
-      @high_rollers[initials] = scores unless @high_rollers.size == n
+      @high_rollers[username] = scores unless @high_rollers.size == n
     end
 
     @high_rollers
@@ -59,7 +59,7 @@ class Region < ActiveRecord::Base
     if users.empty?
       ['email_not_found@noemailfound.noemail']
     else
-      users.map { |u| u.email }.sort
+      users.map(&:email).sort
     end
   end
 
@@ -92,7 +92,7 @@ class Region < ActiveRecord::Base
   end
 
   def available_search_sections
-    sections = %w(city location machine type)
+    sections = %w(location city machine type)
 
     sections.push('operator') if operators.size > 0
 
@@ -142,7 +142,7 @@ List of Empty Locations:
 #{location_machine_xrefs.select { |lmx| !lmx.created_at.nil? && lmx.created_at.between?(start_of_week, end_of_week) }.count} machine(s) added by users this week
 #{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.count} machine(s) removed by users this week
 #{full_name} is listing #{machines_count} machines and #{locations_count} locations
-#{events.select { |e| e.active? }.count } event(s) listed
+#{events.select(&:active?).count } event(s) listed
 #{events.select { |e| !e.created_at.nil? && e.created_at.between?(start_of_week, end_of_week) && (e.end_date.nil? || e.end_date >= Date.today) }.count} event(s) added this week
 #{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::CONTACT_US_TYPE }.count} "contact us" message(s) sent to you
 HERE

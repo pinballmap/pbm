@@ -11,15 +11,26 @@ Pbm::Application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :machines, only: [:index, :show, :create]
+      resources :location_machine_xrefs, only: [:create, :destroy, :update, :show]
       resources :location_types, only: [:index, :show]
-      resources :location_machine_xrefs, only: [:create, :destroy, :update]
-      resources :machine_score_xrefs, only: [:create, :show]
       resources :machine_conditions, only: [:destroy]
+      resources :machine_score_xrefs, only: [:create, :show]
+      resources :machines, only: [:index, :show, :create]
+      resources :operators, only: [:show]
 
+      resources :users, only: [:auth_details] do
+        member do
+          get  :profile_info
+        end
+        collection do
+          get  :auth_details
+          post :signup
+        end
+      end
       resources :regions, only: [:index, :show] do
         collection do
           get  :closest_by_lat_lon
+          get  :does_region_exist
           post :suggest
           post :contact
           post :app_comment
@@ -28,6 +39,7 @@ Pbm::Application.routes.draw do
       resources :locations, only: [:update] do
         member do
           get :machine_details
+          put :confirm
         end
         collection do
           get :closest_by_lat_lon
@@ -36,26 +48,32 @@ Pbm::Application.routes.draw do
       end
 
       scope 'region/:region', constraints: { region: /#{regions}|!admin/i } do
-        resources :machine_score_xrefs, only: [:index]
-        resources :location_machine_xrefs, only: [:index]
         resources :events, only: [:index, :show]
+        resources :location_machine_xrefs, only: [:index]
         resources :locations, only: [:index, :show]
+        resources :machine_score_xrefs, only: [:index]
+        resources :operators, only: [:index]
         resources :region_link_xrefs, only: [:index, :show]
-        resources :zones, only: [:index, :show]
         resources :user_submissions, only: [:index, :show]
+        resources :zones, only: [:index, :show]
       end
     end
   end
 
-  get '/apps' => 'pages#apps'
-  get '/apps/support' => 'pages#app_support'
+  get '/app' => 'pages#app'
+  get '/app/support' => 'pages#app_support'
   get '/privacy' => 'pages#privacy'
   get '/faq' => 'pages#faq'
   get '/store' => 'pages#store'
+  get '/donate' => 'pages#donate'
 
   scope ':region', constraints: { region: /#{regions}|!admin/i } do
-    get 'apps' => redirect('/apps')
-    get 'apps/support' => redirect('/apps/support')
+    get 'app' => redirect('/app')
+    get 'app/support' => redirect('/app/support')
+    get 'privacy' => redirect('/privacy')
+    get 'faq' => redirect('/faq')
+    get 'store' => redirect('/store')
+    get 'donate' => redirect('/donate')
 
     resources :events, only: [:index, :show]
     resources :regions, only: [:index, :show]
@@ -129,14 +147,24 @@ Pbm::Application.routes.draw do
   resources :location_picture_xrefs
   resources :machine_conditions
 
-  devise_for :users
+  devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}, path: '/users', path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'join'}
+
+  resources :users, only: [:profile] do
+    member do
+      get :profile
+    end
+  end
 
   get 'iphone.html', to: 'locations#mobile'
   get '4sq_export.xml' => 'regions#four_square_export', format: 'xml'
+  get 'inspire_profile' => 'pages#inspire_profile'
   get 'pages/home'
 
   # legacy names for regions
   get '/milwaukee' => redirect('/wisconsin')
+  get '/apps' => redirect('/app')
+  get '/apps/support' => redirect('/app/support')
+  get '/profile' => redirect('/inspire_profile')
 
   root to: 'pages#home'
 end

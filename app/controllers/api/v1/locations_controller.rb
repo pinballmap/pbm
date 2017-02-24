@@ -20,8 +20,6 @@ module Api
       param :location_website, String, desc: 'Website of new location', required: false
       param :location_operator, String, desc: 'Machine operator of new location', required: false
       param :location_machines, String, desc: 'List of machines at new location', required: true
-      param :submitter_name, String, desc: 'Name of submitter', required: false
-      param :submitter_email, String, desc: 'Email address of submitter', required: false
       formats ['json']
       def suggest
         if params[:region_id].blank? || params[:location_machines].blank? || params[:location_name].blank?
@@ -30,7 +28,7 @@ module Api
         end
 
         region = Region.find(params['region_id'])
-        send_new_location_notification(params, region)
+        send_new_location_notification(params, region, Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user)
 
         return_response("Thanks for entering that location. We'll get it in the system as soon as possible.", 'msg')
 
@@ -55,7 +53,12 @@ module Api
       formats ['json']
       def index
         locations = apply_scopes(Location).order('locations.name')
-        return_response(locations, 'locations', [location_machine_xrefs: { include: :machine_conditions }])
+        return_response(
+          locations,
+          'locations',
+          [location_machine_xrefs: { include: { machine_conditions: { methods: :username } }, methods: :last_updated_by_username }],
+          [:last_updated_by_username]
+        )
       end
 
       api :PUT, '/api/v1/locations/:id.json', 'Update attributes on a location'
@@ -69,47 +72,19 @@ module Api
       def update
         location = Location.find(params[:id])
 
-        description = params[:description]
-        website = params[:website]
-        phone = params[:phone]
-        location_type = params[:location_type]
-        operator_id = params[:operator_id]
+        values, message_type = location.update_metadata(
+          Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user,
+          description: params[:description],
+          website: params[:website],
+          phone: params[:phone],
+          location_type_id: params[:location_type],
+          operator_id: params[:operator_id]
+        )
 
-        location_type = location_type.to_s if location_type
-        operator_id = operator_id.to_s if operator_id
-
-        location.description = description if description
-        location.website = website if website
-        if !location_type.blank? && !location_type.nil? && !location_type.empty?
-          location.location_type = LocationType.find(location_type)
-        else
-          location.location_type = nil
-        end
-
-        if !operator_id.blank? && !operator_id.nil? && !operator_id.empty?
-          location.operator = Operator.find(operator_id)
-        else
-          location.operator_id = nil
-        end
-
-        update_phone(location, phone)
-
-        location.save ? return_response(location, 'location') : return_response(location.errors.full_messages, 'errors')
+        return_response(values, message_type)
 
         rescue ActiveRecord::RecordNotFound
           return_response('Failed to find location', 'errors')
-      end
-
-      def update_phone(location, phone)
-        if phone && !phone.blank?
-          phone.gsub!(/\s+/, '')
-          phone.gsub!(/[^0-9]/, '')
-
-          phone = phone.empty? ? 'empty' : number_to_phone(phone)
-          location.phone = phone
-        elsif phone && phone.blank?
-          location.phone = nil
-        end
       end
 
       api :GET, '/api/v1/locations/closest_by_lat_lon.json', 'Returns the closest location to transmitted lat/lon'
@@ -153,6 +128,18 @@ module Api
         end
 
         return_response(machines, 'machines')
+
+        rescue ActiveRecord::RecordNotFound
+          return_response('Failed to find location', 'errors')
+      end
+
+      api :PUT, '/api/v1/locations/:id/confirm.json', 'Confirm location information'
+      formats ['json']
+      def confirm
+        location = Location.find(params[:id])
+        location.confirm(Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user)
+
+        return_response('Thanks for confirming that location.', 'msg')
 
         rescue ActiveRecord::RecordNotFound
           return_response('Failed to find location', 'errors')

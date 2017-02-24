@@ -13,7 +13,7 @@ task import_ifpa_tournaments: :environment do
 
   Hash.new { |h, k| h[k] = [] }
 
-  pbm_states = Location.uniq.pluck(:state).map { |s| s.downcase! }.uniq!
+  pbm_states = Location.uniq.pluck(:state).map(&:downcase!).uniq!
 
   # rubocop wants you to use next, but next isn't available on an ActiveRecord::Relation, only each.. https://github.com/bbatsov/rubocop/issues/1238
   # rubocop:disable Style/Next

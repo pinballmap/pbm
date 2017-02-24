@@ -2,6 +2,16 @@
   :javascript
     clearMarkers()
     clearInfoWindows();
+    $("#search_link_wrapper").removeClass("hide_search_link");
+
+    var hrefOrig = 'https://#{request.host_with_port}/#{@region.name.downcase}?';
+    var def_value = window.location.href;
+    if (typeof(search_string) == "undefined") {
+      search_string = def_value;
+      document.getElementById("search_link").href=search_string;
+    } else {
+      document.getElementById("search_link").href=hrefOrig + search_string;
+    }
 
     showLocations(
       [#{@location_data[0].join(', ')}],
@@ -9,6 +19,7 @@
       [#{@location_data[2].join(', ')}],
       [#{@location_data[3].join(', ')}]
     );
+
   #results_container
     #search_results
       - @locations.each do |location|
@@ -18,9 +29,9 @@
             %ul
               %li.name= l.name
               - if (!params[:show_location_distance].blank? && !params[:lat].blank? && !params[:lon].blank?)
-                %li.location_type= " distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
+                %li.location_types= " distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
               - if (l.location_type)
-                %li.location_type= " (#{l.location_type.name})"
+                %li.location_types= " (#{l.location_type.name})"
               .clear
               %li.address
                 %span.address_name[l, :location_summary] #{[l.street, l.city].join(' | ')}
@@ -33,12 +44,11 @@
               %ul
                 %li.name= l.name
                 .clear
-                %span.location_description
-                  %span.comment_image
-                    =image_tag('comment-3.png', :alt => 'Update Location Description/Hours/Etc')
+                - if user_signed_in?
+                  %span.location_description
+                    %span.comment_image
                   %span.location_meta
                     %span.meta_image
-                      =image_tag('tools.png', :alt => 'Update Location Metadata')
                 %li.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
                 %div[l, :metadata]
                   = render :partial => 'locations/render_update_metadata', :locals => {:l => l}
@@ -46,11 +56,17 @@
                   = render :partial => 'locations/render_desc', :locals => {:l => l}
                 %div.location_thumbs
                   = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
-                %div.location_link 
-                  =link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
+                %div.location_confirm
+                  = render :partial => 'locations/render_confirm', :locals => {:l => l}
+                %div.location_link
+                  =link_to 'Link to this location', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
+                %div.login_alert
+                  - if !user_signed_in?
+                    = link_to link_to 'To update this location, you must login! Click here', "https://#{request.host_with_port}/users/login"
             %div.location_detail_sub
-              = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
-              = render :partial => 'locations/add_machine', :locals => {:location => l}
+              - if user_signed_in?
+                = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
+                = render :partial => 'locations/add_machine', :locals => {:location => l}
               = render :partial => 'locations/show_machines', :locals => {:location => l}
         - l = nil
 
@@ -59,4 +75,3 @@
         $(function() {
           singleLocationLoad('#{@region.name.downcase}', #{@locations.first.id});
         });
-

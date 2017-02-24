@@ -4,7 +4,7 @@ class MachineScoreXref < ActiveRecord::Base
   has_one :location, through: :location_machine_xref
   has_one :machine, through: :location_machine_xref
 
-  attr_accessible :initials, :rank, :score, :location_machine_xref_id
+  attr_accessible :score, :location_machine_xref_id
 
   scope :region, lambda {|name|
     r = Region.find_by_name(name)
@@ -15,19 +15,13 @@ class MachineScoreXref < ActiveRecord::Base
     ")
   }
 
-  ENGLISH_SCORES = {
-    1 => 'GC',
-    2 => '1st',
-    3 => '2nd',
-    4 => '3rd',
-    5 => '4th'
-  }
+  def username
+    user ? user.username : ''
+  end
 
-  def sanitize_scores
-    location_machine_xref.machine_score_xrefs.each do
-      MachineScoreXref.delete_all(['location_machine_xref_id = ? and rank < ? and score < ?', location_machine_xref_id, rank, score])
-      MachineScoreXref.delete_all(['location_machine_xref_id = ? and rank > ? and score > ?', location_machine_xref_id, rank, score])
-      MachineScoreXref.delete_all(['location_machine_xref_id = ? and rank = ? and id != ?', location_machine_xref_id, rank, id])
-    end
+  def create_user_submission
+    user_info = user ? "User #{user.username} (#{user.email})" : 'UNKNOWN USER'
+
+    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: "#{user_info} added a score of #{score} for #{machine.name} to #{location.name}", user: user)
   end
 end

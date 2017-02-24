@@ -8,19 +8,20 @@ class Ability
     can :dashboard
     can :history
     can :manage, [Event, Operator, RegionLinkXref, Zone], region_id: user.region_id
-    can :manage, [LocationMachineXref], location: { region_id: user.region_id }
+    can [:read], [UserSubmission], region_id: user.region_id
+    can [:update, :read], [User]
     can [:update, :read], [LocationPictureXref], location: { region_id: user.region_id }
     can [:update, :read, :destroy], [MachineCondition, MachineScoreXref], location: { region_id: user.region_id }
 
     if user.is_super_admin
-      can :manage, [Location]
+      can :manage, [Location, User]
       can :manage, [UserSubmission]
     else
       can :manage, [Location], region_id: user.region_id
     end
 
     if user.region.name == 'portland'
-      can :manage, [Region, Machine, MachineGroup, User, BannedIp, LocationType]
+      can :manage, [Region, Machine, MachineGroup, BannedIp, LocationType]
     elsif user.is_machine_admin
       can [:update, :read], [Region], id: user.region_id
       can :manage, [Machine, MachineGroup]

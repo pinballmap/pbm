@@ -8,7 +8,7 @@ task notify_admins: :environment do
     email_body = r.generate_weekly_admin_email_body
     email_bodies.push(email_body)
 
-    email_to = r.users.map { |u| u.email }
+    email_to = r.users.map(&:email)
 
     Pony.mail(
       to: email_to,

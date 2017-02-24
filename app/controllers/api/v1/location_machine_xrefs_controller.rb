@@ -14,6 +14,15 @@ module Api
         return_response(lmxes, 'location_machine_xrefs', [], [:location, :machine, :machine_conditions])
       end
 
+      api :GET, '/api/v1/region/:region/location_machine_xrefs/:id.json', 'Get info about a single lmx'
+      param :region, String, desc: 'Name of the Region you want to see events for', required: true
+      param :id, Integer, desc: 'LMX id', required: true
+      formats ['json']
+      def show
+        lmx = LocationMachineXref.find(params[:id])
+        return_response(lmx, 'location_machine', [], [:last_updated_by_username, :machine_conditions])
+      end
+
       api :POST, '/api/v1/location_machine_xrefs.json', 'Find or create a machine at a location'
       param :location_id, Integer, desc: 'Location ID to add machine to', required: true
       param :machine_id, Integer, desc: 'Machine ID to add to location', required: true
@@ -30,17 +39,24 @@ module Api
         end
 
         lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine_id)
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
 
         if lmx.nil?
           status_code = 201
-          lmx = LocationMachineXref.create(location_id: location_id, machine_id: machine_id)
+          lmx = LocationMachineXref.create(location_id: location_id, machine_id: machine_id, user_id: user ? user.id : nil)
         end
 
         if condition
-          lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
+          lmx.update_condition(
+            condition,
+            remote_ip: request.remote_ip,
+            request_host: request.host,
+            user_agent: request.user_agent,
+            user_id: user ? user.id : nil
+          )
         end
 
-        return_response(lmx, 'location_machine', [], [], status_code)
+        return_response(lmx, 'location_machine', [], [:last_updated_by_username], status_code)
       end
 
       api :PUT, '/api/v1/location_machine_xrefs/:id.json', "Update a machine's condition at a location"
@@ -49,9 +65,17 @@ module Api
       formats ['json']
       def update
         lmx = LocationMachineXref.find(params[:id])
-        lmx.update_condition(params[:condition], remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
 
-        return_response(lmx, 'location_machine', [], [:machine_conditions])
+        lmx.update_condition(
+          params[:condition],
+          remote_ip: request.remote_ip,
+          request_host: request.host,
+          user_agent: request.user_agent,
+          user_id: user ? user.id : nil
+        )
+
+        return_response(lmx, 'location_machine', [], [:last_updated_by_username, :machine_conditions])
 
         rescue ActiveRecord::RecordNotFound
           return_response('Failed to find machine', 'errors')
@@ -62,7 +86,14 @@ module Api
       formats ['json']
       def destroy
         lmx = LocationMachineXref.find(params[:id])
-        lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+
+        lmx.destroy(
+          remote_ip: request.remote_ip,
+          request_host: request.host,
+          user_agent: request.user_agent,
+          user_id: user ? user.id : nil
+        )
 
         return_response('Successfully deleted lmx #' + lmx.id.to_s, 'msg')
 

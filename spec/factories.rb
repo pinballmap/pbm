@@ -62,14 +62,17 @@ FactoryGirl.define do
 
   factory :user do
     initials 'cap'
+    sequence(:username) { |n| "cap#{n}" }
     sequence(:email) { |n| "captainamerica#{n}@foo.bar" }
     password 'password'
+    password_confirmation 'password'
+    confirmed_at Date.today
   end
 
   factory :location_picture_xref do
     association :location
     association :user
-    photo File.open(File.join(Rails.root, '/app/assets/images/favicon.ico'))
+    photo File.open(File.join(Rails.root, '/app/assets/images/favicon/favicon.ico'))
   end
 
   factory :region_link_xref do

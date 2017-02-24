@@ -17,17 +17,14 @@ describe PagesController do
 
       visit '/portland/events'
 
-      expect(page).to have_content('event 6 @ External location')
-      expect(page).to have_content('event 5 @ Test Location Name')
-      expect(page).to have_content("event 4 @ Test Location Name #{Date.today - 1}")
-      expect(page).to have_content("event 3 @ Test Location Name #{Date.today}")
-      expect(page).to have_content("event 1 @ Test Location Name #{Date.today + 1}")
+      expect(page).to have_content("event 3 @ Test Location Name #{Date.today.strftime('%b-%d-%Y')}")
+      expect(page).to have_content("event 1 @ Test Location Name #{(Date.today + 1).strftime('%b-%d-%Y')}")
       expect(page).to have_content('event 2 @ Test Location Name')
     end
 
     it 'is case insensitive for region name' do
       chicago_region = FactoryGirl.create(:region, name: 'chicago', full_name: 'Chicago')
-      FactoryGirl.create(:event, region: chicago_region, name: 'event 1')
+      FactoryGirl.create(:event, region: chicago_region, name: 'event 1', start_date: Date.today)
 
       visit '/CHICAGO/events'
 
@@ -67,9 +64,11 @@ describe PagesController do
       another_portland_lmx = FactoryGirl.create(:location_machine_xref, location: portland_location, machine: machine)
       FactoryGirl.create(:location_machine_xref, location: chicago_location, machine: machine)
 
-      FactoryGirl.create(:machine_score_xref, location_machine_xref: portland_lmx, score: 100, initials: 'ssw', rank: 1)
-      FactoryGirl.create(:machine_score_xref, location_machine_xref: portland_lmx, score: 90, initials: 'rtgt', rank: 2)
-      FactoryGirl.create(:machine_score_xref, location_machine_xref: another_portland_lmx, score: 200, initials: 'ssw', rank: 1)
+      ssw_user = FactoryGirl.create(:user, username: 'ssw')
+      rtgt_user = FactoryGirl.create(:user, username: 'rtgt')
+      FactoryGirl.create(:machine_score_xref, location_machine_xref: portland_lmx, score: 100, user: ssw_user)
+      FactoryGirl.create(:machine_score_xref, location_machine_xref: portland_lmx, score: 90, user: rtgt_user)
+      FactoryGirl.create(:machine_score_xref, location_machine_xref: another_portland_lmx, score: 200, user: ssw_user)
 
       visit '/portland/high_rollers'
 
@@ -138,14 +137,22 @@ describe PagesController do
 
   describe 'Location suggestions', type: :feature, js: true do
     it 'limits state dropdown to unique states within a region' do
+      @user = FactoryGirl.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
       chicago = FactoryGirl.create(:region, name: 'chicago')
 
       FactoryGirl.create(:location, region: @region, state: 'WA')
       FactoryGirl.create(:location, region: chicago, state: 'IL')
+      login
 
       visit "/#{@region.name}/suggest"
-
       expect(page).to have_select('location_state', options: %w(OR WA))
+    end
+
+    it 'does not show form if not logged in' do
+
+      visit "/#{@region.name}/suggest"
+      expect(page).to have_content('But first! We ask that you Login. Thank you!')
     end
   end
 
@@ -162,7 +169,7 @@ describe PagesController do
       visit '/'
 
       expect(page).to have_css('div#map_summaries')
-      expect(page).to have_content('Chicago Tracking: 1 Locations 1 Machines Portland Tracking: 2 Locations 2 Machines')
+      expect(page).to have_content('Chicago 1 Locations 1 Machines Portland 2 Locations 2 Machines')
     end
 
     it 'shows the proper page title' do
@@ -170,18 +177,42 @@ describe PagesController do
       visit '/'
 
       expect(page).to have_title('Pinball Map')
-      expect(page).not_to have_title('Apps')
+      expect(page).not_to have_title('App')
     end
   end
 
-  describe 'Apps pages', type: :feature, js: true do
-    it 'shows the proper page title' do
+  describe 'Pages', type: :feature, js: true do
+    it 'show the proper page title' do
+      FactoryGirl.create(:user, id: 111)
+      visit '/app'
+      expect(page).to have_title('App')
 
-      visit '/apps'
-      expect(page).to have_title('Apps')
+      visit '/app/support'
+      expect(page).to have_title('App')
 
-      visit '/apps/support'
-      expect(page).to have_title('Apps')
+      visit '/donate'
+      expect(page).to have_title('Donate')
+
+      visit '/store'
+      expect(page).to have_title('Store')
+
+      visit '/faq'
+      expect(page).to have_title('FAQ')
+
+      visit '/users/111/profile'
+      expect(page).to have_title('User Profile')
+
+      visit "/#{@region.name}/about"
+      expect(page).to have_title('About')
+
+      visit "/#{@region.name}/suggest"
+      expect(page).to have_title('Suggest')
+
+      visit "/#{@region.name}/events"
+      expect(page).to have_title('Events')
+
+      visit "/#{@region.name}/high_rollers"
+      expect(page).to have_title('High Scores')
     end
   end
 
@@ -206,6 +237,21 @@ describe PagesController do
 
       expect(page).to have_title('Portland Pinball Map')
       expect(page).not_to have_title('Apps')
+    end
+  end
+
+  describe 'get_a_profile', type: :feature, js: true do
+    it 'redirects you to your user profile page if you are logged in' do
+      visit '/inspire_profile'
+
+      expect(current_path).to eql(inspire_profile_path)
+
+      user = FactoryGirl.create(:user, id: 10)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(user).unshift('User'))
+
+      visit '/inspire_profile'
+
+      expect(current_path).to eql(profile_user_path(user.id))
     end
   end
 end

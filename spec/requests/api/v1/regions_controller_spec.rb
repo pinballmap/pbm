@@ -7,6 +7,33 @@ describe Api::V1::LocationsController, type: :request do
 
     FactoryGirl.create(:user, region: @portland, email: 'portland@admin.com', is_super_admin: 1)
     FactoryGirl.create(:user, region: @la, email: 'la@admin.com')
+    FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+  end
+
+  describe '#does_region_exist' do
+    it 'tells you if name is a valid region' do
+      FactoryGirl.create(:region, id: 6, name: 'clark', motd: 'mine', lat: 12.0, lon: 13.0, full_name: 'Clarky')
+
+      get '/api/v1/regions/does_region_exist.json', name: 'clark'
+      expect(response).to be_success
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      region = parsed_body['region']
+
+      expect(region['id']).to eq(6)
+      expect(region['name']).to eq('clark')
+      expect(region['motd']).to eq('mine')
+      expect(region['lat']).to eq('12.0')
+      expect(region['lon']).to eq('13.0')
+      expect(region['full_name']).to eq('Clarky')
+    end
+
+    it 'throws an error if name does not correspond to a region' do
+      get '/api/v1/regions/does_region_exist.json', name: 'foo'
+
+      expect(JSON.parse(response.body)['errors']).to eq('This is not a valid region.')
+    end
   end
 
   describe '#closest_by_lat_lon' do
@@ -87,27 +114,7 @@ describe Api::V1::LocationsController, type: :request do
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/suggest.json'
       expect(response).to be_success
-      expect(JSON.parse(response.body)['errors']).to eq('Your name, email address, and name of the region you want added are required fields.')
-
-      expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/suggest.json', name: 'foo'
-      expect(response).to be_success
-      expect(JSON.parse(response.body)['errors']).to eq('Your name, email address, and name of the region you want added are required fields.')
-
-      expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/suggest.json', name: 'foo', email: 'bar'
-      expect(response).to be_success
-      expect(JSON.parse(response.body)['errors']).to eq('Your name, email address, and name of the region you want added are required fields.')
-
-      expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/suggest.json', name: 'foo', region_name: 'bar'
-      expect(response).to be_success
-      expect(JSON.parse(response.body)['errors']).to eq('Your name, email address, and name of the region you want added are required fields.')
-
-      expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/suggest.json', name: 'foo', region_name: 'bar', email: ''
-      expect(response).to be_success
-      expect(JSON.parse(response.body)['errors']).to eq('Your name, email address, and name of the region you want added are required fields.')
+      expect(JSON.parse(response.body)['errors']).to eq('The name of the region you want added is a required field.')
     end
 
     it 'emails portland admins on new region submission' do
@@ -117,15 +124,15 @@ describe Api::V1::LocationsController, type: :request do
           from: 'admin@pinballmap.com',
           subject: 'PBM - New region suggestion',
           body: <<HERE
-Their Name: name\n
-Their Email: email\n
+Their Name: ssw\n
+Their Email: foo@bar.com\n
 Region Name: region name\n
 Region Comments: region comments\n
 HERE
         )
       end
 
-      post '/api/v1/regions/suggest.json', name: 'name', email: 'email', region_name: 'region name', comments: 'region comments'
+      post '/api/v1/regions/suggest.json', region_name: 'region name', comments: 'region comments', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq("Thanks for suggesting that region. We'll be in touch.")
@@ -161,7 +168,7 @@ HERE
           body: <<HERE
 Their Name: name\n
 Their Email: email\n
-Message: message\n
+Message: message\n\n
 HERE
         )
       end
@@ -172,6 +179,32 @@ HERE
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
       expect(UserSubmission.all.count).to eq(1)
       expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
+    end
+
+    it 'emails region admins with incoming message - authed' do
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          to: ['la@admin.com'],
+          bcc: ['portland@admin.com'],
+          from: 'admin@pinballmap.com',
+          subject: 'PBM - Message from the Los Angeles region',
+          body: <<HERE
+Their Name: name\n
+Their Email: email\n
+Message: message\n
+Username: ssw\n
+Site Email: foo@bar.com
+HERE
+        )
+      end
+
+      post '/api/v1/regions/contact.json', region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
+      expect(UserSubmission.all.count).to eq(1)
+      expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
+      expect(UserSubmission.first.user_id).to eq(111)
     end
 
     it 'emails region admins with incoming message - notifies if sent from staging server' do
@@ -212,7 +245,7 @@ HERE
     it 'emails app support address with feedback' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          to: 'pinballmap@outlook.com',
+          to: 'pinballmap@posteo.org',
           bcc: ['portland@admin.com'],
           from: 'admin@pinballmap.com',
           subject: 'PBM - App feedback',

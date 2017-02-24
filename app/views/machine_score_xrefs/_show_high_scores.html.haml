@@ -1,4 +1,4 @@
 %div[lmx, :score_container]{:style => "display:#{lmx.machine_score_xrefs.empty? ? 'none' : 'block'}"}
-  = banner('show_scores_lmx', 'SHOW HIGH SCORES', lmx)
+  = banner('show_scores_lmx', 'Show High Scores', lmx)
   %div[lmx, :show_scores]{:style => 'display:none'}
     = render :partial => 'locations/render_scores', :locals => {:lmx => lmx}

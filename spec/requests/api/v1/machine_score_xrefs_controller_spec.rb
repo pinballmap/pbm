@@ -7,8 +7,8 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     @machine = FactoryGirl.create(:machine, name: 'Cleo')
     @lmx = FactoryGirl.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
 
-    @score_rank_1 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, rank: 1, score: 123, initials: 'abc')
-    @score_rank_2 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, rank: 2, score: 100, initials: 'def')
+    @score_1 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, score: 123, user_id: FactoryGirl.create(:user, username: 'ssw').id)
+    @score_2 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user_id: nil)
   end
 
   describe '#index' do
@@ -27,7 +27,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     end
 
     it 'respects limit scope' do
-      get '/api/v1/region/portland/machine_score_xrefs.json?limit=1'
+      get '/api/v1/region/portland/machine_score_xrefs.json', limit: 1
       expect(response).to be_success
 
       scores = JSON.parse(response.body)['machine_score_xrefs']
@@ -45,13 +45,11 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
       expect(scores.size).to eq(2)
 
-      expect(scores[0]['rank']).to eq(1)
-      expect(scores[0]['initials']).to eq('abc')
       expect(scores[0]['score']).to eq(123)
+      expect(scores[0]['username']).to eq('ssw')
 
-      expect(scores[1]['rank']).to eq(2)
-      expect(scores[1]['initials']).to eq('def')
       expect(scores[1]['score']).to eq(100)
+      expect(scores[1]['username']).to eq('')
     end
 
     it 'errors for unknown lmx' do
@@ -64,37 +62,59 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
   describe '#create' do
     it 'errors for unknown lmx' do
-      post '/api/v1/machine_score_xrefs.json?location_machine_xref_id=-1'
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: -1, score: 1234
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
     end
 
+    it 'errors for blank scores' do
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq('Score can not be blank and must be a numeric value')
+    end
+
     it 'errors for failed saves' do
       expect_any_instance_of(MachineScoreXref).to receive(:save).twice.and_return(false)
 
-      post '/api/v1/machine_score_xrefs.json?location_machine_xref_id=' + @lmx.id.to_s + ';score=1234'
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 1234
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq([])
     end
 
-    it 'creates a new score' do
-      post '/api/v1/machine_score_xrefs.json?location_machine_xref_id=' + @lmx.id.to_s + ';score=1,234;initials=abc;rank=1'
+    it 'errors when numbers are larger than bigints (>9223372036854775807)' do
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 9_223_372_036_854_775_808
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq('Number is too large. Please enter a valid score.')
+    end
+
+    it 'return an error if you enter a non-integer score' do
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 'fword', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq('Score can not be blank and must be a numeric value')
+    end
+
+    it 'creates a new score -- authed' do
+      user = FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a')
+
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 1234, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
       expect(response.status).to eq(201)
 
-      expect(JSON.parse(response.body)['msg']).to eq('Added your score!')
+      expect(JSON.parse(response.body)['machine_score_xref']['score']).to eq(1234)
 
       new_score = MachineScoreXref.last
 
-      expect(new_score.initials).to eq('abc')
-      expect(new_score.rank).to eq(1)
       expect(new_score.score).to eq(1234)
       expect(new_score.location_machine_xref_id).to eq(@lmx.id)
+      expect(new_score.user_id).to eq(user.id)
 
       first_score = MachineScoreXref.first
-      expect(first_score.rank).to eq(2)
+      expect(first_score.score).to eq(123)
     end
   end
 end

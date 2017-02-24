@@ -1,3 +1,5 @@
-%select{:name => "user[region_id]"}
-  - Region.all.each do |r|
-    <option value="#{r.id}" #{r.id == region_id ? 'selected=select' : ''} >#{r.name}</option>
+- if Authorization.current_user.is_super_admin
+  %select{:name => "user[region_id]"}
+    <option value=""></option>
+    - Region.all.each do |r|
+      <option value="#{r.id}" #{r.id == region_id ? 'selected=select' : ''} >#{r.name}</option>

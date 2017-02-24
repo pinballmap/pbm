@@ -19,7 +19,7 @@ class PagesController < ApplicationController
       'type' => {
         'id'   => 'id',
         'name' => 'name',
-        'search_collection' => location_types.values.map { |l| l.location_type }.sort { |a, b| a.name <=> b.name }
+        'search_collection' => location_types.values.map(&:location_type).sort { |a, b| a.name <=> b.name }
       },
       'location' => {
         'id'   => 'id',
@@ -55,12 +55,19 @@ class PagesController < ApplicationController
 
   def contact_sent
     return unless params['contact_msg']
+    user = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user
 
-    if verify_recaptcha
+    if user
       flash.now[:alert] = 'Thanks for contacting us!'
-      send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region)
+      send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
     else
-      flash.now[:alert] = 'Your captcha entering skills have failed you. Please go back and try again.'
+      if verify_recaptcha
+        flash.now[:alert] = 'Thanks for contacting us!'
+        send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
+      else
+        flash.now[:alert] = 'Your captcha entering skills have failed you. Please go back and try again.'
+      end
+
     end
   end
 
@@ -89,21 +96,14 @@ class PagesController < ApplicationController
   end
 
   def submitted_new_location
-    if verify_recaptcha
-      if params['location_machines'].match('http://')
-        flash.now[:alert] = "This sort of seems like you are sending us spam. If that's not the case, please contact us via the about page."
-      else
-        flash.now[:alert] = "Thanks for entering that location. We'll get it in the system as soon as possible."
+    flash.now[:alert] = "Thanks for entering that location. We'll get it in the system as soon as possible."
 
-        send_new_location_notification(params, @region)
-      end
-    else
-      flash.now[:alert] = 'Your captcha entering skills have failed you. Please go back and try again.'
-    end
+    user = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user
+    send_new_location_notification(params, @region, user)
   end
 
   def suggest_new_location
-    @states = Location.where(['region_id = ?', @region.id]).map { |r| r.state }.uniq.sort
+    @states = Location.where(['region_id = ?', @region.id]).map(&:state).uniq.sort
   end
 
   def robots
@@ -111,7 +111,7 @@ class PagesController < ApplicationController
     render text: robots, layout: false, content_type: 'text/plain'
   end
 
-  def apps
+  def app
   end
 
   def app_support
@@ -121,6 +121,15 @@ class PagesController < ApplicationController
   end
 
   def store
+  end
+
+  def faq
+  end
+
+  def donate
+  end
+
+  def profile
   end
 
   def contact
@@ -162,5 +171,11 @@ class PagesController < ApplicationController
     end
 
     [ids, lats, lons, contents]
+  end
+
+  def inspire_profile
+    user = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user
+
+    redirect_to profile_user_path(user.id) if user
   end
 end

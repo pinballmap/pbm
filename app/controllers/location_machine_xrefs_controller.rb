@@ -5,6 +5,7 @@ class LocationMachineXrefsController < InheritedResources::Base
   def create
     machine = nil
     location = Location.find(params[:location_id])
+    user = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user
 
     if !params["add_machine_by_id_#{location.id}"].empty?
       machine = Machine.find(params["add_machine_by_id_#{location.id}"])
@@ -16,7 +17,7 @@ class LocationMachineXrefsController < InheritedResources::Base
         machine.name = params["add_machine_by_name_#{location.id}"]
         machine.save
 
-        send_new_machine_notification(machine, location)
+        send_new_machine_notification(machine, location, user)
       end
     else
       # blank submit
@@ -24,10 +25,11 @@ class LocationMachineXrefsController < InheritedResources::Base
     end
 
     location.date_last_updated = Date.today
+    location.last_updated_by_user_id = user.id
     location.save(validate: false)
 
     LocationMachineXref.where(['location_id = ? and machine_id = ?', location.id, machine.id]).first ||
-      LocationMachineXref.create(location_id: location.id, machine_id: machine.id)
+      LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user.id)
   end
 
   def create_confirmation
@@ -37,7 +39,9 @@ class LocationMachineXrefsController < InheritedResources::Base
   def destroy
     lmx = LocationMachineXref.find_by_id(params[:id])
 
-    lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent) unless lmx.nil?
+    user_id = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user.id
+
+    lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: user_id) unless lmx.nil?
 
     render nothing: true
   end
@@ -59,15 +63,17 @@ class LocationMachineXrefsController < InheritedResources::Base
         nil
       else
         lmx.condition = old_condition
-        lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
+        lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: Authorization.current_user ? Authorization.current_user.id : nil)
         lmx.location.date_last_updated = Date.today
+        lmx.location.last_updated_by_user_id = Authorization.current_user ? Authorization.current_user.id : nil
         lmx.location.save(validate: false)
         lmx.location
       end
       lmx
     else
-      lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
+      lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: Authorization.current_user ? Authorization.current_user.id : nil)
       lmx.location.date_last_updated = Date.today
+      lmx.location.last_updated_by_user_id = Authorization.current_user ? Authorization.current_user.id : nil
       lmx.location.save(validate: false)
       lmx.location
       lmx

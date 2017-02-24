@@ -2,14 +2,29 @@ require 'spec_helper'
 
 describe LocationMachineXrefsController do
   before(:each) do
+    login
+
     @region = FactoryGirl.create(:region, name: 'portland', full_name: 'Portland')
     @location = FactoryGirl.create(:location, id: 1, region: @region)
   end
 
+  describe 'add machines - not authed', type: :feature, js: true do
+    it 'Should not allow you to add machines if you are not logged in' do
+      sleep 1
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+      sleep 1
+
+      expect(page).to_not have_selector("#add_machine_location_banner_#{@location.reload.id}")
+    end
+  end
+
   describe 'add machines', type: :feature, js: true do
     before(:each) do
+      @user = FactoryGirl.create(:user)
       @machine_to_add = FactoryGirl.create(:machine, name: 'Medieval Madness')
       FactoryGirl.create(:machine, name: 'Star Wars')
+
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
     end
 
     it 'Should add by id' do
@@ -23,11 +38,19 @@ describe LocationMachineXrefsController do
 
       expect(@location.machines.size).to eq(1)
       expect(@location.machines.first).to eq(@machine_to_add)
-      expect(Location.find(@location.id).date_last_updated).to eq(Date.today)
+      expect(@location.reload.date_last_updated).to eq(Date.today)
 
       expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
       expect(find("#gm_machines_#{@location.id}")).to have_content(@machine_to_add.name)
-      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
+      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')}")
+
+      expect(LocationMachineXref.where(location_id: @location.id, machine_id: @machine_to_add.id).first.user_id).to eq(@user.id)
+
+      user_submission = UserSubmission.first
+      expect(user_submission.user_id).to eq(@user.id)
+      expect(user_submission.region).to eq(@region)
+      expect(user_submission.submission_type).to eq(UserSubmission::NEW_LMX_TYPE)
+      expect(user_submission.submission).to eq("User #{@user.username} (#{@user.email}) added #{@machine_to_add.name} to #{@location.name}")
     end
 
     it 'Should add by name of existing machine' do
@@ -107,9 +130,28 @@ describe LocationMachineXrefsController do
     end
   end
 
+  describe 'machine descriptions - no auth', type: :feature, js: true do
+    before(:each) do
+      @lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
+    end
+
+    it 'does not let you edit machine descriptions' do
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      sleep 1
+
+      expect(page).to_not have_selector('span.condition_button.condition_button_new')
+      page.find("div#desc_show_location_#{@location.id}").click
+      expect(page).to_not have_content('Cancel')
+    end
+  end
+
   describe 'machine descriptions', type: :feature, js: true do
     before(:each) do
       @lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
+      @user = FactoryGirl.create(:user, id: 11, username: 'ssw', email: 'foo@bar.com')
+
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
     end
 
     it 'does not save spam' do
@@ -119,25 +161,25 @@ describe LocationMachineXrefsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx img").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS SPAM')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       sleep 1
 
-      expect(LocationMachineXref.find(@lmx.id).condition).to eq(nil)
+      expect(@lmx.reload.condition).to eq(nil)
     end
 
     it 'does not save conditions with <a href in it' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx img").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS SPAM <a href')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       sleep 1
 
-      expect(LocationMachineXref.find(@lmx.id).condition).to eq(nil)
+      expect(@lmx.reload.condition).to eq(nil)
     end
 
     it 'allows users to update a location machine condition - stubbed out spam detection' do
@@ -147,13 +189,19 @@ describe LocationMachineXrefsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx img").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS NOT SPAM')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       sleep 1
 
-      expect(LocationMachineXref.find(@lmx.id).condition).to eq('THIS IS NOT SPAM')
+      expect(@lmx.reload.condition).to eq('THIS IS NOT SPAM')
+
+      user_submission = UserSubmission.second
+      expect(user_submission.user_id).to eq(@user.id)
+      expect(user_submission.region).to eq(@region)
+      expect(user_submission.submission_type).to eq(UserSubmission::NEW_CONDITION_TYPE)
+      expect(user_submission.submission).to eq("User #{@user.username} (#{@user.email}) commented on #{@lmx.machine.name} at #{@lmx.location.name}. They said: THIS IS NOT SPAM")
     end
 
     it 'should let me add a new machine description' do
@@ -168,24 +216,36 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx img").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       sleep 1
 
-      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{Time.now.strftime('%d-%b-%Y')}")
-      expect(Location.find(@lmx.location.id).date_last_updated).to eq(Date.today)
-      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%Y-%m-%d')}")
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{@lmx.current_condition.created_at.strftime('%b-%d-%Y')} by ssw")
+      expect(@lmx.reload.location.date_last_updated).to eq(Date.today)
+      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{@location.date_last_updated.strftime('%b-%d-%Y')} by ssw")
+      expect(URI.parse(page.find_link('ssw', match: :first)['href']).to_s).to match(%r{\/users\/11\/profile})
+    end
+
+    it 'displays who updated a machine if that data is available' do
+      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, user: FactoryGirl.create(:user, id: 10, username: 'cibw'))
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("Test Comment Updated: #{@lmx.current_condition.created_at.strftime('%b-%d-%Y')} by cibw")
+      expect(URI.parse(page.find_link('cibw')['href']).to_s).to match(%r{\/users\/10\/profile})
     end
 
     it 'only displays the 6 most recent descriptions' do
-      lmx = LocationMachineXref.find(@lmx.id)
+      login
+
+      lmx = @lmx.reload
       lmx.condition = 'Condition 7'
       lmx.save
 
       7.times do |i|
-        FactoryGirl.create(:machine_condition, location_machine_xref: LocationMachineXref.find(@lmx.id), comment: "Condition #{i + 1}", created_at: "199#{i + 1}-01-01")
+        FactoryGirl.create(:machine_condition, location_machine_xref: @lmx.reload, comment: "Condition #{i + 1}", created_at: "199#{i + 1}-01-01")
       end
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
@@ -199,7 +259,7 @@ describe LocationMachineXrefsController do
       expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 2')
       expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 1')
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx img").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
@@ -214,38 +274,40 @@ describe LocationMachineXrefsController do
     it 'should add past conditions when you add a new condition and a condition exists' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx img").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'test')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx img").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content('This is a new condition')
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content('by ssw')
 
       page.find("div#machineconditions_container_lmx_#{@lmx.id}.machineconditions_container_lmx").click
       expect(find('.machine_condition_new_line')).to have_content('test')
+      expect(find('.machine_condition_new_line')).to have_content('by ssw')
     end
 
     it 'adding a new blank comment does not delete old comments' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx img").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'test')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx img").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx img").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: '')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
@@ -253,13 +315,13 @@ describe LocationMachineXrefsController do
 
       page.find("div#machineconditions_container_lmx_#{@lmx.id}.machineconditions_container_lmx").click
       expect(find("div#show_conditions_lmx_#{@lmx.id}")).to have_content('test')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}")).to have_content('This is a new condition')
+      expect(page).to have_content('This is a new condition')
     end
 
     it 'should let me cancel adding a new machine description' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx img").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#cancel_machine_condition_#{@lmx.id}").click
 
@@ -273,6 +335,9 @@ describe LocationMachineXrefsController do
     end
 
     it 'adds by machine name from input -- autocorrect picks via id' do
+      @user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+
       FactoryGirl.create(:machine, id: 10, name: 'Sassy Madness', year: 1980, manufacturer: 'Bally')
       FactoryGirl.create(:machine, id: 11, name: 'Sassy Madness', year: 2010, manufacturer: 'Bally')
 
@@ -296,10 +361,13 @@ describe LocationMachineXrefsController do
 
       sleep(1)
 
-      expect(Location.find(@location).machines.map { |m| m.name + '-' + m.year.to_s + '-' + m.manufacturer.to_s }.sort).to eq(['Sassy Madness-2010-Bally', 'Test Machine Name-2010-Williams'])
+      expect(@location.reload.machines.map { |m| m.name + '-' + m.year.to_s + '-' + m.manufacturer.to_s }.sort).to eq(['Sassy Madness-2010-Bally', 'Test Machine Name-2010-Williams'])
     end
 
     it 'adds by machine name from input' do
+      @user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+
       FactoryGirl.create(:machine, name: 'Sassy Madness')
       FactoryGirl.create(:machine, name: 'Sassy From The Black Lagoon')
       FactoryGirl.create(:machine, name: 'Cleo Game')
@@ -327,7 +395,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       fill_in('by_machine_name', with: 'test')
 
@@ -380,7 +448,7 @@ describe LocationMachineXrefsController do
 
       expect(page).to have_xpath('//li[contains(text(), "Test[]Location")]')
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       fill_in('by_machine_name', with: 'test[')
 
@@ -400,37 +468,37 @@ describe LocationMachineXrefsController do
     it 'hides zone option when no zones in region' do
       visit "/#{@region.name}"
 
-      expect(page).to_not have_css('a#zone_section_link')
+      expect(page).to_not have_css('button#zone_section_link')
 
       FactoryGirl.create(:location, id: 20, region: @region, name: 'Cleo', zone: FactoryGirl.create(:zone, region: @region, name: 'Alberta'))
 
       visit "/#{@region.name}"
 
-      expect(page).to have_css('a#zone_section_link')
+      expect(page).to have_css('button#zone_section_link')
     end
 
     it 'hides operator option when no operators in region' do
       visit "/#{@region.name}"
 
-      expect(page).to_not have_css('a#operator_section_link')
+      expect(page).to_not have_css('button#operator_section_link')
 
       FactoryGirl.create(:location, id: 21, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region))
 
       visit "/#{@region.name}"
 
-      expect(page).to have_css('a#operator_section_link')
+      expect(page).to have_css('button#operator_section_link')
     end
 
     it 'lets you change navigation types' do
       visit "/#{@region.name}"
 
-      expect(page).to have_css('a#location_section_link.active_section_link')
-      expect(page).to_not have_css('a#machine_section_link.active_section_link')
+      expect(page).to have_css('button#location_section_link.active_section_link')
+      expect(page).to_not have_css('button#machine_section_link.active_section_link')
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
-      expect(page).to_not have_css('a#location_section_link.active_section_link')
-      expect(page).to have_css('a#machine_section_link.active_section_link')
+      expect(page).to_not have_css('button#location_section_link.active_section_link')
+      expect(page).to have_css('button#machine_section_link.active_section_link')
     end
 
     it 'automatically limits searching to region' do
@@ -463,7 +531,7 @@ describe LocationMachineXrefsController do
     it 'lets you search by machine name from select' do
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       select('Test Machine Name', from: 'by_machine_id')
 
@@ -479,7 +547,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       select('Test Machine Name', from: 'by_machine_id')
 
@@ -496,7 +564,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       fill_in('by_machine_name', with: 'No Groups')
 
@@ -512,7 +580,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       fill_in('by_machine_name', with: 'Test Machine Name')
 
@@ -528,12 +596,15 @@ describe LocationMachineXrefsController do
       FactoryGirl.create(:machine, name: 'does not exist in region')
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       expect(page).to have_select('by_machine_id', with_options: ['Test Machine Name'])
     end
 
     it 'automatically loads with machine detail visible on a single location search' do
+      @user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+
       visit "/#{@region.name}"
       page.find('input#location_search_button').click
 
@@ -550,7 +621,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#city_section_link').click
+      page.find('div#other_search_options button#city_section_link').click
       select('Beaverton', from: 'by_city_id')
       page.find('input#city_search_button').click
 
@@ -566,7 +637,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#zone_section_link').click
+      page.find('div#other_search_options button#zone_section_link').click
       select('Alberta', from: 'by_zone_id')
       page.find('input#zone_search_button').click
 
@@ -584,7 +655,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#type_section_link').click
+      page.find('div#other_search_options button#type_section_link').click
       select('bar', from: 'by_type_id')
       page.find('input#type_search_button').click
 
@@ -601,7 +672,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#operator_section_link').click
+      page.find('div#other_search_options button#operator_section_link').click
       select('Quarter Bean', from: 'by_operator_id')
       page.find('input#operator_search_button').click
 
@@ -614,7 +685,7 @@ describe LocationMachineXrefsController do
     it 'searches by operator - displays website when available' do
       l = FactoryGirl.create(:location, id: 43, region: @region, name: 'Cleo', operator: FactoryGirl.create(:operator, name: 'Quarter Bean', region: @region, website: 'website.com'))
 
-      visit "/#{@region.name}?by_location_id=#{Location.find(l.id).id}"
+      visit "/#{@region.name}?by_location_id=#{l.reload.id}"
 
       sleep(1)
 
@@ -623,7 +694,7 @@ describe LocationMachineXrefsController do
 
       l = FactoryGirl.create(:location, id: 44, region: @region, name: 'Sass', operator: FactoryGirl.create(:operator, name: 'Sass Bean', region: @region, website: nil))
 
-      visit "/#{@region.name}?by_location_id=#{Location.find(l.id).id}"
+      visit "/#{@region.name}?by_location_id=#{l.reload.id}"
 
       sleep(1)
 
@@ -638,7 +709,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}"
 
-      page.find('div#other_search_options a#operator_section_link').click
+      page.find('div#other_search_options button#operator_section_link').click
 
       expect(page).to have_select('by_operator_id', options: ['All', 'Quarter Bean'])
     end
@@ -656,10 +727,13 @@ describe LocationMachineXrefsController do
     end
 
     it 'displays appropriate values in location description' do
+      @user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+
       visit "/#{@region.name}"
       page.find('input#location_search_button').click
 
-      page.find("div#desc_show_location_#{@location.id}.desc_show_location").click
+      page.find("#location_detail_location_#{@location.id} .location_description .comment_image").click
       fill_in("new_desc_#{@location.id}", with: 'New Condition')
       click_on("save_desc_#{@location.id}")
 
@@ -670,7 +744,7 @@ describe LocationMachineXrefsController do
       FactoryGirl.create(:region, name: 'chicago', default_search_type: 'city', full_name: 'Chicago')
       visit '/chicago'
 
-      expect(page).to have_css('a#city_section_link.active_section_link')
+      expect(page).to have_css('button#city_section_link.active_section_link')
     end
 
     it 'sorts searches by location name' do
@@ -701,7 +775,7 @@ describe LocationMachineXrefsController do
       end
 
       visit "/#{@region.name}"
-      page.find('div#other_search_options a#zone_section_link').click
+      page.find('div#other_search_options button#zone_section_link').click
       select(2, from: 'by_at_least_n_machines_zone')
       page.find('input#zone_search_button').click
 
@@ -733,7 +807,8 @@ describe LocationMachineXrefsController do
 
     it 'escapes characters in location address for infowindow' do
       screen_location = FactoryGirl.create(:location, id: 54, region: @region, name: 'The Screen', street: "1600 St. Michael's Drive", city: "Sassy's Ville")
-      FactoryGirl.create(:location_machine_xref, location: screen_location, machine: FactoryGirl.create(:machine), condition: 'cool machine description')
+      lmx = FactoryGirl.create(:location_machine_xref, location: screen_location, machine: FactoryGirl.create(:machine))
+      FactoryGirl.create(:machine_condition, location_machine_xref: lmx, comment: 'cool machine description')
 
       visit "/#{@region.name}/?by_location_id=#{screen_location.id}"
 
@@ -749,7 +824,7 @@ describe LocationMachineXrefsController do
       FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, id: 57, region: @region), machine: FactoryGirl.create(:machine, name: 'baz', year: 2001))
 
       visit "/#{@region.name}"
-      page.find('div#other_search_options a#machine_section_link').click
+      page.find('div#other_search_options button#machine_section_link').click
 
       expect(page).to have_select('by_machine_id', with_options: ['foo (stern)', 'bar (bally, 2000)', 'baz (2001)'])
     end
@@ -776,7 +851,7 @@ describe LocationMachineXrefsController do
 
       sleep(1)
 
-      expect(URI.parse(page.find_link('foo')['href']).to_s).to eq('http://foo.com')
+      expect(URI.parse(page.find_link('foo')['href']).to_s).to eq('http://foo.com/')
       expect(URI.parse(page.find_link('bar')['href']).to_s).to eq('http://ipdb.org/search.pl?name=bar;qh=checked;searchtype=advanced')
     end
   end
