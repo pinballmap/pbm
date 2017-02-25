@@ -4,10 +4,10 @@
 			Why join?
 		</p>
 		<p class="palatino">
-			If you're not logged in, the maps are read-only. So you need to sign up and login to add and remove machines from places, add comments about machines, etc. The maps are kept up to date because of you! So please sign up and help out.
+			Because updating pinbal maps is fun! The maps are kept up to date by you! Signing up is simple, and will allow you to add and remove machines from places, add comments about machines, etc. Plus you can track your contributions.
 		</p>
 		<p class="palatino">
-			We won't share your email address with anyone. We may add you to our own mailing list, but you'll be able to opt out of that. View <a href="https://pinballmap.com/privacy">Privacy Policy</a>.
+			We won't share your email address with anyone! We may add you to our own mailing list (if we make one), but you'll be able to opt out of that. View <a href="https://pinballmap.com/privacy">Privacy Policy</a>.
 		</p>
 	</div>
 	<div id="login" class="login_new_div">
@@ -17,10 +17,10 @@
 		  <%= f.error_notification %>
 
 		  <div class="form-inputs">
-		  	<span class="why_login">(For your username, how about your initials?)</span>
+		  	<span class="why_login">(How about your initials?)</span>
 		    <%= f.input :username, :required => true, :autofocus => true, as: :string %>
 		    <%= f.input :email, :required => true, :autofocus => true, :input_html => {:minlength => 4} %>
-		    <span class="why_login">(For your password, choose one that you don't use elsewhere)</span>
+		    <span class="why_login">(Choose a password that you don't use elsewhere)</span>
 		    <%= f.input :password, :required => true %>
 		    <%= f.input :password_confirmation, :required => true %>
 		  </div>
