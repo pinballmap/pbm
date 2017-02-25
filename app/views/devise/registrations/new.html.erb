@@ -19,7 +19,7 @@
 		  <div class="form-inputs">
 		  	<span class="why_login">(For your username, how about your initials?)</span>
 		    <%= f.input :username, :required => true, :autofocus => true, as: :string %>
-		    <%= f.input :email, :required => true, :autofocus => true, :minlength => "4" %>
+		    <%= f.input :email, :required => true, :autofocus => true, :input_html => {:minlength => 4} %>
 		    <span class="why_login">(For your password, choose one that you don't use elsewhere)</span>
 		    <%= f.input :password, :required => true %>
 		    <%= f.input :password_confirmation, :required => true %>
