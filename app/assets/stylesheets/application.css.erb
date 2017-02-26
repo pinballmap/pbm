@@ -1632,13 +1632,14 @@ input#initials {
   height: 40px;
   width: 40px;
   display: inline-block;
-  background: url(<%= asset_path 'confirm-sprites.png' %>) no-repeat 0px -80px;
+  background-size: 40px !important;
+  background: url(<%= asset_path 'confirm-sprites.png' %>) no-repeat 0px top;
 }
 .confirm_button:hover {
   background-position: 0px -40px;
 }
 .confirm_button:active {
-  background-position: top;
+  background-position: 0px -80px;
 }
 .confirm_location_button:hover:after {
   content: "Confirm location is up to date";
@@ -1725,6 +1726,7 @@ location_detail .phone {
   height: 40px;
   width: 40px;
   display: inline-block;
+  background-size: 40px !important;
   background: url(<%= asset_path 'comment-sprites.png' %>) no-repeat top;
 }
 .location_description .comment_image:hover {
@@ -1737,6 +1739,7 @@ div.comment_image .comment_image {
   height: 40px;
   width: 40px;
   display: inline-block;
+  background-size: 40px !important;
   background: url(<%= asset_path 'comment-sprites.png' %>) no-repeat 0 -80px;
 }
 div.comment_image .comment_image:hover {
@@ -1749,6 +1752,7 @@ div.comment_image .comment_image:active {
   height: 40px;
   width: 40px;
   display: inline-block;
+  background-size: 40px !important;
   background: url(<%= asset_path 'meta-sprites.png' %>) no-repeat 0px -80px;
 }
 .meta_image:hover {
