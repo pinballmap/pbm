@@ -34,18 +34,18 @@
       #region_map
     - count = 1
     - @all_regions.each do |r|
-      =link_to "/#{r.name}" do
-        %div.map_summary
-          %div.region_name_container
-            %div.region_name_inner
-              %span.region_name
-                #{r.full_name}
-          %div.map_summary_info
-
-            %span.map_summary_info
-              = "#{r.locations_count} Locations"
-              %br/
-              = "#{r.machines_count} Machines"
+      %div.map_summary_outer
+        =link_to "/#{r.name}" do
+          %div.map_summary
+            %div.region_name_container
+              %div.region_name_inner
+                %span.region_name
+                  #{r.full_name}
+            %div.map_summary_info
+              %span.map_summary_locations
+                = "#{r.locations_count} Locations"
+              %span.map_summary_machines
+                = "#{r.machines_count} Machines"
   .clear
   %br/
 

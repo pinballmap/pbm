@@ -2251,7 +2251,7 @@ img.header_image {
   margin: 0 0 0 320px;
 }
 
-.map_summary {
+.map_summary_outer {
   height: 170px;
   width: 170px;
   text-align: center;
@@ -2259,10 +2259,12 @@ img.header_image {
   margin: 0 10px 10px 0;
   background: #faf9fa;
 }
-div.map_summary_info img {
-  position: relative;
-  height: 30px;
-  margin-top: -10px;
+.map_summary_outer a {
+  text-decoration: none;
+}
+.map_summary_outer a:hover {
+  text-decoration: none;
+  color: #303030;
 }
 div.map_summary_info {
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
@@ -2271,15 +2273,19 @@ div.map_summary_info {
   color: #303030;
   margin-top: 25px;
   font-weight: normal;
+  text-decoration: none;
 }
-.map_summary_info {
+div.map_summary_info {
   display: block;
-  margin-top: 15px;
 }
-.map_summary .dark {
+.map_summary_locations, .map_summary_machines {
+  display: block;
+}
+.map_summary_outer .dark {
   font-weight: normal;
 }
-.map_summary:hover {
+
+.map_summary_outer:hover {
   background: #f0f9ff;
 }
 .itemBackground, .itemLink {
