@@ -6,7 +6,7 @@
       - if @search_options[key]['autocomplete']
         = select_tag "by_#{key}_id", options_for_select([['All', '']]) + options_from_collection_for_select(@search_options[key]['search_collection'], @search_options[key]['id'], @search_options[key]['name'], params["by_#{key}"])
         %div.search_field_container
-          = text_field_tag "by_#{key}_name", params["by_#{key}_name"], :class => 'lookup_search_input'
+          = text_field_tag "by_#{key}_name", params["by_#{key}_name"], :class => 'lookup_search_input', :placeholder => 'type here...'
           = image_submit_tag('search_icon.png', :class => 'search', :id => "#{key}_search_button")
       - if (['city', 'zone', 'type'].include? key)
         = select_tag "by_#{key}_id", options_for_select([['All', '']]) + options_from_collection_for_select(@search_options[key]['search_collection'], @search_options[key]['id'], @search_options[key]['name'], params["by_#{key}"])
