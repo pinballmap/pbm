@@ -56,5 +56,6 @@ cucumber:
 * `curl get.pow.cx | sh`
 * `cd ~/.pow`
 * `ln -s /Projects-Path/pbm`
+* `open http://pbm.dev`
 
 If the site loads properly it will be an empty version of pinballmap.com, then ask Scott for a data dump so you can have a full set of data to work with.
