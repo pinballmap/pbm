@@ -753,7 +753,7 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-  padding: 0 5px;
+  padding: 5px 25px;
   background: #303030;
   color: #EFEFEF;
   font-weight: bold;
@@ -822,7 +822,6 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  border: 1px solid #9fa7ae;
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
   font-weight: normal;
 }
@@ -1633,13 +1632,14 @@ input#initials {
   height: 40px;
   width: 40px;
   display: inline-block;
-  background: url(<%= asset_path 'confirm-sprites.png' %>) no-repeat 0px -80px;
+  background-size: 40px !important;
+  background: url(<%= asset_path 'confirm-sprites.png' %>) no-repeat 0px top;
 }
 .confirm_button:hover {
   background-position: 0px -40px;
 }
 .confirm_button:active {
-  background-position: top;
+  background-position: 0px -80px;
 }
 .confirm_location_button:hover:after {
   content: "Confirm location is up to date";
@@ -1726,6 +1726,7 @@ location_detail .phone {
   height: 40px;
   width: 40px;
   display: inline-block;
+  background-size: 40px !important;
   background: url(<%= asset_path 'comment-sprites.png' %>) no-repeat top;
 }
 .location_description .comment_image:hover {
@@ -1738,6 +1739,7 @@ div.comment_image .comment_image {
   height: 40px;
   width: 40px;
   display: inline-block;
+  background-size: 40px !important;
   background: url(<%= asset_path 'comment-sprites.png' %>) no-repeat 0 -80px;
 }
 div.comment_image .comment_image:hover {
@@ -1750,6 +1752,7 @@ div.comment_image .comment_image:active {
   height: 40px;
   width: 40px;
   display: inline-block;
+  background-size: 40px !important;
   background: url(<%= asset_path 'meta-sprites.png' %>) no-repeat 0px -80px;
 }
 .meta_image:hover {
@@ -2220,11 +2223,21 @@ ul.stufflike li, ul.list li {
   padding-top: 5px !important;
   width: 100% !important;
 }
-.local_logo {
+#locations p.local_logo {
+  background-color: transparent !important;
   text-align: center;
 }
+#locations p.local_logo a img{
+  background-color: transparent !important;
+  padding: 0;
+}
 .local_logo img {
-    max-width: 460px;
+  max-width: 460px;
+  padding: 10px;
+  background-color: #EFEFEF;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
 }
 img.header_image {
   margin-left: 30px;
@@ -2238,7 +2251,7 @@ img.header_image {
   margin: 0 0 0 320px;
 }
 
-.map_summary {
+.map_summary_outer {
   height: 170px;
   width: 170px;
   text-align: center;
@@ -2246,10 +2259,12 @@ img.header_image {
   margin: 0 10px 10px 0;
   background: #faf9fa;
 }
-div.map_summary_info img {
-  position: relative;
-  height: 30px;
-  margin-top: -10px;
+.map_summary_outer a {
+  text-decoration: none;
+}
+.map_summary_outer a:hover {
+  text-decoration: none;
+  color: #303030;
 }
 div.map_summary_info {
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
@@ -2258,15 +2273,19 @@ div.map_summary_info {
   color: #303030;
   margin-top: 25px;
   font-weight: normal;
+  text-decoration: none;
 }
-.map_summary_info {
+div.map_summary_info {
   display: block;
-  margin-top: 15px;
 }
-.map_summary .dark {
+.map_summary_locations, .map_summary_machines {
+  display: block;
+}
+.map_summary_outer .dark {
   font-weight: normal;
 }
-.map_summary:hover {
+
+.map_summary_outer:hover {
   background: #f0f9ff;
 }
 .itemBackground, .itemLink {
