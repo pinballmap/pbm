@@ -140,6 +140,7 @@
 .confirm_location span.last_updated {
   padding: 8px 5px;
   font-size: 16px;
+  width: 100%;
 }
 .confirm_location span .last_updated_username {
   font-size: 16px;
@@ -152,7 +153,6 @@
 }
 .confirm_inner {
   width: auto;
-  margin-right: 10px;
 }
 span.region_name_page a {
   font-size: 30px;
@@ -323,10 +323,6 @@ div.pick_a_map {
   font-size: 20px;
 }
 
-.map_summary {
-  margin-right: 5px;
-}
-
 #welcome {
   width: auto;
   min-width: 320px;
@@ -346,7 +342,14 @@ div.pick_a_map {
 }
 
 #map_summaries {
-  margin: 0 0 0 10px;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+}
+.map_summary_outer {
+  display: inline-block;
+  float: none;
+  margin: 0 5px 5px 0;
 }
 
 #locations {
@@ -434,6 +437,7 @@ div.pick_a_map {
 
 #form select {
   margin-right: 5px;
+  height: 32px;
 }
 
 #form input.lookup_search_input,
@@ -477,7 +481,7 @@ div.pick_a_map {
 .search_field_container, .search_other_button {
   width: auto;
   float: none;
-  height: 70px;
+  height: 80px;
   border: none;
   background: transparent;
 }
@@ -492,7 +496,7 @@ div.pick_a_map {
 }
 #form .search_field_container .search,
 #form .search_other_button input {
-  margin: 10px 0 0 0;
+  margin: 10px auto 0;
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
   border: 2px solid #A9A9A9;
@@ -500,6 +504,10 @@ div.pick_a_map {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
+  float: none;
+  width: auto;
+  height: 36px;
+  padding: 3px 30%;
 }
 
 #search_link_wrapper {

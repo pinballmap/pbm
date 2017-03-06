@@ -5,7 +5,7 @@
       %p
         PinballMap.com is a crowdsourced pinball locator, showing all the public pinball machines in select regions of North America.
       %p
-        Pick a region to find pinball machines to play near you! Help keep your map up to date by adding and removing machines from locations, and by submitting new locations that aren't already listed.
+        Pick a region to find pinball machines to play near you! Help keep your map up to date by adding and removing machines to/from locations, and by submitting new locations that aren't already listed.
       %p
         Each regional map is curated by a local administrator, often with the support of a league.
       %p
@@ -15,7 +15,7 @@
         If you'd like to see your city on this site,
         =link_to 'contact us!', 'portland/about', :class => 'apps_link'
       %p
-        = link_to 'Pinball Map open source code', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
+        = link_to 'Pinball Map Code', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
         = link_to 'Pinball Map API', 'https://pinballmap.com/api/v1/docs', :class => 'apps_link'
     %div.home_intro
       %span.twitter_box
@@ -34,18 +34,18 @@
       #region_map
     - count = 1
     - @all_regions.each do |r|
-      =link_to "/#{r.name}" do
-        %div.map_summary
-          %div.region_name_container
-            %div.region_name_inner
-              %span.region_name
-                #{r.full_name}
-          %div.map_summary_info
-
-            %span.map_summary_info
-              = "#{r.locations_count} Locations"
-              %br/
-              = "#{r.machines_count} Machines"
+      %div.map_summary_outer
+        =link_to "/#{r.name}" do
+          %div.map_summary
+            %div.region_name_container
+              %div.region_name_inner
+                %span.region_name
+                  #{r.full_name}
+            %div.map_summary_info
+              %span.map_summary_locations
+                = "#{r.locations_count} Locations"
+              %span.map_summary_machines
+                = "#{r.machines_count} Machines"
   .clear
   %br/
 
