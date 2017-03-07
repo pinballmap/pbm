@@ -52,6 +52,13 @@ Pbm::Application.configure do
 
   config.action_mailer.default_url_options = { :protocol => 'https', :host => 'pinballmap.com' }
 
+  config.force_ssl = true
+  config.ssl_options = {
+    redirect: {
+      exclude: -> request { request.path =~ /api/ }
+    }
+  }
+
   config.middleware.use ExceptionNotification::Rack,
     :email => {
       :deliver_with => :deliver, # Rails >= 4.2.1 do not need this option since it defaults to :deliver_now
