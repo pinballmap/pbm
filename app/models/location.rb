@@ -189,7 +189,7 @@ class Location < ActiveRecord::Base
       self.last_updated_by_user_id = user ? user.id : nil
       save
 
-      UserSubmission.create(region_id: region.id, location: self, submission_type: UserSubmission::LOCATION_METADATA_TYPE, submission: @updates.join("\n"), user_id: user ? user.id : nil)
+      UserSubmission.create(region_id: region.id, location: self, submission_type: UserSubmission::LOCATION_METADATA_TYPE, submission: @updates.join("\n") + " to #{name}", user_id: user ? user.id : nil)
 
       [self, 'location']
     else
