@@ -146,8 +146,12 @@ RailsAdmin.config do |config|
       field :state, :string
       field :zip, :string
       field :phone, :string
-      field :lat, :decimal
-      field :lon, :decimal
+      field :lat, :decimal do
+        required false
+      end
+      field :lon, :decimal do
+        required false
+      end
       field :website, :string
       field :description, :string
       field :region_id do
