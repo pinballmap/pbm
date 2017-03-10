@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Location do
   before(:each) do
-    @l = FactoryGirl.create(:location)
+    @l = FactoryGirl.create(:location, name: 'quarterworld')
     @m1 = FactoryGirl.create(:machine, name: 'Sassy')
     @m2 = FactoryGirl.create(:machine, name: 'Cleo')
     @lmx1 = FactoryGirl.create(:location_machine_xref, location: @l, machine: @m1, created_at: '2014-01-15 04:00:00')
@@ -117,7 +117,7 @@ describe Location do
       user_submission = UserSubmission.third
 
       expect(user_submission.user_id).to eq(u.id)
-      expect(user_submission.submission).to eq('Changed location description to foo')
+      expect(user_submission.submission).to eq('Changed location description to foo to quarterworld')
       expect(user_submission.location).to eq(@l)
     end
 
@@ -127,7 +127,7 @@ describe Location do
       user_submission = UserSubmission.third
 
       expect(user_submission.user_id).to eq(nil)
-      expect(user_submission.submission).to eq('Changed location description to foo')
+      expect(user_submission.submission).to eq('Changed location description to foo to quarterworld')
     end
 
     it 'creates a user submission for updated metadata -- all fields' do
@@ -145,7 +145,7 @@ Changed location description to foo
 Changed phone # to 555-555-5555
 Changed website to http://www.goo.com
 Changed operator to operator
-Changed location type to bar
+Changed location type to bar to quarterworld
 HERE
     end
 
