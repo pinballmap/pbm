@@ -34,8 +34,11 @@
     #by_type_id, #by_operator_id, #by_zone_id, #by_city_id {
       width: 155px;
     }
-    #by_location_id, #by_machine_id {
+    form select#by_location_id, form select#by_machine_id {
       width: 145px;
+    }
+    span.or {
+      width: 17px;
     }
     #form input.lookup_search_input {
       width: 200px;
