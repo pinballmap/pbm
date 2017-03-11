@@ -240,6 +240,46 @@ describe PagesController do
     end
   end
 
+  describe 'admin', type: :feature, js: true do
+    it 'presents a link to the admin pages if you are an admin' do
+      visit '/'
+
+      expect(page).to_not have_content('Admin Menu')
+      expect(page).to have_content('Login')
+
+      visit '/portland'
+
+      expect(page).to_not have_content('Admin Menu')
+      expect(page).to have_content('Login')
+
+      user = FactoryGirl.create(:user)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(user).unshift('User'))
+
+      visit '/'
+
+      expect(page).to_not have_content('Admin Menu')
+      expect(page).to have_content('Logout')
+
+      visit '/portland'
+
+      expect(page).to_not have_content('Admin Menu')
+      expect(page).to have_content('Logout')
+
+      user = FactoryGirl.create(:user, region_id: @region.id)
+      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(user).unshift('User'))
+
+      visit '/'
+
+      expect(page).to have_content('Admin Menu')
+      expect(page).to have_content('Logout')
+
+      visit '/portland'
+
+      expect(page).to have_content('Admin Menu')
+      expect(page).to have_content('Logout')
+    end
+  end
+
   describe 'get_a_profile', type: :feature, js: true do
     it 'redirects you to your user profile page if you are logged in' do
       visit '/inspire_profile'
