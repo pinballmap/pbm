@@ -36,6 +36,10 @@
             %div.login_inner
               %span.darkb.login_inner
                 = link_to 'Logout', "https://#{request.host_with_port}/users/logout", :class => "loggedin"
+                - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
+                  %span.login_slash
+                    |
+                  = link_to 'Admin Menu', "https://#{request.host_with_port}/admin", :class => "loggedin"
         %div.closest_locations_outer
           %div.closest_locations_inner
             %span.darkb.closest_locations{:onclick => "findClosestLocations('#{@region.name}')"}
@@ -73,6 +77,10 @@
             %div.login_inner
               %span.darkb.login_inner
                 = link_to 'Logout', "https://#{request.host_with_port}/users/logout", :class => "loggedin"
+                - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
+                  %span.login_slash
+                    |
+                  = link_to 'Admin Menu', "https://#{request.host_with_port}/admin", :class => "loggedin"
         %div.geo_header_outer
           %div.geo_header_inner
             %span.darkb.geo_header{:onclick => "findClosestRegion()"}
