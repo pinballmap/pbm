@@ -472,18 +472,27 @@ div.pick_a_map {
   float: none;
 }
 
-#by_type_id, #by_operator_id, #by_location_id, #by_machine_id, #by_zone_id, #by_city_id {
+#by_type_id, #by_operator_id, form select#by_location_id, form select#by_machine_id, #by_zone_id, #by_city_id {
   font-size: 18px;
   width: 100%;
   margin: 5px 0 10px;
 }
-
+span.or {
+  height: 32px;
+  line-height: 32px;
+  background: none;
+  color: #A9A9A9;
+  display: block;
+}
 .search_field_container, .search_other_button {
   width: auto;
   float: none;
-  height: 80px;
+  height: 32px;
   border: none;
   background: transparent;
+}
+.search_field_container {
+  padding-left: 20px;
 }
 .search_other_button {
   height: 40px;
@@ -494,7 +503,7 @@ div.pick_a_map {
   background: #FFFFFF;
   height: 32px;
 }
-#form .search_field_container .search,
+#form .search,
 #form .search_other_button input {
   margin: 10px auto 0;
   border-bottom-right-radius: 0;

@@ -268,7 +268,7 @@ p.notice {
   position: fixed;
   background: #fdf0eb none repeat scroll 0% 0%;
   padding: 10px;
-  right: 20px;
+  left: 20px;
   z-index: 4000;
   border: 3px solid black;
 }
@@ -729,6 +729,17 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
   padding: 7px 5px 3px;
   height: 33px;
 }
+span.or {
+  font-size: 16px;
+  position: absolute;
+  background: #A9A9A9;
+  height: 28px;
+  line-height: 26px;
+  width: 22px;
+  text-align: center;
+  color: #FFFFFF;
+  font-style: italic;
+}
 .search_field_container {
   width: 400px;
   height: 28px;
@@ -741,6 +752,12 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
+  border-top-left-radius: 0;
+  -webkit-border-top-left-radius: 0;
+  -moz-border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  -webkit-border-bottom-left-radius: 0;
+  -moz-border-bottom-left-radius: 0;
 }
 #form .search_field_container .search,
 #form .search_other_button input {
@@ -926,9 +943,15 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
   width: 300px;
   font-size: 16px !important;
 }
-#by_location_id, #by_machine_id {
+form select#by_location_id, form select#by_machine_id {
   width: 200px;
   font-size: 16px !important;
+  border-top-right-radius: 0;
+  -webkit-border-top-right-radius: 0;
+  -moz-border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  -webkit-border-bottom-right-radius: 0;
+  -moz-border-bottom-right-radius: 0;
 }
 .active_section_link {
   background-color: #303030 !important;
