@@ -22,6 +22,22 @@ describe Api::V1::UsersController, type: :request do
       expect(response.body).to include('abc123')
     end
 
+    it 'handles username/email as case insensitive' do
+      get '/api/v1/users/auth_details.json', login: 'yEAh@ok.com', password: 'okokok'
+
+      expect(response).to be_success
+      expect(response.body).to include('ssw')
+      expect(response.body).to include('yeah@ok.com')
+      expect(response.body).to include('abc123')
+
+      get '/api/v1/users/auth_details.json', login: 'sSW', password: 'okokok'
+
+      expect(response).to be_success
+      expect(response.body).to include('ssw')
+      expect(response.body).to include('yeah@ok.com')
+      expect(response.body).to include('abc123')
+    end
+
     it 'requires either username or user_email and password' do
       get '/api/v1/users/auth_details.json', password: 'okokok'
 

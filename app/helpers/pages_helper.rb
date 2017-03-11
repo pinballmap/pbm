@@ -83,7 +83,7 @@ module PagesHelper
     desc = ''
 
     if path == app_path
-      desc = "Pinball Map App for iOS and Android. Find pinball machines to play near you! Update the app like the true champ you are."
+      desc = 'Pinball Map App for iOS and Android. Find pinball machines to play near you! Update the app like the true champ you are.'
     elsif path == app_support_path
       desc = 'Pinball Map iOS screenshots, support, and FAQ'
     elsif path == faq_path
@@ -91,19 +91,19 @@ module PagesHelper
     elsif path == store_path
       desc = "Pinball Map Store! We have a t-shirt for sale. Get it while it's hot (pink)."
     elsif path == donate_path
-      desc = "Donate to Pinball Map. Donations help us manage the costs of running the site. Thank you!"
+      desc = 'Donate to Pinball Map. Donations help us manage the costs of running the site. Thank you!'
     elsif path =~ /profile/
       desc = "The user profile tracks your Pinball Map contributions. It's a concise overview of your edits, high scores, and favorite locations."
     elsif path =~ /login/
       desc = 'Log in to Pinball Map and help keep it up to date!'
     elsif path =~ /join/
-      desc = "Join Pinball Map and help keep your local pinball map up to date! This site relies on user contributions. Joining is quick and easy!"
+      desc = 'Join Pinball Map and help keep your local pinball map up to date! This site relies on user contributions. Joining is quick and easy!'
     elsif path =~ /password/
       desc = 'If you forgot your Pinball Map password, you can recover it from here.'
     elsif path =~ /confirmation/
-      desc = "The email confirmation can be resent from this page."
+      desc = 'The email confirmation can be resent from this page.'
     else
-      desc = "The Pinball Map website and free mobile app will help you places to play pinball! Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."
+      desc = 'The Pinball Map website and free mobile app will help you places to play pinball! Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
     end
 
     desc
