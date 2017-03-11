@@ -14,7 +14,7 @@ module Api
           return
         end
 
-        user = User.find_by_username(params[:login]) || User.find_by_email(params[:login])
+        user = User.where('lower(username) = ?', params[:login].downcase).first || User.where('lower(email) = ?', params[:login].downcase).first
 
         unless user
           return_response('Unknown user', 'errors')
