@@ -9,3 +9,4 @@ database.yml
 .DS_Store
 coverage
 vendor/ruby
+.coveralls.yml
