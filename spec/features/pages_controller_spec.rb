@@ -244,12 +244,12 @@ describe PagesController do
     it 'presents a link to the admin pages if you are an admin' do
       visit '/'
 
-      expect(page).to_not have_content('Admin Menu')
+      expect(page).to_not have_content('Admin')
       expect(page).to have_content('Login')
 
       visit '/portland'
 
-      expect(page).to_not have_content('Admin Menu')
+      expect(page).to_not have_content('Admin')
       expect(page).to have_content('Login')
 
       user = FactoryGirl.create(:user)
@@ -257,12 +257,12 @@ describe PagesController do
 
       visit '/'
 
-      expect(page).to_not have_content('Admin Menu')
+      expect(page).to_not have_content('Admin')
       expect(page).to have_content('Logout')
 
       visit '/portland'
 
-      expect(page).to_not have_content('Admin Menu')
+      expect(page).to_not have_content('Admin')
       expect(page).to have_content('Logout')
 
       user = FactoryGirl.create(:user, region_id: @region.id)
@@ -270,12 +270,12 @@ describe PagesController do
 
       visit '/'
 
-      expect(page).to have_content('Admin Menu')
+      expect(page).to have_content('Admin')
       expect(page).to have_content('Logout')
 
       visit '/portland'
 
-      expect(page).to have_content('Admin Menu')
+      expect(page).to have_content('Admin')
       expect(page).to have_content('Logout')
     end
   end

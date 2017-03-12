@@ -39,7 +39,7 @@
                 - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
                   %span.login_slash
                     |
-                  = link_to 'Admin Menu', "https://#{request.host_with_port}/admin", :class => "loggedin"
+                  = link_to 'Admin', "https://#{request.host_with_port}/admin", :class => "loggedin"
         %div.closest_locations_outer
           %div.closest_locations_inner
             %span.darkb.closest_locations{:onclick => "findClosestLocations('#{@region.name}')"}
@@ -80,7 +80,7 @@
                 - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
                   %span.login_slash
                     |
-                  = link_to 'Admin Menu', "https://#{request.host_with_port}/admin", :class => "loggedin"
+                  = link_to 'Admin', "https://#{request.host_with_port}/admin", :class => "loggedin"
         %div.geo_header_outer
           %div.geo_header_inner
             %span.darkb.geo_header{:onclick => "findClosestRegion()"}
@@ -99,6 +99,10 @@
               = link_to 'Join', "https://#{request.host_with_port}/users/join"
             - else
               = link_to 'Logout', "https://#{request.host_with_port}/users/logout"
+            - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
+              %span.login_slash
+                |
+              = link_to 'Admin', "https://#{request.host_with_port}/admin"
         %div.geo_header_wrapper
           %span.darkb{:onclick => "findClosestRegion()"}
             = link_to 'Find Your Closest Map', '#'
@@ -124,6 +128,10 @@
               = link_to 'Join', "https://#{request.host_with_port}/users/join"
             - else
               = link_to 'Logout', "https://#{request.host_with_port}/users/logout"
+            - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
+              %span.login_slash
+                |
+              = link_to 'Admin', "https://#{request.host_with_port}/admin"
         - if user_signed_in?
           =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'} header_image_login", :alt => 'Pinball Map Logo'), root_path
         - else
