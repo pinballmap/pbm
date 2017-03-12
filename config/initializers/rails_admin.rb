@@ -159,6 +159,12 @@ RailsAdmin.config do |config|
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.is_super_admin ? nil : Authorization.current_user.region_id, :object_type => 'location'}
         end
       end
+      field :location_machine_xrefs do
+        visible false
+      end
+      field :machines do
+        orderable true
+      end
     end
     export do; end
     update do; end
