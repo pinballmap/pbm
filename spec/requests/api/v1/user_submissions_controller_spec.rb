@@ -29,5 +29,4 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response.body).to_not include('hope this does not show')
     end
   end
-
 end

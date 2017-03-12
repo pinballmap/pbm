@@ -25,6 +25,8 @@ describe Location do
   end
 
   describe 'website validation' do
+    RSpec::Expectations.configuration.on_potential_false_positives = :nothing
+
     it 'should allow blank websites' do
       @l.update_attributes(website: '')
       expect(lambda do

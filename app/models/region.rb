@@ -64,10 +64,9 @@ class Region < ActiveRecord::Base
   end
 
   def primary_email_contact
-    case
-    when users.empty?
+    if users.empty?
       'email_not_found@noemailfound.noemail'
-    when users.where(is_primary_email_contact: true).any?
+    elsif users.where(is_primary_email_contact: true).any?
       users
         .where(is_primary_email_contact: true)
         .first
@@ -80,7 +79,7 @@ class Region < ActiveRecord::Base
   end
 
   def machineless_locations
-    locations.select { |location| location.machines.size == 0 }
+    locations.select { |location| location.machines.empty? }
   end
 
   def locations_count
@@ -94,9 +93,9 @@ class Region < ActiveRecord::Base
   def available_search_sections
     sections = %w(location city machine type)
 
-    sections.push('operator') if operators.size > 0
+    sections.push('operator') unless operators.empty?
 
-    sections.push('zone') if zones.size > 0
+    sections.push('zone') unless zones.empty?
 
     '[' + sections.map { |s| "'" + s + "'" }.join(', ') + ']'
   end
@@ -115,7 +114,7 @@ class Region < ActiveRecord::Base
   def filtered_region_links
     links = {}
     region_link_xrefs.each do |rlx|
-      (links[(rlx.category && !rlx.category.blank?) ? rlx.category : 'Links'] ||= []) << rlx
+      (links[rlx.category && !rlx.category.blank? ? rlx.category : 'Links'] ||= []) << rlx
     end
 
     links
@@ -142,7 +141,7 @@ List of Empty Locations:
 #{location_machine_xrefs.select { |lmx| !lmx.created_at.nil? && lmx.created_at.between?(start_of_week, end_of_week) }.count} machine(s) added by users this week
 #{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.count} machine(s) removed by users this week
 #{full_name} is listing #{machines_count} machines and #{locations_count} locations
-#{events.select(&:active?).count } event(s) listed
+#{events.select(&:active?).count} event(s) listed
 #{events.select { |e| !e.created_at.nil? && e.created_at.between?(start_of_week, end_of_week) && (e.end_date.nil? || e.end_date >= Date.today) }.count} event(s) added this week
 #{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::CONTACT_US_TYPE }.count} "contact us" message(s) sent to you
 HERE
@@ -152,7 +151,7 @@ HERE
     return unless should_auto_delete_empty_locations
 
     locations.each do |l|
-      l.destroy if (l.location_machine_xrefs.count == 0)
+      l.destroy if l.location_machine_xrefs.count.zero?
     end
   end
 end

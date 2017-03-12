@@ -512,7 +512,6 @@ HERE
   end
 
   describe 'mobile', type: :feature, js: true do
-
     it 'defaults to portland if no region is given' do
       visit '/iphone.html?init=1'
 
@@ -928,6 +927,5 @@ XML
       expect(current_url).to match(%r{\/portland\/location_machine_xrefs\/1\/remove_confirmation.xml})
       expect(sasston.machines.size).to eq(0)
     end
-
   end
 end

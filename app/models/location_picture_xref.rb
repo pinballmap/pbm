@@ -20,6 +20,5 @@ class LocationPictureXref < ActiveRecord::Base
 
   do_not_validate_attachment_file_type :photo
 
-  def rails_admin_default_object_label_method
-  end
+  def rails_admin_default_object_label_method; end
 end

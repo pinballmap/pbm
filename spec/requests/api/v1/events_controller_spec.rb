@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Api::V1::EventsController, type: :request do
-
   describe '#index' do
     before(:each) do
       @region = FactoryGirl.create(:region, name: 'portland')

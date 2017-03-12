@@ -14,7 +14,7 @@ Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhan
 * `cd /Projects-Path/`
 * `git clone https://github.com/scottwainstock/pbm.git` (*I used the SourceTree app instead.*)
 * `cd /Projects-Path/pbm`
-* `rvm --default use ruby-2.1.2`
+* `rvm --default use ruby-2.1.7`
 * `bundle install`
 * `selenium install`
 * `brew update && brew install phantomjs`

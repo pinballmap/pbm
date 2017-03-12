@@ -690,7 +690,7 @@ describe LocationMachineXrefsController do
       sleep(1)
 
       expect(page).to have_content('Cleo')
-      expect(page).to have_link('Quarter Bean', 'website.com')
+      expect(page).to have_link('Quarter Bean')
 
       l = FactoryGirl.create(:location, id: 44, region: @region, name: 'Sass', operator: FactoryGirl.create(:operator, name: 'Sass Bean', region: @region, website: nil))
 

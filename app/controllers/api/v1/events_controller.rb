@@ -13,7 +13,7 @@ module Api
         events = apply_scopes(Event)
         events.select!(&:active?)
 
-        if params[:sorted] && events.size > 0
+        if params[:sorted] && !events.empty?
           apply_special_sort_and_respond(events)
         else
           apply_regular_sort_and_respond(events)

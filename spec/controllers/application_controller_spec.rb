@@ -5,7 +5,7 @@ describe ApplicationController, type: :controller do
     def index
       return '' if mobile_device?
 
-      fail CanCan::AccessDenied
+      raise CanCan::AccessDenied
     end
 
     def after_sign_in_path_for(resource)

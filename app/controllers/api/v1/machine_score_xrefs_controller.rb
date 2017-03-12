@@ -28,7 +28,7 @@ module Api
 
         score.gsub!(/[^0-9]/, '')
 
-        if score.nil? || score.empty? || (score.to_i == 0)
+        if score.nil? || score.empty? || score.to_i.zero?
           return_response('Score can not be blank and must be a numeric value', 'errors')
           return
         end
@@ -48,11 +48,11 @@ module Api
           return_response(msx.errors.full_messages, 'errors')
         end
 
-        rescue ActiveRecord::RecordNotFound
-          return_response('Failed to find machine', 'errors')
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find machine', 'errors')
 
-        rescue ActiveRecord::StatementInvalid
-          return_response('Number is too large. Please enter a valid score.', 'errors')
+      rescue ActiveRecord::StatementInvalid
+        return_response('Number is too large. Please enter a valid score.', 'errors')
       end
 
       api :GET, '/api/v1/machine_score_xrefs/:id.json', "View all high scores for a location's machine"
@@ -64,8 +64,8 @@ module Api
         msxes = MachineScoreXref.where(location_machine_xref_id: lmx.id).order('score desc')
         return_response(msxes, 'machine_scores', [], [:username])
 
-        rescue ActiveRecord::RecordNotFound
-          return_response('Failed to find machine', 'errors')
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find machine', 'errors')
       end
     end
   end

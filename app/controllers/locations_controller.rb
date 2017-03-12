@@ -114,7 +114,7 @@ class LocationsController < InheritedResources::Base
     if (lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine.id))
       id = lmx.id
 
-      user_id = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user.id
+      user_id = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user.id
       lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: user_id)
 
       redirect_to "/#{region}/location_machine_xrefs/#{id}/remove_confirmation.#{format}"

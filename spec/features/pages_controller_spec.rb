@@ -150,7 +150,6 @@ describe PagesController do
     end
 
     it 'does not show form if not logged in' do
-
       visit "/#{@region.name}/suggest"
       expect(page).to have_content('But first! We ask that you Login. Thank you!')
     end
@@ -173,7 +172,6 @@ describe PagesController do
     end
 
     it 'shows the proper page title' do
-
       visit '/'
 
       expect(page).to have_title('Pinball Map')
@@ -232,7 +230,6 @@ describe PagesController do
     end
 
     it 'shows the proper page title' do
-
       visit '/portland'
 
       expect(page).to have_title('Portland Pinball Map')

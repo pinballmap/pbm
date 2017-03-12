@@ -14,6 +14,20 @@ CyclomaticComplexity:
   Max: 15
 PerceivedComplexity:
   Max: 15
+AbcSize:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+IndentArray:
+  Enabled: false
+RequireParentheses:
+  Enabled: false
+IfInsideElse:
+  Enabled: false
+IdenticalConditionalBranches:
+  Enabled: false
+NonLocalExitFromIterator:
+  Enabled: false
 
 AllCops:
   Exclude:

@@ -1,5 +1,6 @@
 module ControllerHelpers
   def login(user = double('user'))
+    allow_message_expectations_on_nil
     if user.nil?
       allow(request.env['warden']).to receive(:authenticate!).and_throw(:warden, scope: :user)
       allow(controller).to receive(:current_user).and_return(nil)

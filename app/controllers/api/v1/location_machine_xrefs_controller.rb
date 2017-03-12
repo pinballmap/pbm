@@ -77,8 +77,8 @@ module Api
 
         return_response(lmx, 'location_machine', [], [:last_updated_by_username, :machine_conditions])
 
-        rescue ActiveRecord::RecordNotFound
-          return_response('Failed to find machine', 'errors')
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find machine', 'errors')
       end
 
       api :DESTROY, '/api/v1/location_machine_xrefs/:id.json', 'Remove a machine from a location'
@@ -97,8 +97,8 @@ module Api
 
         return_response('Successfully deleted lmx #' + lmx.id.to_s, 'msg')
 
-        rescue ActiveRecord::RecordNotFound
-          return_response('Failed to find machine', 'errors')
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find machine', 'errors')
       end
     end
   end

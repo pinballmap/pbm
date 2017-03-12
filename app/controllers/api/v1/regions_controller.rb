@@ -51,8 +51,8 @@ module Api
 
         return_response(region, 'region', [], [:primary_email_contact, :all_admin_email_addresses, :filtered_region_links, :n_high_rollers])
 
-        rescue ActiveRecord::RecordNotFound
-          return_response('Failed to find region', 'errors')
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find region', 'errors')
       end
 
       api :POST, '/api/v1/regions/suggest.json', 'Suggest a new region to add to the map'
@@ -94,8 +94,8 @@ module Api
         send_admin_notification(params, region, Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user)
         return_response('Thanks for the message.', 'msg')
 
-        rescue ActiveRecord::RecordNotFound
-          return_response('Failed to find region', 'errors')
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find region', 'errors')
       end
 
       api :POST, '/api/v1/regions/app_comment.json', 'Send comments about the app'
@@ -124,8 +124,8 @@ module Api
         send_app_comment(params, region)
         return_response('Thanks for the message.', 'msg')
 
-        rescue ActiveRecord::RecordNotFound
-          return_response('Failed to find region', 'errors')
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find region', 'errors')
       end
     end
   end

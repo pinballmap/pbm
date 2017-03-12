@@ -259,20 +259,20 @@ HERE
     end
 
     it 'sends you multiple locations if you use the send_all_within_distance flag' do
-      close_location_1 = FactoryGirl.create(:location, region: @region, lat: 45.49, lon: -122.63)
-      close_location_2 = FactoryGirl.create(:location, region: @region, lat: 45.49, lon: -122.631)
-      close_location_3 = FactoryGirl.create(:location, region: @region, lat: 45.491, lon: -122.63)
+      close_location_one = FactoryGirl.create(:location, region: @region, lat: 45.49, lon: -122.63)
+      close_location_two = FactoryGirl.create(:location, region: @region, lat: 45.49, lon: -122.631)
+      close_location_three = FactoryGirl.create(:location, region: @region, lat: 45.491, lon: -122.63)
       FactoryGirl.create(:location, region: @region, lat: 5.49, lon: 22.63)
 
-      get '/api/v1/locations/closest_by_lat_lon.json', lat: close_location_1.lat, lon: close_location_1.lon, send_all_within_distance: 1
+      get '/api/v1/locations/closest_by_lat_lon.json', lat: close_location_one.lat, lon: close_location_one.lon, send_all_within_distance: 1
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
 
       locations = parsed_body['locations']
-      expect(locations[0]['id']).to eq(close_location_1.id)
-      expect(locations[1]['id']).to eq(close_location_2.id)
-      expect(locations[2]['id']).to eq(close_location_3.id)
+      expect(locations[0]['id']).to eq(close_location_one.id)
+      expect(locations[1]['id']).to eq(close_location_two.id)
+      expect(locations[2]['id']).to eq(close_location_three.id)
     end
   end
 

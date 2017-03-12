@@ -8,14 +8,14 @@ class UserSubmission < ActiveRecord::Base
 
   scope :region, ->(name) { where(region_id: Region.find_by_name(name.downcase).id) }
 
-  NEW_LMX_TYPE = 'new_lmx'
-  CONTACT_US_TYPE = 'contact_us'
-  NEW_CONDITION_TYPE = 'new_condition'
-  REMOVE_MACHINE_TYPE = 'remove_machine'
-  SUGGEST_LOCATION_TYPE = 'suggest_location'
-  LOCATION_METADATA_TYPE = 'location_metadata'
-  NEW_SCORE_TYPE = 'new_msx'
-  CONFIRM_LOCATION_TYPE = 'confirm_location'
+  NEW_LMX_TYPE = 'new_lmx'.freeze
+  CONTACT_US_TYPE = 'contact_us'.freeze
+  NEW_CONDITION_TYPE = 'new_condition'.freeze
+  REMOVE_MACHINE_TYPE = 'remove_machine'.freeze
+  SUGGEST_LOCATION_TYPE = 'suggest_location'.freeze
+  LOCATION_METADATA_TYPE = 'location_metadata'.freeze
+  NEW_SCORE_TYPE = 'new_msx'.freeze
+  CONFIRM_LOCATION_TYPE = 'confirm_location'.freeze
 
   def user_email
     user ? user.email : ''

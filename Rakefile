@@ -12,7 +12,7 @@ task report_empty_locations: :environment do
   # rubocop:disable Style/Next
   Region.all.each do |r|
     machineless_locations = r.machineless_locations
-    if machineless_locations.size > 0
+    unless machineless_locations.empty?
       Pony.mail(
         to: r.users.map(&:email),
         from: 'admin@pinballmap.com',
