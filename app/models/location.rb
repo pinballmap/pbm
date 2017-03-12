@@ -15,9 +15,9 @@ class Location < ActiveRecord::Base
   belongs_to :operator
   belongs_to :last_updated_by_user, class_name: 'User', foreign_key: 'last_updated_by_user_id'
   has_many :events
-  has_many :machines, through: :location_machine_xrefs
   has_many :location_machine_xrefs
   has_many :location_picture_xrefs
+  has_many :machines, through: :location_machine_xrefs
 
   geocoded_by :full_street_address, latitude: :lat, longitude: :lon
   before_validation :geocode, unless: ENV['SKIP_GEOCODE'] || (:lat && :lon)
@@ -67,7 +67,7 @@ class Location < ActiveRecord::Base
     where(Location.by_at_least_n_machines_sql(n))
   }
 
-  attr_accessible :name, :street, :city, :state, :zip, :phone, :lat, :lon, :website, :zone_id, :region_id, :location_type_id, :description, :operator_id, :date_last_updated, :last_updated_by_user_id
+  attr_accessible :name, :street, :city, :state, :zip, :phone, :lat, :lon, :website, :zone_id, :region_id, :location_type_id, :description, :operator_id, :date_last_updated, :last_updated_by_user_id, :machine_ids
 
   before_destroy do |record|
     Event.destroy_all "location_id = #{record.id}"
