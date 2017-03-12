@@ -14,8 +14,6 @@
             %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
             %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
             %hr/
-            - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
-              %li= link_to 'Admin Menu', "https://#{request.host_with_port}/admin"
             %li=link_to 'Home', root_path
             %li=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
             %li=link_to 'Blog', 'http://blog.pinballmap.com'
@@ -38,6 +36,10 @@
             %div.login_inner
               %span.darkb.login_inner
                 = link_to 'Logout', "https://#{request.host_with_port}/users/logout", :class => "loggedin"
+                - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
+                  %span.login_slash
+                    |
+                  = link_to 'Admin Menu', "https://#{request.host_with_port}/admin", :class => "loggedin"
         %div.closest_locations_outer
           %div.closest_locations_inner
             %span.darkb.closest_locations{:onclick => "findClosestLocations('#{@region.name}')"}
@@ -55,8 +57,6 @@
           %ul#nav.js
             %li.first_header_link
               =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
-            - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
-              %li= link_to 'Admin Menu', "https://#{request.host_with_port}/admin"
             %li=link_to 'Blog', 'http://blog.pinballmap.com'
             %li=link_to 'T-Shirts', store_path
             %li=link_to 'App', app_path
@@ -77,6 +77,10 @@
             %div.login_inner
               %span.darkb.login_inner
                 = link_to 'Logout', "https://#{request.host_with_port}/users/logout", :class => "loggedin"
+                - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
+                  %span.login_slash
+                    |
+                  = link_to 'Admin Menu', "https://#{request.host_with_port}/admin", :class => "loggedin"
         %div.geo_header_outer
           %div.geo_header_inner
             %span.darkb.geo_header{:onclick => "findClosestRegion()"}
@@ -102,8 +106,6 @@
         %ul#nav.js
           %li.first_header_link
             =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
-          - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
-            %li= link_to 'Admin Menu', "https://#{request.host_with_port}/admin"
           %li=link_to 'Blog', 'http://blog.pinballmap.com'
           %li=link_to 'T-Shirts', store_path
           %li=link_to 'App', app_path
@@ -136,8 +138,6 @@
           %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
           %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
           %hr/
-          - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
-            %li= link_to 'Admin Menu', "https://#{request.host_with_port}/admin"
           %li=link_to 'Home', root_path
           %li=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
           %li=link_to 'Blog', 'http://blog.pinballmap.com'
