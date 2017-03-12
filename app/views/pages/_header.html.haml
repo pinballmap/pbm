@@ -99,10 +99,10 @@
               = link_to 'Join', "https://#{request.host_with_port}/users/join"
             - else
               = link_to 'Logout', "https://#{request.host_with_port}/users/logout"
-            - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
-              %span.login_slash
-                |
-              = link_to 'Admin', "https://#{request.host_with_port}/admin"
+              - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
+                %span.login_slash
+                  |
+                = link_to 'Admin', "https://#{request.host_with_port}/admin"
         %div.geo_header_wrapper
           %span.darkb{:onclick => "findClosestRegion()"}
             = link_to 'Find Your Closest Map', '#'
@@ -128,10 +128,10 @@
               = link_to 'Join', "https://#{request.host_with_port}/users/join"
             - else
               = link_to 'Logout', "https://#{request.host_with_port}/users/logout"
-            - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
-              %span.login_slash
-                |
-              = link_to 'Admin', "https://#{request.host_with_port}/admin"
+              - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
+                %span.login_slash
+                  |
+                = link_to 'Admin', "https://#{request.host_with_port}/admin"
         - if user_signed_in?
           =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'} header_image_login", :alt => 'Pinball Map Logo'), root_path
         - else
