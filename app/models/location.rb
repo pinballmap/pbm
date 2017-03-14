@@ -22,7 +22,7 @@ class Location < ActiveRecord::Base
   geocoded_by :full_street_address, latitude: :lat, longitude: :lon
   before_validation :geocode, unless: ENV['SKIP_GEOCODE'] || (:lat && :lon)
 
-  scope :region, lambda {|name|
+  scope :region, lambda { |name|
     r = Region.find_by_name(name.downcase) || Region.where(name: 'portland').first
 
     where(region_id: r.id)
@@ -115,7 +115,7 @@ class Location < ActiveRecord::Base
     self.description = new_description.slice(0, 254)
 
     if description !~ %r{http[s]?:\/\/}
-      if ENV['RAKISMET_KEY'] && self.spam?
+      if ENV['RAKISMET_KEY'] && spam?
         self.description = old_description
         @validation_errors.push('This description was flagged as spam.')
       else
@@ -150,7 +150,7 @@ class Location < ActiveRecord::Base
     old_website = website
     self.website = new_website
 
-    if self.valid?
+    if valid?
       @updates.push('Changed website to ' + website)
     else
       self.website = old_website
@@ -178,13 +178,13 @@ class Location < ActiveRecord::Base
     update_operator(options[:operator_id]) if options[:operator_id]
     update_location_type(options[:location_type_id]) if options[:location_type_id]
 
-    if ENV['RAKISMET_KEY'] && self.spam?
+    if ENV['RAKISMET_KEY'] && spam?
       @validation_errors.push('This update was flagged as spam.')
     end
 
-    @validation_errors.push('Invalid') unless self.valid?
+    @validation_errors.push('Invalid') unless valid?
 
-    if save && errors.count == 0 && @validation_errors.empty?
+    if save && errors.count.zero? && @validation_errors.empty?
       self.date_last_updated = Date.today
       self.last_updated_by_user_id = user ? user.id : nil
       save

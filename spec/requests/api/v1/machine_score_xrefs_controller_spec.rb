@@ -7,8 +7,8 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     @machine = FactoryGirl.create(:machine, name: 'Cleo')
     @lmx = FactoryGirl.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
 
-    @score_1 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, score: 123, user_id: FactoryGirl.create(:user, username: 'ssw').id)
-    @score_2 = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user_id: nil)
+    @score_one = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, score: 123, user_id: FactoryGirl.create(:user, username: 'ssw').id)
+    @score_two = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user_id: nil)
   end
 
   describe '#index' do

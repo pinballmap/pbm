@@ -11,8 +11,8 @@ require 'rack_session_access/capybara'
 
 include Sprockets::Rails::Helper
 
-SimpleCov.start 'rails'
-Coveralls.wear! 'rails'
+SimpleCov.start
+Coveralls.wear!
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.

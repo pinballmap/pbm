@@ -14,7 +14,7 @@ describe LocationsController, type: :controller do
 
       get 'update_metadata', region: 'portland', id: @location.id, new_phone_777: 'invalid'
 
-      expect(response.body).to eq("{\"error\":\"Phone format invalid, please use ###-###-####\"}")
+      expect(response.body).to eq('{"error":"Phone format invalid, please use ###-###-####"}')
     end
 
     it 'should return error json when website is in an invalid format' do
@@ -22,7 +22,7 @@ describe LocationsController, type: :controller do
 
       get 'update_metadata', region: 'portland', id: @location.id, new_website_777: 'invalid'
 
-      expect(response.body).to eq("{\"error\":\"Website must begin with http:// or https://\"}")
+      expect(response.body).to eq('{"error":"Website must begin with http:// or https://"}')
     end
   end
   describe '#newest_machine_name' do

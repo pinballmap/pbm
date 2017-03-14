@@ -19,7 +19,7 @@ describe PagesController, type: :controller do
     end
 
     it 'should error on invalid ENV data' do
-      stub_const('ENV', 'TWITTER_CONSUMER_KEY' => '1',  'TWITTER_CONSUMER_SECRET' => '1', 'TWITTER_OAUTH_TOKEN_SECRET' => '1', 'TWITTER_OAUTH_TOKEN' => '1')
+      stub_const('ENV', 'TWITTER_CONSUMER_KEY' => '1', 'TWITTER_CONSUMER_SECRET' => '1', 'TWITTER_OAUTH_TOKEN_SECRET' => '1', 'TWITTER_OAUTH_TOKEN' => '1')
 
       get 'home'
 
@@ -55,7 +55,14 @@ describe PagesController, type: :controller do
     it 'renders public/robots.txt' do
       get 'robots', region: 'portland'
       expect(response.body).to eq(<<HERE)
-# See http://www.robotstxt.org/wc/norobots.html for documentation on how to use the robots.txt file\n#\n# To ban all spiders from the entire site uncomment the next two lines:\n# User-Agent: *\n# Disallow: /
+# See http://www.robotstxt.org/wc/norobots.html for documentation on how to use the robots.txt file
+#
+# To ban all spiders from the entire site uncomment the next two lines:
+User-Agent: *
+Disallow: */locations
+
+User-agent: SemrushBot
+Disallow: /
 HERE
     end
   end
@@ -207,6 +214,5 @@ HERE
 
       post 'submitted_new_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_operator: 'operator', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail'
     end
-
   end
 end

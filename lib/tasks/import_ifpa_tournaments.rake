@@ -7,7 +7,7 @@ task import_ifpa_tournaments: :environment do
   # their ssl is broken, so we're using this for now
   OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
-  IFPA_API_ROOT = 'https://api.ifpapinball.com/v1/'
+  IFPA_API_ROOT = 'https://api.ifpapinball.com/v1/'.freeze
   IFPA_API_KEY = ENV['IFPA_API_KEY']
   NUM_MILES_TO_SEARCH = 50
 
@@ -17,13 +17,13 @@ task import_ifpa_tournaments: :environment do
 
   # rubocop wants you to use next, but next isn't available on an ActiveRecord::Relation, only each.. https://github.com/bbatsov/rubocop/issues/1238
   # rubocop:disable Style/Next
-  JSON.parse(Net::HTTP.get URI(IFPA_API_ROOT + '/calendar/active?api_key=' + IFPA_API_KEY.to_s))['calendar'].each do |c|
+  JSON.parse(Net::HTTP.get(URI(IFPA_API_ROOT + '/calendar/active?api_key=' + IFPA_API_KEY.to_s)))['calendar'].each do |c|
     state = c['state'].downcase
 
     if pbm_states.include?(state) && !Event.exists?(ifpa_tournament_id: c['tournament_id'], ifpa_calendar_id: c['calendar_id'])
       p 'Adding: ' + c['tournament_name']
 
-      cd = JSON.parse(Net::HTTP.get URI(IFPA_API_ROOT + '/calendar/' + c['calendar_id'] + '?api_key=' + IFPA_API_KEY.to_s))['calendar'].first
+      cd = JSON.parse(Net::HTTP.get(URI(IFPA_API_ROOT + '/calendar/' + c['calendar_id'] + '?api_key=' + IFPA_API_KEY.to_s)))['calendar'].first
 
       associated_location = nil
       if cd['latitude'] && cd['longitude'] && cd['zipcode']
@@ -39,12 +39,12 @@ task import_ifpa_tournaments: :environment do
         long_desc << "\n#{cd['address1']}, #{cd['city']}, #{cd['state']}, #{cd['zipcode']}"
       end
 
-      region_ids_to_add_event_to = Array.new
+      region_ids_to_add_event_to = []
       Location.near([cd['latitude'].to_f, cd['longitude'].to_f], NUM_MILES_TO_SEARCH).each do |l|
         region_ids_to_add_event_to.push(l.region_id)
       end
 
-      end_date = (c['start_date'] != c['end_date']) ? c['end_date'] : nil
+      end_date = c['start_date'] != c['end_date'] ? c['end_date'] : nil
 
       region_ids_to_add_event_to.uniq.each do |region_id|
         Event.create(

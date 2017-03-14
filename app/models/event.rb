@@ -10,11 +10,11 @@ class Event < ActiveRecord::Base
 
   def active?
     if start_date && !end_date
-      return (start_date >= Date.today - 1.week)
+      (start_date >= Date.today - 1.week)
     elsif end_date
-      return (end_date >= Date.today - 1.week)
+      (end_date >= Date.today - 1.week)
     else
-      return 1
+      1
     end
   end
 end

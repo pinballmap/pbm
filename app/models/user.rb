@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   def role_symbols
     roles = []
     roles << :admin if region_id
-    roles << :site_admin if (region_id == Region.find_by_name('portland').id)
+    roles << :site_admin if region_id == Region.find_by_name('portland').id
 
     roles
   end
@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   end
 
   def active_for_authentication?
-    super && !self.is_disabled?
+    super && !is_disabled?
   end
 
   def name
@@ -81,7 +81,11 @@ class User < ActiveRecord::Base
     formatted_score_data = []
     msx_submissions.each do |msx_sub|
       score = 'UNKNOWN'
-      score, machine_name, location_name = $1, $2, $3 if msx_sub.submission =~ /added a score of (.*) for (.*) to (.*)$/i
+      if msx_sub.submission =~ /added a score of (.*) for (.*) to (.*)$/i
+        score = $1
+        machine_name = $2
+        location_name = $3
+      end
 
       next unless score && machine_name && location_name
 

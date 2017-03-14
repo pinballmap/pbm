@@ -9,7 +9,7 @@ class MachineScoreXrefsController < InheritedResources::Base
 
     score.gsub!(/[^0-9]/, '')
 
-    return if score.nil? || score.empty? || (score.to_i == 0)
+    return if score.nil? || score.empty? || score.to_i.zero?
 
     msx = MachineScoreXref.create(location_machine_xref_id: params[:location_machine_xref_id])
 

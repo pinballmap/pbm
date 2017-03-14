@@ -93,7 +93,7 @@ HERE
 
   describe '#n_high_rollers' do
     it 'should return the high n rollers' do
-      scores = Array.new
+      scores = []
       lmx = FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: @region))
 
       3.times { |n| scores << FactoryGirl.create(:machine_score_xref, location_machine_xref: lmx, user: FactoryGirl.create(:user, username: "ssw#{n}")) }

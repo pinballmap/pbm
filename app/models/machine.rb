@@ -13,7 +13,7 @@ class Machine < ActiveRecord::Base
   end
 
   def year_and_manufacturer
-    ((year.blank? && manufacturer.blank?) ? '' : " (#{[manufacturer, year].reject(&:blank?).join(', ')})")
+    (year.blank? && manufacturer.blank? ? '' : " (#{[manufacturer, year].reject(&:blank?).join(', ')})")
   end
 
   before_destroy do |record|

@@ -19,7 +19,7 @@ class PagesController < ApplicationController
       'type' => {
         'id'   => 'id',
         'name' => 'name',
-        'search_collection' => location_types.values.map(&:location_type).sort { |a, b| a.name <=> b.name }
+        'search_collection' => location_types.values.map(&:location_type).sort_by(&:name)
       },
       'location' => {
         'id'   => 'id',
@@ -55,7 +55,7 @@ class PagesController < ApplicationController
 
   def contact_sent
     return unless params['contact_msg']
-    user = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user
+    user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
 
     if user
       flash.now[:alert] = 'Thanks for contacting us!'
@@ -67,22 +67,21 @@ class PagesController < ApplicationController
       else
         flash.now[:alert] = 'Your captcha entering skills have failed you. Please go back and try again.'
       end
-
     end
   end
 
   def about
     @links = {}
     @region.region_link_xrefs.each do |rlx|
-      (@links[(rlx.category && !rlx.category.blank?) ? rlx.category : 'Links'] ||= []) << rlx
+      (@links[rlx.category && !rlx.category.blank? ? rlx.category : 'Links'] ||= []) << rlx
     end
 
     @top_machines = LocationMachineXref
-      .region(@region.name)
-      .select('machine_id, count(*) as machine_count')
-      .group(:machine_id)
-      .order('machine_count desc')
-      .limit(10)
+                    .region(@region.name)
+                    .select('machine_id, count(*) as machine_count')
+                    .group(:machine_id)
+                    .order('machine_count desc')
+                    .limit(10)
 
     render "#{@region.name}/about" if lookup_context.find_all("#{@region.name}/about").any?
   end
@@ -98,7 +97,7 @@ class PagesController < ApplicationController
   def submitted_new_location
     flash.now[:alert] = "Thanks for entering that location. We'll get it in the system as soon as possible."
 
-    user = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user
+    user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
     send_new_location_notification(params, @region, user)
   end
 
@@ -111,26 +110,19 @@ class PagesController < ApplicationController
     render text: robots, layout: false, content_type: 'text/plain'
   end
 
-  def app
-  end
+  def app; end
 
-  def app_support
-  end
+  def app_support; end
 
-  def privacy
-  end
+  def privacy; end
 
-  def store
-  end
+  def store; end
 
-  def faq
-  end
+  def faq; end
 
-  def donate
-  end
+  def donate; end
 
-  def profile
-  end
+  def profile; end
 
   def contact
     redirect_to about_path
@@ -174,7 +166,7 @@ class PagesController < ApplicationController
   end
 
   def inspire_profile
-    user = (Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? nil : Authorization.current_user
+    user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
 
     redirect_to profile_user_path(user.id) if user
   end

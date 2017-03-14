@@ -23,8 +23,8 @@ module Api
 
         return_response(operator, 'operator', [], [])
 
-        rescue ActiveRecord::RecordNotFound
-          return_response('Failed to find operator', 'errors')
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find operator', 'errors')
       end
     end
   end

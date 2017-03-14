@@ -32,8 +32,8 @@ module Api
 
         return_response("Thanks for entering that location. We'll get it in the system as soon as possible.", 'msg')
 
-        rescue ActiveRecord::RecordNotFound
-          return_response('Failed to find region', 'errors')
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find region', 'errors')
       end
 
       api :GET, '/api/v1/region/:region/locations.json', 'Fetch locations for a single region'
@@ -83,8 +83,8 @@ module Api
 
         return_response(values, message_type)
 
-        rescue ActiveRecord::RecordNotFound
-          return_response('Failed to find location', 'errors')
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find location', 'errors')
       end
 
       api :GET, '/api/v1/locations/closest_by_lat_lon.json', 'Returns the closest location to transmitted lat/lon'
@@ -116,7 +116,7 @@ module Api
         location = Location.find(params[:id])
 
         machines = []
-        location.machines.sort { |x, y| x.name <=> y.name }.each do |m|
+        location.machines.sort_by(&:name).each do |m|
           machines.push(
             id: m.id,
             name: m.name,
@@ -129,8 +129,8 @@ module Api
 
         return_response(machines, 'machines')
 
-        rescue ActiveRecord::RecordNotFound
-          return_response('Failed to find location', 'errors')
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find location', 'errors')
       end
 
       api :PUT, '/api/v1/locations/:id/confirm.json', 'Confirm location information'
@@ -141,8 +141,8 @@ module Api
 
         return_response('Thanks for confirming that location.', 'msg')
 
-        rescue ActiveRecord::RecordNotFound
-          return_response('Failed to find location', 'errors')
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find location', 'errors')
       end
     end
   end

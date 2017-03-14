@@ -5,4 +5,4 @@ User-Agent: *
 Disallow: */locations
 
 User-agent: SemrushBot
-Disallow: / 
+Disallow: /

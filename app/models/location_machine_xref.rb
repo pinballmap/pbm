@@ -13,7 +13,7 @@ class LocationMachineXref < ActiveRecord::Base
 
   after_create :update_location, :create_user_submission
 
-  scope :region, lambda {|name|
+  scope :region, lambda { |name|
     r = Region.find_by_name(name.downcase)
     joins(:location).where('locations.region_id = ?', r.id)
   }
@@ -82,10 +82,10 @@ class LocationMachineXref < ActiveRecord::Base
       end
 
       Pony.mail(
-          to: location.region.users.map(&:email),
-          from: 'admin@pinballmap.com',
-          subject: add_host_info_to_subject('PBM - Someone removed a machine from a location', options[:request_host]),
-          body: [location.name, machine.name, location.region.name, "(user_id: #{options[:user_id]}) (entered from #{options[:remote_ip]} via #{options[:user_agent]}#{user_info})"].join("\n")
+        to: location.region.users.map(&:email),
+        from: 'admin@pinballmap.com',
+        subject: add_host_info_to_subject('PBM - Someone removed a machine from a location', options[:request_host]),
+        body: [location.name, machine.name, location.region.name, "(user_id: #{options[:user_id]}) (entered from #{options[:remote_ip]} via #{options[:user_agent]}#{user_info})"].join("\n")
       )
     end
 

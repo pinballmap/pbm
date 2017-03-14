@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Api::V1::MachinesController, type: :request do
-
   describe '#index' do
     before(:each) do
       FactoryGirl.create(:machine, name: 'Cleo')
