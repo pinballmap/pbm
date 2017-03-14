@@ -59,7 +59,10 @@ describe PagesController, type: :controller do
 #
 # To ban all spiders from the entire site uncomment the next two lines:
 User-Agent: *
-Disallow: */locations/
+Disallow: */locations
+
+User-agent: SemrushBot
+Disallow: /
 HERE
     end
   end
