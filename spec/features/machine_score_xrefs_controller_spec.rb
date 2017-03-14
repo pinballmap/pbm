@@ -11,9 +11,9 @@ describe MachineScoreXrefsController do
       lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
       @location.reload
 
-      sleep 1
-
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
+
+      sleep 1
 
       expect(page).to_not have_selector("div#add_scores_lmx_banner_#{lmx.id}")
     end
