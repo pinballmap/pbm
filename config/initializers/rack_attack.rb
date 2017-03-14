@@ -10,6 +10,10 @@ if Rails.env.production?
 
       should_ban
     end
+    
+    Rack::Attack.blacklist('block bad UA') do |req|
+      req.path == req.user_agent == 'SemrushBot'
+    end
 
     Rack::Attack.throttle('req/ip', :limit => 10, :period => 1.second) do |req|
       req.ip
