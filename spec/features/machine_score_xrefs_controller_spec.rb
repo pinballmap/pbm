@@ -9,6 +9,9 @@ describe MachineScoreXrefsController do
   describe 'add machine scores - no auth', type: :feature, js: true do
     it 'does not allow you to enter a score if you are not logged in' do
       lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
+      @location.reload
+
+      sleep 1
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
