@@ -3,10 +3,11 @@ module Api
     class MachineScoreXrefsController < InheritedResources::Base
       before_filter :allow_cors
       respond_to :json
-      has_scope :region, :limit
+      has_scope :region, :limit, :zone_id
 
       api :GET, '/api/v1/region/:region/machine_score_xrefs.json', 'Fetch all high scores for a region'
-      param :region, String, desc: 'Name of the Region you want to see events for', required: true
+      param :region, String, desc: 'Name of the Region you want to see scores for', required: true
+      param :zone_id, Integer, desc: 'ID of the zone you want to see scores for', required: false
       param :limit, Integer, desc: 'Limit number of results returned', required: false
       formats ['json']
       def index
