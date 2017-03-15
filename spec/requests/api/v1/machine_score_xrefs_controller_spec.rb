@@ -34,6 +34,24 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
       expect(scores.size).to eq(1)
     end
+
+    it 'respects zone_id scope' do
+      FactoryGirl.create(:zone, id: 1, region: @region)
+      FactoryGirl.create(:zone, id: 2, region: @region)
+
+      3.times do
+        FactoryGirl.create(:machine_score_xref, location_machine_xref: FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: @region, zone_id: 1)), score: 100)
+      end
+
+      FactoryGirl.create(:machine_score_xref, location_machine_xref: FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: @region, zone_id: 2)), score: 100)
+
+      get '/api/v1/region/portland/machine_score_xrefs.json', zone_id: 1
+      expect(response).to be_success
+
+      scores = JSON.parse(response.body)['machine_score_xrefs']
+
+      expect(scores.size).to eq(3)
+    end
   end
 
   describe '#show' do

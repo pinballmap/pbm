@@ -51,6 +51,7 @@ group :test do
   gem 'launchy'
   gem 'poltergeist'
   gem 'rspec-rails'
+  gem 'rspec-retry'
   gem 'rubocop'
   gem 'simplecov'
   gem 'spork'

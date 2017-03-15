@@ -7,7 +7,7 @@ describe Api::V1::LocationsController, type: :request do
 
     FactoryGirl.create(:user, region: @portland, email: 'portland@admin.com', is_super_admin: 1)
     FactoryGirl.create(:user, region: @la, email: 'la@admin.com')
-    FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+    @user = FactoryGirl.create(:user, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
   end
 
   describe '#does_region_exist' do
@@ -204,7 +204,7 @@ HERE
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
       expect(UserSubmission.all.count).to eq(1)
       expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
-      expect(UserSubmission.first.user_id).to eq(111)
+      expect(UserSubmission.first.user_id).to eq(@user.id)
     end
 
     it 'emails region admins with incoming message - notifies if sent from staging server' do

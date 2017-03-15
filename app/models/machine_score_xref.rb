@@ -6,6 +6,12 @@ class MachineScoreXref < ActiveRecord::Base
 
   attr_accessible :score, :location_machine_xref_id
 
+  scope :zone_id, lambda { |id|
+    joins(:location_machine_xref).joins(:location).where("
+      locations.zone_id = #{id}
+    ")
+  }
+
   scope :region, lambda { |name|
     r = Region.find_by_name(name)
     joins(:location_machine_xref).joins(:location).where("

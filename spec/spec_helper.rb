@@ -8,6 +8,7 @@ require 'capybara/poltergeist'
 require 'simplecov'
 require 'coveralls'
 require 'rack_session_access/capybara'
+require 'rspec/retry'
 
 include Sprockets::Rails::Helper
 
@@ -19,6 +20,13 @@ Coveralls.wear!
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
+  config.verbose_retry = true
+  config.display_try_failure_messages = true
+
+  config.around :each, :js do |ex|
+    ex.run_with_retry retry: 3
+  end
+
   Capybara.javascript_driver = :poltergeist
   Capybara.register_driver :poltergeist do |app|
     Capybara::Poltergeist::Driver.new(app, js_errors: false, timeout: 60)
