@@ -6,7 +6,7 @@ gem 'rails', '4.1'
 
 gem 'apipie-rails'
 gem 'aws-sdk', '< 2.0'
-gem 'cancancan'
+gem 'cancancan', '~> 1.15'
 gem 'dalli'
 gem 'declarative_authorization', '0.5.7'
 gem 'devise', '3.2.4'

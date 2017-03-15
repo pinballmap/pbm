@@ -391,7 +391,7 @@ DEPENDENCIES
   apipie-rails
   aws-sdk (< 2.0)
   bullet
-  cancancan
+  cancancan (~> 1.15)
   capybara
   coveralls
   dalli
