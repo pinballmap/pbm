@@ -22,13 +22,13 @@
                 %span.event_date #{e.start_date.strftime("%b-%d-%Y").to_s}
                 - if e.end_date
                   %span.event_date - #{e.end_date.strftime("%b-%d-%Y").to_s}:
-                = link_to e.name, e.external_link, :class => 'event_link', :target => '_blank'
-                - if (e.location)
-                  %span @
-                  = link_to e.location.name, "http://pinballmap.com/#{e.location.region.name}/?by_location_id=#{e.location_id}", :class => 'event_link'
-                - elsif (e.external_location_name && !e.external_location_name.blank?)
-                  %span @ #{e.external_location_name}
-                %br/
-                %span.event_description #{e.long_desc}
+              = link_to e.name, e.external_link, :class => 'event_link', :target => '_blank'
+              - if (e.location)
+                %span @
+                = link_to e.location.name, "http://pinballmap.com/#{e.location.region.name}/?by_location_id=#{e.location_id}", :class => 'event_link'
+              - elsif (e.external_location_name && !e.external_location_name.blank?)
+                %span @ #{e.external_location_name}
+              %br/
+              %span.event_description #{e.long_desc}
     - else
       %p Events coming soon...

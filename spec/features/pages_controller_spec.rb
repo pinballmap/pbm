@@ -50,6 +50,16 @@ describe PagesController do
       expect(page).to have_content('event 1')
       expect(page).to_not have_content('event 2')
     end
+
+    it 'displays events that have no start/end date (typically league stuff)' do
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 1', start_date: nil, end_date: nil)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today)
+
+      visit '/portland/events'
+
+      expect(page).to have_content('event 1')
+      expect(page).to have_content('event 2')
+    end
   end
 
   describe 'High roller list', type: :feature, js: true do
