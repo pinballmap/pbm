@@ -76,5 +76,22 @@ describe Api::V1::EventsController, type: :request do
 
       expect(events[0]['name']).to eq('event 1')
     end
+
+    it 'does displays events with no start and end date' do
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 1', start_date: nil, end_date: nil)
+      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 2', start_date: nil, end_date: nil)
+
+      get '/api/v1/region/portland/events.json'
+      expect(response).to be_success
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      events = parsed_body['events']
+      expect(events.size).to eq(2)
+
+      expect(events[0]['name']).to eq('event 2')
+      expect(events[1]['name']).to eq('event 1')
+    end
   end
 end
