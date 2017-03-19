@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
     user_info = user ? " by #{user.username} (#{user.email})" : ''
 
     body = <<END
-(A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into https://pinballmap.com/admin. Thanks!)\n
+(A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into #{request.protocol}#{request.host_with_port}#{rails_admin_path}. Thanks!)\n
 Location Name: #{params['location_name']}\n
 Street: #{params['location_street']}\n
 City: #{params['location_city']}\n
@@ -180,6 +180,14 @@ END
   helper_method :mobile_device?
 
   protected
+
+  def default_url_options
+    if Rails.env.production?
+      { host: 'www.pinballmap.com', protocol: 'https' }
+    else
+      { protocol: 'http' }
+    end
+  end
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me) }

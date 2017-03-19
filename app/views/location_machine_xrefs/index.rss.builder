@@ -11,7 +11,7 @@ xml.rss :version => "2.0" do
       location = cloned_lmx.location
       xml.item do
         xml.title "#{machine.name} was added to #{location.name}"
-        xml.link "https://pinballmap.com/#{@region.name.downcase}/?by_location_id=#{location.id}"
+        xml.link region_homepage_path(@region.name.downcase) + "/?by_location_id=#{location.id}"
         xml.description "Added on #{cloned_lmx.created_at.nil? ? 'UNKNOWN' : cloned_lmx.created_at.to_s(:rfc822)}"
         xml.guid cloned_lmx.id
         xml.pubDate cloned_lmx.created_at.nil? ? 'UNKNOWN' : cloned_lmx.created_at.to_s(:rfc822)

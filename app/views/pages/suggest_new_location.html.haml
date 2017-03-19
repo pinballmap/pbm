@@ -48,5 +48,5 @@
     - else
       %p
         But first! We ask that you
-        = link_to 'Login.', "https://#{request.host_with_port}/users/login", :class => "darkbl"
+        = link_to 'Login.', new_user_session_path, :class => "darkbl"
         Thank you!

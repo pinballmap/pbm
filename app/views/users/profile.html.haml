@@ -1,11 +1,11 @@
 #page_body
   .left_column.secondary.profile
     %p.profile.darkb
-      =link_to @user.username, "https://#{request.host_with_port}/users/#{@user.id}/profile"
+      =link_to @user.username, profile_user_path(@user.id)
     %p.darkbl{:style => "font-size:16px;"} Member since: #{@user.created_at.strftime('%b-%d-%Y')}
     - if !Authorization.current_user.is_a?(Authorization::AnonymousUser) && (@user.id == Authorization.current_user.id)
       %p
-        =link_to "Update email or password", "https://#{request.host_with_port}/users/edit"
+        =link_to "Update email or password", edit_user_registration_path
   .right_column.right_column_profile
     %div.darkbl.stats
       %div.stat_num_o
@@ -39,7 +39,7 @@
           - @user.profile_list_of_edited_locations.each do |location_array|
             - location = Location.find(location_array[0])
             %span.location_edited
-              <a href="https://#{request.host_with_port}/#{location.region.name}/?by_location_id=#{location.id}">#{location.name}</a>
+              = link_to(location.name, region_homepage_path(location.region.name) + "/?by_location_id=#{location.id}")
             %br/
     %div.darkbl.stats
       %div.stats_o

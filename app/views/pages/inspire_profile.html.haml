@@ -3,11 +3,11 @@
     %p.profile.darkb
       Create an Account
     %p.darkbl
-      =link_to "Join", "https://#{request.host_with_port}/users/join"
+      =link_to "Join", new_user_registration_path
       and update Pinball Map! Then you can check this page to see an overview of your contributions.
     %p
       Already have an account?
-      =link_to "Login", "https://#{request.host_with_port}/users/login"
+      =link_to "Login", new_user_session_path
   .right_column.right_column_profile.inspire_profile
     %div.darkbl.stats
       %div.stat_num_o
