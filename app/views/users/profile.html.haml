@@ -39,7 +39,7 @@
           - @user.profile_list_of_edited_locations.each do |location_array|
             - location = Location.find(location_array[0])
             %span.location_edited
-              <a href="https://#{request.host_with_port}/#{location.region.name}/?by_location_id=#{location.id}">#{location.name}</a>
+              = link_to(location.name, region_homepage_path(location.region.name) + "/?by_location_id=#{location.id}")
             %br/
     %div.darkbl.stats
       %div.stats_o
