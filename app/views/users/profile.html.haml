@@ -1,11 +1,11 @@
 #page_body
   .left_column.secondary.profile
     %p.profile.darkb
-      =link_to @user.username, "https://#{request.host_with_port}/users/#{@user.id}/profile"
+      =link_to @user.username, profile_user_path(@user.id)
     %p.darkbl{:style => "font-size:16px;"} Member since: #{@user.created_at.strftime('%b-%d-%Y')}
     - if !Authorization.current_user.is_a?(Authorization::AnonymousUser) && (@user.id == Authorization.current_user.id)
       %p
-        =link_to "Update email or password", "https://#{request.host_with_port}/users/edit"
+        =link_to "Update email or password", edit_user_registration_path
   .right_column.right_column_profile
     %div.darkbl.stats
       %div.stat_num_o
