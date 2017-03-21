@@ -30,13 +30,7 @@
                 %input{:type => "text", :name => "location_website", :params => "location_website", :class => "text"}
               %li
                 %label{:for => "location_type"} Location Type:
-                %select
-                  %option{value: "Bar", :selected => params[:x] == "Bar"}= "Bar"
-                  %option{value: "Bar/Restaurant", :selected => params[:x] == "Bar/Restaurant"}= "Bar/Restaurant"
-                  %option{value: "Bowling Alley", :selected => params[:x] == "Bowling Alley"}= "Bowling Alley"
-                  %option{value: "Pizza Parlor", :selected => params[:x] == "Pizza Parlor"}= "Pizza Parlor"
-                  %option{value: "Restaurant", :selected => params[:x] == "Restaurant"}= "Restaurant"
-                  %option{value: "Roller Skating Rink", :selected => params[:x] == "Roller Skating Rink"}= "Roller Skating Rink"
+                = select_tag :name, options_for_select(@location_types, default = "Bar")
               %li
                 %label{:for => "location_operator"} Operator:
                 %input{:type => "text", :name => "location_operator", :params => "location_operator", :class => "text"}
