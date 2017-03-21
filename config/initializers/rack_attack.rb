@@ -1,5 +1,5 @@
 if Rails.env.production?
-    Rack::Attack.blacklist('block admin identified IPs') do |req|
+    Rack::Attack.blocklist('block admin identified IPs') do |req|
       should_ban = nil
 
       BannedIp.all.each do |banned_ip|
@@ -10,8 +10,8 @@ if Rails.env.production?
 
       should_ban
     end
-    
-    Rack::Attack.blacklist('block bad UA') do |req|
+
+    Rack::Attack.blocklist('block bad UA') do |req|
       req.user_agent == 'SemrushBot'
     end
 
