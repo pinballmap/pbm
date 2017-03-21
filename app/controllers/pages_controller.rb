@@ -103,7 +103,7 @@ class PagesController < ApplicationController
 
   def suggest_new_location
     @states = Location.where(['region_id = ?', @region.id]).map(&:state).uniq.sort
-    @location_types = LocationType.all().map(&:name).uniq.sort
+    @location_types = LocationType.all.map(&:name).uniq.sort
   end
 
   def robots
