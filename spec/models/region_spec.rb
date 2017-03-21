@@ -211,4 +211,76 @@ HERE
       expect(r.content_for_infowindow.chomp).to eq("'<div class=\"infowindow\" id=\"infowindow_#{r.id}\"><div class=\"gm_region_name\"><a href=\"#{r.name}\">Portland</a></div><hr /><div class=\"gm_location_count\">2 Locations</div><div class=\"gm_machine_count\">3 Machines</div></div>'")
     end
   end
+
+  describe '#move_to_new_region' do
+    it 'moves over all locations' do
+      FactoryGirl.create(:location, region: @region, name: 'Sass')
+      FactoryGirl.create(:location, region: @region, name: 'Cleo')
+
+      @region.move_to_new_region(@other_region)
+
+      expect(@region.locations.count).to eq(0)
+      expect(@other_region.locations.count).to eq(2)
+    end
+
+    it 'moves over all events' do
+      FactoryGirl.create(:event, region: @region, name: 'Sass')
+      FactoryGirl.create(:event, region: @region, name: 'Cleo')
+
+      @region.move_to_new_region(@other_region)
+
+      expect(@region.events.count).to eq(0)
+      expect(@other_region.events.count).to eq(2)
+    end
+
+    it 'moves over all operators' do
+      FactoryGirl.create(:operator, region: @region, name: 'Sass')
+      FactoryGirl.create(:operator, region: @region, name: 'Cleo')
+
+      @region.move_to_new_region(@other_region)
+
+      expect(@region.operators.count).to eq(0)
+      expect(@other_region.operators.count).to eq(2)
+    end
+
+    it 'moves over all region_link_xrefs' do
+      FactoryGirl.create(:region_link_xref, region: @region, name: 'Sass')
+      FactoryGirl.create(:region_link_xref, region: @region, name: 'Cleo')
+
+      @region.move_to_new_region(@other_region)
+
+      expect(@region.region_link_xrefs.count).to eq(0)
+      expect(@other_region.region_link_xrefs.count).to eq(2)
+    end
+
+    it 'moves over all admins' do
+      FactoryGirl.create(:user, region: @region, username: 'Sass')
+      FactoryGirl.create(:user, region: @region, username: 'Cleo')
+
+      @region.move_to_new_region(@other_region)
+
+      expect(@region.users.count).to eq(0)
+      expect(@other_region.users.count).to eq(2)
+    end
+
+    it 'moves over all zones' do
+      FactoryGirl.create(:zone, region: @region, name: 'Sass')
+      FactoryGirl.create(:zone, region: @region, name: 'Cleo')
+
+      @region.move_to_new_region(@other_region)
+
+      expect(@region.zones.count).to eq(0)
+      expect(@other_region.zones.count).to eq(2)
+    end
+
+    it 'moves over all user submissions' do
+      FactoryGirl.create(:user_submission, region: @region)
+      FactoryGirl.create(:user_submission, region: @region)
+
+      @region.move_to_new_region(@other_region)
+
+      expect(@region.user_submissions.count).to eq(0)
+      expect(@other_region.user_submissions.count).to eq(2)
+    end
+  end
 end
