@@ -25,7 +25,7 @@ end
 
 desc 'Move region contents'
 task move_region_contents: :environment do
-  ARGV.each { |a| task a.to_sym do ; end }
+  ARGV.each { |a| task a.to_sym }
   from_region_name = ARGV[1].to_s
   to_region_name = ARGV[2].to_s
 
