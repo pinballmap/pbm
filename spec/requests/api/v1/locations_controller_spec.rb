@@ -54,14 +54,16 @@ State: state\n
 Zip: zip\n
 Phone: phone\n
 Website: website\n
+Type: type\n
 Operator: operator\n
+Comments: comments\n
 Machines: machines\n
 (entered from 127.0.0.1 via cleOS)\n
 HERE
         )
       end
 
-      post '/api/v1/locations/suggest.json', { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_operator: 'operator', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }, HTTP_USER_AGENT: 'cleOS'
+      post '/api/v1/locations/suggest.json', { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }, HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq("Thanks for entering that location. We'll get it in the system as soon as possible.")
@@ -70,7 +72,7 @@ HERE
     end
 
     it 'tags a user when appropriate' do
-      post '/api/v1/locations/suggest.json', { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_operator: 'operator', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+      post '/api/v1/locations/suggest.json', { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
 
       expect(response).to be_success
       expect(UserSubmission.first.user_id).to eq(111)
