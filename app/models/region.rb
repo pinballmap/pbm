@@ -154,4 +154,41 @@ HERE
       l.destroy if l.location_machine_xrefs.count.zero?
     end
   end
+
+  def move_to_new_region(new_region)
+    locations.each do |l|
+      l.region = new_region
+      l.save
+    end
+
+    events.each do |e|
+      e.region = new_region
+      e.save
+    end
+
+    operators.each do |o|
+      o.region = new_region
+      o.save
+    end
+
+    region_link_xrefs.each do |rlx|
+      rlx.region = new_region
+      rlx.save
+    end
+
+    users.each do |u|
+      u.region = new_region
+      u.save
+    end
+
+    zones.each do |z|
+      z.region = new_region
+      z.save
+    end
+
+    user_submissions.each do |us|
+      us.region = new_region
+      us.save
+    end
+  end
 end
