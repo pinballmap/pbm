@@ -1008,7 +1008,8 @@ input#score, input#initials {
   padding: 2px 0 6px 0px;
 }
 
-#location_maker input.text, #contact_maker input.text, #new_user input {
+#location_maker input.text, #contact_maker input.text, #new_user input,
+#location_maker select#location_type {
   font-size: 16px;
   height: 32px !important;
   width: 100%;
@@ -1022,11 +1023,14 @@ input#score, input#initials {
   float: none;
 }
 
-#location_maker textarea.machines {
+#location_maker textarea.machines, #location_maker textarea {
   max-width: 100%;
   min-width: 100%;
   width: 100%;
   min-height: 100px;
+  min-height: 60px;
+  height: 60px;
+  max-height: 60px;
 }
 
 #login {

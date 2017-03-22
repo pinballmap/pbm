@@ -2328,7 +2328,8 @@ div.map_summary_info {
 
 /** Contact/Submission Forms **/
 
-#location_maker input.text, #contact_maker input.text {
+#location_maker input.text, #contact_maker input.text,
+#location_maker select#location_type {
   width: 280px;
   height: 28px;
   margin: 0;
@@ -2343,6 +2344,9 @@ div.map_summary_info {
 #location_maker li.submit, #contact_maker li.submit {
   height: 20px;
 }
+#location_maker li.textbox {
+  height: 70px;
+}
 #contact_maker textarea {
   width: 350px;
   margin: 0;
@@ -2350,12 +2354,13 @@ div.map_summary_info {
   height: 100px;
   max-height: 150px;
 }
-#location_maker textarea.comments, #location_maker textarea.machines {
+#location_maker textarea {
   height: 50px;
+  min-height: 50px;
   width: 575px;
   max-width: 575px;
   min-width: 575px;
-  max-height: 200px;
+  max-height: 50px;
   margin: 0;
   font-size: 14px;
 }
