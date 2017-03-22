@@ -40,7 +40,48 @@
               %br
               %li
                 %label{:for => "location_machines"} Machines:
-                %textarea{:type => "text", :name => "location_machines", :params => "location_machines", :class => "text machines"}
+                %textarea{:type => "text", :id => "location_machines", :name => "location_machines", :params => "location_machines", :class => "text machines"}
+                :javascript
+                  $(function () {
+                    function split( val ) {
+                      return val.split( /,\s*/ );
+                    }
+                    function extractLast( term ) {
+                      return split( term ).pop();
+                    }
+                    $('#location_machines')
+                    .on( "keydown", function( event ) {
+                      if ( event.keyCode === $.ui.keyCode.TAB &&
+                      $( this ).autocomplete( "instance" ).menu.active ) {
+                        event.preventDefault();
+                      }
+                    })
+                    .autocomplete({
+                      minLength: 0,
+                      source: function( request, response ) {
+                        $.getJSON( '/portland/machines/autocomplete', {
+                          term: extractLast( request.term )
+                        }, response );
+                      },
+                      search: function() {
+                        var term = extractLast( this.value );
+                        if ( term.length < 2 ) {
+                          return false;
+                        }
+                      },
+                      focus: function() {
+                        return false;
+                      },
+                      select: function( event, ui ) {
+                        var terms = split( this.value );
+                        terms.pop();
+                        terms.push( ui.item.value );
+                        terms.push( "" );
+                        this.value = terms.join( ", " );
+                        return false;
+                      }
+                    });
+                  });
               %br
               %li.submit{:style => "clear:both;"}
                 %input{:type => "submit", :value => "Submit New Location", :class => "submit_button"}
