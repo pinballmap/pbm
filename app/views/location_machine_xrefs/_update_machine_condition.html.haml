@@ -10,7 +10,6 @@
   %div[lmx, :machine_condition]
     %div.comment_image
       %span.comment_image
-    .clear
   %div[lmx, :machine_condition_edit]{:style => 'display:none'}
     = form_tag update_machine_condition_location_machine_xrefs_path(:action => 'update_machine_condition', :id => lmx.id, :region => @region.name), :id => "update_machine_condition_#{lmx.id}", :method => 'get' do
       = hidden_field_tag :id, lmx.id
