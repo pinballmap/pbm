@@ -36,10 +36,10 @@
                 = select_tag :location_operator, options_for_select(@operators)
               %li.textbox
                 %label{:for => "location_comments"} Comments:
-                %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text comments"}
+                %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text"}
               %li.textbox
                 %label{:for => "location_machines"} Machines:
-                %textarea{:type => "text", :id => "location_machines", :name => "location_machines", :params => "location_machines", :class => "text machines"}
+                %textarea{:type => "text", :id => "location_machines", :name => "location_machines", :params => "location_machines", :class => "text"}
                 :javascript
                   $(function () {
                     function split( val ) {

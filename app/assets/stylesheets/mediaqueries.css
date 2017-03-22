@@ -99,13 +99,16 @@
     #location_maker .first {
       float: none;
     }
-    #location_maker textarea.machines {
+    #location_maker li textarea {
       height: 50px;
-      width: 300px;
-      max-width: 300px;
-      min-width: 300px;
-      max-height: 200px;
+      width: 100%;
+      max-width: 100%;
+      min-width: 100%;
+      max-height: 50px;
       margin: 0;
+    }
+    #location_maker li select {
+      width: 100%;
     }
     .first {
       margin-right: 0;
