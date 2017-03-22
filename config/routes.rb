@@ -163,6 +163,7 @@ Pbm::Application.routes.draw do
   # legacy names for regions
   get '/milwaukee' => redirect('/wisconsin')
   get '/central-indiana' => redirect('/indiana')
+  get '/mid-michigan' => redirect('/michigan-mid')
   get '/burlington' => redirect('/vermont')
   get '/apps' => redirect('/app')
   get '/apps/support' => redirect('/app/support')
