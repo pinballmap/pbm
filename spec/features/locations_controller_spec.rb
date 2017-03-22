@@ -53,6 +53,8 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
+      sleep 1
+
       expect(page).to_not have_selector("input#remove_machine_#{LocationMachineXref.where(location_id: @location.id, machine_id: @machine.id).first.id}")
     end
   end
