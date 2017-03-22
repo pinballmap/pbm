@@ -29,11 +29,19 @@
                 %label{:for => "location_website"} Website:
                 %input{:type => "text", :name => "location_website", :params => "location_website", :class => "text"}
               %li
+                %label{:for => "location_type"} Location Type:
+                = select_tag :location_type, options_for_select(@location_types, default = "Bar")
+              %li
                 %label{:for => "location_operator"} Operator:
                 %input{:type => "text", :name => "location_operator", :params => "location_operator", :class => "text"}
-              %li.machines{:class => "first"}
+              %li
+                %label{:for => "location_comments"} Comments:
+                %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text comments"}
+              %br
+              %li
                 %label{:for => "location_machines"} Machines:
                 %textarea{:type => "text", :name => "location_machines", :params => "location_machines", :class => "text machines"}
+              %br
               %li.submit{:style => "clear:both;"}
                 %input{:type => "submit", :value => "Submit New Location", :class => "submit_button"}
 

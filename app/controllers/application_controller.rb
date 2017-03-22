@@ -53,7 +53,9 @@ State: #{params['location_state']}\n
 Zip: #{params['location_zip']}\n
 Phone: #{params['location_phone']}\n
 Website: #{params['location_website']}\n
+Type: #{params['location_type']}\n
 Operator: #{params['location_operator']}\n
+Comments: #{params['location_comments']}\n
 Machines: #{params['location_machines']}\n
 (entered from #{request.remote_ip} via #{request.user_agent}#{user_info})\n
 END

@@ -151,7 +151,9 @@ State: state\n
 Zip: zip\n
 Phone: phone\n
 Website: website\n
+Type: type\n
 Operator: operator\n
+Comments: comments\n
 Machines: machines\n
 (entered from 0.0.0.0 via Rails Testing)\n
 HERE
@@ -166,7 +168,7 @@ HERE
         )
       end
 
-      post 'submitted_new_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_operator: 'operator', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail'
+      post 'submitted_new_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail'
 
       expect(@region.user_submissions.count).to eq(1)
       submission = @region.user_submissions.first
@@ -186,7 +188,9 @@ State: state\n
 Zip: zip\n
 Phone: phone\n
 Website: website\n
+Type: type\n
 Operator: operator\n
+Comments: comments\n
 Machines: machines\n
 (entered from 0.0.0.0 via Rails Testing by ssw (yeah@ok.com))\n
 HERE
@@ -200,7 +204,7 @@ HERE
         )
       end
 
-      post 'submitted_new_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_operator: 'operator', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail'
+      post 'submitted_new_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail'
     end
 
     it 'should send an email - notifies if sent from the staging server' do
@@ -212,7 +216,7 @@ HERE
         )
       end
 
-      post 'submitted_new_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_operator: 'operator', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail'
+      post 'submitted_new_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail'
     end
   end
 end

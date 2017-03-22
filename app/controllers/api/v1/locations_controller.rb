@@ -18,7 +18,9 @@ module Api
       param :location_zip, String, desc: 'Zip code of new location', required: false
       param :location_phone, String, desc: 'Phone number of new location', required: false
       param :location_website, String, desc: 'Website of new location', required: false
+      param :location_type, String, desc: 'Type of location', required: false
       param :location_operator, String, desc: 'Machine operator of new location', required: false
+      param :location_comments, String, desc: 'Comments', required: false
       param :location_machines, String, desc: 'List of machines at new location', required: true
       formats ['json']
       def suggest
