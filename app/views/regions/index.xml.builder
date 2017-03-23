@@ -10,7 +10,7 @@ xml.data do
         xml.lat region.lat
         xml.lon region.lon
         xml.nSearchNo region.n_search_no
-        xml.motd region.motdWithHTML
+        xml.motd region.motd
         xml.emailContact region.primary_email_contact
       end
     end
