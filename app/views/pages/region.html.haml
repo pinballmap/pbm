@@ -9,5 +9,5 @@
       - if !@region.motd.blank?
         %p
           %span.darkb Message of the Day:
-          = @region.motd
+          = @region.html_motd
       = yield :presearch_sidebar

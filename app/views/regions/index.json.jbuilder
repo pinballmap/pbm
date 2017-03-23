@@ -7,7 +7,7 @@ json.regions @regions.each do |json, region|
     json.lat region.lat
     json.lon region.lon
     json.nSearchNo region.n_search_no
-    json.motd region.motd
+    json.motd region.motdWithHTML
     json.emailContact region.primary_email_contact
   end
 end
