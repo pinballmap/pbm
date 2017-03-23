@@ -121,7 +121,7 @@ class Region < ActiveRecord::Base
   end
 
   def html_motd
-    message = ("#{motd}").gsub(/(\b(((https?|ftp|file|):\/\/)|www[.])[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i) {|s|"<a href ='#{s}' target='_blank'>#{s}</a>"}
+    message = motd.to_s.gsub(/(\b(((https?|ftp|file|):\/\/)|www[.])[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/i) { |s| "<a href =#{s} target=_blank>#{s}</a>" }
     message.html_safe
   end
 
