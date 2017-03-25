@@ -129,6 +129,32 @@ class Region < ActiveRecord::Base
     [lat, lon].join(', ')
   end
 
+  def generate_daily_digest_comments_email_body
+    start_of_day = (DateTime.now - 1.day).beginning_of_day
+    end_of_day = (DateTime.now - 1.day).end_of_day
+
+    <<HERE
+Here's a list of all the comments that were placed in your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@posteo.org
+
+#{full_name} Daily Comments
+
+#{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE }.collect(&:submission).join("\n\n")}
+HERE
+  end
+
+  def generate_daily_digest_removals_email_body
+    start_of_day = (DateTime.now - 1.day).beginning_of_day
+    end_of_day = (DateTime.now - 1.day).end_of_day
+
+    <<HERE
+Here's a list of all the machines that were removed from your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@posteo.org
+
+#{full_name} Daily Machine Removals
+
+#{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.collect(&:submission).join("\n\n")}
+HERE
+  end
+
   def generate_weekly_admin_email_body
     start_of_week = (DateTime.now - 1.week).beginning_of_day
     end_of_week = DateTime.now.end_of_day

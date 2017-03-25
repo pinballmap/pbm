@@ -44,6 +44,20 @@ describe LocationMachineXref do
       @lmx.update_condition('bar', remote_ip: '0.0.0.0', user_agent: 'cleOS', user_id: @u.id)
     end
 
+    it 'should not send an email if the region is set for digest comments' do
+      r_digest_email = FactoryGirl.create(:region, send_digest_removal_emails: 1, send_digest_comment_emails: 1)
+      u_digest_email = FactoryGirl.create(:user, id: 2, region: r_digest_email, username: 'cibw', email: 'foo@baz.com')
+      l_digest_email = FactoryGirl.create(:location, region: r_digest_email)
+      lmx_digest_email = FactoryGirl.create(:location_machine_xref, location: l_digest_email, machine: @m)
+
+      expect(Pony).to_not receive(:mail)
+
+      lmx_digest_email.update_condition('foo', user_id: u_digest_email.id)
+
+      expect(lmx_digest_email.condition).to eq('foo')
+      expect(lmx_digest_email.condition_date.to_s).to eq(Time.now.to_s.split(' ')[0])
+    end
+
     it 'should not send an email for blank condition updates' do
       expect(Pony).to_not receive(:mail)
 
@@ -105,6 +119,17 @@ describe LocationMachineXref do
       @lmx_no_email.destroy
 
       expect(LocationMachineXref.all).to eq([])
+    end
+
+    it 'should not send an email if the region is set for digest removals' do
+      r_digest_email = FactoryGirl.create(:region, send_digest_removal_emails: 1, send_digest_comment_emails: 1)
+      u_digest_email = FactoryGirl.create(:user, id: 2, region: r_digest_email, username: 'cibw', email: 'foo@baz.com')
+      l_digest_email = FactoryGirl.create(:location, region: r_digest_email)
+      lmx_digest_email = FactoryGirl.create(:location_machine_xref, location: l_digest_email, machine: @m)
+
+      expect(Pony).to_not receive(:mail)
+
+      lmx_digest_email.destroy(user_id: u_digest_email.id)
     end
 
     it 'auto-creates a user submission' do

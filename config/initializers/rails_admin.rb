@@ -304,6 +304,8 @@ RailsAdmin.config do |config|
       field :default_search_type, :string
       field :should_email_machine_removal, :boolean
       field :should_auto_delete_empty_locations, :boolean
+      field :send_digest_comment_emails, :boolean
+      field :send_digest_removal_emails, :boolean
     end
     edit do
       field :updated_at, :datetime
@@ -320,6 +322,8 @@ RailsAdmin.config do |config|
       field :default_search_type, :string
       field :should_email_machine_removal, :boolean
       field :should_auto_delete_empty_locations, :boolean
+      field :send_digest_comment_emails, :boolean
+      field :send_digest_removal_emails, :boolean
     end
     create do
       field :name, :string
@@ -332,6 +336,8 @@ RailsAdmin.config do |config|
       field :default_search_type, :string
       field :should_email_machine_removal, :boolean
       field :should_auto_delete_empty_locations, :boolean
+      field :send_digest_comment_emails, :boolean
+      field :send_digest_removal_emails, :boolean
     end
     export do; end
     update do; end

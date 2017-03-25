@@ -28,6 +28,46 @@ describe Region do
     end
   end
 
+  describe '#generate_daily_digest_comments_email_body' do
+    it 'should generate a string containing all machine comments from the day' do
+      FactoryGirl.create(:user_submission, region: @region, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: DateTime.now - 1.day)
+      FactoryGirl.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: DateTime.now - 1.day)
+
+      FactoryGirl.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: DateTime.now - 2.day)
+      FactoryGirl.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+
+      expect(@region.generate_daily_digest_comments_email_body).to eq(<<HERE)
+Here's a list of all the comments that were placed in your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@posteo.org
+
+Portland Daily Comments
+
+bar
+
+foo
+HERE
+    end
+  end
+
+  describe '#generate_daily_digest_removals_email_body' do
+    it 'should generate a string containing all machine removals from the day' do
+      FactoryGirl.create(:user_submission, region: @region, submission: 'foo', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: DateTime.now - 1.day)
+      FactoryGirl.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: DateTime.now - 1.day)
+
+      FactoryGirl.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: DateTime.now - 2.day)
+      FactoryGirl.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
+
+      expect(@region.generate_daily_digest_removals_email_body).to eq(<<HERE)
+Here's a list of all the machines that were removed from your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@posteo.org
+
+Portland Daily Machine Removals
+
+bar
+
+foo
+HERE
+    end
+  end
+
   describe '#generate_weekly_admin_email_body' do
     it 'should generate a string containing metrics about the region condition' do
       FactoryGirl.create(:location, region: @another_region)

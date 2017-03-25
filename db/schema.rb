@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170306034705) do
+ActiveRecord::Schema.define(version: 20170325210403) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -199,6 +199,8 @@ ActiveRecord::Schema.define(version: 20170306034705) do
     t.string   "default_search_type"
     t.boolean  "should_email_machine_removal"
     t.boolean  "should_auto_delete_empty_locations"
+    t.boolean  "send_digest_comment_emails"
+    t.boolean  "send_digest_removal_emails"
   end
 
   create_table "user_submissions", force: true do |t|
