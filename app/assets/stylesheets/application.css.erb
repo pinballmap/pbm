@@ -1285,6 +1285,8 @@ form.remove_machine_condition {
   height: 25px;
   width: 435px;
   text-transform: uppercase;
+  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-style: italic;
 }
 .location_detail input.remove_machine_button:hover {
   color: black;
@@ -1359,12 +1361,19 @@ br.clear {
 }
 #form select, form select {
   border: 2px solid #A9A9A9;
-  background-color: #FFFFFF;
+  background-color: #EFEFEF;
   height: 28px;
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   font-size: 15px;
+  padding-right: 3px;
+}
+#form select:hover, form select:hover {
+  cursor: pointer;
+}
+#form .limit select {
+  padding-right: 0;
 }
 .add_picture_location input.submit_picture {
   width: auto;
@@ -2329,7 +2338,7 @@ div.map_summary_info {
 /** Contact/Submission Forms **/
 
 #location_maker input.text, #contact_maker input.text,
-#location_maker select#location_type, #location_maker select#location_operator {
+#location_maker li select {
   width: 280px;
   height: 28px;
   margin: 0;
@@ -2354,7 +2363,7 @@ div.map_summary_info {
   height: 100px;
   max-height: 150px;
 }
-#location_maker textarea {
+#location_maker li textarea {
   height: 50px;
   min-height: 50px;
   width: 575px;
