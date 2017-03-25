@@ -120,6 +120,11 @@ class Region < ActiveRecord::Base
     links
   end
 
+  def html_motd
+    message = motd.to_s.gsub(%r{(\b(((https?|ftp|file|):\/\/)|www[.])[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])}i) { |s| "<a href =#{s} target=_blank>#{s}</a>" }
+    message.html_safe
+  end
+
   def lat_and_lon
     [lat, lon].join(', ')
   end
