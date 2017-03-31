@@ -48,7 +48,7 @@ If the site loads properly it will be an empty version of pinballmap.com, then a
 * ubuntu/debian/linux mint: [maybe this](https://www.codeproject.com/Articles/898303/Installing-and-Configuring-PostgreSQL-on-Linux-Min)
 * arch/manjaro: [this](http://rmaicle.github.io/blog/2015/11/03/postgresql.html) and [then this](https://wiki.archlinux.org/index.php/PostgreSQL)
 
-4. Install and setup rvm:
+4. Install and setup ruby and rvm:
 
 * `curl -L https://get.rvm.io | bash -s stable --ruby`
 * `rvm install ruby-2.1.7`
