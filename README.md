@@ -36,30 +36,34 @@ If the site loads properly it will be an empty version of pinballmap.com, then a
 
 ## Linux Setup
 
-Fork it. Then:
-`clone https://github.com/{you}/pbm.git`
-`git remote add upstream git://github.com/scottwainstock/pbm.git`
+1. Fork it. Then:
 
-Install postgresql via package manager: postgresql pgadmin3
+* `clone https://github.com/{you}/pbm.git`
+* `git remote add upstream git://github.com/scottwainstock/pbm.git`
 
-Setup postgres (good luck):
-ubuntu/debian/linux mint: [maybe this](https://www.codeproject.com/Articles/898303/Installing-and-Configuring-PostgreSQL-on-Linux-Min)
-arch/manjaro: [this](http://rmaicle.github.io/blog/2015/11/03/postgresql.html) and [then this](https://wiki.archlinux.org/index.php/PostgreSQL)
+2. Install postgresql and pgadmin3 via package manager.
 
-Install rvm: `curl -L https://get.rvm.io | bash -s stable --ruby`
+3. Setup postgres (good luck):
 
-`rvm install ruby-2.1.7`
-`rvm --default use ruby-2.1.7`
-`gem install bundler`
-`bundle install`
-`cp config/database.yml.example config/database.yml` to create your database.yml for development
-`bundle exec rake db:create ; RAILS_ENV=test bundle exec rake db:create`
-`bundle exec rake db:migrate ; RAILS_ENV=test bundle exec rake db:migrate`
+* ubuntu/debian/linux mint: [maybe this](https://www.codeproject.com/Articles/898303/Installing-and-Configuring-PostgreSQL-on-Linux-Min)
+* arch/manjaro: [this](http://rmaicle.github.io/blog/2015/11/03/postgresql.html) and [then this](https://wiki.archlinux.org/index.php/PostgreSQL)
 
-Install phantomjs via package manager.
+4. Install and setup rvm:
 
-Get a database dump from Scott. Then:
-`pg_restore --verbose --clean --no-acl --no-owner -h localhost -d pbm_dev dump.file`
+* `curl -L https://get.rvm.io | bash -s stable --ruby`
+* `rvm install ruby-2.1.7`
+* `rvm --default use ruby-2.1.7`
+* `gem install bundler`
+* `bundle install`
+* `cp config/database.yml.example config/database.yml` to create your database.yml for development
+* `bundle exec rake db:create ; RAILS_ENV=test bundle exec rake db:create`
+* `bundle exec rake db:migrate ; RAILS_ENV=test bundle exec rake db:migrate`
+
+5. Install phantomjs via package manager.
+
+6. Get a database dump from Scott. Then:
+* `pg_restore --verbose --clean --no-acl --no-owner -h localhost -d pbm_dev dump.file`
 
 Start server: `bundle exec rails s`
+
 Run tests: `bundle exec rspec`
