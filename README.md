@@ -25,12 +25,15 @@ Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhan
 * Download [Postgres App](http://postgresapp.com/). (*I have mine run at startup on my "Dev" profile.*)
 * `bundle exec rake db:create ; RAILS_ENV=test bundle exec rake db:create`
 * `bundle exec rake db:migrate ; RAILS_ENV=test bundle exec rake db:migrate`
-* `bundle exec rspec`
 * `rake doc:app`  (*I think this generates documentation for the app, which sounds helpful for later.*)
 * `curl get.pow.cx | sh`
 * `cd ~/.pow`
 * `ln -s /Projects-Path/pbm`
 * `open http://pbm.dev`
+
+Start server: `bundle exec rails s`
+
+Run tests: `bundle exec rspec`
 
 If the site loads properly it will be an empty version of pinballmap.com, then ask Scott for a data dump so you can have a full set of data to work with.
 
