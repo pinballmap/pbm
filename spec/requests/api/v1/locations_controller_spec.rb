@@ -4,38 +4,45 @@ describe Api::V1::LocationsController, type: :request do
   before(:each) do
     @region = FactoryGirl.create(:region, name: 'portland')
     @location = FactoryGirl.create(:location, region: @region, name: 'Satchmo', state: 'OR', zip: '97203', lat: 42.18, lon: -71.18)
-    @user = FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', region: @region, authentication_token: '1G8_s7P-V-4MGojaKD7a')
+    @user = FactoryGirl.create(:user, id: 111, username: 'cibw', email: 'foo@bar.com', region: @region, authentication_token: '1G8_s7P-V-4MGojaKD7a')
     FactoryGirl.create(:user, email: 'super_admin@bar.com', region: nil, is_super_admin: 1)
   end
 
   describe '#suggest' do
     it 'errors when required fields are not sent' do
       expect(Pony).to_not receive(:mail)
-      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s
+      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
 
       expect(Pony).to_not receive(:mail)
-      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s, location_machines: 'foo'
+      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s, location_machines: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
 
       expect(Pony).to_not receive(:mail)
-      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s, location_name: 'baz'
+      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s, location_name: 'baz', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
 
       expect(Pony).to_not receive(:mail)
-      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s, location_name: 'baz', location_machines: ''
+      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s, location_name: 'baz', location_machines: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
     end
 
     it 'errors when region is not available' do
-      post '/api/v1/locations/suggest.json', region_id: -1, location_machines: 'foo', location_name: 'bar'
+      post '/api/v1/locations/suggest.json', region_id: -1, location_machines: 'foo', location_name: 'bar', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find region')
+    end
+
+    it 'errors when not authed' do
+      post '/api/v1/locations/suggest.json', region_id: @region.id.to_s, location_machines: 'foo', location_name: 'bar'
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::AUTH_REQUIRED_MSG)
     end
 
     it 'emails admins on new location submission' do
@@ -58,12 +65,12 @@ Type: type\n
 Operator: operator\n
 Comments: comments\n
 Machines: machines\n
-(entered from 127.0.0.1 via cleOS)\n
+(entered from 127.0.0.1 via cleOS by cibw (foo@bar.com))\n
 HERE
         )
       end
 
-      post '/api/v1/locations/suggest.json', { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }, HTTP_USER_AGENT: 'cleOS'
+      post '/api/v1/locations/suggest.json', { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq("Thanks for entering that location. We'll get it in the system as soon as possible.")
@@ -122,16 +129,22 @@ HERE
 
   describe '#update' do
     it 'throws an error if the location does not exist' do
-      put '/api/v1/locations/666'
+      put '/api/v1/locations/666', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find location')
+    end
+
+    it 'throws an error if you are not authed' do
+      put '/api/v1/locations/' + @location.id.to_s + '.json', description: 'foo', website: 'http://bar', phone: '5555555555', zip: '97777'
+
+      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::AUTH_REQUIRED_MSG)
     end
 
     it 'only allows you to update description, website, type, operator, and phone' do
       type = FactoryGirl.create(:location_type, name: 'bar')
       operator = FactoryGirl.create(:operator, name: 'CleoWorld')
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json', description: 'foo', website: 'http://bar', phone: '5555555555', zip: '97777', location_type: type.id.to_s, operator_id: operator.id.to_s
+      put '/api/v1/locations/' + @location.id.to_s + '.json', description: 'foo', website: 'http://bar', phone: '5555555555', zip: '97777', location_type: type.id.to_s, operator_id: operator.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
 
       updated_location = @location.reload
@@ -160,7 +173,7 @@ HERE
       type = FactoryGirl.create(:location_type, name: 'bar')
       @location.location_type_id = type.id
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json', description: 'foo', website: 'http://bar', phone: '5555555555', zip: '97777', location_type: ''
+      put '/api/v1/locations/' + @location.id.to_s + '.json', description: 'foo', website: 'http://bar', phone: '5555555555', zip: '97777', location_type: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
 
       updated_location = @location.reload
@@ -180,7 +193,7 @@ HERE
       new_type = FactoryGirl.create(:location_type, name: 'baz')
       @location.location_type_id = type.id
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json', location_type: new_type.id
+      put '/api/v1/locations/' + @location.id.to_s + '.json', location_type: new_type.id, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
 
       updated_location = @location.reload
@@ -189,19 +202,19 @@ HERE
     end
 
     it 'responds with an error if an invalid phone number is sent' do
-      put '/api/v1/locations/' + @location.id.to_s + '.json', phone: 'baz'
+      put '/api/v1/locations/' + @location.id.to_s + '.json', phone: 'baz', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
 
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq(['Phone format invalid, please use ###-###-####'])
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json', phone: '444-4444'
+      put '/api/v1/locations/' + @location.id.to_s + '.json', phone: '444-4444', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
 
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq(['Phone format invalid, please use ###-###-####'])
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json', phone: '11-444-4444'
+      put '/api/v1/locations/' + @location.id.to_s + '.json', phone: '11-444-4444', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
 
       expect(response).to be_success
 
@@ -211,7 +224,7 @@ HERE
     it 'blank phone number deletes phone number' do
       @location.phone = '555-555-5555'
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json', phone: nil
+      put '/api/v1/locations/' + @location.id.to_s + '.json', phone: nil, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
 
       parsed_body = JSON.parse(response.body)
@@ -328,6 +341,12 @@ HERE
       put '/api/v1/locations/666/confirm.json', user_token: '1G8_s7P-V-4MGojaKD7a', user_email: 'foo@bar.com'
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find location')
+    end
+
+    it 'throws an error if you are not authed' do
+      put '/api/v1/locations/' + @location.id.to_s + '/confirm.json'
+
+      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::AUTH_REQUIRED_MSG)
     end
   end
 end

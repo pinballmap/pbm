@@ -61,16 +61,17 @@ module Api
       param :comments, String, desc: 'Things we should know about this region', required: false
       formats ['json']
       def suggest
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+
+        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
+
         if params['region_name'].blank?
           return_response('The name of the region you want added is a required field.', 'errors')
           return
         end
 
-        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
-        unless user.nil?
-          params['name'] = user.username
-          params['email'] = user.email
-        end
+        params['name'] = user.username
+        params['email'] = user.email
 
         send_new_region_notification(params)
         return_response("Thanks for suggesting that region. We'll be in touch.", 'msg')
@@ -84,6 +85,10 @@ module Api
       param :email, String, desc: "Sender's email address", required: false
       formats ['json']
       def contact
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+
+        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
+
         region = Region.find(params['region_id'])
 
         if params['message'].blank?
@@ -91,7 +96,7 @@ module Api
           return
         end
 
-        send_admin_notification(params, region, Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user)
+        send_admin_notification(params, region, user)
         return_response('Thanks for the message.', 'msg')
 
       rescue ActiveRecord::RecordNotFound
@@ -110,6 +115,10 @@ module Api
       param :message, String, desc: 'Message to app maintainer', required: true
       formats ['json']
       def app_comment
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+
+        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
+
         region = Region.find(params['region_id'])
 
         required_fields = %w(region_id os os_version device_type app_version email message)

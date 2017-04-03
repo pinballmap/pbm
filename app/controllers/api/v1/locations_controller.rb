@@ -24,13 +24,17 @@ module Api
       param :location_machines, String, desc: 'List of machines at new location', required: true
       formats ['json']
       def suggest
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+
+        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
+
         if params[:region_id].blank? || params[:location_machines].blank? || params[:location_name].blank?
           return_response('Region, location name, and a list of machines are required', 'errors')
           return
         end
 
         region = Region.find(params['region_id'])
-        send_new_location_notification(params, region, Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user)
+        send_new_location_notification(params, region, user)
 
         return_response("Thanks for entering that location. We'll get it in the system as soon as possible.", 'msg')
 
@@ -73,9 +77,12 @@ module Api
       formats ['json']
       def update
         location = Location.find(params[:id])
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+
+        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 
         values, message_type = location.update_metadata(
-          Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user,
+          user,
           description: params[:description],
           website: params[:website],
           phone: params[:phone],
@@ -138,8 +145,12 @@ module Api
       api :PUT, '/api/v1/locations/:id/confirm.json', 'Confirm location information'
       formats ['json']
       def confirm
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+
+        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
+
         location = Location.find(params[:id])
-        location.confirm(Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user)
+        location.confirm(user)
 
         return_response('Thanks for confirming that location.', 'msg')
 

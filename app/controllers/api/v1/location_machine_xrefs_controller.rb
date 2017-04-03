@@ -29,6 +29,10 @@ module Api
       param :condition, String, desc: "Notes on machine's condition", required: false
       formats ['json']
       def create
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+
+        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
+
         location_id = params[:location_id]
         machine_id = params[:machine_id]
         condition = params[:condition]
@@ -39,7 +43,6 @@ module Api
         end
 
         lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine_id)
-        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
 
         if lmx.nil?
           status_code = 201
@@ -67,6 +70,8 @@ module Api
         lmx = LocationMachineXref.find(params[:id])
         user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
 
+        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
+
         lmx.update_condition(
           params[:condition],
           remote_ip: request.remote_ip,
@@ -87,6 +92,8 @@ module Api
       def destroy
         lmx = LocationMachineXref.find(params[:id])
         user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+
+        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 
         lmx.destroy(
           remote_ip: request.remote_ip,

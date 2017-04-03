@@ -17,6 +17,10 @@ module Api
       param :location_id, Integer, desc: 'Location ID of where the machine was added', required: false
       formats ['json']
       def create
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+
+        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
+
         machine_name = params[:machine_name]
         machine_name.strip!
 

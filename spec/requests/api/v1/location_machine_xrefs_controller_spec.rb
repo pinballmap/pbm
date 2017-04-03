@@ -13,7 +13,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
   describe '#delete' do
     it 'deletes an lmx' do
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json'
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
       expect(response.status).to eq(200)
 
@@ -24,14 +24,14 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'sends a deletion email when appropriate' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "#{@location.name}\n#{@machine.name}\n#{@location.region.name}\n(user_id: ) (entered from 127.0.0.1 via cleOS)",
+          body: "#{@location.name}\n#{@machine.name}\n#{@location.region.name}\n(user_id: 111) (entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
           subject: 'PBM - Someone removed a machine from a location',
           to: [],
           from: 'admin@pinballmap.com'
         )
       end
 
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', {}, HTTP_USER_AGENT: 'cleOS'
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
@@ -56,7 +56,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'creates a user submission for the deletion' do
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', {}, HTTP_USER_AGENT: 'cleOS'
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
@@ -85,7 +85,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
         )
       end
 
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', {}, HTTP_HOST: 'pinballmapstaging.herokuapp.com'
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_HOST: 'pinballmapstaging.herokuapp.com'
     end
 
     it 'errors if lmx id does not exist' do
@@ -93,6 +93,14 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
+      expect(LocationMachineXref.all.size).to eq(1)
+    end
+
+    it 'errors if not authed' do
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', {}
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationMachineXrefsController::AUTH_REQUIRED_MSG)
       expect(LocationMachineXref.all.size).to eq(1)
     end
   end
@@ -142,7 +150,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
   describe '#create' do
     it 'updates condition on existing lmx' do
-      post '/api/v1/location_machine_xrefs.json', machine_id: @machine.id.to_s, location_id: @location.id.to_s, condition: 'foo'
+      post '/api/v1/location_machine_xrefs.json', machine_id: @machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
 
@@ -168,7 +176,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'creates new lmx when appropriate' do
       new_machine = FactoryGirl.create(:machine, id: 11, name: 'sass')
 
-      post '/api/v1/location_machine_xrefs.json', machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: 'foo'
+      post '/api/v1/location_machine_xrefs.json', machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
       expect(response.status).to eq(201)
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
@@ -180,7 +188,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it "doesn't let you add machines that don't exist" do
-      post '/api/v1/location_machine_xrefs.json', machine_id: -666, location_id: @location.id.to_s, condition: 'foo'
+      post '/api/v1/location_machine_xrefs.json', machine_id: -666, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
 
@@ -214,17 +222,24 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'returns an error unless the machine_id and location_id are both present' do
-      post '/api/v1/location_machine_xrefs.json'
+      post '/api/v1/location_machine_xrefs.json', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
 
-      post '/api/v1/location_machine_xrefs.json', machine_id: @machine.id.to_s
+      post '/api/v1/location_machine_xrefs.json', machine_id: @machine.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
 
-      post '/api/v1/location_machine_xrefs.json', location_id: @location.id.to_s
+      post '/api/v1/location_machine_xrefs.json', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
+    end
+
+    it 'returns an error if you are not authenticated' do
+      post '/api/v1/location_machine_xrefs.json', machine_id: 123, location_id: @location.id.to_s, condition: 'foo'
+      expect(response).to be_success
+
+      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationMachineXrefsController::AUTH_REQUIRED_MSG)
     end
   end
 
@@ -242,14 +257,14 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "foo\nCleo\nGround Kontrol\nPortland\n(entered from 127.0.0.1 via cleOS)",
+          body: "foo\nCleo\nGround Kontrol\nPortland\n(entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
           subject: 'PBM - Someone entered a machine condition',
           to: [],
           from: 'admin@pinballmap.com'
         )
       end
 
-      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, 'condition=foo', HTTP_USER_AGENT: 'cleOS'
+      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, { condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
       expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('foo')
@@ -278,13 +293,20 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
         )
       end
 
-      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, { condition: 'foo' }, HTTP_HOST: 'pinballmapstaging.herokuapp.com'
+      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, { condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_HOST: 'pinballmapstaging.herokuapp.com'
     end
 
     it 'returns an error message if the lmx does not exist' do
       put '/api/v1/location_machine_xrefs/666?condition=foo'
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
+    end
+
+    it 'returns an error message if you are not authed' do
+      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, { condition: 'foo' }, HTTP_HOST: 'pinballmapstaging.herokuapp.com'
+
+      expect(response).to be_success
+      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationMachineXrefsController::AUTH_REQUIRED_MSG)
     end
   end
 
