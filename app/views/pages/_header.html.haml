@@ -1,31 +1,137 @@
-#header
+- if !mobile_device?
+  #header{:class => "#{@region ? '' : 'header_home'}"}
+    =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
+    %div{:class => "header_buttons"}
+      %div.menu_link
+        #menu &#9776;
+        %ul#nav.js
+          - if (@region)
+            %li.first_header_link=link_to 'Suggest Location', suggest_path
+            %li=link_to 'About', about_path
+            %li=link_to 'Contact', about_path
+            %li=link_to 'Events', events_path
+            %li=link_to 'High Scores', high_rollers_path
+            %li=link_to 'Location RSS', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
+            %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
+            %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
+            %hr/
+          %li.first_header_link=link_to 'Home', root_path
+          %li=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
+          %li=link_to 'Blog', 'http://blog.pinballmap.com'
+          %li=link_to 'T-Shirts', store_path
+          %li=link_to 'App', app_path
+          %li=link_to 'FAQ', faq_path
+          - if !(@region)
+            %li=link_to 'Contact', about_path('portland')
+          %li.last_header_link
+            =link_to 'Donate', donate_path
+      - if !user_signed_in?
+        %div.login.login_region.logged_no
+          %div.login_inner
+            %span.darkb.login_inner
+              = link_to 'Login', new_user_session_path
+              %span.login_slash
+                |
+              = link_to 'Join', new_user_registration_path
+      - else
+        %div.login.login_region.logged_yes
+          %div.login_inner
+            %span.darkb.login_inner
+              = link_to 'Logout', destroy_user_session_path, :class => "loggedin"
+              - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
+                %span.login_slash
+                  |
+                = link_to 'Admin', rails_admin_path, :class => "loggedin"
+      - if (@region)
+        %div.region_logo_dropdown
+          %div.other_regions
+            %span.region_name_page
+              =link_to "#{@region.full_name}", region_homepage_path
+          - if !mobile_device?
+            %ul.other_regions_list= other_regions_html(@region)
+        %div.closest_locations_outer
+          %div.closest_locations_inner
+            %span.darkb.closest_locations{:onclick => "findClosestLocations('#{@region.name}')"}
+              = link_to 'Show Closest Locations', '#', {:id => 'find_closest_locations'}
+      - else
+        %div.geo_header_outer
+          %div.geo_header_inner
+            %span.darkb.geo_header{:onclick => "findClosestRegion()"}
+              = link_to 'Find Your Closest Map', '#'
+- else
+  #header{:class => "#{@region ? '' : 'header_home'}"}
+    -if !(@region)
+      =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
+    %div.menu_link
+      %div.login.login_home
+        %span.darkb
+          - if !user_signed_in?
+            = link_to 'Login', new_user_session_path
+            %span.login_slash
+              |
+            = link_to 'Join', new_user_registration_path
+          - else
+            = link_to 'Logout', destroy_user_session_path
+            - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
+              %span.login_slash
+                |
+              = link_to 'Admin', rails_admin_path
+      - if (@region)
+        - if user_signed_in?
+          =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'} header_image_login", :alt => 'Pinball Map Logo'), root_path
+        - else
+          =link_to image_tag('pinballmapcom_nodot.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
+      - else
+        %div.geo_header_wrapper
+          %span.darkb{:onclick => "findClosestRegion()"}
+            = link_to 'Find Your Closest Map', '#'
+      #menu &#9776;
+      %ul#nav.js
+        - if (@region)
+          %li.first_header_link=link_to 'Suggest Location', suggest_path
+          %li=link_to 'About', about_path
+          %li=link_to 'Contact', about_path('portland')
+          %li=link_to 'Events', events_path
+          %li=link_to 'High Scores', high_rollers_path
+          %li=link_to 'Location RSS', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
+          %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
+          %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
+          %hr/
+        %li.first_header_link
+          =link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
+        %li=link_to 'Blog', 'http://blog.pinballmap.com'
+        %li=link_to 'T-Shirts', store_path
+        %li=link_to 'App', app_path
+        %li=link_to 'FAQ', faq_path
+        - if !(@region)
+          %li=link_to 'Contact', about_path('portland')
+        %li.last_header_link
+          =link_to 'Donate', donate_path
   - if (@region)
-    =image_tag "region_names/#{params[:region]}-diag.png", :class => "region_logo"
-  =link_to image_tag('pinballmapcom.jpg', :class => "#{@region ? 'header_image' : 'header_image_home'}"), @region ? region_homepage_path : root_path
-  - if (@region)
-    %ul
-      %li.first_header_link=link_to 'About Pinball Map', about_path
-      %li=link_to 'Suggest A New Location', suggest_new_location_path
-      %li=link_to 'Contact Us', contact_path
-      %li=link_to 'Apps', apps_path
-      %li=link_to 'Links', links_path
-      %li.other_regions.other_regions_arrow 
-        %span Other Regions
-        %ul.other_regions_list= other_regions_html(@region)
-      %li=link_to 'Events', events_path
-      %li
-        =link_to 'Location Feed', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
-      %li
-        =link_to 'Score Feed', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
-      %li=link_to 'High Rollers', high_rollers_path
+    #header_lower
+      %span.darkb.closest_locations{:style => "float:right;", :onclick => "findClosestLocations('#{@region.name}')"}
+        = link_to 'Show Closest Locations', '#', {:id => 'find_closest_locations'}
+      %div.region_logo_dropdown
+        %div.other_regions
+          %span.region_name_page
+            =link_to "#{@region.full_name}", region_homepage_path
 
 :javascript
   $().ready(function() {
-    $(".other_regions_list").hide();
-
-    $(".other_regions").hover(function () {
+    $(".region_logo_dropdown").hover(function() {
         $(".other_regions_list").show();
       },function(){
         $(".other_regions_list").hide();
+    });
+    $(document).click(function () {
+        $(".other_regions_list").hide();
+    });
+    $("#menu").click(function() {
+      $("#nav").toggle();
+    });
+    $(document).on('click', function(event) {
+      if (!$(event.target).closest('#menu').length) {
+        $("#nav").css('display', 'none');
+      }
     });
   });

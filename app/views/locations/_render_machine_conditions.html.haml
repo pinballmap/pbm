@@ -1,0 +1,19 @@
+:javascript
+  $('#machineconditions_container_lmx#{lmx.id}').ready(function(){
+    if ('#{conditions.empty?}' == 'false'){
+      $('#machineconditions_container_lmx_#{lmx.id}').css('display', 'block');
+    }else{
+      $('#machineconditions_container_lmx_#{lmx.id}').css('display', 'none');
+    }
+  });
+
+- conditions.collect! do |mcx|
+  %div.machine_condition_new_line{:id => "past_machine_condition_#{mcx.id}"}
+    %span.machine_condition= "#{mcx.comment}"
+    .clear
+    - if !mcx.created_at.nil?
+      %span.machine_condition_date= mcx.created_at.strftime("%b-%d-%Y")
+      - if mcx.user_id
+        by
+        %span.machine_condition_name
+          = link_to mcx.user.username, "https://#{request.host_with_port}/users/#{mcx.user_id}/profile"

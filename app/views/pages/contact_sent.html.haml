@@ -1,2 +1,8 @@
-.left_column
-  %p.yellow Thanks for the message!
+#page_body.notbold
+  .right_column.full_width
+    %p.alert= alert
+    %p{:style => 'text-align:center;'}
+      =image_tag 'PPM-Splash-200.png', :alt => 'Thanks'
+    %p{:style => 'text-align:center;'}
+      Go back to the
+      =link_to "#{@region.full_name} Pinball Map", region_homepage_path

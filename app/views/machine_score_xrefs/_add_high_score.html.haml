@@ -1,17 +1,10 @@
 %div.high_score
-  = banner('add_scores_lmx', 'ENTER YOUR HIGH SCORE', lmx)
-  %div[lmx, :add_scores]{:style => 'display:none;'}
-    %br/
+  = banner('add_scores_lmx', 'Enter Your High Score', lmx)
+  %div[lmx, :add_scores]{:style => 'display:none;', :class => 'add_scores_form'}
     = form_tag machine_score_xrefs_path, :id => "add_high_score_#{lmx.id}", :method => 'post' do
       = hidden_field_tag :location_machine_xref_id, lmx.id
       = label_tag :score, 'Score: '
       = text_field_tag :score
-      %br/
-      = label_tag :rank, 'Rank: '
-      = select_tag :rank, options_for_select({'' => '', 'GC' => 1, '1st' => 2, '2nd' => 3, '3rd' => 4, '4th' => 5}.sort {|a,b| a[1].to_i <=> b[1].to_i })
-      %br/
-      = label_tag :initials, 'Initials: '
-      = text_field_tag :initials
       %br/
       = submit_tag 'Add Score', :id => 'add_score'
 

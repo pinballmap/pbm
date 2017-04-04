@@ -1,0 +1,4 @@
+= link_to lmx.machine.ipdb_link.blank? ? "http://ipdb.org/search.pl?name=#{lmx.machine.name};qh=checked;searchtype=advanced" : lmx.machine.ipdb_link, :target => '_blank' do
+  %span.machine_name 
+    #{lmx.machine.name}
+    %span.machine_year_man #{lmx.machine.year_and_manufacturer}

@@ -1,9 +1,13 @@
-#page_body  
-  #lookup
-    #form
-      = render :partial => 'locations/form'
-    %br/
-    #locations
-      = yield :presearch_sidebar
+#region_page_body
   #map
     = render :partial => 'locations/map'
+  #form
+    = render :partial => 'locations/form'
+  #lookup
+    #locations
+      = render :partial => 'pages/intro'
+      - if !@region.motd.blank?
+        %p
+          %span.darkb Message of the Day:
+          = @region.html_motd
+      = yield :presearch_sidebar

@@ -1,10 +1,15 @@
-%span.info You can edit a machine's condition (click the comment text), view high scores, add a new high score, or remove a machine if that machine is no longer at this location.
-%br/
-%br/
-- location_machine_xrefs.sort{|a,b| a.machine.name <=> b.machine.name}.each do |lmx|
+- if user_signed_in?
+  %span.info Add a machine condition; add a high score; remove a machine if it's no longer at this location.
+- location_machine_xrefs.sort{|a,b| a.machine.massaged_name <=> b.machine.massaged_name}.each do |lmx|
   %div.machine_names[lmx, :machine]
-    = render :partial => 'location_machine_xrefs/remove_machine', :locals => {:lmx => lmx}
+    = render :partial => 'location_machine_xrefs/list_machine', :locals => {:lmx => lmx}
+    .clear
     %div[lmx, :machine_condition_display]
       = render :partial => 'location_machine_xrefs/update_machine_condition', :locals => {:lmx => lmx}
+    = render :partial => 'machine_conditions/show_machine_conditions', :locals => {:lmx => lmx}
+    - if user_signed_in?
+      = render :partial => 'location_machine_xrefs/remove_machine', :locals => {:lmx => lmx}
+    = render :partial => 'location_machine_xrefs/pintips', :locals => {:lmx => lmx}
     = render :partial => 'machine_score_xrefs/show_high_scores', :locals => {:lmx => lmx}
-    = render :partial => 'machine_score_xrefs/add_high_score',  :locals => {:lmx => lmx}
+    - if user_signed_in?
+      = render :partial => 'machine_score_xrefs/add_high_score',  :locals => {:lmx => lmx}

@@ -1,20 +1,32 @@
 %span.info Select a machine and then click the Add button.
-%br/
 = form_tag location_machine_xrefs_path, :method => 'post', :id => "add_new_machine_#{l.id}" do
   = hidden_field_tag :location_id, l.id
-  = select_tag :add_machine_by_id, options_for_select(['']) + options_from_collection_for_select(Machine.order('name'), 'id', 'name', params[:add_machine_by_id]), :class => 'lookup_search_select'
-  %br/
-  = text_field_tag :add_machine_by_name, params[:add_machine_by_name], :class => 'lookup_search_input'
+  = select_tag "add_machine_by_id_#{l.id}", options_for_select(['']) + options_from_collection_for_select(Machine.all.sort_by(&:massaged_name), 'id', 'name_and_year', params["add_machine_by_id_#{l.id}"]), :class => 'lookup_search_select'
+  %span or
+  = text_field_tag "add_machine_by_name_#{l.id}", params["add_machine_by_name_#{l.id}"], :class => 'lookup_search_input'
   = submit_tag 'Add', :id => 'add'
 
 :javascript
   $(function () {
-    $('#add_machine_by_name').autocomplete({source: '#{autocomplete_machines_path}'});
+    $("#dialog-message").css("display","none");
+    $('#add_machine_by_name_#{l.id}').autocomplete({ source: '#{autocomplete_machines_path}' });
+    $('#add_machine_by_name_#{l.id}').bind('autocompleteselect', function(event, ui) {
+      event.preventDefault();
+      $(this).val('');
+      $('#add_machine_by_id_#{l.id}').val(ui.item.id);
+    });
   });
 
   $('#add_new_machine_#{l.id}').submit(function () {
     $('#show_machines_location_#{l.id}').html(loadingHTML());
-    $.post(this.action, $(this).serialize(), function (data) { $('#show_machines_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machines') });
+
+    $.post(this.action, $(this).serialize(), function (data) {
+      $('#show_machines_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machines', function() {
+        $('#gm_machines_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_machine_names_for_infowindow', function() {
+          updateLocationUpdatedText(#{l.id}, '#{params[:region]}');
+        });
+      });
+    });
 
     return false;
   });

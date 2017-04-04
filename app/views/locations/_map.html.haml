@@ -1,18 +1,8 @@
 #map_canvas
-  = render :partial => lookup_context.find_all("#{@region.name}/_intro").any? ? "#{@region.name}/intro" : 'pages/intro'
-#ticker
-  - @region.n_recent_scores(20).each do |msx|
-    %span= "#{msx.location.name}'s #{msx.machine.name}: #{MachineScoreXref::ENGLISH_SCORES[msx.rank]} with #{number_with_delimiter(msx.score, :delimiter => ",")} by #{msx.initials}"
 
 :javascript
-  $().ready(function(){
-      $("#ticker").scrollSomething({
-        scrollerWidth: 645,
-        scrollerHeight: 50,
-        buttonSettings: "show",
-        itemsVisable: 3,
-        itemsScrolling: 1,
-        buttonPosition: "bottomRight",
-        scrollInterval: 5000
-      });
+  map = new google.maps.Map(document.getElementById("map_canvas"), {
+    center: {lat: #{@region.lat}, lng: #{@region.lon}},
+    zoom: 12,
+    styles: homeMap
   });

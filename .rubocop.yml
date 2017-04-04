@@ -1,0 +1,37 @@
+LineLength:
+  Enabled: false
+Documentation:
+  Enabled: false
+MethodLength:
+  Enabled: false
+ClassLength:
+  Enabled: false
+GuardClause:
+  Enabled: false
+PerlBackrefs:
+  Enabled: false
+CyclomaticComplexity:
+  Max: 15
+PerceivedComplexity:
+  Max: 15
+AbcSize:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+IndentArray:
+  Enabled: false
+RequireParentheses:
+  Enabled: false
+IfInsideElse:
+  Enabled: false
+IdenticalConditionalBranches:
+  Enabled: false
+NonLocalExitFromIterator:
+  Enabled: false
+
+AllCops:
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'autotest/**/*'
+    - 'vendor/**/*'

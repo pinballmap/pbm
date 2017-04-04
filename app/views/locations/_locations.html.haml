@@ -1,63 +1,78 @@
 - if (@locations)
   :javascript
+
+    clearMarkers()
+    clearInfoWindows();
+    $("#search_link_wrapper").removeClass("hide_search_link");
+
+    var hrefOrig = 'https://#{request.host_with_port}/#{@region.name.downcase}?';
+    var def_value = window.location.href;
+    if (typeof(search_string) == "undefined") {
+      search_string = def_value;
+      document.getElementById("search_link").href=search_string;
+    } else {
+      document.getElementById("search_link").href=hrefOrig + search_string;
+    }
+
     showLocations(
       [#{@location_data[0].join(', ')}],
       [#{@location_data[1].join(', ')}],
       [#{@location_data[2].join(', ')}],
       [#{@location_data[3].join(', ')}]
     );
+
   #results_container
-    .scroll_pane
-      .clear
-      #search_results
-        - @locations.each do |location|
-          - l = location.clone
-          %div.search_result[l]
-            %div.sub_nav_item[l, :show_location_detail]{:onmouseover => "$(this).addClass('location_summary_image_mouseover');", :onmouseout => "$(this).removeClass('location_summary_image_mouseover');", :onclick => "showLocationDetail(#{l.id});"}
+    #search_results
+      - @locations.each do |location|
+        - l = location.clone
+        %div.search_result[l]
+          %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id});"}
+            %ul
+              %li.name= l.name
+              - if (!params[:show_location_distance].blank? && !params[:lat].blank? && !params[:lon].blank?)
+                %li.location_types= " distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
+              - if (l.location_type)
+                %li.location_types= " (#{l.location_type.name})"
+              .clear
+              %li.address
+                %span.address_name[l, :location_summary] #{[l.street, l.city].join(' | ')}
+                .clear
+              %li.machine_names
+                #{[l.machine_names].join('<br />').html_safe}
+          .clear
+          %div.location_detail[l, :location_detail]{:style => 'display:none;'}
+            %div.location_name{:onclick => "toggleArrows('location_detail', #{l.id}); locationLookupMapCenter(#{l.id});"}
               %ul
                 %li.name= l.name
-                - if (l.location_type)
-                  %li= " (#{l.location_type.name})"
                 .clear
-                %li
-                  %span.address_name[l, :location_summary] #{[l.street, l.city].join(' | ')}
-                  .clear
-                %li.machine_names
-                  #{[l.machine_names].join('<br />').html_safe}
-            .clear
-            %div.location_detail[l, :location_detail]{:style => 'display:none'}
-              %div.location_name{:onclick => "toggleArrows('location_detail', #{l.id}); locationLookupMapCenter(#{l.id});"}
-                %ul
-                  %li.name= l.name
-                  - if (l.location_type)
-                    %li= " (#{l.location_type.name})"
-                  .clear
-                  %li.address= l.street
-                  .clear
-                  %li.address= [l.city, l.state + " " + l.zip].join(', ')
-                  .clear
-                  %li.address= l.phone
-                  .clear
-                  - if l.website
-                    %li= link_to l.website, l.website, :class => 'address', :target => 'blank'
-                    .clear
-                  %div[l, :desc]
-                    = render :partial => 'locations/render_desc', :locals => {:l => l}
-                  .clear
-                  %li= link_to 'Link to this map result', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :class =>'location_link', :id => l.id
-              = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
-              = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
-              = render :partial => 'locations/add_machine', :locals => {:location => l}
+                - if user_signed_in?
+                  %span.location_description
+                    %span.comment_image
+                  %span.location_meta
+                    %span.meta_image
+                %li.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
+                %div[l, :metadata]
+                  = render :partial => 'locations/render_update_metadata', :locals => {:l => l}
+                %div[l, :desc]
+                  = render :partial => 'locations/render_desc', :locals => {:l => l}
+                %div.location_thumbs
+                  = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
+                %div.location_confirm
+                  = render :partial => 'locations/render_confirm', :locals => {:l => l}
+                %div.location_link
+                  =link_to 'Link to this location', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
+                %div.login_alert
+                  - if !user_signed_in?
+                    = link_to link_to 'To update this location, you must login! Click here', "https://#{request.host_with_port}/users/login"
+            %div.location_detail_sub
+              - if user_signed_in?
+                = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
+                = render :partial => 'locations/add_machine', :locals => {:location => l}
               = render :partial => 'locations/show_machines', :locals => {:location => l}
-          - l = nil
+        - l = nil
 
     - if (@locations.size == 1)
       :javascript
         $(function() {
           singleLocationLoad(#{@locations.first.id});
         });
-
-:javascript
-  $(function () {
-    $('.scroll_pane').jScrollPane({showArrows: true, autoReinitialise: true});
-  });

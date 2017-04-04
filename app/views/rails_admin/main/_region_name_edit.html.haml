@@ -1,0 +1,3 @@
+- if Authorization.current_user.region.name.eql? 'portland'
+  - p Authorization.current_user.region
+  <input type="text" name="region[name]" id="name" value="#{region.name}" />

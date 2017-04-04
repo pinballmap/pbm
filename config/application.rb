@@ -29,9 +29,7 @@ module Pbm
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-
-    # JavaScript files you want as :defaults (application.js is always included).
-    config.action_view.javascript_expansions[:defaults] = %w()
+    config.i18n.enforce_available_locales = true
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
@@ -40,25 +38,29 @@ module Pbm
     config.filter_parameters += [:password]
 
     config.assets.enabled = true
+    config.serve_static_assets = true
     config.assets.initialize_on_precompile = false
-    config.assets.version = '1.2'
+    config.assets.version = '1.4'
 
     # unfortunate inability to use wildcards because of a bug in rails admin
     config.assets.precompile += %w(
+      mobile-application.css
       mediaqueries.css
       highslide-ie6.css
       highslide.css
-      jquery.jscrollpane.css
       rails_admin.css
+      rails_admin/rails_admin.css
       highslide.min.js
-      jQuery.scrollSomething-1.0.0.js
       jquery.form.js
-      jquery.jscrollpane.js
-      jquery.mousewheel.js
       jquery.remotipart.js
       rails.js
       rails_admin.js
       rails_admin/rails_admin.js
     )
+
+    config.rakismet.key = ENV['RAKISMET_KEY']
+    config.rakismet.url = 'https://pinballmap.com/'
+
+    config.middleware.use Rack::Attack
   end
 end

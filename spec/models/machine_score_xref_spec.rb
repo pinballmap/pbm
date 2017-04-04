@@ -3,27 +3,33 @@ require 'spec_helper'
 describe MachineScoreXref do
   context 'manipulate score data' do
     before(:each) do
-      @lmx = FactoryGirl.create(:location_machine_xref, :location => FactoryGirl.create(:location), :machine => FactoryGirl.create(:machine))
-      @gc = FactoryGirl.create(:machine_score_xref, :location_machine_xref => @lmx, :rank => 1, :score => 1000)
-      @first = FactoryGirl.create(:machine_score_xref, :location_machine_xref => @lmx, :rank => 2, :score => 500)
-      @second = FactoryGirl.create(:machine_score_xref, :location_machine_xref => @lmx, :rank => 3, :score => 250)
+      @lmx = FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location), machine: FactoryGirl.create(:machine))
     end
 
-    describe '#sanitize_scores' do
-      it 'should remove scores that are no longer possible' do
-        new_gc = FactoryGirl.create(:machine_score_xref, :location_machine_xref => @lmx, :rank => 1, :score => 400)
-        new_gc.sanitize_scores
+    describe '#username' do
+      it 'should display blank when there is no user associated with the score' do
+        userless_score = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, user: nil)
+        expect(userless_score.username).to eq('')
 
-        scores = MachineScoreXref.find(:all).sort {|a,b| a.rank <=> b.rank}
-        scores.should == [ new_gc, @second ]
+        user_score = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, user: FactoryGirl.create(:user, username: 'cibw'))
+        expect(user_score.username).to eq('cibw')
       end
+    end
 
-      it 'should remove scores that are no longer possible' do
-        new_first = FactoryGirl.create(:machine_score_xref, :location_machine_xref => @lmx, :rank => 2, :score => 1100)
-        new_first.sanitize_scores
+    describe '#create_user_submission' do
+      it 'creates a user submission' do
+        user = FactoryGirl.create(:user, username: 'cibw', email: 'yeah@ok.com')
+        msx = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, user: user, score: 100)
 
-        scores = MachineScoreXref.find(:all).sort {|a,b| a.rank <=> b.rank}
-        scores.should == [ new_first, @second ]
+        msx.create_user_submission
+
+        submission = UserSubmission.second
+
+        expect(submission.location).to eq(@lmx.location)
+        expect(submission.machine).to eq(@lmx.machine)
+        expect(submission.user).to eq(user)
+        expect(submission.submission_type).to eq(UserSubmission::NEW_SCORE_TYPE)
+        expect(submission.submission).to eq('User cibw (yeah@ok.com) added a score of 100 for Test Machine Name to Test Location Name')
       end
     end
   end
