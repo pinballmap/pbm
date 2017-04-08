@@ -425,8 +425,6 @@ function showLocations(ids, lats, lons, contents) {
     if (contents.length === 1) {
       map.setZoom(18);
       map.setCenter(new google.maps.LatLng(lats[0], lons[0]));
-      zoomLevel = map.getZoom();
-      console.log("zoom " + zoomLevel);
     } else if (contents.length === 0) {
       document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN." + "</p>";
     } else {
