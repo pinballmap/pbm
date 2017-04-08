@@ -47,9 +47,13 @@
     $('#followCheck').prop('checked', false);
 
     $('.location_search').on('submit', function(e) {
+      console.log(mapAdjusted);
+      if (mapAdjusted = 1) {
+        mapAdjusted = 0;
+      }
       e.preventDefault();
       search_string = $( this ).serialize();
-      
+
       var form = $(this);
 
       $('#locations').html(loadingHTML());

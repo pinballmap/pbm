@@ -430,7 +430,6 @@ function showLocations(ids, lats, lons, contents) {
       map.setCenter(new google.maps.LatLng(lats[0], lons[0]));
     } else {
       map.fitBounds(bounds);
-<<<<<<< HEAD
     }
   }
 
@@ -443,10 +442,20 @@ function showLocations(ids, lats, lons, contents) {
     google.maps.event.addListener(map, 'zoom_changed', function() {
       mapAdjusted = 1;
       updateMapAfterUserInteraction();
-=======
       redo();
     }
   }
+  //   if (mapAdjusted === 0) {
+  //   google.maps.event.addListener(map, 'mouseup', function() {
+  //     mapAdjusted = 1;
+  //     updateMapAfterUserInteraction();
+  //   });
+  //
+  //   google.maps.event.addListener(map, 'zoom_changed', function() {
+  //     mapAdjusted = 1;
+  //     updateMapAfterUserInteraction();
+  //   });
+  // }
 }
 
 function redo() {
@@ -466,7 +475,6 @@ function redo() {
         mapAdjusted = 1;
         updateMapAfterUserInteraction();
       }
->>>>>>> added redo map checkbox
     });
   }
 }
