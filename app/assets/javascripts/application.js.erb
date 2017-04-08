@@ -6,6 +6,7 @@ var map;
 var region;
 var mapAdjusted = 0;
 var search_string;
+var zoomLevel;
 var markers = new Array();
 var infoWindows = new Array();
 var locationIDs = new Array();
@@ -424,10 +425,13 @@ function showLocations(ids, lats, lons, contents) {
     if (contents.length === 1) {
       map.setZoom(18);
       map.setCenter(new google.maps.LatLng(lats[0], lons[0]));
+      zoomLevel = map.getZoom();
+      console.log("zoom " + zoomLevel);
     } else if (contents.length === 0) {
       document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN." + "</p>";
     } else {
       map.fitBounds(bounds);
+      tooZoomed();
       redo();
     }
   }
@@ -452,6 +456,27 @@ function redo() {
       }
     });
   }
+}
+
+function tooZoomed() {
+  //show/hide checkbox based on zoom
+  //if zoomed out too far, set to false and remove
+  zoomLevel = map.getZoom(); //get zoom on load
+  if (zoomLevel < 11) { //if map is zoomed out below 11, don't show checkbox
+    document.getElementById("mapFollow_wrapper").style.visibility = "hidden";
+    $('#followCheck').prop('checked', false);
+  } else {
+    document.getElementById("mapFollow_wrapper").style.visibility = "visible";
+  }
+  var listener3 = google.maps.event.addListener(map, 'zoom_changed', function() { //listen for zooming
+    zoomLevel = map.getZoom(); //recheck zoom level
+    if (zoomLevel < 11) {
+      document.getElementById("mapFollow_wrapper").style.visibility = "hidden";
+      $('#followCheck').prop('checked', false);
+    } else {
+      document.getElementById("mapFollow_wrapper").style.visibility = "visible";
+    }
+  });
 }
 
 function attachMarkerClick(mapForMarker, marker, infoWindow) {
