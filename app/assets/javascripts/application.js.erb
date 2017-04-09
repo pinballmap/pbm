@@ -457,24 +457,21 @@ function redo() {
 }
 
 function tooZoomed() {
-  //show/hide checkbox based on zoom
   //if zoomed out too far, set to false and remove
-  zoomLevel = map.getZoom(); //get zoom on load
-  if (zoomLevel < 11) { //if map is zoomed out below 11, don't show checkbox
+  zoomCheck() //get zoom level on map load
+  var listener3 = google.maps.event.addListener(map, 'zoom_changed', function() {
+    zoomCheck() //get zoom level after zoom has changed
+  });
+}
+
+function zoomCheck() {
+  zoomLevel = map.getZoom(); //check zoom level
+  if (zoomLevel < 11) { //show/hide checkbox based on zoom
     document.getElementById("mapFollow_wrapper").style.visibility = "hidden";
-    $('#followCheck').prop('checked', false);
+    $('#followCheck').prop('checked', false); //reset checkbox
   } else {
     document.getElementById("mapFollow_wrapper").style.visibility = "visible";
   }
-  var listener3 = google.maps.event.addListener(map, 'zoom_changed', function() { //listen for zooming
-    zoomLevel = map.getZoom(); //recheck zoom level
-    if (zoomLevel < 11) {
-      document.getElementById("mapFollow_wrapper").style.visibility = "hidden";
-      $('#followCheck').prop('checked', false);
-    } else {
-      document.getElementById("mapFollow_wrapper").style.visibility = "visible";
-    }
-  });
 }
 
 function attachMarkerClick(mapForMarker, marker, infoWindow) {
