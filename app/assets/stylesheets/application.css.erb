@@ -53,6 +53,9 @@ input, textarea {
   box-sizing: border-box;         /* Opera/IE 8+ */
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
 }
+input[type=checkbox] {
+  -webkit-appearance:checkbox;
+}
 .palatino {
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
 }
@@ -898,28 +901,26 @@ span.or {
 .hide_search_link, .hide_button {
   display: none;
 }
-#search_link_wrapper, #mapFollow_wrapper {
+#results_bonus {
   position: fixed;
-  left: 640px;
-  top: 150px;
-  width: 110px;
-  border: 3px solid #dadada;
-  border-left: none;
+  left: 650px;
+  top: 60px;
+  width: 100px;
+  border: 3px solid #D3ECFF;
   background: #ffffff;
   text-align: center;
   padding: 5px;
-  border-top-right-radius: 5px;
-  -webkit-border-top-right-radius: 5px;
-  -moz-border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  -webkit-border-bottom-right-radius: 5px;
-  -moz-border-bottom-right-radius: 5px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  font-size: 15px;
 }
 #mapFollow_wrapper {
-  top: 75px;
+  border-bottom: 1px solid #F53240;
 }
 #search_link_wrapper a {
   color: #303030;
+  font-style: italic;
   text-decoration: none;
 }
 #search_link_wrapper a:hover  {

@@ -34,12 +34,12 @@
               $('#by_#{key}_id').val(ui.item.id);
             });
           });
-- if !mobile_device?
-  #mapFollow_wrapper.hide_button
+#results_bonus.hide_button
+  #mapFollow_wrapper
     Redo results when map is moved?
     %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :onchange => 'redo();'}
-#search_link_wrapper.hide_search_link
-  =link_to "Link to this Search Result", "", :id => "search_link"
+  #search_link_wrapper
+    =link_to "Link to this Search Result", "", :id => "search_link"
 
 :javascript
 
