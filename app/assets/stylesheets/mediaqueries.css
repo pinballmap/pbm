@@ -43,8 +43,8 @@
     #form input.lookup_search_input {
       width: 200px;
     }
-    #search_link_wrapper {
-      left: 470px;
+    #results_bonus {
+      left: 480px;
     }
     .machine_name {
       width: 405px;
