@@ -411,7 +411,7 @@ function showLocations(ids, lats, lons, contents) {
     var marker = new google.maps.Marker({
       animation: google.maps.Animation.DROP,
       position: latlng,
-      map: map,
+      map: map
 
     });
 
@@ -462,7 +462,6 @@ function showLocations(ids, lats, lons, contents) {
 }
 
 function redo() {
-  // if (mapAdjusted === 0) {
     var listener1 = google.maps.event.addListener(map, 'mouseup', function() {
       if (!$("#followCheck").is(':checked')) {
         google.maps.event.removeListener(listener1);
@@ -479,11 +478,9 @@ function redo() {
         updateMapAfterUserInteraction();
       }
     });
-  //}
 }
 
-function tooZoomed() {
-  //if zoomed out too far, set to false and remove
+function tooZoomed() { //if zoomed out too far, set to false and remove
   zoomCheck(); //get zoom level on map load
   var listener3 = google.maps.event.addListener(map, 'zoom_changed', function() {
     zoomCheck(); //get zoom level after zoom has changed
@@ -494,12 +491,10 @@ function zoomCheck() {
   zoomLevel = map.getZoom(); //check zoom level
   if (zoomLevel < 12) { //show/hide checkbox based on zoom
     document.getElementById("mapFollow_wrapper").style.visibility = "hidden";
-    //$('#mapFollow_wrapper').css('height',0);
     $('#mapFollow_wrapper').addClass('redo_gone');
     $('#followCheck').prop('checked', false); //reset checkbox
   } else {
     document.getElementById("mapFollow_wrapper").style.visibility = "visible";
-    //$('#mapFollow_wrapper').css('height','auto');
     $('#mapFollow_wrapper').removeClass('redo_gone');
   }
 }
