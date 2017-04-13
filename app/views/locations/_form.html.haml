@@ -44,11 +44,12 @@
 :javascript
 
   $(function () {
-    $('#followCheck').prop('checked', false);
+
 
     $('.location_search').on('submit', function(e) {
-      if (mapAdjusted = 1) {
+      if (mapAdjusted = 1) { //reset checkbox
         mapAdjusted = 0;
+        $('#followCheck').prop('checked', false);
       }
       e.preventDefault();
       search_string = $( this ).serialize();
