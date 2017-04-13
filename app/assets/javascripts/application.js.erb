@@ -467,13 +467,15 @@ function tooZoomed() {
 
 function zoomCheck() {
   zoomLevel = map.getZoom(); //check zoom level
-  if (zoomLevel < 11) { //show/hide checkbox based on zoom
+  if (zoomLevel < 12) { //show/hide checkbox based on zoom
     document.getElementById("mapFollow_wrapper").style.visibility = "hidden";
-    $('#mapFollow_wrapper').css('height',0);
+    //$('#mapFollow_wrapper').css('height',0);
+    $('#mapFollow_wrapper').addClass('redo_gone');
     $('#followCheck').prop('checked', false); //reset checkbox
   } else {
     document.getElementById("mapFollow_wrapper").style.visibility = "visible";
-    $('#mapFollow_wrapper').css('height','auto');
+    //$('#mapFollow_wrapper').css('height','auto');
+    $('#mapFollow_wrapper').removeClass('redo_gone');
   }
 }
 
