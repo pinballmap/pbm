@@ -38,6 +38,7 @@ function clearMarkers() {
   if (markers) {
     for (i in markers) {
       markers[i].setMap(null);
+      markers[i].setMap(map);
     }
   }
 }
@@ -409,19 +410,18 @@ function showLocations(ids, lats, lons, contents) {
     var latlng = new google.maps.LatLng(lats[i], lons[i]);
 
     var marker = new google.maps.Marker({
-      animation: google.maps.Animation.DROP,
+      //animation: google.maps.Animation.DROP,
       position: latlng,
       map: map
 
     });
-
     markers.push(marker);
     bounds.extend(latlng);
 
     var infoWindow = new google.maps.InfoWindow({ content: contents[i] });
     infoWindows.push(infoWindow);
 
-    attachMarkerClick(map, marker, infoWindow)
+    attachMarkerClick(map, marker, infoWindow);
   }
 
   if (mapAdjusted === 0) {
