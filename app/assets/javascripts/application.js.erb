@@ -184,9 +184,6 @@ var homeMap =
 ]
 
 function showLocations(ids, lats, lons, contents) {
-  if ($(ids).not(locationIDs).length == 0 && $(locationIDs).not(ids).length == 0) {
-    return;
-  }
 
   clearMarkers();
   clearInfoWindows();
@@ -194,10 +191,6 @@ function showLocations(ids, lats, lons, contents) {
   markers = new Array();
 
   locationIDs = ids;
-
-  if (locationIDs.length === 0) {
-    return;
-  }
 
   var nightMap = new google.maps.StyledMapType(
     [
@@ -425,14 +418,14 @@ function showLocations(ids, lats, lons, contents) {
       map.setZoom(18);
       map.setCenter(new google.maps.LatLng(lats[0], lons[0]));
       tooZoomed(); //for single location load
-    } else if (contents.length === 0) {
+    } else if (contents.length == 0) {
       document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN." + "</p>";
     } else {
       map.fitBounds(bounds);
-      tooZoomed();
-      redo();
     }
   }
+  tooZoomed();
+  redo();
 }
 
 function redo() {
