@@ -20,6 +20,10 @@ module Api
       param :score, String, desc: 'A pinball machine high score', required: false
       formats ['json']
       def create
+        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+
+        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
+
         score = params[:score]
 
         if score.nil? || score.empty?
@@ -35,7 +39,6 @@ module Api
         end
 
         lmx = LocationMachineXref.find(params[:location_machine_xref_id])
-        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
 
         msx = MachineScoreXref.create(location_machine_xref_id: lmx.id)
 

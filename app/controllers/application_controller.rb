@@ -1,6 +1,8 @@
 require 'pony'
 
 class ApplicationController < ActionController::Base
+  AUTH_REQUIRED_MSG = 'Authentication is required for this action. Please upgrade your app or pass an authentication token for this type of action.'.freeze
+
   acts_as_token_authentication_handler_for User, fallback: :none
 
   protect_from_forgery

@@ -1,6 +1,7 @@
 class LocationMachineXrefsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   has_scope :region
+  before_action :authenticate_user!, only: [:update_machine_condition, :create_confirmation, :remove_confirmation]
 
   def create
     machine = nil

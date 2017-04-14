@@ -9,6 +9,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
     @score_one = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, score: 123, user_id: FactoryGirl.create(:user, username: 'ssw').id)
     @score_two = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user_id: nil)
+    @user = FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a')
   end
 
   describe '#index' do
@@ -80,14 +81,14 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
   describe '#create' do
     it 'errors for unknown lmx' do
-      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: -1, score: 1234
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: -1, score: 1234, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
     end
 
     it 'errors for blank scores' do
-      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq('Score can not be blank and must be a numeric value')
@@ -96,14 +97,14 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     it 'errors for failed saves' do
       expect_any_instance_of(MachineScoreXref).to receive(:save).twice.and_return(false)
 
-      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 1234
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 1234, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq([])
     end
 
     it 'errors when numbers are larger than bigints (>9223372036854775807)' do
-      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 9_223_372_036_854_775_808
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 9_223_372_036_854_775_808, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq('Number is too large. Please enter a valid score.')
@@ -116,9 +117,14 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
       expect(JSON.parse(response.body)['errors']).to eq('Score can not be blank and must be a numeric value')
     end
 
-    it 'creates a new score -- authed' do
-      user = FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a')
+    it 'errors when not authed' do
+      post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 1234
+      expect(response).to be_success
 
+      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::MachineScoreXrefsController::AUTH_REQUIRED_MSG)
+    end
+
+    it 'creates a new score -- authed' do
       post '/api/v1/machine_score_xrefs.json', location_machine_xref_id: @lmx.id.to_s, score: 1234, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
       expect(response).to be_success
       expect(response.status).to eq(201)
@@ -129,7 +135,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
       expect(new_score.score).to eq(1234)
       expect(new_score.location_machine_xref_id).to eq(@lmx.id)
-      expect(new_score.user_id).to eq(user.id)
+      expect(new_score.user_id).to eq(@user.id)
 
       first_score = MachineScoreXref.first
       expect(first_score.score).to eq(123)

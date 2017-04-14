@@ -136,9 +136,6 @@ Pbm::Application.routes.draw do
     get '/suggest' => 'pages#suggest_new_location'
     get '/submitted_new_location' => 'pages#submitted_new_location'
 
-    get 'iphone.html', to: 'locations#mobile'
-    get 'mobile', to: 'locations#mobile'
-
     get 'all_region_data.json', to: 'regions#all_region_data', format: 'json'
 
     get '*page', to: 'locations#unknown_route'
@@ -155,8 +152,6 @@ Pbm::Application.routes.draw do
     end
   end
 
-  get 'iphone.html', to: 'locations#mobile'
-  get '4sq_export.xml' => 'regions#four_square_export', format: 'xml'
   get 'inspire_profile' => 'pages#inspire_profile'
   get 'pages/home'
 
