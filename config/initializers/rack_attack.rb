@@ -16,7 +16,7 @@ if Rails.env.production?
     end
 
     (1..5).each do |level|
-      Rack::Attack.throttle('req/ip/#{level}', :limit => (20 * level), :period => (8 ** level).seconds) do |req|
+      Rack::Attack.throttle('req/ip/#{level}', :limit => (40 * level), :period => (8 ** level).seconds) do |req|
         req.ip
       end
     end
