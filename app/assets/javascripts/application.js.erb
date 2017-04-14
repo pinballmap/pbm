@@ -183,14 +183,13 @@ var homeMap =
 ]
 
 function showLocations(ids, lats, lons, contents) {
-  if ($(ids).not(locationIDs).length == 0 && $(locationIDs).not(ids).length == 0) {
-    return;
-  }
 
   clearMarkers();
   clearInfoWindows();
   infoWindows = new Array();
   markers = new Array();
+
+  locationIDs = ids;
 
   var nightMap = new google.maps.StyledMapType(
     [
@@ -434,30 +433,8 @@ function showLocations(ids, lats, lons, contents) {
       map.fitBounds(bounds);
     }
   }
-
-  if (mapAdjusted === 0) {
-    google.maps.event.addListener(map, 'mouseup', function() {
-      mapAdjusted = 1;
-      updateMapAfterUserInteraction();
-    });
-
-    google.maps.event.addListener(map, 'zoom_changed', function() {
-      mapAdjusted = 1;
-      updateMapAfterUserInteraction();
-      redo();
-    }
-  }
-  //   if (mapAdjusted === 0) {
-  //   google.maps.event.addListener(map, 'mouseup', function() {
-  //     mapAdjusted = 1;
-  //     updateMapAfterUserInteraction();
-  //   });
-  //
-  //   google.maps.event.addListener(map, 'zoom_changed', function() {
-  //     mapAdjusted = 1;
-  //     updateMapAfterUserInteraction();
-  //   });
-  // }
+  tooZoomed();
+  redo();
 }
 
 function redo() {
