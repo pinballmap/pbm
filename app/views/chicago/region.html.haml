@@ -1,0 +1,12 @@
+- content_for :presearch_sidebar do
+  %p.local_logo
+    =link_to image_tag('chicago/Pinball-Chicago-Logo.png'), 'http://www.pinballchicago.org/ ', :target => '_blank'
+    %br/
+    %br/
+    The Chicago Pinball Map is supported by
+    =link_to "Chicago's Pinball League", 'http://www.pinballchicago.org/', :target => '_blank'
+    %br/
+    %br/
+    =link_to image_tag('twitter-icon.png'), 'https://twitter.com/PinballChicago', :target => '_blank'
+    =link_to '@PinballChicago', 'https://twitter.com/PinballChicago', :target => '_blank'
+= render :file => 'pages/region'

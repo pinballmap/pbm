@@ -3,10 +3,22 @@
   = f.label :photo, 'Photo To Upload:', :style => 'float: left;'
   = f.file_field :photo, :id => 'file_chooser_button'
   %br/
-  = f.submit "Upload"
+  = f.submit "Upload", :class => 'submit_picture'
 
 :javascript
   $('#new_location_picture_xref_#{location.id}').submit(function () {
-    window.alert("Thanks for uploading that picture! It'll show up on the site as soon as an admin approves it.");
-    toggleData('add_picture_location', #{location.id});
+    var form = $(this);
+    $.ajax({
+      url: form.attr('action'),
+      type: 'POST',
+      data: new FormData(this),
+      processData: false,
+      contentType: false,
+      success: function(data) {
+        window.alert("Thanks for uploading that picture! It'll show up on the site as soon as an admin approves it.");
+        toggleData('add_picture_location', #{location.id});
+      }
+    });
+
+    return false;
   });

@@ -1,0 +1,26 @@
+<%- if controller_name != 'sessions' %><br />
+  <div class="login_new"><%= link_to "Already a user? LOGIN", new_session_path(resource_name) %></div><br />
+<% end -%>
+
+<%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+  <div class="login_new"><%= link_to "Not a user yet? Join!", new_registration_path(resource_name) %></div>
+  <span class="why_login">(FYI: You can't edit the map unless you're logged in)</span><br /><br />
+<% end -%>
+
+<%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+  <%= link_to "Forgot your password?", new_password_path(resource_name) %><br /><br />
+<% end -%>
+
+<%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+  <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %><br />
+<% end -%>
+
+<%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
+  <%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name) %><br />
+<% end -%>
+
+<%- if devise_mapping.omniauthable? %>
+  <%- resource_class.omniauth_providers.each do |provider| %>
+    <%= link_to "Login with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider) %><br />
+  <% end -%>
+<% end -%>

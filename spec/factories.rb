@@ -1,4 +1,4 @@
-#  the lat/lon of this address is (45.5207, -122.6628)
+#  the real lat/lon of this address is (45.5207, -122.6628)
 FactoryGirl.define do
   factory :location do
     name 'Test Location Name'
@@ -6,12 +6,28 @@ FactoryGirl.define do
     city 'Portland'
     state 'OR'
     zip '97214'
-    association :region, :name => 'portland'
+    lat '11.11'
+    lon '-11.11'
+    association :region, name: 'portland'
     association :location_type
   end
 
   factory :machine do
     name 'Test Machine Name'
+    association :machine_group
+  end
+
+  factory :user_submission do
+    association :region
+  end
+
+  factory :machine_condition do
+    comment 'Test Comment'
+    association :location_machine_xref
+  end
+
+  factory :machine_group do
+    name 'Test Machine Group'
   end
 
   factory :location_machine_xref do
@@ -46,17 +62,20 @@ FactoryGirl.define do
 
   factory :user do
     initials 'cap'
-    sequence(:email) {|n| "captainamerica#{n}@foo.bar"}
+    sequence(:username) { |n| "cap#{n}" }
+    sequence(:email) { |n| "captainamerica#{n}@foo.bar" }
     password 'password'
+    password_confirmation 'password'
+    confirmed_at Date.today
   end
 
   factory :location_picture_xref do
     association :location
     association :user
-    photo File.open(File.join(Rails.root, '/app/assets/images/favicon.ico'))
+    photo File.open(File.join(Rails.root, '/app/assets/images/favicon/favicon.ico'))
   end
 
-  factory :region_link_xref do 
+  factory :region_link_xref do
     name 'Test Link Name'
     description 'This is a test link'
     url 'http://www.foo.com'

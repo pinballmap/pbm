@@ -5,7 +5,10 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in DeviseMailer.
   config.case_insensitive_keys = [:email]
   Devise.reset_password_within = 6.hours
-  config.mailer_sender = "pbm@pinballmap.com"
+  config.mailer_sender = '"Pinball Map" <pbm@pinballmap.com>'
+
+  config.reset_password_keys = [ :username ]
+  config.confirmation_keys = [ :username ]
 
   # Configure the class responsible to send e-mails.
   # config.mailer = "Devise::Mailer"
@@ -22,13 +25,13 @@ Devise.setup do |config|
   # authenticating an user, both parameters are required. Remember that those
   # parameters are used only when authenticating and not when retrieving from
   # session. If you need permissions, you should implement that in a before filter.
-  # config.authentication_keys = [ :email ]
+  config.authentication_keys = [ :login ]
 
   # Tell if authentication through request.params is enabled. True by default.
-  # config.params_authenticatable = true
+  config.params_authenticatable = true
 
   # Tell if authentication through HTTP Basic Auth is enabled. True by default.
-  # config.http_authenticatable = true
+  config.http_authenticatable = true
 
   # Set this to true to use Basic Auth for AJAX requests.  True by default.
   # config.http_authenticatable_on_xhr = true
@@ -49,14 +52,15 @@ Devise.setup do |config|
 
   # Setup a pepper to generate the encrypted password.
   config.pepper = "543ddce494220a2995efd352c23eebbcf04a959f492c88c1788a8dc655608a47dae32d08df2ac15bf3b3a5688f1cd99868af57c52ac742606e98c032700b4954"
+  config.secret_key = 'd4a23174fa009435ae21ac67cd84a1dc92970e6eedcc8888325188e69fcec220f5f5caef3d8c88fd661f49d38ded1baba5fc4c8803f08f7ee6ac81cd546b4cbc'
 
   # ==> Configuration for :confirmable
   # The time you want to give your user to confirm his account. During this time
   # he will be able to access your application without confirming. Default is nil.
-  # When confirm_within is zero, the user won't be able to sign in without confirming. 
-  # You can use this to let your user access some features of your application 
-  # without confirming the account, but blocking it after a certain period 
-  # (ie 2 days). 
+  # When confirm_within is zero, the user won't be able to sign in without confirming.
+  # You can use this to let your user access some features of your application
+  # without confirming the account, but blocking it after a certain period
+  # (ie 2 days).
   # config.confirm_within = 2.days
 
   # ==> Configuration for :rememberable
@@ -64,10 +68,10 @@ Devise.setup do |config|
   # config.remember_for = 2.weeks
 
   # If true, a valid remember token can be re-used between multiple browsers.
-  # config.remember_across_browsers = true
+  #config.remember_across_browsers = true
 
   # If true, extends the user's remember period when remembered via cookie.
-  # config.extend_remember_period = false
+  config.extend_remember_period = true
 
   # ==> Configuration for :validatable
   # Range for password length
@@ -79,7 +83,7 @@ Devise.setup do |config|
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again.
-  # config.timeout_in = 10.minutes
+  config.timeout_in = 10.years
 
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.
@@ -115,7 +119,7 @@ Devise.setup do |config|
   # devise role declared in your routes.
   # config.default_scope = :user
 
-  # Configure sign_out behavior. 
+  # Configure sign_out behavior.
   # By default sign_out is scoped (i.e. /users/sign_out affects only :user scope).
   # In case of sign_out_all_scopes set to true any logout action will sign out all active scopes.
   # config.sign_out_all_scopes = false

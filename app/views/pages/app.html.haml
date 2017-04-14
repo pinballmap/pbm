@@ -1,0 +1,30 @@
+#page_body
+  .left_column.secondary
+    %p
+      =link_to image_tag('App_Store.png', :alt => 'iTunes App Store Link'), "https://itunes.apple.com/us/app/pinball-map/id359275713?mt=8", :class => 'pic', :target => '_blank'
+      =link_to image_tag('android_market.png', :alt => 'Google Play Store Link'), "https://market.android.com/details?id=com.pbm&feature=search_result#?t=W251bGwsMSwxLDEsImNvbS5wYm0iXQ..", :class => 'pic', :target => '_blank'
+      =link_to image_tag('pebble-store.png', :alt => 'Pebble Watch Store Link'), "https://apps.getpebble.com/applications/54c14c00bcd4c7b7ca000069", :class => 'pic pebble', :target => '_blank'
+  .right_column.right_column_apps
+    %p.darkb.app_title Pinball Map App
+    %p
+      Our mobile app come in three varieties:
+      %span.darkb iPhone/iPad/Apple Watch,
+      %span.darkb Android,
+      and
+      %span.darkb Pebble Watch
+      (with iOS). All are totally FREE! Use them to find spots with pinball while you're on-the-go! Start by opening the app and then choosing a nearby regional map.
+      %span.dark (If you don't have a device that supports these version, just use our mobile-optimized website.)
+    %p
+      Featuring splash artwork by
+      =link_to 'Drew Marshall', 'http://workbydrew.com', :target => '_blank'
+    %p
+      =link_to 'Click here for iPhone/iPad app support (and to see some screenshots).', app_support_path
+    %p
+      %span.dark Some app features:
+    %ul.list
+      %li Add/Remove machines from locations (to help keep the map up to date)
+      %li Find locations by proximity
+      %li Submit new locations to be added
+      %li See recent map updates
+      %li Add comments about machines
+      %li View upcoming events
