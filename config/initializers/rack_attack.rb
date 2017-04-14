@@ -15,7 +15,9 @@ if Rails.env.production?
       req.user_agent == 'SemrushBot'
     end
 
-    Rack::Attack.throttle('req/ip', :limit => 10, :period => 1.second) do |req|
-      req.ip
+    Rack::Attack.(1..5).each do |level|
+      throttle('req/ip/#{level}', :limit => (20 * level), :period => (8 ** level).seconds) do |req|
+        req.ip
+      end
     end
 end
