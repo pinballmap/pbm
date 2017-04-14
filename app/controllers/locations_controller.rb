@@ -1,6 +1,7 @@
 class LocationsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   has_scope :by_location_name, :by_location_id, :by_ipdb_id, :by_machine_id, :by_machine_name, :by_city_id, :by_machine_group_id, :by_zone_id, :by_operator_id, :by_type_id, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region
+  before_action :authenticate_user!, only: [:update_desc, :update_metadata, :confirm]
 
   def autocomplete
     render json: @region.locations.select { |l| l.name =~ /#{Regexp.escape params[:term] || ''}/i }.sort_by(&:name).map { |l| { label: l.name, value: l.name, id: l.id } }
@@ -74,76 +75,6 @@ class LocationsController < InheritedResources::Base
     )
 
     render nothing: true
-  end
-
-  def mobile
-    region = params[:region] || 'portland'
-    format = params[:format] || 'xml'
-
-    if params[:init]
-      init_mobile(region, format, params)
-    elsif (location_id = params[:get_location])
-      redirect_to "/#{region}/locations/#{location_id}.#{format}"
-    elsif (machine_id = params[:get_machine])
-      redirect_to "/#{region}/locations/#{machine_id}/locations_for_machine.#{format}"
-    elsif params[:condition]
-      update_condition_mobile(region, format, params)
-    elsif params[:modify_location]
-      modify_location_mobile(region, format, params)
-    end
-  end
-
-  def modify_location_mobile(region, format, params)
-    location_id = params[:modify_location]
-
-    # unfortunately, the mobile devices are sending us a parameter called 'action'...
-    # until I figure out a way to handle this, I assume if a machine doesn't exist at
-    # a location, create it..if it does, destroy it
-    machine_name = params[:machine_name]
-
-    machine_name.strip! unless machine_name.nil?
-
-    machine = params[:machine_no] ? Machine.find(params[:machine_no]) : Machine.where(['lower(name) = ?', machine_name.downcase]).first
-
-    if machine.nil?
-      machine = Machine.create(name: machine_name)
-
-      send_new_machine_notification(machine, Location.find(params[:modify_location]), nil)
-    end
-
-    if (lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine.id))
-      id = lmx.id
-
-      user_id = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user.id
-      lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: user_id)
-
-      redirect_to "/#{region}/location_machine_xrefs/#{id}/remove_confirmation.#{format}"
-    else
-      lmx = LocationMachineXref.create(location_id: location_id, machine_id: machine.id)
-      redirect_to "/#{region}/location_machine_xrefs/#{lmx.id}/create_confirmation.#{format}"
-    end
-  end
-
-  def update_condition_mobile(region, format, params)
-    lmx = LocationMachineXref.find_by_location_id_and_machine_id(params[:location_no], params[:machine_no])
-    lmx.update_condition(params[:condition], remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent)
-
-    redirect_to "/#{region}/location_machine_xrefs/#{lmx.id}/condition_update_confirmation.#{format}"
-  end
-
-  def init_mobile(region, format, params)
-    case params[:init].to_i
-    when 1 then
-      redirect_to "/#{region}/locations.#{format}"
-    when 2 then
-      redirect_to "/#{region}/regions.#{format}"
-    when 3 then
-      redirect_to "/#{region}/events.#{format}"
-    when 4 then
-      redirect_to "/#{region}/machines.#{format}"
-    when 5 then
-      redirect_to "/#{region}/all_region_data.json"
-    end
   end
 
   def locations_javascript_data(locations)
