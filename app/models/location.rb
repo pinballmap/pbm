@@ -67,8 +67,8 @@ class Location < ActiveRecord::Base
   scope :by_at_least_n_machines_type, lambda { |n|
     where(Location.by_at_least_n_machines_sql(n))
   }
-  scope :by_center_point_and_ne_boundary, lambda {|boundaries|
-    boundary_lat_lons = boundaries.split(',').collect {|b| b.to_f}
+  scope :by_center_point_and_ne_boundary, lambda { |boundaries|
+    boundary_lat_lons = boundaries.split(',').collect(&:to_f)
     distance = Geocoder::Calculations.distance_between([boundary_lat_lons[0], boundary_lat_lons[1]], [boundary_lat_lons[2], boundary_lat_lons[3]])
     box = Geocoder::Calculations.bounding_box([boundary_lat_lons[0], boundary_lat_lons[1]], distance * MAP_SCALE)
 
