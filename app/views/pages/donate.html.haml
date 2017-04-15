@@ -1,0 +1,24 @@
+#page_body
+  .left_column.secondary.donate
+    %p.donate.darkb Donate
+    %p
+      %form{:action => "https://www.paypal.com/cgi-bin/webscr", :method => "post", :target => "_top"}
+        %input{:name => "cmd", :type => "hidden", :value => "_s-xclick"}/
+        %input{:name => "hosted_button_id", :type => "hidden", :value => "HRVPXFUBSG4DE"}/
+        %input{:alt => "PayPal - The safer, easier way to pay online!", :border => "0", :name => "submit", :src => "https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif", :type => "image", :style => "background:#d3ecff;"}/
+        %img{:alt => "", :border => "0", :height => "1", :src => "https://www.paypalobjects.com/en_US/i/scr/pixel.gif", :width => "1"}/
+    %p=image_tag('treasure-map.png', :alt => 'Treasure Map')
+  .right_column.right_column_apps
+    %p
+      %span.darkb Since 2007,
+      we've spent countless evenings and weekends building, maintaining, and enhancing Pinball Map. It's a fun project, and we're grateful that so many people find it useful. We're committed to continuing to improve the site.
+    %p But as the site has grown in popularity and scope, the infrastructure costs have also grown. They are pretty modest, but they still take a bite out of our wallets.
+    %p To help us defray these costs, we made the decision to ask for donations. We've never made money off of this site, and we want it to remain ad-free.
+    %p Here are the costs, and thus our annual donation goals:
+    %ul.list
+      %li $110/year - Dreamhost
+      %li $20/year - Domain
+      %li $192/year - Database + SSL Encryption
+      %li $100/year - Apple Developer Fee
+      %li.darkb GRAND TOTAL: $422
+    %p If you like Pinball Map and want to help support it, you have our heartfelt thanks!

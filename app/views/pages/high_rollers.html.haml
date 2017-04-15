@@ -1,20 +1,25 @@
-%p.yellowb Top 10 Rollers
-.left_column{:style => 'margin-top:-10px;margin-left:0%;height:100%'}
-  %p Here's a list of the rippers who are putting up the most scores in town. In this list, Grand Champ scores are NOT worth more than a 1st place score.<br />This list is about who has the most overall inits. Check the details of each roller to find out where you can take them down!
-.clear
+#page_body
+  .left_column.high
+    %p.darkb Top 10 High Rollers
+    %p
+      This list shows who has the most overall inits. Check the details of each one to find out where you can take them down!
+  .clear
 
-- if (@high_rollers)
-  - rank = 1
-  - count = 1
-  - @high_rollers.sort{|a,b| b[1].size <=> a[1].size}.each do |roller|
-    .score_result
-      %h1= rank
-      %span= "#{roller[0]}: with #{roller[1].size} scores"
-      %br/
-      = banner("user_#{count}", 'Show Score Detail')
-      %div{:style => 'display:none', :id => "user_#{count}"}
-        - roller[1].each do |msx|
-          %span #{MachineScoreXref::ENGLISH_SCORES[msx.rank]} on #{msx.location_machine_xref.location.name}'s #{msx.location_machine_xref.machine.name} with #{msx.score} on #{msx.created_at}
-          %br/
-    - rank += 1
-    - count += 1
+  - if (@high_rollers)
+    - count = 1
+    - @high_rollers.sort{|a,b| b[1].size <=> a[1].size}.each do |roller|
+      .score_result
+        %p= "#{roller[0]}: with #{roller[1].size} scores"
+        = banner("user_#{count}", 'Show Score Detail')
+        %div{:style => 'display:none', :id => "user_#{count}"}
+          - roller[1].each do |msx|
+            %div.score_list
+              %span.score_machine #{msx.location_machine_xref.machine.name}
+              %span.score_score #{number_with_delimiter(msx.score, :delimiter => ",")}
+              %span.score_meta at
+              %span.score_meta_gen
+                #{msx.location_machine_xref.location.name}
+              %span.score_meta on
+              %span.score_meta_gen
+                #{msx.created_at.strftime("%b-%d-%Y")}
+      - count += 1

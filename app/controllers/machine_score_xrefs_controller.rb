@@ -1,22 +1,25 @@
 class MachineScoreXrefsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   has_scope :region
+  before_action :authenticate_user!, only: [:create, :update]
 
   def create
-    msx = MachineScoreXref.create(:location_machine_xref_id => params[:location_machine_xref_id])
-
     score = params[:score]
-    score.gsub!(/[^0-9]/,'')
+
+    return if score.nil? || score.empty?
+
+    score.gsub!(/[^0-9]/, '')
+
+    return if score.nil? || score.empty? || score.to_i.zero?
+
+    msx = MachineScoreXref.create(location_machine_xref_id: params[:location_machine_xref_id])
 
     msx.score = score
     msx.user = current_user
-    msx.rank = params[:rank]
-    msx.initials = params[:initials]
-
     msx.save
-    msx.sanitize_scores
+    msx.create_user_submission
 
-    render :nothing => true
+    render nothing: true
   end
 
   def index

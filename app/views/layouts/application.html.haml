@@ -2,31 +2,39 @@
 %html
   %head
     %meta{:charset => "UTF-8"}
-    %title #{(defined? @region) ? @region.full_name : ''} Pinball Map
-    %meta{:name => "keywords", :content => "pinball, map, google map, locator" }
-    %meta{:name => "description", :content => "Find local places to play pinball! The #{(defined? @region) ? @region.full_name : ''} Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area." }
-    = stylesheet_link_tag 'application', 'jquery.jscrollpane', 'highslide', 'highslide-ie6', 'mediaqueries'
-    = javascript_include_tag 'application', 'jQuery.scrollSomething-1.0.0', 'rails', 'jquery.form', 'jquery.remotipart', 'jquery.mousewheel', 'jquery.jscrollpane', 'highslide.min'
+    %title #{title_for_path(request.path, @region)}
+    %meta{:property => "og:title", :content => "#{title_for_path(request.path, @region)}"}
+    %meta{:name => "keywords", :content => "pinball, map, google map, locator, arcade, tournaments, league" }
+    %meta{:name => "description", :content => "#{desc_for_path(request.path, @region)}" }
+    %meta{:property => "og:description", :content => "#{desc_for_path(request.path, @region)}" }
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
+    %meta{:property => "og:site_name", :content => "Pinball Map"}
+    %meta{:property => "og:type", :content => "website"}
+    %meta{:property => "og:url", :content => "https://#{request.host+request.fullpath}" }
+    %meta{:property => "og:image", :content => image_path("pbm-og-image.png")}
+    %meta{:content => "JFE_WxE-R1LZtdT0omEkIKOlZr7oq1fPBW9mr3cdyx4", :name => "google-site-verification"}/
+    = stylesheet_link_tag 'application', 'mediaqueries'
+    - if mobile_device?
+      = stylesheet_link_tag 'mobile-application'
+    = javascript_include_tag 'application', 'jquery.form', 'jquery.remotipart', 'highslide.min', '//maps.google.com/maps/api/js?sensor=true'
     = csrf_meta_tag
-    = javascript_include_tag 'http://maps.google.com/maps/api/js?sensor=true'
-    = favicon_link_tag 'favicon.ico'
+    = render 'application/favicon'
 
-  %body{ :onload => defined?(@region) ? "setRegion('#{@region.name.downcase}'); switchSection('#{(@region.default_search_type && !@region.default_search_type.empty?) ? @region.default_search_type : 'location'}'); #{params['by_location_id'] ? "initSearchLocation(#{params['by_location_id']});" : params['by_city_id'] ? "initSearchCity('#{params['by_city_id']}');" : ""}" : nil }
-    %p.notice= notice
-    %p.alert= alert
+  %body{ :onload => defined?(@region) ? "setSearchSections(#{@region.available_search_sections}); setRegion('#{@region.name.downcase}'); switchSection('#{(@region.default_search_type && !@region.default_search_type.empty?) ? @region.default_search_type : 'location'}'); initSearch('#{@region.name.downcase}', '#{params['by_operator_id']}', '#{params['by_location_id']}', '#{params['by_location_type_id']}', '#{params['by_zone_id']}', '#{params['by_machine_id']}','#{params['by_ipdb_id']}','#{params['by_city_id']}', '#{params['by_machine_group_id']}', '#{params['show_location_distance']}', '#{params['lat']}', '#{params['lon']}', '#{params['by_at_least_n_machines_city']}', '#{params['by_at_least_n_machines_type']}', '#{params['by_at_least_n_machines_zone']}')" : nil }
     #container
-      #page
+      #page{:class => "#{@region ? '' : (defined? @region) and current_page?(submitted_new_location_path) ? 'page_home submitted' : 'page_home'}"}
         = render :partial => 'pages/header'
         .clear
+        #flash-message{:class => "#{@region ? 'flash_region' : 'flash_home'}"}
+          - flash.each do |name, msg|
+            = content_tag :div, msg, :id => "flash_#{name}"
+            :javascript
+              $(function () {
+                $("#flash_#{name}").delay(4000).fadeOut("slow");
+              });
 
       = yield
-
       :javascript
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-33321299-1']);
-        _gaq.push(['_setDomainName', 'pinballmap.com']);
-        _gaq.push(['_trackPageview']);
-
         $(function () {
           hs.registerOverlay({
             html: '<div class="closebutton" onclick="return hs.close(this)" title="Close"></div>',
@@ -37,5 +45,4 @@
           hs.graphicsDir = '/images/highslide/graphics/';
           hs.wrapperClassName = 'borderless';
 
-          #{analytics_js}
         });

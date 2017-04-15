@@ -1,14 +1,13 @@
 - content_for :presearch_sidebar do
-  %span{:style => 'margin-left:10%;'}
-    = image_tag 'nyc/pinballnyc.png'
-  %br/
-  %br/
-  %p.regular_text 
+  %p.local_logo
+    =link_to image_tag('nyc/pinballnyc.png'), 'http://www.pinballnyc.com/', :target => '_blank'
+    %br/
+    %br/
     Visit
-    =link_to 'Pinball NYC', 'http://www.pinballnyc.com/', :class => 'light_blue', :target => '_blank'
+    =link_to 'Pinball NYC', 'http://www.pinballnyc.com/', :target => '_blank'
     for league news, events, and more.
     %br/
     %br/
     =link_to image_tag('twitter-icon.png'), 'http://www.twitter.com/pinballnyc', :target => '_blank'
-    =link_to 'NYC Pinball Twitter', 'http://www.twitter.com/pinballnyc', :class => 'light_blue', :target => '_blank'
+    =link_to 'NYC Pinball Twitter', 'http://www.twitter.com/pinballnyc', :target => '_blank'
 = render :file => 'pages/region'

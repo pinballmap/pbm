@@ -1,7 +1,4 @@
 Pbm::Application.configure do
-  #config.logger = h3_log = Hodel3000CompliantLogger.new('log/production.log')
-  #config.middleware.use "Oink::Middleware", :logger => h3_log
-
   # The production environment is meant for finished, "live" apps.
   # Code is not reloaded between requests
   config.cache_classes = true
@@ -17,7 +14,7 @@ Pbm::Application.configure do
   # just comment this out and Rails will serve the files
 
   # See everything in the log (default is :info)
-  # config.log_level = :debug
+  config.log_level = :warn
 
   # Use a different logger for distributed setups
   # config.logger = SyslogLogger.new
@@ -38,7 +35,8 @@ Pbm::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Disable delivery errors, bad email addresses will be ignored
-  # config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.perform_deliveries = true
 
   # Enable threaded mode
   # config.threadsafe!
@@ -47,13 +45,18 @@ Pbm::Application.configure do
   # the I18n.default_locale when a translation can not be found)
   config.i18n.fallbacks = true
 
+  config.eager_load = true
+
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  config.action_mailer.default_url_options = { :host => 'pinballmap.com' }
+  config.action_mailer.default_url_options = { :protocol => 'https', :host => 'pinballmap.com' }
 
-  config.middleware.use ExceptionNotifier,
-    :email_prefix => "[PBM Exception] ",
-    :sender_address => %{"PBM Exceptions" <exceptions@pinballmap.com>},
-    :exception_recipients => %w{scott.wainstock@gmail.com}
+  config.middleware.use ExceptionNotification::Rack,
+    :email => {
+      :deliver_with => :deliver, # Rails >= 4.2.1 do not need this option since it defaults to :deliver_now
+      :email_prefix => "[PBM Exception] ",
+      :sender_address => %{"PBM Exceptions" <exceptions@pinballmap.com>},
+      :exception_recipients => %w{scott.wainstock@gmail.com}
+    }
 end

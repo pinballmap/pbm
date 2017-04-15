@@ -1,4 +1,10 @@
-%select{:name => "#{object_type}[zone_id]"}
-  <option value=""></option>
-  - Zone.all.select {|z| z.region_id == Authorization.current_user.region_id}.each do |z|
-    <option value="#{z.id}" #{z.id == zone_id ? 'selected=select' : ''} >#{z.name}</option>
+- if Authorization.current_user.is_super_admin
+  %select{:name => "#{object_type}[zone_id]"}
+    <option value=""></option>
+    - Zone.all.sort {|a, b| a.region.full_name <=> b.region.full_name }.each do |z|
+      <option value="#{z.id}" #{z.id == zone_id ? 'selected=select' : ''} >#{z.region ? z.region.full_name : 'NO REGION'} - #{z.name}</option>
+- else
+  %select{:name => "#{object_type}[zone_id]"}
+    <option value=""></option>
+    - Zone.all.select {|z| z.region_id == Authorization.current_user.region_id}.each do |z|
+      <option value="#{z.id}" #{z.id == zone_id ? 'selected=select' : ''} >#{z.name}</option>
