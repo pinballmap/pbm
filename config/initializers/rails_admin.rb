@@ -531,6 +531,7 @@ RailsAdmin.config do |config|
       field :submission_type, :string
       field :submission, :string
       field :region, :belongs_to_association
+      field :location, :belongs_to_association
       field :user do
         searchable :username
       end
@@ -542,6 +543,7 @@ RailsAdmin.config do |config|
       field :submission_type, :string
       field :submission, :string
       field :region, :belongs_to_association
+      field :location, :belongs_to_association
       field :user, :belongs_to_association
       field :user_email, :string
       field :created_at do
