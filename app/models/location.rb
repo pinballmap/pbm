@@ -22,11 +22,11 @@ class Location < ActiveRecord::Base
   geocoded_by :full_street_address, latitude: :lat, longitude: :lon
   before_validation :geocode, unless: ENV['SKIP_GEOCODE'] || (:lat && :lon)
 
+  MAP_SCALE = 0.75
+
   scope :region, lambda { |name|
     r = Region.find_by_name(name.downcase) || Region.where(name: 'portland').first
-
     where(region_id: r.id)
-
   }
   scope :by_type_id, ->(id) { where('location_type_id in (?)', id.split('_').map(&:to_i)) }
   scope :by_location_id, ->(id) { where('id in (?)', id.split('_').map(&:to_i)) }
