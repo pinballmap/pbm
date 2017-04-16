@@ -22,7 +22,6 @@ module Api
         operator = Operator.find(params[:id])
 
         return_response(operator, 'operator', [], [])
-
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find operator', 'errors')
       end

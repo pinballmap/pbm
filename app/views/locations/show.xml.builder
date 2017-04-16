@@ -1,4 +1,4 @@
-xml.instruct! :xml, :version => "1.0"
+xml.instruct! :xml, version: '1.0'
 xml.data do
   xml.locations do
     xml.location do
@@ -17,12 +17,12 @@ xml.data do
       xml.phone @location.phone
       xml.numMachines @location.machines.size
       xml.machines do
-        for lmx in @location.location_machine_xrefs
+        @location.location_machine_xrefs.each do |lmx|
           xml.machine do
             xml.id lmx.machine_id
             xml.name lmx.machine.name
-            if (lmx.condition.to_s != '')
-              xml.condition lmx.condition, :date => lmx.condition_date.nil? ? '' : lmx.condition_date.to_s
+            if lmx.condition.to_s != ''
+              xml.condition lmx.condition, date: lmx.condition_date.nil? ? '' : lmx.condition_date.to_s
             end
           end
         end
