@@ -28,7 +28,7 @@ Pbm::Application.configure do
   # In production, Apache or nginx will already do this
   config.assets.compile = false
   config.assets.digest = true
-  config.serve_static_assets = true
+  config.serve_static_files = true
   config.static_cache_control = "public, max-age=2592000"
 
   # Enable serving of images, stylesheets, and javascripts from an asset server

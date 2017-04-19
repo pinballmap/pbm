@@ -59,7 +59,7 @@ describe Location do
 
   describe '#machine_names' do
     it 'should return all machine names for this location' do
-      expect(@l.machine_names).to eq(%w(Cleo Sassy))
+      expect(@l.machine_names).to eq(%w[Cleo Sassy])
     end
   end
 

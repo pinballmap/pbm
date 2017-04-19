@@ -1,11 +1,11 @@
-xml.instruct! :xml, :version => "1.0"
-xml.rss :version => "2.0" do
+xml.instruct! :xml, version: '1.0'
+xml.rss version: '2.0' do
   xml.channel do
     xml.title "#{@region.full_name} Pinball Map - New Machine List"
-    xml.description "Find pinball machines!"
+    xml.description 'Find pinball machines!'
     xml.link root_path
 
-    for lmx in @lmxs
+    @lmxs.each do |lmx|
       cloned_lmx = lmx.clone
       machine = cloned_lmx.machine
       location = cloned_lmx.location

@@ -1,7 +1,7 @@
 class MachineScoreXrefsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   has_scope :region
-  before_action :authenticate_user!, only: [:create, :update]
+  before_action :authenticate_user!, only: %i[create update]
 
   def create
     score = params[:score]
@@ -23,7 +23,7 @@ class MachineScoreXrefsController < InheritedResources::Base
   end
 
   def index
-    @msxs = apply_scopes(MachineScoreXref).order('machine_score_xrefs.id desc').limit(50).includes([:location_machine_xref, :location, :machine])
+    @msxs = apply_scopes(MachineScoreXref).order('machine_score_xrefs.id desc').limit(50).includes(%i[location_machine_xref location machine])
 
     respond_with(@msxs)
   end

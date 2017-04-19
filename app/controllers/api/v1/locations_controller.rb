@@ -37,7 +37,6 @@ module Api
         send_new_location_notification(params, region, user)
 
         return_response("Thanks for entering that location. We'll get it in the system as soon as possible.", 'msg')
-
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find region', 'errors')
       end
@@ -91,7 +90,6 @@ module Api
         )
 
         return_response(values, message_type)
-
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find location', 'errors')
       end
@@ -137,7 +135,6 @@ module Api
         end
 
         return_response(machines, 'machines')
-
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find location', 'errors')
       end
@@ -153,7 +150,6 @@ module Api
         location.confirm(user)
 
         return_response('Thanks for confirming that location.', 'msg')
-
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find location', 'errors')
       end

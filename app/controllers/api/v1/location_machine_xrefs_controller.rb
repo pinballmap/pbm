@@ -11,7 +11,7 @@ module Api
       formats ['json']
       def index
         lmxes = apply_scopes(LocationMachineXref).order('id desc')
-        return_response(lmxes, 'location_machine_xrefs', [], [:location, :machine, :machine_conditions])
+        return_response(lmxes, 'location_machine_xrefs', [], %i[location machine machine_conditions])
       end
 
       api :GET, '/api/v1/region/:region/location_machine_xrefs/:id.json', 'Get info about a single lmx'
@@ -20,7 +20,7 @@ module Api
       formats ['json']
       def show
         lmx = LocationMachineXref.find(params[:id])
-        return_response(lmx, 'location_machine', [], [:last_updated_by_username, :machine_conditions])
+        return_response(lmx, 'location_machine', [], %i[last_updated_by_username machine_conditions])
       end
 
       api :POST, '/api/v1/location_machine_xrefs.json', 'Find or create a machine at a location'
@@ -80,8 +80,7 @@ module Api
           user_id: user ? user.id : nil
         )
 
-        return_response(lmx, 'location_machine', [], [:last_updated_by_username, :machine_conditions])
-
+        return_response(lmx, 'location_machine', [], %i[last_updated_by_username machine_conditions])
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find machine', 'errors')
       end
@@ -103,7 +102,6 @@ module Api
         )
 
         return_response('Successfully deleted lmx #' + lmx.id.to_s, 'msg')
-
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find machine', 'errors')
       end

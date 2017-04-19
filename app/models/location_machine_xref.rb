@@ -13,10 +13,10 @@ class LocationMachineXref < ActiveRecord::Base
 
   after_create :update_location, :create_user_submission
 
-  scope :region, lambda { |name|
+  scope :region, (lambda { |name|
     r = Region.find_by_name(name.downcase)
     joins(:location).where('locations.region_id = ?', r.id)
-  }
+  })
 
   def haml_object_ref
     'lmx'

@@ -1,7 +1,7 @@
-xml.instruct! :xml, :version => "1.0"
+xml.instruct! :xml, version: '1.0'
 xml.data do
   xml.events do
-    for event in @events
+    @events.each do |event|
       xml.event do
         xml.id event.id
         xml.name event.name

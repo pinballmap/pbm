@@ -132,8 +132,8 @@ END
   def allow_cors
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Request-Method'] = '*'
-    headers['Access-Control-Allow-Methods'] = %w(GET POST PUT DELETE OPTIONS).join(',')
-    headers['Access-Control-Allow-Headers'] = %w(Origin Accept Content-Type X-Requested-With X-CSRF-Token).join(',')
+    headers['Access-Control-Allow-Methods'] = %w[GET POST PUT DELETE OPTIONS].join(',')
+    headers['Access-Control-Allow-Headers'] = %w[Origin Accept Content-Type X-Requested-With X-CSRF-Token].join(',')
 
     head(:ok) if request.request_method == 'OPTIONS'
   end
@@ -162,13 +162,13 @@ END
   end
 
   def flash_message
-    [:error, :warning, :notice].each do |type|
+    %i[error warning notice].each do |type|
       return flash[type] unless flash[type].blank?
     end
   end
 
   def flash_type
-    [:error, :warning, :notice].each do |type|
+    %i[error warning notice].each do |type|
       return type unless flash[type].blank?
     end
   end

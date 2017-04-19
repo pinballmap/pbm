@@ -1,7 +1,7 @@
-xml.instruct! :xml, :version => "1.0"
+xml.instruct! :xml, version: '1.0'
 xml.data do
   xml.regions do
-    for region in @regions
+    @regions.each do |region|
       xml.region do
         xml.id region.id
         xml.name region.name
