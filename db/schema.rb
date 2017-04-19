@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170325210403) do
+ActiveRecord::Schema.define(version: 20170418033559) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -201,6 +201,24 @@ ActiveRecord::Schema.define(version: 20170325210403) do
     t.boolean  "should_auto_delete_empty_locations"
     t.boolean  "send_digest_comment_emails"
     t.boolean  "send_digest_removal_emails"
+  end
+
+  create_table "suggested_locations", force: true do |t|
+    t.text    "name"
+    t.text    "street"
+    t.text    "city"
+    t.text    "state"
+    t.text    "zip"
+    t.text    "phone"
+    t.text    "website"
+    t.integer "location_type_id"
+    t.integer "operator_id"
+    t.integer "region_id"
+    t.text    "comments"
+    t.text    "machines"
+    t.text    "user_inputted_address"
+    t.decimal "lat",                   precision: 18, scale: 12
+    t.decimal "lon",                   precision: 18, scale: 12
   end
 
   create_table "user_submissions", force: true do |t|
