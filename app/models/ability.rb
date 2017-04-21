@@ -9,13 +9,13 @@ class Ability
     can :history
     can :manage, [Event, Operator, RegionLinkXref, Zone], region_id: user.region_id
     can %i[read], [UserSubmission], region_id: user.region_id
+    can %i[read destroy], [SuggestedLocation], region_id: user.region_id
     can %i[update read], [User]
     can %i[update read], [LocationPictureXref], location: { region_id: user.region_id }
     can %i[update read destroy], [MachineCondition, MachineScoreXref], location: { region_id: user.region_id }
 
     if user.is_super_admin
-      can :manage, [Location, User]
-      can :manage, [UserSubmission]
+      can :manage, [Location, User, UserSubmission, SuggestedLocation]
     else
       can :manage, [Location], region_id: user.region_id
     end

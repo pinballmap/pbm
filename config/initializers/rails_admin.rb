@@ -566,6 +566,12 @@ RailsAdmin.config do |config|
       field :operator, :belongs_to_association
     end
     show do
+      field :machines, :string do
+        label "PROMOTE TO LOCATION"
+        pretty_value do
+          bindings[:view].render partial: 'convert_suggested_location_to_location', locals: {suggested_location: bindings[:object]}
+        end
+      end
       field :name, :string
       field :location_type, :belongs_to_association
       field :operator, :belongs_to_association
