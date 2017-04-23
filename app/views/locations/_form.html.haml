@@ -36,7 +36,7 @@
           });
 #results_bonus.hide_button
   #mapFollow_wrapper
-    %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :onchange => 'redo();'}
+    %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :onchange => 'unChecked();'}
     Redo results when map is moved?
   #search_link_wrapper
     =link_to "Link to this Search Result", "", :id => "search_link"
