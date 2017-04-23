@@ -27,7 +27,7 @@ class Location < ActiveRecord::Base
   scope :region, lambda { |name|
     r = Region.find_by_name(name.downcase) || Region.where(name: 'portland').first
     where(region_id: r.id)
-  })
+  }
   scope :by_type_id, (->(id) { where('location_type_id in (?)', id.split('_').map(&:to_i)) })
   scope :by_location_id, (->(id) { where('id in (?)', id.split('_').map(&:to_i)) })
   scope :by_operator_id, (->(id) { where('operator_id in (?)', id.split('_').map(&:to_i)) })
@@ -73,7 +73,7 @@ class Location < ActiveRecord::Base
     box = Geocoder::Calculations.bounding_box([boundary_lat_lons[0], boundary_lat_lons[1]], distance * MAP_SCALE)
 
     Location.within_bounding_box(box)
-  })
+  }
 
   attr_accessible :name, :street, :city, :state, :zip, :phone, :lat, :lon, :website, :zone_id, :region_id, :location_type_id, :description, :operator_id, :date_last_updated, :last_updated_by_user_id, :machine_ids
 
