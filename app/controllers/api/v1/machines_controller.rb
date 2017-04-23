@@ -35,7 +35,6 @@ module Api
         else
           return_response('Machine already exists', 'errors')
         end
-
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find location', 'errors')
       end

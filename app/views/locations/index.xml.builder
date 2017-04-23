@@ -1,7 +1,7 @@
-xml.instruct! :xml, :version => "1.0"
+xml.instruct! :xml, version: '1.0'
 xml.data do
   xml.locations do
-    for location in @locations
+    @locations.each do |location|
       cloned_location = location.clone
       xml.location do
         xml.id cloned_location.id
@@ -17,7 +17,7 @@ xml.data do
   end
 
   xml.machines do
-    for machine in @region.machines
+    @region.machines.each do |machine|
       cloned_machine = machine.clone
       xml.machine do
         xml.id cloned_machine.id
@@ -30,7 +30,7 @@ xml.data do
   end
 
   xml.zones do
-    for zone in @region.zones
+    @region.zones.each do |zone|
       xml.zone do
         xml.id zone.id
         xml.name zone.name

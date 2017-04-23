@@ -40,7 +40,7 @@ module Api
       def index
         regions = Region.all
 
-        return_response(regions, 'regions', [], [:primary_email_contact, :all_admin_email_addresses])
+        return_response(regions, 'regions', [], %i[primary_email_contact all_admin_email_addresses])
       end
 
       api :GET, '/api/v1/regions/:id.json', 'Fetch information for a single region'
@@ -49,8 +49,7 @@ module Api
       def show
         region = Region.find(params[:id])
 
-        return_response(region, 'region', [], [:primary_email_contact, :all_admin_email_addresses, :filtered_region_links, :n_high_rollers])
-
+        return_response(region, 'region', [], %i[primary_email_contact all_admin_email_addresses filtered_region_links n_high_rollers])
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find region', 'errors')
       end
@@ -98,7 +97,6 @@ module Api
 
         send_admin_notification(params, region, user)
         return_response('Thanks for the message.', 'msg')
-
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find region', 'errors')
       end
@@ -121,7 +119,7 @@ module Api
 
         region = Region.find(params['region_id'])
 
-        required_fields = %w(region_id os os_version device_type app_version email message)
+        required_fields = %w[region_id os os_version device_type app_version email message]
 
         required_fields.each do |field|
           if params[field].blank?
@@ -132,7 +130,6 @@ module Api
 
         send_app_comment(params, region)
         return_response('Thanks for the message.', 'msg')
-
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find region', 'errors')
       end

@@ -1,8 +1,8 @@
-xml.instruct! :xml, :version => "1.0"
+xml.instruct! :xml, version: '1.0'
 xml.data do
   xml.locations do
-    if (@locations)
-      for location in @locations
+    if @locations &
+      @locations.each do |location|
         cloned_location = location.clone
         xml.location do
           xml.id cloned_location.id

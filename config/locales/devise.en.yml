@@ -33,8 +33,8 @@ en:
       unlocked: 'Your account was successfully unlocked.'
     mailer:
       confirmation_instructions:
-        subject: 'Confirmation instructions'
+        subject: 'Pinball Map - Please Confirm Your Account'
       reset_password_instructions:
-        subject: 'Reset password instructions'
+        subject: 'Pinball Map - Reset Password Instructions'
       unlock_instructions:
-        subject: 'Unlock Instructions'
+        subject: 'Pinball Map - Unlock Instructions'

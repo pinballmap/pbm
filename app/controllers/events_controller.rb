@@ -1,5 +1,5 @@
 class EventsController < InheritedResources::Base
-  respond_to :html, :xml, :json, :rss, only: [:index, :show]
+  respond_to :html, :xml, :json, :rss, only: %i[index show]
   has_scope :region
 
   def index

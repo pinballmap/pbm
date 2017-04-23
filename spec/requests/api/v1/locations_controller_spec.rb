@@ -270,7 +270,7 @@ HERE
       expect(location['phone']).to eq('555-555-5555')
       expect(location['lat']).to eq('45.49')
       expect(location['lon']).to eq('-122.63')
-      expect(location['machine_names']).to eq(%w(Bawb Cleo Sassy))
+      expect(location['machine_names']).to eq(%w[Bawb Cleo Sassy])
     end
 
     it 'sends you multiple locations if you use the send_all_within_distance flag' do
