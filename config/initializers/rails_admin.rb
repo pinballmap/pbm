@@ -565,6 +565,19 @@ RailsAdmin.config do |config|
       field :phone, :string
       field :operator, :belongs_to_association
     end
+    edit do
+      field :name, :string
+      field :location_type, :belongs_to_association
+      field :operator, :belongs_to_association
+      field :street, :string
+      field :city, :string
+      field :state, :string
+      field :zip, :string
+      field :phone, :string
+      field :lat, :decimal
+      field :lon, :decimal
+      field :website, :string
+    end
     show do
       field :machines, :string do
         label "PROMOTE TO LOCATION"
