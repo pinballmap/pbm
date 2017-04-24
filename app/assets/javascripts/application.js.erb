@@ -428,13 +428,10 @@ function showLocations(ids, lats, lons, contents) {
 }
 
 function unChecked() {
-    console.log(mapAdjusted);
     if ($("#followCheck").is(':checked')) {
         mapAdjusted = 1;
-        console.log(mapAdjusted + " 1");
     } else if (!$("#followCheck").is(':checked')) {
         mapAdjusted = 0;
-        console.log(mapAdjusted + " 0");
     }
     redo();
 }
@@ -446,10 +443,8 @@ function redo() {
       if (mapAdjusted === 0) {
         google.maps.event.removeListener(listener1);
       } else {
-      console.log(mapAdjusted + " x");
       window.clearTimeout(mapupdater);
       mapupdater=window.setTimeout(function() {
-        console.log(mapupdater);
         var latLngs = [ map.getBounds().getCenter().lat(), map.getBounds().getCenter().lng(), map.getBounds().getNorthEast().lat(), map.getBounds().getNorthEast().lng() ];
         var url = '/' + region + '/locations?by_center_point_and_ne_boundary=' + latLngs.join();
 
@@ -463,10 +458,8 @@ function redo() {
       if (mapAdjusted === 0) {
         google.maps.event.removeListener(listener2);
       } else {
-      console.log(mapAdjusted + " x");
       window.clearTimeout(mapupdater);
       mapupdater=window.setTimeout(function() {
-        console.log(mapupdater);
         var latLngs = [ map.getBounds().getCenter().lat(), map.getBounds().getCenter().lng(), map.getBounds().getNorthEast().lat(), map.getBounds().getNorthEast().lng() ];
         var url = '/' + region + '/locations?by_center_point_and_ne_boundary=' + latLngs.join();
 
