@@ -579,7 +579,7 @@ RailsAdmin.config do |config|
       field :website, :string
     end
     show do
-      field :machines, :string do
+      field :full_street_address, :string do
         label "PROMOTE TO LOCATION"
         pretty_value do
           bindings[:view].render partial: 'convert_suggested_location_to_location', locals: {suggested_location: bindings[:object]}
@@ -597,8 +597,8 @@ RailsAdmin.config do |config|
       field :lon, :decimal
       field :website, :string
       field :comments, :string
-      field :machines, :string
       field :user_inputted_address, :string
+      field :machines, :string
     end
   end
 end
