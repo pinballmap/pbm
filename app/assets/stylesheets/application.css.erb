@@ -901,7 +901,7 @@ span.or {
 .hide_search_link, .hide_button {
   display: none;
 }
-#results_bonus {
+#mapFollow_wrapper, #search_link_wrapper {
   position: fixed;
   left: 650px;
   top: 60px;
@@ -909,22 +909,26 @@ span.or {
   border: 3px solid #D3ECFF;
   background: #ffffff;
   text-align: center;
-  padding: 5px;
+  padding: 5px 5px 5px 5px;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   font-size: 15px;
 }
-#mapFollow_wrapper {
-  border-bottom: 1px solid #F53240;
-  padding-bottom: 5px;
-  margin-bottom: 5px;
-  height: auto;
+#search_link_wrapper {
+  top: 130px;
+}
+#mapFollow_wrapper input {
+  margin: 0;
 }
 .redo_gone {
   height: 0 !important;
   padding-bottom: 0 !important;
+  padding-top: 0 !important;
   margin-bottom: 0 !important;
+}
+#search_link_wrapper {
+  padding-top: 5px;
 }
 #search_link_wrapper a {
   color: #303030;

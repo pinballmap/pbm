@@ -34,12 +34,11 @@
               $('#by_#{key}_id').val(ui.item.id);
             });
           });
-#results_bonus.hide_button
-  #mapFollow_wrapper
-    %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :onchange => 'unChecked();'}
-    Redo results when map is moved?
-  #search_link_wrapper
-    =link_to "Link to this Search Result", "", :id => "search_link"
+#mapFollow_wrapper.hide_button
+  %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :onchange => 'unChecked();'}
+  Redo results when map is moved?
+#search_link_wrapper.hide_button
+  =link_to "Link to this Search Result", "", :id => "search_link"
 
 :javascript
 
