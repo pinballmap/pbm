@@ -151,7 +151,7 @@ Here's a list of all the machines that were removed from your region on #{(DateT
 
 #{full_name} Daily Machine Removals
 
-#{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.collect(&:submission).join("\n\n")}
+#{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.collect(&:submission).sort.join("\n\n")}
 HERE
   end
 
