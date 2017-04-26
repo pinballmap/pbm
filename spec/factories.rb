@@ -12,6 +12,11 @@ FactoryGirl.define do
     association :location_type
   end
 
+  factory :suggested_location do
+    association :region, name: 'portland'
+    association :location_type
+  end
+
   factory :machine do
     name 'Test Machine Name'
     association :machine_group
