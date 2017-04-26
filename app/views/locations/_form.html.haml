@@ -45,12 +45,12 @@
 
   $(function () {
 
-
     $('.location_search').on('submit', function(e) {
       if (mapAdjusted = 1) { //reset checkbox
         mapAdjusted = 0;
         $('#followCheck').prop('checked', false);
       }
+      $('#search_link_wrapper').css('display','block');
       e.preventDefault();
       search_string = $( this ).serialize();
 

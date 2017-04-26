@@ -447,7 +447,7 @@ function redo() {
       mapupdater=window.setTimeout(function() {
         var latLngs = [ map.getBounds().getCenter().lat(), map.getBounds().getCenter().lng(), map.getBounds().getNorthEast().lat(), map.getBounds().getNorthEast().lng() ];
         var url = '/' + region + '/locations?by_center_point_and_ne_boundary=' + latLngs.join();
-
+        document.getElementById('search_link_wrapper').style.display = "none";
         $('#locations').html(loadingHTML());
         $.get(url, function(data) {
           $('#locations').html(data);
@@ -462,7 +462,7 @@ function redo() {
       mapupdater=window.setTimeout(function() {
         var latLngs = [ map.getBounds().getCenter().lat(), map.getBounds().getCenter().lng(), map.getBounds().getNorthEast().lat(), map.getBounds().getNorthEast().lng() ];
         var url = '/' + region + '/locations?by_center_point_and_ne_boundary=' + latLngs.join();
-
+        document.getElementById('search_link_wrapper').style.display = "none";
         $('#locations').html(loadingHTML());
         $.get(url, function(data) {
           $('#locations').html(data);
