@@ -15,15 +15,19 @@ task import_ifpa_tournaments: :environment do
 
   pbm_states = Location.uniq.pluck(:state).map(&:downcase!).uniq!
 
-  # rubocop wants you to use next, but next isn't available on an ActiveRecord::Relation, only each.. https://github.com/bbatsov/rubocop/issues/1238
-  # rubocop:disable Style/Next
   JSON.parse(Net::HTTP.get(URI(IFPA_API_ROOT + '/calendar/active?api_key=' + IFPA_API_KEY.to_s)))['calendar'].each do |c|
     state = c['state'].downcase
 
     if pbm_states.include?(state) && !Event.exists?(ifpa_tournament_id: c['tournament_id'], ifpa_calendar_id: c['calendar_id'])
       p 'Adding: ' + c['tournament_name']
 
-      cd = JSON.parse(Net::HTTP.get(URI(IFPA_API_ROOT + '/calendar/' + c['calendar_id'] + '?api_key=' + IFPA_API_KEY.to_s)))['calendar'].first
+      cd = nil
+      begin
+        cd = JSON.parse(Net::HTTP.get(URI(IFPA_API_ROOT + '/calendar/' + c['calendar_id'] + '?api_key=' + IFPA_API_KEY.to_s)))['calendar'].first
+      rescue JSON::ParserError => e
+        p 'SKIPPING'
+        next
+      end
 
       associated_location = nil
       if cd['latitude'] && cd['longitude'] && cd['zipcode']
