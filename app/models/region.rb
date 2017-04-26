@@ -138,7 +138,7 @@ Here's a list of all the comments that were placed in your region on #{(DateTime
 
 #{full_name} Daily Comments
 
-#{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE }.collect(&:submission).join("\n\n")}
+#{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE }.collect(&:submission).sort.join("\n\n")}
 HERE
   end
 
