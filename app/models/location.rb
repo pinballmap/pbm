@@ -7,7 +7,6 @@ class Location < ActiveRecord::Base
   validates :phone, format: { with: /\A(\(\d{3}\) |\d{3}-)\d{3}-\d{4}\z/, message: 'format invalid, please use ###-###-#### or (###) ###-####' }, if: :phone?
   validates :website, format: { with: %r{^http[s]?:\/\/}, message: 'must begin with http:// or https://', multiline: true }, if: :website?
   validates :name, :street, :city, :state, format: { with: /^\S.*/, message: "Can't start with a blank", multiline: true }
-  validates :lat, :lon, presence: { message: 'Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon' }
 
   belongs_to :location_type
   belongs_to :zone
