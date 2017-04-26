@@ -555,4 +555,50 @@ RailsAdmin.config do |config|
     export do; end
     update do; end
   end
+  config.model SuggestedLocation do
+    list do
+      field :name, :string
+      field :street, :string
+      field :city, :string
+      field :state, :string
+      field :zip, :string
+      field :phone, :string
+      field :operator, :belongs_to_association
+    end
+    edit do
+      field :name, :string
+      field :location_type, :belongs_to_association
+      field :operator, :belongs_to_association
+      field :street, :string
+      field :city, :string
+      field :state, :string
+      field :zip, :string
+      field :phone, :string
+      field :lat, :decimal
+      field :lon, :decimal
+      field :website, :string
+    end
+    show do
+      field :full_street_address, :string do
+        label "PROMOTE TO LOCATION"
+        pretty_value do
+          bindings[:view].render partial: 'convert_suggested_location_to_location', locals: {suggested_location: bindings[:object]}
+        end
+      end
+      field :name, :string
+      field :location_type, :belongs_to_association
+      field :operator, :belongs_to_association
+      field :street, :string
+      field :city, :string
+      field :state, :string
+      field :zip, :string
+      field :phone, :string
+      field :lat, :decimal
+      field :lon, :decimal
+      field :website, :string
+      field :comments, :string
+      field :user_inputted_address, :string
+      field :machines, :string
+    end
+  end
 end

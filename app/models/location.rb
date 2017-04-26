@@ -7,7 +7,6 @@ class Location < ActiveRecord::Base
   validates :phone, format: { with: /\A(\(\d{3}\) |\d{3}-)\d{3}-\d{4}\z/, message: 'format invalid, please use ###-###-#### or (###) ###-####' }, if: :phone?
   validates :website, format: { with: %r{^http[s]?:\/\/}, message: 'must begin with http:// or https://', multiline: true }, if: :website?
   validates :name, :street, :city, :state, format: { with: /^\S.*/, message: "Can't start with a blank", multiline: true }
-  validates :lat, :lon, presence: { message: 'Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon' }
 
   belongs_to :location_type
   belongs_to :zone
@@ -20,7 +19,7 @@ class Location < ActiveRecord::Base
   has_many :machines, through: :location_machine_xrefs
 
   geocoded_by :full_street_address, latitude: :lat, longitude: :lon
-  before_validation :geocode, unless: ENV['SKIP_GEOCODE'] || (:lat && :lon)
+  before_validation :geocode, unless: :should_skip_geocode
 
   scope :region, (lambda { |name|
     r = Region.find_by_name(name.downcase) || Region.where(name: 'portland').first
@@ -74,6 +73,10 @@ class Location < ActiveRecord::Base
     LocationPictureXref.destroy_all "location_id = #{record.id}"
     MachineScoreXref.destroy_all "location_machine_xref_id in (select id from location_machine_xrefs where location_id = #{record.id})"
     LocationMachineXref.destroy_all "location_id = #{record.id}"
+  end
+
+  def should_skip_geocode
+    ENV['SKIP_GEOCODE'] || ((lat && lon) && (last_updated_by_user && !last_updated_by_user.region_id.nil?))
   end
 
   def self.by_at_least_n_machines_sql(n)
