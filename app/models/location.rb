@@ -21,9 +21,10 @@ class Location < ActiveRecord::Base
   geocoded_by :full_street_address, latitude: :lat, longitude: :lon
   before_validation :geocode, unless: :should_skip_geocode
 
+  MAP_SCALE = 0.75
+
   scope :region, (lambda { |name|
     r = Region.find_by_name(name.downcase) || Region.where(name: 'portland').first
-
     where(region_id: r.id)
   })
   scope :by_type_id, (->(id) { where('location_type_id in (?)', id.split('_').map(&:to_i)) })
@@ -64,6 +65,13 @@ class Location < ActiveRecord::Base
   })
   scope :by_at_least_n_machines_type, (lambda { |n|
     where(Location.by_at_least_n_machines_sql(n))
+  })
+  scope :by_center_point_and_ne_boundary, (lambda { |boundaries|
+    boundary_lat_lons = boundaries.split(',').collect(&:to_f)
+    distance = Geocoder::Calculations.distance_between([boundary_lat_lons[0], boundary_lat_lons[1]], [boundary_lat_lons[2], boundary_lat_lons[3]])
+    box = Geocoder::Calculations.bounding_box([boundary_lat_lons[0], boundary_lat_lons[1]], distance * MAP_SCALE)
+
+    Location.within_bounding_box(box)
   })
 
   attr_accessible :name, :street, :city, :state, :zip, :phone, :lat, :lon, :website, :zone_id, :region_id, :location_type_id, :description, :operator_id, :date_last_updated, :last_updated_by_user_id, :machine_ids

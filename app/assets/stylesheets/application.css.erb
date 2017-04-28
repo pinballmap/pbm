@@ -53,6 +53,9 @@ input, textarea {
   box-sizing: border-box;         /* Opera/IE 8+ */
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
 }
+input[type=checkbox] {
+  -webkit-appearance:checkbox;
+}
 .palatino {
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
 }
@@ -895,28 +898,41 @@ span.or {
   color: #ebebeb;
   border-bottom: 1px solid white;
 }
-.hide_search_link {
+.hide_search_link, .hide_button {
   display: none;
 }
-#search_link_wrapper {
+#mapFollow_wrapper, #search_link_wrapper {
   position: fixed;
-  left: 640px;
-  top: 150px;
-  width: 110px;
-  border: 3px solid #dadada;
-  border-left: none;
+  left: 650px;
+  top: 60px;
+  width: 100px;
+  border: 3px solid #D3ECFF;
   background: #ffffff;
   text-align: center;
-  padding: 5px;
-  border-top-right-radius: 5px;
-  -webkit-border-top-right-radius: 5px;
-  -moz-border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  -webkit-border-bottom-right-radius: 5px;
-  -moz-border-bottom-right-radius: 5px;
+  padding: 5px 5px 5px 5px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  font-size: 15px;
+}
+#search_link_wrapper {
+  top: 130px;
+}
+#mapFollow_wrapper input {
+  margin: 0;
+}
+.redo_gone {
+  height: 0 !important;
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+#search_link_wrapper {
+  padding-top: 5px;
 }
 #search_link_wrapper a {
   color: #303030;
+  font-style: italic;
   text-decoration: none;
 }
 #search_link_wrapper a:hover  {
@@ -2221,7 +2237,7 @@ span.begin {
   padding: 5px 20px;
 }
 #not_found {
-  padding: 90px 20px;
+  padding: 130px 20px 0;
   text-align: center;
 }
 #page_body, #region_page_body {

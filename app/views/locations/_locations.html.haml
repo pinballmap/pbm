@@ -1,8 +1,9 @@
 - if (@locations)
   :javascript
+
     clearMarkers()
     clearInfoWindows();
-    $("#search_link_wrapper").removeClass("hide_search_link");
+    $("#mapFollow_wrapper,#search_link_wrappers").removeClass("hide_button");
 
     var hrefOrig = 'https://#{request.host_with_port}/#{@region.name.downcase}?';
     var def_value = window.location.href;
@@ -73,5 +74,5 @@
     - if (@locations.size == 1)
       :javascript
         $(function() {
-          singleLocationLoad('#{@region.name.downcase}', #{@locations.first.id});
+          singleLocationLoad(#{@locations.first.id});
         });
