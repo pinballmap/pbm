@@ -139,9 +139,8 @@ HERE
       3.times { |n| scores << FactoryGirl.create(:machine_score_xref, location_machine_xref: lmx, user: FactoryGirl.create(:user, username: "ssw#{n}")) }
       scores << FactoryGirl.create(:machine_score_xref, location_machine_xref: lmx, user: User.find_by_username('ssw0'))
 
-      expect(@region.n_high_rollers(2)).to include(
-        'ssw0' => [scores[3], scores[0]],
-        'ssw2' => [scores[2]]
+      expect(@region.n_high_rollers(1)).to include(
+        'ssw0' => [scores[3], scores[0]]
       )
     end
   end

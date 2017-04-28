@@ -118,8 +118,12 @@ RailsAdmin.config do |config|
       field :state, :string
       field :zip, :string
       field :phone, :string
-      field :lat, :decimal
-      field :lon, :decimal
+      field :lat, :decimal do
+        required false
+      end
+      field :lon, :decimal do
+        required false
+      end
       field :website, :string
       field :updated_at, :datetime
       field :description, :string
@@ -567,6 +571,11 @@ RailsAdmin.config do |config|
     end
     edit do
       field :name, :string
+      field :region_id do
+        render do
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.is_super_admin ? nil : Authorization.current_user.region_id, :object_type => 'suggested_location'}
+        end
+      end
       field :location_type, :belongs_to_association
       field :operator, :belongs_to_association
       field :street, :string
@@ -588,6 +597,7 @@ RailsAdmin.config do |config|
       field :name, :string
       field :location_type, :belongs_to_association
       field :operator, :belongs_to_association
+      field :region, :belongs_to_association
       field :street, :string
       field :city, :string
       field :state, :string
