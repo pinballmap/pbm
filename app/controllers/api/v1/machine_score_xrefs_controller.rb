@@ -51,11 +51,9 @@ module Api
         else
           return_response(msx.errors.full_messages, 'errors')
         end
-
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find machine', 'errors')
-
-      rescue ActiveRecord::StatementInvalid
+      rescue RangeError
         return_response('Number is too large. Please enter a valid score.', 'errors')
       end
 
@@ -67,7 +65,6 @@ module Api
 
         msxes = MachineScoreXref.where(location_machine_xref_id: lmx.id).order('score desc')
         return_response(msxes, 'machine_scores', [], [:username])
-
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find machine', 'errors')
       end

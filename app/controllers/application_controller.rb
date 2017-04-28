@@ -70,6 +70,26 @@ END
     )
 
     UserSubmission.create(region_id: region.id, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE, submission: body, user_id: user ? user.id : nil)
+
+    location_type = LocationType.find_by_name(params['location_type'])
+    operator = Operator.find_by_name(params['location_operator'])
+
+    user_inputted_address = [params['location_street'], params['location_city'], params['location_state'], params['location_zip']].join(', ')
+
+    (geocoded_results, lat, lon, street, city, state, zip) = ''
+
+    geocoded_results = Geocoder.search(user_inputted_address).first unless Rails.env.test?
+
+    unless geocoded_results.blank?
+      lat = geocoded_results.geometry['location']['lat']
+      lon = geocoded_results.geometry['location']['lng']
+      street = geocoded_results.street_address
+      city = geocoded_results.city
+      state = geocoded_results.state_code
+      zip = geocoded_results.postal_code
+    end
+
+    SuggestedLocation.create(region_id: region.id, name: params['location_name'], street: street || params['location_street'], city: city || params['location_city'], state: state || params['location_state'], zip: zip || params['location_zip'], phone: params['location_phone'], website: params['location_website'], location_type: location_type, operator: operator, comments: params['location_comments'], machines: params['location_machines'], lat: lat, lon: lon, user_inputted_address: user_inputted_address)
   end
 
   def send_new_region_notification(params)
@@ -132,8 +152,8 @@ END
   def allow_cors
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Request-Method'] = '*'
-    headers['Access-Control-Allow-Methods'] = %w(GET POST PUT DELETE OPTIONS).join(',')
-    headers['Access-Control-Allow-Headers'] = %w(Origin Accept Content-Type X-Requested-With X-CSRF-Token).join(',')
+    headers['Access-Control-Allow-Methods'] = %w[GET POST PUT DELETE OPTIONS].join(',')
+    headers['Access-Control-Allow-Headers'] = %w[Origin Accept Content-Type X-Requested-With X-CSRF-Token].join(',')
 
     head(:ok) if request.request_method == 'OPTIONS'
   end
@@ -162,13 +182,13 @@ END
   end
 
   def flash_message
-    [:error, :warning, :notice].each do |type|
+    %i[error warning notice].each do |type|
       return flash[type] unless flash[type].blank?
     end
   end
 
   def flash_type
-    [:error, :warning, :notice].each do |type|
+    %i[error warning notice].each do |type|
       return type unless flash[type].blank?
     end
   end

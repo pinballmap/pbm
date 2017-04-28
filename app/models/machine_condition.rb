@@ -10,7 +10,7 @@ class MachineCondition < ActiveRecord::Base
 
   after_create :create_user_submission
 
-  scope :limited, -> { order('created_at DESC').limit(MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY) }
+  scope :limited, (-> { order('created_at DESC').limit(MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY) })
 
   def create_user_submission
     user_info = user ? "User #{user.username} (#{user.email})" : 'UNKNOWN USER'
