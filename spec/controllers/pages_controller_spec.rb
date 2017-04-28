@@ -218,5 +218,29 @@ HERE
 
       post 'submitted_new_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail'
     end
+
+    it 'should create a suggested location object' do
+      location_type = FactoryGirl.create(:location_type, name: 'type')
+      operator = FactoryGirl.create(:operator, name: 'operator')
+
+      post 'submitted_new_location', region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail'
+
+      expect(SuggestedLocation.all.size).to eq(1)
+
+      sl = SuggestedLocation.first
+      expect(sl.name).to eq('name')
+      expect(sl.region).to eq(@region)
+      expect(sl.street).to eq('street')
+      expect(sl.city).to eq('city')
+      expect(sl.state).to eq('state')
+      expect(sl.zip).to eq('zip')
+      expect(sl.phone).to eq('phone')
+      expect(sl.website).to eq('website')
+      expect(sl.location_type).to eq(location_type)
+      expect(sl.operator).to eq(operator)
+      expect(sl.comments).to eq('comments')
+      expect(sl.machines).to eq('machines')
+      expect(sl.user_inputted_address).to eq('street, city, state, zip')
+    end
   end
 end

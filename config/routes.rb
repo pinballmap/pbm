@@ -143,6 +143,11 @@ Pbm::Application.routes.draw do
 
   resources :location_picture_xrefs
   resources :machine_conditions
+  resources :suggested_locations, only: [] do
+      member do
+        post :convert_to_location
+      end
+  end
 
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}, path: '/users', path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'join'}
 

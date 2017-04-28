@@ -1,10 +1,10 @@
 class Region < ActiveRecord::Base
   has_many :locations
   has_many :zones
-  has_many :users, -> { order 'users.id' }
-  has_many :events, -> { order 'events.id' }
+  has_many :users, (-> { order 'users.id' })
+  has_many :events, (-> { order 'events.id' })
   has_many :operators
-  has_many :region_link_xrefs, -> { order 'region_link_xrefs.id' }
+  has_many :region_link_xrefs, (-> { order 'region_link_xrefs.id' })
   has_many :user_submissions
   has_many :location_machine_xrefs, through: :locations
 
@@ -91,7 +91,7 @@ class Region < ActiveRecord::Base
   end
 
   def available_search_sections
-    sections = %w(location city machine type)
+    sections = %w[location city machine type]
 
     sections.push('operator') unless operators.empty?
 
@@ -138,7 +138,7 @@ Here's a list of all the comments that were placed in your region on #{(DateTime
 
 #{full_name} Daily Comments
 
-#{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE }.collect(&:submission).join("\n\n")}
+#{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE }.collect(&:submission).sort.join("\n\n")}
 HERE
   end
 

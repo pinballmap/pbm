@@ -1,7 +1,7 @@
 class LocationMachineXrefsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   has_scope :region
-  before_action :authenticate_user!, only: [:update_machine_condition, :create_confirmation, :remove_confirmation]
+  before_action :authenticate_user!, only: %i[update_machine_condition create_confirmation remove_confirmation]
 
   def create
     machine = nil
@@ -42,7 +42,7 @@ class LocationMachineXrefsController < InheritedResources::Base
 
     user_id = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user.id
 
-    lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: user_id) unless lmx.nil?
+    lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: user_id) unless lmx&.nil?
 
     render nothing: true
   end

@@ -9,6 +9,18 @@ describe Location do
     @lmx2 = FactoryGirl.create(:location_machine_xref, location: @l, machine: @m2, created_at: '2014-01-15 05:00:00')
   end
 
+  describe '#should_skip_geocode' do
+    it 'respects lat/lon last updated status' do
+      @l.last_updated_by_user_id = FactoryGirl.create(:user, region_id: 1).id
+      @l.lat = 1
+      @l.lon = 1
+
+      ENV['SKIP_GEOCODE'] = '0'
+      expect(@l.should_skip_geocode).to be_truthy
+      ENV['SKIP_GEOCODE'] = '1'
+    end
+  end
+
   describe '#before_destroy' do
     it 'should clean up location_machine_xrefs, events, location_picture_xrefs' do
       FactoryGirl.create(:event, location: @l)
@@ -59,7 +71,7 @@ describe Location do
 
   describe '#machine_names' do
     it 'should return all machine names for this location' do
-      expect(@l.machine_names).to eq(%w(Cleo Sassy))
+      expect(@l.machine_names).to eq(%w[Cleo Sassy])
     end
   end
 

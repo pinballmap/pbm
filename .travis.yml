@@ -3,7 +3,7 @@ cache:
   directories:
     - travis_phantomjs
 rvm:
-  - "2.1.7"
+  - "2.3.4"
 script:
   - RAILS_ENV=test bundle exec rake db:migrate --trace
   - bundle exec rake

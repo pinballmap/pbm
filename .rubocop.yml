@@ -28,6 +28,12 @@ IdenticalConditionalBranches:
   Enabled: false
 NonLocalExitFromIterator:
   Enabled: false
+FrozenStringLiteralComment:
+  Enabled: false
+MultilineOperationIndentation:
+  Enabled: false
+IndentHeredoc:
+  Enabled: false
 
 AllCops:
   Exclude:

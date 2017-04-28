@@ -133,7 +133,7 @@ describe LocationsController do
     it 'displays a location not found message instead of the ocean' do
       visit '/portland/?by_location_id=-1'
 
-      expect(page).to have_content('NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN.')
+      expect(page).to have_content('NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN. Use the dropdown or the autocompleting textbox if you want results.')
     end
   end
 
