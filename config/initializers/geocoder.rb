@@ -7,8 +7,6 @@ Geocoder::Configuration.lookup = :google
 # geocoding service request timeout, in seconds (default 3):
 Geocoder::Configuration.timeout = 20
 
-Geocoder::Configuration.http_proxy = ENV['QUOTAGUARD_URL']
-
 # use HTTPS for geocoding service connections:
 Geocoder::Configuration.use_https = false
 
