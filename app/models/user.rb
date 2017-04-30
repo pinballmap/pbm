@@ -105,7 +105,7 @@ class User < ActiveRecord::Base
       unique_edited_locations_that_exist.push(s.location)
     end
 
-    unique_edited_locations_that_exist.uniq.map { |l| [l.id, l.name, l.region_id] }
+    unique_edited_locations_that_exist.uniq.sort_by(&:created_at).reverse.map { |l| [l.id, l.name, l.region_id] }
   end
 
   def edited_location_submissions

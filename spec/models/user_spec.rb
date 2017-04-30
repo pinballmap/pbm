@@ -64,12 +64,12 @@ describe User do
       location = FactoryGirl.create(:location, id: 1, region_id: 100, name: 'foo')
       another_location = FactoryGirl.create(:location, id: 2, region_id: 200, name: 'bar')
 
-      FactoryGirl.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, location: another_location, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, created_at: '2016-01-01', location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryGirl.create(:user_submission, user: @user, created_at: '2016-01-02', location: another_location, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
 
       FactoryGirl.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
 
-      expect(@user.profile_list_of_edited_locations).to eq([[location.id, location.name, location.region_id], [another_location.id, another_location.name, another_location.region_id]])
+      expect(@user.profile_list_of_edited_locations).to eq([[another_location.id, another_location.name, another_location.region_id], [location.id, location.name, location.region_id]])
     end
 
     it 'should not return locations that no longer exist' do
