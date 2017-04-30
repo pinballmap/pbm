@@ -61,8 +61,8 @@ describe User do
 
   describe '#profile_list_of_edited_locations' do
     it 'should return a list of edited locations for their profile page' do
-      location = FactoryGirl.create(:location, id: 1, region_id: 100, name: 'foo')
-      another_location = FactoryGirl.create(:location, id: 2, region_id: 200, name: 'bar')
+      location = FactoryGirl.create(:location, id: 1, region_id: 100, name: 'foo', created_at: '2017-01-02')
+      another_location = FactoryGirl.create(:location, id: 2, region_id: 200, name: 'bar', created_at: '2017-01-01')
 
       FactoryGirl.create(:user_submission, user: @user, created_at: '2016-01-01', location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
       FactoryGirl.create(:user_submission, user: @user, created_at: '2016-01-02', location: another_location, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
