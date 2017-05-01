@@ -562,6 +562,11 @@ RailsAdmin.config do |config|
   config.model SuggestedLocation do
     list do
       field :name, :string
+      field :region, :belongs_to_association do
+        visible do
+          bindings[:view]._current_user.is_super_admin
+        end
+      end
       field :street, :string
       field :city, :string
       field :state, :string
