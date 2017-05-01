@@ -97,15 +97,11 @@ class User < ActiveRecord::Base
 
   def profile_list_of_edited_locations
     submissions = edited_location_submissions
+    submissions = submissions.select { |s| s.location_id && Location.exists?(id: s.location_id) }
+    submissions = submissions.reverse.uniq(&:location_id)
+    submissions = submissions.reverse
 
-    unique_edited_locations_that_exist = []
-    submissions.each do |s|
-      next unless s.location_id && Location.exists?(id: s.location_id)
-
-      unique_edited_locations_that_exist.push(s.location)
-    end
-
-    unique_edited_locations_that_exist.uniq.map { |l| [l.id, l.name, l.region_id] }
+    submissions.map { |s| [s.location_id, s.location.name, s.location.region_id] }
   end
 
   def edited_location_submissions
@@ -118,7 +114,7 @@ class User < ActiveRecord::Base
       UserSubmission::REMOVE_MACHINE_TYPE,
       UserSubmission::NEW_SCORE_TYPE,
       UserSubmission::CONFIRM_LOCATION_TYPE
-    )
+    ).order('created_at desc')
   end
 
   def as_json(options = {})
