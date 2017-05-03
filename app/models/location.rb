@@ -20,7 +20,7 @@ class Location < ActiveRecord::Base
   has_many :machines, through: :location_machine_xrefs
 
   geocoded_by :full_street_address, latitude: :lat, longitude: :lon
-  before_validation :geocode, unless: :should_skip_geocode
+  before_validation :geocode, unless: ENV['SKIP_GEOCODE'] || (:lat && :lon)
 
   MAP_SCALE = 0.75
 
