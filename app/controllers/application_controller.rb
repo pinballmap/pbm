@@ -102,6 +102,7 @@ Their Name: #{params['name']}\n
 Their Email: #{params['email']}\n
 Region Name: #{params['region_name']}\n
 Region Comments: #{params['comments']}\n
+(entered from #{request.remote_ip} via #{request.user_agent})\n
 END
     )
   end
@@ -113,7 +114,8 @@ END
 Their Name: #{params[:name]}\n
 Their Email: #{params[:email]}\n
 Message: #{params[:message]}\n
-#{user_info}
+#{user_info}\n
+(entered from #{request.remote_ip} via #{request.user_agent})\n
 END
     Pony.mail(
       to: region.users.map(&:email),
