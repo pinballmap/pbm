@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Api::V1::RegionsController, type: :request do
-
   before(:each) do
     @portland = FactoryGirl.create(:region, id: 555, name: 'portland', motd: 'foo', full_name: 'Portland', lat: 12, lon: 13)
     @la = FactoryGirl.create(:region, name: 'la', full_name: 'Los Angeles')
