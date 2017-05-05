@@ -135,11 +135,12 @@ Their Name: ssw\n
 Their Email: foo@bar.com\n
 Region Name: region name\n
 Region Comments: region comments\n
+(entered from 127.0.0.1 via cleOS)\n
 HERE
         )
       end
 
-      post '/api/v1/regions/suggest.json', region_name: 'region name', comments: 'region comments', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/regions/suggest.json', { region_name: 'region name', comments: 'region comments', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq("Thanks for suggesting that region. We'll be in touch.")
@@ -183,12 +184,13 @@ Their Name: name\n
 Their Email: email\n
 Message: message\n
 Username: ssw\n
-Site Email: foo@bar.com
+Site Email: foo@bar.com\n
+(entered from 127.0.0.1 via cleOS)\n
 HERE
         )
       end
 
-      post '/api/v1/regions/contact.json', region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/regions/contact.json', { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
@@ -208,12 +210,13 @@ Their Name: name\n
 Their Email: email\n
 Message: message\n
 Username: ssw\n
-Site Email: foo@bar.com
+Site Email: foo@bar.com\n
+(entered from 127.0.0.1 via cleOS)\n
 HERE
         )
       end
 
-      post '/api/v1/regions/contact.json', region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/regions/contact.json', { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')

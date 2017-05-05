@@ -77,7 +77,7 @@ HERE
           bcc: ['super_admin@bar.com'],
           from: 'admin@pinballmap.com',
           subject: 'PBM - Message from the Portland region',
-          body: "Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\n\n"
+          body: "Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\n\n\n(entered from 0.0.0.0 via Rails Testing)\n\n"
         )
       end
 
@@ -85,7 +85,7 @@ HERE
       expect(@region.reload.user_submissions.count).to eq(1)
       submission = @region.user_submissions.first
       expect(submission.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
-      expect(submission.submission).to eq("Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\n\n")
+      expect(submission.submission).to eq("Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\n\n\n(entered from 0.0.0.0 via Rails Testing)\n\n")
     end
 
     it 'should include user info if you are logged in' do
@@ -98,14 +98,14 @@ HERE
           bcc: ['super_admin@bar.com'],
           from: 'admin@pinballmap.com',
           subject: 'PBM - Message from the Portland region',
-          body: "Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\nUsername: ssw\n\nSite Email: yeah@ok.com\n"
+          body: "Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\nUsername: ssw\n\nSite Email: yeah@ok.com\n\n(entered from 0.0.0.0 via Rails Testing)\n\n"
         )
       end
 
       post 'contact_sent', region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz'
       submission = @region.reload.user_submissions.first
       expect(submission.user).to eq(user)
-      expect(submission.submission).to eq("Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\nUsername: ssw\n\nSite Email: yeah@ok.com\n")
+      expect(submission.submission).to eq("Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\nUsername: ssw\n\nSite Email: yeah@ok.com\n\n(entered from 0.0.0.0 via Rails Testing)\n\n")
     end
 
     it 'email should notify if it was sent from the staging server' do
