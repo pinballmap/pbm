@@ -1,4 +1,11 @@
 class SuggestedLocation < ActiveRecord::Base
+  validates_presence_of :name, :street, :city, :state, :zip, on: :update
+
+  validates :phone, format: { with: /\A(\(\d{3}\) |\d{3}-)\d{3}-\d{4}\z/, message: 'format invalid, please use ###-###-#### or (###) ###-####' }, if: :phone?, on: :update
+  validates :website, format: { with: %r{^http[s]?:\/\/}, message: 'must begin with http:// or https://', multiline: true }, if: :website?, on: :update
+  validates :name, :street, :city, :state, format: { with: /^\S.*/, message: "Can't start with a blank", multiline: true }, on: :update
+  validates :lat, :lon, presence: { message: 'Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon' }, on: :update
+
   belongs_to :region
   belongs_to :operator
   belongs_to :location_type
@@ -10,5 +17,35 @@ class SuggestedLocation < ActiveRecord::Base
 
   def full_street_address
     [street, city, state, zip].join(', ')
+  end
+
+  def convert_to_location
+    location = Location.create(name: name, street: street, city: city, state: state, zip: zip, phone: phone, lat: lat, lon: lon, website: website, region_id: region_id, location_type_id: location_type_id, operator_id: operator_id)
+
+    if !location.valid?
+      errors.add(:base, location.errors.first)
+    else
+      if machines
+        machines.split(/\),\s*/).each do |machine_info|
+          machine_info.strip!
+
+          matches = machine_info.match(/(^.*)\((.*), (.*)/i)
+
+          next if matches.nil?
+
+          name, manufacturer, year = matches.captures
+          name.strip!
+          manufacturer.strip!
+          year.strip!
+          year.delete!(')', '')
+
+          machine = Machine.find_by(name: name, year: year, manufacturer: manufacturer)
+
+          LocationMachineXref.create(location_id: location.id, machine_id: machine.id) unless machine.nil?
+        end
+      end
+
+      delete
+    end
   end
 end

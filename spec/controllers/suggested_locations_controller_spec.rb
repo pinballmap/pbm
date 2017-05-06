@@ -45,5 +45,12 @@ describe SuggestedLocationsController, type: :controller do
 
       expect(response).to redirect_to('/admin')
     end
+
+    it 'should throw an error when failing a field validation' do
+      post :convert_to_location, format: :json, id: FactoryGirl.create(:suggested_location).id
+
+      expect(SuggestedLocation.all.size).to eq(2)
+      expect(Location.all.size).to eq(0)
+    end
   end
 end
