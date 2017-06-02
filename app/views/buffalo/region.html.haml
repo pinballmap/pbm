@@ -1,0 +1,9 @@
+- content_for :presearch_sidebar do
+  %p.local_logo
+    =link_to image_tag('buffalo/buffalopinball.jpg'), 'https://buffalopinball.com/', :target => '_blank'
+    %br/
+    %br/
+    The Buffalo Pinball Map is maintained with the help of the
+    =link_to 'Buffalo Pinball', 'https://buffalopinball.com/', :target => '_blank'
+
+= render :file => 'pages/region'
