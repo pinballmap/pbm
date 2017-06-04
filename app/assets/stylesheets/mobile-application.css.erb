@@ -3,7 +3,7 @@
   overflow: hidden !important;
 }
 #page {
-  height: 70px;
+  height: 30px;
 }
 #page.page_home {
   height: auto;
@@ -20,7 +20,6 @@
   min-width: 320px;
   height: auto;
   margin: 0 auto;
-  padding-top: 2px;
   z-index: 600;
 }
 #header_lower {
@@ -29,13 +28,15 @@
   width: 100%;
   min-width: 320px;
   height: auto;
-  margin: 30px auto 0;
+  margin: 35px auto 0;
 }
 #header a img {
   float: none;
   padding: 0;
-  width: 100%;
-  max-width: 460px;
+  height: 30px;
+  width: auto;
+  margin: 2px auto;
+  display: block;
 }
 #header div.menu_link {
   width: auto !important;
@@ -47,11 +48,11 @@
   text-align: left;
 }
 #menu {
-  margin: 3px 5px 0;
+  margin: 0 0 0 5px;
   padding: 0;
   float: left;
-  height: 20px;
-  font-size: 24px;
+  height: 30px;
+  font-size: 30px;
   text-align: left;
 }
 .header_home #menu {
@@ -77,8 +78,7 @@
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
 }
-#header div.menu_link ul:before,
-#header div.menu_link ul span {
+#header div.menu_link ul:before {
   display: none;
 }
 #header .menu_link ul li.first_header_link {
@@ -111,7 +111,7 @@
   display: block;
   position: relative !important;
 }
-.closest_locations {
+.closest_locations, .geo_header_wrapper {
   font-size: 22px;
   background-color: #FFFFFF;
   width: auto;
@@ -119,7 +119,7 @@
   line-height: 13px;
   padding: 10px 6px;
 }
-.closest_locations a {
+.closest_locations a, .geo_header_wrapper a {
   color: #303030;
   text-shadow: none;
   text-decoration: none;
@@ -174,19 +174,22 @@ span.region_name_page {
   height: auto;
 }
 
-#header a img.header_image {
-  float: none;
-  margin: 0;
-  width: 185px;
-}
-
-#header a img.header_image_login {
-  width: 200px;
-}
-
-.login_region .login_slash,
-.login_home .login_slash {
+.login_slash {
   display: inline;
+  font-weight: bold;
+}
+
+#header div.menu_link ul li.login_list {
+  display: inline;
+  text-align: center;
+}
+#header div.menu_link ul li.login_list a {
+  color: #F53240;
+  font-size: 20px !important;
+}
+span.login_list {
+  display: block;
+  text-align: center;
 }
 
 #header .login_region,
@@ -198,6 +201,11 @@ span.region_name_page {
 }
 #header .login_home {
   width: auto;
+  margin: 0 auto;
+  float: none;
+  display: block;
+  text-align: center;
+  margin-top: 0 !important;
 }
 
 .header_image_a {
@@ -217,7 +225,7 @@ span.region_name_page {
 div.pick_a_map {
   padding-top: 0;
 }
-.apps_header, .blog_header, .store_header, .closest_locations {
+.apps_header, .blog_header, .store_header, .closest_locations, .geo_header_wrapper {
   width: 100% !important;
   float: none;
   padding: 4px 0;
@@ -229,7 +237,7 @@ div.pick_a_map {
   line-height: 24px !important;
 }
 
-.login_home, .geo_header_wrapper, .login_region {
+.login_home, .login_region {
   width: auto;
   float: right;
   font-size: 18px !important;
@@ -251,38 +259,8 @@ div.pick_a_map {
   border: none;
 }
 
-@media only screen and (min-device-width: 320px) and (max-device-width: 370px) and (-webkit-device-pixel-ratio: 2) and (device-aspect-ratio: 2/3)
-{
-  .login_home a, .login_region a {
-    padding: 1px 3px;
-    font-size: 16px;
-  }
-  .geo_header_wrapper a {
-    padding: 3px;
-    font-size: 16px !important;
-  }
-  .login_home {
-    margin: 2px 2px 0 0;
-  }
-  #header a img.header_image {
-    width: 185px;
-    margin-top: 0;
-  }
-}
 @media only screen and (min-device-width: 320px) and (max-device-width: 359px)
 {
-  .login_home a, .login_region a {
-    padding: 1px 3px;
-    font-size: 17px !important;
-    line-height: 21px;
-  }
-  .geo_header_wrapper a {
-    padding: 3px;
-    font-size: 16px !important;
-  }
-  .login_home {
-    margin: 2px 2px 0 0;
-  }
   .metadata_edit_location form select, .metadata_edit_location input.edit_mode {
     width: 160px !important;
   }
@@ -290,9 +268,14 @@ div.pick_a_map {
 
 @media only screen and (max-width: 320px)
 {
-  #header a img.header_image {
-    width: 165px;
-    margin-top: 2px;
+  #header a img {
+    height: 26px;
+    width: auto;
+    margin: 2px auto;
+  }
+  #menu {
+    height: 26px;
+    font-size: 26px;
   }
   .pintips a {
     font-size: 16px !important;
@@ -305,21 +288,6 @@ div.pick_a_map {
   }
   .region_name {
     font-size: 18px;
-  }
-}
-
-@media only screen and (min-device-width: 360px) and (max-device-width: 360px)
-{
-  .login_home a, .login_region a {
-    padding: 1px 3px;
-    font-size: 18px !important;
-  }
-  .geo_header_wrapper a {
-    padding: 3px;
-    font-size: 18px !important;
-  }
-  .login_home {
-    margin: 2px 6px 0 6px;
   }
 }
 
