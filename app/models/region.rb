@@ -8,7 +8,7 @@ class Region < ActiveRecord::Base
   has_many :user_submissions
   has_many :location_machine_xrefs, through: :locations
 
-  attr_accessible :name, :full_name, :motd, :lat, :lon, :n_search_no, :default_search_type, :should_email_machine_removal
+  attr_accessible :name, :full_name, :motd, :lat, :lon, :n_search_no, :default_search_type, :should_email_machine_removal, :should_auto_delete_empty_locations, :send_digest_comment_emails, :send_digest_removal_emails
 
   geocoded_by :lat_and_lon, latitude: :lat, longitude: :lon
 
