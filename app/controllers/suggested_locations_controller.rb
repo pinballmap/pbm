@@ -4,7 +4,7 @@ class SuggestedLocationsController < InheritedResources::Base
 
   def convert_to_location
     sl = SuggestedLocation.find(params[:id])
-    sl.convert_to_location
+    sl.convert_to_location(params[:user_email])
 
     redirect_to sl.errors.any? ? "/admin/suggested_location/#{sl.id}" : rails_admin_path
   end
