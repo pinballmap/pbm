@@ -19,7 +19,7 @@ class SuggestedLocation < ActiveRecord::Base
     [street, city, state, zip].join(', ')
   end
 
-  def convert_to_location
+  def convert_to_location(user_email)
     location = Location.create(name: name, street: street, city: city, state: state, zip: zip, phone: phone, lat: lat, lon: lon, website: website, region_id: region_id, location_type_id: location_type_id, operator_id: operator_id)
 
     if !location.valid?
@@ -46,6 +46,20 @@ class SuggestedLocation < ActiveRecord::Base
       end
 
       delete
+
+      ActiveRecord::Base.connection.execute(<<HERE)
+insert into rails_admin_histories values (
+  nextval('rails_admin_histories_id_seq'),
+  'converted from suggested location',
+  '#{user_email}',
+  #{location.id},
+  'Location',
+  NULL,
+  NULL,
+  now(),
+  now()
+)
+HERE
     end
   end
 end
