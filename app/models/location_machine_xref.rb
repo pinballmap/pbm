@@ -76,7 +76,7 @@ class LocationMachineXref < ActiveRecord::Base
   end
 
   def destroy(options = {})
-    if location.region.should_email_machine_removal
+    if location.region.should_email_machine_removal && !location.region.send_digest_removal_emails
       user_info = nil
       if options[:user_id]
         user = User.find(options[:user_id])

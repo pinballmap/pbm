@@ -122,7 +122,7 @@ describe LocationMachineXref do
     end
 
     it 'should not send an email if the region is set for digest removals' do
-      r_digest_email = FactoryGirl.create(:region, send_digest_removal_emails: 1, send_digest_comment_emails: 1)
+      r_digest_email = FactoryGirl.create(:region, should_email_machine_removal: 1, send_digest_removal_emails: 1, send_digest_comment_emails: 1)
       u_digest_email = FactoryGirl.create(:user, id: 2, region: r_digest_email, username: 'cibw', email: 'foo@baz.com')
       l_digest_email = FactoryGirl.create(:location, region: r_digest_email)
       lmx_digest_email = FactoryGirl.create(:location_machine_xref, location: l_digest_email, machine: @m)
