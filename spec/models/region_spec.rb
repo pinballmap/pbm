@@ -29,6 +29,13 @@ describe Region do
   end
 
   describe '#generate_daily_digest_comments_email_body' do
+    it 'should return nil if there are no comments that day' do
+      FactoryGirl.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: DateTime.now - 2.day)
+      FactoryGirl.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+
+      expect(@region.generate_daily_digest_comments_email_body).to eq(nil)
+    end
+
     it 'should generate a string containing all machine comments from the day' do
       FactoryGirl.create(:user_submission, region: @region, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: DateTime.now - 1.day)
       FactoryGirl.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: DateTime.now - 1.day)
@@ -49,6 +56,13 @@ HERE
   end
 
   describe '#generate_daily_digest_removals_email_body' do
+    it 'should return nil if there are no removals that day' do
+      FactoryGirl.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: DateTime.now - 2.day)
+      FactoryGirl.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
+
+      expect(@region.generate_daily_digest_removals_email_body).to eq(nil)
+    end
+
     it 'should generate a string containing all machine removals from the day' do
       FactoryGirl.create(:user_submission, region: @region, submission: 'foo', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: DateTime.now - 1.day)
       FactoryGirl.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: DateTime.now - 1.day)

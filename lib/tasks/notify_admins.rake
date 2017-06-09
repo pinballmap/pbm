@@ -25,6 +25,9 @@ task send_daily_digest_machine_condition_email: :environment do
     email_subject = "PBM - Daily admin machine comment digest for #{r.full_name} - #{(Date.today - 1.day).strftime('%m/%d/%Y')}"
 
     email_body = r.generate_daily_digest_comments_email_body
+
+    next if email_body.nil?
+
     email_to = r.users.map(&:email)
 
     Pony.mail(
@@ -42,6 +45,9 @@ task send_daily_digest_machine_removal_email: :environment do
     email_subject = "PBM - Daily admin machine removal digest for #{r.full_name} - #{(Date.today - 1.day).strftime('%m/%d/%Y')}"
 
     email_body = r.generate_daily_digest_removals_email_body
+
+    next if email_body.nil?
+
     email_to = r.users.map(&:email)
 
     Pony.mail(
