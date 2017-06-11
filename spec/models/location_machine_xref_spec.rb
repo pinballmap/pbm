@@ -142,7 +142,7 @@ describe LocationMachineXref do
       expect(submission.user).to eq(user)
       expect(submission.location).to eq(@lmx.location)
       expect(submission.machine).to eq(@lmx.machine)
-      expect(submission.submission).to eq(["#{@l.name} (#{@l.id})", "#{@m.name} (#{@m.id})", "#{@l.region.name} (#{@l.region.id})"].join("\n"))
+      expect(submission.submission).to eq(["#{user.username} (#{user.id})", "#{@l.name} (#{@l.id})", "#{@m.name} (#{@m.id})", "#{@l.region.name} (#{@l.region.id})"].join("\n"))
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
     end
   end
