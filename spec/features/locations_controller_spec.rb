@@ -352,7 +352,11 @@ describe LocationsController do
       expect(@location.phone).to eq('555-555-5555')
       expect(@location.operator_id).to eq(o.id)
       expect(@location.location_type_id).to eq(t.id)
+      expect(@location.date_last_updated.strftime('%b-%d-%Y')).to eq(Time.now.strftime('%b-%d-%Y'))
+      expect(@location.last_updated_by_user).to eq(@user)
+
       expect(page).to_not have_css('div#flash_error')
+      expect(page).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')}")
     end
 
     it 'allows users to update a location metadata - TWICE' do
@@ -440,6 +444,10 @@ describe LocationsController do
       sleep 1
 
       expect(Location.find(@location.id).description).to eq('COOL DESC')
+      expect(Location.find(@location.id).date_last_updated.strftime('%b-%d-%Y')).to eq(Time.now.strftime('%b-%d-%Y'))
+      expect(Location.find(@location.id).last_updated_by_user).to eq(@user)
+
+      expect(page).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')}")
     end
 
     it 'allows users to update a location description - TWICE' do

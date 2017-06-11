@@ -57,6 +57,7 @@
       }
 
       $('#metadata_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_update_metadata');
+      updateLocationUpdatedText(#{l.id}, '#{params[:region]}')
     });
 
     return false;
