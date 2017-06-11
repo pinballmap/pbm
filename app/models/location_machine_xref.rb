@@ -91,10 +91,13 @@ class LocationMachineXref < ActiveRecord::Base
       )
     end
 
-    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: ["#{location.name} (#{location.id})", "#{machine.name} (#{machine.id})", "#{location.region.name} (#{location.region.id})"].join("\n"), user_id: options[:user_id])
+    user = nil
+    user = User.find(options[:user_id]) if options[:user_id]
+
+    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: ["#{user.nil? ? 'Unknown' : user.username} (#{user.nil? ? 'Unknown' : user.id})", "#{location.name} (#{location.id})", "#{machine.name} (#{machine.id})", "#{location.region.name} (#{location.region.id})"].join("\n"), user_id: user.nil? ? nil : user.id)
 
     location.date_last_updated = Date.today
-    location.last_updated_by_user_id = options[:user_id]
+    location.last_updated_by_user_id = user.nil? ? nil : user.id
     location.save(validate: false)
     location
 

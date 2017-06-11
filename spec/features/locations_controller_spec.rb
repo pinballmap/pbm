@@ -105,7 +105,7 @@ describe LocationsController do
       expect(UserSubmission.count).to eq(2)
       submission = UserSubmission.second
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
-      expect(submission.submission).to eq("Cleo (1)\nBawb (1)\nportland (1)")
+      expect(submission.submission).to eq("#{@user.username} (#{@user.id})\nCleo (1)\nBawb (1)\nportland (1)")
       expect(submission.user_id).to eq(User.last.id)
     end
 
