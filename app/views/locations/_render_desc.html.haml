@@ -18,6 +18,7 @@
     var form = $(this);
     $.get(form.attr('action'), form.serialize(), function (data) {
       $('#desc_location_#{l.id}').load('/#{params[:region]}/locations/#{l.id}/render_desc');
+      updateLocationUpdatedText(#{l.id}, '#{params[:region]}')
     });
 
     return false;
