@@ -6,6 +6,10 @@ class SuggestedLocationsController < InheritedResources::Base
     sl = SuggestedLocation.find(params[:id])
     sl.convert_to_location(params[:user_email])
 
-    redirect_to sl.errors.any? ? "/admin/suggested_location/#{sl.id}" : rails_admin_path
+    if sl.errors.any?
+      redirect_to "/admin/suggested_location/#{sl.id}", flash: { error: sl.errors.full_messages.join(', ') }
+    else
+      redirect_to rails_admin_path
+    end
   end
 end
