@@ -4,6 +4,7 @@ class Region < ActiveRecord::Base
   has_many :users, (-> { order 'users.id' })
   has_many :events, (-> { order 'events.id' })
   has_many :operators
+  has_many :suggested_locations
   has_many :region_link_xrefs, (-> { order 'region_link_xrefs.id' })
   has_many :user_submissions
   has_many :location_machine_xrefs, through: :locations
@@ -174,6 +175,9 @@ Here is an overview of your pinball map region! Thanks for keeping your region u
 
 List of Empty Locations:
 #{machineless_locations.each.map { |ml| ml.name + " (#{ml.city}, #{ml.state})" }.sort.join("\n")}
+
+List of Suggested Locations:
+#{suggested_locations.each.map(&:name).sort.join("\n")}
 
 #{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::SUGGEST_LOCATION_TYPE }.count} Location(s) submitted to you this week
 #{locations.select { |l| !l.created_at.nil? && l.created_at.between?(start_of_week, end_of_week) }.count} Location(s) added by you this week
