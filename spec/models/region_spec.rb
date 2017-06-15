@@ -113,6 +113,9 @@ HERE
       FactoryGirl.create(:user_submission, region: @region, submission_type: 'contact_us')
       FactoryGirl.create(:user_submission, region: @region, submission_type: 'contact_us')
 
+      FactoryGirl.create(:suggested_location, region: @region, name: 'SL 1')
+      FactoryGirl.create(:suggested_location, region: @region, name: 'SL 2')
+
       expect(@region.generate_weekly_admin_email_body).to eq(<<HERE)
 Here is an overview of your pinball map region! Thanks for keeping your region updated! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@posteo.org
 
@@ -121,6 +124,10 @@ Portland Weekly Overview
 List of Empty Locations:
 Another Empty Location (Rochester, OR)
 Empty Location (Troy, OR)
+
+List of Suggested Locations:
+SL 1
+SL 2
 
 2 Location(s) submitted to you this week
 2 Location(s) added by you this week
