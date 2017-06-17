@@ -72,6 +72,11 @@ RailsAdmin.config do |config|
   config.model Location do
     list do
       field :name, :string
+      field :region, :belongs_to_association do
+        visible do
+          bindings[:view]._current_user.is_super_admin
+        end
+      end
       field :street, :string
       field :city, :string
       field :state, :string
@@ -82,6 +87,11 @@ RailsAdmin.config do |config|
     end
     show do
       field :name, :string
+      field :region, :belongs_to_association do
+        visible do
+          bindings[:view]._current_user.is_super_admin
+        end
+      end
       field :zone, :belongs_to_association
       field :location_type, :belongs_to_association
       field :operator, :belongs_to_association
