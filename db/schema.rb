@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170418033559) do
+ActiveRecord::Schema.define(version: 20170625051130) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,7 +192,7 @@ ActiveRecord::Schema.define(version: 20170418033559) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "full_name",                          limit: 255
-    t.string   "motd",                               limit: 255
+    t.string   "motd",                               limit: 255,                           default: "To help keep Pinball Map running, consider a donation! https://pinballmap.com/donate"
     t.decimal  "lat",                                            precision: 18, scale: 12
     t.decimal  "lon",                                            precision: 18, scale: 12
     t.integer  "n_search_no"
