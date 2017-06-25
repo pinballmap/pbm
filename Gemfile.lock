@@ -130,6 +130,7 @@ GEM
     exception_notification (4.2.1)
       actionmailer (>= 4.0, < 6)
       activesupport (>= 4.0, < 6)
+    excon (0.57.0)
     execjs (2.7.0)
     factory_girl (4.8.0)
       activesupport (>= 3.0.0)
@@ -156,6 +157,9 @@ GEM
       actionpack (>= 4.1, < 5.1)
       activesupport (>= 4.1, < 5.1)
     heapy (0.1.2)
+    heroku-api (0.4.2)
+      excon (~> 0.45)
+      multi_json (~> 1.8)
     html2haml (2.1.0)
       erubis (~> 2.7.0)
       haml (~> 4.0)
@@ -439,6 +443,7 @@ DEPENDENCIES
   geocoder
   haml-rails
   has_scope
+  heroku-api
   inherited_resources
   jbuilder
   jquery-rails
