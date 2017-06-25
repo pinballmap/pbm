@@ -343,4 +343,15 @@ HERE
       expect(@other_region.user_submissions.count).to eq(2)
     end
   end
+
+  describe '#motd' do
+    it 'should return a default message if field is null or ryan-defined values' do
+      expect(@region.motd).to eq('To help keep Pinball Map running, consider a donation! https://pinballmap.com/donate')
+
+      @region.motd = 'foo'
+      @region.save
+
+      expect(@region.reload.motd).to eq('foo')
+    end
+  end
 end
