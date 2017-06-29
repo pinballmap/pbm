@@ -135,6 +135,7 @@ Pbm::Application.routes.draw do
     get '/high_rollers' => 'pages#high_rollers'
     get '/suggest' => 'pages#suggest_new_location'
     get '/submitted_new_location' => 'pages#submitted_new_location'
+    get '/flier' => 'pages#flier'
 
     get 'all_region_data.json', to: 'regions#all_region_data', format: 'json'
 
@@ -168,6 +169,8 @@ Pbm::Application.routes.draw do
   get '/apps' => redirect('/app')
   get '/apps/support' => redirect('/app/support')
   get '/profile' => redirect('/inspire_profile')
+  get '/twincities' => redirect('/minnesota')
+  get '/maryland-north' => redirect('/baltimore')
 
   root to: 'pages#home'
 end
