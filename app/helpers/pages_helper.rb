@@ -20,6 +20,8 @@ module PagesHelper
       title = 'Upcoming Events - '
     elsif path == high_rollers_path(region.name)
       title = 'High Scores - '
+    elsif path == flier_path(region.name)
+      title = 'Help Promote the '
     end
 
     title += "#{region.full_name} Pinball Map"
@@ -69,6 +71,8 @@ module PagesHelper
              "Upcoming pinball events in #{region.full_name}. Tournaments, leagues, charities, launch parties, and more!"
            elsif path == high_rollers_path(region.name)
              "High scores for the #{region.full_name} Pinball Map! If you get a high score on a pinball machine, add it to the map!"
+           elsif path == flier_path(region.name)
+             "Print out this cool promotional flier for the #{region.full_name} Pinball Map! Spread the word!"
            else
              "Find local places to play pinball! The #{region.full_name} Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."
            end

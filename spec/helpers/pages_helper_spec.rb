@@ -29,6 +29,10 @@ describe PagesHelper, type: :helper do
         expect(helper.title_for_path(store_path)).to eq('Store - T-Shirts for Sale! - Pinball Map')
       end
 
+      it 'displays the correct flier title ' do
+        expect(helper.title_for_path(flier_path)).to eq('Help Promote the Pinball Map')
+      end
+
       it 'displays the profile title' do
         expect(helper.title_for_path(profile_user_path(11))).to eq('User Profile - Pinball Map')
       end
