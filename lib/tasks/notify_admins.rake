@@ -11,6 +11,8 @@ task notify_admins: :environment do
 
       email_to = r.users.map(&:email)
 
+      next if email_to.blank? || email_to.nil?
+
       Pony.mail(
         to: email_to,
         from: 'admin@pinballmap.com',
