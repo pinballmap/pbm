@@ -134,6 +134,12 @@ class PagesController < ApplicationController
     redirect_to about_path
   end
 
+  def flier
+    @locations = Location.where('region_id = ?', @region.id)
+    @location_count = @locations.count
+    @lmx_count = @region.machines_count
+  end
+
   def home
     if ENV['TWITTER_CONSUMER_KEY'] && ENV['TWITTER_CONSUMER_SECRET'] && ENV['TWITTER_OAUTH_TOKEN_SECRET'] && ENV['TWITTER_OAUTH_TOKEN']
       begin

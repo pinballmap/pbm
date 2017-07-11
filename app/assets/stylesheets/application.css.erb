@@ -2526,6 +2526,9 @@ div.score_list {
 
 /** Rails Admin **/
 
+input#name[type="text"] {
+  background: white;
+}
 .form-inputs input {
   width: 100%;
 }
@@ -2643,8 +2646,16 @@ border: 1px solid #D56C24;
 #promote_container img.promote_logo {
   width: 100%;
 }
-#promote_container p.promote_logo {
+#promote_container p.allregion {
+  font-size: 14px;
+}
+#promote_container p.promote_logo,
+#promote_container p.promote_link {
   margin-bottom: 0;
+  margin-top: 0;
+  padding: 0;
+}
+#promote_container p.promote_logo {
   line-height: 0;
 }
 #promote_container img.app_logo {
