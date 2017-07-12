@@ -4,7 +4,10 @@
     %p
       %span.darkb Welcome to the #{@region.full_name} Pinball Map!
       This map is best maintained with the help of YOU. Please "add" and "remove" machines to/from locations to keep things up to date.
-    %p To begin: Search!
+    %p
+      %span To begin: Search!
+      - if @location_count > 0
+        Or click here for a random location!
     %p
       We currently are tracking
       %span.dark #{@location_count} locations
@@ -16,6 +19,11 @@
     %p.to_begin
       %span.begin
         To begin: Search!
+        - if @location_count > 0
+          - random_location_id = @region.random_location_id
+          Or click
+          =link_to 'here', "/#{@region.name.downcase}/?by_location_id=#{random_location_id}", :id => random_location_id
+          for a random location!
     %p
       %span.darkb This map is best maintained with the help of YOU.
       Please

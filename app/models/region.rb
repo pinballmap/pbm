@@ -234,4 +234,9 @@ HERE
       us.save
     end
   end
+
+  def random_location_id
+    offset = rand(locations.count)
+    locations.offset(offset).first.id
+  end
 end
