@@ -187,6 +187,20 @@ describe PagesController do
       expect(page).to have_title('Pinball Map')
       expect(page).not_to have_title('App')
     end
+
+    it 'does not show a random location link if there are no locations in the region' do
+      toronto = FactoryGirl.create(:region, name: 'toronto', full_name: 'Toronto')
+
+      visit '/toronto'
+
+      expect(page).not_to have_content('Or click here for a random location!')
+
+      FactoryGirl.create(:location, region: toronto)
+
+      visit '/toronto'
+
+      expect(page).to have_content('Or click here for a random location!')
+    end
   end
 
   describe 'Pages', type: :feature, js: true do
