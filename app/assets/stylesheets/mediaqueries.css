@@ -241,3 +241,12 @@
     text-align: center;
   }
 }
+
+@media print {
+  .page_home, .flier_desc {
+    display: none !important;
+  }
+  .promote_subcontainer {
+      /*height: 50%;*/
+  }
+}

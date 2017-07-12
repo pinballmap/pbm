@@ -13,7 +13,7 @@
     %meta{:property => "og:url", :content => "https://#{request.host+request.fullpath}" }
     %meta{:property => "og:image", :content => image_path("pbm-og-image.png")}
     %meta{:content => "JFE_WxE-R1LZtdT0omEkIKOlZr7oq1fPBW9mr3cdyx4", :name => "google-site-verification"}/
-    = stylesheet_link_tag 'application', 'mediaqueries'
+    = stylesheet_link_tag 'application', 'mediaqueries', :media => ""
     - if mobile_device?
       = stylesheet_link_tag 'mobile-application'
     = javascript_include_tag 'application', 'jquery.form', 'jquery.remotipart', 'highslide.min', '//maps.google.com/maps/api/js?sensor=true'
@@ -42,7 +42,7 @@
 
         ga('create', 'UA-33321299-1', 'pinballmap.com');
         ga('send', 'pageview');
-        
+
         $(function () {
           hs.registerOverlay({
             html: '<div class="closebutton" onclick="return hs.close(this)" title="Close"></div>',

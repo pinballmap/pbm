@@ -26,6 +26,10 @@
       %span{:style => "font-style:italic;"} isn't on the map,
       %span
         =link_to 'submit a new location.', suggest_path
+    %p
+      Want to help spread the word about the #{@region.full_name} Pinball Map?
+      %span.darkb
+        = link_to 'Print out this flier!', flier_path
 
     %p
       We are tracking
