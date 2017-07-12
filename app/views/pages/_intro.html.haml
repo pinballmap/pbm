@@ -7,7 +7,10 @@
     %p
       %span To begin: Search!
       - if @location_count > 0
-        Or click here for a random location!
+        - random_location_id = @region.random_location_id
+        Or click
+        =link_to 'here', "/#{@region.name.downcase}/?by_location_id=#{random_location_id}", :id => random_location_id
+        for a random location!
     %p
       We currently are tracking
       %span.dark #{@location_count} locations
