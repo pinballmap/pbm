@@ -575,6 +575,18 @@ describe LocationMachineXrefsController do
       end
     end
 
+    it 'lets you search by machine name -- does not return all machines when you search for a machine that does not exist in a region' do
+      visit "/#{@region.name}"
+
+      page.find('div#other_search_options button#machine_section_link').click
+
+      fill_in('by_machine_name', with: 'Whatever')
+
+      page.find('input#machine_search_button').click
+
+      expect(page).to have_content('NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN. Use the dropdown or the autocompleting textbox if you want results.')
+    end
+
     it 'lets you search by machine name -- returns grouped machines' do
       FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, id: 32, name: 'Grouped Location', region: @region), machine: FactoryGirl.create(:machine, name: 'Test Machine Name SE', machine_group: @machine_group))
 
