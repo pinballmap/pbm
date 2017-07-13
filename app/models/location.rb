@@ -52,7 +52,7 @@ class Location < ActiveRecord::Base
   scope :by_machine_name, (lambda { |name|
     machine = Machine.find_by_name(name)
 
-    return nil if machine.nil?
+    return Location.none if machine.nil?
 
     machines = machine.machine_group_id ? Machine.where('machine_group_id = ?', machine.machine_group_id).map(&:all_machines_in_machine_group).flatten : [machine]
 
