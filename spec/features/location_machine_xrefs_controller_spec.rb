@@ -776,6 +776,20 @@ describe LocationMachineXrefsController do
       expect(actual_order[3]).to match(/Zelda/)
     end
 
+    it 'sorts searches by location name -- fuzzy search' do
+      FactoryGirl.create(:location, id: 48, region: @region, name: 'Zelda')
+      FactoryGirl.create(:location, id: 49, region: @region, name: 'Cleo')
+      FactoryGirl.create(:location, id: 50, region: @region, name: 'Bawb')
+
+      visit "/#{@region.name}"
+      fill_in('by_location_name', with: 'zel')
+      page.find('input#location_search_button').click
+
+      within('div#search_results') do
+        expect(page).to have_content('Zelda')
+      end
+    end
+
     it 'honor N or more machines' do
       zone = FactoryGirl.create(:zone, region: @region)
 
