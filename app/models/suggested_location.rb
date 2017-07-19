@@ -26,21 +26,29 @@ class SuggestedLocation < ActiveRecord::Base
       errors.add(:base, location.errors.first)
     else
       if machines
-        machines.split(/\)|\],\s*/).each do |machine_info|
-          machine_info.sub!(/^,/, '')
-          machine_info.sub!(/\[/, '(')
-          machine_info.sub!(/ -/, ',')
+        machines.sub!(/\[/, '(')
+        machines.sub!(/\]/, ')')
+        machines.sub!(/ - /, ', ')
+
+        machines.split(/([^,]*,[^,]*,)/).each do |machine_info|
+          next if machine_info.blank?
           machine_info.strip!
 
-          matches = machine_info.match(/(^.*)\((.*), (.*)/i)
+          matches = machine_info.match(/.*\((.*), (.*)\)/i)
 
           next if matches.nil?
 
-          name, manufacturer, year = matches.captures
+          manufacturer, year = matches.captures
+
+          machine_info.sub!(manufacturer, '')
+          machine_info.sub!(year, '')
+          machine_info.sub!(' (, ),', '')
+
+          name = machine_info
+
           name.strip!
           manufacturer.strip!
           year.strip!
-          year.delete!(')', '')
 
           machine = Machine.find_by(name: name, year: year, manufacturer: manufacturer)
 
