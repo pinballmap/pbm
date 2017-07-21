@@ -36,7 +36,7 @@ module PagesHelper
             elsif path == faq_path
               'FAQ - '
             elsif path == store_path
-              'Store - T-Shirts for Sale! - '
+              'Store - '
             elsif path == donate_path
               'Donate - '
             elsif path =~ /profile/
