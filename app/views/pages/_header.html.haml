@@ -18,7 +18,7 @@
           %li.first_header_link=link_to 'Home', root_path
           %li=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
           %li=link_to 'Blog', 'http://blog.pinballmap.com'
-          %li=link_to 'T-Shirts', store_path
+          %li=link_to 'Store', store_path
           %li=link_to 'App', app_path
           %li=link_to 'FAQ', faq_path
           - if !(@region)
@@ -89,7 +89,7 @@
           %hr/
         %li.first_header_link=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
         %li=link_to 'Blog', 'http://blog.pinballmap.com'
-        %li=link_to 'T-Shirts', store_path
+        %li=link_to 'Store', store_path
         %li=link_to 'App', app_path
         %li=link_to 'FAQ', faq_path
         - if !(@region)

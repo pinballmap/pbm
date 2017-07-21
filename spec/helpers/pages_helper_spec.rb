@@ -26,7 +26,7 @@ describe PagesHelper, type: :helper do
       end
 
       it 'displays the correct store title ' do
-        expect(helper.title_for_path(store_path)).to eq('Store - T-Shirts for Sale! - Pinball Map')
+        expect(helper.title_for_path(store_path)).to eq('Store - Pinball Map')
       end
 
       it 'displays the profile title' do
