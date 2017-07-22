@@ -130,6 +130,22 @@ describe LocationsController do
     before(:each) do
     end
 
+    it 'favors by_location_name when search by both by_location_id and by_location_name' do
+      FactoryGirl.create(:location, region: @region, name: 'Cleo')
+      FactoryGirl.create(:location, region: @region, name: 'Zelda')
+
+      visit '/portland'
+
+      fill_in('by_location_name', with: 'Zelda')
+      select('Cleo', from: 'by_location_id')
+
+      click_on 'Search'
+
+      within('div#search_results') do
+        expect(page).to have_content('Zelda')
+      end
+    end
+
     it 'displays a location not found message instead of the ocean' do
       visit '/portland/?by_location_id=-1'
 

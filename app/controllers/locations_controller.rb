@@ -8,6 +8,10 @@ class LocationsController < InheritedResources::Base
   end
 
   def index
+    if !params[:by_location_name].blank? && !params[:by_location_id].blank?
+      params.delete(:by_location_id)
+    end
+
     @locations = apply_scopes(Location).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs)
     @location_data = locations_javascript_data(@locations)
 
