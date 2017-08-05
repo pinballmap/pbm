@@ -1026,9 +1026,20 @@ li.address_full {
 }
 a.website {
   float: left;
-  width: 450px;
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  width: 80px;
+  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
   font-size: 15px;
+  text-transform: uppercase;
+}
+a.website:after {
+  content: "";
+  background: url(<%= asset_path 'open-in-new-black.png' %>) no-repeat center center;
+  float: right;
+  width: 12px;
+  height: 14px;
+  display: inline;
+  background-size: 12px 12px;
+  margin: 0 0 0 4px;
 }
 .machine_name {
   float: left;
@@ -1612,7 +1623,7 @@ input#initials {
   color: #666666;
   font-size: 16px;
   padding: 2px 0 6px 4px;
-  line-height: 16px;
+  line-height: 14px;
 }
 .operator a:hover {
   color: #F53240;
