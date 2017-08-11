@@ -139,7 +139,7 @@ class Region < ActiveRecord::Base
     return nil if submissions.nil? || submissions.empty?
 
     <<HERE
-Here is a list of all the comments that were placed in your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@posteo.org
+Here is a list of all the comments that were placed in your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
 
 #{full_name} Daily Comments
 
@@ -156,7 +156,7 @@ HERE
     return nil if submissions.nil? || submissions.empty?
 
     <<HERE
-Here is a list of all the machines that were removed from your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@posteo.org
+Here is a list of all the machines that were removed from your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
 
 #{full_name} Daily Machine Removals
 
@@ -169,7 +169,7 @@ HERE
     end_of_week = DateTime.now.end_of_day
 
     <<HERE
-Here is an overview of your pinball map region! Thanks for keeping your region updated! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@posteo.org
+Here is an overview of your pinball map region! Thanks for keeping your region updated! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@fastmail.com
 
 #{full_name} Weekly Overview
 

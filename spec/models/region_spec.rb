@@ -44,7 +44,7 @@ describe Region do
       FactoryGirl.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
       expect(@region.generate_daily_digest_comments_email_body).to eq(<<HERE)
-Here is a list of all the comments that were placed in your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@posteo.org
+Here is a list of all the comments that were placed in your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
 
 Portland Daily Comments
 
@@ -71,7 +71,7 @@ HERE
       FactoryGirl.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
       expect(@region.generate_daily_digest_removals_email_body).to eq(<<HERE)
-Here is a list of all the machines that were removed from your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@posteo.org
+Here is a list of all the machines that were removed from your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
 
 Portland Daily Machine Removals
 
@@ -117,7 +117,7 @@ HERE
       FactoryGirl.create(:suggested_location, region: @region, name: 'SL 2')
 
       expect(@region.generate_weekly_admin_email_body).to eq(<<HERE)
-Here is an overview of your pinball map region! Thanks for keeping your region updated! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@posteo.org
+Here is an overview of your pinball map region! Thanks for keeping your region updated! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@fastmail.com
 
 Portland Weekly Overview
 
