@@ -130,7 +130,7 @@ END
 
   def send_app_comment(params, region)
     Pony.mail(
-      to: 'pinballmap@posteo.org',
+      to: 'pinballmap@fastmail.com',
       bcc: User.all.select(&:is_super_admin).map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject('PBM - App feedback'),

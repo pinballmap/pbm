@@ -20,7 +20,7 @@ class Operator < ActiveRecord::Base
 
     return if machine_conditions_to_email.empty?
 
-    body = "Here's a list of comments made on your pinball machines that were posted today to #{region.full_name}. We're sending this in the hope that it will help you identify, and fix, problems. If you don't want to receive these messages, please contact pinballmap@posteo.org.\n"
+    body = "Here's a list of comments made on your pinball machines that were posted today to #{region.full_name}. We're sending this in the hope that it will help you identify, and fix, problems. If you don't want to receive these messages, please contact pinballmap@fastmail.com.\n"
 
     machine_conditions_to_email.sort.each do |mc|
       body += <<HERE
