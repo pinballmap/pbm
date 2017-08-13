@@ -583,6 +583,8 @@ RailsAdmin.config do |config|
       field :zip, :string
       field :phone, :string
       field :operator, :belongs_to_association
+      field :created_at, :datetime
+      field :updated_at, :datetime
     end
     edit do
       field :name, :string
@@ -628,6 +630,8 @@ RailsAdmin.config do |config|
       field :comments, :string
       field :user_inputted_address, :string
       field :machines, :string
+      field :created_at, :datetime
+      field :updated_at, :datetime
     end
   end
 end

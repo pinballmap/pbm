@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170625051130) do
+ActiveRecord::Schema.define(version: 20170813032145) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -204,21 +204,23 @@ ActiveRecord::Schema.define(version: 20170625051130) do
   end
 
   create_table "suggested_locations", force: :cascade do |t|
-    t.text    "name"
-    t.text    "street"
-    t.text    "city"
-    t.text    "state"
-    t.text    "zip"
-    t.text    "phone"
-    t.text    "website"
-    t.integer "location_type_id"
-    t.integer "operator_id"
-    t.integer "region_id"
-    t.text    "comments"
-    t.text    "machines"
-    t.text    "user_inputted_address"
-    t.decimal "lat",                   precision: 18, scale: 12
-    t.decimal "lon",                   precision: 18, scale: 12
+    t.text     "name"
+    t.text     "street"
+    t.text     "city"
+    t.text     "state"
+    t.text     "zip"
+    t.text     "phone"
+    t.text     "website"
+    t.integer  "location_type_id"
+    t.integer  "operator_id"
+    t.integer  "region_id"
+    t.text     "comments"
+    t.text     "machines"
+    t.text     "user_inputted_address"
+    t.decimal  "lat",                   precision: 18, scale: 12
+    t.decimal  "lon",                   precision: 18, scale: 12
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "user_submissions", force: :cascade do |t|
