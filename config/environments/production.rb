@@ -1,4 +1,4 @@
-Pbm::Applicaticn.configure do
+Pbm::Application.configure do
   config.force_ssl = true
 
   # The production environment is meant for finished, "live" apps.
