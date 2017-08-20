@@ -13,6 +13,8 @@ Geocoder::Configuration.use_https = false
 # language to use (for search queries and reverse geocoding):
 Geocoder::Configuration.language = :en
 
+Geocoder::Configuration.http_proxy = ENV['QUOTAGUARD_URL']
+
 # caching (see below for details)
 #Geocoder::Configuration.cache = Redis.new
 #Geocoder::Configuration.cache_prefix = "..."
