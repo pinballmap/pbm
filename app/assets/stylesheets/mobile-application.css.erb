@@ -334,6 +334,14 @@ div.pick_a_map {
   width: auto;
 }
 
+.home_intro p {
+  font-size: 18px;
+}
+
+.home_intro .darkb {
+  font-size: 20px;
+}
+
 .home_intro_container {
   float: none;
 }
@@ -1075,7 +1083,7 @@ p.notice {
   display: none;
 }
 
-.read_more_target {
+.home_intro p.read_more_target, .read_more_target {
   opacity: 0;
   max-height: 0;
   font-size: 0;
@@ -1084,7 +1092,7 @@ p.notice {
 
 .read_more_state:checked ~ .read_more_wrap .read_more_target {
   opacity: 1;
-  font-size: 16px;
+  font-size: inherit;
   max-height: 999em;
 }
 
@@ -1098,16 +1106,13 @@ p.notice {
 .read_more_state:checked ~ .read_more_trigger:before {
   content: 'Read less';
 }
-.read_more_state:checked ~ .twitter_box img {
-  float: left;
-}
 
 .read_more_trigger {
   cursor: pointer;
   display: block;
   padding: 0 .5em;
   color: #666;
-  font-size: .9em;
+  font-size: 18px;
   line-height: 2;
   border: 1px solid #ddd;
   border-radius: .25em;
