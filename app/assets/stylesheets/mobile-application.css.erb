@@ -1068,3 +1068,47 @@ p.notice {
   }
 
 }
+
+/* read more */
+
+.read_more_state {
+  display: none;
+}
+
+.read_more_target {
+  opacity: 0;
+  max-height: 0;
+  font-size: 0;
+  transition: .25s ease;
+}
+
+.read_more_state:checked ~ .read_more_wrap .read_more_target {
+  opacity: 1;
+  font-size: 16px;
+  max-height: 999em;
+}
+
+.read_more_state ~ .read_more_trigger:before {
+  content: 'Read more';
+  text-align: center;
+  margin: 0 auto;
+  display: block;
+}
+
+.read_more_state:checked ~ .read_more_trigger:before {
+  content: 'Read less';
+}
+.read_more_state:checked ~ .twitter_box img {
+  float: left;
+}
+
+.read_more_trigger {
+  cursor: pointer;
+  display: block;
+  padding: 0 .5em;
+  color: #666;
+  font-size: .9em;
+  line-height: 2;
+  border: 1px solid #ddd;
+  border-radius: .25em;
+}
