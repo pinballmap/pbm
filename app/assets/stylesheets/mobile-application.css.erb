@@ -119,7 +119,7 @@
 .closest_locations a, .geo_header_wrapper a {
   color: #303030;
   text-shadow: none;
-  text-decoration: none;
+  text-decoration: underline;
 }
 .location_actual_description {
   float: left;
@@ -332,6 +332,14 @@ div.pick_a_map {
 .home_intro {
   margin: 0 10px 10px 10px;
   width: auto;
+}
+
+.home_intro p {
+  font-size: 18px;
+}
+
+.home_intro .darkb {
+  font-size: 20px;
 }
 
 .home_intro_container {
@@ -1067,4 +1075,47 @@ p.notice {
     width: auto;
   }
 
+}
+
+/* read more */
+
+.read_more_state {
+  display: none;
+}
+
+.home_intro p.read_more_target, .read_more_target, .twitter_img img {
+  opacity: 0;
+  max-height: 0;
+  font-size: 0;
+  transition: .25s ease;
+}
+
+.read_more_state:checked ~ .read_more_wrap .read_more_target,
+.read_more_state:checked ~ .read_more_wrap .read_more_target img {
+  opacity: 1;
+  font-size: inherit;
+  max-height: 999em;
+  height: auto;
+}
+
+.read_more_state ~ .read_more_trigger:before {
+  content: 'Read more';
+  text-align: center;
+  margin: 0 auto;
+  display: block;
+}
+
+.read_more_state:checked ~ .read_more_trigger:before {
+  content: 'Read less';
+}
+
+.read_more_trigger {
+  cursor: pointer;
+  display: block;
+  padding: 0 .5em;
+  color: #666;
+  font-size: 18px;
+  line-height: 2;
+  border: 1px solid #ddd;
+  border-radius: .25em;
 }

@@ -1,34 +1,38 @@
 #welcome
-  %div.home_intro_container
-    %div.home_intro.dark{:style => 'left:0;'}
+  %div.home_intro_container.home_intro
+    - if mobile_device?
+      %input#home_read_more.read_more_state{:type => "checkbox"}/
+    %div.dark.read_more_wrap{:style => 'left:0;'}
       %span.darkb Welcome to PinballMap.com!
       %p
-        PinballMap.com is a crowdsourced pinball locator, showing all the public pinball machines in select regions of North America.
+        Pinball Map is a crowdsourced pinball locator, showing all the public pinball machines in select regions of North America.
       %p
-        Pick a region to find pinball machines to play near you! Help keep your map up to date by adding and removing machines to/from locations, and by submitting new locations that aren't already listed.
-      %p
+        Pick a region to find pinball machines to play near you!
+      %p.read_more_target
+        Help keep your map up to date by adding and removing machines to/from locations, and by submitting new locations that aren't already listed.
+      %p.read_more_target
         Each regional map is curated by a local administrator, often with the support of a league.
-      %p
+      %p.read_more_target
         We have a free
-        = link_to 'mobile app for iPhone/iPad and Android', app_path, :class => 'apps_link'
-      %p
+        = link_to 'mobile app for iPhone/iPad and Android.', app_path, :class => 'apps_link'
+      %p.read_more_target
         If you'd like to see your city on this site,
         =link_to 'contact us!', 'portland/about', :class => 'apps_link'
-      %p
-        = link_to 'Pinball Map Code', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
-        = link_to 'Pinball Map API', apipie_apipie_path, :class => 'apps_link'
-    %div.home_intro
-      %span.twitter_box
-        =link_to image_tag('sol-icon.jpeg', :alt => 'Pinball Map Twitter Icon'), 'https://twitter.com/pinballmapcom', :class => 'twitter_icon'
+        Contribute to the 
+        = link_to 'Pinball Map Code!', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
+        Use the
+        = link_to 'Pinball Map API!', apipie_apipie_path, :class => 'apps_link'
+      %p.read_more_target.twitter_img
+        =image_tag('sol-icon.jpeg', :alt => 'Pinball Map Twitter Icon')
+      %p.twitter_box.read_more_target
         Follow
         =link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
         on Twitter for updates from across all #{@all_regions.size} regional maps!
-        %br/
-        %br/
-        The five most recent updates:
-      %ul.twitter
+      %ul.twitter.read_more_target
         - @tweets.each do |t|
           %li= auto_link(t.text)
+    - if mobile_device?
+      %label.read_more_trigger{:for => "home_read_more"}
   #map_summaries.intro
     - if !mobile_device?
       #region_map
