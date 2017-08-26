@@ -1079,37 +1079,7 @@ p.notice {
 
 /* read more */
 
-.read_more_state {
-  display: none;
-}
-
-.home_intro p.read_more_target, .read_more_target, .twitter_img img {
-  opacity: 0;
-  max-height: 0;
-  font-size: 0;
-  transition: .25s ease;
-}
-
-.read_more_state:checked ~ .read_more_wrap .read_more_target,
-.read_more_state:checked ~ .read_more_wrap .read_more_target img {
-  opacity: 1;
-  font-size: inherit;
-  max-height: 999em;
-  height: auto;
-}
-
-.read_more_state ~ .read_more_trigger:before {
-  content: 'Read more';
-  text-align: center;
-  margin: 0 auto;
-  display: block;
-}
-
-.read_more_state:checked ~ .read_more_trigger:before {
-  content: 'Read less';
-}
-
-.read_more_trigger {
+.read_more:before, .read_less:before {
   cursor: pointer;
   display: block;
   padding: 0 .5em;
@@ -1118,4 +1088,14 @@ p.notice {
   line-height: 2;
   border: 1px solid #ddd;
   border-radius: .25em;
+  text-align: center;
+}
+.read_more:before {
+  content: "read more";
+}
+.read_less:before {
+  content: "read less";
+}
+.read_more_wrap {
+  display: none;
 }

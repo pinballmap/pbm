@@ -1,38 +1,38 @@
 #welcome
   %div.home_intro_container.home_intro
-    - if mobile_device?
-      %input#home_read_more.read_more_state{:type => "checkbox"}/
-    %div.dark.read_more_wrap{:style => 'left:0;'}
+    %div.dark{:style => 'left:0;'}
       %span.darkb Welcome to PinballMap.com!
       %p
         Pinball Map is a crowdsourced pinball locator, showing all the public pinball machines in select regions of North America.
       %p
         Pick a region to find pinball machines to play near you!
-      %p.read_more_target
-        Help keep your map up to date by adding and removing machines to/from locations, and by submitting new locations that aren't already listed.
-      %p.read_more_target
-        Each regional map is curated by a local administrator, often with the support of a league.
-      %p.read_more_target
-        We have a free
-        = link_to 'mobile app for iPhone/iPad and Android.', app_path, :class => 'apps_link'
-      %p.read_more_target
-        If you'd like to see your city on this site,
-        =link_to 'contact us!', 'portland/about', :class => 'apps_link'
-        Contribute to the 
-        = link_to 'Pinball Map Code!', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
-        Use the
-        = link_to 'Pinball Map API!', apipie_apipie_path, :class => 'apps_link'
-      %p.read_more_target.twitter_img
-        =image_tag('sol-icon.jpeg', :alt => 'Pinball Map Twitter Icon')
-      %p.twitter_box.read_more_target
-        Follow
-        =link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
-        on Twitter for updates from across all #{@all_regions.size} regional maps!
-      %ul.twitter.read_more_target
-        - @tweets.each do |t|
-          %li= auto_link(t.text)
+      %div.read_more_wrap
+        %p
+          Help keep your map up to date by adding and removing machines to/from locations, and by submitting new locations that aren't already listed.
+        %p
+          Each regional map is curated by a local administrator, often with the support of a league.
+        %p
+          We have a free
+          = link_to 'mobile app for iPhone/iPad and Android.', app_path, :class => 'apps_link'
+        %p
+          If you'd like to see your city on this site,
+          =link_to 'contact us!', 'portland/about', :class => 'apps_link'
+          Contribute to the 
+          = link_to 'Pinball Map Code!', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
+          Use the
+          = link_to 'Pinball Map API!', apipie_apipie_path, :class => 'apps_link'
+        %p.twitter_img
+          =image_tag('sol-icon.jpeg', :alt => 'Pinball Map Twitter Icon')
+        %p.twitter_box
+          Follow
+          =link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
+          on Twitter for updates from across all #{@all_regions.size} regional maps!
+        %ul.twitter
+          - @tweets.each do |t|
+            %li= auto_link(t.text)
     - if mobile_device?
-      %label.read_more_trigger{:for => "home_read_more"}
+      .read_more
+      .read_less
   #map_summaries.intro
     - if !mobile_device?
       #region_map
@@ -55,6 +55,18 @@
 
 :javascript
   $().ready(function(){
+    $(".read_less").css("display","none");
+    $(".read_more").css("display","block");
+    $(".read_more").click(function() {
+      $(".read_more").css("display","none");
+      $(".read_less,.read_more_wrap").css("display","block");
+    });
+    $(".read_less").click(function() {
+      $(".read_more_wrap,.read_less").css("display","none");
+      $(".read_more").css("display","block");
+    });
+  });
+  $().ready(function(){
     initializeRegionMap(
       [#{@region_data[0].join(', ')}],
       [#{@region_data[1].join(', ')}],
@@ -62,3 +74,4 @@
       [#{@region_data[3].join(', ')}]
     );
   });
+  
