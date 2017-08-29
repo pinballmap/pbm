@@ -863,6 +863,7 @@ span.or {
 #form {
   position: fixed;
   top: 52px;
+  margin-left: 0;
   width: 640px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -892,6 +893,7 @@ span.or {
   float: left;
   padding: 75px 10px 10px 10px;
   width: 640px;
+  background: #FFFFFF;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -908,9 +910,8 @@ span.or {
 .hide_search_link, .hide_button {
   display: none;
 }
-#mapFollow_wrapper, #search_link_wrapper {
+#mapFollow_wrapper, #search_link_wrapper, #min_lookup_wrapper {
   position: fixed;
-  left: 650px;
   top: 60px;
   width: 100px;
   border: 3px solid #D3ECFF;
@@ -923,19 +924,8 @@ span.or {
   font-size: 15px;
 }
 #search_link_wrapper {
-  top: 130px;
-}
-#mapFollow_wrapper input {
-  margin: 0;
-}
-.redo_gone {
-  height: 0 !important;
-  padding-bottom: 0 !important;
-  padding-top: 0 !important;
-  margin-bottom: 0 !important;
-}
-#search_link_wrapper {
   padding-top: 5px;
+  top: 170px;
 }
 #search_link_wrapper a {
   color: #303030;
@@ -944,6 +934,48 @@ span.or {
 }
 #search_link_wrapper a:hover  {
   text-decoration: underline;
+}
+#mapFollow_wrapper {
+  top: 100px;
+}
+#mapFollow_wrapper input {
+  margin: 0;
+}
+.toggle_min_lookup, .toggle_reg_lookup, .toggle_btn_reg, .toggle_map_btn {
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition:all 0.5s ease-in-out;
+  -o-transition:all 0.5s ease-in-out;
+  transition:all 0.5s ease-in-out;
+}
+.toggle_min_lookup {
+  margin-left: -580px !important;
+}
+.toggle_reg_lookup {
+  margin-left: 0px !important;
+}
+.toggle_btn_reg {
+  left: 650px !important;
+}
+.toggle_map_btn {
+  left: 60px !important;
+}
+.slide_left:before {
+  content: "<  more map";
+  width: 30px;
+  height: 20px;
+  position: relative;
+}
+.slide_right:before {
+  content: ">  less map";
+  width: 30px;
+  height: 20px;
+  position: relative;
+}
+.redo_gone {
+  height: 0 !important;
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 .location_link {
   font-size: 18px;
@@ -2233,18 +2265,15 @@ span.begin {
   box-sizing: border-box;
 }
 #map {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin-top: -12px;
   position: fixed;
-  bottom: 0;
-  top: 0;
-  margin-top: 52px;
-  left: 640px;
-  right: 0;
-  min-width: 296px;
-  height: auto;
 }
 #map_canvas {
+  margin-right: -640px;
   height: 100% !important;
-  width: 100% !important;
 }
 #intro {
   padding: 5px 20px;
@@ -2535,6 +2564,53 @@ div.score_list {
 }
 #region_map .gm_region_name a:hover {
   color: #58266F;
+}
+/* // Maps logo and controls
+// https://www.google.com/permissions/geoguidelines/attr-guide.html
+// https://web.archive.org/web/20160505030052/http://www.google.com/permissions/geoguidelines/attr-guide.html
+// The automatically generated Google logo and data provider attribution may only be removed or obstructed if reintroduced in a visible form elsewhere within the Content (e.g. photo caption below a Google Earth still). In other words, your text must be as visible as it would have been if you had used the default text that we provide.
+// .gm-style:first-child is standard map view
+//  1 : map
+//  2 : google logo
+//  3 : map-data window
+//  4 : map data
+//  5 : map data (noscreen)
+//  6 : terms of use
+//  7 : full screen
+//  8 : report map error
+//  9 : map controls
+// 10 : map type controls */
+
+.gm-style div:first-child,
+.gm-style div:nth-child(3),
+.gm-style div:nth-child(9),
+.gm-style div:nth-child(10) {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.gm-style div:nth-child(7),
+.gm-style  div:nth-child(9) {
+  margin-right: 650px !important;
+}
+.gm-style  div:nth-child(9) {
+  margin-right: 650px !important;
+  margin-bottom: 55px !important;
+}
+.gm-style div:nth-child(10) {
+  margin-left: 650px !important;
+  margin-bottom: 50px !important;
+}
+ .gm-style div:nth-child(4) {
+  right: 795px !important;
+  bottom: 53px !important;
+} 
+.gm-style div:nth-child(6) {
+  right: 730px !important;
+  bottom: 53px !important;
+}
+.gm-style div:nth-child(8) {
+  right: 640px !important;
+  bottom: 53px !important;
 }
 
 /** Rails Admin **/

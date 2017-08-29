@@ -3,7 +3,7 @@
 
     clearMarkers()
     clearInfoWindows();
-    $("#mapFollow_wrapper,#search_link_wrappers").removeClass("hide_button");
+    $("#mapFollow_wrapper,#search_link_wrapper,#min_lookup_wrapper").removeClass("hide_button");
 
     var hrefOrig = 'https://#{request.host_with_port}/#{@region.name.downcase}?';
     var def_value = window.location.href;

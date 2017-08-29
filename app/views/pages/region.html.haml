@@ -1,9 +1,10 @@
 #region_page_body
-  #map
-    = render :partial => 'locations/map'
-  #form
+  #form.toggle_reg_lookup
     = render :partial => 'locations/form'
-  #lookup
+  - if mobile_device?
+    #map
+      = render :partial => 'locations/map'
+  #lookup.toggle_reg_lookup
     #locations
       = render :partial => 'pages/intro'
       - if !@region.motd.blank?
@@ -11,3 +12,6 @@
           %span.darkb Message of the Day:
           = @region.html_motd
       = yield :presearch_sidebar
+  - if !mobile_device?
+    #map
+      = render :partial => 'locations/map'
