@@ -1,6 +1,7 @@
 #map_canvas {
   height: 100% !important;
   overflow: hidden !important;
+  margin-right: 0;
 }
 #page {
   height: 30px;
@@ -303,7 +304,7 @@ div.pick_a_map {
   position: relative;
   width: auto;
   min-width: 300px;
-  height: 300px;
+  height: 360px;
   left: 0;
   margin: 0 10px 10px;
   top: 0;
@@ -397,7 +398,7 @@ div.pick_a_map {
   top: 0;
   right: 0;
   position: relative;
-  margin: 10px;
+  margin: 10px !important;
   z-index: 0;
   padding-bottom: 5px;
   padding-top: 0;
@@ -511,6 +512,9 @@ span.or {
   border-bottom-left-radius: 0;
   -webkit-border-bottom-left-radius: 0;
   -moz-border-bottom-left-radius: 0;
+}
+.toggle_btn_reg {
+  left: 0 !important;
 }
 
 .location_link {
@@ -1098,4 +1102,39 @@ p.notice {
 }
 .read_more_wrap {
   display: none;
+}
+
+/* map api */
+
+.gm-style div:first-child,
+.gm-style div:nth-child(3),
+.gm-style div:nth-child(9),
+.gm-style div:nth-child(10) {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.gm-style div:nth-child(7),
+.gm-style  div:nth-child(9) {
+  margin-right: 10px !important;
+}
+.gm-style  div:nth-child(9) {
+  margin-right: 0 !important;
+  margin-bottom: 0 !important;
+}
+.gm-style div:nth-child(10) {
+  margin-left: 10px !important;
+  margin-bottom: 30px !important;
+
+}
+ .gm-style div:nth-child(4) {
+  right: 0 !important;
+  bottom: 0 !important;
+} 
+.gm-style div:nth-child(6) {
+  right: 0 !important;
+  bottom: 0 !important;
+}
+.gm-style div:nth-child(8) {
+  right: 28px !important;
+  bottom: 107px !important;
 }
