@@ -375,7 +375,6 @@ function showLocations(ids, lats, lons, contents) {
     } else {
       map = new google.maps.Map(document.getElementById("map_canvas"), {
         mapTypeControl: true,
-        gestureHandling: 'greedy',
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
             position: google.maps.ControlPosition.LEFT_BOTTOM,
@@ -613,7 +612,10 @@ function initializeRegionMap(ids, lats, lons, contents) {
     infoWindows = new Array();
 
     var bounds = new google.maps.LatLngBounds();
-    var regionMap = new google.maps.Map(document.getElementById("region_map"), { mapTypeId: google.maps.MapTypeId.ROADMAP });
+    var regionMap = new google.maps.Map(document.getElementById("region_map"), { 
+      gestureHandling: 'greedy',
+      mapTypeId: google.maps.MapTypeId.ROADMAP 
+    });
 
     for (i in ids) {
       var latlng = new google.maps.LatLng(lats[i], lons[i]);
