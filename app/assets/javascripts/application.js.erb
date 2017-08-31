@@ -377,7 +377,7 @@ function showLocations(ids, lats, lons, contents) {
         mapTypeControl: true,
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-            position: google.maps.ControlPosition.LEFT_BOTTOM,
+            position: google.maps.ControlPosition.TOP_CENTER,
             mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
                         'styled_map']
             }
@@ -498,6 +498,7 @@ function attachMarkerClick(mapForMarker, marker, infoWindow) {
     mapForMarker.panTo(marker.getPosition());
     infoWindow.open(mapForMarker, marker);
   });
+  google.maps.event.trigger(map, 'resize'); 
 }
 
 function loadingHTML() {
