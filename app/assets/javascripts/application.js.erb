@@ -365,7 +365,6 @@ function showLocations(ids, lats, lons, contents) {
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
       map = new google.maps.Map(document.getElementById("map_canvas"), {
         mapTypeControl: true,
-        gestureHandling: 'greedy',
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
             mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
@@ -375,6 +374,7 @@ function showLocations(ids, lats, lons, contents) {
     } else {
       map = new google.maps.Map(document.getElementById("map_canvas"), {
         mapTypeControl: true,
+        gestureHandling: 'greedy',
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
             position: google.maps.ControlPosition.TOP_CENTER,
