@@ -365,7 +365,6 @@ function showLocations(ids, lats, lons, contents) {
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
       map = new google.maps.Map(document.getElementById("map_canvas"), {
         mapTypeControl: true,
-        gestureHandling: 'greedy',
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
             mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
@@ -378,7 +377,7 @@ function showLocations(ids, lats, lons, contents) {
         gestureHandling: 'greedy',
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-            position: google.maps.ControlPosition.LEFT_BOTTOM,
+            position: google.maps.ControlPosition.TOP_CENTER,
             mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
                         'styled_map']
             }
@@ -499,6 +498,7 @@ function attachMarkerClick(mapForMarker, marker, infoWindow) {
     mapForMarker.panTo(marker.getPosition());
     infoWindow.open(mapForMarker, marker);
   });
+  google.maps.event.trigger(map, 'resize'); 
 }
 
 function loadingHTML() {
@@ -613,7 +613,10 @@ function initializeRegionMap(ids, lats, lons, contents) {
     infoWindows = new Array();
 
     var bounds = new google.maps.LatLngBounds();
-    var regionMap = new google.maps.Map(document.getElementById("region_map"), { mapTypeId: google.maps.MapTypeId.ROADMAP });
+    var regionMap = new google.maps.Map(document.getElementById("region_map"), { 
+      gestureHandling: 'greedy',
+      mapTypeId: google.maps.MapTypeId.ROADMAP 
+    });
 
     for (i in ids) {
       var latlng = new google.maps.LatLng(lats[i], lons[i]);
