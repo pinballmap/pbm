@@ -498,7 +498,6 @@ function attachMarkerClick(mapForMarker, marker, infoWindow) {
     mapForMarker.panTo(marker.getPosition());
     infoWindow.open(mapForMarker, marker);
   });
-  google.maps.event.trigger(map, 'resize'); 
 }
 
 function loadingHTML() {
@@ -613,10 +612,7 @@ function initializeRegionMap(ids, lats, lons, contents) {
     infoWindows = new Array();
 
     var bounds = new google.maps.LatLngBounds();
-    var regionMap = new google.maps.Map(document.getElementById("region_map"), { 
-      gestureHandling: 'greedy',
-      mapTypeId: google.maps.MapTypeId.ROADMAP 
-    });
+    var regionMap = new google.maps.Map(document.getElementById("region_map"), { styles: homeMap });
 
     for (i in ids) {
       var latlng = new google.maps.LatLng(lats[i], lons[i]);
