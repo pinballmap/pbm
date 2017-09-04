@@ -55,8 +55,10 @@
                   = render :partial => 'locations/render_update_metadata', :locals => {:l => l}
                 %div[l, :desc]
                   = render :partial => 'locations/render_desc', :locals => {:l => l}
-                %div.location_thumbs
+                %div.location_thumbs[l, :thumbs]
                   = render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
+                %div.more_pictures[l, :more]
+                %div.less_pictures[l, :less]
                 %div.location_confirm
                   = render :partial => 'locations/render_confirm', :locals => {:l => l}
                 %div.location_link
@@ -69,6 +71,26 @@
                 = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
                 = render :partial => 'locations/add_machine', :locals => {:location => l}
               = render :partial => 'locations/show_machines', :locals => {:location => l}
+          :javascript
+            $(function () {
+              if ($("#thumbs_location_#{l.id} img").length > 0) {
+                $("#location_detail_location_#{l.id} .more_pictures").css("display","block");
+                $("#location_detail_location_#{l.id}.less_pictures").css("display","none");
+              } else {
+                $("#location_detail_location_#{l.id} .more_pictures,#location_detail_location_#{l.id} .less_pictures").css("display","none");
+              }
+              $("#location_detail_location_#{l.id} .more_pictures").click(function() {
+                $("#location_detail_location_#{l.id} .location_thumbs").addClass("toggle_picture_height_off",500);
+                $("#location_detail_location_#{l.id} .more_pictures").css("display","none");
+                $("#location_detail_location_#{l.id} .less_pictures").css("display","block");
+              });
+              $("#location_detail_location_#{l.id} .less_pictures").click(function() {
+                $("#location_detail_location_#{l.id} .location_thumbs").removeClass("toggle_picture_height_off",500);
+                $("#location_detail_location_#{l.id} .more_pictures").css("display","block");
+                $("#location_detail_location_#{l.id} .less_pictures").css("display","none");
+              });
+            });
+
         - l = nil
 
     - if (@locations.size == 1)

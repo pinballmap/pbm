@@ -13,6 +13,10 @@
     #lookup, #location_maker ul, .score_result .sub_nav_item {
       width: 470px;
     }
+    .location_thumbs a {
+      width: 180px;
+      height: 180px;
+    }
     .show_location_detail_location {
       width: 450px;
     }
