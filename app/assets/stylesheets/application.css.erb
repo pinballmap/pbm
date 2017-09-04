@@ -1907,11 +1907,31 @@ div.comment_image .comment_image:active {
 }
 .location_thumbs {
   margin: 5px 6px;
+  max-height: 30px;
+  overflow: hidden;
+  border: 1px solid red;
 }
 .location_thumbs a {
   margin: 0 5px 5px;
   display: inline-block;
   border: 2px solid #EFEFEF;
+}
+/* .more {
+  height: 100%;
+} */
+.morelink:before {
+  content: "see more";
+  font-size: 16px;
+  color: red;
+  height: 20px;
+  width: 100px;
+}
+.lesslink:before {
+  content: "see less";
+  font-size: 16px;
+  color: red;
+  height: 20px;
+  width: 100px;
 }
 .search_option_selector a {
   color: #000;
@@ -2581,30 +2601,30 @@ div.score_list {
 //  9 : map controls
 // 10 : map type controls */
 
-.gm-style div:first-child,
-.gm-style div:nth-child(3),
-.gm-style div:nth-child(9),
-.gm-style div:nth-child(10) {
+#region_page_body .gm-style div:first-child,
+#region_page_body .gm-style div:nth-child(3),
+#region_page_body .gm-style div:nth-child(9),
+#region_page_body .gm-style div:nth-child(10) {
   margin-left: 0 !important;
   margin-right: 0 !important;
 } 
-.gm-style div:nth-child(7),
-.gm-style  div:nth-child(9) {
+#region_page_body .gm-style div:nth-child(7),
+#region_page_body .gm-style  div:nth-child(9) {
   margin-right: 650px !important;
 } 
-.gm-style  div:nth-child(9) {
+#region_page_body .gm-style  div:nth-child(9) {
   margin-right: 650px !important;
   margin-bottom: 55px !important;
 }
-.gm-style div:nth-child(4) {
+#region_page_body .gm-style div:nth-child(4) {
   right: 795px !important;
   bottom: 53px !important;
 }  
-.gm-style div:nth-child(6) {
+#region_page_body .gm-style div:nth-child(6) {
   right: 730px !important;
   bottom: 53px !important;
 } 
-.gm-style div:nth-child(8) {
+#region_page_body .gm-style div:nth-child(8) {
   right: 640px !important;
   bottom: 53px !important;
 } 
