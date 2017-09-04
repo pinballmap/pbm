@@ -1919,6 +1919,12 @@ div.comment_image .comment_image:active {
   height: 200px;
   overflow: hidden;
 }
+.location_thumbs a img {
+  opacity: .7;
+}
+.location_thumbs a img:hover {
+  opacity: 1;
+}
 .toggle_picture_height_off {
   max-height: 100% !important;
 }
@@ -1937,9 +1943,12 @@ div.comment_image .comment_image:active {
   text-align: center;
   position: relative;
 }
+.more_pictures:hover,.less_pictures:hover {
+  background: #dadada;
+}
 .more_pictures:before {
   content: "see more of the pictures";
-  box-shadow: 0 -10px 9px -5px #999;
+  box-shadow: 0 -10px 9px -5px #BBBBBB;
 }
 .less_pictures:before {
   content: "see less of the pictures";
