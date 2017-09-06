@@ -140,6 +140,9 @@ HERE
 
   describe 'submitted_new_location' do
     it 'should send an email' do
+      FactoryGirl.create(:location_type, name: 'type')
+      FactoryGirl.create(:operator, name: 'operator')
+
       logout
 
       body = <<HERE
@@ -177,6 +180,9 @@ HERE
     end
 
     it 'should send an email - includes user info if available' do
+      FactoryGirl.create(:location_type, name: 'type')
+      FactoryGirl.create(:operator, name: 'operator')
+
       login(FactoryGirl.create(:user, username: 'ssw', email: 'yeah@ok.com'))
 
       body = <<HERE

@@ -46,6 +46,9 @@ class ApplicationController < ActionController::Base
   def send_new_location_notification(params, region, user = nil)
     user_info = user ? " by #{user.username} (#{user.email})" : ''
 
+    location_type = params['location_type'] =~ /^[0-9]+$/ ? LocationType.find(params['location_type']) : LocationType.find_by_name(params['location_type'])
+    operator = params['location_operator'] =~ /^[0-9]+$/ ? Operator.find(params['location_operator']) : Operator.find_by_name(params['location_operator'])
+
     body = <<END
 (A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into #{request.protocol}#{request.host_with_port}#{rails_admin_path}. Thanks!)\n
 Location Name: #{params['location_name']}\n
@@ -55,8 +58,8 @@ State: #{params['location_state']}\n
 Zip: #{params['location_zip']}\n
 Phone: #{params['location_phone']}\n
 Website: #{params['location_website']}\n
-Type: #{params['location_type']}\n
-Operator: #{params['location_operator']}\n
+Type: #{location_type ? location_type.name : ''}\n
+Operator: #{operator ? operator.name : ''}\n
 Comments: #{params['location_comments']}\n
 Machines: #{params['location_machines']}\n
 (entered from #{request.remote_ip} via #{request.user_agent}#{user_info})\n
@@ -70,9 +73,6 @@ END
     )
 
     UserSubmission.create(region_id: region.id, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE, submission: body, user_id: user ? user.id : nil)
-
-    location_type = LocationType.find_by_name(params['location_type'])
-    operator = Operator.find_by_name(params['location_operator'])
 
     user_inputted_address = [params['location_street'], params['location_city'], params['location_state'], params['location_zip']].join(', ')
 

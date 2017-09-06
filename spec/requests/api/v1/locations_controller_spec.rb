@@ -46,6 +46,9 @@ describe Api::V1::LocationsController, type: :request do
     end
 
     it 'emails admins on new location submission' do
+      FactoryGirl.create(:location_type, name: 'type')
+      FactoryGirl.create(:operator, name: 'operator')
+
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: ['foo@bar.com'],
@@ -83,6 +86,49 @@ HERE
 
       expect(response).to be_success
       expect(UserSubmission.first.user_id).to eq(111)
+    end
+
+    it 'does not bomb out when operator and type are blank' do
+      post '/api/v1/locations/suggest.json', { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: nil, location_operator: '', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+
+      expect(response).to be_success
+      expect(SuggestedLocation.first.location_type).to eq(nil)
+      expect(SuggestedLocation.first.operator).to eq(nil)
+    end
+
+    it 'lets you enter by operator_id and location_type_id' do
+      lt = FactoryGirl.create(:location_type, name: 'cool type')
+      o = FactoryGirl.create(:operator, name: 'cool operator')
+
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          to: ['foo@bar.com'],
+          bcc: ['super_admin@bar.com'],
+          from: 'admin@pinballmap.com',
+          subject: 'PBM - New location suggested for the portland pinball map',
+          body: <<HERE
+(A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into http://www.example.com/admin. Thanks!)\n
+Location Name: name\n
+Street: street\n
+City: city\n
+State: state\n
+Zip: zip\n
+Phone: phone\n
+Website: website\n
+Type: cool type\n
+Operator: cool operator\n
+Comments: comments\n
+Machines: machines\n
+(entered from 127.0.0.1 via cleOS by cibw (foo@bar.com))\n
+HERE
+        )
+      end
+
+      post '/api/v1/locations/suggest.json', { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: lt.id, location_operator: o.id, location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+      expect(response).to be_success
+
+      expect(SuggestedLocation.first.location_type).to eq(lt)
+      expect(SuggestedLocation.first.operator).to eq(o)
     end
   end
 
