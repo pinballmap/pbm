@@ -40,9 +40,9 @@ class SuggestedLocation < ActiveRecord::Base
 
           manufacturer, year = matches.captures
 
-          machine_info.sub!(manufacturer, '')
-          machine_info.sub!(year, '')
-          machine_info.sub!(' (, ),', '')
+          machine_info.slice!(machine_info.rindex(manufacturer), manufacturer.size)
+	  machine_info.slice!(machine_info.rindex(year), year.size)
+	  machine_info.sub!(' (, ),', '')
 
           name = machine_info
 
