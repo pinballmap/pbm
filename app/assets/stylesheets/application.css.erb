@@ -15,6 +15,10 @@ button::-moz-focus-inner {
   padding: 0 0 2px 0 !important;
   border: 0 none !important;
 }
+html {
+  position: relative;
+  min-height: 100%;
+}
 body {
   margin: 0 auto;
   padding: 0px;
@@ -321,7 +325,7 @@ p.notice {
   border: 5px solid #EFEFEF;
   width: 300px;
   line-height: 120%;
-  margin: 0 10px 10px 10px;
+  margin: 10px;
   font-size: 18px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -385,7 +389,7 @@ p.notice {
   margin: 20px auto;
 }
 #page {
-  height: 64px;
+  height: 50px;
 }
 #header.header_home {
   min-width: 755px;
@@ -716,6 +720,53 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
 
 /** END Header **/
 
+/** Footer **/
+
+#footer {
+  z-index: 60;
+  position: absolute;
+  bottom: 0;
+  margin: 0 auto 0;
+  width: 100%;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  background: #d3ecff;
+}
+#footer.footer_region {
+  position: fixed;
+}
+#footer a {
+  text-decoration: none;
+}
+.footer_github:before {
+  content: "";
+  background: url(<%= asset_path 'GitHub-Mark-32px.png' %>) no-repeat center center;
+  width: 18px;
+  height: 12px;
+  display: inline-block;
+  background-size: 12px 12px;
+  margin-left: 10px;
+}
+.footer_donate:before {
+  content: "";
+  background: url(<%= asset_path 'heart.png' %>) no-repeat center center;
+  width: 18px;
+  height: 12px;
+  display: inline-block;
+  background-size: 14px 12px;
+}
+.footer_donate:hover:before {
+  content: "";
+  background: url(<%= asset_path 'heart_over.png' %>) no-repeat center center;
+  width: 18px;
+  height: 12px;
+  display: inline-block;
+  background-size: 14px 12px;
+}
+
+/** END Footer **/
+
 /** Lookup form **/
 
 #operator_section_link,
@@ -887,11 +938,12 @@ span.or {
 }
 #lookup_map, #container {
   width: 100%;
+  min-height: 100%;
 }
 #lookup {
   display: inline;
   float: left;
-  padding: 75px 10px 10px 10px;
+  padding: 85px 10px 10px 10px;
   width: 640px;
   background: #FFFFFF;
   box-sizing: border-box;
@@ -2020,7 +2072,7 @@ div.comment_image .comment_image:active {
   width: 700px;
   float: none;
   display: block;
-  margin: 0 auto;
+  margin: 15px auto 0;
 }
 .left_column.full_width {
   padding: 1px 10px;
@@ -2029,7 +2081,7 @@ div.comment_image .comment_image:active {
   text-align:center;
   float: left;
   line-height: 14px;
-  margin-top: 10px;
+  margin-top: 15px;
   width: 300px;
 }
 .left_column.secondary img {
@@ -2043,7 +2095,7 @@ div.comment_image .comment_image:active {
 }
 .right_column_outer {
   float: left;
-  margin: 10px 0 0 40px;
+  margin: 15px 0 0 40px;
   width: 399px;
 }
 .right_column.secondary img {
@@ -2084,7 +2136,7 @@ div.comment_image .comment_image:active {
 }
 .event_column {
   min-height: 150px;
-  margin-top: -8px;
+  margin-top: -3px;
   height: 100%;
 }
 .event_info {
@@ -2108,7 +2160,7 @@ div.comment_image .comment_image:active {
   height: 100%;
   padding: 0 10px;
   width: 375px;
-  margin-top: 10px;
+  margin-top: 15px;
   float: left;
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
 }
@@ -2125,7 +2177,7 @@ div.comment_image .comment_image:active {
 }
 .left_column.suggest, .left_column.high {
   width: 620px;
-  margin: 10px auto 10px;
+  margin: 15px auto 10px;
   display:                 flex;
   display:                 -webkit-flex; /* Safari 8 */
   flex-wrap:               wrap;
@@ -2139,7 +2191,7 @@ div.comment_image .comment_image:active {
 }
 .left_column_outer {
   float: left;
-  margin-top: 10px;
+  margin-top: 15px;
   margin-bottom: 30px;
   width: 475px;
 }
@@ -2298,7 +2350,7 @@ span.begin {
   width: 530px;
   height: 350px;
   float: left;
-  margin: 0 10px 10px 0;
+  margin: 10px 10px 10px 0;
   border: 5px solid #d3ecff;
   box-shadow: 1px 2px 7px rgba(90, 100, 117, 0.3);
   -webkit-box-sizing: border-box;
@@ -2629,25 +2681,28 @@ div.score_list {
   margin-left: 0 !important;
   margin-right: 0 !important;
 } 
-#region_page_body .gm-style div:nth-child(7),
-#region_page_body .gm-style  div:nth-child(9) {
+#region_page_body .gm-style div:nth-child(7) {
   margin-right: 650px !important;
+  margin-top: 20px !important;
 } 
+#region_page_body .gm-style  div:nth-child(10) {
+  margin-top: 20px !important;
+}
 #region_page_body .gm-style  div:nth-child(9) {
   margin-right: 650px !important;
-  margin-bottom: 55px !important;
+  margin-bottom: 61px !important;
 }
 #region_page_body .gm-style div:nth-child(4) {
   right: 795px !important;
-  bottom: 53px !important;
+  bottom: 59px !important;
 }  
 #region_page_body .gm-style div:nth-child(6) {
   right: 730px !important;
-  bottom: 53px !important;
+  bottom: 59px !important;
 } 
 #region_page_body .gm-style div:nth-child(8) {
   right: 640px !important;
-  bottom: 53px !important;
+  bottom: 59px !important;
 } 
 
 /** Rails Admin **/
