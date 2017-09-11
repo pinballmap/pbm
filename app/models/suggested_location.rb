@@ -26,9 +26,9 @@ class SuggestedLocation < ActiveRecord::Base
       errors.add(:base, location.errors.first)
     else
       if machines
-        machines.sub!(/\[/, '(')
-        machines.sub!(/\]/, ')')
-        machines.sub!(/ - /, ', ')
+        machines.gsub!(/\[/, '(')
+        machines.gsub!(/\]/, ')')
+        machines.gsub!(/ - /, ', ')
 
         machines.split(/([^,]*,[^,]*,)/).each do |machine_info|
           next if machine_info.blank?

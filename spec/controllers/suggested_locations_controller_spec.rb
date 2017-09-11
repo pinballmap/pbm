@@ -8,7 +8,7 @@ describe SuggestedLocationsController, type: :controller do
     @lt = FactoryGirl.create(:location_type, name: 'lt')
     @o = FactoryGirl.create(:operator, name: 'o')
 
-    @sl = FactoryGirl.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', phone: '555-555-5555', lat: 11.11, lon: 22.22, website: 'http://www.cool.com', region: @r, location_type: @lt, operator: @o, machines: 'The Dark Knight (Stern, 2008), Star Trek (Pro) (Stern, 2013), Challenger [Gottlieb - 1971], The Bally Game Show (Bally, 1990), this will not match')
+    @sl = FactoryGirl.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', phone: '555-555-5555', lat: 11.11, lon: 22.22, website: 'http://www.cool.com', region: @r, location_type: @lt, operator: @o, machines: 'The Dark Knight (Stern, 2008), Star Trek (Pro) [Stern - 2013], Challenger [Gottlieb - 1971], The Bally Game Show (Bally, 1990), this will not match')
   end
 
   describe '#convert_to_location' do
