@@ -15,7 +15,7 @@ module PagesHelper
     if path == suggest_path(region.name)
       title = 'Suggest a New Location to the '
     elsif path == about_path(region.name)
-      title = 'About the '
+      title = 'About | Contact | Links - '
     elsif path == events_path(region.name)
       title = 'Upcoming Events - '
     elsif path == high_rollers_path(region.name)
