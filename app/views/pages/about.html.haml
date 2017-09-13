@@ -2,9 +2,13 @@
   .left_column_outer
     .left_column_about
       %p.darkb
-        Contact the
-        = @region.full_name
-        regional administrator
+        Contact
+        - if (@region.name == 'portland')
+          the Pinball Map dudes
+        - else 
+          the
+          = @region.full_name
+          Pinball Map administrator
       #contact_maker
         = form_tag contact_sent_path, :method => 'get' do
           %ul
@@ -36,7 +40,7 @@
         = link_to 'pinballmap.com', root_path
         was developed by Scott and Ryan. If you live in a region with pinball and would like to see it added to this site, AND you would like to serve as the regional administrator of the data, please
         - if (@region.name == 'portland')
-          contact us via the form below.
+          contact us via the form above.
         - else
           = link_to 'contact us via the Portland region page.', about_path('portland')
         For more details about the criteria we use for adding regions,
