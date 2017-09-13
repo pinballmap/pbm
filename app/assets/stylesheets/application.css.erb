@@ -755,10 +755,27 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
   height: 12px;
   display: inline-block;
   background-size: 14px 12px;
+  margin-left: 10px;
 }
 .footer_donate:hover:before {
   content: "";
   background: url(<%= asset_path 'heart_over.png' %>) no-repeat center center;
+  width: 18px;
+  height: 12px;
+  display: inline-block;
+  background-size: 14px 12px;
+}
+.footer_contact:before {
+  content: "";
+  background: url(<%= asset_path 'contact.png' %>) no-repeat center center;
+  width: 18px;
+  height: 12px;
+  display: inline-block;
+  background-size: 14px 12px;
+}
+.footer_contact:hover:before {
+  content: "";
+  background: url(<%= asset_path 'contact_over.png' %>) no-repeat center center;
   width: 18px;
   height: 12px;
   display: inline-block;
