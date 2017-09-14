@@ -26,9 +26,9 @@ class SuggestedLocation < ActiveRecord::Base
       errors.add(:base, location.errors.first)
     else
       if machines
-        machines.sub!(/\[/, '(')
-        machines.sub!(/\]/, ')')
-        machines.sub!(/ - /, ', ')
+        machines.tr!('[', '(')
+        machines.tr!(']', ')')
+        machines.gsub!(/ - /, ', ')
 
         machines.split(/([^,]*,[^,]*,)/).each do |machine_info|
           next if machine_info.blank?
@@ -40,8 +40,8 @@ class SuggestedLocation < ActiveRecord::Base
 
           manufacturer, year = matches.captures
 
-          machine_info.sub!(manufacturer, '')
-          machine_info.sub!(year, '')
+          machine_info.slice!(machine_info.rindex(manufacturer), manufacturer.size)
+          machine_info.slice!(machine_info.rindex(year), year.size)
           machine_info.sub!(' (, ),', '')
 
           name = machine_info
