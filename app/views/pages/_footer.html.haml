@@ -1,0 +1,4 @@
+#footer{:class => "#{@region ? '' : (defined? @region) and current_page?(region_homepage_path) ? 'footer_region' : ''}"}
+  =link_to 'Contact', about_path('portland'), :class => 'footer_contact'
+  =link_to 'Donate', donate_path, :class => 'footer_donate'
+  =link_to 'Github', 'https://github.com/scottwainstock/pbm/', :target => '_blank', :class => 'footer_github'

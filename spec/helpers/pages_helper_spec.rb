@@ -72,7 +72,7 @@ describe PagesHelper, type: :helper do
       end
 
       it 'displays the about title' do
-        expect(helper.title_for_path(about_path(@region.name), @region)).to eq('About the ' + @region.full_name + ' Pinball Map')
+        expect(helper.title_for_path(about_path(@region.name), @region)).to eq('About | Contact | Links - ' + @region.full_name + ' Pinball Map')
       end
 
       it 'displays the events title' do
