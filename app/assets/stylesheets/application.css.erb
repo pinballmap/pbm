@@ -750,16 +750,17 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
 }
 .footer_donate:before {
   content: "";
-  background: url(<%= asset_path 'heart.png' %>) no-repeat center center;
+  background: url(<%= asset_path 'donate-sprites.png' %>) no-repeat 0px top;
   width: 18px;
   height: 12px;
   display: inline-block;
-  background-size: 14px 12px;
+  background-size: 14px !important;
   margin-left: 10px;
 }
 .footer_donate:hover:before {
   content: "";
-  background: url(<%= asset_path 'heart_over.png' %>) no-repeat center center;
+  background: url(<%= asset_path 'donate-sprites.png' %>) no-repeat center center;
+  background-position: 0px -12px;
   width: 18px;
   height: 12px;
   display: inline-block;
@@ -767,19 +768,18 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
 }
 .footer_contact:before {
   content: "";
-  background: url(<%= asset_path 'contact.png' %>) no-repeat center center;
-  width: 18px;
+  background: url(<%= asset_path 'contact-sprites.png' %>) no-repeat 0px top;
+  width: 14px;
   height: 12px;
   display: inline-block;
-  background-size: 14px 12px;
+  background-size: 12px !important;
 }
 .footer_contact:hover:before {
   content: "";
-  background: url(<%= asset_path 'contact_over.png' %>) no-repeat center center;
-  width: 18px;
+  background-position: 0px -12px;
+  width: 14px;
   height: 12px;
-  display: inline-block;
-  background-size: 14px 12px;
+  background-size: 12px;
 }
 
 /** END Footer **/
