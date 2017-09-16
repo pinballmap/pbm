@@ -16,8 +16,8 @@
     = stylesheet_link_tag 'application', 'mediaqueries', :media => ""
     - if mobile_device?
       = stylesheet_link_tag 'mobile-application'
-    - api_params = ENV['GOOGLE_MAPS_API_KEY'] ? "key=#{ENV['GOOGLE_MAPS_API_KEY']};sensor=true" : 'sensor=true'
-    = javascript_include_tag 'application', 'jquery.form', 'jquery.remotipart', 'highslide.min', "//maps.google.com/maps/api/js?#{api_params}"
+    - api_params = ENV['GOOGLE_MAPS_API_KEY'] ? "key=#{ENV['GOOGLE_MAPS_API_KEY']}" : ''
+    = javascript_include_tag 'application', 'jquery.form', 'jquery.remotipart', 'highslide.min', "//maps.googleapis.com/maps/api/js?#{api_params}"
     = csrf_meta_tag
     = render 'application/favicon'
 
