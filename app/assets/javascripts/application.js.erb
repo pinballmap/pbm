@@ -504,7 +504,10 @@ function attachMarkerClick(mapForMarker, marker, infoWindow, id) {
     clearInfoWindows();
     mapForMarker.panTo(marker.getPosition());
     infoWindow.open(mapForMarker, marker);
-    scrollToMiddle('#location_' + id);
+
+    if( !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ) {
+      scrollToMiddle('#location_' + id);
+    }
   });
 }
 
