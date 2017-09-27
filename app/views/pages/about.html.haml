@@ -9,6 +9,10 @@
           the
           = @region.full_name
           Pinball Map administrator
+      %p
+        (or
+        = link_to 'click here', about_path('portland')
+        to contact the Pinball Map creators)
       #contact_maker
         = form_tag contact_sent_path, :method => 'get' do
           %ul
