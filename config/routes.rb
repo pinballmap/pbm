@@ -117,6 +117,7 @@ Pbm::Application.routes.draw do
         get :render_machines
         get :render_scores
         get :render_last_updated
+        get :render_location_detail
       end
     end
 

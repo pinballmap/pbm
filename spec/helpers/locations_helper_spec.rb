@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe LocationsHelper, type: :helper do
-
   describe '#search_banner' do
     it 'should give me a banner' do
       FactoryGirl.create(:location)
