@@ -1,9 +1,2 @@
 %div[location, :show_machines]
-
-:javascript
-  $(function() {
-    $('#show_machines_location_banner_#{location.id}').load(function () {
-      $('#show_machines_location_#{location.id}').html(loadingHTML());
-      $('#show_machines_location_#{location.id}').load('/#{params[:region]}/locations/#{location.id}/render_machines');
-    });
-  });
+  
