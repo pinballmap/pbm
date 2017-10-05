@@ -150,7 +150,7 @@ describe LocationMachineXrefsController do
     before(:each) do
       @lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine))
       @user = FactoryGirl.create(:user, id: 11, username: 'ssw', email: 'foo@bar.com')
-
+      
       page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
     end
 
@@ -161,7 +161,7 @@ describe LocationMachineXrefsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find(".machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS SPAM')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
