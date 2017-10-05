@@ -22,25 +22,29 @@
     );
 
   #results_container
-    #search_results
+    #search_results   
       - @locations.each do |location|
         - l = location.clone
         %div.search_result[l]
-          %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id});"}
-            %ul
-              %li.name= l.name
-              - if (!params[:show_location_distance].blank? && !params[:lat].blank? && !params[:lon].blank?)
-                %li.location_types= " distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
-              - if (l.location_type)
-                %li.location_types= " (#{l.location_type.name})"
-              .clear
-              %li.address
-                %span.address_name[l, :location_summary] #{[l.street, l.city].join(' | ')}
+          - if (@locations.size == 1)
+            .clear
+            %div.location_detail[l, :location_detail]{:style => 'display:none;'}
+          - else
+            %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id});"}
+              %ul
+                %li.name= l.name
+                - if (!params[:show_location_distance].blank? && !params[:lat].blank? && !params[:lon].blank?)
+                  %li.location_types= " distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
+                - if (l.location_type)
+                  %li.location_types= " (#{l.location_type.name})"
                 .clear
-              %li.machine_names
-                #{[l.machine_names].join('<br />').html_safe}
-          .clear
-          %div.location_detail[l, :location_detail]{:style => 'display:none;'}
+                %li.address
+                  %span.address_name[l, :location_summary] #{[l.street, l.city].join(' | ')}
+                  .clear
+                %li.machine_names
+                  #{[l.machine_names].join('<br />').html_safe}
+            .clear
+            %div.location_detail[l, :location_detail]{:style => 'display:none;'}
 
         - l = nil
 
