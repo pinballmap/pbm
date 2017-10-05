@@ -161,7 +161,7 @@ describe LocationMachineXrefsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      page.find(".machine_condition_lmx span.comment_image").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS SPAM')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
@@ -274,13 +274,13 @@ describe LocationMachineXrefsController do
     it 'should add past conditions when you add a new condition and a condition exists' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find(".machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'test')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find(".machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
@@ -295,19 +295,19 @@ describe LocationMachineXrefsController do
     it 'adding a new blank comment does not delete old comments' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find(".machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'test')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find(".machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find(".machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: '')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
