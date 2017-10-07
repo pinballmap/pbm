@@ -581,16 +581,8 @@ function showLocationDetail(locationID) {
   $.get('/' + region + '/locations/' + locationID + '/render_location_detail', function(data) {
     $('#location_detail_location_' + locationID).html(data);
   });
-
-  renderMachines(locationID);
 }
 
-function renderMachines(locationID) {
-  $('#show_machines_location_' + locationID).html(loadingHTML());
-  $.get('/' + region + '/locations/' + locationID + '/render_machines', function(data) {
-    $('#show_machines_location_' + locationID).html(data);
-  });
-}
 
 function locationLookupMapCenter(locationID) {
   var index = jQuery.inArray(locationID, locationIDs);

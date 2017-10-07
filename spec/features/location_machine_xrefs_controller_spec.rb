@@ -160,7 +160,7 @@ describe LocationMachineXrefsController do
       expect(Rakismet).to receive(:akismet_call).and_return('true')
 
       visit '/portland/?by_location_id=' + @location.id.to_s
-
+      
       page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS SPAM')
       page.find("input#save_machine_condition_#{@lmx.id}").click

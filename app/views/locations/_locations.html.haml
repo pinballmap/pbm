@@ -25,10 +25,10 @@
     #search_results   
       - @locations.each do |location|
         - l = location.clone
-        %div.search_result[l]
+        %div.search_result[l]         
           - if (@locations.size == 1)
-            .clear
-            %div.location_detail[l, :location_detail]{:style => 'display:none;'}
+            %div.location_detail[l, :location_detail]
+              = render :partial => 'locations/render_location_detail', :locals => {:l => l}
           - else
             %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id});"}
               %ul
@@ -47,9 +47,3 @@
             %div.location_detail[l, :location_detail]{:style => 'display:none;'}
 
         - l = nil
-
-    - if (@locations.size == 1)
-      :javascript
-        $(function() {
-          showLocationDetail(#{@locations.first.id});
-        });
