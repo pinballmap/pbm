@@ -12,19 +12,10 @@ var infoWindows = new Array();
 var locationIDs = new Array();
 var searchSections = new Array();
 
-function toggleArrows(name, id) {
-  var open = '_open_arrow' + (id ? '_' + id : '');
-  var closed = '_closed_arrow' + (id ? '_' + id : '');
-
-  $('#' + name + open).toggle();
-  $('#' + name + closed).toggle();
-}
-
 function toggleData(name, id) {
   var main = id ? '_' + id : '';
 
   $('#' + name + main).toggle();
-  toggleArrows(name, id);
 }
 
 function clearInfoWindows() {
@@ -585,18 +576,13 @@ function showLocationDetail(locationID) {
 
   $('#show_location_detail_location_' + locationID).toggle();
   toggleData('location_detail_location', locationID);
-  toggleArrows('location_detail', locationID);
-}
 
-function singleLocationLoad(locationID) {
-  showLocationDetail(locationID);
-  toggleData('show_machines_location', locationID);
-
-  $('#show_machines_location_' + locationID).html(loadingHTML());
-  $.get('/' + region + '/locations/' + locationID + '/render_machines', function(data) {
-    $('#show_machines_location_' + locationID).html(data);
+  $('#location_detail_location_' + locationID).html(loadingHTML());
+  $.get('/' + region + '/locations/' + locationID + '/render_location_detail', function(data) {
+    $('#location_detail_location_' + locationID).html(data);
   });
 }
+
 
 function locationLookupMapCenter(locationID) {
   var index = jQuery.inArray(locationID, locationIDs);

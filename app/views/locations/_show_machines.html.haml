@@ -1,10 +1,10 @@
-= banner('show_machines_location', 'SHOW MACHINES', location)
-%div[location, :show_machines]{:style => 'display:none'}
+%div[location, :show_machines]
 
 :javascript
   $(function() {
-    $('#show_machines_location_banner_#{location.id}').click(function () {
-      $('#show_machines_location_#{location.id}').html(loadingHTML());
-      $('#show_machines_location_#{location.id}').load('/#{params[:region]}/locations/#{location.id}/render_machines');
+    $('#show_machines_location_#{location.id}').html(loadingHTML());
+    $.get('/' + region + '/locations/#{location.id}/render_machines', function(data) {
+      $('#show_machines_location_#{location.id}').html(data);
     });
   });
+
