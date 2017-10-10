@@ -47,3 +47,9 @@
             %div.location_detail[l, :location_detail]{:style => 'display:none;'}
 
         - l = nil
+
+    - if (@locations.size == 1)
+      :javascript
+        $(function() {
+          locationLookupMapCenter(#{@locations.first.id});
+        });
