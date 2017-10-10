@@ -92,6 +92,9 @@ HERE
       FactoryGirl.create(:user_submission, region: @region, submission_type: 'suggest_location')
       FactoryGirl.create(:user_submission, region: @region, submission_type: 'suggest_location')
 
+      FactoryGirl.create(:user_submission, region: @region, submission_type: 'new_condition')
+      FactoryGirl.create(:user_submission, region: @region, submission_type: 'new_condition')
+
       location_added_today = FactoryGirl.create(:location, region: @region)
       FactoryGirl.create(:location_machine_xref, location: location_added_today, machine: FactoryGirl.create(:machine))
 
@@ -131,6 +134,7 @@ SL 2
 
 2 Location(s) submitted to you this week
 2 Location(s) added by you this week
+2 machine comment(s) by users this week
 1 machine(s) added by users this week
 2 machine(s) removed by users this week
 Portland is listing 3 machines and 3 locations
