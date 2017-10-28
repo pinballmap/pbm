@@ -1,6 +1,7 @@
-%div.location_name{:onclick => "locationLookupMapCenter(#{l.id});"}
+%div.location_name
 	%ul
-		%li.name= l.name
+		%li.name{:onclick => "locationLookupMapCenter(#{l.id});"}
+			=l.name
 		.clear
 		- if user_signed_in?
 			%span.location_description
@@ -23,7 +24,6 @@
 		%div.login_alert
 			- if !user_signed_in?
 				= link_to link_to 'To update this location, you must login! Click here', "https://#{request.host_with_port}/users/login"
-	%div.location_detail_sub
 	- if user_signed_in?
 		= render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
 		= render :partial => 'locations/add_machine', :locals => {:location => l}
