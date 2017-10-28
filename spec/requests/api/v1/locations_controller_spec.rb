@@ -171,6 +171,23 @@ HERE
 
       expect(response.body.scan('ssw').size).to eq(2)
     end
+
+    it 'returns num_machines' do
+      FactoryGirl.create(:location_machine_xref, location: @location)
+      get "/api/v1/region/#{@region.name}/locations.json"
+      parsed_body = JSON.parse(response.body)
+
+      location = parsed_body['locations'][0]
+      expect(location['num_machines']).to eq(1)
+    end
+
+    it 'omits lmx/condition info when you use the no_details param' do
+      FactoryGirl.create(:location_machine_xref, location: @location)
+      get "/api/v1/region/#{@region.name}/locations.json?no_details=1"
+
+      expect(response.body.scan('location_machine_xrefs').size).to eq(0)
+      expect(response.body.scan('machine_conditions').size).to eq(0)
+    end
   end
 
   describe '#update' do

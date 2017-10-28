@@ -123,6 +123,12 @@ describe Location do
     end
   end
 
+  describe '#num_machines' do
+    it 'should send back a number indicating the number of machines at the location' do
+      expect(@l.num_machines).to eq(2)
+    end
+  end
+
   describe '#update_metadata' do
     it 'creates a user submission for updated metadata' do
       u = FactoryGirl.create(:user, username: 'ssw', email: 'yeah@ok.com')

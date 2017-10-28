@@ -61,8 +61,8 @@ module Api
         return_response(
           locations,
           'locations',
-          [location_machine_xrefs: { include: { machine_conditions: { methods: :username } }, methods: :last_updated_by_username }],
-          [:last_updated_by_username]
+          params[:no_details] ? nil : [location_machine_xrefs: { include: { machine_conditions: { methods: :username } }, methods: :last_updated_by_username }],
+          %i[last_updated_by_username num_machines]
         )
       end
 

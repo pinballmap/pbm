@@ -92,6 +92,10 @@ class Location < ActiveRecord::Base
     "id in (select location_id from (select location_id, count(*) as count from location_machine_xrefs group by location_id) x where x.count >= #{n})"
   end
 
+  def num_machines
+    machines.length
+  end
+
   def machine_names
     machines.sort_by(&:massaged_name).map(&:name_and_year)
   end
