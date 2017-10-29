@@ -13,6 +13,19 @@ describe Api::V1::MachinesController, type: :request do
       expect(response.body).to include('Cleo')
       expect(response.body).to include('Bawb')
     end
+
+    it 'respects no_details param' do
+      get '/api/v1/machines.json?no_details=1'
+
+      expect(response.body).to include('Cleo')
+      expect(response.body).to include('Bawb')
+
+      expect(response.body.scan('is_active').size).to eq(0)
+      expect(response.body.scan('created_at').size).to eq(0)
+      expect(response.body.scan('updated_at').size).to eq(0)
+      expect(response.body.scan('ipdb_link').size).to eq(0)
+      expect(response.body.scan('ipdb_id').size).to eq(0)
+    end
   end
 
   describe '#create' do

@@ -34,6 +34,8 @@ MultilineOperationIndentation:
   Enabled: false
 IndentHeredoc:
   Enabled: false
+ParameterLists:
+  Max: 6
 
 AllCops:
   Exclude:
