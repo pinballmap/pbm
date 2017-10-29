@@ -126,7 +126,7 @@ module Api
         return_response(
           location,
           nil,
-          [location_machine_xrefs: { include: { machine_conditions: { methods: :username } }, methods: :last_updated_by_username }],
+          [location_machine_xrefs: { include: { machine_conditions: { methods: :username }, machine_score_xrefs: {} }, methods: :last_updated_by_username }],
           %i[last_updated_by_username num_machines]
         )
       rescue ActiveRecord::RecordNotFound

@@ -417,11 +417,13 @@ HERE
     it 'returns all regions within scope along with lmx data' do
       lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, id: 777, name: 'Cleo'))
       FactoryGirl.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'foo bar')
+      FactoryGirl.create(:machine_score_xref, location_machine_xref: lmx, score: 567)
       get "/api/v1/region/#{@region.name}/locations/#{@location.id}.json"
 
       expect(response.body).to include('Satchmo')
       expect(response.body).to include('777')
       expect(response.body).to include('foo bar')
+      expect(response.body).to include('567')
     end
   end
 end
