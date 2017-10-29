@@ -55,6 +55,7 @@ module Api
       param :by_operator_id, Integer, desc: 'Operator ID to search by', required: false
       param :by_type_id, Integer, desc: 'Location type ID to search by', required: false
       param :by_at_least_n_machines_type, Integer, desc: 'Only locations with N or more machines', required: false
+      param :no_details, Integer, desc: 'Omit lmx/condition data from pull', required: false
       formats ['json']
       def index
         locations = apply_scopes(Location).order('locations.name')
