@@ -148,7 +148,9 @@ END
   end
 
   def return_response(data, root, includes = [], methods = [], http_status = 200, except = [])
-    render json: { root => data.as_json(include: includes, methods: methods, root: false, except: except) }, status: http_status
+    json_data = data.as_json(include: includes, methods: methods, root: false, except: except)
+
+    render json: root.nil? ? json_data : { root => json_data }, status: http_status
   end
 
   def allow_cors

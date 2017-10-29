@@ -412,4 +412,16 @@ HERE
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::AUTH_REQUIRED_MSG)
     end
   end
+
+  describe '#show' do
+    it 'returns all regions within scope along with lmx data' do
+      lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: FactoryGirl.create(:machine, id: 777, name: 'Cleo'))
+      FactoryGirl.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'foo bar')
+      get "/api/v1/region/#{@region.name}/locations/#{@location.id}.json"
+
+      expect(response.body).to include('Satchmo')
+      expect(response.body).to include('777')
+      expect(response.body).to include('foo bar')
+    end
+  end
 end

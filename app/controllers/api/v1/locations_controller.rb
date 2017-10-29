@@ -117,6 +117,22 @@ module Api
         end
       end
 
+      api :GET, '/api/v1/locations/:id.json', 'Display the details of this location'
+      param :id, Integer, desc: 'ID of location', required: true
+      formats ['json']
+      def show
+        location = Location.find(params[:id])
+
+        return_response(
+          location,
+          nil,
+          [location_machine_xrefs: { include: { machine_conditions: { methods: :username } }, methods: :last_updated_by_username }],
+          %i[last_updated_by_username num_machines]
+        )
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find location', 'errors')
+      end
+
       api :GET, '/api/v1/locations/:id/machine_details.json', 'Display the details of the machines at this location'
       param :id, Integer, desc: 'ID of location', required: true
       formats ['json']
