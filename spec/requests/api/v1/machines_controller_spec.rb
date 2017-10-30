@@ -26,6 +26,21 @@ describe Api::V1::MachinesController, type: :request do
       expect(response.body.scan('ipdb_link').size).to eq(0)
       expect(response.body.scan('ipdb_id').size).to eq(0)
     end
+
+    it 'respects region filter' do
+      portland = FactoryGirl.create(:region)
+      location = FactoryGirl.create(:location, region: portland)
+      FactoryGirl.create(:location_machine_xref, location: location, machine: FactoryGirl.create(:machine, id: 7, name: 'Cleo'))
+
+      chicago = FactoryGirl.create(:region)
+      another_location = FactoryGirl.create(:location, region: chicago)
+      FactoryGirl.create(:location_machine_xref, location: another_location, machine: FactoryGirl.create(:machine, id: 77, name: 'Bawb'))
+
+      get "/api/v1/machines.json?region_id=#{portland.id}"
+
+      expect(response.body).to include('Cleo')
+      expect(response.body).not_to include('Bawb')
+    end
   end
 
   describe '#create' do
