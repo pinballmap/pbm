@@ -14,8 +14,7 @@ module Api
         return_response(lmxes, 'location_machine_xrefs', [], %i[location machine machine_conditions])
       end
 
-      api :GET, '/api/v1/region/:region/location_machine_xrefs/:id.json', 'Get info about a single lmx'
-      param :region, String, desc: 'Name of the Region you want to see events for', required: true
+      api :GET, '/api/v1/location_machine_xrefs/:id.json', 'Get info about a single lmx'
       param :id, Integer, desc: 'LMX id', required: true
       formats ['json']
       def show
