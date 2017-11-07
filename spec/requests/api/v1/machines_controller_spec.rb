@@ -25,6 +25,7 @@ describe Api::V1::MachinesController, type: :request do
       expect(response.body.scan('updated_at').size).to eq(0)
       expect(response.body.scan('ipdb_link').size).to eq(0)
       expect(response.body.scan('ipdb_id').size).to eq(0)
+      expect(response.body.scan('machine_group_id').size).to eq(0)
     end
 
     it 'respects region filter' do

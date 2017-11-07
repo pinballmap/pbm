@@ -187,6 +187,24 @@ HERE
 
       expect(response.body.scan('location_machine_xrefs').size).to eq(0)
       expect(response.body.scan('machine_conditions').size).to eq(0)
+      expect(response.body.scan('street').size).to eq(0)
+      expect(response.body.scan('zip').size).to eq(0)
+      expect(response.body.scan('phone').size).to eq(0)
+      expect(response.body.scan('state').size).to eq(0)
+      expect(response.body.scan('website').size).to eq(0)
+      expect(response.body.scan('description').size).to eq(0)
+      expect(response.body.scan('created_at').size).to eq(0)
+      expect(response.body.scan('updated_at').size).to eq(0)
+      expect(response.body.scan('date_last_updated').size).to eq(0)
+      expect(response.body.scan('last_updated_by_user_id').size).to eq(0)
+
+      expect(response.body.scan('id').size).to_not eq(0)
+      expect(response.body.scan('name').size).to_not eq(0)
+      expect(response.body.scan('lat').size).to_not eq(0)
+      expect(response.body.scan('lon').size).to_not eq(0)
+      expect(response.body.scan('city').size).to_not eq(0)
+      expect(response.body.scan('num_machines').size).to_not eq(0)
+      expect(response.body.scan('last_updated_by_username').size).to_not eq(0)
     end
   end
 
