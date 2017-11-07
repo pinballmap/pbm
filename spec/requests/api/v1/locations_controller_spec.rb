@@ -197,6 +197,7 @@ HERE
       expect(response.body.scan('updated_at').size).to eq(0)
       expect(response.body.scan('date_last_updated').size).to eq(0)
       expect(response.body.scan('last_updated_by_user_id').size).to eq(0)
+      expect(response.body.scan('region_id').size).to eq(0)
 
       expect(response.body.scan('id').size).to_not eq(0)
       expect(response.body.scan('name').size).to_not eq(0)
