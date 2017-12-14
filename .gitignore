@@ -11,3 +11,4 @@ coverage
 vendor/ruby
 .coveralls.yml
 *.directory
+logfile
