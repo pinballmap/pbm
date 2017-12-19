@@ -4,6 +4,14 @@
       %span.darkb Welcome to PinballMap.com!
       %p
         Pinball Map is a crowdsourced pinball locator, showing all the public pinball machines in select regions of North America.
+      %p 
+        We are currently listing a total of 
+        %span.darkb 
+          #{number_with_delimiter(Location.all.count,:delimiter => ",")} 
+        locations and 
+        %span.darkb 
+          #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} 
+        machines.
       %p
         Pick a region to find pinball machines to play near you!
       %div.read_more_wrap
