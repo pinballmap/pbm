@@ -61,7 +61,16 @@
       $('#search_link_wrapper').css('display','block');
       e.preventDefault();
       search_string = $( this ).serialize();
-
+     
+      var by_location = 'by_location_id='
+      var region = window.location.pathname.split( '/' )[1];
+      if (search_string.indexOf(by_location) > 0) {
+        var id = search_string.match(`${by_location}(.*)&`)[1];
+        history.replaceState({}, 'foo', `/${region}/?${by_location}${id}`)
+      } else {
+        history.replaceState({}, 'foo', `/${region}`)
+      }
+      
       var form = $(this);
 
       $('#locations').html(loadingHTML());
