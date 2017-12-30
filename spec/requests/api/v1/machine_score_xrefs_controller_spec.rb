@@ -9,7 +9,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
     @score_one = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, score: 123, user_id: FactoryGirl.create(:user, username: 'ssw').id)
     @score_two = FactoryGirl.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user_id: nil)
-    @user = FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a')
+    @user = FactoryGirl.create(:user, id: 222, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a')
   end
 
   describe '#index' do
