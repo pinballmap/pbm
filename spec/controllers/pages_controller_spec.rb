@@ -156,6 +156,7 @@ Phone: phone\n
 Website: website\n
 Type: type\n
 Operator: operator\n
+Zone: \n
 Comments: comments\n
 Machines: machines\n
 (entered from 0.0.0.0 via Rails Testing)\n
@@ -196,6 +197,7 @@ Phone: phone\n
 Website: website\n
 Type: type\n
 Operator: operator\n
+Zone: \n
 Comments: comments\n
 Machines: machines\n
 (entered from 0.0.0.0 via Rails Testing by ssw (yeah@ok.com))\n

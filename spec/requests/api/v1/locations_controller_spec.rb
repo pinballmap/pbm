@@ -46,8 +46,9 @@ describe Api::V1::LocationsController, type: :request do
     end
 
     it 'emails admins on new location submission' do
-      FactoryGirl.create(:location_type, name: 'type')
-      FactoryGirl.create(:operator, name: 'operator')
+      lt = FactoryGirl.create(:location_type, name: 'type')
+      o = FactoryGirl.create(:operator, name: 'operator')
+      z = FactoryGirl.create(:zone, name: 'zone')
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
@@ -66,6 +67,7 @@ Phone: phone\n
 Website: website\n
 Type: type\n
 Operator: operator\n
+Zone: zone\n
 Comments: comments\n
 Machines: machines\n
 (entered from 127.0.0.1 via cleOS by cibw (foo@bar.com))\n
@@ -73,12 +75,16 @@ HERE
         )
       end
 
-      post '/api/v1/locations/suggest.json', { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+      post '/api/v1/locations/suggest.json', { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq("Thanks for entering that location. We'll get it in the system as soon as possible.")
       expect(UserSubmission.all.count).to eq(1)
       expect(UserSubmission.first.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
+
+      expect(SuggestedLocation.first.location_type).to eq(lt)
+      expect(SuggestedLocation.first.operator).to eq(o)
+      expect(SuggestedLocation.first.zone).to eq(z)
     end
 
     it 'tags a user when appropriate' do
@@ -88,17 +94,19 @@ HERE
       expect(UserSubmission.first.user_id).to eq(111)
     end
 
-    it 'does not bomb out when operator and type are blank' do
-      post '/api/v1/locations/suggest.json', { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: nil, location_operator: '', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+    it 'does not bomb out when operator and type and zone are blank' do
+      post '/api/v1/locations/suggest.json', { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: nil, location_zone: '', location_operator: '', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
 
       expect(response).to be_success
       expect(SuggestedLocation.first.location_type).to eq(nil)
       expect(SuggestedLocation.first.operator).to eq(nil)
+      expect(SuggestedLocation.first.zone).to eq(nil)
     end
 
-    it 'lets you enter by operator_id and location_type_id' do
+    it 'lets you enter by operator_id and location_type_id and zone_id' do
       lt = FactoryGirl.create(:location_type, name: 'cool type')
       o = FactoryGirl.create(:operator, name: 'cool operator')
+      z = FactoryGirl.create(:zone, name: 'cool zone')
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
@@ -117,6 +125,7 @@ Phone: phone\n
 Website: website\n
 Type: cool type\n
 Operator: cool operator\n
+Zone: cool zone\n
 Comments: comments\n
 Machines: machines\n
 (entered from 127.0.0.1 via cleOS by cibw (foo@bar.com))\n
@@ -124,11 +133,12 @@ HERE
         )
       end
 
-      post '/api/v1/locations/suggest.json', { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: lt.id, location_operator: o.id, location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+      post '/api/v1/locations/suggest.json', { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: lt.id, location_operator: o.id, location_zone: z.id, location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
       expect(response).to be_success
 
       expect(SuggestedLocation.first.location_type).to eq(lt)
       expect(SuggestedLocation.first.operator).to eq(o)
+      expect(SuggestedLocation.first.zone).to eq(z)
     end
   end
 

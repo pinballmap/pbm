@@ -47,13 +47,15 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'capybara-screenshot'
+  gem 'chromedriver-helper'
   gem 'coveralls', require: false
   gem 'factory_girl_rails'
   gem 'launchy'
-  gem 'poltergeist'
   gem 'rspec-rails'
   gem 'rspec-retry'
   gem 'rubocop'
+  gem "selenium-webdriver"
   gem 'simplecov'
   gem 'spork'
   gem 'test_after_commit'

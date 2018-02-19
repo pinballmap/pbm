@@ -4,11 +4,11 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'factory_girl_rails'
 require 'rspec/rails'
 require 'capybara/rspec'
-require 'capybara/poltergeist'
 require 'simplecov'
 require 'coveralls'
 require 'rack_session_access/capybara'
 require 'rspec/retry'
+require "selenium/webdriver"
 
 include Sprockets::Rails::Helper
 
@@ -27,10 +27,22 @@ RSpec.configure do |config|
     ex.run_with_retry retry: 3
   end
 
-  Capybara.javascript_driver = :poltergeist
-  Capybara.register_driver :poltergeist do |app|
-    Capybara::Poltergeist::Driver.new(app, js_errors: false, timeout: 60)
+  Capybara.register_driver :chrome do |app|
+    Capybara::Selenium::Driver.new(app, browser: :chrome)
   end
+
+  Capybara.register_driver :headless_chrome do |app|
+    capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+      chromeOptions: { args: %w(headless disable-gpu) }
+    )
+
+  Capybara::Selenium::Driver.new app,
+      browser: :chrome,
+      desired_capabilities: capabilities
+  end
+
+  Capybara.javascript_driver = :headless_chrome
+  #Capybara.javascript_driver = :chrome
 
   # == Mock Framework
   #
