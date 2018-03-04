@@ -1,14 +1,14 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 require 'rspec/rails'
 require 'capybara/rspec'
 require 'simplecov'
 require 'coveralls'
 require 'rack_session_access/capybara'
 require 'rspec/retry'
-require "selenium/webdriver"
+require 'selenium/webdriver'
 
 include Sprockets::Rails::Helper
 
@@ -42,7 +42,7 @@ RSpec.configure do |config|
   end
 
   Capybara.javascript_driver = :headless_chrome
-  #Capybara.javascript_driver = :chrome
+  # Capybara.javascript_driver = :chrome
 
   # == Mock Framework
   #
@@ -61,6 +61,7 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = false
 
+  config.include Devise::Test::ControllerHelpers, type: :controller
   config.include ControllerHelpers, type: :controller
   config.include FeatureHelpers, type: :feature
 
@@ -82,5 +83,6 @@ RSpec.configure do |config|
 
   config.after(:each) do
     DatabaseCleaner.clean
+    Warden.test_reset!
   end
 end

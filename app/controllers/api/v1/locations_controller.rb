@@ -2,7 +2,7 @@ module Api
   module V1
     class LocationsController < InheritedResources::Base
       include ActionView::Helpers::NumberHelper
-      before_filter :allow_cors
+      before_action :allow_cors
       respond_to :json
       has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_zone_id, :by_operator_id, :by_type_id, :by_machine_group_id, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region, :by_ipdb_id
 
@@ -25,7 +25,7 @@ module Api
       param :location_machines, String, desc: 'List of machines at new location', required: true
       formats ['json']
       def suggest
-        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+        user = current_user.nil? ? nil : current_user
 
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 
@@ -82,7 +82,7 @@ module Api
       formats ['json']
       def update
         location = Location.find(params[:id])
-        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+        user = current_user.nil? ? nil : current_user
 
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 
@@ -164,7 +164,7 @@ module Api
       api :PUT, '/api/v1/locations/:id/confirm.json', 'Confirm location information'
       formats ['json']
       def confirm
-        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+        user = current_user.nil? ? nil : current_user
 
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 

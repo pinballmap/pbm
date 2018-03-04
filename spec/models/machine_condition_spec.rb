@@ -4,11 +4,11 @@ describe MachineCondition do
   context 'keep a lot of lmx conditions' do
     describe '#create' do
       it 'auto-creates a user submission' do
-        location = FactoryGirl.create(:location, region: FactoryGirl.create(:region))
-        machine = FactoryGirl.create(:machine)
-        user = FactoryGirl.create(:user)
-        lmx = FactoryGirl.create(:location_machine_xref, location: location, machine: machine)
-        FactoryGirl.create(:machine_condition, user: user, comment: 'yep', location_machine_xref: lmx)
+        location = FactoryBot.create(:location, region: FactoryBot.create(:region))
+        machine = FactoryBot.create(:machine)
+        user = FactoryBot.create(:user)
+        lmx = FactoryBot.create(:location_machine_xref, location: location, machine: machine)
+        FactoryBot.create(:machine_condition, user: user, comment: 'yep', location_machine_xref: lmx)
 
         submission = UserSubmission.second
 

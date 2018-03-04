@@ -2,18 +2,16 @@ require 'spec_helper'
 
 describe LocationsController do
   before(:each) do
-    login
-
-    @region = FactoryGirl.create(:region, name: 'portland', full_name: 'portland', lat: 1, lon: 2, motd: 'This is a MOTD', n_search_no: 4, should_email_machine_removal: 1)
+    @region = FactoryBot.create(:region, name: 'portland', full_name: 'portland', lat: 1, lon: 2, motd: 'This is a MOTD', n_search_no: 4, should_email_machine_removal: 1)
   end
 
   describe 'confirm location', type: :feature, js: true do
     before(:each) do
-      @user = FactoryGirl.create(:user, username: 'ssw')
-      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+      @user = FactoryBot.create(:user, username: 'ssw')
+      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
 
-      @location = FactoryGirl.create(:location, region_id: @region.id, name: 'Cleo')
-      @machine = FactoryGirl.create(:machine, name: 'Bawb')
+      @location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
+      @machine = FactoryBot.create(:machine, name: 'Bawb')
     end
 
     it 'lets you click a button to update the date_last_updated' do
@@ -36,16 +34,17 @@ describe LocationsController do
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')}")
     end
   end
+
   describe 'remove machine - not authed', type: :feature, js: true do
     before(:each) do
-      @location = FactoryGirl.create(:location, region_id: @region.id, name: 'Cleo')
-      @machine = FactoryGirl.create(:machine, name: 'Bawb')
+      @location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
+      @machine = FactoryBot.create(:machine, name: 'Bawb')
+
+      page.set_rack_session("warden.user.user.key" => nil)
     end
 
     it 'removes a machine from a location' do
-      logout
-
-      FactoryGirl.create(:location_machine_xref, location: @location, machine: @machine)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
 
       @location.reload
 
@@ -61,29 +60,18 @@ describe LocationsController do
 
   describe 'remove machine', type: :feature, js: true do
     before(:each) do
-      @user = FactoryGirl.create(:user, username: 'ssw', email: 'ssw@test.com')
-      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+      @user = FactoryBot.create(:user, id: 1001, username: 'ssw', email: 'ssw@test.com')
+      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
 
-      @location = FactoryGirl.create(:location, region_id: @region.id, name: 'Cleo')
-      @machine = FactoryGirl.create(:machine, name: 'Bawb')
-    end
-
-    def handle_js_confirm(accept = true)
-      page.evaluate_script 'window.original_confirm_function = window.confirm'
-      page.evaluate_script "window.confirm = function(msg) { return #{accept}; }"
-      yield
-    ensure
-      page.evaluate_script 'window.confirm = window.original_confirm_function'
+      @location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
+      @machine = FactoryBot.create(:machine, name: 'Bawb')
     end
 
     it 'removes a machine from a location' do
-      FactoryGirl.create(:location_machine_xref, location: @location, machine: @machine)
-
-      page.driver.headers = { 'User-Agent' => 'Mozilla/5.0 (cleOS)' }
+      FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "Cleo\nBawb\nportland\n(user_id: #{@user.id}) (entered from 127.0.0.1 via Mozilla/5.0 (cleOS) by ssw (ssw@test.com))",
           subject: 'PBM - Someone removed a machine from a location',
           to: [],
           from: 'admin@pinballmap.com'
@@ -92,7 +80,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      handle_js_confirm do
+      page.accept_confirm do
         click_button 'remove'
       end
 
@@ -110,13 +98,13 @@ describe LocationsController do
     end
 
     it 'removes a machine from a location - allows you to cancel out of remove' do
-      lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: @machine)
+      lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
 
       expect(Pony).to_not receive(:mail)
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      handle_js_confirm(false) do
+      page.dismiss_confirm do
         click_button 'remove'
       end
 
@@ -131,8 +119,8 @@ describe LocationsController do
     end
 
     it 'favors by_location_name when search by both by_location_id and by_location_name' do
-      FactoryGirl.create(:location, region: @region, name: 'Cleo')
-      FactoryGirl.create(:location, region: @region, name: 'Zelda')
+      FactoryBot.create(:location, region: @region, name: 'Cleo')
+      FactoryBot.create(:location, region: @region, name: 'Zelda')
 
       visit '/portland'
 
@@ -155,131 +143,131 @@ describe LocationsController do
 
   describe 'initial search by passed in param', type: :feature, js: true do
     before(:each) do
-      @type = FactoryGirl.create(:location_type, name: 'Bar')
-      @zone = FactoryGirl.create(:zone, region: @region, name: 'DT')
-      @operator = FactoryGirl.create(:operator, region: @region, name: 'Quarterworld')
-      @location = FactoryGirl.create(:location, region: @region, city: 'Portland', name: 'Cleo', zone: @zone, location_type: @type, operator: @operator)
-      @machine = FactoryGirl.create(:machine, name: 'Barb', ipdb_id: 777)
-      FactoryGirl.create(:location_machine_xref, location: @location, machine: @machine)
+      @type = FactoryBot.create(:location_type, name: 'Bar')
+      @zone = FactoryBot.create(:zone, region: @region, name: 'DT')
+      @operator = FactoryBot.create(:operator, region: @region, name: 'Quarterworld')
+      @location = FactoryBot.create(:location, region: @region, city: 'Portland', name: 'Cleo', zone: @zone, location_type: @type, operator: @operator)
+      @machine = FactoryBot.create(:machine, name: 'Barb', ipdb_id: 777)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
 
-      FactoryGirl.create(:location, region: @region, name: 'Sass', city: 'Beaverton')
+      FactoryBot.create(:location, region: @region, name: 'Sass', city: 'Beaverton')
     end
 
     it 'by_city_id' do
       visit '/portland/?by_city_id=' + @location.city
 
-      expect(page).to have_content('Cleo')
-      expect(page).to_not have_content('Sass')
+      expect(find("#search_results")).to have_content('Cleo')
+      expect(find("#search_results")).to_not have_content('Sass')
     end
 
     it 'by_operator_id' do
       visit '/portland/?by_operator_id=' + @location.operator_id.to_s
 
-      expect(page).to have_content('Cleo')
-      expect(page).to_not have_content('Sass')
+      expect(find("#search_results")).to have_content('Cleo')
+      expect(find("#search_results")).to_not have_content('Sass')
     end
 
     it 'by_machine_group_id' do
-      machine_group = FactoryGirl.create(:machine_group, id: 1001, name: 'Sass')
-      sass_reg_ed = FactoryGirl.create(:machine, name: 'Sass Reg Ed', machine_group_id: 1001)
-      sass_tourn_ed = FactoryGirl.create(:machine, name: 'Sass Tournament Ed', machine_group_id: 1001)
-      machine_group_location = FactoryGirl.create(:location, region: @region)
+      machine_group = FactoryBot.create(:machine_group, id: 1001, name: 'Sass')
+      sass_reg_ed = FactoryBot.create(:machine, name: 'Sass Reg Ed', machine_group_id: 1001)
+      sass_tourn_ed = FactoryBot.create(:machine, name: 'Sass Tournament Ed', machine_group_id: 1001)
+      machine_group_location = FactoryBot.create(:location, region: @region)
 
-      FactoryGirl.create(:location_machine_xref, location: machine_group_location, machine: sass_reg_ed)
-      FactoryGirl.create(:location_machine_xref, location: machine_group_location, machine: sass_tourn_ed)
+      FactoryBot.create(:location_machine_xref, location: machine_group_location, machine: sass_reg_ed)
+      FactoryBot.create(:location_machine_xref, location: machine_group_location, machine: sass_tourn_ed)
 
       visit '/portland/?by_machine_group_id=' + machine_group.id.to_s
 
-      expect(page).to have_content('Sass Reg Ed')
-      expect(page).to have_content('Sass Tournament Ed')
-      expect(page).to_not have_content('Barb')
+      expect(find("#search_results")).to have_content('Sass Reg Ed')
+      expect(find("#search_results")).to have_content('Sass Tournament Ed')
+      expect(find("#search_results")).to_not have_content('Barb')
     end
 
     it 'by_location_id' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      expect(page).to have_content('Cleo')
-      expect(page).to_not have_content('Sass')
+      expect(find("#search_results")).to have_content('Cleo')
+      expect(find("#search_results")).to_not have_content('Sass')
     end
 
     it 'by_location_id -- multiple ids' do
-      other_location = FactoryGirl.create(:location, region: @region, name: 'Zelda')
+      other_location = FactoryBot.create(:location, region: @region, name: 'Zelda')
 
       visit '/portland/?by_location_id=' + @location.id.to_s + '_' + other_location.id.to_s
 
-      expect(page).to have_content('Cleo')
-      expect(page).to have_content('Zelda')
-      expect(page).to_not have_content('Sass')
+      expect(find("#search_results")).to have_content('Cleo')
+      expect(find("#search_results")).to have_content('Zelda')
+      expect(find("#search_results")).to_not have_content('Sass')
     end
 
     it 'by_zone_id' do
       visit '/portland/?by_zone_id=' + @zone.id.to_s
 
-      expect(page).to have_content('Cleo')
-      expect(page).to_not have_content('Sass')
+      expect(find("#search_results")).to have_content('Cleo')
+      expect(find("#search_results")).to_not have_content('Sass')
     end
 
     it 'by_zone_id -- multiple ids' do
-      other_zone = FactoryGirl.create(:zone, name: 'NE')
-      FactoryGirl.create(:location, region: @region, name: 'Zelda', zone: other_zone)
+      other_zone = FactoryBot.create(:zone, name: 'NE')
+      FactoryBot.create(:location, region: @region, name: 'Zelda', zone: other_zone)
       visit '/portland/?by_zone_id=' + @zone.id.to_s + '_' + other_zone.id.to_s
 
-      expect(page).to have_content('Cleo')
-      expect(page).to have_content('Zelda')
-      expect(page).to_not have_content('Sass')
+      expect(find("#search_results")).to have_content('Cleo')
+      expect(find("#search_results")).to have_content('Zelda')
+      expect(find("#search_results")).to_not have_content('Sass')
     end
 
     it 'by_type_id' do
       visit '/portland/?by_location_type_id=' + @type.id.to_s
 
-      expect(page).to have_content('Cleo')
-      expect(page).to_not have_content('Sass')
+      expect(find("#search_results")).to have_content('Cleo')
+      expect(find("#search_results")).to_not have_content('Sass')
     end
 
     it 'by_type_id -- multiple ids' do
-      other_type = FactoryGirl.create(:location_type, name: 'PUB')
-      FactoryGirl.create(:location, region: @region, name: 'Zelda', location_type: other_type)
+      other_type = FactoryBot.create(:location_type, name: 'PUB')
+      FactoryBot.create(:location, region: @region, name: 'Zelda', location_type: other_type)
 
       visit '/portland/?by_location_type_id=' + @type.id.to_s + '_' + other_type.id.to_s
 
-      expect(page).to have_content('Cleo')
-      expect(page).to have_content('Zelda')
-      expect(page).to_not have_content('Sass')
+      expect(find("#search_results")).to have_content('Cleo')
+      expect(find("#search_results")).to have_content('Zelda')
+      expect(find("#search_results")).to_not have_content('Sass')
     end
 
     it 'by_ipdb_id' do
       visit '/portland/?by_ipdb_id=' + @machine.ipdb_id.to_s
 
-      expect(page).to have_content('Cleo')
-      expect(page).to_not have_content('Sass')
+      expect(find("#search_results")).to have_content('Cleo')
+      expect(find("#search_results")).to_not have_content('Sass')
     end
 
     it 'by_machine_id' do
       visit '/portland/?by_machine_id=' + @machine.id.to_s
 
-      expect(page).to have_content('Cleo')
-      expect(page).to_not have_content('Sass')
+      expect(find("#search_results")).to have_content('Cleo')
+      expect(find("#search_results")).to_not have_content('Sass')
     end
 
     it 'by_machine_id -- multiple ids' do
-      other_machine = FactoryGirl.create(:machine, name: 'Cool')
-      other_location = FactoryGirl.create(:location, region: @region, name: 'Zelda')
-      FactoryGirl.create(:location_machine_xref, location: other_location, machine: other_machine)
+      other_machine = FactoryBot.create(:machine, name: 'Cool')
+      other_location = FactoryBot.create(:location, region: @region, name: 'Zelda')
+      FactoryBot.create(:location_machine_xref, location: other_location, machine: other_machine)
 
       visit '/portland/?by_machine_id=' + @machine.id.to_s + '_' + other_machine.id.to_s
 
-      expect(page).to have_content('Cleo')
-      expect(page).to have_content('Zelda')
-      expect(page).to_not have_content('Sass')
+      expect(find("#search_results")).to have_content('Cleo')
+      expect(find("#search_results")).to have_content('Zelda')
+      expect(find("#search_results")).to_not have_content('Sass')
     end
   end
 
   describe 'update_metadata', type: :feature, js: true do
     before(:each) do
-      @user = FactoryGirl.create(:user)
-      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+      @user = FactoryBot.create(:user)
+      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
 
-      @location = FactoryGirl.create(:location, region: @region, name: 'Cleo')
+      @location = FactoryBot.create(:location, region: @region, name: 'Cleo')
     end
 
     it 'does not save data if any formats are invalid - website and phone' do
@@ -287,7 +275,7 @@ describe LocationsController do
 
       expect(Rakismet).to receive(:akismet_call).twice.and_return('false')
 
-      o = FactoryGirl.create(:operator, region: @location.region, name: 'Quarterworld')
+      o = FactoryBot.create(:operator, region: @location.region, name: 'Quarterworld')
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
@@ -304,7 +292,7 @@ describe LocationsController do
       expect(@location.website).to eq('http://www.pinballmap.com')
       expect(page).to have_content('format invalid, please use ###-###-####')
 
-      t = FactoryGirl.create(:location_type, name: 'Bar')
+      t = FactoryBot.create(:location_type, name: 'Bar')
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
@@ -350,8 +338,8 @@ describe LocationsController do
     end
 
     it 'allows users to update a location metadata - stubbed out spam detection' do
-      t = FactoryGirl.create(:location_type, name: 'Bar')
-      o = FactoryGirl.create(:operator, region: @location.region, name: 'Quarterworld')
+      t = FactoryBot.create(:location_type, name: 'Bar')
+      o = FactoryBot.create(:operator, region: @location.region, name: 'Quarterworld')
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
@@ -404,10 +392,10 @@ describe LocationsController do
 
   describe 'update_desc', type: :feature, js: true do
     before(:each) do
-      @user = FactoryGirl.create(:user)
-      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
+      @user = FactoryBot.create(:user)
+      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
 
-      @location = FactoryGirl.create(:location, region: @region, name: 'Cleo')
+      @location = FactoryBot.create(:location, region: @region, name: 'Cleo')
     end
 
     it 'does not save spam' do

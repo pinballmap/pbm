@@ -1,4 +1,4 @@
-class Location < ActiveRecord::Base
+class Location < ApplicationRecord
   include Rakismet::Model
 
   rakismet_attrs content: :description
@@ -9,18 +9,18 @@ class Location < ActiveRecord::Base
   validates :name, :street, :city, :state, format: { with: /^\S.*/, message: "Can't start with a blank", multiline: true }
   validates :lat, :lon, presence: { message: 'Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon' }
 
-  belongs_to :location_type
-  belongs_to :zone
-  belongs_to :region
-  belongs_to :operator
-  belongs_to :last_updated_by_user, class_name: 'User', foreign_key: 'last_updated_by_user_id'
+  belongs_to :location_type, optional: true
+  belongs_to :zone, optional: true
+  belongs_to :region, optional: true
+  belongs_to :operator, optional: true
+  belongs_to :last_updated_by_user, class_name: 'User', foreign_key: 'last_updated_by_user_id', optional: true
   has_many :events
   has_many :location_machine_xrefs
   has_many :location_picture_xrefs
   has_many :machines, through: :location_machine_xrefs
 
   geocoded_by :full_street_address, latitude: :lat, longitude: :lon
-  before_validation :geocode, unless: ENV['SKIP_GEOCODE'] || (:lat && :lon)
+  before_validation :geocode, unless: :skip_geocoding?
 
   MAP_SCALE = 0.75
 
@@ -45,7 +45,7 @@ class Location < ActiveRecord::Base
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
   })
   scope :by_machine_group_id, (lambda { |id|
-    machines = Machine.where('machine_group_id in (?)', id).flatten
+    machines = Machine.where('machine_group_id in (?)', id)
 
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
   })
@@ -75,13 +75,11 @@ class Location < ActiveRecord::Base
     Location.within_bounding_box(box)
   })
 
-  attr_accessible :name, :street, :city, :state, :zip, :phone, :lat, :lon, :website, :zone_id, :region_id, :location_type_id, :description, :operator_id, :date_last_updated, :last_updated_by_user_id, :machine_ids
-
   before_destroy do |record|
-    Event.destroy_all "location_id = #{record.id}"
-    LocationPictureXref.destroy_all "location_id = #{record.id}"
-    MachineScoreXref.destroy_all "location_machine_xref_id in (select id from location_machine_xrefs where location_id = #{record.id})"
-    LocationMachineXref.destroy_all "location_id = #{record.id}"
+    Event.where(location_id: record.id).destroy_all
+    LocationPictureXref.where(location_id: record.id).destroy_all
+    MachineScoreXref.where("location_machine_xref_id in (select id from location_machine_xrefs where location_id = #{record.id})").destroy_all
+    LocationMachineXref.where(location_id: record.id).destroy_all
   end
 
   def should_skip_geocode

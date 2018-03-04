@@ -6,7 +6,7 @@ class LocationMachineXrefsController < InheritedResources::Base
   def create
     machine = nil
     location = Location.find(params[:location_id])
-    user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+    user = current_user.nil? ? nil : current_user
 
     if !params["add_machine_by_id_#{location.id}"].empty?
       machine = Machine.find(params["add_machine_by_id_#{location.id}"])
@@ -40,7 +40,7 @@ class LocationMachineXrefsController < InheritedResources::Base
   def destroy
     lmx = LocationMachineXref.find_by_id(params[:id])
 
-    user_id = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user.id
+    user_id = current_user.nil? ? nil : current_user.id
 
     lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: user_id) unless lmx&.nil?
 
@@ -64,17 +64,17 @@ class LocationMachineXrefsController < InheritedResources::Base
         nil
       else
         lmx.condition = old_condition
-        lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: Authorization.current_user ? Authorization.current_user.id : nil)
+        lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: current_user ? current_user.id : nil)
         lmx.location.date_last_updated = Date.today
-        lmx.location.last_updated_by_user_id = Authorization.current_user ? Authorization.current_user.id : nil
+        lmx.location.last_updated_by_user_id = current_user ? current_user.id : nil
         lmx.location.save(validate: false)
         lmx.location
       end
       lmx
     else
-      lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: Authorization.current_user ? Authorization.current_user.id : nil)
+      lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: current_user ? current_user.id : nil)
       lmx.location.date_last_updated = Date.today
-      lmx.location.last_updated_by_user_id = Authorization.current_user ? Authorization.current_user.id : nil
+      lmx.location.last_updated_by_user_id = current_user ? current_user.id : nil
       lmx.location.save(validate: false)
       lmx.location
       lmx
@@ -100,4 +100,9 @@ class LocationMachineXrefsController < InheritedResources::Base
   def condition_update_confirmation; end
 
   def remove_confirmation; end
+
+  private
+  def event_params
+    params.require(:location_machine_xref).permit(:machine_id, :location_id, :condition, :condition_date, :ip, :user_id)
+  end
 end

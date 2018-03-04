@@ -1,8 +1,6 @@
-class Operator < ActiveRecord::Base
-  belongs_to :region
+class Operator < ApplicationRecord
+  belongs_to :region, optional: true
   has_many :locations
-
-  attr_accessible :name, :region_id, :email, :website, :phone
 
   scope :region, (->(name) { where(region_id: Region.find_by_name(name.downcase).id) })
 

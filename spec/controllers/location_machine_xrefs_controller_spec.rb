@@ -2,11 +2,10 @@ require 'spec_helper'
 
 describe LocationMachineXrefsController, type: :controller do
   before(:each) do
-    expect_any_instance_of(ApplicationController).to receive(:set_current_user).and_return(nil)
-    @region = FactoryGirl.create(:region, name: 'portland')
-    @location = FactoryGirl.create(:location, id: 1)
-    @user = FactoryGirl.create(:user, username: 'ssw', email: 'ssw@yeah.com')
-    FactoryGirl.create(:user, email: 'foo@bar.com', region: @region)
+    @region = FactoryBot.create(:region, name: 'portland')
+    @location = FactoryBot.create(:location, id: 1)
+    @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com')
+    FactoryBot.create(:user, email: 'foo@bar.com', region: @region)
   end
 
   describe 'create' do
@@ -22,10 +21,12 @@ describe LocationMachineXrefsController, type: :controller do
         )
       end
 
-      post 'create', region: 'portland', add_machine_by_name_1: 'foo', add_machine_by_id_1: '', location_id: @location.id
+      post 'create', params: { region: 'portland', add_machine_by_name_1: 'foo', add_machine_by_id_1: '', location_id: @location.id }
     end
 
     it 'should send email on new machine creation - notifies if staging site origin' do
+      login(@user)
+
       @request.host = 'pinballmapstaging.herokuapp.com'
 
       expect(Pony).to receive(:mail) do |mail|
@@ -34,13 +35,15 @@ describe LocationMachineXrefsController, type: :controller do
         )
       end
 
-      post 'create', region: 'portland', add_machine_by_name_1: 'foo', add_machine_by_id_1: '', location_id: @location.id
+      post 'create', params: { region: 'portland', add_machine_by_name_1: 'foo', add_machine_by_id_1: '', location_id: @location.id }
     end
 
     it "should return undef if you don't supply a machine name or id" do
+      login(@user)
+
       expect(Pony).to_not receive(:mail)
 
-      post 'create', region: 'portland', add_machine_by_id_1: '', add_machine_by_name_1: '', location_id: @location.id
+      post 'create', params: { region: 'portland', add_machine_by_id_1: '', add_machine_by_name_1: '', location_id: @location.id }
 
       expect(LocationMachineXref.all.size).to eq(0)
     end

@@ -1,12 +1,10 @@
-class Machine < ActiveRecord::Base
-  belongs_to :location_machine_xref
-  belongs_to :machine_group
+class Machine < ApplicationRecord
+  belongs_to :location_machine_xref, optional: true
+  belongs_to :machine_group, optional: true
 
   scope :by_name, (proc { |name| where(:name.matches => "%#{name}%") })
 
   validates_presence_of :name
-
-  attr_accessible :name, :ipdb_link, :year, :manufacturer, :machine_group_id
 
   def name_and_year
     name + year_and_manufacturer
@@ -17,8 +15,8 @@ class Machine < ActiveRecord::Base
   end
 
   before_destroy do |record|
-    MachineScoreXref.destroy_all "location_machine_xref_id in (select id from location_machine_xrefs where machine_id = #{record.id})"
-    LocationMachineXref.destroy_all "machine_id = #{record.id}"
+    MachineScoreXref.where("location_machine_xref_id in (select id from location_machine_xrefs where machine_id = #{record.id})").destroy_all
+    LocationMachineXref.where(machine_id: record.id).destroy_all
   end
 
   def massaged_name

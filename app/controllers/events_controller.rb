@@ -2,6 +2,15 @@ class EventsController < InheritedResources::Base
   respond_to :html, :xml, :json, :rss, only: %i[index show]
   has_scope :region
 
+  def create
+    @event = Event.new(event_params)
+    if @event.save
+      redirect_to @event, notice: 'Event was successfully created.'
+    else
+      render action: 'new'
+    end
+  end
+
   def index
     @events = apply_scopes(Event)
     @events.select!(&:active?)
@@ -20,5 +29,10 @@ class EventsController < InheritedResources::Base
       format.json { respond_with @events }
       format.rss { respond_with @events }
     end
+  end
+
+  private
+  def event_params
+    params.require(:event).permit(:name, :long_desc, :start_date, :end_date, :region_id, :external_link, :category_no, :location_id, :category, :external_location_name, :ifpa_tournament_id, :ifpa_calendar_id)
   end
 end

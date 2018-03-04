@@ -1,4 +1,4 @@
-class SuggestedLocation < ActiveRecord::Base
+class SuggestedLocation < ApplicationRecord
   validates_presence_of :name, :street, :city, :state, :zip, on: :update
 
   validates :phone, format: { with: /\A(\(\d{3}\) |\d{3}-)\d{3}-\d{4}\z/, message: 'format invalid, please use ###-###-#### or (###) ###-####' }, if: :phone?, on: :update
@@ -6,15 +6,13 @@ class SuggestedLocation < ActiveRecord::Base
   validates :name, :street, :city, :state, format: { with: /^\S.*/, message: "Can't start with a blank", multiline: true }, on: :update
   validates :lat, :lon, presence: { message: 'Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon' }, on: :update
 
-  belongs_to :region
-  belongs_to :operator
-  belongs_to :zone
-  belongs_to :location_type
+  belongs_to :region, optional: true
+  belongs_to :operator, optional: true
+  belongs_to :zone, optional: true
+  belongs_to :location_type, optional: true
 
   geocoded_by :full_street_address, latitude: :lat, longitude: :lon
-  before_validation :geocode, unless: ENV['SKIP_GEOCODE']
-
-  attr_accessible :name, :street, :city, :state, :zip, :phone, :lat, :lon, :website, :region_id, :location_type_id, :comments, :zone_id, :zone, :operator_id, :machines, :region, :operator, :location_type, :user_inputted_address
+  before_validation :geocode, unless: :skip_geocoding?
 
   def full_street_address
     [street, city, state, zip].join(', ')

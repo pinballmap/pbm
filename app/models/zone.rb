@@ -1,9 +1,7 @@
-class Zone < ActiveRecord::Base
+class Zone < ApplicationRecord
   validates_presence_of :name
-  belongs_to :region
+  belongs_to :region, optional: true
   has_many :locations
-
-  attr_accessible :name, :region_id, :short_name, :is_primary
 
   default_scope { order 'name' }
 

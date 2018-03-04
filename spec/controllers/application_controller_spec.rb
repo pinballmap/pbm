@@ -18,13 +18,11 @@ describe ApplicationController, type: :controller do
   end
 
   before(:each) do
-    FactoryGirl.create(:region, name: 'portland', full_name: 'Portland')
+    FactoryBot.create(:region, name: 'portland', full_name: 'Portland')
   end
 
   describe 'CanCan AccessDenied' do
     it 'redirects to login page when you access a page that needs authorization' do
-      expect_any_instance_of(ApplicationController).to receive(:set_current_user).and_return(nil)
-
       get :index
 
       expect(response).to redirect_to '/users/login'
@@ -33,11 +31,9 @@ describe ApplicationController, type: :controller do
 
   describe '#mobile_device?' do
     it 'sets 1 to mobile param session when true' do
-      expect_any_instance_of(ApplicationController).to receive(:set_current_user).and_return(nil)
-
       session[:mobile_param] = '1'
 
-      get :index
+      get :index, format: :json
 
       expect(response.body).to eq('')
     end
@@ -45,7 +41,7 @@ describe ApplicationController, type: :controller do
 
   describe '#after_sign_in_path_for' do
     it 'redirects you to the main page' do
-      user = FactoryGirl.create(:user)
+      user = FactoryBot.create(:user)
 
       expect(controller.after_sign_in_path_for(user)).to eq('/')
     end
@@ -55,7 +51,7 @@ describe ApplicationController, type: :controller do
     it 'returns root path of you came from admin' do
       request.env['HTTP_REFERER'] = 'admin'
 
-      user = FactoryGirl.create(:user)
+      user = FactoryBot.create(:user)
 
       expect(controller.after_sign_out_path_for(user)).to eq('/')
     end
@@ -63,7 +59,7 @@ describe ApplicationController, type: :controller do
     it 'returns you to referrer page if it was not admin' do
       request.env['HTTP_REFERER'] = 'portland'
 
-      user = FactoryGirl.create(:user)
+      user = FactoryBot.create(:user)
 
       expect(controller.after_sign_out_path_for(user)).to eq('portland')
     end

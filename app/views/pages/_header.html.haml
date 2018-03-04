@@ -16,7 +16,7 @@
             %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
             %hr/
           %li.first_header_link=link_to 'Home', root_path
-          %li=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
+          %li=link_to 'User Profile', current_user.nil? ? inspire_profile_path : profile_user_path(current_user.id)
           %li=link_to 'Blog', 'http://blog.pinballmap.com'
           %li=link_to 'Store', store_path
           %li=link_to 'App', app_path
@@ -38,7 +38,7 @@
           %div.login_inner
             %span.darkb.login_inner
               = link_to 'Logout', destroy_user_session_path, :class => "loggedin"
-              - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
+              - if (current_user && !current_user.region_id.blank?)
                 %span.login_slash
                   |
                 = link_to 'Admin', rails_admin_path, :class => "loggedin"
@@ -73,7 +73,7 @@
         - else
           %span.login_list
             %li.login_list= link_to 'Logout', destroy_user_session_path
-            - if (Authorization.current_user && !Authorization.current_user.region_id.blank?)
+            - if (current_user && !current_user.region_id.blank?)
               %span.login_slash
                 |
               %li.login_list= link_to 'Admin', rails_admin_path
@@ -87,7 +87,7 @@
           %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
           %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
           %hr/
-        %li.first_header_link=link_to 'User Profile', (Authorization.current_user && !Authorization.current_user.is_a?(Authorization::AnonymousUser)) ? profile_user_path(Authorization.current_user.id) : inspire_profile_path
+        %li.first_header_link=link_to 'User Profile', current_user ? profile_user_path(current_user.id) : inspire_profile_path
         %li=link_to 'Blog', 'http://blog.pinballmap.com'
         %li=link_to 'Store', store_path
         %li=link_to 'App', app_path

@@ -3,6 +3,15 @@ class LocationsController < InheritedResources::Base
   has_scope :by_location_name, :by_location_id, :by_ipdb_id, :by_machine_id, :by_machine_name, :by_city_id, :by_machine_group_id, :by_zone_id, :by_operator_id, :by_type_id, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :by_center_point_and_ne_boundary, :region
   before_action :authenticate_user!, only: %i[update_desc update_metadata confirm]
 
+  def create
+    @location = Location.new(location_params)
+    if @location.save
+      redirect_to @location, notice: 'Location was successfully created.'
+    else
+      render action: 'new'
+    end
+  end
+
   def autocomplete
     render json: @region.locations.select { |l| l.name =~ /#{Regexp.escape params[:term] || ''}/i }.sort_by(&:name).map { |l| { label: l.name, value: l.name, id: l.id } }
   end
@@ -29,7 +38,7 @@ class LocationsController < InheritedResources::Base
   end
 
   def render_machine_names_for_infowindow
-    render text: Location.find(params[:id]).machine_names.join('<br />')
+    render plain: Location.find(params[:id]).machine_names.join('<br />')
   end
 
   def render_scores
@@ -60,7 +69,7 @@ class LocationsController < InheritedResources::Base
     l = Location.find(params[:id])
 
     values, message_type = l.update_metadata(
-      Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user,
+      current_user.nil? ? nil : current_user,
       phone: params["new_phone_#{l.id}"],
       website: params["new_website_#{l.id}"],
       operator_id: params["new_operator_#{l.id}"],
@@ -78,7 +87,7 @@ class LocationsController < InheritedResources::Base
     l = Location.find(params[:id])
 
     l.update_metadata(
-      Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user,
+      current_user.nil? ? nil : current_user,
       description: params["new_desc_#{l.id}"]
     )
 
@@ -102,12 +111,17 @@ class LocationsController < InheritedResources::Base
   end
 
   def newest_machine_name
-    render text: Location.find(params[:id]).newest_machine_xref.machine.name
+    render plain: Location.find(params[:id]).newest_machine_xref.machine.name
   end
 
   def confirm
     l = Location.find(params[:id])
-    l.confirm(Authorization.current_user ? Authorization.current_user : nil)
+    l.confirm(current_user ? current_user : nil)
     l
+  end
+
+  private
+  def location_params
+    params.require(:location).permit(:name, :street, :city, :state, :zip, :phone, :lat, :lon, :website, :zone_id, :region_id, :location_type_id, :description, :operator_id, :date_last_updated, :last_updated_by_user_id, :machine_ids)
   end
 end

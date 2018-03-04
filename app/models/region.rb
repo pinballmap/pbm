@@ -1,4 +1,4 @@
-class Region < ActiveRecord::Base
+class Region < ApplicationRecord
   has_many :locations
   has_many :zones
   has_many :users, (-> { order 'users.id' })
@@ -8,8 +8,6 @@ class Region < ActiveRecord::Base
   has_many :region_link_xrefs, (-> { order 'region_link_xrefs.id' })
   has_many :user_submissions
   has_many :location_machine_xrefs, through: :locations
-
-  attr_accessible :name, :full_name, :motd, :lat, :lon, :n_search_no, :default_search_type, :should_email_machine_removal, :should_auto_delete_empty_locations, :send_digest_comment_emails, :send_digest_removal_emails
 
   geocoded_by :lat_and_lon, latitude: :lat, longitude: :lon
 

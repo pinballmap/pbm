@@ -1,13 +1,15 @@
-require File.expand_path('../boot', __FILE__)
+require_relative 'boot'
 
 require 'rails/all'
 
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env) if defined?(Bundler)
+Bundler.require(*Rails.groups)
 
 module Pbm
   class Application < Rails::Application
+    config.load_defaults 5.1
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -41,8 +43,6 @@ module Pbm
     config.serve_static_files = true
     config.assets.initialize_on_precompile = false
     config.assets.version = '1.4'
-
-    config.active_record.raise_in_transactional_callbacks = true
 
     # unfortunate inability to use wildcards because of a bug in rails admin
     config.assets.precompile += %w(

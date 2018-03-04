@@ -7,7 +7,7 @@
     }
   });
 
-- conditions.collect! do |mcx|
+- conditions.each do |mcx|
   %div.machine_condition_new_line{:id => "past_machine_condition_#{mcx.id}"}
     %span.machine_condition= "#{mcx.comment}"
     .clear

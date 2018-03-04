@@ -1,5 +1,5 @@
 #  the real lat/lon of this address is (45.5207, -122.6628)
-FactoryGirl.define do
+FactoryBot.define do
   factory :location do
     name 'Test Location Name'
     street '303 Southeast 3rd Avenue'

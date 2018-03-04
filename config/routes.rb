@@ -4,7 +4,7 @@ if Region.table_exists? && Region.all.size > 0
   regions = Region.all.each.map { |r| r.name }.join('|')
 end
 
-Pbm::Application.routes.draw do
+Rails.application.routes.draw do
   apipie
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'

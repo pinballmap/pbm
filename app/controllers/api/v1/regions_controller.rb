@@ -1,7 +1,7 @@
 module Api
   module V1
     class RegionsController < InheritedResources::Base
-      before_filter :allow_cors
+      before_action :allow_cors
       respond_to :json
 
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_REGION = 250
@@ -60,7 +60,7 @@ module Api
       param :comments, String, desc: 'Things we should know about this region', required: false
       formats ['json']
       def suggest
-        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+        user = current_user.nil? ? nil : current_user
 
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 
@@ -84,7 +84,7 @@ module Api
       param :email, String, desc: "Sender's email address", required: false
       formats ['json']
       def contact
-        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+        user = current_user.nil? ? nil : current_user
 
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 
@@ -113,7 +113,7 @@ module Api
       param :message, String, desc: 'Message to app maintainer', required: true
       formats ['json']
       def app_comment
-        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+        user = current_user.nil? ? nil : current_user
 
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 

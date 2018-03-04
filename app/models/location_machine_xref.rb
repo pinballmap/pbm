@@ -1,15 +1,13 @@
-class LocationMachineXref < ActiveRecord::Base
+class LocationMachineXref < ApplicationRecord
   include Rakismet::Model
 
   rakismet_attrs content: :condition
 
-  belongs_to :location
-  belongs_to :machine
-  belongs_to :user
+  belongs_to :location, optional: true
+  belongs_to :machine, optional: true
+  belongs_to :user, optional: true
   has_many :machine_score_xrefs
   has_many :machine_conditions
-
-  attr_accessible :machine_id, :location_id, :condition, :condition_date, :ip, :user_id
 
   after_create :update_location, :create_user_submission
 

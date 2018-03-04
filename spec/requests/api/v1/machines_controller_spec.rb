@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Api::V1::MachinesController, type: :request do
   describe '#index' do
     before(:each) do
-      FactoryGirl.create(:machine, name: 'Cleo')
-      FactoryGirl.create(:machine, name: 'Bawb')
+      FactoryBot.create(:machine, name: 'Cleo')
+      FactoryBot.create(:machine, name: 'Bawb')
     end
 
     it 'returns all machines in the database' do
@@ -29,13 +29,13 @@ describe Api::V1::MachinesController, type: :request do
     end
 
     it 'respects region filter' do
-      portland = FactoryGirl.create(:region)
-      location = FactoryGirl.create(:location, region: portland)
-      FactoryGirl.create(:location_machine_xref, location: location, machine: FactoryGirl.create(:machine, id: 7, name: 'Cleo'))
+      portland = FactoryBot.create(:region)
+      location = FactoryBot.create(:location, region: portland)
+      FactoryBot.create(:location_machine_xref, location: location, machine: FactoryBot.create(:machine, id: 7, name: 'Cleo'))
 
-      chicago = FactoryGirl.create(:region)
-      another_location = FactoryGirl.create(:location, region: chicago)
-      FactoryGirl.create(:location_machine_xref, location: another_location, machine: FactoryGirl.create(:machine, id: 77, name: 'Bawb'))
+      chicago = FactoryBot.create(:region)
+      another_location = FactoryBot.create(:location, region: chicago)
+      FactoryBot.create(:location_machine_xref, location: another_location, machine: FactoryBot.create(:machine, id: 77, name: 'Bawb'))
 
       get "/api/v1/machines.json?region_id=#{portland.id}"
 
@@ -46,31 +46,31 @@ describe Api::V1::MachinesController, type: :request do
 
   describe '#create' do
     before(:each) do
-      @region = FactoryGirl.create(:region, name: 'Portland')
-      @location = FactoryGirl.create(:location, name: 'Ground Kontrol')
+      @region = FactoryBot.create(:region, name: 'Portland')
+      @location = FactoryBot.create(:location, name: 'Ground Kontrol')
 
-      FactoryGirl.create(:machine, name: 'Cleo')
-      FactoryGirl.create(:user, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      FactoryBot.create(:machine, name: 'Cleo')
+      FactoryBot.create(:user, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
     end
 
     it 'errors with missing location_id' do
-      post '/api/v1/machines.json', machine_name: 'Bawb', location_id: nil, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/machines.json', params: { machine_name: 'Bawb', location_id: nil, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find location')
     end
 
     it 'errors when not authed' do
-      post '/api/v1/machines.json', machine_name: 'Auth Bawb', location_id: @location.id.to_s
+      post '/api/v1/machines.json', params: { machine_name: 'Auth Bawb', location_id: @location.id.to_s }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::MachinesController::AUTH_REQUIRED_MSG)
     end
 
     it 'handles creation by machine name.. machine exists with same name.. case insensitive' do
-      post '/api/v1/machines.json', machine_name: 'Cleo', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/machines.json', params: { machine_name: 'Cleo', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Machine already exists')
 
-      post '/api/v1/machines.json', machine_name: 'cleo', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/machines.json', params: { machine_name: 'cleo', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Machine already exists')
 
@@ -78,7 +78,7 @@ describe Api::V1::MachinesController, type: :request do
     end
 
     it 'handles creation by machine name.. machine exists with same name.. ignores preceeding and trailing whitespace' do
-      post '/api/v1/machines.json', machine_name: ' Cleo ', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/machines.json', params: { machine_name: ' Cleo ', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Machine already exists')
 
@@ -95,7 +95,7 @@ describe Api::V1::MachinesController, type: :request do
         )
       end
 
-      post '/api/v1/machines.json', machine_name: 'Bawb', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/machines.json', params: { machine_name: 'Bawb', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(response.status).to eq(201)
       expect(JSON.parse(response.body)['machine']['name']).to eq('Bawb')
@@ -111,7 +111,7 @@ describe Api::V1::MachinesController, type: :request do
         )
       end
 
-      post '/api/v1/machines.json', machine_name: 'Auth Bawb', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/machines.json', params: { machine_name: 'Auth Bawb', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(response.status).to eq(201)
       expect(JSON.parse(response.body)['machine']['name']).to eq('Auth Bawb')

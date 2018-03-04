@@ -7,8 +7,8 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_filter :detect_region, :set_current_user
-  after_filter :flash_to_headers, :store_location
+  before_action :detect_region
+  after_action :flash_to_headers, :store_location
 
   rescue_from ActionView::MissingTemplate do
   end
@@ -220,16 +220,12 @@ END
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me) }
-    devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
-    devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
+    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me) }
+    devise_parameter_sanitizer.permit(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
+    devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
   end
 
   def detect_region
     @region = Region.find_by_name(params[:region].downcase) if params[:region] && (params[:region].is_a? String)
-  end
-
-  def set_current_user
-    Authorization.current_user = current_user
   end
 end

@@ -1,7 +1,5 @@
-class MachineGroup < ActiveRecord::Base
-  belongs_to :machine
+class MachineGroup < ApplicationRecord
+  belongs_to :machine, optional: true
 
   validates_presence_of :name
-
-  attr_accessible :name
 end

@@ -27,4 +27,9 @@ class MachineScoreXrefsController < InheritedResources::Base
 
     respond_with(@msxs)
   end
+
+  private
+  def machine_score_xref_params
+    params.require(:machine_score_xref).permit(:score, :location_machine_xref_id)
+  end
 end

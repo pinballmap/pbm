@@ -3,7 +3,7 @@
     %p.profile.darkb
       =link_to @user.username, profile_user_path(@user.id)
     %p.darkbl{:style => "font-size:16px;"} Member since: #{@user.created_at.strftime('%b-%d-%Y')}
-    - if !Authorization.current_user.is_a?(Authorization::AnonymousUser) && (@user.id == Authorization.current_user.id)
+    - if current_user && (@user.id == current_user.id)
       %p
         =link_to "Update email or password", edit_user_registration_path
   .right_column.right_column_profile

@@ -1,7 +1,5 @@
-class LocationType < ActiveRecord::Base
+class LocationType < ApplicationRecord
   has_many :locations
-
-  attr_accessible :name
 
   default_scope { order 'name' }
 end

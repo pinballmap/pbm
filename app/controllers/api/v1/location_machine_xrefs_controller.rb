@@ -1,7 +1,7 @@
 module Api
   module V1
     class LocationMachineXrefsController < InheritedResources::Base
-      before_filter :allow_cors
+      before_action :allow_cors
       respond_to :json
       has_scope :region, :limit
 
@@ -28,7 +28,7 @@ module Api
       param :condition, String, desc: "Notes on machine's condition", required: false
       formats ['json']
       def create
-        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+        user = current_user.nil? ? nil : current_user
 
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 
@@ -67,7 +67,7 @@ module Api
       formats ['json']
       def update
         lmx = LocationMachineXref.find(params[:id])
-        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+        user = current_user.nil? ? nil : current_user
 
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 
@@ -89,7 +89,7 @@ module Api
       formats ['json']
       def destroy
         lmx = LocationMachineXref.find(params[:id])
-        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+        user = current_user.nil? ? nil : current_user
 
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 

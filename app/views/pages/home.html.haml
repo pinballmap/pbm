@@ -76,11 +76,12 @@
     });
   });
   $().ready(function(){
-    initializeRegionMap(
-      [#{@region_data[0].join(', ')}],
-      [#{@region_data[1].join(', ')}],
-      [#{@region_data[2].join(', ')}],
-      [#{@region_data[3].join(', ')}]
-    );
+    - unless Rails.env.test?
+      initializeRegionMap(
+        [#{@region_data[0].join(', ')}],
+        [#{@region_data[1].join(', ')}],
+        [#{@region_data[2].join(', ')}],
+        [#{@region_data[3].join(', ').html_safe}]
+      );
   });
   
