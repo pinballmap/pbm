@@ -37,7 +37,7 @@
         %div.login.login_region.logged_yes
           %div.login_inner
             %span.darkb.login_inner
-              = link_to 'Logout', destroy_user_session_path, :class => "loggedin"
+              = link_to 'Logout', destroy_user_session_path, :class => "loggedin", method: :delete
               - if (current_user && !current_user.region_id.blank?)
                 %span.login_slash
                   |
@@ -72,7 +72,7 @@
             %li.login_list= link_to 'Join', new_user_registration_path
         - else
           %span.login_list
-            %li.login_list= link_to 'Logout', destroy_user_session_path
+            %li.login_list= link_to 'Logout', destroy_user_session_path, method: :delete
             - if (current_user && !current_user.region_id.blank?)
               %span.login_slash
                 |
