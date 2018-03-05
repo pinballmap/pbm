@@ -75,13 +75,15 @@
       $(".read_more").css("display","block");
     });
   });
-  $().ready(function(){
-    - unless Rails.env.test?
-      initializeRegionMap(
-        [#{@region_data[0].join(', ')}],
-        [#{@region_data[1].join(', ')}],
-        [#{@region_data[2].join(', ')}],
-        [#{@region_data[3].join(', ').html_safe}]
-      );
-  });
+
+- unless Rails.env.test?
+  :javascript
+    $().ready(function(){
+        initializeRegionMap(
+          [#{@region_data[0].join(', ')}],
+          [#{@region_data[1].join(', ')}],
+          [#{@region_data[2].join(', ')}],
+          [#{@region_data[3].join(', ').html_safe}]
+        );
+    });
   
