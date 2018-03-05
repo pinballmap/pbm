@@ -22,7 +22,7 @@ describe MachineScoreXrefsController do
   describe 'add machine scores', type: :feature, js: true do
     before(:each) do
       @user = FactoryBot.create(:user, username: 'cap')
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
     end
 
     it 'adds a score' do
@@ -105,7 +105,7 @@ describe MachineScoreXrefsController do
   describe 'displays scores correctly', type: :feature, js: true do
     it 'honors the hide/show of the display area' do
       @user = FactoryBot.create(:user, username: 'cap')
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
 
       lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine))
 

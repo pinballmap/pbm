@@ -36,26 +36,20 @@ class Location < ApplicationRecord
   scope :by_location_name, (->(name) { where('lower(name) ilike ?', '%' + name.downcase + '%') })
   scope :by_ipdb_id, (lambda { |id|
     machines = Machine.where('ipdb_id in (?)', id.split('_').map(&:to_i)).map(&:all_machines_in_machine_group).flatten
-
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
   })
   scope :by_machine_id, (lambda { |id|
     machines = Machine.where('id in (?)', id.split('_').map(&:to_i)).map(&:all_machines_in_machine_group).flatten
-
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
   })
   scope :by_machine_group_id, (lambda { |id|
     machines = Machine.where('machine_group_id in (?)', id)
-
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
   })
   scope :by_machine_name, (lambda { |name|
     machine = Machine.find_by_name(name)
-
     return Location.none if machine.nil?
-
     machines = machine.machine_group_id ? Machine.where('machine_group_id = ?', machine.machine_group_id).map(&:all_machines_in_machine_group).flatten : [machine]
-
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
   })
   scope :by_at_least_n_machines_city, (lambda { |n|
@@ -71,7 +65,6 @@ class Location < ApplicationRecord
     boundary_lat_lons = boundaries.split(',').collect(&:to_f)
     distance = Geocoder::Calculations.distance_between([boundary_lat_lons[0], boundary_lat_lons[1]], [boundary_lat_lons[2], boundary_lat_lons[3]])
     box = Geocoder::Calculations.bounding_box([boundary_lat_lons[0], boundary_lat_lons[1]], distance * MAP_SCALE)
-
     Location.within_bounding_box(box)
   })
 
@@ -155,7 +148,7 @@ class Location < ApplicationRecord
         self.phone = old_phone
         @validation_errors.push('Phone format invalid, please use ###-###-####')
       end
-    elsif new_phone && new_phone.blank?
+    elsif new_phone&.blank?
       self.phone = nil
     end
   end

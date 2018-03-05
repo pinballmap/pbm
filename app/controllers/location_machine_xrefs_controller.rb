@@ -102,6 +102,7 @@ class LocationMachineXrefsController < InheritedResources::Base
   def remove_confirmation; end
 
   private
+
   def event_params
     params.require(:location_machine_xref).permit(:machine_id, :location_id, :condition, :condition_date, :ip, :user_id)
   end

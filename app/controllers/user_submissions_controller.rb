@@ -12,6 +12,7 @@ class UserSubmissionsController < InheritedResources::Base
   end
 
   private
+
   def user_submission_params
     params.require(:user_submission).permit(:region_id, :user, :user_id, :submission_type, :submission, :location, :location_id, :machine, :machine_id)
   end

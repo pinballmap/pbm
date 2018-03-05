@@ -121,6 +121,7 @@ class LocationsController < InheritedResources::Base
   end
 
   private
+
   def location_params
     params.require(:location).permit(:name, :street, :city, :state, :zip, :phone, :lat, :lon, :website, :zone_id, :region_id, :location_type_id, :description, :operator_id, :date_last_updated, :last_updated_by_user_id, :machine_ids)
   end

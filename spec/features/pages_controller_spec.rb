@@ -148,7 +148,7 @@ describe PagesController do
   describe 'Location suggestions', type: :feature, js: true do
     it 'limits state dropdown to unique states within a region' do
       @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
       chicago = FactoryBot.create(:region, name: 'chicago')
 
       FactoryBot.create(:location, region: @region, state: 'WA')
@@ -274,7 +274,7 @@ describe PagesController do
       expect(page).to have_content('Login')
 
       user = FactoryBot.create(:user)
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
 
       visit '/'
 
@@ -287,7 +287,7 @@ describe PagesController do
       expect(page).to have_content('Logout')
 
       user = FactoryBot.create(:user, region_id: @region.id)
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
 
       visit '/'
 
@@ -308,7 +308,7 @@ describe PagesController do
       expect(current_path).to eql(inspire_profile_path)
 
       user = FactoryBot.create(:user, id: 10)
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
 
       visit '/inspire_profile'
 

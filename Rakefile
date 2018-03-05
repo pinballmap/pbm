@@ -21,6 +21,7 @@ task report_empty_locations: :environment do
       )
     end
   end
+  # rubocop:enable Style/Next
 end
 
 desc 'Move region contents'

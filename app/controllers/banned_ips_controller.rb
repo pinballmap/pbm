@@ -12,6 +12,7 @@ class BannedIpsController < InheritedResources::Base
   end
 
   private
+
   def banned_ip_params
     params.require(:banned_ip).permit(:ip_address)
   end

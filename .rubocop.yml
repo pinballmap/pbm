@@ -43,3 +43,4 @@ AllCops:
     - 'config/**/*'
     - 'autotest/**/*'
     - 'vendor/**/*'
+    - 'bin/**/*'

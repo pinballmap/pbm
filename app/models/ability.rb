@@ -2,7 +2,7 @@ class Ability < ApplicationRecord
   include CanCan::Ability
 
   def initialize(user)
-    return unless user && user.region_id?
+    return unless user&.region_id?
 
     can :access, :rails_admin
     can :dashboard

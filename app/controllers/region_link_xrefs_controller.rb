@@ -12,6 +12,7 @@ class RegionLinkXrefsController < InheritedResources::Base
   end
 
   private
+
   def region_link_xref_params
     params.require(:region_link_xref).permit(:name, :url, :description, :category, :region_id, :sort_order)
   end

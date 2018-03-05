@@ -32,6 +32,7 @@ class EventsController < InheritedResources::Base
   end
 
   private
+
   def event_params
     params.require(:event).permit(:name, :long_desc, :start_date, :end_date, :region_id, :external_link, :category_no, :location_id, :category, :external_location_name, :ifpa_tournament_id, :ifpa_calendar_id)
   end

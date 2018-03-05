@@ -27,6 +27,7 @@ class RegionsController < InheritedResources::Base
   end
 
   private
+
   def region_params
     params.require(:region).permit(:name, :full_name, :motd, :lat, :lon, :n_search_no, :default_search_type, :should_email_machine_removal, :should_auto_delete_empty_locations, :send_digest_comment_emails, :send_digest_removal_emails)
   end

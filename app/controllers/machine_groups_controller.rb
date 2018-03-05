@@ -12,6 +12,7 @@ class MachineGroupsController < InheritedResources::Base
   end
 
   private
+
   def machine_group_params
     params.require(:machine_group).permit(:name)
   end

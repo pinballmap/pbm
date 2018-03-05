@@ -22,8 +22,8 @@ class MachinesController < InheritedResources::Base
   end
 
   private
+
   def machine_params
     params.require(:machine).permit(:name, :ipdb_link, :year, :manufacturer, :machine_group_id)
-
   end
 end

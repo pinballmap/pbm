@@ -12,6 +12,7 @@ class LocationPictureXrefsController < InheritedResources::Base
   end
 
   private
+
   def location_picture_xref_params
     params.require(:location_picture_xref).permit(:location_id, :description, :approved, :user_id, :photo_file_name, :photo_content_type, :photo_file_size, :photo)
   end

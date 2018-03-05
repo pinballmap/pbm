@@ -12,6 +12,7 @@ class ZonesController < InheritedResources::Base
   end
 
   private
+
   def zone_params
     params.require(:zone).permit(:name, :region_id, :short_name, :is_primary)
   end

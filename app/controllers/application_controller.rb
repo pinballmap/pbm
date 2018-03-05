@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
     operator = params['location_operator'] =~ /^[0-9]+$/ ? Operator.find(params['location_operator']) : Operator.find_by_name(params['location_operator'])
     zone = params['location_zone'] =~ /^[0-9]+$/ ? Zone.find(params['location_zone']) : Zone.find_by_name(params['location_zone'])
 
-    body = <<END
+    body = <<BODY
 (A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into #{request.protocol}#{request.host_with_port}#{rails_admin_path}. Thanks!)\n
 Location Name: #{params['location_name']}\n
 Street: #{params['location_street']}\n
@@ -65,7 +65,7 @@ Zone: #{zone ? zone.name : ''}\n
 Comments: #{params['location_comments']}\n
 Machines: #{params['location_machines']}\n
 (entered from #{request.remote_ip} via #{request.user_agent}#{user_info})\n
-END
+BODY
     Pony.mail(
       to: region.users.map(&:email),
       bcc: User.all.select(&:is_super_admin).map(&:email),
@@ -99,26 +99,26 @@ END
       to: Region.where('lower(name) = ?', 'portland').first.users.map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject('PBM - New region suggestion'),
-      body: <<END
+      body: <<BODY
 Their Name: #{params['name']}\n
 Their Email: #{params['email']}\n
 Region Name: #{params['region_name']}\n
 Region Comments: #{params['comments']}\n
 (entered from #{request.remote_ip} via #{request.user_agent})\n
-END
+BODY
     )
   end
 
   def send_admin_notification(params, region, user = nil)
     user_info = user ? "Username: #{user.username}\n\nSite Email: #{user.email}" : ''
 
-    body = <<END
+    body = <<BODY
 Their Name: #{params[:name]}\n
 Their Email: #{params[:email]}\n
 Message: #{params[:message]}\n
 #{user_info}\n
 (entered from #{request.remote_ip} via #{request.user_agent})\n
-END
+BODY
     Pony.mail(
       to: region.users.map(&:email),
       bcc: User.all.select(&:is_super_admin).map(&:email),
@@ -136,7 +136,7 @@ END
       bcc: User.all.select(&:is_super_admin).map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject('PBM - App feedback'),
-      body: <<END
+      body: <<BODY
 OS: #{params['os']}\n
 OS Version: #{params['os_version']}\n
 Device Type: #{params['device_type']}\n
@@ -145,7 +145,7 @@ Region: #{region.name}\n
 Their Name: #{params['name']}\n
 Their Email: #{params['email']}\n
 Message: #{params['message']}\n
-END
+BODY
     )
   end
 

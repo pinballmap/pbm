@@ -129,15 +129,15 @@ class Region < ApplicationRecord
   end
 
   def generate_daily_digest_comments_email_body
-    start_of_day = (DateTime.now - 1.day).beginning_of_day
-    end_of_day = (DateTime.now - 1.day).end_of_day
+    start_of_day = (Time.now - 1.day).beginning_of_day
+    end_of_day = (Time.now - 1.day).end_of_day
 
     submissions = user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE }.collect(&:submission).sort.join("\n\n")
 
     return nil if submissions.nil? || submissions.empty?
 
     <<HERE
-Here is a list of all the comments that were placed in your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
+Here is a list of all the comments that were placed in your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
 
 #{full_name} Daily Comments
 
@@ -146,15 +146,15 @@ HERE
   end
 
   def generate_daily_digest_removals_email_body
-    start_of_day = (DateTime.now - 1.day).beginning_of_day
-    end_of_day = (DateTime.now - 1.day).end_of_day
+    start_of_day = (Time.now - 1.day).beginning_of_day
+    end_of_day = (Time.now - 1.day).end_of_day
 
     submissions = user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.collect(&:submission).sort.join("\n\n")
 
     return nil if submissions.nil? || submissions.empty?
 
     <<HERE
-Here is a list of all the machines that were removed from your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
+Here is a list of all the machines that were removed from your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
 
 #{full_name} Daily Machine Removals
 
@@ -163,8 +163,8 @@ HERE
   end
 
   def generate_weekly_admin_email_body
-    start_of_week = (DateTime.now - 1.week).beginning_of_day
-    end_of_week = DateTime.now.end_of_day
+    start_of_week = (Time.now - 1.week).beginning_of_day
+    end_of_week = Time.now.end_of_day
 
     <<HERE
 Here is an overview of your pinball map region! Thanks for keeping your region updated! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@fastmail.com

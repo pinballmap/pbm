@@ -22,7 +22,7 @@ describe LocationMachineXrefsController do
       @machine_to_add = FactoryBot.create(:machine, name: 'Medieval Madness')
       FactoryBot.create(:machine, name: 'Star Wars')
 
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
     end
 
     it 'Should add by id' do
@@ -149,7 +149,7 @@ describe LocationMachineXrefsController do
       @lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine))
       @user = FactoryBot.create(:user, id: 11, username: 'ssw', email: 'foo@bar.com')
 
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
     end
 
     it 'does not save spam' do
@@ -334,7 +334,7 @@ describe LocationMachineXrefsController do
 
     it 'adds by machine name from input -- autocorrect picks via id' do
       @user = FactoryBot.create(:user)
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
 
       FactoryBot.create(:machine, id: 10, name: 'Sassy Madness', year: 1980, manufacturer: 'Bally')
       FactoryBot.create(:machine, id: 11, name: 'Sassy Madness', year: 2010, manufacturer: 'Bally')
@@ -364,7 +364,7 @@ describe LocationMachineXrefsController do
 
     it 'adds by machine name from input' do
       @user = FactoryBot.create(:user)
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
 
       FactoryBot.create(:machine, name: 'Sassy Madness')
       FactoryBot.create(:machine, name: 'Sassy From The Black Lagoon')
@@ -613,7 +613,7 @@ describe LocationMachineXrefsController do
 
     it 'automatically loads with machine detail visible on a single location search' do
       @user = FactoryBot.create(:user)
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
 
       visit "/#{@region.name}"
       page.find('input#location_search_button').click
@@ -737,7 +737,7 @@ describe LocationMachineXrefsController do
 
     it 'displays appropriate values in location description' do
       @user = FactoryBot.create(:user)
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
 
       visit "/#{@region.name}"
       page.find('input#location_search_button').click

@@ -8,7 +8,7 @@ describe LocationsController do
   describe 'confirm location', type: :feature, js: true do
     before(:each) do
       @user = FactoryBot.create(:user, username: 'ssw')
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
 
       @location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
       @machine = FactoryBot.create(:machine, name: 'Bawb')
@@ -40,7 +40,7 @@ describe LocationsController do
       @location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
       @machine = FactoryBot.create(:machine, name: 'Bawb')
 
-      page.set_rack_session("warden.user.user.key" => nil)
+      page.set_rack_session("warden.user.user.key": nil)
     end
 
     it 'removes a machine from a location' do
@@ -61,7 +61,7 @@ describe LocationsController do
   describe 'remove machine', type: :feature, js: true do
     before(:each) do
       @user = FactoryBot.create(:user, id: 1001, username: 'ssw', email: 'ssw@test.com')
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
 
       @location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
       @machine = FactoryBot.create(:machine, name: 'Bawb')
@@ -156,15 +156,15 @@ describe LocationsController do
     it 'by_city_id' do
       visit '/portland/?by_city_id=' + @location.city
 
-      expect(find("#search_results")).to have_content('Cleo')
-      expect(find("#search_results")).to_not have_content('Sass')
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to_not have_content('Sass')
     end
 
     it 'by_operator_id' do
       visit '/portland/?by_operator_id=' + @location.operator_id.to_s
 
-      expect(find("#search_results")).to have_content('Cleo')
-      expect(find("#search_results")).to_not have_content('Sass')
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to_not have_content('Sass')
     end
 
     it 'by_machine_group_id' do
@@ -178,16 +178,16 @@ describe LocationsController do
 
       visit '/portland/?by_machine_group_id=' + machine_group.id.to_s
 
-      expect(find("#search_results")).to have_content('Sass Reg Ed')
-      expect(find("#search_results")).to have_content('Sass Tournament Ed')
-      expect(find("#search_results")).to_not have_content('Barb')
+      expect(find('#search_results')).to have_content('Sass Reg Ed')
+      expect(find('#search_results')).to have_content('Sass Tournament Ed')
+      expect(find('#search_results')).to_not have_content('Barb')
     end
 
     it 'by_location_id' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      expect(find("#search_results")).to have_content('Cleo')
-      expect(find("#search_results")).to_not have_content('Sass')
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to_not have_content('Sass')
     end
 
     it 'by_location_id -- multiple ids' do
@@ -195,16 +195,16 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s + '_' + other_location.id.to_s
 
-      expect(find("#search_results")).to have_content('Cleo')
-      expect(find("#search_results")).to have_content('Zelda')
-      expect(find("#search_results")).to_not have_content('Sass')
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to have_content('Zelda')
+      expect(find('#search_results')).to_not have_content('Sass')
     end
 
     it 'by_zone_id' do
       visit '/portland/?by_zone_id=' + @zone.id.to_s
 
-      expect(find("#search_results")).to have_content('Cleo')
-      expect(find("#search_results")).to_not have_content('Sass')
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to_not have_content('Sass')
     end
 
     it 'by_zone_id -- multiple ids' do
@@ -212,16 +212,16 @@ describe LocationsController do
       FactoryBot.create(:location, region: @region, name: 'Zelda', zone: other_zone)
       visit '/portland/?by_zone_id=' + @zone.id.to_s + '_' + other_zone.id.to_s
 
-      expect(find("#search_results")).to have_content('Cleo')
-      expect(find("#search_results")).to have_content('Zelda')
-      expect(find("#search_results")).to_not have_content('Sass')
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to have_content('Zelda')
+      expect(find('#search_results')).to_not have_content('Sass')
     end
 
     it 'by_type_id' do
       visit '/portland/?by_location_type_id=' + @type.id.to_s
 
-      expect(find("#search_results")).to have_content('Cleo')
-      expect(find("#search_results")).to_not have_content('Sass')
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to_not have_content('Sass')
     end
 
     it 'by_type_id -- multiple ids' do
@@ -230,23 +230,23 @@ describe LocationsController do
 
       visit '/portland/?by_location_type_id=' + @type.id.to_s + '_' + other_type.id.to_s
 
-      expect(find("#search_results")).to have_content('Cleo')
-      expect(find("#search_results")).to have_content('Zelda')
-      expect(find("#search_results")).to_not have_content('Sass')
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to have_content('Zelda')
+      expect(find('#search_results')).to_not have_content('Sass')
     end
 
     it 'by_ipdb_id' do
       visit '/portland/?by_ipdb_id=' + @machine.ipdb_id.to_s
 
-      expect(find("#search_results")).to have_content('Cleo')
-      expect(find("#search_results")).to_not have_content('Sass')
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to_not have_content('Sass')
     end
 
     it 'by_machine_id' do
       visit '/portland/?by_machine_id=' + @machine.id.to_s
 
-      expect(find("#search_results")).to have_content('Cleo')
-      expect(find("#search_results")).to_not have_content('Sass')
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to_not have_content('Sass')
     end
 
     it 'by_machine_id -- multiple ids' do
@@ -256,16 +256,16 @@ describe LocationsController do
 
       visit '/portland/?by_machine_id=' + @machine.id.to_s + '_' + other_machine.id.to_s
 
-      expect(find("#search_results")).to have_content('Cleo')
-      expect(find("#search_results")).to have_content('Zelda')
-      expect(find("#search_results")).to_not have_content('Sass')
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to have_content('Zelda')
+      expect(find('#search_results')).to_not have_content('Sass')
     end
   end
 
   describe 'update_metadata', type: :feature, js: true do
     before(:each) do
       @user = FactoryBot.create(:user)
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
 
       @location = FactoryBot.create(:location, region: @region, name: 'Cleo')
     end
@@ -393,7 +393,7 @@ describe LocationsController do
   describe 'update_desc', type: :feature, js: true do
     before(:each) do
       @user = FactoryBot.create(:user)
-      page.set_rack_session("warden.user.user.key" => User.serialize_into_session(@user))
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
 
       @location = FactoryBot.create(:location, region: @region, name: 'Cleo')
     end

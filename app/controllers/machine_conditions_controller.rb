@@ -18,6 +18,7 @@ class MachineConditionsController < InheritedResources::Base
   end
 
   private
+
   def condition_params
     params.require(:machine_condition).permit(:comment, :location_machine_xref, :user, :user_id)
   end

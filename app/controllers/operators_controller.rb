@@ -12,6 +12,7 @@ class OperatorsController < InheritedResources::Base
   end
 
   private
+
   def operator_params
     params.require(:operator).permit(:name, :region_id, :email, :website, :phone)
   end

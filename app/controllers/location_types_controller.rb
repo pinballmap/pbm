@@ -12,6 +12,7 @@ class LocationTypesController < InheritedResources::Base
   end
 
   private
+
   def location_type_params
     params.require(:location_type).permit(:name)
   end
