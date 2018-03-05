@@ -1,4 +1,4 @@
-class RemoveLocationPictureXrefNoFromLocationPictureXref < ActiveRecord::Migration
+class RemoveLocationPictureXrefNoFromLocationPictureXref < ActiveRecord::Migration[4.2]
   def self.up
     remove_column :location_picture_xrefs, :location_picture_xref_no
   end

@@ -1,4 +1,4 @@
-class RenameLocationDescToLocationDescription < ActiveRecord::Migration
+class RenameLocationDescToLocationDescription < ActiveRecord::Migration[4.2]
   def self.up
     rename_column :locations, :desc, :description
   end

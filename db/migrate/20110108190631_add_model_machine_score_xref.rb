@@ -1,4 +1,4 @@
-class AddModelMachineScoreXref < ActiveRecord::Migration
+class AddModelMachineScoreXref < ActiveRecord::Migration[4.2]
   def self.up
     create_table :machine_score_xrefs do |t|
       t.integer :location_machine_xref_id

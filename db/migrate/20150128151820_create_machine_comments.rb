@@ -1,4 +1,4 @@
-class CreateMachineComments < ActiveRecord::Migration
+class CreateMachineComments < ActiveRecord::Migration[4.2]
   def change
     create_table :machine_comments do |t|
       t.text :comment

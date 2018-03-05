@@ -1,4 +1,4 @@
-class AddMetaFieldsToUserSubmissions < ActiveRecord::Migration
+class AddMetaFieldsToUserSubmissions < ActiveRecord::Migration[4.2]
   def change
     add_column :user_submissions, :location_id, :integer
     add_column :user_submissions, :machine_id, :integer

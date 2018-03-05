@@ -1,4 +1,4 @@
-class CreateMachines < ActiveRecord::Migration
+class CreateMachines < ActiveRecord::Migration[4.2]
   def self.up
     create_table :machines do |t|
       t.string :name

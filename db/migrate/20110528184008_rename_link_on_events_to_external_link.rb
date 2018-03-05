@@ -1,4 +1,4 @@
-class RenameLinkOnEventsToExternalLink < ActiveRecord::Migration
+class RenameLinkOnEventsToExternalLink < ActiveRecord::Migration[4.2]
   def self.up
     rename_column :events, :link, :external_link
   end

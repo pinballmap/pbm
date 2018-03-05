@@ -1,4 +1,4 @@
-class AddFullNameToRegion < ActiveRecord::Migration
+class AddFullNameToRegion < ActiveRecord::Migration[4.2]
   def self.up
     add_column :regions, :full_name, :string
   end

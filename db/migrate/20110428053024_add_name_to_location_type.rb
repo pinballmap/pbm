@@ -1,4 +1,4 @@
-class AddNameToLocationType < ActiveRecord::Migration
+class AddNameToLocationType < ActiveRecord::Migration[4.2]
   def self.up
     add_column :location_types, :name, :string
   end

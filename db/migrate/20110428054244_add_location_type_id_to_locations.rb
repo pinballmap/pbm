@@ -1,4 +1,4 @@
-class AddLocationTypeIdToLocations < ActiveRecord::Migration
+class AddLocationTypeIdToLocations < ActiveRecord::Migration[4.2]
   def self.up
     add_column :locations, :location_type_id, :integer
   end

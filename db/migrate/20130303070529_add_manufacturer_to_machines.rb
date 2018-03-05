@@ -1,4 +1,4 @@
-class AddManufacturerToMachines < ActiveRecord::Migration
+class AddManufacturerToMachines < ActiveRecord::Migration[4.2]
   def up
     add_column :machines, :manufacturer, :string
   end

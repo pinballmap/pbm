@@ -1,4 +1,4 @@
-class AddRegionIdToLocation < ActiveRecord::Migration
+class AddRegionIdToLocation < ActiveRecord::Migration[4.2]
   def self.up
     add_column :locations, :region_id, :integer
   end
