@@ -971,6 +971,8 @@ GEM
       simple_oauth (~> 0.3.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
+    uglifier (4.1.6)
+      execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
@@ -1050,6 +1052,7 @@ DEPENDENCIES
   spork
   timecop
   twitter
+  uglifier
 
 RUBY VERSION
    ruby 2.3.4p301
