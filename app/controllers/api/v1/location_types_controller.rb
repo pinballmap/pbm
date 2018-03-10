@@ -1,7 +1,7 @@
 module Api
   module V1
     class LocationTypesController < InheritedResources::Base
-      before_filter :allow_cors
+      before_action :allow_cors
       respond_to :json
 
       api :GET, '/api/v1/location_types.json', 'Fetch all location types'

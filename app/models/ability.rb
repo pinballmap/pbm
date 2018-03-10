@@ -1,11 +1,11 @@
-class Ability < ApplicationRecord
+class Ability
   include CanCan::Ability
 
   def initialize(user)
     return unless user&.region_id?
 
     can :access, :rails_admin
-    can :dashboard
+    can :read, :dashboard
     can :history
     can :manage, [Event, Operator, RegionLinkXref, Zone], region_id: user.region_id
     can %i[read], [UserSubmission], region_id: user.region_id

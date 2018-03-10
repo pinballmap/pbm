@@ -27,6 +27,10 @@ class User < ApplicationRecord
     roles
   end
 
+  def admin?
+    defined? region_id
+  end
+
   def validate_username
     return unless User.where(email: username).exists?
 
