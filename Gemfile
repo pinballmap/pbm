@@ -38,6 +38,7 @@ gem 'sass-rails'
 gem 'simple_form'
 gem 'simple_token_authentication'
 gem 'twitter'
+gem 'uglifier'
 
 group :production do
   gem 'rails_12factor'
