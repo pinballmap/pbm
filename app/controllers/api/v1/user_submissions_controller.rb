@@ -1,6 +1,8 @@
 module Api
   module V1
     class UserSubmissionsController < InheritedResources::Base
+      protect_from_forgery with: :null_session, if: -> { request.format.json? }
+
       before_action :allow_cors
       respond_to :json
 
