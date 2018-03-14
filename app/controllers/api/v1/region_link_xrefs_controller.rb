@@ -1,7 +1,7 @@
 module Api
   module V1
     class RegionLinkXrefsController < InheritedResources::Base
-      protect_from_forgery with: :null_session, if: -> { request.format.json? }
+      skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
       respond_to :json
