@@ -4,5 +4,6 @@
   map = new google.maps.Map(document.getElementById("map_canvas"), {
     center: {lat: #{@region.lat}, lng: #{@region.lon}},
     zoom: 12,
+    gestureHandling: 'greedy',
     styles: homeMap
   });
