@@ -24,7 +24,8 @@
   - if (l.location_type)
     %li.location_type
       %span.italic Location Type:
-      %span.bold &nbsp;#{l.location_type.name}
+      %span.bold 
+        =link_to "#{l.location_type.name}", "#{request.host_with_port}/#{@region.name.downcase}?utf8=✓&by_location_type_id=#{l.location_type.id}"
   .clear
 %div[l, :metadata_edit]{:style => 'display:none'}
   = form_tag update_metadata_locations_path(:action => 'update_metadata', :id => l.id, :region => @region.name), :id => "update_metadata_#{l.id}", :method => 'get' do
