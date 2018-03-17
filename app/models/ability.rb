@@ -9,7 +9,6 @@ class Ability
     can :history
     can :manage, [Event, Operator, RegionLinkXref, Zone], region_id: user.region_id
     can %i[read], [UserSubmission], region_id: user.region_id
-    can %i[update read], [User]
     can %i[update read], [LocationPictureXref], location: { region_id: user.region_id }
     can %i[update read destroy], [MachineCondition, MachineScoreXref], location: { region_id: user.region_id }
 

@@ -33,6 +33,12 @@ RailsAdmin.add_extension(:cancancan2, RailsAdmin::Extensions::CanCanCan2, author
 RailsAdmin.config do |config|
   config.authorize_with :cancancan2
 
+  config.parent_controller = 'ApplicationController'
+
+  config.authenticate_with do
+    warden.authenticate! scope: :user
+  end
+
   config.current_user_method(&:current_user)
 
   config.audit_with :history, User
@@ -91,7 +97,7 @@ RailsAdmin.config do |config|
       field :category, :string
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.region_id, :object_type => 'event'}
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.region_id, :object_type => 'event'}
         end
       end
     end
@@ -199,7 +205,7 @@ RailsAdmin.config do |config|
       field :description, :string
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.is_super_admin ? nil : Authorization.current_user.region_id, :object_type => 'location'}
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.region_id, :object_type => 'location'}
         end
       end
       field :location_machine_xrefs do
@@ -324,7 +330,7 @@ RailsAdmin.config do |config|
       field :phone, :string
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.is_super_admin ? nil : Authorization.current_user.region_id, :object_type => 'operator'}
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.is_super_admin ? nil : bindings[:view]._current_user.region_id, :object_type => 'operator'}
         end
       end
     end
@@ -415,7 +421,7 @@ RailsAdmin.config do |config|
       field :sort_order, :integer
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.region_id, :object_type => 'region_link_xref'}
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.region_id, :object_type => 'region_link_xref'}
         end
       end
     end
@@ -513,7 +519,7 @@ RailsAdmin.config do |config|
       field :is_primary, :boolean
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.region_id, :object_type => 'zone'}
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.region_id, :object_type => 'zone'}
         end
       end
     end
@@ -619,7 +625,7 @@ RailsAdmin.config do |config|
       field :name, :string
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => Authorization.current_user.is_super_admin ? nil : Authorization.current_user.region_id, :object_type => 'suggested_location'}
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, :object_type => 'suggested_location'}
         end
       end
       field :location_type, :belongs_to_association
