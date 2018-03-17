@@ -218,7 +218,7 @@ describe LocationsController do
     end
 
     it 'by_type_id' do
-      visit '/portland/?by_location_type_id=' + @type.id.to_s
+      visit '/portland/?by_type_id=' + @type.id.to_s
 
       expect(find('#search_results')).to have_content('Cleo')
       expect(find('#search_results')).to_not have_content('Sass')
@@ -228,7 +228,7 @@ describe LocationsController do
       other_type = FactoryBot.create(:location_type, name: 'PUB')
       FactoryBot.create(:location, region: @region, name: 'Zelda', location_type: other_type)
 
-      visit '/portland/?by_location_type_id=' + @type.id.to_s + '_' + other_type.id.to_s
+      visit '/portland/?by_type_id=' + @type.id.to_s + '_' + other_type.id.to_s
 
       expect(find('#search_results')).to have_content('Cleo')
       expect(find('#search_results')).to have_content('Zelda')
