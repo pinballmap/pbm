@@ -140,6 +140,7 @@ HERE
     it 'should send an email' do
       FactoryBot.create(:location_type, name: 'type')
       FactoryBot.create(:operator, name: 'operator')
+      FactoryBot.create(:zone, name: 'zone')
 
       logout
 
@@ -154,7 +155,7 @@ Phone: phone\n
 Website: website\n
 Type: type\n
 Operator: operator\n
-Zone: \n
+Zone: zone\n
 Comments: comments\n
 Machines: machines\n
 (entered from 0.0.0.0 via Rails Testing)\n
@@ -170,7 +171,7 @@ HERE
         )
       end
 
-      post 'submitted_new_location', params: { region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
+      post 'submitted_new_location', params: { region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
 
       expect(@region.user_submissions.count).to eq(1)
       submission = @region.user_submissions.first
@@ -228,8 +229,9 @@ HERE
     it 'should create a suggested location object' do
       location_type = FactoryBot.create(:location_type, name: 'type')
       operator = FactoryBot.create(:operator, name: 'operator')
+      zone = FactoryBot.create(:zone, name: 'zone')
 
-      post 'submitted_new_location', params: { region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
+      post 'submitted_new_location', params: { region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_zone: 'zone', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
 
       expect(SuggestedLocation.all.size).to eq(1)
 
@@ -243,6 +245,7 @@ HERE
       expect(sl.phone).to eq('phone')
       expect(sl.website).to eq('website')
       expect(sl.location_type).to eq(location_type)
+      expect(sl.zone).to eq(zone)
       expect(sl.operator).to eq(operator)
       expect(sl.comments).to eq('comments')
       expect(sl.machines).to eq('machines')

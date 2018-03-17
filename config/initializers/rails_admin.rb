@@ -618,6 +618,7 @@ RailsAdmin.config do |config|
       field :zip, :string
       field :phone, :string
       field :operator, :belongs_to_association
+      field :zone, :belongs_to_association
       field :created_at, :datetime
       field :updated_at, :datetime
     end
@@ -630,6 +631,7 @@ RailsAdmin.config do |config|
       end
       field :location_type, :belongs_to_association
       field :operator, :belongs_to_association
+      field :zone, :belongs_to_association
       field :street, :string
       field :city, :string
       field :state, :string
@@ -653,6 +655,7 @@ RailsAdmin.config do |config|
       field :name, :string
       field :location_type, :belongs_to_association
       field :operator, :belongs_to_association
+      field :zone, :belongs_to_association
       field :region, :belongs_to_association
       field :street, :string
       field :city, :string

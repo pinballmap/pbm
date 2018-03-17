@@ -5,8 +5,9 @@ describe SuggestedLocationsController, type: :controller do
     @r = FactoryBot.create(:region, name: 'portland')
     @lt = FactoryBot.create(:location_type, name: 'lt')
     @o = FactoryBot.create(:operator, name: 'o', region: @r)
+    @z = FactoryBot.create(:zone, name: 'z', region: @r)
 
-    @sl = FactoryBot.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', phone: '555-555-5555', lat: 11.11, lon: 22.22, website: 'http://www.cool.com', region: @r, location_type: @lt, operator: @o, machines: 'The Dark Knight (Stern, 2008), Star Trek (Pro) [Stern - 2013], Challenger [Gottlieb - 1971], The Bally Game Show (Bally, 1990), this will not match')
+    @sl = FactoryBot.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', phone: '555-555-5555', lat: 11.11, lon: 22.22, website: 'http://www.cool.com', region: @r, location_type: @lt, operator: @o, zone: @z, machines: 'The Dark Knight (Stern, 2008), Star Trek (Pro) [Stern - 2013], Challenger [Gottlieb - 1971], The Bally Game Show (Bally, 1990), this will not match')
 
     login
   end
@@ -34,6 +35,7 @@ describe SuggestedLocationsController, type: :controller do
       expect(l.website).to eq('http://www.cool.com')
       expect(l.region).to eq(@r)
       expect(l.location_type).to eq(@lt)
+      expect(l.zone).to eq(@z)
       expect(l.operator).to eq(@o)
 
       expect(SuggestedLocation.all.size).to eq(0)

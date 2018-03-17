@@ -110,6 +110,9 @@ class PagesController < ApplicationController
 
     @operators = Operator.where(['region_id = ?', @region.id]).map(&:name).uniq.sort
     @operators.unshift('')
+
+    @zones = Zone.where(['region_id = ?', @region.id]).map(&:name).uniq.sort
+    @zones.unshift('')
   end
 
   def robots

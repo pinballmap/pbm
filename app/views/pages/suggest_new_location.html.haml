@@ -31,9 +31,12 @@
               %li
                 %label{:for => "location_type"} Location Type:
                 = select_tag :location_type, options_for_select(@location_types)
-              %li
+              %li{:class => "first"}
                 %label{:for => "location_operator"} Operator:
                 = select_tag :location_operator, options_for_select(@operators)
+              %li
+                %label{:for => "location_zone"} Zone:
+                = select_tag :location_zone, options_for_select(@zones)
               %li.textbox
                 %label{:for => "location_comments"} Comments:
                 %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text"}
