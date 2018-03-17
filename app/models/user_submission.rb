@@ -14,6 +14,7 @@ class UserSubmission < ApplicationRecord
   LOCATION_METADATA_TYPE = 'location_metadata'.freeze
   NEW_SCORE_TYPE = 'new_msx'.freeze
   CONFIRM_LOCATION_TYPE = 'confirm_location'.freeze
+  DELETE_LOCATION_TYPE = 'delete_location'.freeze
 
   def user_email
     user ? user.email : ''

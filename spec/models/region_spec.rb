@@ -101,6 +101,10 @@ HERE
       FactoryBot.create(:user_submission, region: @region, submission_type: 'remove_machine')
       FactoryBot.create(:user_submission, region: @region, submission_type: 'remove_machine')
 
+      FactoryBot.create(:user_submission, region: @region, submission_type: 'delete_location')
+      FactoryBot.create(:user_submission, region: @region, submission_type: 'delete_location')
+      FactoryBot.create(:user_submission, region: @region, submission_type: 'delete_location')
+
       FactoryBot.create(:location_machine_xref, location: location_added_today, machine: FactoryBot.create(:machine), created_at: Date.today - 2.week)
       FactoryBot.create(:location_machine_xref, location: location_added_today, machine: FactoryBot.create(:machine), created_at: Date.today - 2.week)
 
@@ -134,6 +138,7 @@ SL 2
 
 2 Location(s) submitted to you this week
 2 Location(s) added by you this week
+3 Location(s) deleted this week
 2 machine comment(s) by users this week
 1 machine(s) added by users this week
 2 machine(s) removed by users this week

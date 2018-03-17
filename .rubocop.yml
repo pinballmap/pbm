@@ -11,9 +11,9 @@ GuardClause:
 PerlBackrefs:
   Enabled: false
 CyclomaticComplexity:
-  Max: 15
+  Max: 16
 PerceivedComplexity:
-  Max: 15
+  Max: 16
 AbcSize:
   Enabled: false
 Metrics/BlockLength:
