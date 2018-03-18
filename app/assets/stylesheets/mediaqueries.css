@@ -123,16 +123,16 @@
 }
 
 @media (max-width: 865px) {
-  .closest_locations, #header .closest_locations_outer {
+  /* .closest_locations, #header .closest_locations_outer {
     display:none;
-  }
+  } */
   #region_map {
     width: 420px;
     height: 270px;
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 920px) {
   #header .login_home {
     width: 40px;
   }
@@ -153,9 +153,6 @@
     text-align: center;
     border: none;
   }
-  .login_home .login_slash {
-    display: none;
-  }
   #header .geo_header_outer {
     width: 90px;
   }
@@ -167,37 +164,6 @@
     padding: 3px 4px 4px;
     text-align: center;
   }
-}
-
-@media (max-width: 950px) {
-
-  .left_column.secondary, .left_column_outer, .left_column {
-    float: none;
-    margin: 0px auto 10px;
-    padding: 1px 10px 10px;
-    min-height: auto;
-  }
-  .left_column_about {
-    float: none;
-    padding: 10px;
-  }
-  .right_column, #right_column, .right_column.secondary, .right_column_outer {
-    margin: 0 auto 10px;
-    display: block;
-    float: none;
-    clear: both;
-    min-height: auto;
-    width: 475px;
-  }
-  .right_column_outer .links_column {
-    width: 450px;
-  }
-  .event_column {
-    width: 395px;
-  }
-}
-
-@media (max-width: 1065px) {
   .blog_header_region {
     display: none;
   }
@@ -241,6 +207,38 @@
     padding: 3px 4px 4px;
     text-align: center;
   }
+}
+
+@media (max-width: 950px) {
+
+  .left_column.secondary, .left_column_outer, .left_column {
+    float: none;
+    margin: 0px auto 10px;
+    padding: 1px 10px 10px;
+    min-height: auto;
+  }
+  .left_column_about {
+    float: none;
+    padding: 10px;
+  }
+  .right_column, #right_column, .right_column.secondary, .right_column_outer {
+    margin: 0 auto 10px;
+    display: block;
+    float: none;
+    clear: both;
+    min-height: auto;
+    width: 475px;
+  }
+  .right_column_outer .links_column {
+    width: 450px;
+  }
+  .event_column {
+    width: 395px;
+  }
+}
+
+@media (max-width: 1065px) {
+
 }
 
 @media print {
