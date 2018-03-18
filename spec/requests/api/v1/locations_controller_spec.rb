@@ -53,7 +53,7 @@ describe Api::V1::LocationsController, type: :request do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: ['foo@bar.com'],
-          bcc: ['super_admin@bar.com'],
+          cc: ['super_admin@bar.com'],
           from: 'admin@pinballmap.com',
           subject: 'PBM - New location suggested for the portland pinball map',
           body: <<HERE
@@ -111,7 +111,7 @@ HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: ['foo@bar.com'],
-          bcc: ['super_admin@bar.com'],
+          cc: ['super_admin@bar.com'],
           from: 'admin@pinballmap.com',
           subject: 'PBM - New location suggested for the portland pinball map',
           body: <<HERE
