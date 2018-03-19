@@ -176,7 +176,7 @@ HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: ['la@admin.com'],
-          bcc: ['portland@admin.com'],
+          cc: ['portland@admin.com'],
           from: 'admin@pinballmap.com',
           subject: 'PBM - Message from the Los Angeles region',
           body: <<HERE
@@ -202,7 +202,7 @@ HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: ['la@admin.com'],
-          bcc: ['portland@admin.com'],
+          cc: ['portland@admin.com'],
           from: 'admin@pinballmap.com',
           subject: 'PBM - Message from the Los Angeles region',
           body: <<HERE
@@ -272,7 +272,7 @@ HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: 'pinballmap@fastmail.com',
-          bcc: ['portland@admin.com'],
+          cc: ['portland@admin.com'],
           from: 'admin@pinballmap.com',
           subject: 'PBM - App feedback',
           body: <<HERE

@@ -2,6 +2,8 @@
 	%ul
 		%li.name{:onclick => "locationLookupMapCenter(#{l.id});"}
 			=l.name
+		%span.permalink
+			=link_to image_tag( 'link.png' ), "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id, :alt => 'link to this location'
 		.clear
 		- if user_signed_in?
 			%span.location_description
@@ -19,11 +21,9 @@
 		%div.less_pictures[l, :less]
 		%div.location_confirm
 			= render :partial => 'locations/render_confirm', :locals => {:l => l}
-		%div.location_link
-			=link_to 'Link to this location', "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id
 		%div.login_alert
 			- if !user_signed_in?
-				= link_to link_to 'To update this location, you must login! Click here', "https://#{request.host_with_port}/users/login"
+				= link_to link_to 'LOGIN to update this location! Click here', "https://#{request.host_with_port}/users/login"
 	- if user_signed_in?
 		= render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
 		= render :partial => 'locations/add_machine', :locals => {:location => l}
