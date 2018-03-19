@@ -25,21 +25,19 @@ body {
   min-width: 320px;
 }
 #header {
-  position: fixed;
-  box-shadow: none;
-  width: 100%;
+  position: absolute;
   min-width: 320px;
-  height: auto;
+  height: 36px;
+  padding: 5px 0 5px;
   margin: 0 auto;
   z-index: 600;
 }
 #header_lower {
   position: relative;
-  box-shadow: none;
   width: 100%;
   min-width: 320px;
   height: auto;
-  margin: 35px auto 0;
+  margin: 45px auto 0;
 }
 #header a img {
   float: none;
@@ -71,7 +69,7 @@ body {
   -ms-flex-pack: space-around;
   justify-content: space-around;
   left: 10px;
-  top: 0;
+  top: 5px;
   position: absolute;
 }
 #header #nav {
@@ -130,6 +128,7 @@ body {
 }
 .other_regions {
   margin: 0 auto;
+  padding-top: 10px;
   width: 100%;
   height: 55px;
   font-size: 20px;
@@ -195,8 +194,6 @@ span.region_name_page {
 
 #header.header_home, #header.header_image_home {
   min-width: 320px;
-  padding: 0;
-  height: auto;
 }
 
 .login_slash {
@@ -243,7 +240,7 @@ span.login_list {
   -ms-flex-pack: space-around;
   justify-content: space-around;
   right: 10px;
-  top: 0;
+  top: 6px;
   position: absolute;
 }
 .user_icon_link img {
@@ -271,7 +268,7 @@ div.pick_a_map {
 .apps_header, .blog_header, .store_header, .closest_locations, .geo_header_wrapper {
   width: 100% !important;
   float: none;
-  padding: 4px 0;
+  padding: 8px 0 0;
   text-align: center;
   border-top: none;
   border-right: none;
