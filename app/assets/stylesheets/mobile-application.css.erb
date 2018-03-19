@@ -59,12 +59,20 @@ body {
   text-align: left;
 }
 #menu {
-  margin: -5px 0 0 5px;
   padding: 0;
-  float: left;
   height: 30px;
   font-size: 30px;
-  text-align: left;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+  left: 10px;
+  top: 0;
+  position: absolute;
 }
 #header #nav {
   display: block;
@@ -223,6 +231,24 @@ span.login_list {
   display: block;
   text-align: center;
   margin-top: 0 !important;
+}
+
+.user_icon_link {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+  right: 10px;
+  top: 0;
+  position: absolute;
+}
+.user_icon_link img {
+  height: 30px;
+  width: 30px;
 }
 
 .header_image_a {
