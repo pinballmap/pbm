@@ -1,4 +1,4 @@
-class LocationIdIndxOnLocationPictureXrefs < ActiveRecord::Migration
+class LocationIdIndxOnLocationPictureXrefs < ActiveRecord::Migration[4.2]
   def self.up
   end
 

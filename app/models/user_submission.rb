@@ -1,10 +1,8 @@
-class UserSubmission < ActiveRecord::Base
-  belongs_to :region
-  belongs_to :user
-  belongs_to :location
-  belongs_to :machine
-
-  attr_accessible :region_id, :user, :user_id, :submission_type, :submission, :location, :location_id, :machine, :machine_id
+class UserSubmission < ApplicationRecord
+  belongs_to :region, optional: true
+  belongs_to :user, optional: true
+  belongs_to :location, optional: true
+  belongs_to :machine, optional: true
 
   scope :region, (->(name) { where(region_id: Region.find_by_name(name.downcase).id) })
 
@@ -16,6 +14,7 @@ class UserSubmission < ActiveRecord::Base
   LOCATION_METADATA_TYPE = 'location_metadata'.freeze
   NEW_SCORE_TYPE = 'new_msx'.freeze
   CONFIRM_LOCATION_TYPE = 'confirm_location'.freeze
+  DELETE_LOCATION_TYPE = 'delete_location'.freeze
 
   def user_email
     user ? user.email : ''

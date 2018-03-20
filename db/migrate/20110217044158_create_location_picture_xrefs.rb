@@ -1,4 +1,4 @@
-class CreateLocationPictureXrefs < ActiveRecord::Migration
+class CreateLocationPictureXrefs < ActiveRecord::Migration[4.2]
   def self.up
     create_table :location_picture_xrefs do |t|
       t.integer :location_picture_xref_no

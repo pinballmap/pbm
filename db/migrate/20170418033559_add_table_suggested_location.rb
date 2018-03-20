@@ -1,4 +1,4 @@
-class AddTableSuggestedLocation < ActiveRecord::Migration
+class AddTableSuggestedLocation < ActiveRecord::Migration[4.2]
   def change
     create_table :suggested_locations do |t|
 	t.text :name

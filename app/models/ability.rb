@@ -2,14 +2,13 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    return unless user && !user.is_a?(Authorization::AnonymousUser) && user.region_id?
+    return unless user&.region_id?
 
     can :access, :rails_admin
-    can :dashboard
+    can :read, :dashboard
     can :history
     can :manage, [Event, Operator, RegionLinkXref, Zone], region_id: user.region_id
     can %i[read], [UserSubmission], region_id: user.region_id
-    can %i[update read], [User]
     can %i[update read], [LocationPictureXref], location: { region_id: user.region_id }
     can %i[update read destroy], [MachineCondition, MachineScoreXref], location: { region_id: user.region_id }
 

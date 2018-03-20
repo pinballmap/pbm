@@ -3,18 +3,18 @@ require 'spec_helper'
 describe Api::V1::UsersController, type: :request do
   describe '#auth_details' do
     before(:each) do
-      @user = FactoryGirl.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc123')
+      @user = FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc123')
     end
 
     it 'returns all app-centric user data' do
-      get '/api/v1/users/auth_details.json', login: 'yeah@ok.com', password: 'okokok'
+      get '/api/v1/users/auth_details.json', params: { login: 'yeah@ok.com', password: 'okokok' }
 
       expect(response).to be_success
       expect(response.body).to include('ssw')
       expect(response.body).to include('yeah@ok.com')
       expect(response.body).to include('abc123')
 
-      get '/api/v1/users/auth_details.json', login: 'ssw', password: 'okokok'
+      get '/api/v1/users/auth_details.json', params: { login: 'ssw', password: 'okokok' }
 
       expect(response).to be_success
       expect(response.body).to include('ssw')
@@ -23,14 +23,14 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'handles username/email as case insensitive' do
-      get '/api/v1/users/auth_details.json', login: 'yEAh@ok.com', password: 'okokok'
+      get '/api/v1/users/auth_details.json', params: { login: 'yEAh@ok.com', password: 'okokok' }
 
       expect(response).to be_success
       expect(response.body).to include('ssw')
       expect(response.body).to include('yeah@ok.com')
       expect(response.body).to include('abc123')
 
-      get '/api/v1/users/auth_details.json', login: 'sSW', password: 'okokok'
+      get '/api/v1/users/auth_details.json', params: { login: 'sSW', password: 'okokok' }
 
       expect(response).to be_success
       expect(response.body).to include('ssw')
@@ -39,44 +39,44 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'requires either username or user_email and password' do
-      get '/api/v1/users/auth_details.json', password: 'okokok'
+      get '/api/v1/users/auth_details.json', params: { password: 'okokok' }
 
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('login and password are required fields')
 
-      get '/api/v1/users/auth_details.json', login: 'ssw'
+      get '/api/v1/users/auth_details.json', params: { login: 'ssw' }
 
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('login and password are required fields')
     end
 
     it 'tells you if your user is not confirmed' do
-      FactoryGirl.create(:user, id: 333, username: 'unconfirmed', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc456', confirmed_at: nil)
+      FactoryBot.create(:user, id: 333, username: 'unconfirmed', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc456', confirmed_at: nil)
 
-      get '/api/v1/users/auth_details.json', login: 'unconfirmed', password: 'okokok'
+      get '/api/v1/users/auth_details.json', params: { login: 'unconfirmed', password: 'okokok' }
 
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('User is not yet confirmed. Please follow emailed confirmation instructions.')
     end
 
     it 'tells you if your user is disabled' do
-      FactoryGirl.create(:user, id: 334, username: 'disabled', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc456', is_disabled: true)
+      FactoryBot.create(:user, id: 334, username: 'disabled', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc456', is_disabled: true)
 
-      get '/api/v1/users/auth_details.json', login: 'disabled', password: 'okokok'
+      get '/api/v1/users/auth_details.json', params: { login: 'disabled', password: 'okokok' }
 
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Your account is disabled. Please contact us if you think this is a mistake.')
     end
 
     it 'tells you if you enter the wrong password' do
-      get '/api/v1/users/auth_details.json', login: 'ssw', password: 'NOT_okokok'
+      get '/api/v1/users/auth_details.json', params: { login: 'ssw', password: 'NOT_okokok' }
 
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Incorrect password')
     end
 
     it 'tells you if this user does not exist' do
-      get '/api/v1/users/auth_details.json', login: 's', password: 'okokok'
+      get '/api/v1/users/auth_details.json', params: { login: 's', password: 'okokok' }
 
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Unknown user')
@@ -85,7 +85,7 @@ describe Api::V1::UsersController, type: :request do
 
   describe '#signup' do
     it 'returns all app-centric user data if successful' do
-      post '/api/v1/users/signup.json', username: 'foo', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok'
+      post '/api/v1/users/signup.json', params: { username: 'foo', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok' }
 
       expect(response).to be_success
       expect(response.body).to include('foo')
@@ -94,44 +94,44 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'requires a username and email address' do
-      post '/api/v1/users/signup.json', username: '', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok'
+      post '/api/v1/users/signup.json', params: { username: '', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok' }
 
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('username and email are required fields')
 
-      post '/api/v1/users/signup.json', username: 'yeah', email: '', password: 'okokok', confirm_password: 'okokok'
+      post '/api/v1/users/signup.json', params: { username: 'yeah', email: '', password: 'okokok', confirm_password: 'okokok' }
 
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('username and email are required fields')
     end
 
     it 'does not allow blank passwords' do
-      post '/api/v1/users/signup.json', username: 'yeah', email: 'yeah@ok.com', password: '', confirm_password: ''
+      post '/api/v1/users/signup.json', params: { username: 'yeah', email: 'yeah@ok.com', password: '', confirm_password: '' }
 
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('password can not be blank')
     end
 
     it 'tells you if passwords do not match' do
-      post '/api/v1/users/signup.json', username: 'yeah', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'NOPE'
+      post '/api/v1/users/signup.json', params: { username: 'yeah', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'NOPE' }
 
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('your entered passwords do not match')
     end
 
     it 'does not allow duplicated usernames' do
-      FactoryGirl.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc123')
+      FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc123')
 
-      post '/api/v1/users/signup.json', username: 'ssw', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok'
+      post '/api/v1/users/signup.json', params: { username: 'ssw', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok' }
 
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('This username already exists')
     end
 
     it 'does not allow duplicated email addresses' do
-      FactoryGirl.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc123')
+      FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc123')
 
-      post '/api/v1/users/signup.json', username: 'CLEO', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok'
+      post '/api/v1/users/signup.json', params: { username: 'CLEO', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok' }
 
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('This email address already exists')
@@ -140,28 +140,28 @@ describe Api::V1::UsersController, type: :request do
 
   describe '#profile_info' do
     before(:each) do
-      @user = FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw', created_at: '2016-01-01')
+      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw', created_at: '2016-01-01')
     end
 
     it 'returns all profile stats for a given user' do
-      location = FactoryGirl.create(:location, id: 100, region_id: 1000, name: 'location')
-      another_location = FactoryGirl.create(:location, id: 101, region_id: 1001, name: 'another location')
+      location = FactoryBot.create(:location, id: 100, region_id: 1000, name: 'location')
+      another_location = FactoryBot.create(:location, id: 101, region_id: 1001, name: 'another location')
 
-      FactoryGirl.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::NEW_LMX_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, created_at: '2017-01-02', location: another_location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
-      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::NEW_LMX_TYPE)
+      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-02', location: another_location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
 
-      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (scott.wainstock@gmail.com) added a score of 1234 for Cheetah to Bottles')
-      FactoryGirl.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-02', submission: 'User ssw (scott.wainstock@gmail.com) added a score of 12 for Machine to Location')
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (scott.wainstock@gmail.com) added a score of 1234 for Cheetah to Bottles')
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-02', submission: 'User ssw (scott.wainstock@gmail.com) added a score of 12 for Machine to Location')
 
-      get '/api/v1/users/111/profile_info.json', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      get '/api/v1/users/111/profile_info.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_success
       json = JSON.parse(response.body)['profile_info']
@@ -183,7 +183,7 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'tells you if this user does not exist' do
-      get '/api/v1/users/-1/profile_info.json', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      get '/api/v1/users/-1/profile_info.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find user')

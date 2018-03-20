@@ -67,6 +67,8 @@ Devise.setup do |config|
   # The time the user will be remembered without asking for credentials again.
   # config.remember_for = 2.weeks
 
+  config.reconfirmable = false
+
   # If true, a valid remember token can be re-used between multiple browsers.
   #config.remember_across_browsers = true
 

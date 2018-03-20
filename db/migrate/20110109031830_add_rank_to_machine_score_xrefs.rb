@@ -1,4 +1,4 @@
-class AddRankToMachineScoreXrefs < ActiveRecord::Migration
+class AddRankToMachineScoreXrefs < ActiveRecord::Migration[4.2]
   def self.up
     add_column :machine_score_xrefs, :rank, :string
   end

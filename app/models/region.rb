@@ -1,4 +1,4 @@
-class Region < ActiveRecord::Base
+class Region < ApplicationRecord
   has_many :locations
   has_many :zones
   has_many :users, (-> { order 'users.id' })
@@ -8,8 +8,6 @@ class Region < ActiveRecord::Base
   has_many :region_link_xrefs, (-> { order 'region_link_xrefs.id' })
   has_many :user_submissions
   has_many :location_machine_xrefs, through: :locations
-
-  attr_accessible :name, :full_name, :motd, :lat, :lon, :n_search_no, :default_search_type, :should_email_machine_removal, :should_auto_delete_empty_locations, :send_digest_comment_emails, :send_digest_removal_emails
 
   geocoded_by :lat_and_lon, latitude: :lat, longitude: :lon
 
@@ -131,15 +129,15 @@ class Region < ActiveRecord::Base
   end
 
   def generate_daily_digest_comments_email_body
-    start_of_day = (DateTime.now - 1.day).beginning_of_day
-    end_of_day = (DateTime.now - 1.day).end_of_day
+    start_of_day = (Time.now - 1.day).beginning_of_day
+    end_of_day = (Time.now - 1.day).end_of_day
 
     submissions = user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE }.collect(&:submission).sort.join("\n\n")
 
     return nil if submissions.nil? || submissions.empty?
 
     <<HERE
-Here is a list of all the comments that were placed in your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
+Here is a list of all the comments that were placed in your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
 
 #{full_name} Daily Comments
 
@@ -148,15 +146,15 @@ HERE
   end
 
   def generate_daily_digest_removals_email_body
-    start_of_day = (DateTime.now - 1.day).beginning_of_day
-    end_of_day = (DateTime.now - 1.day).end_of_day
+    start_of_day = (Time.now - 1.day).beginning_of_day
+    end_of_day = (Time.now - 1.day).end_of_day
 
     submissions = user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.collect(&:submission).sort.join("\n\n")
 
     return nil if submissions.nil? || submissions.empty?
 
     <<HERE
-Here is a list of all the machines that were removed from your region on #{(DateTime.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
+Here is a list of all the machines that were removed from your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
 
 #{full_name} Daily Machine Removals
 
@@ -165,8 +163,8 @@ HERE
   end
 
   def generate_weekly_admin_email_body
-    start_of_week = (DateTime.now - 1.week).beginning_of_day
-    end_of_week = DateTime.now.end_of_day
+    start_of_week = (Time.now - 1.week).beginning_of_day
+    end_of_week = Time.now.end_of_day
 
     <<HERE
 Here is an overview of your pinball map region! Thanks for keeping your region updated! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@fastmail.com
@@ -181,6 +179,7 @@ List of Suggested Locations:
 
 #{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::SUGGEST_LOCATION_TYPE }.count} Location(s) submitted to you this week
 #{locations.select { |l| !l.created_at.nil? && l.created_at.between?(start_of_week, end_of_week) }.count} Location(s) added by you this week
+#{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::DELETE_LOCATION_TYPE }.count} Location(s) deleted this week
 #{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE }.count} machine comment(s) by users this week
 #{location_machine_xrefs.select { |lmx| !lmx.created_at.nil? && lmx.created_at.between?(start_of_week, end_of_week) }.count} machine(s) added by users this week
 #{user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.count} machine(s) removed by users this week

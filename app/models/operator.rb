@@ -1,8 +1,6 @@
-class Operator < ActiveRecord::Base
-  belongs_to :region
+class Operator < ApplicationRecord
+  belongs_to :region, optional: true
   has_many :locations
-
-  attr_accessible :name, :region_id, :email, :website, :phone
 
   scope :region, (->(name) { where(region_id: Region.find_by_name(name.downcase).id) })
 
@@ -12,7 +10,7 @@ class Operator < ActiveRecord::Base
     machine_conditions_to_email = []
     locations.each do |l|
       l.location_machine_xrefs.each do |lmx|
-        lmx.machine_conditions.where('created_at BETWEEN ? AND ?', DateTime.now.beginning_of_day, DateTime.now.end_of_day).each do |mc|
+        lmx.machine_conditions.where('created_at BETWEEN ? AND ?', Time.now.beginning_of_day, Time.now.end_of_day).each do |mc|
           machine_conditions_to_email.push(mc)
         end
       end

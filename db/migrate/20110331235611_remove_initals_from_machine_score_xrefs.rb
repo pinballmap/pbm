@@ -1,4 +1,4 @@
-class RemoveInitalsFromMachineScoreXrefs < ActiveRecord::Migration
+class RemoveInitalsFromMachineScoreXrefs < ActiveRecord::Migration[4.2]
   def self.up
     remove_column :machine_score_xrefs, :initials
   end

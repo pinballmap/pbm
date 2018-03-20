@@ -1,4 +1,4 @@
-class AddIndexToLocationIdAndMachineIdOnLocationMachineXrefs < ActiveRecord::Migration
+class AddIndexToLocationIdAndMachineIdOnLocationMachineXrefs < ActiveRecord::Migration[4.2]
   def self.up
     add_index :location_machine_xrefs, :location_id
     add_index :location_machine_xrefs, :machine_id

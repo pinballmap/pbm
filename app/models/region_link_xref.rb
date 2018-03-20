@@ -1,7 +1,5 @@
-class RegionLinkXref < ActiveRecord::Base
-  belongs_to :region
+class RegionLinkXref < ApplicationRecord
+  belongs_to :region, optional: true
 
   scope :region, (->(name) { where(region_id: Region.find_by_name(name.downcase).id) })
-
-  attr_accessible :name, :url, :description, :category, :region_id, :sort_order
 end

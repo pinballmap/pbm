@@ -1,3 +1,2 @@
-class BannedIp < ActiveRecord::Base
-  attr_accessible :ip_address
+class BannedIp < ApplicationRecord
 end

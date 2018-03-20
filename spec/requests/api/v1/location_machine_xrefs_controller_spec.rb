@@ -2,18 +2,18 @@ require 'spec_helper'
 
 describe Api::V1::LocationMachineXrefsController, type: :request do
   before(:each) do
-    @region = FactoryGirl.create(:region, id: 3, name: 'portland', should_email_machine_removal: 1)
-    @location = FactoryGirl.create(:location, id: 1, name: 'Ground Kontrol', region: @region)
-    @machine = FactoryGirl.create(:machine, id: 2, name: 'Cleo')
+    @region = FactoryBot.create(:region, id: 3, name: 'portland', should_email_machine_removal: 1)
+    @location = FactoryBot.create(:location, id: 1, name: 'Ground Kontrol', region: @region)
+    @machine = FactoryBot.create(:machine, id: 2, name: 'Cleo')
 
-    @lmx = FactoryGirl.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
+    @lmx = FactoryBot.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
 
-    FactoryGirl.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+    FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
   end
 
   describe '#delete' do
     it 'deletes an lmx' do
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(response.status).to eq(200)
 
@@ -31,7 +31,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
         )
       end
 
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
@@ -48,7 +48,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
         )
       end
 
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
@@ -56,7 +56,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'creates a user submission for the deletion' do
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
@@ -67,7 +67,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'creates a user submission for the deletion - authed' do
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
@@ -85,7 +85,8 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
         )
       end
 
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_HOST: 'pinballmapstaging.herokuapp.com'
+      host! 'pinballmapstaging.herokuapp.com'
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
     end
 
     it 'errors if lmx id does not exist' do
@@ -107,8 +108,8 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
   describe '#index' do
     it 'sends all lmxes in region' do
-      chicago = FactoryGirl.create(:region, id: 11, name: 'chicago')
-      FactoryGirl.create(:location_machine_xref, machine: @machine, location: FactoryGirl.create(:location, id: 11, name: 'Chicago Location', region: chicago))
+      chicago = FactoryBot.create(:region, id: 11, name: 'chicago')
+      FactoryBot.create(:location_machine_xref, machine: @machine, location: FactoryBot.create(:location, id: 11, name: 'Chicago Location', region: chicago))
 
       get '/api/v1/region/portland/location_machine_xrefs.json'
       expect(response).to be_success
@@ -122,11 +123,11 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it "only sends the #{MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY} most recent machine_conditions" do
-      chicago = FactoryGirl.create(:region, name: 'chicago')
-      lmx = FactoryGirl.create(:location_machine_xref, machine: @machine, location: FactoryGirl.create(:location, id: 12, name: 'Chicago Location', region: chicago))
+      chicago = FactoryBot.create(:region, name: 'chicago')
+      lmx = FactoryBot.create(:location_machine_xref, machine: @machine, location: FactoryBot.create(:location, id: 12, name: 'Chicago Location', region: chicago))
 
       (MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY + 10).times do
-        FactoryGirl.create(:machine_condition, location_machine_xref: lmx.reload, comment: 'Foo')
+        FactoryBot.create(:machine_condition, location_machine_xref: lmx.reload, comment: 'Foo')
       end
 
       get '/api/v1/region/chicago/location_machine_xrefs.json'
@@ -138,7 +139,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'respects limit scope' do
-      newest_lmx = FactoryGirl.create(:location_machine_xref, machine: FactoryGirl.create(:machine, name: 'Barb'), location: @location)
+      newest_lmx = FactoryBot.create(:location_machine_xref, machine: FactoryBot.create(:machine, name: 'Barb'), location: @location)
 
       get '/api/v1/region/portland/location_machine_xrefs.json?limit=1'
       expect(response).to be_success
@@ -150,7 +151,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
   describe '#create' do
     it 'updates condition on existing lmx' do
-      post '/api/v1/location_machine_xrefs.json', machine_id: @machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
 
@@ -162,7 +163,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'updates condition on existing lmx - authed' do
-      post '/api/v1/location_machine_xrefs.json', machine_id: @machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
 
@@ -174,9 +175,9 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'creates new lmx when appropriate' do
-      new_machine = FactoryGirl.create(:machine, id: 11, name: 'sass')
+      new_machine = FactoryBot.create(:machine, id: 11, name: 'sass')
 
-      post '/api/v1/location_machine_xrefs.json', machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(response.status).to eq(201)
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
@@ -188,7 +189,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it "doesn't let you add machines that don't exist" do
-      post '/api/v1/location_machine_xrefs.json', machine_id: -666, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: -666, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
 
@@ -196,9 +197,9 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'creates new lmx when appropriate - authed' do
-      new_machine = FactoryGirl.create(:machine, id: 22, name: 'sass')
+      new_machine = FactoryBot.create(:machine, id: 22, name: 'sass')
 
-      post '/api/v1/location_machine_xrefs.json', machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(response.status).to eq(201)
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
@@ -212,9 +213,9 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'does not create a machine condition if you pass a blank condition' do
-      new_machine = FactoryGirl.create(:machine, id: 22, name: 'sass')
+      new_machine = FactoryBot.create(:machine, id: 22, name: 'sass')
 
-      post '/api/v1/location_machine_xrefs.json', machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(response.status).to eq(201)
 
@@ -222,21 +223,21 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'returns an error unless the machine_id and location_id are both present' do
-      post '/api/v1/location_machine_xrefs.json', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/location_machine_xrefs.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
 
-      post '/api/v1/location_machine_xrefs.json', machine_id: @machine.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
 
-      post '/api/v1/location_machine_xrefs.json', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/location_machine_xrefs.json', params: { location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
     end
 
     it 'returns an error if you are not authenticated' do
-      post '/api/v1/location_machine_xrefs.json', machine_id: 123, location_id: @location.id.to_s, condition: 'foo'
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: 123, location_id: @location.id.to_s, condition: 'foo' }
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationMachineXrefsController::AUTH_REQUIRED_MSG)
@@ -245,15 +246,15 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
   describe '#update' do
     before(:each) do
-      @region = FactoryGirl.create(:region, id: 22, name: 'Portland')
-      @location = FactoryGirl.create(:location, id: 3, name: 'Ground Kontrol', region: @region)
-      @machine = FactoryGirl.create(:machine, id: 4, name: 'Cleo')
+      @region = FactoryBot.create(:region, id: 22, name: 'Portland')
+      @location = FactoryBot.create(:location, id: 3, name: 'Ground Kontrol', region: @region)
+      @machine = FactoryBot.create(:machine, id: 4, name: 'Cleo')
 
-      @lmx = FactoryGirl.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
+      @lmx = FactoryBot.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
     end
 
     it 'updates condition' do
-      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
@@ -264,7 +265,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
         )
       end
 
-      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, { condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, params: { condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
       expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('foo')
@@ -272,9 +273,9 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'updates condition - authed' do
-      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
 
-      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS'
+      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, params: { condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
       expect(JSON.parse(response.body)['location_machine']['last_updated_by_username']).to eq('ssw')
@@ -293,7 +294,8 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
         )
       end
 
-      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, { condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_HOST: 'pinballmapstaging.herokuapp.com'
+      host! 'pinballmapstaging.herokuapp.com'
+      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, params: { condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
     end
 
     it 'returns an error message if the lmx does not exist' do
@@ -303,7 +305,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'returns an error message if you are not authed' do
-      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, { condition: 'foo' }, HTTP_HOST: 'pinballmapstaging.herokuapp.com'
+      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, params: { condition: 'foo', HTTP_HOST: 'pinballmapstaging.herokuapp.com' }
 
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationMachineXrefsController::AUTH_REQUIRED_MSG)
@@ -312,10 +314,10 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
   describe '#get' do
     it 'sends all detail about this lmx (including machine conditions)' do
-      chicago = FactoryGirl.create(:region, id: 11, name: 'chicago')
-      lmx = FactoryGirl.create(:location_machine_xref, id: 100, machine: @machine, location: FactoryGirl.create(:location, id: 11, name: 'Chicago Location', region: chicago), condition: 'condition')
-      FactoryGirl.create(:machine_condition, id: 1, location_machine_xref: lmx.reload, comment: 'foo')
-      FactoryGirl.create(:machine_condition, id: 2, location_machine_xref: lmx.reload, comment: 'bar')
+      chicago = FactoryBot.create(:region, id: 11, name: 'chicago')
+      lmx = FactoryBot.create(:location_machine_xref, id: 100, machine: @machine, location: FactoryBot.create(:location, id: 11, name: 'Chicago Location', region: chicago), condition: 'condition')
+      FactoryBot.create(:machine_condition, id: 1, location_machine_xref: lmx.reload, comment: 'foo')
+      FactoryBot.create(:machine_condition, id: 2, location_machine_xref: lmx.reload, comment: 'bar')
 
       get '/api/v1/location_machine_xrefs/' + lmx.id.to_s + '.json'
       expect(response).to be_success

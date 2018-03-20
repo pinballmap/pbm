@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe Operator do
   before(:each) do
-    @r = FactoryGirl.create(:region, full_name: 'Portland')
-    @o = FactoryGirl.create(:operator, region: @r, email: 'foo@bar.com')
-    @no_changes_operator = FactoryGirl.create(:operator, region: @r, email: 'bar@baz.com')
-    @no_email_operator = FactoryGirl.create(:operator, region: @r)
+    @r = FactoryBot.create(:region, full_name: 'Portland')
+    @o = FactoryBot.create(:operator, region: @r, email: 'foo@bar.com')
+    @no_changes_operator = FactoryBot.create(:operator, region: @r, email: 'bar@baz.com')
+    @no_email_operator = FactoryBot.create(:operator, region: @r)
   end
 
   describe '#send_recent_comments' do
@@ -20,16 +20,16 @@ describe Operator do
     end
 
     it 'Sends emails to operators with recent comments on their machines' do
-      l = FactoryGirl.create(:location, region: @r, operator: @o, name: 'Cleo Corner')
+      l = FactoryBot.create(:location, region: @r, operator: @o, name: 'Cleo Corner')
 
-      m1 = FactoryGirl.create(:machine, name: 'Sassy')
-      m2 = FactoryGirl.create(:machine, name: 'Cleo')
-      lmx1 = FactoryGirl.create(:location_machine_xref, location: l, machine: m1)
-      lmx2 = FactoryGirl.create(:location_machine_xref, location: l, machine: m2)
+      m1 = FactoryBot.create(:machine, name: 'Sassy')
+      m2 = FactoryBot.create(:machine, name: 'Cleo')
+      lmx1 = FactoryBot.create(:location_machine_xref, location: l, machine: m1)
+      lmx2 = FactoryBot.create(:location_machine_xref, location: l, machine: m2)
 
-      FactoryGirl.create(:machine_condition, location_machine_xref: lmx1, comment: 'Sassy Comment')
-      FactoryGirl.create(:machine_condition, location_machine_xref: lmx2, comment: 'Cleo Comment')
-      FactoryGirl.create(:machine_condition, location_machine_xref: lmx2, comment: 'Old Cleo Comment', created_at: Date.today - 2.days)
+      FactoryBot.create(:machine_condition, location_machine_xref: lmx1, comment: 'Sassy Comment')
+      FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Cleo Comment')
+      FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Old Cleo Comment', created_at: Date.today - 2.days)
 
       body = <<HERE
 Here's a list of comments made on your pinball machines that were posted today to #{@o.region.full_name}. We're sending this in the hope that it will help you identify, and fix, problems. If you don't want to receive these messages, please contact pinballmap@fastmail.com.

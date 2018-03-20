@@ -1,7 +1,9 @@
 module Api
   module V1
     class MachineScoreXrefsController < InheritedResources::Base
-      before_filter :allow_cors
+      skip_before_action :verify_authenticity_token
+
+      before_action :allow_cors
       respond_to :json
       has_scope :region, :limit, :zone_id
 
@@ -20,7 +22,7 @@ module Api
       param :score, String, desc: 'A pinball machine high score', required: false
       formats ['json']
       def create
-        user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+        user = current_user.nil? ? nil : current_user
 
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 

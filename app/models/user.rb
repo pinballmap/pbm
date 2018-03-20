@@ -1,8 +1,8 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   include ActionView::Helpers::NumberHelper
   acts_as_token_authenticatable
 
-  belongs_to :region
+  belongs_to :region, optional: true
   has_many :location_machine_xrefs
   has_many :machine_score_xrefs
   has_many :location_picture_xrefs
@@ -17,7 +17,6 @@ class User < ActiveRecord::Base
 
   devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :trackable, :validatable, authentication_keys: [:login]
 
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :region_id, :is_machine_admin, :is_primary_email_contact, :username, :is_disabled, :is_super_admin
   attr_accessor :login
 
   def role_symbols
@@ -26,6 +25,10 @@ class User < ActiveRecord::Base
     roles << :site_admin if region_id == Region.find_by_name('portland').id
 
     roles
+  end
+
+  def admin?
+    defined? region_id
   end
 
   def validate_username

@@ -1,4 +1,4 @@
-class AddUserIdToLocationMachineXref < ActiveRecord::Migration
+class AddUserIdToLocationMachineXref < ActiveRecord::Migration[4.2]
   def self.up
     add_column :location_machine_xrefs, :user_id, :integer
   end

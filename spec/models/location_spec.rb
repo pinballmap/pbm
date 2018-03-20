@@ -2,16 +2,16 @@ require 'spec_helper'
 
 describe Location do
   before(:each) do
-    @l = FactoryGirl.create(:location, name: 'quarterworld')
-    @m1 = FactoryGirl.create(:machine, name: 'Sassy')
-    @m2 = FactoryGirl.create(:machine, name: 'Cleo')
-    @lmx1 = FactoryGirl.create(:location_machine_xref, location: @l, machine: @m1, created_at: '2014-01-15 04:00:00')
-    @lmx2 = FactoryGirl.create(:location_machine_xref, location: @l, machine: @m2, created_at: '2014-01-15 05:00:00')
+    @l = FactoryBot.create(:location, name: 'quarterworld')
+    @m1 = FactoryBot.create(:machine, name: 'Sassy')
+    @m2 = FactoryBot.create(:machine, name: 'Cleo')
+    @lmx1 = FactoryBot.create(:location_machine_xref, location: @l, machine: @m1, created_at: '2014-01-15 04:00:00')
+    @lmx2 = FactoryBot.create(:location_machine_xref, location: @l, machine: @m2, created_at: '2014-01-15 05:00:00')
   end
 
   describe '#should_skip_geocode' do
     it 'respects lat/lon last updated status' do
-      @l.last_updated_by_user_id = FactoryGirl.create(:user, region_id: 1).id
+      @l.last_updated_by_user_id = FactoryBot.create(:user, region_id: 1).id
       @l.lat = 1
       @l.lon = 1
 
@@ -23,8 +23,8 @@ describe Location do
 
   describe '#before_destroy' do
     it 'should clean up location_machine_xrefs, events, location_picture_xrefs' do
-      FactoryGirl.create(:event, location: @l)
-      FactoryGirl.create(:location_picture_xref, location: @l, photo: nil)
+      FactoryBot.create(:event, location: @l)
+      FactoryBot.create(:location_picture_xref, location: @l, photo: nil)
 
       @l.destroy
 
@@ -77,8 +77,8 @@ describe Location do
 
   describe '#content_for_infowindow' do
     it 'generate the html that the infowindow wants to use' do
-      l = FactoryGirl.create(:location)
-      ['Foo', 'Bar', 'Baz', "Beans'"].each { |name| FactoryGirl.create(:location_machine_xref, location: l, machine: FactoryGirl.create(:machine, name: name)) }
+      l = FactoryBot.create(:location)
+      ['Foo', 'Bar', 'Baz', "Beans'"].each { |name| FactoryBot.create(:location_machine_xref, location: l, machine: FactoryBot.create(:machine, name: name)) }
 
       expect(l.content_for_infowindow.chomp).to eq("'<div class=\"infowindow\" id=\"infowindow_#{l.id}\"><div class=\"gm_location_name\">Test Location Name</div><div class=\"gm_address\">303 Southeast 3rd Avenue<br />Portland, OR, 97214<br /></div><hr /><div class=\"gm_machines\" id=\"gm_machines_#{l.id}\">Bar<br />Baz<br />Beans\\'<br />Foo<br /></div></div>'")
     end
@@ -92,14 +92,14 @@ describe Location do
 
   describe '#massaged_name' do
     it 'ignores "the" in names' do
-      the_location = FactoryGirl.create(:location, name: 'The Hilt')
+      the_location = FactoryBot.create(:location, name: 'The Hilt')
       expect(the_location.massaged_name).to eq('Hilt')
     end
   end
 
   describe '#confirm' do
     it 'sets date_last_updated and last_updated_by_user_id' do
-      user = FactoryGirl.create(:user, username: 'ssw')
+      user = FactoryBot.create(:user, username: 'ssw')
 
       @l.confirm(user)
 
@@ -108,8 +108,8 @@ describe Location do
     end
 
     it 'auto-creates user submissions' do
-      user = FactoryGirl.create(:user, username: 'ssw')
-      location = FactoryGirl.create(:location, name: 'foo')
+      user = FactoryBot.create(:user, username: 'ssw')
+      location = FactoryBot.create(:location, name: 'foo')
 
       location.confirm(user)
 
@@ -131,7 +131,7 @@ describe Location do
 
   describe '#update_metadata' do
     it 'creates a user submission for updated metadata' do
-      u = FactoryGirl.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
       @l.update_metadata(u, description: 'foo')
 
       user_submission = UserSubmission.third
@@ -151,9 +151,9 @@ describe Location do
     end
 
     it 'creates a user submission for updated metadata -- all fields' do
-      u = FactoryGirl.create(:user, username: 'ssw', email: 'yeah@ok.com')
-      FactoryGirl.create(:operator, id: 1, name: 'operator')
-      FactoryGirl.create(:location_type, id: 1, name: 'bar')
+      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      FactoryBot.create(:operator, id: 1, name: 'operator')
+      FactoryBot.create(:location_type, id: 1, name: 'bar')
 
       @l.update_metadata(u, description: 'foo', phone: '555-555-5555', website: 'http://www.goo.com', operator_id: 1, location_type_id: 1)
 
@@ -170,7 +170,7 @@ HERE
     end
 
     it 'truncates location description to 254 characters' do
-      u = FactoryGirl.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
       @l.update_metadata(u, description: '1' * 300)
 
       expect(@l.description.size).to eq(254)

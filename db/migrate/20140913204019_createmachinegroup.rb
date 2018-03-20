@@ -1,4 +1,4 @@
-class Createmachinegroup < ActiveRecord::Migration
+class Createmachinegroup < ActiveRecord::Migration[4.2]
   def up
     create_table :machine_groups do |t|
       t.string :name, :null => false

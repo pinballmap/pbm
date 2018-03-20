@@ -2,18 +2,18 @@ require 'spec_helper'
 
 describe LocationMachineXref do
   before(:each) do
-    @r = FactoryGirl.create(:region, name: 'Portland', should_email_machine_removal: 1)
-    @r_no_email = FactoryGirl.create(:region, should_email_machine_removal: 0)
+    @r = FactoryBot.create(:region, name: 'Portland', should_email_machine_removal: 1)
+    @r_no_email = FactoryBot.create(:region, should_email_machine_removal: 0)
 
-    @u = FactoryGirl.create(:user, id: 1, region: @r, username: 'ssw', email: 'foo@bar.com')
+    @u = FactoryBot.create(:user, id: 1, region: @r, username: 'ssw', email: 'foo@bar.com')
 
-    @l = FactoryGirl.create(:location, region: @r, name: 'Cool Bar')
-    @l_no_email = FactoryGirl.create(:location, region: @r_no_email)
+    @l = FactoryBot.create(:location, region: @r, name: 'Cool Bar')
+    @l_no_email = FactoryBot.create(:location, region: @r_no_email)
 
-    @m = FactoryGirl.create(:machine, name: 'Sassy')
+    @m = FactoryBot.create(:machine, name: 'Sassy')
 
-    @lmx = FactoryGirl.create(:location_machine_xref, location: @l, machine: @m)
-    @lmx_no_email = FactoryGirl.create(:location_machine_xref, location: @l_no_email, machine: @m)
+    @lmx = FactoryBot.create(:location_machine_xref, location: @l, machine: @m)
+    @lmx_no_email = FactoryBot.create(:location_machine_xref, location: @l_no_email, machine: @m)
   end
 
   describe '#update_condition' do
@@ -45,10 +45,10 @@ describe LocationMachineXref do
     end
 
     it 'should not send an email if the region is set for digest comments' do
-      r_digest_email = FactoryGirl.create(:region, send_digest_removal_emails: 1, send_digest_comment_emails: 1)
-      u_digest_email = FactoryGirl.create(:user, id: 2, region: r_digest_email, username: 'cibw', email: 'foo@baz.com')
-      l_digest_email = FactoryGirl.create(:location, region: r_digest_email)
-      lmx_digest_email = FactoryGirl.create(:location_machine_xref, location: l_digest_email, machine: @m)
+      r_digest_email = FactoryBot.create(:region, send_digest_removal_emails: 1, send_digest_comment_emails: 1)
+      u_digest_email = FactoryBot.create(:user, id: 2, region: r_digest_email, username: 'cibw', email: 'foo@baz.com')
+      l_digest_email = FactoryBot.create(:location, region: r_digest_email)
+      lmx_digest_email = FactoryBot.create(:location_machine_xref, location: l_digest_email, machine: @m)
 
       expect(Pony).to_not receive(:mail)
 
@@ -83,7 +83,7 @@ describe LocationMachineXref do
     end
 
     it 'should tag update with a user when given' do
-      @lmx.update_condition('foo', user_id: FactoryGirl.create(:user, id: 10, username: 'foo').id)
+      @lmx.update_condition('foo', user_id: FactoryBot.create(:user, id: 10, username: 'foo').id)
 
       expect(@lmx.user_id).to eq(10)
       expect(@lmx.last_updated_by_username).to eq('foo')
@@ -122,10 +122,10 @@ describe LocationMachineXref do
     end
 
     it 'should not send an email if the region is set for digest removals' do
-      r_digest_email = FactoryGirl.create(:region, should_email_machine_removal: 1, send_digest_removal_emails: 1, send_digest_comment_emails: 1)
-      u_digest_email = FactoryGirl.create(:user, id: 2, region: r_digest_email, username: 'cibw', email: 'foo@baz.com')
-      l_digest_email = FactoryGirl.create(:location, region: r_digest_email)
-      lmx_digest_email = FactoryGirl.create(:location_machine_xref, location: l_digest_email, machine: @m)
+      r_digest_email = FactoryBot.create(:region, should_email_machine_removal: 1, send_digest_removal_emails: 1, send_digest_comment_emails: 1)
+      u_digest_email = FactoryBot.create(:user, id: 2, region: r_digest_email, username: 'cibw', email: 'foo@baz.com')
+      l_digest_email = FactoryBot.create(:location, region: r_digest_email)
+      lmx_digest_email = FactoryBot.create(:location_machine_xref, location: l_digest_email, machine: @m)
 
       expect(Pony).to_not receive(:mail)
 
@@ -149,14 +149,14 @@ describe LocationMachineXref do
 
   describe '#current_condition' do
     it 'should return the most recent machine condition' do
-      @r = FactoryGirl.create(:region, name: 'Portland', should_email_machine_removal: 1)
-      @l = FactoryGirl.create(:location, region: @r, name: 'Cool Bar')
-      @m = FactoryGirl.create(:machine, name: 'Sassy')
-      @lmx = FactoryGirl.create(:location_machine_xref, location: @l, machine: @m)
+      @r = FactoryBot.create(:region, name: 'Portland', should_email_machine_removal: 1)
+      @l = FactoryBot.create(:location, region: @r, name: 'Cool Bar')
+      @m = FactoryBot.create(:machine, name: 'Sassy')
+      @lmx = FactoryBot.create(:location_machine_xref, location: @l, machine: @m)
 
-      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'foo')
-      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
-      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'baz')
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'foo')
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'baz')
 
       expect(@lmx.current_condition.comment).to eq('baz')
     end
@@ -164,11 +164,11 @@ describe LocationMachineXref do
 
   describe '#last_updated_by_username' do
     it 'should return the most recent comments username' do
-      lmx = FactoryGirl.create(:location_machine_xref)
+      lmx = FactoryBot.create(:location_machine_xref)
 
       expect(lmx.last_updated_by_username).to eq('')
 
-      lmx = FactoryGirl.create(:location_machine_xref, user: FactoryGirl.create(:user, id: 666, username: 'foo'))
+      lmx = FactoryBot.create(:location_machine_xref, user: FactoryBot.create(:user, id: 666, username: 'foo'))
 
       expect(lmx.last_updated_by_username).to eq('foo')
     end
@@ -176,9 +176,9 @@ describe LocationMachineXref do
 
   describe '#create' do
     it 'auto-creates a user submission' do
-      user = FactoryGirl.create(:user, id: 777)
+      user = FactoryBot.create(:user, id: 777)
 
-      FactoryGirl.create(:location_machine_xref, location: @l, machine: @m, user: user)
+      FactoryBot.create(:location_machine_xref, location: @l, machine: @m, user: user)
 
       submission = UserSubmission.third
 
@@ -193,14 +193,14 @@ describe LocationMachineXref do
 
   describe '#current_condition' do
     it 'should return the most recent machine condition' do
-      @r = FactoryGirl.create(:region, name: 'Portland', should_email_machine_removal: 1)
-      @l = FactoryGirl.create(:location, region: @r, name: 'Cool Bar')
-      @m = FactoryGirl.create(:machine, name: 'Sassy')
-      @lmx = FactoryGirl.create(:location_machine_xref, location: @l, machine: @m)
+      @r = FactoryBot.create(:region, name: 'Portland', should_email_machine_removal: 1)
+      @l = FactoryBot.create(:location, region: @r, name: 'Cool Bar')
+      @m = FactoryBot.create(:machine, name: 'Sassy')
+      @lmx = FactoryBot.create(:location_machine_xref, location: @l, machine: @m)
 
-      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'foo')
-      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
-      FactoryGirl.create(:machine_condition, location_machine_xref: @lmx, comment: 'baz')
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'foo')
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'baz')
 
       expect(@lmx.current_condition.comment).to eq('baz')
     end
@@ -208,11 +208,11 @@ describe LocationMachineXref do
 
   describe '#last_updated_by_username' do
     it 'should return the most recent comments username' do
-      lmx = FactoryGirl.create(:location_machine_xref)
+      lmx = FactoryBot.create(:location_machine_xref)
 
       expect(lmx.last_updated_by_username).to eq('')
 
-      lmx = FactoryGirl.create(:location_machine_xref, user: FactoryGirl.create(:user, id: 666, username: 'foo'))
+      lmx = FactoryBot.create(:location_machine_xref, user: FactoryBot.create(:user, id: 666, username: 'foo'))
 
       expect(lmx.last_updated_by_username).to eq('foo')
     end

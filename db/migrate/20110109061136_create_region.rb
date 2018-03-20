@@ -1,4 +1,4 @@
-class CreateRegion < ActiveRecord::Migration
+class CreateRegion < ActiveRecord::Migration[4.2]
   def self.up
     create_table :regions do |t|
       t.string :name

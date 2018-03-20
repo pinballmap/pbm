@@ -1,7 +1,9 @@
 module Api
   module V1
     class UsersController < InheritedResources::Base
-      before_filter :allow_cors
+      skip_before_action :verify_authenticity_token
+
+      before_action :allow_cors
       respond_to :json
 
       api :GET, '/api/v1/users/auth_details.json', 'Fetch auth info for a user'

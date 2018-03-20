@@ -1,12 +1,10 @@
-class MachineCondition < ActiveRecord::Base
+class MachineCondition < ApplicationRecord
   MAX_HISTORY_SIZE_TO_DISPLAY = 6
 
-  belongs_to :user
-  belongs_to :location_machine_xref
+  belongs_to :user, optional: true
+  belongs_to :location_machine_xref, optional: true
   has_one :location, through: :location_machine_xref
   has_one :machine, through: :location_machine_xref
-
-  attr_accessible :comment, :location_machine_xref, :user, :user_id
 
   after_create :create_user_submission
 

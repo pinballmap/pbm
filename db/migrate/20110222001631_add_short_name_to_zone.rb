@@ -1,4 +1,4 @@
-class AddShortNameToZone < ActiveRecord::Migration
+class AddShortNameToZone < ActiveRecord::Migration[4.2]
   def self.up
     add_column :zones, :short_name, :string
   end

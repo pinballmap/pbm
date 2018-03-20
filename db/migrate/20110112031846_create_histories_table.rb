@@ -1,4 +1,4 @@
-class CreateHistoriesTable < ActiveRecord::Migration
+class CreateHistoriesTable < ActiveRecord::Migration[4.2]
    def self.up
      create_table :histories do |t|
        t.string :message # title, name, or object_id

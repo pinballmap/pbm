@@ -1,12 +1,12 @@
-include Warden::Test::Helpers
-
 module FeatureHelpers
-  def login(user = FactoryGirl.create(:user))
-    Authorization.current_user = user
+  include Warden::Test::Helpers
+
+  def login(user = FactoryBot.create(:user))
+    login_as(user, scope: :user)
     user
   end
 
-  def logout
-    Authorization.current_user = nil
+  def logout(user)
+    logout(user)
   end
 end

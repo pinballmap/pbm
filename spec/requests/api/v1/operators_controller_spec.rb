@@ -3,14 +3,14 @@ require 'spec_helper'
 describe Api::V1::OperatorsController, type: :request do
   describe '#index' do
     before(:each) do
-      @region = FactoryGirl.create(:region, name: 'portland')
+      @region = FactoryBot.create(:region, name: 'portland')
     end
 
     it 'handles basic operator displaying' do
-      FactoryGirl.create(:operator, region: @region, name: 'Sass')
-      FactoryGirl.create(:operator, region: @region, name: 'Bawb')
-      FactoryGirl.create(:operator, region: @region, name: 'Cleo')
-      FactoryGirl.create(:operator, name: 'HOPE THIS DONT SHOW')
+      FactoryBot.create(:operator, region: @region, name: 'Sass')
+      FactoryBot.create(:operator, region: @region, name: 'Bawb')
+      FactoryBot.create(:operator, region: @region, name: 'Cleo')
+      FactoryBot.create(:operator, name: 'HOPE THIS DONT SHOW')
 
       get '/api/v1/region/portland/operators.json'
       expect(response).to be_success
@@ -29,7 +29,7 @@ describe Api::V1::OperatorsController, type: :request do
 
   describe '#show' do
     it 'sends back operator metadata' do
-      operator = FactoryGirl.create(:operator, region: @region, name: 'Sass')
+      operator = FactoryBot.create(:operator, region: @region, name: 'Sass')
 
       get "/api/v1/operators/#{operator.id}.json"
       expect(response).to be_success

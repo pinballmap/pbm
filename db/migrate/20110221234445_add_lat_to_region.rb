@@ -1,4 +1,4 @@
-class AddLatToRegion < ActiveRecord::Migration
+class AddLatToRegion < ActiveRecord::Migration[4.2]
   def self.up
     add_column :regions, :lat, :float
   end

@@ -2,19 +2,19 @@ require 'spec_helper'
 
 describe Api::V1::RegionsController, type: :request do
   before(:each) do
-    @portland = FactoryGirl.create(:region, id: 555, name: 'portland', motd: 'foo', full_name: 'Portland', lat: 12, lon: 13)
-    @la = FactoryGirl.create(:region, name: 'la', full_name: 'Los Angeles')
+    @portland = FactoryBot.create(:region, id: 555, name: 'portland', motd: 'foo', full_name: 'Portland', lat: 12, lon: 13)
+    @la = FactoryBot.create(:region, name: 'la', full_name: 'Los Angeles')
 
-    FactoryGirl.create(:user, region: @portland, email: 'portland@admin.com', is_super_admin: 1)
-    FactoryGirl.create(:user, region: @la, email: 'la@admin.com')
-    @user = FactoryGirl.create(:user, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+    FactoryBot.create(:user, region: @portland, email: 'portland@admin.com', is_super_admin: 1)
+    FactoryBot.create(:user, region: @la, email: 'la@admin.com')
+    @user = FactoryBot.create(:user, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
   end
 
   describe '#does_region_exist' do
     it 'tells you if name is a valid region' do
-      FactoryGirl.create(:region, id: 6, name: 'clark', motd: 'mine', lat: 12.0, lon: 13.0, full_name: 'Clarky')
+      FactoryBot.create(:region, id: 6, name: 'clark', motd: 'mine', lat: 12.0, lon: 13.0, full_name: 'Clarky')
 
-      get '/api/v1/regions/does_region_exist.json', name: 'clark'
+      get '/api/v1/regions/does_region_exist.json', params: { name: 'clark' }
       expect(response).to be_success
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
@@ -30,7 +30,7 @@ describe Api::V1::RegionsController, type: :request do
     end
 
     it 'throws an error if name does not correspond to a region' do
-      get '/api/v1/regions/does_region_exist.json', name: 'foo'
+      get '/api/v1/regions/does_region_exist.json', params: { name: 'foo' }
 
       expect(JSON.parse(response.body)['errors']).to eq('This is not a valid region.')
     end
@@ -38,9 +38,9 @@ describe Api::V1::RegionsController, type: :request do
 
   describe '#closest_by_lat_lon' do
     it 'sends back closest region' do
-      FactoryGirl.create(:region, name: 'not portland', lat: 122.0, lon: 13.0)
+      FactoryBot.create(:region, name: 'not portland', lat: 122.0, lon: 13.0)
 
-      get '/api/v1/regions/closest_by_lat_lon.json', lat: 12.1, lon: 13.0
+      get '/api/v1/regions/closest_by_lat_lon.json', params: { lat: 12.1, lon: 13.0 }
       expect(response).to be_success
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
@@ -56,7 +56,7 @@ describe Api::V1::RegionsController, type: :request do
     end
 
     it 'throws an error if no regions are within 250 miles' do
-      get '/api/v1/regions/closest_by_lat_lon.json', lat: 120.0, lon: 13.0
+      get '/api/v1/regions/closest_by_lat_lon.json', params: { lat: 120.0, lon: 13.0 }
 
       expect(JSON.parse(response.body)['errors']).to eq('No regions within 250 miles.')
     end
@@ -87,8 +87,8 @@ describe Api::V1::RegionsController, type: :request do
 
   describe '#index' do
     it 'sends back additional, non-db fields' do
-      FactoryGirl.create(:user, region: @portland, email: 'not@primary.com')
-      FactoryGirl.create(:user, region: @portland, email: 'is@primary.com', is_primary_email_contact: 1)
+      FactoryBot.create(:user, region: @portland, email: 'not@primary.com')
+      FactoryBot.create(:user, region: @portland, email: 'is@primary.com', is_primary_email_contact: 1)
 
       get '/api/v1/regions.json'
       expect(response).to be_success
@@ -112,14 +112,14 @@ describe Api::V1::RegionsController, type: :request do
   describe '#suggest' do
     it 'errors when required fields are not sent' do
       expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/suggest.json', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/regions/suggest.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('The name of the region you want added is a required field.')
     end
 
     it 'errors when not authed' do
       expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/suggest.json', region_name: 'region name', comments: 'region comments'
+      post '/api/v1/regions/suggest.json', params: { region_name: 'region name', comments: 'region comments' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::RegionsController::AUTH_REQUIRED_MSG)
     end
@@ -140,7 +140,7 @@ HERE
         )
       end
 
-      post '/api/v1/regions/suggest.json', { region_name: 'region name', comments: 'region comments', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+      post '/api/v1/regions/suggest.json', params: { region_name: 'region name', comments: 'region comments', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq("Thanks for suggesting that region. We'll be in touch.")
@@ -149,25 +149,25 @@ HERE
 
   describe '#contact' do
     it 'throws an error if the region does not exist' do
-      post '/api/v1/regions/contact.json', region_id: -1, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/regions/contact.json', params: { region_id: -1, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find region')
     end
 
     it 'throws an error when not authed' do
-      post '/api/v1/regions/contact.json', region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name'
+      post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name' }
 
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::RegionsController::AUTH_REQUIRED_MSG)
     end
 
     it 'errors when required fields are not sent' do
       expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/contact.json', region_id: @la.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('A message is required.')
 
       expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/contact.json', region_id: @la.id.to_s, message: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, message: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('A message is required.')
     end
@@ -176,7 +176,7 @@ HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: ['la@admin.com'],
-          bcc: ['portland@admin.com'],
+          cc: ['portland@admin.com'],
           from: 'admin@pinballmap.com',
           subject: 'PBM - Message from the Los Angeles region',
           body: <<HERE
@@ -190,7 +190,7 @@ HERE
         )
       end
 
-      post '/api/v1/regions/contact.json', { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+      post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
@@ -202,7 +202,7 @@ HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: ['la@admin.com'],
-          bcc: ['portland@admin.com'],
+          cc: ['portland@admin.com'],
           from: 'admin@pinballmap.com',
           subject: 'PBM - Message from the Los Angeles region',
           body: <<HERE
@@ -216,7 +216,7 @@ HERE
         )
       end
 
-      post '/api/v1/regions/contact.json', { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_USER_AGENT: 'cleOS'
+      post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
@@ -232,36 +232,38 @@ HERE
         )
       end
 
-      post '/api/v1/regions/contact.json', { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_HOST: 'pinballmapstaging.herokuapp.com'
+      host! 'pinballmapstaging.herokuapp.com'
+
+      post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
     end
   end
 
   describe '#app_comment' do
     it 'throws an error if the region does not exist' do
-      post '/api/v1/regions/app_comment.json', region_id: -1, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/regions/app_comment.json', params: { region_id: -1, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find region')
     end
 
     it 'throws an error if not authed' do
-      post '/api/v1/regions/app_comment.json', region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email', message: 'foo'
+      post '/api/v1/regions/app_comment.json', params: { region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email', message: 'foo' }
 
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::RegionsController::AUTH_REQUIRED_MSG)
     end
 
     it 'errors when required fields are not sent' do
       expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/app_comment.json', region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/regions/app_comment.json', params: { region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('region_id, os, os_version, device_type, app_version, email, message are all required.')
 
       expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/app_comment.json', region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', message: 'message', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/regions/app_comment.json', params: { region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', message: 'message', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('region_id, os, os_version, device_type, app_version, email, message are all required.')
 
       expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/app_comment.json', region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', message: 'message', email: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/regions/app_comment.json', params: { region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', message: 'message', email: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
       expect(JSON.parse(response.body)['errors']).to eq('region_id, os, os_version, device_type, app_version, email, message are all required.')
     end
@@ -270,7 +272,7 @@ HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: 'pinballmap@fastmail.com',
-          bcc: ['portland@admin.com'],
+          cc: ['portland@admin.com'],
           from: 'admin@pinballmap.com',
           subject: 'PBM - App feedback',
           body: <<HERE
@@ -286,7 +288,7 @@ HERE
         )
       end
 
-      post '/api/v1/regions/app_comment.json', region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a'
+      post '/api/v1/regions/app_comment.json', params: { region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
 
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
@@ -299,7 +301,9 @@ HERE
         )
       end
 
-      post '/api/v1/regions/app_comment.json', { region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, HTTP_HOST: 'pinballmapstaging.herokuapp.com'
+      host! 'pinballmapstaging.herokuapp.com'
+
+      post '/api/v1/regions/app_comment.json', params: { region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
     end
   end
 end

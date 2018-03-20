@@ -54,8 +54,9 @@ class PagesController < ApplicationController
   end
 
   def contact_sent
-    return unless params['contact_msg']
-    user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+    return if params['contact_msg'].nil? || params['contact_msg'].empty?
+
+    user = current_user.nil? ? nil : current_user
 
     if user
       flash.now[:alert] = 'Thanks for contacting us!'
@@ -97,7 +98,7 @@ class PagesController < ApplicationController
   def submitted_new_location
     flash.now[:alert] = "Thanks for entering that location. We'll get it in the system as soon as possible."
 
-    user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+    user = current_user.nil? ? nil : current_user
     send_new_location_notification(params, @region, user)
   end
 
@@ -109,11 +110,14 @@ class PagesController < ApplicationController
 
     @operators = Operator.where(['region_id = ?', @region.id]).map(&:name).uniq.sort
     @operators.unshift('')
+
+    @zones = Zone.where(['region_id = ?', @region.id]).map(&:name).uniq.sort
+    @zones.unshift('')
   end
 
   def robots
     robots = File.read(Rails.root + 'public/robots.txt')
-    render text: robots, layout: false, content_type: 'text/plain'
+    render plain: robots
   end
 
   def app; end
@@ -178,7 +182,7 @@ class PagesController < ApplicationController
   end
 
   def inspire_profile
-    user = Authorization.current_user.nil? || Authorization.current_user.is_a?(Authorization::AnonymousUser) ? nil : Authorization.current_user
+    user = current_user.nil? ? nil : current_user
 
     redirect_to profile_user_path(user.id) if user
   end

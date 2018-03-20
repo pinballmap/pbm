@@ -1,4 +1,4 @@
-class ChangeDescriptionFromStringToText < ActiveRecord::Migration
+class ChangeDescriptionFromStringToText < ActiveRecord::Migration[4.2]
   def self.up
     change_column :location_machine_xrefs, :condition, :text
   end

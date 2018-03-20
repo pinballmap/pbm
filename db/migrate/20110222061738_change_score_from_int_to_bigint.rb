@@ -1,4 +1,4 @@
-class ChangeScoreFromIntToBigint < ActiveRecord::Migration
+class ChangeScoreFromIntToBigint < ActiveRecord::Migration[4.2]
   def self.up
     change_column :machine_score_xrefs, :score, :bigint
   end

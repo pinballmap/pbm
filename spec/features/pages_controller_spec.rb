@@ -2,18 +2,18 @@ require 'spec_helper'
 
 describe PagesController do
   before(:each) do
-    @region = FactoryGirl.create(:region, name: 'portland', full_name: 'Portland')
-    @location = FactoryGirl.create(:location, region: @region, state: 'OR')
+    @region = FactoryBot.create(:region, name: 'portland', full_name: 'Portland')
+    @location = FactoryBot.create(:location, region: @region, state: 'OR')
   end
 
   describe 'Events', type: :feature, js: true do
     it 'handles basic event displaying' do
-      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today)
-      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today + 1)
-      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 3', start_date: Date.today - 1)
-      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 4')
-      FactoryGirl.create(:event, region: @region, location: @location, external_location_name: 'External location', name: 'event 5')
-      FactoryGirl.create(:event, region: @region, external_location_name: 'External location', name: 'event 6')
+      FactoryBot.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today)
+      FactoryBot.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today + 1)
+      FactoryBot.create(:event, region: @region, location: @location, name: 'event 3', start_date: Date.today - 1)
+      FactoryBot.create(:event, region: @region, location: @location, name: 'event 4')
+      FactoryBot.create(:event, region: @region, location: @location, external_location_name: 'External location', name: 'event 5')
+      FactoryBot.create(:event, region: @region, external_location_name: 'External location', name: 'event 6')
 
       visit '/portland/events'
 
@@ -23,8 +23,8 @@ describe PagesController do
     end
 
     it 'is case insensitive for region name' do
-      chicago_region = FactoryGirl.create(:region, name: 'chicago', full_name: 'Chicago')
-      FactoryGirl.create(:event, region: chicago_region, name: 'event 1', start_date: Date.today)
+      chicago_region = FactoryBot.create(:region, name: 'chicago', full_name: 'Chicago')
+      FactoryBot.create(:event, region: chicago_region, name: 'event 1', start_date: Date.today)
 
       visit '/CHICAGO/events'
 
@@ -32,8 +32,8 @@ describe PagesController do
     end
 
     it 'does not display events that are a week older than their end date' do
-      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today, end_date: Date.today)
-      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today - 8, end_date: Date.today - 8)
+      FactoryBot.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today, end_date: Date.today)
+      FactoryBot.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today - 8, end_date: Date.today - 8)
 
       visit '/portland/events'
 
@@ -42,8 +42,8 @@ describe PagesController do
     end
 
     it 'does not display events that are a week older than start date if there is no end date' do
-      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today)
-      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today - 8)
+      FactoryBot.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today)
+      FactoryBot.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today - 8)
 
       visit '/portland/events'
 
@@ -52,8 +52,8 @@ describe PagesController do
     end
 
     it 'displays events that have no start/end date (typically league stuff)' do
-      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 1', start_date: nil, end_date: nil)
-      FactoryGirl.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today)
+      FactoryBot.create(:event, region: @region, location: @location, name: 'event 1', start_date: nil, end_date: nil)
+      FactoryBot.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today)
 
       visit '/portland/events'
 
@@ -64,21 +64,21 @@ describe PagesController do
 
   describe 'High roller list', type: :feature, js: true do
     it 'should have intro text that displays correct number of locations and machines for a region' do
-      chicago_region = FactoryGirl.create(:region, name: 'chicago')
-      portland_location = FactoryGirl.create(:location, region: @region)
-      chicago_location = FactoryGirl.create(:location, region: chicago_region)
+      chicago_region = FactoryBot.create(:region, name: 'chicago')
+      portland_location = FactoryBot.create(:location, region: @region)
+      chicago_location = FactoryBot.create(:location, region: chicago_region)
 
-      machine = FactoryGirl.create(:machine)
+      machine = FactoryBot.create(:machine)
 
-      portland_lmx = FactoryGirl.create(:location_machine_xref, location: @location, machine: machine)
-      another_portland_lmx = FactoryGirl.create(:location_machine_xref, location: portland_location, machine: machine)
-      FactoryGirl.create(:location_machine_xref, location: chicago_location, machine: machine)
+      portland_lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: machine)
+      another_portland_lmx = FactoryBot.create(:location_machine_xref, location: portland_location, machine: machine)
+      FactoryBot.create(:location_machine_xref, location: chicago_location, machine: machine)
 
-      ssw_user = FactoryGirl.create(:user, username: 'ssw')
-      rtgt_user = FactoryGirl.create(:user, username: 'rtgt')
-      FactoryGirl.create(:machine_score_xref, location_machine_xref: portland_lmx, score: 100, user: ssw_user)
-      FactoryGirl.create(:machine_score_xref, location_machine_xref: portland_lmx, score: 90, user: rtgt_user)
-      FactoryGirl.create(:machine_score_xref, location_machine_xref: another_portland_lmx, score: 200, user: ssw_user)
+      ssw_user = FactoryBot.create(:user, username: 'ssw')
+      rtgt_user = FactoryBot.create(:user, username: 'rtgt')
+      FactoryBot.create(:machine_score_xref, location_machine_xref: portland_lmx, score: 100, user: ssw_user)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: portland_lmx, score: 90, user: rtgt_user)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: another_portland_lmx, score: 200, user: ssw_user)
 
       visit '/portland/high_rollers'
 
@@ -91,7 +91,7 @@ describe PagesController do
     it 'shows the top 10 machine counts on the about page' do
       11.times do |machine_name_counter|
         machine_name_counter.times do
-          FactoryGirl.create(:location_machine_xref, location: @location, machine: Machine.where(name: "Machine#{machine_name_counter}").first_or_create)
+          FactoryBot.create(:location_machine_xref, location: @location, machine: Machine.where(name: "Machine#{machine_name_counter}").first_or_create)
         end
       end
 
@@ -103,11 +103,11 @@ describe PagesController do
 
   describe 'Links', type: :feature, js: true do
     it 'shows links in a region' do
-      chicago = FactoryGirl.create(:region, name: 'chicago', full_name: 'Chicago')
+      chicago = FactoryBot.create(:region, name: 'chicago', full_name: 'Chicago')
 
-      FactoryGirl.create(:region_link_xref, region: @region, description: 'foo')
-      FactoryGirl.create(:region_link_xref, region: chicago, name: 'chicago link 1', category: 'main links', sort_order: 2, description: 'desc1')
-      FactoryGirl.create(:region_link_xref, region: chicago, name: 'cool link 1', category: 'cool links', sort_order: 1, description: 'desc2')
+      FactoryBot.create(:region_link_xref, region: @region, description: 'foo')
+      FactoryBot.create(:region_link_xref, region: chicago, name: 'chicago link 1', category: 'main links', sort_order: 2, description: 'desc1')
+      FactoryBot.create(:region_link_xref, region: chicago, name: 'cool link 1', category: 'cool links', sort_order: 1, description: 'desc2')
 
       visit '/chicago/about'
 
@@ -115,9 +115,9 @@ describe PagesController do
     end
 
     it 'sort order does not cause headers to display twice' do
-      FactoryGirl.create(:region_link_xref, region: @region, description: 'desc', name: 'link 1', category: 'main links', sort_order: 2)
-      FactoryGirl.create(:region_link_xref, region: @region, description: 'desc', name: 'link 2', category: 'main links', sort_order: 1)
-      FactoryGirl.create(:region_link_xref, region: @region, description: 'desc', name: 'link 3', category: 'other category')
+      FactoryBot.create(:region_link_xref, region: @region, description: 'desc', name: 'link 1', category: 'main links', sort_order: 2)
+      FactoryBot.create(:region_link_xref, region: @region, description: 'desc', name: 'link 2', category: 'main links', sort_order: 1)
+      FactoryBot.create(:region_link_xref, region: @region, description: 'desc', name: 'link 3', category: 'other category')
 
       visit "/#{@region.name}/about"
 
@@ -125,10 +125,10 @@ describe PagesController do
     end
 
     it 'makes a default link category called "Links"' do
-      FactoryGirl.create(:region_link_xref, region: @region, name: 'link 1', description: nil, category: nil)
-      FactoryGirl.create(:region_link_xref, region: @region, name: 'link 2', description: nil, category: '')
-      FactoryGirl.create(:region_link_xref, region: @region, name: 'link 3', description: nil, category: ' ')
-      FactoryGirl.create(:region_link_xref, region: @region, name: 'link 4', description: nil, category: 'other category')
+      FactoryBot.create(:region_link_xref, region: @region, name: 'link 1', description: nil, category: nil)
+      FactoryBot.create(:region_link_xref, region: @region, name: 'link 2', description: nil, category: '')
+      FactoryBot.create(:region_link_xref, region: @region, name: 'link 3', description: nil, category: ' ')
+      FactoryBot.create(:region_link_xref, region: @region, name: 'link 4', description: nil, category: 'other category')
 
       visit "/#{@region.name}/about"
 
@@ -136,8 +136,8 @@ describe PagesController do
     end
 
     it 'Mixing sort_order and nil sort_order links does not error' do
-      FactoryGirl.create(:region_link_xref, region: @region, name: 'Minnesota Pinball - The "Pin Cities"', url: 'https://www.facebook.com/groups/minnesotapinball/', description: 'Your best source for everything pinball in Minnesota!  Events, leagues, locations, games and more!', category: 'Pinball Map Links', sort_order: 1)
-      FactoryGirl.create(:region_link_xref, region: @region, name: 'Pinball Map Store', url: 'http://blog.pinballmap.com', description: 'News, questions, feelings.', category: 'Pinball Map Links', sort_order: nil)
+      FactoryBot.create(:region_link_xref, region: @region, name: 'Minnesota Pinball - The "Pin Cities"', url: 'https://www.facebook.com/groups/minnesotapinball/', description: 'Your best source for everything pinball in Minnesota!  Events, leagues, locations, games and more!', category: 'Pinball Map Links', sort_order: 1)
+      FactoryBot.create(:region_link_xref, region: @region, name: 'Pinball Map Store', url: 'http://blog.pinballmap.com', description: 'News, questions, feelings.', category: 'Pinball Map Links', sort_order: nil)
 
       visit "/#{@region.name}/about"
 
@@ -147,12 +147,12 @@ describe PagesController do
 
   describe 'Location suggestions', type: :feature, js: true do
     it 'limits state dropdown to unique states within a region' do
-      @user = FactoryGirl.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
-      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(@user).unshift('User'))
-      chicago = FactoryGirl.create(:region, name: 'chicago')
+      @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
+      chicago = FactoryBot.create(:region, name: 'chicago')
 
-      FactoryGirl.create(:location, region: @region, state: 'WA')
-      FactoryGirl.create(:location, region: chicago, state: 'IL')
+      FactoryBot.create(:location, region: @region, state: 'WA')
+      FactoryBot.create(:location, region: chicago, state: 'IL')
       login
 
       visit "/#{@region.name}/suggest"
@@ -167,13 +167,13 @@ describe PagesController do
 
   describe 'Homepage', type: :feature, js: true do
     it 'shows the proper number of locations and machines per region' do
-      chicago = FactoryGirl.create(:region, name: 'chicago', full_name: 'Chicago')
-      machine = FactoryGirl.create(:machine)
+      chicago = FactoryBot.create(:region, name: 'chicago', full_name: 'Chicago')
+      machine = FactoryBot.create(:machine)
 
-      FactoryGirl.create(:location_machine_xref, location: @location, machine: machine)
-      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: @region), machine: machine)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: machine)
+      FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location, region: @region), machine: machine)
 
-      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: chicago), machine: machine)
+      FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location, region: chicago), machine: machine)
 
       visit '/'
 
@@ -189,13 +189,13 @@ describe PagesController do
     end
 
     it 'does not show a random location link if there are no locations in the region' do
-      toronto = FactoryGirl.create(:region, name: 'toronto', full_name: 'Toronto')
+      toronto = FactoryBot.create(:region, name: 'toronto', full_name: 'Toronto')
 
       visit '/toronto'
 
       expect(page).not_to have_content('Or click here for a random location!')
 
-      FactoryGirl.create(:location, region: toronto)
+      FactoryBot.create(:location, region: toronto)
 
       visit '/toronto'
 
@@ -205,7 +205,7 @@ describe PagesController do
 
   describe 'Pages', type: :feature, js: true do
     it 'show the proper page title' do
-      FactoryGirl.create(:user, id: 111)
+      FactoryBot.create(:user, id: 111)
       visit '/app'
       expect(page).to have_title('App')
 
@@ -240,13 +240,13 @@ describe PagesController do
 
   describe 'Landing page for a region', type: :feature, js: true do
     it 'shows the proper location and machine counts in the intro text' do
-      chicago = FactoryGirl.create(:region, name: 'chicago')
-      machine = FactoryGirl.create(:machine)
+      chicago = FactoryBot.create(:region, name: 'chicago')
+      machine = FactoryBot.create(:machine)
 
-      FactoryGirl.create(:location_machine_xref, location: @location, machine: machine)
-      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: @region), machine: machine)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: machine)
+      FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location, region: @region), machine: machine)
 
-      FactoryGirl.create(:location_machine_xref, location: FactoryGirl.create(:location, region: chicago), machine: machine)
+      FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location, region: chicago), machine: machine)
 
       visit '/portland'
 
@@ -273,8 +273,8 @@ describe PagesController do
       expect(page).to_not have_content('Admin')
       expect(page).to have_content('Login')
 
-      user = FactoryGirl.create(:user)
-      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(user).unshift('User'))
+      user = FactoryBot.create(:user)
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
 
       visit '/'
 
@@ -286,8 +286,8 @@ describe PagesController do
       expect(page).to_not have_content('Admin')
       expect(page).to have_content('Logout')
 
-      user = FactoryGirl.create(:user, region_id: @region.id)
-      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(user).unshift('User'))
+      user = FactoryBot.create(:user, region_id: @region.id)
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
 
       visit '/'
 
@@ -307,8 +307,8 @@ describe PagesController do
 
       expect(current_path).to eql(inspire_profile_path)
 
-      user = FactoryGirl.create(:user, id: 10)
-      page.set_rack_session('warden.user.user.key' => User.serialize_into_session(user).unshift('User'))
+      user = FactoryBot.create(:user, id: 10)
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
 
       visit '/inspire_profile'
 

@@ -1,4 +1,4 @@
-class AddDescToLocations < ActiveRecord::Migration
+class AddDescToLocations < ActiveRecord::Migration[4.2]
   def self.up
     add_column :locations, :desc, :string
   end

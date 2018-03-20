@@ -1,4 +1,4 @@
-class CreateRegionLinksXrefTable < ActiveRecord::Migration
+class CreateRegionLinksXrefTable < ActiveRecord::Migration[4.2]
   def self.up
     create_table :region_link_xrefs do |t|
       t.string :name

@@ -304,9 +304,8 @@ p.notice {
   color: #d3ecff;
   font-size: 28px;
   text-align: center;
-  top: 0;
+  top: 200px;
   right: 0;
-  bottom: 0;
   left: 0;
   height: 100px;
   width: 475px;
@@ -489,11 +488,11 @@ p.notice {
   float: right;
   margin: 1px 0 auto;
   padding: 0 13px 0 0;
-  width: 464px;
+  height: 50px;
 }
 #header .region_logo_dropdown {
   width: 164px;
-  height: 49px;
+  height: 50px;
   position: relative;
   float: right;
   margin: 0;
@@ -589,6 +588,7 @@ p.notice {
 }
 .login a, .login_new a, .login_alert a {
   color: #F53240;
+  font-weight: bold;
 }
 .login_alert {
   font-style: italic;
@@ -682,7 +682,7 @@ div.pick_a_map .login_home {
 .other_regions {
   display: table !important;
   position: absolute !important;
-  height: 50px;
+  height: 51px;
   width: 164px;
   padding-top: 0;
 }
@@ -706,6 +706,7 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
 #header .geo_header_outer {
   width: 190px;
   float: right;
+  padding-right: 10px;
 }
 #header div.login_inner, #header div.closest_locations_inner,
 #header div.geo_header_inner {
@@ -1042,25 +1043,6 @@ span.or {
   padding-top: 0 !important;
   margin-bottom: 0 !important;
 }
-.location_link {
-  font-size: 18px;
-  font-weight: normal;
-  padding: 2px 2px 2px;
-  margin: 0;
-  text-align: center;
-  background-color: #FFFFFF;
-  border-right: 3px solid #EFEFEF;
-  width: 605px;
-}
-.location_link a {
-  text-decoration: none;
-  font-style: italic;
-  color: #5D5D5D;
-}
-.location_link a:hover {
-  text-decoration: underline;
-  color: #303030;
-}
 #by_type_id, #by_operator_id, #by_zone_id, #by_city_id {
   width: 300px;
   font-size: 16px !important;
@@ -1104,6 +1086,9 @@ a.active_section_link:hover {
   padding-left: 10px;
   padding-right: 5px;
 }
+#search_results li.name {
+  padding-right: 35px;
+}
 .name {
   font-size: 24px;
   line-height: 24px;
@@ -1114,6 +1099,17 @@ a.active_section_link:hover {
   border-radius: 0 5px 0 0;
   -moz-border-radius: 0 5px 0 0;
   -webkit-border-radius: 0 5px 0 0;
+}
+span.permalink {
+  float: right;
+  width: 30px;
+  margin-top: -43px;
+}
+.permalink img {
+  height: 20px;
+  width: 20px;
+  margin-top: 10px;
+
 }
 .address, .address_full {
   font-size: 16px;
@@ -2696,26 +2692,29 @@ div.score_list {
 #region_page_body .gm-style div:nth-child(10) {
   margin-left: 0 !important;
   margin-right: 0 !important;
-} 
-#region_page_body .gm-style div:nth-child(7) {
-  margin-right: 650px !important;
 }
-#region_page_body .gm-style  div:nth-child(9) {
+#region_page_body .gm-style div:nth-child(7) {
+  bottom: 73px !important;
+}
+#region_page_body .gm-style div:nth-child(9) {
   margin-right: 650px !important;
-  margin-bottom: 61px !important;
+  margin-bottom: 73px !important;
+}
+#region_page_body .gm-style div:nth-child(10) {
+  right: 680px !important;
 }
 #region_page_body .gm-style div:nth-child(4) {
   right: 795px !important;
-  bottom: 59px !important;
-}  
-#region_page_body .gm-style div:nth-child(6) {
-  right: 730px !important;
-  bottom: 59px !important;
-} 
+  bottom: 73px !important;
+}
+#region_page_body .gm-style div:nth-child(5) {
+  right: 815px !important;
+  bottom: 73px !important;
+}
 #region_page_body .gm-style div:nth-child(8) {
   right: 640px !important;
-  bottom: 59px !important;
-} 
+  bottom: 73px !important;
+}
 
 /** Rails Admin **/
 

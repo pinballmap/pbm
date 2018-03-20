@@ -7,8 +7,8 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_filter :detect_region, :set_current_user
-  after_filter :flash_to_headers, :store_location
+  before_action :detect_region
+  after_action :flash_to_headers, :store_location
 
   rescue_from ActionView::MissingTemplate do
   end
@@ -48,8 +48,9 @@ class ApplicationController < ActionController::Base
 
     location_type = params['location_type'] =~ /^[0-9]+$/ ? LocationType.find(params['location_type']) : LocationType.find_by_name(params['location_type'])
     operator = params['location_operator'] =~ /^[0-9]+$/ ? Operator.find(params['location_operator']) : Operator.find_by_name(params['location_operator'])
+    zone = params['location_zone'] =~ /^[0-9]+$/ ? Zone.find(params['location_zone']) : Zone.find_by_name(params['location_zone'])
 
-    body = <<END
+    body = <<BODY
 (A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into #{request.protocol}#{request.host_with_port}#{rails_admin_path}. Thanks!)\n
 Location Name: #{params['location_name']}\n
 Street: #{params['location_street']}\n
@@ -60,13 +61,14 @@ Phone: #{params['location_phone']}\n
 Website: #{params['location_website']}\n
 Type: #{location_type ? location_type.name : ''}\n
 Operator: #{operator ? operator.name : ''}\n
+Zone: #{zone ? zone.name : ''}\n
 Comments: #{params['location_comments']}\n
 Machines: #{params['location_machines']}\n
 (entered from #{request.remote_ip} via #{request.user_agent}#{user_info})\n
-END
+BODY
     Pony.mail(
       to: region.users.map(&:email),
-      bcc: User.all.select(&:is_super_admin).map(&:email),
+      cc: User.all.select(&:is_super_admin).map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject("PBM - New location suggested for the #{region.name} pinball map"),
       body: body
@@ -89,7 +91,7 @@ END
       zip = geocoded_results.postal_code
     end
 
-    SuggestedLocation.create(region_id: region.id, name: params['location_name'], street: street || params['location_street'], city: city || params['location_city'], state: state || params['location_state'], zip: zip || params['location_zip'], phone: params['location_phone'], website: params['location_website'], location_type: location_type, operator: operator, comments: params['location_comments'], machines: params['location_machines'], lat: lat, lon: lon, user_inputted_address: user_inputted_address)
+    SuggestedLocation.create(region_id: region.id, name: params['location_name'], street: street || params['location_street'], city: city || params['location_city'], state: state || params['location_state'], zip: zip || params['location_zip'], phone: params['location_phone'], website: params['location_website'], location_type: location_type, operator: operator, zone: zone, comments: params['location_comments'], machines: params['location_machines'], lat: lat, lon: lon, user_inputted_address: user_inputted_address)
   end
 
   def send_new_region_notification(params)
@@ -97,29 +99,29 @@ END
       to: Region.where('lower(name) = ?', 'portland').first.users.map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject('PBM - New region suggestion'),
-      body: <<END
+      body: <<BODY
 Their Name: #{params['name']}\n
 Their Email: #{params['email']}\n
 Region Name: #{params['region_name']}\n
 Region Comments: #{params['comments']}\n
 (entered from #{request.remote_ip} via #{request.user_agent})\n
-END
+BODY
     )
   end
 
   def send_admin_notification(params, region, user = nil)
     user_info = user ? "Username: #{user.username}\n\nSite Email: #{user.email}" : ''
 
-    body = <<END
+    body = <<BODY
 Their Name: #{params[:name]}\n
 Their Email: #{params[:email]}\n
 Message: #{params[:message]}\n
 #{user_info}\n
 (entered from #{request.remote_ip} via #{request.user_agent})\n
-END
+BODY
     Pony.mail(
       to: region.users.map(&:email),
-      bcc: User.all.select(&:is_super_admin).map(&:email),
+      cc: User.all.select(&:is_super_admin).map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject("PBM - Message from the #{region.full_name} region"),
       body: body
@@ -131,10 +133,10 @@ END
   def send_app_comment(params, region)
     Pony.mail(
       to: 'pinballmap@fastmail.com',
-      bcc: User.all.select(&:is_super_admin).map(&:email),
+      cc: User.all.select(&:is_super_admin).map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject('PBM - App feedback'),
-      body: <<END
+      body: <<BODY
 OS: #{params['os']}\n
 OS Version: #{params['os_version']}\n
 Device Type: #{params['device_type']}\n
@@ -143,7 +145,7 @@ Region: #{region.name}\n
 Their Name: #{params['name']}\n
 Their Email: #{params['email']}\n
 Message: #{params['message']}\n
-END
+BODY
     )
   end
 
@@ -218,16 +220,12 @@ END
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me) }
-    devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
-    devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
+    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me) }
+    devise_parameter_sanitizer.permit(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
+    devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
   end
 
   def detect_region
     @region = Region.find_by_name(params[:region].downcase) if params[:region] && (params[:region].is_a? String)
-  end
-
-  def set_current_user
-    Authorization.current_user = current_user
   end
 end

@@ -1,4 +1,4 @@
-class AddIpToLocationMachineXref < ActiveRecord::Migration
+class AddIpToLocationMachineXref < ActiveRecord::Migration[4.2]
   def self.up
     add_column :location_machine_xrefs, :ip, :string
   end
