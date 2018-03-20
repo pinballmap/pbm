@@ -42,7 +42,11 @@
 - else
   #header{:class => "#{@region ? '' : 'header_home'}"}
     #menu &#9776;
-    =link_to image_tag('pinballmapcom_nocom.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path
+    =link_to image_tag('pinballmapcom_nocom.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => 'logo_link'
+    - if user_signed_in?
+      =link_to image_tag('user.png', :alt => 'profile icon'), profile_user_path(current_user.id), :class => 'user_icon_link'
+    - else
+      =link_to image_tag('user.png', :alt => 'login icon'), new_user_session_path, :class => 'user_icon_link'
     %div.menu_link
       %ul#nav.js
         - if !user_signed_in?
