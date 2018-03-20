@@ -14,6 +14,14 @@ class SuggestedLocation < ApplicationRecord
   geocoded_by :full_street_address, latitude: :lat, longitude: :lon
   before_validation :geocode, unless: :skip_geocoding?
 
+  def skip_geocoding?
+    address_incomplete? || super
+  end
+
+  def address_incomplete?
+    street.nil? || city.nil? || state.nil? || zip.nil?
+  end
+
   def full_street_address
     [street, city, state, zip].join(', ')
   end

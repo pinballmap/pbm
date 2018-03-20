@@ -6,6 +6,15 @@ describe SuggestedLocation do
     @user = FactoryBot.create(:user, email: 'yeah@ok.com')
   end
 
+  describe '#address_incomplete?' do
+    it 'should be true based on lack of address' do
+      expect(@suggested_location.address_incomplete?).to be(false)
+
+      @suggested_location.street = nil
+      expect(@suggested_location.address_incomplete?).to be(true)
+    end
+  end
+
   describe '#convert_to_location' do
     it 'should create a rails_admin history entry' do
       @suggested_location.convert_to_location(@user.email)
@@ -14,7 +23,7 @@ describe SuggestedLocation do
 select message, username, item, month, year from rails_admin_histories limit 1
 HERE
 
-      expect(results.values).to eq([['converted from suggested location', 'yeah@ok.com', '1', nil, nil]])
+      expect(results.values).to eq([['converted from suggested location', 'yeah@ok.com', 1, nil, nil]])
     end
   end
 end
