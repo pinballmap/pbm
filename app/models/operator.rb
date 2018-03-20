@@ -1,6 +1,7 @@
 class Operator < ApplicationRecord
   belongs_to :region, optional: true
   has_many :locations
+  has_many :suggested_locations
 
   scope :region, (->(name) { where(region_id: Region.find_by_name(name.downcase).id) })
 
