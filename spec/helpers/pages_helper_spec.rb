@@ -25,6 +25,10 @@ describe PagesHelper, type: :helper do
         expect(helper.title_for_path(faq_path)).to eq('FAQ - Pinball Map')
       end
 
+      it 'displays the correct privacy title' do
+        expect(helper.title_for_path(privacy_path)).to eq('Privacy Policy - Pinball Map')
+      end
+
       it 'displays the correct store title ' do
         expect(helper.title_for_path(store_path)).to eq('Store - Pinball Map')
       end
