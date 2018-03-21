@@ -61,6 +61,13 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "pbm_#{Rails.env}"
   config.action_mailer.perform_caching = false
+  config.action_mailer.default_url_options = { :protocol => 'https', :host => 'pinballmap.com' }
+  config.middleware.use ExceptionNotification::Rack,
+    :email => {
+      :email_prefix => "[PBM Exception] ",
+      :sender_address => %{"PBM Exceptions" <exceptions@pinballmap.com>},
+      :exception_recipients => %w{scott.wainstock@gmail.com}
+    }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
