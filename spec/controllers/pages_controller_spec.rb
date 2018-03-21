@@ -164,7 +164,7 @@ HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: ['foo@bar.com'],
-          cc: ['super_admin@bar.com'],
+          bcc: ['super_admin@bar.com'],
           from: 'admin@pinballmap.com',
           subject: 'PBM - New location suggested for the portland pinball map',
           body: body
@@ -204,7 +204,7 @@ HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: ['foo@bar.com'],
-          cc: ['super_admin@bar.com'],
+          bcc: ['super_admin@bar.com'],
           from: 'admin@pinballmap.com',
           subject: 'PBM - New location suggested for the portland pinball map',
           body: body

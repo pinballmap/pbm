@@ -78,7 +78,6 @@ module PagesHelper
            else
              "Find local places to play pinball! The #{region.full_name} Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."
            end
-
     desc
   end
 
@@ -108,7 +107,6 @@ module PagesHelper
            else
              'The Pinball Map website and free mobile app will help you places to play pinball! Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
            end
-
     desc
   end
 end
