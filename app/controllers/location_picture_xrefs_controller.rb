@@ -4,11 +4,17 @@ class LocationPictureXrefsController < InheritedResources::Base
 
   def create
     @location_picture_xref = LocationPictureXref.new(location_picture_xref_params)
-    if @location_picture_xref.save
-      redirect_to @location_picture_xref, notice: 'LocationPictureXref was successfully created.'
-    else
-      render action: 'new'
+
+    respond_to do |format|
+      format.js if @location_picture_xref.save
     end
+
+    Pony.mail(
+      to: @location_picture_xref.location.region.users.map(&:email),
+      from: 'admin@pinballmap.com',
+      subject: 'PBM - Someone wants you to approve a picture',
+      body: "This is photo ID: #{@location_picture_xref.id}. It's at location: #{@location_picture_xref.location.name}. Region: #{@location_picture_xref.region.full_name}.\n\n\nYou can view the picture here #{@location_picture_xref.photo.url}\n\n\nTo approve it, please visit here #{rails_admin_path}/location_picture_xref\n\n\nOnce there, click 'edit' and then tick the 'approve' button."
+    )
   end
 
   private
