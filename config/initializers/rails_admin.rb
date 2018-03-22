@@ -119,6 +119,11 @@ RailsAdmin.config do |config|
       field :phone, :string
       field :zone, :belongs_to_association
       field :operator, :belongs_to_association
+      field :is_stern_army, :boolean do
+        visible do
+          bindings[:view]._current_user.is_super_admin
+        end
+      end
     end
     show do
       field :name, :string
@@ -140,6 +145,11 @@ RailsAdmin.config do |config|
       field :website, :string
       field :updated_at, :datetime
       field :description, :string
+      field :is_stern_army, :boolean do
+        visible do
+          bindings[:view]._current_user.is_super_admin
+        end
+      end
     end
     edit do
       field :name, :string
@@ -172,6 +182,11 @@ RailsAdmin.config do |config|
       field :website, :string
       field :updated_at, :datetime
       field :description, :string
+      field :is_stern_army, :boolean do
+        visible do
+          bindings[:view]._current_user.is_super_admin
+        end
+      end
     end
     create do
       field :name, :string
@@ -213,6 +228,11 @@ RailsAdmin.config do |config|
       end
       field :machines do
         orderable true
+      end
+      field :is_stern_army, :boolean do
+        visible do
+          bindings[:view]._current_user.is_super_admin
+        end
       end
     end
     export do; end

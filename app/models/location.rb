@@ -67,6 +67,7 @@ class Location < ApplicationRecord
     box = Geocoder::Calculations.bounding_box([boundary_lat_lons[0], boundary_lat_lons[1]], distance * MAP_SCALE)
     Location.within_bounding_box(box)
   })
+  scope :by_is_stern_army, (->(_non_blank_param) { where(is_stern_army: true) })
 
   before_destroy do |record|
     Event.where(location_id: record.id).destroy_all

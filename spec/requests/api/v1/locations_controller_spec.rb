@@ -173,6 +173,14 @@ HERE
       expect(response.body).to include('foo bar')
     end
 
+    it 'respects is_stern_army filter' do
+      FactoryBot.create(:location, region: @region, name: 'Stern Army Place', is_stern_army: 't')
+      get "/api/v1/region/#{@region.name}/locations.json", params: { by_is_stern_army: 1 }
+
+      expect(response.body).to include('Stern Army Place')
+      expect(response.body).to_not include('Satchmo')
+    end
+
     it 'returns username' do
       ssw = FactoryBot.create(:user, username: 'ssw')
       lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 777, name: 'Cleo'), user: ssw)
