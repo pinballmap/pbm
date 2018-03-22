@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180214052824) do
+ActiveRecord::Schema.define(version: 20180322035017) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 20180214052824) do
     t.integer "operator_id"
     t.date "date_last_updated"
     t.integer "last_updated_by_user_id"
+    t.boolean "is_stern_army"
     t.index ["location_type_id"], name: "index_locations_on_location_type_id"
     t.index ["operator_id"], name: "index_locations_on_operator_id"
     t.index ["region_id"], name: "index_locations_on_region_id"
