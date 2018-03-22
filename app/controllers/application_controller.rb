@@ -68,7 +68,7 @@ Machines: #{params['location_machines']}\n
 BODY
     Pony.mail(
       to: region.users.map(&:email),
-      cc: User.all.select(&:is_super_admin).map(&:email),
+      bcc: User.all.select(&:is_super_admin).map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject("PBM - New location suggested for the #{region.name} pinball map"),
       body: body

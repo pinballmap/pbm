@@ -18,6 +18,8 @@ AbcSize:
   Enabled: false
 Metrics/BlockLength:
   Enabled: false
+Metrics/ModuleLength:
+  Max: 150
 IndentArray:
   Enabled: false
 RequireParentheses:

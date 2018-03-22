@@ -172,6 +172,7 @@ Rails.application.routes.draw do
   get '/profile' => redirect('/inspire_profile')
   get '/twincities' => redirect('/minnesota')
   get '/maryland-north' => redirect('/baltimore')
+  get '/portland-maine' => redirect('/maine')
 
   root to: 'pages#home'
 end

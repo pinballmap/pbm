@@ -35,6 +35,8 @@ module PagesHelper
               'App Support - '
             elsif path == faq_path
               'FAQ - '
+            elsif path == privacy_path
+              'Privacy Policy - '
             elsif path == store_path
               'Store - '
             elsif path == donate_path
@@ -76,7 +78,6 @@ module PagesHelper
            else
              "Find local places to play pinball! The #{region.full_name} Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."
            end
-
     desc
   end
 
@@ -87,6 +88,8 @@ module PagesHelper
              'Pinball Map iOS screenshots, support, and FAQ'
            elsif path == faq_path
              'Pinball Map Frequently Asked Questions (FAQ). Got a question? It may be answered here.'
+           elsif path == privacy_path
+             'Pinball Map Privacy Policy. We take privacy srsly. Read this for details.'
            elsif path == store_path
              "Pinball Map Store! We have a t-shirt for sale. Get it while it's hot (pink)."
            elsif path == donate_path
@@ -104,7 +107,6 @@ module PagesHelper
            else
              'The Pinball Map website and free mobile app will help you places to play pinball! Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
            end
-
     desc
   end
 end
