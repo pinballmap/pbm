@@ -19,7 +19,7 @@ class SuggestedLocation < ApplicationRecord
   end
 
   def address_incomplete?
-    street.nil? || city.nil? || state.nil? || zip.nil?
+    street.nil? || city.nil?
   end
 
   def full_street_address

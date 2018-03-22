@@ -10,6 +10,12 @@ describe SuggestedLocation do
     it 'should be true based on lack of address' do
       expect(@suggested_location.address_incomplete?).to be(false)
 
+      @suggested_location.state = nil
+      expect(@suggested_location.address_incomplete?).to be(false)
+
+      @suggested_location.zip = nil
+      expect(@suggested_location.address_incomplete?).to be(false)
+
       @suggested_location.street = nil
       expect(@suggested_location.address_incomplete?).to be(true)
     end
