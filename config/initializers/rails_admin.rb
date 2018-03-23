@@ -649,9 +649,21 @@ RailsAdmin.config do |config|
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, :object_type => 'suggested_location'}
         end
       end
-      field :location_type, :belongs_to_association
-      field :operator, :belongs_to_association
-      field :zone, :belongs_to_association
+      field :location_type_id do
+        render do
+          bindings[:view].render :partial => 'location_type_select', :locals => {:object_type => 'suggested_location', :location_type_id => bindings[:object].location_type_id}
+        end
+      end
+      field :operator_id do
+        render do
+          bindings[:view].render :partial => 'operator_select', :locals => {:object_type => 'suggested_location', :operator_id => bindings[:object].operator_id}
+        end
+      end
+      field :zone_id do
+        render do
+          bindings[:view].render :partial => 'zone_select', :locals => {:object_type => 'suggested_location', :zone_id => bindings[:object].zone_id}
+        end
+      end
       field :street, :string
       field :city, :string
       field :state, :string
