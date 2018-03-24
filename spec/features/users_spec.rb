@@ -7,6 +7,11 @@ describe UsersController do
       page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
     end
 
+    it 'sets page title appropriately' do
+      visit "/users/#{@user.id}/profile"
+      expect(page.title).to eq(@user.username + "'s User Profile - Pinball Map")
+    end
+
     it 'display metrics about the users account' do
       FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, id: 100), submission_type: UserSubmission::NEW_LMX_TYPE)
       FactoryBot.create(:user_submission, user: @user, location: Location.find(100), submission_type: UserSubmission::NEW_CONDITION_TYPE)

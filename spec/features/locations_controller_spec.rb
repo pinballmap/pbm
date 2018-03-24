@@ -118,6 +118,38 @@ describe LocationsController do
     before(:each) do
     end
 
+    it 'sets title and description appropriately if one location is returned' do
+      FactoryBot.create(:location, region: @region, name: 'Cleo')
+      FactoryBot.create(:location, region: @region, name: 'Zelda', street: '1234 Foo St.', city: 'Portland', zip: '97203')
+
+      visit '/portland'
+
+      desc_text = 'Find local places to play pinball! The portland Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
+      desc_tag = "meta[name=\"description\"][content=\"#{desc_text}\"]"
+      expect(page.title).to eq('portland Pinball Map')
+      expect(page.body).to have_css(desc_tag, visible: false)
+
+      fill_in('by_location_name', with: 'Zelda')
+      click_on 'location_search_button'
+
+      sleep 1
+
+      desc_text = '1234 Foo St., Portland, OR, 97203. Play pinball at Zelda!'
+      desc_tag = "meta[name=\"description\"][content=\"#{desc_text}\"]"
+      expect(page.title).to eq('Zelda - portland Pinball Map')
+      expect(page.body).to have_css(desc_tag, visible: false)
+
+      fill_in('by_location_name', with: '')
+      click_on 'location_search_button'
+
+      sleep 1
+
+      desc_text = 'Find local places to play pinball! The portland Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
+      desc_tag = "meta[name=\"description\"][content=\"#{desc_text}\"]"
+      expect(page.title).to eq('portland Pinball Map')
+      expect(page.body).to have_css(desc_tag, visible: false)
+    end
+
     it 'favors by_location_name when search by both by_location_id and by_location_name' do
       FactoryBot.create(:location, region: @region, name: 'Cleo')
       FactoryBot.create(:location, region: @region, name: 'Zelda')
