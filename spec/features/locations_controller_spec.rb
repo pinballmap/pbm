@@ -122,32 +122,46 @@ describe LocationsController do
       FactoryBot.create(:location, region: @region, name: 'Cleo')
       FactoryBot.create(:location, region: @region, name: 'Zelda', street: '1234 Foo St.', city: 'Portland', zip: '97203')
 
+      old_style_title = 'portland Pinball Map'
+      single_location_title = 'Zelda - portland Pinball Map'
+      old_style_description = 'Find local places to play pinball! The portland Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
+      single_location_description = '1234 Foo St., Portland, OR, 97203. Play pinball at Zelda!'
+
       visit '/portland'
 
-      desc_text = 'Find local places to play pinball! The portland Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
-      desc_tag = "meta[name=\"description\"][content=\"#{desc_text}\"]"
+      desc_tag = "meta[name=\"description\"][content=\"#{old_style_description}\"]"
+      og_desc_tag = "meta[property=\"og:description\"][content=\"#{old_style_description}\"]"
+      og_title_tag = "meta[property=\"og:title\"][content=\"#{old_style_title}\"]"
       expect(page.title).to eq('portland Pinball Map')
       expect(page.body).to have_css(desc_tag, visible: false)
+      expect(page.body).to have_css(og_title_tag, visible: false)
+      expect(page.body).to have_css(og_desc_tag, visible: false)
 
       fill_in('by_location_name', with: 'Zelda')
       click_on 'location_search_button'
 
       sleep 1
 
-      desc_text = '1234 Foo St., Portland, OR, 97203. Play pinball at Zelda!'
-      desc_tag = "meta[name=\"description\"][content=\"#{desc_text}\"]"
-      expect(page.title).to eq('Zelda - portland Pinball Map')
+      desc_tag = "meta[name=\"description\"][content=\"#{single_location_description}\"]"
+      og_desc_tag = "meta[property=\"og:description\"][content=\"#{single_location_description}\"]"
+      og_title_tag = "meta[property=\"og:title\"][content=\"#{single_location_title}\"]"
+      expect(page.title).to eq(single_location_title)
       expect(page.body).to have_css(desc_tag, visible: false)
+      expect(page.body).to have_css(og_desc_tag, visible: false)
+      expect(page.body).to have_css(og_title_tag, visible: false)
 
       fill_in('by_location_name', with: '')
       click_on 'location_search_button'
 
       sleep 1
 
-      desc_text = 'Find local places to play pinball! The portland Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
-      desc_tag = "meta[name=\"description\"][content=\"#{desc_text}\"]"
+      desc_tag = "meta[name=\"description\"][content=\"#{old_style_description}\"]"
+      og_desc_tag = "meta[property=\"og:description\"][content=\"#{old_style_description}\"]"
+      title_tag = "meta[property=\"og:title\"][content=\"#{old_style_title}\"]"
       expect(page.title).to eq('portland Pinball Map')
       expect(page.body).to have_css(desc_tag, visible: false)
+      expect(page.body).to have_css(title_tag, visible: false)
+      expect(page.body).to have_css(og_desc_tag, visible: false)
     end
 
     it 'favors by_location_name when search by both by_location_id and by_location_name' do

@@ -9,7 +9,12 @@ describe UsersController do
 
     it 'sets page title appropriately' do
       visit "/users/#{@user.id}/profile"
-      expect(page.title).to eq(@user.username + "'s User Profile - Pinball Map")
+
+      title = @user.username + "'s User Profile - Pinball Map"
+
+      desc_tag = "meta[property=\"og:title\"][content=\"#{title}\"]"
+      expect(page.body).to have_css(desc_tag, visible: false)
+      expect(page.title).to eq(title)
     end
 
     it 'display metrics about the users account' do
