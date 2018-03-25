@@ -82,8 +82,8 @@ class Location < ApplicationRecord
     ENV['SKIP_GEOCODE'] || ((lat && lon) && (last_updated_by_user && !last_updated_by_user.region_id.nil?))
   end
 
-  def self.by_at_least_n_machines_sql(n)
-    "id in (select location_id from (select location_id, count(*) as count from location_machine_xrefs group by location_id) x where x.count >= #{n})"
+  def self.by_at_least_n_machines_sql(number_of_machines)
+    "id in (select location_id from (select location_id, count(*) as count from location_machine_xrefs group by location_id) x where x.count >= #{number_of_machines})"
   end
 
   def num_machines
