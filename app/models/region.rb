@@ -30,12 +30,12 @@ class Region < ApplicationRecord
     machine_score_xrefs
   end
 
-  def n_recent_scores(n)
+  def n_recent_scores(number_of_scores)
     scores = machine_score_xrefs.sort_by(&:id)
-    scores[0, n]
+    scores[0, number_of_scores]
   end
 
-  def n_high_rollers(n = 10)
+  def n_high_rollers(number_of_high_rollers = 10)
     rollers = {}
     @high_rollers = {}
 
@@ -48,7 +48,7 @@ class Region < ApplicationRecord
       scores = roller[1]
       scores.sort! { |a, b| b.created_at <=> a.created_at }
 
-      @high_rollers[username] = scores unless @high_rollers.size == n
+      @high_rollers[username] = scores unless @high_rollers.size == number_of_high_rollers
     end
 
     @high_rollers
