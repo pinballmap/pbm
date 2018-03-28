@@ -13,5 +13,5 @@
           = @region.html_motd
       = yield :presearch_sidebar
   - if !mobile_device?
-    #map
+    #map.desktop_map
       = render :partial => 'locations/map'

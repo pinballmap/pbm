@@ -359,8 +359,7 @@ function showLocations(ids, lats, lons, contents) {
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
             position: google.maps.ControlPosition.BOTTOM_CENTER,
-            mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
-                        'styled_map']
+            mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'styled_map']
             }
       });
     } else {
@@ -369,9 +368,8 @@ function showLocations(ids, lats, lons, contents) {
 	      gestureHandling: 'greedy',
         mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-            position: google.maps.ControlPosition.TOP_CENTER,
-            mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
-                        'styled_map']
+            position: google.maps.ControlPosition.BOTTOM_RIGHT,
+            mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'styled_map']
             }
       });
     }
