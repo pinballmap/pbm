@@ -42,7 +42,7 @@ module PagesHelper
             elsif path == donate_path
               'Donate - '
             elsif path =~ /profile/
-              'User Profile - '
+              "#{@user.username}'s User Profile - "
             elsif path =~ /login/
               'Login - '
             elsif path =~ /join/

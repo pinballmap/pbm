@@ -119,13 +119,14 @@ describe LocationsController do
     end
 
     it 'sets title and description appropriately if one location is returned' do
+      FactoryBot.create(:machine, name: 'Bawb')
       FactoryBot.create(:location, region: @region, name: 'Cleo')
       FactoryBot.create(:location, region: @region, name: 'Zelda', street: '1234 Foo St.', city: 'Portland', zip: '97203')
 
       old_style_title = 'portland Pinball Map'
       single_location_title = 'Zelda - portland Pinball Map'
       old_style_description = 'Find local places to play pinball! The portland Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
-      single_location_description = '1234 Foo St., Portland, OR, 97203. Play pinball at Zelda!'
+      single_location_description = 'Zelda on Pinball Map! 1234 Foo St., Portland, OR, 97203. Zelda has 1 pinball machine: Bawb.'
 
       visit '/portland'
 
