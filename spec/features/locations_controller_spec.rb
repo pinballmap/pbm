@@ -119,9 +119,11 @@ describe LocationsController do
     end
 
     it 'sets title and description appropriately if one location is returned' do
-      FactoryBot.create(:machine, name: 'Bawb')
       FactoryBot.create(:location, region: @region, name: 'Cleo')
-      FactoryBot.create(:location, region: @region, name: 'Zelda', street: '1234 Foo St.', city: 'Portland', zip: '97203')
+      @location = FactoryBot.create(:location, region: @region, name: 'Zelda', street: '1234 Foo St.', city: 'Portland', zip: '97203')
+      @machine = FactoryBot.create(:machine, name: 'Bawb')
+      FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
+
 
       old_style_title = 'portland Pinball Map'
       single_location_title = 'Zelda - portland Pinball Map'
