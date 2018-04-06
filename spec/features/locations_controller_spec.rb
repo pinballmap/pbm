@@ -124,7 +124,6 @@ describe LocationsController do
       @machine = FactoryBot.create(:machine, name: 'Bawb')
       FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
 
-
       old_style_title = 'portland Pinball Map'
       single_location_title = 'Zelda - portland Pinball Map'
       old_style_description = 'Find local places to play pinball! The portland Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
