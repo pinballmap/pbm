@@ -41,7 +41,7 @@ describe UsersController do
       expect(page).to have_content('1 Machine Comments')
       expect(page).to have_content('3 Locations Submitted')
       expect(page).to have_content('5 Locations Edited')
-      expect(page).to have_content('High Scores: Machine Two 2 at Location One on Jan-01-2016 Machine One 1 at Location One on Jan-02-2016')
+      expect(page).to have_content('High Scores: Machine One 1 at Location One on Jan-02-2016 Machine Two 2 at Location One on Jan-01-2016')
     end
 
     it 'adds commas to high scores' do
