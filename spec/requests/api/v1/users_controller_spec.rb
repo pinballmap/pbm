@@ -177,7 +177,7 @@ describe Api::V1::UsersController, type: :request do
         [100, 'location', 1000]
       ])
       expect(json['profile_list_of_high_scores']).to eq([
-        ['Location', 'Machine', '12', 'Jan-02-2016'],  
+        ['Location', 'Machine', '12', 'Jan-02-2016'],
         ['Bottles', 'Cheetah', '1,234', 'Jan-01-2016']
       ])
     end
