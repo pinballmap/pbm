@@ -15,7 +15,7 @@ class SuggestedLocation < ApplicationRecord
   before_validation :geocode, unless: :skip_geocoding?
 
   def skip_geocoding?
-    address_incomplete? || super
+    address_incomplete? || ENV['SKIP_GEOCODE'] || (lat && lon)
   end
 
   def address_incomplete?
