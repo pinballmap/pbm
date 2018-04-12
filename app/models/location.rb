@@ -78,7 +78,7 @@ class Location < ApplicationRecord
     UserSubmission.create(region_id: region.id, location: self, submission_type: UserSubmission::DELETE_LOCATION_TYPE, submission: "Deleted #{name} (#{id})")
   end
 
-  def should_skip_geocode
+  def skip_geocoding?
     ENV['SKIP_GEOCODE'] || ((lat && lon) && (last_updated_by_user && !last_updated_by_user.region_id.nil?))
   end
 
