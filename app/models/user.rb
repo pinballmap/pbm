@@ -79,7 +79,7 @@ class User < ApplicationRecord
   end
 
   def profile_list_of_high_scores
-    msx_submissions = UserSubmission.where(user: self, submission_type: UserSubmission::NEW_SCORE_TYPE).order(:created_at)
+    msx_submissions = UserSubmission.where(user: self, submission_type: UserSubmission::NEW_SCORE_TYPE).order(created_at: 'DESC')
 
     formatted_score_data = []
     msx_submissions.each do |msx_sub|

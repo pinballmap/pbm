@@ -39,13 +39,20 @@ body {
   height: auto;
   margin: 45px auto 0;
 }
-#header a img {
+#header a.logo_link {
+  height: 30px;
   float: none;
   padding: 0;
+}
+#header_image {
+  text-align: center;
+}
+#header a.logo_link img {
+  padding: 0;
   height: 30px;
-  width: auto;
+  width: 203px;
   margin: 2px auto;
-  display: block;
+  display: inline;
 }
 #header div.menu_link {
   width: auto !important;
@@ -57,7 +64,7 @@ body {
   text-align: left;
 }
 #menu {
-  padding: 0;
+  padding: 0 5px 0 0 ;
   height: 30px;
   font-size: 30px;
   display: -webkit-box;
@@ -242,6 +249,7 @@ span.login_list {
   right: 10px;
   top: 6px;
   position: absolute;
+  padding: 0 0 0 5px;
 }
 .user_icon_link img {
   height: 30px;
@@ -346,7 +354,7 @@ div.pick_a_map {
   position: relative;
   width: auto;
   min-width: 300px;
-  height: 360px;
+  height: 360px !important;
   left: 0;
   margin: 0 10px 10px;
   top: 0;
@@ -1174,4 +1182,9 @@ p.notice {
 }
 #region_page_body .gm-style div:nth-child(7) {
   bottom: 5px !important;
+}
+#region_page_body .gm-style-iw {
+  max-height: 180px !important;
+  max-width: 200px !important;
+  overflow-y: scroll !important;
 }

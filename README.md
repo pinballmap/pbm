@@ -17,7 +17,7 @@ Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhan
 * `rvm --default use ruby-2.3.4`
 * `bundle install`
 * `selenium install`
-* `brew update && brew install phantomjs`
+* `brew update`
 * `cp config/database.yml.example config/database.yml` to create your database.yml for development
 
 * `brew install postgresql`
@@ -33,7 +33,7 @@ Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhan
 
 Start server: `bundle exec rails s`
 
-Run tests: `bundle exec rspec`
+Run tests: `bundle exec rake`
 
 If the site loads properly it will be an empty version of pinballmap.com, then ask Scott for a data dump so you can have a full set of data to work with.
 
@@ -62,11 +62,9 @@ If the site loads properly it will be an empty version of pinballmap.com, then a
 * `bundle exec rake db:create ; RAILS_ENV=test bundle exec rake db:create`
 * `bundle exec rake db:migrate ; RAILS_ENV=test bundle exec rake db:migrate`
 
-5. Install phantomjs via package manager.
-
-6. Get a database dump from Scott. Then:
+5. Get a database dump from Scott. Then:
 * `pg_restore --verbose --clean --no-acl --no-owner -h localhost -d pbm_dev dump.file`
 
 Start server: `bundle exec rails s`
 
-Run tests: `bundle exec rspec`
+Run tests: `bundle exec rake`

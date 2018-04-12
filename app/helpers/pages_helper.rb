@@ -41,8 +41,10 @@ module PagesHelper
               'Store - '
             elsif path == donate_path
               'Donate - '
+            elsif path =~ /inspire_profile/
+              'Sign up! - '
             elsif path =~ /profile/
-              'User Profile - '
+              "#{@user.username}'s User Profile - "
             elsif path =~ /login/
               'Login - '
             elsif path =~ /join/

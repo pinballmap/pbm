@@ -34,7 +34,8 @@ describe PagesHelper, type: :helper do
       end
 
       it 'displays the profile title' do
-        expect(helper.title_for_path(profile_user_path(11))).to eq('User Profile - Pinball Map')
+        @user = FactoryBot.create(:user, username: 'ssw')
+        expect(helper.title_for_path(profile_user_path(11))).to eq("ssw's User Profile - Pinball Map")
       end
 
       it 'displays the donate title' do
