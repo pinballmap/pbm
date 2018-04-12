@@ -122,16 +122,6 @@
     }
 }
 
-@media (max-width: 865px) {
-  /* .closest_locations, #header .closest_locations_outer {
-    display:none;
-  } */
-  #region_map {
-    width: 420px;
-    height: 270px;
-  }
-}
-
 @media (max-width: 920px) {
   #header .login_home {
     width: 40px;
