@@ -321,11 +321,16 @@ p.notice {
 #page.submitted #flash-message #flash_alert {
   display: none !important;
 }
+#home_top_container {
+  width: 960px;
+  margin: 0 auto;
+}
 .home_intro {
   padding: 3px 6px 6px;
   background-color: #EFEFEF;
   border: 5px solid #EFEFEF;
-  width: 300px;
+  width: 400px;
+  min-width: 200px;
   line-height: 120%;
   margin: 0 10px 10px 10px;
   font-size: 18px;
@@ -337,7 +342,7 @@ p.notice {
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
 }
 .home_intro_container {
-  float: left;
+  float: right;
 }
 
 /** END Home **/
@@ -651,7 +656,7 @@ div.pick_a_map .login_home {
   margin: 6px 5px;
   float: right;
 }
-.region_name, .region_name_page,
+.region_name_page,
 #header span.region_name_page a {
   color: #F53240;
   font-size: 20px;
@@ -663,25 +668,6 @@ div.pick_a_map .login_home {
   border-radius: 0;
   display: block;
   font-weight: bold;
-}
-.region_name_container {
-  height: 45px !important;
-  width: 170px;
-  position: relative;
-}
-.region_name_inner {
-  display: table !important;
-  position: absolute !important;
-  height: 45px;
-  width: 160px;
-  margin-left: 5px;
-}
-.region_name {
-  padding: 12px 0 6px;
-  height: 45px;
-  display: table-cell !important;
-  text-align: center;
-  vertical-align: middle;
 }
 .other_regions {
   display: table !important;
@@ -2398,10 +2384,10 @@ span.begin {
   max-width: 920px;
 }
 #welcome {
-  margin: 0 auto 0;
-  width: 100%;
+  margin: 10px auto 0;
+  width: 960px;
   min-width: 819px;
-  max-width: 100%;
+  max-width: 960px;
   height: 100%;
 }
 ul.stufflike li, ul.list li {
@@ -2448,47 +2434,48 @@ ul.stufflike li, ul.list li {
   margin-top: 0;
 }
 #map_summaries {
-  margin: 0 0 0 320px;
+  margin: 10px 0 0 320px;
 }
-#map_summary_outer {
-  margin-top: 10px;
-}
-.map_summary_outer {
-  height: 170px;
-  width: 170px;
-  text-align: center;
-  float: left;
+#region_list {
+  width: 520px;
+  float: left;  
   margin: 0 10px 10px 0;
-  background: #faf9fa;
 }
-.map_summary_outer a {
-  text-decoration: none;
-}
-.map_summary_outer a:hover {
-  text-decoration: none;
-  color: #303030;
+#region_list p {
+  margin: 5px 20px 10px;
+  font-size: 20px;
+  text-align: center;
 }
 div.map_summary_info {
   font-family: "Palatino","Georgia","Times New Roman", Times,serif;
   font-size: 16px;
   line-height: 26px;
   color: #303030;
-  margin-top: 25px;
   font-weight: normal;
   text-decoration: none;
 }
-div.map_summary_info {
-  display: block;
+div.region_name {
+  padding: 0 0 10px 10px;
+  font-size: 18px;
+  font-weight: bold;
 }
-.map_summary_locations, .map_summary_machines {
-  display: block;
-}
-.map_summary_outer .dark {
-  font-weight: normal;
-}
-
-.map_summary_outer:hover {
+span.state_name {
   background: #f0f9ff;
+  width: 100%;
+  display: block;
+  color: #F53240;
+  font-size: 20px;
+  line-height: 22px;
+  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
+  font-weight: bold;
+  margin-bottom: 15px;
+  padding: 10px 0 10px 10px;
+}
+li span.state_name {
+  background: none;
+  width: auto;
+  padding: 0;
+  margin: 5px 0;
 }
 .itemBackground, .itemLink {
   display: none;

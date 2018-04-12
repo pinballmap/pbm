@@ -12,8 +12,6 @@
         %span.darkb 
           #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} 
         machines.
-      %p
-        Pick a region to find pinball machines to play near you!
       %div.read_more_wrap
         %p
           Help keep your map up to date by adding and removing machines to/from locations, and by submitting new locations that aren't already listed.
@@ -29,40 +27,39 @@
           = link_to 'Pinball Map Code!', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
           Use the
           = link_to 'Pinball Map API!', apipie_apipie_path, :class => 'apps_link'
-        %p.twitter_img
-          =image_tag('sol-icon.jpeg', :alt => 'Pinball Map Twitter Icon')
-        %p.twitter_box
-          Follow
-          =link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
-          on Twitter for updates from across all #{@all_regions.size} regional maps!
-        %ul.twitter
-          - @tweets.each do |t|
-            %li= auto_link(t.text)
+        %div.twitter
+          %p.twitter_img
+            =image_tag('sol-icon.jpeg', :alt => 'Pinball Map Twitter Icon')
+          %p.twitter_box
+            Follow
+            =link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
+            on Twitter for updates from across all #{@all_regions.size} regional maps!
+          %ul.twitter
+            - @tweets.each do |t|
+              %li= auto_link(t.text)
     - if mobile_device?
       .read_more
       .read_less
-  #map_summaries.intro
-    - if !mobile_device?
-      #region_map
-    #map_summary_outer
-      - count = 1
-      - last_state = ''
-      - @all_regions.each do |r|
-        %div.map_summary_outer
-          - if last_state != r.state
-            %span #{r.state}
-            - last_state = r.state
-          =link_to "/#{r.name}" do
-            %div.map_summary
-              %div.region_name_container
-                %div.region_name_inner
-                  %span.region_name
-                    #{r.full_name}
-              %div.map_summary_info
-                %span.map_summary_locations
-                  = "#{r.locations_count} Locations"
-                %span.map_summary_machines
-                  = "#{r.machines_count} Machines"
+  - if !mobile_device?
+    #region_map
+  #region_list
+    %p
+      Pick a region to find pinball machines to play near you!
+    - count = 1
+    - last_state = ''
+    - @all_regions.each do |r|
+      %div.state_name
+        - if last_state != r.state
+          %span.state_name #{r.state}
+          - last_state = r.state
+      %div.region_name
+        =link_to "/#{r.name}" do
+          #{r.full_name}
+        %div.map_summary_info
+          %span.map_summary_locations
+            = "#{r.locations_count} Locations, "
+          %span.map_summary_machines
+            = "#{r.machines_count} Machines"
   .clear
   %br/
 
