@@ -46,8 +46,12 @@
       #region_map
     #map_summary_outer
       - count = 1
+      - last_state = ''
       - @all_regions.each do |r|
         %div.map_summary_outer
+          - if last_state != r.state
+            %span #{r.state}
+            - last_state = r.state
           =link_to "/#{r.name}" do
             %div.map_summary
               %div.region_name_container

@@ -161,7 +161,7 @@ class PagesController < ApplicationController
       @tweets = []
     end
 
-    @all_regions = Region.order('full_name')
+    @all_regions = Region.order(:state, :full_name)
     @region_data = regions_javascript_data(@all_regions)
   end
 

@@ -4,10 +4,12 @@ describe PagesHelper, type: :helper do
   describe '#other_regions_html' do
     it 'should give me html of links to other regions landing pages' do
       r = FactoryBot.create(:region)
-      FactoryBot.create(:region, name: 'Xanadu', full_name: 'Xanadu, FL')
-      FactoryBot.create(:region, name: 'Anaconda', full_name: 'Anaconda, MI')
+      FactoryBot.create(:region, name: 'Xanadu', state: 'FL', full_name: 'Xanadu, FL')
+      FactoryBot.create(:region, name: 'xanadu_again', state: 'FL', full_name: 'Xanadu, FL AGAIN')
+      FactoryBot.create(:region, name: 'georgia', state: 'AL', full_name: 'Georgia, AL')
+      FactoryBot.create(:region, name: 'Anaconda', state: 'MI', full_name: 'Anaconda, MI')
 
-      expect(helper.other_regions_html(r)).to eq("<li><a href='/anaconda'>Anaconda, MI</a></li><li><a href='/xanadu'>Xanadu, FL</a></li>")
+      expect(helper.other_regions_html(r)).to eq("<li>AL<br /><a href='/georgia'>Georgia, AL</a></li><li>FL<br /><a href='/xanadu'>Xanadu, FL</a></li><li><a href='/xanadu_again'>Xanadu, FL AGAIN</a></li><li>MI<br /><a href='/anaconda'>Anaconda, MI</a></li>")
     end
   end
 

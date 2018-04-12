@@ -1,8 +1,20 @@
 module PagesHelper
   def other_regions_html(region)
-    html = Region.where('id != ?', region.id).order('name').map { |other_region| "<li><a href='/#{other_region.name.downcase}'>#{other_region.full_name}</a></li>" }.join
+    other_regions_html = []
 
-    html.html_safe
+    last_state = ''
+    Region.where('id != ?', region.id).order(:state, :full_name).each do |r|
+      html = '<li>'
+      html += "#{r.state}<br />" if last_state != r.state
+
+      last_state = r.state
+
+      html += "<a href='/#{r.name.downcase}'>#{r.full_name}</a></li>"
+
+      other_regions_html << html
+    end
+
+    other_regions_html.join.html_safe
   end
 
   def title_for_path(path, region = nil)

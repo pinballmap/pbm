@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180322035017) do
+ActiveRecord::Schema.define(version: 20180412042101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -191,6 +191,7 @@ ActiveRecord::Schema.define(version: 20180322035017) do
     t.boolean "should_auto_delete_empty_locations"
     t.boolean "send_digest_comment_emails"
     t.boolean "send_digest_removal_emails"
+    t.text "state"
   end
 
   create_table "suggested_locations", id: :serial, force: :cascade do |t|

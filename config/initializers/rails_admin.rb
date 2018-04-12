@@ -366,6 +366,7 @@ RailsAdmin.config do |config|
       field :name, :string
       field :updated_at, :datetime
       field :full_name, :string
+      field :state, :string
       field :motd, :string
       field :lat, :decimal
       field :lon, :decimal
@@ -385,6 +386,7 @@ RailsAdmin.config do |config|
         end
       end
       field :motd, :string
+      field :state, :string
       field :lat, :decimal
       field :lon, :decimal
       field :n_search_no, :integer
@@ -398,6 +400,7 @@ RailsAdmin.config do |config|
       field :name, :string
       field :updated_at, :datetime
       field :full_name, :string
+      field :state, :string
       field :motd, :string
       field :lat, :decimal
       field :lon, :decimal
