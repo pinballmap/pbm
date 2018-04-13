@@ -9,7 +9,7 @@ describe PagesHelper, type: :helper do
       FactoryBot.create(:region, name: 'georgia', state: 'AL', full_name: 'Georgia, AL')
       FactoryBot.create(:region, name: 'Anaconda', state: 'MI', full_name: 'Anaconda, MI')
 
-      expect(helper.other_regions_html(r)).to eq("<li>AL<br /><a href='/georgia'>Georgia, AL</a></li><li>FL<br /><a href='/xanadu'>Xanadu, FL</a></li><li><a href='/xanadu_again'>Xanadu, FL AGAIN</a></li><li>MI<br /><a href='/anaconda'>Anaconda, MI</a></li>")
+      expect(helper.other_regions_html(r)).to eq("<li><span class='state_name'>AL</span><a href='/georgia'>Georgia, AL</a></li><li><span class='state_name'>FL</span><a href='/xanadu'>Xanadu, FL</a></li><li><a href='/xanadu_again'>Xanadu, FL AGAIN</a></li><li><span class='state_name'>MI</span><a href='/anaconda'>Anaconda, MI</a></li>")
     end
   end
 
