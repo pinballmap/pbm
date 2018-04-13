@@ -5,7 +5,7 @@ module PagesHelper
     last_state = ''
     Region.where('id != ?', region.id).order(:state, :full_name).each do |r|
       html = '<li>'
-      html += "#{r.state}<br />" if last_state != r.state
+      html += "<span class='state_name'>#{r.state}</span>" if last_state != r.state
 
       last_state = r.state
 
