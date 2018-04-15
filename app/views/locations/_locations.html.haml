@@ -7,11 +7,21 @@
 
     var hrefOrig = 'https://#{request.host_with_port}/#{@region.name.downcase}?';
     var def_value = window.location.href;
+
+    var url = '';
     if (typeof(search_string) == "undefined") {
-      search_string = def_value;
-      document.getElementById("search_link").href=search_string;
+      url = def_value;
+      document.getElementById("search_link").href=url;
     } else {
-      document.getElementById("search_link").href=hrefOrig + search_string;
+      url = hrefOrig + search_string;
+      document.getElementById("search_link").href=url;
+    }
+
+    if (history.pushState) {
+      var a = document.createElement('a');
+      a.href = url;
+
+      window.history.pushState('', '', a.pathname + a.search);
     }
 
     showLocations(
