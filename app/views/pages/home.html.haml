@@ -40,24 +40,25 @@
     - if mobile_device?
       .read_more
       .read_less
-  - if !mobile_device?
-    #region_map
-  #region_list
-    %p
-      Pick a region to find pinball machines to play near you!
-    - @all_regions.each.map {|r| r.state}.uniq.each do |s|
-      %div.state_name_container
-        %div.state_name
-          %span.state_name #{s}
-        - @all_regions.select {|r| r.state == s}.each do |r|
-          %div.region_name
-            =link_to "/#{r.name}" do
-              #{r.full_name}
-            %div.map_summary_info
-              %span.map_summary_locations
-                = "#{r.locations_count} Locations, "
-              %span.map_summary_machines
-                = "#{r.machines_count} Machines"
+  #map_summaries
+    - if !mobile_device?
+      #region_map
+    #region_list
+      -# %p
+      -#   Pick a region to find pinball machines to play near you!
+      - @all_regions.each.map {|r| r.state}.uniq.each do |s|
+        %div.state_name_container
+          %div.state_name
+            %span.state_name #{s}
+          - @all_regions.select {|r| r.state == s}.each do |r|
+            %div.region_name
+              =link_to "/#{r.name}" do
+                #{r.full_name}
+              %div.map_summary_info
+                %span.map_summary_locations
+                  = "#{r.locations_count} Locations"
+                %span.map_summary_machines
+                  = "#{r.machines_count} Machines"
   .clear
   %br/
 

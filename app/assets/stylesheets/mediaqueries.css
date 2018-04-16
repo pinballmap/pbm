@@ -122,6 +122,20 @@
     }
 }
 
+@media (max-width: 1040px) {
+  #region_map {
+    width: 530px;
+    height: 300px;
+  }
+}
+
+@media (max-width: 865px) {
+  #region_map {
+    width: 420px;
+    height: 270px;
+  }
+}
+
 @media (max-width: 920px) {
   #header .login_home {
     width: 40px;

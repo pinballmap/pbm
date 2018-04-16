@@ -178,7 +178,7 @@ describe PagesController do
       visit '/'
 
       expect(page).to have_css('div#region_list')
-      expect(page).to have_content('Chicago 1 Locations, 1 Machines Portland 2 Locations, 2 Machines')
+      expect(page).to have_content('Chicago 1 Locations 1 Machines Portland 2 Locations 2 Machines')
     end
 
     it 'shows the proper page title' do
