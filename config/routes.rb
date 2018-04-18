@@ -43,6 +43,7 @@ Rails.application.routes.draw do
         end
         collection do
           get :closest_by_lat_lon
+          get  :closest_by_zip
           post :suggest
         end
       end

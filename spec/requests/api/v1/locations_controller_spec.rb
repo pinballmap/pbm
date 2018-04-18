@@ -344,6 +344,53 @@ HERE
     end
   end
 
+  describe '#closest_by_zip' do
+    it 'sends you the closest location to you, along with machines at the location' do
+      get '/api/v1/locations/closest_by_zip.json', params: { zip: '97202' }
+
+      expect(JSON.parse(response.body)['errors']).to eq('No locations within 50 miles.')
+
+      closest_location = FactoryBot.create(:location, region: @region, name: 'Closest Location', street: '123 pine', city: 'portland', phone: '555-555-5555', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
+      FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Cleo'))
+      FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Bawb'))
+      FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Sassy'))
+
+      get '/api/v1/locations/closest_by_zip.json', params: { zip: '97202' }
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      location = parsed_body['location']
+
+      expect(location['name']).to eq('Closest Location')
+      expect(location['street']).to eq('123 pine')
+      expect(location['city']).to eq('portland')
+      expect(location['state']).to eq('OR')
+      expect(location['zip']).to eq('97202')
+      expect(location['phone']).to eq('555-555-5555')
+      expect(location['lat']).to eq('45.49')
+      expect(location['lon']).to eq('-122.63')
+      expect(location['machine_names']).to eq(%w[Bawb Cleo Sassy])
+    end
+
+    it 'sends you multiple locations if you use the send_all_within_distance flag' do
+      close_location_one = FactoryBot.create(:location, region: @region, lat: 45.49, lon: -122.63)
+      close_location_two = FactoryBot.create(:location, region: @region, lat: 45.49, lon: -122.631)
+      close_location_three = FactoryBot.create(:location, region: @region, lat: 45.491, lon: -122.63)
+      FactoryBot.create(:location, region: @region, lat: 5.49, lon: 22.63)
+
+      get '/api/v1/locations/closest_by_zip.json', params: { zip: '97202', send_all_within_distance: 1 }
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      locations = parsed_body['locations']
+      expect(locations[0]['id']).to eq(close_location_two.id)
+      expect(locations[1]['id']).to eq(close_location_one.id)
+      expect(locations[2]['id']).to eq(close_location_three.id)
+    end
+  end
+
   describe '#closest_by_lat_lon' do
     it 'sends you the closest location to you, along with machines at the location' do
       get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: 45.49, lon: -122.63 }
