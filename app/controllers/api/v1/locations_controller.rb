@@ -125,6 +125,27 @@ module Api
         end
       end
 
+      api :GET, '/api/v1/locations/closest_by_zip.json', 'Returns the closest location to transmitted zip'
+      description "This sends you the closest location to your zip (defaults to within #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles). It includes a list of machines at the location."
+      param :zip, String, desc: 'Zip', required: true
+      param :max_distance, String, desc: 'Closest location within "max_distance" miles', required: false
+      param :send_all_within_distance, String, desc: "Send all locations within max_distance param, or #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles.", required: false
+      formats ['json']
+      def closest_by_zip
+        max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
+
+        closest_location = Location.near(params[:zip].to_s, max_distance).first
+
+        if params[:send_all_within_distance]
+          closest_locations = Location.near(params[:zip].to_s, max_distance)
+          return_response(closest_locations, 'locations', [], [:machine_names])
+        elsif closest_location
+          return_response(closest_location, 'location', [], [:machine_names])
+        else
+          return_response("No locations within #{max_distance} miles.", 'errors')
+        end
+      end
+
       api :GET, '/api/v1/locations/:id.json', 'Display the details of this location'
       param :id, Integer, desc: 'ID of location', required: true
       formats ['json']
