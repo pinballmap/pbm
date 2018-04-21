@@ -2,14 +2,45 @@
  *= require jquery-ui
  */
 
-/** Core **/
-
-@font-face {
+ @font-face {
   font-family: 'Freight-MedSC';
   src: url(<%= asset_path "freight-sans-medium-sc-opentype.otf" %>);
 }
+
+/** variables **/
+
+$sans: "Freight-MedSC",Helvetica,Arial,sans-serif;
+$serif: "Palatino","Georgia","Times New Roman", Times,serif;
+$red: #F53240;
+$blue: #D3ECff;
+$darkgrey: #433A3A;
+$lightgrey: #EFEFEF;
+
+/** mixins **/
+
+@mixin radius ($radii...) {
+  border-radius: $radii;
+}
+@mixin padding ($pads...) {
+  padding: $pads;
+}
+@mixin set ($width, $height, $padding, $margin ) {
+  width: $width;
+  height: $height;
+  padding: $padding;
+  margin: $margin;
+}
+
+/** Core **/
+
 * {
   outline: none;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+.clear {
+  clear: both;
 }
 button::-moz-focus-inner {
   padding: 0 0 2px 0 !important;
@@ -18,6 +49,7 @@ button::-moz-focus-inner {
 html {
   min-height: 100%;
   position: relative;
+  box-sizing: border-box;    
 }
 html.html_region {
   position: static;
@@ -28,10 +60,10 @@ body {
   background-color: #FFFFFF;
   background-size: 4px auto;
   color: #171717;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
   -webkit-font-smoothing: antialiased;
 }
-p {
+p, form.new_user, form.edit_user {
   font-size: 16px;
   line-height: 22px;
 }
@@ -48,23 +80,18 @@ a {
 }
 a:hover, a:active {
   text-decoration: underline;
-  color: #F53240;
+  color: $red;
 }
 input, textarea {
   -webkit-appearance: none;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  @include radius(0);
+  font-family: $serif;
 }
 input[type=checkbox] {
-  -webkit-appearance:checkbox;
+  -webkit-appearance: checkbox;
 }
 .palatino {
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
 }
 select {
   font-family: Helvetica,Arial,sans-serif;
@@ -98,9 +125,9 @@ ul li li {
   color: #0b252b;
 }
 .darkb, .darkbl {
-  color: #F53240;
+  color: $red;
   text-shadow: 0.1px 0.1px 0.1px white;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
   font-size: 18px;
   font-weight: bold;
 }
@@ -119,7 +146,7 @@ ul li li {
   text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
   margin: 0;
   font-weight: 700;
-  color: #F53240;
+  color: $red;
 }
 
 /** END Core **/
@@ -127,11 +154,9 @@ ul li li {
 /** Login **/
 
 #login {
-  background: none repeat scroll 0 0 rgba(253, 252, 254, 1);
-  border: 2px solid #EFEFEF;
-  margin: 10px auto 0;
-  padding: 0 20px 20px;
-  width: 270px;
+  background: none repeat scroll 0 0 #fdfcfe;
+  border: 2px solid $lightgrey;
+  @include set(310px,auto,0 20px 20px, 10px auto 0);
 }
 #login label.password,
 #login label.email,
@@ -139,21 +164,12 @@ ul li li {
   display: block;
   font-size: 20px;
 }
-#login label.boolean {
-  font-size: 12px;
-}
 #login input.boolean {
-  height: 16px !important;
-  width: 16px;
+  @include set(16px,16px,0,0 5px 0 0);
+  font-size: 12px;
   border: 1px solid #303030;
-  margin: 0 5px 0 0;
 }
-form.new_user, form.edit_user {
-  font-size: 16px;
-}
-form.new_user .input, form.edit_user .input {
-  margin-top: 10px;
-}
+form.new_user .input, form.edit_user .input,
 form.new_user .form-actions, form.edit_user .form-actions {
   margin-top: 10px;
 }
@@ -166,8 +182,8 @@ form.new_user .form-actions, form.edit_user .form-actions {
 }
 .login_why_inner {
   width: 270px;
-  background-color: #EFEFEF;
-  border: 2px solid #d3ecff;
+  background-color: $lightgrey;
+  border: 2px solid $blue;
   float: left;
   padding: 10px;
   margin-top: 10px;
@@ -177,8 +193,7 @@ form.new_user .form-actions, form.edit_user .form-actions {
   font-weight: bold;
 }
 .login_why_inner p {
-  margin-top: 10px;
-  margin-bottom: 5px;
+  margin: 10px 0 5px 0;
 }
 .login_new_div {
   float: right;
@@ -188,9 +203,9 @@ form.new_user .form-actions, form.edit_user .form-actions {
   color: #303030;
 }
 .error_notification {
-  color: #F53240;
+  color: $red;
   line-height: 16px;
-  background: #d3ecff;
+  background: $blue;
   text-align: center;
   font-style: italic;
   padding: 4px;
@@ -200,19 +215,18 @@ form.new_user .form-actions, form.edit_user .form-actions {
 
 div.stats {
   line-height: 22px;
-  border-bottom: 1px solid #F53240;
+  border-bottom: 1px solid $red;
   padding: 20px 0;
 }
 .stat_num_o {
   width: 50px;
   float: left;
-  display: inline-block;
 }
 .stats_o {
   margin-left: 5px;
 }
 span.stats {
-  background: #d3ecff;
+  background: $blue;
   font-size: 32px;
   line-height: 32px;
   padding: 5px;
@@ -245,7 +259,7 @@ ul.twitter {
 .twitter li {
   padding: 5px 0;
   border-bottom: 1px solid #DECEB9;
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
   color: #452809;
   font-size: 15px;
 }
@@ -253,20 +267,16 @@ ul.twitter {
   border: none;
 }
 .twitter_img img {
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  margin: 20px 5px 0 0;
-  margin-bottom: 2px;
-  border-radius: 5px;
-  margin-top: 3px;
+  @include radius(5px);
+  margin: 3px 5px 2px 0;
   float: left;
 }
 .home_intro p.twitter_box {
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
   font-size: 18px;
 }
 p.notice {
-  color: #F53240;
+  color: $red;
   font-size: 18px;
   text-align: center;
   margin: -10px auto 10px;
@@ -277,20 +287,10 @@ p.notice {
   line-height: 36px;
   text-align: center;
   margin: 25px auto 0;
-  color: #F53240;
+  color: $red;
   border-bottom: 1px solid #c3c0bc;
   border-top: 1px solid #c3c0bc;
   padding: 10px;
-}
-#flash_error {
-  font-size: 16px;
-  margin-top: 120px;
-  position: fixed;
-  background: #fdf0eb none repeat scroll 0% 0%;
-  padding: 10px;
-  left: 20px;
-  z-index: 4000;
-  border: 3px solid black;
 }
 #flash_recaptcha_error {
   display: none;
@@ -300,8 +300,9 @@ p.notice {
   float: left;
 }
 #flash-message #flash_notice,
-#flash-message #flash_alert {
-  color: #d3ecff;
+#flash-message #flash_alert,
+#flash_error {
+  color: $blue;
   font-size: 28px;
   text-align: center;
   top: 200px;
@@ -327,19 +328,16 @@ p.notice {
 }
 .home_intro {
   padding: 3px 6px 6px;
-  background-color: #EFEFEF;
-  border: 5px solid #EFEFEF;
+  background-color: $lightgrey;
+  border: 5px solid $lightgrey;
   width: 300px;
   min-width: 200px;
   line-height: 120%;
   margin: 0 10px 10px 10px;
   font-size: 18px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .home_intro p, span.why_login {
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
 }
 .home_intro_container {
   float: left;
@@ -350,10 +348,7 @@ p.notice {
 /** Store **/
 
 .store_wrapper {
-  border: 3px solid #F53240;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  border: 3px solid $red;
   text-align:center;
   width: 190px;
   margin: 0 auto 15px;
@@ -366,14 +361,14 @@ p.notice {
   padding: 0;
   margin: 15px 0;
   text-align: center;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
   font-weight: bold;
 }
 .store_shirt {
   width: 420px;
   height: 578px;
   margin-top: 2px;
-  border: 2px solid #d3ecff;
+  border: 2px solid $blue;
 }
 
 /** Header **/
@@ -386,7 +381,7 @@ p.notice {
   width: 100%;
   min-width: 768px;
   height: 52px;
-  background: #d3ecff;
+  background: $blue;
 }
 #header a {
   text-decoration: none;
@@ -421,7 +416,7 @@ p.notice {
 }
 #header .menu_link hr {
   height: 1px;
-  background: #F53240;
+  background: $red;
   border: 0;
   margin: 2px 10px;
 }
@@ -443,9 +438,6 @@ p.notice {
   height: 50px;
   text-align: center;
   float: left;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #header div.menu_link:hover {
   cursor: pointer;
@@ -460,7 +452,7 @@ p.notice {
   font-size: 14px !important;
   color: #55413F;
   width: 165px;
-  background: #EFEFEF;
+  background: $lightgrey;
 }
 #header .menu_link ul li a {
   text-align: left !important;
@@ -473,20 +465,17 @@ p.notice {
   font-size: 16px;
   line-height: 16px;
   font-weight: bold;
-  background-color: #EFEFEF;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  background-color: $lightgrey;
 }
 #header .menu_link ul li a:hover {
   color: #303030;
-  background-color: #d3ecff;
+  background-color: $blue;
 }
 #header .menu_home ul li a {
-  background-color: #D3ECFF;
+  background-color: $blue;
 }
 #header .menu_home ul li a:hover {
-  background-color: #EFEFEF;
+  background-color: $lightgrey;
 }
 #header a.logo_link img {
   border: 0 none;
@@ -517,14 +506,9 @@ a.logo_link {
   list-style: none;
   padding: 8px 5px 5px;
   border-top: none;
-  background: #EFEFEF;
+  background: $lightgrey;
   border: 1px solid rgb(102,102,102);
-  border-bottom-left-radius: 5px;
-  -webkit-border-bottom-left-radius: 5px;
-  -moz-border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  -webkit-border-bottom-right-radius: 5px;
-  -moz-border-bottom-right-radius: 5px;
+  @include radius(0 0 5px 5px);
 }
 #header ul.other_regions_list {
   font-size: 16px;
@@ -552,17 +536,17 @@ a.logo_link {
   box-shadow: none;
 }
 #header ul.other_regions_list a:hover {
-  color: #F53240;
+  color: $red;
 }
 .other_regions_arrow:after {
   content:"";
-    background: url(<%= asset_path 'arrow-sprite-dark.png' %>) no-repeat;
-    display: inline-block;
-    height: 7px;
-    margin-left: 2px;
-    width: 7px;
-    padding-left:1px;
-    vertical-align: middle;
+  background: url(<%= asset_path 'arrow-sprite-dark.png' %>) no-repeat;
+  display: inline-block;
+  height: 7px;
+  margin-left: 2px;
+  width: 7px;
+  padding-left:1px;
+  vertical-align: middle;
 }
 .feed_icon:before {
   content:"";
@@ -577,9 +561,6 @@ a.logo_link {
 }
 .closest_locations, .geo_header, .login {
   font-size: 18px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .header_buttons .closest_locations,
 .header_buttons .geo_header,
@@ -596,7 +577,7 @@ a.logo_link {
   text-decoration: underline;
 }
 .login a, .login_new a, .login_alert a {
-  color: #F53240;
+  color: $red;
   font-weight: bold;
 }
 .login_alert {
@@ -615,23 +596,18 @@ span.why_login {
   padding: 5px 0 0;
 }
 #login .button {
-  color: #EFEFEF;
+  color: $lightgrey;
   font-size: 18px;
   line-height: 18px;
   height: 36px;
   font-weight: bold;
   padding: 6px 6px;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
+  @include radius(6px);
   margin: 7px 0px;
   border: 2px solid #A9A9A9;
   background-color: #303030;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   box-shadow: 1px 1px 3px #888;
-  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
+  font-family: $sans;
   text-transform: uppercase;
 }
 #login .button:hover {
@@ -658,14 +634,12 @@ div.pick_a_map .login_home {
 }
 .region_name_page,
 #header span.region_name_page a {
-  color: #F53240;
+  color: $red;
   font-size: 20px;
   line-height: 22px;
-  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
+  font-family: $sans;
   text-align: center;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
+  @include radius(0);
   display: block;
   font-weight: bold;
 }
@@ -725,7 +699,7 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
   height: 20px;
   text-align: center;
   line-height: 20px;
-  background: #d3ecff;
+  background: $blue;
 }
 #footer.footer_region {
   position: fixed;
@@ -782,13 +756,8 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
   line-height: 16px;
   border: 2px solid #A9A9A9;
   color: #303030;
-  background-color: #EFEFEF;
-  border-radius: 3px;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  background-color: $lightgrey;
+  @include radius(3px);
   margin-left: 5px;
   box-shadow: 2px 2px 2px #cccccc;
   -moz-box-shadow: 2px 2px 2px #cccccc;
@@ -815,47 +784,23 @@ span.or {
   border: 2px solid #A9A9A9;
   float: right;
   background: #FFFFFF;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  border-radius: 2px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-top-left-radius: 0;
-  -webkit-border-top-left-radius: 0;
-  -moz-border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  -webkit-border-bottom-left-radius: 0;
-  -moz-border-bottom-left-radius: 0;
+  @include radius(0 2px 2px 0);
 }
 #form .search_field_container .search,
 #form .search_other_button input {
   border: none;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   height: 28px;
   margin: -2px -2px 0 0;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
+  @include radius(0 2px 2px 0);
   padding: 5px 25px;
   background: #303030;
-  color: #EFEFEF;
+  color: $lightgrey;
   font-weight: bold;
   float: right;
   box-shadow: none;
-  border-bottom-right-radius: 2px;
-  border-top-right-radius: 2px;
-  -moz-border-bottom-right-radius: 2px;
-  -moz-border-top-right-radius: 2px;
-  -webkit-border-bottom-right-radius: 2px;
-  -webkit-border-top-right-radius: 2px;
 }
 #form .search_other_button input {
-  border-radius: 2px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
+  @include radius(2px);
 }
 .search_other_button {
   float: right;
@@ -895,17 +840,15 @@ span.or {
   background: #303030;
   text-decoration: none;
   border-color: #642501;
-  color: #F53240 !important;
+  color: $red !important;
   cursor: pointer;
 }
 #locations p {
   margin: 0px 20px 15px;
-  background-color: #EFEFEF;
+  background-color: $lightgrey;
   padding: 10px;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  @include radius(5px);
+  font-family: $serif;
   font-weight: normal;
 }
 #locations .darkb {
@@ -919,22 +862,8 @@ span.or {
   top: 52px;
   margin-left: 0;
   width: 640px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
   z-index: 20;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  -moz-border-bottom-left-radius: 5px;
-  -moz-border-bottom-right-radius: 5px;
-  -webkit-border-bottom-left-radius: 5px;
-  -webkit-border-bottom-right-radius: 5px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  -moz-border-top-left-radius: 0;
-  -moz-border-top-right-radius: 0;
-  -webkit-border-top-left-radius: 0;
-  -webkit-border-top-right-radius: 0;
+  @include radius(0 0 5px 5px);
   padding: 4px;
   background-color: #ffffff;
   box-shadow: 0 5px 10px rgba(90, 100, 117, 0.5);
@@ -949,9 +878,6 @@ span.or {
   padding: 85px 10px 10px 10px;
   width: 640px;
   background: #FFFFFF;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
   position: relative;
   -webkit-transform: translateZ(0);
 }
@@ -968,19 +894,17 @@ span.or {
 #mapFollow_wrapper, #search_link_wrapper, #min_lookup_wrapper {
   position: fixed;
   top: 60px;
-  width: 100px;
-  border: 3px solid #D3ECFF;
+  width: 110px;
+  border: 3px solid $blue;
   background: #ffffff;
   text-align: center;
-  padding: 5px 5px 5px 5px;
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
+  padding: 5px;
+  @include radius(5px);
   font-size: 15px;
 }
 #search_link_wrapper {
   padding-top: 5px;
-  top: 175px;
+  top: 180px;
 }
 #search_link_wrapper a {
   color: #303030;
@@ -1040,16 +964,11 @@ span.or {
 form select#by_location_id, form select#by_machine_id {
   width: 200px;
   font-size: 16px !important;
-  border-top-right-radius: 0;
-  -webkit-border-top-right-radius: 0;
-  -moz-border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  -webkit-border-bottom-right-radius: 0;
-  -moz-border-bottom-right-radius: 0;
+  @include radius(0);
 }
 .active_section_link {
   background-color: #303030 !important;
-  color: #d3ecff !important;
+  color: $blue !important;
   box-shadow: none !important;
   -moz-box-shadow: none !important;
   -webkit-box-shadow: none !important;
@@ -1067,9 +986,7 @@ a.active_section_link:hover {
   border-left: 8px solid #A9A9A9;
   padding-left: 0px;
   margin-bottom: 0px;
-  border-radius: 5px 0 0 5px;
-  -moz-border-radius: 5px 0 0 5px;
-  -webkit-border-radius: 5px 0 0 5px;
+  @include radius(5px 0 0 5px);
 }
 #search_results li {
   list-style-type: none;
@@ -1083,12 +1000,10 @@ a.active_section_link:hover {
   font-size: 24px;
   line-height: 24px;
   height: 100%;
-  color: #433A3A;
-  background-color: #d3ecff;
+  color: $darkgrey;
+  background-color: $blue;
   padding: 10px 5px;
-  border-radius: 0 5px 0 0;
-  -moz-border-radius: 0 5px 0 0;
-  -webkit-border-radius: 0 5px 0 0;
+  @include radius(0 5px 0 0);
 }
 span.permalink {
   float: right;
@@ -1104,19 +1019,19 @@ span.permalink {
 .address, .address_full {
   font-size: 16px;
   line-height: 16px;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
 }
 li.address {
   padding: 2px 0 2px 5px;
 }
 li.address_full {
   padding: 0 0 0 5px;
-  background: #EFEFEF;
+  background: $lightgrey;
   width: 435px;
 }
 a.website {
   float: left;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
   font-size: 15px;
   text-transform: uppercase;
 }
@@ -1140,7 +1055,7 @@ a.website:after {
   padding: 3px 12px 3px 8px;
   width: 100%;
   margin-left: -20px;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
   font-weight: bold;
 }
 .machine_name:hover {
@@ -1163,7 +1078,7 @@ span.machine_year_man {
   font-size: 20px;
   font-weight: normal;
   font-style: italic;
-  color: #EFEFEF;
+  color: $lightgrey;
 }
 .machine_lmx {
   color: #180e03;
@@ -1184,9 +1099,6 @@ span.machine_year_man {
   height: 24px;
   padding-left: 5px;
   width: 435px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   clear: both;
   margin-left: 10px;
   margin-top: -1px;
@@ -1194,7 +1106,7 @@ span.machine_year_man {
   border-bottom: 1px solid #888;
 }
 .pintips a {
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
   font-size: 18px;
   text-decoration: none;
   line-height: 24px;
@@ -1228,12 +1140,12 @@ div.comment_image span.comment_image:hover:after {
   font-size: 16px;
   margin-left: 45px;
   background: #444444;
-  color: #EFEFEF;
+  color: $lightgrey;
   padding: 5px;
   text-align: center;
   font-weight: bold;
   font-style: italic;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
 }
 .machine_condition_new_line span {
   display: inline;
@@ -1244,7 +1156,7 @@ div.comment_image span.comment_image:hover:after {
   font-size: 14px;
   margin: 6px 0 0;
   display: inline-block;
-  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
+  font-family: $sans;
 }
 div.machine_condition_text {
   float: left;
@@ -1255,7 +1167,7 @@ div.machine_condition_text {
 span.machine_condition_text {
   font-size: 15px;
   line-height: 16px;
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
   font-weight: normal;
   display: block;
   color: #333333;
@@ -1283,20 +1195,17 @@ form.remove_machine_condition {
   color: #333333;
   font-size: 14px;
   line-height: 16px;
-  border-bottom: 1px solid #d3ecff;
+  border-bottom: 1px solid $blue;
   margin-bottom: 8px;
 }
 .machine_condition_new_line .machine_condition {
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
   font-weight: normal;
 }
 .machine_condition_display_lmx {
   margin: 5px 0 5px 10px;
   color: #666666;
   padding: 2px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   width: 490px;
 }
 .machine_condition_display_lmx .edit_mode {
@@ -1306,7 +1215,8 @@ form.remove_machine_condition {
   height: 80px;
   max-height: 120px;
   min-height: 28px;
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
+  padding: 5px;
 }
 .machine_condition_display_lmx .condition_button {
   height: 20px;
@@ -1317,11 +1227,11 @@ form.remove_machine_condition {
   font-size: 15px;
   border: none;
   width: auto;
-  background: #EFEFEF;
+  background: $lightgrey;
   border-top: 2px solid #d6c1aa;
   border-bottom: 2px solid #d6c1aa;
   margin-top: 5px;
-  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
+  font-family: $sans;
   font-weight: bold;
 }
 .machine_condition_display_lmx .condition_button:hover {
@@ -1334,9 +1244,6 @@ form.remove_machine_condition {
 .machine_condition_edit_lmx {
   width: 435px;
   margin: 5px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .machineconditions_container_lmx {
   margin-left: 10px;
@@ -1348,9 +1255,6 @@ form.remove_machine_condition {
 .high_score > .sub_nav_item,
 .score_container_lmx > .sub_nav_item {
   width: 435px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   clear: both;
   border: none;
   font-size: 18px;
@@ -1379,7 +1283,7 @@ form.remove_machine_condition {
   padding: 0 0 5px 0;
 }
 .add_picture_location, .add_machine_location {
-  background-color: #EFEFEF;
+  background-color: $lightgrey;
 }
 .add_machine_location form select option {
   font-size: 16px;
@@ -1397,7 +1301,7 @@ form.remove_machine_condition {
   height: 25px;
   width: 435px;
   text-transform: uppercase;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
   font-style: italic;
 }
 .location_detail input.remove_machine_button:hover {
@@ -1422,7 +1326,7 @@ br.clear {
   font-weight: normal;
   color: #f9f9f9;
   cursor: pointer;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
 }
 .sub_nav_item:hover {
   color: #ffffff;
@@ -1456,27 +1360,21 @@ br.clear {
 }
 .search_result {
   height: 100%;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
+  @include radius(5px);
   margin-bottom: 12px;
 }
 .search_result li.location_types {
   padding: 2px 0 0 4px;
 }
 .show_location_detail_location ul:hover {
-  background-color: #d3ecff;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
+  background-color: $blue;
+  @include radius(5px);
 }
 #form select, form select {
   border: 2px solid #A9A9A9;
-  background-color: #EFEFEF;
+  background-color: $lightgrey;
   height: 28px;
-  border-radius: 2px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
+  @include radius(2px);
   font-size: 15px;
   padding-right: 3px;
   padding-left: 3px;
@@ -1509,9 +1407,7 @@ br.clear {
 .metadata_edit_location input.save_button,
 .metadata_edit_location input.cancel_button {
   border: 2px solid #A9A9A9;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
+  @include radius(6px);
   box-shadow: 1px 1px 3px #b7cfc1;
   -moz-box-shadow: 1px 1px 3px #b7cfc1;
   -webkit-box-shadow: 1px 1px 3px #b7cfc1;
@@ -1519,14 +1415,11 @@ br.clear {
   cursor: pointer;
   margin-right: 4px;
   font-size: 14px;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
   text-transform: uppercase;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   height: 28px;
   background: #303030;
-  color: #EFEFEF;
+  color: $lightgrey;
   font-weight: bold;
 }
 input.search:active,
@@ -1542,16 +1435,16 @@ input.search:active,
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
   transform: translate(1px, 1px);
-  background: #d3ecff;
+  background: $blue;
 }
 .save_button {
   float: left;
   margin-left: 5px;
 }
 input:focus {
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #d3ecff;
-  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #d3ecff;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #d3ecff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px $blue;
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px $blue;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px $blue;
 }
 input.search:hover,
 input#add:hover,
@@ -1586,9 +1479,7 @@ input#initials,
   height: 28px;
   border: 2px solid #A9A9A9;
   color: #000;
-  border-radius: 2px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
+  @include radius(2px);
 }
 input.search,
 .condition_button, .desc_edit_location input,
@@ -1661,9 +1552,6 @@ input#initials {
   padding: 5px 0 5px 5px;
   background-color: #faf9fa;
   width: 435px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .add_picture_location_toggle,
 .add_machine_location_toggle  {
@@ -1689,14 +1577,11 @@ input#initials {
 .show_scores_lmx_toggle:hover,
 .show_conditions_lmx_toggle:hover,
 .add_scores_lmx_toggle:hover  {
-  background-color: #d3ecff;
+  background-color: $blue;
   color: #333333;
 }
 .show_conditions_lmx_toggle {
   width: 435px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   color: #333333;
   border: none;
   font-size: 18px;
@@ -1710,7 +1595,7 @@ input#initials {
   line-height: 14px;
 }
 .operator a:hover, .location_type a:hover {
-  color: #F53240;
+  color: $red;
 }
 .location_type li {
   margin-top: 5px;
@@ -1727,7 +1612,7 @@ input#initials {
   max-height: 100px;
   min-height: 28px;
   margin-bottom: 10px;
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
 }
 .confirm_location {
   padding: 0 0 0 10px;
@@ -1751,8 +1636,8 @@ input#initials {
   vertical-align: middle;
 }
 .confirm_location span .last_updated_username {
-  color: #F53240;
-  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
+  color: $red;
+  font-family: $sans;
   font-size: 20px;
   font-weight: bold;
 }
@@ -1799,10 +1684,10 @@ input#initials {
   margin-left: 5px;
   margin-top: 8px;
   background: #444444;
-  color: #EFEFEF;
+  color: $lightgrey;
   padding: 5px;
   font-weight: bold;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
 }
 #rank {
   margin-left: 13px;
@@ -1815,10 +1700,8 @@ input#score {
   line-height: 14px;
   font-weight: normal;
   height: 100%;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
+  font-family: $sans;
+  @include radius(5px);
 }
 .location_detail .address_full {
   color: #333333;
@@ -1830,18 +1713,14 @@ location_detail .phone {
 }
 .location_detail_sub {
   padding: 10px;
-  background: #EFEFEF;
+  background: $lightgrey;
 }
 .location_name {
-  background-color: #EFEFEF;
-  border-radius: 5px 5px 0 0;
-  -moz-border-radius: 5px 5px 0 0;
-  -webkit-border-radius: 5px 5px 0 0;
+  background-color: $lightgrey;
+  @include radius(5px 5px 0 0);
 }
 .location_detail_location ul {
-  border-radius: 5px 0 0 0;
-  -moz-border-radius: 5px 0 0 0;
-  -webkit-border-radius: 5px 0 0 0;
+  @include radius(5px 0 0 0);
 }
 .location_description, .location_actual_description {
   font-style: italic;
@@ -1850,7 +1729,7 @@ location_detail .phone {
   display: block;
   font-size: 13px;
   line-height: 15px;
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
 }
 .location_actual_description {
   float: left;
@@ -1858,7 +1737,7 @@ location_detail .phone {
 .desc_button {
   color: #303030;
   line-height: 20px;
-  background: #EFEFEF;
+  background: $lightgrey;
   margin: 5px 0;
   border-top: 1px solid #CAC6C6;
   border-bottom: 1px solid #CAC6C6;
@@ -1923,15 +1802,15 @@ div.comment_image .comment_image:active {
   right: 120px;
   margin-top: 10px;
   background: #444444;
-  color: #EFEFEF;
+  color: $lightgrey;
   padding: 5px;
   font-weight: bold;
   font-style: italic;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
 }
 .location_meta .meta_image:hover:after {
   content: "Update Location Info";
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
 }
 .desc_button:hover, .confirm_location_button:hover {
   text-decoration: underline;
@@ -1947,7 +1826,7 @@ div.comment_image .comment_image:active {
 .show_location_detail_location {
   padding: 0;
   width: 620px;
-  background: #EFEFEF;
+  background: $lightgrey;
 }
 .location_thumbs {
   margin: 5px 6px 0 6px;
@@ -1958,7 +1837,7 @@ div.comment_image .comment_image:active {
 .location_thumbs a {
   margin: 0 5px 5px;
   display: inline-block;
-  border: 4px solid #d3ecff;
+  border: 4px solid $blue;
   max-width: 200px;
   max-height: 200px;
   overflow: hidden;
@@ -1984,7 +1863,7 @@ div.comment_image .comment_image:active {
   font-size: 18px;
   line-height: 2;
   border: 1px solid #ddd;
-  border-radius: .25em;
+  @include radius(.25em);
   text-align: center;
   position: relative;
 }
@@ -2017,7 +1896,7 @@ div.comment_image .comment_image:active {
   width: 420px;
   border: none;
   background: inherit;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
 }
 
 /** Sub Pages **/
@@ -2028,7 +1907,7 @@ div.comment_image .comment_image:active {
 #location_maker label, #contact_maker label {
   display: block;
   color: #2E2322;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
   font-weight: bold;
 }
 #location_maker ul {
@@ -2040,15 +1919,12 @@ div.comment_image .comment_image:active {
   margin-right: 15px;
   clear: both;
 }
-.text_column a, #left_column a {
+#left_column a {
   text-decoration: underline;
 }
-.text_column a:hover, #left_column a:hover {
+#left_column a:hover {
   text-decoration: underline;
-  color: #F53240;
-}
-.text_column_portland {
-  width: 440px;
+  color: $red;
 }
 .right_column, #right_column {
   float: left;
@@ -2057,7 +1933,7 @@ div.comment_image .comment_image:active {
   padding: 0 10px;
   min-height: 575px;
   width: 486px;
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
 }
 .left_column.full_width,
 .right_column.full_width {
@@ -2091,7 +1967,7 @@ div.comment_image .comment_image:active {
   width: 399px;
 }
 .right_column.secondary img {
-  border: 2px solid #EFEFEF;
+  border: 2px solid $lightgrey;
 }
 .app_store .pic img {
   width: 220px;
@@ -2125,9 +2001,7 @@ div.comment_image .comment_image:active {
   margin-top: 5px;
 }
 .left_column.secondary .pebble img {
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+  @include radius(10px);
   padding-bottom: 0;
   width: 220px;
   height: 116px;
@@ -2141,7 +2015,7 @@ div.comment_image .comment_image:active {
   font-size: 18px;
   padding-left: 10px;
   list-style-type: none;
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
   font-weight: bold;
 }
 .event_info a {
@@ -2151,19 +2025,19 @@ div.comment_image .comment_image:active {
   font-size: 12px;
   font-weight: normal;
   color: #55413F;
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
 }
 #left_column, .left_column, .left_column_about {
-  background-color: #EFEFEF;
+  background-color: $lightgrey;
   height: 100%;
   padding: 0 10px;
   width: 375px;
   margin-top: 15px;
   float: left;
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
 }
 .left_column.donate {
-  background-color: #d3ecff;
+  background-color: $blue;
 }
 .left_column_about {
   width: 450px;
@@ -2211,9 +2085,9 @@ div.comment_image .comment_image:active {
   padding-left: 10px;
 }
 .links_category, .app_title {
-  background-color: #d3ecff;
+  background-color: $blue;
   padding: 5px;
-  color: #F53240 !important;
+  color: $red !important;
 }
 .links_content {
   padding-left: 10px;
@@ -2222,7 +2096,7 @@ div.comment_image .comment_image:active {
   font-size: 20px;
   font-weight: bold;
   color: #303030;
-  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
+  font-family: $sans;
 }
 .question.darkb {
   text-align: center;
@@ -2234,11 +2108,11 @@ div.comment_image .comment_image:active {
 /** Map/intro **/
 
 .hello, .name, .intro, #intro .hello {
-  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
+  font-family: $sans;
   font-weight: bold;
 }
 #intro {
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
 }
 #intro p {
   font-weight: 400;
@@ -2248,13 +2122,13 @@ div.comment_image .comment_image:active {
   padding: 5px;
 }
 #intro .darkb {
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
   font-weight: 700;
   font-size: 16px;
 }
 .to_begin {
   margin-top: 10px;
-  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
+  font-family: $sans;
   font-weight: bold;
 }
 @-webkit-keyframes colorChange {
@@ -2264,7 +2138,7 @@ div.comment_image .comment_image:active {
     50% {
         color: #303030;
         text-shadow: 1px 1px 5px #CCCCCC;
-        background-color: #d3ecff;
+        background-color: $blue;
     }
     100% {
         color: #2e2322;
@@ -2277,7 +2151,7 @@ div.comment_image .comment_image:active {
     50% {
         color: #303030;
         text-shadow: 1px 1px 5px #CCCCCC;
-        background-color: #d3ecff;
+        background-color: $blue;
     }
     100% {
         color: #2e2322;
@@ -2290,7 +2164,7 @@ div.comment_image .comment_image:active {
     50% {
         color: #303030;
         text-shadow: 1px 1px 5px #CCCCCC;
-        background-color: #d3ecff;
+        background-color: $blue;
     }
     100% {
         color: #2e2322;
@@ -2303,7 +2177,7 @@ div.comment_image .comment_image:active {
     50% {
         color: #303030;
         text-shadow: 1px 1px 5px #CCCCCC;
-        background-color: #d3ecff;
+        background-color: $blue;
     }
     100% {
         color: #2e2322;
@@ -2311,7 +2185,7 @@ div.comment_image .comment_image:active {
 }
 span.begin {
     padding: 10px;
-    background-color: #EFEFEF;
+    background-color: $lightgrey;
 
     -webkit-animation-duration: 5s;
     -webkit-animation-name: colorChange;
@@ -2349,11 +2223,8 @@ span.begin {
   height: 450px;
   float: left;
   margin: 0 10px 10px 0;
-  border: 5px solid #d3ecff;
+  border: 5px solid $blue;
   box-shadow: 1px 2px 7px rgba(90, 100, 117, 0.3);
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
 #map {
   width: 100%;
@@ -2421,10 +2292,8 @@ ul.stufflike li, ul.list li {
 .local_logo img {
   max-width: 460px;
   padding: 10px;
-  background-color: #EFEFEF;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
+  background-color: $lightgrey;
+  @include radius(5px);
 }
 .black_text {
   color: #383838;
@@ -2443,7 +2312,7 @@ ul.stufflike li, ul.list li {
   margin: 0 0 0 320px;
 }
 div.map_summary_info {
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
   font-size: 16px;
   line-height: 26px;
   color: #303030;
@@ -2468,22 +2337,14 @@ div.state_name_container {
   margin: 5px;
   float: left;
   border: 4px solid #f0f9ff;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-div.state_name {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
 span.state_name {
   background: #f0f9ff;
   display: block;
-  color: #F53240;
+  color: $red;
   font-size: 20px;
   line-height: 22px;
-  font-family: 'Freight-MedSC',Helvetica,Arial,sans-serif;
+  font-family: $sans;
   font-weight: bold;
   margin-bottom: 5px;
   padding: 10px;
@@ -2551,21 +2412,6 @@ li span.state_name {
   font-size: 14px;
 }
 
-/** Unused? **/
-
-.clear {
-  clear: both;
-}
-.right {
-  float: right;
-}
-.none {
-  float: none;
-}
-.pic {
-  padding: 5px;
-}
-
 /** High Rollers **/
 
 .high_roller_right_column {
@@ -2575,7 +2421,7 @@ li span.state_name {
   padding: 1em;
 }
 .high_score_new_line {
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
   color: #333333;
   display: block;
   line-height: 15px;
@@ -2588,7 +2434,7 @@ li span.state_name {
   display: inline-block;
   color: #666666;
   font-size: 12px;
-  border-bottom: 1px solid #d3ecff;
+  border-bottom: 1px solid $blue;
 }
 .score_result {
   width: 610px;
@@ -2622,7 +2468,7 @@ span.stats_list span.score_meta {
   color: #666;
   font-weight: normal;
   display: inline;
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
 }
 div.score_list span.score_meta_gen,
 span.stats_list span.score_meta_gen {
@@ -2633,7 +2479,7 @@ span.stats_list span.score_meta_gen {
 div.score_list span.score_machine,
 span.stats_list span.score_machine{
   text-decoration: underline;
-  background: #EFEFEF;
+  background: $lightgrey;
 }
 div.score_list span.score_score,
 span.stats_list span.score_score {
@@ -2641,10 +2487,10 @@ span.stats_list span.score_score {
 }
 div.score_list {
   margin-bottom: 15px;
-  border-bottom: 1px solid #d3ecff;
+  border-bottom: 1px solid $blue;
 }
 .right_column_profile.inspire_profile .stat_num_o {
-  color: #F53240;
+  color: $red;
 }
 
 /** Find a Pinball notice **/
@@ -2789,13 +2635,10 @@ border: 1px solid #D56C24;
   display: block;
   border: 0;
   border-collapse: collapse;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
 }
 .ui-menu-item:hover,
 .ui-menu-item a:hover {
-  background: #d3ecff;
+  background: $blue;
   padding: 1px 5px;
 }
 
@@ -2809,9 +2652,6 @@ border: 1px solid #D56C24;
 #promote_container {
   text-align: center;
   height: 880px;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
 }
 .promote_subcontainer {
   margin: 10px;
@@ -2826,17 +2666,14 @@ border: 1px solid #D56C24;
   -webkit-flex-wrap:       wrap;         /* Safari 8 */
   justify-content:         center;
   -webkit-justify-content: center;       /* Safari 8 */
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
 }
 #promote_container p {
-  font-family: "Palatino","Georgia","Times New Roman", Times,serif;
+  font-family: $serif;
   font-size: 20px;
   line-height: 30px;
 }
 #promote_container p.help {
-  font-family: "Freight-MedSC",Helvetica,Arial,sans-serif;
+  font-family: $sans;
 }
 #promote_container img.promote_logo {
   width: 100%;
