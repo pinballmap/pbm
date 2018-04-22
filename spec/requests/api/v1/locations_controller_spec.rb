@@ -344,9 +344,9 @@ HERE
     end
   end
 
-  describe '#closest_by_zip' do
+  describe '#closest_by_address' do
     it 'sends you the closest location to you, along with machines at the location' do
-      get '/api/v1/locations/closest_by_zip.json', params: { zip: '97202' }
+      get '/api/v1/locations/closest_by_address.json', params: { address: '97202' }
 
       expect(JSON.parse(response.body)['errors']).to eq('No locations within 50 miles.')
 
@@ -355,7 +355,7 @@ HERE
       FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Bawb'))
       FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Sassy'))
 
-      get '/api/v1/locations/closest_by_zip.json', params: { zip: '97202' }
+      get '/api/v1/locations/closest_by_address.json', params: { address: '97202' }
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
@@ -379,7 +379,7 @@ HERE
       close_location_three = FactoryBot.create(:location, region: @region, lat: 45.491, lon: -122.63)
       FactoryBot.create(:location, region: @region, lat: 5.49, lon: 22.63)
 
-      get '/api/v1/locations/closest_by_zip.json', params: { zip: '97202', send_all_within_distance: 1 }
+      get '/api/v1/locations/closest_by_address.json', params: { address: '97202', send_all_within_distance: 1 }
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
