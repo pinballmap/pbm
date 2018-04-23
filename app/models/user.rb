@@ -136,13 +136,11 @@ class User < ApplicationRecord
     attributes = attributes.slice(*required_attributes)
     attributes.delete_if { |_key, value| value.blank? }
 
-    if attributes.size == required_attributes.size
-      if attributes.key?(:login)
-        login = attributes.delete(:login)
-        record = find_record(login)
-      else
-        record = where(attributes).first
-      end
+    if attributes.key?(:login)
+      login = attributes.delete(:login)
+      record = find_record(login)
+    else
+      record = where(attributes).first
     end
 
     unless record
