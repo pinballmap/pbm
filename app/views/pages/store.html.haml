@@ -1,10 +1,10 @@
 #page_body
-  .left_column{:style => 'margin-bottom:15px;'}
-    %p.store_title.darkb Pinball Map T-Shirts! SOLD OUT!
-    %p
-      Hey folks! We're out of shirts! We have nothing to sell you right now.
-    %p
-      But at one point we were selling this t-shirt.
-  .right_column.event_column
-    %p{:style => 'text-align:center;'}
+  .column_container
+    .column.w_400.bg_gray
+      %h1.red Pinball Map T-Shirts! SOLD OUT!
+      %p.serif
+        Hey folks! We're out of shirts! We have nothing to sell you right now.
+      %p.serif
+        But at one point we were selling this t-shirt.
+    .column
       =image_tag 'pbm-shirt-web.jpg', :class => 'store_shirt', :alt => 'Pinball Map T-Shirt'

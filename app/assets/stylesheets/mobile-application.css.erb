@@ -27,7 +27,7 @@ body {
 #header {
   position: absolute;
   min-width: 320px;
-  height: 36px;
+  height: 46px;
   padding: 5px 0 5px;
   margin: 0 auto;
   z-index: 600;
@@ -76,7 +76,7 @@ body {
   -ms-flex-pack: space-around;
   justify-content: space-around;
   left: 10px;
-  top: 1px;
+  top: 3px;
   position: absolute;
 }
 #header #nav {
@@ -198,16 +198,13 @@ span.region_name_page a {
 span.region_name_page {
   background: #EFEFEF;
 }
-
 #header.header_home, #header.header_image_home {
   min-width: 320px;
 }
-
 .login_slash {
   display: inline;
   font-weight: bold;
 }
-
 #header div.menu_link ul li.login_list {
   display: inline;
   text-align: center;
@@ -220,7 +217,6 @@ span.login_list {
   display: block;
   text-align: center;
 }
-
 #header .login_region,
 #header .login_home,
 #header .closest_locations_outer,
@@ -236,7 +232,6 @@ span.login_list {
   text-align: center;
   margin-top: 0 !important;
 }
-
 #region_list {
   width: auto;
 }
@@ -258,17 +253,14 @@ span.login_list {
   height: 30px;
   width: 30px;
 }
-
 .header_image_a {
   display: block;
 }
-
 #header .region_logo_dropdown {
     float: none;
     background: #A9A9A9;
     width: auto;
 }
-
 .pick_a_map span.pick_a_map {
   display: none;
 }
@@ -939,52 +931,18 @@ input#score, input#initials {
   border: none;
   background-color: transparent;
 }
-
-.links_column, #left_column, .left_column, .right_column_outer
-.left_column.suggest, .left_column.high, .left_column.secondary,
-.right_column, #right_column, .left_column_outer, .right_column.secondary,
-.score_result {
-  margin: 10px !important;
+.column {
+  width: 100% !important;
+  min-width: 0;
+  min-height: 0;
 }
-.left_column.secondary, .left_column,.left_column_about {
-  padding: 1px 10px 1px;
-}
-.left_column.full_width,
-.right_column.full_width {
-  width: auto;
-}
-
-.left_column_outer {
-  padding: 0;
-}
-.left_column_about {
-  margin-left: 0;
-}
-
 #page_body {
   width: 100%;
   min-width: 0;
 }
-
-#left_column, .left_column, .left_column_about,
-#region_page_body, .links_column, .right_column_outer .links_column, .links_category, .left_column_outer, .right_column_outer,
-.left_column.suggest, .left_column.high, .left_column.secondary,
-.right_column, #right_column, .right_column.right_column_apps, .right_column.secondary {
-  width: auto;
-  min-width: 0;
-  min-height: 0;
-}
-
-.right_column, #right_column, .left_column.secondary,
-#left_column, .left_column, .left_column_about {
-  float: none;
-  display: block;
-  clear: both;
-}
-
-.right_column.secondary .ios img,
-.right_column.secondary .ipad img,
-.right_column img.store_shirt {
+.column .ios img,
+.column .ipad img,
+.column img.store_shirt {
   width: 98%;
   height: auto;
 }

@@ -1,105 +1,106 @@
 #page_body
-  .left_column.suggest
-    %p.darkb Suggest a New Location
-    - if user_signed_in?
-      %p Add a new location to the database. Fill in this form. We'll review it to make sure the data works... so don't expect it to show up just yet. Thanks for helping out!
-      #location_maker
-        = form_tag submitted_new_location_path, :method => 'get' do
-          %form#submit_location
-            %ul
-              %li{:class => "first"}
-                %label{:for => "location_name"} Location Name:
-                %input{:type => "text", :name => "location_name", :params => "location_name", :class => "text"}
-              %li
-                %label{:for => "location_street"} Street:
-                %input{:type => "text", :name => "location_street", :params => "location_street", :class => "text"}
-              %li{:class => "first"}
-                %label{:for => "location_city"} City:
-                %input{:type => "text", :name => "location_city", :params => "location_city", :class => "text"}
-              %li
-                %label{:for => "location_state"} State:
-                = select_tag :location_state, options_for_select(@states)
-              %li{:class => "first"}
-                %label{:for => "location_zip"} Zip:
-                %input{:type => "text", :name => "location_zip", :params => "location_zip", :class => "text"}
-              %li
-                %label{:for => "location_phone"} Phone:
-                %input{:type => "text", :name => "location_phone", :params => "location_phone", :class => "text"}
-              %li{:class => "first"}
-                %label{:for => "location_website"} Website:
-                %input{:type => "text", :name => "location_website", :params => "location_website", :class => "text"}
-              %li
-                %label{:for => "location_type"} Location Type:
-                = select_tag :location_type, options_for_select(@location_types)
-              - if @operators.size > 1
+  .column_container
+    .column.bg_gray.w_640.suggest
+      %h1.red Suggest a New Location
+      - if user_signed_in?
+        %p.serif Add a new location to the database. Fill in this form. We'll review it to make sure the data works... so don't expect it to show up just yet. Thanks for helping out!
+        #location_maker
+          = form_tag submitted_new_location_path, :method => 'get' do
+            %form#submit_location
+              %ul
                 %li{:class => "first"}
-                  %label{:for => "location_operator"} Operator:
-                  = select_tag :location_operator, options_for_select(@operators)
-              - if @zones.size > 1
+                  %label{:for => "location_name"} Location Name:
+                  %input{:type => "text", :name => "location_name", :params => "location_name", :class => "text"}
                 %li
-                  %label{:for => "location_zone"} Zone:
-                  = select_tag :location_zone, options_for_select(@zones)
-              .clear
-              %li.textbox
-                %label{:for => "location_comments"} Comments:
-                %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text"}
-              %li.textbox
-                %label{:for => "location_machines"} Machines:
-                %textarea{:type => "text", :id => "location_machines", :name => "location_machines", :params => "location_machines", :class => "text"}
-                :javascript
-                  $(function () {
-                    function split( val ) {
-                      return val.split( /,\s*/ );
-                    }
-                    function extractLast( term ) {
-                      return split( term ).pop();
-                    }
-                    $('#location_machines')
-                    .on( "keydown", function( event ) {
-                      if ( event.keyCode === $.ui.keyCode.TAB &&
-                      $( this ).autocomplete( "instance" ).menu.active ) {
-                        event.preventDefault();
+                  %label{:for => "location_street"} Street:
+                  %input{:type => "text", :name => "location_street", :params => "location_street", :class => "text"}
+                %li{:class => "first"}
+                  %label{:for => "location_city"} City:
+                  %input{:type => "text", :name => "location_city", :params => "location_city", :class => "text"}
+                %li
+                  %label{:for => "location_state"} State:
+                  = select_tag :location_state, options_for_select(@states)
+                %li{:class => "first"}
+                  %label{:for => "location_zip"} Zip:
+                  %input{:type => "text", :name => "location_zip", :params => "location_zip", :class => "text"}
+                %li
+                  %label{:for => "location_phone"} Phone:
+                  %input{:type => "text", :name => "location_phone", :params => "location_phone", :class => "text"}
+                %li{:class => "first"}
+                  %label{:for => "location_website"} Website:
+                  %input{:type => "text", :name => "location_website", :params => "location_website", :class => "text"}
+                %li
+                  %label{:for => "location_type"} Location Type:
+                  = select_tag :location_type, options_for_select(@location_types)
+                - if @operators.size > 1
+                  %li{:class => "first"}
+                    %label{:for => "location_operator"} Operator:
+                    = select_tag :location_operator, options_for_select(@operators)
+                - if @zones.size > 1
+                  %li
+                    %label{:for => "location_zone"} Zone:
+                    = select_tag :location_zone, options_for_select(@zones)
+                .clear
+                %li.textbox
+                  %label{:for => "location_comments"} Comments:
+                  %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text"}
+                %li.textbox
+                  %label{:for => "location_machines"} Machines:
+                  %textarea{:type => "text", :id => "location_machines", :name => "location_machines", :params => "location_machines", :class => "text"}
+                  :javascript
+                    $(function () {
+                      function split( val ) {
+                        return val.split( /,\s*/ );
                       }
-                    })
-                    .autocomplete({
-                      minLength: 0,
-                      source: function( request, response ) {
-                        $.getJSON( '/portland/machines/autocomplete', {
-                          term: extractLast( request.term )
-                        }, response );
-                      },
-                      search: function() {
-                        var term = extractLast( this.value );
-                        if ( term.length < 2 ) {
+                      function extractLast( term ) {
+                        return split( term ).pop();
+                      }
+                      $('#location_machines')
+                      .on( "keydown", function( event ) {
+                        if ( event.keyCode === $.ui.keyCode.TAB &&
+                        $( this ).autocomplete( "instance" ).menu.active ) {
+                          event.preventDefault();
+                        }
+                      })
+                      .autocomplete({
+                        minLength: 0,
+                        source: function( request, response ) {
+                          $.getJSON( '/portland/machines/autocomplete', {
+                            term: extractLast( request.term )
+                          }, response );
+                        },
+                        search: function() {
+                          var term = extractLast( this.value );
+                          if ( term.length < 2 ) {
+                            return false;
+                          }
+                        },
+                        focus: function() {
+                          return false;
+                        },
+                        select: function( event, ui ) {
+                          var terms = split( this.value );
+                          terms.pop();
+                          terms.push( ui.item.value );
+                          terms.push( "" );
+                          this.value = terms.join( ", " );
                           return false;
                         }
-                      },
-                      focus: function() {
-                        return false;
-                      },
-                      select: function( event, ui ) {
-                        var terms = split( this.value );
-                        terms.pop();
-                        terms.push( ui.item.value );
-                        terms.push( "" );
-                        this.value = terms.join( ", " );
-                        return false;
-                      }
+                      });
                     });
-                  });
-              %li.submit{:style => "clear:both;"}
-                %input{:type => "submit", :value => "Submit New Location", :class => "submit_button"}
+                %li.submit.mt_5{:style => "clear:both;"}
+                  %input{:type => "submit", :value => "Submit New Location", :class => "submit_button"}
 
-      %p
-        Remember, only use this form if you are adding a new
-        %em
-          location
-        to the map. If you want to add/remove a
-        %em
-          machine
-        to/from a location, just bring up that location on the map and then use the add/remove functions.
-    - else
-      %p
-        But first! We ask that you
-        = link_to 'Login.', new_user_session_path, :class => "darkbl"
-        Thank you!
+        %p.serif
+          Remember, only use this form if you are adding a new
+          %em
+            location
+          to the map. If you want to add/remove a
+          %em
+            machine
+          to/from a location, just bring up that location on the map and then use the add/remove functions.
+      - else
+        %p.serif.ta_c
+          But first! We ask that you
+          = link_to 'Login.', new_user_session_path, :class => "darkbl"
+          Thank you!
