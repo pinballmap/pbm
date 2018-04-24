@@ -1,35 +1,37 @@
-<div class="login_why_outer">
-	<div class="login_why_inner">
-		<p class="why_login darkb">
-			Why join?
-		</p>
-		<p class="palatino">
-			Because updating pinball maps is fun! The maps are kept up to date by you! Signing up is simple, and will allow you to add and remove machines from places, add comments about machines, etc. Plus you can track your contributions.
-		</p>
-		<p class="palatino">
-			We won't share your email address with anyone! We may add you to our own mailing list (if we make one), but you'll be able to opt out of that. View <%= link_to 'Privacy Policy', privacy_path %>.
-		</p>
-	</div>
-	<div id="login" class="login_new_div">
-		<h2>Join</h2>
+<div class="page_login">
+	<div class="column_container">
+		<div class="column w_320 bg_gray">
+			<p class="why_login darkb">
+				Why join?
+			</p>
+			<p class="serif">
+				Because updating pinball maps is fun! The maps are kept up to date by you! Signing up is simple, and will allow you to add and remove machines from places, add comments about machines, etc. Plus you can track your contributions.
+			</p>
+			<p class="serif">
+				We won't share your email address with anyone! We may add you to our own mailing list (if we make one), but you'll be able to opt out of that. View <%= link_to 'Privacy Policy', privacy_path %>.
+			</p>
+		</div>
+		<div id="login" class="column w_320">
+			<h2>Join</h2>
 
-		<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-		  <%= f.error_notification %>
+			<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+				<%= f.error_notification %>
 
-		  <div class="form-inputs">
-		  	<span class="why_login">(How about your initials?)</span>
-		    <%= f.input :username, :required => true, :autofocus => true, as: :string %>
-		    <%= f.input :email, :required => true, :autofocus => true, :input_html => {:minlength => 4} %>
-		    <span class="why_login">(Choose a password that you don't use elsewhere)</span>
-		    <%= f.input :password, :required => true %>
-		    <%= f.input :password_confirmation, :required => true %>
-		  </div>
+				<div class="form-inputs">
+					<span class="why_login">(How about your initials?)</span>
+					<%= f.input :username, :required => true, :autofocus => true, as: :string %>
+					<%= f.input :email, :required => true, :autofocus => true, :input_html => {:minlength => 4} %>
+					<span class="why_login">(Choose a password that you don't use elsewhere)</span>
+					<%= f.input :password, :required => true %>
+					<%= f.input :password_confirmation, :required => true %>
+				</div>
 
-		  <div class="form-actions">
-		    <%= f.button :submit, "Join" %>
-		  </div>
-		<% end %>
+				<div class="form-actions">
+					<%= f.button :submit, "Join" %>
+				</div>
+			<% end %>
 
-		<%= render "devise/shared/links" %>
+			<%= render "devise/shared/links" %>
+		</div>
 	</div>
 </div>

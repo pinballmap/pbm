@@ -1,19 +1,17 @@
-<div class="login_why_outer">
-	<div id="login">
-		<h2>LOG IN</h2>
+<div id="login">
+	<h2>LOG IN</h2>
 
-		<%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-		  <div class="form-inputs">
-		    <%= f.input :login, :required => false, :autofocus => true, as: :string, :size => 40 %>
-		    <%= f.input :password, :required => false %>
-		    <%= f.input :remember_me, :as => :boolean if devise_mapping.rememberable? %>
-		  </div>
+	<%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+		<div class="form-inputs">
+			<%= f.input :login, :required => false, :autofocus => true, as: :string, :size => 40 %>
+			<%= f.input :password, :required => false %>
+			<%= f.input :remember_me, :as => :boolean if devise_mapping.rememberable? %>
+		</div>
 
-		  <div class="form-actions">
-		    <%= f.button :submit, "Login" %>
-		  </div><br />
-		<% end %>
+		<div class="form-actions">
+			<%= f.button :submit, "Login" %>
+		</div><br />
+	<% end %>
 
-		<%= render "devise/shared/links" %>
-	</div>
+	<%= render "devise/shared/links" %>
 </div>

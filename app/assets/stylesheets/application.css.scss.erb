@@ -121,6 +121,42 @@ ul li li {
   font-size: 14px;
   letter-spacing: .3px;
 }
+.bg_gray {
+  background-color: $lightgrey;
+}
+.bg_blue {
+  background-color: $blue;
+}
+.w_320 {
+  width: 320px;
+}
+.w_400 {
+  width: 400px;
+}
+.w_450 {
+  width: 450px;
+}
+.w_560 {
+  width: 560px;
+}
+.w_640 {
+  width: 640px;
+}
+.mt_0 {
+  margin-top: 0;
+}
+.mt_5 {
+  margin-top: 5px;
+}
+.mb_0 {
+  margin-bottom: 0;
+}
+.pb_10 {
+  padding-bottom: 10px;
+}
+.ta_c {
+  text-align: center;
+}
 
 /* Text */
 
@@ -174,7 +210,7 @@ h1 {
 #login {
   background: none repeat scroll 0 0 #fdfcfe;
   border: 2px solid $lightgrey;
-  @include set(310px,auto,0 20px 20px, 10px auto 0);
+  padding: 0 15px 10px;
 }
 #login label.password,
 #login label.email,
@@ -194,8 +230,8 @@ form.new_user .form-actions, form.edit_user .form-actions {
 #login abbr {
   border: none;
 }
-.login_why_outer {
-  width: 610px;
+.page_login {
+  max-width: 710px;
   margin: 0 auto;
 }
 .login_why_inner {
@@ -212,10 +248,6 @@ form.new_user .form-actions, form.edit_user .form-actions {
 }
 .login_why_inner p {
   margin: 10px 0 5px 0;
-}
-.login_new_div {
-  float: right;
-  margin: 0;
 }
 .login_slash {
   color: #303030;
@@ -1907,47 +1939,12 @@ div.comment_image .comment_image:active {
   justify-content: center;
   align-items: flex-start;
   -webkit-flex-flow: row wrap;
+  margin-bottom: 20px;
 }
 .column {
   margin: 15px auto;
   height: 100%;
   padding: 0 10px;
-}
-.bg_gray {
-  background-color: $lightgrey;
-}
-.bg_blue {
-  background-color: $blue;
-}
-.w_320 {
-  width: 320px;
-}
-.w_400 {
-  width: 400px;
-}
-.w_450 {
-  width: 450px;
-}
-.w_560 {
-  width: 560px;
-}
-.w_640 {
-  width: 640px;
-}
-.mt_0 {
-  margin-top: 0;
-}
-.mt_5 {
-  margin-top: 5px;
-}
-.mb_0 {
-  margin-bottom: 0;
-}
-.pb_10 {
-  padding-bottom: 10px;
-}
-.ta_c {
-  text-align: center;
 }
 #location_maker ul, #contact_maker ul {
   list-style-type: none;
