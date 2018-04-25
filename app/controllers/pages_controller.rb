@@ -1,6 +1,29 @@
 require 'pony'
 
 class PagesController < ApplicationController
+  respond_to :xml, :json, :html, :js, :rss
+
+  def params
+    request.parameters
+  end
+
+  def regionless_location_data
+    @locations = []
+
+    @locations = Location.near(params[:address], 5) if params[:address]
+
+    @location_data = LocationsController.locations_javascript_data(@locations)
+
+    render json: [
+      @location_data[0],
+      @location_data[1],
+      @location_data[2],
+      @location_data[3]
+    ]
+  end
+
+  def regionless; end
+
   def region
     @locations = Location.where('region_id = ?', @region.id)
     @location_count = @locations.count
