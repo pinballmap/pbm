@@ -1,15 +1,19 @@
-<h2>Login</h2>
+<div class="column_container">
+	<div id="login" class="">
+		<h2>Forgot your password?</h2>
 
-<%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-  <div class="form-inputs">
-    <%= f.input :email, :required => false, :autofocus => true %>
-    <%= f.input :password, :required => false %>
-    <%= f.input :remember_me, :as => :boolean if devise_mapping.rememberable? %>
-  </div>
+		<%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
+			<%= f.error_notification %>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Login" %>
-  </div>
-<% end %>
+			<div class="form-inputs">
+				<%= f.input :login, :required => true, :autofocus => true, as: :string %>
+			</div>
 
-<%= render "users/shared/links" %>
+			<div class="form-actions reset-password">
+				<%= f.button :submit, "Send me reset password instructions" %>
+			</div>
+		<% end %>
+
+		<%= render "devise/shared/links" %>
+	</div>
+</div>

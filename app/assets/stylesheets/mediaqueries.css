@@ -10,7 +10,7 @@
       font-size: 11px;
       margin: 0 2px;
     }
-    #lookup, #location_maker ul, .score_result .sub_nav_item {
+    #lookup, #location_maker ul {
       width: 470px;
     }
     .location_thumbs a {
@@ -136,7 +136,16 @@
   }
 }
 
-@media (max-width: 920px) {
+@media (max-width: 960px) {
+  .column.suggest {
+    display:                 flex;
+    display:                 -webkit-flex; /* Safari 8 */
+    flex-wrap:               wrap;
+    -webkit-flex-wrap:       wrap;         /* Safari 8 */
+    justify-content:         center;
+    -webkit-justify-content: center;       /* Safari 8 */
+    float: none;
+  }
   #header .login_home {
     width: 40px;
   }
@@ -213,43 +222,8 @@
   }
 }
 
-@media (max-width: 950px) {
-
-  .left_column.secondary, .left_column_outer, .left_column {
-    float: none;
-    margin: 0px auto 10px;
-    padding: 1px 10px 10px;
-    min-height: auto;
-  }
-  .left_column_about {
-    float: none;
-    padding: 10px;
-  }
-  .right_column, #right_column, .right_column.secondary, .right_column_outer {
-    margin: 0 auto 10px;
-    display: block;
-    float: none;
-    clear: both;
-    min-height: auto;
-    width: 475px;
-  }
-  .right_column_outer .links_column {
-    width: 450px;
-  }
-  .event_column {
-    width: 395px;
-  }
-}
-
-@media (max-width: 1065px) {
-
-}
-
 @media print {
   .page_home, .flier_desc {
     display: none !important;
-  }
-  .promote_subcontainer {
-      /*height: 50%;*/
   }
 }

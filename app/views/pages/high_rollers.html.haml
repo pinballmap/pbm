@@ -1,25 +1,26 @@
 #page_body
-  .left_column.high
-    %p.darkb Top 10 High Rollers
-    %p
-      This list shows who has the most overall inits. Check the details of each one to find out where you can take them down!
-  .clear
+  .column_container
+    .column.bg_gray.w_640
+      %h1.red Top 10 High Rollers
+      %p.serif
+        This list shows who has the most overall inits. Check the details of each one to find out where you can take them down!
+    .clear
 
-  - if (@high_rollers)
-    - count = 1
-    - @high_rollers.sort{|a,b| b[1].size <=> a[1].size}.each do |roller|
-      .score_result
-        %p= "#{roller[0]}: with #{roller[1].size} scores"
-        = banner("user_#{count}", 'Show Score Detail')
-        %div{:style => 'display:none', :id => "user_#{count}"}
-          - roller[1].each do |msx|
-            %div.score_list
-              %span.score_machine #{msx.location_machine_xref.machine.name}
-              %span.score_score #{number_with_delimiter(msx.score, :delimiter => ",")}
-              %span.score_meta at
-              %span.score_meta_gen
-                #{msx.location_machine_xref.location.name}
-              %span.score_meta on
-              %span.score_meta_gen
-                #{msx.created_at.strftime("%b-%d-%Y")}
-      - count += 1
+    - if (@high_rollers)
+      - count = 1
+      - @high_rollers.sort{|a,b| b[1].size <=> a[1].size}.each do |roller|
+        .column.w_640
+          %p.mb_0= "#{roller[0]}: with #{roller[1].size} scores"
+          = banner("user_#{count}", 'Show Score Detail')
+          %div{:style => 'display:none', :id => "user_#{count}"}
+            - roller[1].each do |msx|
+              %div.score_list
+                %span.score_machine #{msx.location_machine_xref.machine.name}
+                %span.score_score #{number_with_delimiter(msx.score, :delimiter => ",")}
+                %span.score_meta at
+                %span.score_meta_gen
+                  #{msx.location_machine_xref.location.name}
+                %span.score_meta on
+                %span.score_meta_gen
+                  #{msx.created_at.strftime("%b-%d-%Y")}
+        - count += 1
