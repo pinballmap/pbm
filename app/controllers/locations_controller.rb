@@ -22,7 +22,7 @@ class LocationsController < InheritedResources::Base
     end
 
     @locations = apply_scopes(Location).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs)
-    @location_data = locations_javascript_data(@locations)
+    @location_data = LocationsController.locations_javascript_data(@locations)
 
     respond_with(@locations) do |format|
       format.html { render partial: 'locations/locations', layout: false }
@@ -94,7 +94,7 @@ class LocationsController < InheritedResources::Base
     render nothing: true
   end
 
-  def locations_javascript_data(locations)
+  def self.locations_javascript_data(locations)
     ids = []
     lats = []
     lons = []

@@ -175,7 +175,6 @@ var homeMap =
 ]
 
 function showLocations(ids, lats, lons, contents) {
-
   clearMarkers();
   clearInfoWindows();
   infoWindows = new Array();
@@ -391,7 +390,6 @@ function showLocations(ids, lats, lons, contents) {
 
   for (i in ids) {
     var latlng = new google.maps.LatLng(lats[i], lons[i]);
-
     var marker = new google.maps.Marker({
       position: latlng,
       map: map,
