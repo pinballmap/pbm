@@ -162,6 +162,8 @@ Rails.application.routes.draw do
 
   get 'inspire_profile' => 'pages#inspire_profile'
   get 'pages/home'
+  get 'regionless' => 'pages#regionless'
+  get 'regionless_location_data' => 'pages#regionless_location_data'
 
   # legacy names for regions
   get '/milwaukee' => redirect('/wisconsin')
