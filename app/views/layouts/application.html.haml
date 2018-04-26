@@ -31,7 +31,7 @@
             = content_tag :div, msg, :id => "flash_#{name}"
             :javascript
               $(function () {
-                $("#flash_#{name}").delay(4000).fadeOut("slow");
+                $("#flash_#{name}").delay(3000).fadeOut("slow");
               });
 
       = yield
