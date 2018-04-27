@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-%html{:class => "#{@region ? '' : (defined? @region) and current_page?(region_homepage_path) ? 'html_region' : ''}"}
+%html{:class => "#{current_page?(regionless_path) ? 'html_region' : '' }"}
   %head
     %meta{:charset => "UTF-8"}
     %title #{title_for_path(request.path, @region)}
@@ -31,7 +31,7 @@
             = content_tag :div, msg, :id => "flash_#{name}"
             :javascript
               $(function () {
-                $("#flash_#{name}").delay(4000).fadeOut("slow");
+                $("#flash_#{name}").delay(3000).fadeOut("slow");
               });
 
       = yield

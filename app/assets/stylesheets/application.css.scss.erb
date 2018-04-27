@@ -51,7 +51,7 @@ html {
   position: relative;
   box-sizing: border-box;    
 }
-html.html_region {
+html.html_region, html.html_regionless {
   position: static;
 }
 body {
@@ -820,7 +820,7 @@ span.or {
   background: #FFFFFF;
   @include radius(0 2px 2px 0);
 }
-#form .search_field_container .search,
+.location_search .search,
 #form .search_other_button input {
   border: none;
   height: 28px;
@@ -906,10 +906,14 @@ span.or {
   width: 100%;
   min-height: 100%;
 }
+#container {
+  display: flex;  
+  flex-flow: row wrap;
+}
 #lookup {
   display: inline;
   float: left;
-  padding: 85px 10px 10px 10px;
+  padding: 125px 10px 10px 10px;
   width: 640px;
   background: #FFFFFF;
   position: relative;
@@ -1942,6 +1946,7 @@ div.comment_image .comment_image:active {
   align-items: flex-start;
   -webkit-flex-flow: row wrap;
   margin-bottom: 20px;
+  margin-top: 60px;
 }
 .column {
   margin: 15px auto;
@@ -2139,10 +2144,6 @@ span.begin {
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
 }
-#map, .right_column, #right_column {
-  height: 100%;
-  z-index: -1;
-}
 #map, #map_canvas {
   background: #faf9fa;
 }
@@ -2158,6 +2159,8 @@ span.begin {
   overflow: hidden;
   position: fixed;
   height: calc(100% - 70px) !important;
+  margin-top: 52px;
+  z-index: -1;
 }
 #map_canvas {
   margin-right: -640px;
@@ -2175,6 +2178,7 @@ span.begin {
   display: block;
   margin: 0 auto;
   min-height: 100%;
+  width: 100%;
   z-index: 2;
   min-width: 768px;
 }
@@ -2336,12 +2340,6 @@ li span.state_name {
 
 /** High Rollers **/
 
-.high_roller_right_column {
-  float: right;
-  width: 400px;
-  margin-left: 550px;
-  padding: 1em;
-}
 .high_score_new_line {
   font-family: $serif;
   color: #333333;
@@ -2397,9 +2395,6 @@ span.stats_list span.score_score {
 div.score_list {
   margin-bottom: 15px;
   border-bottom: 1px solid $blue;
-}
-.right_column_profile.inspire_profile .stat_num_o {
-  color: $red;
 }
 
 /** Find a Pinball notice **/
