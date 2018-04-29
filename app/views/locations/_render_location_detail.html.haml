@@ -3,7 +3,7 @@
 		%li.name{:onclick => "locationLookupMapCenter(#{l.id});"}
 			=l.name
 		%span.permalink
-			=link_to image_tag( 'link.png' ), "/#{@region.name.downcase}/?by_location_id=#{l.id}", :id => l.id, :alt => 'link to this location'
+			=link_to image_tag( 'link.png' ), "/#{l.region.name.downcase}/?by_location_id=#{l.id}", :id => l.id, :alt => 'link to this location'
 		.clear
 		- if user_signed_in?
 			%span.location_description

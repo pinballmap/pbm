@@ -1,11 +1,16 @@
-#regionless_map_div{style: "float: left; margin-top:70px;"}
-  = form_tag regionless_location_data_path, :method => 'get', :id => 'address_search_form', :class => 'location_search' do
-    = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => 'address goes here...'
-    = image_submit_tag('search_icon.png', :class => 'search', :id => "address_search_button")
+#region_page_body
+  #form.toggle_reg_lookup
+    = form_tag regionless_location_data_path, :method => 'get', :id => 'address_search_form', :class => 'location_search' do
+      = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => 'address goes here...'
+      = image_submit_tag('search_icon.png', :class => 'search', :id => "address_search_button")
 
-#map
-  = render :partial => 'locations/map', locals: { lat: 40.3399, lon: 127.5101 }
-#mapFollow_wrapper.hide_button.toggle_btn_reg
+  #lookup.toggle_reg_lookup
+    #locations
+      %span Cool Job
+
+  #map
+    = render :partial => 'locations/map', locals: { lat: 40.3399, lon: 127.5101 }
+  #mapFollow_wrapper.hide_button.toggle_btn_reg
 
 :javascript
   $('#address_search_form').on('submit', function(e) {
@@ -14,9 +19,7 @@
     var form = $(this);
 
     $.get(form.attr('action'), form.serialize(), function(data, textStatus, jqxhr) {
-      clearMarkers();
-      clearInfoWindows();
-      showLocations(data[0], data[1], data[2], data[3]);
+      $('#locations').html(data);
     });
 
     return false;

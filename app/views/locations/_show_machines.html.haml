@@ -3,7 +3,7 @@
 :javascript
   $(function() {
     $('#show_machines_location_#{location.id}').html(loadingHTML());
-    $.get('/' + region + '/locations/#{location.id}/render_machines', function(data) {
+    $.get('/locations/#{location.id}/render_machines', function(data) {
       $('#show_machines_location_#{location.id}').html(data);
     });
   });

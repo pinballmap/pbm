@@ -5,6 +5,6 @@
   $(function() {
     $('#add_machine_location_banner_#{location.id}').click(function () {
       $('#add_machine_location_#{location.id}').html(loadingHTML());
-      $('#add_machine_location_#{location.id}').load('/#{params[:region]}/locations/#{location.id}/render_add_machine');
+      $('#add_machine_location_#{location.id}').load('/locations/#{location.id}/render_add_machine');
     });
   });

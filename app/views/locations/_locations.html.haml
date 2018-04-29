@@ -5,6 +5,15 @@
     clearInfoWindows();
     $("#mapFollow_wrapper,#search_link_wrapper,#min_lookup_wrapper").removeClass("hide_button");
 
+    showLocations(
+      [#{@location_data[0].join(', ')}],
+      [#{@location_data[1].join(', ')}],
+      [#{@location_data[2].join(', ')}],
+      [#{@location_data[3].join(', ').html_safe}]
+    );
+
+- if (@locations && @region)
+  :javascript
     var hrefOrig = 'https://#{request.host_with_port}/#{@region.name.downcase}?';
     var def_value = window.location.href;
 
@@ -23,13 +32,6 @@
 
       window.history.pushState('', '', a.pathname + a.search);
     }
-
-    showLocations(
-      [#{@location_data[0].join(', ')}],
-      [#{@location_data[1].join(', ')}],
-      [#{@location_data[2].join(', ')}],
-      [#{@location_data[3].join(', ').html_safe}]
-    );
 
 :javascript
   var isSingleLocation = #{@locations.size == 1 ? true : false}
@@ -64,7 +66,7 @@
       %div.search_result[l]         
         - if (@locations.size == 1)
           %div.location_detail[l, :location_detail]
-            = render :partial => 'locations/render_location_detail', :locals => {:l => l}
+            = render :partial => 'locations/render_location_detail', :locals => {l: l}
         - else
           %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id});"}
             %ul

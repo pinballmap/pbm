@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
+  get ':region/location_machine_xrefs.rss' => 'location_machine_xrefs#index'
+
   namespace :api do
     namespace :v1 do
       resources :location_machine_xrefs, only: [:create, :destroy, :update, :show]
@@ -52,7 +54,7 @@ Rails.application.routes.draw do
         resources :events, only: [:index, :show]
         resources :location_machine_xrefs, only: [:index]
         resources :locations, only: [:index, :show]
-        resources :machine_score_xrefs, only: [:index]
+        resources :machine_score_xrefs, only: [:index, :show]
         resources :operators, only: [:index]
         resources :region_link_xrefs, only: [:index, :show]
         resources :user_submissions, only: [:index, :show]
@@ -79,48 +81,7 @@ Rails.application.routes.draw do
     resources :events, only: [:index, :show]
     resources :regions, only: [:index, :show]
 
-    resources :machines, only: [:index, :show] do
-      collection do
-        get :autocomplete
-      end
-    end
-
     resources :pages
-    resources :machine_score_xrefs
-
-    resources :location_machine_xrefs do
-      collection do
-        get :update_machine_condition
-      end
-      member do
-        get :condition_update_confirmation
-        get :create_confirmation
-        get :remove_confirmation
-        get :render_machine_condition
-        get :render_machine_conditions
-      end
-    end
-
-    resources :locations, only: [:index, :show] do
-      collection do
-        get :update_desc
-        get :update_metadata
-        get :autocomplete
-      end
-      member do
-        get :confirm
-        get :locations_for_machine
-        get :newest_machine_name
-        get :render_add_machine
-        get :render_desc
-        get :render_update_metadata
-        get :render_machine_names_for_infowindow
-        get :render_machines
-        get :render_scores
-        get :render_last_updated
-        get :render_location_detail
-      end
-    end
 
     # xml/rss mismatch to support rss-formatted output with $region.xml urls, $region.rss is already expected by mobile devices, and is expected to be formatted without hrefs
     get ':region' + '.xml' => 'location_machine_xrefs#index', format: 'rss'
@@ -144,6 +105,47 @@ Rails.application.routes.draw do
     get '*page', to: 'locations#unknown_route'
   end
 
+  resources :locations, only: [:index, :show] do
+    collection do
+      get :update_desc
+      get :update_metadata
+      get :autocomplete
+    end
+    member do
+      get :confirm
+      get :locations_for_machine
+      get :newest_machine_name
+      get :render_add_machine
+      get :render_desc
+      get :render_update_metadata
+      get :render_machine_names_for_infowindow
+      get :render_last_updated
+      get :render_location_detail
+      get :render_machines
+      get :render_scores
+    end
+  end
+
+  resources :machines, only: [:index, :show] do
+    collection do
+      get :autocomplete
+    end
+  end
+
+  resources :location_machine_xrefs do
+    collection do
+      get :update_machine_condition
+    end
+    member do
+      get :condition_update_confirmation
+      get :create_confirmation
+      get :remove_confirmation
+      get :render_machine_condition
+      get :render_machine_conditions
+    end
+  end
+
+  resources :machine_score_xrefs
   resources :location_picture_xrefs
   resources :machine_conditions
   resources :suggested_locations, only: [] do

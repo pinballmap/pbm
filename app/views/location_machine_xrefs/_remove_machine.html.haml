@@ -1,5 +1,5 @@
 %div.remove_button
-  = button_to "remove machine",  location_machine_xref_path(:region => @region.name, :id => lmx.id), :id => "remove_machine_#{lmx.id}", :method => 'delete', :remote => true, :class => "remove_machine_button"
+  = button_to "remove machine",  location_machine_xref_path(:region => lmx.location.region.name, :id => lmx.id), :id => "remove_machine_#{lmx.id}", :method => 'delete', :remote => true, :class => "remove_machine_button"
 
 :javascript
   $('#remove_machine_#{lmx.id}').click(function () {

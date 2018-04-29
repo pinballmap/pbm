@@ -20,7 +20,7 @@
 
         var form = $(this);
         $.post(form.attr('action'), form.serialize(), function (data) {
-          $('#show_scores_lmx_#{lmx.id}').load('/#{params[:region]}/locations/#{lmx.id}/render_scores');
+          $('#show_scores_lmx_#{lmx.id}').load('/locations/#{lmx.id}/render_scores');
         });
         $('#add_high_score_#{lmx.id} #score').val('');
 

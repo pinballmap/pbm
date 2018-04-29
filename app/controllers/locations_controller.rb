@@ -13,10 +13,13 @@ class LocationsController < InheritedResources::Base
   end
 
   def autocomplete
-    render json: @region.locations.select { |l| l.name =~ /#{Regexp.escape params[:term] || ''}/i }.sort_by(&:name).map { |l| { label: l.name, value: l.name, id: l.id } }
+    @searchable_locations = @region ? @region.locations : Location.all
+    render json: @searchable_locations.select { |l| l.name =~ /#{Regexp.escape params[:term] || ''}/i }.sort_by(&:name).map { |l| { label: l.name, value: l.name, id: l.id } }
   end
 
   def index
+    @region = Region.find_by_name(params[:region])
+
     if !params[:by_location_name].blank? && !params[:by_location_id].blank?
       params.delete(:by_location_id)
     end

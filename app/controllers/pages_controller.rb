@@ -14,12 +14,7 @@ class PagesController < ApplicationController
 
     @location_data = LocationsController.locations_javascript_data(@locations)
 
-    render json: [
-      @location_data[0],
-      @location_data[1],
-      @location_data[2],
-      @location_data[3]
-    ]
+    render partial: 'locations/locations', layout: false
   end
 
   def regionless; end
