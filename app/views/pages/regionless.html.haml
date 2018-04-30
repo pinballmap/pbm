@@ -1,11 +1,19 @@
-#regionless_map_div{style: "float: left; margin-top:70px;"}
-  = form_tag regionless_location_data_path, :method => 'get', :id => 'address_search_form', :class => 'location_search' do
-    = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => 'address goes here...'
-    = image_submit_tag('search_icon.png', :class => 'search', :id => "address_search_button")
+#region_page_body
+  #form.toggle_reg_lookup
+    = form_tag regionless_location_data_path, :method => 'get', :id => 'address_search_form', :class => 'location_search' do
+      = hidden_field_tag :by_machine_id
+      = text_field_tag "by_machine_name", params["by_machine_name"], :class => 'lookup_search_input', :placeholder => 'machine goes here...'
+      = text_field_tag "by_location_name", params["by_location_name"], :class => 'lookup_search_input', :placeholder => 'location goes here...'
+      = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => 'address goes here...'
+      = image_submit_tag('search_icon.png', :class => 'search', :id => "address_search_button")
 
-#map
-  = render :partial => 'locations/map', locals: { lat: 40.3399, lon: 127.5101 }
-#mapFollow_wrapper.hide_button.toggle_btn_reg
+  #lookup.toggle_reg_lookup
+    #locations
+      %span Search For Something!
+
+  #map
+    = render :partial => 'locations/map', locals: { lat: 45.512794, lon: -122.679565 }
+  #mapFollow_wrapper.hide_button.toggle_btn_reg
 
 :javascript
   $('#address_search_form').on('submit', function(e) {
@@ -14,10 +22,25 @@
     var form = $(this);
 
     $.get(form.attr('action'), form.serialize(), function(data, textStatus, jqxhr) {
-      clearMarkers();
-      clearInfoWindows();
-      showLocations(data[0], data[1], data[2], data[3]);
+      $('#locations').html(data);
     });
 
     return false;
+  });
+
+:javascript
+  $(function () {
+    $('#by_location_name').autocomplete({source: '/locations/autocomplete'});
+    $('#by_location_name').bind('autocompleteselect', function(event, ui) {
+      event.preventDefault();
+      $('#by_machine_id').val('');
+      $('#by_machine_name').val('');
+    });
+
+    $('#by_machine_name').autocomplete({source: '/machines/autocomplete'});
+    $('#by_machine_name').bind('autocompleteselect', function(event, ui) {
+      event.preventDefault();
+      $('#by_machine_id').val(ui.item.id);
+      $('#by_location_name').val('');
+    });
   });

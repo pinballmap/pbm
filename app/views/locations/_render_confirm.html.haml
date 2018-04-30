@@ -14,7 +14,7 @@
 
 :javascript
   $('#confirm_location_button_#{l.id}').click(function () {
-    $.get('/#{params[:region]}/locations/#{l.id}/confirm', {}, function(data) {
-      updateLocationUpdatedText(#{l.id}, '#{params[:region]}');
+    $.get('/locations/#{l.id}/confirm', {}, function(data) {
+      updateLocationUpdatedText(#{l.id}, '#{l.region.name}');
     });
   });
