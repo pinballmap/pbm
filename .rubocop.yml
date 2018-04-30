@@ -38,6 +38,8 @@ IndentHeredoc:
   Enabled: false
 Style/ExpandPathArguments:
   Enabled: false
+Style/ConditionalAssignment:
+  Enabled: false
 ParameterLists:
   Max: 6
 
