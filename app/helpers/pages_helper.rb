@@ -119,7 +119,7 @@ module PagesHelper
            elsif path =~ /confirmation/
              'The email confirmation can be resent from this page.'
            else
-             'The Pinball Map website and free mobile app will help you places to play pinball! Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
+             'The Pinball Map website and free mobile app will help you find places to play pinball! Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
            end
     desc
   end
