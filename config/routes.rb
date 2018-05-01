@@ -33,6 +33,7 @@ Rails.application.routes.draw do
         collection do
           get  :closest_by_lat_lon
           get  :does_region_exist
+          get  :location_and_machine_counts
           post :suggest
           post :contact
           post :app_comment
