@@ -8,6 +8,24 @@ module Api
 
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_REGION = 250
 
+      api :GET, '/api/v1/regions/location_and_machine_counts.json', 'Get location and machine counts'
+      description 'Get location and machine counts'
+      param :region_name, String, desc: 'region_name to limit counts to', required: false
+      formats ['json']
+      def location_and_machine_counts
+        if params[:region_name]
+          region = Region.where(['lower(name) = ?', params[:region_name].downcase]).first
+
+          if region
+            return_response({ num_locations: region.locations.count, num_lmxes: region.location_machine_xrefs.count }, nil)
+          else
+            return_response('This is not a valid region.', 'errors')
+          end
+        else
+          return_response({ num_locations: Location.count, num_lmxes: LocationMachineXref.count }, nil)
+        end
+      end
+
       api :GET, '/api/v1/regions/does_region_exist.json', 'Find if name corresponds to a known region'
       description 'Find if name corresponds to a known region'
       param :name, String, desc: 'name of region', required: true

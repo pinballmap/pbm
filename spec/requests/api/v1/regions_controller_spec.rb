@@ -10,6 +10,47 @@ describe Api::V1::RegionsController, type: :request do
     @user = FactoryBot.create(:user, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
   end
 
+  describe '#location_and_machine_counts' do
+    before(:each) do
+      @pdx_location = FactoryBot.create(:location, region: @portland)
+      @pdx_location_two = FactoryBot.create(:location, region: @portland)
+      @la_location = FactoryBot.create(:location, region: @la)
+      @machine = FactoryBot.create(:machine)
+      @machine_two = FactoryBot.create(:machine)
+
+      FactoryBot.create(:location_machine_xref, machine_id: @machine.id, location_id: @pdx_location.id)
+      FactoryBot.create(:location_machine_xref, machine_id: @machine_two.id, location_id: @pdx_location.id)
+      FactoryBot.create(:location_machine_xref, machine_id: @machine.id, location_id: @pdx_location_two.id)
+      FactoryBot.create(:location_machine_xref, machine_id: @machine.id, location_id: @la_location.id)
+    end
+
+    it 'tells you how many total locations and machines are tracked on pbm' do
+      get '/api/v1/regions/location_and_machine_counts.json'
+
+      expect(response).to be_success
+      parsed_body = JSON.parse(response.body)
+
+      expect(parsed_body['num_locations']).to eq(3)
+      expect(parsed_body['num_lmxes']).to eq(4)
+    end
+
+    it 'tells you how many total locations and machines are in a specific region' do
+      get '/api/v1/regions/location_and_machine_counts.json', params: { region_name: @portland.name }
+
+      expect(response).to be_success
+      parsed_body = JSON.parse(response.body)
+
+      expect(parsed_body['num_locations']).to eq(2)
+      expect(parsed_body['num_lmxes']).to eq(3)
+    end
+
+    it 'throws an error if name does not correspond to a region' do
+      get '/api/v1/regions/location_and_machine_counts.json', params: { region_name: 'foo' }
+
+      expect(JSON.parse(response.body)['errors']).to eq('This is not a valid region.')
+    end
+  end
+
   describe '#does_region_exist' do
     it 'tells you if name is a valid region' do
       FactoryBot.create(:region, id: 6, name: 'clark', motd: 'mine', lat: 12.0, lon: 13.0, full_name: 'Clarky')

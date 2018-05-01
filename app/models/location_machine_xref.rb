@@ -13,6 +13,9 @@ class LocationMachineXref < ApplicationRecord
 
   scope :region, (lambda { |name|
     r = Region.find_by_name(name.downcase)
+
+    return unless r
+
     joins(:location).where('locations.region_id = ?', r.id)
   })
 
