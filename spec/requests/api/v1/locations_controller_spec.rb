@@ -357,6 +357,8 @@ HERE
 
       get '/api/v1/locations/closest_by_address.json', params: { address: '97202' }
 
+      sleep 1
+
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
 
