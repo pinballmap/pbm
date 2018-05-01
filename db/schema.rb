@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180412042101) do
+ActiveRecord::Schema.define(version: 20180501030619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -156,10 +156,10 @@ ActiveRecord::Schema.define(version: 20180412042101) do
   end
 
   create_table "rails_admin_histories", id: :serial, force: :cascade do |t|
-    t.string "message", limit: 255
-    t.string "username", limit: 255
+    t.text "message"
+    t.text "username"
     t.integer "item"
-    t.string "table", limit: 255
+    t.text "table"
     t.integer "month", limit: 2
     t.bigint "year"
     t.datetime "created_at"
