@@ -39,14 +39,14 @@ Rails.application.routes.draw do
           post :app_comment
         end
       end
-      resources :locations, only: [:update] do
+      resources :locations, only: [:index, :update] do
         member do
           get :machine_details
           put :confirm
         end
         collection do
           get :closest_by_lat_lon
-          get  :closest_by_address
+          get :closest_by_address
           post :suggest
         end
       end

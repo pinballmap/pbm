@@ -44,6 +44,7 @@ module Api
         return_response('Failed to find region', 'errors')
       end
 
+      api :GET, '/api/v1/locations.json', 'Fetch locations for all regions'
       api :GET, '/api/v1/region/:region/locations.json', 'Fetch locations for a single region'
       description 'This will also return a list of machines at each location'
       param :region, String, desc: 'Name of the Region you want to see events for', required: true

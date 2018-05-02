@@ -153,14 +153,29 @@ HERE
       assert_response :success
     end
 
-    it 'returns all regions within scope along with lmx data' do
+    it 'returns all locations within scope along with lmx data' do
+      FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'la'), name: 'Cleo')
+      FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'chicago'), name: 'Bawb')
+
+      get '/api/v1/locations.json'
+
+      expect(response.body).to include('Bawb')
+      expect(response.body).to include('Cleo')
+      expect(response.body).to include('Satchmo')
+    end
+
+    it 'returns all locations in a region within scope along with lmx data' do
+      FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'chicago'), name: 'Bawb')
+
       lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 777, name: 'Cleo'))
       FactoryBot.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'foo bar')
+
       get "/api/v1/region/#{@region.name}/locations.json"
 
       expect(response.body).to include('Satchmo')
       expect(response.body).to include('777')
       expect(response.body).to include('foo bar')
+      expect(response.body).to_not include('Bawb')
     end
 
     it 'respects by_ipdb_id filter' do
