@@ -65,7 +65,7 @@
                       .autocomplete({
                         minLength: 0,
                         source: function( request, response ) {
-                          $.getJSON( '/portland/machines/autocomplete', {
+                          $.getJSON( '/machines/autocomplete', {
                             term: extractLast( request.term )
                           }, response );
                         },
