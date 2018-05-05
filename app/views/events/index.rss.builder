@@ -3,7 +3,7 @@ xml.rss version: '2.0' do
   xml.channel do
     xml.title "#{@region.full_name} Pinball Map - Events List"
     xml.description 'Find pinball events!'
-    xml.link "https://#{request.host}"
+    xml.link [request.protocol, request.host_with_port].join('')
 
     @events.each do |event|
       xml.item do

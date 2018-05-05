@@ -140,7 +140,7 @@ ul li li {
   width: 640px;
 }
 .mt_0 {
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 .mt_5 {
   margin-top: 5px;
@@ -409,7 +409,6 @@ p.notice {
 
 #header {
   z-index: 60;
-  position: fixed;
   top: 0;
   margin: 0 auto 0;
   width: 100%;
@@ -427,8 +426,8 @@ p.notice {
 #page {
   height: 50px;
 }
-#header.header_home {
-  min-width: 755px;
+.header_fixed {
+  position: fixed;
 }
 #header span.region_name_page a:hover {
   box-shadow: none;
@@ -719,6 +718,23 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
 
 /** END Header **/
 
+/** Regionless **/
+
+.beta {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  right: 50%;
+  color: yellow;
+  text-shadow: 4px 4px $red;
+  font-size: 36px;
+  perspective: 50em;
+  font-weight: bold;
+  transform: rotate(-20deg);
+}
+
+/** END Regionless **/
+
 /** Footer **/
 
 #footer {
@@ -907,10 +923,13 @@ span.or {
   display: flex;  
   flex-flow: row wrap;
 }
+#container > * {
+  flex: 1 100%;
+}
 #lookup {
   display: inline;
   float: left;
-  padding: 125px 10px 10px 10px;
+  padding: 95px 10px 10px 10px;
   width: 640px;
   background: #FFFFFF;
   position: relative;
@@ -1087,8 +1106,8 @@ a.website:after {
   font-size: 26px;
   line-height: 28px;
   height: 100%;
-  padding: 3px 12px 3px 8px;
   width: 100%;
+  padding: 3px 12px 3px 8px;
   margin-left: -20px;
   font-family: $sans;
   font-weight: bold;
@@ -1536,8 +1555,6 @@ input.search,
   background: #FFFFFF;
   color: #000000;
   font-family: Helvetica;
-
-  border: none;
   margin: 0;
   height: 24px;
   padding-left: 4px;
@@ -1662,7 +1679,6 @@ input#initials {
   height: 50px;
   font-style: italic;
   font-weight: normal;
-  width: 602px;
   position: relative;
 }
 .confirm_location span.last_updated {
@@ -1685,8 +1701,9 @@ input#initials {
   display: table !important;
   position: absolute !important;
   height: 50px;
-  width: 590px;
+  width: 100%;
   padding-top: 0;
+  padding-right: 20px;
 }
 .confirm_logged:hover {
   cursor: pointer;
@@ -1947,7 +1964,7 @@ div.comment_image .comment_image:active {
   justify-content: center;
   align-items: flex-start;
   -webkit-flex-flow: row wrap;
-  margin: 60px auto 20px;
+  margin: 0 auto 20px;
 }
 .column {
   margin: 15px auto;
@@ -2160,7 +2177,6 @@ span.begin {
   overflow: hidden;
   position: fixed;
   height: calc(100% - 70px) !important;
-  margin-top: 52px;
   z-index: -1;
 }
 #map_canvas {
@@ -2189,9 +2205,9 @@ span.begin {
   min-width: 350px;
 }
 #welcome {
-  margin: 60px auto 0;
+  margin: 10px auto 0;
   min-width: 819px;
-  height: 100%;
+  height: 100%; 
 }
 ul.stufflike li, ul.list li {
   padding: 2px 0 2px 10px;
@@ -2233,9 +2249,6 @@ ul.stufflike li, ul.list li {
   color: #383838;
   font-size: 16px;
   margin-top: 0;
-}
-#map_summaries {
-  margin: 10px 0 0 320px;
 }
 #region_list p {
   margin: 5px 20px 10px;

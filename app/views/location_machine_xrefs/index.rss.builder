@@ -3,7 +3,7 @@ xml.rss version: '2.0' do
   xml.channel do
     xml.title "#{@region ? @region.full_name : ''} Pinball Map - New Machine List"
     xml.description 'Find pinball machines!'
-    xml.link root_path
+    xml.link [request.protocol, request.host_with_port].join('')
 
     @lmxs.each do |lmx|
       cloned_lmx = lmx.clone
