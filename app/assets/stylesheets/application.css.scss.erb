@@ -379,19 +379,15 @@ p.notice {
 }
 .home_intro {
   padding: 3px 6px 6px;
-  background-color: $lightgrey;
   border: 5px solid $lightgrey;
-  width: 300px;
   min-width: 200px;
   line-height: 120%;
   margin: 0 10px 10px 10px;
   font-size: 18px;
+  height: 450px;
 }
 .home_intro p, span.why_login {
   font-family: $serif;
-}
-.home_intro_container {
-  float: left;
 }
 
 /** END Home **/
@@ -2167,7 +2163,7 @@ span.begin {
 #region_map {
   width: 700px;
   height: 450px;
-  margin: 0 10px 10px 0;
+  margin: 10px 0;
   border: 5px solid $blue;
   box-shadow: 1px 2px 7px rgba(90, 100, 117, 0.3);
 }
@@ -2205,7 +2201,6 @@ span.begin {
 }
 #welcome {
   margin: 10px auto 0;
-  min-width: 819px;
   height: 100%; 
 }
 ul.stufflike li, ul.list li {
@@ -2254,9 +2249,6 @@ ul.stufflike li, ul.list li {
   font-size: 20px;
   text-align: center;
 }
-#map_summaries {
-  margin: 0 0 0 320px;
-}
 div.map_summary_info {
   font-family: $serif;
   font-size: 16px;
@@ -2278,6 +2270,29 @@ div.region_name {
 }
 div.region_name_container {
   text-align: center;
+}
+#div_container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  -webkit-flex-flow: row wrap;
+  margin: 0 auto 20px;
+}
+#div_container > * {
+
+}
+.div_01 {
+  width: 450px;
+}
+.div_02 {
+  width: 700px;
+}
+.div_03 {
+  width: 300px;
+}
+.div_04 {
+  width: 100%;
 }
 #region_list {
   display: flex;
