@@ -728,7 +728,6 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
   color: yellow;
   text-shadow: 4px 4px $red;
   font-size: 36px;
-  perspective: 50em;
   font-weight: bold;
   transform: rotate(-20deg);
 }
@@ -2279,6 +2278,14 @@ div.region_name {
 }
 div.region_name_container {
   text-align: center;
+}
+#region_list {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  -webkit-flex-flow: row wrap;
+  margin: 0 auto 20px;
 }
 div.state_name_container {
   margin: 5px;

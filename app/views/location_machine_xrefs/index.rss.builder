@@ -15,7 +15,7 @@ xml.rss version: '2.0' do
           xml.link [request.protocol, request.host_with_port, region_homepage_path(@region.name.downcase), "/?by_location_id=#{location.id}"].join('')
         end
         xml.description "Added on #{cloned_lmx.created_at.nil? ? 'UNKNOWN' : cloned_lmx.created_at.to_s(:rfc822)}"
-        xml.guid cloned_lmx.id
+        xml.guid cloned_lmx.id, isPermaLink: false
         xml.pubDate cloned_lmx.created_at.nil? ? 'UNKNOWN' : cloned_lmx.created_at.to_s(:rfc822)
       end
       cloned_lmx = nil
