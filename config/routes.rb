@@ -9,8 +9,6 @@ Rails.application.routes.draw do
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
-  get ':region/location_machine_xrefs.rss' => 'location_machine_xrefs#index'
-
   namespace :api do
     namespace :v1 do
       resources :location_machine_xrefs, only: [:create, :destroy, :update, :show]
@@ -81,6 +79,7 @@ Rails.application.routes.draw do
 
     resources :events, only: [:index, :show]
     resources :regions, only: [:index, :show]
+    resources :location_machine_xrefs, only: [:index], format: 'rss', :as => :lmx_rss
 
     resources :pages
 
