@@ -42,6 +42,7 @@
       event.preventDefault();
       $('#by_machine_id').val('');
       $('#by_machine_name').val('');
+      $('#by_location_name').val(ui.item.value);
     });
 
     $('#by_machine_name').autocomplete({source: '/machines/autocomplete'});
@@ -49,6 +50,7 @@
       event.preventDefault();
       $('#by_machine_id').val(ui.item.id);
       $('#by_location_name').val('');
+      $('#by_machine_name').val(ui.item.value);
     });
   });
 
