@@ -7,13 +7,20 @@
       = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => 'address goes here...'
       = image_submit_tag('search_icon.png', :class => 'search', :id => "address_search_button")
 
+  - if !mobile_device?
+    #min_lookup_wrapper.hide_button.slide_left.toggle_btn_reg{:onclick => "min_lookup()"}
+  #mapFollow_wrapper.hide_button.toggle_btn_reg
+    %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :onchange => 'unChecked();'}
+    Redo results when map is moved?
+  #search_link_wrapper.hide_button.toggle_btn_reg
+    =link_to "Link to this Search Result", "", :id => "search_link"
+
   #lookup.toggle_reg_lookup
     #locations
       %span Search For Something!
 
   #map
     = render :partial => 'locations/map', locals: { lat: 45.512794, lon: -122.679565 }
-  #mapFollow_wrapper.hide_button.toggle_btn_reg
 
 :javascript
   $('#address_search_form').on('submit', function(e) {
@@ -35,6 +42,7 @@
       event.preventDefault();
       $('#by_machine_id').val('');
       $('#by_machine_name').val('');
+      $('#by_location_name').val(ui.item.value);
     });
 
     $('#by_machine_name').autocomplete({source: '/machines/autocomplete'});
@@ -42,5 +50,15 @@
       event.preventDefault();
       $('#by_machine_id').val(ui.item.id);
       $('#by_location_name').val('');
+      $('#by_machine_name').val(ui.item.value);
     });
   });
+
+:javascript
+  function min_lookup() {
+    $("#lookup,#form").toggleClass("toggle_min_lookup");
+    $("#lookup,#form").toggleClass("toggle_reg_lookup");
+    $("#min_lookup_wrapper").toggleClass("slide_left slide_right");
+    $("#mapFollow_wrapper, #search_link_wrapper, #min_lookup_wrapper").toggleClass("toggle_map_btn");
+    $("#mapFollow_wrapper, #search_link_wrapper, #min_lookup_wrapper").toggleClass("toggle_btn_reg");
+  }
