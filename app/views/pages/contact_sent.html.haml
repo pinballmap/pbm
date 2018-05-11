@@ -2,11 +2,11 @@
   .column_container
     .column.w_560
       %p.alert= alert
-        %p{:style => 'text-align:center;'}
-          =image_tag 'PPM-Splash-200.png', :alt => 'Thanks'
-        %p{:style => 'text-align:center;'}
-          In 3 seconds we'll take you back to the
-          =link_to "#{@region.full_name} Pinball Map", region_homepage_path
+      %p.ta_c
+        =image_tag 'PPM-Splash-200.png', :alt => 'Thanks'
+      %p.ta_c
+        In 3 seconds we'll take you back to the
+        =link_to "#{@region.full_name} Pinball Map", region_homepage_path
 
 :javascript
-  window.setTimeout(function(){ window.location = './' },3000);
+  window.setTimeout(function(){ window.location.href = './' },3000);
