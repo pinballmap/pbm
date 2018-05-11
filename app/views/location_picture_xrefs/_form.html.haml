@@ -8,6 +8,7 @@
 :javascript
   $('#new_location_picture_xref_#{location.id}').submit(function () {
     var form = $(this);
+    $(".submit_picture").attr('disabled', true);
     $.ajax({
       url: form.attr('action'),
       type: 'POST',
@@ -17,6 +18,7 @@
       success: function(data) {
         window.alert("Thanks for uploading that picture! It'll show up on the site as soon as an admin approves it.");
         toggleData('add_picture_location', #{location.id});
+        $(".submit_picture").attr('disabled', false);
       }
     });
 
