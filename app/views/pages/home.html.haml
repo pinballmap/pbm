@@ -29,6 +29,17 @@
               = link_to 'Pinball Map Code!', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
               Use the
               = link_to 'Pinball Map API!', apipie_apipie_path, :class => 'apps_link'
+            - if mobile_device?
+              %div.twitter
+                %p.twitter_img
+                  =image_tag('sol-icon.jpeg', :alt => 'Pinball Map Twitter Icon')
+                %p.twitter_box
+                  Follow
+                  =link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
+                  on Twitter for updates from across all #{@all_regions.size} regional maps!
+                %ul.twitter
+                  - @tweets.each do |t|
+                    %li= auto_link(t.text)
           - if mobile_device?
             .read_more
             .read_less
