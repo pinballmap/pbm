@@ -9,23 +9,25 @@
   - if l.website?
     %li.website= link_to "Website", l.website, :class => 'website', :target => 'blank'
     .clear
-  - if (l.operator_id)
-    - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
-      %li.operator
-        %span.italic Operated by:
-        %span.bold &nbsp;#{l.operator.name}
-      .clear
-    - else
-      %li.operator
-        %span.italic Operated by:
-        %span.bold
-          =link_to "#{l.operator.name}", "#{l.operator.website}", :target => "_blank"
-      .clear
-  - if (l.location_type)
-    %li.location_type
-      %span.italic Location Type:
-      %span.bold
-        =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?utf8=✓&by_type_id=#{l.location_type.id}"
+  - if (l.operator_id) || (l.location_type)
+    %hr
+    - if (l.operator_id)
+      - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
+        %li.operator
+          %span.grey Operated by:
+          %span &nbsp;#{l.operator.name}
+        .clear
+      - else
+        %li.operator
+          %span.grey Operated by:
+          %span
+            =link_to "#{l.operator.name}", "#{l.operator.website}", :target => "_blank"
+        .clear
+    - if (l.location_type)
+      %li.location_type
+        %span.grey Location Type:
+        %span
+          =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?utf8=✓&by_type_id=#{l.location_type.id}"
   .clear
 %div[l, :metadata_edit]{:style => 'display:none'}
   = form_tag update_metadata_locations_path(:action => 'update_metadata', id: l.id, region: l.region.name), :id => "update_metadata_#{l.id}", :method => 'get' do
