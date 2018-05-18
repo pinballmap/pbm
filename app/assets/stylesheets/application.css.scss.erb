@@ -6,16 +6,17 @@
   font-family: 'Freight-MedSC';
   src: url(<%= asset_path "freight-sans-medium-sc-opentype.otf" %>);
 }
-@import url('https://fonts.googleapis.com/css?family=Lato');
+@import url('https://fonts.googleapis.com/css?family=Work+Sans');
 
 /** variables **/
 
 $sans: "Freight-MedSC",sans-serif;
-$serif: 'Lato',sans-serif;
+$serif: 'Work Sans',sans-serif;
 $red: #F53240;
 $blue: #D3ECFF;
-$darkgrey: #433A3A;
+$darkgrey: #303030;
 $lightgrey: #EFEFEF;
+$grey: #666666;
 
 /** mixins **/
 
@@ -25,7 +26,7 @@ $lightgrey: #EFEFEF;
 @mixin padding ($pads...) {
   padding: $pads;
 }
-@mixin set ($width, $height, $padding, $margin ) {
+@mixin set ($width, $height, $padding, $margin) {
   width: $width;
   height: $height;
   padding: $padding;
@@ -70,6 +71,10 @@ img {
 }
 h1 {
   font-size: 36px;
+}
+hr {
+  border: 1px solid $blue;
+  width: 90%;
 }
 a {
   color: #383838;
@@ -125,6 +130,9 @@ ul li li {
 .bg_blue {
   background-color: $blue;
 }
+.grey {
+  color: $grey;
+}
 .w_320 {
   width: 320px;
 }
@@ -178,7 +186,7 @@ ul li li {
   color: $red;
 }
 .darkbl {
-  color: #303030;
+  color: $darkgrey;
 }
 h1 {
   font-size: 28px;
@@ -222,7 +230,7 @@ h1 {
 #login input.boolean {
   @include set(16px,16px,0,0 5px 0 0);
   font-size: 12px;
-  border: 1px solid #303030;
+  border: 1px solid $darkgrey;
 }
 form.new_user .input, form.edit_user .input,
 form.new_user .form-actions, form.edit_user .form-actions {
@@ -251,7 +259,7 @@ form.new_user .form-actions, form.edit_user .form-actions {
   margin: 10px 0 5px 0;
 }
 .login_slash {
-  color: #303030;
+  color: $darkgrey;
 }
 .error_notification {
   color: $red;
@@ -498,7 +506,7 @@ p.notice {
   background-color: $lightgrey;
 }
 #header .menu_link ul li a:hover {
-  color: #303030;
+  color: $darkgrey;
   background-color: $blue;
 }
 #header .menu_home ul li a {
@@ -558,7 +566,7 @@ a.logo_link {
   border: none;
   background: transparent;
   padding: 0;
-  color: #303030;
+  color: $darkgrey;
   vertical-align: middle;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -611,6 +619,7 @@ a.logo_link {
   font-style: italic;
   background: #fff1f1;
   line-height: 22px;
+  font-family: $sans;
 }
 .location_detail .login_alert {
   text-align: center;
@@ -632,7 +641,7 @@ span.why_login {
   @include radius(6px);
   margin: 7px 0px;
   border: 2px solid #A9A9A9;
-  background-color: #303030;
+  background-color: $darkgrey;
   box-shadow: 1px 1px 3px #888;
   font-family: $sans;
   text-transform: uppercase;
@@ -798,7 +807,7 @@ span.region_name_page, #header span.login_inner, #header span.closest_locations,
   font-size: 16px;
   line-height: 16px;
   border: 2px solid #A9A9A9;
-  color: #303030;
+  color: $darkgrey;
   background-color: $lightgrey;
   @include radius(3px);
   margin-left: 5px;
@@ -836,7 +845,7 @@ span.or {
   margin: -2px -2px 0 0;
   @include radius(0 2px 2px 0);
   padding: 5px 25px;
-  background: #303030;
+  background: $darkgrey;
   color: $lightgrey;
   font-weight: bold;
   float: right;
@@ -880,7 +889,7 @@ span.or {
   text-transform: capitalize;
 }
 #other_search_options button:hover {
-  background: #303030;
+  background: $darkgrey;
   text-decoration: none;
   border-color: #642501;
   color: $red !important;
@@ -957,7 +966,7 @@ span.or {
   top: 180px;
 }
 #search_link_wrapper a {
-  color: #303030;
+  color: $darkgrey;
   font-style: italic;
   text-decoration: none;
 }
@@ -1017,7 +1026,7 @@ form select#by_location_id, form select#by_machine_id {
   @include radius(0);
 }
 .active_section_link {
-  background-color: #303030 !important;
+  background-color: $darkgrey !important;
   color: $blue !important;
   box-shadow: none !important;
   -moz-box-shadow: none !important;
@@ -1068,8 +1077,8 @@ span.permalink {
 }
 .address, .address_full {
   font-size: 16px;
-  line-height: 16px;
-  font-family: $sans;
+  line-height: 20px;
+  font-family: $serif;
 }
 li.address {
   padding: 2px 0 2px 5px;
@@ -1079,25 +1088,12 @@ li.address_full {
   background: $lightgrey;
   width: 435px;
 }
-a.website {
-  float: left;
+.location_confirm {
   font-family: $sans;
-  font-size: 15px;
-  text-transform: uppercase;
-}
-a.website:after {
-  content: "";
-  background: url(<%= asset_path 'open-in-new-black.png' %>) no-repeat center center;
-  float: right;
-  width: 12px;
-  height: 14px;
-  display: inline;
-  background-size: 12px 12px;
-  margin: 0 0 0 4px;
 }
 .machine_name {
   float: left;
-  background-color: #303030;
+  background-color: $darkgrey;
   color: #ffffff;
   font-size: 26px;
   line-height: 28px;
@@ -1202,7 +1198,7 @@ div.comment_image span.comment_image:hover:after {
 }
 .machine_condition_display_lmx span.machine_condition_date,
 .machine_condition_display_lmx span.machine_condition_name  {
-  color: #666666;
+  color: $grey;
   font-size: 14px;
   margin: 6px 0 0;
   display: inline-block;
@@ -1231,7 +1227,7 @@ span.machine_condition_text {
 .machine_condition_new_line span.machine_condition_date {
   margin: 8px 0 2px;
   display: inline-block;
-  color: #666666;
+  color: $grey;
   font-size: 13px;
 }
 div.machine_condition_meta {
@@ -1254,7 +1250,7 @@ form.remove_machine_condition {
 }
 .machine_condition_display_lmx {
   margin: 5px 0 5px 10px;
-  color: #666666;
+  color: $grey;
   padding: 2px;
   width: 490px;
 }
@@ -1343,7 +1339,7 @@ form.remove_machine_condition {
   background-color: #fedee4;
   border-top: 1px solid #DDDDDD;
   border: none;
-  color: #666666;
+  color: $grey;
   cursor: pointer;
   padding: 0 2px 2px;
   font-size: 16px;
@@ -1403,7 +1399,7 @@ br.clear {
   padding: 2px 0 1px 2px;
 }
 .sub_nav_location li.address {
-  color: #666666;
+  color: $grey;
 }
 .sub_nav_location .location_type {
   background: transparent;
@@ -1431,7 +1427,7 @@ br.clear {
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
-  color: #303030;
+  color: $darkgrey;
 }
 #form select:hover, form select:hover {
   cursor: pointer;
@@ -1468,7 +1464,7 @@ br.clear {
   font-family: $sans;
   text-transform: uppercase;
   height: 28px;
-  background: #303030;
+  background: $darkgrey;
   color: $lightgrey;
   font-weight: bold;
 }
@@ -1608,7 +1604,7 @@ input#initials {
 }
 .add_picture_location_toggle,
 .add_machine_location_toggle  {
-  color: #303030;
+  color: $darkgrey;
   font-weight: bold;
   background: #dadada;
 }
@@ -1642,10 +1638,7 @@ input#initials {
   height: 24px;
 }
 .location_type, .location_type a, .location_types, .operator, .operator a {
-  color: #666666;
-  font-size: 16px;
   padding: 2px 0 6px 4px;
-  line-height: 14px;
 }
 .operator a:hover, .location_type a:hover {
   color: $red;
@@ -1705,7 +1698,7 @@ input#initials {
   cursor: pointer;
 }
 .confirm_location_button {
-  color: #303030;
+  color: $darkgrey;
   line-height: 20px;
   margin: 5px 0 0;
   font-size: 12px;
@@ -1753,16 +1746,12 @@ input#score {
   line-height: 14px;
   font-weight: normal;
   height: 100%;
-  font-family: $sans;
+  font-family: $serif;
   @include radius(5px);
+  color: $darkgrey;
 }
 .location_detail .address_full {
-  color: #333333;
   margin: 5px 0 5px 0;
-}
-location_detail .phone {
-  color: #333333;
-  margin: 0 0 5px 0;
 }
 .location_detail_sub {
   padding: 10px;
@@ -1788,7 +1777,7 @@ location_detail .phone {
   float: left;
 }
 .desc_button {
-  color: #303030;
+  color: $darkgrey;
   line-height: 20px;
   background: $lightgrey;
   margin: 5px 0;
@@ -2041,7 +2030,7 @@ div.comment_image .comment_image:active {
 .question {
   font-size: 20px;
   font-weight: bold;
-  color: #303030;
+  color: $darkgrey;
   font-family: $sans;
 }
 .question.darkb {
@@ -2083,7 +2072,7 @@ div.comment_image .comment_image:active {
         color: #2e2322;
     }
     50% {
-        color: #303030;
+        color: $darkgrey;
         text-shadow: 1px 1px 5px #CCCCCC;
         background-color: $blue;
     }
@@ -2096,7 +2085,7 @@ div.comment_image .comment_image:active {
         color: #2e2322;
     }
     50% {
-        color: #303030;
+        color: $darkgrey;
         text-shadow: 1px 1px 5px #CCCCCC;
         background-color: $blue;
     }
@@ -2109,7 +2098,7 @@ div.comment_image .comment_image:active {
         color: #2e2322;
     }
     50% {
-        color: #303030;
+        color: $darkgrey;
         text-shadow: 1px 1px 5px #CCCCCC;
         background-color: $blue;
     }
@@ -2122,7 +2111,7 @@ div.comment_image .comment_image:active {
         color: #2e2322;
     }
     50% {
-        color: #303030;
+        color: $darkgrey;
         text-shadow: 1px 1px 5px #CCCCCC;
         background-color: $blue;
     }
@@ -2254,7 +2243,7 @@ div.map_summary_info {
   font-family: $serif;
   font-size: 16px;
   line-height: 26px;
-  color: #303030;
+  color: $darkgrey;
   font-weight: normal;
   text-decoration: none;
   padding-top: 5px;
@@ -2386,7 +2375,7 @@ li span.state_name {
 .high_score_date {
   margin: 2px 0;
   display: inline-block;
-  color: #666666;
+  color: $grey;
   font-size: 12px;
   border-bottom: 1px solid $blue;
 }
@@ -2397,7 +2386,7 @@ div.score_list span,
 span.stats_list span {
   line-height: 20px;
   font-size: 16px;
-  color: #303030;
+  color: $darkgrey;
   display: block;
   font-weight: bold;
 }
@@ -2453,7 +2442,7 @@ div.score_list {
 }
 #region_map .gm_region_name a {
   font-weight: bold;
-  color: #303030;
+  color: $darkgrey;
 }
 #region_map .gm_region_name a:hover {
   color: #58266F;

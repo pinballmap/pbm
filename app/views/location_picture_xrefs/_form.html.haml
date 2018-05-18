@@ -17,8 +17,8 @@
       contentType: false,
       success: function(data) {
         window.alert("Thanks for uploading that picture! It'll show up on the site as soon as an admin approves it.");
-        document.getElementById("file_chooser_button").reset();
         toggleData('add_picture_location', #{location.id});
+        document.getElementById('new_location_picture_xref_#{location.id}').reset();
         $(".submit_picture").attr('disabled', false);
       }
     });
