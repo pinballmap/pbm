@@ -199,7 +199,7 @@ class Location < ApplicationRecord
       self.last_updated_by_user_id = user ? user.id : nil
       save
 
-      UserSubmission.create(region_id: region.id, location: self, submission_type: UserSubmission::LOCATION_METADATA_TYPE, submission: @updates.join("\n") + " to #{name}", user_id: user ? user.id : nil)
+      UserSubmission.create(region_id: region&.id, location: self, submission_type: UserSubmission::LOCATION_METADATA_TYPE, submission: @updates.join("\n") + " to #{name}", user_id: user ? user.id : nil)
 
       [self, 'location']
     else
@@ -215,7 +215,7 @@ class Location < ApplicationRecord
     self.date_last_updated = Date.today
     self.last_updated_by_user = user
 
-    UserSubmission.create(region_id: region.id, location: self, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE, submission: "User #{user ? user.username : 'UNKNOWN'} confirmed the lineup at #{name}", user: user)
+    UserSubmission.create(region_id: region&.id, location: self, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE, submission: "User #{user ? user.username : 'UNKNOWN'} confirmed the lineup at #{name}", user: user)
 
     save(validate: false)
   end

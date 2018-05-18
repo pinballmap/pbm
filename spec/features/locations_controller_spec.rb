@@ -9,29 +9,32 @@ describe LocationsController do
     before(:each) do
       @user = FactoryBot.create(:user, username: 'ssw')
       page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
-
-      @location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
-      @machine = FactoryBot.create(:machine, name: 'Bawb')
     end
 
-    it 'lets you click a button to update the date_last_updated' do
-      visit '/portland/?by_location_id=' + @location.id.to_s
-      find("#confirm_location_#{@location.id} span.confirm_button").click
+    [FactoryBot.create(:region, name: 'portland'), nil].each do |region|
+      it 'lets you click a button to update the date_last_updated' do
+        location = FactoryBot.create(:location, region: region, name: 'Cleo')
 
-      sleep 1
+        visit "/#{region ? region.name : 'regionless'}/?by_location_id=" + location.id.to_s
+        find("#confirm_location_#{location.id} span.confirm_button").click
 
-      expect(@location.reload.date_last_updated).to eq(Date.today)
-      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')} by ssw")
-      expect(URI.parse(page.find_link('ssw')['href']).to_s).to match(%r{\/users\/#{@user.id}\/profile})
+        sleep 1
+
+        expect(location.reload.date_last_updated).to eq(Date.today)
+        expect(find("#last_updated_location_#{location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')} by ssw")
+        expect(URI.parse(page.find_link('ssw')['href']).to_s).to match(%r{\/users\/#{@user.id}\/profile})
+      end
     end
 
     it 'displays no username when it was last updated by a non-user' do
-      @location.date_last_updated = Date.today
-      @location.save(validate: false)
+      location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
 
-      visit '/portland/?by_location_id=' + @location.id.to_s
+      location.date_last_updated = Date.today
+      location.save(validate: false)
 
-      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')}")
+      visit '/portland/?by_location_id=' + location.id.to_s
+
+      expect(find("#last_updated_location_#{location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')}")
     end
   end
 
@@ -67,34 +70,46 @@ describe LocationsController do
       @machine = FactoryBot.create(:machine, name: 'Bawb')
     end
 
-    it 'removes a machine from a location' do
-      FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
+    [true, false].each do |region|
+      it 'removes a machine from a location' do
+        region = region ? @region : nil
+        location = FactoryBot.create(:location, name: 'Cleo', region: region)
 
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          subject: 'PBM - Someone removed a machine from a location',
-          to: [],
-          from: 'admin@pinballmap.com'
-        )
+        FactoryBot.create(:location_machine_xref, location: location, machine: @machine)
+
+        if region
+          expect(Pony).to receive(:mail) do |mail|
+            expect(mail).to include(
+              subject: 'PBM - Someone removed a machine from a location',
+              to: [],
+              from: 'admin@pinballmap.com'
+            )
+          end
+        else
+          expect(Pony).to_not receive(:mail)
+        end
+
+        visit "/#{region ? region.name : 'regionless'}/?by_location_id=" + location.id.to_s
+
+        page.accept_confirm do
+          click_button 'remove'
+        end
+
+        sleep 1
+
+        expect(LocationMachineXref.all).to eq([])
+        expect(location.reload.date_last_updated).to eq(Date.today)
+        expect(find("#last_updated_location_#{location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')}")
+
+        expect(UserSubmission.count).to eq(2)
+        submission = UserSubmission.second
+        expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
+
+        region_submission_metadata = region ? "#{region.name} (#{region.id})" : 'REGIONLESS'
+        expect(submission.submission).to eq("#{@user.username} (#{@user.id})\nCleo (2)\nBawb (1)\n#{region_submission_metadata}")
+        expect(submission.user_id).to eq(User.last.id)
+        expect(submission.region).to eq(location.region)
       end
-
-      visit '/portland/?by_location_id=' + @location.id.to_s
-
-      page.accept_confirm do
-        click_button 'remove'
-      end
-
-      sleep 1
-
-      expect(LocationMachineXref.all).to eq([])
-      expect(@location.reload.date_last_updated).to eq(Date.today)
-      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')}")
-
-      expect(UserSubmission.count).to eq(2)
-      submission = UserSubmission.second
-      expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
-      expect(submission.submission).to eq("#{@user.username} (#{@user.id})\nCleo (1)\nBawb (1)\nportland (1)")
-      expect(submission.user_id).to eq(User.last.id)
     end
 
     it 'removes a machine from a location - allows you to cancel out of remove' do
@@ -118,52 +133,57 @@ describe LocationsController do
     before(:each) do
     end
 
-    it 'sets title and description appropriately if one location is returned' do
-      FactoryBot.create(:location, region: @region, name: 'Cleo')
-      @location = FactoryBot.create(:location, region: @region, name: 'Zelda', street: '1234 Foo St.', city: 'Portland', zip: '97203')
-      @machine = FactoryBot.create(:machine, name: 'Bawb')
-      FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
+    [true, false].each do |region|
+      it 'sets title and description appropriately if one location is returned' do
+        region = region ? @region : nil
+        FactoryBot.create(:location, region: region, name: 'Cleo')
 
-      old_style_title = 'portland Pinball Map'
-      single_location_title = 'Zelda - portland Pinball Map'
-      old_style_description = 'Find local places to play pinball! The portland Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
-      single_location_description = 'Zelda on Pinball Map! 1234 Foo St., Portland, OR, 97203. Zelda has 1 pinball machine: Bawb.'
+        location = FactoryBot.create(:location, region: region, name: 'Zelda', street: '1234 Foo St.', city: 'Portland', zip: '97203')
+        machine = FactoryBot.create(:machine, name: 'Bawb')
+        FactoryBot.create(:location_machine_xref, location: location, machine: machine)
 
-      visit '/portland'
+        old_style_title = "#{region ? region.name + ' ' : ''}Pinball Map"
+        single_location_title = "Zelda - #{region ? region.name + ' ' : ''}Pinball Map"
+        old_style_description = "Find local places to play pinball! The #{region ? region.name + ' ' : ''}Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."
+        single_location_description = 'Zelda on Pinball Map! 1234 Foo St., Portland, OR, 97203. Zelda has 1 pinball machine: Bawb.'
 
-      desc_tag = "meta[name=\"description\"][content=\"#{old_style_description}\"]"
-      og_desc_tag = "meta[property=\"og:description\"][content=\"#{old_style_description}\"]"
-      og_title_tag = "meta[property=\"og:title\"][content=\"#{old_style_title}\"]"
-      expect(page.title).to eq('portland Pinball Map')
-      expect(page.body).to have_css(desc_tag, visible: false)
-      expect(page.body).to have_css(og_title_tag, visible: false)
-      expect(page.body).to have_css(og_desc_tag, visible: false)
+        visit "/#{region ? region.name : 'regionless'}"
 
-      fill_in('by_location_name', with: 'Zelda')
-      click_on 'location_search_button'
+        desc_tag = "meta[name=\"description\"][content=\"#{old_style_description}\"]"
+        og_desc_tag = "meta[property=\"og:description\"][content=\"#{old_style_description}\"]"
+        og_title_tag = "meta[property=\"og:title\"][content=\"#{old_style_title}\"]"
 
-      sleep 1
+        expect(page.title).to eq("#{region ? region.name + ' ' : ''}Pinball Map")
+        expect(page.body).to have_css(desc_tag, visible: false)
+        expect(page.body).to have_css(og_title_tag, visible: false)
+        expect(page.body).to have_css(og_desc_tag, visible: false)
 
-      desc_tag = "meta[name=\"description\"][content=\"#{single_location_description}\"]"
-      og_desc_tag = "meta[property=\"og:description\"][content=\"#{single_location_description}\"]"
-      og_title_tag = "meta[property=\"og:title\"][content=\"#{single_location_title}\"]"
-      expect(page.title).to eq(single_location_title)
-      expect(page.body).to have_css(desc_tag, visible: false)
-      expect(page.body).to have_css(og_desc_tag, visible: false)
-      expect(page.body).to have_css(og_title_tag, visible: false)
+        fill_in('by_location_name', with: 'Zelda')
+        click_on 'location_search_button'
 
-      fill_in('by_location_name', with: '')
-      click_on 'location_search_button'
+        sleep 1
 
-      sleep 1
+        desc_tag = "meta[name=\"description\"][content=\"#{single_location_description}\"]"
+        og_desc_tag = "meta[property=\"og:description\"][content=\"#{single_location_description}\"]"
+        og_title_tag = "meta[property=\"og:title\"][content=\"#{single_location_title}\"]"
+        expect(page.title).to eq(single_location_title)
+        expect(page.body).to have_css(desc_tag, visible: false)
+        expect(page.body).to have_css(og_desc_tag, visible: false)
+        expect(page.body).to have_css(og_title_tag, visible: false) if region
 
-      desc_tag = "meta[name=\"description\"][content=\"#{old_style_description}\"]"
-      og_desc_tag = "meta[property=\"og:description\"][content=\"#{old_style_description}\"]"
-      title_tag = "meta[property=\"og:title\"][content=\"#{old_style_title}\"]"
-      expect(page.title).to eq('portland Pinball Map')
-      expect(page.body).to have_css(desc_tag, visible: false)
-      expect(page.body).to have_css(title_tag, visible: false)
-      expect(page.body).to have_css(og_desc_tag, visible: false)
+        fill_in('by_location_name', with: '')
+        click_on 'location_search_button'
+
+        sleep 1
+
+        desc_tag = "meta[name=\"description\"][content=\"#{old_style_description}\"]"
+        og_desc_tag = "meta[property=\"og:description\"][content=\"#{old_style_description}\"]"
+        title_tag = "meta[property=\"og:title\"][content=\"#{old_style_title}\"]"
+        expect(page.title).to eq("#{region ? region.name + ' ' : ''}Pinball Map")
+        expect(page.body).to have_css(desc_tag, visible: false)
+        expect(page.body).to have_css(title_tag, visible: false)
+        expect(page.body).to have_css(og_desc_tag, visible: false)
+      end
     end
 
     it 'favors by_location_name when search by both by_location_id and by_location_name' do

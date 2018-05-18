@@ -25,10 +25,13 @@
     %li.location_type
       %span.italic Location Type:
       %span.bold
+      - if l.region
         =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?utf8=✓&by_type_id=#{l.location_type.id}"
+      - else
+        #{l.location_type.name}
   .clear
 %div[l, :metadata_edit]{:style => 'display:none'}
-  = form_tag update_metadata_locations_path(:action => 'update_metadata', id: l.id, region: l.region.name), :id => "update_metadata_#{l.id}", :method => 'get' do
+  = form_tag update_metadata_locations_path(:action => 'update_metadata', id: l.id), :id => "update_metadata_#{l.id}", :method => 'get' do
     = hidden_field_tag :id, l.id
     = label_tag "Phone #: "
     = text_field_tag "new_phone_#{l.id}", l.phone, :class => 'edit_mode'
@@ -57,7 +60,7 @@
       }
 
       $('#metadata_location_#{l.id}').load('/locations/#{l.id}/render_update_metadata');
-      updateLocationUpdatedText(#{l.id}, '#{l.region.name}')
+      updateLocationUpdatedText(#{l.id})
     });
 
     return false;

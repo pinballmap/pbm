@@ -45,11 +45,11 @@ class LocationMachineXref < ApplicationRecord
 
     MachineCondition.create(comment: condition, location_machine_xref: self, user_id: location.last_updated_by_user_id)
 
-    return if condition.nil? || condition.blank?
+    return if condition.nil? || condition.blank? || location.region_id.blank?
 
     user_info = location.last_updated_by_user ? " by #{location.last_updated_by_user.username} (#{location.last_updated_by_user.email})" : ''
 
-    unless location.region.send_digest_comment_emails?
+    unless location.region&.send_digest_comment_emails?
       Pony.mail(
         to: location.region.users.map(&:email),
         from: 'admin@pinballmap.com',
@@ -77,7 +77,7 @@ class LocationMachineXref < ApplicationRecord
   end
 
   def destroy(options = {})
-    if location.region.should_email_machine_removal && !location.region.send_digest_removal_emails
+    if location.region&.should_email_machine_removal && !location.region&.send_digest_removal_emails
       user_info = nil
       if options[:user_id]
         user = User.find(options[:user_id])
@@ -94,8 +94,9 @@ class LocationMachineXref < ApplicationRecord
 
     user = nil
     user = User.find(options[:user_id]) if options[:user_id]
+    user_submission_region_string = location.region ? "#{location.region.name} (#{location.region.id})" : 'REGIONLESS'
 
-    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: ["#{user.nil? ? 'Unknown' : user.username} (#{user.nil? ? 'Unknown' : user.id})", "#{location.name} (#{location.id})", "#{machine.name} (#{machine.id})", "#{location.region.name} (#{location.region.id})"].join("\n"), user_id: user.nil? ? nil : user.id)
+    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: ["#{user.nil? ? 'Unknown' : user.username} (#{user.nil? ? 'Unknown' : user.id})", "#{location.name} (#{location.id})", "#{machine.name} (#{machine.id})", user_submission_region_string].join("\n"), user_id: user.nil? ? nil : user.id)
 
     location.date_last_updated = Date.today
     location.last_updated_by_user_id = user.nil? ? nil : user.id

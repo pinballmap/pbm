@@ -25,30 +25,34 @@ describe LocationMachineXrefsController do
       page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
     end
 
-    it 'Should add by id' do
-      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+    [FactoryBot.create(:region, name: 'portland', full_name: 'portland'), nil].each do |region|
+      it 'Should add by id' do
+        location = FactoryBot.create(:location, id: 11, region: region)
 
-      find("#add_machine_location_banner_#{@location.id}").click
-      select(@machine_to_add.name, from: 'add_machine_by_id_1')
-      click_on 'add'
+        visit "/#{region ? region.name : 'regionless'}/?by_location_id=#{location.id}"
 
-      sleep 1
+        find("#add_machine_location_banner_#{location.id}").click
+        select(@machine_to_add.name, from: 'add_machine_by_id_11')
+        click_on 'add'
 
-      expect(@location.machines.size).to eq(1)
-      expect(@location.machines.first).to eq(@machine_to_add)
-      expect(@location.reload.date_last_updated).to eq(Date.today)
+        sleep 1
 
-      expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
-      expect(find("#gm_machines_#{@location.id}")).to have_content(@machine_to_add.name)
-      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')}")
+        expect(location.machines.size).to eq(1)
+        expect(location.machines.first).to eq(@machine_to_add)
+        expect(location.reload.date_last_updated).to eq(Date.today)
 
-      expect(LocationMachineXref.where(location_id: @location.id, machine_id: @machine_to_add.id).first.user_id).to eq(@user.id)
+        expect(find("#show_machines_location_#{location.id}")).to have_content(@machine_to_add.name)
+        expect(find("#gm_machines_#{location.id}")).to have_content(@machine_to_add.name)
+        expect(find("#last_updated_location_#{location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')}")
 
-      user_submission = UserSubmission.first
-      expect(user_submission.user_id).to eq(@user.id)
-      expect(user_submission.region).to eq(@region)
-      expect(user_submission.submission_type).to eq(UserSubmission::NEW_LMX_TYPE)
-      expect(user_submission.submission).to eq("User #{@user.username} (#{@user.email}) added #{@machine_to_add.name} to #{@location.name}")
+        expect(LocationMachineXref.where(location_id: location.id, machine_id: @machine_to_add.id).first.user_id).to eq(@user.id)
+
+        user_submission = UserSubmission.first
+        expect(user_submission.user_id).to eq(@user.id)
+        expect(user_submission.region).to eq(region)
+        expect(user_submission.submission_type).to eq(UserSubmission::NEW_LMX_TYPE)
+        expect(user_submission.submission).to eq("User #{@user.username} (#{@user.email}) added #{@machine_to_add.name} to #{location.name}")
+      end
     end
 
     it 'Should add by name of existing machine' do
@@ -180,26 +184,33 @@ describe LocationMachineXrefsController do
       expect(@lmx.reload.condition).to eq(nil)
     end
 
-    it 'allows users to update a location machine condition - stubbed out spam detection' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
+    [FactoryBot.create(:region, name: 'portland', full_name: 'portland'), nil].each do |region|
+      it 'allows users to update a location machine condition - stubbed out spam detection' do
+        location = FactoryBot.create(:location, id: 111)
+        location.region = region
 
-      expect(Rakismet).to receive(:akismet_call).and_return('false')
+        lmx = FactoryBot.create(:location_machine_xref, location: location, machine: FactoryBot.create(:machine))
+        stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
 
-      visit '/portland/?by_location_id=' + @location.id.to_s
+        expect(Rakismet).to receive(:akismet_call).and_return('false')
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
-      fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS NOT SPAM')
-      page.find("input#save_machine_condition_#{@lmx.id}").click
+        visit "/#{location.region ? location.region.name : 'regionless'}/?by_location_id=" + location.id.to_s
 
-      sleep 1
+        page.find("div#machine_condition_lmx_#{lmx.id}.machine_condition_lmx span.comment_image").click
+        fill_in("new_machine_condition_#{lmx.id}", with: 'THIS IS NOT SPAM')
+        page.find("input#save_machine_condition_#{lmx.id}").click
 
-      expect(@lmx.reload.condition).to eq('THIS IS NOT SPAM')
+        sleep 1
 
-      user_submission = UserSubmission.second
-      expect(user_submission.user_id).to eq(@user.id)
-      expect(user_submission.region).to eq(@region)
-      expect(user_submission.submission_type).to eq(UserSubmission::NEW_CONDITION_TYPE)
-      expect(user_submission.submission).to eq("User #{@user.username} (#{@user.email}) commented on #{@lmx.machine.name} at #{@lmx.location.name}. They said: THIS IS NOT SPAM")
+        expect(lmx.reload.condition).to eq('THIS IS NOT SPAM')
+
+        user_submission = UserSubmission.last
+
+        expect(user_submission.user_id).to eq(@user.id)
+        expect(user_submission.region).to eq(location.region)
+        expect(user_submission.submission_type).to eq(UserSubmission::NEW_CONDITION_TYPE)
+        expect(user_submission.submission).to eq("User #{@user.username} (#{@user.email}) commented on #{lmx.machine.name} at #{lmx.location.name}. They said: THIS IS NOT SPAM")
+      end
     end
 
     it 'should let me add a new machine description' do
@@ -806,12 +817,16 @@ describe LocationMachineXrefsController do
       expect(page).to_not have_content('Bawb')
     end
 
-    it 'honors direct link for location' do
-      visit "/#{@region.name}/?by_location_id=#{@location.id}"
-      sleep(1)
+    [FactoryBot.create(:region, name: 'portland', full_name: 'Portland'), nil].each do |region|
+      it 'honors direct link for location' do
+        location = FactoryBot.create(:location, id: 111, region: region)
 
-      within('div.search_result') do
-        expect(page).to have_content('Test Location Name')
+        visit "/#{region ? region.name : 'regionless'}/?by_location_id=#{location.id}"
+        sleep(1)
+
+        within('div.search_result') do
+          expect(page).to have_content('Test Location Name')
+        end
       end
     end
 

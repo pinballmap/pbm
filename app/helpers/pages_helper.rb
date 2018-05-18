@@ -118,6 +118,8 @@ module PagesHelper
              'If you forgot your Pinball Map password, you can recover it from here.'
            elsif path =~ /confirmation/
              'The email confirmation can be resent from this page.'
+           elsif path =~ /regionless/
+             'Find local places to play pinball! The Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
            else
              'The Pinball Map website and free mobile app will help you find places to play pinball! Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
            end

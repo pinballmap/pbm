@@ -167,6 +167,8 @@ Rails.application.routes.draw do
   get 'pages/home'
   get 'regionless' => 'pages#regionless'
   get 'regionless_location_data' => 'pages#regionless_location_data'
+  get 'suggest' => 'pages#suggest_new_location', as: 'regionless_location_suggest'
+  get 'submitted_new_location' => 'pages#submitted_new_location', as: 'regionless_submitted_new_location'
 
   # legacy names for regions
   get '/milwaukee' => redirect('/wisconsin')

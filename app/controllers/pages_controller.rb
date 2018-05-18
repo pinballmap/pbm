@@ -126,16 +126,22 @@ class PagesController < ApplicationController
   end
 
   def suggest_new_location
-    @states = Location.where(['region_id = ?', @region.id]).map(&:state).uniq.sort
+    @operators = []
+    @zones = []
+    @states = []
+
+    if @region
+      @states = Location.where(['region_id = ?', @region.id]).map(&:state).uniq.sort
+
+      @operators = Operator.where(['region_id = ?', @region.id]).map(&:name).uniq.sort
+      @operators.unshift('')
+
+      @zones = Zone.where(['region_id = ?', @region.id]).map(&:name).uniq.sort
+      @zones.unshift('')
+    end
 
     @location_types = LocationType.all.map(&:name).uniq.sort
     @location_types.unshift('')
-
-    @operators = Operator.where(['region_id = ?', @region.id]).map(&:name).uniq.sort
-    @operators.unshift('')
-
-    @zones = Zone.where(['region_id = ?', @region.id]).map(&:name).uniq.sort
-    @zones.unshift('')
   end
 
   def robots

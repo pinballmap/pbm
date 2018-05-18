@@ -3,7 +3,7 @@
   .clear
 %div[l, :desc_edit]{:style => 'display:none'}
   - if user_signed_in?
-    = form_tag update_desc_locations_path(:action => 'update_desc', :id => l.id, :region => l.region.name), :id => "update_desc_#{l.id}", :method => 'get' do
+    = form_tag update_desc_locations_path(:action => 'update_desc', :id => l.id), :id => "update_desc_#{l.id}", :method => 'get' do
       = hidden_field_tag :id, l.id
       = text_area_tag "new_desc_#{l.id}", (l.description.to_s == '') ? 'Update location description/hours/etc' : l.description, :cols => 20, :rows => 3, :class => 'edit_mode'
       %br/
@@ -18,7 +18,7 @@
     var form = $(this);
     $.get(form.attr('action'), form.serialize(), function (data) {
       $('#desc_location_#{l.id}').load('/locations/#{l.id}/render_desc');
-      updateLocationUpdatedText(#{l.id}, '#{l.region.name}')
+      updateLocationUpdatedText(#{l.id})
     });
 
     return false;

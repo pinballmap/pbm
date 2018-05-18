@@ -39,7 +39,7 @@
   if (isSingleLocation) {
     var locationName = "#{raw @locations.size == 0 ? '' : @locations[0].name}";
     var locationAddress = "#{raw @locations.size == 0 ? '' : @locations[0].full_street_address}";
-    var regionName = "#{raw @locations.size == 0 ? '' : @locations[0].region.full_name}";
+    var regionName = "#{raw @locations.size == 0 ? '' : @locations[0].region ? @locations[0].region.full_name : ''}";
     var machineCount = "#{raw @locations.size == 0 ? '' : @locations[0].machines.count}";
     var machineNames = "#{raw @locations.size == 0 ? '' : @locations[0].machine_names[0,3].join(', ')}";
     var machineSingle = "#{raw @locations.size == 0 ? '' : @locations[0].machines.count > 1 ? 'pinball machines' : 'pinball machine'}";

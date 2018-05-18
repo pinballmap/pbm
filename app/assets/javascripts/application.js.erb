@@ -519,7 +519,7 @@ function switchSection(newSection) {
   $("#" + newSection + "_section_link").toggleClass("active_section_link");
 }
 
-function initSearch(region, operatorIDs, locationIDs, locationTypeIDs, zoneIDs, machineIDs, ipdbIDs, cityName, machineGroupId, showLocationDistance, lat, lon, byAtLeastNMachinesCity, byAtLeastNMachinesType, byAtLeastNMachinesZone) {
+function initSearch(operatorIDs, locationIDs, locationTypeIDs, zoneIDs, machineIDs, ipdbIDs, cityName, machineGroupId, showLocationDistance, lat, lon, byAtLeastNMachinesCity, byAtLeastNMachinesType, byAtLeastNMachinesZone) {
   if (operatorIDs || locationIDs || locationTypeIDs || zoneIDs || machineIDs || ipdbIDs || cityName || machineGroupId || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone) {
     var url = '/locations?by_location_id=' + locationIDs + ';by_operator_id=' + operatorIDs + ';by_type_id=' + locationTypeIDs + ';by_zone_id=' + zoneIDs + ';by_machine_id=' + machineIDs + ';by_city_id=' + cityName + ';by_machine_group_id=' + machineGroupId + ';by_ipdb_id=' + ipdbIDs + ';show_location_distance=' + showLocationDistance + ';lat=' + lat + ';lon=' + lon + ';by_at_least_n_machines_city=' + byAtLeastNMachinesCity + ';by_at_least_n_machines_type=' + byAtLeastNMachinesType + ';by_at_least_n_machines_zone=' + byAtLeastNMachinesZone;
 
@@ -595,7 +595,7 @@ function setSearchSections(newSearchSections) {
   searchSections = newSearchSections;
 }
 
-function updateLocationUpdatedText(id, region) {
+function updateLocationUpdatedText(id) {
     $('#last_updated_location_' + id).load('/locations/' + id + '/render_last_updated');
 
     return false;

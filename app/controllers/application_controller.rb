@@ -67,14 +67,14 @@ Machines: #{params['location_machines']}\n
 (entered from #{request.remote_ip} via #{request.user_agent}#{user_info})\n
 BODY
     Pony.mail(
-      to: region.users.map(&:email),
+      to: region ? region.users.map(&:email) : User.all.select(&:is_super_admin).map(&:email),
       bcc: User.all.select(&:is_super_admin).map(&:email),
       from: 'admin@pinballmap.com',
-      subject: add_host_info_to_subject("PBM - New location suggested for the #{region.name} pinball map"),
+      subject: add_host_info_to_subject("PBM - New location suggested for the #{region ? region.name : 'REGIONLESS'} pinball map"),
       body: body
     )
 
-    UserSubmission.create(region_id: region.id, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE, submission: body, user_id: user ? user.id : nil)
+    UserSubmission.create(region_id: region ? region.id : nil, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE, submission: body, user_id: user ? user.id : nil)
 
     user_inputted_address = [params['location_street'], params['location_city'], params['location_state'], params['location_zip']].join(', ')
 
@@ -91,7 +91,7 @@ BODY
       zip = geocoded_results.postal_code
     end
 
-    SuggestedLocation.create(region_id: region.id, name: params['location_name'], street: street || params['location_street'], city: city || params['location_city'], state: state || params['location_state'], zip: zip || params['location_zip'], phone: params['location_phone'], website: params['location_website'], location_type: location_type, operator: operator, zone: zone, comments: params['location_comments'], machines: params['location_machines'], lat: lat, lon: lon, user_inputted_address: user_inputted_address)
+    SuggestedLocation.create(region_id: region ? region.id : nil, name: params['location_name'], street: street || params['location_street'], city: city || params['location_city'], state: state || params['location_state'], zip: zip || params['location_zip'], phone: params['location_phone'], website: params['location_website'], location_type: location_type, operator: operator, zone: zone, comments: params['location_comments'], machines: params['location_machines'], lat: lat, lon: lon, user_inputted_address: user_inputted_address)
   end
 
   def send_new_region_notification(params)
