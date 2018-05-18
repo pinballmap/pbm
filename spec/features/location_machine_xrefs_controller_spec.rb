@@ -25,8 +25,9 @@ describe LocationMachineXrefsController do
       page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
     end
 
-    [FactoryBot.create(:region, name: 'portland', full_name: 'portland'), nil].each do |region|
+    [true, false].each do |region|
       it 'Should add by id' do
+        region = region ? @region : nil
         location = FactoryBot.create(:location, id: 11, region: region)
 
         visit "/#{region ? region.name : 'regionless'}/?by_location_id=#{location.id}"
@@ -184,10 +185,10 @@ describe LocationMachineXrefsController do
       expect(@lmx.reload.condition).to eq(nil)
     end
 
-    [FactoryBot.create(:region, name: 'portland', full_name: 'portland'), nil].each do |region|
+    [true, false].each do |region|
       it 'allows users to update a location machine condition - stubbed out spam detection' do
-        location = FactoryBot.create(:location, id: 111)
-        location.region = region
+        region = region ? @region : nil
+        location = FactoryBot.create(:location, id: 111, region: region)
 
         lmx = FactoryBot.create(:location_machine_xref, location: location, machine: FactoryBot.create(:machine))
         stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
