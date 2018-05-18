@@ -136,15 +136,36 @@ HERE
     end
   end
 
-  describe 'submitted_new_location' do
-    it 'should send an email' do
-      FactoryBot.create(:location_type, name: 'type')
-      FactoryBot.create(:operator, name: 'operator')
-      FactoryBot.create(:zone, name: 'zone')
+  describe 'suggest_new_location' do
+    it 'works with a region' do
+      post 'suggest_new_location', params: { region: 'portland' }
 
-      logout
+      expect(assigns(:states)).to eq(['OR'])
+      expect(assigns(:operators)).to eq([''])
+      expect(assigns(:zones)).to eq([''])
+      expect(assigns(:location_types)).to eq(['', 'Test Location Type'])
+    end
 
-      body = <<HERE
+    it 'works without a region' do
+      post 'suggest_new_location', params: { region: nil }
+
+      expect(assigns(:states)).to eq([])
+      expect(assigns(:operators)).to eq([])
+      expect(assigns(:zones)).to eq([])
+      expect(assigns(:location_types)).to eq(['', 'Test Location Type'])
+    end
+  end
+
+  ['portland', nil].each do |region|
+    describe 'submitted_new_location' do
+      it 'should send an email' do
+        FactoryBot.create(:location_type, name: 'type')
+        FactoryBot.create(:operator, name: 'operator')
+        FactoryBot.create(:zone, name: 'zone')
+
+        logout
+
+        body = <<HERE
 (A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into http://test.host/admin. Thanks!)\n
 Location Name: name\n
 Street: street\n
@@ -161,31 +182,31 @@ Machines: machines\n
 (entered from 0.0.0.0 via Rails Testing)\n
 HERE
 
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['foo@bar.com'],
-          bcc: ['super_admin@bar.com'],
-          from: 'admin@pinballmap.com',
-          subject: 'PBM - New location suggested for the portland pinball map',
-          body: body
-        )
+        expect(Pony).to receive(:mail) do |mail|
+          expect(mail).to include(
+            to: region.nil? ? ['super_admin@bar.com'] : ['foo@bar.com'],
+            bcc: ['super_admin@bar.com'],
+            from: 'admin@pinballmap.com',
+            subject: "PBM - New location suggested for the #{region.nil? ? 'REGIONLESS' : region} pinball map",
+            body: body
+          )
+        end
+
+        post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
+
+        expect(region.nil? ? UserSubmission.count : @region.user_submissions.count).to eq(1)
+        submission = region.nil? ? UserSubmission.first : @region.user_submissions.first
+        expect(submission.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
+        expect(submission.submission).to eq(body)
       end
 
-      post 'submitted_new_location', params: { region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
+      it 'should send an email - includes user info if available' do
+        FactoryBot.create(:location_type, name: 'type')
+        FactoryBot.create(:operator, name: 'operator')
 
-      expect(@region.user_submissions.count).to eq(1)
-      submission = @region.user_submissions.first
-      expect(submission.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
-      expect(submission.submission).to eq(body)
-    end
+        login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com'))
 
-    it 'should send an email - includes user info if available' do
-      FactoryBot.create(:location_type, name: 'type')
-      FactoryBot.create(:operator, name: 'operator')
-
-      login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com'))
-
-      body = <<HERE
+        body = <<HERE
 (A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into http://test.host/admin. Thanks!)\n
 Location Name: name\n
 Street: street\n
@@ -201,55 +222,56 @@ Comments: comments\n
 Machines: machines\n
 (entered from 0.0.0.0 via Rails Testing by ssw (yeah@ok.com))\n
 HERE
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['foo@bar.com'],
-          bcc: ['super_admin@bar.com'],
-          from: 'admin@pinballmap.com',
-          subject: 'PBM - New location suggested for the portland pinball map',
-          body: body
-        )
+        expect(Pony).to receive(:mail) do |mail|
+          expect(mail).to include(
+            to: region ? ['foo@bar.com'] : ['super_admin@bar.com'],
+            bcc: ['super_admin@bar.com'],
+            from: 'admin@pinballmap.com',
+            subject: "PBM - New location suggested for the #{region.nil? ? 'REGIONLESS' : region} pinball map",
+            body: body
+          )
+        end
+
+        post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
       end
 
-      post 'submitted_new_location', params: { region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
-    end
+      it 'should send an email - notifies if sent from the staging server' do
+        @request.host = 'pinballmapstaging.herokuapp.com'
 
-    it 'should send an email - notifies if sent from the staging server' do
-      @request.host = 'pinballmapstaging.herokuapp.com'
+        expect(Pony).to receive(:mail) do |mail|
+          expect(mail).to include(
+            subject: "(STAGING) PBM - New location suggested for the #{region.nil? ? 'REGIONLESS' : region} pinball map"
+          )
+        end
 
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          subject: '(STAGING) PBM - New location suggested for the portland pinball map'
-        )
+        post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
       end
 
-      post 'submitted_new_location', params: { region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
-    end
+      it 'should create a suggested location object' do
+        location_type = FactoryBot.create(:location_type, name: 'type')
+        operator = FactoryBot.create(:operator, name: 'operator')
+        zone = FactoryBot.create(:zone, name: 'zone')
 
-    it 'should create a suggested location object' do
-      location_type = FactoryBot.create(:location_type, name: 'type')
-      operator = FactoryBot.create(:operator, name: 'operator')
-      zone = FactoryBot.create(:zone, name: 'zone')
+        post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_zone: 'zone', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
 
-      post 'submitted_new_location', params: { region: 'portland', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_zone: 'zone', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
+        expect(SuggestedLocation.all.size).to eq(1)
 
-      expect(SuggestedLocation.all.size).to eq(1)
-
-      sl = SuggestedLocation.first
-      expect(sl.name).to eq('name')
-      expect(sl.region).to eq(@region)
-      expect(sl.street).to eq('street')
-      expect(sl.city).to eq('city')
-      expect(sl.state).to eq('state')
-      expect(sl.zip).to eq('zip')
-      expect(sl.phone).to eq('phone')
-      expect(sl.website).to eq('website')
-      expect(sl.location_type).to eq(location_type)
-      expect(sl.zone).to eq(zone)
-      expect(sl.operator).to eq(operator)
-      expect(sl.comments).to eq('comments')
-      expect(sl.machines).to eq('machines')
-      expect(sl.user_inputted_address).to eq('street, city, state, zip')
+        sl = SuggestedLocation.first
+        expect(sl.name).to eq('name')
+        expect(sl.region).to eq(region.nil? ? nil : @region)
+        expect(sl.street).to eq('street')
+        expect(sl.city).to eq('city')
+        expect(sl.state).to eq('state')
+        expect(sl.zip).to eq('zip')
+        expect(sl.phone).to eq('phone')
+        expect(sl.website).to eq('website')
+        expect(sl.location_type).to eq(location_type)
+        expect(sl.zone).to eq(zone)
+        expect(sl.operator).to eq(operator)
+        expect(sl.comments).to eq('comments')
+        expect(sl.machines).to eq('machines')
+        expect(sl.user_inputted_address).to eq('street, city, state, zip')
+      end
     end
   end
 end

@@ -11,7 +11,7 @@
     %div.comment_image
       %span.comment_image
   %div[lmx, :machine_condition_edit]{:style => 'display:none'}
-    = form_tag update_machine_condition_location_machine_xrefs_path(:action => 'update_machine_condition', :id => lmx.id, :region => lmx.location.region.name), :id => "update_machine_condition_#{lmx.id}", :method => 'get' do
+    = form_tag update_machine_condition_location_machine_xrefs_path(:action => 'update_machine_condition', :id => lmx.id), :id => "update_machine_condition_#{lmx.id}", :method => 'get' do
       = hidden_field_tag :id, lmx.id
       = text_area_tag "new_machine_condition_#{lmx.id}", '', :cols => 20, :rows => 3, :class => 'edit_mode', :placeholder => '(note: if this machine is gone, please just remove it. no need to leave a comment saying it is gone)'
       %br/
@@ -26,7 +26,7 @@
     $.get(form.attr('action'), form.serialize(), function (data) {
       $('#machine_condition_display_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_machine_condition');
       $('#show_conditions_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_machine_conditions');
-      updateLocationUpdatedText(#{lmx.location_id}, '#{lmx.location.region.name}');
+      updateLocationUpdatedText(#{lmx.location_id});
     });
 
     return false;

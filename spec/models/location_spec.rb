@@ -121,6 +121,18 @@ describe Location do
       expect(submission.submission).to eq('User ssw confirmed the lineup at foo')
       expect(submission.submission_type).to eq(UserSubmission::CONFIRM_LOCATION_TYPE)
     end
+
+    it 'works with regionless locations' do
+      user = FactoryBot.create(:user, username: 'ssw')
+      regionless_location = FactoryBot.create(:location, name: 'foo', region: nil)
+
+      regionless_location.confirm(user)
+
+      submission = UserSubmission.last
+
+      expect(submission.region).to eq(nil)
+      expect(submission.submission_type).to eq(UserSubmission::CONFIRM_LOCATION_TYPE)
+    end
   end
 
   describe '#num_machines' do
@@ -130,6 +142,19 @@ describe Location do
   end
 
   describe '#update_metadata' do
+    it 'works with a regionless location' do
+      regionless_location = FactoryBot.create(:location, name: 'REGIONLESS', region: nil)
+      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      regionless_location.update_metadata(u, description: 'foo')
+
+      user_submission = UserSubmission.third
+
+      expect(user_submission.user_id).to eq(u.id)
+      expect(user_submission.submission).to eq('Changed location description to foo to REGIONLESS')
+      expect(user_submission.location).to eq(regionless_location)
+      expect(user_submission.region).to eq(nil)
+    end
+
     it 'creates a user submission for updated metadata' do
       u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
       @l.update_metadata(u, description: 'foo')

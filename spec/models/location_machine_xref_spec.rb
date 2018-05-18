@@ -17,6 +17,21 @@ describe LocationMachineXref do
   end
 
   describe '#update_condition' do
+    it 'should work with regionless locations' do
+      regionless_location = FactoryBot.create(:location, region: nil, name: 'REGIONLESS')
+      regionless_lmx = FactoryBot.create(:location_machine_xref, location: regionless_location, machine: @m)
+
+      expect(Pony).to_not receive(:mail)
+
+      regionless_lmx.update_condition('regionless condish', user_id: @u.id)
+
+      expect(regionless_lmx.condition).to eq('regionless condish')
+      expect(regionless_lmx.condition_date.to_s).to eq(Time.now.to_s.split(' ')[0])
+
+      expect(MachineCondition.all.count).to eq(1)
+      expect(MachineCondition.first.comment).to eq('regionless condish')
+    end
+
     it 'should update the condition of the lmx, timestamp it, and email the admins of the region' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
@@ -91,6 +106,26 @@ describe LocationMachineXref do
   end
 
   describe '#destroy' do
+    it 'works with regionless locations' do
+      regionless_location = FactoryBot.create(:location, name: 'Regionless Location', region: nil)
+      regionless_lmx = FactoryBot.create(:location_machine_xref, location: regionless_location, machine: @m)
+
+      expect(Pony).to_not receive(:mail)
+
+      user = User.find(1)
+      regionless_lmx.destroy(user_id: user.id)
+
+      expect(LocationMachineXref.all).to_not include(regionless_lmx)
+      submission = UserSubmission.fourth
+
+      expect(submission.region).to eq(nil)
+      expect(submission.user).to eq(user)
+      expect(submission.location).to eq(regionless_lmx.location)
+      expect(submission.machine).to eq(regionless_lmx.machine)
+      expect(submission.submission).to eq(["#{user.username} (#{user.id})", "#{regionless_location.name} (#{regionless_location.id})", "#{@m.name} (#{@m.id})", 'REGIONLESS'].join("\n"))
+      expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
+    end
+
     it 'should remove the lmx, and email admins if appropriate' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(

@@ -6,7 +6,7 @@
         =image_tag 'PPM-Splash-200.png', :alt => 'Thanks'
       %p.ta_c
         In 3 seconds we'll take you back to the
-        =link_to "#{@region.full_name} Pinball Map", region_homepage_path
+        =link_to "#{@region ? @region.full_name : ''} Pinball Map", @region ? region_homepage_path : regionless_path
 
 :javascript
   window.setTimeout(function(){ window.location.href = './' },3000);
