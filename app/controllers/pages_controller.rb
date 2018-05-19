@@ -11,7 +11,9 @@ class PagesController < ApplicationController
   def regionless_location_data
     @locations = []
 
-    if !params[:address].blank?
+    if params[:address].blank? && params[:by_machine_id].blank? && params[:by_location_name].blank? && params[:by_machine_name].blank?
+      @locations = []
+    elsif !params[:address].blank?
       @locations = Location.near(params[:address], 5).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs)
     else
       @locations = apply_scopes(Location).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs)

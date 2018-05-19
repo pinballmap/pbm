@@ -6,6 +6,33 @@ describe PagesController do
     @location = FactoryBot.create(:location, region: @region, state: 'OR')
   end
 
+  describe 'Regionless', type: :feature, js: true do
+    it 'shouldnt perform a search if you dont enter search criteria' do
+      visit '/regionless'
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(page.body).to have_content('NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN.')
+    end
+
+    it 'only lets you search by one thing at a time' do
+      visit '/regionless'
+
+      fill_in('by_location_name', with: 'foo')
+
+      fill_in('by_machine_name', with: 'bar')
+      expect(find('#by_location_name').value).to eq('')
+      expect(find('#address').value).to eq('')
+
+      fill_in('address', with: 'baz')
+      expect(find('#by_location_name').value).to eq('')
+      expect(find('#by_machine_name').value).to eq('')
+      expect(find('#by_machine_id', visible: false).value).to eq('')
+    end
+  end
+
   describe 'Events', type: :feature, js: true do
     it 'handles basic event displaying' do
       FactoryBot.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today)
