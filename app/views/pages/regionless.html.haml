@@ -1,4 +1,4 @@
-#region_page_body
+#region_page_body.mt_30
   #form.toggle_reg_lookup
     = form_tag regionless_location_data_path, :method => 'get', :id => 'address_search_form', :class => 'location_search' do
       = hidden_field_tag :by_machine_id
@@ -15,12 +15,12 @@
   #search_link_wrapper.hide_button.toggle_btn_reg
     =link_to "Link to this Search Result", "", :id => "search_link"
 
+  #map
+    = render :partial => 'locations/map', locals: { lat: 45.512794, lon: -122.679565 }
+    
   #lookup.toggle_reg_lookup
     #locations
       %span Search For Something!
-
-  #map
-    = render :partial => 'locations/map', locals: { lat: 45.512794, lon: -122.679565 }
 
 :javascript
   $('#address_search_form').on('submit', function(e) {
