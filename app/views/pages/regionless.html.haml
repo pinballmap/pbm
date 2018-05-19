@@ -20,7 +20,36 @@
     
   #lookup.toggle_reg_lookup
     #locations
-      %span Search For Something!
+      #intro
+        %p.dark.hello
+          One Map To Rule Them All
+        %p
+          This pinball map has locations from 
+          %span.bold.red all 
+          the 
+          = link_to "regions", root_path
+          as well as “regionless” locations.
+        %p 
+          It is currently listing a total of 
+          %span.darkb 
+            #{number_with_delimiter(Location.all.count,:delimiter => ",")} 
+          locations and 
+          %span.darkb 
+            #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} 
+          machines.
+        %p 
+          This map is in
+          %span.bold.red
+            BETA! 
+          That means it’s not in its final form. We’ll be continuously enhancing the search experience. But to do so, it would help if you used it and 
+          = link_to "gave us feedback!", about_path('portland')
+        %p    
+          You can
+          = link_to "submit locations here.", regionless_location_suggest_path
+          Doesn’t matter if the location fits within one of our regions. We’re aiming for more comprehensive coverage.
+        %p
+          If you prefer to navigate the map via your trusted home region, 
+          = link_to "go here to find it.", root_path
 
 :javascript
   $('#address_search_form').on('submit', function(e) {
