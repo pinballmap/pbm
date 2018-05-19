@@ -54,7 +54,6 @@
       margin-left: -480px !important;
     }
     .machine_name {
-      width: 405px;
       margin-left: -10px;
     }
     .machine_names {
@@ -94,8 +93,7 @@
     }
     .confirm_inner,
     .confirm_location {
-      width: 422px;
-      padding-right: 10px;
+      padding-right: 20px;
     }
     #location_maker .first {
       float: none;
