@@ -28,6 +28,8 @@
 
     var form = $(this);
 
+    $('#locations').html(loadingHTML());
+
     $.get(form.attr('action'), form.serialize(), function(data, textStatus, jqxhr) {
       $('#locations').html(data);
     });
