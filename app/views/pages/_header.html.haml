@@ -69,14 +69,15 @@
                 |
               %li.login_list= link_to 'Admin', rails_admin_path
         = render :partial => 'pages/menu'
-  - if (@region)
+  - if (@region || current_page?(regionless_path))
     #header_lower
-      %span.darkb.closest_locations{:style => "float:right;", :onclick => "findClosestLocations('#{@region.name}')"}
+      %span.darkb.closest_locations{:style => "float:right;", :onclick => "findClosestLocations('#{@region ? @region.name : 'regionless'}')"}
         = link_to 'Show Closest Locations', '#', {:id => 'find_closest_locations'}
-      %div.region_logo_dropdown
-        %div.other_regions
-          %span.region_name_page
-            =link_to "#{@region.full_name}", region_homepage_path
+      - if (@region)
+        %div.region_logo_dropdown
+          %div.other_regions
+            %span.region_name_page
+              =link_to "#{@region.full_name}", region_homepage_path
   - else
     #header_lower
       %div.geo_header_wrapper
