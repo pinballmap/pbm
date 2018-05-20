@@ -77,14 +77,11 @@
 
     $('#by_machine_name').bind('input', function(event, ui) {
       event.preventDefault();
-      $('#address').val('');
       $('#by_location_name').val('');
     });
 
     $('#address').bind('input', function(event, ui) {
       $('#by_location_name').val('');
-      $('#by_machine_name').val('');
-      $('#by_machine_id').val('');
     });
 
     $('#by_location_name').autocomplete({source: '/locations/autocomplete'});

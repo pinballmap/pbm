@@ -70,6 +70,47 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.strategy = :transaction
+
+    Geocoder.configure(lookup: :test)
+    Geocoder::Lookup::Test.add_stub(
+      '97202', [
+      {
+        'latitude'     => 45.51258500000001,
+        'longitude'    => -122.617788,
+        'address'      => 'Portland, OR 97202, USA',
+        'state'        => 'Oregon',
+        'state_code'   => 'OR',
+        'country'      => 'United States',
+        'country_code' => 'US'
+      }
+      ]
+    )
+    Geocoder::Lookup::Test.add_stub(
+      '97203', [
+      {
+        'latitude'     => 45.6008356,
+        'longitude'    => -122.760606,
+        'address'      => 'Portland, OR 97203, USA',
+        'state'        => 'Oregon',
+        'state_code'   => 'OR',
+        'country'      => 'United States',
+        'country_code' => 'US'
+      }
+      ]
+    )
+    Geocoder::Lookup::Test.add_stub(
+      '303 Southeast 3rd Avenue, Portland, OR, 97214', [
+      {
+        'latitude'     => 45.52068740000001,
+        'longitude'    => -122.6630702,
+        'address'      => '303 SE 3rd Ave, Portland, OR 97214, USA',
+        'state'        => 'Oregon',
+        'state_code'   => 'OR',
+        'country'      => 'United States',
+        'country_code' => 'US'
+      }
+      ]
+    )
   end
 
   config.before(:each, js: true) do
