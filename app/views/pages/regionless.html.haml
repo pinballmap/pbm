@@ -32,10 +32,10 @@
         %p 
           It is currently listing a total of 
           %span.darkb 
-            #{number_with_delimiter(Location.all.count,:delimiter => ",")} 
+            #{number_with_delimiter(Location.count,:delimiter => ",")} 
           locations and 
           %span.darkb 
-            #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} 
+            #{number_with_delimiter(LocationMachineXref.count,:delimiter => ",")} 
           machines.
         %p 
           This map is in
