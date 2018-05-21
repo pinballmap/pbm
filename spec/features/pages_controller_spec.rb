@@ -23,15 +23,18 @@ describe PagesController do
       fill_in('by_location_name', with: 'foo')
 
       fill_in('by_machine_name', with: 'bar')
+      expect(find('#by_location_id', visible: false).value).to eq('')
       expect(find('#by_location_name').value).to eq('')
       expect(find('#address').value).to eq('')
 
       fill_in('address', with: 'baz')
+      expect(find('#by_location_id', visible: false).value).to eq('')
       expect(find('#by_location_name').value).to eq('')
-      expect(find('#by_machine_name').value).to eq('bar')
       expect(find('#by_machine_id', visible: false).value).to eq('')
+      expect(find('#by_machine_name').value).to eq('bar')
 
       fill_in('by_machine_name', with: 'bang')
+      expect(find('#by_location_id', visible: false).value).to eq('')
       expect(find('#by_location_name').value).to eq('')
       expect(find('#address').value).to eq('baz')
 
@@ -61,6 +64,25 @@ describe PagesController do
 
       expect(page.body).to have_content('Rip City')
       expect(page.body).to_not have_content('No Way')
+    end
+
+    it 'location autocomplete select ensures you only search by a single location' do
+      FactoryBot.create(:location, region: nil, name: 'Rip Rental')
+      FactoryBot.create(:location, region: nil, name: 'Rip City Retail')
+
+      visit '/regionless'
+
+      fill_in('by_location_name', with: 'Rip')
+      page.execute_script %{ $('#by_location_name').trigger('focus') }
+      page.execute_script %{ $('#by_location_name').trigger('keydown') }
+      find(:xpath, '//li[contains(text(), "Rip City Retail")]').click
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(find('#search_results')).to have_content('Rip City Retail')
+      expect(find('#search_results')).to_not have_content('Rip Rental')
     end
   end
 

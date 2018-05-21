@@ -2,6 +2,7 @@
   #form.toggle_reg_lookup
     = form_tag regionless_location_data_path, :method => 'get', :id => 'address_search_form', :class => 'location_search' do
       = hidden_field_tag :by_machine_id
+      = hidden_field_tag :by_location_id
       = text_field_tag "by_machine_name", params["by_machine_name"], :class => 'lookup_search_input', :placeholder => 'machine goes here...'
       = text_field_tag "by_location_name", params["by_location_name"], :class => 'lookup_search_input', :placeholder => 'location goes here...'
       = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => 'address goes here...'
@@ -72,16 +73,19 @@
     $('#by_location_name').bind('input', function(event, ui) {
       event.preventDefault();
       $('#address').val('');
-      $('#by_machine_name').val('');
       $('#by_machine_id').val('');
+      $('#by_machine_name').val('');
     });
 
     $('#by_machine_name').bind('input', function(event, ui) {
       event.preventDefault();
+      $('#by_location_id').val('');
       $('#by_location_name').val('');
     });
 
     $('#address').bind('input', function(event, ui) {
+      event.preventDefault();
+      $('#by_location_id').val('');
       $('#by_location_name').val('');
     });
 
@@ -90,14 +94,16 @@
       event.preventDefault();
       $('#by_machine_id').val('');
       $('#by_machine_name').val('');
+      $('#by_location_id').val(ui.item.id);
       $('#by_location_name').val(ui.item.value);
     });
 
     $('#by_machine_name').autocomplete({source: '/machines/autocomplete'});
     $('#by_machine_name').bind('autocompleteselect', function(event, ui) {
       event.preventDefault();
-      $('#by_machine_id').val(ui.item.id);
+      $('#by_location_id').val('');
       $('#by_location_name').val('');
+      $('#by_machine_id').val(ui.item.id);
       $('#by_machine_name').val(ui.item.value);
     });
   });
