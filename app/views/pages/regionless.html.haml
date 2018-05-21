@@ -54,6 +54,7 @@
 :javascript
   $('#address_search_form').on('submit', function(e) {
     e.preventDefault();
+    search_string = $( this ).serialize();
 
     var form = $(this);
 
