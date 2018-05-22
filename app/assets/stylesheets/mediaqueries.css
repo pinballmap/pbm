@@ -47,6 +47,9 @@
     #form input.lookup_search_input {
       width: 200px;
     }
+    #form #address_search_form input.lookup_search_input {
+      width: 280px;
+    }
     .toggle_btn_reg {
       left: 480px !important;
     }
@@ -155,6 +158,27 @@
   }
 }
 
+@media (max-width: 880px) {
+  .header_menu_01 {
+    display: none;
+  }
+  #header .menu_link ul li.menu_header_01 {
+    display: block;
+  }
+  .header_buttons_child.header_menu_01 {
+    width: 0;
+  }
+}
+
+@media (max-width: 965px) {
+  .header_buttons_child {
+    width: 90px;
+  }
+  .login_slash {
+    display: none;
+  }
+}
+
 @media (max-width: 740px) {
   #region_map {
     width: auto;
@@ -207,58 +231,12 @@
     text-align: center;
     border: none;
   }
-  #header .geo_header_outer {
-    width: 90px;
-  }
-  .geo_header {
-    font-size: 12px;
-    width: 90px;
-    margin-top: 8px;
-    line-height: 14px;
-    padding: 3px 4px 4px;
-    text-align: center;
-  }
   .blog_header_region {
     display: none;
-  }
-  .login_region a.loggedin, .login_home a.loggedin {
-    font-size: 15px;
   }
   .login_region a, .login_home a {
     font-size: 14px;
     padding: 0;
-    text-align: center;
-  }
-  .login_region.logged_no, .login_home.logged_no {
-    margin-top: -2px !important;
-    padding: 0;
-    text-align: center;
-    border: none;
-  }
-  .login_region.logged_yes, .login_home.logged_yes {
-    margin-top: 0 !important;
-    padding: 0;
-    text-align: center;
-    border: none;
-  }
-  .login_region .login_slash, .login_home .login_slash {
-    display: none;
-  }
-  .logged_no {
-    width: 40px;
-  }
-  .logged_yes {
-    width: 55px;
-  }
-  #header .closest_locations_outer {
-    width: 70px;
-  }
-  .closest_locations {
-    font-size: 12px;
-    width: 75px;
-    margin-top: 0;
-    line-height: 14px;
-    padding: 3px 4px 4px;
     text-align: center;
   }
 }
