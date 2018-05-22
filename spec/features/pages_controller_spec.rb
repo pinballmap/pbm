@@ -17,19 +17,72 @@ describe PagesController do
       expect(page.body).to have_content('NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN.')
     end
 
-    it 'only lets you search by one thing at a time' do
+    it 'only lets you search by one thing at a time, OR address + machine' do
       visit '/regionless'
 
       fill_in('by_location_name', with: 'foo')
 
       fill_in('by_machine_name', with: 'bar')
+      expect(find('#by_location_id', visible: false).value).to eq('')
       expect(find('#by_location_name').value).to eq('')
       expect(find('#address').value).to eq('')
 
       fill_in('address', with: 'baz')
+      expect(find('#by_location_id', visible: false).value).to eq('')
       expect(find('#by_location_name').value).to eq('')
-      expect(find('#by_machine_name').value).to eq('')
       expect(find('#by_machine_id', visible: false).value).to eq('')
+      expect(find('#by_machine_name').value).to eq('bar')
+
+      fill_in('by_machine_name', with: 'bang')
+      expect(find('#by_location_id', visible: false).value).to eq('')
+      expect(find('#by_location_name').value).to eq('')
+      expect(find('#address').value).to eq('baz')
+
+      fill_in('by_location_name', with: 'foo')
+      expect(find('#by_machine_name').value).to eq('')
+      expect(find('#address').value).to eq('')
+    end
+
+    it 'lets you search by address and machine' do
+      rip_city_location = FactoryBot.create(:location, region: nil, name: 'Rip City', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
+      no_way_location = FactoryBot.create(:location, region: nil, name: 'No Way', zip: '97203', lat: 45.593049200000, lon: -122.732620200000)
+      FactoryBot.create(:location_machine_xref, location: rip_city_location, machine: FactoryBot.create(:machine, name: 'Sass'))
+      FactoryBot.create(:location_machine_xref, location: no_way_location, machine: FactoryBot.create(:machine, name: 'Bawb'))
+
+      visit '/regionless'
+
+      fill_in('by_machine_name', with: 'Sass')
+      page.execute_script %{ $('#by_machine_name').trigger('focus') }
+      page.execute_script %{ $('#by_machine_name').trigger('keydown') }
+      find(:xpath, '//li[contains(text(), "Sass")]').click
+
+      fill_in('address', with: '97203')
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(page.body).to have_content('Rip City')
+      expect(page.body).to_not have_content('No Way')
+    end
+
+    it 'location autocomplete select ensures you only search by a single location' do
+      FactoryBot.create(:location, region: nil, name: 'Rip Rental')
+      FactoryBot.create(:location, region: nil, name: 'Rip City Retail')
+
+      visit '/regionless'
+
+      fill_in('by_location_name', with: 'Rip')
+      page.execute_script %{ $('#by_location_name').trigger('focus') }
+      page.execute_script %{ $('#by_location_name').trigger('keydown') }
+      find(:xpath, '//li[contains(text(), "Rip City Retail")]').click
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(find('#search_results')).to have_content('Rip City Retail')
+      expect(find('#search_results')).to_not have_content('Rip Rental')
     end
   end
 

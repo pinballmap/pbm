@@ -182,6 +182,11 @@ RailsAdmin.config do |config|
       field :website, :string
       field :updated_at, :datetime
       field :description, :string
+      field :region_id do
+        render do
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.region_id, :object_type => 'location'}
+        end
+      end
       field :is_stern_army, :boolean do
         visible do
           bindings[:view]._current_user.is_super_admin

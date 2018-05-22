@@ -12,9 +12,7 @@
       [#{@location_data[3].join(', ').html_safe}]
     );
 
-- if (@locations && @region)
-  :javascript
-    var hrefOrig = 'https://#{request.host_with_port}/#{@region.name.downcase}?';
+    var hrefOrig = 'https://#{request.host_with_port}/#{@region ? @region.name.downcase : "regionless"}?';
     var def_value = window.location.href;
 
     var url = '';
