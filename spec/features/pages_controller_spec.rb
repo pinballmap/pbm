@@ -67,7 +67,7 @@ describe PagesController do
     end
 
     it 'location autocomplete select ensures you only search by a single location' do
-      FactoryBot.create(:location, region: nil, name: 'Rip Rental')
+      FactoryBot.create(:location, region: nil, name: 'Rip City Retail SW')
       FactoryBot.create(:location, region: nil, name: 'Rip City Retail')
 
       visit '/regionless'
@@ -75,14 +75,14 @@ describe PagesController do
       fill_in('by_location_name', with: 'Rip')
       page.execute_script %{ $('#by_location_name').trigger('focus') }
       page.execute_script %{ $('#by_location_name').trigger('keydown') }
-      find(:xpath, '//li[contains(text(), "Rip City Retail")]').click
+      find(:xpath, '//li[text()="Rip City Retail"]').click
 
       click_on 'location_search_button'
 
       sleep 1
 
       expect(find('#search_results')).to have_content('Rip City Retail')
-      expect(find('#search_results')).to_not have_content('Rip Rental')
+      expect(find('#search_results')).to_not have_content('Rip City Retail SW')
     end
   end
 
