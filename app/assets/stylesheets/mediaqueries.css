@@ -148,7 +148,7 @@
   }
 }
 
-@media (max-width: 865px) {
+@media (max-width: 875px) {
   #region_map {
     width: 420px;
     height: 450px;
@@ -182,9 +182,6 @@
 @media (max-width: 1095px) {
   .header_buttons_child {
     width: 90px;
-  }
-  .login_slash {
-    display: none;
   }
 }
 
