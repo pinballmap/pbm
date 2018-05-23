@@ -148,7 +148,7 @@
   }
 }
 
-@media (max-width: 865px) {
+@media (max-width: 875px) {
   #region_map {
     width: 420px;
     height: 450px;
@@ -156,9 +156,18 @@
   .div_02 {
     width: 420px;
   }
+  .header_menu_02 {
+    display: none;
+  }
+  #header .menu_link ul li.menu_header_02 {
+    display: block;
+  }
+  .header_buttons_child.header_menu_02 {
+    width: 0;
+  }
 }
 
-@media (max-width: 880px) {
+@media (max-width: 980px) {
   .header_menu_01 {
     display: none;
   }
@@ -170,12 +179,9 @@
   }
 }
 
-@media (max-width: 965px) {
+@media (max-width: 1095px) {
   .header_buttons_child {
     width: 90px;
-  }
-  .login_slash {
-    display: none;
   }
 }
 

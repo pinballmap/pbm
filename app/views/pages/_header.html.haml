@@ -8,7 +8,7 @@
         #menu &#9776;
         %ul#nav.js
           = render :partial => 'pages/menu'
-      .header_buttons_child
+      .header_buttons_child.header_menu_02
         - if !user_signed_in?
           = link_to 'Login', new_user_session_path
           %span.login_slash
@@ -20,26 +20,29 @@
             %span.login_slash
               |
             = link_to 'Admin', rails_admin_path
-      - if (@region || current_page?(regionless_path))
+      - if !current_page?(regionless_path)
+        .header_buttons_child
+          = link_to 'Try the BETA map!', regionless_path
+      - if !(@region)
+        .header_buttons_child
+          =link_to 'Add Location', regionless_location_suggest_path, :class => "bold"
+      - else
+        .header_buttons_child.header_menu_01
+          =link_to 'Add Location', suggest_path, :class => "bold"
+      - if (@region || current_page?(regionless_path))     
+        .header_buttons_child
+          %span.bold{:onclick => "findClosestLocations('#{@region ? @region.name : 'regionless'}')"}
+            = link_to 'Closest Locations', '#', {:id => 'find_closest_locations'}
         - if (@region)
           %div.region_logo_dropdown.header_buttons_child
             %span.region_name_page
               =link_to "#{@region.full_name}", region_homepage_path
             - if !mobile_device?
               %ul.other_regions_list= other_regions_html(@region)
-        - if current_page?(regionless_path)
-          .header_buttons_child
-            =link_to 'Add Location', regionless_location_suggest_path, :class => "bold"
         - else
-          .header_buttons_child.header_menu_01
-            =link_to 'Add Location', suggest_path, :class => "bold"
-        .header_buttons_child
-          %span.bold{:onclick => "findClosestLocations('#{@region ? @region.name : 'regionless'}')"}
-            = link_to 'Closest Locations', '#', {:id => 'find_closest_locations'}
-      - else
-        .header_buttons_child.w_95
-          %span{:onclick => "findClosestRegion()"}
-            = link_to 'Find Your Closest Map', '#'
+          .header_buttons_child.w_95
+            %span{:onclick => "findClosestRegion()"}
+              = link_to 'Find Your Closest Map', '#'
 - else
   #header{:class => "#{@region ? '' : 'header_home'}"}
     #menu &#9776;
@@ -67,22 +70,23 @@
                 |
               %li.login_list= link_to 'Admin', rails_admin_path
         = render :partial => 'pages/menu'
-  - if (@region || current_page?(regionless_path))
-    #header_lower
-      .darkb
-        - if current_page?(regionless_path)
-          =link_to 'Add Location', regionless_location_suggest_path
-        - else
-          =link_to 'Add Location', suggest_path
-        %span{:style => "float:right;", :onclick => "findClosestLocations('#{@region ? @region.name : 'regionless'}')"}
-          = link_to 'Closest Locations', '#', {:id => 'find_closest_locations'}
-      - if (@region)
-        .region_name_page
-          =link_to "#{@region.full_name}", region_homepage_path
-  - else
-    #header_lower.w_auto.ta_c.pt_10
-      %span.darkb{:onclick => "findClosestRegion()"}
-        = link_to 'Find Your Closest Map', '#'
+  #header_lower.header_buttons_container
+    - if !current_page?(regionless_path)
+      .header_buttons_child= link_to 'Try the BETA map!', regionless_path
+    - if !(@region)
+      .header_buttons_child=link_to 'Add Location', regionless_location_suggest_path, :class => "bold"
+    - else
+      .header_buttons_child=link_to 'Add Location', suggest_path, :class => "bold"
+    - if (@region || current_page?(regionless_path))
+      %span.header_buttons_child{:onclick => "findClosestLocations('#{@region ? @region.name : 'regionless'}')"}
+        = link_to 'Closest Locations', '#', {:id => 'find_closest_locations'}
+    - else
+      .w_auto.ta_c.pt_10.header_buttons_child
+        %span{:onclick => "findClosestRegion()"}
+          = link_to 'Find Your Closest Map', '#'
+  - if (@region)
+    .region_name_page
+      =link_to "#{@region.full_name}", region_homepage_path
 
 :javascript
   $().ready(function() {
