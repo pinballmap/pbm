@@ -2,7 +2,7 @@ require 'pony'
 
 class PagesController < ApplicationController
   respond_to :xml, :json, :html, :js, :rss
-  has_scope :by_location_name, :by_machine_id, :by_location_id
+  has_scope :by_location_name, :by_location_id, :by_machine_name, :by_machine_id
 
   def params
     request.parameters
@@ -11,12 +11,12 @@ class PagesController < ApplicationController
   def regionless_location_data
     @locations = []
 
-    if params[:address].blank? && params[:by_machine_id].blank? && params[:by_location_name].blank?
+    if params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank?
       @locations = []
-    elsif !params[:address].blank?
-      @locations = apply_scopes(Location.near(params[:address], 5)).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs)
     else
-      @locations = apply_scopes(Location).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs)
+      params.delete(:by_machine_name) unless params[:by_machine_id].blank?
+
+      @locations = apply_scopes(params[:address].blank? ? Location : Location.near(params[:address], 5)).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs)
     end
 
     @location_data = LocationsController.locations_javascript_data(@locations)
