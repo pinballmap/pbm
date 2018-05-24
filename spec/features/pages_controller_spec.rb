@@ -84,6 +84,40 @@ describe PagesController do
       expect(find('#search_results')).to have_content('Rip City Retail')
       expect(find('#search_results')).to_not have_content('Rip City Retail SW')
     end
+
+    it 'machine search blanks out machine_id when you search, honors machine_name scope' do
+      rip_location = FactoryBot.create(:location, region: nil, name: 'Rip City Retail SW')
+      clark_location = FactoryBot.create(:location, region: nil, name: "Clark's Corner")
+      renee_location = FactoryBot.create(:location, region: nil, name: "Renee's Rental")
+      FactoryBot.create(:location_machine_xref, location: rip_location, machine: FactoryBot.create(:machine, name: 'Sass'))
+      FactoryBot.create(:location_machine_xref, location: clark_location, machine: FactoryBot.create(:machine, name: 'Sass 2'))
+      FactoryBot.create(:location_machine_xref, location: renee_location, machine: FactoryBot.create(:machine, name: 'Bawb'))
+
+      visit '/regionless'
+
+      fill_in('by_machine_name', with: 'Bawb')
+      page.execute_script %{ $('#by_machine_name').trigger('focus') }
+      page.execute_script %{ $('#by_machine_name').trigger('keydown') }
+      find(:xpath, '//li[text()="Bawb"]').click
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(find('#search_results')).to have_content('Renee')
+      expect(find('#search_results')).to_not have_content('Clark')
+      expect(find('#search_results')).to_not have_content('Rip City')
+
+      fill_in('by_machine_name', with: 'Sass')
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(find('#search_results')).to have_content('Rip City')
+      expect(find('#search_results')).to_not have_content('Clark')
+      expect(find('#search_results')).to_not have_content('Renee')
+    end
   end
 
   describe 'Events', type: :feature, js: true do
