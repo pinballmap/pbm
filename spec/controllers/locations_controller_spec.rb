@@ -14,7 +14,7 @@ describe LocationsController, type: :controller do
     it 'should return error json when phone number is in an invalid format' do
       get 'update_metadata', params: { region: 'portland', id: @location.id, new_phone_777: 'invalid' }
 
-      expect(response.body).to eq('{"error":"Phone format invalid, please use ###-###-####"}')
+      expect(response.body).to eq('{"error":"Invalid phone format."}')
     end
 
     it 'should return error json when website is in an invalid format' do

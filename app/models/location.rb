@@ -4,7 +4,7 @@ class Location < ApplicationRecord
   rakismet_attrs content: :description
 
   validates_presence_of :name, :street, :city, :state, :zip
-  validates :phone, format: { with: /\A(\(\d{3}\) |\d{3}-)\d{3}-\d{4}\z/, message: 'format invalid, please use ###-###-#### or (###) ###-####' }, if: :phone?
+  validates :phone, phone: { allow_blank: true }
   validates :website, format: { with: %r{^http[s]?:\/\/}, message: 'must begin with http:// or https://', multiline: true }, if: :website?
   validates :name, :street, :city, :state, format: { with: /^\S.*/, message: "Can't start with a blank", multiline: true }
   validates :lat, :lon, presence: { message: 'Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon' }
@@ -140,16 +140,13 @@ class Location < ApplicationRecord
   def update_phone(new_phone)
     old_phone = phone
     if new_phone && !new_phone.blank?
-      new_phone.gsub!(/\s+/, '')
-      new_phone.gsub!(/[^0-9]/, '')
-
-      self.phone = new_phone.empty? ? 'empty' : ActionController::Base.helpers.number_to_phone(new_phone)
+      self.phone = new_phone.empty? ? 'empty' : new_phone
 
       if valid?
         @updates.push('Changed phone # to ' + phone)
       else
         self.phone = old_phone
-        @validation_errors.push('Phone format invalid, please use ###-###-####')
+        @validation_errors.push('Invalid phone format.')
       end
     elsif new_phone&.blank?
       self.phone = nil
