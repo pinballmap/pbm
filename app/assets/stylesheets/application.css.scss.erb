@@ -1850,7 +1850,6 @@ div.comment_image .comment_image:active {
 .location_thumbs a {
   margin: 0 5px 5px;
   display: inline-block;
-  border: 4px solid $blue;
   max-width: 200px;
   max-height: 200px;
   overflow: hidden;
@@ -1872,23 +1871,24 @@ div.comment_image .comment_image:active {
   cursor: pointer;
   display: block;
   padding: 0 .5em;
-  color: #666;
-  font-size: 18px;
-  line-height: 2;
   border: 1px solid #ddd;
   @include radius(.25em);
-  text-align: center;
   position: relative;
+  content: "";
+  height: 40px;
+  width: 100%;
 }
 .more_pictures:hover,.less_pictures:hover {
   background: #dadada;
 }
 .more_pictures:before {
-  content: "see more of the pictures";
+  background: url(<%= asset_path 'down-arrow.png' %>) no-repeat;
   box-shadow: 0 -10px 9px -5px #BBBBBB;
+  background-position: center; 
 }
 .less_pictures:before {
-  content: "see less of the pictures";
+  background: url(<%= asset_path 'up-arrow.png' %>) no-repeat;
+  background-position: center; 
 }
 .search_option_selector a {
   color: #000;
