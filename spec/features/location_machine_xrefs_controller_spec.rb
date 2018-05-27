@@ -420,8 +420,8 @@ describe LocationMachineXrefsController do
     it 'searches by location name from input' do
       chicago_region = FactoryBot.create(:region, name: 'chicago')
 
-      FactoryBot.create(:location, id: 11, region: @region, name: 'Cleo North')
-      FactoryBot.create(:location, id: 12, region: @region, name: 'Cleo South')
+      FactoryBot.create(:location, id: 11, region: @region, name: 'Cleo North', city: 'Portland', state: 'OR')
+      FactoryBot.create(:location, id: 12, region: @region, name: 'Cleo South', city: 'Vancouver', state: 'WA')
       FactoryBot.create(:location, id: 13, region: @region, name: 'Sassy')
       FactoryBot.create(:location, id: 14, region: chicago_region, name: 'Cleo West')
 
@@ -432,8 +432,8 @@ describe LocationMachineXrefsController do
       page.execute_script %{ $('#by_location_name').trigger('focus') }
       page.execute_script %{ $('#by_location_name').trigger('keydown') }
 
-      expect(page).to have_xpath('//li[contains(text(), "Cleo North")]')
-      expect(page).to have_xpath('//li[contains(text(), "Cleo South")]')
+      expect(page).to have_xpath('//li[contains(text(), "Cleo North (Portland, OR)")]')
+      expect(page).to have_xpath('//li[contains(text(), "Cleo South (Vancouver, WA)")]')
       expect(page).to_not have_xpath('//li[contains(text(), "Cleo West")]')
       expect(page).to_not have_xpath('//li[contains(text(), "Sassy")]')
     end

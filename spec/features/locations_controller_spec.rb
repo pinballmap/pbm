@@ -358,14 +358,14 @@ describe LocationsController do
       expect(@location.reload.operator_id).to eq(o.id)
       expect(@location.phone).to eq(nil)
       expect(@location.website).to eq('http://www.pinballmap.com')
-      expect(page).to have_content('format invalid, please use ###-###-####')
+      expect(page).to have_content('Invalid phone format.')
 
       t = FactoryBot.create(:location_type, name: 'Bar')
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.location_meta span.meta_image').click
-      fill_in("new_phone_#{@location.id}", with: '555-555-5555')
+      fill_in("new_phone_#{@location.id}", with: '503-488-1938')
       fill_in("new_website_#{@location.id}", with: 'www.foo.com')
       select('Bar', from: "new_location_type_#{@location.id}")
       click_on 'Save'
@@ -373,7 +373,7 @@ describe LocationsController do
       sleep 1
 
       expect(@location.reload.location_type_id).to eq(t.id)
-      expect(@location.phone).to eq('555-555-5555')
+      expect(@location.phone).to eq('503-488-1938')
       expect(@location.website).to eq('http://www.pinballmap.com')
       expect(page).to have_content('must begin with http:// or https://')
     end
@@ -413,7 +413,7 @@ describe LocationsController do
 
       find('.location_meta span.meta_image').click
       fill_in("new_website_#{@location.id}", with: 'http://www.foo.com')
-      fill_in("new_phone_#{@location.id}", with: '555-555-5555')
+      fill_in("new_phone_#{@location.id}", with: '503-285-3928')
       select('Bar', from: "new_location_type_#{@location.id}")
       select('Quarterworld', from: "new_operator_#{@location.id}")
       click_on 'Save'
@@ -421,7 +421,7 @@ describe LocationsController do
       sleep 1
 
       expect(@location.reload.website).to eq('http://www.foo.com')
-      expect(@location.phone).to eq('555-555-5555')
+      expect(@location.phone).to eq('503-285-3928')
       expect(@location.operator_id).to eq(o.id)
       expect(@location.location_type_id).to eq(t.id)
       expect(@location.date_last_updated.strftime('%b-%d-%Y')).to eq(Time.now.strftime('%b-%d-%Y'))

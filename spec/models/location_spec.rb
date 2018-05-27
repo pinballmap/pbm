@@ -9,6 +9,29 @@ describe Location do
     @lmx2 = FactoryBot.create(:location_machine_xref, location: @l, machine: @m2, created_at: '2014-01-15 05:00:00')
   end
 
+  describe 'validates phone' do
+    it 'only allows valid formats' do
+      [
+        '503-796-9364',
+        '(503) 796-9364',
+        '+61 8 8952 2355',
+        '+49-89-636-48018',
+        '+47 930 48 892'
+      ].each do |p|
+        @l.phone = p
+        expect(lambda do
+          @l.save!
+        end).to_not raise_error
+      end
+
+      @l.phone = 'ABC'
+
+      expect(lambda do
+        @l.save!
+      end).to raise_error
+    end
+  end
+
   describe '#skip_geocoding?' do
     it 'respects lat/lon last updated status' do
       @l.last_updated_by_user_id = FactoryBot.create(:user, region_id: 1).id
@@ -180,14 +203,14 @@ describe Location do
       FactoryBot.create(:operator, id: 1, name: 'operator')
       FactoryBot.create(:location_type, id: 1, name: 'bar')
 
-      @l.update_metadata(u, description: 'foo', phone: '555-555-5555', website: 'http://www.goo.com', operator_id: 1, location_type_id: 1)
+      @l.update_metadata(u, description: 'foo', phone: '(503) 796-9364', website: 'http://www.goo.com', operator_id: 1, location_type_id: 1)
 
       user_submission = UserSubmission.third
 
       expect(user_submission.user_id).to eq(u.id)
       expect(user_submission.submission).to eq(<<-HERE.strip)
 Changed location description to foo
-Changed phone # to 555-555-5555
+Changed phone # to (503) 796-9364
 Changed website to http://www.goo.com
 Changed operator to operator
 Changed location type to bar to quarterworld

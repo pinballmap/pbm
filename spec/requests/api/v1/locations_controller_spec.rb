@@ -259,14 +259,14 @@ HERE
       type = FactoryBot.create(:location_type, name: 'bar')
       operator = FactoryBot.create(:operator, name: 'CleoWorld')
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { description: 'foo', website: 'http://bar', phone: '5555555555', zip: '97777', location_type: type.id.to_s, operator_id: operator.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { description: 'foo', website: 'http://bar', phone: '5038471772', zip: '97777', location_type: type.id.to_s, operator_id: operator.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
 
       updated_location = @location.reload
 
       expect(updated_location.description).to eq('foo')
       expect(updated_location.website).to eq('http://bar')
-      expect(updated_location.phone).to eq('555-555-5555')
+      expect(updated_location.phone).to eq('5038471772')
       expect(updated_location.zip).to eq('97203')
       expect(updated_location.location_type_id).to eq(type.id)
       expect(updated_location.operator_id).to eq(operator.id)
@@ -278,7 +278,7 @@ HERE
 
       expect(location['description']).to eq('foo')
       expect(location['website']).to eq('http://bar')
-      expect(location['phone']).to eq('555-555-5555')
+      expect(location['phone']).to eq('5038471772')
       expect(location['zip']).to eq('97203')
       expect(location['location_type_id']).to eq(type.id)
       expect(location['operator_id']).to eq(operator.id)
@@ -288,7 +288,7 @@ HERE
       type = FactoryBot.create(:location_type, name: 'bar')
       @location.location_type_id = type.id
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { description: 'foo', website: 'http://bar', phone: '5555555555', zip: '97777', location_type: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { description: 'foo', website: 'http://bar', phone: '5039183717', zip: '97777', location_type: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
 
       updated_location = @location.reload
@@ -321,23 +321,23 @@ HERE
 
       expect(response).to be_success
 
-      expect(JSON.parse(response.body)['errors']).to eq(['Phone format invalid, please use ###-###-####'])
+      expect(JSON.parse(response.body)['errors']).to eq(['Invalid phone format.'])
 
       put '/api/v1/locations/' + @location.id.to_s + '.json', params: { phone: '444-4444', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_success
 
-      expect(JSON.parse(response.body)['errors']).to eq(['Phone format invalid, please use ###-###-####'])
+      expect(JSON.parse(response.body)['errors']).to eq(['Invalid phone format.'])
 
       put '/api/v1/locations/' + @location.id.to_s + '.json', params: { phone: '11-444-4444', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_success
 
-      expect(JSON.parse(response.body)['errors']).to eq(['Phone format invalid, please use ###-###-####'])
+      expect(JSON.parse(response.body)['errors']).to eq(['Invalid phone format.'])
     end
 
     it 'blank phone number deletes phone number' do
-      @location.phone = '555-555-5555'
+      @location.phone = '503-294-9948'
 
       put '/api/v1/locations/' + @location.id.to_s + '.json', params: { phone: nil, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_success
@@ -365,7 +365,7 @@ HERE
 
       expect(JSON.parse(response.body)['errors']).to eq('No locations within 50 miles.')
 
-      closest_location = FactoryBot.create(:location, region: @region, name: 'Closest Location', street: '123 pine', city: 'portland', phone: '555-555-5555', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
+      closest_location = FactoryBot.create(:location, region: @region, name: 'Closest Location', street: '123 pine', city: 'portland', phone: '503-924-9188', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
       FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Cleo'))
       FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Bawb'))
       FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Sassy'))
@@ -384,7 +384,7 @@ HERE
       expect(location['city']).to eq('portland')
       expect(location['state']).to eq('OR')
       expect(location['zip']).to eq('97202')
-      expect(location['phone']).to eq('555-555-5555')
+      expect(location['phone']).to eq('503-924-9188')
       expect(location['lat']).to eq('45.49')
       expect(location['lon']).to eq('-122.63')
       expect(location['machine_names']).to eq(%w[Bawb Cleo Sassy])
@@ -414,7 +414,7 @@ HERE
 
       expect(JSON.parse(response.body)['errors']).to eq('No locations within 50 miles.')
 
-      closest_location = FactoryBot.create(:location, region: @region, name: 'Closest Location', street: '123 pine', city: 'portland', phone: '555-555-5555', state: 'OR', zip: '97203', lat: 45.49, lon: -122.63)
+      closest_location = FactoryBot.create(:location, region: @region, name: 'Closest Location', street: '123 pine', city: 'portland', phone: '503-928-9288', state: 'OR', zip: '97203', lat: 45.49, lon: -122.63)
       FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Cleo'))
       FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Bawb'))
       FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Sassy'))
@@ -431,7 +431,7 @@ HERE
       expect(location['city']).to eq('portland')
       expect(location['state']).to eq('OR')
       expect(location['zip']).to eq('97203')
-      expect(location['phone']).to eq('555-555-5555')
+      expect(location['phone']).to eq('503-928-9288')
       expect(location['lat']).to eq('45.49')
       expect(location['lon']).to eq('-122.63')
       expect(location['machine_names']).to eq(%w[Bawb Cleo Sassy])
