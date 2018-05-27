@@ -1850,7 +1850,6 @@ div.comment_image .comment_image:active {
 .location_thumbs a {
   margin: 0 5px 5px;
   display: inline-block;
-  border: 4px solid $blue;
   max-width: 200px;
   max-height: 200px;
   overflow: hidden;
@@ -1884,11 +1883,23 @@ div.comment_image .comment_image:active {
   background: #dadada;
 }
 .more_pictures:before {
-  content: "see more of the pictures";
+  content: "";
+  text-align: center;
+  background: url(<%= asset_path 'down-arrow.png' %>) no-repeat;
+  background-position: center; 
   box-shadow: 0 -10px 9px -5px #BBBBBB;
+  display: inline-block;
+  height: 40px;
+  width: 100%;
 }
 .less_pictures:before {
-  content: "see less of the pictures";
+  content: "";
+  text-align: center;
+  background: url(<%= asset_path 'up-arrow.png' %>) no-repeat;
+  background-position: center; 
+  display: inline-block;
+  height: 40px;
+  width: 100%;
 }
 .search_option_selector a {
   color: #000;
