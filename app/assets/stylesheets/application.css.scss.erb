@@ -1871,35 +1871,24 @@ div.comment_image .comment_image:active {
   cursor: pointer;
   display: block;
   padding: 0 .5em;
-  color: #666;
-  font-size: 18px;
-  line-height: 2;
   border: 1px solid #ddd;
   @include radius(.25em);
-  text-align: center;
   position: relative;
+  content: "";
+  height: 40px;
+  width: 100%;
 }
 .more_pictures:hover,.less_pictures:hover {
   background: #dadada;
 }
 .more_pictures:before {
-  content: "";
-  text-align: center;
   background: url(<%= asset_path 'down-arrow.png' %>) no-repeat;
-  background-position: center; 
   box-shadow: 0 -10px 9px -5px #BBBBBB;
-  display: inline-block;
-  height: 40px;
-  width: 100%;
+  background-position: center; 
 }
 .less_pictures:before {
-  content: "";
-  text-align: center;
   background: url(<%= asset_path 'up-arrow.png' %>) no-repeat;
   background-position: center; 
-  display: inline-block;
-  height: 40px;
-  width: 100%;
 }
 .search_option_selector a {
   color: #000;
