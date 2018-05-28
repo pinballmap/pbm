@@ -15,13 +15,13 @@
         = text_field_tag "by_location_name", params["by_location_name"], :class => 'lookup_search_input', :placeholder => 'e.g. Quarterworld Arcade'
       = image_submit_tag('search_icon.png', :class => 'search', :id => "location_search_button")
 
-  - if !mobile_device?
-    #min_lookup_wrapper.hide_button.slide_left.toggle_btn_reg{:onclick => "min_lookup()"}
-  #mapFollow_wrapper.hide_button.toggle_btn_reg
-    %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :onchange => 'unChecked();'}
-    Redo results when map is moved?
-  #search_link_wrapper.hide_button.toggle_btn_reg
-    =link_to "Link to this Search Result", "", :id => "search_link"
+    - if !mobile_device?
+      #min_lookup_wrapper.hide_button.slide_left.toggle_btn_reg{:onclick => "min_lookup()"}
+    #mapFollow_wrapper.hide_button.toggle_btn_reg
+      %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :onchange => 'unChecked();'}
+      Redo results when map is moved?
+    #search_link_wrapper.hide_button.toggle_btn_reg
+      =link_to "Link to this Search Result", "", :id => "search_link"
 
   #map
     = render :partial => 'locations/map', locals: { lat: 45.512794, lon: -122.679565 }
