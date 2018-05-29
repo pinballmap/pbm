@@ -172,6 +172,7 @@ Street: street\n
 City: city\n
 State: state\n
 Zip: zip\n
+Country: country\n
 Phone: phone\n
 Website: website\n
 Type: type\n
@@ -192,7 +193,7 @@ HERE
           )
         end
 
-        post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
+        post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
 
         expect(region.nil? ? UserSubmission.count : @region.user_submissions.count).to eq(1)
         submission = region.nil? ? UserSubmission.first : @region.user_submissions.first
@@ -213,6 +214,7 @@ Street: street\n
 City: city\n
 State: state\n
 Zip: zip\n
+Country: country\n
 Phone: phone\n
 Website: website\n
 Type: type\n
@@ -232,7 +234,7 @@ HERE
           )
         end
 
-        post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
+        post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
       end
 
       it 'should send an email - notifies if sent from the staging server' do
@@ -252,7 +254,7 @@ HERE
         operator = FactoryBot.create(:operator, name: 'operator')
         zone = FactoryBot.create(:zone, name: 'zone')
 
-        post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_zone: 'zone', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
+        post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', location_zone: 'zone', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
 
         expect(SuggestedLocation.all.size).to eq(1)
 
@@ -263,6 +265,7 @@ HERE
         expect(sl.city).to eq('city')
         expect(sl.state).to eq('state')
         expect(sl.zip).to eq('zip')
+        expect(sl.country).to eq('country')
         expect(sl.phone).to eq('phone')
         expect(sl.website).to eq('website')
         expect(sl.location_type).to eq(location_type)

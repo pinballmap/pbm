@@ -57,6 +57,7 @@ Street: #{params['location_street']}\n
 City: #{params['location_city']}\n
 State: #{params['location_state']}\n
 Zip: #{params['location_zip']}\n
+Country: #{params['location_country']}\n
 Phone: #{params['location_phone']}\n
 Website: #{params['location_website']}\n
 Type: #{location_type ? location_type.name : ''}\n
@@ -91,7 +92,7 @@ BODY
       zip = geocoded_results.postal_code
     end
 
-    SuggestedLocation.create(region_id: region ? region.id : nil, name: params['location_name'], street: street || params['location_street'], city: city || params['location_city'], state: state || params['location_state'], zip: zip || params['location_zip'], phone: params['location_phone'], website: params['location_website'], location_type: location_type, operator: operator, zone: zone, comments: params['location_comments'], machines: params['location_machines'], lat: lat, lon: lon, user_inputted_address: user_inputted_address)
+    SuggestedLocation.create(region_id: region ? region.id : nil, name: params['location_name'], street: street || params['location_street'], city: city || params['location_city'], state: state || params['location_state'], zip: zip || params['location_zip'], country: params['location_country'], phone: params['location_phone'], website: params['location_website'], location_type: location_type, operator: operator, zone: zone, comments: params['location_comments'], machines: params['location_machines'], lat: lat, lon: lon, user_inputted_address: user_inputted_address)
   end
 
   def send_new_region_notification(params)

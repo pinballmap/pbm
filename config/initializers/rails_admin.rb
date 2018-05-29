@@ -116,6 +116,7 @@ RailsAdmin.config do |config|
       field :city, :string
       field :state, :string
       field :zip, :string
+      field :country, :string
       field :phone, :string
       field :zone, :belongs_to_association
       field :operator, :belongs_to_association
@@ -139,6 +140,7 @@ RailsAdmin.config do |config|
       field :city, :string
       field :state, :string
       field :zip, :string
+      field :country, :string
       field :phone, :string
       field :lat, :decimal
       field :lon, :decimal
@@ -172,6 +174,11 @@ RailsAdmin.config do |config|
       field :city, :string
       field :state, :string
       field :zip, :string
+      field :country do
+        render do
+          bindings[:view].render :partial => 'country_select', :locals => {:object_type => 'location', :country => bindings[:object].country}
+        end
+      end
       field :phone, :string
       field :lat, :decimal do
         required false
@@ -214,6 +221,11 @@ RailsAdmin.config do |config|
       field :city, :string
       field :state, :string
       field :zip, :string
+      field :country do
+        render do
+          bindings[:view].render :partial => 'country_select', :locals => {:object_type => 'location', :country => bindings[:object].country}
+        end
+      end
       field :phone, :string
       field :lat, :decimal do
         required false
@@ -644,6 +656,7 @@ RailsAdmin.config do |config|
       field :city, :string
       field :state, :string
       field :zip, :string
+      field :country, :string
       field :phone, :string
       field :operator, :belongs_to_association
       field :zone, :belongs_to_association
@@ -676,6 +689,11 @@ RailsAdmin.config do |config|
       field :city, :string
       field :state, :string
       field :zip, :string
+      field :country do
+        render do
+          bindings[:view].render :partial => 'country_select', :locals => {:object_type => 'suggested_location', :country => bindings[:object].country}
+        end
+      end
       field :phone, :string
       field :lat, :decimal do
         required false
@@ -701,6 +719,7 @@ RailsAdmin.config do |config|
       field :city, :string
       field :state, :string
       field :zip, :string
+      field :country, :string
       field :phone, :string
       field :lat, :decimal
       field :lon, :decimal
