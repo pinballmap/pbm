@@ -27,12 +27,15 @@
                   %label{:for => "location_zip"} Zip:
                   %input{:type => "text", :name => "location_zip", :params => "location_zip", :class => "text"}
                 %li
+                  %label{:for => "location_country"} Country:
+                  = country_select('suggested_location', 'location_country', {include_blank: true}, {name: 'location_country'})
+                %li{:class => "first"}
                   %label{:for => "location_phone"} Phone:
                   %input{:type => "text", :name => "location_phone", :params => "location_phone", :class => "text"}
-                %li{:class => "first"}
+                %li
                   %label{:for => "location_website"} Website:
                   %input{:type => "text", :name => "location_website", :params => "location_website", :class => "text"}
-                %li
+                %li{:class => "first"}
                   %label{:for => "location_type"} Location Type:
                   = select_tag :location_type, options_for_select(@location_types)
                 - if @operators.size > 1

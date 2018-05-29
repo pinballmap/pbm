@@ -5,6 +5,7 @@ FactoryBot.define do
     street '303 Southeast 3rd Avenue'
     city 'Portland'
     state 'OR'
+    country 'US'
     zip '97214'
     lat '11.11'
     lon '-11.11'

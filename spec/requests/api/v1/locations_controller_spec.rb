@@ -63,6 +63,7 @@ Street: street\n
 City: city\n
 State: state\n
 Zip: zip\n
+Country: \n
 Phone: phone\n
 Website: website\n
 Type: type\n
@@ -121,6 +122,7 @@ Street: street\n
 City: city\n
 State: state\n
 Zip: zip\n
+Country: \n
 Phone: phone\n
 Website: website\n
 Type: cool type\n
