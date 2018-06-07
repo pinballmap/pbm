@@ -202,6 +202,19 @@ describe LocationsController do
       end
     end
 
+    it 'does not display region name in a region map search' do
+      FactoryBot.create(:location, region: @region, name: 'Cleo')
+
+      visit '/portland'
+
+      click_on 'Search'
+
+      within('div#search_results') do
+        expect(page).to have_content('Cleo')
+        expect(page).to_not have_content('(Region: portland)')
+      end
+    end
+
     it 'displays a location not found message instead of the ocean' do
       visit '/portland/?by_location_id=-1'
 

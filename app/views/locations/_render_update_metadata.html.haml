@@ -31,6 +31,12 @@
           =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?utf8=✓&by_type_id=#{l.location_type.id}"
         - else
           #{l.location_type.name}
+    - if (!@region && l.region)
+      %li.location_type
+        %span.grey Region:
+        %span
+        =link_to "#{l.region.full_name}", "/#{l.region.name.downcase}"
+        .clear
   .clear
 %div[l, :metadata_edit]{:style => 'display:none'}
   = form_tag update_metadata_locations_path(:action => 'update_metadata', id: l.id), :id => "update_metadata_#{l.id}", :method => 'get' do
