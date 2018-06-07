@@ -20,6 +20,8 @@
   %li.mobile_hide=link_to 'Add Location', regionless_location_suggest_path  
 %li=link_to 'Home', root_path
 %li=link_to 'User Profile', current_user.nil? ? inspire_profile_path : profile_user_path(current_user.id)
+- if !(@region)
+  %li=link_to 'Location RSS', "/location_machine_xrefs.rss", {:class => 'feed_icon'}
 %li=link_to 'Blog', 'http://blog.pinballmap.com'
 %li=link_to 'Store', store_path
 %li=link_to 'App', app_path
