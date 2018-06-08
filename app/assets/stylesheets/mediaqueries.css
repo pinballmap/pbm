@@ -198,7 +198,7 @@
     width: 100%;
     height: auto;
   }
-  .div_01 p {
+  .div_01 p, .div_01 .darkb {
     font-size: 14px;
     line-height: 16px;
   }
