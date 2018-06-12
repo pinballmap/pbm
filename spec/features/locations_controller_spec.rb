@@ -203,7 +203,7 @@ describe LocationsController do
     end
 
     it 'does not display region name in a region map search' do
-      FactoryBot.create(:location, region: @region, name: 'Cleo')
+      pdx_location = FactoryBot.create(:location, region: @region, name: 'Cleo')
 
       visit '/portland'
 
@@ -211,7 +211,14 @@ describe LocationsController do
 
       within('div#search_results') do
         expect(page).to have_content('Cleo')
-        expect(page).to_not have_content('(Region: portland)')
+        expect(page).to_not have_content('Region: portland')
+      end
+
+      visit '/portland/?by_location_id=' + pdx_location.id.to_s
+
+      within('div#search_results') do
+        expect(page).to have_content('Cleo')
+        expect(page).to_not have_content('Region: portland')
       end
     end
 

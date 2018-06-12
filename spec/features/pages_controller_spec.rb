@@ -106,6 +106,12 @@ describe PagesController do
       fill_in('by_machine_name', with: 'Sass 3')
       click_on 'location_search_button'
       expect(find('#search_results')).to have_content('Region: Chicago')
+
+      visit '/regionless/?by_location_id=' + rip_location.id.to_s
+      expect(find('#search_results')).to_not have_content('Region:')
+
+      visit '/regionless/?by_location_id=' + clark_location.id.to_s
+      expect(find('#search_results')).to have_content('Region: Portland')
     end
 
     it 'machine search blanks out machine_id when you search, honors machine_name scope' do
