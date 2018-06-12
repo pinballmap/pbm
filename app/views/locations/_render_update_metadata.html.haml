@@ -32,7 +32,7 @@
         - else
           #{l.location_type.name}
       .clear
-    - if (!@region && l.region)
+    - if ((current_page?(regionless_location_data_path) || request.referer =~ /regionless/) && l.region)
       %li.location_type
         %span.grey Region:
         %span
