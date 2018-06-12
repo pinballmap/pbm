@@ -1610,13 +1610,13 @@ input#initials {
   height: 24px;
 }
 .location_type, .location_type a, .location_types, .operator, .operator a {
-  padding: 2px 0 6px 4px;
+  padding: 2px 0 2px 4px;
 }
 .operator a:hover, .location_type a:hover {
   color: $red;
 }
-.location_type li {
-  margin-top: 5px;
+li.location_type, li.operator {
+  line-height: 20px;
 }
 .edit_mode {
   font-size: 15px;
@@ -2462,7 +2462,6 @@ div.score_list {
 }
 #region_page_body .gm-style-iw {
   max-height: 400px !important;
-  overflow-y: auto !important;
 }
 
 /** Rails Admin **/
