@@ -2,7 +2,7 @@
   #header{:class => "#{@region ? '' : (defined? @region) and current_page?(region_homepage_path) ? 'header_fixed' : ''} #{current_page?(regionless_path) ? 'header_fixed' : '' }"}
     - if current_page?(regionless_path)
       %span.beta BETA
-    =link_to image_tag('pinballmapcom_nocom.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => "logo_link"
+    =link_to image_tag('pinballmap-logo.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => "logo_link"
     %div{:class => "header_buttons_container"}
       %div.menu_link
         #menu &#9776;
@@ -49,7 +49,7 @@
     - if current_page?(regionless_path)
       %span.beta BETA
     #header_image
-      =link_to image_tag('pinballmapcom_nocom.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => 'logo_link'
+      =link_to image_tag('pinballmap-logo.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => 'logo_link'
     - if user_signed_in?
       =link_to image_tag('user.png', :alt => 'profile icon'), profile_user_path(current_user.id), :class => 'user_icon_link'
     - else
