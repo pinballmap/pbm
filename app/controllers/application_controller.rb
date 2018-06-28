@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   acts_as_token_authentication_handler_for User, fallback: :none
 
-  protect_from_forgery
+  protect_from_forgery prepend: true
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :detect_region
   after_action :flash_to_headers, :store_location
