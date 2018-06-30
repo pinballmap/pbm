@@ -35,7 +35,7 @@
                 %p.twitter_box
                   Follow
                   =link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
-                  on Twitter for updates from across all #{@all_regions.size} regional maps!
+                  on Twitter for map updates and news!
                 %ul.twitter
                   - @tweets.each do |t|
                     %li= auto_link(t.text)
