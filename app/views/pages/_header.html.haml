@@ -1,7 +1,7 @@
 - if !mobile_device?
   #header{:class => "#{@region ? '' : (defined? @region) and current_page?(region_homepage_path) ? 'header_fixed' : ''} #{current_page?(regionless_path) ? 'header_fixed' : '' }"}
     - if current_page?(regionless_path)
-      %span.beta BETA
+      =link_to 'BETA', regionless_path, :class => 'beta'
     =link_to image_tag('pinballmap-logo.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => "logo_link"
     %div{:class => "header_buttons_container"}
       %div.menu_link
@@ -22,7 +22,7 @@
             = link_to 'Admin', rails_admin_path
       - if !current_page?(regionless_path)
         .header_buttons_child
-          = link_to 'Try the BETA map!', regionless_path
+          = link_to 'Try the BIG map!', regionless_path
       - if !(@region)
         .header_buttons_child
           =link_to 'Add Location', regionless_location_suggest_path, :class => "bold"
@@ -47,7 +47,7 @@
   #header{:class => "#{@region ? '' : 'header_home'}"}
     #menu &#9776;
     - if current_page?(regionless_path)
-      %span.beta BETA
+      =link_to 'BETA', regionless_path, :class => 'beta'
     #header_image
       =link_to image_tag('pinballmap-logo.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => 'logo_link'
     - if user_signed_in?
@@ -72,7 +72,7 @@
         = render :partial => 'pages/menu'
   #header_lower.header_buttons_container
     - if !current_page?(regionless_path)
-      .header_buttons_child= link_to 'Try the BETA map!', regionless_path
+      .header_buttons_child= link_to 'Try the BIG map!', regionless_path
     - if !(@region)
       .header_buttons_child=link_to 'Add Location', regionless_location_suggest_path, :class => "bold"
     - else

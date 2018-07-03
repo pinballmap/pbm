@@ -132,7 +132,7 @@
   .div_01 {
     width: 300px;
   }
-  .div_01 p {
+  .div_01 p, .div_01 .darkb {
     font-size: 14px;
     line-height: 16px;
   }
