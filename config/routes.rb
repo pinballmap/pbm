@@ -37,7 +37,7 @@ Rails.application.routes.draw do
           post :app_comment
         end
       end
-      resources :locations, only: [:index, :update] do
+      resources :locations, only: [:index, :show, :update] do
         member do
           get :machine_details
           put :confirm
