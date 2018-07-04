@@ -123,6 +123,11 @@
     }
 }
 
+@media (max-width: 1800px) {
+  .div_01b {
+    display: none;
+  }
+}
 @media (max-width: 1600px) {
   .div_03 {
     display: none !important;
