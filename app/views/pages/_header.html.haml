@@ -39,10 +39,10 @@
               =link_to "#{@region.full_name}", region_homepage_path
             - if !mobile_device?
               %ul.other_regions_list= other_regions_html(@region)
-        - else
-          .header_buttons_child.w_95
-            %span{:onclick => "findClosestRegion()"}
-              = link_to 'Find Your Closest Map', '#'
+      - else
+        .header_buttons_child.w_95
+          %span{:onclick => "findClosestRegion()"}
+            = link_to 'Find Your Closest Map', '#'
 - else
   #header{:class => "#{@region ? '' : 'header_home'}"}
     #menu &#9776;
@@ -81,7 +81,7 @@
       %span.header_buttons_child{:onclick => "findClosestLocations('#{@region ? @region.name : 'regionless'}')"}
         = link_to 'Closest Locations', '#', {:id => 'find_closest_locations'}
     - else
-      .w_auto.ta_c.pt_10.header_buttons_child
+      .ta_c.pt_10.header_buttons_child
         %span{:onclick => "findClosestRegion()"}
           = link_to 'Find Your Closest Map', '#'
   - if (@region)
