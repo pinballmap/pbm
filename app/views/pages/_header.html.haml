@@ -81,7 +81,7 @@
       %span.header_buttons_child{:onclick => "findClosestLocations('#{@region ? @region.name : 'regionless'}')"}
         = link_to 'Closest Locations', '#', {:id => 'find_closest_locations'}
     - else
-      .ta_c.pt_10.header_buttons_child
+      .header_buttons_child
         %span{:onclick => "findClosestRegion()"}
           = link_to 'Find Your Closest Map', '#'
   - if (@region)
