@@ -13,7 +13,7 @@
             And it supports "regionless" locations, as well. So basically, now we're aiming to cover as much area as possible, and not just select cities.
           %p 
             Stay tuned for a sweet app update that will list all locations in one big super map!
-          %p 
+          %p.l
             We are currently listing a total of 
             %span.darkb 
               #{number_with_delimiter(Location.all.count,:delimiter => ",")} 
@@ -22,7 +22,7 @@
               #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} 
             machines.
   .div_01b.home_more.read_more_wrap    
-    %p
+    %p.f
       Help keep your map up to date by adding and removing machines to/from locations, and by submitting new locations that aren't already listed.
     %p
       Each regional map listed below is curated by a local administrator, often with the support of a league.
