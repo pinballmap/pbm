@@ -45,6 +45,7 @@ Rails.application.routes.draw do
         collection do
           get :closest_by_lat_lon
           get :closest_by_address
+          get :autocomplete
           post :suggest
         end
       end

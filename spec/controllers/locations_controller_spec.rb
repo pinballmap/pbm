@@ -23,6 +23,7 @@ describe LocationsController, type: :controller do
       expect(response.body).to eq('{"error":"Website must begin with http:// or https://"}')
     end
   end
+
   describe '#newest_machine_name' do
     it 'should tell you the name of the newest machine added to the location' do
       FactoryBot.create(:location_machine_xref, location_id: @location.id, machine: FactoryBot.create(:machine, name: 'cool'))
