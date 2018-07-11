@@ -200,6 +200,19 @@ module Api
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find location', 'errors')
       end
+
+      api :GET, '/api/v1/locations/autocomplete.json', 'Send back fuzzy search results of search params'
+      param :name, String, desc: 'name to fuzzy search with', required: true
+      formats ['json']
+      def autocomplete
+        locations = Location.select { |l| l.name =~ /#{Regexp.escape params[:name] || ''}/i }.sort_by(&:name).map { |l| { label: "#{l.name} (#{l.city}, #{l.state})", value: l.name, id: l.id } }
+
+        return_response(
+          locations,
+          nil,
+          []
+        )
+      end
     end
   end
 end

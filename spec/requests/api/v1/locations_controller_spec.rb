@@ -529,4 +529,18 @@ HERE
       expect(response.body).to include('567')
     end
   end
+
+  describe '#autocomplete' do
+    it 'should do a fuzzy search on name and return a list of in-scope names and IDs' do
+      FactoryBot.create(:location, name: 'foo')
+      bar = FactoryBot.create(:location, name: 'bar')
+      barfoo = FactoryBot.create(:location, name: 'barfoo')
+
+      get '/api/v1/locations/autocomplete', params: { name: 'ar' }
+
+      expect(response.body).to eq(<<HERE.strip)
+[{"label":"bar (Portland, OR)","value":"bar","id":#{bar.id}},{"label":"barfoo (Portland, OR)","value":"barfoo","id":#{barfoo.id}}]
+HERE
+    end
+  end
 end
