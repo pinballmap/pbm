@@ -12,7 +12,7 @@
       %hr
       .regionless_input.inline
         %span Location
-        = text_field_tag "by_location_name", params["by_location_name"], :class => 'lookup_search_input', :placeholder => 'e.g. Quarterworld Arcade'
+        = text_field_tag "by_location_name", params["by_location_name"], :class => 'lookup_search_input', :placeholder => 'e.g. Ground Kontrol'
       = image_submit_tag('search_icon.png', :class => 'search', :id => "location_search_button")
 
     - if !mobile_device?
