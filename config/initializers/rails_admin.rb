@@ -302,12 +302,18 @@ RailsAdmin.config do |config|
       field :manufacturer, :string
       field :year, :integer
       field :is_active, :boolean
+      field :ipdb_link, :string
+      field :ipdb_id, :integer
+      field :opdb_id, :string
       field :machine_group, :belongs_to_association
     end
     show do
       field :name, :string
       field :is_active, :boolean
       field :updated_at, :datetime
+      field :ipdb_link, :string
+      field :ipdb_id, :integer
+      field :opdb_id, :string
       field :machine_group, :belongs_to_association
     end
     edit do
@@ -315,6 +321,8 @@ RailsAdmin.config do |config|
       field :manufacturer, :string
       field :year, :integer
       field :ipdb_link, :string
+      field :ipdb_id, :integer
+      field :opdb_id, :string
       field :is_active, :boolean
       field :machine_group, :belongs_to_association
     end
