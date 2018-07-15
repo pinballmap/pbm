@@ -235,7 +235,7 @@ describe LocationsController do
       @zone = FactoryBot.create(:zone, region: @region, name: 'DT')
       @operator = FactoryBot.create(:operator, region: @region, name: 'Quarterworld')
       @location = FactoryBot.create(:location, region: @region, city: 'Portland', name: 'Cleo', zone: @zone, location_type: @type, operator: @operator)
-      @machine = FactoryBot.create(:machine, name: 'Barb', ipdb_id: 777)
+      @machine = FactoryBot.create(:machine, name: 'Barb', ipdb_id: 777, opdb_id: 'b33f')
       FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
 
       FactoryBot.create(:location, region: @region, name: 'Sass', city: 'Beaverton')
@@ -325,6 +325,13 @@ describe LocationsController do
 
     it 'by_ipdb_id' do
       visit '/portland/?by_ipdb_id=' + @machine.ipdb_id.to_s
+
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to_not have_content('Sass')
+    end
+
+    it 'by_opdb_id' do
+      visit '/portland/?by_opdb_id=' + @machine.opdb_id.to_s
 
       expect(find('#search_results')).to have_content('Cleo')
       expect(find('#search_results')).to_not have_content('Sass')

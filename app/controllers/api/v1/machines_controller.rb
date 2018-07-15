@@ -12,7 +12,7 @@ module Api
       param :region_id, Integer, desc: 'show only machines from this region', required: false
       formats ['json']
       def index
-        except = params[:no_details] ? %i[is_active created_at updated_at ipdb_link ipdb_id machine_group_id] : nil
+        except = params[:no_details] ? %i[is_active created_at updated_at ipdb_link ipdb_id opdb_id machine_group_id] : nil
         machines = params[:region_id] ? Region.find(params[:region_id]).machines : Machine.all
 
         return_response(machines, 'machines', nil, nil, 200, except)
