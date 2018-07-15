@@ -38,6 +38,10 @@ class Location < ApplicationRecord
     machines = Machine.where('ipdb_id in (?)', id.split('_').map(&:to_i)).map(&:all_machines_in_machine_group).flatten
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
   })
+  scope :by_opdb_id, (lambda { |id|
+    machines = Machine.where('opdb_id in (?)', id.split('_')).map(&:all_machines_in_machine_group).flatten
+    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
+  })
   scope :by_machine_id, (lambda { |id|
     machines = Machine.where('id in (?)', id.split('_').map(&:to_i)).map(&:all_machines_in_machine_group).flatten
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))

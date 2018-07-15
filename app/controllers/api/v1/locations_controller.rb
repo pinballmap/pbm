@@ -6,7 +6,7 @@ module Api
 
       before_action :allow_cors
       respond_to :json
-      has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_zone_id, :by_operator_id, :by_type_id, :by_machine_group_id, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region, :by_ipdb_id, :by_is_stern_army
+      has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_zone_id, :by_operator_id, :by_type_id, :by_machine_group_id, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region, :by_ipdb_id, :by_opdb_id, :by_is_stern_army
 
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION = 50
 
@@ -52,6 +52,7 @@ module Api
       param :by_location_id, Integer, desc: 'Location ID to search for', required: false
       param :by_machine_id, Integer, desc: 'Machine ID to find in locations', required: false
       param :by_ipdb_id, Integer, desc: 'IPDB ID to find in locations', required: false
+      param :by_opdb_id, Integer, desc: 'OPDB ID to find in locations', required: false
       param :by_machine_name, String, desc: 'Find machine name in locations', required: false
       param :by_city_id, String, desc: 'City to search for', required: false
       param :by_machine_group_id, String, desc: 'Machine Group to search for', required: false
@@ -177,7 +178,8 @@ module Api
             year: m.year,
             manufacturer: m.manufacturer,
             ipdb_link: m.ipdb_link,
-            ipdb_id: m.ipdb_id
+            ipdb_id: m.ipdb_id,
+            opdb_id: m.opdb_id
           )
         end
 

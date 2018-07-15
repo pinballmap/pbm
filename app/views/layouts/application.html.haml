@@ -21,7 +21,7 @@
     = csrf_meta_tag
     = render 'application/favicon'
 
-  - init_search = "initSearch('#{params['by_operator_id']}', '#{params['by_location_id']}', '#{params['by_type_id']}', '#{params['by_zone_id']}', '#{params['by_machine_id']}','#{params['by_ipdb_id']}','#{params['by_city_id']}', '#{params['by_machine_group_id']}', '#{params['show_location_distance']}', '#{params['lat']}', '#{params['lon']}', '#{params['by_at_least_n_machines_city']}', '#{params['by_at_least_n_machines_type']}', '#{params['by_at_least_n_machines_zone']}')"
+  - init_search = "initSearch('#{params['by_operator_id']}', '#{params['by_location_id']}', '#{params['by_type_id']}', '#{params['by_zone_id']}', '#{params['by_machine_id']}','#{params['by_ipdb_id']}','#{params['by_opdb_id']}', '#{params['by_city_id']}', '#{params['by_machine_group_id']}', '#{params['show_location_distance']}', '#{params['lat']}', '#{params['lon']}', '#{params['by_at_least_n_machines_city']}', '#{params['by_at_least_n_machines_type']}', '#{params['by_at_least_n_machines_zone']}')"
   %body{ :onload => defined?(@region) ? "setSearchSections(#{@region.available_search_sections}); setRegion('#{@region.name.downcase}'); switchSection('#{(@region.default_search_type && !@region.default_search_type.empty?) ? @region.default_search_type : 'location'}'); #{init_search}" : "#{init_search}" }
     #container
       #page{:class => "#{@region ? '' : (defined? @region) and current_page?(submitted_new_location_path) ? 'page_home submitted' : 'page_home'}"}

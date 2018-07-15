@@ -180,10 +180,16 @@ HERE
       expect(response.body).to_not include('Bawb')
     end
 
-    it 'respects by_ipdb_id filter' do
-      lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 777, name: 'Cleo', ipdb_id: 999))
+    it 'respects by_ipdb_id / by_opdb_id filters' do
+      lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 777, name: 'Cleo', ipdb_id: 999, opdb_id: 'b33f'))
       FactoryBot.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'foo bar')
       get "/api/v1/region/#{@region.name}/locations.json", params: { by_ipdb_id: 999 }
+
+      expect(response.body).to include('Satchmo')
+      expect(response.body).to include('777')
+      expect(response.body).to include('foo bar')
+
+      get "/api/v1/region/#{@region.name}/locations.json", params: { by_opdb_id: 'b33f' }
 
       expect(response.body).to include('Satchmo')
       expect(response.body).to include('777')
