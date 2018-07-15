@@ -1,3 +1,4 @@
+require 'json'
 class Machine < ApplicationRecord
   belongs_to :location_machine_xref, optional: true
   belongs_to :machine_group, optional: true
@@ -25,5 +26,16 @@ class Machine < ApplicationRecord
 
   def all_machines_in_machine_group
     machine_group_id ? Machine.where('machine_group_id = ?', machine_group_id).to_a : [self]
+  end
+
+  def self.tag_with_opdb_json(opdb_json)
+    JSON.parse(opdb_json).each do |r|
+      m = Machine.find_by_ipdb_id(r['ipdb_id'])
+
+      unless m.nil?
+        m.opdb_id = r['opdb_id']
+        m.save
+      end
+    end
   end
 end
