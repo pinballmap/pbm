@@ -1025,11 +1025,18 @@ a.active_section_link:hover {
 #search_results {
   color: #180e03;
 }
-.search_result ul {
+.search_result .show_location_detail_location > ul,
+.location_name ul {
   border-left: 8px solid #A9A9A9;
   padding-left: 0px;
   margin-bottom: 0px;
   @include radius(5px 0 0 5px);
+}
+.search_result .show_location_detail_location > ul {
+  transition: all .2s ease-in-out;  
+}
+.search_result .show_location_detail_location > ul:hover {
+  transform: scale(1.01);
 }
 #search_results li {
   list-style-type: none;
@@ -1046,7 +1053,7 @@ a.active_section_link:hover {
   color: $darkgrey;
   background-color: $blue;
   padding: 10px 5px;
-  @include radius(0 5px 0 0);
+  @include radius(5px 5px 0 0);
 }
 span.permalink {
   float: right;
@@ -1084,18 +1091,21 @@ li.address_full {
   height: 100%;
   width: 100%;
   padding: 3px 12px 3px 8px;
-  margin-left: -20px;
+  margin-left: -13px;
   font-family: $sans;
   font-weight: bold;
 }
 .machine_name:hover {
   background-color: #414141;
 }
-.machine_names {
+#search_results .machine_names ul {
   color: #171717;
   font-size: 18px;
-  padding: 0 0 10px 10px !important;
+  padding: 0 !important;
   line-height: 20px;
+}
+#search_results .machine_names ul li {
+  padding-left: 0;
 }
 .machine_names a {
   text-decoration: none;
@@ -1113,7 +1123,7 @@ span.machine_year_man {
 .machine_lmx {
   color: #180e03;
   font-size: 12px;
-  padding: 5px;
+  padding: 0 5px 5px 5px;
   border-left: 5px solid #A9A9A9;
   min-height: 90px;
 }

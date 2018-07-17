@@ -547,13 +547,14 @@ span.or {
   left: 0 !important;
 }
 
-.search_result ul {
+.search_result .show_location_detail_location > ul, .location_name ul {
   border: none;
   border-radius: 0;
-}
-
-.search_result .show_location_detail_location ul {
   margin-top: 0;
+  transition: none;
+}
+.search_result .show_location_detail_location > ul:hover {
+  transform: none;
 }
 
 .name {
@@ -587,9 +588,13 @@ span.or {
   margin: 0 5px 0 4px;
 }
 
-.machine_names {
+#search_results li.machine_names ul {
   font-size: 18px;
   line-height: 24px;
+}
+#search_results li.machine_names ul li {
+  padding-left: 10px;
+  text-indent: -10px;
 }
 div.remove_button {
   width: 100%;
@@ -681,10 +686,6 @@ span.machine_condition_text {
 
 #search_results {
   width: auto;
-}
-
-.location_name {
-  margin: -16px 0 0;
 }
 
 .location_thumbs {
