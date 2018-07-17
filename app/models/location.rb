@@ -3,7 +3,7 @@ class Location < ApplicationRecord
 
   rakismet_attrs content: :description
 
-  validates_presence_of :name, :street, :city, :state, :zip
+  validates_presence_of :name, :street, :city, :state
   validates :phone, phone: { allow_blank: true }
   validates :website, format: { with: %r{^http[s]?:\/\/}, message: 'must begin with http:// or https://', multiline: true }, if: :website?
   validates :name, :street, :city, :state, format: { with: /^\S.*/, message: "Can't start with a blank", multiline: true }
