@@ -1029,16 +1029,14 @@ a.active_section_link:hover {
 }
 .search_result .show_location_detail_location > ul,
 .location_name ul {
-  border-left: 8px solid #A9A9A9;
+  border-left: 8px solid rgba(0, 0, 0, 0.125);
   padding-left: 0px;
   margin-bottom: 0px;
   @include radius(5px 0 0 5px);
+  margin-top: 0;
 }
 .search_result .show_location_detail_location > ul {
   transition: all .2s ease-in-out;
-}
-.location_name ul {
-  margin-top: 0;
 }
 .search_result .show_location_detail_location > ul:hover {
   transform: scale(1.01);
@@ -1763,7 +1761,7 @@ input#score {
   border: 1px solid rgba(0,0,0,.125);
 }
 .location_detail_location ul {
-  @include radius(5px 0 0 0);
+  @include radius(4px 0 0 0);
 }
 .location_description, .location_actual_description {
   font-style: italic;
