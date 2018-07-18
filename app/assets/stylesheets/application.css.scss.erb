@@ -923,6 +923,7 @@ span.or {
   background: #FFFFFF;
   position: relative;
   -webkit-transform: translateZ(0);
+  box-shadow: 1px 1px 4px rgba(90,100,117,0.5);
 }
 .search_results_header {
   margin: 20px 0 5px 13px;
@@ -944,6 +945,7 @@ span.or {
   padding: 5px;
   @include radius(5px);
   font-size: 15px;
+  box-shadow: 1px 1px 4px rgba(90,100,117,0.5);
 }
 #search_link_wrapper {
   padding-top: 5px;
@@ -1033,7 +1035,10 @@ a.active_section_link:hover {
   @include radius(5px 0 0 5px);
 }
 .search_result .show_location_detail_location > ul {
-  transition: all .2s ease-in-out;  
+  transition: all .2s ease-in-out;
+}
+.location_name ul {
+  margin-top: 0;
 }
 .search_result .show_location_detail_location > ul:hover {
   transform: scale(1.01);
@@ -1755,6 +1760,7 @@ input#score {
 .location_name {
   background-color: $lightgrey;
   @include radius(5px 5px 0 0);
+  border: 1px solid rgba(0,0,0,.125);
 }
 .location_detail_location ul {
   @include radius(5px 0 0 0);
@@ -1864,6 +1870,8 @@ div.comment_image .comment_image:active {
   padding: 0;
   width: 620px;
   background: $lightgrey;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: 5px;
 }
 .location_thumbs {
   margin: 5px 6px 0 6px;
