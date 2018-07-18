@@ -75,10 +75,12 @@
                 %li.location_types= " (#{l.location_type.name})"
               .clear
               %li.address
-                %span.address_name[l, :location_summary] #{[l.street, l.city].join(' | ')}
+                %span.address_name[l, :location_summary] #{[l.street, l.city, l.state].join(', ')}
                 .clear
               %li.machine_names
-                #{[l.machine_names].join('<br />').html_safe}
+                %ul
+                  - l.machine_names.each do |machine|
+                    %li #{machine.html_safe}
           .clear
           %div.location_detail[l, :location_detail]{:style => 'display:none;'}
 
