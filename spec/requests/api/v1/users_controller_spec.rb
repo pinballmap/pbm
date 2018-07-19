@@ -9,14 +9,14 @@ describe Api::V1::UsersController, type: :request do
     it 'returns all app-centric user data' do
       get '/api/v1/users/auth_details.json', params: { login: 'yeah@ok.com', password: 'okokok' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response.body).to include('ssw')
       expect(response.body).to include('yeah@ok.com')
       expect(response.body).to include('abc123')
 
       get '/api/v1/users/auth_details.json', params: { login: 'ssw', password: 'okokok' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response.body).to include('ssw')
       expect(response.body).to include('yeah@ok.com')
       expect(response.body).to include('abc123')
@@ -25,14 +25,14 @@ describe Api::V1::UsersController, type: :request do
     it 'handles username/email as case insensitive' do
       get '/api/v1/users/auth_details.json', params: { login: 'yEAh@ok.com', password: 'okokok' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response.body).to include('ssw')
       expect(response.body).to include('yeah@ok.com')
       expect(response.body).to include('abc123')
 
       get '/api/v1/users/auth_details.json', params: { login: 'sSW', password: 'okokok' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response.body).to include('ssw')
       expect(response.body).to include('yeah@ok.com')
       expect(response.body).to include('abc123')
@@ -41,12 +41,12 @@ describe Api::V1::UsersController, type: :request do
     it 'requires either username or user_email and password' do
       get '/api/v1/users/auth_details.json', params: { password: 'okokok' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('login and password are required fields')
 
       get '/api/v1/users/auth_details.json', params: { login: 'ssw' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('login and password are required fields')
     end
 
@@ -55,7 +55,7 @@ describe Api::V1::UsersController, type: :request do
 
       get '/api/v1/users/auth_details.json', params: { login: 'unconfirmed', password: 'okokok' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('User is not yet confirmed. Please follow emailed confirmation instructions.')
     end
 
@@ -64,21 +64,21 @@ describe Api::V1::UsersController, type: :request do
 
       get '/api/v1/users/auth_details.json', params: { login: 'disabled', password: 'okokok' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Your account is disabled. Please contact us if you think this is a mistake.')
     end
 
     it 'tells you if you enter the wrong password' do
       get '/api/v1/users/auth_details.json', params: { login: 'ssw', password: 'NOT_okokok' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Incorrect password')
     end
 
     it 'tells you if this user does not exist' do
       get '/api/v1/users/auth_details.json', params: { login: 's', password: 'okokok' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unknown user')
     end
   end
@@ -87,7 +87,7 @@ describe Api::V1::UsersController, type: :request do
     it 'returns all app-centric user data if successful' do
       post '/api/v1/users/signup.json', params: { username: 'foo', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response.body).to include('foo')
       expect(response.body).to include('yeah@ok.com')
       expect(response.body).to include('authentication_token')
@@ -96,26 +96,26 @@ describe Api::V1::UsersController, type: :request do
     it 'requires a username and email address' do
       post '/api/v1/users/signup.json', params: { username: '', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('username and email are required fields')
 
       post '/api/v1/users/signup.json', params: { username: 'yeah', email: '', password: 'okokok', confirm_password: 'okokok' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('username and email are required fields')
     end
 
     it 'does not allow blank passwords' do
       post '/api/v1/users/signup.json', params: { username: 'yeah', email: 'yeah@ok.com', password: '', confirm_password: '' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('password can not be blank')
     end
 
     it 'tells you if passwords do not match' do
       post '/api/v1/users/signup.json', params: { username: 'yeah', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'NOPE' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('your entered passwords do not match')
     end
 
@@ -124,7 +124,7 @@ describe Api::V1::UsersController, type: :request do
 
       post '/api/v1/users/signup.json', params: { username: 'ssw', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('This username already exists')
     end
 
@@ -133,7 +133,7 @@ describe Api::V1::UsersController, type: :request do
 
       post '/api/v1/users/signup.json', params: { username: 'CLEO', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('This email address already exists')
     end
   end
@@ -163,7 +163,7 @@ describe Api::V1::UsersController, type: :request do
 
       get '/api/v1/users/111/profile_info.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       json = JSON.parse(response.body)['profile_info']
 
       expect(json['num_machines_added']).to eq(1)
@@ -185,7 +185,7 @@ describe Api::V1::UsersController, type: :request do
     it 'tells you if this user does not exist' do
       get '/api/v1/users/-1/profile_info.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find user')
     end
   end

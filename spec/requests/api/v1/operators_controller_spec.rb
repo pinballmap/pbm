@@ -13,7 +13,7 @@ describe Api::V1::OperatorsController, type: :request do
       FactoryBot.create(:operator, name: 'HOPE THIS DONT SHOW')
 
       get '/api/v1/region/portland/operators.json'
-      expect(response).to be_success
+      expect(response).to be_successful
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
@@ -32,7 +32,7 @@ describe Api::V1::OperatorsController, type: :request do
       operator = FactoryBot.create(:operator, region: @region, name: 'Sass')
 
       get "/api/v1/operators/#{operator.id}.json"
-      expect(response).to be_success
+      expect(response).to be_successful
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
 

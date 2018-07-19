@@ -117,7 +117,7 @@ class Location < ApplicationRecord
   end
 
   def newest_machine_xref
-    location_machine_xrefs.sort_by(&:created_at).last
+    location_machine_xrefs.max_by(&:created_at)
   end
 
   def massaged_name

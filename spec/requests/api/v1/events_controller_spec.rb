@@ -13,7 +13,7 @@ describe Api::V1::EventsController, type: :request do
       FactoryBot.create(:event, region: @region, location: @location, name: 'event 3')
 
       get '/api/v1/region/portland/events.json'
-      expect(response).to be_success
+      expect(response).to be_successful
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
@@ -32,7 +32,7 @@ describe Api::V1::EventsController, type: :request do
       FactoryBot.create(:event, region: @region, location: @location, category: 'Foo', name: 'event 3', start_date: Date.today, end_date: Date.today)
 
       get '/api/v1/region/portland/events.json', params: { sorted: 'true' }
-      expect(response).to be_success
+      expect(response).to be_successful
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
@@ -50,7 +50,7 @@ describe Api::V1::EventsController, type: :request do
       FactoryBot.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today - 8, end_date: Date.today - 8)
 
       get '/api/v1/region/portland/events.json'
-      expect(response).to be_success
+      expect(response).to be_successful
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
@@ -66,7 +66,7 @@ describe Api::V1::EventsController, type: :request do
       FactoryBot.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today - 8)
 
       get '/api/v1/region/portland/events.json'
-      expect(response).to be_success
+      expect(response).to be_successful
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
@@ -82,7 +82,7 @@ describe Api::V1::EventsController, type: :request do
       FactoryBot.create(:event, region: @region, location: @location, name: 'event 2', start_date: nil, end_date: nil)
 
       get '/api/v1/region/portland/events.json'
-      expect(response).to be_success
+      expect(response).to be_successful
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)

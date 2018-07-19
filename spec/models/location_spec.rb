@@ -214,7 +214,7 @@ Changed phone # to (503) 796-9364
 Changed website to http://www.goo.com
 Changed operator to operator
 Changed location type to bar to quarterworld
-HERE
+      HERE
     end
 
     it 'truncates location description to 254 characters' do

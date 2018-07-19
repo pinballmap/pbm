@@ -56,23 +56,23 @@ describe Api::V1::MachinesController, type: :request do
 
     it 'errors with missing location_id' do
       post '/api/v1/machines.json', params: { machine_name: 'Bawb', location_id: nil, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find location')
     end
 
     it 'errors when not authed' do
       post '/api/v1/machines.json', params: { machine_name: 'Auth Bawb', location_id: @location.id.to_s }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::MachinesController::AUTH_REQUIRED_MSG)
     end
 
     it 'handles creation by machine name.. machine exists with same name.. case insensitive' do
       post '/api/v1/machines.json', params: { machine_name: 'Cleo', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Machine already exists')
 
       post '/api/v1/machines.json', params: { machine_name: 'cleo', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Machine already exists')
 
       expect(Machine.all.size).to eq(1)
@@ -80,7 +80,7 @@ describe Api::V1::MachinesController, type: :request do
 
     it 'handles creation by machine name.. machine exists with same name.. ignores preceeding and trailing whitespace' do
       post '/api/v1/machines.json', params: { machine_name: ' Cleo ', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Machine already exists')
 
       expect(Machine.all.size).to eq(1)
@@ -97,7 +97,7 @@ describe Api::V1::MachinesController, type: :request do
       end
 
       post '/api/v1/machines.json', params: { machine_name: 'Bawb', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response.status).to eq(201)
       expect(JSON.parse(response.body)['machine']['name']).to eq('Bawb')
     end
@@ -113,7 +113,7 @@ describe Api::V1::MachinesController, type: :request do
       end
 
       post '/api/v1/machines.json', params: { machine_name: 'Auth Bawb', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response.status).to eq(201)
       expect(JSON.parse(response.body)['machine']['name']).to eq('Auth Bawb')
     end

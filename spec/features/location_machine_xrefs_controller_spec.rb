@@ -216,23 +216,25 @@ describe LocationMachineXrefsController do
 
     it 'should let me add a new machine description' do
       expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          body: "This is a new condition\n#{@lmx.machine.name}\n#{@lmx.location.name}\nportland\n(entered from 127.0.0.1)",
-          subject: 'PBM - Someone entered a machine condition',
-          to: [],
-          from: 'admin@pinballmap.com'
-        )
+        expect(mail[:body]).to match(/This is a new condition/)
+        expect(mail[:body]).to match(/#{@lmx.machine.name}/)
+        expect(mail[:body]).to match(/#{@lmx.location.name}/)
+        expect(mail[:body]).to match(/portland/)
+        expect(mail[:body]).to match(/entered from 127.0.0.1/)
+        expect(mail[:subject]).to match(/PBM - Someone entered a machine condition/)
+        expect(mail[:to]).to eq([])
+        expect(mail[:from]).to eq('admin@pinballmap.com')
       end
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
-      page.find("input#save_machine_condition_#{@lmx.id}").click
+      page.find("input#save_machine_condition_#{@lmx.id}.save_button").click
 
       sleep 1
 
-      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition Updated: #{@lmx.current_condition.created_at.strftime('%b-%d-%Y')} by ssw")
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition\nUpdated: #{@lmx.current_condition.created_at.strftime('%b-%d-%Y')} by ssw")
       expect(@lmx.reload.location.date_last_updated).to eq(Date.today)
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{@location.date_last_updated.strftime('%b-%d-%Y')} by ssw")
       expect(URI.parse(page.find_link('ssw', match: :first)['href']).to_s).to match(%r{\/users\/11\/profile})
@@ -243,7 +245,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("Test Comment Updated: #{@lmx.current_condition.created_at.strftime('%b-%d-%Y')} by cibw")
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("Test Comment\nUpdated: #{@lmx.current_condition.created_at.strftime('%b-%d-%Y')} by cibw")
       expect(URI.parse(page.find_link('cibw')['href']).to_s).to match(%r{\/users\/10\/profile})
     end
 
@@ -594,7 +596,7 @@ describe LocationMachineXrefsController do
 
       page.find('input#machine_search_button').click
 
-      expect(page).to have_content('NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN. Use the dropdown or the autocompleting textbox if you want results.')
+      expect(page).to have_content("NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
     end
 
     it 'lets you search by machine name -- returns grouped machines' do
@@ -743,7 +745,7 @@ describe LocationMachineXrefsController do
 
       page.find('input#location_search_button').click
 
-      expect(page).to have_content('Cleo (bar)')
+      expect(page).to have_content("Cleo\n(bar)")
       expect(page).to have_content('Bawb')
     end
 

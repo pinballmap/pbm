@@ -119,7 +119,7 @@ class LocationsController < InheritedResources::Base
 
   def confirm
     l = Location.find(params[:id])
-    l.confirm(current_user ? current_user : nil)
+    l.confirm(current_user || nil)
     l
   end
 
