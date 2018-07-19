@@ -160,8 +160,8 @@ describe PagesController do
 
       visit '/portland/events'
 
-      expect(page).to have_content("event 3 @ Test Location Name #{Date.today.strftime('%b-%d-%Y')}")
-      expect(page).to have_content("event 1 @ Test Location Name #{(Date.today + 1).strftime('%b-%d-%Y')}")
+      expect(page).to have_content("event 3 @ Test Location Name\n#{Date.today.strftime('%b-%d-%Y')}")
+      expect(page).to have_content("event 1 @ Test Location Name\n#{(Date.today + 1).strftime('%b-%d-%Y')}")
       expect(page).to have_content('event 2 @ Test Location Name')
     end
 
@@ -240,7 +240,7 @@ describe PagesController do
 
       visit '/portland/about'
 
-      expect(page).to have_content('Machine10: with 10 machines Machine9: with 9 machines Machine8: with 8 machines Machine7: with 7 machines Machine6: with 6 machines Machine5: with 5 machines Machine4: with 4 machines Machine3: with 3 machines Machine2: with 2 machines Machine1: with 1 machines')
+      expect(page).to have_content("Machine10: with 10 machines\nMachine9: with 9 machines\nMachine8: with 8 machines\nMachine7: with 7 machines\nMachine6: with 6 machines\nMachine5: with 5 machines\nMachine4: with 4 machines\nMachine3: with 3 machines\nMachine2: with 2 machines\nMachine1: with 1 machines")
     end
   end
 
@@ -254,7 +254,7 @@ describe PagesController do
 
       visit '/chicago/about'
 
-      expect(page).to have_content('cool links cool link 1 desc2 main links chicago link 1 desc1')
+      expect(page).to have_content("cool links\ncool link 1\ndesc2\nmain links\nchicago link 1\ndesc1")
     end
 
     it 'sort order does not cause headers to display twice' do
@@ -264,7 +264,7 @@ describe PagesController do
 
       visit "/#{@region.name}/about"
 
-      expect(page).to have_content('main links link 2 desc link 1 desc other category link 3 desc')
+      expect(page).to have_content("main links\nlink 2\ndesc\nlink 1\ndesc\nother category\nlink 3\ndesc")
     end
 
     it 'makes a default link category called "Links"' do
@@ -275,7 +275,7 @@ describe PagesController do
 
       visit "/#{@region.name}/about"
 
-      expect(page).to have_content('Links link 1 link 2 link 3 other category link 4')
+      expect(page).to have_content("Links\nlink 1\nlink 2\nlink 3\nother category\nlink 4")
     end
 
     it 'Mixing sort_order and nil sort_order links does not error' do
@@ -284,7 +284,7 @@ describe PagesController do
 
       visit "/#{@region.name}/about"
 
-      expect(page).to have_content('Links Pinball Map Store News, questions, feelings. Minnesota Pinball - The "Pin Cities" Your best source for everything pinball in Minnesota! Events, leagues, locations, games and more!')
+      expect(page).to have_content("Links\nPinball Map Store\nNews, questions, feelings.\nMinnesota Pinball - The \"Pin Cities\"\nYour best source for everything pinball in Minnesota! Events, leagues, locations, games and more!")
     end
   end
 
@@ -321,7 +321,7 @@ describe PagesController do
       visit '/'
 
       expect(page).to have_css('div#region_list')
-      expect(page).to have_content('Chicago 1 Locations 1 Machines Portland 2 Locations 2 Machines')
+      expect(page).to have_content("Chicago\n1 Locations\n1 Machines\nPortland\n2 Locations\n2 Machines")
     end
 
     it 'shows the proper page title' do

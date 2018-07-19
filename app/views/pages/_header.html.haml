@@ -8,7 +8,7 @@
         #menu &#9776;
         %ul#nav.js
           = render :partial => 'pages/menu'
-      .header_buttons_child.header_menu_02
+      .header_buttons_child
         - if !user_signed_in?
           = link_to 'Login', new_user_session_path
           %span.login_slash

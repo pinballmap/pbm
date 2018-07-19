@@ -27,7 +27,7 @@ describe Api::V1::RegionsController, type: :request do
     it 'tells you how many total locations and machines are tracked on pbm' do
       get '/api/v1/regions/location_and_machine_counts.json'
 
-      expect(response).to be_success
+      expect(response).to be_successful
       parsed_body = JSON.parse(response.body)
 
       expect(parsed_body['num_locations']).to eq(3)
@@ -37,7 +37,7 @@ describe Api::V1::RegionsController, type: :request do
     it 'tells you how many total locations and machines are in a specific region' do
       get '/api/v1/regions/location_and_machine_counts.json', params: { region_name: @portland.name }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       parsed_body = JSON.parse(response.body)
 
       expect(parsed_body['num_locations']).to eq(2)
@@ -56,7 +56,7 @@ describe Api::V1::RegionsController, type: :request do
       FactoryBot.create(:region, id: 6, name: 'clark', motd: 'mine', lat: 12.0, lon: 13.0, full_name: 'Clarky')
 
       get '/api/v1/regions/does_region_exist.json', params: { name: 'clark' }
-      expect(response).to be_success
+      expect(response).to be_successful
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
 
@@ -82,7 +82,7 @@ describe Api::V1::RegionsController, type: :request do
       FactoryBot.create(:region, name: 'not portland', lat: 122.0, lon: 13.0)
 
       get '/api/v1/regions/closest_by_lat_lon.json', params: { lat: 12.1, lon: 13.0 }
-      expect(response).to be_success
+      expect(response).to be_successful
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
 
@@ -106,7 +106,7 @@ describe Api::V1::RegionsController, type: :request do
   describe '#show' do
     it 'sends back region metadata' do
       get "/api/v1/regions/#{@portland.id}.json"
-      expect(response).to be_success
+      expect(response).to be_successful
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
 
@@ -132,7 +132,7 @@ describe Api::V1::RegionsController, type: :request do
       FactoryBot.create(:user, region: @portland, email: 'is@primary.com', is_primary_email_contact: 1)
 
       get '/api/v1/regions.json'
-      expect(response).to be_success
+      expect(response).to be_successful
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
@@ -154,14 +154,14 @@ describe Api::V1::RegionsController, type: :request do
     it 'errors when required fields are not sent' do
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/suggest.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('The name of the region you want added is a required field.')
     end
 
     it 'errors when not authed' do
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/suggest.json', params: { region_name: 'region name', comments: 'region comments' }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::RegionsController::AUTH_REQUIRED_MSG)
     end
 
@@ -182,7 +182,7 @@ HERE
       end
 
       post '/api/v1/regions/suggest.json', params: { region_name: 'region name', comments: 'region comments', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(JSON.parse(response.body)['msg']).to eq("Thanks for suggesting that region. We'll be in touch.")
     end
@@ -204,12 +204,12 @@ HERE
     it 'errors when required fields are not sent' do
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('A message is required.')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, message: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('A message is required.')
     end
 
@@ -232,7 +232,7 @@ HERE
       end
 
       post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
       expect(UserSubmission.all.count).to eq(1)
@@ -258,7 +258,7 @@ HERE
       end
 
       post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
       expect(UserSubmission.all.count).to eq(1)
@@ -295,17 +295,17 @@ HERE
     it 'errors when required fields are not sent' do
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/app_comment.json', params: { region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('region_id, os, os_version, device_type, app_version, email, message are all required.')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/app_comment.json', params: { region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', message: 'message', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('region_id, os, os_version, device_type, app_version, email, message are all required.')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/app_comment.json', params: { region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', message: 'message', email: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('region_id, os, os_version, device_type, app_version, email, message are all required.')
     end
 
@@ -330,7 +330,7 @@ HERE
       end
 
       post '/api/v1/regions/app_comment.json', params: { region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
     end
