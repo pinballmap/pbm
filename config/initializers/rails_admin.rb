@@ -33,8 +33,6 @@ RailsAdmin.add_extension(:cancancan2, RailsAdmin::Extensions::CanCanCan2, author
 RailsAdmin.config do |config|
   config.authorize_with :cancancan2
 
-  config.parent_controller = 'ApplicationController'
-
   config.authenticate_with do
     warden.authenticate! scope: :user
   end
