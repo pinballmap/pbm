@@ -355,6 +355,51 @@ describe LocationsController do
       expect(find('#search_results')).to have_content('Zelda')
       expect(find('#search_results')).to_not have_content('Sass')
     end
+
+    it 'provides a "link to results" link filtered appropriately by region (or not)' do
+      visit '/portland'
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/portland\?utf8=%E2%9C%93&region=portland&by_location_id=&by_location_name=/)
+
+      visit '/regionless'
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/regionless\?utf8=%E2%9C%93&by_machine_id=&by_location_id=&by_machine_name=&address=&by_location_name=/)
+    end
+
+    it 'respects a region param' do
+      regionless_location = FactoryBot.create(:location, region: nil, name: 'Regionless place')
+      FactoryBot.create(:location_machine_xref, location: regionless_location, machine: @machine)
+
+      visit "/regionless?utf8=%E2%9C%93&by_location_id=&by_location_name=&by_machine_id=#{@machine.id}"
+
+      sleep 1
+
+      expect(find('#search_results')).to have_content('Regionless place')
+      expect(find('#search_results')).to have_content('Cleo')
+
+      visit "/portland?utf8=%E2%9C%93&region=portland&by_location_id=&by_location_name=&by_machine_id=#{@machine.id}"
+
+      sleep 1
+
+      expect(find('#search_results')).to_not have_content('Regionless place')
+      expect(find('#search_results')).to have_content('Cleo')
+    end
+
+    it 'respects a region param -- does not start a search just based on presense of region' do
+      visit '/portland'
+
+      sleep 1
+
+      expect(page).not_to have_selector('#search_results')
+    end
   end
 
   describe 'update_metadata', type: :feature, js: true do

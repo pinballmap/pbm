@@ -339,6 +339,8 @@ describe PagesController do
       expect(page).not_to have_content('Or click here for a random location!')
 
       FactoryBot.create(:location, region: toronto)
+      FactoryBot.create(:location, region: toronto)
+      FactoryBot.create(:location, region: toronto)
 
       visit '/toronto'
 
