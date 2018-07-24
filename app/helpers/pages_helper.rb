@@ -53,17 +53,17 @@ module PagesHelper
               'Store - '
             elsif path == donate_path
               'Donate - '
-            elsif path =~ /inspire_profile/
+            elsif path.match?(/inspire_profile/)
               'Sign up! - '
-            elsif path =~ /profile/
+            elsif path.match?(/profile/)
               "#{@user.username}'s User Profile - "
-            elsif path =~ /login/
+            elsif path.match?(/login/)
               'Login - '
-            elsif path =~ /join/
+            elsif path.match?(/join/)
               'Join - '
-            elsif path =~ /password/
+            elsif path.match?(/password/)
               'Forgot Password - '
-            elsif path =~ /confirmation/
+            elsif path.match?(/confirmation/)
               'Confirmation Instructions - '
             else
               ''
@@ -108,17 +108,17 @@ module PagesHelper
              "Pinball Map Store! We have a t-shirt for sale. Get it while it's hot (pink)."
            elsif path == donate_path
              'Donate to Pinball Map. Donations help us manage the costs of running the site. Thank you!'
-           elsif path =~ /profile/
+           elsif path.match?(/profile/)
              "The user profile tracks your Pinball Map contributions. It's a concise overview of your edits, high scores, and favorite locations."
-           elsif path =~ /login/
+           elsif path.match?(/login/)
              'Log in to Pinball Map and help keep it up to date!'
-           elsif path =~ /join/
+           elsif path.match?(/join/)
              'Join Pinball Map and help keep your local pinball map up to date! This site relies on user contributions. Joining is quick and easy!'
-           elsif path =~ /password/
+           elsif path.match?(/password/)
              'If you forgot your Pinball Map password, you can recover it from here.'
-           elsif path =~ /confirmation/
+           elsif path.match?(/confirmation/)
              'The email confirmation can be resent from this page.'
-           elsif path =~ /regionless/
+           elsif path.match?(/regionless/)
              'Find local places to play pinball! The Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
            else
              'The Pinball Map website and free mobile app will help you find places to play pinball! Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'

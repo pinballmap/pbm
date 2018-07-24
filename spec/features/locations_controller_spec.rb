@@ -16,7 +16,10 @@ describe LocationsController do
         location = FactoryBot.create(:location, region: region, name: 'Cleo')
 
         visit "/#{region ? region.name : 'regionless'}/?by_location_id=" + location.id.to_s
-        find("#confirm_location_#{location.id} span.confirm_button").click
+
+        sleep 1
+
+        find("#confirm_location_button_#{location.id} span.confirm_button").click
 
         sleep 1
 

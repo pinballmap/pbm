@@ -128,7 +128,7 @@ class Location < ApplicationRecord
     old_description = description
     self.description = new_description.slice(0, 254)
 
-    if description !~ %r{http[s]?:\/\/}
+    if !description.match?(%r{http[s]?:\/\/})
       if ENV['RAKISMET_KEY'] && spam?
         self.description = old_description
         @validation_errors.push('This description was flagged as spam.')
