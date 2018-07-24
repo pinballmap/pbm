@@ -53,7 +53,7 @@ class LocationMachineXrefsController < InheritedResources::Base
 
     condition = params["new_machine_condition_#{id}".to_sym]
 
-    if condition =~ /<a href/
+    if condition.match?(/<a href/)
       lmx
     elsif ENV['RAKISMET_KEY']
       old_condition = lmx.condition
