@@ -37,11 +37,11 @@
           });
 - if !mobile_device?
   #min_lookup_wrapper.hide_button.slide_left.toggle_btn_reg{:onclick => "min_lookup()"}
+#search_link_wrapper.hide_button.toggle_btn_reg
+  =link_to "Link to this Search Result", "", :id => "search_link"
 #mapFollow_wrapper.hide_button.toggle_btn_reg
   %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :onchange => 'unChecked();'}
   Redo results when map is moved?
-#search_link_wrapper.hide_button.toggle_btn_reg
-  =link_to "Link to this Search Result", "", :id => "search_link"
 :javascript
   
   function min_lookup() {
