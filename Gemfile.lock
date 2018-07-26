@@ -1034,6 +1034,7 @@ GEM
     tilt (2.0.8)
     timecop (0.9.1)
     tins (1.16.3)
+    tunemygc (1.0.71)
     twitter (6.2.0)
       addressable (~> 2.3)
       buftok (~> 0.2.0)
@@ -1130,6 +1131,7 @@ DEPENDENCIES
   simplecov
   spork
   timecop
+  tunemygc
   twitter
   uglifier
 

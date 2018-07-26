@@ -39,6 +39,7 @@ gem 'sanitize'
 gem 'sass-rails'
 gem 'simple_form'
 gem 'simple_token_authentication'
+gem 'tunemygc'
 gem 'twitter'
 gem 'uglifier'
 
