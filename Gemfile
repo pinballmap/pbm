@@ -39,6 +39,7 @@ gem 'sanitize'
 gem 'sass-rails'
 gem 'simple_form'
 gem 'simple_token_authentication'
+gem 'tunemygc'
 gem 'twitter'
 gem 'uglifier'
 
@@ -66,7 +67,7 @@ end
 group :development, :test do
   gem 'bullet'
   gem 'database_cleaner'
-  gem 'derailed'
+  gem 'derailed_benchmarks'
   gem 'email_spec'
   gem 'listen'
   gem 'pry'
