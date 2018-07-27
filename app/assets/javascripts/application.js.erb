@@ -387,29 +387,12 @@ function showLocations(ids, lats, lons, contents) {
   } else {
       map.setMapTypeId('roadmap');
   }
-  var markerLabel = 'GO!';
-  
-  var blueCircle = {
-    //path: google.maps.SymbolPath.CIRCLE,
-    url: 'http://image.flaticon.com/icons/svg/252/252025.svg',
-    scaledSize: new google.maps.Size(60, 60),
-    origin: new google.maps.Point(0, 0), // used if icon is a part of sprite, indicates image position in sprite
-    anchor: new google.maps.Point(20,40)
-    // fillColor: '#D3ECFF',
-    // fillOpacity: .8,
-    // scale: 20,
-    // strokeColor: "#666666",
-    // strokeWeight: 3,
-  };
 
   for (i in ids) {
     var latlng = new google.maps.LatLng(lats[i], lons[i]);
     var marker = new google.maps.Marker({
       position: latlng,
-      icon: blueCircle,
-      label: markerLabel,
       map: map,
-      labelClass: "labels",
     });
     markers.push(marker);
     bounds.extend(latlng);
@@ -632,19 +615,9 @@ function initializeRegionMap(ids, lats, lons, contents) {
     for (i in ids) {
       var latlng = new google.maps.LatLng(lats[i], lons[i]);
 
-      var blueCircle = {
-        path: google.maps.SymbolPath.CIRCLE,
-        fillColor: '#D3ECFF',
-        fillOpacity: .8,
-        scale: 10,
-        strokeColor: "#666666",
-        strokeWeight: 3
-      };
-
       var marker = new google.maps.Marker({
         animation: google.maps.Animation.DROP,
         position: latlng,
-        icon: blueCircle,
         map: regionMap,
       });
 
