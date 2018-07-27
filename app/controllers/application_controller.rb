@@ -46,9 +46,9 @@ class ApplicationController < ActionController::Base
   def send_new_location_notification(params, region, user = nil)
     user_info = user ? " by #{user.username} (#{user.email})" : ''
 
-    location_type = params['location_type']&.match?(/^[0-9]+$/) ? LocationType.find(params['location_type']) : LocationType.find_by_name(params['location_type'])
-    operator = params['location_operator']&.match?(/^[0-9]+$/) ? Operator.find(params['location_operator']) : Operator.find_by_name(params['location_operator'])
-    zone = params['location_zone']&.match?(/^[0-9]+$/) ? Zone.find(params['location_zone']) : Zone.find_by_name(params['location_zone'])
+    location_type = params['location_type']&.is_a?(Integer) || params['location_type']&.match?(/^[0-9]+$/) ? LocationType.find(params['location_type']) : LocationType.find_by_name(params['location_type'])
+    operator = params['location_operator']&.is_a?(Integer) || params['location_operator']&.match?(/^[0-9]+$/) ? Operator.find(params['location_operator']) : Operator.find_by_name(params['location_operator'])
+    zone = params['location_zone']&.is_a?(Integer) || params['location_zone']&.match?(/^[0-9]+$/) ? Zone.find(params['location_zone']) : Zone.find_by_name(params['location_zone'])
 
     body = <<BODY
 (A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into #{request.protocol}#{request.host_with_port}#{rails_admin_path}. Thanks!)\n
