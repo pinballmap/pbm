@@ -109,7 +109,7 @@ HERE
       o = FactoryBot.create(:operator, name: 'cool operator')
       z = FactoryBot.create(:zone, name: 'cool zone')
 
-      expect(Pony).to receive(:mail) do |mail|
+      expect(Pony).to receive(:mail).twice do |mail|
         expect(mail).to include(
           to: ['foo@bar.com'],
           bcc: ['super_admin@bar.com'],
@@ -138,9 +138,16 @@ HERE
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: lt.id, location_operator: o.id, location_zone: z.id, location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_successful
 
+      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: lt.id, location_operator: o.id, location_zone: z.id, location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }, as: :json
+      expect(response).to be_successful
+
       expect(SuggestedLocation.first.location_type).to eq(lt)
       expect(SuggestedLocation.first.operator).to eq(o)
       expect(SuggestedLocation.first.zone).to eq(z)
+
+      expect(SuggestedLocation.second.location_type).to eq(lt)
+      expect(SuggestedLocation.second.operator).to eq(o)
+      expect(SuggestedLocation.second.zone).to eq(z)
     end
   end
 
