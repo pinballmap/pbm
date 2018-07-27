@@ -249,6 +249,14 @@ describe LocationMachineXrefsController do
       expect(URI.parse(page.find_link('cibw')['href']).to_s).to match(%r{\/users\/10\/profile})
     end
 
+    it 'does not error out if user later deleted their account' do
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, user_id: 666)
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+
+      expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("Test Comment\nUpdated: #{@lmx.current_condition.created_at.strftime('%b-%d-%Y')} by DELETED USER")
+    end
+
     it 'only displays the 6 most recent descriptions' do
       login
 

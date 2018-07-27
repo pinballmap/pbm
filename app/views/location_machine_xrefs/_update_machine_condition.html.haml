@@ -5,7 +5,10 @@
     - if lmx.current_condition.user_id
       by
       %span.machine_condition_name
-        = link_to lmx.current_condition.user.username, "http://#{request.host_with_port}/users/#{lmx.current_condition.user.id}/profile"
+        - if lmx.current_condition.user
+          = link_to lmx.current_condition.user.username, "http://#{request.host_with_port}/users/#{lmx.current_condition.user.id}/profile"
+        - else
+          DELETED USER
 - if user_signed_in?
   %div[lmx, :machine_condition]
     %div.comment_image
