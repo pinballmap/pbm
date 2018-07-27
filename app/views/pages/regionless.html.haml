@@ -26,7 +26,7 @@
   #map
     = render :partial => 'locations/map', locals: { lat: 45.512794, lon: -122.679565 }
     
-  #lookup.toggle_reg_lookup
+  #lookup.toggle_reg_lookup.regionless_lookup
     #locations
       #intro
         %p.dark.hello
@@ -58,6 +58,9 @@
         %p
           If you prefer to navigate the map via your trusted home region, 
           = link_to "go here to find it.", root_path
+        %p 
+          Also, check out our podcast!
+          = link_to "Mappin' Around with Scott & Ryan", "http://pod.pinballmap.com", :class => "bold"
 
 :javascript
   $('#address_search_form').on('submit', function(e) {
