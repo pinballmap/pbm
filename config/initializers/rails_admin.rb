@@ -264,7 +264,11 @@ RailsAdmin.config do |config|
       field :location, :belongs_to_association
       field :created_at, :datetime
       field :description, :text
-      field :photo, :paperclip
+      field :photo do
+        pretty_value do
+          bindings[:view].tag(:img, src: bindings[:object].photo.url)
+        end
+      end
       field :approved, :boolean
     end
     edit do
@@ -273,7 +277,11 @@ RailsAdmin.config do |config|
       end
       field :created_at, :datetime
       field :description, :text
-      field :photo, :paperclip
+      field :photo do
+        pretty_value do
+          bindings[:view].tag(:img, src: bindings[:object].photo.url)
+        end
+      end
       field :approved, :boolean
     end
     export do; end
