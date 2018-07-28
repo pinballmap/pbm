@@ -189,6 +189,25 @@ describe LocationsController do
       end
     end
 
+    it 'displays the number of machines returned in a search' do
+      cleo_location = FactoryBot.create(:location, region: @region, name: 'Cleo')
+      FactoryBot.create(:location, region: @region, name: 'Zelda')
+
+      visit '/portland'
+
+      click_on 'location_search_button'
+
+      within('div#search_results') do
+        expect(page).to have_content('2 Locations in Results')
+      end
+
+      visit '/portland/?by_location_id=' + cleo_location.id.to_s
+
+      within('div#search_results') do
+        expect(page).to have_content('1 Location in Results')
+      end
+    end
+
     it 'favors by_location_name when search by both by_location_id and by_location_name' do
       FactoryBot.create(:location, region: @region, name: 'Cleo')
       FactoryBot.create(:location, region: @region, name: 'Zelda')
