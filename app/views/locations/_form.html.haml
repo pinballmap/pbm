@@ -61,7 +61,7 @@
       }
       $('#search_link_wrapper').css('display','block');
       e.preventDefault();
-      search_string = $( this ).serialize();
+      search_string = $(this).children(":input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
 
       var form = $(this);
 
