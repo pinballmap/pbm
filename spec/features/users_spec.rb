@@ -17,6 +17,18 @@ describe UsersController do
       expect(page.title).to eq(title)
     end
 
+    it 'looks up by user_id or username' do
+      title = @user.username + "'s User Profile - Pinball Map"
+
+      visit "/users/#{@user.id}/profile"
+
+      expect(page.title).to eq(title)
+
+      visit "/users/#{@user.username}/profile"
+
+      expect(page.title).to eq(title)
+    end
+
     it 'display metrics about the users account' do
       FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, id: 100), submission_type: UserSubmission::NEW_LMX_TYPE)
       FactoryBot.create(:user_submission, user: @user, location: Location.find(100), submission_type: UserSubmission::NEW_CONDITION_TYPE)

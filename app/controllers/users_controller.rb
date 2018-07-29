@@ -11,7 +11,9 @@ class UsersController < InheritedResources::Base
   end
 
   def profile
-    @user = User.find(params[:id])
+    search_param = params[:id]
+
+    @user = search_param.to_i.to_s == search_param ? User.find(search_param) : User.find_by_username(search_param)
   end
 
   private
