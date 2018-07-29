@@ -200,12 +200,6 @@ describe LocationsController do
       within('div#search_results') do
         expect(page).to have_content('2 Locations in Results')
       end
-
-      visit '/portland/?by_location_id=' + cleo_location.id.to_s
-
-      within('div#search_results') do
-        expect(page).to_not have_content('1 Location in Results')
-      end
     end
 
     it 'favors by_location_name when search by both by_location_id and by_location_name' do

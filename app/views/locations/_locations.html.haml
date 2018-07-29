@@ -61,7 +61,7 @@
   #search_results   
     - if @locations.size > 1
       #search_results_count
-        %span #{@locations.size} Location#{@locations.size > 1 ? 's' : ''} in Results
+        %span #{@locations.size} Locations in Results
     - @locations.each do |location|
       - l = location.clone
       %div.search_result[l]         
