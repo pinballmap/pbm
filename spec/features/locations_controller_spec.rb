@@ -385,7 +385,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/portland\?utf8=%E2%9C%93&region=portland&by_location_id=&by_location_name=/)
+      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/portland\?utf8=%E2%9C%93&region=portland$/)
 
       visit '/regionless'
 
@@ -393,21 +393,21 @@ describe LocationsController do
 
       sleep 1
 
-      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/regionless\?utf8=%E2%9C%93&by_machine_id=&by_location_id=&by_machine_name=&address=&by_location_name=/)
+      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/regionless\?utf8=%E2%9C%93$/)
     end
 
     it 'respects a region param' do
       regionless_location = FactoryBot.create(:location, region: nil, name: 'Regionless place')
       FactoryBot.create(:location_machine_xref, location: regionless_location, machine: @machine)
 
-      visit "/regionless?utf8=%E2%9C%93&by_location_id=&by_location_name=&by_machine_id=#{@machine.id}"
+      visit "/regionless?utf8=%E2%9C%93&by_machine_id=#{@machine.id}"
 
       sleep 1
 
       expect(find('#search_results')).to have_content('Regionless place')
       expect(find('#search_results')).to have_content('Cleo')
 
-      visit "/portland?utf8=%E2%9C%93&region=portland&by_location_id=&by_location_name=&by_machine_id=#{@machine.id}"
+      visit "/portland?utf8=%E2%9C%93&region=portland&by_machine_id=#{@machine.id}"
 
       sleep 1
 
