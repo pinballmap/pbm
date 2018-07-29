@@ -6,7 +6,7 @@
       by
       %span.machine_condition_name
         - if lmx.current_condition.user
-          = link_to lmx.current_condition.user.username, "http://#{request.host_with_port}/users/#{lmx.current_condition.user.id}/profile"
+          = link_to lmx.current_condition.user.username, "http://#{request.host_with_port}/users/#{lmx.current_condition.user.username}/profile"
         - else
           DELETED USER
 - if user_signed_in?

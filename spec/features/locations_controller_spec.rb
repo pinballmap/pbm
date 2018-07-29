@@ -25,7 +25,7 @@ describe LocationsController do
 
         expect(location.reload.date_last_updated).to eq(Date.today)
         expect(find("#last_updated_location_#{location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')} by ssw")
-        expect(URI.parse(page.find_link('ssw')['href']).to_s).to match(%r{\/users\/#{@user.id}\/profile})
+        expect(URI.parse(page.find_link('ssw')['href']).to_s).to match(%r{\/users\/#{@user.username}\/profile})
       end
     end
 
@@ -199,12 +199,6 @@ describe LocationsController do
 
       within('div#search_results') do
         expect(page).to have_content('2 Locations in Results')
-      end
-
-      visit '/portland/?by_location_id=' + cleo_location.id.to_s
-
-      within('div#search_results') do
-        expect(page).to have_content('1 Location in Results')
       end
     end
 

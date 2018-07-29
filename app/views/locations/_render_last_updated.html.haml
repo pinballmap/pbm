@@ -3,4 +3,4 @@
   - if l.last_updated_by_user
     by
     %span.last_updated_username
-      = link_to l.last_updated_by_user.username, "https://#{request.host_with_port}/users/#{l.last_updated_by_user.id}/profile"
+      = link_to l.last_updated_by_user.username, "https://#{request.host_with_port}/users/#{l.last_updated_by_user.username}/profile"
