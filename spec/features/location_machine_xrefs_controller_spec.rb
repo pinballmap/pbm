@@ -237,7 +237,7 @@ describe LocationMachineXrefsController do
       expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition\nUpdated: #{@lmx.current_condition.created_at.strftime('%b-%d-%Y')} by ssw")
       expect(@lmx.reload.location.date_last_updated).to eq(Date.today)
       expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{@location.date_last_updated.strftime('%b-%d-%Y')} by ssw")
-      expect(URI.parse(page.find_link('ssw', match: :first)['href']).to_s).to match(%r{\/users\/11\/profile})
+      expect(URI.parse(page.find_link('ssw', match: :first)['href']).to_s).to match(%r{\/users\/ssw\/profile})
     end
 
     it 'displays who updated a machine if that data is available' do
@@ -246,7 +246,7 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("Test Comment\nUpdated: #{@lmx.current_condition.created_at.strftime('%b-%d-%Y')} by cibw")
-      expect(URI.parse(page.find_link('cibw')['href']).to_s).to match(%r{\/users\/10\/profile})
+      expect(URI.parse(page.find_link('cibw')['href']).to_s).to match(%r{\/users\/cibw\/profile})
     end
 
     it 'does not error out if user later deleted their account' do

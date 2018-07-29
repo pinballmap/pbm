@@ -25,7 +25,7 @@ describe LocationsController do
 
         expect(location.reload.date_last_updated).to eq(Date.today)
         expect(find("#last_updated_location_#{location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')} by ssw")
-        expect(URI.parse(page.find_link('ssw')['href']).to_s).to match(%r{\/users\/#{@user.id}\/profile})
+        expect(URI.parse(page.find_link('ssw')['href']).to_s).to match(%r{\/users\/#{@user.username}\/profile})
       end
     end
 
@@ -204,7 +204,7 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + cleo_location.id.to_s
 
       within('div#search_results') do
-        expect(page).to have_content('1 Location in Results')
+        expect(page).to_not have_content('1 Location in Results')
       end
     end
 
@@ -385,7 +385,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/portland\?utf8=%E2%9C%93&region=portland$/)
+      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/portland\?utf8=%E2%9C%93&region=portland&by_location_id=&by_location_name=/)
 
       visit '/regionless'
 
@@ -393,21 +393,21 @@ describe LocationsController do
 
       sleep 1
 
-      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/regionless\?utf8=%E2%9C%93$/)
+      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/regionless\?utf8=%E2%9C%93&by_machine_id=&by_location_id=&by_machine_name=&address=&by_location_name=/)
     end
 
     it 'respects a region param' do
       regionless_location = FactoryBot.create(:location, region: nil, name: 'Regionless place')
       FactoryBot.create(:location_machine_xref, location: regionless_location, machine: @machine)
 
-      visit "/regionless?utf8=%E2%9C%93&by_machine_id=#{@machine.id}"
+      visit "/regionless?utf8=%E2%9C%93&by_location_id=&by_location_name=&by_machine_id=#{@machine.id}"
 
       sleep 1
 
       expect(find('#search_results')).to have_content('Regionless place')
       expect(find('#search_results')).to have_content('Cleo')
 
-      visit "/portland?utf8=%E2%9C%93&region=portland&by_machine_id=#{@machine.id}"
+      visit "/portland?utf8=%E2%9C%93&region=portland&by_location_id=&by_location_name=&by_machine_id=#{@machine.id}"
 
       sleep 1
 
