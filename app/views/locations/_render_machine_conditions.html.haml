@@ -17,6 +17,6 @@
         by
         %span.machine_condition_name
           - if mcx.user
-            = link_to mcx.user.username, "https://#{request.host_with_port}/users/#{mcx.user_id}/profile"
+            = link_to mcx.user.username, "https://#{request.host_with_port}/users/#{mcx.user.username}/profile"
           - else
             DELETED USER
