@@ -2,7 +2,7 @@ language: ruby
 cache:
   directories:
 rvm:
-  - "2.3.4"
+  - "2.5.1"
 script:
   - RAILS_ENV=test bundle exec rake db:migrate --trace
   - bundle exec rake
