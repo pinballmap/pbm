@@ -6,6 +6,18 @@ describe SuggestedLocation do
     @user = FactoryBot.create(:user, email: 'yeah@ok.com')
   end
 
+  describe 'after_create' do
+    it 'should put http:// in front of websites without one' do
+      expect(@suggested_location.website).to be(nil)
+
+      location_with_complete_website = FactoryBot.create(:suggested_location, website: 'http://foo.com')
+      expect(location_with_complete_website.website).to eq('http://foo.com')
+
+      location_with_incomplete_website = FactoryBot.create(:suggested_location, website: 'bar.com')
+      expect(location_with_incomplete_website.website).to eq('http://bar.com')
+    end
+  end
+
   describe '#address_incomplete?' do
     it 'should be true based on lack of address' do
       expect(@suggested_location.address_incomplete?).to be(false)
