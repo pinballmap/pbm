@@ -1,3 +1,5 @@
+require 'uri'
+
 class SuggestedLocation < ApplicationRecord
   validates_presence_of :name, :street, :city, :state, :zip, on: :update
 
@@ -13,6 +15,13 @@ class SuggestedLocation < ApplicationRecord
 
   geocoded_by :full_street_address, latitude: :lat, longitude: :lon
   before_validation :geocode, unless: :skip_geocoding?
+
+  after_create :massage_fields
+
+  def massage_fields
+    self.website = "http://#{website}" if website && website !~ /\A#{URI.regexp(%w[http https])}\z/
+    self.country = 'US' unless country
+  end
 
   def skip_geocoding?
     address_incomplete? || ENV['SKIP_GEOCODE'] || (lat && lon)
