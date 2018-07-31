@@ -828,7 +828,7 @@ describe LocationMachineXrefsController do
       expect(page).to_not have_content('Bawb')
     end
 
-    [FactoryBot.create(:region, name: 'portland', full_name: 'Portland'), nil].each do |region|
+    [Region.find_by_name('portland'), nil].each do |region|
       it 'honors direct link for location' do
         location = FactoryBot.create(:location, id: 111, region: region)
 

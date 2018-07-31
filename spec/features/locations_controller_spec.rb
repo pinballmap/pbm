@@ -11,7 +11,7 @@ describe LocationsController do
       page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
     end
 
-    [FactoryBot.create(:region, name: 'portland'), nil].each do |region|
+    [Region.find_by_name('portland'), nil].each do |region|
       it 'lets you click a button to update the date_last_updated' do
         location = FactoryBot.create(:location, region: region, name: 'Cleo')
 
