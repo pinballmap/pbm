@@ -15,6 +15,21 @@ describe SuggestedLocation do
 
       location_with_incomplete_website = FactoryBot.create(:suggested_location, website: 'bar.com')
       expect(location_with_incomplete_website.website).to eq('http://bar.com')
+
+      expect(@suggested_location.country).to eq('US')
+
+      filled_in_country = FactoryBot.create(:suggested_location, country: 'FR')
+      expect(filled_in_country.country).to eq('FR')
+    end
+
+    it 'should tag the location with US as the country if no country is sent' do
+      expect(@suggested_location.website).to be(nil)
+
+      location_with_complete_website = FactoryBot.create(:suggested_location, website: 'http://foo.com')
+      expect(location_with_complete_website.website).to eq('http://foo.com')
+
+      location_with_incomplete_website = FactoryBot.create(:suggested_location, website: 'bar.com')
+      expect(location_with_incomplete_website.website).to eq('http://bar.com')
     end
   end
 
