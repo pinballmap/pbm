@@ -24,7 +24,7 @@ class LocationsController < InheritedResources::Base
       params.delete(:by_location_id)
     end
 
-    @locations = apply_scopes(Location).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs)
+    @locations = apply_scopes(Location).order('locations.name').includes(:region, :location_type, :location_machine_xrefs, :machines)
     @location_data = LocationsController.locations_javascript_data(@locations)
 
     respond_with(@locations) do |format|
@@ -37,7 +37,7 @@ class LocationsController < InheritedResources::Base
   end
 
   def render_machines
-    render partial: 'locations/render_machines', locals: { location_machine_xrefs: Location.find(params[:id]).location_machine_xrefs }
+    render partial: 'locations/render_machines', locals: { location_machine_xrefs: LocationMachineXref.where(location_id: params[:id]).includes(:machine, :machine_score_xrefs, machine_conditions: :user) }
   end
 
   def render_machine_names_for_infowindow

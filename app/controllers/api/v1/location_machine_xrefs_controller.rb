@@ -12,8 +12,8 @@ module Api
       param :limit, Integer, desc: 'Limit the number of results that are returned', required: false
       formats ['json']
       def index
-        lmxes = apply_scopes(LocationMachineXref).order('id desc')
-        return_response(lmxes, 'location_machine_xrefs', [], %i[location machine machine_conditions])
+        lmxes = apply_scopes(LocationMachineXref).order('location_machine_xrefs.id desc').includes(:location, :machine, machine_conditions: :user)
+        return_response(lmxes, 'location_machine_xrefs', %i[location machine machine_conditions])
       end
 
       api :GET, '/api/v1/location_machine_xrefs/:id.json', 'Get info about a single lmx'
