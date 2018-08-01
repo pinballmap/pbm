@@ -192,11 +192,12 @@ class PagesController < ApplicationController
       @tweets = []
     end
 
+    @machine_and_location_count_by_region = Region.machine_and_location_count_by_region
     @all_regions = Region.order(:state, :full_name)
-    @region_data = regions_javascript_data(@all_regions)
+    @region_data = regions_javascript_data(@all_regions, @machine_and_location_count_by_region)
   end
 
-  def regions_javascript_data(regions)
+  def regions_javascript_data(regions, machine_and_location_count_by_region)
     ids = []
     lats = []
     lons = []
@@ -206,7 +207,7 @@ class PagesController < ApplicationController
       ids      << r.id
       lats     << r.lat
       lons     << r.lon
-      contents << r.content_for_infowindow
+      contents << r.content_for_infowindow(machine_and_location_count_by_region[r.id]['locations_count'], machine_and_location_count_by_region[r.id]['machines_count'])
     end
 
     [ids, lats, lons, contents]
