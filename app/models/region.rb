@@ -87,18 +87,13 @@ HERE
   end
 
   def primary_email_contact
-    if users.empty?
-      'email_not_found@noemailfound.noemail'
-    elsif users.where(is_primary_email_contact: true).any?
-      users
-        .where(is_primary_email_contact: true)
-        .first
-        .email
-    else
-      users
-        .first
-        .email
+    return 'email_not_found@noemailfound.noemail' if users.empty?
+
+    users.each do |u|
+      return u.email if u.is_primary_email_contact
     end
+
+    users.first.email
   end
 
   def machineless_locations

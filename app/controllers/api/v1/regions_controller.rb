@@ -58,7 +58,7 @@ module Api
       api :GET, '/api/v1/regions.json', 'Fetch all regions'
       description 'Fetch data about all regions'
       def index
-        regions = Region.all.includes(:users)
+        regions = Region.includes(:users).all
 
         return_response(regions, 'regions', [], %i[primary_email_contact all_admin_email_addresses])
       end
