@@ -11,6 +11,30 @@ class Region < ApplicationRecord
 
   geocoded_by :lat_and_lon, latitude: :lat, longitude: :lon
 
+  def self.machine_and_location_count_by_region
+    records_array = ActiveRecord::Base.connection.execute(<<HERE)
+select
+  r.id as region_id,
+  count(distinct l.id) as locations_count,
+  count(distinct x.id) as machines_count
+from
+  regions r
+  left outer join locations l on l.region_id = r.id
+  left outer join location_machine_xrefs x on x.location_id = l.id
+group by
+  1
+HERE
+
+    machine_and_location_count_by_region = {}
+    records_array.each do |r|
+      machine_and_location_count_by_region[r['region_id']] = {}
+      machine_and_location_count_by_region[r['region_id']]['locations_count'] = r['locations_count']
+      machine_and_location_count_by_region[r['region_id']]['machines_count'] = r['machines_count']
+    end
+
+    machine_and_location_count_by_region
+  end
+
   def machines
     machines = {}
     location_machine_xrefs.includes(:machine).each do |lmx|
@@ -99,12 +123,12 @@ class Region < ApplicationRecord
     '[' + sections.map { |s| "'" + s + "'" }.join(', ') + ']'
   end
 
-  def content_for_infowindow
+  def content_for_infowindow(locations_count, machines_count)
     content = "'<div class=\"infowindow\" id=\"infowindow_#{id}\">"
     content += "<div class=\"gm_region_name\"><a href=\"#{name}\">#{full_name.gsub("'", "\\\\'")}</a></div>"
     content += '<hr />'
-    content += "<div class=\"gm_location_count\">#{locations.size} Locations</div>"
-    content += "<div class=\"gm_machine_count\">#{location_machine_xrefs.size} Machines</div>"
+    content += "<div class=\"gm_location_count\">#{locations_count} Locations</div>"
+    content += "<div class=\"gm_machine_count\">#{machines_count} Machines</div>"
     content += "</div>'"
 
     content.html_safe
