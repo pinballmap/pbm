@@ -18,6 +18,7 @@ class Location < ApplicationRecord
   has_many :location_machine_xrefs
   has_many :location_picture_xrefs
   has_many :machines, through: :location_machine_xrefs
+  has_many :machine_conditions, through: :location_machine_xrefs
 
   geocoded_by :full_street_address, latitude: :lat, longitude: :lon
   before_validation :geocode, unless: :skip_geocoding?
