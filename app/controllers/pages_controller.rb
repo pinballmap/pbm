@@ -27,7 +27,7 @@ class PagesController < ApplicationController
   def regionless; end
 
   def region
-    @locations = Location.where('region_id = ?', @region.id)
+    @locations = Location.where('region_id = ?', @region.id).includes(:location_type)
     @location_count = @locations.count
     @lmx_count = @region.machines_count
 
