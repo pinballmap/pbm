@@ -13,7 +13,7 @@ module Api
       param :limit, Integer, desc: 'Limit number of results returned', required: false
       formats ['json']
       def index
-        scores = apply_scopes(MachineScoreXref).order('id desc')
+        scores = apply_scopes(MachineScoreXref).includes(:user).order('id desc')
         return_response(scores, 'machine_score_xrefs', [], [:username])
       end
 
