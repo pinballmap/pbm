@@ -268,8 +268,8 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, params: { condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
-      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('foo')
-      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][1]['comment']).to eq('bar')
+      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('bar')
+      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][1]['comment']).to eq('foo')
     end
 
     it 'updates condition - authed' do
@@ -279,9 +279,10 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(response).to be_successful
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
       expect(JSON.parse(response.body)['location_machine']['last_updated_by_username']).to eq('ssw')
-      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('foo')
-      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['username']).to eq('ssw')
-      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][1]['comment']).to eq('bar')
+      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('bar')
+      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['username']).to eq('')
+      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][1]['comment']).to eq('foo')
+      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][1]['username']).to eq('ssw')
 
       @lmx.reload
       expect(@lmx.location.last_updated_by_user.id).to eq(111)
@@ -328,8 +329,8 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(lmx['condition']).to eq('condition')
 
       expect(machine_conditions.size).to eq(2)
-      expect(machine_conditions[0]['comment']).to eq('bar')
-      expect(machine_conditions[1]['comment']).to eq('foo')
+      expect(machine_conditions[0]['comment']).to eq('foo')
+      expect(machine_conditions[1]['comment']).to eq('bar')
     end
   end
 end
