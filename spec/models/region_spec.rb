@@ -23,6 +23,19 @@ describe Region do
     end
   end
 
+  describe '#delete_empty_regionless_locations' do
+    it 'should remove all empty regionless locations' do
+      FactoryBot.create(:location, region: nil)
+      not_empty = FactoryBot.create(:location, region: nil, name: 'not empty')
+      FactoryBot.create(:location_machine_xref, location: not_empty, machine: FactoryBot.create(:machine))
+
+      Region.delete_empty_regionless_locations
+
+      expect(Location.all.count).to eq(1)
+      expect(Location.first.name).to eq('not empty')
+    end
+  end
+
   describe '#delete_all_empty_locations' do
     it 'should remove all empty locations if the region has opted in to this functionality' do
       FactoryBot.create(:location, region: @region)

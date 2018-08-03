@@ -244,6 +244,12 @@ List of Suggested Locations:
 HERE
   end
 
+  def self.delete_empty_regionless_locations
+    Location.where('region_id is null').each do |l|
+      l.destroy if l.location_machine_xrefs.count.zero?
+    end
+  end
+
   def delete_all_empty_locations
     return unless should_auto_delete_empty_locations
 
