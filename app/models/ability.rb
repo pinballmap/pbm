@@ -26,7 +26,6 @@ class Ability
       can :manage, [Machine, MachineGroup]
     else
       can %i[update read], [Region], id: user.region_id
-      can %i[read], [Machine]
     end
   end
 end
