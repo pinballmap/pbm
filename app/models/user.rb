@@ -117,7 +117,7 @@ class User < ApplicationRecord
       UserSubmission::REMOVE_MACHINE_TYPE,
       UserSubmission::NEW_SCORE_TYPE,
       UserSubmission::CONFIRM_LOCATION_TYPE
-    ).order('created_at desc')
+    ).includes('location').order('created_at desc')
   end
 
   def as_json(options = {})
