@@ -16,7 +16,7 @@ class PagesController < ApplicationController
     else
       params.delete(:by_machine_name) unless params[:by_machine_id].blank?
 
-      @locations = apply_scopes(params[:address].blank? ? Location : Location.near(params[:address], 5)).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs)
+      @locations = apply_scopes(params[:address].blank? ? Location : Location.near(params[:address], 5)).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs, :region, :location_type)
     end
 
     @location_data = LocationsController.locations_javascript_data(@locations)

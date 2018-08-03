@@ -66,7 +66,7 @@ module Api
       def index
         except = params[:no_details] ? %i[street zip phone state website description created_at updated_at date_last_updated last_updated_by_user_id region_id] : nil
 
-        locations = apply_scopes(Location).order('locations.name').includes({ location_machine_xrefs: :user }, { machine_conditions: :user }, :machines, :last_updated_by_user)
+        locations = apply_scopes(Location).includes({ location_machine_xrefs: :user }, { machine_conditions: :user }, :machines, :last_updated_by_user).order('locations.name')
         return_response(
           locations,
           'locations',

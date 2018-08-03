@@ -32,12 +32,12 @@
         - else
           #{l.location_type.name}
       .clear
-    - if ((current_page?(regionless_location_data_path) || request.referer =~ /regionless/) && l.region)
-      %li.location_type
-        %span.grey Region:
-        %span
-        =link_to "#{l.region.full_name}", "/#{l.region.name.downcase}"
-        .clear
+  - if ((current_page?(regionless_location_data_path) || request.referer =~ /regionless/) && l.region)
+    %li.location_type
+      %span.grey Region:
+      %span
+      =link_to "#{l.region.full_name}", "/#{l.region.name.downcase}"
+      .clear
   .clear
 %div[l, :metadata_edit]{:style => 'display:none'}
   = form_tag update_metadata_locations_path(:action => 'update_metadata', id: l.id), :id => "update_metadata_#{l.id}", :method => 'get' do
