@@ -99,6 +99,59 @@ HERE
     end
   end
 
+  describe '#generate_weekly_regionless_email_body' do
+    it 'should generate a string containing metrics about regionless locations' do
+      FactoryBot.create(:location, region: @region, name: 'Another Region Location')
+
+      FactoryBot.create(:location, region: nil, name: 'Empty Location', city: 'Troy', state: 'OR')
+      FactoryBot.create(:location, region: nil, name: 'Another Empty Location', city: 'Rochester', state: 'OR', created_at: Date.today - 2.week)
+
+      FactoryBot.create(:user_submission, region: nil, submission_type: 'suggest_location')
+      FactoryBot.create(:user_submission, region: nil, submission_type: 'suggest_location')
+
+      FactoryBot.create(:user_submission, region: nil, submission_type: 'new_condition')
+      FactoryBot.create(:user_submission, region: nil, submission_type: 'new_condition')
+
+      location_added_today = FactoryBot.create(:location, region: nil, name: 'Location Added Today')
+      FactoryBot.create(:location_machine_xref, location: location_added_today, machine: FactoryBot.create(:machine))
+
+      FactoryBot.create(:user_submission, region: nil, submission_type: 'remove_machine')
+      FactoryBot.create(:user_submission, region: nil, submission_type: 'remove_machine')
+
+      FactoryBot.create(:user_submission, region: nil, submission_type: 'delete_location')
+      FactoryBot.create(:user_submission, region: nil, submission_type: 'delete_location')
+      FactoryBot.create(:user_submission, region: nil, submission_type: 'delete_location')
+
+      FactoryBot.create(:location_machine_xref, location: location_added_today, machine: FactoryBot.create(:machine), created_at: Date.today - 2.week)
+      FactoryBot.create(:location_machine_xref, location: location_added_today, machine: FactoryBot.create(:machine), created_at: Date.today - 2.week)
+
+      FactoryBot.create(:suggested_location, region: nil, name: 'SL 1')
+      FactoryBot.create(:suggested_location, region: nil, name: 'SL 2')
+
+      expect(Region.generate_weekly_regionless_email_body).to eq(<<HERE)
+Here is an overview of regionless locations! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@fastmail.com
+
+Regionless Weekly Overview
+
+List of Empty Locations:
+Another Empty Location (Rochester, OR)
+Empty Location (Troy, OR)
+
+List of Suggested Locations:
+SL 1
+SL 2
+
+2 Location(s) submitted to you this week
+2 Location(s) added by you this week
+3 Location(s) deleted this week
+2 machine comment(s) by users this week
+1 machine(s) added by users this week
+2 machine(s) removed by users this week
+REGIONLESS is listing 3 machines and 3 locations
+HERE
+    end
+  end
+
   describe '#generate_weekly_admin_email_body' do
     it 'should generate a string containing metrics about the region condition' do
       FactoryBot.create(:location, region: @another_region)

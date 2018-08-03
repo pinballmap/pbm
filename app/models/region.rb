@@ -182,6 +182,40 @@ Here is a list of all the machines that were removed from your region on #{(Time
 HERE
   end
 
+  def self.generate_weekly_regionless_email_body
+    start_of_week = (Time.now - 1.week).beginning_of_day
+    end_of_week = Time.now.end_of_day
+
+    regionless_locations = Location.where('region_id is null')
+    regionless_user_submissions = UserSubmission.where('region_id is null')
+    regionless_machine_count = LocationMachineXref.count_by_sql('select count(*) from location_machine_xrefs lmx inner join locations l on (lmx.location_id = l.id) where l.region_id is null')
+
+    regionless_machines_added_by_users_this_week = 0
+    regionless_locations.each do |l|
+      regionless_machines_added_by_users_this_week += l.location_machine_xrefs.select { |lmx| !lmx.created_at.nil? && lmx.created_at.between?(start_of_week, end_of_week) }.count
+    end
+
+    <<HERE
+Here is an overview of regionless locations! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@fastmail.com
+
+Regionless Weekly Overview
+
+List of Empty Locations:
+#{regionless_locations.select { |location| location.machines.empty? }.each.map { |ml| ml.name + " (#{ml.city}, #{ml.state})" }.sort.join("\n")}
+
+List of Suggested Locations:
+#{SuggestedLocation.where('region_id is null').each.map(&:name).sort.join("\n")}
+
+#{UserSubmission.where('region_id is null').select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::SUGGEST_LOCATION_TYPE }.count} Location(s) submitted to you this week
+#{regionless_locations.select { |l| !l.created_at.nil? && l.created_at.between?(start_of_week, end_of_week) }.count} Location(s) added by you this week
+#{regionless_user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::DELETE_LOCATION_TYPE }.count} Location(s) deleted this week
+#{regionless_user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE }.count} machine comment(s) by users this week
+#{regionless_machines_added_by_users_this_week} machine(s) added by users this week
+#{regionless_user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.count} machine(s) removed by users this week
+REGIONLESS is listing #{regionless_machine_count} machines and #{regionless_locations.count} locations
+HERE
+  end
+
   def generate_weekly_admin_email_body
     start_of_week = (Time.now - 1.week).beginning_of_day
     end_of_week = Time.now.end_of_day
