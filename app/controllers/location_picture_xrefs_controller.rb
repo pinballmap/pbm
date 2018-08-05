@@ -10,10 +10,10 @@ class LocationPictureXrefsController < InheritedResources::Base
     end
 
     Pony.mail(
-      to: @location_picture_xref.location.region.users.map(&:email),
+      to: @location_picture_xref.location.region_id ? @location_picture_xref.location.region.users.map(&:email) : User.where("is_super_admin = 't'").map(&:email),
       from: 'admin@pinballmap.com',
       subject: 'PBM - Someone wants you to approve a picture',
-      body: "This is photo ID: #{@location_picture_xref.id}. It's at location: #{@location_picture_xref.location.name}. Region: #{@location_picture_xref.location.region.full_name}.\n\n\nYou can view the picture here #{@location_picture_xref.photo.url}\n\n\nTo approve it, please visit here #{request.base_url}#{rails_admin_path}/location_picture_xref\n\n\nOnce there, click 'edit' and then tick the 'approve' button."
+      body: "This is photo ID: #{@location_picture_xref.id}. It's at location: #{@location_picture_xref.location.name}. Region: #{@location_picture_xref.location.region_id ? @location_picture_xref.location.region.full_name : 'REGIONLESS'}.\n\n\nYou can view the picture here #{@location_picture_xref.photo.url}\n\n\nTo approve it, please visit here #{request.base_url}#{rails_admin_path}/location_picture_xref\n\n\nOnce there, click 'edit' and then tick the 'approve' button."
     )
   end
 
