@@ -53,7 +53,7 @@ describe UsersController do
       expect(page).to have_content("1\nMachine Comments")
       expect(page).to have_content("3\nLocations Submitted")
       expect(page).to have_content("5\nLocations Edited")
-      expect(page).to have_content("High Scores:\nMachine One\n1\nat Location One on Jan-02-2016\nMachine Two\n2\nat Location One on Jan-01-2016")
+      expect(page).to have_content("High Scores (Last 50):\nMachine One\n1\nat Location One on Jan-02-2016\nMachine Two\n2\nat Location One on Jan-01-2016")
     end
 
     it 'adds commas to high scores' do
@@ -62,7 +62,7 @@ describe UsersController do
       login
       visit "/users/#{@user.id}/profile"
 
-      expect(page).to have_content("High Scores:\nMachine One\n1,000,000\nat Location One on Jan-02-2016")
+      expect(page).to have_content("High Scores (Last 50):\nMachine One\n1,000,000\nat Location One on Jan-02-2016")
     end
 
     it 'Only lets you edit your own account' do

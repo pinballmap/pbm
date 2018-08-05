@@ -152,7 +152,7 @@ module Api
       param :id, Integer, desc: 'ID of location', required: true
       formats ['json']
       def show
-        location = Location.includes({ location_machine_xrefs: [:user, :machine, :machine_conditions, :machine_score_xrefs] }).find(params[:id])
+        location = Location.includes(location_machine_xrefs: %i[user machine machine_conditions machine_score_xrefs]).find(params[:id])
 
         return_response(
           location,
