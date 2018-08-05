@@ -38,6 +38,20 @@ describe User do
 
       expect(@user.profile_list_of_high_scores).to eq([['Second Location', 'Second Machine', '2,000', 'Jan-02-2016'], ['First Location', 'First Machine', '100', 'Jan-01-2016']])
     end
+
+    it 'only returns the most recent 50' do
+      region = FactoryBot.create(:region)
+      @location = FactoryBot.create(:location, name: 'First Location')
+      @machine = FactoryBot.create(:machine, name: 'First Machine')
+
+      51.times do |i|
+        FactoryBot.create(:user_submission, region: region, location: @location, machine: @machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 100 for First Machine to First Location', user: @user, created_at: Date.new(2016, 1, 1).next_day(i).to_s)
+      end
+
+      expect(@user.profile_list_of_high_scores.size).to eq(50)
+      expect(@user.profile_list_of_high_scores.map { |s| s[3] }[0]).to eq('Feb-20-2016')
+      expect(@user.profile_list_of_high_scores.map { |s| s[3] }[49]).to eq('Jan-02-2016')
+    end
   end
 
   describe '#num_locations_edited' do
@@ -70,6 +84,16 @@ describe User do
       FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
 
       expect(@user.profile_list_of_edited_locations).to eq([[another_location.id, another_location.name, another_location.region_id], [location.id, location.name, location.region_id]])
+    end
+
+    it 'should return the most recent 50' do
+      51.times do |i|
+        FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, name: i.to_s), submission_type: UserSubmission::LOCATION_METADATA_TYPE, created_at: Date.new(2016, 1, 1).next_day(i).to_s)
+      end
+
+      expect(@user.profile_list_of_edited_locations.size).to eq(50)
+      expect(@user.profile_list_of_edited_locations.map { |s| s[1] }[0]).to eq('50')
+      expect(@user.profile_list_of_edited_locations.map { |s| s[1] }[49]).to eq('1')
     end
 
     it 'should not return locations that no longer exist' do

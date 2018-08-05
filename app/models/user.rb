@@ -79,7 +79,7 @@ class User < ApplicationRecord
   end
 
   def profile_list_of_high_scores
-    msx_submissions = UserSubmission.where(user: self, submission_type: UserSubmission::NEW_SCORE_TYPE).order(created_at: 'DESC')
+    msx_submissions = UserSubmission.where(user: self, submission_type: UserSubmission::NEW_SCORE_TYPE).order(created_at: 'DESC').limit(50)
 
     formatted_score_data = []
     msx_submissions.each do |msx_sub|
@@ -117,7 +117,7 @@ class User < ApplicationRecord
       UserSubmission::REMOVE_MACHINE_TYPE,
       UserSubmission::NEW_SCORE_TYPE,
       UserSubmission::CONFIRM_LOCATION_TYPE
-    ).includes('location').order('created_at desc')
+    ).includes('location').order('created_at desc').limit(50)
   end
 
   def as_json(options = {})

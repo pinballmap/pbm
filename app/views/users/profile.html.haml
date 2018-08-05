@@ -36,7 +36,7 @@
       - if !@user.profile_list_of_edited_locations.empty?
         %div.darkbl.stats
           %div.stats_o
-            List of Locations Edited:
+            List of Locations Edited (with your last 50 updates):
             %span.stats_list
               - @user.profile_list_of_edited_locations.each do |location_array|
                 - location = Location.find(location_array[0])
@@ -47,7 +47,7 @@
       - if !@user.profile_list_of_high_scores.empty?          
         %div.darkbl.stats
           %div.stats_o
-            High Scores:
+            High Scores (Last 50):
             %span.stats_list
               - @user.profile_list_of_high_scores.each do |score_array|
                 - location_name, machine_name, score, date_created = score_array
