@@ -20,7 +20,9 @@ class SuggestedLocation < ApplicationRecord
 
   def massage_fields
     self.website = "http://#{website}" if website && website !~ /\A#{URI.regexp(%w[http https])}\z/
-    self.country = 'US' unless country
+    self.country = 'US' if country.blank?
+
+    save
   end
 
   def skip_geocoding?
