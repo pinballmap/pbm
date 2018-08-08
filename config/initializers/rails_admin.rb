@@ -189,7 +189,7 @@ RailsAdmin.config do |config|
       field :description, :string
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.region_id, :object_type => 'location'}
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, :object_type => 'location'}
         end
       end
       field :is_stern_army, :boolean do
@@ -484,6 +484,7 @@ RailsAdmin.config do |config|
   end
   config.model User do
     list do
+      scopes [nil, :admins, :non_admins]
       field :email, :string
       field :username, :string
       field :region, :belongs_to_association
