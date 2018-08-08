@@ -155,7 +155,7 @@
 
 @media (max-width: 1180px) {
   .div_01b {
-    display: none !important;
+    display: none;
   }
   .div_01 {
     width: 450px;
