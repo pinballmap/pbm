@@ -5,6 +5,15 @@ describe User do
     @user = FactoryBot.create(:user)
   end
 
+  describe 'rails admin scopes' do
+    it 'should show admins and non_admins based on scopes' do
+      admin_user = FactoryBot.create(:user, region_id: 1)
+
+      expect(User.admins).to eq([admin_user])
+      expect(User.non_admins).to eq([@user])
+    end
+  end
+
   describe '#num_machines_added' do
     it 'should return the number of machines this user has added' do
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_LMX_TYPE)

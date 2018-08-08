@@ -484,6 +484,7 @@ RailsAdmin.config do |config|
   end
   config.model User do
     list do
+      scopes [nil, :admins, :non_admins]
       field :email, :string
       field :username, :string
       field :region, :belongs_to_association
