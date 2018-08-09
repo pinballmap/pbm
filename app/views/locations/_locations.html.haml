@@ -32,7 +32,7 @@
     }
 
 :javascript
-  var isSingleLocation = #{@locations.size == 1 ? true : false}
+  var isSingleLocation = #{@locations.size == 1 ? true : false};
 
   if (isSingleLocation) {
     var locationName = "#{raw @locations.size == 0 ? '' : @locations[0].name}";
