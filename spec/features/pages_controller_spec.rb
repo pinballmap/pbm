@@ -406,6 +406,52 @@ describe PagesController do
     end
   end
 
+  describe 'admin', type: :feature, js: true do 
+    it 'presents a link to the admin pages if you are an admin' do
+      visit '/'
+      find('#menu').click
+
+      expect(page).to_not have_content('Admin')
+      expect(page).to have_content('Login')
+
+      visit '/portland'
+      find('#menu').click
+
+      expect(page).to_not have_content('Admin')
+      expect(page).to have_content('Login')
+
+      user = FactoryBot.create(:user)
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
+
+      visit '/'
+      find('#menu').click
+
+      expect(page).to_not have_content('Admin')
+      expect(page).to have_content('Logout')
+
+      visit '/portland'
+      find('#menu').click
+
+      expect(page).to_not have_content('Admin')
+      expect(page).to have_content('Logout')
+
+      user = FactoryBot.create(:user, region_id: @region.id)
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
+
+      visit '/'
+      find('#menu').click
+
+      expect(page).to have_content('Admin')
+      expect(page).to have_content('Logout')
+
+      visit '/portland'
+      find('#menu').click
+
+      expect(page).to have_content('Admin')
+      expect(page).to have_content('Logout')
+    end
+  end
+
   describe 'get_a_profile', type: :feature, js: true do
     it 'redirects you to your user profile page if you are logged in' do
       visit '/inspire_profile'
