@@ -406,7 +406,7 @@ describe PagesController do
     end
   end
 
-  describe 'admin', type: :feature, js: true do 
+  describe 'admin', type: :feature, js: true do
     it 'presents a link to the admin pages if you are an admin' do
       visit '/'
       find('#menu').click
