@@ -14,7 +14,7 @@ describe PagesController do
 
       sleep 1
 
-      expect(page.body).to have_content('NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN.')
+      expect(page.body).to have_content('NOT FOUND. PLEASE SEARCH AGAIN.')
     end
 
     it 'only lets you search by one thing at a time, OR address + machine' do
