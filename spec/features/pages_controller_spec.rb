@@ -14,7 +14,7 @@ describe PagesController do
 
       sleep 1
 
-      expect(page.body).to have_content('NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN.')
+      expect(page.body).to have_content('NOT FOUND. PLEASE SEARCH AGAIN.')
     end
 
     it 'only lets you search by one thing at a time, OR address + machine' do
@@ -409,11 +409,13 @@ describe PagesController do
   describe 'admin', type: :feature, js: true do
     it 'presents a link to the admin pages if you are an admin' do
       visit '/'
+      find('#menu').click
 
       expect(page).to_not have_content('Admin')
       expect(page).to have_content('Login')
 
       visit '/portland'
+      find('#menu').click
 
       expect(page).to_not have_content('Admin')
       expect(page).to have_content('Login')
@@ -422,11 +424,13 @@ describe PagesController do
       page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
 
       visit '/'
+      find('#menu').click
 
       expect(page).to_not have_content('Admin')
       expect(page).to have_content('Logout')
 
       visit '/portland'
+      find('#menu').click
 
       expect(page).to_not have_content('Admin')
       expect(page).to have_content('Logout')
@@ -435,11 +439,13 @@ describe PagesController do
       page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
 
       visit '/'
+      find('#menu').click
 
       expect(page).to have_content('Admin')
       expect(page).to have_content('Logout')
 
       visit '/portland'
+      find('#menu').click
 
       expect(page).to have_content('Admin')
       expect(page).to have_content('Logout')

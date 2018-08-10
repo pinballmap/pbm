@@ -8,7 +8,7 @@
         #menu &#9776;
         %ul#nav.js
           = render :partial => 'pages/menu'
-      .header_buttons_child
+      .header_buttons_child.header_menu_02{:class => "#{@region ? 'header_menu_region' : ''}"}
         - if !user_signed_in?
           = link_to 'Login', new_user_session_path
           %span.login_slash
@@ -30,7 +30,7 @@
         .header_buttons_child.header_menu_01
           =link_to 'Add Location', suggest_path, :class => "bold"
       - if (@region || current_page?(regionless_path))     
-        .header_buttons_child
+        .header_buttons_child{:class => "#{@region ? 'header_menu_03' : ''}"}
           %span.bold{:onclick => "findClosestLocations('#{@region ? @region.name : 'regionless'}')"}
             = link_to 'Closest Locations', '#', {:id => 'find_closest_locations'}
         - if (@region)

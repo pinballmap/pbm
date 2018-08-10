@@ -423,7 +423,7 @@ p.f {
   margin-top: 0;
 }
 .home_more {
-  margin: 49px 10px 10px;
+  margin: 49px 0 0;
 }
 
 /** END Home **/
@@ -745,6 +745,9 @@ form#address_search_form input.lookup_search_input {
 }
 #footer a {
   text-decoration: none;
+}
+.footer_api {
+  padding-left: 10px;
 }
 .footer_github:before {
   content: "";
@@ -2349,9 +2352,6 @@ li span.state_name {
 #contact_maker input.text {
   width: 350px;
 }
-#location_maker li.textbox {
-  height: 70px;
-}
 #contact_maker textarea {
   width: 350px;
   margin: 0;
@@ -2365,9 +2365,11 @@ li span.state_name {
   width: 575px;
   max-width: 575px;
   min-width: 575px;
-  max-height: 50px;
+  max-height: 300px;
   margin: 0;
   font-size: 14px;
+  resize: both;
+  overflow: auto;
 }
 #location_maker li.machines, #location_maker li.recaptcha,
 #contact_maker li.recaptcha, #contact_maker li.msg {

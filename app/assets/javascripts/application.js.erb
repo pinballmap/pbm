@@ -407,7 +407,7 @@ function showLocations(ids, lats, lons, contents) {
       map.setCenter(new google.maps.LatLng(lats[0], lons[0]));
       tooZoomed(); //for single location load
     } else if (contents.length == 0) {
-      document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "NOT FOUND IN THIS REGION. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
+      document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
     } else {
       map.fitBounds(bounds);
     }

@@ -65,6 +65,8 @@ module PagesHelper
               'Forgot Password - '
             elsif path.match?(/confirmation/)
               'Confirmation Instructions - '
+            elsif path == regionless_location_suggest_path
+              'Suggest a New Location - '
             else
               ''
             end
@@ -120,6 +122,8 @@ module PagesHelper
              'The email confirmation can be resent from this page.'
            elsif path.match?(/regionless/)
              'Find local places to play pinball! The Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
+           elsif path == regionless_location_suggest_path
+             '"Add a new location to the Pinball Map! This crowdsourced map relies on your knowledge and help!"'
            else
              'The Pinball Map website and free mobile app will help you find places to play pinball! Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
            end

@@ -124,26 +124,12 @@
 }
 
 @media (max-width: 1800px) {
-  .div_01b {
+  .div_03 {
     display: none;
   }
 }
-@media (max-width: 1600px) {
-  .div_03 {
-    display: none !important;
-  }
-}
-@media (max-width: 1200px) {
-  .div_01 {
-    width: 300px;
-  }
-  .div_01 p, .div_01 .darkb {
-    font-size: 14px;
-    line-height: 16px;
-  }
-}
 
-@media (max-width: 1040px) {
+@media (max-width: 1500px) {
   #region_map {
     width: 530px;
     height: 450px;
@@ -153,6 +139,32 @@
   }
 }
 
+@media (max-width: 1300px) {
+  .div_01 {
+    width: 300px;
+  }
+  .home_intro {
+    margin: 0 0 0 10px;
+    padding: 3px 0 0;
+  }
+  .div_01 p, .div_01 .darkb, .div_01b p {
+    font-size: 14px;
+    line-height: 16px;
+  }
+}
+
+@media (max-width: 1180px) {
+  .div_01b {
+    display: none;
+  }
+  .div_01 {
+    width: 450px;
+  }
+  .div_01 p, .div_01 .darkb {
+    font-size: 16px;
+    line-height: 22px;
+  }
+}
 @media (max-width: 875px) {
   #region_map {
     width: 420px;
@@ -161,25 +173,37 @@
   .div_02 {
     width: 420px;
   }
-  .header_menu_02 {
+  .header_menu_03 {
     display: none;
   }
-  #header .menu_link ul li.menu_header_02 {
+  #header .menu_link ul li.menu_header_03 {
     display: block;
   }
-  .header_buttons_child.header_menu_02 {
+  .header_buttons_child.header_menu_03 {
+    width: 0;
+  }
+}
+
+@media (max-width: 850px) {
+  .header_menu_01, .header_menu_02 {
+    display: none;
+  }
+  #header .menu_link ul li.menu_header_01, #header .menu_link ul li.menu_header_02 {
+    display: block;
+  }
+  .header_buttons_child.header_menu_01, .header_buttons_child.header_menu_02 {
     width: 0;
   }
 }
 
 @media (max-width: 980px) {
-  .header_menu_01 {
+  .header_menu_02.header_menu_region {
     display: none;
   }
-  #header .menu_link ul li.menu_header_01 {
+  #header .menu_link ul li.menu_header_02.header_menu_region {
     display: block;
   }
-  .header_buttons_child.header_menu_01 {
+  .header_buttons_child.header_menu_02.header_menu_region {
     width: 0;
   }
 }
@@ -212,6 +236,14 @@
   }
 }
 
+@media (max-width: 740px) {
+  .header_menu_02 {
+    display: none;
+  }
+  .header_buttons_child.header_menu_02 {
+    width: 0;
+  }
+}
 @media (max-width: 960px) {
   .column.suggest {
     display:                 flex;
