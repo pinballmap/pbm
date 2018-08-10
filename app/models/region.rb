@@ -148,6 +148,23 @@ HERE
     [lat, lon].join(', ')
   end
 
+  def self.generate_daily_digest_regionless_comments_email_body
+    start_of_day = (Time.now - 1.day).beginning_of_day
+    end_of_day = (Time.now - 1.day).end_of_day
+
+    submissions = UserSubmission.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE && us.region_id.nil? }.collect(&:submission).sort.join("\n\n")
+
+    return nil if submissions.nil? || submissions.empty?
+
+    <<HERE
+Here is a list of all the comments that were placed in regionless locations on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
+
+REGIONLESS Daily Comments
+
+#{submissions}
+HERE
+  end
+
   def generate_daily_digest_comments_email_body
     start_of_day = (Time.now - 1.day).beginning_of_day
     end_of_day = (Time.now - 1.day).end_of_day
@@ -160,6 +177,23 @@ HERE
 Here is a list of all the comments that were placed in your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
 
 #{full_name} Daily Comments
+
+#{submissions}
+HERE
+  end
+
+  def self.generate_daily_digest_regionless_removals_email_body
+    start_of_day = (Time.now - 1.day).beginning_of_day
+    end_of_day = (Time.now - 1.day).end_of_day
+
+    submissions = UserSubmission.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE && us.region_id.nil? }.collect(&:submission).sort.join("\n\n")
+
+    return nil if submissions.nil? || submissions.empty?
+
+    <<HERE
+Here is a list of all the machines that were removed from regionless locations on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
+
+REGIONLESS Daily Machine Removals
 
 #{submissions}
 HERE
