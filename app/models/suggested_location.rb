@@ -19,7 +19,7 @@ class SuggestedLocation < ApplicationRecord
   after_create :massage_fields
 
   def massage_fields
-    self.website = "http://#{website}" if website && website !~ /\A#{URI.regexp(%w[http https])}\z/
+    self.website = "http://#{website}" if website && !website.blank? && website !~ /\A#{URI.regexp(%w[http https])}\z/
     self.country = 'US' if country.blank?
 
     save
