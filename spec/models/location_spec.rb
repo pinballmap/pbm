@@ -164,6 +164,16 @@ describe Location do
     end
   end
 
+  describe 'by_location_name scope' do
+    it 'should search on normal apostrophes and weird iOS ones' do
+      clark_location = FactoryBot.create(:location, name: "Clark's Castle")
+      clark_other_location = FactoryBot.create(:location, name: 'Clark’s Castle')
+
+      expect(Location.by_location_name("Clark's")).to eq([clark_location, clark_other_location])
+      expect(Location.by_location_name('Clark’s')).to eq([clark_location, clark_other_location])
+    end
+  end
+
   describe '#update_metadata' do
     it 'works with a regionless location' do
       regionless_location = FactoryBot.create(:location, name: 'REGIONLESS', region: nil)
