@@ -477,6 +477,27 @@ describe LocationMachineXrefsController do
 
       expect(page).to have_xpath('//li[contains(text(), "Test[]Machine")]')
     end
+
+    it 'works with normal and iOS apostrophes' do
+      FactoryBot.create(:location, id: 777, region: @region, name: "Clark's Castle")
+      FactoryBot.create(:location, id: 778, region: @region, name: 'Clark’s Castle')
+
+      visit "/#{@region.name}"
+
+      fill_in('by_location_name', with: "Clark's")
+
+      page.execute_script %{ $('#by_location_name').trigger('focus') }
+      page.execute_script %{ $('#by_location_name').trigger('keydown') }
+
+      expect(page).to have_selector('li', count: 2)
+
+      fill_in('by_location_name', with: 'Clark’s')
+
+      page.execute_script %{ $('#by_location_name').trigger('focus') }
+      page.execute_script %{ $('#by_location_name').trigger('keydown') }
+
+      expect(page).to have_selector('li', count: 2)
+    end
   end
 
   describe 'main page filtering', type: :feature, js: true do

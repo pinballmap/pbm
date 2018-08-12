@@ -207,7 +207,7 @@ module Api
       param :name, String, desc: 'name to fuzzy search with', required: true
       formats ['json']
       def autocomplete
-        locations = Location.select { |l| l.name =~ /#{Regexp.escape params[:name] || ''}/i }.sort_by(&:name).map { |l| { label: "#{l.name} (#{l.city}, #{l.state})", value: l.name, id: l.id } }
+        locations = Location.select { |l| l.name.tr('’', "'") =~ /#{Regexp.escape params[:name].tr('’', "'") || ''}/i }.sort_by(&:name).map { |l| { label: "#{l.name} (#{l.city}, #{l.state})", value: l.name, id: l.id } }
 
         return_response(
           locations,
