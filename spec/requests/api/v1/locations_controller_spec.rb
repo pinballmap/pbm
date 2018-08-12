@@ -555,5 +555,23 @@ HERE
 [{"label":"bar (Portland, OR)","value":"bar","id":#{bar.id}},{"label":"barfoo (Portland, OR)","value":"barfoo","id":#{barfoo.id}}]
 HERE
     end
+
+    it 'handles normal and iOS apostrophes' do
+      FactoryBot.create(:location, name: 'foo')
+      bar = FactoryBot.create(:location, name: "Clark's Castle")
+      barfoo = FactoryBot.create(:location, name: 'Clark’s Castle')
+
+      get '/api/v1/locations/autocomplete', params: { name: "Clark's" }
+
+      expect(response.body).to eq(<<HERE.strip)
+[{"label":"Clark's Castle (Portland, OR)","value":"Clark's Castle","id":#{bar.id}},{"label":"Clark’s Castle (Portland, OR)","value":"Clark’s Castle","id":#{barfoo.id}}]
+HERE
+
+      get '/api/v1/locations/autocomplete', params: { name: 'Clark’s' }
+
+      expect(response.body).to eq(<<HERE.strip)
+[{"label":"Clark's Castle (Portland, OR)","value":"Clark's Castle","id":#{bar.id}},{"label":"Clark’s Castle (Portland, OR)","value":"Clark’s Castle","id":#{barfoo.id}}]
+HERE
+    end
   end
 end
