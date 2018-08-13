@@ -203,6 +203,15 @@ HERE
       expect(response.body).to include('foo bar')
     end
 
+    it 'respects regionless_only filter' do
+      FactoryBot.create(:location, region: @region, name: 'Cleo')
+      FactoryBot.create(:location, region: nil, name: 'Regionless')
+      get '/api/v1/locations.json', params: { regionless_only: 1 }
+
+      expect(response.body).to include('Regionless')
+      expect(response.body).to_not include('Cleo')
+    end
+
     it 'respects is_stern_army filter' do
       FactoryBot.create(:location, region: @region, name: 'Stern Army Place', is_stern_army: 't')
       get "/api/v1/region/#{@region.name}/locations.json", params: { by_is_stern_army: 1 }
