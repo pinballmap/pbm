@@ -16,6 +16,11 @@
       %span.dark #{@location_count} locations
       and
       %span.dark #{@lmx_count} machines.
+    %p 
+      Check out our podcast!
+      = link_to "Mappin' Around with Scott & Ryan", "http://pod.pinballmap.com", :class => "bold"
+    %p
+      = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold" 
   - else
     %p.dark.hello
       Welcome to the #{@region.full_name} Pinball Map!
@@ -49,3 +54,5 @@
     %p 
       Check out our podcast!
       = link_to "Mappin' Around with Scott & Ryan", "http://pod.pinballmap.com", :class => "bold"
+    %p
+      = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold"     
