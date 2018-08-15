@@ -1,9 +1,3 @@
-regions = 'portland|chicago|toronto'
-
-if Region.table_exists? && Region.all.size > 0
-  regions = Region.all.each.map { |r| r.name }.join('|')
-end
-
 Rails.application.routes.draw do
   apipie
 
@@ -51,7 +45,7 @@ Rails.application.routes.draw do
         end
       end
 
-      scope 'region/:region', constraints: { region: /#{regions}|!admin/i } do
+      scope 'region/:region', constraints: lambda { |request| Region.where('lower(name) = ?', request[:region].downcase).any? } do
         resources :events, only: [:index, :show]
         resources :location_machine_xrefs, only: [:index]
         resources :locations, only: [:index, :show]
@@ -71,7 +65,7 @@ Rails.application.routes.draw do
   get '/store' => 'pages#store'
   get '/donate' => 'pages#donate'
 
-  scope ':region', constraints: { region: /#{regions}|!admin/i } do
+  scope ':region', constraints: lambda { |request| Region.where('lower(name) = ?', request[:region].downcase).any? } do
     get 'app' => redirect('/app')
     get 'app/support' => redirect('/app/support')
     get 'privacy' => redirect('/privacy')

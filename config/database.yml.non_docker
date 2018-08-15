@@ -1,0 +1,21 @@
+development:
+  adapter: postgresql
+  encoding: utf8
+  database: pbm_dev
+  template: template0
+
+test: &test
+  adapter: postgresql
+  encoding: utf8
+  database: pbm_test
+  template: template0
+
+production:
+  adapter: postgresql
+  encoding: utf8
+  database: pbm_dev
+  password:
+  template: template0
+
+cucumber:
+  <<: *test
