@@ -103,7 +103,6 @@ class PagesController < ApplicationController
     end
 
     @top_machines = LocationMachineXref
-                    .includes(:machine)
                     .region(@region.name)
                     .select('machine_id, count(*) as machine_count')
                     .group(:machine_id)
