@@ -4,7 +4,7 @@
     %span.machine_condition_date= 'Updated: ' + lmx.current_condition.created_at.strftime("%b-%d-%Y")
     - if lmx.current_condition.user_id
       by
-      %span.machine_condition_name
+      %span.machine_condition_name.bold
         - if lmx.current_condition.user
           = link_to lmx.current_condition.user.username, "http://#{request.host_with_port}/users/#{lmx.current_condition.user.username}/profile"
         - else
