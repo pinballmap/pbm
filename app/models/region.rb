@@ -8,7 +8,6 @@ class Region < ApplicationRecord
   has_many :region_link_xrefs, (-> { order 'region_link_xrefs.id' })
   has_many :user_submissions
   has_many :location_machine_xrefs, through: :locations
-  has_many :machine_score_xrefs, through: :location_machine_xrefs
 
   geocoded_by :lat_and_lon, latitude: :lat, longitude: :lon
 
