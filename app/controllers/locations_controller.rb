@@ -37,7 +37,7 @@ class LocationsController < InheritedResources::Base
   end
 
   def render_machines
-    render partial: 'locations/render_machines', locals: { location_machine_xrefs: LocationMachineXref.where(location_id: params[:id]).includes(:machine, machine_score_xrefs: :user, machine_conditions: :user) }
+    render partial: 'locations/render_machines', locals: { location_machine_xrefs: LocationMachineXref.where(location_id: params[:id]).includes(:machine, :machine_score_xrefs, machine_conditions: :user) }
   end
 
   def render_machine_names_for_infowindow
