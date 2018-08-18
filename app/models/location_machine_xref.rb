@@ -7,7 +7,7 @@ class LocationMachineXref < ApplicationRecord
   belongs_to :machine, optional: true
   belongs_to :user, optional: true
   has_many :machine_score_xrefs
-  has_many :machine_conditions
+  has_many :machine_conditions, (-> { order 'created_at desc' })
 
   after_create :update_location, :create_user_submission
 
@@ -113,7 +113,7 @@ class LocationMachineXref < ApplicationRecord
   end
 
   def current_condition
-    machine_conditions.last
+    machine_conditions.first
   end
 
   def last_updated_by_username
