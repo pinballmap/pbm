@@ -13,7 +13,9 @@
       %p.serif
         The shirts are $20, with FREE shipping for domestic orders. If you are a 
         = link_to "Pinball Map Patreon", "https://patreon.com/pinballmap", :class => "bold"
-        supporter, you get a discount! $5 discount (25%!) if you support us at the $5/mo level, and $2 discount if you support us at the $2/mo level. We don't have a button for that, so just CONTACT US before ordering.
+        supporter, you get a discount! $5 discount (25%!) if you support us at the $5/mo level, and $2 discount if you support us at the $2/mo level. We don't have a button for that, so just 
+        =link_to 'CONTACT US', about_path('portland')
+        before ordering.
       %h2.red{:style => "text-align: center;margin-bottom: 0;"} Pinball Map T-Shirt
       %div{:style => 'width: 180px;margin: 0 auto;'} 
         %form{:action => "https://www.paypal.com/cgi-bin/webscr", :method => "post", :target => "_top"}
