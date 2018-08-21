@@ -477,6 +477,68 @@ HERE
       expect(locations[1]['id']).to eq(close_location_two.id)
       expect(locations[2]['id']).to eq(close_location_three.id)
     end
+
+    it 'respects filters' do
+      location_type = FactoryBot.create(:location_type)
+      machine = FactoryBot.create(:machine)
+      operator = FactoryBot.create(:operator)
+
+      close_location_one = FactoryBot.create(:location, region: @region, lat: 45.49, lon: -122.63)
+      close_location_two = FactoryBot.create(:location, region: @region, lat: 45.49, lon: -122.631, operator: operator, location_type: location_type)
+      close_location_three = FactoryBot.create(:location, region: @region, lat: 45.491, lon: -122.63, operator: operator, location_type: location_type)
+      FactoryBot.create(:location, region: @region, lat: 5.49, lon: 22.63)
+
+      FactoryBot.create(:location_machine_xref, location: close_location_two, machine: machine)
+      FactoryBot.create(:location_machine_xref, location: close_location_three)
+      FactoryBot.create(:location_machine_xref, location: close_location_three)
+      FactoryBot.create(:location_machine_xref, location: close_location_three)
+
+      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: close_location_one.lat, lon: close_location_one.lon, by_type_id: location_type.id }
+
+      location = JSON.parse(response.body)['location']
+      expect(location['id']).to eq(close_location_two.id)
+
+      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: close_location_one.lat, lon: close_location_one.lon, by_operator_id: operator.id }
+
+      location = JSON.parse(response.body)['location']
+      expect(location['id']).to eq(close_location_two.id)
+
+      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: close_location_one.lat, lon: close_location_one.lon, by_machine_id: machine.id }
+
+      location = JSON.parse(response.body)['location']
+      expect(location['id']).to eq(close_location_two.id)
+
+      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: close_location_one.lat, lon: close_location_one.lon, by_at_least_n_machines_type: 3 }
+
+      location = JSON.parse(response.body)['location']
+      expect(location['id']).to eq(close_location_three.id)
+
+      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: close_location_one.lat, lon: close_location_one.lon, by_type_id: location_type.id, send_all_within_distance: 1 }
+
+      locations = JSON.parse(response.body)['locations']
+      expect(locations.size).to eq(2)
+      expect(locations[0]['id']).to eq(close_location_two.id)
+      expect(locations[1]['id']).to eq(close_location_three.id)
+
+      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: close_location_one.lat, lon: close_location_one.lon, by_operator_id: operator.id, send_all_within_distance: 1 }
+
+      locations = JSON.parse(response.body)['locations']
+      expect(locations.size).to eq(2)
+      expect(locations[0]['id']).to eq(close_location_two.id)
+      expect(locations[1]['id']).to eq(close_location_three.id)
+
+      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: close_location_one.lat, lon: close_location_one.lon, by_machine_id: machine.id, send_all_within_distance: 1 }
+
+      locations = JSON.parse(response.body)['locations']
+      expect(locations.size).to eq(1)
+      expect(locations[0]['id']).to eq(close_location_two.id)
+
+      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: close_location_one.lat, lon: close_location_one.lon, by_at_least_n_machines_type: 3, send_all_within_distance: 1 }
+
+      locations = JSON.parse(response.body)['locations']
+      expect(locations.size).to eq(1)
+      expect(locations[0]['id']).to eq(close_location_three.id)
+    end
   end
 
   describe '#machine_details' do

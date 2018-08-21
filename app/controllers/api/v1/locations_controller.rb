@@ -110,19 +110,22 @@ module Api
       description "This sends you the closest location to your lat/lon (defaults to within #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles). It includes a list of machines at the location."
       param :lat, String, desc: 'Latitude', required: true
       param :lon, String, desc: 'Longitude', required: true
+      param :by_type_id, Integer, desc: 'Location type ID to search by', required: false
+      param :by_machine_id, Integer, desc: 'Machine ID to find in locations', required: false
+      param :by_operator_id, Integer, desc: 'Operator ID to search by', required: false
+      param :by_at_least_n_machines_type, Integer, desc: 'Only locations with N or more machines', required: false
       param :max_distance, String, desc: 'Closest location within "max_distance" miles', required: false
       param :send_all_within_distance, String, desc: "Send all locations within max_distance param, or #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles.", required: false
       formats ['json']
       def closest_by_lat_lon
         max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
 
-        closest_location = Location.near([params[:lat], params[:lon]], max_distance).first
+        closest_locations = apply_scopes(Location).near([params[:lat], params[:lon]], max_distance)
 
-        if params[:send_all_within_distance]
-          closest_locations = Location.near([params[:lat], params[:lon]], max_distance)
+        if !closest_locations.empty? && !params[:send_all_within_distance]
+          return_response(closest_locations.first, 'location', [], [:machine_names])
+        elsif !closest_locations.empty?
           return_response(closest_locations, 'locations', [], [:machine_names])
-        elsif closest_location
-          return_response(closest_location, 'location', [], [:machine_names])
         else
           return_response("No locations within #{max_distance} miles.", 'errors')
         end
