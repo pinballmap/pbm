@@ -1,58 +1,42 @@
 = yield :intro_extra
 #intro
-  - if mobile_device?
-    %p
-      %span.darkb Welcome to the #{@region.full_name} Pinball Map!
-      This map is best maintained with the help of YOU. Please "add" and "remove" machines to/from locations to keep things up to date.
-    %p
-      %span To begin: Search!
+  %p.darkb News!
+  %p
+    We made two new
+    = link_to "Pinball Map T-Shirts!", store_path, :class => "bold"
+  %p 
+    Check out our podcast!
+    = link_to "Mappin' Around with Scott & Ryan", "http://pod.pinballmap.com", :class => "bold"
+  %p
+    = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold" 
+  %p.dark.hello
+    Welcome to the #{@region.full_name} Pinball Map!
+  %p.to_begin
+    %span.begin
+      To begin: Search!
       - if @location_count > 0
         - random_location_id = @region.random_location_id
         Or click
         =link_to 'here', "/#{@region.name.downcase}/?by_location_id=#{random_location_id}", :id => random_location_id
         for a random location!
-    %p
-      We currently are tracking
-      %span.dark #{@location_count} locations
-      and
-      %span.dark #{@lmx_count} machines.
-    %p 
-      Check out our podcast!
-      = link_to "Mappin' Around with Scott & Ryan", "http://pod.pinballmap.com", :class => "bold"
-    %p
-      = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold" 
-  - else
-    %p.dark.hello
-      Welcome to the #{@region.full_name} Pinball Map!
-    %p.to_begin
-      %span.begin
-        To begin: Search!
-        - if @location_count > 0
-          - random_location_id = @region.random_location_id
-          Or click
-          =link_to 'here', "/#{@region.name.downcase}/?by_location_id=#{random_location_id}", :id => random_location_id
-          for a random location!
-    %p
-      %span.darkb This map is best maintained with the help of YOU.
-      Please
-      %span.darkb "add"
-      and
-      %span.darkb "remove"
-      machines to/from locations to keep things up to date. And if you know of a location with machines that
-      %span{:style => "font-style:italic;"} isn't on the map,
-      %span
-        =link_to 'submit a new location.', suggest_path
+  %p
+    %span.darkb This map is best maintained with the help of YOU.
+    Please
+    %span.darkb "add"
+    and
+    %span.darkb "remove"
+    machines to/from locations to keep things up to date. And if you know of a location with machines that
+    %span{:style => "font-style:italic;"} isn't on the map,
+    %span
+      =link_to 'submit a new location.', suggest_path
+  - if !mobile_device?
     %p
       Want to help spread the word about the #{@region.full_name} Pinball Map?
       %span.darkb
         = link_to 'Print out this flier!', flier_path
-    %p
-      We are tracking
-      %span.dark #{@location_count} locations
-      and
-      %span.dark #{@lmx_count} machines.
-    %p 
-      Check out our podcast!
-      = link_to "Mappin' Around with Scott & Ryan", "http://pod.pinballmap.com", :class => "bold"
-    %p
-      = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold"     
+  %p
+    We are tracking
+    %span.dark #{@location_count} locations
+    and
+    %span.dark #{@lmx_count} machines.
+        

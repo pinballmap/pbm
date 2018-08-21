@@ -29,6 +29,15 @@
   #lookup.toggle_reg_lookup.regionless_lookup
     #locations
       #intro
+        %p.darkb News!
+        %p
+          We made two new
+          = link_to "Pinball Map T-Shirts!", store_path, :class => "bold"
+        %p 
+          Check out our podcast!
+          = link_to "Mappin' Around with Scott & Ryan", "http://pod.pinballmap.com", :class => "bold"
+        %p
+          = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold" 
         %p.dark.hello
           One Map To Rule Them All
         %p
@@ -46,7 +55,7 @@
             #{number_with_delimiter(LocationMachineXref.count,:delimiter => ",")} 
           machines.
         %p 
-          This map is in
+          This big map is in
           %span.bold.red
             BETA! 
           That means it’s not in its final form. We’ll be continuously enhancing the search experience. But to do so, it would help if you used it and 
@@ -58,9 +67,6 @@
         %p
           If you prefer to navigate the map via your trusted home region, 
           = link_to "go here to find it.", root_path
-        %p 
-          Check out our podcast!
-          = link_to "Mappin' Around with Scott & Ryan", "http://pod.pinballmap.com", :class => "bold"
 
 :javascript
   $('#address_search_form').on('submit', function(e) {

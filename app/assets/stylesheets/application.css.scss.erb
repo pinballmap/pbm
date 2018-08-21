@@ -184,6 +184,14 @@ ul li li {
 .inline {
   display: inline !important;
 }
+.gray_bg {
+  @include radius(5px);
+  background-color: $lightgrey;
+}
+.no_gray_bg {
+  radius: none;
+  background-color: none;
+}
 
 /* Text */
 
@@ -221,7 +229,7 @@ h1 {
 .bold {
   font-weight: bold;
 }
-.hello {
+.hello, #intro .hello {
   font-size: 28px;
   line-height: 36px;
   text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
@@ -887,9 +895,7 @@ span.or {
 }
 #locations p {
   margin: 0px 20px 15px;
-  background-color: $lightgrey;
   padding: 10px;
-  @include radius(5px);
   font-family: $serif;
   font-weight: normal;
 }
@@ -2067,8 +2073,6 @@ div.comment_image .comment_image:active {
 }
 #intro p {
   font-weight: 400;
-  border: none;
-  background: none;
   margin: 10px 0;
   padding: 5px;
 }
