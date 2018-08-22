@@ -15,7 +15,7 @@ class User < ApplicationRecord
 
   validate :validate_username
 
-  devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :trackable, :validatable, authentication_keys: [:login]
+  devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :trackable, :validatable, authentication_keys: [:login], confirmation_keys: [:login]
 
   scope :admins, (-> { where('region_id is not null') })
   scope :non_admins, (-> { where('region_id is null') })
@@ -48,6 +48,19 @@ class User < ApplicationRecord
       where(conditions.to_hash).where(['lower(username) = :value OR lower(email) = :value', value: login.downcase]).first
     elsif conditions.key?(:username) || conditions.key?(:email)
       where(conditions.to_hash).first
+    end
+  end
+
+  def self.find_first_by_auth_conditions(warden_conditions)
+    conditions = warden_conditions.dup
+    if (login = conditions.delete(:login))
+      where(conditions).where(['lower(username) = :value OR lower(email) = :value', { value: login.downcase }]).first
+    else
+      if conditions[:username].nil?
+        where(conditions).first
+      else
+        where(username: conditions[:username]).first
+      end
     end
   end
 

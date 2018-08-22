@@ -8,7 +8,7 @@ Devise.setup do |config|
   config.mailer_sender = '"Pinball Map" <pbm@pinballmap.com>'
 
   config.reset_password_keys = [ :login ]
-  config.confirmation_keys = [ :username ]
+  config.confirmation_keys = [ :login ]
 
   # Configure the class responsible to send e-mails.
   # config.mailer = "Devise::Mailer"
