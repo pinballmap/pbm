@@ -102,12 +102,16 @@ class User < ApplicationRecord
   end
 
   def profile_list_of_edited_locations
-    submissions = edited_location_submissions
+    submissions = last_50_edited_location_submissions
     submissions = submissions.select { |s| s.location_id && Location.exists?(id: s.location_id) }
     submissions = submissions.reverse.uniq(&:location_id)
     submissions = submissions.reverse
 
     submissions.map { |s| [s.location_id, s.location.name, s.location.region_id] }
+  end
+
+  def last_50_edited_location_submissions
+    edited_location_submissions.limit(50)
   end
 
   def edited_location_submissions
@@ -120,7 +124,7 @@ class User < ApplicationRecord
       UserSubmission::REMOVE_MACHINE_TYPE,
       UserSubmission::NEW_SCORE_TYPE,
       UserSubmission::CONFIRM_LOCATION_TYPE
-    ).includes('location').order('created_at desc').limit(50)
+    ).includes('location').order('created_at desc')
   end
 
   def as_json(options = {})
