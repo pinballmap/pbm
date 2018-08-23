@@ -7,12 +7,13 @@ module Api
       respond_to :json
       has_scope :region
 
+      api :GET, '/api/v1/operators.json', 'Fetch all operators for all regions'
       api :GET, '/api/v1/region/:region/operators.json', 'Fetch all operators'
       param :region, String, desc: 'Name of the Region you want to see operators for', required: true
       description 'Fetch data about all operators for region'
       formats ['json']
       def index
-        operators = apply_scopes(Operator).sort_by(&:name)
+        operators = apply_scopes(Operator).order('name')
 
         return_response(operators, 'operators', [], [])
       end

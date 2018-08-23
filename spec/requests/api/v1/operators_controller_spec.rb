@@ -25,6 +25,23 @@ describe Api::V1::OperatorsController, type: :request do
       expect(operators[1]['name']).to eq('Cleo')
       expect(operators[2]['name']).to eq('Sass')
     end
+
+    it 'works for regionless' do
+      FactoryBot.create(:operator, region: @region, name: 'Sass')
+      FactoryBot.create(:operator, name: 'HOPE THIS DOES SHOW')
+
+      get '/api/v1/operators.json'
+      expect(response).to be_successful
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      operators = parsed_body['operators']
+      expect(operators.size).to eq(2)
+
+      expect(operators[0]['name']).to eq('HOPE THIS DOES SHOW')
+      expect(operators[1]['name']).to eq('Sass')
+    end
   end
 
   describe '#show' do
