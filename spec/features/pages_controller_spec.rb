@@ -14,7 +14,7 @@ describe PagesController do
 
       sleep 1
 
-      expect(page.body).to have_content('NOT FOUND. PLEASE SEARCH AGAIN.')
+      expect(page.body).to have_content('0 Locations in Results')
     end
 
     it 'only lets you search by one thing at a time, OR address + machine' do
@@ -64,6 +64,20 @@ describe PagesController do
 
       expect(page.body).to have_content('Rip City')
       expect(page.body).to_not have_content('No Way')
+    end
+
+    it 'lets you search by address -- displays 0 results instead of saying "Not Found"' do
+      FactoryBot.create(:location, region: nil, name: 'Troy', zip: '48098', lat: 42.5925, lon: 83.1756)
+
+      visit '/regionless'
+
+      fill_in('address', with: '97203')
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(page.body).to have_content('0 Locations in Results')
     end
 
     it 'location autocomplete select ensures you only search by a single location' do

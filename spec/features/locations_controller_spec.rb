@@ -238,10 +238,10 @@ describe LocationsController do
       end
     end
 
-    it 'displays a location not found message instead of the ocean' do
+    it 'displays 0 locations found and shows the ocean' do
       visit '/portland/?by_location_id=-1'
 
-      expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
+      expect(page).to have_content('0 Locations in Results')
     end
   end
 
