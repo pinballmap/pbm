@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       resources :machine_conditions, only: [:destroy]
       resources :machine_score_xrefs, only: [:create, :show]
       resources :machines, only: [:index, :show, :create]
-      resources :operators, only: [:show]
+      resources :operators, only: [:index, :show]
 
       resources :users, only: [:auth_details] do
         member do
