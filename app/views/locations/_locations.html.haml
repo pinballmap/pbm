@@ -9,7 +9,8 @@
       [#{@location_data[0].join(', ')}],
       [#{@location_data[1].join(', ')}],
       [#{@location_data[2].join(', ')}],
-      [#{@location_data[3].join(', ').html_safe}]
+      [#{@location_data[3].join(', ').html_safe}],
+      [#{[@lat, @lon].join(', ')}]
     );
 
     var hrefOrig = 'https://#{request.host_with_port}/#{@region ? @region.name.downcase : "regionless"}?';
@@ -59,8 +60,9 @@
 
 #results_container
   #search_results   
-    #search_results_count
-      %span #{@locations.size} Locations in Results
+    - unless @locations.size == 1
+      #search_results_count
+        %span #{@locations.size} Locations in Results
     - @locations.each do |location|
       - l = location.clone
       %div.search_result[l]         

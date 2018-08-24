@@ -15,6 +15,7 @@ describe PagesController do
       sleep 1
 
       expect(page.body).to have_content('0 Locations in Results')
+      expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
     end
 
     it 'only lets you search by one thing at a time, OR address + machine' do
@@ -78,6 +79,7 @@ describe PagesController do
       sleep 1
 
       expect(page.body).to have_content('0 Locations in Results')
+      expect(page).to_not have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
     end
 
     it 'location autocomplete select ensures you only search by a single location' do
