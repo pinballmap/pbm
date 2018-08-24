@@ -16,6 +16,13 @@ class PagesController < ApplicationController
     else
       params.delete(:by_machine_name) unless params[:by_machine_id].blank?
 
+      @lat, @lon = ''
+      unless params[:address].blank?
+        results = Geocoder.search(params[:address])
+
+        (@lat, @lon) = results.first.coordinates
+      end
+
       @locations = apply_scopes(params[:address].blank? ? Location : Location.near(params[:address], 5)).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs, :region, :location_type)
     end
 
