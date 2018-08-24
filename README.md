@@ -7,14 +7,14 @@
 
 Available here: [http://pinballmap.com/api/v1/docs](http://pinballmap.com/api/v1/docs)
 
-## Mac Enviroment Setup
+## Mac Environment Setup
 Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhanifin) undertook to get the site up and running on OS X 10.9. If you would like to contribute, and have any trouble, please ask.
 
-* Follow the Ruby install instructions at [railsapps.github.io/installrubyonrails-mac.html](http://railsapps.github.io/installrubyonrails-mac.html). Make sure you also download ruby-2.3.4.
+* Follow the Ruby install instructions at [railsapps.github.io/installrubyonrails-mac.html](http://railsapps.github.io/installrubyonrails-mac.html). Make sure you also download ruby-2.5.1.
 * `cd /Projects-Path/`
 * `git clone https://github.com/scottwainstock/pbm.git` (*I used the SourceTree app instead.*)
 * `cd /Projects-Path/pbm`
-* `rvm --default use ruby-2.3.4`
+* `rvm --default use ruby-2.5.1`
 * `bundle install`
 * `selenium install`
 * `brew update`
@@ -23,6 +23,7 @@ Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhan
 * `brew install postgresql`
 * `initdb /usr/local/var/postgres -E utf8`
 * Download [Postgres App](http://postgresapp.com/). (*I have mine run at startup on my "Dev" profile.*)
+* `CREATEDB pbm_dev`
 * `bundle exec rake db:create ; RAILS_ENV=test bundle exec rake db:create`
 * `bundle exec rake db:migrate ; RAILS_ENV=test bundle exec rake db:migrate`
 * `rake doc:app`  (*I think this generates documentation for the app, which sounds helpful for later.*)
