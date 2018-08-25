@@ -70,6 +70,11 @@
 
 :javascript
   $('#address_search_form').on('submit', function(e) {
+    if (mapAdjusted = 1) { //reset checkbox
+      mapAdjusted = 0;
+      $('#followCheck').prop('checked', false);
+    }
+    $('#search_link_wrapper').css('display','block');
     e.preventDefault();
     search_string = $("#address_search_form :input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
 
