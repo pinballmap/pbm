@@ -16,10 +16,15 @@
       processData: false,
       contentType: false,
       success: function(data) {
-        window.alert("Thanks for uploading that picture! It'll show up on the site as soon as an admin approves it.");
+        window.alert("Thanks for uploading that picture!");
         toggleData('add_picture_location', #{location.id});
         document.getElementById('new_location_picture_xref_#{location.id}').reset();
         $(".submit_picture").attr('disabled', false);
+
+        $("#location_detail_location_#{location.id}").html(loadingHTML());
+        $.get("/locations/#{location.id}/render_location_detail", function(data) {
+          $("#location_detail_location_#{location.id}").html(data);
+        });
       }
     });
 
