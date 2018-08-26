@@ -258,7 +258,6 @@ RailsAdmin.config do |config|
       field :location, :belongs_to_association
       field :created_at, :datetime
       field :description, :text
-      field :approved, :boolean
     end
     show do
       field :location, :belongs_to_association
@@ -269,7 +268,6 @@ RailsAdmin.config do |config|
           bindings[:view].tag(:img, src: bindings[:object].photo.url)
         end
       end
-      field :approved, :boolean
     end
     edit do
       field :location, :belongs_to_association do
@@ -282,7 +280,6 @@ RailsAdmin.config do |config|
           bindings[:view].tag(:img, src: bindings[:object].photo.url)
         end
       end
-      field :approved, :boolean
     end
     export do; end
     create do; end

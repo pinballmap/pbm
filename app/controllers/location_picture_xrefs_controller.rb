@@ -12,14 +12,14 @@ class LocationPictureXrefsController < InheritedResources::Base
     Pony.mail(
       to: @location_picture_xref.location.region_id ? @location_picture_xref.location.region.users.map(&:email) : User.where("is_super_admin = 't'").map(&:email),
       from: 'admin@pinballmap.com',
-      subject: 'PBM - Someone wants you to approve a picture',
-      body: "This is photo ID: #{@location_picture_xref.id}. It's at location: #{@location_picture_xref.location.name}. Region: #{@location_picture_xref.location.region_id ? @location_picture_xref.location.region.full_name : 'REGIONLESS'}.\n\n\nYou can view the picture here #{@location_picture_xref.photo.url}\n\n\nTo approve it, please visit here #{request.base_url}#{rails_admin_path}/location_picture_xref\n\n\nOnce there, click 'edit' and then tick the 'approve' button."
+      subject: 'PBM - Someone added a picture',
+      body: "This is photo ID: #{@location_picture_xref.id}. It's at location: #{@location_picture_xref.location.name}. Region: #{@location_picture_xref.location.region_id ? @location_picture_xref.location.region.full_name : 'REGIONLESS'}.\n\n\nYou can view the picture here #{@location_picture_xref.photo.url}\n\n\nNo need to approve it, it's already live."
     )
   end
 
   private
 
   def location_picture_xref_params
-    params.require(:location_picture_xref).permit(:location_id, :description, :approved, :user_id, :photo_file_name, :photo_content_type, :photo_file_size, :photo)
+    params.require(:location_picture_xref).permit(:location_id, :description, :user_id, :photo_file_name, :photo_content_type, :photo_file_size, :photo)
   end
 end
