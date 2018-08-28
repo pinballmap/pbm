@@ -9,6 +9,7 @@
   $('#new_location_picture_xref_#{location.id}').submit(function () {
     var form = $(this);
     $(".submit_picture").attr('disabled', true);
+    $("#add_picture_location_#{location.id} .info").html(loadingHTML());
     $.ajax({
       url: form.attr('action'),
       type: 'POST',
