@@ -9,7 +9,8 @@ class LocationPictureXref < ApplicationRecord
                     url: 'https://s3.amazonaws.com/pbm-images/location_picture_xref/photo/:id/medium/:filename',
                     styles: {
                       thumb: '36x25>',
-                      medium: '300x300>'
+                      medium: '300x300>',
+                      large: '800x800>'
                     },
                     s3_credentials: {
                       access_key_id: ENV['AWS_ACCESS_KEY_ID'],
