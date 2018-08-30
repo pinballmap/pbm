@@ -265,7 +265,7 @@ RailsAdmin.config do |config|
       field :description, :text
       field :photo do
         pretty_value do
-          bindings[:view].tag(:img, src: bindings[:object].photo.url)
+          bindings[:view].tag(:img, src: bindings[:object].photo.url(:large))
         end
       end
     end
@@ -277,7 +277,7 @@ RailsAdmin.config do |config|
       field :description, :text
       field :photo do
         pretty_value do
-          bindings[:view].tag(:img, src: bindings[:object].photo.url)
+          bindings[:view].tag(:img, src: bindings[:object].photo.url(:large))
         end
       end
     end
