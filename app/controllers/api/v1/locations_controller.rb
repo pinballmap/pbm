@@ -120,7 +120,7 @@ module Api
       def closest_by_lat_lon
         max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
 
-        closest_locations = apply_scopes(Location).near([params[:lat], params[:lon]], max_distance)
+        closest_locations = apply_scopes(Location).includes(:machines).near([params[:lat], params[:lon]], max_distance)
 
         if !closest_locations.empty? && !params[:send_all_within_distance]
           return_response(closest_locations.first, 'location', [], [:machine_names])
