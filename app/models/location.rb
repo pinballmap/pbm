@@ -89,7 +89,7 @@ class Location < ApplicationRecord
   end
 
   def self.by_at_least_n_machines_sql(number_of_machines)
-    "id in (select location_id from (select location_id, count(*) as count from location_machine_xrefs group by location_id) x where x.count >= #{number_of_machines})"
+    "locations.id in (select location_id from (select location_id, count(*) as count from location_machine_xrefs group by location_id) x where x.count >= #{number_of_machines})"
   end
 
   def num_machines
