@@ -35,8 +35,9 @@ task send_daily_digest_machine_condition_email: :environment do
     next if email_body.nil?
 
     email_bodies.push(email_body)
-
     email_to = r.users.map(&:email)
+
+    next if email_to.blank? || email_to.nil?
 
     Pony.mail(
       to: email_to,
@@ -71,8 +72,9 @@ task send_daily_digest_machine_removal_email: :environment do
     next if email_body.nil?
 
     email_bodies.push(email_body)
-
     email_to = r.users.map(&:email)
+
+    next if email_to.blank? || email_to.nil?
 
     Pony.mail(
       to: email_to,
