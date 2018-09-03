@@ -539,6 +539,24 @@ HERE
       expect(locations.size).to eq(1)
       expect(locations[0]['id']).to eq(close_location_three.id)
     end
+
+    it 'lets you filter by a specific machine and N machines at the same time' do
+      machine = FactoryBot.create(:machine)
+
+      close_location_one = FactoryBot.create(:location, region: @region, lat: 45.49, lon: -122.63)
+      close_location_two = FactoryBot.create(:location, region: @region, lat: 45.49, lon: -122.631)
+      FactoryBot.create(:location, region: @region, lat: 5.49, lon: 22.63)
+
+      FactoryBot.create(:location_machine_xref, location: close_location_one, machine: machine)
+      FactoryBot.create(:location_machine_xref, location: close_location_two, machine: machine)
+      FactoryBot.create(:location_machine_xref, location: close_location_two)
+      FactoryBot.create(:location_machine_xref, location: close_location_two)
+
+      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: close_location_one.lat, lon: close_location_one.lon, by_at_least_n_machines_type: 2, by_machine_id: machine.id }
+
+      location = JSON.parse(response.body)['location']
+      expect(location['id']).to eq(close_location_two.id)
+    end
   end
 
   describe '#machine_details' do
