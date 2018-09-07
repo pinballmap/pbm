@@ -68,8 +68,8 @@ class Location < ApplicationRecord
   })
   scope :by_center_point_and_ne_boundary, (lambda { |boundaries|
     boundary_lat_lons = boundaries.split(',').collect(&:to_f)
-    distance = Geocoder::Calculations.distance_between([boundary_lat_lons[0], boundary_lat_lons[1]], [boundary_lat_lons[2], boundary_lat_lons[3]])
-    box = Geocoder::Calculations.bounding_box([boundary_lat_lons[0], boundary_lat_lons[1]], distance * MAP_SCALE)
+    distance = Geocoder::Calculations.distance_between([boundary_lat_lons[1], boundary_lat_lons[0]], [boundary_lat_lons[3], boundary_lat_lons[2]])
+    box = Geocoder::Calculations.bounding_box([boundary_lat_lons[1], boundary_lat_lons[0]], distance * MAP_SCALE)
     Location.within_bounding_box(box)
   })
   scope :by_is_stern_army, (->(_non_blank_param) { where(is_stern_army: true) })
