@@ -50,13 +50,13 @@ function showLocations(ids, lats, lons, contents, latLng) {
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
       map = new mapboxgl.Map({
         container: 'map_canvas',
-        style: 'mapbox://styles/mapbox/streets-v10',
+        style: 'mapbox://styles/ryantg/cjlsma1tr02ck2rt5s8ovaokv',
       });
       map.addControl(new mapboxgl.NavigationControl(), 'top-right');
     } else {
       map = new mapboxgl.Map({
         container: 'map_canvas',
-        style: 'mapbox://styles/mapbox/streets-v10',
+        style: 'mapbox://styles/ryantg/cjlsma1tr02ck2rt5s8ovaokv',
       });
       map.addControl(new mapboxgl.NavigationControl(), 'top-right');
     }
@@ -277,7 +277,7 @@ function initializeRegionMap(ids, lats, lons, contents) {
     var bounds = new mapboxgl.LngLatBounds();
     var regionMap = new mapboxgl.Map({
       container: 'region_map',
-      style: 'mapbox://styles/mapbox/streets-v10',
+      style: 'mapbox://styles/ryantg/cjlsma1tr02ck2rt5s8ovaokv',
     });
     regionMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
