@@ -4,9 +4,11 @@
 - lon = local_assigns.has_key?(:lon) ? lon : @region.lon
 
 :javascript
-  map = new google.maps.Map(document.getElementById("map_canvas"), {
-    center: {lat: #{lat}, lng: #{lon}},
-    zoom: 12,
-    gestureHandling: 'greedy',
-    styles: homeMap
+  mapboxgl.accessToken = 'pk.eyJ1Ijoic2NvdHR3YWluc3RvY2siLCJhIjoiY2pscTBwb2V5MGxtdjN3bnZmNTluOTl4aiJ9.LLiB40caxstM1RxyfD1G-w';
+  map = new mapboxgl.Map({
+    container: 'map_canvas',
+    style: 'mapbox://styles/mapbox/streets-v10',
+    center: [#{lon}, #{lat}],
+    zoom: 12
   });
+  map.addControl(new mapboxgl.NavigationControl(), 'top-right');
