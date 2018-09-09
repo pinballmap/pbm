@@ -427,6 +427,31 @@ describe LocationsController do
       @location = FactoryBot.create(:location, region: @region, name: 'Cleo')
     end
 
+    it 'regioned page: only allows you to pick regionless operators or operators in your region' do
+      FactoryBot.create(:operator, region: nil, name: 'Regionless operator')
+      FactoryBot.create(:operator, region: @region, name: 'Quarterworld')
+
+      FactoryBot.create(:operator, region: FactoryBot.create(:region, name: 'la'), name: 'Other region operator')
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find('.location_meta span.meta_image').click
+      expect(page).to have_select("new_operator_#{@location.id}", with_options: ['Quarterworld', 'Regionless operator'])
+    end
+
+    it 'regionless page: lets you pick any operator' do
+      FactoryBot.create(:operator, region: nil, name: 'Regionless operator')
+      FactoryBot.create(:operator, region: @region, name: 'Quarterworld')
+      FactoryBot.create(:operator, region: FactoryBot.create(:region, name: 'la'), name: 'Other region operator')
+
+      regionless_location = FactoryBot.create(:location, region: nil, name: 'Regionless')
+
+      visit '/regionless/?by_location_id=' + regionless_location.id.to_s
+
+      find('.location_meta span.meta_image').click
+      expect(page).to have_select("new_operator_#{regionless_location.id}", with_options: ['Other region operator', 'Quarterworld', 'Regionless operator'])
+    end
+
     it 'does not save data if any formats are invalid - website and phone' do
       stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
 

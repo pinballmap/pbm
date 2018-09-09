@@ -385,10 +385,15 @@ HERE
       expect(@region.reload.available_search_sections).to eq("['location', 'city', 'machine', 'type', 'zone']")
     end
 
-    it 'should not return operator as a search section if the region has no operators' do
+    it 'should not return operator as a search section if the region has no operators OR there are no regionless operators' do
       expect(@region.available_search_sections).to eq("['location', 'city', 'machine', 'type']")
 
-      FactoryBot.create(:location, region: @region, name: 'Cleo', operator: FactoryBot.create(:operator, name: 'Quarter Bean', region: @region))
+      FactoryBot.create(:operator, region: @region)
+
+      expect(@region.reload.available_search_sections).to eq("['location', 'city', 'machine', 'type', 'operator']")
+
+      Operator.delete_all
+      FactoryBot.create(:operator, region: nil)
 
       expect(@region.reload.available_search_sections).to eq("['location', 'city', 'machine', 'type', 'operator']")
     end

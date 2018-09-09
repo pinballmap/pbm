@@ -518,12 +518,19 @@ describe LocationMachineXrefsController do
       expect(page).to have_css('button#zone_section_link')
     end
 
-    it 'hides operator option when no operators in region' do
+    it 'hides operator option when no operators in region OR no regionless operators' do
       visit "/#{@region.name}"
 
       expect(page).to_not have_css('button#operator_section_link')
 
-      FactoryBot.create(:location, id: 21, region: @region, name: 'Cleo', operator: FactoryBot.create(:operator, name: 'Quarter Bean', region: @region))
+      FactoryBot.create(:operator, region: @region)
+
+      visit "/#{@region.name}"
+
+      expect(page).to have_css('button#operator_section_link')
+
+      Operator.delete_all
+      FactoryBot.create(:operator, region: nil)
 
       visit "/#{@region.name}"
 

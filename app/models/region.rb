@@ -112,7 +112,9 @@ HERE
   def available_search_sections
     sections = %w[location city machine type]
 
-    sections.push('operator') unless operators.empty?
+    if operators.present? || Operator.where(region_id: nil).exists?
+      sections.push('operator')
+    end
 
     sections.push('zone') unless zones.empty?
 
