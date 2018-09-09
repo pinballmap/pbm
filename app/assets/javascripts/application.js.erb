@@ -63,10 +63,14 @@ function showLocations(ids, lats, lons, contents, latLng) {
   }
 
   for (i in ids) {
+
+    var el = document.createElement('div');
+    el.className = 'marker';
+
     var popup = new mapboxgl.Popup({ offset: 25 })
       .setHTML(contents[i]);
 
-    var marker = new mapboxgl.Marker()
+    var marker = new mapboxgl.Marker(el)
       .setLngLat([lons[i], lats[i]])
       .setPopup(popup)
       .on('click', function(e) { map.setView(e.latlng, 13) })
@@ -282,10 +286,13 @@ function initializeRegionMap(ids, lats, lons, contents) {
     regionMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
     for (i in ids) {
+      var el = document.createElement('div');
+      el.className = 'markersm';
+
       var popup = new mapboxgl.Popup({ offset: 25 })
         .setHTML(contents[i]);
 
-      var marker = new mapboxgl.Marker()
+      var marker = new mapboxgl.Marker(el)
         .setLngLat([lons[i], lats[i]])
         .setPopup(popup)
         .on('click', function(e) { map.setView(e.latlng, 13) })

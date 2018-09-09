@@ -2466,8 +2466,21 @@ div.score_list {
   color: $red;
 }
 #map .mapboxgl-ctrl-top-right, #map .mapboxgl-ctrl-bottom-right {
-  right: 650px !important;
+  right: 650px;
 }
+.marker,.markersm {
+  background: url(<%= asset_path 'teardrop200.png' %>) no-repeat;
+  background-size: cover;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+}
+.markersm {
+  width: 35px;
+  height: 35px;
+}
+
+
 
 /** Rails Admin **/
 
