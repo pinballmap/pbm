@@ -4,10 +4,10 @@
 - lon = local_assigns.has_key?(:lon) ? lon : @region.lon
 
 :javascript
-  mapboxgl.accessToken = 'pk.eyJ1Ijoic2NvdHR3YWluc3RvY2siLCJhIjoiY2pscTBwb2V5MGxtdjN3bnZmNTluOTl4aiJ9.LLiB40caxstM1RxyfD1G-w';
+  //mapboxgl.accessToken = 'pk.eyJ1Ijoic2NvdHR3YWluc3RvY2siLCJhIjoiY2pscTBwb2V5MGxtdjN3bnZmNTluOTl4aiJ9.LLiB40caxstM1RxyfD1G-w';
   map = new mapboxgl.Map({
     container: 'map_canvas',
-    style: 'mapbox://styles/scottwainstock/cjluavodk1dur2rn6ukd92fu7',
+    style: 'https://maps.tilehosting.com/styles/basic/style.json?key=',
     center: [#{lon}, #{lat}],
     zoom: 12
   });
