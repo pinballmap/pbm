@@ -49,7 +49,10 @@
     = text_field_tag "new_website_#{l.id}", l.website, :class => 'edit_mode'
     .clear
     = label_tag "Operator: "
-    = select_tag "new_operator_#{l.id}", options_for_select([['']]) + options_from_collection_for_select(Operator.select { |o| o.region_id == l.region_id }, 'id', 'name', l.operator_id)
+    - if (current_page?(regionless_location_data_path) || request.referer =~ /regionless/)
+      = select_tag "new_operator_#{l.id}", options_for_select([['']]) + options_from_collection_for_select(Operator.order(:name).all, 'id', 'name', l.operator_id)
+    - else
+      = select_tag "new_operator_#{l.id}", options_for_select([['']]) + options_from_collection_for_select(Operator.order(:name).select { |o| (o.region_id == l.region_id) || (o.region_id == nil) }, 'id', 'name', l.operator_id)
     .clear
     = label_tag "Location Type: "
     = select_tag "new_location_type_#{l.id}", options_for_select([['']]) + options_from_collection_for_select(LocationType.all, 'id', 'name', l.location_type_id)
