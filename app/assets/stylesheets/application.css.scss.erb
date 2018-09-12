@@ -947,7 +947,7 @@ span.or {
 .hide_search_link, .hide_button {
   display: none;
 }
-#mapFollow_wrapper, #search_link_wrapper, #min_lookup_wrapper {
+#mapFollow_wrapper, #search_link_wrapper {
   position: fixed;
   top: 60px;
   width: 110px;
@@ -968,7 +968,7 @@ span.or {
   font-style: italic;
   text-decoration: none;
 }
-#search_link_wrapper a:hover, #min_lookup_wrapper:hover  {
+#search_link_wrapper a:hover  {
   text-decoration: underline;
   cursor: pointer;
 }
@@ -980,35 +980,8 @@ span.or {
 #mapFollow_wrapper input {
   margin: 0;
 }
-.toggle_min_lookup, .toggle_reg_lookup, .toggle_btn_reg, .toggle_map_btn {
-  -webkit-transition: all 0.5s ease-in-out;
-  -moz-transition:all 0.5s ease-in-out;
-  -o-transition:all 0.5s ease-in-out;
-  transition:all 0.5s ease-in-out;
-}
-.toggle_min_lookup {
-  margin-left: -640px !important;
-}
-.toggle_reg_lookup {
-  margin-left: 0px !important;
-}
 .toggle_btn_reg {
   left: 650px !important;
-}
-.toggle_map_btn {
-  left: 0px !important;
-}
-.slide_left:before {
-  content: "◀  more map";
-  width: 30px;
-  height: 20px;
-  position: relative;
-}
-.slide_right:before {
-  content: "▶  more search";
-  width: 30px;
-  height: 20px;
-  position: relative;
 }
 .redo_gone {
   height: 0 !important;
@@ -2178,6 +2151,7 @@ span.begin {
   box-shadow: 1px 2px 7px rgba(90, 100, 117, 0.3);
 }
 #map {
+  left: 640px;
   width: 100%;
   overflow: hidden;
   position: fixed;
@@ -2185,15 +2159,14 @@ span.begin {
   z-index: -1;
 }
 #map_canvas {
-  margin-right: -640px;
   height: 100% !important;
+  margin-left: -640px;
 }
 #intro {
   padding: 5px 20px;
 }
 #not_found {
   padding: 200px 0 0;
-  margin-left: -640px;
   text-align: center;
 }
 #region_page_body {
@@ -2288,9 +2261,6 @@ div.region_name_container {
   align-items: flex-start;
   -webkit-flex-flow: row wrap;
   margin: 0 auto 20px;
-}
-#div_container > * {
-
 }
 .div_01 {
   width: 450px;
