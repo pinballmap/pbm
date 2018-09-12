@@ -1,10 +1,10 @@
 #region_page_body
-  #form.toggle_reg_lookup
+  #form
     = render :partial => 'locations/form'
   - if mobile_device?
     #map
       = render :partial => 'locations/map'
-  #lookup.toggle_reg_lookup
+  #lookup
     #locations
       = render :partial => 'pages/intro'
       - if !@region.motd.blank?
