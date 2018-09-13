@@ -166,7 +166,7 @@ HERE
         logout
 
         body = <<HERE
-(A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into http://test.host/admin. Thanks!)\n
+    Dear Admin: A new pinball spot has been submitted for your region! Please verify/fix the address using https://maps.google.com and then "Promote" the location to the map via http://test.host/admin/suggested_location. If any fields are missing, like Location Type, please fill them in! Thanks!!\n
 Location Name: name\n
 Street: street\n
 City: city\n
@@ -208,7 +208,7 @@ HERE
         login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com'))
 
         body = <<HERE
-(A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into http://test.host/admin. Thanks!)\n
+    Dear Admin: A new pinball spot has been submitted for your region! Please verify/fix the address using https://maps.google.com and then "Promote" the location to the map via http://test.host/admin/suggested_location. If any fields are missing, like Location Type, please fill them in! Thanks!!\n
 Location Name: name\n
 Street: street\n
 City: city\n

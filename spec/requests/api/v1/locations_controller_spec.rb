@@ -57,7 +57,7 @@ describe Api::V1::LocationsController, type: :request do
           from: 'admin@pinballmap.com',
           subject: 'PBM - New location suggested for the portland pinball map',
           body: <<HERE
-(A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into http://www.example.com/admin. Thanks!)\n
+          Dear Admin: A new pinball spot has been submitted for your region! Please verify/fix the address using https://maps.google.com and then "Promote" the location to the map via http://www.example.com/admin/suggested_location. If any fields are missing, like Location Type, please fill them in! Thanks!!\n
 Location Name: name\n
 Street: street\n
 City: city\n
