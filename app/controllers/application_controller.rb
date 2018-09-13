@@ -51,7 +51,7 @@ class ApplicationController < ActionController::Base
     zone = params['location_zone']&.is_a?(Integer) || params['location_zone']&.match?(/^[0-9]+$/) ? Zone.find(params['location_zone']) : Zone.find_by_name(params['location_zone'])
 
     body = <<BODY
-(A new pinball spot has been submitted for your region! Please verify the address on https://maps.google.com and then paste that Google Maps address into #{request.protocol}#{request.host_with_port}#{rails_admin_path}. Thanks!)\n
+    Dear Admin: A new pinball spot has been submitted for your region! Please verify/fix the address using https://maps.google.com and then "Promote" the location to the map via #{request.protocol}#{request.host_with_port}#{rails_admin_path}/suggested_location. If any fields are missing, like Location Type, please fill them in! Thanks!!\n
 Location Name: #{params['location_name']}\n
 Street: #{params['location_street']}\n
 City: #{params['location_city']}\n
