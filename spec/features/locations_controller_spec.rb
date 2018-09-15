@@ -440,6 +440,8 @@ describe LocationsController do
     end
 
     it 'regionless page: lets you pick any operator' do
+      stub_const('ENV', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
+
       FactoryBot.create(:operator, region: nil, name: 'Regionless operator')
       FactoryBot.create(:operator, region: @region, name: 'Quarterworld')
       FactoryBot.create(:operator, region: FactoryBot.create(:region, name: 'la'), name: 'Other region operator')
@@ -453,7 +455,7 @@ describe LocationsController do
     end
 
     it 'does not save data if any formats are invalid - website and phone' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
+      stub_const('ENV', 'RAKISMET_KEY' => 'asdf', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
 
       expect(Rakismet).to receive(:akismet_call).twice.and_return('false')
 
@@ -493,7 +495,7 @@ describe LocationsController do
     end
 
     it 'does not save spam - website and phone' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
+      stub_const('ENV', 'RAKISMET_KEY' => 'asdf', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
 
       expect(Rakismet).to receive(:akismet_call).twice.and_return('true')
 
@@ -520,6 +522,8 @@ describe LocationsController do
     end
 
     it 'allows users to update a location metadata - stubbed out spam detection' do
+      stub_const('ENV', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
+
       t = FactoryBot.create(:location_type, name: 'Bar')
       o = FactoryBot.create(:operator, region: @location.region, name: 'Quarterworld')
 
@@ -546,7 +550,7 @@ describe LocationsController do
     end
 
     it 'allows users to update a location metadata - TWICE' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
+      stub_const('ENV', 'RAKISMET_KEY' => 'asdf', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
 
       expect(Rakismet).to receive(:akismet_call).twice.and_return('false')
 
@@ -581,7 +585,7 @@ describe LocationsController do
     end
 
     it 'does not save spam' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
+      stub_const('ENV', 'RAKISMET_KEY' => 'asdf', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
 
       expect(Rakismet).to receive(:akismet_call).and_return('true')
 
