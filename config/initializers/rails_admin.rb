@@ -370,6 +370,11 @@ RailsAdmin.config do |config|
       field :email, :string
       field :website, :string
       field :phone, :string
+      field :region_id do
+        render do
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, :object_type => 'operator'}
+        end
+      end
     end
     create do
       field :name, :string
@@ -378,7 +383,7 @@ RailsAdmin.config do |config|
       field :phone, :string
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.is_super_admin ? nil : bindings[:view]._current_user.region_id, :object_type => 'operator'}
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, :object_type => 'operator'}
         end
       end
     end

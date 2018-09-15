@@ -1,5 +1,5 @@
 - if current_user.is_super_admin
-  %select{:name => "#{object_type}[region_id]", :id => "region_id"}
+  %select{:name => "#{object_type}[region_id]", :id => "#{object_type}_region_id"}
     <option value=''></option>
     - Region.all.sort_by(&:full_name).each do |r|
       <option value="#{r.id}" #{r.id == region_id ? 'selected=selected' : ''} >#{r.full_name}</option>
