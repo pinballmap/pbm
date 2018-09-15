@@ -158,7 +158,7 @@ describe LocationMachineXrefsController do
     end
 
     it 'does not save spam' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
+      stub_const('ENV', 'RAKISMET_KEY' => 'asdf', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
 
       expect(Rakismet).to receive(:akismet_call).and_return('true')
 
@@ -191,7 +191,7 @@ describe LocationMachineXrefsController do
         location = FactoryBot.create(:location, id: 111, region: region)
 
         lmx = FactoryBot.create(:location_machine_xref, location: location, machine: FactoryBot.create(:machine))
-        stub_const('ENV', 'RAKISMET_KEY' => 'asdf')
+        stub_const('ENV', 'RAKISMET_KEY' => 'asdf', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
 
         expect(Rakismet).to receive(:akismet_call).and_return('false')
 
@@ -564,6 +564,8 @@ describe LocationMachineXrefsController do
     end
 
     it 'allows case insensive searches of a region' do
+      stub_const('ENV', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
+
       chicago_region = FactoryBot.create(:region, name: 'chicago', full_name: 'Chicago')
       FactoryBot.create(:location, id: 23, region: chicago_region, name: 'Chicago Location')
 
@@ -787,6 +789,8 @@ describe LocationMachineXrefsController do
     end
 
     it 'displays appropriate values in location description' do
+      stub_const('ENV', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
+
       @user = FactoryBot.create(:user)
       page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
 

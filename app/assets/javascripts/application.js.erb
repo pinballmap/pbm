@@ -48,7 +48,7 @@ function showLocations(ids, lats, lons, contents, latLng) {
   if (mapAdjusted === 0) {
       map = new mapboxgl.Map({
         container: 'map_canvas',
-        style: 'https://maps.tilehosting.com/styles/bright/style.json?key=<%= ENV["MAPTILER_API_KEY"] %>',
+        style: 'mapbox://styles/mapbox/streets-v10',
       });
       map.addControl(new mapboxgl.NavigationControl(), 'top-right');
   }
@@ -268,10 +268,13 @@ function updateLocationUpdatedText(id) {
 }
 
 function initializeRegionMap(ids, lats, lons, contents) {
+    api_key = '<%= Rails.env.production? ? ENV["MAPBOX_LIVE_API_KEY"] : ENV["MAPBOX_DEV_API_KEY"] %>';
+    mapboxgl.accessToken = api_key
+
     var bounds = new mapboxgl.LngLatBounds();
     var regionMap = new mapboxgl.Map({
       container: 'region_map',
-      style: 'https://maps.tilehosting.com/styles/bright/style.json?key=<%= ENV["MAPTILER_API_KEY"] %>',
+      style: 'mapbox://styles/mapbox/streets-v10',
     });
     regionMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
 

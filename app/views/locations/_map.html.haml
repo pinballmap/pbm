@@ -4,9 +4,12 @@
 - lon = local_assigns.has_key?(:lon) ? lon : @region.lon
 
 :javascript
+  api_key = '#{Rails.env.production? ? ENV["MAPBOX_LIVE_API_KEY"] : ENV["MAPBOX_DEV_API_KEY"]}';
+  mapboxgl.accessToken = api_key;
+
   map = new mapboxgl.Map({
     container: 'map_canvas',
-    style: 'https://maps.tilehosting.com/styles/bright/style.json?key=#{ENV["MAPTILER_API_KEY"]}',
+    style: 'mapbox://styles/mapbox/streets-v10',
     center: [#{lon}, #{lat}],
     zoom: 12
   });
