@@ -6,4 +6,4 @@ COPY Gemfile /pbm/Gemfile
 COPY Gemfile.lock /pbm/Gemfile.lock
 RUN bundle install
 COPY . /pbm
-ENTRYPOINT ["bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0"]
+CMD ["bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0"]
