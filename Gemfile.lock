@@ -1048,6 +1048,8 @@ GEM
       simple_oauth (~> 0.3.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
+    tzinfo-data (1.2018.5)
+      tzinfo (>= 1.0.0)
     uglifier (4.1.15)
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
@@ -1133,10 +1135,11 @@ DEPENDENCIES
   timecop
   tunemygc
   twitter
+  tzinfo-data
   uglifier
 
 RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.2
+   1.16.4
