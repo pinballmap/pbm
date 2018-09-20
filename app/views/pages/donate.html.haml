@@ -4,7 +4,7 @@
       %h1.red Donate
       %p You can become a monthly patron of Pinball Map via Patreon!
       %div{:style => 'width: 200px;margin: 0 auto;'}
-        <a href="https://www.patreon.com/bePatron?u=12887048" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+        =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'width:200px;'), "https://patreon.com/pinballmap", :target => "_blank"
       %p=image_tag('treasure-map.png', :alt => 'Treasure Map')
     .column.w_560.mt_0
       %p
