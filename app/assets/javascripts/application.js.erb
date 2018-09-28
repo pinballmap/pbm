@@ -249,7 +249,7 @@ function showLocationDetail(locationID) {
 function locationLookupMapCenter(locationID) {
   var index = jQuery.inArray(locationID, locationIDs);
   clearInfoWindows();
-  map.panTo(markers[index].getLngLat(),{padding: 50, animate: false});
+  map.panTo(markers[index].getLngLat());
   markers[index].togglePopup();
 }
 
