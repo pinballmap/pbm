@@ -41,8 +41,8 @@ gem 'simple_form'
 gem 'simple_token_authentication'
 gem 'tunemygc'
 gem 'twitter'
-gem 'uglifier'
 gem 'tzinfo-data'
+gem 'uglifier'
 
 group :production do
   gem 'rails_12factor'
