@@ -69,4 +69,3 @@ If the site loads properly it will be an empty version of pinballmap.com, then a
 Start server: `bundle exec rails s`
 
 Run tests: `bundle exec rake`
-
