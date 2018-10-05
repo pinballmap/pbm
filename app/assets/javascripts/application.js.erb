@@ -268,7 +268,7 @@ function updateLocationUpdatedText(id) {
 }
 
 function initializeRegionMap(ids, lats, lons, contents) {
-    api_key = '<%= Rails.env.production? ? ENV["MAPBOX_LIVE_API_KEY"] : ENV["MAPBOX_DEV_API_KEY"] %>';
+    api_key = 'pk.eyJ1IjoicnlhbnRnIiwiYSI6ImNqbHNtNTJ5azAweHoza3BiajV2eGQ5OHgifQ.9kvE_xb8x9sq_n8PL6Cj3w';
     mapboxgl.accessToken = api_key
 
     var bounds = new mapboxgl.LngLatBounds();
