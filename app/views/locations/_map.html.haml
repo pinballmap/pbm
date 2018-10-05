@@ -4,12 +4,9 @@
 - lon = local_assigns.has_key?(:lon) ? lon : @region.lon
 
 :javascript
-  api_key = 'pk.eyJ1IjoicnlhbnRnIiwiYSI6ImNqbHNtNTJ5azAweHoza3BiajV2eGQ5OHgifQ.9kvE_xb8x9sq_n8PL6Cj3w';
-  mapboxgl.accessToken = api_key;
-
   map = new mapboxgl.Map({
     container: 'map_canvas',
-    style: 'mapbox://styles/ryantg/cjmti8a1y0t8q2ro8imwi8lok',
+    style: 'http://54.148.64.226:8080/styles/klokantech-basic/style.json',
     center: [#{lon}, #{lat}],
     zoom: 12
   });
