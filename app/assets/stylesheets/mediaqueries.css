@@ -168,7 +168,7 @@
     line-height: 22px;
   }
 }
-@media (max-width: 875px) {
+@media (max-width: 885px) {
   #region_map {
     width: 420px;
     height: 450px;
@@ -203,7 +203,7 @@
   .header_menu_02.header_menu_region {
     display: none;
   }
-  #header .menu_link ul li.menu_header_02.header_menu_region {
+  #header .menu_link ul li.menu_header_02 {
     display: block;
   }
   .header_buttons_child.header_menu_02.header_menu_region {

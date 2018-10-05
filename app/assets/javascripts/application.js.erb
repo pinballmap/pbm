@@ -48,7 +48,7 @@ function showLocations(ids, lats, lons, contents, latLng) {
   if (mapAdjusted === 0) {
       map = new mapboxgl.Map({
         container: 'map_canvas',
-        style: 'mapbox://styles/mapbox/streets-v10',
+        style: 'mapbox://styles/ryantg/cjmti8a1y0t8q2ro8imwi8lok',
       });
       map.addControl(new mapboxgl.NavigationControl(), 'top-right');
   }
@@ -76,13 +76,22 @@ function showLocations(ids, lats, lons, contents, latLng) {
       map.setZoom(18);
       map.setCenter([lons[0], lats[0]]);
       tooZoomed();
+      if (document.getElementById("not_found")) {
+        document.getElementById("not_found").style.display = "none";
+      }
     } else if (contents.length == 0 && latLng.length === 1) {
       document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
     } else if (contents.length == 0 && latLng.length === 2) {
-      map.fitBounds(bounds);
+      map.fitBounds(bounds, {padding: 50, animate: false});
       map.setZoom(18);
+      if (document.getElementById("not_found")) {
+        document.getElementById("not_found").style.display = "none";
+      }
     } else {
-      map.fitBounds(bounds);
+      map.fitBounds(bounds, {padding: 50, animate: false});
+      if (document.getElementById("not_found")) {
+        document.getElementById("not_found").style.display = "none";
+      }
     }
   }
   tooZoomed();
@@ -204,7 +213,6 @@ function findClosestLocations(region) {
         document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "No pinball found on this map within 5 miles of your location." + "</p>";
       } else {
           var locationIds = [];
-
           for (var i = 0; i < response.locations.length; i++) {
             locationIds.push(response.locations[i].id)
           }
@@ -274,7 +282,7 @@ function initializeRegionMap(ids, lats, lons, contents) {
     var bounds = new mapboxgl.LngLatBounds();
     var regionMap = new mapboxgl.Map({
       container: 'region_map',
-      style: 'mapbox://styles/mapbox/streets-v10',
+      style: 'mapbox://styles/ryantg/cjmti8a1y0t8q2ro8imwi8lok',
     });
     regionMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
@@ -295,7 +303,7 @@ function initializeRegionMap(ids, lats, lons, contents) {
       bounds.extend([lons[i], lats[i]]);
     }
 
-    regionMap.fitBounds(bounds);
+    regionMap.fitBounds(bounds, {padding: 50, animate: false});
 }
 
 var fade_flash = function() {
