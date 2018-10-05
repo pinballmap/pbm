@@ -76,16 +76,13 @@ function showLocations(ids, lats, lons, contents, latLng) {
       map.setZoom(18);
       map.setCenter([lons[0], lats[0]]);
       tooZoomed();
-      //document.getElementById('not_found').style.display = "none";
     } else if (contents.length == 0 && latLng.length === 1) {
-     // document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
+      document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
     } else if (contents.length == 0 && latLng.length === 2) {
-      //document.getElementById('not_found').style.display = "none";
       map.fitBounds(bounds, {padding: 50, animate: false});
       map.setZoom(18);
     } else {
       map.fitBounds(bounds, {padding: 50, animate: false});
-      //document.getElementById('not_found').style.display = "none";
     }
   }
   tooZoomed();
@@ -207,7 +204,6 @@ function findClosestLocations(region) {
         document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "No pinball found on this map within 5 miles of your location." + "</p>";
       } else {
           var locationIds = [];
-          //document.getElementById('not_found').style.display = "none";
           for (var i = 0; i < response.locations.length; i++) {
             locationIds.push(response.locations[i].id)
           }
