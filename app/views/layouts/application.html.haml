@@ -13,6 +13,7 @@
     %meta{:property => "og:url", :content => "https://#{request.host+request.fullpath}" }
     %meta{:property => "og:image", :content => image_path("pbm-og-image.png")}
     %meta{:content => "JFE_WxE-R1LZtdT0omEkIKOlZr7oq1fPBW9mr3cdyx4", :name => "google-site-verification"}/
+    %meta{:http-equiv => "Content-Security-Policy", :content => "upgrade-insecure-requests"}
     = stylesheet_link_tag 'normalize', 'application', 'mediaqueries', 'https://api.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css', :media => ""
     - if mobile_device?
       = stylesheet_link_tag 'mobile-application'
