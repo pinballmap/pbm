@@ -602,7 +602,7 @@ HERE
       expect(updated_location.last_updated_by_user).to eq(@user)
       expect(updated_location.date_last_updated.to_s).to eq('2010-06-01')
 
-      expect(JSON.parse(response.body)['msg']).to eq('Thanks for confirming that location.')
+      expect(JSON.parse(response.body)['msg']).to eq('Thanks for confirming the line-up at this location!')
     end
 
     it 'throws an error if the location does not exist' do
