@@ -208,7 +208,7 @@ module Api
         location = Location.find(params[:id])
         location.confirm(user)
 
-        return_response('Thanks for confirming that location.', 'msg')
+        return_response('Thanks for confirming the line-up at this location!', 'msg')
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find location', 'errors')
       end
