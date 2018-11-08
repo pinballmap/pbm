@@ -13,6 +13,11 @@ FactoryBot.define do
     association :location_type
   end
 
+  factory :user_fave_location do
+    association :user
+    association :location
+  end
+
   factory :suggested_location do
     association :region, name: 'portland'
     association :location_type

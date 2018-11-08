@@ -138,6 +138,116 @@ describe Api::V1::UsersController, type: :request do
     end
   end
 
+  describe '#add_fave_location' do
+    it 'adds a location to your list of favorites' do
+      user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+
+      new_location = FactoryBot.create(:location, id: 555)
+
+      expect(UserFaveLocation.all.count).to eq(0)
+
+      post '/api/v1/users/111/add_fave_location.json', params: { location_id: 555, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(UserFaveLocation.first.user_id).to eq(user.id)
+      expect(UserFaveLocation.first.location_id).to eq(new_location.id)
+    end
+
+    it 'does not let you do this for other users' do
+      FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      FactoryBot.create(:user, id: 112)
+
+      FactoryBot.create(:location, id: 555)
+
+      expect(UserFaveLocation.all.count).to eq(0)
+
+      post '/api/v1/users/112/add_fave_location.json', params: { location_id: 555, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Unauthorized user update.')
+      expect(UserFaveLocation.all.count).to eq(0)
+    end
+
+    it 'tells you if this user does not exist' do
+      post '/api/v1/users/234/add_fave_location.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Unknown asset')
+    end
+
+    it 'tells you if this location does not exist' do
+      post '/api/v1/users/111/add_fave_location.json', params: { location_id: 999, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Unknown asset')
+    end
+  end
+
+  describe '#remove_fave_location' do
+    it 'removes a location to your list of favorites' do
+      user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+
+      FactoryBot.create(:user_fave_location, user: user, location: FactoryBot.create(:location, id: 123))
+      FactoryBot.create(:user_fave_location, user: user, location: FactoryBot.create(:location, id: 456))
+
+      post '/api/v1/users/111/remove_fave_location.json', params: { location_id: 123, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(UserFaveLocation.all.count).to eq(1)
+      expect(UserFaveLocation.first.user_id).to eq(user.id)
+      expect(UserFaveLocation.first.location_id).to eq(456)
+    end
+
+    it 'does not let you do this for other users' do
+      FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+
+      FactoryBot.create(:user_fave_location, user: FactoryBot.create(:user, id: 777), location: FactoryBot.create(:location, id: 123))
+
+      post '/api/v1/users/777/remove_fave_location.json', params: { location_id: 123, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(UserFaveLocation.all.count).to eq(1)
+    end
+
+    it 'tells you if this user does not exist' do
+      post '/api/v1/users/234/remove_fave_location.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Unknown asset')
+    end
+
+    it 'tells you if this location does not exist' do
+      post '/api/v1/users/111/remove_fave_location.json', params: { location_id: 999, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Unknown asset')
+    end
+  end
+
+  describe '#list_fave_locations' do
+    it 'sends all favorited locations for a user' do
+      user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+
+      FactoryBot.create(:user_fave_location, user: user, location: FactoryBot.create(:location, id: 123))
+      FactoryBot.create(:user_fave_location, user: user, location: FactoryBot.create(:location, id: 456))
+
+      FactoryBot.create(:user_fave_location, user: FactoryBot.create(:user), location: FactoryBot.create(:location, id: 789))
+
+      get '/api/v1/users/111/list_fave_locations.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_fave_locations']
+
+      expect(json.count).to eq(2)
+      expect(json[0]['location_id']).to eq(123)
+      expect(json[1]['location_id']).to eq(456)
+    end
+
+    it 'tells you if this user does not exist' do
+      get '/api/v1/users/234/list_fave_locations.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Unknown user')
+    end
+  end
+
   describe '#profile_info' do
     before(:each) do
       @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw', created_at: '2016-01-01')
