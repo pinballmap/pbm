@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :machine_score_xrefs
   has_many :location_picture_xrefs
   has_many :user_submissions
+  has_many :user_fave_locations
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 

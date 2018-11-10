@@ -15,7 +15,10 @@ Rails.application.routes.draw do
 
       resources :users, only: [:auth_details] do
         member do
+          post :add_fave_location
+          get  :list_fave_locations
           get  :profile_info
+          post :remove_fave_location
         end
         collection do
           get  :auth_details
