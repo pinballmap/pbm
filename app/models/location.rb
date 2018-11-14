@@ -74,6 +74,7 @@ class Location < ApplicationRecord
   })
   scope :by_is_stern_army, (->(_non_blank_param) { where(is_stern_army: true) })
   scope :regionless_only, (->(_non_blank_param) { where(region_id: nil) })
+  scope :zoneless, (-> { where(zone_id: nil) })
 
   before_destroy do |record|
     Event.where(location_id: record.id).destroy_all
