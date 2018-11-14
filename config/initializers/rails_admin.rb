@@ -104,6 +104,7 @@ RailsAdmin.config do |config|
   end
   config.model Location do
     list do
+      scopes [nil, :zoneless]
       field :name, :string
       field :region, :belongs_to_association do
         visible do
