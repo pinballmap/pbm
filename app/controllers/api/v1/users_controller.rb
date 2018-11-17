@@ -13,7 +13,7 @@ module Api
       def list_fave_locations
         user = User.find(params[:id])
 
-        return_response(user.user_fave_locations, 'user_fave_locations')
+        return_response(user.user_fave_locations, 'user_fave_locations', [location: { include: %i[location_type machines] }])
       rescue ActiveRecord::RecordNotFound
         return_response('Unknown user', 'errors')
       end

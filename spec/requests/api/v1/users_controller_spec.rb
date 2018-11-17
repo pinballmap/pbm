@@ -240,7 +240,9 @@ describe Api::V1::UsersController, type: :request do
     it 'sends all favorited locations for a user' do
       user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
 
-      FactoryBot.create(:user_fave_location, user: user, location: FactoryBot.create(:location, id: 123))
+      location = FactoryBot.create(:location, id: 123)
+      FactoryBot.create(:user_fave_location, user: user, location: location)
+      FactoryBot.create(:location_machine_xref, location: location)
       FactoryBot.create(:user_fave_location, user: user, location: FactoryBot.create(:location, id: 456))
 
       FactoryBot.create(:user_fave_location, user: FactoryBot.create(:user), location: FactoryBot.create(:location, id: 789))
@@ -252,6 +254,8 @@ describe Api::V1::UsersController, type: :request do
 
       expect(json.count).to eq(2)
       expect(json[0]['location_id']).to eq(123)
+      expect(json[0]['location']['location_type']['name']).to eq('Test Location Type')
+      expect(json[0]['location']['machines'][0]['name']).to eq('Test Machine Name')
       expect(json[1]['location_id']).to eq(456)
     end
 
