@@ -32,6 +32,11 @@ module Api
           return
         end
 
+        if UserFaveLocation.where(user: user, location: location).count.positive?
+          return_response('This location is already saved as a fave.', 'errors')
+          return
+        end
+
         UserFaveLocation.create(user: user, location: location)
 
         return_response('Successfully added fave', 'success')

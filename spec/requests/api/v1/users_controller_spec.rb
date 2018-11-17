@@ -152,6 +152,21 @@ describe Api::V1::UsersController, type: :request do
       expect(UserFaveLocation.first.location_id).to eq(new_location.id)
     end
 
+    it 'rejects duplicate attempts to add' do
+      FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      FactoryBot.create(:location, id: 555)
+
+      post '/api/v1/users/111/add_fave_location.json', params: { location_id: 555, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(UserFaveLocation.all.size).to eq(1)
+
+      post '/api/v1/users/111/add_fave_location.json', params: { location_id: 555, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('This location is already saved as a fave.')
+      expect(UserFaveLocation.all.size).to eq(1)
+    end
+
     it 'does not let you do this for other users' do
       FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
       FactoryBot.create(:user, id: 112)
