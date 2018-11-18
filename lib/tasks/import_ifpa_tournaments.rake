@@ -7,7 +7,7 @@ task import_ifpa_tournaments: :environment do
   # their ssl is broken, so we're using this for now
   OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
-  IFPA_API_ROOT = 'https://api.ifpapinball.com/v1/'.freeze
+  IFPA_API_ROOT = 'https://api.ifpapinball.com/v1/'
   IFPA_API_KEY = ENV['IFPA_API_KEY']
   NUM_MILES_TO_SEARCH = 50
 
