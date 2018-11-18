@@ -13,7 +13,7 @@ task import_ifpa_tournaments: :environment do
 
   Hash.new { |h, k| h[k] = [] }
 
-  pbm_states = Location.uniq.pluck(:state).map(&:downcase!).uniq!
+  pbm_states = Location.all.pluck(:state).map(&:downcase!).uniq!
 
   JSON.parse(Net::HTTP.get(URI(IFPA_API_ROOT + '/calendar/active?api_key=' + IFPA_API_KEY.to_s)))['calendar'].each do |c|
     state = c['state'].downcase
