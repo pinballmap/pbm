@@ -10,11 +10,11 @@ Available here: [http://pinballmap.com/api/v1/docs](http://pinballmap.com/api/v1
 ## Mac Environment Setup
 Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhanifin) undertook to get the site up and running on OS X 10.9. If you would like to contribute, and have any trouble, please ask.
 
-* Follow the Ruby install instructions at [railsapps.github.io/installrubyonrails-mac.html](http://railsapps.github.io/installrubyonrails-mac.html). Make sure you also download ruby-2.5.1.
+* Follow the Ruby install instructions at [railsapps.github.io/installrubyonrails-mac.html](http://railsapps.github.io/installrubyonrails-mac.html). Make sure you also download ruby-2.5.3.
 * `cd /Projects-Path/`
 * `git clone https://github.com/scottwainstock/pbm.git` (*I used the SourceTree app instead.*)
 * `cd /Projects-Path/pbm`
-* `rvm --default use ruby-2.5.1`
+* `rvm --default use ruby-2.5.3`
 * `bundle install`
 * `selenium install`
 * `brew update`
