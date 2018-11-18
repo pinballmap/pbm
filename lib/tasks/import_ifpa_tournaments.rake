@@ -41,7 +41,7 @@ task import_ifpa_tournaments: :environment do
     if associated_location
       location_id = associated_location.id
     else
-      long_desc << "\n#{cd['address1']}, #{cd['city']}, #{cd['state']}, #{cd['zipcode']}"
+      long_desc += "\n#{cd['address1']}, #{cd['city']}, #{cd['state']}, #{cd['zipcode']}"
     end
 
     region_ids_to_add_event_to = []
