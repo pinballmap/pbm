@@ -13,6 +13,12 @@ Rails.application.routes.draw do
       resources :machines, only: [:index, :show, :create]
       resources :operators, only: [:index, :show]
 
+      resources :user_submissions, only: [:list_within_range] do
+        collection do
+          get :list_within_range
+        end
+      end
+
       resources :users, only: [:auth_details] do
         member do
           post :add_fave_location
