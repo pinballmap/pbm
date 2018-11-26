@@ -48,7 +48,7 @@ function showLocations(ids, lats, lons, contents, latLng) {
   if (mapAdjusted === 0) {
       map = new mapboxgl.Map({
         container: 'map_canvas',
-        style: 'mapbox://styles/ryantg/cjmti8a1y0t8q2ro8imwi8lok',
+        style: 'https://mapserver.pinballmap.com/styles/klokantech-basic/style.json',
       });
       map.addControl(new mapboxgl.NavigationControl(), 'top-right');
   }
@@ -276,13 +276,10 @@ function updateLocationUpdatedText(id) {
 }
 
 function initializeRegionMap(ids, lats, lons, contents) {
-    api_key = 'pk.eyJ1IjoicnlhbnRnIiwiYSI6ImNqbHNtNTJ5azAweHoza3BiajV2eGQ5OHgifQ.9kvE_xb8x9sq_n8PL6Cj3w';
-    mapboxgl.accessToken = api_key
-
     var bounds = new mapboxgl.LngLatBounds();
     var regionMap = new mapboxgl.Map({
       container: 'region_map',
-      style: 'mapbox://styles/ryantg/cjmti8a1y0t8q2ro8imwi8lok',
+      style: 'https://mapserver.pinballmap.com/styles/klokantech-basic/style.json',
     });
     regionMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
