@@ -119,6 +119,7 @@ RailsAdmin.config do |config|
       field :phone, :string
       field :zone, :belongs_to_association
       field :operator, :belongs_to_association
+      field :location_type, :belongs_to_association
       field :is_stern_army, :boolean do
         visible do
           bindings[:view]._current_user.is_super_admin
