@@ -1778,8 +1778,7 @@ input#score {
   border-bottom: 1px solid #CAC6C6;
   text-align: right;
 }
-.location_description .comment_image,
-.location_meta .meta_image {
+.location_description .comment_image {
   height: 40px;
   float: right;
   cursor: pointer;
@@ -1807,15 +1806,18 @@ div.comment_image .comment_image {
   background: url(<%= asset_path 'comment-sprites.png' %>) no-repeat 0 -80px;
 }
 div.comment_image .comment_image:hover {
-  background-position: 0px -40px;
+  background-position: 0px -39px;
 }
 div.comment_image .comment_image:active {
   background-position: top;
+  height: 39px;
 }
 .meta_image {
   height: 40px;
   width: 40px;
-  display: inline-block;
+  float: right;
+  margin: 0 0 0 5px;
+  cursor: pointer;
   background-size: 40px !important;
   background: url(<%= asset_path 'meta-sprites.png' %>) no-repeat 0px -80px;
 }
