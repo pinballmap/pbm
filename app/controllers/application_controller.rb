@@ -1,6 +1,7 @@
 require 'pony'
 
 class ApplicationController < ActionController::Base
+  FILTERING_REQUIRED_MSG = 'Filtering is required for this action. Please provide a filter when using this endpoint.'.freeze
   AUTH_REQUIRED_MSG = 'Authentication is required for this action. Please upgrade your app or pass an authentication token for this type of action.'.freeze
 
   acts_as_token_authentication_handler_for User, fallback: :none

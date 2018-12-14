@@ -162,15 +162,22 @@ HERE
       assert_response :success
     end
 
-    it 'returns all locations within scope along with lmx data' do
+    it 'forces you to filter' do
       FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'la'), name: 'Cleo')
       FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'chicago'), name: 'Bawb')
 
       get '/api/v1/locations.json'
 
-      expect(response.body).to include('Bawb')
+      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::FILTERING_REQUIRED_MSG)
+    end
+
+    it 'respects stern_army filter' do
+      FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'la'), name: 'Cleo', is_stern_army: 't')
+      FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'chicago'), name: 'Bawb')
+
+      get '/api/v1/locations.json?by_is_stern_army=1'
+
       expect(response.body).to include('Cleo')
-      expect(response.body).to include('Satchmo')
     end
 
     it 'returns all locations in a region within scope along with lmx data' do
