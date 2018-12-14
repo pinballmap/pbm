@@ -1254,6 +1254,7 @@ form.remove_machine_condition {
   min-height: 28px;
   font-family: $serif;
   padding: 5px;
+  margin-bottom: 5px;
 }
 .machine_condition_display_lmx .condition_button {
   height: 20px;
@@ -1778,8 +1779,7 @@ input#score {
   border-bottom: 1px solid #CAC6C6;
   text-align: right;
 }
-.location_description .comment_image,
-.location_meta .meta_image {
+.location_description .comment_image {
   height: 40px;
   float: right;
   cursor: pointer;
@@ -1787,14 +1787,14 @@ input#score {
   width: 40px;
 }
 .location_description .comment_image {
-  height: 40px;
+  height: 39px;
   width: 40px;
   display: inline-block;
   background-size: 40px !important;
   background: url(<%= asset_path 'comment-sprites.png' %>) no-repeat top;
 }
 .location_description .comment_image:hover {
-  background-position: 0px -40px;
+  background-position: 0px -39px;
 }
 .location_description .comment_image:active {
   background-position: 0px -80px;
@@ -1807,20 +1807,24 @@ div.comment_image .comment_image {
   background: url(<%= asset_path 'comment-sprites.png' %>) no-repeat 0 -80px;
 }
 div.comment_image .comment_image:hover {
-  background-position: 0px -40px;
+  background-position: 0px -39px;
 }
 div.comment_image .comment_image:active {
   background-position: top;
+  height: 39px;
 }
 .meta_image {
-  height: 40px;
-  width: 40px;
-  display: inline-block;
-  background-size: 40px !important;
-  background: url(<%= asset_path 'meta-sprites.png' %>) no-repeat 0px -80px;
+  height: 39px;
+  width: 39px;
+  float: right;
+  margin: 0 0 0 5px;
+  cursor: pointer;
+  background-size: 39px !important;
+  background: url(<%= asset_path 'meta-sprites.png' %>) no-repeat 0px -78px;
 }
 .meta_image:hover {
   background-position: 0px -40px;
+  margin: 1px 0 0 5px;
 }
 .meta_image:active {
   background-position: top;

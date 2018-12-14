@@ -55,8 +55,8 @@ If the site loads properly it will be an empty version of pinballmap.com, then a
 4. Install and setup ruby and rvm:
 
 * `curl -L https://get.rvm.io | bash -s stable --ruby`
-* `rvm install ruby-2.3.4`
-* `rvm --default use ruby-2.3.4`
+* `rvm install ruby-2.5.3`
+* `rvm --default use ruby-2.5.3`
 * `gem install bundler`
 * `bundle install`
 * `cp config/database.yml.example config/database.yml` to create your database.yml for development
