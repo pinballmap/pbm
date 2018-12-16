@@ -98,7 +98,7 @@ class User < ApplicationRecord
   def profile_list_of_high_scores
     msx_submissions = UserSubmission.where(user: self, submission_type: UserSubmission::NEW_SCORE_TYPE).order(created_at: 'DESC').limit(50)
 
-    formatted_score_data = []
+    high_score_hash = {}
     msx_submissions.each do |msx_sub|
       score = 'UNKNOWN'
       if msx_sub.submission =~ /added a score of (.*) for (.*) to (.*)$/i
@@ -109,10 +109,12 @@ class User < ApplicationRecord
 
       next unless score && machine_name && location_name
 
-      formatted_score_data.push([location_name, machine_name, number_with_precision(score, precision: 0, delimiter: ','), msx_sub.created_at.strftime('%b-%d-%Y')])
+      if !high_score_hash[machine_name] || high_score_hash[machine_name][2] < score
+        high_score_hash[machine_name] = [location_name, machine_name, number_with_precision(score, precision: 0, delimiter: ','), msx_sub.created_at.strftime('%b-%d-%Y')]
+      end
     end
 
-    formatted_score_data
+    high_score_hash.values
   end
 
   def profile_list_of_edited_locations

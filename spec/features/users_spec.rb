@@ -40,8 +40,11 @@ describe UsersController do
       FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, id: 400), submission_type: UserSubmission::LOCATION_METADATA_TYPE)
       FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, id: 500, name: 'Location One'), machine: FactoryBot.create(:machine, name: 'Machine One'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 1 for Machine One to Location One', created_at: '2016-01-02')
 
+      machine = FactoryBot.create(:machine, name: 'Machine Two')
       FactoryBot.create(:user_submission, user: @user, location: Location.find(400), submission_type: UserSubmission::LOCATION_METADATA_TYPE)
-      FactoryBot.create(:user_submission, user: @user, location: Location.find(500), machine: FactoryBot.create(:machine, name: 'Machine Two'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 2 for Machine Two to Location One', created_at: '2016-01-01')
+
+      FactoryBot.create(:user_submission, user: @user, location: Location.find(500), machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 2 for Machine Two to Location One', created_at: '2016-01-01')
+      FactoryBot.create(:user_submission, user: @user, location: Location.find(400), machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 3 for Machine Two to Location Two', created_at: '2016-01-01')
 
       login
       visit "/users/#{@user.id}/profile"
@@ -53,7 +56,7 @@ describe UsersController do
       expect(page).to have_content("1\nMachine Comments")
       expect(page).to have_content("3\nLocations Submitted")
       expect(page).to have_content("5\nLocations Edited")
-      expect(page).to have_content("High Scores (Last 50):\nMachine One\n1\nat Location One on Jan-02-2016\nMachine Two\n2\nat Location One on Jan-01-2016")
+      expect(page).to have_content("High Scores (Last 50):\nMachine One\n1\nat Location One on Jan-02-2016\nMachine Two\n3\nat Location Two on Jan-01-2016")
     end
 
     it 'adds commas to high scores' do
