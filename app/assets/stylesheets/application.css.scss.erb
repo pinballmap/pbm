@@ -1780,24 +1780,22 @@ input#score {
   text-align: right;
 }
 .location_description .comment_image {
-  height: 40px;
   float: right;
   cursor: pointer;
   margin: 0 0 0 5px;
-  width: 40px;
 }
 .location_description .comment_image {
-  height: 39px;
-  width: 40px;
+  height: 40px;
+  width: 41px;
   display: inline-block;
-  background-size: 40px !important;
+  background-size: 41px !important;
   background: url(<%= asset_path 'comment-sprites.png' %>) no-repeat top;
 }
 .location_description .comment_image:hover {
-  background-position: 0px -39px;
+  background-position: 0px -41px;
 }
 .location_description .comment_image:active {
-  background-position: 0px -80px;
+  background-position: 0px -82px;
 }
 div.comment_image .comment_image {
   height: 40px;
@@ -1807,24 +1805,27 @@ div.comment_image .comment_image {
   background: url(<%= asset_path 'comment-sprites.png' %>) no-repeat 0 -80px;
 }
 div.comment_image .comment_image:hover {
-  background-position: 0px -39px;
+  background-position: 0px -40px;
+  height: 39px;
+  width: 40px;
+  background-size: 40px !important;
 }
 div.comment_image .comment_image:active {
   background-position: top;
   height: 39px;
 }
 .meta_image {
-  height: 39px;
-  width: 39px;
+  height: 40px;
+  width: 40px;
   float: right;
   margin: 0 0 0 5px;
   cursor: pointer;
-  background-size: 39px !important;
-  background: url(<%= asset_path 'meta-sprites.png' %>) no-repeat 0px -78px;
+  background-size: 40px !important;
+  background: url(<%= asset_path 'meta-sprites.png' %>) no-repeat 0px -80px;
 }
 .meta_image:hover {
   background-position: 0px -40px;
-  margin: 1px 0 0 5px;
+  margin: 0 0 0 5px;
 }
 .meta_image:active {
   background-position: top;
