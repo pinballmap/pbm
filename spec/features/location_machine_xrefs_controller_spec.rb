@@ -489,14 +489,14 @@ describe LocationMachineXrefsController do
       page.execute_script %{ $('#by_location_name').trigger('focus') }
       page.execute_script %{ $('#by_location_name').trigger('keydown') }
 
-      expect(page).to have_selector('li', count: 2)
+      expect(page).to have_selector('li.ui-menu-item', count: 2)
 
       fill_in('by_location_name', with: 'Clark’s')
 
       page.execute_script %{ $('#by_location_name').trigger('focus') }
       page.execute_script %{ $('#by_location_name').trigger('keydown') }
 
-      expect(page).to have_selector('li', count: 2)
+      expect(page).to have_selector('li.ui-menu-item', count: 2)
     end
   end
 
