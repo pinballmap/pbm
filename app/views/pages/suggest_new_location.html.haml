@@ -10,7 +10,7 @@
               %ul
                 %li{:class => "first"}
                   %label{:for => "location_name"} Location Name:
-                  %input{:type => "text", :name => "location_name", :params => "location_name", :class => "text"}
+                  %input{type: "text", name: "location_name", params: "location_name", class: "text", required: true}
                 %li
                   %label{:for => "location_street"} Street:
                   %input{:type => "text", :name => "location_street", :params => "location_street", :class => "text"}
@@ -52,7 +52,7 @@
                   %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text"}
                 %li.textbox
                   %label{:for => "location_machines"} Machines:
-                  %textarea{:type => "text", :id => "location_machines", :name => "location_machines", :params => "location_machines", :class => "text"}
+                  %textarea{type: "text", id: "location_machines", name: "location_machines", params: "location_machines", class: "text", required: true}
                   :javascript
                     $(function () {
                       function split( val ) {
