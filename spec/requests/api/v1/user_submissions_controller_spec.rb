@@ -11,16 +11,16 @@ describe Api::V1::UserSubmissionsController, type: :request do
       another_location = FactoryBot.create(:location, lat: '45.6008355', lon: '-122.760606')
       distant_location = FactoryBot.create(:location, lat: '12.6008356', lon: '-12.760606')
 
-      FactoryBot.create(:user_submission, location: location, submission_type: UserSubmission::NEW_LMX_TYPE)
-      FactoryBot.create(:user_submission, location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-      FactoryBot.create(:user_submission, location: another_location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-      FactoryBot.create(:user_submission, location: another_location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
-      FactoryBot.create(:user_submission, location: another_location, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE)
-      FactoryBot.create(:user_submission, location: another_location, submission_type: UserSubmission::NEW_SCORE_TYPE)
-      FactoryBot.create(:user_submission, location: another_location, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: another_location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: another_location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: another_location, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: another_location, submission_type: UserSubmission::NEW_SCORE_TYPE)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: another_location, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
 
-      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (scott.wainstock@gmail.com) added a score of 1234 for Cheetah to Bottles')
-      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-02', submission: 'User ssw (scott.wainstock@gmail.com) added a score of 12 for Machine to Location')
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (scott.wainstock@gmail.com) added a score of 1234 for Cheetah to Bottles')
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (scott.wainstock@gmail.com) added a score of 12 for Machine to Location')
 
       FactoryBot.create(:user_submission, location: distant_location, submission_type: 'remove_machine', submission: 'foo')
 
@@ -30,6 +30,34 @@ describe Api::V1::UserSubmissionsController, type: :request do
       json = JSON.parse(response.body)['user_submissions']
 
       expect(json.count).to eq(7)
+    end
+
+    it 'respects date range filtering' do
+      location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606')
+
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now.strftime('%Y-%m-%d'), submission: 'User ssw (scott.wainstock@gmail.com) added a score of 12 for Machine to Location')
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE)
+
+      get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606', submission_type: UserSubmission::NEW_LMX_TYPE }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(1)
+    end
+
+    it 'respects type filter' do
+      location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606')
+
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (scott.wainstock@gmail.com) added a score of 1234 for Cheetah to Bottles')
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now.strftime('%Y-%m-%d'), submission: 'User ssw (scott.wainstock@gmail.com) added a score of 12 for Machine to Location')
+
+      get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606' }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(1)
     end
   end
 
