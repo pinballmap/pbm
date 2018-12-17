@@ -55,7 +55,7 @@ describe SuggestedLocationsController, type: :controller do
     end
 
     it 'should throw an error when failing a field validation' do
-      post :convert_to_location, format: :json, params: { id: FactoryBot.create(:suggested_location).id }
+      post :convert_to_location, format: :json, params: { id: FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman').id }
 
       expect(SuggestedLocation.all.size).to eq(2)
       expect(Location.all.size).to eq(0)

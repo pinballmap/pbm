@@ -1,7 +1,8 @@
 require 'uri'
 
 class SuggestedLocation < ApplicationRecord
-  validates_presence_of :name, :street, :city, :state, :zip, on: :update
+  validates_presence_of :name, :machines, on: :create
+  validates_presence_of :street, :city, :state, :zip, on: :update
 
   validates :phone, format: { with: /\A(\(\d{3}\) |\d{3}-)\d{3}-\d{4}\z/, message: 'format invalid, please use ###-###-#### or (###) ###-####' }, if: :phone?, on: :update
   validates :website, format: { with: %r{^http[s]?:\/\/}, message: 'must begin with http:// or https://', multiline: true }, if: :website?, on: :update

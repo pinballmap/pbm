@@ -193,8 +193,8 @@ HERE
       FactoryBot.create(:location_machine_xref, location: location_added_today, machine: FactoryBot.create(:machine), created_at: Date.today - 2.week)
       FactoryBot.create(:location_machine_xref, location: location_added_today, machine: FactoryBot.create(:machine), created_at: Date.today - 2.week)
 
-      FactoryBot.create(:suggested_location, region: nil, name: 'SL 1')
-      FactoryBot.create(:suggested_location, region: nil, name: 'SL 2')
+      FactoryBot.create(:suggested_location, region: nil, name: 'SL 1', machines: 'Batman')
+      FactoryBot.create(:suggested_location, region: nil, name: 'SL 2', machines: 'Batman')
 
       expect(Region.generate_weekly_regionless_email_body).to eq(<<HERE)
 Here is an overview of regionless locations! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@fastmail.com
@@ -258,8 +258,8 @@ HERE
       FactoryBot.create(:user_submission, region: @region, submission_type: 'contact_us')
       FactoryBot.create(:user_submission, region: @region, submission_type: 'contact_us')
 
-      FactoryBot.create(:suggested_location, region: @region, name: 'SL 1')
-      FactoryBot.create(:suggested_location, region: @region, name: 'SL 2')
+      FactoryBot.create(:suggested_location, region: @region, name: 'SL 1', machines: 'Batman')
+      FactoryBot.create(:suggested_location, region: @region, name: 'SL 2', machines: 'Batman')
 
       expect(@region.generate_weekly_admin_email_body).to eq(<<HERE)
 Here is an overview of your pinball map region! Thanks for keeping your region updated! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@fastmail.com
