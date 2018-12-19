@@ -29,6 +29,9 @@
       - else
         .header_buttons_child.header_menu_01
           =link_to 'Add Location', suggest_path, :class => "bold"
+      - if (current_user)
+        .header_buttons_child
+          =link_to 'Fave Locations', saved_path, :class => "bold"
       - if (@region || current_page?(regionless_path))     
         .header_buttons_child{:class => "#{@region ? 'header_menu_03' : ''}"}
           %span.bold{:onclick => "findClosestLocations('#{@region ? @region.name : 'regionless'}')"}
@@ -77,6 +80,9 @@
       .header_buttons_child=link_to 'Add Location', regionless_location_suggest_path, :class => "bold"
     - else
       .header_buttons_child=link_to 'Add Location', suggest_path, :class => "bold"
+    - if (current_user)
+      .header_buttons_child
+        =link_to 'Fave Locations', saved_path, :class => "bold"
     - if (@region || current_page?(regionless_path))
       %span.header_buttons_child{:onclick => "findClosestLocations('#{@region ? @region.name : 'regionless'}')"}
         = link_to 'Closest Locations', '#', {:id => 'find_closest_locations'}

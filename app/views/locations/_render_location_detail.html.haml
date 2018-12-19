@@ -2,6 +2,9 @@
 	%ul
 		%li.name{:onclick => "locationLookupMapCenter(#{l.id});"}
 			=l.name
+		- if user_signed_in?
+			%span.fave_location{:id => "fave_location_#{l.id}"}
+				=image_tag( l.user_fave?(current_user.id) ? 'heart-filled.png' : 'heart-empty.png', :alt => 'fave this location', :id => "fave_location_img_#{l.id}")
 		%span.permalink
 			=link_to image_tag( 'link.png' ), "/#{l.region ? l.region.name.downcase : 'regionless'}/?by_location_id=#{l.id}", :id => l.id, :alt => 'link to this location'
 		.clear
@@ -41,6 +44,20 @@
 			$("#location_detail_location_#{l.id} .location_thumbs").addClass("toggle_picture_height_off",500);
 			$("#location_detail_location_#{l.id} .more_pictures").css("display","none");
 			$("#location_detail_location_#{l.id} .less_pictures").css("display","block");
+		});
+		$("#location_detail_location_#{l.id} .less_pictures").click(function() {
+			$("#location_detail_location_#{l.id} .location_thumbs").removeClass("toggle_picture_height_off",500);
+			$("#location_detail_location_#{l.id} .more_pictures").css("display","block");
+			$("#location_detail_location_#{l.id} .less_pictures").css("display","none");
+		});
+		$("#fave_location_#{l.id}").click(function() {
+			$.post('/users/#{current_user ? current_user.id : 'null'}/toggle_fave_location.json', {location_id: #{l.id}}, function(data) {
+				if ($("#fave_location_img_#{l.id}").attr('src') === '#{asset_path('heart-filled.png')}') {
+					$("#fave_location_img_#{l.id}").attr('src', '#{asset_path('heart-empty.png')}');
+				} else {
+					$("#fave_location_img_#{l.id}").attr('src', '#{asset_path('heart-filled.png')}');
+				}
+			});
 		});
 		$("#location_detail_location_#{l.id} .less_pictures").click(function() {
 			$("#location_detail_location_#{l.id} .location_thumbs").removeClass("toggle_picture_height_off",500);
