@@ -160,17 +160,15 @@ Rails.application.routes.draw do
       end
   end
 
-  resources :users, only: [:profile, :fave_locations, :toggle_fave_location] do
+  resources :users, only: [:profile] do
     member do
-      get :profile, :fave_locations
-      post :toggle_fave_location
+      get :profile
     end
   end
 
   get 'inspire_profile' => 'pages#inspire_profile'
   get 'pages/home'
   get 'regionless' => 'pages#regionless'
-  get 'saved' => 'pages#regionless', user_faved: true
   get 'regionless_location_data' => 'pages#regionless_location_data'
   get 'suggest' => 'pages#suggest_new_location', as: 'regionless_location_suggest'
   get 'submitted_new_location' => 'pages#submitted_new_location', as: 'regionless_submitted_new_location'

@@ -9,35 +9,6 @@ describe Location do
     @lmx2 = FactoryBot.create(:location_machine_xref, location: @l, machine: @m2, created_at: '2014-01-15 05:00:00')
   end
 
-  describe '#user_fave?' do
-    it 'tells you if the location is a fave of the user passed in as a param' do
-      user = FactoryBot.create(:user)
-      location = FactoryBot.create(:location)
-      other_location = FactoryBot.create(:location)
-
-      FactoryBot.create(:user_fave_location, user: user, location: location)
-      FactoryBot.create(:user_fave_location, location: other_location)
-
-      expect(location.user_fave?(user.id)).to be_truthy
-      expect(other_location.user_fave?(user.id)).to_not be_truthy
-    end
-  end
-
-  describe 'respects user_faved scope' do
-    it 'should filter to locations that the user has faved' do
-      user = FactoryBot.create(:user)
-      location = FactoryBot.create(:location)
-      other_location = FactoryBot.create(:location)
-
-      FactoryBot.create(:user_fave_location, user: user, location: location)
-      FactoryBot.create(:user_fave_location, user: user, location: other_location)
-
-      FactoryBot.create(:user_fave_location, location: location)
-
-      expect(Location.user_faved(user.id)).to eq([location, other_location])
-    end
-  end
-
   describe 'validates phone' do
     it 'only allows valid formats' do
       [
