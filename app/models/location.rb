@@ -75,6 +75,10 @@ class Location < ApplicationRecord
   scope :by_is_stern_army, (->(_non_blank_param) { where(is_stern_army: true) })
   scope :regionless_only, (->(_non_blank_param) { where(region_id: nil) })
   scope :zoneless, (-> { where(zone_id: nil) })
+  scope :user_faved, (lambda { |user_id|
+    fave_ids = UserFaveLocation.where(user_id: user_id).map(&:location_id)
+    where(id: fave_ids)
+  })
 
   before_destroy do |record|
     Event.where(location_id: record.id).destroy_all
@@ -91,6 +95,10 @@ class Location < ApplicationRecord
 
   def self.by_at_least_n_machines_sql(number_of_machines)
     "locations.id in (select location_id from (select location_id, count(*) as count from location_machine_xrefs group by location_id) x where x.count >= #{number_of_machines})"
+  end
+
+  def user_fave?(user_id)
+    UserFaveLocation.where(user_id: user_id, location_id: id).any?
   end
 
   def num_machines

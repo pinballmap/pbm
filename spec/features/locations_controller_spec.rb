@@ -5,6 +5,44 @@ describe LocationsController do
     @region = FactoryBot.create(:region, name: 'portland', full_name: 'portland', lat: 1, lon: 2, motd: 'This is a MOTD', n_search_no: 4, should_email_machine_removal: 1)
   end
 
+  describe 'add as fave', type: :feature, js: true do
+    it "doesn't give you the option unless you're logged in" do
+      location = FactoryBot.create(:location, region: @region, name: 'Cleo')
+
+      visit "/#{@region.name}/?by_location_id=" + location.id.to_s
+
+      expect(page).to_not have_selector("#fave_location_#{location.id}")
+    end
+
+    it 'toggles between faved and unfaved when clicked' do
+      user = FactoryBot.create(:user)
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
+
+      location = FactoryBot.create(:location, region: @region, name: 'Cleo')
+
+      visit "/#{@region.name}/?by_location_id=" + location.id.to_s
+
+      expect(page).to have_selector("#fave_location_#{location.id}")
+
+      expect(UserFaveLocation.where(location: location, user: user).size).to eq(0)
+      expect(page.find("#fave_location_img_#{location.id}")['src']).to have_content('heart-empty')
+
+      find("#fave_location_img_#{location.id}").click
+
+      sleep 1
+
+      expect(UserFaveLocation.where(location: location, user: user).size).to eq(1)
+      expect(page.find("#fave_location_img_#{location.id}")['src']).to have_content('heart-filled')
+
+      find("#fave_location_img_#{location.id}").click
+
+      sleep 1
+
+      expect(UserFaveLocation.where(location: location, user: user).size).to eq(0)
+      expect(page.find("#fave_location_img_#{location.id}")['src']).to have_content('heart-empty')
+    end
+  end
+
   describe 'confirm location', type: :feature, js: true do
     before(:each) do
       @user = FactoryBot.create(:user, username: 'ssw')

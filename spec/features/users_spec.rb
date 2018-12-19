@@ -1,6 +1,26 @@
 require 'spec_helper'
 
 describe UsersController do
+  describe 'Fave Locations', type: :feature, js: true do
+    before(:each) do
+      @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
+    end
+
+    it 'lists fave locations for users' do
+      FactoryBot.create(:user_fave_location, user: @user, location: FactoryBot.create(:location, name: 'Foo'))
+      FactoryBot.create(:user_fave_location, user: @user, location: FactoryBot.create(:location, name: 'Bar'))
+      FactoryBot.create(:user_fave_location, location: FactoryBot.create(:location, name: 'Baz'))
+
+      visit "/users/#{@user.id}/fave_locations"
+
+      expect(page).to have_link('Foo')
+      expect(page).to have_link('Bar')
+
+      expect(page).to_not have_link('Baz')
+    end
+  end
+
   describe 'Profile', type: :feature, js: true do
     before(:each) do
       @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
@@ -27,6 +47,20 @@ describe UsersController do
       visit "/users/#{@user.username}/profile"
 
       expect(page.title).to eq(title)
+    end
+
+    it 'lists saved locations' do
+      FactoryBot.create(:user_fave_location, user: @user, location: FactoryBot.create(:location, name: 'Foo'))
+      FactoryBot.create(:user_fave_location, user: @user, location: FactoryBot.create(:location, name: 'Bar'))
+      FactoryBot.create(:user_fave_location, location: FactoryBot.create(:location, name: 'Baz'))
+
+      visit "/users/#{@user.id}/profile"
+
+      expect(page).to have_content('Fave Locations:')
+      expect(page).to have_link('Foo')
+      expect(page).to have_link('Bar')
+
+      expect(page).to_not have_link('Baz')
     end
 
     it 'display metrics about the users account' do
@@ -57,6 +91,8 @@ describe UsersController do
       expect(page).to have_content("3\nLocations Submitted")
       expect(page).to have_content("5\nLocations Edited")
       expect(page).to have_content("High Scores (Last 50):\nMachine One\n1\nat Location One on Jan-02-2016\nMachine Two\n3\nat Location Two on Jan-01-2016")
+
+      expect(page).to_not have_content('Fave Locations:')
     end
 
     it 'adds commas to high scores' do
