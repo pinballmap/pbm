@@ -31,6 +31,7 @@
           =link_to 'Add Location', suggest_path, :class => "bold"
       - if (current_user)
         .header_buttons_child.header_menu_03
+          =image_tag( 'heart-empty.png', :alt => 'heart icon', :class => 'fave_icon')            
           =link_to 'Saved Locations', saved_path, :class => "bold"
       - if (@region || current_page?(regionless_path))     
         .header_buttons_child{:class => "#{@region ? 'header_menu_04' : ''}"}
