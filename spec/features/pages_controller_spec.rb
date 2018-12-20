@@ -67,6 +67,21 @@ describe PagesController do
       expect(page.body).to_not have_content('No Way')
     end
 
+    it 'respects user_faved filter' do
+      user = FactoryBot.create(:user)
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
+
+      FactoryBot.create(:user_fave_location, user: user, location: FactoryBot.create(:location, name: 'Foo'))
+      FactoryBot.create(:user_fave_location, user: user, location: FactoryBot.create(:location, name: 'Bar'))
+      FactoryBot.create(:user_fave_location, location: FactoryBot.create(:location, name: 'Baz'))
+
+      visit '/saved'
+
+      expect(page.body).to have_content('Foo')
+      expect(page.body).to have_content('Bar')
+      expect(page.body).to_not have_content('Baz')
+    end
+
     it 'lets you search by address -- displays 0 results instead of saying "Not Found"' do
       FactoryBot.create(:location, region: nil, name: 'Troy', zip: '48098', lat: 42.5925, lon: 83.1756)
 
