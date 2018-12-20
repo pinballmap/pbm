@@ -8,6 +8,11 @@
             Pinball Map is a crowdsourced pinball locator for public pinball machines. And we have a mobile app!
           %p.darkb News!
           %p
+            Save your favorite locations! Click the
+            =image_tag( 'heart-empty.png', :alt => 'heart icon', :class => 'fave_icon')
+            next to each location name. Then view them all on the
+            = link_to "Saved Map", saved_path, :class => "bold"
+          %p
             We made two new
             = link_to "Pinball Map T-Shirts!", store_path, :class => "bold"
           %p 
@@ -16,9 +21,8 @@
           %p
             = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold" 
           %p 
-            We've
-            =link_to 'combined all the regional maps into one big super map.', regionless_path, :class => "bold" 
-            And it supports "regionless" locations, as well.
+            Check out the
+            =link_to 'One Big Map.', regionless_path, :class => "bold" 
           %p.l
             We are currently listing a total of 
             %span.darkb 
@@ -29,7 +33,7 @@
             machines.
   .div_01b.home_more.read_more_wrap    
     %p.f
-      Help keep your map up to date by adding and removing machines to/from locations, and by submitting new locations that aren't already listed.
+      Help keep your map up to date by adding and removing machines, and by submitting new locations.
     %p
       Each regional map listed below is curated by a local administrator, often with the support of a league.
     %p
