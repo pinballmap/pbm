@@ -1,5 +1,5 @@
 - if !mobile_device?
-  #header{:class => "#{@region ? '' : (defined? @region) and current_page?(region_homepage_path) ? 'header_fixed' : ''} #{current_page?(regionless_path) ? 'header_fixed' : '' }"}
+  #header{:class => "#{@region ? '' : (defined? @region) and current_page?(region_homepage_path) ? 'header_fixed' : ''} #{current_page?(regionless_path) ? 'header_fixed' : '' } #{current_page?(saved_path) ? 'header_fixed' : '' }"}
     - if current_page?(regionless_path)
       =link_to 'BETA', regionless_path, :class => 'beta'
     =link_to image_tag('pinballmap-logo.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => "logo_link"
@@ -30,10 +30,10 @@
         .header_buttons_child.header_menu_01
           =link_to 'Add Location', suggest_path, :class => "bold"
       - if (current_user)
-        .header_buttons_child
+        .header_buttons_child.header_menu_03
           =link_to 'Fave Locations', saved_path, :class => "bold"
       - if (@region || current_page?(regionless_path))     
-        .header_buttons_child{:class => "#{@region ? 'header_menu_03' : ''}"}
+        .header_buttons_child{:class => "#{@region ? 'header_menu_04' : ''}"}
           %span.bold{:onclick => "findClosestLocations('#{@region ? @region.name : 'regionless'}')"}
             = link_to 'Closest Locations', '#', {:id => 'find_closest_locations'}
         - if (@region)
@@ -43,7 +43,7 @@
             - if !mobile_device?
               %ul.other_regions_list= other_regions_html(@region)
       - else
-        .header_buttons_child.w_95
+        .header_buttons_child.header_menu_05.w_95
           %span{:onclick => "findClosestRegion()"}
             = link_to 'Find Your Closest Map', '#'
 - else
