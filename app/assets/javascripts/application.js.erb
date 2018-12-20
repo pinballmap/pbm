@@ -114,7 +114,7 @@ function redo() {
     } else {
       window.clearTimeout(mapupdater);
       mapupdater = window.setTimeout(function() {
-        var url = '/locations?by_center_point_and_ne_boundary=' + map.getBounds().getCenter().toArray().join() + ',' + map.getBounds().getNorthEast().toArray().join();
+        var url = '/locations?region=' + region + ';by_center_point_and_ne_boundary=' + map.getBounds().getCenter().toArray().join() + ',' + map.getBounds().getNorthEast().toArray().join();
         document.getElementById('search_link_wrapper').style.display = "none";
         $('#locations').html(loadingHTML());
         $.get(url, function(data) {
@@ -130,7 +130,7 @@ function redo() {
     } else {
       window.clearTimeout(mapupdater);
       mapupdater = window.setTimeout(function() {
-        var url = '/locations?by_center_point_and_ne_boundary=' + map.getBounds().getCenter().toArray().join() + ',' + map.getBounds().getNorthEast().toArray().join();
+        var url = '/locations?region=' + region + ';by_center_point_and_ne_boundary=' + map.getBounds().getCenter().toArray().join() + ',' + map.getBounds().getNorthEast().toArray().join();
         document.getElementById('search_link_wrapper').style.display = "none";
         $('#locations').html(loadingHTML());
         $.get(url, function(data) {
