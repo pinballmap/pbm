@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Location do
   before(:each) do
     @l = FactoryBot.create(:location, name: 'quarterworld')
-    @m1 = FactoryBot.create(:machine, name: 'Sassy')
-    @m2 = FactoryBot.create(:machine, name: 'Cleo')
+    @m1 = FactoryBot.create(:machine, id: 200, name: 'Sassy')
+    @m2 = FactoryBot.create(:machine, id: 201, name: 'Cleo')
     @lmx1 = FactoryBot.create(:location_machine_xref, location: @l, machine: @m1, created_at: '2014-01-15 04:00:00')
     @lmx2 = FactoryBot.create(:location_machine_xref, location: @l, machine: @m2, created_at: '2014-01-15 05:00:00')
   end
@@ -124,6 +124,12 @@ describe Location do
   describe '#machine_names' do
     it 'should return all machine names for this location' do
       expect(@l.machine_names).to eq(%w[Cleo Sassy])
+    end
+  end
+
+  describe '#machine_ids' do
+    it 'should return all machine ids for this location' do
+      expect(@l.machine_ids).to eq([201, 200])
     end
   end
 

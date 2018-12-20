@@ -131,9 +131,9 @@ module Api
         closest_locations = apply_scopes(Location).includes(:machines).near([params[:lat], params[:lon]], max_distance)
 
         if !closest_locations.empty? && !params[:send_all_within_distance]
-          return_response(closest_locations.first, 'location', [], [:machine_names])
+          return_response(closest_locations.first, 'location', [], %i[machine_names machine_ids])
         elsif !closest_locations.empty?
-          return_response(closest_locations, 'locations', [], [:machine_names])
+          return_response(closest_locations, 'locations', [], %i[machine_names machine_ids])
         else
           return_response("No locations within #{max_distance} miles.", 'errors')
         end
