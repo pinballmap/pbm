@@ -6,7 +6,7 @@
   - if (current_user && !current_user.region_id.blank?)
     %li.menu_header_02.mobile_hide= link_to 'Admin', rails_admin_path
 - if user_signed_in?
-  %li.menu_header_03.mobile_hide= link_to 'Fave Locations', saved_path
+  %li.menu_header_03.mobile_hide= link_to 'Saved Locations', saved_path
 - if (@region)
   %li.menu_header_01=link_to 'Add Location', suggest_path
   %li=link_to 'About', about_path

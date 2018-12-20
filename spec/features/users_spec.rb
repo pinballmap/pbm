@@ -56,7 +56,7 @@ describe UsersController do
 
       visit "/users/#{@user.id}/profile"
 
-      expect(page).to have_content('Fave Locations:')
+      expect(page).to have_content('Saved Locations:')
       expect(page).to have_link('Foo')
       expect(page).to have_link('Bar')
 
@@ -92,7 +92,7 @@ describe UsersController do
       expect(page).to have_content("5\nLocations Edited")
       expect(page).to have_content("High Scores (Last 50):\nMachine One\n1\nat Location One on Jan-02-2016\nMachine Two\n3\nat Location Two on Jan-01-2016")
 
-      expect(page).to_not have_content('Fave Locations:')
+      expect(page).to_not have_content('Saved Locations:')
     end
 
     it 'adds commas to high scores' do
