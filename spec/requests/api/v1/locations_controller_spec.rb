@@ -446,9 +446,9 @@ HERE
       expect(JSON.parse(response.body)['errors']).to eq('No locations within 50 miles.')
 
       closest_location = FactoryBot.create(:location, region: @region, name: 'Closest Location', street: '123 pine', city: 'portland', phone: '503-928-9288', state: 'OR', zip: '97203', lat: 45.49, lon: -122.63)
-      FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Cleo'))
-      FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Bawb'))
-      FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Sassy'))
+      FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, id: 200, name: 'Cleo'))
+      FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, id: 201, name: 'Bawb'))
+      FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, id: 202, name: 'Sassy'))
 
       get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: closest_location.lat, lon: closest_location.lon }
 
@@ -466,6 +466,7 @@ HERE
       expect(location['lat']).to eq('45.49')
       expect(location['lon']).to eq('-122.63')
       expect(location['machine_names']).to eq(%w[Bawb Cleo Sassy])
+      expect(location['machine_ids']).to eq([201, 200, 202])
     end
 
     it 'sends you multiple locations if you use the send_all_within_distance flag' do

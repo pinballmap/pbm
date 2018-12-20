@@ -109,6 +109,10 @@ class Location < ApplicationRecord
     machines.sort_by(&:massaged_name).map(&:name_and_year)
   end
 
+  def machine_ids
+    machines.sort_by(&:massaged_name).map(&:id)
+  end
+
   def content_for_infowindow
     content = "'<div class=\"infowindow\" id=\"infowindow_#{id}\">"
     content += "<div class=\"gm_location_name\">#{name.gsub("'", "\\\\'")}</div>"
