@@ -62,8 +62,9 @@
       - if !@user.user_fave_locations.empty?          
         %div.darkbl.stats
           %div.stats_o
-            Fave Locations:
+            Saved Locations:
             %span.stats_list
               - @user.user_fave_locations.each do |fave_location|
-                %span.score_machine
+                %span.location_edited
                   = link_to(fave_location.location.name, (fave_location.location.region ? region_homepage_path(fave_location.location.region.name) : regionless_path) + "/?by_location_id=#{fave_location.location.id}")
+                %br/
