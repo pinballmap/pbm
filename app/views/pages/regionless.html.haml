@@ -13,7 +13,7 @@
       .regionless_input.inline
         %span Location
         = text_field_tag "by_location_name", params["by_location_name"], :class => 'lookup_search_input', :placeholder => 'e.g. Wedgehead'
-      = image_submit_tag('search_icon.png', :class => 'search', :id => "location_search_button")
+      = image_submit_tag('search_icon.png', :class => 'regionless search', :id => "location_search_button")
 
     #search_link_wrapper.hide_button.toggle_btn_reg
       =link_to "Link to this Search Result", "", :id => "search_link"
