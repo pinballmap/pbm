@@ -30,7 +30,10 @@ Machine: #{mc.location_machine_xref.machine.name}
 HERE
     end
 
-    puts body unless Rails.env.test?
+    unless Rails.env.test?
+      puts body
+      sleep(5) # Sendgrid is throttling us :<
+    end
 
     Pony.mail(
       to: email,
