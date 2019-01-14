@@ -30,6 +30,8 @@ Machine: #{mc.location_machine_xref.machine.name}
 HERE
     end
 
+    puts body unless Rails.env.test?
+
     Pony.mail(
       to: email,
       from: 'admin@pinballmap.com',
