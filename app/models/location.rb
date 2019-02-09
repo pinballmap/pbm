@@ -79,6 +79,10 @@ class Location < ApplicationRecord
     fave_ids = UserFaveLocation.where(user_id: user_id).map(&:location_id)
     where(id: fave_ids)
   })
+  scope :manufacturer, (lambda { |manufacturer|
+    machines = Machine.where('manufacturer = ?', manufacturer)
+    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
+  })
 
   before_destroy do |record|
     Event.where(location_id: record.id).destroy_all

@@ -437,6 +437,25 @@ HERE
       expect(locations[1]['id']).to eq(close_location_one.id)
       expect(locations[2]['id']).to eq(close_location_two.id)
     end
+
+    it 'respects manufacturer filter' do
+      stern_closest = FactoryBot.create(:location, region: @region, name: 'Closest Stern Location', street: '123 pine', city: 'portland', phone: '503-924-9188', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
+      FactoryBot.create(:location_machine_xref, location: stern_closest, machine: FactoryBot.create(:machine, name: 'Cleo', manufacturer: 'Stern'))
+
+      closest_location = FactoryBot.create(:location, region: @region, name: 'Closest Location', street: '123 pine', city: 'portland', phone: '503-924-9188', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
+      FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Sass', manufacturer: 'Williams'))
+
+      get '/api/v1/locations/closest_by_address.json', params: { address: '97202', manufacturer: 'Stern', send_all_within_distance: 1 }
+
+      sleep 1
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      locations = parsed_body['locations']
+
+      expect(locations[0]['name']).to eq('Closest Stern Location')
+    end
   end
 
   describe '#closest_by_lat_lon' do
