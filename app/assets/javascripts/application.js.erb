@@ -163,7 +163,7 @@ function tooZoomed() { //if zoomed out too far, set to false and remove
 
 function zoomCheck() {
   zoomLevel = map.getZoom(); //check zoom level
-  if (zoomLevel < 12) { //show/hide checkbox based on zoom
+  if (zoomLevel < 9) { //show/hide checkbox based on zoom
     document.getElementById("mapFollow_wrapper").style.visibility = "hidden";
     $('#mapFollow_wrapper').addClass('redo_gone');
     $('#followCheck').prop('checked', false); //reset checkbox
