@@ -27,8 +27,8 @@ describe Operator do
       lmx1 = FactoryBot.create(:location_machine_xref, location: l, machine: m1)
       lmx2 = FactoryBot.create(:location_machine_xref, location: l, machine: m2)
 
-      FactoryBot.create(:machine_condition, location_machine_xref: lmx1, comment: 'Sassy Comment')
-      FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Cleo Comment')
+      FactoryBot.create(:machine_condition, location_machine_xref: lmx1, comment: 'Sassy Comment', created_at: (Time.now - 1.day).beginning_of_day)
+      FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Cleo Comment', created_at: (Time.now - 1.day).beginning_of_day)
       FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Old Cleo Comment', created_at: Date.today - 2.days)
 
       body = <<HERE
