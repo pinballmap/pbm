@@ -2,11 +2,11 @@ require 'uri'
 
 class SuggestedLocation < ApplicationRecord
   validates_presence_of :name, :machines, on: :create
-  validates_presence_of :street, :city, :state, :zip, on: :update
+  validates_presence_of :street, :city, :zip, on: :update
 
   validates :phone, format: { with: /\A(\(\d{3}\) |\d{3}-)\d{3}-\d{4}\z/, message: 'format invalid, please use ###-###-#### or (###) ###-####' }, if: :phone?, on: :update
   validates :website, format: { with: %r{^http[s]?:\/\/}, message: 'must begin with http:// or https://', multiline: true }, if: :website?, on: :update
-  validates :name, :street, :city, :state, format: { with: /^\S.*/, message: "Can't start with a blank", multiline: true }, on: :update
+  validates :name, :street, :city, format: { with: /^\S.*/, message: "Can't start with a blank", multiline: true }, on: :update
   validates :lat, :lon, presence: { message: 'Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon' }, on: :update
 
   belongs_to :region, optional: true
