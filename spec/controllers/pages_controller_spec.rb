@@ -140,7 +140,7 @@ HERE
     it 'works with a region' do
       post 'suggest_new_location', params: { region: 'portland' }
 
-      expect(assigns(:states)).to eq(['OR'])
+      expect(assigns(:states)).to eq(['','OR'])
       expect(assigns(:operators)).to eq([''])
       expect(assigns(:zones)).to eq([''])
       expect(assigns(:location_types)).to eq(['', 'Test Location Type'])

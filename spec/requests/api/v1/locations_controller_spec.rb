@@ -102,6 +102,7 @@ HERE
       expect(SuggestedLocation.first.location_type).to eq(nil)
       expect(SuggestedLocation.first.operator).to eq(nil)
       expect(SuggestedLocation.first.zone).to eq(nil)
+      expect(SuggestedLocation.first.state).to eq(nil)
     end
 
     it 'lets you enter by operator_id and location_type_id and zone_id' do
