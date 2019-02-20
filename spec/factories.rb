@@ -4,6 +4,7 @@ FactoryBot.define do
     name 'Test Location Name'
     street '303 Southeast 3rd Avenue'
     city 'Portland'
+    state 'OR'
     country 'US'
     zip '97214'
     lat '11.11'
@@ -51,10 +52,6 @@ FactoryBot.define do
 
   factory :zone do
     name 'Test Zone'
-  end
-
-  factory :state do
-    name 'Test State'
   end
 
   factory :operator do
