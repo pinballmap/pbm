@@ -140,7 +140,7 @@ HERE
     it 'works with a region' do
       post 'suggest_new_location', params: { region: 'portland' }
 
-      expect(assigns(:states)).to eq(['','OR'])
+      expect(assigns(:states)).to eq(['','Test State'])
       expect(assigns(:operators)).to eq([''])
       expect(assigns(:zones)).to eq([''])
       expect(assigns(:location_types)).to eq(['', 'Test Location Type'])
@@ -205,6 +205,7 @@ HERE
       it 'should send an email - includes user info if available' do
         FactoryBot.create(:location_type, name: 'type')
         FactoryBot.create(:operator, name: 'operator')
+        FactoryBot.create(:state, name: 'state')
 
         login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com'))
 
@@ -254,6 +255,7 @@ HERE
         location_type = FactoryBot.create(:location_type, name: 'type')
         operator = FactoryBot.create(:operator, name: 'operator')
         zone = FactoryBot.create(:zone, name: 'zone')
+        state = FactoryBot.create(:state, name: 'state')
 
         post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', location_zone: 'zone', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
 
@@ -264,7 +266,7 @@ HERE
         expect(sl.region).to eq(region.nil? ? nil : @region)
         expect(sl.street).to eq('street')
         expect(sl.city).to eq('city')
-        expect(sl.state).to eq('state')
+        expect(sl.state).to eq(state)
         expect(sl.zip).to eq('zip')
         expect(sl.country).to eq('country')
         expect(sl.phone).to eq('phone')
