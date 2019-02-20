@@ -162,6 +162,7 @@ HERE
         FactoryBot.create(:location_type, name: 'type')
         FactoryBot.create(:operator, name: 'operator')
         FactoryBot.create(:zone, name: 'zone')
+        FactoryBot.create(:state, name: 'state')
 
         logout
 

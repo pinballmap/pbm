@@ -49,6 +49,7 @@ describe Api::V1::LocationsController, type: :request do
       lt = FactoryBot.create(:location_type, name: 'type')
       o = FactoryBot.create(:operator, name: 'operator')
       z = FactoryBot.create(:zone, name: 'zone')
+      st = FactoryBot.create(:state, name: 'state')
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
@@ -86,6 +87,7 @@ HERE
       expect(SuggestedLocation.first.location_type).to eq(lt)
       expect(SuggestedLocation.first.operator).to eq(o)
       expect(SuggestedLocation.first.zone).to eq(z)
+      expect(SuggestedLocation.first.state).to eq(st)
     end
 
     it 'tags a user when appropriate' do
@@ -96,7 +98,7 @@ HERE
     end
 
     it 'does not bomb out when operator and type and zone are blank' do
-      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: nil, location_zone: '', location_operator: '', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: '', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: nil, location_zone: '', location_operator: '', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
 
       expect(response).to be_successful
       expect(SuggestedLocation.first.location_type).to eq(nil)
@@ -139,16 +141,18 @@ HERE
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: lt.id, location_operator: o.id, location_zone: z.id, location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_successful
 
-      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: lt.id, location_operator: o.id, location_zone: z.id, location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }, as: :json
+      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: st.id, location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: lt.id, location_operator: o.id, location_zone: z.id, location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }, as: :json
       expect(response).to be_successful
 
       expect(SuggestedLocation.first.location_type).to eq(lt)
       expect(SuggestedLocation.first.operator).to eq(o)
       expect(SuggestedLocation.first.zone).to eq(z)
+      expect(SuggestedLocation.first.state).to eq(st)
 
       expect(SuggestedLocation.second.location_type).to eq(lt)
       expect(SuggestedLocation.second.operator).to eq(o)
       expect(SuggestedLocation.second.zone).to eq(z)
+      expect(SuggestedLocation.second.state).to eq(st)
     end
   end
 
