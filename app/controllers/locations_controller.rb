@@ -14,7 +14,7 @@ class LocationsController < InheritedResources::Base
 
   def autocomplete
     @searchable_locations = @region ? @region.locations : Location.all
-    render json: @searchable_locations.select { |l| l.name.tr('’', "'") =~ /#{Regexp.escape params[:term].tr('’', "'") || ''}/i }.sort_by(&:name).map { |l| { label: "#{l.name} (#{l.city} #{l.state})", value: l.name, id: l.id } }
+    render json: @searchable_locations.select { |l| l.name.tr('’', "'") =~ /#{Regexp.escape params[:term].tr('’', "'") || ''}/i }.sort_by(&:name).map { |l| { label: "#{l.name} (#{l.city}, #{l.state})", value: l.name, id: l.id } }
   end
 
   def index
