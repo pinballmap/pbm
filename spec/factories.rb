@@ -54,6 +54,10 @@ FactoryBot.define do
     name 'Test Zone'
   end
 
+  factory :state do
+    name 'Test State'
+  end
+
   factory :operator do
     name 'Test Operator'
   end
