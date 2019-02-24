@@ -13,7 +13,10 @@
 				%span.comment_image
 			%span.location_meta
 				%span.meta_image
-		%li.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
+		- if (l.state.blank?)
+			%li.address_full= [l.street, l.city + " " + l.zip].join(', ')
+		- else
+			%li.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
 		%div[l, :metadata]
 			= render :partial => 'locations/render_update_metadata', :locals => {:l => l}
 		%div[l, :desc]

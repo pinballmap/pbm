@@ -78,9 +78,13 @@
               - if (l.location_type)
                 %li.location_types= " (#{l.location_type.name})"
               .clear
-              %li.address
-                %span.address_name[l, :location_summary] #{[l.street, l.city, l.state].join(', ')}
-                .clear
+              - if (l.state.blank?)
+                %li.address
+                  %span.address_name[l, :location_summary] #{[l.street, l.city].join(', ')}
+              - else
+                %li.address
+                  %span.address_name[l, :location_summary] #{[l.street, l.city, l.state].join(', ')}
+              .clear
               %li.machine_names
                 %ul
                   - l.machine_names.each do |machine|
