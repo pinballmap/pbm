@@ -330,7 +330,7 @@ describe PagesController do
       login
 
       visit "/#{@region.name}/suggest"
-      expect(page).to have_select('location_state', options: %w[OR WA])
+      expect(page).to have_select('location_state', options: ['', 'OR', 'WA'])
     end
 
     it 'does not show form if not logged in' do
