@@ -11,9 +11,11 @@ module Api
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION = 50
 
       api :POST, '/api/v1/locations/suggest.json', 'Suggest a new location to add to the map'
-      description "This doesn't actually create a new location, it just sends location information to region admins"
-      param :region_id, Integer, desc: 'ID of the region that the location belongs in', required: true
+      description "This doesn't actually create a new location, it just sends location information to region admins. Please send a region or lat/lon combo to get suggestions to the right people."
       param :location_name, String, desc: 'Name of new location', required: true
+      param :region_id, Integer, desc: 'ID of the region that the location belongs in', required: false
+      param :lat, String, desc: 'Latitude', required: false
+      param :lon, String, desc: 'Longitude', required: false
       param :location_street, String, desc: 'Street address of new location', required: false
       param :location_city, String, desc: 'City of new location', required: false
       param :location_state, String, desc: 'State of new location', required: false
@@ -31,12 +33,18 @@ module Api
 
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 
-        if params[:region_id].blank? || params[:location_machines].blank? || params[:location_name].blank?
-          return_response('Region, location name, and a list of machines are required', 'errors')
+        if (params[:region_id].blank? && params[:lat].blank? && params[:lon].blank?) || params[:location_machines].blank? || params[:location_name].blank?
+          return_response('Region or lat/lon, location name, and a list of machines are required', 'errors')
           return
         end
 
-        region = Region.find(params['region_id'])
+        region = nil
+        if params[:region_id]
+          region = Region.find(params['region_id'])
+        else
+          region = Region.near([params[:lat], params[:lon]], 200).first
+        end
+
         send_new_location_notification(params, region, user)
 
         return_response("Thanks for entering that location. We'll get it in the system as soon as possible.", 'msg')
