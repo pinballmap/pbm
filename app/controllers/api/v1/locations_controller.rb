@@ -9,6 +9,7 @@ module Api
       has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_zone_id, :by_operator_id, :by_type_id, :by_machine_group_id, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region, :by_ipdb_id, :by_opdb_id, :by_is_stern_army, :regionless_only, :manufacturer
 
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION = 50
+      MAX_MILES_TO_SEARCH_FOR_CLOSEST_REGION = 200
 
       api :POST, '/api/v1/locations/suggest.json', 'Suggest a new location to add to the map'
       description "This doesn't actually create a new location, it just sends location information to region admins. Please send a region or lat/lon combo to get suggestions to the right people."
@@ -42,7 +43,7 @@ module Api
         if params[:region_id]
           region = Region.find(params['region_id'])
         else
-          region = Region.near([params[:lat], params[:lon]], 200).first
+          region = Region.near([params[:lat], params[:lon]], MAX_MILES_TO_SEARCH_FOR_CLOSEST_REGION).first
         end
 
         send_new_location_notification(params, region, user)
