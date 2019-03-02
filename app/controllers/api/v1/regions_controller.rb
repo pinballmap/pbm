@@ -98,8 +98,10 @@ module Api
 
       api :POST, '/api/v1/regions/contact.json', 'Contact regional administrator'
       description 'Send a message to the admins for a region'
-      param :region_id, Integer, desc: 'ID of the region to send a message to', required: true
       param :message, String, desc: 'Message to admins', required: true
+      param :region_id, Integer, desc: 'ID of the region to send a message to', required: false
+      param :lat, String, desc: 'Latitude', required: false
+      param :lon, String, desc: 'Longitude', required: false
       param :name, String, desc: "Sender's name", required: false
       param :email, String, desc: "Sender's email address", required: false
       formats ['json']
@@ -108,7 +110,12 @@ module Api
 
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 
-        region = Region.find(params['region_id'])
+        region = nil
+        if params[:region_id]
+          region = Region.find(params['region_id'])
+        else
+          region = Region.near([params[:lat], params[:lon]], :effective_radius).first
+        end
 
         if params['message'].blank?
           return_response('A message is required.', 'errors')
