@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Api::V1::RegionsController, type: :request do
   before(:each) do
     @portland = FactoryBot.create(:region, id: 555, name: 'portland', motd: 'foo', full_name: 'Portland', lat: 12, lon: 13)
-    @la = FactoryBot.create(:region, name: 'la', full_name: 'Los Angeles')
+    @la = FactoryBot.create(:region, name: 'la', full_name: 'Los Angeles', lat: 14, lon: 15)
 
     FactoryBot.create(:user, region: @portland, email: 'portland@admin.com', is_super_admin: 1)
     FactoryBot.create(:user, region: @la, email: 'la@admin.com')
@@ -237,6 +237,27 @@ HERE
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
       expect(UserSubmission.all.count).to eq(1)
       expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
+    end
+
+    it 'finds closest region by lat/lon' do
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          to: ['portland@admin.com'],
+          cc: ['portland@admin.com'],
+          from: 'admin@pinballmap.com',
+          subject: 'PBM - Message from the Portland region',
+          body: <<HERE
+Their Name: name\n
+Their Email: email\n
+Message: message\n
+Username: ssw\n
+Site Email: foo@bar.com\n
+(entered from 127.0.0.1 via cleOS)\n
+HERE
+        )
+      end
+
+      post '/api/v1/regions/contact.json', params: { region_id: nil, lat: 12, lon: 13, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
     end
 
     it 'emails region admins with incoming message - authed' do
