@@ -2,9 +2,12 @@ require 'spec_helper'
 
 describe Api::V1::LocationsController, type: :request do
   before(:each) do
-    @region = FactoryBot.create(:region, name: 'portland')
+    @region = FactoryBot.create(:region, name: 'portland', lat: 10, lon: 10)
+    @another_region = FactoryBot.create(:region, name: 'seattle', lat: 20, lon: 20)
+    @out_of_bounds_region = FactoryBot.create(:region, name: 'vancouver', lat: 100, lon: 100)
     @location = FactoryBot.create(:location, region: @region, name: 'Satchmo', state: 'OR', zip: '97203', lat: 42.18, lon: -71.18)
     @user = FactoryBot.create(:user, id: 111, username: 'cibw', email: 'foo@bar.com', region: @region, authentication_token: '1G8_s7P-V-4MGojaKD7a')
+    @another_region_admin_user = FactoryBot.create(:user, id: 222, username: 'latguy', email: 'lat@guy.com', region: @another_region)
     FactoryBot.create(:user, email: 'super_admin@bar.com', region: nil, is_super_admin: 1)
   end
 
@@ -13,22 +16,22 @@ describe Api::V1::LocationsController, type: :request do
       expect(Pony).to_not receive(:mail)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
+      expect(JSON.parse(response.body)['errors']).to eq('Region or lat/lon, location name, and a list of machines are required')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_machines: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
+      expect(JSON.parse(response.body)['errors']).to eq('Region or lat/lon, location name, and a list of machines are required')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'baz', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
+      expect(JSON.parse(response.body)['errors']).to eq('Region or lat/lon, location name, and a list of machines are required')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'baz', location_machines: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(JSON.parse(response.body)['errors']).to eq('Region, location name, and a list of machines are required')
+      expect(JSON.parse(response.body)['errors']).to eq('Region or lat/lon, location name, and a list of machines are required')
     end
 
     it 'errors when region is not available' do
@@ -86,6 +89,36 @@ HERE
       expect(SuggestedLocation.first.location_type).to eq(lt)
       expect(SuggestedLocation.first.operator).to eq(o)
       expect(SuggestedLocation.first.zone).to eq(z)
+    end
+
+    it 'searches boundary boxes by transmitted lat/lon to determine region' do
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          to: ['lat@guy.com'],
+          bcc: ['super_admin@bar.com'],
+          from: 'admin@pinballmap.com',
+          subject: 'PBM - New location suggested for the seattle pinball map',
+          body: <<HERE
+    Dear Admin: A new pinball spot has been submitted for your region! Please verify/fix the address using https://maps.google.com and then "Promote" the location to the map via http://www.example.com/admin/suggested_location. If any fields are missing, like Location Type, please fill them in! Thanks!!\n
+Location Name: name\n
+Street: \n
+City: \n
+State: \n
+Zip: \n
+Country: \n
+Phone: \n
+Website: \n
+Type: \n
+Operator: \n
+Zone: \n
+Comments: \n
+Machines: machines\n
+(entered from 127.0.0.1 via cleOS by cibw (foo@bar.com))\n
+HERE
+        )
+      end
+
+      post '/api/v1/locations/suggest.json', params: { region_id: nil, location_name: 'name', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', lat: 20, lon: 20 }, headers: { HTTP_USER_AGENT: 'cleOS' }
     end
 
     it 'tags a user when appropriate' do
