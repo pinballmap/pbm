@@ -405,6 +405,7 @@ RailsAdmin.config do |config|
       field :motd, :string
       field :lat, :decimal
       field :lon, :decimal
+      field :effective_radius, :decimal
       field :n_search_no, :integer
       field :default_search_type, :string
       field :should_email_machine_removal, :boolean
@@ -424,6 +425,7 @@ RailsAdmin.config do |config|
       field :state, :string
       field :lat, :decimal
       field :lon, :decimal
+      field :effective_radius, :decimal
       field :n_search_no, :integer
       field :default_search_type, :string
       field :should_email_machine_removal, :boolean
@@ -439,6 +441,7 @@ RailsAdmin.config do |config|
       field :motd, :string
       field :lat, :decimal
       field :lon, :decimal
+      field :effective_radius, :decimal
       field :n_search_no, :integer
       field :default_search_type, :string
       field :should_email_machine_removal, :boolean
