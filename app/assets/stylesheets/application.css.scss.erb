@@ -14,9 +14,11 @@ $sans: "Freight-MedSC",sans-serif;
 $serif: 'Work Sans',sans-serif;
 $red: #F53240;
 $blue: #D3ECFF;
-$darkgrey: #303030;
-$lightgrey: #EFEFEF;
-$grey: #666666;
+$darkgrey: #4b5862;
+$lightgrey: #f5fbff;
+$medgrey: #97a5af;
+$grey: #6a7d8a;
+$black: #000e18;
 
 /** mixins **/
 
@@ -658,7 +660,7 @@ span.why_login {
   padding: 5px 0 0;
 }
 #login .button {
-  color: $lightgrey;
+  color: $medgrey;
   font-size: 18px;
   line-height: 18px;
   height: 36px;
@@ -666,7 +668,7 @@ span.why_login {
   padding: 6px 6px;
   @include radius(6px);
   margin: 7px 0px;
-  border: 2px solid #A9A9A9;
+  border: 2px solid $grey;
   background-color: $darkgrey;
   box-shadow: 1px 1px 3px #888;
   font-family: $sans;
@@ -674,7 +676,7 @@ span.why_login {
 }
 #login .button:hover {
   cursor: pointer;
-  background: #A9A9A9;
+  background: $grey;
 }
 #login .reset-password .button,
 #login .confirmation .button {
@@ -805,7 +807,7 @@ form#address_search_form input.lookup_search_input {
 #type_section_link {
   font-size: 16px;
   line-height: 16px;
-  border: 2px solid #A9A9A9;
+  border: 2px solid $medgrey;
   color: $darkgrey;
   background-color: $lightgrey;
   @include radius(3px);
@@ -821,7 +823,7 @@ form#address_search_form input.lookup_search_input {
 span.or {
   font-size: 16px;
   position: absolute;
-  background: #A9A9A9;
+  background: $medgrey;
   height: 28px;
   line-height: 26px;
   width: 22px;
@@ -833,7 +835,7 @@ span.or {
 .search_field_container {
   width: 54%;
   height: 28px;
-  border: 2px solid #A9A9A9;
+  border: 2px solid $medgrey;
   float: right;
   background: #FFFFFF;
   @include radius(0 2px 2px 0);
@@ -1136,7 +1138,7 @@ span.machine_year_man {
   color: #180e03;
   font-size: 12px;
   padding: 0 5px 5px 5px;
-  border-left: 5px solid #A9A9A9;
+  border-left: 5px solid $medgrey;
   min-height: 90px;
 }
 .machine_sub_items {
@@ -1145,7 +1147,7 @@ span.machine_year_man {
 .pintips {
   text-align: left;
   font-weight: normal;
-  color: #000000;
+  color: $black;
   font-size: 16px;
   line-height: 24px;
   height: 24px;
@@ -1191,7 +1193,7 @@ div.comment_image span.comment_image:hover:after {
   line-height: 14px;
   font-size: 16px;
   margin-left: 45px;
-  background: #444444;
+  background: $black;
   color: $lightgrey;
   padding: 5px;
   text-align: center;
@@ -1429,7 +1431,7 @@ br.clear {
   @include radius(5px);
 }
 #form select, form select {
-  border: 2px solid #A9A9A9;
+  border: 2px solid $medgrey;
   background-color: $lightgrey;
   height: 28px;
   @include radius(2px);
@@ -1464,7 +1466,7 @@ br.clear {
 .new_location_picture_xref input.submit_picture,
 .metadata_edit_location input.save_button,
 .metadata_edit_location input.cancel_button {
-  border: 2px solid #A9A9A9;
+  border: 2px solid $medgrey;
   @include radius(6px);
   box-shadow: 1px 1px 3px #b7cfc1;
   -moz-box-shadow: 1px 1px 3px #b7cfc1;
@@ -1534,7 +1536,7 @@ input#score,
   background: #FFFFFF;
   padding: 0 5px;
   height: 28px;
-  border: 2px solid #A9A9A9;
+  border: 2px solid $medgrey;
   color: #000;
   @include radius(2px);
 }
@@ -1556,7 +1558,7 @@ input.search,
   font-size: 16px;
   margin: 0 0 0 4px;
   background: #FFFFFF;
-  color: #000000;
+  color: $black;
   font-family: Helvetica;
   margin: 0;
   padding-left: 4px;
@@ -1606,18 +1608,18 @@ input#score {
 }
 .add_scores_form, .show_scores_lmx, .show_conditions_lmx {
   padding: 5px 0 5px 5px;
-  background-color: #faf9fa;
+  background-color: #ffffff;
   width: 75%;
 }
 .add_picture_location_toggle,
 .add_machine_location_toggle  {
-  color: $darkgrey;
+  color: $black;
   font-weight: bold;
-  background: #dadada;
+  background: $medgrey;
 }
 .add_picture_location_toggle:hover,
 .add_machine_location_toggle:hover {
-  background: #9e9e9e;
+  background: $grey;
 }
 .add_scores_lmx_toggle {
   color: #333333;
@@ -1736,7 +1738,7 @@ li.location_type, li.operator {
   font-size: 16px;
   margin-left: 5px;
   margin-top: 8px;
-  background: #444444;
+  background: $black;
   color: $lightgrey;
   padding: 5px;
   font-weight: bold;
@@ -1853,7 +1855,7 @@ div.comment_image .comment_image:active {
   float: right;
   right: 120px;
   margin-top: 10px;
-  background: #444444;
+  background: $black;
   color: $lightgrey;
   padding: 5px;
   font-weight: bold;
@@ -2157,7 +2159,7 @@ span.begin {
     animation-iteration-count: 1;
 }
 #map, #map_canvas {
-  background: #faf9fa;
+  background: #ffffff;
 }
 #region_map {
   width: 700px;
@@ -2388,7 +2390,7 @@ li span.state_name {
   border-bottom: 1px solid $blue;
 }
 .column .sub_nav_item {
-  background: #A9A9A9;
+  background: $medgrey;
 }
 div.score_list span,
 span.stats_list span {
@@ -2562,7 +2564,7 @@ border: 1px solid #D56C24;
   float: left;
   padding: 10px;
   width: calc(50% - 20px);
-  border: 2px solid #000000;
+  border: 2px solid $black;
   display:                 flex;
   display:                 -webkit-flex; /* Safari 8 */
   flex-wrap:               wrap;
