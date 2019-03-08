@@ -1,15 +1,5 @@
-@media (max-width: 965px), only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
+@media (max-width: 1090px), only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
 
-    .pintips, .machine_condition_display_lmx, .machine_condition_edit_lmx,
-    .high_score > .sub_nav_item, .score_container_lmx > .sub_nav_item,
-    .add_scores_form, .show_scores_lmx, .show_conditions_lmx, .show_conditions_lmx_toggle,
-    .location_detail input.remove_machine_button {
-      width: 400px;
-    }
-    .location_search .info {
-      font-size: 11px;
-      margin: 0 2px;
-    }
     #lookup, #location_maker ul {
       width: 470px;
     }
@@ -17,44 +7,20 @@
       width: 180px;
       height: 180px;
     }
-    .show_location_detail_location {
-      width: 450px;
-    }
     #form {
       width: 470px;
     }
     #map {
       left: 470px;
     }
-    #map .mapboxgl-ctrl-top-right, #map .mapboxgl-ctrl-bottom-right {
-      right: 480px;
+    #map .mapboxgl-ctrl-top-left {
+      left: 480px;
     }
-    input#score, input#initials {
+    #map_canvas {
+      margin-left: -470px;
+    }
+    input#score {
       width: 290px;
-    }
-    #operator_section_link, #zone_section_link, #machine_section_link, #city_section_link, #location_section_link, #type_section_link {
-      margin-left: 2px;
-      font-size: 13px;
-      line-height: 13px;
-      font-weight: normal;
-    }
-    #other_search_options {
-      width: 460px;
-    }
-    #by_type_id, #by_operator_id, #by_zone_id, #by_city_id {
-      width: 155px;
-    }
-    form select#by_location_id, form select#by_machine_id {
-      width: 145px;
-    }
-    span.or {
-      width: 17px;
-    }
-    #form input.lookup_search_input {
-      width: 200px;
-    }
-    #form #address_search_form input.lookup_search_input {
-      width: 280px;
     }
     .toggle_btn_reg {
       left: 480px !important;
@@ -79,9 +45,6 @@
     }
     li.address_full, a.website, li.phone {
       width: auto;
-    }
-    .search_field_container {
-      width: 290px;
     }
     .lookup_search_select,
     .lookup_search_input {
@@ -162,6 +125,24 @@
   }
 }
 
+@media (min-width: 1555px) {
+  #lookup, #form {
+    width: 640px;
+  }
+  #map {
+    left: 640px;
+  }
+  #map_canvas {
+    margin-left: -640px;
+  }
+  .toggle_btn_reg {
+    left: 650px;
+  }
+  #map .mapboxgl-ctrl-top-left {
+    left: 650px;
+  }
+}
+
 @media (max-width: 1180px) {
   .div_01b {
     display: none;
@@ -172,6 +153,25 @@
   .div_01 p, .div_01 .darkb {
     font-size: 16px;
     line-height: 22px;
+  }
+  #operator_section_link, #zone_section_link, #machine_section_link, #city_section_link, #location_section_link, #type_section_link {
+    margin-left: 2px;
+    font-size: 13px;
+    line-height: 13px;
+    font-weight: normal;
+  }
+  #by_type_id, #by_operator_id, #by_zone_id, #by_city_id {
+    width: 34%;
+    font-size: 14px;
+  }
+  span.or {
+    width: 17px;
+  }
+  #form input.lookup_search_input {
+    width: 200px;
+  }
+  #form #address_search_form input.lookup_search_input {
+    width: 280px;
   }
 }
 

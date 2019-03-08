@@ -731,7 +731,7 @@ form#address_search_form input.lookup_search_input {
   padding-left: 15px;
 }
 #lookup.regionless_lookup {
-  padding: 105px 10px 10px 10px;
+  padding: 135px 10px 10px 10px;
 }
 
 /** END Regionless **/
@@ -828,9 +828,10 @@ span.or {
   text-align: center;
   color: #FFFFFF;
   font-style: italic;
+  padding-right: 5px;
 }
 .search_field_container {
-  width: 400px;
+  width: 54%;
   height: 28px;
   border: 2px solid #A9A9A9;
   float: right;
@@ -864,6 +865,7 @@ span.or {
   border: none;
   margin: 0;
   height: 24px;
+  width: 54%;
   padding-left: 4px;
   font-family: Helvetica;
 }
@@ -883,7 +885,6 @@ span.or {
 #other_search_options {
   padding: 6px 0;
   text-align: center;
-  width: 630px;
 }
 #other_search_options button {
   padding: 3px 6px;
@@ -913,7 +914,7 @@ span.or {
   position: fixed;
   top: 52px;
   margin-left: 0;
-  width: 640px;
+  width: 42%;
   z-index: 20;
   @include radius(0 0 5px 5px);
   padding: 4px;
@@ -935,7 +936,7 @@ span.or {
   display: inline;
   float: left;
   padding: 95px 10px 10px 10px;
-  width: 640px;
+  width: 42%;
   background: #FFFFFF;
   position: relative;
   -webkit-transform: translateZ(0);
@@ -953,7 +954,7 @@ span.or {
 }
 #mapFollow_wrapper, #search_link_wrapper {
   position: fixed;
-  top: 60px;
+  top: 100px;
   width: 110px;
   border: 3px solid $blue;
   background: #ffffff;
@@ -965,7 +966,7 @@ span.or {
 }
 #search_link_wrapper {
   padding-top: 5px;
-  top: 100px;
+  top: 160px;
 }
 #search_link_wrapper a {
   color: $grey;
@@ -977,7 +978,7 @@ span.or {
   cursor: pointer;
 }
 #mapFollow_wrapper {
-  top: 160px;
+  top: 220px;
   border: 3px solid $darkgrey;
   background: $blue;
 }
@@ -985,7 +986,7 @@ span.or {
   margin: 0;
 }
 .toggle_btn_reg {
-  left: 650px !important;
+  left: 43%;
 }
 .redo_gone {
   height: 0 !important;
@@ -994,11 +995,11 @@ span.or {
   margin-bottom: 0 !important;
 }
 #by_type_id, #by_operator_id, #by_zone_id, #by_city_id {
-  width: 300px;
+  width: 34%;
   font-size: 16px !important;
 }
 form select#by_location_id, form select#by_machine_id {
-  width: 200px;
+  width: 42%;
   font-size: 16px !important;
   @include radius(0);
 }
@@ -1089,7 +1090,6 @@ li.address {
 li.address_full {
   padding: 0 0 0 5px;
   background: $lightgrey;
-  width: 435px;
 }
 .location_confirm {
   font-family: $sans;
@@ -1150,7 +1150,7 @@ span.machine_year_man {
   line-height: 24px;
   height: 24px;
   padding-left: 5px;
-  width: 435px;
+  width: 75%;
   clear: both;
   margin-left: 10px;
   margin-top: -1px;
@@ -1199,6 +1199,9 @@ div.comment_image span.comment_image:hover:after {
   font-style: italic;
   font-family: $sans;
 }
+.machine_condition_lmx {
+  width: 90%;
+}
 .machine_condition_new_line span {
   display: inline;
 }
@@ -1212,7 +1215,7 @@ div.comment_image span.comment_image:hover:after {
 }
 div.machine_condition_text {
   float: left;
-  width: 430px;
+  width: 80%;
   margin-bottom: 6px;
   font-size: 14px;
 }
@@ -1261,12 +1264,11 @@ form.remove_machine_condition {
   margin: 5px 0 5px 10px;
   color: $grey;
   padding: 2px;
-  width: 490px;
 }
 .machine_condition_display_lmx .edit_mode {
-  width: 430px;
-  max-width: 430px;
-  min-width: 430px;
+  width: 80%;
+  max-width: 80%;
+  min-width: 80%;
   height: 80px;
   max-height: 120px;
   min-height: 28px;
@@ -1310,7 +1312,7 @@ form.remove_machine_condition {
 }
 .high_score > .sub_nav_item,
 .score_container_lmx > .sub_nav_item {
-  width: 435px;
+  width: 75%;
   clear: both;
   border: none;
   font-size: 18px;
@@ -1336,7 +1338,7 @@ form.remove_machine_condition {
   padding: 5px 0px;
 }
 .add_picture_location span.info, .add_machine_location span.info, .show_machines_location span.info {
-  padding: 0 0 5px 0;
+  padding: 0 5px 5px 0;
 }
 .add_picture_location, .add_machine_location {
   background-color: $lightgrey;
@@ -1355,7 +1357,7 @@ form.remove_machine_condition {
   font-size: 16px;
   line-height: 25px;
   height: 25px;
-  width: 435px;
+  width: 74%;
   text-transform: uppercase;
   font-family: $sans;
   font-style: italic;
@@ -1402,7 +1404,6 @@ br.clear {
   font-size: 14px;
   line-height: 16px;
   font-weight: normal;
-  width: 405px;
   color: #f9f9f9;
   cursor: pointer;
   height: 100%;
@@ -1528,7 +1529,6 @@ input.submit_button:hover,
 #new_user input[type="text"],
 #edit_user input,
 input#score,
-input#initials,
 #add_machine_by_name,
 .lookup_search_input {
   background: #FFFFFF;
@@ -1551,7 +1551,7 @@ input.search,
 }
 #form input.lookup_search_input,
 .lookup_search_input {
-  width: 320px;
+  width: 65%;
   height: 28px;
   font-size: 16px;
   margin: 0 0 0 4px;
@@ -1559,16 +1559,15 @@ input.search,
   color: #000000;
   font-family: Helvetica;
   margin: 0;
-  height: 24px;
   padding-left: 4px;
 }
 .lookup_search_select {
-  width: 450px;
+  width: 84%;
   margin: 0 10px 10px 10px;
 }
 .lookup_search_input {
   margin: 0 0 5px 10px;
-  width: 450px;
+  width: 84%;
 }
 input.lookup_search_input:focus {
   box-shadow: none;
@@ -1596,11 +1595,8 @@ input.lookup_search_input:focus {
   width: 260px;
   float: right;
 }
-input#score, input#initials {
-  width: 360px;
-}
-input#initials {
-  width: 69%;
+input#score {
+  width: 80%;
 }
 .score_container_lmx {
   margin-left: 10px;
@@ -1611,7 +1607,7 @@ input#initials {
 .add_scores_form, .show_scores_lmx, .show_conditions_lmx {
   padding: 5px 0 5px 5px;
   background-color: #faf9fa;
-  width: 435px;
+  width: 75%;
 }
 .add_picture_location_toggle,
 .add_machine_location_toggle  {
@@ -1881,7 +1877,6 @@ div.comment_image .comment_image:active {
 }
 .show_location_detail_location {
   padding: 0;
-  width: 620px;
   background: $lightgrey;
   border: 1px solid rgba(0,0,0,.125);
   border-radius: 5px;
@@ -1953,7 +1948,7 @@ div.comment_image .comment_image:active {
   margin-right: 10px;
 }
 #file_chooser_button {
-  width: 420px;
+  width: 80%;
   border: none;
   background: inherit;
   font-family: $sans;
@@ -2172,16 +2167,16 @@ span.begin {
   box-shadow: 1px 2px 7px rgba(90, 100, 117, 0.3);
 } 
 #map {
-  left: 640px;
+  left: 42%;
   width: 100%;
   overflow: hidden;
   position: fixed;
   height: calc(100% - 70px) !important;
-  z-index: 3;
+  z-index: -1;
 } 
 #map_canvas {
   height: 100% !important;
-  margin-left: -640px;
+  margin-left: -42%;
 }
 #intro {
   padding: 5px 20px;
@@ -2460,8 +2455,8 @@ div.score_list {
 #region_map .gm_region_name a:hover {
   color: $red;
 }
-#map .mapboxgl-ctrl-top-right, #map .mapboxgl-ctrl-bottom-right {
-  right: 650px;
+#map .mapboxgl-ctrl-top-left {
+  left: 30%;
 }
 .marker,.markersm {
   background: url(<%= asset_path 'teardrop200.png' %>) no-repeat;
@@ -2474,8 +2469,6 @@ div.score_list {
   width: 35px;
   height: 35px;
 }
-
-
 
 /** Rails Admin **/
 

@@ -50,7 +50,7 @@ function showLocations(ids, lats, lons, contents, latLng) {
         container: 'map_canvas',
         style: 'https://mapserver.pinballmap.com/styles/klokantech-basic/style.json',
       });
-      map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+      map.addControl(new mapboxgl.NavigationControl(), 'top-left');
   }
 
   for (i in ids) {
