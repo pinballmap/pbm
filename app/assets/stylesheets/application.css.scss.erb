@@ -14,10 +14,10 @@ $sans: "Freight-MedSC",sans-serif;
 $serif: 'Work Sans',sans-serif;
 $red: #F53240;
 $blue: #D3ECFF;
-$darkgrey: #4b5862;
+$grey: #6a7d8a;
 $lightgrey: #f5fbff;
 $medgrey: #97a5af;
-$grey: #6a7d8a;
+$darkgrey: #4b5862;
 $black: #000e18;
 
 /** mixins **/
@@ -53,14 +53,15 @@ button::-moz-focus-inner {
 html {
   min-height: 100%;
   position: relative;
-  box-sizing: border-box;    
+  box-sizing: border-box;
+  background: $lightgrey;
 }
 body {
   margin: 0 auto;
   padding: 0px;
-  background-color: #FFFFFF;
+  background-color: $lightgrey  ;
   background-size: 4px auto;
-  color: #171717;
+  color: $black;
   font-family: $sans;
   -webkit-font-smoothing: antialiased;
 }
@@ -585,6 +586,7 @@ a.logo_link {
   z-index: 100;
   font-weight: bold;
   background: $blue;
+  margin-top: 15;
 }
 #header ul.other_regions_list a,
 #header ul.other_regions_list a:hover {
@@ -1007,7 +1009,7 @@ form select#by_location_id, form select#by_machine_id {
 }
 .active_section_link {
   background-color: $darkgrey !important;
-  color: $blue !important;
+  color: $lightgrey !important;
   box-shadow: none !important;
   -moz-box-shadow: none !important;
   -webkit-box-shadow: none !important;
@@ -2180,6 +2182,42 @@ span.begin {
   height: 100% !important;
   margin-left: -42%;
 }
+.mask {
+  background-color: rgba(245,251,255, 0.7);
+  position: absolute;
+  z-index: 9999;
+  height: 100%;
+  width: 100%;
+}
+.closest_button {
+  border: 3px solid $darkgrey;
+  background: $blue;
+  @include radius(5px);
+  font-size: 28px;
+  text-align: center;
+  top: 200px;
+  right: 0;
+  left: 0;
+  height: 100px;
+  width: 365px;
+  margin: auto;
+  padding: 5px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 150;
+  line-height: 42px;
+  box-shadow: 5px 7px 10px rgba(90, 100, 117, 0.5);
+}
+.closest_button a {
+  text-decoration: none;
+  color: $darkgrey;
+}
+.closest_button a:hover {
+  text-decoration: none;
+  color: $red;
+}
 #intro {
   padding: 5px 20px;
 }
@@ -2271,6 +2309,7 @@ div.region_name {
 }
 div.region_name_container {
   text-align: center;
+  background: #ffffff;
 }
 #div_container {
   display: flex;

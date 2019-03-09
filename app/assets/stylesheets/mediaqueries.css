@@ -207,15 +207,6 @@
   .div_02 {
     width: 420px;
   }
-  .header_menu_04 {
-    display: none;
-  }
-  #header .menu_link ul li.menu_header_04 {
-    display: block;
-  }
-  .header_buttons_child.header_menu_04 {
-    width: 0;
-  }
 }
 
 @media (max-width: 960px) {

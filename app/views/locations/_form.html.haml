@@ -45,6 +45,7 @@
   $(function () {
 
     $('.location_search').on('submit', function(e) {
+      $(".mask").hide();
       if (mapAdjusted = 1) { //reset checkbox
         mapAdjusted = 0;
         $('#followCheck').prop('checked', false);

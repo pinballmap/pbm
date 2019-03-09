@@ -34,9 +34,14 @@ function clearMarkers() {
   }
 }
 
+function clearClosest() {
+  $(".mask").hide();
+}
+
 function showLocations(ids, lats, lons, contents, latLng) {
   clearMarkers();
   clearInfoWindows();
+  clearClosest();
   markers = new Array();
 
   locationIDs = ids;
