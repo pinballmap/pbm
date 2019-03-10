@@ -69,10 +69,11 @@ describe User do
       machine = FactoryBot.create(:machine, name: 'First Machine')
 
       FactoryBot.create(:user_submission, region: region, location: location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 100 for First Machine to First Location', user: @user, created_at: Date.new(2016, 1, 1))
+      FactoryBot.create(:user_submission, region: region, location: use_this_location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 300 for First Machine to Second Location', user: @user, created_at: Date.new(2016, 1, 1))
       FactoryBot.create(:user_submission, region: region, location: use_this_location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a score of 200 for First Machine to Second Location', user: @user, created_at: Date.new(2016, 1, 1))
 
       expect(@user.profile_list_of_high_scores.size).to eq(1)
-      expect(@user.profile_list_of_high_scores).to eq([['Second Location', 'First Machine', '200', 'Jan-01-2016']])
+      expect(@user.profile_list_of_high_scores).to eq([['Second Location', 'First Machine', '300', 'Jan-01-2016']])
     end
   end
 
