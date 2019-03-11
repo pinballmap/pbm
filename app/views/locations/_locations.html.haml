@@ -60,9 +60,7 @@
 
 #results_container
   #search_results   
-    - unless @locations.size == 1
-      #search_results_count
-        %span #{@locations.size} Locations in Results
+    - total_num_machines = 0           
     - @locations.each do |location|
       - l = location.clone
       %div.search_result[l]         
@@ -93,7 +91,11 @@
           %div.location_detail[l, :location_detail]{:style => 'display:none;'}
 
       - l = nil
-
+      - total_num_machines += location.machines.size
+  - unless @locations.size == 1
+    #search_results_count
+      %span 
+        #{@locations.size} Locations & #{total_num_machines} Machines in Results
   - if (@locations.size == 1)
     :javascript
       $(function() {
