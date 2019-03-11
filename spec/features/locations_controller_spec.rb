@@ -227,7 +227,7 @@ describe LocationsController do
       end
     end
 
-    it 'displays the number of machines returned in a search' do
+    it 'displays the number of locations returned in a search' do
       FactoryBot.create(:location, region: @region, name: 'Cleo')
       FactoryBot.create(:location, region: @region, name: 'Zelda')
 
@@ -236,7 +236,7 @@ describe LocationsController do
       click_on 'location_search_button'
 
       within('div#search_results') do
-        expect(page).to have_content('2 Locations in Results')
+        expect(page).to have_content('2 Locations')
       end
     end
 
@@ -279,7 +279,7 @@ describe LocationsController do
     it 'displays a location not found message instead of the ocean' do
       visit '/portland/?by_location_id=-1'
 
-      expect(page).to have_content('0 Locations in Results')
+      expect(page).to have_content('0 Locations')
       expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
     end
   end
