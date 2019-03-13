@@ -164,12 +164,6 @@
     width: 34%;
     font-size: 14px;
   }
-  #form input.lookup_search_input {
-    width: 200px;
-  }
-  #form #address_search_form input.lookup_search_input {
-    width: 280px;
-  }
 }
 
 @media (max-width: 1080px) {
