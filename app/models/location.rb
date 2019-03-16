@@ -81,7 +81,7 @@ class Location < ApplicationRecord
   })
   scope :manufacturer, (lambda { |manufacturer|
     machines = Machine.where('manufacturer = ?', manufacturer)
-    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
+    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id)).distinct
   })
 
   before_destroy do |record|
