@@ -50,9 +50,8 @@
         %p.twitter_img
           =image_tag('sol-icon.jpeg', :alt => 'Pinball Map Twitter Icon')
         %p.twitter_box
-          Follow
+          Updates from
           =link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
-          on Twitter for map updates and news!
         %ul.twitter
           - @tweets.each do |t|
             %li= auto_link(t.text)
@@ -67,9 +66,8 @@
       %p.twitter_img
         =image_tag('sol-icon.jpeg', :alt => 'Pinball Map Twitter Icon')
       %p.twitter_box
-        Follow
+        Updates from
         =link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
-        on Twitter for updates from across all #{@all_regions.size} regional maps!
       %ul.twitter
         - @tweets.each do |t|
           %li= auto_link(t.text)
