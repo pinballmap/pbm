@@ -174,6 +174,7 @@ BODY
 
   def store_location
     return unless request.get?
+
     if request.path != '/users/login' &&
        request.path != '/users/join' &&
        request.path != '/users/password/new' &&

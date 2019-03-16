@@ -20,10 +20,11 @@ class PagesController < ApplicationController
       unless params[:address].blank?
         results = Geocoder.search(params[:address])
 
-        (@lat, @lon) = results.first.coordinates
+        @lat = results.first.data['latitude']
+        @lon = results.first.data['longitude']
       end
 
-      @locations = apply_scopes(params[:address].blank? ? Location : Location.near(params[:address], 5)).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs, :region, :location_type)
+      @locations = apply_scopes(params[:address].blank? ? Location : Location.near([@lat, @lon], 5)).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs, :region, :location_type)
     end
 
     @location_data = LocationsController.locations_javascript_data(@locations)

@@ -39,9 +39,7 @@ module Api
         condition = params[:condition]
         status_code = 200
 
-        if machine_id.nil? || location_id.nil? || !Machine.exists?(machine_id) || !Location.exists?(location_id)
-          return return_response('Failed to find machine', 'errors')
-        end
+        return return_response('Failed to find machine', 'errors') if machine_id.nil? || location_id.nil? || !Machine.exists?(machine_id) || !Location.exists?(location_id)
 
         lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine_id)
 
