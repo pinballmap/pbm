@@ -474,6 +474,7 @@ HERE
     it 'respects manufacturer filter' do
       stern_closest = FactoryBot.create(:location, region: @region, name: 'Closest Stern Location', street: '123 pine', city: 'portland', phone: '503-924-9188', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
       FactoryBot.create(:location_machine_xref, location: stern_closest, machine: FactoryBot.create(:machine, name: 'Cleo', manufacturer: 'Stern'))
+      FactoryBot.create(:location_machine_xref, location: stern_closest, machine: FactoryBot.create(:machine, name: 'Sass', manufacturer: 'Stern'))
 
       closest_location = FactoryBot.create(:location, region: @region, name: 'Closest Location', street: '123 pine', city: 'portland', phone: '503-924-9188', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
       FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Sass', manufacturer: 'Williams'))
@@ -483,9 +484,8 @@ HERE
       sleep 1
 
       parsed_body = JSON.parse(response.body)
-      expect(parsed_body.size).to eq(1)
-
       locations = parsed_body['locations']
+      expect(locations.size).to eq(1)
 
       expect(locations[0]['name']).to eq('Closest Stern Location')
     end
