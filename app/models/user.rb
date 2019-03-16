@@ -109,9 +109,7 @@ class User < ApplicationRecord
 
       next unless score && machine_name && location_name
 
-      if !high_score_hash[machine_name] || high_score_hash[machine_name][2] < score
-        high_score_hash[machine_name] = [location_name, machine_name, number_with_precision(score, precision: 0, delimiter: ','), msx_sub.created_at.strftime('%b-%d-%Y')]
-      end
+      high_score_hash[machine_name] = [location_name, machine_name, number_with_precision(score, precision: 0, delimiter: ','), msx_sub.created_at.strftime('%b-%d-%Y')] if !high_score_hash[machine_name] || high_score_hash[machine_name][2] < score
     end
 
     high_score_hash.values

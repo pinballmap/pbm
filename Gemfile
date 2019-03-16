@@ -59,6 +59,7 @@ group :test do
   gem 'rspec-rails'
   gem 'rspec-retry'
   gem 'rubocop'
+  gem 'rubocop-rspec'
   gem 'selenium-webdriver'
   gem 'simplecov'
   gem 'spork'

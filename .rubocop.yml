@@ -1,3 +1,7 @@
+require: rubocop-rspec
+
+Layout/AlignHash:
+  Enabled: false
 LineLength:
   Enabled: false
 Documentation:
@@ -42,6 +46,12 @@ Style/ConditionalAssignment:
   Enabled: false
 ParameterLists:
   Max: 6
+RSpec:
+  Enabled: false
+Capybara/CurrentPathExpectation:
+  Enabled: false
+FactoryBot/CreateList:
+  Enabled: false
 
 AllCops:
   Exclude:

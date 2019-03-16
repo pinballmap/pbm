@@ -20,9 +20,7 @@ class LocationsController < InheritedResources::Base
   def index
     @region = Region.find_by_name(params[:region])
 
-    if !params[:by_location_name].blank? && !params[:by_location_id].blank?
-      params.delete(:by_location_id)
-    end
+    params.delete(:by_location_id) if !params[:by_location_name].blank? && !params[:by_location_id].blank?
 
     @locations = apply_scopes(Location).order('locations.name').includes(:region, :location_type, :location_machine_xrefs, :machines)
     @location_data = LocationsController.locations_javascript_data(@locations)
