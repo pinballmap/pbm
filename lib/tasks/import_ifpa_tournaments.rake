@@ -31,9 +31,7 @@ task import_ifpa_tournaments: :environment do
     end
 
     associated_location = nil
-    if cd['latitude'] && cd['longitude'] && cd['zipcode']
-      associated_location = Location.where('zip = ?', cd['zipcode'].to_s).select { |l| l.lat.to_f.round(4).to_s == cd['latitude'] && l.lon.to_f.round(4).to_s == cd['longitude'] }.first
-    end
+    associated_location = Location.where('zip = ?', cd['zipcode'].to_s).select { |l| l.lat.to_f.round(4).to_s == cd['latitude'] && l.lon.to_f.round(4).to_s == cd['longitude'] }.first if cd['latitude'] && cd['longitude'] && cd['zipcode']
 
     location_id = nil
     long_desc = Sanitize.clean(cd['details']).truncate(300)

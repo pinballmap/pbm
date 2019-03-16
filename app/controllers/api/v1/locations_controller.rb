@@ -157,10 +157,18 @@ module Api
       def closest_by_address
         max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
 
-        closest_location = apply_scopes(Location).near(params[:address].to_s, max_distance).first
+        lat, lon = ''
+        unless params[:address].blank?
+          results = Geocoder.search(params[:address])
+
+          lat = results.first.data['latitude']
+          lon = results.first.data['longitude']
+        end
+
+        closest_location = apply_scopes(Location).near([lat, lon], max_distance).first
 
         if params[:send_all_within_distance]
-          closest_locations = apply_scopes(Location).near(params[:address].to_s, max_distance)
+          closest_locations = apply_scopes(Location).near([lat, lon], max_distance)
           return_response(closest_locations, 'locations', [], [:machine_names])
         elsif closest_location
           return_response(closest_location, 'location', [], [:machine_names])

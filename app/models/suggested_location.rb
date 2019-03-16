@@ -50,6 +50,7 @@ class SuggestedLocation < ApplicationRecord
 
         machines.split(/([^,]*,[^,]*,)/).each do |machine_info|
           next if machine_info.blank?
+
           machine_info.strip!
 
           matches = machine_info.match(/.*\((.*), (.*)\)/i)

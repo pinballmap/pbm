@@ -55,7 +55,7 @@ describe PagesController do
       fill_in('by_machine_name', with: 'Sass')
       page.execute_script %{ $('#by_machine_name').trigger('focus') }
       page.execute_script %{ $('#by_machine_name').trigger('keydown') }
-      find(:xpath, '//li[contains(text(), "Sass")]').click
+      find(:xpath, '//div[contains(text(), "Sass")]').click
 
       fill_in('address', with: '97203')
 
@@ -106,7 +106,7 @@ describe PagesController do
       fill_in('by_location_name', with: 'Rip')
       page.execute_script %{ $('#by_location_name').trigger('focus') }
       page.execute_script %{ $('#by_location_name').trigger('keydown') }
-      find(:xpath, '//li[text()="Rip City Retail (Portland OR)"]').click
+      find(:xpath, '//div[text()="Rip City Retail (Portland OR)"]').click
 
       click_on 'location_search_button'
 
@@ -158,7 +158,7 @@ describe PagesController do
       fill_in('by_machine_name', with: 'Bawb')
       page.execute_script %{ $('#by_machine_name').trigger('focus') }
       page.execute_script %{ $('#by_machine_name').trigger('keydown') }
-      find(:xpath, '//li[text()="Bawb"]').click
+      find(:xpath, '//div[text()="Bawb"]').click
 
       click_on 'location_search_button'
 
