@@ -635,7 +635,7 @@ describe LocationMachineXrefsController do
       page.find('input#machine_search_button').click
 
       expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
-      expect(page).to have_content('0 Locations in Result')
+      expect(page).to have_content('0 Locations & 0 Machines in Result')
     end
 
     it 'lets you search by machine name -- returns grouped machines' do
