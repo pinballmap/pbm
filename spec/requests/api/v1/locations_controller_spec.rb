@@ -467,8 +467,8 @@ HERE
 
       locations = parsed_body['locations']
       expect(locations[0]['id']).to eq(close_location_three.id)
-      expect(locations[1]['id']).to eq(close_location_one.id)
-      expect(locations[2]['id']).to eq(close_location_two.id)
+      expect(locations[1]['id']).to eq(close_location_two.id)
+      expect(locations[2]['id']).to eq(close_location_one.id)
     end
 
     it 'respects manufacturer filter' do

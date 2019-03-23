@@ -18,10 +18,14 @@ class PagesController < ApplicationController
 
       @lat, @lon = ''
       unless params[:address].blank?
-        results = Geocoder.search(params[:address])
-
-        @lat = results.first.data['latitude']
-        @lon = results.first.data['longitude']
+        if Rails.env.test?
+          # hardcode a PDX lat/lon during tests
+          @lat = 45.590502800000
+          @lon = -122.754940100000
+        else
+          results = Geocoder.search(params[:address])
+          @lat, @lon = results.first.coordinates
+        end
       end
 
       @locations = apply_scopes(params[:address].blank? ? Location : Location.near([@lat, @lon], 5)).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs, :region, :location_type)
