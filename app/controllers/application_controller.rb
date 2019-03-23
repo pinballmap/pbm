@@ -85,8 +85,7 @@ BODY
     geocoded_results = Geocoder.search(user_inputted_address).first unless Rails.env.test?
 
     unless geocoded_results.blank?
-      lat = geocoded_results.geometry['location']['lat']
-      lon = geocoded_results.geometry['location']['lng']
+      lat, lon = geocoded_results.coordinates
       street = geocoded_results.street_address
       city = geocoded_results.city
       state = geocoded_results.state_code
