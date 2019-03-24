@@ -7,7 +7,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     @machine = FactoryBot.create(:machine, name: 'Cleo')
     @lmx = FactoryBot.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
 
-    @score_one = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 123, user_id: FactoryBot.create(:user, username: 'ssw').id)
+    @score_one = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 123, user_id: FactoryBot.create(:user, id: 333, username: 'ssw').id)
     @score_two = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user_id: nil)
     @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a')
   end
