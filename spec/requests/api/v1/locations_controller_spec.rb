@@ -692,6 +692,20 @@ HERE
     end
   end
 
+  describe '#autocomplete_city' do
+    it 'should do a fuzzy search on city name and return a list of in-scope city names + state' do
+      FactoryBot.create(:location, city: 'Portland', state: 'ME')
+      FactoryBot.create(:location, city: 'Portland', state: 'OR')
+      FactoryBot.create(:location, city: 'Beaverton')
+
+      get '/api/v1/locations/autocomplete_city', params: { name: 'port' }
+
+      expect(response.body).to eq(<<HERE.strip)
+[{"label":"Portland OR","value":"Portland OR"},{"label":"Portland ME","value":"Portland ME"}]
+HERE
+    end
+  end
+
   describe '#autocomplete' do
     it 'should do a fuzzy search on name and return a list of in-scope names and IDs' do
       FactoryBot.create(:location, name: 'foo')
