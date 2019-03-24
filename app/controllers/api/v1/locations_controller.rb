@@ -236,6 +236,19 @@ module Api
         return_response('Failed to find location', 'errors')
       end
 
+      api :GET, '/api/v1/locations/autocomplete_city.json', 'Send back a list of cities in the DB that fit your search criteria'
+      param :name, String, desc: 'city/state name part', required: true
+      formats ['json']
+      def autocomplete_city
+        locations = Location.select { |l| l.city.tr('’', "'") =~ /#{Regexp.escape params[:name].tr('’', "'") || ''}/i }.sort_by(&:city).map { |l| { label: "#{l.city} #{l.state}", value: "#{l.city} #{l.state}" } }
+
+        return_response(
+          locations.uniq!,
+          nil,
+          []
+        )
+      end
+
       api :GET, '/api/v1/locations/autocomplete.json', 'Send back fuzzy search results of search params'
       param :name, String, desc: 'name to fuzzy search with', required: true
       formats ['json']

@@ -50,6 +50,7 @@ Rails.application.routes.draw do
           get :closest_by_lat_lon
           get :closest_by_address
           get :autocomplete
+          get :autocomplete_city
           post :suggest
         end
       end
