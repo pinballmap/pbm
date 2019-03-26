@@ -704,6 +704,16 @@ HERE
 [{"label":"Portland OR","value":"Portland OR"},{"label":"Portland ME","value":"Portland ME"}]
 HERE
     end
+
+    it 'should return an emtpy array if no found results' do
+      FactoryBot.create(:location, city: 'Portland', state: 'ME')
+      FactoryBot.create(:location, city: 'Portland', state: 'OR')
+      FactoryBot.create(:location, city: 'Beaverton')
+
+      get '/api/v1/locations/autocomplete_city', params: { name: 'asdf' }
+
+      expect(response.body).to eq('[]')
+    end    
   end
 
   describe '#autocomplete' do
@@ -717,6 +727,16 @@ HERE
       expect(response.body).to eq(<<HERE.strip)
 [{"label":"bar (Portland, OR)","value":"bar","id":#{bar.id}},{"label":"barfoo (Portland, OR)","value":"barfoo","id":#{barfoo.id}}]
 HERE
+    end
+
+    it 'should return an emtpy array if no found results' do
+      FactoryBot.create(:location, name: 'foo')
+      bar = FactoryBot.create(:location, name: 'bar')
+      barfoo = FactoryBot.create(:location, name: 'barfoo')
+    
+      get '/api/v1/locations/autocomplete', params: { name: 'asdf' }
+    
+      expect(response.body).to eq('[]')
     end
 
     it 'handles normal and iOS apostrophes' do
