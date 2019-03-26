@@ -713,7 +713,7 @@ HERE
       get '/api/v1/locations/autocomplete_city', params: { name: 'asdf' }
 
       expect(response.body).to eq('[]')
-    end    
+    end
   end
 
   describe '#autocomplete' do
@@ -729,13 +729,13 @@ HERE
 HERE
     end
 
-    it 'should return an emtpy array if no found results' do
+    it 'should return an empty array if no found results' do
       FactoryBot.create(:location, name: 'foo')
-      bar = FactoryBot.create(:location, name: 'bar')
-      barfoo = FactoryBot.create(:location, name: 'barfoo')
-    
+      FactoryBot.create(:location, name: 'bar')
+      FactoryBot.create(:location, name: 'barfoo')
+
       get '/api/v1/locations/autocomplete', params: { name: 'asdf' }
-    
+
       expect(response.body).to eq('[]')
     end
 
