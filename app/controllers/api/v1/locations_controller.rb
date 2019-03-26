@@ -243,7 +243,7 @@ module Api
         locations = Location.select { |l| l.city.tr('’', "'") =~ /#{Regexp.escape params[:name].tr('’', "'") || ''}/i }.sort_by(&:city).map { |l| { label: "#{l.city} #{l.state}", value: "#{l.city} #{l.state}" } }
 
         return_response(
-          locations.uniq!,
+          locations.uniq,
           nil,
           []
         )
