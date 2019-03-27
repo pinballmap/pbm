@@ -239,6 +239,50 @@ HERE
       expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
     end
 
+    it 'emails super admins when lat/lon is null or no regions are within lat/lon bounding boxes' do
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          to: ['portland@admin.com'],
+          cc: [],
+          from: 'admin@pinballmap.com',
+          subject: 'PBM - REGIONLESS Message',
+          body: <<HERE
+Their Name: name\n
+Their Email: email\n
+Message: message\n
+Username: ssw\n
+Site Email: foo@bar.com\n
+(entered from 127.0.0.1 via cleOS)\n
+HERE
+        )
+      end
+
+      post '/api/v1/regions/contact.json', params: { region_id: nil, lat: nil, lon: nil, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
+      expect(UserSubmission.all.count).to eq(1)
+      expect(UserSubmission.first.region_id).to be_nil
+
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          to: ['portland@admin.com'],
+          cc: [],
+          from: 'admin@pinballmap.com',
+          subject: 'PBM - REGIONLESS Message',
+          body: <<HERE
+Their Name: name\n
+Their Email: email\n
+Message: message\n
+Username: ssw\n
+Site Email: foo@bar.com\n
+(entered from 127.0.0.1 via cleOS)\n
+HERE
+        )
+      end
+
+      post '/api/v1/regions/contact.json', params: { region_id: nil, lat: 1, lon: -1, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
+      expect(UserSubmission.all.count).to eq(2)
+      expect(UserSubmission.second.region_id).to be_nil
+    end
+
     it 'finds closest region by lat/lon' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(

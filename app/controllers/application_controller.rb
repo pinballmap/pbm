@@ -120,15 +120,16 @@ Message: #{params[:message]}\n
 #{user_info}\n
 (entered from #{request.remote_ip} via #{request.user_agent})\n
 BODY
+    to_users = region.nil? ? User.all.select(&:is_super_admin).map(&:email) : region.users.map(&:email)
     Pony.mail(
-      to: region.users.map(&:email),
-      cc: User.all.select(&:is_super_admin).map(&:email),
+      to: to_users,
+      cc: region.nil? ? [] : User.all.select(&:is_super_admin).map(&:email),
       from: 'admin@pinballmap.com',
-      subject: add_host_info_to_subject("PBM - Message from the #{region.full_name} region"),
+      subject: add_host_info_to_subject(region.nil? ? 'PBM - REGIONLESS Message' : "PBM - Message from the #{region.full_name} region"),
       body: body
     )
 
-    UserSubmission.create(region_id: region.id, submission_type: UserSubmission::CONTACT_US_TYPE, submission: body, user_id: user ? user.id : nil)
+    UserSubmission.create(region_id: region.nil? ? nil : region.id, submission_type: UserSubmission::CONTACT_US_TYPE, submission: body, user_id: user ? user.id : nil)
   end
 
   def send_app_comment(params, region)
