@@ -703,9 +703,15 @@ HERE
       expect(response.body).to eq(<<HERE.strip)
 [{"label":"Portland OR","value":"Portland OR"},{"label":"Portland ME","value":"Portland ME"}]
 HERE
+
+      get '/api/v1/locations/autocomplete_city', params: { name: 'portland o' }
+
+      expect(response.body).to eq(<<HERE.strip)
+[{"label":"Portland OR","value":"Portland OR"}]
+HERE
     end
 
-    it 'should return an emtpy array if no found results' do
+    it 'should return an empty array if no found results' do
       FactoryBot.create(:location, city: 'Portland', state: 'ME')
       FactoryBot.create(:location, city: 'Portland', state: 'OR')
       FactoryBot.create(:location, city: 'Beaverton')
