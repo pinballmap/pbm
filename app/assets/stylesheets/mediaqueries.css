@@ -164,6 +164,9 @@
     width: 34%;
     font-size: 14px;
   }
+  .location_search .info {
+    font-size: 10px;
+  }
 }
 
 @media (max-width: 1080px) {
