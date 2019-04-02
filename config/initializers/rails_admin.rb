@@ -516,11 +516,6 @@ RailsAdmin.config do |config|
           bindings[:view]._current_user.is_super_admin
         end
       end
-      field :password, :password do
-        visible do
-          bindings[:view]._current_user.is_super_admin
-        end
-      end
       field :is_machine_admin, :boolean do
         visible do
           bindings[:view]._current_user.is_super_admin
