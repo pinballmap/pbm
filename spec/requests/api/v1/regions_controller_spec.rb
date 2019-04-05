@@ -195,12 +195,6 @@ HERE
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find region')
     end
 
-    it 'throws an error when not authed' do
-      post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name' }
-
-      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::RegionsController::AUTH_REQUIRED_MSG)
-    end
-
     it 'errors when required fields are not sent' do
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
@@ -213,7 +207,7 @@ HERE
       expect(JSON.parse(response.body)['errors']).to eq('A message is required.')
     end
 
-    it 'emails region admins with incoming message' do
+    it 'emails region admins with incoming message and account info if logged in' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: ['la@admin.com'],
@@ -232,6 +226,30 @@ HERE
       end
 
       post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
+      expect(response).to be_successful
+
+      expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
+      expect(UserSubmission.all.count).to eq(1)
+      expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
+    end
+
+    it 'emails region admins with incoming message when user is not logged in' do
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          to: ['la@admin.com'],
+          cc: ['portland@admin.com'],
+          from: 'admin@pinballmap.com',
+          subject: 'PBM - Message from the Los Angeles region',
+          body: <<HERE
+Their Name: name\n
+Their Email: email\n
+Message: message\n\n\n
+(entered from 127.0.0.1 via cleOS)\n
+HERE
+        )
+      end
+
+      post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
