@@ -108,8 +108,6 @@ module Api
       def contact
         user = current_user.nil? ? nil : current_user
 
-        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
-
         region = nil
         if params[:region_id]
           region = Region.find(params['region_id'])
