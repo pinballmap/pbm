@@ -83,6 +83,33 @@ describe Api::V1::UsersController, type: :request do
     end
   end
 
+  describe '#forgot_password' do
+    it 'requires identification' do
+      post '/api/v1/users/forgot_password.json'
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Please send an email or username to use this feature')
+    end
+
+    it 'works via username' do
+      FactoryBot.create(:user, username: 'username')
+
+      post '/api/v1/users/forgot_password.json', params: { identification: 'username' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['msg']).to eq('Password reset request successful.')
+    end
+
+    it 'works via email' do
+      FactoryBot.create(:user, email: 'yeah@ok.com')
+
+      post '/api/v1/users/forgot_password.json', params: { identification: 'yeah@ok.com' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['msg']).to eq('Password reset request successful.')
+    end
+  end
+
   describe '#signup' do
     it 'returns all app-centric user data if successful' do
       post '/api/v1/users/signup.json', params: { username: 'foo', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok' }

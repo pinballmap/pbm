@@ -100,6 +100,26 @@ module Api
         return_response(user, 'user', [], %i[username email authentication_token])
       end
 
+      api :POST, '/api/v1/users/forgot_password.json', 'Password retrieval'
+      description 'Reset a forgotten password'
+      param :identification, String, desc: 'A username or email address', required: true
+      def forgot_password
+        if params[:identification].blank?
+          return_response('Please send an email or username to use this feature', 'errors')
+          return
+        end
+
+        user = User.find_by_username(params[:identification]) || User.find_by_email(params[:identification])
+
+        unless user
+          return_response('Can not find a user associated with this email or username', 'errors')
+          return
+        end
+
+        user.send_reset_password_instructions
+        return_response('Password reset request successful.', 'msg')
+      end
+
       api :POST, '/api/v1/users/signup.json', 'Signup a new user'
       description 'Signup a new user for the PBM'
       param :username, String, desc: 'New username', required: true

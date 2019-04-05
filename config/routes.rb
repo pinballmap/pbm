@@ -29,6 +29,7 @@ Rails.application.routes.draw do
         collection do
           get  :auth_details
           post :signup
+          post :forgot_password
         end
       end
       resources :regions, only: [:index, :show] do
