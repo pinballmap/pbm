@@ -33,8 +33,8 @@ module Api
 
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 
-        if (params[:region_id].blank? && params[:lat].blank? && params[:lon].blank?) || params[:location_machines].blank? || params[:location_name].blank?
-          return_response('Region or lat/lon, location name, and a list of machines are required', 'errors')
+        if params[:location_machines].blank? || params[:location_name].blank?
+          return_response('Location name, and a list of machines are required', 'errors')
           return
         end
 

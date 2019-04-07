@@ -16,22 +16,22 @@ describe Api::V1::LocationsController, type: :request do
       expect(Pony).to_not receive(:mail)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(JSON.parse(response.body)['errors']).to eq('Region or lat/lon, location name, and a list of machines are required')
+      expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_machines: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(JSON.parse(response.body)['errors']).to eq('Region or lat/lon, location name, and a list of machines are required')
+      expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'baz', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(JSON.parse(response.body)['errors']).to eq('Region or lat/lon, location name, and a list of machines are required')
+      expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'baz', location_machines: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(JSON.parse(response.body)['errors']).to eq('Region or lat/lon, location name, and a list of machines are required')
+      expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
     end
 
     it 'errors when region is not available' do
@@ -80,6 +80,49 @@ HERE
       end
 
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
+      expect(response).to be_successful
+
+      expect(JSON.parse(response.body)['msg']).to eq("Thanks for entering that location. We'll get it in the system as soon as possible.")
+      expect(UserSubmission.all.count).to eq(1)
+      expect(UserSubmission.first.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
+
+      expect(SuggestedLocation.first.location_type).to eq(lt)
+      expect(SuggestedLocation.first.operator).to eq(o)
+      expect(SuggestedLocation.first.zone).to eq(z)
+    end
+
+    it 'emails super admins on new location submission where user has no lat/lon reported' do
+      lt = FactoryBot.create(:location_type, name: 'type')
+      o = FactoryBot.create(:operator, name: 'operator')
+      z = FactoryBot.create(:zone, name: 'zone')
+
+      expect(Pony).to receive(:mail) do |mail|
+        expect(mail).to include(
+          to: ['super_admin@bar.com'],
+          from: 'admin@pinballmap.com',
+          bcc: ['super_admin@bar.com'],
+          subject: 'PBM - New location suggested for the REGIONLESS pinball map',
+          body: <<HERE
+    Dear Admin: A new pinball spot has been submitted for your region! Please verify/fix the address using https://maps.google.com and then "Promote" the location to the map via http://www.example.com/admin/suggested_location. If any fields are missing, like Location Type, please fill them in! Thanks!!\n
+Location Name: name\n
+Street: street\n
+City: city\n
+State: state\n
+Zip: zip\n
+Country: \n
+Phone: phone\n
+Website: website\n
+Type: type\n
+Operator: operator\n
+Zone: zone\n
+Comments: comments\n
+Machines: machines\n
+(entered from 127.0.0.1 via cleOS by cibw (foo@bar.com))\n
+HERE
+        )
+      end
+
+      post '/api/v1/locations/suggest.json', params: { location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['msg']).to eq("Thanks for entering that location. We'll get it in the system as soon as possible.")
