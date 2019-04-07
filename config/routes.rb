@@ -30,6 +30,7 @@ Rails.application.routes.draw do
           get  :auth_details
           post :signup
           post :forgot_password
+          post :resend_confirmation
         end
       end
       resources :regions, only: [:index, :show] do

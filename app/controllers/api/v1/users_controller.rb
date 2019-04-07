@@ -120,6 +120,26 @@ module Api
         return_response('Password reset request successful.', 'msg')
       end
 
+      api :POST, '/api/v1/users/resend_confirmation.json', 'Resend confirmation'
+      description 'Resend an account confirmation'
+      param :identification, String, desc: 'A username or email address', required: true
+      def resend_confirmation
+        if params[:identification].blank?
+          return_response('Please send an email or username to use this feature', 'errors')
+          return
+        end
+
+        user = User.find_by_username(params[:identification]) || User.find_by_email(params[:identification])
+
+        unless user
+          return_response('Can not find a user associated with this email or username', 'errors')
+          return
+        end
+
+        user.send_confirmation_instructions
+        return_response('Confirmation info resent.', 'msg')
+      end
+
       api :POST, '/api/v1/users/signup.json', 'Signup a new user'
       description 'Signup a new user for the PBM'
       param :username, String, desc: 'New username', required: true
