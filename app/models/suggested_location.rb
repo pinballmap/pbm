@@ -38,6 +38,12 @@ class SuggestedLocation < ApplicationRecord
   end
 
   def convert_to_location(user_email)
+    if country.blank? || country.nil?
+      errors.add(:base, 'Country is a required field for conversion.')
+
+      return
+    end
+
     location = Location.create(name: name, street: street, city: city, state: state, zip: zip, country: country, phone: phone, lat: lat, lon: lon, website: website, region_id: region_id, location_type_id: location_type_id, operator_id: operator_id, zone_id: zone_id)
 
     if !location.valid?

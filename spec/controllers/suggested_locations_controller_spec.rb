@@ -60,5 +60,16 @@ describe SuggestedLocationsController, type: :controller do
       expect(SuggestedLocation.all.size).to eq(2)
       expect(Location.all.size).to eq(0)
     end
+
+    it 'should throw an error when country is blank' do
+      sl = FactoryBot.create(:suggested_location, region: FactoryBot.create(:region, name: 'chicago'), lat: 1, lon: 2, name: 'foo', street: 'foo', state: 'OR', zip: '97203', city: 'Portland', machines: 'Batman')
+      sl.country = nil
+      sl.save
+
+      post :convert_to_location, format: :json, params: { id: sl.id }
+
+      expect(SuggestedLocation.all.size).to eq(2)
+      expect(Location.all.size).to eq(0)
+    end
   end
 end

@@ -61,5 +61,12 @@ HERE
 
       expect(results.values).to eq([['converted from suggested location', 'yeah@ok.com', 1, nil, nil]])
     end
+
+    it 'requires country' do
+      @suggested_location.country = nil
+      @suggested_location.convert_to_location(@user.email)
+
+      expect(@suggested_location.errors.first).to eq([:base, 'Country is a required field for conversion.'])
+    end
   end
 end
