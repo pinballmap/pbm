@@ -15,6 +15,8 @@ task import_ifpa_tournaments: :environment do
 
   pbm_states = Location.all.pluck(:state).map(&:downcase!).uniq!
 
+  # Need to run the request twice to make sure that ifpa is awake
+  Net::HTTP.get(URI(IFPA_API_ROOT + '/calendar/active?api_key=' + IFPA_API_KEY.to_s))
   JSON.parse(Net::HTTP.get(URI(IFPA_API_ROOT + '/calendar/active?api_key=' + IFPA_API_KEY.to_s)))['calendar'].each do |c|
     state = c['state'].downcase
 
