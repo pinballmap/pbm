@@ -109,7 +109,7 @@ module Api
           return
         end
 
-        user = User.find_by_username(params[:identification]) || User.find_by_email(params[:identification])
+        user = User.where('lower(username) = ?', params[:identification].downcase).first || User.where('lower(email) = ?', params[:identification].downcase).first
 
         unless user
           return_response('Can not find a user associated with this email or username', 'errors')
@@ -129,7 +129,7 @@ module Api
           return
         end
 
-        user = User.find_by_username(params[:identification]) || User.find_by_email(params[:identification])
+        user = User.where('lower(username) = ?', params[:identification].downcase).first || User.where('lower(email) = ?', params[:identification].downcase).first
 
         unless user
           return_response('Can not find a user associated with this email or username', 'errors')

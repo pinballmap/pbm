@@ -98,6 +98,11 @@ describe Api::V1::UsersController, type: :request do
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['msg']).to eq('Confirmation info resent.')
+
+      post '/api/v1/users/resend_confirmation.json', params: { identification: 'useRname' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['msg']).to eq('Confirmation info resent.')
     end
 
     it 'works via email' do
@@ -122,6 +127,11 @@ describe Api::V1::UsersController, type: :request do
       FactoryBot.create(:user, username: 'username')
 
       post '/api/v1/users/forgot_password.json', params: { identification: 'username' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['msg']).to eq('Password reset request successful.')
+
+      post '/api/v1/users/forgot_password.json', params: { identification: 'useRname' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['msg']).to eq('Password reset request successful.')
