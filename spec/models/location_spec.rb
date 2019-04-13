@@ -74,9 +74,10 @@ describe Location do
   end
 
   describe '#before_destroy' do
-    it 'should clean up location_machine_xrefs, events, location_picture_xrefs' do
+    it 'should clean up location_machine_xrefs, events, location_picture_xrefs, user_fave_locations' do
       FactoryBot.create(:event, location: @l)
       FactoryBot.create(:location_picture_xref, location: @l, photo: nil)
+      FactoryBot.create(:user_fave_location, location: @l)
 
       @l.destroy
 
@@ -85,6 +86,7 @@ describe Location do
       expect(LocationMachineXref.all).to eq([])
       expect(MachineScoreXref.all).to eq([])
       expect(Location.all).to eq([])
+      expect(UserFaveLocation.all).to eq([])
     end
   end
 
