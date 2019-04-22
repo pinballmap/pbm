@@ -27,15 +27,15 @@ module Api
       param :submission_type, String, desc: 'Type of submission to filter to', required: false
       def list_within_range
         max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS
-        min_date_of_submission = params[:min_date_of_submission] ? params[:min_date_of_submission].to_date : 1.month.ago
+        min_date_of_submission = params[:min_date_of_submission] ? params[:min_date_of_submission].to_date.beginning_of_day : 1.month.ago.beginning_of_day
 
         locations = apply_scopes(Location).near([params[:lat], params[:lon]], max_distance)
 
         user_submissions = nil
         if params[:submission_type]
-          user_submissions = UserSubmission.where(created_at: min_date_of_submission..Date.today, location_id: locations.map(&:id), submission_type: params[:submission_type])
+          user_submissions = UserSubmission.where(created_at: min_date_of_submission..Date.today.end_of_day, location_id: locations.map(&:id), submission_type: params[:submission_type])
         else
-          user_submissions = UserSubmission.where(created_at: min_date_of_submission..Date.today, location_id: locations.map(&:id))
+          user_submissions = UserSubmission.where(created_at: min_date_of_submission..Date.today.end_of_day, location_id: locations.map(&:id))
         end
 
         return_response(user_submissions, 'user_submissions')
