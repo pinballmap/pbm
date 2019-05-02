@@ -146,8 +146,7 @@ describe LocationsController do
         submission = UserSubmission.second
         expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
 
-        region_submission_metadata = region ? "#{region.name} (#{region.id})" : 'REGIONLESS'
-        expect(submission.submission).to eq("#{@user.username} (#{@user.id})\nCleo (2)\nBawb (1)\n#{region_submission_metadata}")
+        expect(submission.submission).to eq("Bawb was removed from Cleo by #{@user.username}")
         expect(submission.user_id).to eq(User.last.id)
         expect(submission.region).to eq(location.region)
       end

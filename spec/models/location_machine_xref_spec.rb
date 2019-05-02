@@ -122,7 +122,7 @@ describe LocationMachineXref do
       expect(submission.user).to eq(user)
       expect(submission.location).to eq(regionless_lmx.location)
       expect(submission.machine).to eq(regionless_lmx.machine)
-      expect(submission.submission).to eq(["#{user.username} (#{user.id})", "#{regionless_location.name} (#{regionless_location.id})", "#{@m.name} (#{@m.id})", 'REGIONLESS'].join("\n"))
+      expect(submission.submission).to eq("#{@m.name} was removed from #{regionless_location.name} by #{user.name}")
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
     end
 
@@ -177,7 +177,7 @@ describe LocationMachineXref do
       expect(submission.user).to eq(user)
       expect(submission.location).to eq(@lmx.location)
       expect(submission.machine).to eq(@lmx.machine)
-      expect(submission.submission).to eq(["#{user.username} (#{user.id})", "#{@l.name} (#{@l.id})", "#{@m.name} (#{@m.id})", "#{@l.region.name} (#{@l.region.id})"].join("\n"))
+      expect(submission.submission).to eq("#{@m.name} was removed from #{@l.name} by #{user.name}")
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
     end
   end
@@ -221,7 +221,7 @@ describe LocationMachineXref do
       expect(submission.user).to eq(user)
       expect(submission.location).to eq(@l)
       expect(submission.machine).to eq(@m)
-      expect(submission.submission).to eq("User #{user.username} (#{user.email}) added #{@m.name} to #{@l.name}")
+      expect(submission.submission).to eq("#{@m.name} was added to #{@l.name} by #{user.name}")
       expect(submission.submission_type).to eq(UserSubmission::NEW_LMX_TYPE)
     end
   end

@@ -11,7 +11,7 @@ class MachineCondition < ApplicationRecord
   scope :limited, (-> { order('created_at DESC').limit(MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY) })
 
   def create_user_submission
-    user_info = user ? "User #{user.username} (#{user.email})" : 'UNKNOWN USER'
+    user_info = user ? user.username : 'UNKNOWN USER'
 
     UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_CONDITION_TYPE, submission: "#{user_info} commented on #{machine.name} at #{location.name}. They said: #{comment}", user: user)
   end

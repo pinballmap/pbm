@@ -63,7 +63,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       submission = Region.find(@lmx.location.region_id).user_submissions.second
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
-      expect(submission.submission).to eq("ssw (111)\nGround Kontrol (1)\nCleo (2)\nportland (3)")
+      expect(submission.submission).to eq('Cleo was removed from Ground Kontrol by ssw')
     end
 
     it 'creates a user submission for the deletion - authed' do
@@ -74,7 +74,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       submission = Region.find(@lmx.location.region_id).user_submissions.second
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
-      expect(submission.submission).to eq("ssw (111)\nGround Kontrol (1)\nCleo (2)\nportland (3)")
+      expect(submission.submission).to eq('Cleo was removed from Ground Kontrol by ssw')
       expect(submission.user_id).to eq(111)
     end
 

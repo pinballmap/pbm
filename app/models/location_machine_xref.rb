@@ -94,9 +94,8 @@ class LocationMachineXref < ApplicationRecord
 
     user = nil
     user = User.find(options[:user_id]) if options[:user_id]
-    user_submission_region_string = location.region ? "#{location.region.name} (#{location.region.id})" : 'REGIONLESS'
 
-    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: ["#{user.nil? ? 'Unknown' : user.username} (#{user.nil? ? 'Unknown' : user.id})", "#{location.name} (#{location.id})", "#{machine.name} (#{machine.id})", user_submission_region_string].join("\n"), user_id: user.nil? ? nil : user.id)
+    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: "#{machine.name} was removed from #{location.name}#{user.nil? ? '' : ' by ' + user.name}", user: user)
 
     location.date_last_updated = Date.today
     location.last_updated_by_user_id = user.nil? ? nil : user.id
@@ -107,9 +106,7 @@ class LocationMachineXref < ApplicationRecord
   end
 
   def create_user_submission
-    user_info = user ? "User #{user.username} (#{user.email})" : 'UNKNOWN USER'
-
-    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_LMX_TYPE, submission: "#{user_info} added #{machine.name} to #{location.name}", user: user)
+    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_LMX_TYPE, submission: "#{machine.name} was added to #{location.name}#{user.nil? ? '' : ' by ' + user.name}", user: user)
   end
 
   def current_condition
