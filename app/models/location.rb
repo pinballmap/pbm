@@ -235,7 +235,7 @@ class Location < ApplicationRecord
     self.date_last_updated = Date.today
     self.last_updated_by_user = user
 
-    UserSubmission.create(region_id: region&.id, location: self, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE, submission: "User #{user ? user.username : 'UNKNOWN'} confirmed the lineup at #{name}", user: user)
+    UserSubmission.create(region_id: region&.id, location: self, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE, submission: "#{user ? user.username : 'UNKNOWN'} confirmed the lineup at #{name}", user: user)
 
     save(validate: false)
   end
