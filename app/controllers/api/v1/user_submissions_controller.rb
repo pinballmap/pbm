@@ -17,7 +17,7 @@ module Api
         return_response(user_submissions, 'user_submissions')
       end
 
-      MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS = 5
+      MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS = 30
 
       api :GET, '/api/v1/user_submissions/list_within_range.json', 'Fetch user submissions within N miles of provided lat/lon'
       param :lat, String, desc: 'Latitude', required: true
