@@ -38,7 +38,9 @@ module Api
           user_submissions = UserSubmission.where(created_at: min_date_of_submission..Date.today.end_of_day, location_id: locations.map(&:id))
         end
 
-        return_response(user_submissions, 'user_submissions')
+        sorted_submissions = user_submissions.order('created_at DESC')
+
+        return_response(sorted_submissions, 'user_submissions')
       end
     end
   end
