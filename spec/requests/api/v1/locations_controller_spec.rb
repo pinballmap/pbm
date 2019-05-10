@@ -744,13 +744,13 @@ HERE
       get '/api/v1/locations/autocomplete_city', params: { name: 'port' }
 
       expect(response.body).to eq(<<HERE.strip)
-[{"label":"Portland OR","value":"Portland OR"},{"label":"Portland ME","value":"Portland ME"}]
+[{"label":"Portland, OR","value":"Portland, OR"},{"label":"Portland, ME","value":"Portland, ME"}]
 HERE
 
       get '/api/v1/locations/autocomplete_city', params: { name: 'portland o' }
 
       expect(response.body).to eq(<<HERE.strip)
-[{"label":"Portland OR","value":"Portland OR"}]
+[{"label":"Portland, OR","value":"Portland, OR"}]
 HERE
     end
 
