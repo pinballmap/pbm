@@ -17,7 +17,7 @@ module Api
         return_response(user_submissions, 'user_submissions')
       end
 
-      MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS = 5
+      MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS = 30
 
       api :GET, '/api/v1/user_submissions/list_within_range.json', 'Fetch user submissions within N miles of provided lat/lon'
       param :lat, String, desc: 'Latitude', required: true
@@ -38,7 +38,9 @@ module Api
           user_submissions = UserSubmission.where(created_at: min_date_of_submission..Date.today.end_of_day, location_id: locations.map(&:id))
         end
 
-        return_response(user_submissions, 'user_submissions')
+        sorted_submissions = user_submissions.order('created_at DESC')
+
+        return_response(sorted_submissions, 'user_submissions')
       end
     end
   end

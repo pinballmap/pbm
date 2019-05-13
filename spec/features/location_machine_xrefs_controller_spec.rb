@@ -442,8 +442,8 @@ describe LocationMachineXrefsController do
       page.execute_script %{ $('#by_location_name').trigger('focus') }
       page.execute_script %{ $('#by_location_name').trigger('keydown') }
 
-      expect(page).to have_xpath('//div[contains(text(), "Cleo North (Portland OR)")]')
-      expect(page).to have_xpath('//div[contains(text(), "Cleo South (Vancouver WA)")]')
+      expect(page).to have_xpath('//div[contains(text(), "Cleo North (Portland, OR)")]')
+      expect(page).to have_xpath('//div[contains(text(), "Cleo South (Vancouver, WA)")]')
       expect(page).to_not have_xpath('//div[contains(text(), "Cleo West")]')
       expect(page).to_not have_xpath('//div[contains(text(), "Sassy")]')
     end

@@ -240,7 +240,7 @@ module Api
       param :name, String, desc: 'city/state name part', required: true
       formats ['json']
       def autocomplete_city
-        locations = Location.select { |l| "#{l.city.tr('’', "'")} #{l.state}" =~ /#{Regexp.escape params[:name].tr('’', "'") || ''}/i }.sort_by(&:city).map { |l| { label: "#{l.city} #{l.state}", value: "#{l.city} #{l.state}" } }
+        locations = Location.select { |l| "#{l.city.tr('’', "'")} #{l.state}" =~ /#{Regexp.escape params[:name].tr('’', "'") || ''}/i }.sort_by(&:city).map { |l| { label: "#{l.city}#{l.state.blank? ? '' : ','} #{l.state}", value: "#{l.city}#{l.state.blank? ? '' : ','} #{l.state}" } }
 
         return_response(
           locations.uniq,

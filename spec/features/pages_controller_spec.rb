@@ -106,7 +106,7 @@ describe PagesController do
       fill_in('by_location_name', with: 'Rip')
       page.execute_script %{ $('#by_location_name').trigger('focus') }
       page.execute_script %{ $('#by_location_name').trigger('keydown') }
-      find(:xpath, '//div[text()="Rip City Retail (Portland OR)"]').click
+      find(:xpath, '//div[text()="Rip City Retail (Portland, OR)"]').click
 
       click_on 'location_search_button'
 
