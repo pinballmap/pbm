@@ -174,7 +174,7 @@ HERE
     return nil if submissions.nil? || submissions.empty?
 
     <<HERE
-Here is a list of all the comments that were placed in your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
+Here is a list of all the comments that were placed in your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact map@pinballmap.com
 
 #{full_name} Daily Comments
 
@@ -208,7 +208,7 @@ HERE
     return nil if submissions.nil? || submissions.empty?
 
     <<HERE
-Here is a list of all the machines that were removed from your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
+Here is a list of all the machines that were removed from your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact map@pinballmap.com
 
 #{full_name} Daily Machine Removals
 
@@ -230,7 +230,7 @@ HERE
     end
 
     <<HERE
-Here is an overview of regionless locations! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@fastmail.com
+Here is an overview of regionless locations! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact map@pinballmap.com
 
 Regionless Weekly Overview
 
@@ -255,7 +255,7 @@ HERE
     end_of_week = Time.now.end_of_day
 
     <<HERE
-Here is an overview of your pinball map region! Thanks for keeping your region updated! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@fastmail.com
+Here is an overview of your pinball map region! Thanks for keeping your region updated! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact map@pinballmap.com
 
 #{full_name} Weekly Overview
 

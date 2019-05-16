@@ -32,7 +32,7 @@ describe Operator do
       FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Old Cleo Comment', created_at: Date.today - 2.days)
 
       body = <<HERE
-Here's a list of comments made on your pinball machines that were posted today to #{@o.region.full_name}. We're sending this in the hope that it will help you identify, and fix, problems. If you don't want to receive these messages, please contact pinballmap@fastmail.com.
+Here's a list of comments made on your pinball machines that were posted today to #{@o.region.full_name}. We're sending this in the hope that it will help you identify, and fix, problems. If you don't want to receive these messages, please contact map@pinballmap.com.
 
 Comment: Sassy Comment
 Location: Cleo Corner - 303 Southeast 3rd Avenue, Portland, OR, 97214

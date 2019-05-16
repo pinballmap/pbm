@@ -74,7 +74,7 @@ describe Region do
       FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
       expect(@region.generate_daily_digest_comments_email_body).to eq(<<HERE)
-Here is a list of all the comments that were placed in your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
+Here is a list of all the comments that were placed in your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact map@pinballmap.com
 
 Portland Daily Comments
 
@@ -156,7 +156,7 @@ HERE
       FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
       expect(@region.generate_daily_digest_removals_email_body).to eq(<<HERE)
-Here is a list of all the machines that were removed from your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact pinballmap@fastmail.com
+Here is a list of all the machines that were removed from your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact map@pinballmap.com
 
 Portland Daily Machine Removals
 
@@ -197,7 +197,7 @@ HERE
       FactoryBot.create(:suggested_location, region: nil, name: 'SL 2', machines: 'Batman')
 
       expect(Region.generate_weekly_regionless_email_body).to eq(<<HERE)
-Here is an overview of regionless locations! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@fastmail.com
+Here is an overview of regionless locations! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact map@pinballmap.com
 
 Regionless Weekly Overview
 
@@ -262,7 +262,7 @@ HERE
       FactoryBot.create(:suggested_location, region: @region, name: 'SL 2', machines: 'Batman')
 
       expect(@region.generate_weekly_admin_email_body).to eq(<<HERE)
-Here is an overview of your pinball map region! Thanks for keeping your region updated! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact pinballmap@fastmail.com
+Here is an overview of your pinball map region! Thanks for keeping your region updated! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact map@pinballmap.com
 
 Portland Weekly Overview
 
