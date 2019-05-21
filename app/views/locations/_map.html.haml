@@ -1,7 +1,7 @@
 #map_canvas
   .mask
     .closest_button   
-      %span.bold{:onclick => "findClosestLocations('#{@region ? @region.name : 'regionless'}')"}
+      %span.bold{:onclick => "findClosestLocations('#{@region ? @region.name : 'map'}')"}
         = link_to 'Click here to find the closest pinball machines!', '#', {:id => 'find_closest_locations'}
 
 - lat = local_assigns.has_key?(:lat) ? lat : @region.lat

@@ -172,14 +172,15 @@ Rails.application.routes.draw do
 
   get 'inspire_profile' => 'pages#inspire_profile'
   get 'pages/home'
-  get 'regionless' => 'pages#regionless'
-  get 'saved' => 'pages#regionless', user_faved: true
-  get 'regionless_location_data' => 'pages#regionless_location_data'
-  get 'suggest' => 'pages#suggest_new_location', as: 'regionless_location_suggest'
-  get 'submitted_new_location' => 'pages#submitted_new_location', as: 'regionless_submitted_new_location'
+  get 'map' => 'pages#map'
+  get 'saved' => 'pages#map', user_faved: true
+  get 'map_location_data' => 'pages#map_location_data'
+  get 'suggest' => 'pages#suggest_new_location', as: 'map_location_suggest'
+  get 'submitted_new_location' => 'pages#submitted_new_location', as: 'map_submitted_new_location'
 
   # legacy names for regions
   get '/milwaukee' => redirect('/wisconsin')
+  get '/regionless' => redirect('/map')
   get '/central-indiana' => redirect('/indiana')
   get '/mid-michigan' => redirect('/michigan-mid')
   get '/burlington' => redirect('/vermont')

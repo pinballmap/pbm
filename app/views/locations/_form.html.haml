@@ -43,10 +43,10 @@
 :javascript
 
   $(function () {
-    var isRegionless = 0;
+    var ismap = 0;
     $('.location_search').on('submit', function(e) {
       $(".mask").hide();
-      isRegionless = 0;
+      ismap = 0;
       if (mapAdjusted = 1) { //reset checkbox
         mapAdjusted = 0;
         $('#followCheck').prop('checked', false);

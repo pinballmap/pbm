@@ -6,7 +6,7 @@
 			%span.fave_location{:id => "fave_location_#{l.id}"}
 				=image_tag( l.user_fave?(current_user.id) ? 'heart-filled.png' : 'heart-empty.png', :alt => 'fave this location', :id => "fave_location_img_#{l.id}")
 		%span.permalink
-			=link_to image_tag( 'link.png' ), "/#{l.region ? l.region.name.downcase : 'regionless'}/?by_location_id=#{l.id}", :id => l.id, :alt => 'link to this location'
+			=link_to image_tag( 'link.png' ), "/#{l.region ? l.region.name.downcase : 'map'}/?by_location_id=#{l.id}", :id => l.id, :alt => 'link to this location'
 		.clear
 		- if user_signed_in?
 			%span.location_description

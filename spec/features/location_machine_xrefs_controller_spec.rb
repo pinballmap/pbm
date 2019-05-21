@@ -30,7 +30,7 @@ describe LocationMachineXrefsController do
         region = region ? @region : nil
         location = FactoryBot.create(:location, id: 11, region: region)
 
-        visit "/#{region ? region.name : 'regionless'}/?by_location_id=#{location.id}"
+        visit "/#{region ? region.name : 'map'}/?by_location_id=#{location.id}"
 
         find("#add_machine_location_banner_#{location.id}").click
         select(@machine_to_add.name, from: 'add_machine_by_id_11')
@@ -195,7 +195,7 @@ describe LocationMachineXrefsController do
 
         expect(Rakismet).to receive(:akismet_call).and_return('false')
 
-        visit "/#{location.region ? location.region.name : 'regionless'}/?by_location_id=" + location.id.to_s
+        visit "/#{location.region ? location.region.name : 'map'}/?by_location_id=" + location.id.to_s
 
         page.find("div#machine_condition_lmx_#{lmx.id}.machine_condition_lmx span.comment_image").click
         fill_in("new_machine_condition_#{lmx.id}", with: 'THIS IS NOT SPAM')
@@ -865,7 +865,7 @@ describe LocationMachineXrefsController do
       it 'honors direct link for location' do
         location = FactoryBot.create(:location, id: 111, region: region)
 
-        visit "/#{region ? region.name : 'regionless'}/?by_location_id=#{location.id}"
+        visit "/#{region ? region.name : 'map'}/?by_location_id=#{location.id}"
         sleep(1)
 
         within('div.search_result') do

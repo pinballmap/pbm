@@ -18,7 +18,7 @@ module PagesHelper
   end
 
   def title_for_path(path, region = nil)
-    title = region.nil? ? title_for_regionless_path(path) : title_for_region_path(path, region)
+    title = region.nil? ? title_for_map_path(path) : title_for_region_path(path, region)
     title
   end
 
@@ -40,7 +40,7 @@ module PagesHelper
     title
   end
 
-  def title_for_regionless_path(path)
+  def title_for_map_path(path)
     title = if path == app_path
               'App - '
             elsif path == app_support_path
@@ -65,7 +65,7 @@ module PagesHelper
               'Forgot Password - '
             elsif path.match?(/confirmation/)
               'Confirmation Instructions - '
-            elsif path == regionless_location_suggest_path
+            elsif path == map_location_suggest_path
               'Suggest a New Location - '
             else
               ''
@@ -76,7 +76,7 @@ module PagesHelper
   end
 
   def desc_for_path(path, region = nil)
-    desc = region.nil? ? desc_for_regionless_path(path) : desc_for_region_path(path, region)
+    desc = region.nil? ? desc_for_map_path(path) : desc_for_region_path(path, region)
     desc
   end
 
@@ -97,7 +97,7 @@ module PagesHelper
     desc
   end
 
-  def desc_for_regionless_path(path)
+  def desc_for_map_path(path)
     desc = if path == app_path
              'Pinball Map App for iOS and Android. Find pinball machines to play near you! Update the app like the true champ you are.'
            elsif path == app_support_path
@@ -120,9 +120,9 @@ module PagesHelper
              'If you forgot your Pinball Map password, you can recover it from here.'
            elsif path.match?(/confirmation/)
              'The email confirmation can be resent from this page.'
-           elsif path.match?(/regionless/)
+           elsif path.match?(/map/)
              'Find local places to play pinball! The Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
-           elsif path == regionless_location_suggest_path
+           elsif path == map_location_suggest_path
              '"Add a new location to the Pinball Map! This crowdsourced map relies on your knowledge and help!"'
            else
              'The Pinball Map website and free mobile app will help you find places to play pinball! Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'

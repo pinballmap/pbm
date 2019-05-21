@@ -8,7 +8,7 @@ class PagesController < ApplicationController
     request.parameters
   end
 
-  def regionless_location_data
+  def map_location_data
     @locations = []
 
     if params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:user_faved].blank?
@@ -36,7 +36,7 @@ class PagesController < ApplicationController
     render partial: 'locations/locations', layout: false
   end
 
-  def regionless
+  def map
     user = current_user.nil? ? nil : current_user
 
     params[:user_faved] = user.id if user && !params[:user_faved].blank?
