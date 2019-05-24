@@ -1,4 +1,4 @@
 #page_body
   - @user.user_fave_locations.each do |fave_location|
-    = link_to(fave_location.location.name, (fave_location.location.region ? region_homepage_path(fave_location.location.region.name) : regionless_path) + "/?by_location_id=#{fave_location.location.id}")
+    = link_to(fave_location.location.name, (fave_location.location.region ? region_homepage_path(fave_location.location.region.name) : map_path) + "/?by_location_id=#{fave_location.location.id}")
     %br/

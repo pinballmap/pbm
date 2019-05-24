@@ -53,7 +53,7 @@ describe LocationsController do
       it 'lets you click a button to update the date_last_updated' do
         location = FactoryBot.create(:location, region: region, name: 'Cleo')
 
-        visit "/#{region ? region.name : 'regionless'}/?by_location_id=" + location.id.to_s
+        visit "/#{region ? region.name : 'map'}/?by_location_id=" + location.id.to_s
 
         sleep 1
 
@@ -130,7 +130,7 @@ describe LocationsController do
           expect(Pony).to_not receive(:mail)
         end
 
-        visit "/#{region ? region.name : 'regionless'}/?by_location_id=" + location.id.to_s
+        visit "/#{region ? region.name : 'map'}/?by_location_id=" + location.id.to_s
 
         page.accept_confirm do
           click_button 'remove'
@@ -187,7 +187,7 @@ describe LocationsController do
         old_style_description = "Find local places to play pinball! The #{region ? region.name + ' ' : ''}Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."
         single_location_description = 'Zelda on Pinball Map! 1234 Foo St., Portland, OR, 97203. Zelda has 1 pinball machine: Bawb.'
 
-        visit "/#{region ? region.name : 'regionless'}"
+        visit "/#{region ? region.name : 'map'}"
 
         desc_tag = "meta[name=\"description\"][content=\"#{old_style_description}\"]"
         og_desc_tag = "meta[property=\"og:description\"][content=\"#{old_style_description}\"]"
@@ -419,20 +419,20 @@ describe LocationsController do
 
       expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/portland\?utf8=%E2%9C%93&region=portland$/)
 
-      visit '/regionless'
+      visit '/map'
 
       click_on 'location_search_button'
 
       sleep 1
 
-      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/regionless\?utf8=%E2%9C%93$/)
+      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/map\?utf8=%E2%9C%93$/)
     end
 
     it 'respects a region param' do
       regionless_location = FactoryBot.create(:location, region: nil, name: 'Regionless place')
       FactoryBot.create(:location_machine_xref, location: regionless_location, machine: @machine)
 
-      visit "/regionless?utf8=%E2%9C%93&by_machine_id=#{@machine.id}"
+      visit "/map?utf8=%E2%9C%93&by_machine_id=#{@machine.id}"
 
       sleep 1
 
@@ -485,7 +485,7 @@ describe LocationsController do
 
       regionless_location = FactoryBot.create(:location, region: nil, name: 'Regionless')
 
-      visit '/regionless/?by_location_id=' + regionless_location.id.to_s
+      visit '/map/?by_location_id=' + regionless_location.id.to_s
 
       find('.location_meta span.meta_image').click
       expect(page).to have_select("new_operator_#{regionless_location.id}", with_options: ['Other region operator', 'Quarterworld', 'Regionless operator'])

@@ -42,7 +42,7 @@
                 - location = Location.find(location_array[0])
                 - if location
                   %span.location_edited
-                    = link_to(location.name, (location.region ? region_homepage_path(location.region.name) : regionless_path) + "/?by_location_id=#{location.id}")
+                    = link_to(location.name, (location.region ? region_homepage_path(location.region.name) : map_path) + "/?by_location_id=#{location.id}")
                   %br/
       - if !@user.profile_list_of_high_scores.empty?          
         %div.darkbl.stats
@@ -66,5 +66,5 @@
             %span.stats_list
               - @user.user_fave_locations.each do |fave_location|
                 %span.location_edited
-                  = link_to(fave_location.location.name, (fave_location.location.region ? region_homepage_path(fave_location.location.region.name) : regionless_path) + "/?by_location_id=#{fave_location.location.id}")
+                  = link_to(fave_location.location.name, (fave_location.location.region ? region_homepage_path(fave_location.location.region.name) : map_path) + "/?by_location_id=#{fave_location.location.id}")
                 %br/

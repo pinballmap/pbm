@@ -32,7 +32,7 @@
         - else
           #{l.location_type.name}
       .clear
-  - if ((current_page?(regionless_location_data_path) || request.referer =~ /regionless/) && l.region)
+  - if ((current_page?(map_location_data_path) || request.referer =~ /map/) && l.region)
     %li.location_type
       %span.grey Region:
       %span
@@ -49,7 +49,7 @@
     = text_field_tag "new_website_#{l.id}", l.website, :class => 'edit_mode'
     .clear
     = label_tag "Operator: "
-    - if (current_page?(regionless_location_data_path) || request.referer =~ /regionless/)
+    - if (current_page?(map_location_data_path) || request.referer =~ /map/)
       = select_tag "new_operator_#{l.id}", options_for_select([['']]) + options_from_collection_for_select(Operator.order(:name).all, 'id', 'name', l.operator_id)
     - else
       = select_tag "new_operator_#{l.id}", options_for_select([['']]) + options_from_collection_for_select(Operator.order(:name).select { |o| (o.region_id == l.region_id) || (o.region_id == nil) }, 'id', 'name', l.operator_id)

@@ -24,7 +24,7 @@ describe PagesHelper, type: :helper do
       end
 
       it 'displays the suggest location title' do
-        expect(helper.title_for_path(regionless_location_suggest_path)).to eq('Suggest a New Location - Pinball Map')
+        expect(helper.title_for_path(map_location_suggest_path)).to eq('Suggest a New Location - Pinball Map')
       end
 
       it 'displays the correct faq title' do

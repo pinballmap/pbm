@@ -8,7 +8,7 @@ describe PagesController do
 
   describe 'Regionless', type: :feature, js: true do
     it 'shouldnt perform a search if you dont enter search criteria' do
-      visit '/regionless'
+      visit '/map'
 
       click_on 'location_search_button'
 
@@ -19,7 +19,7 @@ describe PagesController do
     end
 
     it 'only lets you search by one thing at a time, OR address + machine' do
-      visit '/regionless'
+      visit '/map'
 
       fill_in('by_location_name', with: 'foo')
 
@@ -50,7 +50,7 @@ describe PagesController do
       FactoryBot.create(:location_machine_xref, location: rip_city_location, machine: FactoryBot.create(:machine, name: 'Sass'))
       FactoryBot.create(:location_machine_xref, location: no_way_location, machine: FactoryBot.create(:machine, name: 'Bawb'))
 
-      visit '/regionless'
+      visit '/map'
 
       fill_in('by_machine_name', with: 'Sass')
       page.execute_script %{ $('#by_machine_name').trigger('focus') }
@@ -85,7 +85,7 @@ describe PagesController do
     it 'lets you search by address -- displays 0 results instead of saying "Not Found"' do
       FactoryBot.create(:location, region: nil, name: 'Troy', zip: '48098', lat: 42.5925, lon: 83.1756)
 
-      visit '/regionless'
+      visit '/map'
 
       fill_in('address', with: '97203')
 
@@ -101,7 +101,7 @@ describe PagesController do
       FactoryBot.create(:location, region: nil, name: 'Rip City Retail SW')
       FactoryBot.create(:location, region: nil, name: 'Rip City Retail', city: 'Portland', state: 'OR')
 
-      visit '/regionless'
+      visit '/map'
 
       fill_in('by_location_name', with: 'Rip')
       page.execute_script %{ $('#by_location_name').trigger('focus') }
@@ -124,7 +124,7 @@ describe PagesController do
       FactoryBot.create(:location_machine_xref, location: clark_location, machine: FactoryBot.create(:machine, name: 'Sass 2'))
       FactoryBot.create(:location_machine_xref, location: renee_location, machine: FactoryBot.create(:machine, name: 'Sass 3'))
 
-      visit '/regionless'
+      visit '/map'
 
       fill_in('by_machine_name', with: 'Sass')
       click_on 'location_search_button'
@@ -138,10 +138,10 @@ describe PagesController do
       click_on 'location_search_button'
       expect(find('#search_results')).to have_content('Region: Chicago')
 
-      visit '/regionless/?by_location_id=' + rip_location.id.to_s
+      visit '/map/?by_location_id=' + rip_location.id.to_s
       expect(find('#search_results')).to_not have_content('Region:')
 
-      visit '/regionless/?by_location_id=' + clark_location.id.to_s
+      visit '/map/?by_location_id=' + clark_location.id.to_s
       expect(find('#search_results')).to have_content('Region: Portland')
     end
 
@@ -153,7 +153,7 @@ describe PagesController do
       FactoryBot.create(:location_machine_xref, location: clark_location, machine: FactoryBot.create(:machine, name: 'Sass 2'))
       FactoryBot.create(:location_machine_xref, location: renee_location, machine: FactoryBot.create(:machine, name: 'Bawb'))
 
-      visit '/regionless'
+      visit '/map'
 
       fill_in('by_machine_name', with: 'Bawb')
       page.execute_script %{ $('#by_machine_name').trigger('focus') }

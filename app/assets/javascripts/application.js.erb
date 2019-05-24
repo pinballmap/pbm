@@ -4,7 +4,7 @@
 
 var map;
 var region;
-var isRegionless;
+var ismap;
 var mapAdjusted = 0;
 var search_string;
 var zoomLevel;
@@ -133,8 +133,8 @@ function redo() {
     } else {
       window.clearTimeout(mapupdater);
       mapupdater = window.setTimeout(function() {
-        if (isRegionless == 1) {
-          var url = '/locations?regionless_location_data=' + ';by_center_point_and_ne_boundary=' + map.getBounds().getCenter().toArray().join() + ',' + map.getBounds().getNorthEast().toArray().join();
+        if (ismap == 1) {
+          var url = '/locations?map_location_data=' + ';by_center_point_and_ne_boundary=' + map.getBounds().getCenter().toArray().join() + ',' + map.getBounds().getNorthEast().toArray().join();
         }
         else {
           var url = '/locations?region=' + region + ';by_center_point_and_ne_boundary=' + map.getBounds().getCenter().toArray().join() + ',' + map.getBounds().getNorthEast().toArray().join();
@@ -154,8 +154,8 @@ function redo() {
     } else {
       window.clearTimeout(mapupdater);
       mapupdater = window.setTimeout(function() {
-        if (isRegionless == 1) {
-          var url = '/locations?regionless_location_data=' + ';by_center_point_and_ne_boundary=' + map.getBounds().getCenter().toArray().join() + ',' + map.getBounds().getNorthEast().toArray().join();
+        if (ismap == 1) {
+          var url = '/locations?map_location_data=' + ';by_center_point_and_ne_boundary=' + map.getBounds().getCenter().toArray().join() + ',' + map.getBounds().getNorthEast().toArray().join();
         }
         else {
           var url = '/locations?region=' + region + ';by_center_point_and_ne_boundary=' + map.getBounds().getCenter().toArray().join() + ',' + map.getBounds().getNorthEast().toArray().join();

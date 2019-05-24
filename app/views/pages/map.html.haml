@@ -1,19 +1,19 @@
 #region_page_body
   #form.toggle_reg_lookup
-    = form_tag regionless_location_data_path, :method => 'get', :id => 'address_search_form', :class => 'location_search' do
+    = form_tag map_location_data_path, :method => 'get', :id => 'address_search_form', :class => 'location_search' do
       = hidden_field_tag :by_machine_id
       = hidden_field_tag :by_location_id
-      .regionless_input
+      .map_input
         %span Machine
         = text_field_tag "by_machine_name", params["by_machine_name"], :class => 'lookup_search_input', :placeholder => 'e.g. Iron Maiden'
-      .regionless_input
+      .map_input
         %span Near
         = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => 'e.g. Portland, OR'
       %hr
-      .regionless_input.inline
+      .map_input.inline
         %span Location
         = text_field_tag "by_location_name", params["by_location_name"], :class => 'lookup_search_input', :placeholder => 'e.g. Wedgehead'
-      = image_submit_tag('search_icon.png', :class => 'regionless search', :id => "location_search_button")
+      = image_submit_tag('search_icon.png', :class => 'map search', :id => "location_search_button")
 
     #search_link_wrapper.hide_button.toggle_btn_reg
       =link_to "Link to this Search Result", "", :id => "search_link"
@@ -24,7 +24,7 @@
   #map
     = render :partial => 'locations/map', locals: { lat: 45.512794, lon: -122.679565 }
     
-  #lookup.toggle_reg_lookup.regionless_lookup
+  #lookup.toggle_reg_lookup.map_lookup
     #locations
       #intro
         %p.darkb News!
@@ -43,7 +43,7 @@
           %span.bold.red all 
           the 
           = link_to "regions", root_path
-          as well as “regionless” locations.
+          as well as “map” locations.
         %p 
           It is currently listing a total of 
           %span.darkb 
@@ -60,7 +60,7 @@
           = link_to "gave us feedback!", about_path('portland')
         %p    
           You can
-          = link_to "submit locations here.", regionless_location_suggest_path
+          = link_to "submit locations here.", map_location_suggest_path
           Doesn’t matter if the location fits within one of our regions. We’re aiming for more comprehensive coverage.
         %p
           If you prefer to navigate the map via your trusted home region, 
@@ -89,7 +89,7 @@
   });
 
 :javascript
-  var isRegionless = 1;
+  var ismap = 1;
   $(function () {
     $('#by_location_name').bind('input', function(event, ui) {
       event.preventDefault();
