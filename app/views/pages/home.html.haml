@@ -1,76 +1,83 @@
-#div_container
+#div_container_column.div_01_outer
   .div_01
-    #welcome
-      %div.home_intro_container.home_intro
-        %div.dark{:style => 'left:0;'}
-          %span.darkb Welcome to PinballMap.com!
-          %p
-            Pinball Map is a crowdsourced pinball locator for public pinball machines. And we have a mobile app!
-          %p.darkb News!
-          %p
-            Save your favorite locations! Click the
-            =image_tag( 'heart-empty.png', :alt => 'heart icon', :class => 'fave_icon')
-            next to each location name. Then view them all on the
-            = link_to "Saved Map", saved_path, :class => "bold"
-          %p
-            We made two new
-            = link_to "Pinball Map T-Shirts!", store_path, :class => "bold"
-          %p 
-            Check out our podcast!
-            = link_to "Mappin' Around with Scott & Ryan", "http://pod.pinballmap.com", :class => "bold"
-          %p
-            = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold" 
-          %p 
-            Check out the
-            =link_to 'One Big Map.', map_path, :class => "bold" 
-          %p.l
-            We are currently listing a total of 
-            %span.darkb 
-              #{number_with_delimiter(Location.all.count,:delimiter => ",")} 
-            locations and 
-            %span.darkb 
-              #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} 
-            machines.
-  .div_01b.home_more.read_more_wrap    
-    %p.f
-      Help keep your map up to date by adding and removing machines, and by submitting new locations.
+    %p.darkb.p1
+      Welcome to Pinball Map!
+    %p.p2{:style => 'flex-direction:row;flex-wrap:wrap;display: flex;align-items: center;justify-content: center;'}
+      %span{:style => 'max-width:400px;min-width:100px'}
+        Pinball Map is a crowdsourced map of public pinball machines. 
+        %br/
+        And we have a 
+        = link_to 'mobile app.', app_path, :class => 'apps_link'
+      %span{:style => 'width:96px;'}
+        =image_tag( 'splash-icon-128.png', :alt => 'splash', :style => 'height:96px;', :class => 'splash')
+    %p.bold.p3
+      = link_to 'Explore the Map', map_path
+#div_container_row{:style => 'border-bottom:20px solid #d1dfe8;'}
+  .div_01b.home_intro
+    %p.darkb News!
     %p
-      Each regional map listed below is curated by a local administrator, often with the support of a league.
+      Save your favorite locations! Click the
+      =image_tag( 'heart-empty.png', :alt => 'heart icon', :class => 'fave_icon')
+      next to each location name. Then view them all on the
+      = link_to "Saved Map", saved_path, :class => "bold"
+    %p
+      We made two new
+      = link_to "Pinball Map T-Shirts!", store_path, :class => "bold"
+    %p 
+      We have a podcast,
+      = link_to "Mappin' Around with Scott & Ryan.", "http://pod.pinballmap.com", :class => "bold"
+      New episodes every couple months.
+    %p
+      = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold", :target => '_blank'
+    %p 
+      = link_to 'Stern Pinball', 'https://sternpinball.com/pinball-locator/', :target => '_blank'
+      uses our data for their machine locator. Our API is also used by
+      = link_to 'Matchplay Events', 'https://matchplay.events/', :target => '_blank'
+      and
+      = link_to 'Pindigo', 'https://pindigo.app/', :target => '_blank'
+      and 
+      = link_to 'this sweet heamap', 'https://arcg.is/0bHaif', :target => '_blank'
+      and others! You can use the
+      = link_to 'Pinball Map API', apipie_apipie_path, :class => 'apps_link'
+      in your own project. 
+  .div_01b.home_intro.read_more_wrap
+    %p
+      Pinball Map is listing 
+      %span.darkb 
+        #{number_with_delimiter(Location.all.count,:delimiter => ",")} 
+      locations and 
+      %span.darkb 
+        #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} 
+      machines.
+    %p
+      This is a user-powered map. You can help keep it up to date by adding and removing machines, submitting new locations, and telling your friends to use it!
+    %p
+      The data is managed by over 100 administrators and thousands of active users.
+      =link_to 'Contact us!', 'portland/about', :class => 'apps_link'
     %p
       We have a free
       = link_to 'mobile app for iOS and Android.', app_path, :class => 'apps_link'
     %p
-      =link_to 'Contact us!', 'portland/about', :class => 'apps_link'
-      Contribute to the 
-      = link_to 'Pinball Map Code!', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
-      Use the
-      = link_to 'Pinball Map API!', apipie_apipie_path, :class => 'apps_link'
-    - if mobile_device?
-      %div.twitter
-        %p.twitter_img
-          =image_tag('sol-icon.jpeg', :alt => 'Pinball Map Twitter Icon')
-        %p.twitter_box
-          Updates from
-          =link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
-        %ul.twitter
-          - @tweets.each do |t|
-            %li= auto_link(t.text)
+      Pinball Map is not monetized - no ads or premium membership. The 
+      = link_to 'code is open source.', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
+      Follow us on Twitter for a massive amount of map updates.
+      = link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
   - if mobile_device?
     .read_more
     .read_less
-  .div_02
-    - if !mobile_device?
+#div_container_column{:style => 'background-color:#ffffff'}
+  .div_05
+    %p.darkb.p1
+      Regional Maps    
+    %p
+      If the 
+      = link_to 'big map', map_path
+      isn't cutting it for you, you can search for machines in one select area. Please pick a "regional" map below. Regions are predefined geographical areas - they can be a city, county, state, or even a country - that an administrator and the local users created. Each of the regional map is curated by a local administrator, often with the support of a league.    
+- if !mobile_device?
+  #div_container_column{:style => 'background-color:#ffffff'} 
+    .div_02
       #region_map
-  .div_03
-    %div.twitter
-      %p.twitter_img
-        =image_tag('sol-icon.jpeg', :alt => 'Pinball Map Twitter Icon')
-      %p.twitter_box
-        Updates from
-        =link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
-      %ul.twitter
-        - @tweets.each do |t|
-          %li= auto_link(t.text)
+#div_container_column
   .div_04
     #map_summaries
       #region_list
