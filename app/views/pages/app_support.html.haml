@@ -1,24 +1,34 @@
 #page_body
   .column_container
     .column.bg_gray.w_400
-      %p.darkb Pinball Map iOS Application Support - FAQ
-      %p.question The application will not load.
+      %p.darkb Pinball Map App Support - FAQ
+      %p.question How do I search for a particular machine?
+      %ul.answer 
+        %li When you're on the map screen, click the "filter" button in the upper right, then choose a machine. Then go back to the map and it will only show places with that machine.
+      %p.question When I filter for "Cool Machine (Pro)", I also see results for "Cool Machine (LE). What's up?
+      %ul.answer 
+        %li This is by design. We've found that most users want to see all versions, and don't want to conduct 3 separate searches for the same title.
+      %p.question How do I add a new location?
+      %ul.answer 
+        %li Click the menu icon in the lower right, and choose "Submit Location". Then fill out the form! Our administrators moderate submissions, and it can take a few days. The more accurate and thorough your submission, the quicker it will get added!
+      %p.question How do I remove a machine from a location?
+      %ul.answer 
+        %li Click on the machine name, and then look for a "remove" button.
+      %p.question This location closed/no longer has machines. What do I do - do I need to tell you?
+      %ul.answer 
+        %li Simply remove all the machines from it. Empty locations are periodically removed.
+      %p.question When I search for a city, the city is listed twice (and maybe the second instance of it is misspelled). Or, I see the same location listed twice. Or, the place is in the wrong spot on the map. Etc.
+      %ul.answer 
+        %li These are data entry mistakes. Please contact us so we can fix them.
+      %p.question How do I get listed as an operator?
       %ul.answer
-        %li Close the app, check your internet connection, and try again.
-      %p.question The "Closest Locations" menu is blank.
-      %ul.answer
-        %li Check your Settings and turn on Location Services in the General Menu. Then try again.
-      %p.question When I load a location page, it goes blank and an error is thrown.
-      %ul.answer
-        %li Contact <a class="five" href="mailto:map@pinballmap.com">map@pinballmap.com</a> with the name of the location you tried to view.
-      %p.question When I view a location, the map coordinates are incorrect.
-      %ul.answer
-        %li Contact your regional administrator with the name of the location you tried to view.
-      %p.question My business has at least one pinball machine, but it does not show up in the application.
-      %ul.answer
-        %li Your business or machines have not been added to the database yet.
-        %li First check if your business is in our database. If you don't see your business, submit your location to us! A regional administrator will then add the location to the site.
-        %li If your business is in our database, select it then add the machines to it. (If there are machines listed, but they've been replaced by others, please remove the machines and then add the new ones)
+        %li Contact us and we'll add you.
+      %p.question What is your privacy policy?
+      %ul.answer 
+        %li 
+          We do not track or store user locations, nor store any personal information. We do not sell any user data. We do not use third-party analytics - however, we built the app using Expo, and they 
+          =link_to 'collect anonymous usage statistics.', 'https://expo.io/privacy', :target => '_blank'
+          This site is not monetized. We keep a log of map edits that users make.
       %p.darkb.subpage_text If you have another question or comment about the application, please contact <a class="five" href="mailto:map@pinballmap.com">map@pinballmap.com</a>. Thank you for your continued support.
     .column.w_400
       .ios
@@ -35,17 +45,3 @@
             =link_to image_tag('app_support/iphone-v4-04.jpg', :alt => 'Pinball Map iPhone Screenshot 4'), '/assets/app_support/iphone-v4-04.jpg'
           %li
             =link_to image_tag('app_support/iphone-v4-05.jpg', :alt => 'Pinball Map iPhone Screenshot 5'), '/assets/app_support/iphone-v4-05.jpg'
-      .ipad
-        %p.darkb.links_category
-          Pinball Map iOS iPad Screenshots
-        %ul
-          %li
-            =link_to image_tag('app_support/ipad-v4-01.jpg', :alt => 'Pinball Map iPad Screenshot 1'), '/assets/app_support/ipad-v4-01.jpg'
-          %li
-            =link_to image_tag('app_support/ipad-v4-02.jpg', :alt => 'Pinball Map iPad Screenshot 2'), '/assets/app_support/ipad-v4-02.jpg'
-          %li
-            =link_to image_tag('app_support/ipad-v4-03.jpg', :alt => 'Pinball Map iPad Screenshot 3'), '/assets/app_support/ipad-v4-03.jpg'
-          %li
-            =link_to image_tag('app_support/ipad-v4-04.jpg', :alt => 'Pinball Map iPad Screenshot 4'), '/assets/app_support/ipad-v4-04.jpg'
-          %li
-            =link_to image_tag('app_support/ipad-v4-05.jpg', :alt => 'Pinball Map iPad Screenshot 5'), '/assets/app_support/ipad-v4-05.jpg'
