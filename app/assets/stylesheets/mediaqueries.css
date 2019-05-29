@@ -147,18 +147,6 @@
   }
 }
 
-@media (max-width: 1000px) {
-  .header_menu_05 {
-    display: none;
-  }
-  #header .menu_link ul li.menu_header_05 {
-    display: block;
-  }
-  .header_buttons_child.header_menu_05 {
-    width: 0;
-  }
-}
-
 @media (max-width: 960px) {
   .column.suggest {
     display:                 flex;

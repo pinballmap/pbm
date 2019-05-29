@@ -18,9 +18,10 @@
   %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
   %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
   %hr/
-- if !(@region)
+- if (mobile_device? and !(@region))
   %li=link_to 'Add Location', map_location_suggest_path
-%li=link_to 'Map', map_path
+- if !current_page?(map_path)
+  %li=link_to 'Map', map_path
 %li=link_to 'User Profile', current_user.nil? ? inspire_profile_path : profile_user_path(current_user.id)
 %li=link_to 'App', app_path
 - if !(@region)
