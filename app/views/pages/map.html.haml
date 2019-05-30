@@ -36,16 +36,8 @@
           = link_to "Mappin' Around with Scott & Ryan", "http://pod.pinballmap.com", :class => "bold"
         %p
           = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold" 
-        %p.dark.hello
-          One Map To Rule Them All
-        %p
-          This pinball map has locations from 
-          %span.bold.red all 
-          the 
-          = link_to "regions", root_path
-          as well as “map” locations.
         %p 
-          It is currently listing a total of 
+          Pinball Map is currently listing a total of 
           %span.darkb 
             #{number_with_delimiter(Location.count,:delimiter => ",")} 
           locations and 
@@ -53,7 +45,7 @@
             #{number_with_delimiter(LocationMachineXref.count,:delimiter => ",")} 
           machines.
         %p 
-          This big map is in
+          This search experience is in
           %span.bold.red
             BETA! 
           That means it’s not in its final form. We’ll be continuously enhancing the search experience. But to do so, it would help if you used it and 
@@ -61,7 +53,6 @@
         %p    
           You can
           = link_to "submit locations here.", map_location_suggest_path
-          Doesn’t matter if the location fits within one of our regions. We’re aiming for more comprehensive coverage.
         %p
           If you prefer to navigate the map via your trusted home region, 
           = link_to "go here to find it.", root_path
