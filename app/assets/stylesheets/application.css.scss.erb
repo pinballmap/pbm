@@ -1016,11 +1016,12 @@ a.active_section_link:hover {
   @include radius(5px 0 0 5px);
   margin-top: 0;
 }
-.search_result .show_location_detail_location > ul {
-  transition: all .2s ease-in-out;
+.show_location_detail_location ul {
+  transition: all .3s ease-in-out;
 }
-.search_result .show_location_detail_location > ul:hover {
-  transform: scale(1.01);
+.show_location_detail_location ul:hover {
+  background-color: $blue;
+  @include radius(5px);
 }
 #search_results li {
   list-style-type: none;
@@ -1419,10 +1420,6 @@ br.clear {
 .search_result li.location_types {
   padding: 2px 0 0 4px;
   color: $grey;
-}
-.show_location_detail_location ul:hover {
-  background-color: $blue;
-  @include radius(5px);
 }
 #form select, form select {
   border: 2px solid $medgrey;
