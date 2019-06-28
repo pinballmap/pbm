@@ -11,7 +11,6 @@ xml.data do
         xml.lon region.lon
         xml.nSearchNo region.n_search_no
         xml.motd region.motd
-        xml.emailContact region.primary_email_contact
       end
     end
   end
