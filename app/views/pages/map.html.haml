@@ -30,9 +30,9 @@
         %p.darkb News!
         %p 
           We completely redesigned the app! Read our 
-          = link_to "release notes", "http://blog.pinballmap.com/2019/06/18/pinball-map-app-update-5-0"
+          = link_to "release notes", "http://blog.pinballmap.com/2019/06/18/pinball-map-app-update-5-0", :class => "bold"
           or 
-          = link_to "watch this demo video", "https://youtu.be/FfbIhYt_DTE"
+          = link_to "watch this demo video", "https://youtu.be/FfbIhYt_DTE", :class => "bold", :target => "_blank"
         %p
           You can now save your favorite locations! Click the
           =image_tag( 'heart-empty.png', :alt => 'heart icon', :class => 'fave_icon')
@@ -70,7 +70,6 @@
 :javascript
   $('#address_search_form').on('submit', function(e) {
     $(".mask").hide();
-    $('#followCheck').prop('checked', true);
     $('#search_link_wrapper').css('display','block');
     e.preventDefault();
     search_string = $("#address_search_form :input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
