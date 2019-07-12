@@ -115,7 +115,7 @@ RailsAdmin.config do |config|
       field :city, :string
       field :state, :string
       field :zip, :string
-      field :country, :belongs_to_association
+      field :country, :string
       field :phone, :string
       field :zone, :belongs_to_association
       field :operator, :belongs_to_association
@@ -140,7 +140,7 @@ RailsAdmin.config do |config|
       field :city, :string
       field :state, :string
       field :zip, :string
-      field :country, :belongs_to_association
+      field :country, :string
       field :phone, :string
       field :lat, :decimal
       field :lon, :decimal
@@ -673,7 +673,7 @@ RailsAdmin.config do |config|
       field :city, :string
       field :state, :string
       field :zip, :string
-      field :country, :belongs_to_association
+      field :country, :string
       field :phone, :string
       field :operator, :belongs_to_association
       field :zone, :belongs_to_association
@@ -736,7 +736,7 @@ RailsAdmin.config do |config|
       field :city, :string
       field :state, :string
       field :zip, :string
-      field :country, :belongs_to_association
+      field :country, :string
       field :phone, :string
       field :lat, :decimal
       field :lon, :decimal
