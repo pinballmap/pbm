@@ -21,6 +21,8 @@ services:
     build:
       context: .
     ports:
+      # use default port or sourced env var port if specified
+      # - 3000:3000
       - "${PORT}:3000"
     links:
       - db
