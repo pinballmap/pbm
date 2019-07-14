@@ -1,14 +1,47 @@
-version: '3'
+version: "2.1"
+
 services:
+
   db:
     image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data
-  web:
-    build: .
-    volumes:
-      - .:/pbm
+      - pbm-data:/var/lib/postgresql/data
     ports:
-      - "3000:3000"
-    depends_on:
+      - 5432:5432
+    healthcheck:
+      test: pg_isready
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  pbm:
+    build:
+      context: .
+    ports:
+      - "${PORT}:3000"
+    links:
       - db
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db/pbm_dev
+    depends_on:
+      db:
+        condition: service_healthy
+
+  pbm_setup:
+    build:
+      context: .
+    command: bundle exec rake db:create db:migrate
+    links:
+      - db
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db/pbm_dev
+    depends_on:
+      db:
+        condition: service_healthy
+
+
+volumes:
+  pbm-data:
