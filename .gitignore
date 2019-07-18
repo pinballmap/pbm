@@ -12,3 +12,6 @@ vendor/ruby
 .coveralls.yml
 *.directory
 logfile
+
+# local env vars
+.env.local
