@@ -10,11 +10,11 @@ Available here: [http://pinballmap.com/api/v1/docs](http://pinballmap.com/api/v1
 ## Mac Environment Setup
 Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhanifin) undertook to get the site up and running on OS X 10.9. If you would like to contribute, and have any trouble, please ask.
 
-* Follow the Ruby install instructions at [railsapps.github.io/installrubyonrails-mac.html](http://railsapps.github.io/installrubyonrails-mac.html). Make sure you also download ruby-2.5.3.
+* Follow the Ruby install instructions at [railsapps.github.io/installrubyonrails-mac.html](http://railsapps.github.io/installrubyonrails-mac.html). Make sure you also download ruby-2.6.2.
 * `cd /Projects-Path/`
 * `git clone https://github.com/scottwainstock/pbm.git` (*I used the SourceTree app instead.*)
 * `cd /Projects-Path/pbm`
-* `rvm --default use ruby-2.5.3`
+* `rvm --default use ruby-2.6.2`
 * `bundle install`
 * `selenium install`
 * `brew update`
@@ -60,8 +60,8 @@ or read:
 4. Install and setup ruby and rvm:
 
 * `curl -L https://get.rvm.io | bash -s stable --ruby`
-* `rvm install ruby-2.5.3`
-* `rvm --default use ruby-2.5.3`
+* `rvm install ruby-2.6.2`
+* `rvm --default use ruby-2.6.2`
 * `gem install bundler`
 * `bundle install`
 * `cp config/database.yml.example config/database.yml` to create your database.yml for development
@@ -74,3 +74,24 @@ or read:
 Start server: `bundle exec rails s`
 
 Run tests: `bundle exec rake`
+
+
+## Docker Setup
+### Prerequisites
+* Docker >= v1.12.0+
+* Docker-Compose (comes with Docker for Mac. Separate install on Linux)
+* _Optional_: [direnv](http://direnv.net/) or some other way to source environment variables to override default ports in case of conflict
+
+### Usage
+#### Fully Containerized
+* Run `docker-compose up -d` to start containers
+* Navigate to `localhost:$PORT` (either specified, or defaults to `3000`)
+* Bring down containers with `docker-compose down`
+  * By default, the database will keep its state as a [docker volume](https://docs.docker.com/storage/volumes/). If you want to start fresh, run `docker-compose down -v` to destroy the volume. The next time you bring up this docker-compose file, `db:create` and `db:migrate` will re-populate the database.
+
+#### Postgres only
+If you just want to run postgres in a container and use your local filesystem for running Rails, you can use the postgres only compose file.
+* Run `docker-compose -f docker-compose.postgres.yml up -d`
+* If first time running, run `bundle exec rake db:create db:migrate` to populate the postgres container.
+* Bring down containers with `docker-compose -f docker-compose.postgres.yml down`
+  * By default, the database will keep its state as a [docker volume](https://docs.docker.com/storage/volumes/). If you want to start fresh, run `docker-compose -f docker-compose.postgres.yml down -v` to destroy the volume.
