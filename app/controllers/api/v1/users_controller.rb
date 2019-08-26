@@ -147,7 +147,7 @@ module Api
       param :password, String, desc: 'New password', required: true
       param :confirm_password, String, desc: 'New password confirmation', required: true
       def signup
-        if verify_recaptcha!
+        if !verify_recaptcha
           return_response('Your captcha skills have failed you', 'errors')
           return
         end
