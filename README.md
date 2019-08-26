@@ -45,9 +45,14 @@ If the site loads properly it will be an empty version of pinballmap.com, then a
 * `clone https://github.com/{you}/pbm.git`
 * `git remote add upstream git://github.com/scottwainstock/pbm.git`
 
-2. Install postgresql and pgadmin3 via package manager.
+2. Install postgresql.
 
-3. Setup postgres (good luck):
+3. Setup postgres:
+
+* createuser --interactive
+* createdb pbm_dev
+
+or read:
 
 * ubuntu/debian/linux mint: [maybe this](https://www.codeproject.com/Articles/898303/Installing-and-Configuring-PostgreSQL-on-Linux-Min)
 * arch/manjaro: [this](http://rmaicle.github.io/posts/b1n4mAMm9P34wNR) and [then this](https://wiki.archlinux.org/index.php/PostgreSQL)
