@@ -147,11 +147,6 @@ module Api
       param :password, String, desc: 'New password', required: true
       param :confirm_password, String, desc: 'New password confirmation', required: true
       def signup
-        unless verify_recaptcha
-          return_response('Your captcha skills have failed you', 'errors')
-          return
-        end
-
         if params[:password].blank? || params[:confirm_password].blank?
           return_response('password can not be blank', 'errors')
           return
@@ -178,7 +173,7 @@ module Api
           return_response('This email address already exists', 'errors')
           return
         end
-
+        
         user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:confirm_password], username: params[:username])
         user.save ? return_response(user, 'user', [], %i[username email authentication_token]) : return_response(user.errors.full_messages.join(','), 'errors')
       end
