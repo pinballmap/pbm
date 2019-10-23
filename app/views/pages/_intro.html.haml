@@ -1,6 +1,9 @@
 = yield :intro_extra
 #intro
   %p.darkb News!
+  %p
+    We have shiny new 
+    = link_to "stickers for sale!", store_path, :class => "bold"
   %p 
     We completely redesigned the app! Read our 
     = link_to "release notes", "http://blog.pinballmap.com/2019/06/18/pinball-map-app-update-5-0", :class => "bold"
@@ -19,6 +22,7 @@
     = link_to "Mappin' Around with Scott & Ryan", "http://pod.pinballmap.com", :class => "bold"
   %p
     = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold" 
+    Patreon supporters get an EXCLUSIVE Pinball Map Hand Sanitizer!
   %p 
     Looking for spots outside of this region? Try the
     =link_to 'One Big Map.', map_path, :class => "bold" 
