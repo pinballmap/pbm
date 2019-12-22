@@ -7,6 +7,8 @@ module Api
       respond_to :json
       has_scope :region, :limit
 
+      DEFAULT_TOP_N_MACHINES = 25
+
       api :GET, '/api/v1/region/:region/location_machine_xrefs.json', 'Get all machines at locations in a single region'
       param :region, String, desc: 'Name of the Region you want to see events for', required: true
       param :limit, Integer, desc: 'Limit the number of results that are returned', required: false
@@ -103,6 +105,30 @@ module Api
         return_response('Successfully deleted lmx #' + lmx.id.to_s, 'msg')
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find machine', 'errors')
+      end
+
+      api :GET, '/api/v1/location_machine_xrefs/top_n_machines.json', 'Show the top N machines on location'
+      param :n, String, desc: 'Number of machines to show', required: false
+      formats ['json']
+      def top_n_machines
+        top_n = params[:n] ||= DEFAULT_TOP_N_MACHINES
+
+        records_array = ActiveRecord::Base.connection.exec_query(<<HERE).to_a
+select
+  coalesce(g.name, m.name) as machine_name,
+  min(m.manufacturer) as manufacturer,
+  min(m.year) as year,
+  count(*) as machine_count
+from
+  location_machine_xrefs lmx
+  inner join machines m on m.id=lmx.machine_id
+  left outer join machine_groups g on g.id=m.machine_group_id
+group by 1
+order by 4 desc
+limit #{top_n}
+HERE
+
+        return_response(records_array, 'machines')
       end
     end
   end

@@ -333,4 +333,56 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(machine_conditions[1]['comment']).to eq('foo')
     end
   end
+
+  describe '#top_n_machines' do
+    it 'sends back the top N machines' do
+      chicago = FactoryBot.create(:region)
+
+      machine_group = FactoryBot.create(:machine_group, name: 'machine 2')
+
+      top_machine = FactoryBot.create(:machine, id: 1111, name: 'machine 1', machine_group_id: nil)
+      second_machine = FactoryBot.create(:machine, id: 2222, name: 'machine 2 A', machine_group_id: machine_group.id)
+      second_machine_grouped = FactoryBot.create(:machine, id: 3333, name: 'machine 2 B', machine_group_id: machine_group.id)
+      unpopular_machine = FactoryBot.create(:machine, id: 4444, name: 'unpopular machine', machine_group_id: nil)
+
+      5.times do |index|
+        FactoryBot.create(:location_machine_xref, machine: top_machine, location: FactoryBot.create(:location, id: 111 + index, region: chicago))
+      end
+
+      2.times do |index|
+        FactoryBot.create(:location_machine_xref, machine: second_machine, location: FactoryBot.create(:location, id: 222 + index, region: chicago))
+        FactoryBot.create(:location_machine_xref, machine: second_machine_grouped, location: FactoryBot.create(:location, id: 333 + index, region: chicago))
+      end
+
+      3.times do |index|
+        FactoryBot.create(:location_machine_xref, machine: unpopular_machine, location: FactoryBot.create(:location, id: 444 + index, region: chicago))
+      end
+
+      get '/api/v1/location_machine_xrefs/top_n_machines.json?n=2'
+      expect(response).to be_successful
+
+      machines = JSON.parse(response.body)['machines']
+      expect(machines.size).to eq(2)
+
+      expect(machines[0]['machine_name']).to eq('machine 1')
+      expect(machines[1]['machine_name']).to eq('machine 2')
+    end
+
+    it 'defaults to top 25' do
+      ActiveRecord::Base.connection.tables.each do |t|
+        ActiveRecord::Base.connection.reset_pk_sequence!(t)
+      end
+
+      30.times do |index|
+        FactoryBot.create(:location_machine_xref, machine: FactoryBot.create(:machine, id: 1111 + index, name: 'machine ' + index.to_s, machine_group_id: nil), location: FactoryBot.create(:location))
+      end
+
+      get '/api/v1/location_machine_xrefs/top_n_machines.json'
+      expect(response).to be_successful
+
+      machines = JSON.parse(response.body)['machines']
+
+      expect(machines.size).to eq(25)
+    end
+  end
 end

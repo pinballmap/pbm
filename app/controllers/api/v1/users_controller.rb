@@ -173,7 +173,7 @@ module Api
           return_response('This email address already exists', 'errors')
           return
         end
-        
+
         user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:confirm_password], username: params[:username])
         user.save ? return_response(user, 'user', [], %i[username email authentication_token]) : return_response(user.errors.full_messages.join(','), 'errors')
       end

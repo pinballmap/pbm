@@ -6,7 +6,6 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :location_machine_xrefs, only: [:create, :destroy, :update, :show]
       resources :location_types, only: [:index, :show]
       resources :machine_conditions, only: [:destroy]
       resources :machine_score_xrefs, only: [:create, :show]
@@ -41,6 +40,11 @@ Rails.application.routes.draw do
           post :suggest
           post :contact
           post :app_comment
+        end
+      end
+      resources :location_machine_xrefs, only: [:create, :destroy, :update, :show] do
+        collection do
+          get :top_n_machines
         end
       end
       resources :locations, only: [:index, :show, :update] do

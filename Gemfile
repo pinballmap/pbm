@@ -51,7 +51,6 @@ end
 group :test do
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'webdrivers', '~> 4.0'
   gem 'coveralls', require: false
   gem 'factory_bot_rails'
   gem 'launchy'
@@ -64,6 +63,7 @@ group :test do
   gem 'simplecov'
   gem 'spork'
   gem 'timecop'
+  gem 'webdrivers', '~> 4.0'
 end
 
 group :development, :test do
