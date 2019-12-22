@@ -51,7 +51,7 @@ end
 group :test do
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'chromedriver-helper'
+  gem 'webdrivers', '~> 4.0'
   gem 'coveralls', require: false
   gem 'factory_bot_rails'
   gem 'launchy'

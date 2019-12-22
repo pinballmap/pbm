@@ -10,6 +10,7 @@ require 'coveralls'
 require 'rack_session_access/capybara'
 require 'rspec/retry'
 require 'selenium/webdriver'
+require 'webdrivers'
 
 include Sprockets::Rails::Helper
 
