@@ -11,13 +11,10 @@
       width: 470px;
     }
     #map {
-      left: 470px;
-    }
-    #map .mapboxgl-ctrl-top-left {
-      left: 480px;
+      left: 0;
     }
     #map_canvas {
-      margin-left: -470px;
+      margin-left: 470px;
     }
     input#score {
       width: 290px;
@@ -106,15 +103,12 @@
     width: 640px;
   }
   #map {
-    left: 640px;
+    left: 0;
   }
   #map_canvas {
-    margin-left: -640px;
+    margin-left: 640px;
   }
   .toggle_btn_reg {
-    left: 650px;
-  }
-  #map .mapboxgl-ctrl-top-left {
     left: 650px;
   }
 }
