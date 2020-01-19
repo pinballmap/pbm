@@ -11,7 +11,7 @@
         = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => 'e.g. Portland, OR'
       %hr
       .map_input.inline
-        %span Location
+        %span Venue
         = text_field_tag "by_location_name", params["by_location_name"], :class => 'lookup_search_input', :placeholder => 'e.g. Wedgehead'
       = image_submit_tag('search_icon.png', :class => 'map search', :id => "location_search_button")
 
