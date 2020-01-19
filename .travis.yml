@@ -9,9 +9,10 @@ script:
 services:
   - postgresql
 addons:
-  postgresql: "9.3"
+  postgresql: "9.6"
   chrome: stable
 before_install:
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
   - cp config/database.yml.travis config/database.yml
