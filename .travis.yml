@@ -6,6 +6,8 @@ rvm:
 script:
   - RAILS_ENV=test bundle exec rake db:migrate --trace
   - bundle exec rake
+services:
+  - postgresql
 addons:
   postgresql: "9.3"
   chrome: stable
