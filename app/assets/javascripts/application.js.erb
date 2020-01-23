@@ -127,8 +127,9 @@ function unChecked() {
 
 function redo() {
   var mapupdater;
+  zoomLevel = map.getZoom();
   map.on('mouseup', function() {
-    if (mapAdjusted === 0) {
+    if (mapAdjusted === 0 || zoomLevel < 9) {
       map.off('mouseup');
     } else {
       window.clearTimeout(mapupdater);
@@ -147,9 +148,9 @@ function redo() {
       }, REDO_TIMEOUT);
     }
   });
-
+  
   map.on('zoom', function() {
-    if (mapAdjusted === 0) {
+    if (mapAdjusted === 0 || zoomLevel < 9) {
       map.off('zoom');
     } else {
       window.clearTimeout(mapupdater);
@@ -180,13 +181,10 @@ function tooZoomed() { //if zoomed out too far, set to false and remove
 function zoomCheck() {
   zoomLevel = map.getZoom(); //check zoom level
   if (zoomLevel < 9) { //show/hide checkbox based on zoom
-    document.getElementById("mapFollow_wrapper").style.visibility = "hidden";
-    $('#mapFollow_wrapper').addClass('redo_gone');
-    $('#followCheck').prop('checked', false); //reset checkbox
+    document.getElementById("zoom_in_more").style.display = "block";
     unChecked();
   } else {
-    document.getElementById("mapFollow_wrapper").style.visibility = "visible";
-    $('#mapFollow_wrapper').removeClass('redo_gone');
+    document.getElementById("zoom_in_more").style.display = "none";
   }
 }
 
