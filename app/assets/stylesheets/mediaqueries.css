@@ -84,6 +84,12 @@
     #location_maker ul, #location_maker ul li {
       padding-left: 0;
     }
+    div.mapboxgl-ctrl-top-left {
+      left: 0% !important;
+    }
+    div.mapboxgl-ctrl-bottom-right {
+      right: 0% !important;
+    }
 }
 
 @media (max-width: 1800px) {
@@ -110,6 +116,15 @@
   }
   .toggle_btn_reg {
     left: 650px;
+  }
+}
+
+@media (max-width: 1555px) {
+  .mapboxgl-ctrl-top-left {
+    left: 30% !important;
+  }
+  .mapboxgl-ctrl-bottom-right {
+    right: 30% !important;
   }
 }
 
