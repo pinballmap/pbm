@@ -60,6 +60,8 @@ module Pbm
       rails.js
       rails_admin.js
       rails_admin/rails_admin.js
+      smartbanner.min.js
+      smartbanner.min.css
     )
 
     config.rakismet.key = ENV['RAKISMET_KEY']
