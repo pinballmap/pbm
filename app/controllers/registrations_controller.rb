@@ -5,11 +5,11 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     if verify_recaptcha
       @user = User.new(user_params)
-        if @user.save
-          redirect_to root_path, notice: 'Great! Now confirm your account. A confirmation link has been sent to your email address.'
-        else
-          render action: 'new'
-        end
+      if @user.save
+        redirect_to root_path, notice: 'Great! Now confirm your account. A confirmation link has been sent to your email address.'
+      else
+        render action: 'new'
+      end
     else
       build_resource(sign_up_params)
       clean_up_passwords(resource)
