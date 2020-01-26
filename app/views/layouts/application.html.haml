@@ -13,9 +13,25 @@
     %meta{:property => "og:url", :content => "https://#{request.host+request.fullpath}" }
     %meta{:property => "og:image", :content => image_path("pbm-og-image.png")}
     %meta{:content => "JFE_WxE-R1LZtdT0omEkIKOlZr7oq1fPBW9mr3cdyx4", :name => "google-site-verification"}/
+    / Start SmartBanner configuration
+    %meta{:content => "Pinball Map", :name => "smartbanner:title"}/
+    %meta{:content => "Get the App!", :name => "smartbanner:author"}/
+    %meta{:content => "FREE", :name => "smartbanner:price"}/
+    %meta{:content => " - On the App Store", :name => "smartbanner:price-suffix-apple"}/
+    %meta{:content => " - In Google Play", :name => "smartbanner:price-suffix-google"}/
+    %meta{:content => "#{asset_path('splash-icon-128.png')}", :name => "smartbanner:icon-apple"}/
+    %meta{:content => "#{asset_path('splash-icon-128.png')}", :name => "smartbanner:icon-google"}/
+    %meta{:content => "VIEW", :name => "smartbanner:button"}/
+    %meta{:content => "https://itunes.apple.com/us/app/pinball-map/id359275713?mt=8", :name => "smartbanner:button-url-apple"}/
+    %meta{:content => "https://play.google.com/store/apps/details?id=com.pbm&hl=en", :name => "smartbanner:button-url-google"}/
+    %meta{:content => "android,ios", :name => "smartbanner:enabled-platforms"}/
+    %meta{:content => "Close", :name => "smartbanner:close-label"}/
+    / End SmartBanner configuration
+
     = stylesheet_link_tag 'normalize', 'application', 'mediaqueries', 'https://api.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css', :media => ""
     - if mobile_device?
-      = stylesheet_link_tag 'mobile-application'
+      = stylesheet_link_tag 'mobile-application', 'smartbanner.min.css'
+      = javascript_include_tag 'smartbanner.min.js'
     = javascript_include_tag 'application', 'jquery.form', 'jquery.remotipart', 'highslide.min', 'https://api.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.js'
     = csrf_meta_tag
     = render 'application/favicon'

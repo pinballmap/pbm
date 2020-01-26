@@ -38,6 +38,8 @@
 #search_link_wrapper.hide_button.toggle_btn_reg
   =link_to "Link to this Search Result", "", :id => "search_link"
 #mapFollow_wrapper.hide_button.toggle_btn_reg
+  %p.red{:style => 'line-height:16px;', :id => "zoom_in_more"}
+    Zoom in further to refresh results
   %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :onchange => 'unChecked();'}
   Redo results when map is moved?
 :javascript
@@ -47,10 +49,6 @@
     $('.location_search').on('submit', function(e) {
       $(".mask").hide();
       ismap = 0;
-      if (mapAdjusted = 1) { //reset checkbox
-        mapAdjusted = 0;
-        $('#followCheck').prop('checked', false);
-      }
       $('#search_link_wrapper').css('display','block');
       e.preventDefault();
       search_string = $(this).children(":input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
