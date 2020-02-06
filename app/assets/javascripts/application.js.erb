@@ -13,10 +13,10 @@ var locationIDs = new Array();
 var searchSections = new Array();
 const REDO_TIMEOUT = 1800;
 
-function showData(name, id) {
+function toggleData(name, id) {
   var main = id ? '_' + id : '';
 
-  $('#' + name + main).show();
+  $('#' + name + main).toggle();
 }
 
 function clearInfoWindows() {
@@ -274,7 +274,7 @@ function showLocationDetail(locationID) {
   
   if ($('#location_detail_location_' + locationID).is(":hidden") ) {
     $('#show_location_detail_location_' + locationID).hide();
-    showData('location_detail_location', locationID);
+    toggleData('location_detail_location', locationID);
 
     $('#location_detail_location_' + locationID).html(loadingHTML());
     $.get('/locations/' + locationID + '/render_location_detail', function(data) {
