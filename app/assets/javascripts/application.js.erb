@@ -13,10 +13,10 @@ var locationIDs = new Array();
 var searchSections = new Array();
 const REDO_TIMEOUT = 1800;
 
-function toggleData(name, id) {
+function showData(name, id) {
   var main = id ? '_' + id : '';
 
-  $('#' + name + main).toggle();
+  $('#' + name + main).show();
 }
 
 function clearInfoWindows() {
@@ -271,14 +271,16 @@ function findClosestRegion(e) {
 
 function showLocationDetail(locationID) {
   locationLookupMapCenter(locationID);
+  
+  if ($('#location_detail_location_' + locationID).is(":hidden") ) {
+    $('#show_location_detail_location_' + locationID).hide();
+    showData('location_detail_location', locationID);
 
-  $('#show_location_detail_location_' + locationID).toggle();
-  toggleData('location_detail_location', locationID);
-
-  $('#location_detail_location_' + locationID).html(loadingHTML());
-  $.get('/locations/' + locationID + '/render_location_detail', function(data) {
-    $('#location_detail_location_' + locationID).html(data);
-  });
+    $('#location_detail_location_' + locationID).html(loadingHTML());
+    $.get('/locations/' + locationID + '/render_location_detail', function(data) {
+      $('#location_detail_location_' + locationID).html(data);
+    });
+  }
 }
 
 function locationLookupMapCenter(locationID) {
