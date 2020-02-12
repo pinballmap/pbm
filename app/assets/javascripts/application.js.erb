@@ -271,14 +271,16 @@ function findClosestRegion(e) {
 
 function showLocationDetail(locationID) {
   locationLookupMapCenter(locationID);
+  
+  if ($('#location_detail_location_' + locationID).is(":hidden") ) {
+    $('#show_location_detail_location_' + locationID).hide();
+    toggleData('location_detail_location', locationID);
 
-  $('#show_location_detail_location_' + locationID).toggle();
-  toggleData('location_detail_location', locationID);
-
-  $('#location_detail_location_' + locationID).html(loadingHTML());
-  $.get('/locations/' + locationID + '/render_location_detail', function(data) {
-    $('#location_detail_location_' + locationID).html(data);
-  });
+    $('#location_detail_location_' + locationID).html(loadingHTML());
+    $.get('/locations/' + locationID + '/render_location_detail', function(data) {
+      $('#location_detail_location_' + locationID).html(data);
+    });
+  }
 }
 
 function locationLookupMapCenter(locationID) {
