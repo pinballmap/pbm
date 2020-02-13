@@ -49,6 +49,10 @@
     $('.location_search').on('submit', function(e) {
       $(".mask").hide();
       ismap = 0;
+      if (mapAdjusted = 1) { //reset checkbox
+        mapAdjusted = 0;
+        $('#followCheck').prop('checked', false);
+      }
       $('#search_link_wrapper').css('display','block');
       e.preventDefault();
       search_string = $(this).children(":input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
