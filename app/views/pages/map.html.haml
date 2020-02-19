@@ -24,7 +24,7 @@
       Redo results when map is moved?
 
   #map
-    = render :partial => 'locations/map', locals: { lat: 45.512794, lon: -122.679565 }
+    = render :partial => 'locations/map', locals: { lat: @random_lat, lon: @random_lon }
     
   #lookup.toggle_reg_lookup.map_lookup
     #locations
