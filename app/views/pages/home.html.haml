@@ -12,11 +12,6 @@
         =image_tag( 'splash-icon-128.png', :alt => 'splash', :style => 'height:96px;', :class => 'splash')
     %p.bold.p3
       = link_to 'Explore the Map', map_path
-    %p
-      The map was last edited
-      =distance_of_time_in_words(Time.now, UserSubmission.last.created_at)
-      ago.
-      
 #div_container_row{:style => 'border-bottom:20px solid #d1dfe8;'}
   .div_01b.home_intro
     %p.darkb News!
