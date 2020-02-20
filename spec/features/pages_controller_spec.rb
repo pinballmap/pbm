@@ -76,6 +76,7 @@ describe PagesController do
       FactoryBot.create(:user_fave_location, location: FactoryBot.create(:location, name: 'Baz'))
 
       visit '/saved'
+      sleep 1
 
       expect(page.body).to have_content('Foo')
       expect(page.body).to have_content('Bar')
