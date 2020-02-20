@@ -202,8 +202,6 @@ class PagesController < ApplicationController
     @machine_and_location_count_by_region = Region.machine_and_location_count_by_region
     @all_regions = Region.order(:state, :full_name)
     @region_data = regions_javascript_data(@all_regions, @machine_and_location_count_by_region)
-    
-    #@latest_submission_time = UserSubmission.last.created_at
   end
 
   def regions_javascript_data(regions, machine_and_location_count_by_region)
