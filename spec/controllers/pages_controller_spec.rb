@@ -97,6 +97,12 @@ HERE
 
       post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: nil }
     end
+                                 
+    it 'should not send an email if the body contains a spam keyword' do
+      expect(Pony).to_not receive(:mail)
+
+      post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'vape' }
+    end
 
     it 'should flash an error message if captcha fails' do
       logout

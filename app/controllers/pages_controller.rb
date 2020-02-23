@@ -100,7 +100,7 @@ class PagesController < ApplicationController
   end
 
   def contact_sent
-    return if params['contact_msg'].nil? || params['contact_msg'].empty?
+    return if params['contact_msg'].nil? || params['contact_msg'].empty? || params['contact_msg'].match?(/vape/) || params['contact_msg'].match?(/seo/)
 
     user = current_user.nil? ? nil : current_user
 
