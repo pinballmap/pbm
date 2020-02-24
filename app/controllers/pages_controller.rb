@@ -40,6 +40,11 @@ class PagesController < ApplicationController
     user = current_user.nil? ? nil : current_user
 
     params[:user_faved] = user.id if user && !params[:user_faved].blank?
+
+    @region_list = Region.all
+    @region_random = @region_list.sample
+    @random_lat = @region_random.lat
+    @random_lon = @region_random.lon
   end
 
   def region
@@ -95,7 +100,7 @@ class PagesController < ApplicationController
   end
 
   def contact_sent
-    return if params['contact_msg'].nil? || params['contact_msg'].empty?
+    return if params['contact_msg'].nil? || params['contact_msg'].empty? || params['contact_msg'].match?(/vape/) || params['contact_msg'].match?(/seo/)
 
     user = current_user.nil? ? nil : current_user
 
@@ -194,25 +199,11 @@ class PagesController < ApplicationController
   end
 
   def home
-    if ENV['TWITTER_CONSUMER_KEY'] && ENV['TWITTER_CONSUMER_SECRET'] && ENV['TWITTER_OAUTH_TOKEN_SECRET'] && ENV['TWITTER_OAUTH_TOKEN']
-      begin
-        client = Twitter::REST::Client.new do |config|
-          config.consumer_key = ENV['TWITTER_CONSUMER_KEY']
-          config.consumer_secret = ENV['TWITTER_CONSUMER_SECRET']
-          config.access_token = ENV['TWITTER_OAUTH_TOKEN']
-          config.access_token_secret = ENV['TWITTER_OAUTH_TOKEN_SECRET']
-        end
-        @tweets = client.user_timeline('pinballmapcom', count: 5)
-      rescue Twitter::Error
-        @tweets = []
-      end
-    else
-      @tweets = []
-    end
-
     @machine_and_location_count_by_region = Region.machine_and_location_count_by_region
     @all_regions = Region.order(:state, :full_name)
     @region_data = regions_javascript_data(@all_regions, @machine_and_location_count_by_region)
+    
+    @last_updated_time = Location.maximum(:updated_at)
   end
 
   def regions_javascript_data(regions, machine_and_location_count_by_region)
