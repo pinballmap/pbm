@@ -925,7 +925,7 @@ GEM
     nested_form (0.3.2)
     newrelic_rpm (6.1.0.352)
     nio4r (2.3.1)
-    nokogiri (1.10.1)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
     nokogumbo (2.0.1)
       nokogiri (~> 1.8, >= 1.8.4)
