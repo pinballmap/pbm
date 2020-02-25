@@ -202,7 +202,7 @@ class PagesController < ApplicationController
     @machine_and_location_count_by_region = Region.machine_and_location_count_by_region
     @all_regions = Region.order(:state, :full_name)
     @region_data = regions_javascript_data(@all_regions, @machine_and_location_count_by_region)
-    
+
     @last_updated_time = Location.maximum(:updated_at)
   end
 
