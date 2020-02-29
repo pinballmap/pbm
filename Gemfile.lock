@@ -1020,7 +1020,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.19.0, < 2.0)
     rainbow (3.0.0)
-    rake (12.3.2)
+    rake (12.3.3)
     rakismet (1.5.4)
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
