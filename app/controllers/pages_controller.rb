@@ -45,6 +45,10 @@ class PagesController < ApplicationController
     @region_random = @region_list.sample
     @random_lat = @region_random.lat
     @random_lon = @region_random.lon
+    
+    @big_locations = Location.joins(:location_machine_xrefs).group('id').having('count(location_machine_xrefs)>9')
+    @big_locations_name = @big_locations.sample
+    @location_placeholder = @big_locations_name.nil? ? 'e.g. Ground Kontrol' : 'e.g. ' + @big_locations_name.name
   end
 
   def region

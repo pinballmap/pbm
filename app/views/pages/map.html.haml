@@ -12,7 +12,7 @@
       %hr
       .map_input.inline
         %span Venue
-        = text_field_tag "by_location_name", params["by_location_name"], :class => 'lookup_search_input', :placeholder => 'e.g. Wedgehead'
+        = text_field_tag "by_location_name", params["by_location_name"], :class => 'lookup_search_input', :placeholder => @location_placeholder
       = image_submit_tag('search_icon.png', :class => 'map search', :id => "location_search_button")
 
     #search_link_wrapper.hide_button.toggle_btn_reg
