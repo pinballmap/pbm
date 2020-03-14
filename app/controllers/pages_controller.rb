@@ -47,8 +47,12 @@ class PagesController < ApplicationController
     @random_lon = @region_random.lon
     
     @big_locations = Location.joins(:location_machine_xrefs).group('id').having('count(location_machine_xrefs)>9')
-    @big_locations_name = @big_locations.sample
-    @location_placeholder = @big_locations_name.nil? ? 'e.g. Ground Kontrol' : 'e.g. ' + @big_locations_name.name
+    @big_locations_sample = @big_locations.sample
+    @location_placeholder = @big_locations_sample.nil? ? 'e.g. Ground Kontrol' : 'e.g. ' + @big_locations_sample.name
+    
+    @machine_list = Machine.all
+    @machine_sample = @machine_list.sample
+    @machine_placeholder = @machine_sample.nil? ? 'e.g. Lord of the Rings' : 'e.g. ' + @machine_sample.name
   end
 
   def region

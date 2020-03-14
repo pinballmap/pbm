@@ -5,7 +5,7 @@
       = hidden_field_tag :by_location_id
       .map_input
         %span Machine
-        = text_field_tag "by_machine_name", params["by_machine_name"], :class => 'lookup_search_input', :placeholder => 'e.g. Iron Maiden'
+        = text_field_tag "by_machine_name", params["by_machine_name"], :class => 'lookup_search_input', :placeholder => @machine_placeholder 
       .map_input
         %span Near
         = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => 'e.g. Portland, OR'
