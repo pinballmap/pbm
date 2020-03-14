@@ -3,6 +3,9 @@
 
 *sweet pinballin' brah*
 
+This repo is the codebase for [pinballmap.com](https://pinballmap.com). The code for the [Pinball Map mobile app is here](https://github.com/bpoore/pbm-react). If you have an app issue, please use that repo.
+
+
 ## API Documentation
 
 Available here: [http://pinballmap.com/api/v1/docs](http://pinballmap.com/api/v1/docs)
