@@ -54,7 +54,7 @@ class PagesController < ApplicationController
     @machine_sample = @machine_list.sample
     @machine_placeholder = @machine_sample.nil? ? 'e.g. Lord of the Rings' : 'e.g. ' + @machine_sample.name
 
-    @big_cities = Location.select(%i{city state}).having('count(city)>9', 'count(state)>0').group('city', 'state')
+    @big_cities = Location.select(%i[city state]).having('count(city)>9', 'count(state)>0').group('city', 'state')
     @big_cities_sample = @big_cities.sample
     @big_cities_placeholder = @big_cities_sample.nil? ? 'e.g. Portland, OR' : 'e.g. ' + @big_cities_sample.city + ', ' + @big_cities_sample.state
   end
