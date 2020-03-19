@@ -1,4 +1,5 @@
 class MachineScoreXref < ApplicationRecord
+  include ActionView::Helpers::NumberHelper
   belongs_to :user, optional: true
   belongs_to :location_machine_xref, optional: true, counter_cache: true
   has_one :location, through: :location_machine_xref
@@ -26,6 +27,6 @@ class MachineScoreXref < ApplicationRecord
   def create_user_submission
     user_info = user ? user.username : 'UNKNOWN USER'
 
-    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: "#{user_info} added a high score of #{score} on #{machine.name} at #{location.name}", user: user)
+    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: "#{user_info} added a high score of #{number_with_precision(score, precision: 0, delimiter: ',')} on #{machine.name} at #{location.name}", user: user)
   end
 end

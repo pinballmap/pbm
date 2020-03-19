@@ -45,6 +45,18 @@ class PagesController < ApplicationController
     @region_random = @region_list.sample
     @random_lat = @region_random.lat
     @random_lon = @region_random.lon
+
+    @big_locations = Location.joins(:location_machine_xrefs).group('id').having('count(location_machine_xrefs)>9')
+    @big_locations_sample = @big_locations.sample
+    @location_placeholder = @big_locations_sample.nil? ? 'e.g. Ground Kontrol' : 'e.g. ' + @big_locations_sample.name
+
+    @machine_list = Machine.all
+    @machine_sample = @machine_list.sample
+    @machine_placeholder = @machine_sample.nil? ? 'e.g. Lord of the Rings' : 'e.g. ' + @machine_sample.name
+
+    @big_cities = Location.select(%i[city state]).having('count(city)>9', 'count(state)>0').group('city', 'state')
+    @big_cities_sample = @big_cities.sample
+    @big_cities_placeholder = @big_cities_sample.nil? ? 'e.g. Portland, OR' : 'e.g. ' + @big_cities_sample.city + ', ' + @big_cities_sample.state
   end
 
   def region
@@ -202,7 +214,7 @@ class PagesController < ApplicationController
     @machine_and_location_count_by_region = Region.machine_and_location_count_by_region
     @all_regions = Region.order(:state, :full_name)
     @region_data = regions_javascript_data(@all_regions, @machine_and_location_count_by_region)
-    
+
     @last_updated_time = Location.maximum(:updated_at)
   end
 
