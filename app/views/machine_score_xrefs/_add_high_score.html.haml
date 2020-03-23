@@ -4,16 +4,15 @@
     = form_tag machine_score_xrefs_path, :id => "add_high_score_#{lmx.id}", :method => 'post' do
       = hidden_field_tag :location_machine_xref_id, lmx.id
       = label_tag :score, 'Score: '
-      = text_field_tag :score, nil, :placeholder => "enter your score"
+      = text_field_tag :score, nil, :placeholder => "enter your score", :class => 'score', :id => "score_#{lmx.id}"
       %br/
-      = submit_tag 'Add Score', :id => 'add_score'
+      = submit_tag 'Add Score', :id => "add_score_#{lmx.id}", :class => 'add_score'
 
     :javascript
-      document.getElementById('score').addEventListener('input', event =>
+      document.getElementById('score_#{lmx.id}').addEventListener('input', event =>
         event.target.value = (parseInt(event.target.value.replace(/[^\d]+/gi, '')) || 0).toLocaleString('en-US')
       );
       $('#add_high_score_#{lmx.id}').submit(function () {
-        value = toString().replace(/,/g, '')
         $('#score_container_lmx_#{lmx.id}').css('visibility', 'visible');
         $('#score_container_lmx_#{lmx.id}').css('display', 'block');
         $('#show_scores_lmx_#{lmx.id}').html(loadingHTML());
@@ -26,7 +25,7 @@
         $.post(form.attr('action'), form.serialize(), function (data) {
           $('#show_scores_lmx_#{lmx.id}').load('/locations/#{lmx.id}/render_scores');
         });
-        $('#add_high_score_#{lmx.id} #score').val('');
+        $('#add_high_score_#{lmx.id} #score_#{lmx.id}').val('');
 
         return false;
       });
