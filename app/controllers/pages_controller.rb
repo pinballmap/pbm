@@ -120,11 +120,11 @@ class PagesController < ApplicationController
       flash.now[:alert] = 'Thanks for contacting us!'
       send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
     else
-      if verify_recaptcha
+      if verify_recaptcha(action: 'contact', minimum_score: 0.5)
         flash.now[:alert] = 'Thanks for contacting us!'
         send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
       else
-        flash.now[:alert] = 'Your captcha entering skills have failed you. Please go back and try again.'
+        flash.now[:alert] = 'Your captcha entering skills have failed you. We think you are a bot.'
       end
     end
   end

@@ -112,7 +112,7 @@ HERE
 
       post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz' }
 
-      expect(request.flash[:alert]).to eq('Your captcha entering skills have failed you. Please go back and try again.')
+      expect(request.flash[:alert]).to eq('Your captcha entering skills have failed you. We think you are a bot.')
     end
   end
 

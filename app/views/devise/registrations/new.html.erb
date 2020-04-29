@@ -25,7 +25,9 @@
 					<%= f.input :password, :required => true %>
 					<%= f.input :password_confirmation, :required => true %>
 				</div>
-				<div class="recaptcha" style="clear:both"><%= recaptcha_tags %></div>
+				<div class="recaptcha" style="clear:both">
+          <%= recaptcha_v3 action: 'signup' %>
+        </div>
 				<div class="form-actions">
 					<%= f.button :submit, "Join" %>
 				</div>
