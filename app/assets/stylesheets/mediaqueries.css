@@ -16,7 +16,7 @@
     #map_canvas {
       margin-left: 470px;
     }
-    input#score {
+    input.score {
       width: 290px;
     }
     .toggle_btn_reg {
