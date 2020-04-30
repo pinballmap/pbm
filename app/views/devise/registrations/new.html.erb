@@ -26,7 +26,7 @@
 					<%= f.input :password_confirmation, :required => true %>
 				</div>
 				<div class="recaptcha" style="clear:both">
-          <%= recaptcha_v3 action: 'signup' %>
+          <%= recaptcha_v3 action: 'signup', site_key: ENV['RECAPTCHA_SITE_KEY'] %>
         </div>
 				<div class="form-actions">
 					<%= f.button :submit, "Join" %>

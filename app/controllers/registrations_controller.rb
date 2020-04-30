@@ -3,7 +3,7 @@ class RegistrationsController < Devise::RegistrationsController
   prepend_before_action :create, only: [:create]
 
   def create
-    if verify_recaptcha(action: 'signup', minimum_score: 0.5)
+    if verify_recaptcha(action: 'signup', minimum_score: 0.5, secret_key: ENV['RECAPTCHA_SECRET_KEY'])
       @user = User.new(user_params)
       if @user.save
         redirect_to root_path, notice: 'Great! Now confirm your account. A confirmation link has been sent to your email address.'

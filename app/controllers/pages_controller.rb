@@ -120,7 +120,7 @@ class PagesController < ApplicationController
       flash.now[:alert] = 'Thanks for contacting us!'
       send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
     else
-      if verify_recaptcha(action: 'contact', minimum_score: 0.5)
+      if verify_recaptcha(action: 'contact', minimum_score: 0.5, secret_key: ENV['RECAPTCHA_SECRET_KEY'])
         flash.now[:alert] = 'Thanks for contacting us!'
         send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
       else
