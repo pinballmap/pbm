@@ -1090,7 +1090,7 @@ GEM
       childprocess (~> 0.5)
       rubyzip (~> 1.2, >= 1.2.2)
     sexp_processor (4.12.0)
-    simple_form (4.1.0)
+    simple_form (5.0.2)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
     simple_token_authentication (1.15.1)
