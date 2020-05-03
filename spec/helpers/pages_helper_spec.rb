@@ -67,6 +67,10 @@ describe PagesHelper, type: :helper do
       it 'displays the default title' do
         expect(helper.title_for_path('/foo')).to eq('Pinball Map')
       end
+
+      it 'displays the correct flier title ' do
+        expect(helper.title_for_path(map_flier_path)).to eq('Help Promote Pinball Map')
+      end
     end
 
     describe 'with region' do

@@ -4,16 +4,25 @@
   #promote_container
     .promote_subcontainer
       %p.dark.hello.black_text
-        Find pinball machines to play on the #{@region.full_name} Pinball Map!
+        Find pinball machines to play on 
+        - if (@region)  
+          the #{@region.full_name}
+        Pinball Map!
       %p.promote_link
-        pinballmap.com#{region_homepage_path}
+        - if (@region)
+          pinballmap.com#{region_homepage_path}
+        - else
+          pinballmap.com
       %p.promote_link
         %span Tracking
-        %span.bold #{@lmx_count}
-        pinball machines in #{@region.full_name}
-        %br/
-        %span.italic.allregion
-          and #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} across the world!
+        - if (@region)
+          %span.bold #{@lmx_count}
+          pinball machines in #{@region.full_name}
+          %br/
+          %span.italic.allregion
+            and #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} across the world!
+        - else
+          #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} pinball machines across the world!
       %p.dark.hello.help
         Help keep the map up to date!
       %p.dark.hello
@@ -24,16 +33,25 @@
         =image_tag'pinballmap-logo.png', :alt => 'Pinball Map Logo', :class => 'promote_logo'
     .promote_subcontainer
       %p.dark.hello.black_text
-        Find pinball machines to play on the #{@region.full_name} Pinball Map!
+        Find pinball machines to play on 
+        - if (@region)  
+          the #{@region.full_name}
+        Pinball Map!
       %p.promote_link
-        pinballmap.com#{region_homepage_path}
+        - if (@region)
+          pinballmap.com#{region_homepage_path}
+        - else
+          pinballmap.com
       %p.promote_link
         %span Tracking
-        %span.bold #{@lmx_count}
-        pinball machines in #{@region.full_name}
-        %br/
-        %span.italic.allregion
-          and #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} across the world!
+        - if (@region)
+          %span.bold #{@lmx_count}
+          pinball machines in #{@region.full_name}
+          %br/
+          %span.italic.allregion
+            and #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} across the world!
+        - else
+          #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} pinball machines across the world!
       %p.dark.hello.help
         Help keep the map up to date!
       %p.dark.hello
@@ -44,16 +62,25 @@
         =image_tag'pinballmap-logo.png', :alt => 'Pinball Map Logo', :class => 'promote_logo'
     .promote_subcontainer
       %p.dark.hello.black_text
-        Find pinball machines to play on the #{@region.full_name} Pinball Map!
+        Find pinball machines to play on 
+        - if (@region)  
+          the #{@region.full_name}
+        Pinball Map!
       %p.promote_link
-        pinballmap.com#{region_homepage_path}
+        - if (@region)
+          pinballmap.com#{region_homepage_path}
+        - else
+          pinballmap.com
       %p.promote_link
         %span Tracking
-        %span.bold #{@lmx_count}
-        pinball machines in #{@region.full_name}
-        %br/
-        %span.italic.allregion
-          and #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} across the world!
+        - if (@region)
+          %span.bold #{@lmx_count}
+          pinball machines in #{@region.full_name}
+          %br/
+          %span.italic.allregion
+            and #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} across the world!
+        - else
+          #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} pinball machines across the world!
       %p.dark.hello.help
         Help keep the map up to date!
       %p.dark.hello
@@ -64,16 +91,25 @@
         =image_tag'pinballmap-logo.png', :alt => 'Pinball Map Logo', :class => 'promote_logo'
     .promote_subcontainer
       %p.dark.hello.black_text
-        Find pinball machines to play on the #{@region.full_name} Pinball Map!
+        Find pinball machines to play on 
+        - if (@region)  
+          the #{@region.full_name}
+        Pinball Map!
       %p.promote_link
-        pinballmap.com#{region_homepage_path}
+        - if (@region)
+          pinballmap.com#{region_homepage_path}
+        - else
+          pinballmap.com
       %p.promote_link
         %span Tracking
-        %span.bold #{@lmx_count}
-        pinball machines in #{@region.full_name}
-        %br/
-        %span.italic.allregion
-          and #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} across the world!
+        - if (@region)
+          %span.bold #{@lmx_count}
+          pinball machines in #{@region.full_name}
+          %br/
+          %span.italic.allregion
+            and #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} across the world!
+        - else
+          #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} pinball machines across the world!
       %p.dark.hello.help
         Help keep the map up to date!
       %p.dark.hello

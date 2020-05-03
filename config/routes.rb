@@ -181,6 +181,7 @@ Rails.application.routes.draw do
   get 'map_location_data' => 'pages#map_location_data'
   get 'suggest' => 'pages#suggest_new_location', as: 'map_location_suggest'
   get 'submitted_new_location' => 'pages#submitted_new_location', as: 'map_submitted_new_location'
+  get 'flier' => 'pages#flier', as: 'map_flier'
 
   # legacy names for regions
   get '/milwaukee' => redirect('/wisconsin')

@@ -67,6 +67,8 @@ module PagesHelper
               'Confirmation Instructions - '
             elsif path == map_location_suggest_path
               'Suggest a New Location - '
+            elsif path == map_flier_path
+              'Help Promote '
             else
               ''
             end
@@ -107,7 +109,7 @@ module PagesHelper
            elsif path == privacy_path
              'Pinball Map Privacy Policy. We take privacy srsly. Read this for details.'
            elsif path == store_path
-             "Pinball Map Store! We have a t-shirt for sale. Get it while it's hot (pink)."
+             'Pinball Map Store! We t-shirts and stickers for sale.'
            elsif path == donate_path
              'Donate to Pinball Map. Donations help us manage the costs of running the site. Thank you!'
            elsif path.match?(/profile/)
@@ -123,7 +125,9 @@ module PagesHelper
            elsif path.match?(/map/)
              'Find local places to play pinball! The Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
            elsif path == map_location_suggest_path
-             '"Add a new location to the Pinball Map! This crowdsourced map relies on your knowledge and help!"'
+             'Add a new location to the Pinball Map! This crowdsourced map relies on your knowledge and help!'
+           elsif path == map_flier_path
+             'Print out this cool promotional flier for Pinball Map, and help spread the word!'
            else
              'The Pinball Map website and free mobile app will help you find places to play pinball! Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
            end
