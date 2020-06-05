@@ -734,11 +734,11 @@ describe LocationsController do
       expect(@location.date_last_updated).to eq(Date.today)
     end
 
-    it 'truncates descriptions to 255 characters' do
+    it 'truncates descriptions to 550 characters' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       string_that_is_too_large = <<HERE
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur porta dui vel eleifend. Maecenas pulvinar varius euismod. Curabitur luctus diam quis pulvinar facilisis. Suspendisse eu felis sit amet eros cursus aliquam. Proin sit amet posuere.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur porta dui vel eleifend. Maecenas pulvinar varius euismod. Curabitur luctus diam quis pulvinar facilisis. Suspendisse eu felis sit amet eros cursus aliquam. Proin sit amet posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur porta dui vel eleifend. Maecenas pulvinar varius euismod. Curabitur luctus diam quis pulvinar facilisis. Suspendisse eu felis sit amet eros cursus aliquam. Proin sit amet posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 HERE
 
       find("#location_detail_location_#{@location.id} .location_description .comment_image").click
@@ -747,7 +747,7 @@ HERE
 
       sleep 1
 
-      expect(@location.reload.description).to eq('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur porta dui vel eleifend. Maecenas pulvinar varius euismod. Curabitur luctus diam quis pulvinar facilisis. Suspendisse eu felis sit amet eros cursus aliquam. Proin sit amet posuer')
+      expect(@location.reload.description).to eq('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur porta dui vel eleifend. Maecenas pulvinar varius euismod. Curabitur luctus diam quis pulvinar facilisis. Suspendisse eu felis sit amet eros cursus aliquam. Proin sit amet posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur porta dui vel eleifend. Maecenas pulvinar varius euismod. Curabitur luctus diam quis pulvinar facilisis. Suspendisse eu felis sit amet eros cursus aliquam. Proin sit amet posuere. Lorem ipsum dolor sit amet, consect')
     end
   end
 end
