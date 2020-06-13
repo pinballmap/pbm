@@ -87,7 +87,7 @@ module Api
         return_response(
           locations,
           'locations',
-          params[:no_details] ? nil : [location_machine_xrefs: { include: { machine_conditions: { methods: :username } }, methods: :last_updated_by_username }],
+          params[:no_details] ? nil : [location_machine_xrefs: { include: { machine_conditions: { methods: :username }, machine: { methods: :machine_group_id } }, methods: :last_updated_by_username }],
           %i[last_updated_by_username num_machines],
           200,
           except
@@ -153,6 +153,7 @@ module Api
       param :max_distance, String, desc: 'Closest location within "max_distance" miles', required: false
       param :send_all_within_distance, String, desc: "Send all locations within max_distance param, or #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles.", required: false
       param :manufacturer, String, desc: 'Locations with machines from this manufacturer', required: false
+      param :by_machine_group_id, String, desc: 'Machine Group to search for', required: false
       formats ['json']
       def closest_by_address
         max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
@@ -170,12 +171,13 @@ module Api
         end
 
         closest_location = apply_scopes(Location).near([lat, lon], max_distance).first
+        location_details = [location_machine_xrefs: { include: { machine: { methods: :machine_group_id } } }]
 
         if params[:send_all_within_distance]
           closest_locations = apply_scopes(Location).near([lat, lon], max_distance)
-          return_response(closest_locations, 'locations', [], [:machine_names])
+          return_response(closest_locations, 'locations', location_details, [:machine_names])
         elsif closest_location
-          return_response(closest_location, 'location', [], [:machine_names])
+          return_response(closest_location, 'location', location_details, [:machine_names])
         else
           return_response("No locations within #{max_distance} miles.", 'errors')
         end
