@@ -205,9 +205,9 @@ class PagesController < ApplicationController
   end
 
   def flier
-    @locations = Location.where('region_id = ?', @region.id)
-    @location_count = @locations.count
-    @lmx_count = @region.machines_count
+    @locations = !@region.nil? ? Location.where('region_id = ?', @region.id) : ''
+    @location_count = !@region.nil? ? @locations.count : ''
+    @lmx_count = !@region.nil? ? @region.machines_count : ''
   end
 
   def home

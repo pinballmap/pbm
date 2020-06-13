@@ -264,11 +264,11 @@ Changed location type to bar to quarterworld
       HERE
     end
 
-    it 'truncates location description to 254 characters' do
+    it 'truncates location description to 549 characters' do
       u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
-      @l.update_metadata(u, description: '1' * 300)
+      @l.update_metadata(u, description: '1' * 600)
 
-      expect(@l.description.size).to eq(254)
+      expect(@l.description.size).to eq(549)
     end
   end
 end

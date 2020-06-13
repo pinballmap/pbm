@@ -147,7 +147,7 @@ class Location < ApplicationRecord
 
   def update_description(new_description)
     old_description = description
-    self.description = new_description.slice(0, 254)
+    self.description = new_description.slice(0, 549)
 
     if !description.match?(%r{http[s]?:\/\/})
       if ENV['RAKISMET_KEY'] && spam?
