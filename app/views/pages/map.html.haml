@@ -1,5 +1,5 @@
 #region_page_body
-  #form.toggle_reg_lookup
+  #form
     = form_tag map_location_data_path, :method => 'get', :id => 'address_search_form', :class => 'location_search' do
       = hidden_field_tag :by_machine_id
       = hidden_field_tag :by_location_id
@@ -26,7 +26,7 @@
   #map
     = render :partial => 'locations/map', locals: { lat: @random_lat, lon: @random_lon }
     
-  #lookup.toggle_reg_lookup.map_lookup
+  #lookup
     #locations
       #intro
         %p.darkb News!
