@@ -1,6 +1,10 @@
 #region_page_body
-  #form
-    = render :partial => 'locations/form'
+  - if mobile_device?
+    %div.search_modal{:onclick => "showSearchModal();"}
+      %button SEARCH
+  #form_container
+    #form
+      = render :partial => 'locations/form'
   - if mobile_device?
     #map
       = render :partial => 'locations/map'

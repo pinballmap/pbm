@@ -1,3 +1,6 @@
+- if mobile_device?
+  %div.close_button{:onclick => "hideSearchModal();"}
+    X
 %div{:id => 'other_search_options'}
 
 - @search_options.each_key do |key|
@@ -47,6 +50,7 @@
   $(function () {
     var ismap = 0;
     $('.location_search').on('submit', function(e) {
+      hideSearchModal();
       $(".mask").hide();
       ismap = 0;
       if (mapAdjusted = 1) { //reset checkbox

@@ -299,6 +299,17 @@ function backToResults() {
   $('.location_detail_location').hide();
 }
 
+function showSearchModal() {
+  $('#form_container').show(400);
+}
+
+function hideSearchModal() {
+  if ($('.search_modal').css('display') == 'block' ) {
+    $('#form_container').hide(400);
+  }
+}
+
+
 function setRegion(regionName) {
   region = regionName;
 }
