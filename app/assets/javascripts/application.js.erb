@@ -54,7 +54,7 @@ function showLocations(ids, lats, lons, contents, latLng) {
   if (mapAdjusted === 0) {
       map = new mapboxgl.Map({
         container: 'map_canvas',
-        style: 'https://mapserver.pinballmap.com/styles/klokantech-basic/style.json',
+        style: 'https://tiles.pinballmap.com/styles/basic-preview/style.json',
       });
       map.addControl(new mapboxgl.NavigationControl(), 'top-left');
   }
