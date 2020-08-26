@@ -271,9 +271,12 @@ function findClosestRegion(e) {
 
 function showLocationDetail(locationID) {
   locationLookupMapCenter(locationID);
+  $('.location_detail_location').hide();
   
   if ($('#location_detail_location_' + locationID).is(":hidden") ) {
     $('#show_location_detail_location_' + locationID).hide();
+    $('.sub_nav_location').hide();
+    $('.back_to_results').show();
     toggleData('location_detail_location', locationID);
 
     $('#location_detail_location_' + locationID).html(loadingHTML());
@@ -289,6 +292,23 @@ function locationLookupMapCenter(locationID) {
   map.panTo(markers[index].getLngLat());
   markers[index].togglePopup();
 }
+
+function backToResults() {
+  $('.back_to_results').hide();
+  $('.sub_nav_location').show("slide", {direction: "left"}, 400);
+  $('.location_detail_location').hide();
+}
+
+function showSearchModal() {
+  $('#form_container').show(400);
+}
+
+function hideSearchModal() {
+  if ($('.search_modal').css('display') == 'block' ) {
+    $('#form_container').hide(400);
+  }
+}
+
 
 function setRegion(regionName) {
   region = regionName;

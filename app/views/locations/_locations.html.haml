@@ -59,7 +59,9 @@
   }
 
 #results_container
-  #search_results   
+  #search_results
+    %div.back_to_results{:onclick => "backToResults();"}
+      %span < Go back to search results
     - total_num_machines = 0           
     - @locations.each do |location|
       - l = location.clone

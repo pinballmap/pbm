@@ -407,19 +407,73 @@ div.state_name_container {
   min-width: 0;
 }
 
+#form_container {
+  display: none;
+  background:rgba(255,255,255,0.7);
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  top: 0;
+}
+
 #form {
-  width: auto;
-  border: 3px solid #97a5af;
+  width: 95%;
+  border: 5px solid #97a5af;
   min-width: 300px;
   height: auto;
-  top: 0;
-  right: 0;
-  position: relative;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(0%, -50%);
   margin: 10px !important;
-  z-index: 0;
-  padding-bottom: 5px;
-  padding-top: 0;
+  padding: 5px 10px;
+}
+
+.search_modal button {
+  border: 2px solid #97a5af;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  box-shadow: 1px 1px 3px #b7cfc1;
+  -moz-box-shadow: 1px 1px 3px #b7cfc1;
+  -webkit-box-shadow: 1px 1px 3px #b7cfc1;
+  padding: 4px 8px;
+  font-size: 16px;
+  font-family: "Freight-MedSC",sans-serif;
+  text-transform: uppercase;
+  height: 28px;
+  background: #4b5862;
+  color: #f5fbff;
+  font-weight: bold;
+  width: 100px;
+  margin: 10px auto 10px;
+  text-align: center;
+  letter-spacing: 2px;
+  line-height: 1;
+  display: block;
+}
+
+.search_modal button:active {
   box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  transform: translate(1px, 1px);
+  background: #d3ecff;
+}
+
+.close_button {
+  position: absolute;
+  top: -20px;
+  right: -5px;
+  background: #F53240;
+  font-size: 32px;
+  color: #f5fbff;
+  padding: 2px 0px 0 10px;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
 }
 
 #form .search {
@@ -526,15 +580,9 @@ span.or {
   width: auto;
   left: 0;
   top: 5px;
-  border-color: #666666;
-  border-bottom: none;
-  border-bottom-right-radius: 0;
-  -webkit-border-bottom-right-radius: 0;
-  -moz-border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-  -webkit-border-bottom-left-radius: 0;
-  -moz-border-bottom-left-radius: 0;
+  border: none;
   box-shadow: none;
+  background: none;
 }
 #search_link_wrapper {
   border: none;
@@ -558,6 +606,7 @@ span.or {
 .show_location_detail_location {
   border-radius: 0;
   border: none;
+  margin-bottom: 0;
 }
 
 .name {
@@ -625,6 +674,7 @@ span.machine_condition_text {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  margin-bottom: 12px;
 }
 #search_results li.address_full {
   width: auto;
@@ -1049,6 +1099,8 @@ p.notice {
 
 .ui-autocomplete {
   position: absolute;
+  max-width: 80vw;
+  max-height: calc(60vw);
 }
 
 @media (max-width: 915px) {

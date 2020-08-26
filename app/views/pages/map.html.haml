@@ -1,32 +1,39 @@
 #region_page_body
-  #form.toggle_reg_lookup
-    = form_tag map_location_data_path, :method => 'get', :id => 'address_search_form', :class => 'location_search' do
-      = hidden_field_tag :by_machine_id
-      = hidden_field_tag :by_location_id
-      .map_input
-        %span Machine
-        = text_field_tag "by_machine_name", params["by_machine_name"], :class => 'lookup_search_input', :placeholder => @machine_placeholder 
-      .map_input
-        %span Near
-        = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => @big_cities_placeholder
-      %hr
-      .map_input.inline
-        %span Venue
-        = text_field_tag "by_location_name", params["by_location_name"], :class => 'lookup_search_input', :placeholder => @location_placeholder
-      = image_submit_tag('search_icon.png', :class => 'map search', :id => "location_search_button")
+  - if mobile_device?
+    %div.search_modal{:onclick => "showSearchModal();"}
+      %button SEARCH
+  #form_container
+    #form
+      - if mobile_device?
+        %div.close_button{:onclick => "hideSearchModal();"}
+          X
+      = form_tag map_location_data_path, :method => 'get', :id => 'address_search_form', :class => 'location_search' do
+        = hidden_field_tag :by_machine_id
+        = hidden_field_tag :by_location_id
+        .map_input
+          %span Machine
+          = text_field_tag "by_machine_name", params["by_machine_name"], :class => 'lookup_search_input', :placeholder => @machine_placeholder 
+        .map_input
+          %span Near
+          = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => @big_cities_placeholder
+        %hr
+        .map_input.inline
+          %span Venue
+          = text_field_tag "by_location_name", params["by_location_name"], :class => 'lookup_search_input', :placeholder => @location_placeholder
+        = image_submit_tag('search_icon.png', :class => 'map search', :id => "location_search_button")
 
-    #search_link_wrapper.hide_button.toggle_btn_reg
-      =link_to "Link to this Search Result", "", :id => "search_link"
-    #mapFollow_wrapper.hide_button.toggle_btn_reg
-      %p.red{:style => 'line-height:16px;', :id => "zoom_in_more"}
-        Zoom in further to refresh results
-      %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :onchange => 'unChecked();'}
-      Redo results when map is moved?
+      #search_link_wrapper.hide_button.toggle_btn_reg
+        =link_to "Link to this Search Result", "", :id => "search_link"
+      #mapFollow_wrapper.hide_button.toggle_btn_reg
+        %p.red{:style => 'line-height:16px;', :id => "zoom_in_more"}
+          Zoom in further to refresh results
+        %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :onchange => 'unChecked();'}
+        Redo results when map is moved?
 
   #map
     = render :partial => 'locations/map', locals: { lat: @random_lat, lon: @random_lon }
     
-  #lookup.toggle_reg_lookup.map_lookup
+  #lookup.map_lookup
     #locations
       #intro
         %p.darkb News!
@@ -71,6 +78,7 @@
 
 :javascript
   $('#address_search_form').on('submit', function(e) {
+    hideSearchModal();
     $(".mask").hide();
     if (mapAdjusted = 1) { //reset checkbox
       mapAdjusted = 0;
