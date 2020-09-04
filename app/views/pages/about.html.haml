@@ -23,7 +23,10 @@
               %label{:for => "contact_msg"} Message:
               %textarea{:type => "text", :name => "contact_msg", :params => "contact_msg", :class => "text"}
             - if !user_signed_in?
-              %div= recaptcha_v3(action: 'contact', site_key: ENV['RECAPTCHA_SITE_KEY'])
+              %li
+                %span.red.serif Security Question (required)
+                %label{:for => "security_test", } What are we mapping on this site?
+                %input{:type => "text", :name => "security_test", :params => "security_test", :class => "text"}
             %li.submit{:style => "clear:both;"}
               %input{:type => "submit", :value => "Submit Comment", :class => "submit_button"}
     .column.bg_gray.w_450

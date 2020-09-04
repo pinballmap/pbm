@@ -3,8 +3,9 @@ class RegistrationsController < Devise::RegistrationsController
   prepend_before_action :create, only: [:create]
 
   def create
-    if verify_recaptcha(action: 'signup', minimum_score: 0.5, secret_key: ENV['RECAPTCHA_SECRET_KEY'])
-      @user = User.new(user_params)
+    @answers = %w[pinball Pinball PINBALL]
+    @user = User.new(user_params)
+    if @answers.any? { |w| @user.security_test[w] }
       if @user.save
         redirect_to root_path, notice: 'Great! Now confirm your account. A confirmation link has been sent to your email address.'
       else
@@ -13,8 +14,7 @@ class RegistrationsController < Devise::RegistrationsController
     else
       build_resource(sign_up_params)
       clean_up_passwords(resource)
-      flash.now[:alert] = 'Your captcha entering skills have failed you. Please go back and try again.'
-      flash.delete :recaptcha_error
+      flash.now[:alert] = 'You failed the security test. Please go back and try again.'
       render :new
     end
   end
@@ -22,6 +22,6 @@ class RegistrationsController < Devise::RegistrationsController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :remember_me, :region_id, :is_machine_admin, :is_primary_email_contact, :username, :is_disabled, :is_super_admin)
+    params.require(:user).permit(:email, :password, :password_confirmation, :security_test, :remember_me, :region_id, :is_machine_admin, :is_primary_email_contact, :username, :is_disabled, :is_super_admin)
   end
 end

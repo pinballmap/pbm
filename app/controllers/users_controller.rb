@@ -34,6 +34,6 @@ class UsersController < InheritedResources::Base
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :remember_me, :region_id, :is_machine_admin, :is_primary_email_contact, :username, :is_disabled, :is_super_admin)
+    params.require(:user).permit(:email, :password, :password_confirmation, :security_test, :remember_me, :region_id, :is_machine_admin, :is_primary_email_contact, :username, :is_disabled, :is_super_admin)
   end
 end
