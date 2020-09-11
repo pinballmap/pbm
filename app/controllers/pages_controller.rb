@@ -115,16 +115,17 @@ class PagesController < ApplicationController
     return if params['contact_msg'].nil? || params['contact_msg'].empty? || params['contact_msg'].match?(/vape/) || params['contact_msg'].match?(/seo/)
 
     user = current_user.nil? ? nil : current_user
+    @answers = %w[pinball Pinball PINBALL]
 
     if user
       flash.now[:alert] = 'Thanks for contacting us!'
       send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
     else
-      if verify_recaptcha(action: 'contact', minimum_score: 0.5, secret_key: ENV['RECAPTCHA_SECRET_KEY'])
+      if @answers.any? { |w| params['security_test'][w] }
         flash.now[:alert] = 'Thanks for contacting us!'
         send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
       else
-        flash.now[:alert] = 'Your captcha entering skills have failed you. We think you are a bot.'
+        flash.now[:alert] = 'You failed the security test. Please go back and try again.'
       end
     end
   end

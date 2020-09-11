@@ -53,7 +53,7 @@ HERE
         )
       end
 
-      post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz' }
+      post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_test: 'pinball' }
       expect(@region.reload.user_submissions.count).to eq(1)
       submission = @region.user_submissions.first
       expect(submission.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
@@ -89,7 +89,7 @@ HERE
         )
       end
 
-      post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz' }
+      post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_test: 'pinball' }
     end
 
     it 'should not send an email if the body is blank' do
@@ -104,15 +104,14 @@ HERE
       post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'vape' }
     end
 
-    it 'should flash an error message if captcha fails' do
+    it 'should flash an error message if security test fails' do
       logout
-      expect(controller).to receive(:verify_recaptcha).and_return(nil)
 
       expect(Pony).to_not receive(:mail)
 
-      post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz' }
+      post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_test: 'dunno' }
 
-      expect(request.flash[:alert]).to eq('Your captcha entering skills have failed you. We think you are a bot.')
+      expect(request.flash[:alert]).to eq('You failed the security test. Please go back and try again.')
     end
   end
 
