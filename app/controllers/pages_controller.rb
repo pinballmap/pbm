@@ -27,8 +27,11 @@ class PagesController < ApplicationController
           @lat, @lon = results.first.coordinates
         end
       end
-
-      @locations = apply_scopes(params[:address].blank? ? Location : Location.near([@lat, @lon], 5)).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs, :region, :location_type)
+      @near_distance = 5
+      while @locations.blank? do
+        @locations = apply_scopes(params[:address].blank? ? Location : Location.near([@lat, @lon], @near_distance)).order('locations.name').includes(:location_machine_xrefs, :machines, :region, :location_type)
+        @near_distance += 50
+      end
     end
 
     @location_data = LocationsController.locations_javascript_data(@locations)
