@@ -30,7 +30,7 @@ class PagesController < ApplicationController
       @near_distance = 5
       while @locations.blank? do
         @locations = apply_scopes(params[:address].blank? ? Location : Location.near([@lat, @lon], @near_distance)).order('locations.name').includes(:location_machine_xrefs, :machines, :region, :location_type)
-        @near_distance += 50
+        @near_distance += 100
       end
     end
 
