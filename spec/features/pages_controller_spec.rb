@@ -83,7 +83,7 @@ describe PagesController do
       expect(page.body).to_not have_content('Baz')
     end
 
-    it 'lets you search by address -- displays 0 results instead of saying "Not Found"' do
+    it 'lets you search by address -- display closest location no matter how far away it is instead of saying "Not Found"' do
       FactoryBot.create(:location, region: nil, name: 'Troy', zip: '48098', lat: 42.5925, lon: 83.1756)
 
       visit '/map'
@@ -94,7 +94,7 @@ describe PagesController do
 
       sleep 1
 
-      expect(page.body).to have_content('0 Locations & 0 Machines in Result')
+      expect(page.body).to have_content('Test Location')
       expect(page).to_not have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
     end
 
