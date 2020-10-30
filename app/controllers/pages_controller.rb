@@ -189,6 +189,11 @@ class PagesController < ApplicationController
     robots = File.read(Rails.root + 'public/robots.txt')
     render plain: robots
   end
+  
+  def apple_app_site_association
+    aasa = File.read(Rails.root + '.well-known/apple-app-site-association')
+    render json: aasa
+  end
 
   def app; end
 
