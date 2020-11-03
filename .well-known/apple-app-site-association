@@ -3,7 +3,32 @@
     "apps": [],
     "details": [{
       "appID": "X8ZE3634DQ.net.isaacruiz.ppm",
-      "paths": ["*/?by_location_id=*"]
+      "paths": ["/map/?by_location_id=*"]
     }]
   }
+}
+{
+	"applinks": {
+		"apps": [],
+		"details": [
+			{
+				"appIDs": [ "X8ZE3634DQ.net.isaacruiz.ppm" ],
+				"components": [
+					{
+						"/": "/map/?by_location_id=*",
+						"comment": "Matches any location details URL whose path starts with /map/ - this is for testing right now, since we also have region urls"
+					}
+				]
+			},
+			{
+				"appID": "X8ZE3634DQ.net.isaacruiz.ppm",
+				"paths": [ "/map/?by_location_id=*" ]
+			}
+		]
+	},
+	"activitycontinuation": {
+		"apps": [
+			"X8ZE3634DQ.net.isaacruiz.ppm"
+		]
+	}
 }
