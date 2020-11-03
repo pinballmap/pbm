@@ -1,13 +1,4 @@
 {
-  "applinks": {
-    "apps": [],
-    "details": [{
-      "appID": "X8ZE3634DQ.net.isaacruiz.ppm",
-      "paths": ["/map/?by_location_id=*"]
-    }]
-  }
-}
-{
 	"applinks": {
 		"apps": [],
 		"details": [
