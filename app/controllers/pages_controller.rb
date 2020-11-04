@@ -27,8 +27,11 @@ class PagesController < ApplicationController
           @lat, @lon = results.first.coordinates
         end
       end
-
-      @locations = apply_scopes(params[:address].blank? ? Location : Location.near([@lat, @lon], 5)).order('locations.name').includes(:location_machine_xrefs, :machines, :location_picture_xrefs, :region, :location_type)
+      @near_distance = 5
+      while @locations.blank? and @near_distance < 600 do
+        @locations = apply_scopes(params[:address].blank? ? Location : Location.near([@lat, @lon], @near_distance)).order('locations.name').includes(:location_machine_xrefs, :machines, :region, :location_type)
+        @near_distance += 100
+      end
     end
 
     @location_data = LocationsController.locations_javascript_data(@locations)
@@ -185,6 +188,11 @@ class PagesController < ApplicationController
   def robots
     robots = File.read(Rails.root + 'public/robots.txt')
     render plain: robots
+  end
+  
+  def apple_app_site_association
+    aasa = File.read(Rails.root + '.well-known/apple-app-site-association')
+    render json: aasa
   end
 
   def app; end
