@@ -28,7 +28,7 @@ class PagesController < ApplicationController
         end
       end
       @near_distance = 5
-      while @locations.blank? and @near_distance < 600 do
+      while @locations.blank? && @near_distance < 600
         @locations = apply_scopes(params[:address].blank? ? Location : Location.near([@lat, @lon], @near_distance)).order('locations.name').includes(:location_machine_xrefs, :machines, :region, :location_type)
         @near_distance += 100
       end
@@ -189,7 +189,7 @@ class PagesController < ApplicationController
     robots = File.read(Rails.root + 'public/robots.txt')
     render plain: robots
   end
-  
+
   def apple_app_site_association
     aasa = File.read(Rails.root + '.well-known/apple-app-site-association')
     render json: aasa
