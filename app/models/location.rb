@@ -227,6 +227,10 @@ class Location < ApplicationRecord
     end
   end
 
+  def name_and_city
+    name + ' (' + city + ')'
+  end
+
   def last_updated_by_username
     last_updated_by_user ? last_updated_by_user.username : ''
   end

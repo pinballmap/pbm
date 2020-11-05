@@ -563,7 +563,7 @@ describe LocationMachineXrefsController do
       end
     end
 
-    it 'allows case insensive searches of a region' do
+    it 'allows case insensitive searches of a region' do
       stub_const('ENV', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
 
       chicago_region = FactoryBot.create(:region, name: 'chicago', full_name: 'Chicago')
@@ -909,6 +909,15 @@ describe LocationMachineXrefsController do
       page.find('div#other_search_options button#machine_section_link').click
 
       expect(page).to have_select('by_machine_id', with_options: ['foo (stern)', 'bar (bally, 2000)', 'baz (2001)'])
+    end
+
+    it 'has a location dropdown with city' do
+      FactoryBot.create(:location, id: 11, region: @region, name: 'Cleo North', city: 'Portland', state: 'OR')
+
+      visit "/#{@region.name}"
+      page.find('div#other_search_options button#location_section_link').click
+
+      expect(page).to have_select('by_location_id', with_options: ['Cleo North', '(Portland)'])
     end
 
     it 'has location summary info that shows machine metadata when available' do
