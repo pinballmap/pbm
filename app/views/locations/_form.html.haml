@@ -8,7 +8,7 @@
     = form_tag locations_path, :method => 'get', :class => 'location_search' do
       = hidden_field_tag :region, params[:region]
       - if @search_options[key]['autocomplete']
-        = select_tag "by_#{key}_id", options_for_select([['All', '']]) + options_from_collection_for_select(@search_options[key]['search_collection'], @search_options[key]['id'], @search_options[key]['name'], params["by_#{key}"])
+        = select_tag "by_#{key}_id", options_for_select([['All', '']]) + options_from_collection_for_select(@search_options[key]['search_collection'], @search_options[key]['id'], @search_options[key]["name"], params["by_#{key}"])
         %span.or or
         %div.search_field_container
           = text_field_tag "by_#{key}_name", params["by_#{key}_name"], :class => 'lookup_search_input', :placeholder => 'type here...'
