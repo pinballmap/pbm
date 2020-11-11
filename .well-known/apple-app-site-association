@@ -7,7 +7,8 @@
 				"components": [
 					{
 						"/": "/map/*",
-						"comment": "Matches any location details URL whose path starts with /map/ - this is for testing right now, since we also have region urls"
+						"?": { "by_location_id": "*" }
+						"comment": "Matches any URL whose path starts with /map and which has a query item with name 'by_location_id' and any value"
 					}
 				]
 			},
