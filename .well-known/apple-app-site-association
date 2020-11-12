@@ -6,14 +6,14 @@
 				"appIDs": [ "X8ZE3634DQ.net.isaacruiz.ppm" ],
 				"components": [
 					{
-						"/": "/map/*",
-						"comment": "Matches any location details URL whose path starts with /map/ - this is for testing right now, since we also have region urls"
+						"/": "/*",
+						"comment": "Matches any URL"
 					}
 				]
 			},
 			{
 				"appID": "X8ZE3634DQ.net.isaacruiz.ppm",
-				"paths": [ "/map/*" ]
+				"paths": [ "/*" ]
 			}
 		]
 	},
