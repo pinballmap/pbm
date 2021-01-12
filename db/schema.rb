@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_02_061504) do
+ActiveRecord::Schema.define(version: 2021_01_12_043456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 2020_09_02_061504) do
     t.integer "zone_id"
     t.integer "region_id"
     t.integer "location_type_id"
-    t.string "description", limit: 255
+    t.text "description"
     t.integer "operator_id"
     t.date "date_last_updated"
     t.integer "last_updated_by_user_id"
