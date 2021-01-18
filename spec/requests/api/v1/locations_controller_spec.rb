@@ -580,6 +580,29 @@ HERE
       expect(locations[1]['id']).to eq(close_location_two.id)
       expect(locations[2]['id']).to eq(close_location_three.id)
     end
+    
+    it 'respects no_details and shows fewer location fields' do
+      close_location_one = FactoryBot.create(:location, region: @region, lat: 45.49, lon: -122.63)
+      close_location_two = FactoryBot.create(:location, region: @region, lat: 45.49, lon: -122.631)
+      FactoryBot.create(:location, region: @region, lat: 5.49, lon: 22.63)
+      
+      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: close_location_one.lat, lon: close_location_one.lon, send_all_within_distance: 1, no_details: 1 }
+
+      expect(response.body.scan('country').size).to eq(0)
+      expect(response.body.scan('is_stern_army').size).to eq(0)
+      expect(response.body.scan('last_updated_by_user_id').size).to eq(0)
+      expect(response.body.scan('description').size).to eq(0)
+      expect(response.body.scan('region_id').size).to eq(0)
+      expect(response.body.scan('zone_id').size).to eq(0)
+      expect(response.body.scan('website').size).to eq(0)
+      expect(response.body.scan('phone').size).to eq(0)
+
+      expect(response.body.scan('id').size).to_not eq(0)
+      expect(response.body.scan('name').size).to_not eq(0)
+      expect(response.body.scan('lat').size).to_not eq(0)
+      expect(response.body.scan('lon').size).to_not eq(0)
+      expect(response.body.scan('city').size).to_not eq(0)
+    end
 
     it 'respects filters' do
       location_type = FactoryBot.create(:location_type)
