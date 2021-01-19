@@ -131,17 +131,20 @@ module Api
       param :by_operator_id, Integer, desc: 'Operator ID to search by', required: false
       param :by_at_least_n_machines_type, Integer, desc: 'Only locations with N or more machines', required: false
       param :max_distance, String, desc: 'Closest location within "max_distance" miles', required: false
+      param :no_details, Integer, desc: 'Omit data that app does not need from pull', required: false
       param :send_all_within_distance, String, desc: "Send all locations within max_distance param, or #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles.", required: false
       formats ['json']
       def closest_by_lat_lon
         max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
 
+        except = params[:no_details] ? %i[country is_stern_army last_updated_by_user_id description region_id zone_id website phone] : nil
+        
         closest_locations = apply_scopes(Location).includes(:machines).near([params[:lat], params[:lon]], max_distance)
 
         if !closest_locations.empty? && !params[:send_all_within_distance]
-          return_response(closest_locations.first, 'location', [], %i[machine_names machine_ids])
+          return_response(closest_locations.first, 'location', [], %i[machine_names machine_ids], 200, except)
         elsif !closest_locations.empty?
-          return_response(closest_locations, 'locations', [], %i[machine_names machine_ids])
+          return_response(closest_locations, 'locations', [], %i[machine_names machine_ids], 200, except)
         else
           return_response("No locations within #{max_distance} miles.", 'errors')
         end
