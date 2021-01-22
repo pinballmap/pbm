@@ -155,11 +155,14 @@ module Api
       param :address, String, desc: 'Address', required: true
       param :max_distance, String, desc: 'Closest location within "max_distance" miles', required: false
       param :send_all_within_distance, String, desc: "Send all locations within max_distance param, or #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles.", required: false
+      param :no_details, Integer, desc: 'Omit data that app does not need from pull', required: false
       param :manufacturer, String, desc: 'Locations with machines from this manufacturer', required: false
       param :by_machine_group_id, String, desc: 'Machine Group to search for', required: false
       formats ['json']
       def closest_by_address
         max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
+        
+        except = params[:no_details] ? %i[country is_stern_army last_updated_by_user_id description region_id zone_id website phone] : nil
 
         lat, lon = ''
         unless params[:address].blank?
@@ -178,9 +181,9 @@ module Api
 
         if params[:send_all_within_distance]
           closest_locations = apply_scopes(Location).near([lat, lon], max_distance)
-          return_response(closest_locations, 'locations', location_details, [:machine_names])
+          return_response(closest_locations, 'locations', location_details, [:machine_names], 200, except)
         elsif closest_location
-          return_response(closest_location, 'location', location_details, [:machine_names])
+          return_response(closest_location, 'location', location_details, [:machine_names], 200, except)
         else
           return_response("No locations within #{max_distance} miles.", 'errors')
         end
