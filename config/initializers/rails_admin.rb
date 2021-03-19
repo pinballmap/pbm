@@ -616,6 +616,56 @@ RailsAdmin.config do |config|
     export do; end
     update do; end
   end
+  config.model MachineCondition do
+    list do
+      field :id, :integer
+      field :comment, :string
+      field :user do
+        searchable :username
+      end
+      field :location_machine_xref_id do
+        read_only true
+        label "Machine"
+        pretty_value do
+          bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object].location_machine_xref_id}
+        end
+      end
+      field :created_at, :date
+      field :updated_at, :date
+    end
+    show do
+      field :id, :integer
+      field :comment, :string
+      field :user do
+        searchable :username
+      end
+      field :location_machine_xref_id do
+        read_only true
+        label "Machine"
+        pretty_value do
+          bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object].location_machine_xref_id}
+        end
+      end
+      field :created_at, :date
+      field :updated_at, :date
+    end
+    edit do
+      field :comment, :text
+      field :user do
+        read_only true
+      end
+      field :location_machine_xref_id do
+        read_only true
+        label "Machine"
+        pretty_value do
+          bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object].location_machine_xref_id}
+        end
+      end
+    end
+    create do; end
+    export do; end
+    update do; end
+  end
   config.model LocationMachineXref do
     edit do
       field :condition
