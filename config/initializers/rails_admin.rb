@@ -619,7 +619,7 @@ RailsAdmin.config do |config|
   config.model MachineCondition do
     list do
       field :id, :integer
-      field :comment, :string
+      field :comment
       field :user do
         searchable :username
       end
@@ -635,7 +635,7 @@ RailsAdmin.config do |config|
     end
     show do
       field :id, :integer
-      field :comment, :string
+      field :comment
       field :user do
         searchable :username
       end
@@ -650,7 +650,7 @@ RailsAdmin.config do |config|
       field :updated_at, :date
     end
     edit do
-      field :comment, :text
+      field :comment
       field :user do
         read_only true
       end
