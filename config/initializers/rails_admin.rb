@@ -623,13 +623,8 @@ RailsAdmin.config do |config|
       field :user do
         searchable :username
       end
-      field :location_machine_xref_id do
-        read_only true
-        label "Machine"
-        pretty_value do
-          bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object].location_machine_xref_id}
-        end
-      end
+      field :machine, :belongs_to_association
+      field :location, :belongs_to_association
       field :created_at, :date
       field :updated_at, :date
     end
@@ -639,13 +634,8 @@ RailsAdmin.config do |config|
       field :user do
         searchable :username
       end
-      field :location_machine_xref_id do
-        read_only true
-        label "Machine"
-        pretty_value do
-          bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object].location_machine_xref_id}
-        end
-      end
+      field :machine, :belongs_to_association
+      field :location, :belongs_to_association
       field :created_at, :date
       field :updated_at, :date
     end
@@ -654,13 +644,8 @@ RailsAdmin.config do |config|
       field :user do
         read_only true
       end
-      field :location_machine_xref_id do
-        read_only true
-        label "Machine"
-        pretty_value do
-          bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object].location_machine_xref_id}
-        end
-      end
+      field :machine
+      field :location
     end
     create do; end
     export do; end
