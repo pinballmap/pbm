@@ -13,8 +13,7 @@ class Ability
     can %i[update read destroy], [MachineScoreXref], location: { region_id: user.region_id }
 
     if user.is_super_admin
-      can :manage, [Operator, Location, User, UserSubmission, SuggestedLocation, LocationPictureXref]
-      can %i[update read destroy], [MachineCondition]
+      can :manage, [Operator, Location, User, UserSubmission, SuggestedLocation, MachineCondition, LocationPictureXref]
     else
       can :manage, [Location, Operator], region_id: user.region_id
       can %i[update read destroy], [SuggestedLocation], region_id: user.region_id
