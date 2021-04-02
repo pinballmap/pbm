@@ -1,6 +1,9 @@
 namespace :heroku do
   desc 'Restart heroku dynos'
   task restart_dynos: :environment do
-    Heroku::API.new(api_key: ENV['HEROKU_API_KEY']).post_ps_restart(ENV['HEROKU_APP_NAME'])
+    heroku = PlatformAPI.connect_oauth(ENV['HEROKU_OAUTH_TOKEN'])
+    dynos =  heroku.dyno.list(ENV['HEROKU_APP_NAME'])
+
+    heroku.dyno.restart(ENV['HEROKU_APP_NAME'], dynos[0]['name'])
   end
 end
