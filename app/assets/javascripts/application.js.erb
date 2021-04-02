@@ -154,7 +154,7 @@ function redo() {
       }, REDO_TIMEOUT);
     }
   });
-  
+
   map.on('zoomend', function() {
     zoomLevel = map.getZoom();
     if (zoomLevel < 9) {
@@ -264,7 +264,7 @@ function findClosestRegion(e) {
 function showLocationDetail(locationID) {
   locationLookupMapCenter(locationID);
   $('.location_detail_location').hide();
-  
+
   if ($('#location_detail_location_' + locationID).is(":hidden") ) {
     $('#show_location_detail_location_' + locationID).hide();
     $('.sub_nav_location').hide();
@@ -312,7 +312,7 @@ function setSearchSections(newSearchSections) {
 
 function updateLocationUpdatedText(id) {
     $('#last_updated_location_' + id).load('/locations/' + id + '/render_last_updated');
-
+    $('#stale_' + id).hide();
     return false;
 }
 

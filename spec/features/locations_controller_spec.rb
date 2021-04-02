@@ -79,6 +79,33 @@ describe LocationsController do
     end
   end
 
+  describe 'stale location notice', type: :feature, js: true do
+    before(:each) do
+    end
+
+    it 'shows stale data notice if location has not been updated in over two years' do
+      location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
+
+      location.date_last_updated = 3.years.ago
+      location.save(validate: false)
+
+      visit '/portland/?by_location_id=' + location.id.to_s
+
+      expect(find("#stale_#{location.id}")).to have_content("This location has not been updated in over 2 years! The info may be out of date.")
+    end
+
+    it 'hides stale data notice if location has been updated in past two years' do
+      location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
+
+      location.date_last_updated = Date.today
+      location.save(validate: false)
+
+      visit '/portland/?by_location_id=' + location.id.to_s
+
+      expect(page).to_not have_selector("#stale_#{location.id}")
+    end
+  end
+
   describe 'remove machine - not authed', type: :feature, js: true do
     before(:each) do
       @location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
