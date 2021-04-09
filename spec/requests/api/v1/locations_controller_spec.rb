@@ -101,7 +101,7 @@ HERE
           to: ['super_admin@bar.com'],
           from: 'admin@pinballmap.com',
           bcc: ['super_admin@bar.com'],
-          subject: 'PBM - New location suggested for the REGIONLESS pinball map',
+          subject: 'PBM - New location suggested for pinball map',
           body: <<HERE
     Dear Admin: A new pinball spot has been submitted for your region! Please verify/fix the address using https://maps.google.com and then "Promote" the location to the map via http://www.example.com/admin/suggested_location. If any fields are missing, like Location Type, please fill them in! Thanks!!\n
 Location Name: name\n
