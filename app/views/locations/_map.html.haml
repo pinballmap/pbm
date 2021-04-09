@@ -1,6 +1,6 @@
 #map_canvas
   .mask
-    .closest_button   
+    .closest_button
       %span.bold{:onclick => "findClosestLocations('#{@region ? @region.name : 'map'}')"}
         = link_to 'Click here to find the closest pinball machines!', '#', {:id => 'find_closest_locations'}
         Or Search.
@@ -9,7 +9,7 @@
 - lon = local_assigns.has_key?(:lon) ? lon : @region.lon
 
 :javascript
-  map = new mapboxgl.Map({
+  map = new maplibregl.Map({
     container: 'map_canvas',
     style: 'https://tiles.pinballmap.com/styles/basic-preview/style.json',
     center: [#{lon}, #{lat}],

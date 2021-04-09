@@ -28,11 +28,11 @@
     %meta{:content => "Close", :name => "smartbanner:close-label"}/
     / End SmartBanner configuration
 
-    = stylesheet_link_tag 'normalize', 'application', 'mediaqueries', 'https://api.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css', :media => ""
+    = stylesheet_link_tag 'normalize', 'application', 'mediaqueries', 'https://unpkg.com/maplibre-gl@1.14.0/dist/maplibre-gl.css', :media => ""
     - if mobile_device?
       = stylesheet_link_tag 'mobile-application', 'smartbanner.min.css'
       = javascript_include_tag 'smartbanner.min.js'
-    = javascript_include_tag 'application', 'jquery.form', 'jquery.remotipart', 'highslide.min', 'https://api.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.js'
+    = javascript_include_tag 'application', 'jquery.form', 'jquery.remotipart', 'highslide.min', 'https://unpkg.com/maplibre-gl@1.14.0/dist/maplibre-gl.js'
     = csrf_meta_tag
     = render 'application/favicon'
 
