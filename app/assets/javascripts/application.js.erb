@@ -47,16 +47,16 @@ function showLocations(ids, lats, lons, contents, latLng) {
 
   locationIDs = ids;
 
-  var bounds = new mapboxgl.LngLatBounds();
+  var bounds = new maplibregl.LngLatBounds();
   var today = new Date();
   var curHr = today.getHours();
 
   if (mapAdjusted === 0) {
-      map = new mapboxgl.Map({
+      map = new maplibregl.Map({
         container: 'map_canvas',
         style: 'https://tiles.pinballmap.com/styles/basic-preview/style.json',
       });
-      map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+      map.addControl(new maplibregl.NavigationControl(), 'top-left');
   }
 
   for (i in ids) {
@@ -78,10 +78,10 @@ function showLocations(ids, lats, lons, contents, latLng) {
       });
     })(el, i);
 
-    var popup = new mapboxgl.Popup({ offset: 25 })
+    var popup = new maplibregl.Popup({ offset: 25 })
       .setHTML(contents[i]);
 
-    var marker = new mapboxgl.Marker(el)
+    var marker = new maplibregl.Marker(el)
       .setLngLat([lons[i], lats[i]])
       .setPopup(popup)
       .addTo(map);
@@ -317,21 +317,21 @@ function updateLocationUpdatedText(id) {
 }
 
 function initializeRegionMap(ids, lats, lons, contents) {
-    var bounds = new mapboxgl.LngLatBounds();
-    var regionMap = new mapboxgl.Map({
+    var bounds = new maplibregl.LngLatBounds();
+    var regionMap = new maplibregl.Map({
       container: 'region_map',
       style: 'https://tiles.pinballmap.com/styles/basic-preview/style.json',
     });
-    regionMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    regionMap.addControl(new maplibregl.NavigationControl(), 'top-right');
 
     for (i in ids) {
       var el = document.createElement('div');
       el.className = 'markersm';
 
-      var popup = new mapboxgl.Popup({ offset: 25 })
+      var popup = new maplibregl.Popup({ offset: 25 })
         .setHTML(contents[i]);
 
-      var marker = new mapboxgl.Marker(el)
+      var marker = new maplibregl.Marker(el)
         .setLngLat([lons[i], lats[i]])
         .setPopup(popup)
         .on('click', function(e) { map.setView(e.latlng, 13) })
