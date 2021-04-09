@@ -167,7 +167,7 @@ HERE
             to: region.nil? ? ['super_admin@bar.com'] : ['foo@bar.com'],
             bcc: ['super_admin@bar.com'],
             from: 'admin@pinballmap.com',
-            subject: "PBM - New location suggested for the #{region.nil? ? 'REGIONLESS' : region} pinball map",
+            subject: "PBM - New location suggested for#{region.nil? ? '' : ' the ' + region} pinball map",
             body: body
           )
         end
@@ -208,7 +208,7 @@ HERE
             to: region ? ['foo@bar.com'] : ['super_admin@bar.com'],
             bcc: ['super_admin@bar.com'],
             from: 'admin@pinballmap.com',
-            subject: "PBM - New location suggested for the #{region.nil? ? 'REGIONLESS' : region} pinball map",
+            subject: "PBM - New location suggested for#{region.nil? ? '' : ' the ' + region} pinball map",
             body: body
           )
         end
@@ -221,7 +221,7 @@ HERE
 
         expect(Pony).to receive(:mail) do |mail|
           expect(mail).to include(
-            subject: "(STAGING) PBM - New location suggested for the #{region.nil? ? 'REGIONLESS' : region} pinball map"
+            subject: "(STAGING) PBM - New location suggested for#{region.nil? ? '' : ' the ' + region} pinball map"
           )
         end
 

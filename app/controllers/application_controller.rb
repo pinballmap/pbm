@@ -72,7 +72,7 @@ BODY
       to: region ? region.users.map(&:email) : User.all.select(&:is_super_admin).map(&:email),
       bcc: User.all.select(&:is_super_admin).map(&:email),
       from: 'admin@pinballmap.com',
-      subject: add_host_info_to_subject("PBM - New location suggested for the #{region ? region.name : 'REGIONLESS'} pinball map"),
+      subject: add_host_info_to_subject("PBM - New location suggested for#{region ? ' the ' + region.name : ''} pinball map"),
       body: body
     )
 
