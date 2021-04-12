@@ -778,14 +778,14 @@ form#address_search_form input.lookup_search_input {
 #type_section_link {
   font-size: 16px;
   line-height: 16px;
-  border: 2px solid $medgrey;
+  border: 0px;
   color: $darkgrey;
   background-color: $lightgrey;
-  @include radius(3px);
+  @include radius(5px);
   margin-left: 5px;
-  box-shadow: 2px 2px 2px #cccccc;
-  -moz-box-shadow: 2px 2px 2px #cccccc;
-  -webkit-box-shadow: 2px 2px 2px #cccccc;
+  box-shadow: 2px 5px 10px #d0d5d9;
+  -moz-box-shadow: 2px 5px 10px #d0d5d9;
+  -webkit-box-shadow: 2px 5px 10px #d0d5d9;
 }
 .section {
   padding: 7px 5px 3px;
@@ -880,9 +880,6 @@ span.or {
 #locations .darkb {
   font-size: 18px;
 }
-#locations {
-  margin-top: 10px;
-}
 #form {
   position: fixed;
   top: 52px;
@@ -892,7 +889,7 @@ span.or {
   @include radius(0 0 5px 5px);
   padding: 4px;
   background-color: #ffffff;
-  box-shadow: 0 5px 10px rgba(90, 100, 117, 0.5);
+  box-shadow: 0 5px 10px #d0d5d9;
 }
 #lookup_map, #container {
   width: 100%;
@@ -908,12 +905,11 @@ span.or {
 #lookup {
   display: inline;
   float: left;
-  padding: 95px 10px 10px 10px;
+  padding: 95px 15px 15px 15px;
   width: 42%;
   background: #FFFFFF;
   position: relative;
   -webkit-transform: translateZ(0);
-  box-shadow: 1px 1px 4px rgba(90,100,117,0.5);
 }
 .search_results_header {
   margin: 20px 0 5px 13px;
@@ -929,13 +925,12 @@ span.or {
   position: fixed;
   top: 100px;
   width: 110px;
-  border: 3px solid $blue;
   background: #ffffff;
   text-align: center;
   padding: 5px;
-  @include radius(5px);
+  @include radius(10px);
   font-size: 15px;
-  box-shadow: 1px 1px 4px rgba(90,100,117,0.5);
+  box-shadow: 1px 1px 10px rgba(90,100,117,0.5);
 }
 #search_link_wrapper {
   padding-top: 5px;
@@ -952,8 +947,7 @@ span.or {
 }
 #mapFollow_wrapper {
   top: 220px;
-  border: 3px solid $darkgrey;
-  background: $blue;
+  color: $grey;
 }
 #mapFollow_wrapper input {
   margin: 0;
@@ -992,9 +986,12 @@ a.active_section_link:hover {
 .back_to_results {
   display: none;
   font-size: 16px;
-  margin: 0 0 5px 5px;
-  background: $lightgrey;
-  padding: 5px;
+  color: #766a62;
+  font-weight: bold;
+  font-size: 18px;
+  margin: 5px 0 10px 0;
+  padding: 10px;
+  border-radius: 10px;
 }
 .back_to_results:hover {
   color: $red;
@@ -1006,10 +1003,7 @@ a.active_section_link:hover {
 }
 .search_result .show_location_detail_location > ul,
 .location_name ul {
-  border-left: 8px solid rgba(0, 0, 0, 0.125);
   padding-left: 0px;
-  margin-bottom: 0px;
-  @include radius(5px 0 0 5px);
   margin-top: 0;
 }
 .show_location_detail_location ul {
@@ -1017,7 +1011,7 @@ a.active_section_link:hover {
 }
 .show_location_detail_location ul:hover {
   background-color: $blue;
-  @include radius(5px);
+  @include radius(10px);
 }
 #search_results li {
   list-style-type: none;
@@ -1045,32 +1039,27 @@ a.active_section_link:hover {
   color: $darkgrey;
   background-color: $blue;
   padding: 10px 5px;
-  @include radius(0 5px 0 0);
+  @include radius(10px 10px 0 0);
 }
-span.fave_location {
+.location_tools {
   float: right;
-  width: 60px;
-  margin-top: -43px;
+  margin-top: -35px;
+  padding-right: 5px;
 }
-.fave_location img {
-  height: 20px;
-  width: 20px;
-  margin-top: 10px;
+.location_tools:hover {
   cursor: pointer;
+}
+img.fave_location, .permalink img {
+  height: 22px;
+  width: 22px;
+}
+img.comment_image, img.meta_image {
+  height: 24px;
+  width: 24px;
 }
 img.fave_icon {
   height: 15px;
   width: 15px;
-}
-span.permalink {
-  float: right;
-  width: 30px;
-  margin-top: -43px;
-}
-.permalink img {
-  height: 20px;
-  width: 20px;
-  margin-top: 10px;
 }
 .address, .address_full {
   font-size: 16px;
@@ -1082,7 +1071,6 @@ li.address {
 }
 li.address_full {
   padding: 0 0 0 5px;
-  background: $lightgrey;
 }
 .location_confirm {
   font-family: $sans;
@@ -1147,8 +1135,6 @@ span.machine_year_man {
   clear: both;
   margin-left: 10px;
   margin-top: -1px;
-  border-top: 1px solid #888;
-  border-bottom: 1px solid #888;
 }
 .pintips a {
   font-family: $sans;
@@ -1156,15 +1142,9 @@ span.machine_year_man {
   text-decoration: none;
   line-height: 24px;
 }
-.pintips a:after {
-  content: "";
-  background: url(<%= asset_path 'open-in-new-black.png' %>) no-repeat center center;
-  float: right;
-  width: 16px;
-  height: 22px;
-  display: inline;
-  background-size: 16px 16px;
-  margin: 0 0 0 4px;
+.pintips_icon {
+  width: 14px;
+  height: 14px;
 }
 div.comment_image {
   width: 40px;
@@ -1193,7 +1173,7 @@ div.comment_image span.comment_image:hover:after {
   font-family: $sans;
 }
 .machine_condition_lmx {
-  width: 90%;
+  width: 75%;
 }
 .machine_condition_new_line span {
   display: inline;
@@ -1206,9 +1186,20 @@ div.comment_image span.comment_image:hover:after {
   display: inline-block;
   font-family: $serif;
 }
+.add_condition {
+  font-family: $sans;
+  font-size: 18px;
+  text-decoration: none;
+  line-height: 24px;
+  color: #333333;
+  padding-left: 5px;
+}
+.add_condition:hover {
+  cursor: pointer;
+  background-color: $blue;
+}
 div.machine_condition_text {
-  float: left;
-  width: 80%;
+  width: 100%;
   margin-bottom: 6px;
   font-size: 14px;
 }
@@ -1268,29 +1259,6 @@ form.remove_machine_condition {
   font-family: $serif;
   padding: 5px;
   margin-bottom: 5px;
-}
-.machine_condition_display_lmx .condition_button {
-  height: 20px;
-  line-height: 20px;
-  box-shadow: none;
-  background: none;
-  text-transform: uppercase;
-  font-size: 15px;
-  border: none;
-  width: auto;
-  background: $lightgrey;
-  border-top: 2px solid #d6c1aa;
-  border-bottom: 2px solid #d6c1aa;
-  margin-top: 5px;
-  font-family: $sans;
-  font-weight: bold;
-}
-.machine_condition_display_lmx .condition_button:hover {
-  background: #d6c1aa;
-  cursor: pointer;
-}
-.condition_button:hover {
-  background-color: #dbd9d7;
 }
 .machine_condition_edit_lmx {
   width: 435px;
@@ -1410,7 +1378,8 @@ br.clear {
 }
 .search_result {
   height: 100%;
-  @include radius(5px);
+  @include radius(10px);
+  box-shadow: 2px 5px 10px #d0d5d9;
 }
 .search_result li.location_types {
   padding: 2px 0 0 4px;
@@ -1733,8 +1702,7 @@ li.location_type, li.operator {
 .stale {
   padding: 10px;
   font-family: $serif;
-  color: $red;
-  background-color: #feeef1;
+  color: #e4606a;
   line-height: 16px;
 }
 #rank {
@@ -1749,7 +1717,7 @@ input.score {
   font-weight: normal;
   height: 100%;
   font-family: $serif;
-  @include radius(5px);
+  @include radius(10px);
   color: $darkgrey;
 }
 .location_detail .address_full {
@@ -1760,23 +1728,19 @@ input.score {
   background: $lightgrey;
 }
 .location_name {
-  background-color: $lightgrey;
-  @include radius(5px 5px 0 0);
-  border: 1px solid rgba(0,0,0,.125);
+  @include radius(10px);
 }
 .location_detail_location ul {
   @include radius(4px 0 0 0);
 }
-.location_description, .location_actual_description {
+.location_actual_description {
   font-style: italic;
-  color: #222222;
+  color: $grey;
   padding: 5px 10px 0;
   display: block;
   font-size: 13px;
   line-height: 15px;
   font-family: $serif;
-}
-.location_actual_description {
   float: left;
 }
 .desc_button {
@@ -1787,77 +1751,6 @@ input.score {
   border-top: 1px solid #CAC6C6;
   border-bottom: 1px solid #CAC6C6;
   text-align: right;
-}
-.location_description .comment_image {
-  float: right;
-  cursor: pointer;
-  margin: 0 0 0 5px;
-}
-.location_description .comment_image {
-  height: 40px;
-  width: 41px;
-  display: inline-block;
-  background-size: 41px !important;
-  background: url(<%= asset_path 'comment-sprites.png' %>) no-repeat top;
-}
-.location_description .comment_image:hover {
-  background-position: 0px -41px;
-}
-.location_description .comment_image:active {
-  background-position: 0px -82px;
-}
-div.comment_image .comment_image {
-  height: 40px;
-  width: 40px;
-  display: inline-block;
-  background-size: 40px !important;
-  background: url(<%= asset_path 'comment-sprites.png' %>) no-repeat 0 -80px;
-}
-div.comment_image .comment_image:hover {
-  background-position: 0px -40px;
-  height: 39px;
-}
-div.comment_image .comment_image:active {
-  background-position: top;
-  height: 39px;
-}
-.meta_image {
-  height: 40px;
-  width: 40px;
-  float: right;
-  margin: 0 0 0 5px;
-  cursor: pointer;
-  background-size: 40px !important;
-  background: url(<%= asset_path 'meta-sprites.png' %>) no-repeat 0px -80px;
-}
-.meta_image:hover {
-  background-position: 0px -40px;
-  margin: 0 0 0 5px;
-}
-.meta_image:active {
-  background-position: top;
-}
-.location_description .comment_image:hover:after,
-.location_meta .meta_image:hover:after {
-  content: "Update Location Description/Hours/Etc";
-  position: absolute;
-  line-height: 12px;
-  font-size: 14px;
-  margin-left: 10px;
-  text-align: right;
-  float: right;
-  right: 120px;
-  margin-top: 10px;
-  background: $black;
-  color: $lightgrey;
-  padding: 5px;
-  font-weight: bold;
-  font-style: italic;
-  font-family: $sans;
-}
-.location_meta .meta_image:hover:after {
-  content: "Update Location Info";
-  font-family: $sans;
 }
 .desc_button:hover, .confirm_location_button:hover {
   text-decoration: underline;
@@ -1873,9 +1766,8 @@ div.comment_image .comment_image:active {
 .show_location_detail_location {
   padding: 0;
   background: $lightgrey;
-  border: 1px solid rgba(0,0,0,.125);
-  border-radius: 5px;
   margin-bottom: 12px;
+  border-radius: 10px;
 }
 .location_thumbs {
   margin: 5px 6px 0 6px;
@@ -2184,7 +2076,7 @@ span.begin {
 .closest_button {
   border: 3px solid $darkgrey;
   background: $blue;
-  @include radius(5px);
+  @include radius(10px);
   font-size: 22px;
   text-align: center;
   top: 200px;

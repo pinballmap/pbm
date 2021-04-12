@@ -1,6 +1,4 @@
 %div[l, :desc_show]
-  - if (!l.description.blank?)
-    %hr
   %span.location_actual_description= (l.description.to_s == '') ? '' : l.description
   .clear
 %div[l, :desc_edit]{:style => 'display:none'}
@@ -28,7 +26,7 @@
 
 - if user_signed_in?
   :javascript
-    $('#desc_cancel_#{l.id}, #location_detail_location_#{l.id} .location_description .comment_image').unbind('click').click(function () {
+    $('#desc_cancel_#{l.id}, #location_detail_location_#{l.id} .comment_image').unbind('click').click(function () {
       $('#desc_show_location_#{l.id}').toggle();
       $('#desc_edit_location_#{l.id}').toggle();
     });

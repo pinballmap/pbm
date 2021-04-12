@@ -1,3 +1,4 @@
 - if (!lmx.machine.opdb_id.blank?)
   .pintips
     = link_to "View Playing Tips on PinTips", "http://pintips.net/opdb/#{lmx.machine.opdb_id}", :target => '_blank'
+    =image_tag( 'open-in-new-black.png', :alt => 'open in new window', :class => 'pintips_icon')
