@@ -2,17 +2,13 @@
 	%ul
 		%li.name{:onclick => "locationLookupMapCenter(#{l.id});"}
 			=l.name
-		- if user_signed_in?
-			%span.fave_location{:id => "fave_location_#{l.id}"}
-				=image_tag( l.user_fave?(current_user.id) ? 'heart-filled.png' : 'heart-empty.png', :alt => 'fave this location', :id => "fave_location_img_#{l.id}")
-		%span.permalink
-			=link_to image_tag( 'link.png' ), "/#{l.region ? l.region.name.downcase : 'map'}/?by_location_id=#{l.id}", :id => l.id, :alt => 'link to this location'
+		%div.location_tools
+			- if user_signed_in?
+				=image_tag('comment-4.png', :class => 'comment_image')
+				=image_tag('pencil-eraser-100.png', :class => 'meta_image')
+				=image_tag( l.user_fave?(current_user.id) ? 'heart-filled.png' : 'heart-empty.png', :alt => 'fave this location', :id => "fave_location_img_#{l.id}", :class => 'fave_location')
+				=link_to image_tag( 'link.png' ), "/#{l.region ? l.region.name.downcase : 'map'}/?by_location_id=#{l.id}", :id => l.id, :alt => 'link to this location', :class => 'permalink'
 		.clear
-		- if user_signed_in?
-			%span.location_description
-				%span.comment_image
-			%span.location_meta
-				%span.meta_image
 		- if (l.state.blank?)
 			%li.address_full= [l.street, l.city + " " + l.zip].join(', ')
 		- else
@@ -53,7 +49,7 @@
 			$("#location_detail_location_#{l.id} .more_pictures").css("display","block");
 			$("#location_detail_location_#{l.id} .less_pictures").css("display","none");
 		});
-		$("#fave_location_#{l.id}").click(function() {
+		$("#fave_location_img_#{l.id}").click(function() {
 			$.post('/users/#{current_user ? current_user.id : 'null'}/toggle_fave_location.json', {location_id: #{l.id}}, function(data) {
 				if ($("#fave_location_img_#{l.id}").attr('src') === '#{asset_path('heart-filled.png')}') {
 					$("#fave_location_img_#{l.id}").attr('src', '#{asset_path('heart-empty.png')}');

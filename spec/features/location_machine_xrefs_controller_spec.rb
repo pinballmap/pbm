@@ -164,7 +164,7 @@ describe LocationMachineXrefsController do
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS SPAM')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
@@ -176,7 +176,7 @@ describe LocationMachineXrefsController do
     it 'does not save conditions with <a href in it' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS SPAM <a href')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
@@ -197,7 +197,7 @@ describe LocationMachineXrefsController do
 
         visit "/#{location.region ? location.region.name : 'map'}/?by_location_id=" + location.id.to_s
 
-        page.find("div#machine_condition_lmx_#{lmx.id}.machine_condition_lmx span.comment_image").click
+        page.find("div#machine_condition_lmx_#{lmx.id}.machine_condition_lmx .add_condition").click
         fill_in("new_machine_condition_#{lmx.id}", with: 'THIS IS NOT SPAM')
         page.find("input#save_machine_condition_#{lmx.id}").click
 
@@ -228,7 +228,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}.save_button").click
 
@@ -279,7 +279,7 @@ describe LocationMachineXrefsController do
       expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 2')
       expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 1')
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
@@ -294,13 +294,13 @@ describe LocationMachineXrefsController do
     it 'should add past conditions when you add a new condition and a condition exists' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'test')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
@@ -315,19 +315,19 @@ describe LocationMachineXrefsController do
     it 'adding a new blank comment does not delete old comments' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'test')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: '')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
@@ -341,7 +341,7 @@ describe LocationMachineXrefsController do
     it 'should let me cancel adding a new machine description' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx span.comment_image").click
+      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#cancel_machine_condition_#{@lmx.id}").click
 
@@ -797,7 +797,7 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}"
       page.find('input#location_search_button').click
 
-      page.find("#location_detail_location_#{@location.id} .location_description .comment_image").click
+      page.find("#location_detail_location_#{@location.id} .comment_image").click
       fill_in("new_desc_#{@location.id}", with: 'New Condition')
       click_on("save_desc_#{@location.id}")
 

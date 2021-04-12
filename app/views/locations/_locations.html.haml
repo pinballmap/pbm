@@ -61,11 +61,11 @@
 #results_container
   #search_results
     %div.back_to_results{:onclick => "backToResults();"}
-      %span < Go back to search results
-    - total_num_machines = 0           
+      %span &#129044; Go back to search results
+    - total_num_machines = 0
     - @locations.each do |location|
       - l = location.clone
-      %div.search_result[l]         
+      %div.search_result[l]
         - if (@locations.size == 1)
           %div.location_detail[l, :location_detail]
             = render :partial => 'locations/render_location_detail', :locals => {l: l}
@@ -96,7 +96,7 @@
       - total_num_machines += location.machines.size
   - unless @locations.size == 1
     #search_results_count
-      %span 
+      %span
         #{@locations.size} Locations & #{total_num_machines} Machines in Results
   - if (@locations.size == 1)
     :javascript

@@ -10,7 +10,6 @@
     %li.website= link_to "Website", l.website, :class => 'website', :target => 'blank'
     .clear
   - if (l.operator_id) || (l.location_type)
-    %hr
     - if (l.operator_id)
       - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
         %li.operator
@@ -78,7 +77,7 @@
     return false;
   });
 
-  $('#metadata_cancel_#{l.id}, #location_detail_location_#{l.id} .location_meta .meta_image').unbind('click').click(function () {
+  $('#metadata_cancel_#{l.id}, #location_detail_location_#{l.id} .meta_image').unbind('click').click(function () {
     $('#metadata_show_location_#{l.id}').toggle();
     $('#metadata_edit_location_#{l.id}').toggle();
   });
