@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_12_043456) do
+ActiveRecord::Schema.define(version: 2021_04_13_230424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -76,6 +76,8 @@ ActiveRecord::Schema.define(version: 2021_01_12_043456) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "name", limit: 255
+    t.string "icon"
+    t.string "library"
   end
 
   create_table "locations", id: :serial, force: :cascade do |t|
