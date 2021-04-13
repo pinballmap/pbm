@@ -290,12 +290,18 @@ RailsAdmin.config do |config|
   config.model LocationType do
     list do
       field :name, :string
+      field :icon, :string
+      field :library, :string
     end
     show do
       field :name, :string
+      field :icon, :string
+      field :library, :string
     end
     edit do
       field :name, :string
+      field :icon, :string
+      field :library, :string
     end
     export do; end
     create do; end
