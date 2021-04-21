@@ -263,7 +263,7 @@ HERE
           to: ['portland@admin.com'],
           cc: [],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - REGIONLESS Message',
+          subject: 'PBM - Message',
           body: <<HERE
 Their Name: name\n
 Their Email: email\n
@@ -284,7 +284,7 @@ HERE
           to: ['portland@admin.com'],
           cc: [],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - REGIONLESS Message',
+          subject: 'PBM - Message',
           body: <<HERE
 Their Name: name\n
 Their Email: email\n
