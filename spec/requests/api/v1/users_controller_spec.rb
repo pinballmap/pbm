@@ -363,6 +363,7 @@ describe Api::V1::UsersController, type: :request do
       expect(json['num_machines_added']).to eq(1)
       expect(json['num_machines_removed']).to eq(2)
       expect(json['num_lmx_comments_left']).to eq(3)
+      expect(json['num_msx_scores_added']).to eq(3)
       expect(json['num_locations_suggested']).to eq(4)
       expect(json['num_locations_edited']).to eq(2)
       expect(json['created_at']).to eq('2016-01-01T00:00:00.000-08:00')

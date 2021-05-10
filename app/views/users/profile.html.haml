@@ -26,6 +26,11 @@
       %div.darkbl.stats
         %div.stat_num_o
           %span.stats
+            #{@user.num_msx_scores_added}
+        %span.stats_text High Scores Added
+      %div.darkbl.stats
+        %div.stat_num_o
+          %span.stats
             #{@user.num_locations_suggested}
         %span.stats_text Locations Submitted
       %div.darkbl.stats
@@ -44,7 +49,7 @@
                   %span.location_edited
                     = link_to(location.name, (location.region ? region_homepage_path(location.region.name) : map_path) + "/?by_location_id=#{location.id}")
                   %br/
-      - if !@user.profile_list_of_high_scores.empty?          
+      - if !@user.profile_list_of_high_scores.empty?
         %div.darkbl.stats
           %div.stats_o
             High Scores (Last 50):
@@ -59,7 +64,7 @@
                 %span.score_meta_gen #{location_name}
                 %span.score_meta on
                 %span.score_meta_gen #{date_created}
-      - if !@user.user_fave_locations.empty?          
+      - if !@user.user_fave_locations.empty?
         %div.darkbl.stats
           %div.stats_o
             Saved Locations:

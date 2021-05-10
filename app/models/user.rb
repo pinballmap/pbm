@@ -95,6 +95,10 @@ class User < ApplicationRecord
     UserSubmission.where('user_id = ? and submission_type = ?', id, UserSubmission::NEW_CONDITION_TYPE).size
   end
 
+  def num_msx_scores_added
+    UserSubmission.where('user_id = ? and submission_type = ?', id, UserSubmission::NEW_SCORE_TYPE).size
+  end
+
   def profile_list_of_high_scores
     msx_submissions = UserSubmission.where(user: self, submission_type: UserSubmission::NEW_SCORE_TYPE).order(created_at: 'DESC').limit(50)
 
