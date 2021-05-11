@@ -188,7 +188,7 @@ module Api
           user,
           'profile_info',
           [],
-          %i[num_machines_added num_machines_removed num_locations_edited num_locations_suggested num_lmx_comments_left profile_list_of_edited_locations profile_list_of_high_scores created_at]
+          %i[num_machines_added num_machines_removed num_locations_edited num_locations_suggested num_lmx_comments_left num_msx_scores_added profile_list_of_edited_locations profile_list_of_high_scores created_at]
         )
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find user', 'errors')
