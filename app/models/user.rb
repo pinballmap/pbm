@@ -105,7 +105,7 @@ class User < ApplicationRecord
     high_score_hash = {}
     msx_submissions.each do |msx_sub|
       score = 'UNKNOWN'
-      if msx_sub.submission =~ /added a score of (.*) for (.*) to (.*)$/i
+      if msx_sub.submission =~ /added a high score of (.*) on (.*) at (.*)$/i
         score = $1
         machine_name = $2
         location_name = $3

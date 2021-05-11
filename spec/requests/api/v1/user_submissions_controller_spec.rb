@@ -19,8 +19,8 @@ describe Api::V1::UserSubmissionsController, type: :request do
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: another_location, submission_type: UserSubmission::NEW_SCORE_TYPE)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: another_location, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
 
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (scott.wainstock@gmail.com) added a score of 1234 for Cheetah to Bottles')
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (scott.wainstock@gmail.com) added a score of 12 for Machine to Location')
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 1234 on Cheetah at Bottles')
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 12 on Machine at Location')
 
       FactoryBot.create(:user_submission, location: distant_location, submission_type: 'remove_machine', submission: 'foo')
 
@@ -35,7 +35,7 @@ describe Api::V1::UserSubmissionsController, type: :request do
     it 'respects date range filtering' do
       location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606')
 
-      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now.strftime('%Y-%m-%d'), submission: 'User ssw (scott.wainstock@gmail.com) added a score of 12 for Machine to Location')
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now.strftime('%Y-%m-%d'), submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 12 on Machine at Location')
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE)
       FactoryBot.create(:user_submission, created_at: (Date.today - 30).strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE)
 
@@ -50,8 +50,8 @@ describe Api::V1::UserSubmissionsController, type: :request do
     it 'respects type filter' do
       location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606')
 
-      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (scott.wainstock@gmail.com) added a score of 1234 for Cheetah to Bottles')
-      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now.strftime('%Y-%m-%d'), submission: 'User ssw (scott.wainstock@gmail.com) added a score of 12 for Machine to Location')
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 1234 on Cheetah at Bottles')
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now.strftime('%Y-%m-%d'), submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 12 on Machine at Location')
 
       get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606' }
 
