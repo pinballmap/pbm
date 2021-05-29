@@ -355,3 +355,8 @@ var show_ajax_message = function(msg, type) {
     $("#flash-message").html('<div id="flash_'+type+'">'+msg+'</div>');
     fade_flash();
 };
+
+function show_new_machine_message() {
+    $("#flash-message").html('<div id="flash_alert">'+'Thank you. Since this is a new machine name, we are moderating this submission.'+'</div>');
+    fade_flash();
+};

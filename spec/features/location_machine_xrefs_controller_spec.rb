@@ -84,7 +84,7 @@ describe LocationMachineXrefsController do
       expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
     end
 
-    it 'Should add by name of new machine' do
+    it 'Should not add by name of new machine' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       find("#add_machine_location_banner_#{@location.id}").click
@@ -93,10 +93,9 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(@location.machines.size).to eq(1)
-      expect(@location.machines.first.name).to eq('New Machine Name')
+      expect(@location.machines.size).to eq(0)
 
-      expect(find("#show_machines_location_#{@location.id}")).to have_content('New Machine Name')
+      expect(find("#show_machines_location_#{@location.id}")).to_not have_content('New Machine Name')
     end
 
     it 'should display year/manufacturer where appropriate in dropdown' do

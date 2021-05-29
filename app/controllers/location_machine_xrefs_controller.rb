@@ -16,9 +16,9 @@ class LocationMachineXrefsController < InheritedResources::Base
       if machine.nil?
         machine = Machine.new
         machine.name = params["add_machine_by_name_#{location.id}"]
-        machine.save
 
         send_new_machine_notification(machine, location, user)
+        return
       end
     else
       # blank submit
