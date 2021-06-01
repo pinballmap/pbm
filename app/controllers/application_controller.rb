@@ -34,6 +34,8 @@ class ApplicationController < ActionController::Base
   end
 
   def send_new_machine_notification(machine, location, user)
+    render js: 'show_new_machine_message();'
+
     user_info = user ? " by #{user.username} (#{user.email})" : ''
 
     Pony.mail(

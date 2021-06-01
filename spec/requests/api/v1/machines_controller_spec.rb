@@ -105,8 +105,7 @@ describe Api::V1::MachinesController, type: :request do
 
       post '/api/v1/machines.json', params: { machine_name: 'Bawb', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(response.status).to eq(201)
-      expect(JSON.parse(response.body)['machine']['name']).to eq('Bawb')
+      expect(response.status).to eq(200)
     end
 
     it 'handles creation by machine name.. new machine name - authed' do
@@ -121,8 +120,7 @@ describe Api::V1::MachinesController, type: :request do
 
       post '/api/v1/machines.json', params: { machine_name: 'Auth Bawb', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(response.status).to eq(201)
-      expect(JSON.parse(response.body)['machine']['name']).to eq('Auth Bawb')
+      expect(response.status).to eq(200)
     end
   end
 end
