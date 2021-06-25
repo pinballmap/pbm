@@ -4,9 +4,9 @@
       Welcome to Pinball Map!
     %p.p2
       %span{:style => 'max-width:400px;min-width:100px'}
-        Pinball Map is a crowdsourced map of public pinball machines. 
+        Pinball Map is a crowdsourced map of public pinball machines.
         %br/
-        And we have a 
+        And we have a
         = link_to 'mobile app.', app_path, :class => 'apps_link'
       %span{:style => 'width:96px;'}
         =image_tag( 'splash-icon-128.png', :alt => 'splash', :style => 'height:96px;', :class => 'splash')
@@ -20,12 +20,9 @@
   .div_01b.home_intro
     %p.darkb News!
     %p
-      We have shiny new 
-      = link_to "stickers for sale!", store_path, :class => "bold"
-    %p 
-      We completely redesigned the app! Read our 
+      We completely redesigned the app! Read our
       = link_to "release notes", "http://blog.pinballmap.com/2019/06/18/pinball-map-app-update-5-0", :class => "bold"
-      or 
+      or
       = link_to "watch this demo video", "https://youtu.be/FfbIhYt_DTE", :class => "bold", :target => "_blank"
     %p
       Save your favorite locations! Click the
@@ -35,32 +32,32 @@
     %p
       We made two new
       = link_to "Pinball Map T-Shirts!", store_path, :class => "bold"
-    %p 
+    %p
       We have a podcast,
       = link_to "Mappin' Around with Scott & Ryan.", "http://pod.pinballmap.com", :class => "bold"
       New episodes every couple months.
     %p
       = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold", :target => '_blank'
       Patreon supporters get an EXCLUSIVE Pinball Map Hand Sanitizer!
-    %p 
+    %p
       = link_to 'Stern Pinball', 'https://sternpinball.com/pinball-locator/', :target => '_blank'
       uses our data for their machine locator. Our API is also used by
       = link_to 'Matchplay Events', 'https://matchplay.events/', :target => '_blank'
       and
       = link_to 'Pindigo', 'https://pindigo.app/', :target => '_blank'
-      and 
+      and
       = link_to 'this sweet heatmap', 'https://arcg.is/0bHaif', :target => '_blank'
       and others! You can use the
       = link_to 'Pinball Map API', apipie_apipie_path, :class => 'apps_link'
-      in your own project. 
+      in your own project.
   .div_01b.home_intro.read_more_wrap
     %p
-      Pinball Map is listing 
-      %span.darkb 
-        #{number_with_delimiter(Location.all.count,:delimiter => ",")} 
-      locations and 
-      %span.darkb 
-        #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} 
+      Pinball Map is listing
+      %span.darkb
+        #{number_with_delimiter(Location.all.count,:delimiter => ",")}
+      locations and
+      %span.darkb
+        #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")}
       machines.
     %p
       This is a user-powered map. You can help keep it up to date by adding and removing machines, submitting new locations, and telling your friends to use it!
@@ -71,7 +68,7 @@
       We have a free
       = link_to 'mobile app for iOS and Android.', app_path, :class => 'apps_link'
     %p
-      Pinball Map is not monetized - no ads or premium membership. The 
+      Pinball Map is not monetized - no ads or premium membership. The
       = link_to 'code is open source.', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
       Follow us on Twitter for a massive amount of map updates.
       = link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
@@ -81,13 +78,13 @@
 #div_container_column{:style => 'background-color:#ffffff'}
   .div_05
     %p.darkb.p1
-      Regional Maps    
+      Regional Maps
     %p
-      If the 
+      If the
       = link_to 'big map', map_path
-      isn't cutting it for you, you can search for machines in one select area. Please pick a "regional" map below. Regions are predefined geographical areas - they can be a city, county, state, or even a country - that an administrator and the local users created. Each regional map is curated by a local administrator, often with the support of a league.    
+      isn't cutting it for you, you can search for machines in one select area. Please pick a "regional" map below. Regions are predefined geographical areas - they can be a city, county, state, or even a country - that an administrator and the local users created. Each regional map is curated by a local administrator, often with the support of a league.
 - if !mobile_device?
-  #div_container_column{:style => 'background-color:#ffffff'} 
+  #div_container_column{:style => 'background-color:#ffffff'}
     .div_02
       #region_map
 #div_container_column
@@ -135,4 +132,4 @@
           [#{@region_data[3].join(', ').html_safe}]
         );
     });
-  
+

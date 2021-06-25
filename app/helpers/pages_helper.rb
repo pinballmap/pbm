@@ -109,7 +109,7 @@ module PagesHelper
            elsif path == privacy_path
              'Pinball Map Privacy Policy. We take privacy srsly. Read this for details.'
            elsif path == store_path
-             'Pinball Map Store! We t-shirts and stickers for sale.'
+             'Pinball Map Store! We t-shirts for sale.'
            elsif path == donate_path
              'Donate to Pinball Map. Donations help us manage the costs of running the site. Thank you!'
            elsif path.match?(/profile/)
