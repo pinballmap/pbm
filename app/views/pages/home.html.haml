@@ -100,11 +100,6 @@
                 %div.region_name
                   =link_to "/#{r.name}" do
                     #{r.full_name}
-                  %div.map_summary_info
-                    %span.map_summary_locations
-                      = "#{@machine_and_location_count_by_region[r.id]['locations_count']} Locations"
-                    %span.map_summary_machines
-                      = "#{@machine_and_location_count_by_region[r.id]['machines_count']} Machines"
     .clear
     %br/
 
