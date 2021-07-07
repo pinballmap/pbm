@@ -341,21 +341,6 @@ describe PagesController do
   end
 
   describe 'Homepage', type: :feature, js: true do
-    it 'shows the proper number of locations and machines per region' do
-      chicago = FactoryBot.create(:region, name: 'chicago', full_name: 'Chicago')
-      machine = FactoryBot.create(:machine)
-
-      FactoryBot.create(:location_machine_xref, location: @location, machine: machine)
-      FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location, region: @region), machine: machine)
-
-      FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location, region: chicago), machine: machine)
-
-      visit '/'
-
-      expect(page).to have_css('div#region_list')
-      expect(page).to have_content("Chicago\n1 Locations\n1 Machines\nPortland\n2 Locations\n2 Machines")
-    end
-
     it 'shows the proper page title' do
       visit '/'
 
