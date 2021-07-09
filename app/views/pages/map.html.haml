@@ -12,7 +12,7 @@
         = hidden_field_tag :by_location_id
         .map_input
           %span Machine
-          = text_field_tag "by_machine_name", params["by_machine_name"], :class => 'lookup_search_input', :placeholder => @machine_placeholder 
+          = text_field_tag "by_machine_name", params["by_machine_name"], :class => 'lookup_search_input', :placeholder => @machine_placeholder
         .map_input
           %span Near
           = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => @big_cities_placeholder
@@ -27,20 +27,20 @@
       #mapFollow_wrapper.hide_button.toggle_btn_reg
         %p.red{:style => 'line-height:16px;', :id => "zoom_in_more"}
           Zoom in further to refresh results
-        %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :onchange => 'unChecked();'}
+        %input{:type => "checkbox", :id => "followCheck", :name => "followCheck"}
         Redo results when map is moved?
 
   #map
     = render :partial => 'locations/map', locals: { lat: @random_lat, lon: @random_lon }
-    
+
   #lookup.map_lookup
     #locations
       #intro
         %p.darkb News!
         %p
-          We completely redesigned the app! Read our 
+          We completely redesigned the app! Read our
           = link_to "release notes", "http://blog.pinballmap.com/2019/06/18/pinball-map-app-update-5-0", :class => "bold"
-          or 
+          or
           = link_to "watch this demo video", "https://youtu.be/FfbIhYt_DTE", :class => "bold", :target => "_blank"
         %p
           You can now save your favorite locations! Click the
@@ -50,30 +50,30 @@
         %p
           We made two new
           = link_to "Pinball Map T-Shirts!", store_path, :class => "bold"
-        %p 
+        %p
           Check out our podcast!
           = link_to "Mappin' Around with Scott & Ryan", "http://pod.pinballmap.com", :class => "bold"
         %p
-          = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold" 
-        %p 
-          Pinball Map is currently listing a total of 
-          %span.darkb 
-            #{number_with_delimiter(Location.count,:delimiter => ",")} 
-          locations and 
-          %span.darkb 
-            #{number_with_delimiter(LocationMachineXref.count,:delimiter => ",")} 
+          = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold"
+        %p
+          Pinball Map is currently listing a total of
+          %span.darkb
+            #{number_with_delimiter(Location.count,:delimiter => ",")}
+          locations and
+          %span.darkb
+            #{number_with_delimiter(LocationMachineXref.count,:delimiter => ",")}
           machines.
-        %p 
+        %p
           This search experience is in
           %span.bold.red
-            BETA! 
-          That means it’s not in its final form. We’ll be continuously enhancing the search experience. But to do so, it would help if you used it and 
+            BETA!
+          That means it’s not in its final form. We’ll be continuously enhancing the search experience. But to do so, it would help if you used it and
           = link_to "gave us feedback!", about_path('portland')
-        %p    
+        %p
           You can
           = link_to "submit locations here.", map_location_suggest_path
         %p
-          If you prefer to navigate the map via your trusted home region, 
+          If you prefer to navigate the map via your trusted home region,
           = link_to "go here to find it.", root_path
 
 :javascript

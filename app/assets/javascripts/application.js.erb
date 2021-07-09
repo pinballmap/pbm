@@ -72,7 +72,6 @@ function showLocations(ids, lats, lons, contents, latLng) {
         showLocationDetail(locationID);
         var index = jQuery.inArray(locationID, locationIDs);
         markers[index].togglePopup();
-
         document.getElementById('location_detail_location_' + locationID).scrollIntoView(true);
         window.scrollBy(0, -140);
       });
@@ -119,6 +118,7 @@ function showLocations(ids, lats, lons, contents, latLng) {
 
 function zoomCheck() {
   zoomLevel = map.getZoom();
+  console.log(zoomLevel);
   if (zoomLevel < 9) {
     document.getElementById("zoom_in_more").style.display = "block";
   } else {
@@ -131,8 +131,9 @@ function zoomCheck() {
 function redo() {
   var mapupdater;
   zoomLevel = map.getZoom();
-  map.on('mouseup', function() {
+  map.on('moveend', function() {
     zoomLevel = map.getZoom();
+    console.log("moveend " + zoomLevel);
     if (zoomLevel < 9) {
       document.getElementById("zoom_in_more").style.display = "block";
       zoomLevel = map.getZoom();
@@ -157,8 +158,12 @@ function redo() {
 
   map.on('zoomend', function() {
     zoomLevel = map.getZoom();
+    console.log("zoomend " + zoomLevel);
     if (zoomLevel < 9) {
       document.getElementById("zoom_in_more").style.display = "block";
+      zoomLevel = map.getZoom();
+    } else if (zoomLevel >= 9) {
+      document.getElementById("zoom_in_more").style.display = "none";
       zoomLevel = map.getZoom();
     } else if ($("#followCheck").is(':checked')) {
       document.getElementById("zoom_in_more").style.display = "none";
@@ -281,7 +286,6 @@ function showLocationDetail(locationID) {
 function locationLookupMapCenter(locationID) {
   var index = jQuery.inArray(locationID, locationIDs);
   clearInfoWindows();
-  map.panTo(markers[index].getLngLat());
   markers[index].togglePopup();
 }
 
