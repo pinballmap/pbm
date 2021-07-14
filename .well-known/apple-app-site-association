@@ -1,25 +1,112 @@
 {
-	"applinks": {
-		"apps": [],
-		"details": [
-			{
-				"appIDs": [ "X8ZE3634DQ.net.isaacruiz.ppm" ],
-				"components": [
-					{
-						"/": "/*",
-						"comment": "Matches any URL"
-					}
-				]
-			},
-			{
-				"appID": "X8ZE3634DQ.net.isaacruiz.ppm",
-				"paths": [ "/*" ]
-			}
-		]
-	},
-	"activitycontinuation": {
-		"apps": [
-			"X8ZE3634DQ.net.isaacruiz.ppm"
-		]
-	}  
+    "applinks": {
+        "details": [
+            {
+                "appID": "X8ZE3634DQ.net.isaacruiz.ppm",
+                "paths": [
+                "NOT /store",
+                "NOT /app/*",
+                "NOT /donate",
+                "NOT /users/*",
+                "NOT /faq",
+                "NOT /privacy",
+                "NOT /admin/*",
+                "NOT /*/flier",
+                "NOT /flier",
+                "NOT /*/high_rollers",
+                "NOT /location_machine_xrefs.rss",
+                "NOT /*/location_machine_xrefs.rss",
+                "NOT /*/machine_score_xrefs.rss",
+                "NOT /*/events.rss",
+                "NOT /api/*",
+                "/*" ]
+            },
+            {
+                "appIDs": [ "X8ZE3634DQ.net.isaacruiz.ppm" ],
+                "components": [
+                    {
+                        "/": "/store",
+                        "exclude": true,
+                        "comment": "Exclude store"
+                    },
+                    {
+                        "/": "/app/*",
+                        "exclude": true,
+                        "comment": "Exclude app"
+                    },
+                    {
+                        "/": "/donate",
+                        "exclude": true,
+                        "comment": "Exclude donate"
+                    },
+                    {
+                        "/": "/users/*",
+                        "exclude": true,
+                        "comment": "Exclude donate"
+                    },
+                    {
+                        "/": "/faq",
+                        "exclude": true,
+                        "comment": "Exclude donate"
+                    },
+                    {
+                        "/": "/privacy",
+                        "exclude": true,
+                        "comment": "Exclude flier"
+                    },
+                    {
+                        "/": "/admin/*",
+                        "exclude": true,
+                        "comment": "Exclude flier"
+                    },
+                    {
+                        "/": "/*/flier",
+                        "exclude": true,
+                        "comment": "Exclude privacy"
+                    },
+                    {
+                        "/": "/flier",
+                        "exclude": true,
+                        "comment": "Exclude donate"
+                    },
+                    {
+                        "/": "/location_machine_xrefs.rss",
+                        "exclude": true,
+                        "comment": "Exclude rss"
+                    },
+                    {
+                        "/": "/*/location_machine_xrefs.rss",
+                        "exclude": true,
+                        "comment": "Exclude rss"
+                    },
+                    {
+                        "/": "/*/machine_score_xrefs.rss",
+                        "exclude": true,
+                        "comment": "Exclude rss"
+                    },
+                    {
+                        "/": "/*/events.rss",
+                        "exclude": true,
+                        "comment": "Exclude rss"
+                    },
+                    {
+                        "/": "/api/*",
+                        "exclude": true,
+                        "comment": "Exclude API"
+                    },
+                    {
+                        "/": "/*",
+                        "comment": "The remainder matches any URL"
+                    }
+                ]
+            }
+        ]
+    },
+    "activitycontinuation": {
+        "apps": [ "X8ZE3634DQ.net.isaacruiz.ppm" ]
+    },
+    "webcredentials": {
+        "apps": [ "X8ZE3634DQ.net.isaacruiz.ppm" ]
+    },
 }
+
