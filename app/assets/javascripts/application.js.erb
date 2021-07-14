@@ -131,7 +131,7 @@ function zoomCheck() {
 function redo() {
   var mapupdater;
   zoomLevel = map.getZoom();
-  map.on('mouseup', function() {
+  map.on('moveend', function() {
     zoomLevel = map.getZoom();
     if (zoomLevel < 9) {
       document.getElementById("zoom_in_more").style.display = "block";
@@ -159,6 +159,9 @@ function redo() {
     zoomLevel = map.getZoom();
     if (zoomLevel < 9) {
       document.getElementById("zoom_in_more").style.display = "block";
+      zoomLevel = map.getZoom();
+    } else if (zoomLevel >= 9) {
+      document.getElementById("zoom_in_more").style.display = "none";
       zoomLevel = map.getZoom();
     } else if ($("#followCheck").is(':checked')) {
       document.getElementById("zoom_in_more").style.display = "none";
@@ -281,7 +284,6 @@ function showLocationDetail(locationID) {
 function locationLookupMapCenter(locationID) {
   var index = jQuery.inArray(locationID, locationIDs);
   clearInfoWindows();
-  map.panTo(markers[index].getLngLat());
   markers[index].togglePopup();
 }
 
