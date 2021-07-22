@@ -35,7 +35,7 @@ describe LocationMachineXref do
     it 'should update the condition of the lmx, timestamp it, and email the admins of the region' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "foo\nSassy\nCool Bar\nPortland\n(entered from  via  by ssw (foo@bar.com))",
+          body: "foo\nSassy\nCool Bar\nPortland\nPortland\n(entered from  via  by ssw (foo@bar.com))",
           subject: 'PBM - Someone entered a machine condition',
           to: ['foo@bar.com'],
           from: 'admin@pinballmap.com'
@@ -49,7 +49,7 @@ describe LocationMachineXref do
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "bar\nSassy\nCool Bar\nPortland\n(entered from 0.0.0.0 via cleOS by ssw (foo@bar.com))",
+          body: "bar\nSassy\nCool Bar\nPortland\nPortland\n(entered from 0.0.0.0 via cleOS by ssw (foo@bar.com))",
           subject: 'PBM - Someone entered a machine condition',
           to: ['foo@bar.com'],
           from: 'admin@pinballmap.com'
@@ -122,14 +122,14 @@ describe LocationMachineXref do
       expect(submission.user).to eq(user)
       expect(submission.location).to eq(regionless_lmx.location)
       expect(submission.machine).to eq(regionless_lmx.machine)
-      expect(submission.submission).to eq("#{@m.name} was removed from #{regionless_location.name} by #{user.name}")
+      expect(submission.submission).to eq("#{@m.name} was removed from #{regionless_location.name} (#{regionless_location.city}) by #{user.name}")
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
     end
 
     it 'should remove the lmx, and email admins if appropriate' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "Cool Bar\nSassy\nPortland\n(user_id: 1) (entered from  via  by ssw (foo@bar.com))",
+          body: "Cool Bar\nPortland\nSassy\nPortland\n(user_id: 1) (entered from  via  by ssw (foo@bar.com))",
           subject: 'PBM - Someone removed a machine from a location',
           to: ['foo@bar.com'],
           from: 'admin@pinballmap.com'
@@ -140,7 +140,7 @@ describe LocationMachineXref do
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "Cool Bar\nSassy\nPortland\n(user_id: ) (entered from 0.0.0.0 via cleOS)",
+          body: "Cool Bar\nPortland\nSassy\nPortland\n(user_id: ) (entered from 0.0.0.0 via cleOS)",
           subject: 'PBM - Someone removed a machine from a location',
           to: ['foo@bar.com'],
           from: 'admin@pinballmap.com'
@@ -177,7 +177,7 @@ describe LocationMachineXref do
       expect(submission.user).to eq(user)
       expect(submission.location).to eq(@lmx.location)
       expect(submission.machine).to eq(@lmx.machine)
-      expect(submission.submission).to eq("#{@m.name} was removed from #{@l.name} by #{user.name}")
+      expect(submission.submission).to eq("#{@m.name} was removed from #{@l.name} (#{@l.city}) by #{user.name}")
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
     end
   end
@@ -185,7 +185,7 @@ describe LocationMachineXref do
   describe '#current_condition' do
     it 'should return the most recent machine condition' do
       @r = FactoryBot.create(:region, name: 'Portland', should_email_machine_removal: 1)
-      @l = FactoryBot.create(:location, region: @r, name: 'Cool Bar')
+      @l = FactoryBot.create(:location, region: @r, name: 'Cool Bar', city: 'Portland')
       @m = FactoryBot.create(:machine, name: 'Sassy')
       @lmx = FactoryBot.create(:location_machine_xref, location: @l, machine: @m)
 
@@ -221,7 +221,7 @@ describe LocationMachineXref do
       expect(submission.user).to eq(user)
       expect(submission.location).to eq(@l)
       expect(submission.machine).to eq(@m)
-      expect(submission.submission).to eq("#{@m.name} was added to #{@l.name} by #{user.name}")
+      expect(submission.submission).to eq("#{@m.name} was added to #{@l.name} (#{@l.city}) by #{user.name}")
       expect(submission.submission_type).to eq(UserSubmission::NEW_LMX_TYPE)
     end
   end

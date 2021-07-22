@@ -54,7 +54,7 @@ class LocationMachineXref < ApplicationRecord
         to: location.region.users.map(&:email),
         from: 'admin@pinballmap.com',
         subject: add_host_info_to_subject('PBM - Someone entered a machine condition', options[:request_host]),
-        body: [condition, machine.name, location.name, location.region.name, "(entered from #{options[:remote_ip]} via #{options[:user_agent]}#{user_info})"].join("\n")
+        body: [condition, machine.name, location.name, location.city, location.region.name, "(entered from #{options[:remote_ip]} via #{options[:user_agent]}#{user_info})"].join("\n")
       )
     end
   end
@@ -88,14 +88,14 @@ class LocationMachineXref < ApplicationRecord
         to: location.region.users.map(&:email),
         from: 'admin@pinballmap.com',
         subject: add_host_info_to_subject('PBM - Someone removed a machine from a location', options[:request_host]),
-        body: [location.name, machine.name, location.region.name, "(user_id: #{options[:user_id]}) (entered from #{options[:remote_ip]} via #{options[:user_agent]}#{user_info})"].join("\n")
+        body: [location.name, location.city, machine.name, location.region.name, "(user_id: #{options[:user_id]}) (entered from #{options[:remote_ip]} via #{options[:user_agent]}#{user_info})"].join("\n")
       )
     end
 
     user = nil
     user = User.find(options[:user_id]) if options[:user_id]
 
-    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: "#{machine.name} was removed from #{location.name}#{user.nil? ? '' : ' by ' + user.name}", user: user)
+    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: "#{machine.name} was removed from #{location.name} (#{location.city})#{user.nil? ? '' : ' by ' + user.name}", user: user)
 
     location.date_last_updated = Date.today
     location.last_updated_by_user_id = user.nil? ? nil : user.id
@@ -106,7 +106,7 @@ class LocationMachineXref < ApplicationRecord
   end
 
   def create_user_submission
-    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_LMX_TYPE, submission: "#{machine.name} was added to #{location.name}#{user.nil? ? '' : ' by ' + user.name}", user: user)
+    UserSubmission.create(region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_LMX_TYPE, submission: "#{machine.name} was added to #{location.name} (#{location.city})#{user.nil? ? '' : ' by ' + user.name}", user: user)
   end
 
   def current_condition

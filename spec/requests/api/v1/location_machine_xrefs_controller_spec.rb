@@ -24,7 +24,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'sends a deletion email when appropriate' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "#{@location.name}\n#{@machine.name}\n#{@location.region.name}\n(user_id: 111) (entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
+          body: "#{@location.name}\n#{@location.city}\n#{@machine.name}\n#{@location.region.name}\n(user_id: 111) (entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
           subject: 'PBM - Someone removed a machine from a location',
           to: [],
           from: 'admin@pinballmap.com'
@@ -41,7 +41,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'sends a deletion email when appropriate - authed' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "#{@location.name}\n#{@machine.name}\n#{@location.region.name}\n(user_id: 111) (entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
+          body: "#{@location.name}\n#{@location.city}\n#{@machine.name}\n#{@location.region.name}\n(user_id: 111) (entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
           subject: 'PBM - Someone removed a machine from a location',
           to: [],
           from: 'admin@pinballmap.com'
@@ -63,7 +63,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       submission = Region.find(@lmx.location.region_id).user_submissions.second
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
-      expect(submission.submission).to eq('Cleo was removed from Ground Kontrol by ssw')
+      expect(submission.submission).to eq('Cleo was removed from Ground Kontrol (Portland) by ssw')
     end
 
     it 'creates a user submission for the deletion - authed' do
@@ -74,7 +74,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       submission = Region.find(@lmx.location.region_id).user_submissions.second
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
-      expect(submission.submission).to eq('Cleo was removed from Ground Kontrol by ssw')
+      expect(submission.submission).to eq('Cleo was removed from Ground Kontrol (Portland) by ssw')
       expect(submission.user_id).to eq(111)
     end
 
@@ -258,7 +258,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "foo\nCleo\nGround Kontrol\nPortland\n(entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
+          body: "foo\nCleo\nGround Kontrol\nPortland\nPortland\n(entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
           subject: 'PBM - Someone entered a machine condition',
           to: [],
           from: 'admin@pinballmap.com'

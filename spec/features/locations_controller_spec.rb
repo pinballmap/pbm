@@ -141,7 +141,7 @@ describe LocationsController do
     [true, false].each do |region|
       it 'removes a machine from a location' do
         region = region ? @region : nil
-        location = FactoryBot.create(:location, name: 'Cleo', region: region)
+        location = FactoryBot.create(:location, name: 'Cleo', city: 'Portland', region: region)
 
         FactoryBot.create(:location_machine_xref, location: location, machine: @machine)
 
@@ -173,7 +173,7 @@ describe LocationsController do
         submission = UserSubmission.second
         expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
 
-        expect(submission.submission).to eq("Bawb was removed from Cleo by #{@user.username}")
+        expect(submission.submission).to eq("Bawb was removed from Cleo (Portland) by #{@user.username}")
         expect(submission.user_id).to eq(User.last.id)
         expect(submission.region).to eq(location.region)
       end

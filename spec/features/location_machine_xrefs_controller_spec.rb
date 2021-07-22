@@ -52,7 +52,7 @@ describe LocationMachineXrefsController do
         expect(user_submission.user_id).to eq(@user.id)
         expect(user_submission.region).to eq(region)
         expect(user_submission.submission_type).to eq(UserSubmission::NEW_LMX_TYPE)
-        expect(user_submission.submission).to eq("#{@machine_to_add.name} was added to #{location.name} by #{@user.username}")
+        expect(user_submission.submission).to eq("#{@machine_to_add.name} was added to #{location.name} (#{location.city}) by #{@user.username}")
       end
     end
 
@@ -209,7 +209,7 @@ describe LocationMachineXrefsController do
         expect(user_submission.user_id).to eq(@user.id)
         expect(user_submission.region).to eq(location.region)
         expect(user_submission.submission_type).to eq(UserSubmission::NEW_CONDITION_TYPE)
-        expect(user_submission.submission).to eq("#{@user.username} commented on #{lmx.machine.name} at #{lmx.location.name}. They said: THIS IS NOT SPAM")
+        expect(user_submission.submission).to eq("#{@user.username} commented on #{lmx.machine.name} at #{lmx.location.name} (#{lmx.location.city}). They said: THIS IS NOT SPAM")
       end
     end
 
