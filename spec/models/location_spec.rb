@@ -169,7 +169,7 @@ describe Location do
 
     it 'auto-creates user submissions' do
       user = FactoryBot.create(:user, username: 'ssw')
-      location = FactoryBot.create(:location, name: 'foo')
+      location = FactoryBot.create(:location, name: 'foo', city: 'Portland')
 
       location.confirm(user)
 
@@ -178,7 +178,7 @@ describe Location do
       expect(submission.user).to eq(user)
       expect(submission.region).to eq(location.region)
       expect(submission.location).to eq(location)
-      expect(submission.submission).to eq('ssw confirmed the lineup at foo')
+      expect(submission.submission).to eq('ssw confirmed the lineup at foo in Portland')
       expect(submission.submission_type).to eq(UserSubmission::CONFIRM_LOCATION_TYPE)
     end
 
