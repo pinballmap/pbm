@@ -16,7 +16,7 @@ describe MachineCondition do
         expect(submission.user).to eq(user)
         expect(submission.location).to eq(lmx.location)
         expect(submission.machine).to eq(lmx.machine)
-        expect(submission.submission).to eq("#{user.username} commented on #{lmx.machine.name} at #{lmx.location.name} (#{lmx.location.city}). They said: yep")
+        expect(submission.submission).to eq("#{user.username} commented on #{lmx.machine.name} at #{lmx.location.name} in #{lmx.location.city}. They said: yep")
         expect(submission.submission_type).to eq(UserSubmission::NEW_CONDITION_TYPE)
       end
     end

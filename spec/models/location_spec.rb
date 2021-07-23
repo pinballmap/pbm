@@ -178,7 +178,7 @@ describe Location do
       expect(submission.user).to eq(user)
       expect(submission.region).to eq(location.region)
       expect(submission.location).to eq(location)
-      expect(submission.submission).to eq('ssw confirmed the lineup at foo (Portland)')
+      expect(submission.submission).to eq('ssw confirmed the lineup at foo in Portland')
       expect(submission.submission_type).to eq(UserSubmission::CONFIRM_LOCATION_TYPE)
     end
 

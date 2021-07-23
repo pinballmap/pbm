@@ -173,7 +173,7 @@ describe LocationsController do
         submission = UserSubmission.second
         expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
 
-        expect(submission.submission).to eq("Bawb was removed from Cleo (Portland) by #{@user.username}")
+        expect(submission.submission).to eq("Bawb was removed from Cleo in Portland by #{@user.username}")
         expect(submission.user_id).to eq(User.last.id)
         expect(submission.region).to eq(location.region)
       end

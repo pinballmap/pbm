@@ -29,7 +29,7 @@ describe MachineScoreXref do
         expect(submission.machine).to eq(@lmx.machine)
         expect(submission.user).to eq(user)
         expect(submission.submission_type).to eq(UserSubmission::NEW_SCORE_TYPE)
-        expect(submission.submission).to eq('cibw added a high score of 100 on Test Machine Name at Test Location Name (Portland)')
+        expect(submission.submission).to eq('cibw added a high score of 100 on Test Machine Name at Test Location Name in Portland')
       end
     end
   end
