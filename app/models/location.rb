@@ -96,7 +96,7 @@ class Location < ApplicationRecord
   end
 
   def skip_geocoding?
-    ENV['SKIP_GEOCODE'] || ((lat && lon) && (last_updated_by_user && !last_updated_by_user.region_id.nil?))
+    ENV['SKIP_GEOCODE'] || (lat && lon)
   end
 
   def self.by_at_least_n_machines_sql(number_of_machines)
