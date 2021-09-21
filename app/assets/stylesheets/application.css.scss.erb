@@ -2,12 +2,12 @@
  *= require jquery-ui
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Lato&family=Nunito:ital,wght@0,400;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;600&display=swap');
 
 /** variables **/
 
-$sans: 'Nunito',"Segoe UI", Roboto, Helvetica, Arial,sans-serif;
-$serif: 'Lato',"Lucida Grande", Tahoma,sans-serif;
+$sans: 'Nunito',Helvetica,Arial,sans-serif;
+$serif: 'Lato',"Lucida Grande",Tahoma,sans-serif;
 $red: #F53240;
 $blue: #e0f1ff;
 $purple: #e0e0ff;
@@ -16,6 +16,8 @@ $lightgrey: #fafaff;
 $medgrey: #aeb1d2;
 $darkgrey: #47475f;
 $black: #000e18;
+$sansBold: 600;
+$serifBold: 700;
 
 /** mixins **/
 
@@ -206,7 +208,7 @@ ul li li {
   text-shadow: 0.1px 0.1px 0.1px white;
   font-family: $sans;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: $sansBold;
 }
 .red {
   color: $red;
@@ -221,20 +223,20 @@ h1 {
   margin: 15px 0;
   text-align: center;
   font-family: $sans;
-  font-weight: bold;
+  font-weight: $sansBold;
 }
 .italic {
   font-style: italic;
 }
 .bold {
-  font-weight: bold;
+  font-weight: $sansBold;
 }
 .hello, #intro .hello {
   font-size: 28px;
   line-height: 36px;
   text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
   margin: 0;
-  font-weight: 700;
+  font-weight: $sansBold;
   color: $red;
 }
 
@@ -279,7 +281,7 @@ form.new_user .form-actions, form.edit_user .form-actions {
 }
 .login_why_inner p.why_login {
   font-size: 18px;
-  font-weight: bold;
+  font-weight: $sansBold;
 }
 .login_why_inner p {
   margin: 10px 0 5px 0;
@@ -494,7 +496,7 @@ p.notice {
   width: auto !important;
   font-size: 16px;
   line-height: 16px;
-  font-weight: bold;
+  font-weight: $sansBold;
   background-color: $lightgrey;
 }
 #header .menu_link ul li a:hover {
@@ -551,7 +553,7 @@ a.logo_link {
   overflow: auto;
   border-top: none;
   z-index: 100;
-  font-weight: bold;
+  font-weight: $sansBold;
   background: $blue;
   margin-top: 15;
 }
@@ -592,7 +594,7 @@ a.logo_link {
 .header_buttons_container {
   display: flex;
   flex-flow: row wrap;
-  font-weight: bold;
+  font-weight: $sansBold;
   text-align: center;
   max-width: 1100px;
 }
@@ -610,7 +612,7 @@ a.logo_link {
 }
 .login a, .login_new a, .login_alert a {
   color: $red;
-  font-weight: bold;
+  font-weight: $sansBold;
 }
 .login_alert {
   font-style: italic;
@@ -633,7 +635,7 @@ span.why_login {
   font-size: 18px;
   line-height: 18px;
   height: 36px;
-  font-weight: bold;
+  font-weight: $sansBold;
   padding: 6px 6px;
   @include radius(6px);
   margin: 7px 0px;
@@ -658,7 +660,7 @@ span.why_login {
   color: red;
 }
 #login a {
-  font-weight: bold;
+  font-weight: $sansBold;
   font-size: 18px;
 }
 .region_name_page,
@@ -670,7 +672,7 @@ span.why_login {
   text-align: center;
   @include radius(0);
   display: block;
-  font-weight: bold;
+  font-weight: $sansBold;
 }
 
 /** END Header **/
@@ -684,7 +686,7 @@ span.why_login {
   color: yellow;
   text-shadow: 4px 4px $red;
   font-size: 36px;
-  font-weight: bold;
+  font-weight: $sansBold;
 }
 a.beta:hover {
   color: $red;
@@ -818,7 +820,7 @@ span.or {
   padding: 5px 25px;
   background: $darkgrey;
   color: $lightgrey;
-  font-weight: bold;
+  font-weight: $sansBold;
   float: right;
   box-shadow: none;
 }
@@ -842,7 +844,7 @@ span.or {
 }
 .location_search .info {
   font-family: Helvetica;
-  font-weight: normal;
+  font-weight: 400;
   margin: 0 5px;
   font-size: 12px;
 }
@@ -873,7 +875,7 @@ span.or {
   margin: 0px 20px 15px;
   padding: 10px;
   font-family: $serif;
-  font-weight: normal;
+  font-weight: 400;
 }
 #locations .darkb {
   font-size: 18px;
@@ -985,7 +987,7 @@ a.active_section_link:hover {
   display: none;
   font-size: 16px;
   color: #766a62;
-  font-weight: bold;
+  font-weight: $sansBold;
   font-size: 18px;
   margin: 5px 0 10px 0;
   padding: 10px;
@@ -1084,7 +1086,7 @@ li.address_full {
   padding: 3px 12px 3px 8px;
   margin-left: -13px;
   font-family: $sans;
-  font-weight: 600;
+  font-weight: $sansBold;
 }
 .machine_name:hover {
   background-color: #414141;
@@ -1107,7 +1109,7 @@ li.address_full {
 }
 span.machine_year_man {
   font-size: 18px;
-  font-weight: normal;
+  font-weight: 400;
   font-style: italic;
   color: $lightgrey;
 }
@@ -1123,7 +1125,7 @@ span.machine_year_man {
 }
 .pintips {
   text-align: left;
-  font-weight: normal;
+  font-weight: 400;
   color: $black;
   font-size: 14px;
   line-height: 24px;
@@ -1167,7 +1169,7 @@ div.comment_image span.comment_image:hover:after {
   color: $lightgrey;
   padding: 5px;
   text-align: center;
-  font-weight: bold;
+  font-weight: $sansBold;
   font-style: italic;
   font-family: $sans;
 }
@@ -1206,12 +1208,12 @@ span.machine_condition_text {
   font-size: 14px;
   line-height: 16px;
   font-family: $serif;
-  font-weight: normal;
+  font-weight: 400;
   display: block;
   color: #333333;
 }
 .machine_condition_display_lmx span.machine_condition_name {
-  font-weight: bold;
+  font-weight: $sansBold;
   line-height: 14px;
   margin: 0;
   display: inline;
@@ -1239,7 +1241,7 @@ form.remove_machine_condition {
 }
 .machine_condition_new_line .machine_condition {
   font-family: $serif;
-  font-weight: normal;
+  font-weight: 400;
   color: #333333;
 
 }
@@ -1341,7 +1343,7 @@ br.clear {
   height: 26px;
   padding-left: 5px;
   font-size: 16px;
-  font-weight: normal;
+  font-weight: 400;
   color: #f9f9f9;
   cursor: pointer;
   font-family: $sans;
@@ -1363,7 +1365,7 @@ br.clear {
 .sub_nav_location {
   font-size: 14px;
   line-height: 16px;
-  font-weight: normal;
+  font-weight: 400;
   color: #f9f9f9;
   cursor: pointer;
   height: 100%;
@@ -1434,7 +1436,7 @@ br.clear {
   height: 28px;
   background: $darkgrey;
   color: $lightgrey;
-  font-weight: bold;
+  font-weight: $sansBold;
 }
 input.search:active,
 .submit_button:active,
@@ -1568,7 +1570,7 @@ input.score {
 .add_picture_location_toggle,
 .add_machine_location_toggle  {
   color: $black;
-  font-weight: bold;
+  font-weight: $sansBold;
   background: $medgrey;
 }
 .add_picture_location_toggle:hover,
@@ -1630,13 +1632,13 @@ li.location_type, li.operator {
   line-height: 18px;
   height: 50px;
   font-style: italic;
-  font-weight: normal;
+  font-weight: 400;
   position: relative;
 }
 .confirm_location span.last_updated {
   font-style: normal;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: $sansBold;
   display: block;
   text-align: right;
   color: #5d5d5d;
@@ -1647,7 +1649,7 @@ li.location_type, li.operator {
   color: $red;
   font-family: $sans;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: $sansBold;
 }
 .confirm_inner {
   display: table !important;
@@ -1695,7 +1697,7 @@ li.location_type, li.operator {
   background: $black;
   color: $lightgrey;
   padding: 5px;
-  font-weight: bold;
+  font-weight: $sansBold;
   font-family: $sans;
 }
 .stale {
@@ -1713,7 +1715,7 @@ input.score {
 .location_detail {
   font-size: 12px;
   line-height: 14px;
-  font-weight: normal;
+  font-weight: 400;
   height: 100%;
   font-family: $serif;
   @include radius(10px);
@@ -1863,7 +1865,7 @@ input.score {
   display: block;
   color: #2E2322;
   font-family: $sans;
-  font-weight: bold;
+  font-weight: $sansBold;
 }
 #location_maker ul {
   width: 600px;
@@ -1901,14 +1903,14 @@ input.score {
   padding-left: 10px;
   list-style-type: none;
   font-family: $sans;
-  font-weight: bold;
+  font-weight: $sansBold;
 }
 .event_info a {
   text-decoration: underline;
 }
 .event_description {
   font-size: 12px;
-  font-weight: normal;
+  font-weight: 400;
   color: #55413F;
   font-family: $serif;
 }
@@ -1926,7 +1928,7 @@ input.score {
 }
 .question {
   font-size: 20px;
-  font-weight: bold;
+  font-weight: $sansBold;
   color: $darkgrey;
   font-family: $sans;
 }
@@ -1942,7 +1944,7 @@ input.score {
 
 .hello, .name, .intro, #intro .hello {
   font-family: $sans;
-  font-weight: bold;
+  font-weight: $sansBold;
 }
 #intro {
   font-family: $serif;
@@ -1954,13 +1956,13 @@ input.score {
 }
 #intro .darkb {
   font-family: $serif;
-  font-weight: 700;
+  font-weight: $serifBold;
   font-size: 16px;
 }
 .to_begin {
   margin-top: 10px;
   font-family: $sans;
-  font-weight: bold;
+  font-weight: $sansBold;
 }
 @-webkit-keyframes colorChange {
     0% {
@@ -2373,7 +2375,7 @@ span.stats_list span {
   font-size: 16px;
   color: $darkgrey;
   display: block;
-  font-weight: bold;
+  font-weight: $sansBold;
 }
 div.score_list span.score_meta,
 span.stats_list span.score_meta {
@@ -2426,7 +2428,7 @@ div.score_list {
   color: black;
 }
 #region_map .gm_region_name a {
-  font-weight: bold;
+  font-weight: $sansBold;
   color: $darkgrey;
 }
 #region_map .gm_region_name a:hover {
