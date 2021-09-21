@@ -1,6 +1,8 @@
 #div_container_column.div_01_outer
   .div_01
     %p.darkb.p1
+      %span{:style => 'width:42px;'}
+        =image_tag( 'splash-icon-128.png', :alt => 'splash', :style => 'height:42px;', :class => 'splash')
       Welcome to Pinball Map!
     %p.p2
       %span{:style => 'max-width:400px;min-width:100px'}
@@ -8,15 +10,13 @@
         %br/
         And we have a
         = link_to 'mobile app.', app_path, :class => 'apps_link'
-      %span{:style => 'width:96px;'}
-        =image_tag( 'splash-icon-128.png', :alt => 'splash', :style => 'height:96px;', :class => 'splash')
     %p.bold.p3
       = link_to 'Explore the Map', map_path
     %p
       The map was last edited
       =distance_of_time_in_words(Time.now, @last_updated_time)
       ago.
-#div_container_row{:style => 'border-bottom:20px solid #d1dfe8;'}
+#div_container_row{:style => 'border-bottom: 20px solid #e0e0ff;'}
   .div_01b.home_intro
     %p.darkb News!
     %p
@@ -75,7 +75,7 @@
   - if mobile_device?
     .read_more
     .read_less
-#div_container_column{:style => 'background-color:#ffffff'}
+#div_container_column{:style => 'background-color:#f5f5ff'}
   .div_05
     %p.darkb.p1
       Regional Maps
@@ -84,7 +84,7 @@
       = link_to 'big map', map_path
       isn't cutting it for you, you can search for machines in one select area. Please pick a "regional" map below. Regions are predefined geographical areas - they can be a city, county, state, or even a country - that an administrator and the local users created. Each regional map is curated by a local administrator, often with the support of a league.
 - if !mobile_device?
-  #div_container_column{:style => 'background-color:#ffffff'}
+  #div_container_column{:style => 'background-color:#f5f5ff'}
     .div_02
       #region_map
 #div_container_column

@@ -2,22 +2,19 @@
  *= require jquery-ui
  */
 
-@font-face {
-  font-family: 'Freight-MedSC';
-  src: url(<%= asset_path "freight-sans-medium-sc-opentype.otf" %>);
-}
-@import url('https://fonts.googleapis.com/css?family=Work+Sans');
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Nunito:ital,wght@0,400;1,600&display=swap');
 
 /** variables **/
 
-$sans: "Freight-MedSC",sans-serif;
-$serif: 'Work Sans',sans-serif;
+$sans: 'Nunito',"Segoe UI", Roboto, Helvetica, Arial,sans-serif;
+$serif: 'Lato',"Lucida Grande", Tahoma,sans-serif;
 $red: #F53240;
-$blue: #D3ECFF;
-$grey: #6a7d8a;
-$lightgrey: #f5fbff;
-$medgrey: #97a5af;
-$darkgrey: #4b5862;
+$blue: #e0f1ff;
+$purple: #e0e0ff;
+$grey: #7f7fa0;
+$lightgrey: #fafaff;
+$medgrey: #aeb1d2;
+$darkgrey: #47475f;
 $black: #000e18;
 
 /** mixins **/
@@ -429,6 +426,7 @@ p.notice {
 }
 #header a {
   text-decoration: none;
+  font-size: 14px;
 }
 #page_home {
   width: 800px;
@@ -929,7 +927,7 @@ span.or {
   text-align: center;
   padding: 5px;
   @include radius(10px);
-  font-size: 15px;
+  font-size: 14px;
   box-shadow: 1px 1px 10px rgba(90,100,117,0.5);
 }
 #search_link_wrapper {
@@ -1033,11 +1031,11 @@ a.active_section_link:hover {
   top: 135px;
 }
 .name {
-  font-size: 24px;
-  line-height: 24px;
+  font-size: 22px;
+  line-height: 22px;
   height: 100%;
   color: $darkgrey;
-  background-color: $blue;
+  background-color: $purple;
   padding: 10px 5px;
   @include radius(10px 10px 0 0);
 }
@@ -1079,14 +1077,14 @@ li.address_full {
   float: left;
   background-color: $darkgrey;
   color: #ffffff;
-  font-size: 26px;
-  line-height: 28px;
+  font-size: 22px;
+  line-height: 24px;
   height: 100%;
   width: 100%;
   padding: 3px 12px 3px 8px;
   margin-left: -13px;
   font-family: $sans;
-  font-weight: bold;
+  font-weight: 600;
 }
 .machine_name:hover {
   background-color: #414141;
@@ -1108,7 +1106,7 @@ li.address_full {
   line-height: 22px;
 }
 span.machine_year_man {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: normal;
   font-style: italic;
   color: $lightgrey;
@@ -1127,7 +1125,7 @@ span.machine_year_man {
   text-align: left;
   font-weight: normal;
   color: $black;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
   height: 24px;
   padding-left: 5px;
@@ -1138,13 +1136,14 @@ span.machine_year_man {
 }
 .pintips a {
   font-family: $sans;
-  font-size: 18px;
+  font-size: 14px;
   text-decoration: none;
   line-height: 24px;
 }
 .pintips_icon {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
+  margin-left: 6px;
 }
 div.comment_image {
   width: 40px;
@@ -1188,9 +1187,9 @@ div.comment_image span.comment_image:hover:after {
 }
 .add_condition {
   font-family: $sans;
-  font-size: 18px;
+  font-size: 14px;
   text-decoration: none;
-  line-height: 24px;
+  line-height: 20px;
   color: #333333;
   padding-left: 5px;
 }
@@ -1276,9 +1275,9 @@ form.remove_machine_condition {
   width: 75%;
   clear: both;
   border: none;
-  font-size: 18px;
-  line-height: 24px;
-  height: 24px;
+  font-size: 14px;
+  line-height: 20px;
+  height: 20px;
 }
 #add_machine_by_id {
   margin-bottom: 5px;
@@ -1309,7 +1308,7 @@ form.remove_machine_condition {
 }
 .location_detail input.remove_machine_button {
   margin: 0 10px;
-  background-color: #fedee4;
+  background-color: #fee5e7;
   border-top: 1px solid #DDDDDD;
   border: none;
   color: $grey;
@@ -1636,7 +1635,7 @@ li.location_type, li.operator {
 }
 .confirm_location span.last_updated {
   font-style: normal;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   display: block;
   text-align: right;
@@ -1647,7 +1646,7 @@ li.location_type, li.operator {
 .confirm_location span .last_updated_username {
   color: $red;
   font-family: $sans;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
 }
 .confirm_inner {
@@ -1917,7 +1916,7 @@ input.score {
   padding-left: 10px;
 }
 .links_category, .app_title {
-  background-color: $blue;
+  background-color: $purple;
   padding: 5px;
   color: $red !important;
   margin-top: 0;
@@ -2176,8 +2175,8 @@ div.map_summary_info {
 }
 div.region_name {
   padding: 6px 10px;
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 400;
   display: inline-block;
   text-align: center;
 }
@@ -2196,14 +2195,14 @@ div.region_name_container {
   flex-direction: row;
   justify-content: center;
   margin: 0 auto;
-  background-color: #e4f3ff;
+  background-color: #fafaff;
   flex-wrap: wrap;
 }
 .div_01_outer {
   margin-top: 2px;
   text-align: center;
   background-color: #e0ebf2;
-  border-bottom: 20px solid #d1dfe8;
+  border-bottom: 20px solid #e0e0ff;
   z-index:100;
   background: url(<%= asset_path 'PPM-SplashTile-BW-Inverted-blue.png' %>) repeat;
   background-size: 5px;
@@ -2216,11 +2215,14 @@ div.region_name_container {
   padding: 0 20px;
 }
 .div_01 .p1 {
-  font-size:42px;
-  line-height:42px;
-  display:block;
-  margin-top:30px;
-  margin-bottom:10px;
+  font-size: 32px;
+  line-height: 32px;
+  display: block;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .div_01 .p2 {
   font-size: 20px;
@@ -2235,11 +2237,12 @@ div.region_name_container {
   justify-content: center;
 }
 .div_01 .p3 {
-  font-size: 56px;
-  line-height:56px;
-  display:block;
-  margin-bottom:30px;
-  margin-top:10px;
+  font-size: 32px;
+  line-height: 32px;
+  display: block;
+  font-weight: 600;
+  margin-bottom: 20px;
+  margin-top: 10px;
 }
 .div_01b {
   flex-direction: row;
@@ -2289,7 +2292,7 @@ span.state_name {
   font-size: 20px;
   line-height: 22px;
   font-family: $sans;
-  font-weight: bold;
+  font-weight: 600;
 }
 li span.state_name {
   background: none;
