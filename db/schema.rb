@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_13_230424) do
+ActiveRecord::Schema.define(version: 2021_10_04_024618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -148,6 +148,7 @@ ActiveRecord::Schema.define(version: 2021_04_13_230424) do
     t.integer "machine_group_id"
     t.integer "ipdb_id"
     t.text "opdb_id"
+    t.text "opdb_img"
     t.index ["machine_group_id"], name: "index_machines_on_machine_group_id"
   end
 
