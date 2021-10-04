@@ -316,6 +316,7 @@ RailsAdmin.config do |config|
       field :ipdb_link, :string
       field :ipdb_id, :integer
       field :opdb_id, :string
+      field :opdb_img, :string
       field :machine_group, :belongs_to_association
     end
     show do
@@ -325,6 +326,7 @@ RailsAdmin.config do |config|
       field :ipdb_link, :string
       field :ipdb_id, :integer
       field :opdb_id, :string
+      field :opdb_img, :string
       field :machine_group, :belongs_to_association
     end
     edit do
@@ -334,6 +336,7 @@ RailsAdmin.config do |config|
       field :ipdb_link, :string
       field :ipdb_id, :integer
       field :opdb_id, :string
+      field :opdb_img, :string
       field :is_active, :boolean
       field :machine_group, :belongs_to_association
     end
