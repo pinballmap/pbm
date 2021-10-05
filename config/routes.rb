@@ -198,6 +198,7 @@ Rails.application.routes.draw do
   get '/portland-maine' => redirect('/maine')
   get '/orlando' => redirect('/florida-central')
   get '/london' => redirect('/uk')
+  get '/chico' => redirect('/map')
 
   root to: 'pages#home'
 end
