@@ -309,7 +309,7 @@ HERE
       FactoryBot.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'baz', user: ssw)
       get "/api/v1/region/#{@region.name}/locations.json"
 
-      expect(response.body.scan('ssw').size).to eq(2)
+      expect(response.body.scan('ssw').size).to eq(3)
     end
 
     it 'returns num_machines' do

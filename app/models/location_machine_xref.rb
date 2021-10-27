@@ -73,6 +73,7 @@ class LocationMachineXref < ApplicationRecord
 
   def update_location
     location.date_last_updated = Date.today
+    location.last_updated_by_user_id = user ? user.id : nil
     location.save(validate: false)
   end
 
