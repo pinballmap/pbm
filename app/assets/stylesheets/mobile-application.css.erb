@@ -30,6 +30,8 @@ body {
   min-width: 320px;
 }
 #header {
+  display: flex;
+  align-items: center;
   min-width: 320px;
   height: 46px;
   padding: 5px 0 5px;
@@ -42,39 +44,39 @@ body {
   padding: 0;
 }
 #header_image {
-  text-align: center;
+  margin: auto;
 }
 #header a.logo_link img {
   padding: 0;
   height: 30px;
   width: 203px;
-  margin: 2px auto;
-  display: inline;
+  margin: auto;
 }
 #header div.menu_link {
   width: auto !important;
-  position: relative;
+  position: absolute;
+  left: 0;
+  top: 45px;
   border: none;
   line-height: 18px;
   height: auto;
+  width: 100%;
   float: none;
   text-align: left;
 }
 #menu {
-  padding: 0 5px 0 0 ;
-  height: 30px;
+  margin: auto;
   font-size: 30px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
-  justify-content: space-around;
-  left: 10px;
-  top: 8px;
-  position: absolute;
+}
+#header_app {
+  margin: auto;
+}
+#header_app a {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  background-color: white;
+  margin-right: 5px;
 }
 #header #nav {
   display: block;
@@ -194,7 +196,7 @@ body {
 }
 #header div.menu_link ul li.login_list a {
   color: #F53240;
-  font-size: 20px !important;
+  font-size: 16px !important;
 }
 span.login_list {
   display: block;
@@ -274,6 +276,12 @@ div.pick_a_map {
   .metadata_edit_location form select, .metadata_edit_location input.edit_mode {
     width: 160px !important;
   }
+}
+
+@media only screen and (max-width: 340px) {
+    #header_app a {
+      font-size: 10px;
+    }
 }
 
 @media only screen and (max-width: 320px)
