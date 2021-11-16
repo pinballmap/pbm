@@ -45,7 +45,7 @@
     #header_image
       =link_to image_tag('pinballmap-logo.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => 'logo_link'
     #header_app
-      =link_to 'use the app', app_path
+      =link_to 'use app', app_path
     %div.menu_link
       %ul#nav.js
         - if !user_signed_in?
