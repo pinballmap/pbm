@@ -31,9 +31,9 @@
           =link_to 'Add Location', suggest_path, :class => "bold"
       - if (current_user)
         .header_buttons_child.header_menu_03
-          =image_tag( 'heart-empty.png', :alt => 'heart icon', :class => 'fave_icon')            
+          =image_tag( 'heart-empty.png', :alt => 'heart icon', :class => 'fave_icon')
           =link_to 'Saved Locations', saved_path, :class => "bold"
-      - if (@region)     
+      - if (@region)
         %div.region_logo_dropdown.header_buttons_child
           %span.region_name_page
             =link_to "#{@region.full_name}", region_homepage_path
@@ -44,10 +44,8 @@
     #menu &#9776;
     #header_image
       =link_to image_tag('pinballmap-logo.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => 'logo_link'
-    - if user_signed_in?
-      =link_to image_tag('user.png', :alt => 'profile icon'), profile_user_path(current_user.id), :class => 'user_icon_link'
-    - else
-      =link_to image_tag('user.png', :alt => 'login icon'), new_user_session_path, :class => 'user_icon_link'
+    #header_app
+      =link_to 'use the app', app_path
     %div.menu_link
       %ul#nav.js
         - if !user_signed_in?
