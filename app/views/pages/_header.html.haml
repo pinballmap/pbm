@@ -5,7 +5,8 @@
     =link_to image_tag('pinballmap-logo.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => "logo_link"
     %div{:class => "header_buttons_container"}
       %div.menu_link
-        #menu &#9776;
+        #menu
+          =image_tag 'menu.svg', :class => 'header_menu', :alt => 'Pinball Map Menu'
         %ul#nav.js
           = render :partial => 'pages/menu'
       .header_buttons_child.header_menu_02{:class => "#{@region ? 'header_menu_region' : ''}"}
@@ -41,7 +42,8 @@
             %ul.other_regions_list= other_regions_html(@region)
 - else
   #header{:class => "#{@region ? '' : 'header_home'}"}
-    #menu &#9776;
+    #menu
+      =image_tag 'menu.svg', :class => 'header_menu', :alt => 'Pinball Map Menu'
     #header_image
       =link_to image_tag('pinballmap-logo.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => 'logo_link'
     #header_app
