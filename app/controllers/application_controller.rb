@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
     zone = params['location_zone']&.is_a?(Integer) || params['location_zone']&.match?(/^[0-9]+$/) ? Zone.find(params['location_zone']) : Zone.find_by_name(params['location_zone'])
 
     body = <<BODY
-    Dear Admin: You can approve this location with the click of a button at #{request.protocol}#{request.host_with_port}#{rails_admin_path}/suggested_location\n Click the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\n But first, confirm the address via https://maps.google.com and add any missing fields (like Type, Phone, and Website). Thanks!!\n
+    Dear Admin: You can approve this location with the click of a button at #{request.protocol}#{request.host_with_port}#{rails_admin_path}/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
 Location Name: #{params['location_name']}\n
 Street: #{params['location_street']}\n
 City: #{params['location_city']}\n
