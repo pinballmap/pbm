@@ -60,7 +60,7 @@ describe Api::V1::LocationsController, type: :request do
           from: 'admin@pinballmap.com',
           subject: 'PBM - New location suggested for the portland pinball map',
           body: <<HERE
-    Dear Admin: A new pinball spot has been submitted for your region! Please verify/fix the address using https://maps.google.com and then "Promote" the location to the map via http://www.example.com/admin/suggested_location. If any fields are missing, like Location Type, please fill them in! Thanks!!\n
+    Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n Click the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\n But first, confirm the address via https://maps.google.com and add any missing fields (like Type, Phone, and Website). Thanks!!\n
 Location Name: name\n
 Street: street\n
 City: city\n
@@ -103,7 +103,7 @@ HERE
           bcc: ['super_admin@bar.com'],
           subject: 'PBM - New location suggested for pinball map',
           body: <<HERE
-    Dear Admin: A new pinball spot has been submitted for your region! Please verify/fix the address using https://maps.google.com and then "Promote" the location to the map via http://www.example.com/admin/suggested_location. If any fields are missing, like Location Type, please fill them in! Thanks!!\n
+    Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n Click the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\n But first, confirm the address via https://maps.google.com and add any missing fields (like Type, Phone, and Website). Thanks!!\n
 Location Name: name\n
 Street: street\n
 City: city\n
@@ -142,7 +142,7 @@ HERE
           from: 'admin@pinballmap.com',
           subject: 'PBM - New location suggested for the seattle pinball map',
           body: <<HERE
-    Dear Admin: A new pinball spot has been submitted for your region! Please verify/fix the address using https://maps.google.com and then "Promote" the location to the map via http://www.example.com/admin/suggested_location. If any fields are missing, like Location Type, please fill them in! Thanks!!\n
+    Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n Click the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\n But first, confirm the address via https://maps.google.com and add any missing fields (like Type, Phone, and Website). Thanks!!\n
 Location Name: name\n
 Street: \n
 City: \n
@@ -192,7 +192,7 @@ HERE
           from: 'admin@pinballmap.com',
           subject: 'PBM - New location suggested for the portland pinball map',
           body: <<HERE
-    Dear Admin: A new pinball spot has been submitted for your region! Please verify/fix the address using https://maps.google.com and then "Promote" the location to the map via http://www.example.com/admin/suggested_location. If any fields are missing, like Location Type, please fill them in! Thanks!!\n
+    Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n Click the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\n But first, confirm the address via https://maps.google.com and add any missing fields (like Type, Phone, and Website). Thanks!!\n
 Location Name: name\n
 Street: street\n
 City: city\n

@@ -766,7 +766,7 @@ RailsAdmin.config do |config|
     end
     show do
       field :full_street_address, :string do
-        label "PROMOTE TO LOCATION"
+        label "APPROVE LOCATION"
         pretty_value do
           bindings[:view].render partial: 'convert_suggested_location_to_location', locals: {suggested_location: bindings[:object]}
         end
