@@ -1,4 +1,3 @@
 = banner('add_picture_location', 'UPLOAD A PICTURE', location)
 %div[location, :add_picture]{:style => 'display:none;'}
-  %span.info Upload a picture of this place!
   = render :partial => 'location_picture_xrefs/form',  :locals => {:location => location}
