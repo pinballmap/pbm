@@ -160,7 +160,7 @@ describe LocationsController do
         visit "/#{region ? region.name : 'map'}/?by_location_id=" + location.id.to_s
 
         page.accept_confirm do
-          click_button 'remove'
+          click_button 'Remove'
         end
 
         sleep 1
@@ -187,7 +187,7 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       page.dismiss_confirm do
-        click_button 'remove'
+        click_button 'Remove'
       end
 
       sleep 1

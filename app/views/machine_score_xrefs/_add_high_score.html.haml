@@ -1,5 +1,5 @@
 %div.high_score
-  = banner('add_scores_lmx', 'Enter Your High Score', lmx)
+  = banner('add_scores_lmx', 'Add high score', lmx)
   %div[lmx, :add_scores]{:style => 'display:none;', :class => 'add_scores_form'}
     = form_tag machine_score_xrefs_path, :id => "add_high_score_#{lmx.id}", :method => 'post' do
       = hidden_field_tag :location_machine_xref_id, lmx.id

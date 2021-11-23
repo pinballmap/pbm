@@ -1175,14 +1175,13 @@ span.machine_year_man {
   width: 400px;
 }
 .pintips {
-  text-align: left;
+  text-align: center;
   font-weight: 400;
   color: $black;
   font-size: 14px;
   line-height: 24px;
   height: 24px;
   padding-left: 5px;
-  width: 75%;
   clear: both;
   margin-left: 10px;
   margin-top: -1px;
@@ -1224,8 +1223,23 @@ div.comment_image span.comment_image:hover:after {
   font-style: italic;
   font-family: $sans;
 }
-.machine_condition_lmx {
-  width: 75%;
+.machine_condition_lmx,
+.high_score > .sub_nav_item,
+.location_detail input.remove_machine_button {
+  width: 200px;
+  background: white;
+  @include radius(10px);
+  margin: 10px auto;
+  text-align: center;
+  box-shadow: 2px 5px 10px #d0d5d9;
+  -moz-box-shadow: 2px 5px 10px #d0d5d9;
+  -webkit-box-shadow: 2px 5px 10px #d0d5d9;
+  font-size: 14px;
+  height: 26px;
+  line-height: 26px;
+  color: #333333;
+  text-decoration: none;
+  padding-left: 0;
 }
 .machine_condition_new_line span {
   display: inline;
@@ -1238,17 +1252,10 @@ div.comment_image span.comment_image:hover:after {
   display: inline-block;
   font-family: $serif;
 }
-.add_condition {
-  font-family: $sans;
-  font-size: 14px;
-  text-decoration: none;
-  line-height: 20px;
-  color: #333333;
-  padding-left: 5px;
-}
 .add_condition:hover {
   cursor: pointer;
   background-color: $blue;
+  @include radius(10px);
 }
 div.machine_condition_text {
   width: 100%;
@@ -1296,11 +1303,6 @@ form.remove_machine_condition {
   color: #333333;
 
 }
-.machine_condition_display_lmx {
-  margin: 5px 0 5px 10px;
-  color: $grey;
-  padding: 2px;
-}
 .machine_condition_display_lmx .edit_mode {
   width: 80%;
   max-width: 80%;
@@ -1320,10 +1322,6 @@ form.remove_machine_condition {
   margin-left: 10px;
   clear: both;
 }
-.high_score {
-  margin-left: 10px;
-}
-.high_score > .sub_nav_item,
 .score_container_lmx > .sub_nav_item {
   width: 75%;
   clear: both;
@@ -1359,21 +1357,16 @@ form.remove_machine_condition {
 .add_machine_location form select option {
   font-size: 16px;
 }
+.remove_button {
+  margin: 0 auto;
+  text-align: center;
+}
 .location_detail input.remove_machine_button {
-  margin: 0 10px;
+  margin: 5px auto 10px;
   background-color: #fee5e7;
-  border-top: 1px solid #DDDDDD;
   border: none;
-  color: $grey;
   cursor: pointer;
-  padding: 0 2px 2px;
-  font-size: 16px;
-  line-height: 25px;
-  height: 25px;
-  width: 74%;
-  text-transform: uppercase;
-  font-family: $sans;
-  font-style: italic;
+  line-height: 22px;
 }
 .location_detail input.remove_machine_button:hover {
   color: black;
@@ -1623,6 +1616,14 @@ input.score {
   color: $black;
   font-weight: $bold;
   background: $medgrey;
+  @include radius(10px);
+  margin: 5px auto 10px;
+  padding-left: 10px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 2px 5px 10px #d0d5d9;
+  -moz-box-shadow: 2px 5px 10px #d0d5d9;
+  -webkit-box-shadow: 2px 5px 10px #d0d5d9;
 }
 .add_picture_location_toggle:hover,
 .add_machine_location_toggle:hover {
@@ -1888,10 +1889,10 @@ input.score {
   margin-right: 10px;
 }
 #file_chooser_button {
-  width: 80%;
   border: none;
   background: inherit;
   font-family: $sans;
+  margin-bottom: 10px;
 }
 
 /** Sub Pages **/
