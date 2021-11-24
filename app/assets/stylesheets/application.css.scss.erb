@@ -1224,6 +1224,7 @@ div.comment_image span.comment_image:hover:after {
   font-family: $sans;
 }
 .machine_condition_lmx,
+.sub_nav_item.show_conditions_lmx_toggle,
 .high_score > .sub_nav_item,
 .location_detail input.remove_machine_button {
   width: 200px;
@@ -1259,7 +1260,7 @@ div.comment_image span.comment_image:hover:after {
 }
 div.machine_condition_text {
   width: 100%;
-  margin-bottom: 6px;
+  margin: 6px;
   font-size: 14px;
 }
 span.machine_condition_text {
@@ -1318,10 +1319,6 @@ form.remove_machine_condition {
   width: 435px;
   margin: 5px;
 }
-.machineconditions_container_lmx {
-  margin-left: 10px;
-  clear: both;
-}
 .score_container_lmx > .sub_nav_item {
   width: 75%;
   clear: both;
@@ -1362,7 +1359,7 @@ form.remove_machine_condition {
   text-align: center;
 }
 .location_detail input.remove_machine_button {
-  margin: 5px auto 10px;
+  margin: 0 auto 10px;
   background-color: #fee5e7;
   border: none;
   cursor: pointer;
@@ -1615,7 +1612,7 @@ input.score {
 .add_machine_location_toggle  {
   color: $black;
   font-weight: $bold;
-  background: $medgrey;
+  background: white;
   @include radius(10px);
   margin: 5px auto 10px;
   padding-left: 10px;
@@ -1645,14 +1642,6 @@ input.score {
 .add_scores_lmx_toggle:hover  {
   background-color: $blue;
   color: #333333;
-}
-.show_conditions_lmx_toggle {
-  width: 435px;
-  color: #333333;
-  border: none;
-  font-size: 18px;
-  line-height: 24px;
-  height: 24px;
 }
 .location_type, .location_type a, .location_types, .operator, .operator a {
   padding: 2px 0 2px 4px;
