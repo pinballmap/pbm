@@ -27,8 +27,8 @@
 			- if !user_signed_in?
 				= link_to link_to 'LOGIN to update this location! Click here', "https://#{request.host_with_port}/users/login"
 	- if user_signed_in?
-		= render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
 		= render :partial => 'locations/add_machine', :locals => {:location => l}
+		= render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
 	= render :partial => 'locations/show_machines', :locals => {:location => l}
 
 :javascript
