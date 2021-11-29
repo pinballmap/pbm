@@ -855,31 +855,30 @@ span.or {
   padding-right: 5px;
 }
 .search_field_container {
-  width: 54%;
+  width: 55%;
   height: 28px;
   border: 2px solid $medgrey;
   float: right;
   background: #FFFFFF;
-  @include radius(0 2px 2px 0);
+  @include radius(0 10px 10px 0);
 }
 .location_search .search,
 #form .search_other_button input {
   border: none;
   height: 28px;
   margin: -2px -2px 0 0;
-  @include radius(0 2px 2px 0);
+  @include radius(10px);
   padding: 5px 25px;
   background: $darkgrey;
   color: $lightgrey;
   font-weight: $bold;
   float: right;
-  box-shadow: none;
+  box-shadow: 2px 5px 10px #d0d5d9;
+  -moz-box-shadow: 2px 5px 10px #d0d5d9;
+  -webkit-box-shadow: 2px 5px 10px #d0d5d9;
 }
 .location_search .map.search {
   margin: 0 2px 0 0;
-}
-#form .search_other_button input {
-  @include radius(2px);
 }
 .search_other_button {
   float: right;
@@ -890,11 +889,11 @@ span.or {
   margin: 0;
   height: 24px;
   width: 54%;
-  padding-left: 4px;
-  font-family: Helvetica;
+  padding-left: 10px;
+  font-family: $serif;
 }
 .location_search .info {
-  font-family: Helvetica;
+  font-family: $serif;
   font-weight: 400;
   margin: 0 5px;
   font-size: 12px;
@@ -1181,10 +1180,6 @@ span.machine_year_man {
   font-size: 14px;
   line-height: 24px;
   height: 24px;
-  padding-left: 5px;
-  clear: both;
-  margin-left: 10px;
-  margin-top: -1px;
 }
 .pintips a {
   font-family: $sans;
@@ -1226,6 +1221,7 @@ div.comment_image span.comment_image:hover:after {
 .machine_condition_lmx,
 .sub_nav_item.show_conditions_lmx_toggle,
 .high_score > .sub_nav_item,
+.score_container_lmx > .sub_nav_item,
 .location_detail input.remove_machine_button {
   width: 200px;
   background: white;
@@ -1302,7 +1298,6 @@ form.remove_machine_condition {
   font-family: $serif;
   font-weight: 400;
   color: #333333;
-
 }
 .machine_condition_display_lmx .edit_mode {
   width: 80%;
@@ -1318,14 +1313,6 @@ form.remove_machine_condition {
 .machine_condition_edit_lmx {
   width: 435px;
   margin: 5px;
-}
-.score_container_lmx > .sub_nav_item {
-  width: 75%;
-  clear: both;
-  border: none;
-  font-size: 14px;
-  line-height: 20px;
-  height: 20px;
 }
 #add_machine_by_id {
   margin-bottom: 5px;
@@ -1597,9 +1584,6 @@ input.lookup_search_input:focus {
 input.score {
   width: 80%;
 }
-.score_container_lmx {
-  margin-left: 10px;
-}
 .show_conditions_lmx {
   padding: 2px;
 }
@@ -1631,11 +1615,6 @@ input.score {
 }
 .add_scores_lmx label {
   font-size: 14px;
-}
-.show_scores_lmx_toggle {
-  width: 283px;
-  color: #333333;
-  border-bottom: 1px solid #888 !important;
 }
 .show_scores_lmx_toggle:hover,
 .show_conditions_lmx_toggle:hover,
@@ -1681,7 +1660,6 @@ li.location_type, li.operator {
   font-size: 16px;
   font-weight: $bold;
   display: block;
-  text-align: right;
   color: #5d5d5d;
   display: table-cell !important;
   vertical-align: middle;
