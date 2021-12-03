@@ -745,6 +745,7 @@ a.beta:hover {
 }
 form#address_search_form input.lookup_search_input {
   margin-bottom: 5px;
+  @include radius(5px);
 }
 .map_input {
   display: block;
@@ -1018,7 +1019,7 @@ span.or {
 form select#by_location_id, form select#by_machine_id {
   width: 42%;
   font-size: 16px !important;
-  @include radius(0);
+  @include radius(5px 0 0 5px);
 }
 .active_section_link {
   background-color: $darkgrey !important;
@@ -1418,13 +1419,10 @@ br.clear {
   border: 2px solid $medgrey;
   background-color: $lightgrey;
   height: 28px;
-  @include radius(2px);
+  @include radius(5px);
   font-size: 15px;
   padding-right: 3px;
   padding-left: 3px;
-  appearance: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
   color: $darkgrey;
 }
 #form select:hover, form select:hover {
@@ -1522,7 +1520,7 @@ input.score,
   height: 28px;
   border: 2px solid $medgrey;
   color: #000;
-  @include radius(2px);
+  @include radius(5px);
 }
 input.search,
 .condition_button, .desc_edit_location input,
