@@ -34,6 +34,7 @@ class Location < ApplicationRecord
   scope :by_operator_id, (->(id) { where('operator_id in (?)', id.split('_').map(&:to_i)) })
   scope :by_zone_id, (->(id) { where('zone_id in (?)', id.split('_').map(&:to_i)) })
   scope :by_city_id, (->(city) { where(city: city) })
+  scope :by_state_id, (->(state) { where(state: state) })
   scope :by_location_name, (->(name) { where("lower(regexp_replace(name, '’', '''', 'gi')) ilike ?", '%' + name.downcase.tr('’', "'") + '%') })
   scope :by_ipdb_id, (lambda { |id|
     machines = Machine.where('ipdb_id in (?)', id.split('_').map(&:to_i)).map(&:all_machines_in_machine_group).flatten

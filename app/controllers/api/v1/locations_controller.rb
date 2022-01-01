@@ -6,7 +6,7 @@ module Api
 
       before_action :allow_cors
       respond_to :json
-      has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_zone_id, :by_operator_id, :by_type_id, :by_machine_group_id, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region, :by_ipdb_id, :by_opdb_id, :by_is_stern_army, :regionless_only, :manufacturer
+      has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_state_id, :by_zone_id, :by_operator_id, :by_type_id, :by_machine_group_id, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region, :by_ipdb_id, :by_opdb_id, :by_is_stern_army, :regionless_only, :manufacturer
 
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION = 50
 
@@ -63,6 +63,7 @@ module Api
       param :by_opdb_id, Integer, desc: 'OPDB ID to find in locations', required: false
       param :by_machine_name, String, desc: 'Find machine name in locations', required: false
       param :by_city_id, String, desc: 'City to search for', required: false
+      param :by_state_id, String, desc: 'State to search for', required: false
       param :by_machine_group_id, String, desc: 'Machine Group to search for', required: false
       param :by_zone_id, Integer, desc: 'Zone ID to search by', required: false
       param :by_operator_id, Integer, desc: 'Operator ID to search by', required: false
@@ -73,7 +74,7 @@ module Api
       param :regionless_only, Integer, desc: 'Show only regionless locations', required: false
       formats ['json']
       def index
-        return return_response(FILTERING_REQUIRED_MSG, 'errors') unless params[:region] || params[:by_location_name] || params[:by_location_id] || params[:by_machine_id] || params[:by_ipdb_id] || params[:by_opdb_id] || params[:by_machine_name] || params[:by_city_id] || params[:by_machine_group_id] || params[:by_zone_id] || params[:by_operator_id] || params[:by_type_id] || params[:by_at_least_n_machines_type] || params[:by_is_stern_army] || params[:regionless_only]
+        return return_response(FILTERING_REQUIRED_MSG, 'errors') unless params[:region] || params[:by_location_name] || params[:by_location_id] || params[:by_machine_id] || params[:by_ipdb_id] || params[:by_opdb_id] || params[:by_machine_name] || params[:by_city_id] || params[:by_state_id] || params[:by_machine_group_id] || params[:by_zone_id] || params[:by_operator_id] || params[:by_type_id] || params[:by_at_least_n_machines_type] || params[:by_is_stern_army] || params[:regionless_only]
 
         except = params[:no_details] ? %i[street zip phone state website description created_at updated_at date_last_updated last_updated_by_user_id region_id] : nil
 
