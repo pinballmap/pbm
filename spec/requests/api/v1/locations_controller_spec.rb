@@ -765,6 +765,25 @@ HERE
     end
   end
 
+  describe '#by_city_id' do
+    it 'returns all locations within a city and state' do
+      FactoryBot.create(:location, city: 'Portland', state: 'ME')
+      FactoryBot.create(:location, city: 'Portland', state: 'OR')
+
+      get "/api/v1/locations.json/?by_state_id=OR;by_city_id=Portland"
+
+      expect(response.body).to include('OR')
+      expect(response.body).to_not include('ME')
+    end
+
+    it 'forces you to filter by_state_id' do
+
+      get "/api/v1/locations.json/?by_state_id=OR"
+
+      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::FILTERING_REQUIRED_MSG)
+    end
+  end
+
   describe '#show' do
     it 'returns all regions within scope along with lmx data' do
       lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 777, name: 'Cleo'))
