@@ -163,7 +163,7 @@ module Api
       def closest_by_address
         max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
 
-        except = params[:no_details] ? %i[location_machine_xrefs.condition country last_updated_by_user_id description region_id zone_id website phone] : nil
+        except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone] : nil
 
         lat, lon = ''
         unless params[:address].blank?
