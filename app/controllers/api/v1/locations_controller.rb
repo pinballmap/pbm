@@ -76,7 +76,7 @@ module Api
       def index
         return return_response(FILTERING_REQUIRED_MSG, 'errors') unless params[:region] || params[:by_location_name] || params[:by_location_id] || params[:by_machine_id] || params[:by_ipdb_id] || params[:by_opdb_id] || params[:by_machine_name] || params[:by_city_id] || params[:by_machine_group_id] || params[:by_zone_id] || params[:by_operator_id] || params[:by_type_id] || params[:by_at_least_n_machines_type] || params[:by_is_stern_army] || params[:regionless_only]
 
-        except = params[:no_details] ? %i[street zip phone state website description created_at updated_at date_last_updated last_updated_by_user_id region_id] : nil
+        except = params[:no_details] ? %i[phone website description created_at updated_at date_last_updated last_updated_by_user_id region_id] : nil
 
         locations = nil
         if params[:no_details]
@@ -138,7 +138,7 @@ module Api
       def closest_by_lat_lon
         max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
 
-        except = params[:no_details] ? %i[country is_stern_army last_updated_by_user_id description region_id zone_id website phone] : nil
+        except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone] : nil
 
         closest_locations = apply_scopes(Location).includes(:machines).near([params[:lat], params[:lon]], max_distance)
 
@@ -163,7 +163,7 @@ module Api
       def closest_by_address
         max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
 
-        except = params[:no_details] ? %i[country is_stern_army last_updated_by_user_id description region_id zone_id website phone] : nil
+        except = params[:no_details] ? %i[location_machine_xrefs.condition country last_updated_by_user_id description region_id zone_id website phone] : nil
 
         lat, lon = ''
         unless params[:address].blank?
@@ -178,7 +178,7 @@ module Api
         end
 
         closest_location = apply_scopes(Location).near([lat, lon], max_distance).first
-        location_details = [location_machine_xrefs: { include: { machine: { methods: :machine_group_id } } }]
+        location_details = [location_machine_xrefs: { include: { machine: { methods: :machine_group_id, except: params[:no_details] ? %i[is_active created_at updated_at ipdb_link ] : nil } }, except: params[:no_details] ? %i[condition created_at updated_at condition_date ip user_id machine_score_xrefs_count] : nil }]
 
         if params[:send_all_within_distance]
           closest_locations = apply_scopes(Location).near([lat, lon], max_distance)
