@@ -327,10 +327,7 @@ HERE
 
       expect(response.body.scan('location_machine_xrefs').size).to eq(0)
       expect(response.body.scan('machine_conditions').size).to eq(0)
-      expect(response.body.scan('street').size).to eq(0)
-      expect(response.body.scan('zip').size).to eq(0)
       expect(response.body.scan('phone').size).to eq(0)
-      expect(response.body.scan('state').size).to eq(0)
       expect(response.body.scan('website').size).to eq(0)
       expect(response.body.scan('description').size).to eq(0)
       expect(response.body.scan('created_at').size).to eq(0)
@@ -341,6 +338,9 @@ HERE
 
       expect(response.body.scan('id').size).to_not eq(0)
       expect(response.body.scan('name').size).to_not eq(0)
+      expect(response.body.scan('street').size).to_not eq(0)
+      expect(response.body.scan('state').size).to_not eq(0)
+      expect(response.body.scan('zip').size).to_not eq(0)
       expect(response.body.scan('lat').size).to_not eq(0)
       expect(response.body.scan('lon').size).to_not eq(0)
       expect(response.body.scan('city').size).to_not eq(0)
@@ -521,7 +521,6 @@ HERE
       get '/api/v1/locations/closest_by_address.json', params: { address: '97202', send_all_within_distance: 1, no_details: 1 }
 
       expect(response.body.scan('country').size).to eq(0)
-      expect(response.body.scan('is_stern_army').size).to eq(0)
       expect(response.body.scan('last_updated_by_user_id').size).to eq(0)
       expect(response.body.scan('description').size).to eq(0)
       expect(response.body.scan('region_id').size).to eq(0)
@@ -534,6 +533,7 @@ HERE
       expect(response.body.scan('lat').size).to_not eq(0)
       expect(response.body.scan('lon').size).to_not eq(0)
       expect(response.body.scan('city').size).to_not eq(0)
+      expect(response.body.scan('is_stern_army').size).to_not eq(0)
     end
 
     it 'respects manufacturer filter' do
@@ -610,7 +610,6 @@ HERE
       get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: closest_location.lat, lon: closest_location.lon, send_all_within_distance: 1, no_details: 1 }
 
       expect(response.body.scan('country').size).to eq(0)
-      expect(response.body.scan('is_stern_army').size).to eq(0)
       expect(response.body.scan('last_updated_by_user_id').size).to eq(0)
       expect(response.body.scan('description').size).to eq(0)
       expect(response.body.scan('region_id').size).to eq(0)
@@ -623,6 +622,7 @@ HERE
       expect(response.body.scan('lat').size).to_not eq(0)
       expect(response.body.scan('lon').size).to_not eq(0)
       expect(response.body.scan('city').size).to_not eq(0)
+      expect(response.body.scan('is_stern_army').size).to_not eq(0)
     end
 
     it 'respects filters' do
