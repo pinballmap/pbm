@@ -1,4 +1,4 @@
 - if (!lmx.machine.opdb_id.blank?)
-  .pintips
+  .external_machine_link
     = link_to "View Playing Tips on PinTips", "http://pintips.net/opdb/#{lmx.machine.opdb_id}", :target => '_blank'
-    =image_tag( 'open-in-new-black.png', :alt => 'open in new window', :class => 'pintips_icon')
+    =image_tag( 'open-in-new-black.png', :alt => 'open in new window', :class => 'external_machine_link_icon')

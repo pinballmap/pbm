@@ -135,6 +135,9 @@ a:hover, a:active {
   text-decoration: underline;
   color: $red;
 }
+button:hover, .button:hover, .pointer {
+  cursor: pointer;
+}
 input, textarea {
   -webkit-appearance: none;
   font-family: $serif;
@@ -269,8 +272,13 @@ ul li li {
   font-size: 28px;
   line-height: 28px;
 }
+.font22 {
+  font-size: 22px;
+  line-height: 24px;
+}
 .font20 {
   font-size: 20px;
+  line-height: 20px;
 }
 .font18 {
   font-size: 18px;
@@ -591,9 +599,6 @@ a.logo_link {
 .login_alert a {
   text-decoration: none;
 }
-#header .login a:hover, #header .login_new a:hover, .login_alert a:hover {
-  text-decoration: underline;
-}
 .login a, .login_new a, .login_alert a {
   color: $red;
   font-weight: $bold;
@@ -607,30 +612,8 @@ a.logo_link {
 .location_detail .login_alert {
   text-align: center;
 }
-#login .button {
-  color: $lightgrey;
-  font-size: 18px;
-  line-height: 18px;
-  height: 36px;
-  font-weight: $bold;
-  padding: 6px 6px;
-  @include radius(6px);
-  margin: 7px 0px;
-  border: 2px solid $grey;
-  background-color: $darkgrey;
-  box-shadow: 1px 1px 3px #888;
-  font-family: $sans;
-  text-transform: uppercase;
-}
 #login .button:hover {
-  cursor: pointer;
   background: $grey;
-}
-#login .reset-password .button,
-#login .confirmation .button {
-  cursor: pointer;
-  width: 100%;
-  font-size: 12px;
 }
 #login .error {
   font-style: italic;
@@ -647,7 +630,6 @@ a.logo_link {
   line-height: 22px;
   font-family: $sans;
   text-align: center;
-  @include radius(0);
   display: block;
   font-weight: $bold;
 }
@@ -906,9 +888,6 @@ span.or {
   top: 220px;
   color: $grey;
 }
-#mapFollow_wrapper input {
-  margin: 0;
-}
 .toggle_btn_reg {
   left: 43%;
 }
@@ -942,20 +921,14 @@ a.active_section_link:hover {
 
 .back_to_results {
   display: none;
-  font-size: 16px;
-  color: #766a62;
-  font-weight: $bold;
-  font-size: 18px;
   margin: 5px 0 10px 0;
   padding: 10px;
-  border-radius: 10px;
+  @include radius(10px);
 }
 .back_to_results:hover {
-  color: $red;
-  cursor: pointer;
+  text-decoration: underline;
 }
 #search_results {
-  color: #180e03;
   margin-top: 20px;
 }
 .search_result .show_location_detail_location > ul,
@@ -967,7 +940,7 @@ a.active_section_link:hover {
   transition: all .3s ease-in-out;
 }
 .show_location_detail_location ul:hover {
-  background-color: $blue;
+  background-color: $purple;
   @include radius(10px);
 }
 #search_results li {
@@ -979,6 +952,7 @@ a.active_section_link:hover {
   padding-right: 120px;
 }
 #search_results_count {
+  color: $red;
   position: absolute;
   top: 95px;
   left: 0;
@@ -990,8 +964,6 @@ a.active_section_link:hover {
   top: 135px;
 }
 .name {
-  font-size: 22px;
-  line-height: 22px;
   height: 100%;
   color: $darkgrey;
   background-color: $purple;
@@ -1002,9 +974,6 @@ a.active_section_link:hover {
   float: right;
   margin-top: -35px;
   padding-right: 5px;
-}
-.location_tools:hover {
-  cursor: pointer;
 }
 img.fave_location, .permalink img {
   height: 22px;
@@ -1029,24 +998,14 @@ li.address {
 li.address_full {
   padding: 0 0 0 5px;
 }
-.location_confirm {
-  font-family: $sans;
-}
 .machine_name {
   float: left;
   background-color: $darkgrey;
   color: #ffffff;
-  font-size: 22px;
-  line-height: 24px;
   height: 100%;
   width: 100%;
   padding: 3px 12px 3px 8px;
   margin-left: -13px;
-  font-family: $sans;
-  font-weight: $bold;
-}
-.machine_name:hover {
-  background-color: #414141;
 }
 #search_results .machine_names ul {
   color: #171717;
@@ -1080,7 +1039,7 @@ span.machine_year_man {
 .machine_sub_items {
   width: 400px;
 }
-.pintips {
+.external_machine_link {
   text-align: center;
   font-weight: 400;
   color: $black;
@@ -1088,42 +1047,16 @@ span.machine_year_man {
   line-height: 24px;
   height: 24px;
 }
-.pintips a {
+.external_machine_link a {
   font-family: $sans;
   font-size: 14px;
   text-decoration: none;
   line-height: 24px;
 }
-.pintips_icon {
+.external_machine_link_icon {
   width: 12px;
   height: 12px;
   margin-left: 6px;
-}
-div.comment_image {
-  width: 40px;
-  height: 40px;
-  float: right;
-  margin-bottom: 5px;
-}
-div.comment_image span.comment_image {
-  float: right;
-  cursor: pointer;
-  height: 40px;
-}
-div.comment_image span.comment_image:hover:after {
-  content: "Leave a comment!";
-  position: absolute;
-  margin-top: -4px;
-  line-height: 14px;
-  font-size: 16px;
-  margin-left: 45px;
-  background: $black;
-  color: $lightgrey;
-  padding: 5px;
-  text-align: center;
-  font-weight: $bold;
-  font-style: italic;
-  font-family: $sans;
 }
 .machine_condition_lmx,
 .sub_nav_item.show_conditions_lmx_toggle,
@@ -1353,7 +1286,8 @@ br.clear {
 #location_picture_xref_submit,
 .new_location_picture_xref input.submit_picture,
 .metadata_edit_location input.save_button,
-.metadata_edit_location input.cancel_button {
+.metadata_edit_location input.cancel_button,
+#login .button {
   border: 2px solid $medgrey;
   @include radius(6px);
   box-shadow: 1px 1px 3px #b7cfc1;
