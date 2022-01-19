@@ -10,10 +10,10 @@
       = form_tag map_location_data_path, :method => 'get', :id => 'address_search_form', :class => 'location_search' do
         = hidden_field_tag :by_machine_id
         = hidden_field_tag :by_location_id
-        .map_input
+        .map_input.block
           %span Machine
           = text_field_tag "by_machine_name", params["by_machine_name"], :class => 'lookup_search_input', :placeholder => @machine_placeholder
-        .map_input
+        .map_input.block
           %span Near
           = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => @big_cities_placeholder
         %hr
@@ -35,8 +35,8 @@
 
   #lookup.map_lookup
     #locations
-      #intro
-        %p.darkb News!
+      #intro.serif
+        %p.red.font18.sans.bold News!
         %p
           We completely redesigned the app! Read our
           = link_to "release notes", "http://blog.pinballmap.com/2019/06/18/pinball-map-app-update-5-0", :class => "bold"
@@ -57,10 +57,10 @@
           = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold"
         %p
           Pinball Map is currently listing a total of
-          %span.darkb
+          %span.red.font18.sans.bold
             #{number_with_delimiter(Location.count,:delimiter => ",")}
           locations and
-          %span.darkb
+          %span.red.font18.sans.bold
             #{number_with_delimiter(LocationMachineXref.count,:delimiter => ",")}
           machines.
         %p

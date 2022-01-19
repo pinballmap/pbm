@@ -1,39 +1,39 @@
 #page_body
   .column_container
     .column.bg_gray.w_400
-      %p.darkb Pinball Map App Support - FAQ
+      %p.red.font18.sans.bold Pinball Map App Support - FAQ
       %p.question How do I search for a particular machine?
-      %ul.answer 
+      %ul.answer
         %li When you're on the map screen, click the "filter" button in the upper right, then choose a machine. Then go back to the map and it will only show places with that machine.
       %p.question When I filter for "Cool Machine (Pro)", I also see results for "Cool Machine (LE)". What's up?
-      %ul.answer 
+      %ul.answer
         %li This is by design. We've found that most users want to see all versions, and don't want to conduct 3 separate searches for the same title.
       %p.question How do I add a new location?
-      %ul.answer 
+      %ul.answer
         %li Click the menu icon in the lower right, and choose "Submit Location". Then fill out the form! Our administrators moderate submissions, and it can take a few days. The more accurate and thorough your submission, the quicker it will get added!
       %p.question How do I remove a machine from a location?
-      %ul.answer 
+      %ul.answer
         %li Click on the machine name, and then look for a "remove" button.
       %p.question This location closed/no longer has machines. What do I do - do I need to tell you?
-      %ul.answer 
+      %ul.answer
         %li Simply remove all the machines from it. Empty locations are periodically removed.
       %p.question When I search for a city, the city is listed twice (and maybe the second instance of it is misspelled). Or, I see the same location listed twice. Or, the place is in the wrong spot on the map. Etc.
-      %ul.answer 
+      %ul.answer
         %li These are data entry mistakes. Please contact us so we can fix them.
       %p.question How do I get listed as an operator?
       %ul.answer
         %li Contact us and we'll add you.
       %p.question What is your privacy policy?
-      %ul.answer 
-        %li 
-          We do not track or store user locations, nor store any personal information. We do not sell any user data. We do not use third-party analytics - however, we built the app using Expo, and they 
+      %ul.answer
+        %li
+          We do not track or store user locations, nor store any personal information. We do not sell any user data. We do not use third-party analytics - however, we built the app using Expo, and they
           =link_to 'collect anonymous usage statistics.', 'https://expo.io/privacy', :target => '_blank'
           This site is not monetized. We keep a log of map edits that users make.
           =link_to 'More detailed Privacy Policy.', privacy_path
-      %p.darkb.subpage_text If you have another question or comment about the application, please contact <a class="five" href="mailto:map@pinballmap.com">map@pinballmap.com</a>. Thank you for your continued support.
+      %p.red.font18.sans.bold.subpage_text If you have another question or comment about the application, please contact <a class="five" href="mailto:map@pinballmap.com">map@pinballmap.com</a>. Thank you for your continued support.
     .column.w_400
       .ios
-        %p.darkb.links_category
+        %p.red.font18.sans.bold.links_category
           Pinball Map App Screenshots
         %ul
           %li
@@ -48,4 +48,3 @@
             =link_to image_tag('app_support/ios-screenshot-05.jpg', :alt => 'Pinball Map iPhone Screenshot 5'), '/assets/app_support/ios-screenshot-05.jpg'
           %li
             =link_to image_tag('app_support/ios-screenshot-06.jpg', :alt => 'Pinball Map iPhone Screenshot 6'), '/assets/app_support/ios-screenshot-06.jpg'
-    

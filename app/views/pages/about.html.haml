@@ -1,42 +1,42 @@
 #page_body
   .column_container.serif
     .column.bg_gray.w_450
-      %p.darkb
+      %p.red.font18.sans.bold
         Contact
         - if (@region.name == 'portland')
           Pinball Map HQ
-        - else 
+        - else
           the
           = @region.full_name
           Pinball Map administrator
       #contact_maker.pb_10
         = form_tag contact_sent_path, :method => 'get' do
-          %ul
+          %ul.pl_0
             - if !user_signed_in?
               %li
                 %label{:for => "contact_name"} Your Name:
-                %input{:type => "text", :name => "contact_name", :params => "contact_name", :class => "text"}
+                %input{:type => "text", :name => "contact_name", :params => "contact_name", :class => "text w_400"}
               %li
                 %label{:for => "contact_email"} Your Email:
-                %input{:type => "text", :name => "contact_email", :params => "contact_email", :class => "text"}
-            %li.msg
+                %input{:type => "text", :name => "contact_email", :params => "contact_email", :class => "text w_400"}
+            %li.msg.h_auto
               %label{:for => "contact_msg"} Message:
-              %textarea{:type => "text", :name => "contact_msg", :params => "contact_msg", :class => "text"}
+              %textarea{:type => "text", :name => "contact_msg", :params => "contact_msg", :class => "text w_400"}
             - if !user_signed_in?
               %li
                 %span.red.serif Security Question (required)
                 %label{:for => "security_test", } What are we mapping on this site?
-                %input{:type => "text", :name => "security_test", :params => "security_test", :class => "text"}
+                %input{:type => "text", :name => "security_test", :params => "security_test", :class => "text w_400"}
             %li.submit{:style => "clear:both;"}
               %input{:type => "submit", :value => "Submit Comment", :class => "submit_button"}
     .column.bg_gray.w_450
-      %p.darkb
+      %p.red.font18.sans.bold
         About the
         = @region.full_name
         Pinball Map
       %p
         This map lists all the pinball machines in the
-        %span.darkb= @region.full_name
+        %span.red.font18.sans.bold= @region.full_name
         region. The data is kept up to date by YOU!
       %p
         = link_to 'pinballmap.com', root_path
@@ -49,8 +49,8 @@
         = link_to 'see this blog post,', 'http://blog.pinballmap.com/2014/07/21/criteria-for-adding-a-new-pinball-map', :target => '_blank'
         or read the
         = link_to 'FAQ.', faq_path
-      %p  
-        Listen to our podcast, 
+      %p
+        Listen to our podcast,
         = link_to "Mappin' Around with Scott & Ryan!", "http://pod.pinballmap.com", :class => "bold"
       %p
         Follow
@@ -64,7 +64,7 @@
         =link_to 'Pinball Map Privacy Policy', privacy_path
     - if (@region.operators.size > 0)
       .column.w_450
-        %p.darkb.links_category
+        %p.red.font18.sans.bold.links_category
           Operators in this Region
           - @region.operators.each do |o|
             - if o.locations
@@ -74,7 +74,7 @@
                 - else
                   =link_to "#{o.name}", "#{o.website}", :target => "_blank"
     .column.w_450
-      %p.darkb.links_category Top 10 Machines
+      %p.red.font18.sans.bold.links_category Top 10 Machines
       - @top_machines.each do |lmx|
         .machine_quantity
           %p
@@ -82,7 +82,7 @@
       .column.w_450
         - if (@links.size > 0)
           - @links.keys.sort.each do |key|
-            %p.darkb.links_category #{key}
+            %p.red.font18.sans.bold.links_category #{key}
             - @links[key].sort_by! { |rlx| rlx.sort_order || 0 }.each do |l|
               %p.links_content
                 = link_to l.name, l.url, :target => '_blank'

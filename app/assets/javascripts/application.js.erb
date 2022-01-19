@@ -99,7 +99,7 @@ function showLocations(ids, lats, lons, contents, latLng) {
         document.getElementById("not_found").style.display = "none";
       }
     } else if (contents.length == 0 && latLng.length === 1) {
-      document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
+      document.getElementById("map_canvas").innerHTML="<p id='not_found' class='font28 red bold'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
     } else if (contents.length == 0 && latLng.length === 2) {
       map.fitBounds(bounds, {padding: 50, animate: false});
       map.setZoom(18);
@@ -232,7 +232,7 @@ function findClosestLocations(region) {
     var dfd = $.getJSON('/api/v1/locations/closest_by_lat_lon.json', {lat: position.coords.latitude, lon: position.coords.longitude, max_distance: 50, send_all_within_distance: 1});
     dfd.done(function(response) {
       if (!response.locations) {
-        document.getElementById("map_canvas").innerHTML="<p id='not_found' class='dark hello'>" + "No pinball found on this map within 50 miles of your location." + "</p>";
+        document.getElementById("map_canvas").innerHTML="<p id='not_found' class='font28 red bold'>" + "No pinball found on this map within 50 miles of your location." + "</p>";
       } else {
           var locationIds = [];
           for (var i = 0; i < response.locations.length; i++) {
