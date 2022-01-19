@@ -1,24 +1,26 @@
 #div_container_column.div_01_outer
   .div_01
-    %p.darkb.p1
+    %p.red.font18.sans.bold.p1
       %span{:style => 'width:42px;margin-right: 5px;'}
-        =image_tag( 'splash-icon-128.png', :alt => 'splash', :style => 'height:42px;', :class => 'splash')
+        =image_tag( 'icon-color-noBGsvg.svg', :alt => 'splash', :style => 'height:42px;', :class => 'splash')
       Welcome to Pinball Map!
     %p.p2
-      %span{:style => 'max-width:400px;min-width:100px'}
-        Pinball Map is a crowdsourced map of public pinball machines.
-        %br/
-        And we have a
-        = link_to 'mobile app.', app_path, :class => 'apps_link'
+      %span{:style => 'max-width:500px;min-width:100px'}
+        Founded in 2008, Pinball Map is a crowdsourced worldwide map of public pinball machines.
     %p.bold.p3
       = link_to 'Explore the Map', map_path
-    %p
+    %p.p2
+      %span
+        Use our
+        = link_to "mobile app", app_path, :class => "apps_link", :style => "color: #fd0091;"
+    %p.italic.flex_center
+      =image_tag( 'machine-pink.png', :alt => 'machine', :style => 'height:32px;margin-right:5px;', :class => 'splash')
       The map was last edited
       =distance_of_time_in_words(Time.now, @last_updated_time)
-      ago.
-#div_container_row{:style => 'border-bottom: 20px solid #e0e0ff;'}
-  .div_01b.home_intro
-    %p.darkb News!
+      ago
+#div_container_row{:style => 'border-bottom: 20px solid #ebebff;'}
+  .div_01b.serif
+    %p.red.font18.sans.bold News!
     %p
       We completely redesigned the app! Read our
       = link_to "release notes", "http://blog.pinballmap.com/2019/06/18/pinball-map-app-update-5-0", :class => "bold"
@@ -35,7 +37,7 @@
     %p
       We have a podcast,
       = link_to "Mappin' Around with Scott & Ryan.", "http://pod.pinballmap.com", :class => "bold"
-      New episodes every couple months.
+      New episodes are... kind of on hold.
     %p
       = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold", :target => '_blank'
       Patreon supporters get an EXCLUSIVE Pinball Map Hand Sanitizer!
@@ -46,24 +48,24 @@
       and
       = link_to 'Pindigo', 'https://pindigo.app/', :target => '_blank'
       and
-      = link_to 'this sweet heatmap', 'https://arcg.is/0bHaif', :target => '_blank'
-      and others! You can use the
+      = link_to 'Scorbit', 'https://scorbit.io/', :target => '_blank'
+      and many others! You can use the
       = link_to 'Pinball Map API', apipie_apipie_path, :class => 'apps_link'
       in your own project.
-  .div_01b.home_intro.read_more_wrap
+  .div_01b.serif.read_more_wrap
+    %p.red.font18.sans.bold And more
     %p
       Pinball Map is listing
-      %span.darkb
+      %span.red.font18.sans.bold
         #{number_with_delimiter(Location.all.count,:delimiter => ",")}
       locations and
-      %span.darkb
+      %span.red.font18.sans.bold
         #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")}
       machines.
     %p
       This is a user-powered map. You can help keep it up to date by adding and removing machines, submitting new locations, and telling your friends to use it!
     %p
       The data is managed by over 100 administrators and thousands of active users.
-      =link_to 'Contact us!', 'portland/about', :class => 'apps_link'
     %p
       We have a free
       = link_to 'mobile app for iOS and Android.', app_path, :class => 'apps_link'
@@ -72,12 +74,14 @@
       = link_to 'code is open source.', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
       Follow us on Twitter for a massive amount of map updates.
       = link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
+    %p
+      = link_to 'Contact us!', 'portland/about', :class => 'apps_link'
   - if mobile_device?
     .read_more
     .read_less
 #div_container_column{:style => 'background-color:#f5f5ff'}
   .div_05
-    %p.darkb.p1
+    %p.p1.red.font18.sans.bold
       Regional Maps
     %p
       If the

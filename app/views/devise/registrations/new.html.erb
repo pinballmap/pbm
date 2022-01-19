@@ -18,10 +18,10 @@
 				<%= f.error_notification %>
 
 				<div class="form-inputs">
-					<span class="why_login">(How about your initials?)</span>
+					<span class="font14 grey">(How about your initials?)</span>
 					<%= f.input :username, :required => true, :autofocus => true, as: :string %>
 					<%= f.input :email, :required => true, :autofocus => true, :input_html => {:minlength => 4} %>
-					<span class="why_login">(Choose a password that you don't use elsewhere)</span>
+					<span class="font14 pt_5 grey block">(Choose a password that you don't use elsewhere)</span>
 					<%= f.input :password, :required => true %>
 					<%= f.input :password_confirmation, :required => true %>
 					<p class="red serif">Security Question (required)</p>

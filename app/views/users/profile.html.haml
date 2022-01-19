@@ -1,75 +1,75 @@
 #page_body
   .column_container
     .column.w_320.bg_gray.ta_c
-      %p.profile.darkb
+      %p.profile.red.font18.sans.bold
         =link_to @user.username, profile_user_path(@user.id)
-      %p.darkbl{:style => "font-size:16px;"} Member since: #{@user.created_at.strftime('%b-%d-%Y')}
+      %p.darkgrey{:style => "font-size:16px;"} Member since: #{@user.created_at.strftime('%b-%d-%Y')}
       - if current_user && (@user.id == current_user.id)
         %p
           =link_to "Update email or password", edit_user_registration_path
     .column.w_560.mt_5
-      %div.darkbl.stats
+      %div.darkgrey.stats.font18.sans.bold
         %div.stat_num_o
           %span.stats
             #{@user.num_machines_added}
         %span.stats_text Machines Added
-      %div.darkbl.stats
+      %div.darkgrey.stats.font18.sans.bold
         %div.stat_num_o
           %span.stats
             #{@user.num_machines_removed}
         %span.stats_text Machines Removed
-      %div.darkbl.stats
+      %div.darkgrey.stats.font18.sans.bold
         %div.stat_num_o
           %span.stats
             #{@user.num_lmx_comments_left}
         %span.stats_text Machine Comments
-      %div.darkbl.stats
+      %div.darkgrey.stats.font18.sans.bold
         %div.stat_num_o
           %span.stats
             #{@user.num_msx_scores_added}
         %span.stats_text High Scores Added
-      %div.darkbl.stats
+      %div.darkgrey.stats.font18.sans.bold
         %div.stat_num_o
           %span.stats
             #{@user.num_locations_suggested}
         %span.stats_text Locations Submitted
-      %div.darkbl.stats
+      %div.darkgrey.stats.font18.sans.bold
         %div.stat_num_o
           %span.stats
             #{@user.num_locations_edited}
         %span.stats_text Locations Edited
       - if !@user.profile_list_of_edited_locations.empty?
-        %div.darkbl.stats
-          %div.stats_o
+        %div.darkgrey.stats.font18.sans.bold
+          %div.ml_5
             List of Locations Edited (with your last 50 updates):
             %span.stats_list
               - @user.profile_list_of_edited_locations.each do |location_array|
                 - location = Location.find(location_array[0])
                 - if location
-                  %span.location_edited
+                  %span.location_edited.inline
                     = link_to(location.name, (location.region ? region_homepage_path(location.region.name) : map_path) + "/?by_location_id=#{location.id}")
                   %br/
       - if !@user.profile_list_of_high_scores.empty?
-        %div.darkbl.stats
-          %div.stats_o
+        %div.darkgrey.stats.font18.sans.bold
+          %div.ml_5
             High Scores (Last 50):
             %span.stats_list
               - @user.profile_list_of_high_scores.each do |score_array|
                 - location_name, machine_name, score, date_created = score_array
-                %span.score_machine
+                %span.score_machine.mt_10
                   #{machine_name}
-                %span.score_score
+                %span.pt_5.block
                   #{number_with_precision(score, precision: 0, delimiter: ',')}
-                %span.score_meta at
-                %span.score_meta_gen #{location_name}
-                %span.score_meta on
-                %span.score_meta_gen #{date_created}
+                %span.score_meta.inline at
+                %span.score_meta_gen.inline #{location_name}
+                %span.score_meta.inline on
+                %span.score_meta_gen.inline #{date_created}
       - if !@user.user_fave_locations.empty?
-        %div.darkbl.stats
-          %div.stats_o
+        %div.darkgrey.stats.font18.sans.bold
+          %div.ml_5
             Saved Locations:
             %span.stats_list
               - @user.user_fave_locations.each do |fave_location|
-                %span.location_edited
+                %span.location_edited.inline
                   = link_to(fave_location.location.name, (fave_location.location.region ? region_homepage_path(fave_location.location.region.name) : map_path) + "/?by_location_id=#{fave_location.location.id}")
                 %br/

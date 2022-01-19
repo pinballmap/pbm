@@ -9,13 +9,13 @@
           Here's a list of the upcoming pinball events in the #{@region.full_name} area.
         %p.serif
           If you have a pinball event that you'd like included on this page, use the contact form on the
-          = link_to 'about page', about_path, :class => 'intro sans'
+          = link_to 'about page', about_path, :class => 'font18 bold sans'
           to give us the info.
 
     .column.w_450
       - if (@sorted_events.size > 0)
         - @sorted_events.keys.sort.each do |key|
-          %p.darkb.links_category #{key}
+          %p.red.font18.sans.bold.links_category #{key}
           %ul.event_info
             - @sorted_events[key].sort{|a,b| a.start_date.to_s <=> b.start_date.to_s}.each do |e|
               %li
