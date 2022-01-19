@@ -1,8 +1,8 @@
 %div.location_name
 	%ul
-		%li.name{:onclick => "locationLookupMapCenter(#{l.id});"}
+		%li.name.bold.font20{:onclick => "locationLookupMapCenter(#{l.id});"}
 			=l.name
-		%div.location_tools
+		%div.location_tools.pointer
 			- if user_signed_in?
 				=image_tag('comment-4.png', :class => 'comment_image')
 				=image_tag('pencil-eraser-100.png', :class => 'meta_image')
@@ -21,7 +21,7 @@
 			= render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
 		%div.more_pictures[l, :more]
 		%div.less_pictures[l, :less]
-		%div.location_confirm
+		%div.location_confirm.sans
 			= render :partial => 'locations/render_confirm', :locals => {:l => l}
 		%div.login_alert
 			- if !user_signed_in?

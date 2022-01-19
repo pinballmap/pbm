@@ -941,8 +941,8 @@ describe LocationMachineXrefsController do
 
       sleep(1)
 
-      expect(URI.parse(page.find_link('foo')['href']).to_s).to eq('http://foo.com/')
-      expect(URI.parse(page.find_link('bar')['href']).to_s).to eq('http://ipdb.org/search.pl?name=bar;qh=checked;searchtype=advanced')
+      expect(page).to have_link('View machine on IPDB', href: 'http://foo.com')
+      expect(page).to have_link('View machine on IPDB', href: 'http://ipdb.org/search.pl?name=bar;qh=checked;searchtype=advanced')
     end
   end
 end

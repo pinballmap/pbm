@@ -53,10 +53,6 @@
     #add {
       margin-left: 10px;
     }
-    div.comment_image span.comment_image:hover:after {
-      margin-left: -50px;
-
-    }
     .confirm_inner,
     .confirm_location {
       padding-right: 20px;

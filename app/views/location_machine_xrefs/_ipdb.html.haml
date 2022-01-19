@@ -1,0 +1,6 @@
+.external_machine_link
+  - if (lmx.machine.ipdb_link.blank?)
+    = link_to "View machine on IPDB", "http://ipdb.org/search.pl?name=#{lmx.machine.name};qh=checked;searchtype=advanced"
+  - else
+    = link_to "View machine on IPDB", lmx.machine.ipdb_link, :target => '_blank'
+  = image_tag( 'open-in-new-black.png', :alt => 'open in new window', :class => 'external_machine_link_icon')

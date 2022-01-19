@@ -60,7 +60,7 @@
 
 #results_container
   #search_results
-    %div.back_to_results{:onclick => "backToResults();"}
+    %div.back_to_results.font14.bold.red.pointer{:onclick => "backToResults();"}
       %span &#129044; Go back to search results
     - total_num_machines = 0
     - @locations.each do |location|
@@ -72,7 +72,7 @@
         - else
           %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id});"}
             %ul
-              %li.name= l.name
+              %li.name.bold.font20= l.name
               - if (!params[:show_location_distance].blank? && !params[:lat].blank? && !params[:lon].blank?)
                 %li.location_types= " distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
               - if (l.location_type)
