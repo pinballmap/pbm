@@ -31,6 +31,7 @@ class Machine < ApplicationRecord
   def self.tag_with_opdb_json(opdb_json)
     JSON.parse(opdb_json).each do |r|
       m = Machine.find_by_opdb_id(r['opdb_id'])
+
       unless m.nil?
         if r["images"].length > 0
           r["images"].each do |g|
