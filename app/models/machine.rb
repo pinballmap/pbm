@@ -30,11 +30,18 @@ class Machine < ApplicationRecord
 
   def self.tag_with_opdb_json(opdb_json)
     JSON.parse(opdb_json).each do |r|
-      m = Machine.find_by_ipdb_id(r['ipdb_id'])
-
+      m = Machine.find_by_opdb_id(r['opdb_id'])
       unless m.nil?
-        m.opdb_id = r['opdb_id']
-        m.save
+        if r["images"].length > 0
+          r["images"].each do |g|
+            if g["primary"] == true
+              m.opdb_img = g["urls"]["medium"]
+              m.opdb_img_height = g["sizes"]["medium"]["height"]
+              m.opdb_img_width = g["sizes"]["medium"]["width"]
+              m.save
+            end
+          end
+        end
       end
     end
   end
