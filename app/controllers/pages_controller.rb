@@ -69,11 +69,14 @@ class PagesController < ApplicationController
 
     cities = {}
     location_types = {}
+    operators = {}
 
     @locations.each do |l|
       location_types[l.location_type_id] = l if l.location_type_id
 
       cities[l.city] = l
+
+      operators[l.operator_id] = l if l.operator_id
     end
 
     @search_options = {
@@ -102,7 +105,7 @@ class PagesController < ApplicationController
       'operator' => {
         'id'   => 'id',
         'name' => 'name',
-        'search_collection' => Operator.where('operators.region_id = ?', @region.id).joins(:locations).group('operators.id').order('name')
+        'search_collection' => operators.values.map(&:operator).sort_by(&:name)
       },
       'city' => {
         'id'   => 'city',
