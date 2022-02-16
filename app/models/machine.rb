@@ -33,12 +33,12 @@ class Machine < ApplicationRecord
       m = Machine.find_by_opdb_id(r['opdb_id'])
       next unless m
 
-      primary = r["images"].find { |g| g["primary"] }
+      primary = r['images'].find { |g| g['primary'] }
 
       if primary
-        m.opdb_img = primary["urls"]["medium"]
-        m.opdb_img_height = primary["sizes"]["medium"]["height"]
-        m.opdb_img_width = primary["sizes"]["medium"]["width"]
+        m.opdb_img = primary['urls']['medium']
+        m.opdb_img_height = primary['sizes']['medium']['height']
+        m.opdb_img_width = primary['sizes']['medium']['width']
       end
       m.save
     end
