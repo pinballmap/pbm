@@ -22,16 +22,16 @@
           = text_field_tag "by_location_name", params["by_location_name"], :class => 'lookup_search_input', :placeholder => @location_placeholder
         = image_submit_tag('search_icon.png', :class => 'map search', :id => "location_search_button")
 
-      #search_link_wrapper.hide_button.toggle_btn_reg
-        =link_to "Link to this Search Result", "", :id => "search_link"
-      #mapFollow_wrapper.hide_button.toggle_btn_reg
-        %p.red{:style => 'line-height:16px;', :id => "zoom_in_more"}
-          Zoom in further to refresh results
-        %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :class => "m_0"}
-        Redo results when map is moved?
-
   #map
     = render :partial => 'locations/map', locals: { lat: @random_lat, lon: @random_lon }
+
+  #search_link_wrapper.hide_button.toggle_btn_reg
+    =link_to "Link to this Search Result", "", :id => "search_link"
+  #mapFollow_wrapper.hide_button.toggle_btn_reg
+    %p.red{:style => 'line-height:16px;', :id => "zoom_in_more"}
+      Zoom in further to refresh results!
+    %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :class => "m_0"}
+    Redo results when map is moved?
 
   #lookup.map_lookup
     #locations

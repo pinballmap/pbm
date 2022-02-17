@@ -14,7 +14,7 @@ describe PagesController do
 
       sleep 1
 
-      expect(page.body).to have_content('0 Locations & 0 Machines in Result')
+      expect(page.body).to have_content('0 Locations & 0 machines in results')
       expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
     end
 
@@ -94,7 +94,7 @@ describe PagesController do
 
       sleep 1
 
-      expect(page.body).to have_content('0 Locations & 0 Machines in Result')
+      expect(page.body).to have_content('0 Locations & 0 machines in results')
       expect(page).to_not have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
     end
 
