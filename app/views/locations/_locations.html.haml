@@ -61,7 +61,8 @@
 #results_container
   #search_results
     %div.back_to_results.font14.bold.red.pointer{:onclick => "backToResults();"}
-      %span &#129044; Go back to search results
+      %span.left_arrow &#129044;
+      %span Go back to search results
     - total_num_machines = 0
     - @locations.each do |location|
       - l = location.clone
