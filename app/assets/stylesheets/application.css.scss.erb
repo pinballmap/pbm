@@ -928,8 +928,11 @@ a.active_section_link:hover {
 .back_to_results:hover {
   text-decoration: underline;
 }
+.left_arrow {
+  font-family: 'Zapf Dingbats';
+}
 #search_results {
-  margin-top: 20px;
+  margin-top: 25px;
 }
 .search_result .show_location_detail_location > ul,
 .location_name ul {
@@ -992,9 +995,6 @@ img.fave_icon {
   line-height: 20px;
   font-family: $serif;
 }
-li.address {
-  padding: 2px 0 2px 5px;
-}
 li.address_full {
   padding: 0 0 0 5px;
 }
@@ -1008,7 +1008,7 @@ li.address_full {
   margin-left: -13px;
 }
 #search_results .machine_names ul {
-  color: #171717;
+  color: $red;
   font-size: 18px;
   padding: 0 !important;
   line-height: 20px;
@@ -1252,8 +1252,9 @@ br.clear {
   box-shadow: 2px 5px 10px #d0d5d9;
 }
 .search_result li.location_types {
-  padding: 2px 0 0 4px;
+  margin: 6px 0 4px;
   color: $grey;
+  font-size: 14px;
 }
 #form select, form select {
   border: 2px solid $medgrey;

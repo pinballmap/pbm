@@ -38,13 +38,7 @@
               $('#by_#{key}_id').val(ui.item.id);
             });
           });
-#search_link_wrapper.hide_button.toggle_btn_reg
-  =link_to "Link to this Search Result", "", :id => "search_link"
-#mapFollow_wrapper.hide_button.toggle_btn_reg
-  %p.red{:style => 'line-height:16px;', :id => "zoom_in_more"}
-    Zoom in further to refresh results!
-  %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :class => "m_0"}
-  Redo results when map is moved?
+
 :javascript
 
   $(function () {
