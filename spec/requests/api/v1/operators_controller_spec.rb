@@ -45,8 +45,8 @@ describe Api::V1::OperatorsController, type: :request do
   end
 
   describe '#show' do
-    it 'sends back operator metadata' do
-      operator = FactoryBot.create(:operator, region: @region, name: 'Sass')
+    it 'sends back appropriate operator metadata' do
+      operator = FactoryBot.create(:operator, region: @region, name: 'Sass', email: 'foo@bar.com', phone: '111-222-3333')
 
       get "/api/v1/operators/#{operator.id}.json"
       expect(response).to be_successful
@@ -56,6 +56,8 @@ describe Api::V1::OperatorsController, type: :request do
       operator_json = parsed_body['operator']
 
       expect(operator_json['name']).to eq('Sass')
+      expect(response.body).not_to include('foo@bar.com')
+      expect(response.body).not_to include('111-222-3333')
     end
 
     it 'throws an error if the region does not exist' do
