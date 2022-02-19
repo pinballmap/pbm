@@ -24,7 +24,9 @@ module Api
       def show
         operator = Operator.find(params[:id])
 
-        return_response(operator, 'operator', [], [])
+        except = %i[email phone]
+
+        return_response(operator, 'operator', [], [], 200, except)
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find operator', 'errors')
       end
