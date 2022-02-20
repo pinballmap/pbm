@@ -16,6 +16,27 @@
         %li
           Simply remove all the machines from it. We get notified once a week about empty locations, and then we delete them (sometimes we wait longer to delete them because we want to verify that the machines are really gone). So, no need to tell us. But still, thanks for telling us and for updating the map!
       %hr
+      %p.question How do I add a new location?
+      %ul.answer
+        %li
+          Fill out
+          =link_to 'this form.', map_location_suggest_path
+      %hr
+      %p.question Can I add my private collection to the map?
+      %ul.answer
+        %li
+          No. Pinball Map only lists publicly-accessible locations. The definition of 'public' varies - some places have entrance fees, or limited hours. But overall, the location has to be inclusive and accessible. So please don't submit your house or a private club that excludes people from becoming members.
+      %hr
+      %p.question How do I remove a machine from a location?
+      %ul.answer
+        %li
+          Click the "remove" button beneath a machine name.
+      %hr
+      %p.question How do I get listed as an operator?
+      %ul.answer
+        %li
+          = link_to 'Contact us.', about_path('portland')
+      %hr
       %p.question Can you include 'bat games' like SlugFest on the map?
       %ul.answer
         %li
@@ -40,7 +61,7 @@
       %p.question Why was my account banned?
       %ul.answer
         %li
-        If we find that your account has been used to mess with data on the site, then we may ban it. Abusive behavior includes, but is not limited to: deleting machines that are at a location; adding machines that are not at a location; leaving lots of inappropriate/abusive comments.
+          If we find that your account has been used to mess with data on the site, then we may ban it. Abusive behavior includes, but is not limited to: deleting machines that are at a location; adding machines that are not at a location; leaving lots of inappropriate/abusive comments.
       %p.question You should add Johndoeville as a 'region' on the map.
       %ul.answer
         %li
