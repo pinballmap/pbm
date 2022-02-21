@@ -26,7 +26,8 @@ module Api
 
         except = %i[email phone]
 
-        return_response(operator, 'operator', [], [], 200, except)
+        return_response(operator, 'operator', [], %i[operator_has_email], 200, except)
+
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find operator', 'errors')
       end

@@ -5,6 +5,10 @@ class Operator < ApplicationRecord
 
   scope :region, (->(name) { where(region_id: Region.find_by_name(name.downcase).id) })
 
+  def operator_has_email
+    return self.email.blank? ? false : true
+  end
+
   def send_recent_comments
     return if email.to_s == ''
 
