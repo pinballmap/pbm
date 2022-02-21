@@ -14,8 +14,9 @@ module Api
       formats ['json']
       def index
         operators = apply_scopes(Operator).order('name')
+        except = %i[email phone]
 
-        return_response(operators, 'operators', [], [])
+        return_response(operators, 'operators', [], %i[operator_has_email], 200, except)
       end
 
       api :GET, '/api/v1/operators/:id.json', 'Fetch information for a single operator'
@@ -27,7 +28,6 @@ module Api
         except = %i[email phone]
 
         return_response(operator, 'operator', [], %i[operator_has_email], 200, except)
-
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find operator', 'errors')
       end
