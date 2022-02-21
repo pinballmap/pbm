@@ -58,6 +58,20 @@ describe Api::V1::OperatorsController, type: :request do
       expect(operator_json['name']).to eq('Sass')
       expect(response.body).not_to include('foo@bar.com')
       expect(response.body).not_to include('111-222-3333')
+      expect(operator_json['operator_has_email']).to eq(true)
+    end
+
+    it 'returns false if operator does not have email' do
+      operator = FactoryBot.create(:operator, region: @region, name: 'Sass', phone: '111-222-3333')
+
+      get "/api/v1/operators/#{operator.id}.json"
+      expect(response).to be_successful
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      operator_json = parsed_body['operator']
+
+      expect(operator_json['operator_has_email']).to eq(false)
     end
 
     it 'throws an error if the region does not exist' do
