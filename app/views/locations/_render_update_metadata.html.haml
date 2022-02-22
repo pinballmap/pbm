@@ -9,28 +9,31 @@
   - if l.website?
     %li.website= link_to "Website", l.website, :class => 'website', :target => 'blank'
     .clear
-  - if (l.operator_id) || (l.location_type)
-    - if (l.operator_id)
-      - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
-        %li.operator
-          %span.grey Operated by:
-          %span &nbsp;#{l.operator.name}
-        .clear
-      - else
-        %li.operator
-          %span.grey Operated by:
-          %span
-            =link_to "#{l.operator.name}", "#{l.operator.website}", :target => "_blank"
-        .clear
-    - if (l.location_type)
-      %li.location_type
-        %span.grey Location Type:
-        %span
-        - if l.region
-          =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?utf8=✓&by_type_id=#{l.location_type.id}"
-        - else
-          #{l.location_type.name}
+  - if (l.operator_id)
+    - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
+      %li.operator
+        %span.grey Operated by:
+        %span &nbsp;#{l.operator.name}
       .clear
+    - else
+      %li.operator
+        %span.grey Operated by:
+        %span
+          =link_to "#{l.operator.name}", "#{l.operator.website}", :target => "_blank"
+    - if (l.operator.operator_has_email)
+      %li.operator.operator_comments.location_actual_description (This operator receives machine comments)
+    - else
+      %li.operator.operator_comments.location_actual_description (This operator does not receive machine comments)
+  .clear
+  - if (l.location_type)
+    %li.location_type
+      %span.grey Location Type:
+      %span
+      - if l.region
+        =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?utf8=✓&by_type_id=#{l.location_type.id}"
+      - else
+        #{l.location_type.name}
+    .clear
   - if ((current_page?(map_location_data_path) || request.referer =~ /map/) && l.region)
     %li.location_type
       %span.grey Region:
