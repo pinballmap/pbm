@@ -14,7 +14,7 @@ module Api
       formats ['json']
       def index
         operators = apply_scopes(Operator).order('name')
-        except = %i[email phone]
+        except = %i[email phone created_at updated_at]
 
         return_response(operators, 'operators', [], %i[operator_has_email], 200, except)
       end
@@ -25,7 +25,7 @@ module Api
       def show
         operator = Operator.find(params[:id])
 
-        except = %i[email phone]
+        except = %i[email phone created_at updated_at]
 
         return_response(operator, 'operator', [], %i[operator_has_email], 200, except)
       rescue ActiveRecord::RecordNotFound
