@@ -752,7 +752,7 @@ describe LocationMachineXrefsController do
 
       expect(page).to have_content('Cleo')
       expect(page).to have_link('Quarter Bean')
-      expect(page).to have_content("(This operator does not receive machine comments)")
+      expect(page).to have_content('(This operator does not receive machine comments)')
 
       l = FactoryBot.create(:location, id: 44, region: @region, name: 'Sass', operator: FactoryBot.create(:operator, name: 'Sass Bean', region: @region, website: nil))
 
@@ -781,7 +781,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}?by_location_id=#{l.reload.id}"
 
-      expect(page).to have_content("(This operator receives machine comments)")
+      expect(page).to have_content('(This operator receives machine comments)')
     end
 
     it 'displays location type for a location, if it is available' do
