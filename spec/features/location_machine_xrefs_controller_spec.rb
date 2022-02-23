@@ -777,7 +777,7 @@ describe LocationMachineXrefsController do
     end
 
     it 'displays message about operator receiving machine comments' do
-      FactoryBot.create(:location, id: 45, region: @region, name: 'Cleo', operator: FactoryBot.create(:operator, name: 'Quarter Bean', email: 'foo@bar.com', region: @region))
+      l = FactoryBot.create(:location, id: 45, region: @region, name: 'Cleo', operator: FactoryBot.create(:operator, name: 'Quarter Bean', email: 'foo@bar.com', region: @region))
 
       visit "/#{@region.name}?by_location_id=#{l.reload.id}"
 

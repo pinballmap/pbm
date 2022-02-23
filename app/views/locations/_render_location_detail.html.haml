@@ -7,7 +7,7 @@
 				=image_tag('comment-4.png', :class => 'comment_image')
 				=image_tag('pencil-eraser-100.png', :class => 'meta_image')
 				=image_tag( l.user_fave?(current_user.id) ? 'heart-filled.png' : 'heart-empty.png', :alt => 'fave this location', :id => "fave_location_img_#{l.id}", :class => 'fave_location')
-				=link_to image_tag( 'link.png' ), "/#{l.region ? l.region.name.downcase : 'map'}/?by_location_id=#{l.id}", :id => l.id, :alt => 'link to this location', :class => 'permalink'
+			=link_to image_tag( 'link.png' ), "/#{@region ? l.region.name.downcase : 'map'}/?by_location_id=#{l.id}", :id => l.id, :alt => 'link to this location', :class => 'permalink'
 		.clear
 		- if (l.state.blank?)
 			%li.address_full= [l.street, l.city + " " + l.zip].join(', ')
