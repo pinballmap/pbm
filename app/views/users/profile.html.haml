@@ -1,13 +1,23 @@
 #page_body
   .column_container
     .column.w_320.bg_gray.ta_c
-      %p.profile.red.font18.sans.bold
+      %p.red.font18.sans.bold
         =link_to @user.username, profile_user_path(@user.id)
+      - if !@user.contributor_rank.blank?
+        %p.red.bold.blue_bg.p_10.inline_block
+          #{@user.contributor_rank}
+          %span{:class => "profile_rank_icon profile_rank_icon_#{@user.contributor_rank_int}"}
+        %p#hella
       %p.darkgrey{:style => "font-size:16px;"} Member since: #{@user.created_at.strftime('%b-%d-%Y')}
       - if current_user && (@user.id == current_user.id)
         %p
           =link_to "Update email or password", edit_user_registration_path
     .column.w_560.mt_5
+      %div.darkgrey.stats.font18.sans.bold
+        %div.stat_num_o
+          %span.stats
+            #{@user.num_total_submissions}
+        %span.stats_text Total Submissions
       %div.darkgrey.stats.font18.sans.bold
         %div.stat_num_o
           %span.stats

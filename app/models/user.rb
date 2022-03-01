@@ -99,6 +99,42 @@ class User < ApplicationRecord
     UserSubmission.where('user_id = ? and submission_type = ?', id, UserSubmission::NEW_SCORE_TYPE).size
   end
 
+  def num_total_submissions
+    num_machines_added + num_machines_removed + num_locations_edited + num_locations_suggested + num_lmx_comments_left + num_msx_scores_added
+  end
+
+  def contributor_rank_int
+    if region_id == 1 || username == 'pbm'
+      return 1
+    elsif !region_id.blank?
+      return 2
+    elsif num_total_submissions > 500
+      return 3
+    elsif num_total_submissions > 250
+      return 4
+    elsif num_total_submissions > 50
+      return 5
+    else
+      return ''
+    end
+  end
+
+  def contributor_rank
+    if contributor_rank_int == 1
+      return 'Global Administrator'
+    elsif contributor_rank_int == 2
+      return 'Regional Administrator'
+    elsif contributor_rank_int == 3
+      return 'Grand Champ Contributor'
+    elsif contributor_rank_int == 4
+      return 'Legendary Contributor'
+    elsif contributor_rank_int == 5
+      return 'Super Contributor'
+    else
+      return ''
+    end
+  end
+
   def profile_list_of_high_scores
     msx_submissions = UserSubmission.where(user: self, submission_type: UserSubmission::NEW_SCORE_TYPE).order(created_at: 'DESC').limit(50)
 
