@@ -613,6 +613,7 @@ span.or {
   width: auto;
   float: none;
   margin-left: 0;
+  margin: 2px 0;
 }
 
 .external_machine_link a {
@@ -705,7 +706,7 @@ span.machine_condition_text {
   font-weight: normal;
 }
 
-.sub_nav_item, .external_machine_link {
+.sub_nav_item {
   height: auto;
   padding: 10px 0;
 }
@@ -749,7 +750,7 @@ span.machine_condition_text {
 
 .high_score > .sub_nav_item, .score_container_lmx > .sub_nav_item {
   min-width: 240px;
-  width: 90%;
+  width: auto;
 }
 
 .high_score span, .score_container_lmx span,
@@ -766,10 +767,6 @@ span.machine_condition_text {
 
 .score_container_lmx span.high_score_new_line {
   font-size: 15px;
-}
-
-.high_score, .machineconditions_container_lmx {
-  margin: 0;
 }
 
 .desc_edit_location .edit_mode, .machine_condition_display_lmx .edit_mode {
@@ -881,7 +878,12 @@ span.machine_condition_text {
   margin-left: 0 !important;
 }
 
-.machine_condition_display_lmx, .score_result .sub_nav_item, .score_result {
+.machine_condition_display_lmx,
+.score_result .sub_nav_item,
+.score_result,
+.high_score,
+.score_container_lmx,
+.machineconditions_container_lmx {
   width: 90%;
   margin: 0 auto;
 }

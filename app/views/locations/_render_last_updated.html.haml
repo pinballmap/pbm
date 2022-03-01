@@ -4,5 +4,3 @@
     by
     %span.last_updated_username
       = link_to l.last_updated_by_user.username, "https://#{request.host_with_port}/users/#{l.last_updated_by_user.username}/profile"
-      - if !l.last_updated_by_user.contributor_rank_int.blank?
-        %span{:class => "rank_icon rank_icon_#{l.last_updated_by_user.contributor_rank_int}"}

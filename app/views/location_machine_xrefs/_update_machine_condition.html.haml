@@ -7,8 +7,6 @@
       %span.machine_condition_name.bold
         - if lmx.current_condition.user
           = link_to lmx.current_condition.user.username, "http://#{request.host_with_port}/users/#{lmx.current_condition.user.username}/profile"
-          - if !lmx.current_condition.user.contributor_rank_int.blank?
-            %span{:class => "rank_icon rank_icon_#{lmx.current_condition.user.contributor_rank_int}"}
         - else
           DELETED USER
 - if user_signed_in?

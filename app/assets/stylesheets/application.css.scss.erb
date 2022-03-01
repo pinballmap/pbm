@@ -443,26 +443,9 @@ form.new_user .form-actions, form.edit_user .form-actions {
   width: 160px;
 }
 .profile_rank_icon {
-  background: url(<%= asset_path 'rank/rank_20px.png' %>) no-repeat 0px top;
   margin-bottom: -5px;
   height: 20px;
   width: 20px;
-  display: inline-block !important;
-}
-.profile_rank_icon_1 {
-  background-position: 0px 0px;
-}
-.profile_rank_icon_2 {
-  background-position: 0px -20px;
-}
-.profile_rank_icon_3 {
-  background-position: 0px -40px;
-}
-.profile_rank_icon_4 {
-  background-position: 0px -60px;
-}
-.profile_rank_icon_5 {
-  background-position: 0px -80px;
 }
 div.stats {
   line-height: 22px;
@@ -1600,6 +1583,7 @@ li.location_type, li.operator {
   font-family: $sans;
   font-size: 16px;
   font-weight: $bold;
+  display: inline-block;
 }
 .confirm_inner {
   display: table !important;
@@ -1615,7 +1599,7 @@ li.location_type, li.operator {
 .confirm_location_button {
   color: $darkgrey;
   line-height: 20px;
-  margin: 5px 0 0;
+  margin: 5px 5px 0 0;
   font-size: 12px;
 }
 .confirm_location_button img {
