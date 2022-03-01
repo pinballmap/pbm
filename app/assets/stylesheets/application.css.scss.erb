@@ -224,6 +224,9 @@ ul li li {
 .p_0 {
   padding: 0;
 }
+.p_10 {
+  padding: 10px;
+}
 .pb_10 {
   padding-bottom: 10px;
 }
@@ -245,6 +248,9 @@ ul li li {
 .block {
   display: block;
 }
+.inline_block {
+  display: inline-block;
+}
 .none {
   display: none;
 }
@@ -254,6 +260,10 @@ ul li li {
 .gray_bg {
   @include radius(5px);
   background-color: $lightgrey;
+}
+.blue_bg {
+  @include radius(5px);
+  background-color: $blue;
 }
 .flex_center {
   display: flex;
@@ -373,6 +383,87 @@ form.new_user .form-actions, form.edit_user .form-actions {
 
 /** Stats **/
 
+.rank_icon {
+  background: url(<%= asset_path 'rank/rank.png' %>) no-repeat 0px top;
+  margin-bottom: -3px;
+  height: 15px;
+  width: 15px;
+  display: inline-block !important;
+}
+.rank_icon_1:hover:after,
+.rank_icon_2:hover:after,
+.rank_icon_3:hover:after,
+.rank_icon_4:hover:after,
+.rank_icon_5:hover:after {
+  position: absolute;
+  line-height: 14px;
+  font-size: 16px;
+  margin-left: 25px;
+  margin-top: -5px;
+  background: $black;
+  color: $lightgrey;
+  padding: 5px;
+  font-weight: $bold;
+  font-family: $sans;
+  text-align: center;
+}
+.rank_icon_1 {
+  background-position: 0px 0px;
+}
+.rank_icon_1:hover:after {
+  content: "Global Administrator";
+  width: 180px;
+}
+.rank_icon_2 {
+  background-position: 0px -15px;
+}
+.rank_icon_2:hover:after {
+  content: "Regional Administrator";
+  width: 190px;
+}
+.rank_icon_3  {
+  background-position: 0px -30px;
+}
+.rank_icon_3:hover:after {
+  content: "Grand Champ Contributor";
+  width: 220px;
+}
+.rank_icon_4 {
+  background-position: 0px -45px;
+}
+.rank_icon_4:hover:after {
+  content: "Legendary Contributor";
+  width: 190px;
+}
+.rank_icon_5 {
+  background-position: 0px -60px;
+}
+.rank_icon_5:hover:after {
+  content: "Super Contributor";
+  width: 160px;
+}
+.profile_rank_icon {
+  background: url(<%= asset_path 'rank/rank_20px.png' %>) no-repeat 0px top;
+  margin-bottom: -5px;
+  height: 20px;
+  width: 20px;
+  display: inline-block !important;
+}
+.profile_rank_icon_1 {
+  background-position: 0px 0px;
+}
+.profile_rank_icon_2 {
+  background-position: 0px -20px;
+}
+.profile_rank_icon_3 {
+  background-position: 0px -40px;
+}
+.profile_rank_icon_4 {
+  background-position: 0px -60px;
+}
+.profile_rank_icon_5 {
+  background-position: 0px -80px;
+}
 div.stats {
   line-height: 22px;
   border-bottom: 1px solid $red;
@@ -1564,9 +1655,6 @@ li.location_type, li.operator {
   font-family: $serif;
   color: #e4606a;
   line-height: 20px;
-}
-#rank {
-  margin-left: 13px;
 }
 input.score {
   margin: 0 0 10px 9px;

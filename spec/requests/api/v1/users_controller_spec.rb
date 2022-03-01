@@ -366,6 +366,7 @@ describe Api::V1::UsersController, type: :request do
       expect(json['num_msx_scores_added']).to eq(3)
       expect(json['num_locations_suggested']).to eq(4)
       expect(json['num_locations_edited']).to eq(2)
+      expect(json['num_total_submissions']).to eq(15)
       expect(json['created_at']).to eq('2016-01-01T00:00:00.000-08:00')
       expect(json['profile_list_of_edited_locations']).to eq([
         [101, 'another location', 1001],
