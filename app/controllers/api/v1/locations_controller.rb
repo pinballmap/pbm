@@ -76,7 +76,7 @@ module Api
       def index
         return return_response(FILTERING_REQUIRED_MSG, 'errors') unless params[:region] || params[:by_location_name] || params[:by_location_id] || params[:by_machine_id] || params[:by_ipdb_id] || params[:by_opdb_id] || params[:by_machine_name] || params[:by_city_id] || params[:by_machine_group_id] || params[:by_zone_id] || params[:by_operator_id] || params[:by_type_id] || params[:by_at_least_n_machines_type] || params[:by_is_stern_army] || params[:regionless_only]
 
-        except = params[:no_details] ? %i[phone website description created_at updated_at date_last_updated last_updated_by_user_id region_id] : nil
+        except = params[:no_details] ? %i[phone website description created_at updated_at date_last_updated last_updated_by_user_id last_updated_by_user_rank last_updated_by_user_rank_int region_id] : nil
 
         locations = nil
         if params[:no_details]
@@ -89,7 +89,7 @@ module Api
           locations,
           'locations',
           params[:no_details] ? nil : [location_machine_xrefs: { include: { machine_conditions: { methods: :username }, machine: { methods: :machine_group_id } }, methods: :last_updated_by_username }],
-          %i[last_updated_by_username num_machines],
+          %i[last_updated_by_username num_machines last_updated_by_user_rank last_updated_by_user_rank_int],
           200,
           except
         )
@@ -138,7 +138,7 @@ module Api
       def closest_by_lat_lon
         max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
 
-        except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone] : nil
+        except = params[:no_details] ? %i[country last_updated_by_user_id last_updated_by_user_rank last_updated_by_user_rank_int description region_id zone_id website phone] : nil
 
         closest_locations = apply_scopes(Location).includes(:machines).near([params[:lat], params[:lon]], max_distance)
 
@@ -163,7 +163,7 @@ module Api
       def closest_by_address
         max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
 
-        except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone] : nil
+        except = params[:no_details] ? %i[country last_updated_by_user_id last_updated_by_user_rank last_updated_by_user_rank_int description region_id zone_id website phone] : nil
 
         lat, lon = ''
         unless params[:address].blank?
@@ -200,7 +200,7 @@ module Api
           location,
           nil,
           [location_machine_xrefs: { include: { machine_conditions: { methods: :username }, machine_score_xrefs: { methods: :username } }, methods: :last_updated_by_username }],
-          %i[last_updated_by_username num_machines]
+          %i[last_updated_by_username num_machines last_updated_by_user_rank last_updated_by_user_rank_int]
         )
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find location', 'errors')
