@@ -236,14 +236,6 @@ class Location < ApplicationRecord
     last_updated_by_user ? last_updated_by_user.username : ''
   end
 
-  def last_updated_by_user_rank
-    last_updated_by_user ? last_updated_by_user.contributor_rank_int.blank? ? '' : last_updated_by_user.contributor_rank : ''
-  end
-
-  def last_updated_by_user_rank_int
-    last_updated_by_user ? last_updated_by_user.contributor_rank_int.blank? ? '' : last_updated_by_user.contributor_rank_int : ''
-  end
-
   def confirm(user)
     self.date_last_updated = Date.today
     self.last_updated_by_user = user
