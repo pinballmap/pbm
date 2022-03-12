@@ -383,6 +383,53 @@ form.new_user .form-actions, form.edit_user .form-actions {
 
 /** Stats **/
 
+.rank_icon {
+  margin-bottom: -3px;
+  height: 15px;
+  width: 15px;
+}
+.rank_icon_1:hover:after,
+.rank_icon_2:hover:after,
+.rank_icon_3:hover:after,
+.rank_icon_4:hover:after,
+.rank_icon_5:hover:after {
+  position: absolute;
+  line-height: 14px;
+  font-size: 16px;
+  margin-left: 10px;
+  margin-top: -3px;
+  background: $black;
+  color: $lightgrey;
+  padding: 5px;
+  font-weight: $bold;
+  font-family: $sans;
+  text-align: center;
+}
+.rank_icon_1:hover:after {
+  content: "Global Administrator";
+  width: 180px;
+}
+.rank_icon_2:hover:after {
+  content: "Regional Administrator";
+  width: 190px;
+}
+.rank_icon_3:hover:after {
+  content: "Grand Champ Contributor";
+  width: 220px;
+}
+.rank_icon_4:hover:after {
+  content: "Legendary Contributor";
+  width: 190px;
+}
+.rank_icon_5:hover:after {
+  content: "Super Contributor";
+  width: 160px;
+}
+.profile_rank_icon {
+  margin-bottom: -5px;
+  height: 20px;
+  width: 20px;
+}
 div.stats {
   line-height: 22px;
   border-bottom: 1px solid $red;
