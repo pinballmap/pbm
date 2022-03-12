@@ -145,6 +145,57 @@ class User < ApplicationRecord
     ).includes('location').order('created_at desc')
   end
 
+  def num_total_submissions
+    edited_location_submissions.size + num_locations_suggested
+  end
+
+  def contributor_rank_int
+    case num_total_submissions
+    when 0...50
+      nil
+    when 50...250
+      3
+    when 250...500
+      2
+    when 500...Float::INFINITY
+      1
+    end
+  end
+
+  def contributor_rank
+    case contributor_rank_int
+    when nil
+      nil
+    when 3
+      'Super Contributor'
+    when 2
+      'Legendary Contributor'
+    when 1
+      'Grand Champ Contributor'
+    end
+  end
+
+  def admin_rank_int
+    if region_id == 1 || username == 'pbm'
+      return 1
+    elsif !region_id.blank?
+      return 2
+    else
+      return nil
+    end
+  end
+
+  def admin_title
+    case admin_rank_int
+    when 1
+      'Global Administrator'
+    when 2
+      'Regional Administrator'
+    else
+      nil
+    end
+  end
+
   def as_json(options = {})
     super({ only: [:id] }.merge(options))
   end
