@@ -1,15 +1,5 @@
 = yield :intro_extra
 #intro.serif
-  %p.red.font16.sans.bold News!
-  %p
-    Check out our podcast!
-    = link_to "Mappin' Around with Scott & Ryan", "http://pod.pinballmap.com", :class => "bold"
-  %p
-    = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold"
-    Patreon supporters get an EXCLUSIVE Pinball Map Hand Sanitizer!
-  %p
-    Looking for spots outside of this region? Try the
-    =link_to 'One Big Map.', map_path, :class => "bold"
   %p.font28.red.bold
     Welcome to the #{@region.full_name} Pinball Map!
   %p.sans.bold
@@ -20,6 +10,12 @@
         Or click
         =link_to 'here', "/#{@region.name.downcase}/?by_location_id=#{random_location_id}", :id => random_location_id
         for a random location!
+  %p
+    Looking for spots outside of this region? Try the
+    =link_to 'One Big Map.', map_path, :class => "bold"
+  %p
+    We also recommend trying out our
+    =link_to 'mobile app.', app_path
   %p
     %span.red.font16.sans.bold This map is best maintained with the help of YOU.
     Please
