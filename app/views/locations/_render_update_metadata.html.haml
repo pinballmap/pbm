@@ -10,16 +10,14 @@
     %li.website= link_to "Website", l.website, :class => 'website', :target => 'blank'
     .clear
   - if (l.operator_id)
-    - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
-      %li.operator
-        %span.grey Operated by:
+    %li.operator
+      %span.grey Operated by:
+      - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
         %span &nbsp;#{l.operator.name}
-      .clear
-    - else
-      %li.operator
-        %span.grey Operated by:
+      - else
         %span
           =link_to "#{l.operator.name}", "#{l.operator.website}", :target => "_blank"
+    .clear
     - if (l.operator.operator_has_email)
       %li.operator.operator_comments.location_actual_description (This operator receives machine comments)
     - else
