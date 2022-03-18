@@ -167,11 +167,11 @@ class User < ApplicationRecord
     when nil
       nil
     when 3
-      'Super Contributor'
+      'Super Mapper'
     when 2
-      'Legendary Contributor'
+      'Legendary Mapper'
     when 1
-      'Grand Champ Contributor'
+      'Grand Champ Mapper'
     end
   end
 
