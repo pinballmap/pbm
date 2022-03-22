@@ -146,7 +146,7 @@ class User < ApplicationRecord
   end
 
   def num_total_submissions
-    user_submissions.count
+    user_submissions.includes('location').count
   end
 
   def contributor_rank_int

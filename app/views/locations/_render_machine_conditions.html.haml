@@ -18,5 +18,13 @@
         %span.machine_condition_name.bold
           - if mcx.user
             = link_to mcx.user.username, "https://#{request.host_with_port}/users/#{mcx.user.username}/profile"
+            - mcx_admin_rank_int = mcx.user.admin_rank_int
+            - mcx_contributor_rank_int = mcx.user.contributor_rank_int
+            - if !mcx_contributor_rank_int.blank?
+              %span{:class => "rank_icon_#{mcx_admin_rank_int} rank_icon_comment"}
+                =image_tag("rank/Rank_#{mcx_admin_rank_int}.png", :class => "rank_icon")
+            - elsif !mcx_contributor_rank_int.blank?
+              %span{:class => "rank_icon_#{mcx_contributor_rank_int} rank_icon_comment"}
+                =image_tag("rank/Rank_#{mcx_contributor_rank_int}.png", :class => "rank_icon")
           - else
             DELETED USER

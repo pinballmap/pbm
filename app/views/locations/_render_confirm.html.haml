@@ -11,6 +11,12 @@
           by
           %span.last_updated_username
             = link_to l.last_updated_by_user.username, "https://#{request.host_with_port}/users/#{l.last_updated_by_user.username}/profile"
+            - if !l.last_updated_by_user.admin_rank_int.blank?
+              %span{:class => "rank_icon_#{l.last_updated_by_user.admin_rank_int}"}
+                =image_tag("rank/Rank_#{l.last_updated_by_user.admin_rank_int}.png", :class => "rank_icon")
+            - elsif !l.last_updated_by_user.contributor_rank_int.blank?
+              %span{:class => "rank_icon_#{l.last_updated_by_user.contributor_rank_int}"}
+                =image_tag("rank/Rank_#{l.last_updated_by_user.contributor_rank_int}.png", :class => "rank_icon")
   - if (!l.date_last_updated.blank?) && (l.date_last_updated < 2.years.ago)
     %div{:class => "stale", :id => "stale_#{l.id}"}
       This location has not been updated in over 2 years! The info may be out of date.
