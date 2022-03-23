@@ -7,14 +7,14 @@
       %span.machine_condition_name.bold
         - if lmx.current_condition.user
           = link_to lmx.current_condition.user.username, "http://#{request.host_with_port}/users/#{lmx.current_condition.user.username}/profile"
-        - lmx_admin_rank_int = lmx.user.admin_rank_int
-        - lmx_contributor_rank_int = lmx.user.contributor_rank_int
-        - if !lmx_admin_rank_int.blank?
-          %span{:class => "rank_icon_#{lmx_admin_rank_int} rank_icon_comment"}
-            =image_tag("rank/Rank_#{lmx_admin_rank_int}.png", :class => "rank_icon")
-        - elsif !lmx_contributor_rank_int.blank?
-          %span{:class => "rank_icon_#{lmx_contributor_rank_int} rank_icon_comment"}
-            =image_tag("rank/Rank_#{lmx_contributor_rank_int}.png", :class => "rank_icon")
+          - lmx_admin_rank_int = lmx.current_condition.user.admin_rank_int
+          - lmx_contributor_rank_int = lmx.current_condition.user.contributor_rank_int
+          - if !lmx_admin_rank_int.blank?
+            %span{:class => "rank_icon_#{lmx_admin_rank_int} rank_icon_comment"}
+              =image_tag("rank/Rank_#{lmx_admin_rank_int}.png", :class => "rank_icon")
+          - elsif !lmx_contributor_rank_int.blank?
+            %span{:class => "rank_icon_#{lmx_contributor_rank_int} rank_icon_comment"}
+              =image_tag("rank/Rank_#{lmx_contributor_rank_int}.png", :class => "rank_icon")
         - else
           DELETED USER
 - if user_signed_in?
