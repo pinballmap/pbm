@@ -154,11 +154,11 @@ class User < ApplicationRecord
     when 0...50
       nil
     when 50...250
-      3
+      5
     when 250...500
-      2
+      4
     when 500...Float::INFINITY
-      1
+      3
     end
   end
 
@@ -166,11 +166,11 @@ class User < ApplicationRecord
     case contributor_rank_int
     when nil
       nil
-    when 3
+    when 5
       'Super Mapper'
-    when 2
+    when 4
       'Legendary Mapper'
-    when 1
+    when 3
       'Grand Champ Mapper'
     end
   end
