@@ -175,6 +175,10 @@ class User < ApplicationRecord
     end
   end
 
+  def is_admin
+    region_id.present?
+  end
+
   def admin_rank_int
     if region_id == 1 || username == 'pbm'
       return 1
