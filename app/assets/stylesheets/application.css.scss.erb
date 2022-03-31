@@ -420,18 +420,24 @@ form.new_user .form-actions, form.edit_user .form-actions {
 }
 .rank_icon_3:hover:after {
   content: "Grand Champ Mapper";
-  width: 220px;
+  width: 190px;
 }
 .rank_icon_4:hover:after {
   content: "Legendary Mapper";
-  width: 190px;
+  width: 160px;
 }
 .rank_icon_5:hover:after {
   content: "Super Mapper";
-  width: 160px;
+  width: 130px;
 }
 .rank_icon_comment:hover:after {
   margin-top: 2px;
+}
+.rank_icon_past_comment:hover::after {
+  margin-top: 5px;
+}
+.rank_icon_comment, .rank_icon_past_comment {
+  margin-left: 1px;
 }
 div.stats {
   line-height: 22px;
@@ -1075,9 +1081,6 @@ li.address_full {
 }
 #search_results .machine_names ul li {
   padding-left: 0;
-}
-.machine_names a {
-  text-decoration: none;
 }
 .address_name {
   font-size: 16px;
