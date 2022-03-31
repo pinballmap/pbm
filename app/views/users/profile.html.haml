@@ -7,12 +7,12 @@
         %p.red.bold.blue_bg.p_10.inline_block
           #{@user.admin_title}
           %span
-            =image_tag("rank/Rank_#{@user.admin_rank_int}.png", :class => "profile_rank_icon rank_icon_#{@user.admin_rank_int}")
+            =image_tag("rank/Rank_#{@user.admin_rank_int}.png", :class => "rank_icon_profile rank_icon_#{@user.admin_rank_int}")
       - elsif @user.contributor_rank_int
         %p.red.bold.blue_bg.p_10.inline_block
           #{@user.contributor_rank}
           %span
-            =image_tag("rank/Rank_#{@user.contributor_rank_int}.png", :class => "profile_rank_icon rank_icon_#{@user.contributor_rank_int}")
+            =image_tag("rank/Rank_#{@user.contributor_rank_int}.png", :class => "rank_icon_profile rank_icon_#{@user.contributor_rank_int}")
       %p.darkgrey{:style => "font-size:16px;"} Member since: #{@user.created_at.strftime('%b-%d-%Y')}
       - if current_user && (@user.id == current_user.id)
         %p

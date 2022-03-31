@@ -32,7 +32,7 @@ class User < ApplicationRecord
   end
 
   def admin?
-    defined? region_id
+    region_id.present?
   end
 
   def validate_username
@@ -180,8 +180,6 @@ class User < ApplicationRecord
       1
     elsif !region_id.blank?
       2
-    else
-      nil
     end
   end
 
