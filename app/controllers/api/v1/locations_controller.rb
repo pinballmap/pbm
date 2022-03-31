@@ -47,7 +47,7 @@ module Api
 
         send_new_location_notification(params, region, user)
 
-        return_response("Thanks for entering that location. We'll get it in the system as soon as possible.", 'msg')
+        return_response("Thanks for your submission! We'll review and add it soon. Be patient!", 'msg')
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find region', 'errors')
       end
