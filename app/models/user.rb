@@ -32,7 +32,7 @@ class User < ApplicationRecord
   end
 
   def admin?
-    defined? region_id
+    region_id.present?
   end
 
   def validate_username
@@ -146,7 +146,7 @@ class User < ApplicationRecord
   end
 
   def num_total_submissions
-    user_submissions.includes('location').count
+    user_submissions.count
   end
 
   def contributor_rank_int
@@ -175,17 +175,11 @@ class User < ApplicationRecord
     end
   end
 
-  def is_admin
-    region_id.present?
-  end
-
   def admin_rank_int
     if region_id == 1 || username == 'pbm'
       1
     elsif !region_id.blank?
       2
-    else
-      nil
     end
   end
 
