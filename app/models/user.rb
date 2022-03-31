@@ -177,11 +177,11 @@ class User < ApplicationRecord
 
   def admin_rank_int
     if region_id == 1 || username == 'pbm'
-      return 1
+      1
     elsif !region_id.blank?
-      return 2
+      2
     else
-      return nil
+      nil
     end
   end
 
@@ -191,8 +191,6 @@ class User < ApplicationRecord
       'Global Administrator'
     when 2
       'Regional Administrator'
-    else
-      nil
     end
   end
 
