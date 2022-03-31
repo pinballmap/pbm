@@ -162,7 +162,7 @@ class PagesController < ApplicationController
   end
 
   def submitted_new_location
-    flash.now[:alert] = "Thanks for entering that location. We'll get it in the system as soon as possible."
+    flash.now[:alert] = "Thanks for your submission! We'll review and add it soon. Be patient!"
 
     user = current_user.nil? ? nil : current_user
     send_new_location_notification(params, @region, user)

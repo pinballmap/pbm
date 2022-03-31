@@ -82,7 +82,7 @@ HERE
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_successful
 
-      expect(JSON.parse(response.body)['msg']).to eq("Thanks for entering that location. We'll get it in the system as soon as possible.")
+      expect(JSON.parse(response.body)['msg']).to eq("Thanks for your submission! We'll review and add it soon. Be patient!")
       expect(UserSubmission.all.count).to eq(1)
       expect(UserSubmission.first.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
 
@@ -125,7 +125,7 @@ HERE
       post '/api/v1/locations/suggest.json', params: { location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_successful
 
-      expect(JSON.parse(response.body)['msg']).to eq("Thanks for entering that location. We'll get it in the system as soon as possible.")
+      expect(JSON.parse(response.body)['msg']).to eq("Thanks for your submission! We'll review and add it soon. Be patient!")
       expect(UserSubmission.all.count).to eq(1)
       expect(UserSubmission.first.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
 

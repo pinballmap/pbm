@@ -3,7 +3,7 @@
     .column.bg_gray.w_640.suggest
       %h1.red Suggest a New Location
       - if user_signed_in?
-        %p.serif Add a new location to the database. Fill in this form. We'll review it to make sure the data works... so don't expect it to show up just yet. Thanks for helping out!
+        %p.serif Submit a new location to the map. We review all location submissions. Please be patient after submitting. Thanks for contributing!
         #location_maker
           = form_tag @region ? submitted_new_location_path : map_submitted_new_location_path, :method => 'get' do
             %form#submit_location
@@ -50,6 +50,8 @@
                 %li.textbox
                   %label{:for => "location_comments"} Comments:
                   %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text"}
+                %li.serif.red
+                  Please use the AUTOCOMPLETE in the "Machines" form below. Start typing, then select a result. If you don't, then your submission will take longer to be approved.
                 %li.textbox
                   %label{:for => "location_machines"} Machines:
                   %textarea{type: "text", id: "location_machines", name: "location_machines", params: "location_machines", class: "text", required: true}
@@ -96,9 +98,6 @@
                     });
                 %li.submit.mt_5{:style => "clear:both;"}
                   %input{:type => "submit", :value => "Submit New Location", :class => "submit_button"}
-
-        %p.serif
-          Please use the AUTOCOMPLETE in the above "Machines" form. Start typing, then select a result. If you don't, then your submission will take longer to be approved.
       - else
         %p.serif.ta_c
           But first! We ask that you
