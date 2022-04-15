@@ -115,16 +115,15 @@ module Api
 
         records_array = ActiveRecord::Base.connection.exec_query(<<HERE).to_a
 select
-  coalesce(g.name, m.name) as machine_name,
-  min(m.manufacturer) as manufacturer,
+  left(m.opdb_id,5) as opdb_id,
+  split_part(min(m.name), ' (', 1) as machine_name,
+  (array_agg(m.manufacturer ORDER BY m.year ASC))[1],
   min(m.year) as year,
   count(*) as machine_count
 from
-  location_machine_xrefs lmx
-  inner join machines m on m.id=lmx.machine_id
-  left outer join machine_groups g on g.id=m.machine_group_id
+  location_machine_xrefs lmx inner join machines m on m.id=lmx.machine_id
 group by 1
-order by 4 desc
+order by 5 desc
 limit #{top_n}
 HERE
 
