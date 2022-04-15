@@ -117,7 +117,7 @@ module Api
 select
   left(m.opdb_id,5) as opdb_id,
   split_part(min(m.name), ' (', 1) as machine_name,
-  (array_agg(m.manufacturer ORDER BY m.year ASC))[1],
+  (array_agg(m.manufacturer ORDER BY m.year ASC))[1] as manufacturer,
   min(m.year) as year,
   count(*) as machine_count
 from
