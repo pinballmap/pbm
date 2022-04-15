@@ -338,24 +338,22 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'sends back the top N machines' do
       chicago = FactoryBot.create(:region)
 
-      machine_group = FactoryBot.create(:machine_group, name: 'machine 2')
+      first_machine = FactoryBot.create(:machine, id: 1111, name: 'machine 1 (LE)', opdb_id: 'b33fy-ch33s')
+      second_machine = FactoryBot.create(:machine, id: 2222, name: 'machine 1 (Pro)', opdb_id: 'b33fy-t2cos')
+      third_machine = FactoryBot.create(:machine, id: 3333, name: 'machine 2', opdb_id: 'ch33s')
+      fourth_machine = FactoryBot.create(:machine, id: 4444, name: 'machine 3', opdb_id: 'gr@vy')
 
-      top_machine = FactoryBot.create(:machine, id: 1111, name: 'machine 1', machine_group_id: nil)
-      second_machine = FactoryBot.create(:machine, id: 2222, name: 'machine 2 A', machine_group_id: machine_group.id)
-      second_machine_grouped = FactoryBot.create(:machine, id: 3333, name: 'machine 2 B', machine_group_id: machine_group.id)
-      unpopular_machine = FactoryBot.create(:machine, id: 4444, name: 'unpopular machine', machine_group_id: nil)
-
-      5.times do |index|
-        FactoryBot.create(:location_machine_xref, machine: top_machine, location: FactoryBot.create(:location, id: 111 + index, region: chicago))
+      2.times do |index|
+        FactoryBot.create(:location_machine_xref, machine: first_machine, location: FactoryBot.create(:location, id: 111 + index, region: chicago))
       end
 
       2.times do |index|
         FactoryBot.create(:location_machine_xref, machine: second_machine, location: FactoryBot.create(:location, id: 222 + index, region: chicago))
-        FactoryBot.create(:location_machine_xref, machine: second_machine_grouped, location: FactoryBot.create(:location, id: 333 + index, region: chicago))
+        FactoryBot.create(:location_machine_xref, machine: third_machine, location: FactoryBot.create(:location, id: 333 + index, region: chicago))
       end
 
-      3.times do |index|
-        FactoryBot.create(:location_machine_xref, machine: unpopular_machine, location: FactoryBot.create(:location, id: 444 + index, region: chicago))
+      1.times do |index|
+        FactoryBot.create(:location_machine_xref, machine: fourth_machine, location: FactoryBot.create(:location, id: 444 + index, region: chicago))
       end
 
       get '/api/v1/location_machine_xrefs/top_n_machines.json?n=2'
@@ -374,7 +372,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       end
 
       30.times do |index|
-        FactoryBot.create(:location_machine_xref, machine: FactoryBot.create(:machine, id: 1111 + index, name: 'machine ' + index.to_s, machine_group_id: nil), location: FactoryBot.create(:location))
+        FactoryBot.create(:location_machine_xref, machine: FactoryBot.create(:machine, id: 1111 + index, name: 'machine ' + index.to_s, opdb_id: 'b33' + index.to_s), location: FactoryBot.create(:location))
       end
 
       get '/api/v1/location_machine_xrefs/top_n_machines.json'
