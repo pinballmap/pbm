@@ -18,6 +18,8 @@
       The map was last edited
       =distance_of_time_in_words(Time.now, @last_updated_time)
       ago
+    %p
+      =(@top_machines)
 #div_container_row{:style => 'border-bottom: 20px solid #ebebff;'}
   .div_01b.serif
     %p.red.font18.sans.bold News!
@@ -69,7 +71,7 @@
       = link_to 'mobile app for iOS and Android.', app_path, :class => 'apps_link'
     %p
       Pinball Map is not monetized - no ads or premium membership. The
-      = link_to 'code is open source.', 'https://github.com/scottwainstock/pbm', :class => 'apps_link'
+      = link_to 'code is open source.', 'https://github.com/pinballmap/pbm', :class => 'apps_link'
       Follow us on Twitter for a massive amount of map updates.
       = link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
     %p

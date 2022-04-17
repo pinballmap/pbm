@@ -15,7 +15,7 @@ Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhan
 
 * Follow the Ruby install instructions at [railsapps.github.io/installrubyonrails-mac.html](http://railsapps.github.io/installrubyonrails-mac.html). Make sure you also download ruby-2.6.9.
 * `cd /Projects-Path/`
-* `git clone https://github.com/scottwainstock/pbm.git` (*I used the SourceTree app instead.*)
+* `git clone https://github.com/pinballmap/pbm.git` (*I used the SourceTree app instead.*)
 * `cd /Projects-Path/pbm`
 * `rvm --default use ruby-2.6.9`
 * `bundle install`
@@ -46,7 +46,7 @@ If the site loads properly it will be an empty version of pinballmap.com, then a
 1. Fork it. Then:
 
 * `clone https://github.com/{you}/pbm.git`
-* `git remote add upstream git://github.com/scottwainstock/pbm.git`
+* `git remote add upstream git://github.com/pinballmap/pbm.git`
 
 2. Install postgresql.
 
