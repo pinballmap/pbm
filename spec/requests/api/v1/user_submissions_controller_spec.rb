@@ -105,5 +105,18 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(json.count).to eq(2)
       expect(response.body).to_not include('sass')
     end
+
+    it 'only shows submissions after May 2, 2019' do
+      location = FactoryBot.create(:location, name: 'bawb', id: 111)
+
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 1234 on Cheetah at Bottles')
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2019-06-01', submission: 'sw added a high score of 4567 on Loofah at Bottles')
+      get '/api/v1/user_submissions/location.json', params: { id: 111 }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(1)
+    end
   end
 end

@@ -22,7 +22,7 @@ module Api
       formats ['json']
       def location
         location = Location.find(params[:id])
-        user_submissions = UserSubmission.where(location_id: location)
+        user_submissions = UserSubmission.where(location_id: location, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day)
         sorted_submissions = user_submissions.order('created_at DESC')
 
         return_response(sorted_submissions, 'user_submissions')
