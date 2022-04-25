@@ -26,7 +26,6 @@ module Api
         sorted_submissions = user_submissions.order('created_at DESC')
 
         return_response(sorted_submissions, 'user_submissions')
-
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find location', 'errors')
       end
