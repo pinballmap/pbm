@@ -17,6 +17,19 @@ module Api
         return_response(user_submissions, 'user_submissions')
       end
 
+      api :GET, '/api/v1/user_submissions/location.json', 'Fetch user submissions for a location'
+      param :id, Integer, desc: 'ID of location', required: true
+      formats ['json']
+      def location
+        location = Location.find(params[:id])
+        user_submissions = UserSubmission.where(location_id: location)
+        sorted_submissions = user_submissions.order('created_at DESC')
+
+        return_response(sorted_submissions, 'user_submissions')
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find location', 'errors')
+      end
+
       MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS = 30
 
       api :GET, '/api/v1/user_submissions/list_within_range.json', 'Fetch user submissions within N miles of provided lat/lon'

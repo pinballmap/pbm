@@ -12,9 +12,10 @@ Rails.application.routes.draw do
       resources :machines, only: [:index, :show, :create]
       resources :operators, only: [:index, :show]
 
-      resources :user_submissions, only: [:list_within_range] do
+      resources :user_submissions, only: [:list_within_range, :location] do
         collection do
           get :list_within_range
+          get :location
         end
       end
 

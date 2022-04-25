@@ -86,4 +86,24 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response.body).to_not include('hope this does not show')
     end
   end
+
+  describe '#location' do
+    it 'returns user submissions for a single location' do
+      location = FactoryBot.create(:location, name: 'bawb', id: 111)
+      another_location = FactoryBot.create(:location, name: 'sass', id: 222)
+
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw')
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: 'Loofah was removed from bawb by ssw')
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: another_location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to sass by ssw')
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: another_location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: 'Loofah was removed from sass by ssw')
+      get '/api/v1/user_submissions/location.json', params: { id: 111 }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(response.body).to include('bawb')
+      expect(json.count).to eq(2)
+      expect(response.body).to_not include('sass')
+    end
+  end
 end
