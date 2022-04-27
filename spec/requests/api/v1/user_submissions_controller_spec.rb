@@ -119,4 +119,18 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(json.count).to eq(1)
     end
   end
+
+  describe '#total_user_submission_count' do
+    it 'returns a count of all user submissions' do
+      location = FactoryBot.create(:location, name: 'bawb', id: 111)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+
+      get '/api/v1/user_submissions/total_user_submission_count.json'
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['total_user_submission_count']).to eq(3)
+    end
+  end
 end
