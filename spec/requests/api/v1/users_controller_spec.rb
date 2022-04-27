@@ -386,8 +386,8 @@ describe Api::V1::UsersController, type: :request do
   end
   describe '#total_user_count' do
     it 'returns a count of all users' do
-      user1 = FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc123')
-      user2 = FactoryBot.create(:user, id: 2, username: 'rtg', email: 'yeah@no.com', password: 'nonono', password_confirmation: 'nonono', authentication_token: 'fgc123')
+      FactoryBot.create(:user, id: 1)
+      FactoryBot.create(:user, id: 2)
       get '/api/v1/users/total_user_count.json'
 
       expect(response).to be_successful
