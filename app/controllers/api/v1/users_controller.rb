@@ -18,6 +18,13 @@ module Api
         return_response('Unknown user', 'errors')
       end
 
+      api :GET, '/api/v1/users/total_user_count.json', 'Fetch total count of users'
+      description 'Fetch total count of users'
+      formats ['json']
+      def total_user_count
+        return_response({ total_user_count: User.count }, nil)
+      end
+
       api :POST, '/api/v1/users/:id/add_fave_location.json', 'Adds a location to your fave list'
       description 'Adds a location to your fave list'
       param :id, Integer, desc: 'ID of user', required: true
