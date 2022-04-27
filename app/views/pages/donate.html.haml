@@ -14,8 +14,9 @@
       %p We've never made money off of this site, and we want it to remain ad-free. If you like Pinball Map and want to help support it, you have our heartfelt thanks!
       %p If Patreon isn't your thing, you could also make a one-time donation, via paypal.
       %p
-        %form{:action => "https://www.paypal.com/cgi-bin/webscr", :method => "post", :target => "_top"}
-          %input{:name => "cmd", :type => "hidden", :value => "_s-xclick"}/
-          %input{:name => "hosted_button_id", :type => "hidden", :value => "HRVPXFUBSG4DE"}/
-          %input{:alt => "PayPal - The safer, easier way to pay online!", :border => "0", :name => "submit", :src => "https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif", :type => "image"}/
+        %form{:action => "https://www.paypal.com/donate", :method => "post", :target => "_top"}
+          %input{:name => "business", :type => "hidden", :value => "LGYTWRYP64G34"}/
+          %input{:name => "no_recurring", :type => "hidden", :value => "0"}/
+          %input{:name => "item_name", :type => "hidden", :value => "Donation to Pinball Map!"}/
+          %input{:alt => "PayPal - The safer, easier way to pay online!", :border => "0", :name => "submit", :src => "https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif", :type => "image"}/
           %img{:alt => "", :border => "0", :height => "1", :src => "https://www.paypalobjects.com/en_US/i/scr/pixel.gif", :width => "1"}/
