@@ -12,14 +12,15 @@ Rails.application.routes.draw do
       resources :machines, only: [:index, :show, :create]
       resources :operators, only: [:index, :show]
 
-      resources :user_submissions, only: [:list_within_range, :location] do
+      resources :user_submissions, only: [:list_within_range, :location, :total_user_submission_count] do
         collection do
           get :list_within_range
           get :location
+          get :total_user_submission_count
         end
       end
 
-      resources :users, only: [:auth_details] do
+      resources :users, only: [:auth_details, :total_user_count] do
         member do
           post :add_fave_location
           get  :list_fave_locations
@@ -27,6 +28,7 @@ Rails.application.routes.draw do
           post :remove_fave_location
         end
         collection do
+          get :total_user_count
           get  :auth_details
           post :signup
           post :forgot_password

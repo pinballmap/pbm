@@ -384,4 +384,14 @@ describe Api::V1::UsersController, type: :request do
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find user')
     end
   end
+  describe '#total_user_count' do
+    it 'returns a count of all users' do
+      FactoryBot.create(:user, id: 1)
+      FactoryBot.create(:user, id: 2)
+      get '/api/v1/users/total_user_count.json'
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['total_user_count']).to eq(2)
+    end
+  end
 end

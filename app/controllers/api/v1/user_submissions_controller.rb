@@ -30,6 +30,13 @@ module Api
         return_response('Failed to find location', 'errors')
       end
 
+      api :GET, '/api/v1/user_submissions/total_user_submission_count.json', 'Fetch total count of user submissions'
+      description 'Fetch total count of user submissions'
+      formats ['json']
+      def total_user_submission_count
+        return_response({ total_user_submission_count: UserSubmission.count }, nil)
+      end
+
       MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS = 30
 
       api :GET, '/api/v1/user_submissions/list_within_range.json', 'Fetch user submissions within N miles of provided lat/lon'
