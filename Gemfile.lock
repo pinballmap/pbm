@@ -924,7 +924,6 @@ GEM
     moneta (1.0.0)
     multi_json (1.13.1)
     nested_form (0.3.2)
-    newrelic_rpm (6.1.0.352)
     nio4r (2.5.8)
     nokogiri (1.13.4)
       mini_portile2 (~> 2.8.0)
@@ -1179,7 +1178,6 @@ DEPENDENCIES
   launchy
   listen
   memcachier
-  newrelic_rpm
   paperclip
   pg
   phonelib
