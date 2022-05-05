@@ -1,8 +1,9 @@
+[![Build Status](https://app.travis-ci.com/pinballmap/pbm.svg?branch=master)](https://app.travis-ci.com/pinballmap/pbm)
 [![Coverage Status](https://coveralls.io/repos/scottwainstock/pbm/badge.png)](https://coveralls.io/r/scottwainstock/pbm)
 
 *sweet pinballin' brah*
 
-This repo is the codebase for [pinballmap.com](https://pinballmap.com). The code for the [Pinball Map mobile app is here](https://github.com/bpoore/pbm-react). If you have an app issue, please use that repo.
+This repo is the codebase for [pinballmap.com](https://pinballmap.com). The code for the [Pinball Map mobile app is here](https://github.com/pinballmap/pbm-react). If you have an app issue, please use that repo.
 
 
 ## API Documentation
