@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/scottwainstock/pbm.svg?branch=master)](https://travis-ci.org/scottwainstock/pbm)
 [![Coverage Status](https://coveralls.io/repos/scottwainstock/pbm/badge.png)](https://coveralls.io/r/scottwainstock/pbm)
 
 *sweet pinballin' brah*
