@@ -42,16 +42,11 @@
         = link_to 'pinballmap.com', root_path
         was developed by Scott and Ryan.
         - if (@region.name == 'portland')
-          Contact us via the form above.
+          Contact us via that form over there.
         - else
           = link_to 'contact us via the Portland region page.', about_path('portland')
-        For more details about the criteria we use for adding regions,
-        = link_to 'see this blog post,', 'http://blog.pinballmap.com/2014/07/21/criteria-for-adding-a-new-pinball-map', :target => '_blank'
-        or read the
+        Read the
         = link_to 'FAQ.', faq_path
-      %p
-        Listen to our podcast,
-        = link_to "Mappin' Around with Scott & Ryan!", "http://pod.pinballmap.com", :class => "bold"
       %p
         Follow
         = link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'

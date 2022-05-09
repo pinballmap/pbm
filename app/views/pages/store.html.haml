@@ -1,72 +1,8 @@
 #page_body
   .column_container
     .column.w_400.bg_gray
-      %h1.red We have NEW Pinball Map T-Shirts for sale!
-      %p.serif
-        The original design has been updated, with the big logo now on the back, and a graceful Pinball Map logo on the chest. The shirt is black.
-      %p.serif
-        And we have a brand new graphic! Well, it's 10 years old, but it's new to shirts. It's our original Portland Pinball Map graphic, and it is glorious. You may enjoy this shirt even if you're not from Portland. The shirt is navy blue.
-      %p.serif
-        Both designs are by the talented
-        = link_to 'Drew Marshall.', 'https://workbydrew.com', :target => "_blank", :class => "bold"
-        They come in sizes S - XXL, unisex, on All Style brand shirts (similar to Gildan).
-      %p.red.bold NOTE: We are all out of X-Large and Small in the classic style!
-      %p.serif
-        The shirts are $19, plus $3 shipping for domestic orders. If you are a
-        = link_to "Pinball Map Patreon", "https://patreon.com/pinballmap", :class => "bold"
-        supporter, you get a discount! $5 discount if you support us at the $5/mo level, and $2 discount if you support us at the $2/mo level. We don't have a button for that, so just
-        =link_to 'CONTACT US', about_path('portland')
-        before ordering.
-      %h2.red{:style => "text-align: center;margin-bottom: 0;"} Pinball Map T-Shirt
-      %p.serif{:style => "text-align: center;display:block;"}
-        2-Sided! On Black!
-        %br/
-        $19+$3 Shipping.
-      %span.serif{:style => "text-align: center;display:block;"} Pick a Size:
-      %div{:style => 'width: 125px;margin: 0 auto;'}
-        %form{:action => "https://www.paypal.com/cgi-bin/webscr", :method => "post", :target => "paypal"}
-          %input{:name => "cmd", :type => "hidden", :value => "_s-xclick"}/
-          %table{:align => 'center'}
-            %tr{:align => 'center'}
-              %td
-                %input{:name => "on0", :type => "hidden", :value => "$19+$3 Shipping. Pick a Size"}>/
-            %tr{:align => 'center'}
-              %td
-                %select{:name => "os0"}
-                  %option{:value => "Medium"} Medium
-                  %option{:value => "Large"} Large
-                  %option{:value => "XX Large"} XX Large
-          %input{:name => "encrypted", :type => "hidden", :value => "-----BEGIN PKCS7-----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-----END PKCS7-----\n"}/
-          %input{:alt => "PayPal - The safer, easier way to pay online!", :border => "0", :name => "submit", :src => "https://www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif", :type => "image"}/
-          %img{:alt => "", :border => "0", :height => "1", :src => "https://www.paypalobjects.com/en_US/i/scr/pixel.gif", :width => "1"}/
-
-
-      %h2.red{:style => "text-align: center;margin-bottom: 0;"} Portland Pinball Map T-Shirt
-      %p.serif{:style => "text-align: center;display:block;"}
-        9-Color! On Navy Blue.
-        %br/
-        $19+$3 Shipping.
-      %span.serif{:style => "text-align: center;display:block;"} Pick a Size:
-      %div{:style => 'width: 125px;margin: 0 auto 15px;'}
-        %form{:action => "https://www.paypal.com/cgi-bin/webscr", :method => "post", :target => "paypal"}
-          %input{:name => "cmd", :type => "hidden", :value => "_s-xclick"}/
-          %table{:align => 'center'}
-            %tr{:align => 'center'}
-              %td
-                %input{:name => "on0", :type => "hidden", :value => "$19+$3 Shipping. Pick a Size"}>/
-            %tr{:align => 'center'}
-              %td
-                %select{:name => "os0"}
-                  %option{:value => "Small"} Small
-                  %option{:value => "Medium"} Medium
-                  %option{:value => "Large"} Large
-                  %option{:value => "X Large"} X Large
-                  %option{:value => "XX Large"} XX Large
-          %input{:name => "encrypted", :type => "hidden", :value => "-----BEGIN PKCS7-----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-----END PKCS7-----\n"}/
-          %input{:alt => "PayPal - The safer, easier way to pay online!", :border => "0", :name => "submit", :src => "https://www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif", :type => "image"}/
-          %img{:alt => "", :border => "0", :height => "1", :src => "https://www.paypalobjects.com/en_US/i/scr/pixel.gif", :width => "1"}/
-
-
+      %h1.red We don't have anything to sell right now.
+      %p But here are some pictures of old shirts.
     .column
       %p
         =image_tag 'tshirt-pbm-front-500.jpg', :class => 'store_img store_shirt', :alt => 'Pinball Map T-Shirt'
