@@ -60,6 +60,7 @@ Rails.application.routes.draw do
           get :closest_by_address
           get :autocomplete
           get :autocomplete_city
+          get :top_cities
           post :suggest
         end
       end

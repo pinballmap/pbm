@@ -270,6 +270,19 @@ module Api
           []
         )
       end
+
+      api :GET, '/api/v1/locations/top_cities.json', 'Fetch top 10 cities by number of locations'
+      description 'Fetch top 10 cities by number of locations'
+      formats ['json']
+      def top_cities
+        top_cities = Location.select(
+          [
+            :city, :state, Arel.star.count.as('location_count')
+          ]
+        ).order(:location_count).reverse_order.group(:city, :state).limit(10)
+
+        return_response(top_cities, nil)
+      end
     end
   end
 end
