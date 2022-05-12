@@ -41,15 +41,15 @@ module Api
       description 'Fetch top 10 users by submission count'
       formats ['json']
       def top_users
-        xid = Arel::Table.new('user_submissions')
-        lid = Arel::Table.new('users')
+        sid = Arel::Table.new('user_submissions')
+        uid = Arel::Table.new('users')
         top_users = UserSubmission.select(
           [
-            xid[:user_id], lid[:username], Arel.star.count.as('submission_count')
+            sid[:user_id], uid[:username], Arel.star.count.as('submission_count')
           ]
         ).joins(
-          UserSubmission.arel_table.join(User.arel_table).on(lid[:id].eq(xid[:user_id])).join_sources
-        ).order(:submission_count).reverse_order.group(lid[:username], xid[:user_id]).limit(10)
+          UserSubmission.arel_table.join(User.arel_table).on(uid[:id].eq(sid[:user_id])).join_sources
+        ).order(:submission_count).reverse_order.group(uid[:username], sid[:user_id]).limit(10)
 
         return_response(top_users, nil)
       end
