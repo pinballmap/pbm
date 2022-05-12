@@ -300,6 +300,25 @@ module Api
 
         return_response(top_cities_by_machine, nil)
       end
+
+      api :GET, '/api/v1/locations/type_count.json', 'Fetch a count of each location type'
+      description 'Fetch a count of each location type'
+      formats ['json']
+      def type_count
+        l = Arel::Table.new('locations')
+        t = Arel::Table.new('location_types')
+        type_count = Location.select(
+          [
+            t[:name], Arel.star.count.as('type_count')
+          ]
+        ).joins(
+          Location.arel_table.join(LocationType.arel_table).on(
+            l[:location_type_id].eq(t[:id])
+          ).join_sources
+        ).order(:type_count).reverse_order.group(t[:name])
+
+        return_response(type_count, nil)
+      end
     end
   end
 end

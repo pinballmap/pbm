@@ -63,6 +63,7 @@ Rails.application.routes.draw do
           get :autocomplete_city
           get :top_cities
           get :top_cities_by_machine
+          get :type_count
           post :suggest
         end
       end

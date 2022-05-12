@@ -837,6 +837,25 @@ HERE
     end
   end
 
+  describe '#type_count' do
+    it 'returns a count of location types' do
+      lt = FactoryBot.create(:location_type, name: 'type')
+      lt2 = FactoryBot.create(:location_type, name: 'type2')
+      FactoryBot.create(:location, location_type: lt)
+      FactoryBot.create(:location, location_type: lt)
+      FactoryBot.create(:location, location_type: lt2)
+
+      get '/api/v1/locations/type_count.json'
+
+      type = JSON.parse(response.body)[0]
+      expect(type['type_count']).to eq(2)
+      expect(type['name']).to eq('type')
+      type2 = JSON.parse(response.body)[1]
+      expect(type2['type_count']).to eq(1)
+      expect(type2['name']).to eq('type2')
+    end
+  end
+
   describe '#autocomplete_city' do
     it 'should do a fuzzy search on city name and return a list of in-scope city names + state' do
       FactoryBot.create(:location, city: 'Portland', state: 'ME')
