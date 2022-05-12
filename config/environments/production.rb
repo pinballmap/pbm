@@ -71,7 +71,7 @@ Rails.application.configure do
     :email => {
       :email_prefix => "[PBM Exception] ",
       :sender_address => %{"PBM Exceptions" <exceptions@pinballmap.com>},
-      :exception_recipients => %w{scott.wainstock@gmail.com}
+      :exception_recipients => %w{admin@pinballmap.com}
     }
 
   # Ignore bad email addresses and do not raise email delivery errors.

@@ -8,7 +8,7 @@ Apipie.configure do |config|
   config.api_routes              = Rails.application.routes
   config.app_info = "
     If you use this API for something cool, please let us know, we like looking at interesting uses of the data.
-    If you have any suggestions/requests for endpoints, please email: scott.wainstock@gmail.com.
+    If you have any suggestions/requests for endpoints, please email: admin@pinballmap.com.
     If you have any patches that you'd like to submit to the API, please check out: https://github.com/pinballmap/pbm.
   "
 end
