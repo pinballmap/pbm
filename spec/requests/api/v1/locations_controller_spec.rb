@@ -797,6 +797,65 @@ HERE
     end
   end
 
+  describe '#top_cities' do
+    it 'returns a count of locations for cities' do
+      FactoryBot.create(:location, city: 'Los Angeles', state: 'CA')
+      FactoryBot.create(:location, city: 'Los Angeles', state: 'CA')
+      FactoryBot.create(:location, city: 'Portland', state: 'OR')
+      FactoryBot.create(:location, city: 'Portland', state: 'OR')
+      FactoryBot.create(:location, city: 'Portland', state: 'OR')
+      FactoryBot.create(:location, city: 'Seattle', state: 'WA')
+      get '/api/v1/locations/top_cities.json'
+
+      portland = JSON.parse(response.body)[0]
+      expect(portland['location_count']).to eq(4)
+      expect(portland['city']).to eq('Portland')
+      la = JSON.parse(response.body)[1]
+      expect(la['location_count']).to eq(2)
+      expect(la['city']).to eq('Los Angeles')
+      seattle = JSON.parse(response.body)[2]
+      expect(seattle['location_count']).to eq(1)
+      expect(seattle['city']).to eq('Seattle')
+    end
+  end
+
+  describe '#top_cities_by_machine' do
+    it 'returns a count of number of machines by cities' do
+      portland_location = FactoryBot.create(:location, city: 'Portland', state: 'OR')
+      seattle_location = FactoryBot.create(:location, city: 'Seattle', state: 'WA')
+      FactoryBot.create(:location_machine_xref, location: portland_location, machine: FactoryBot.create(:machine, id: 200, name: 'Cleo'))
+      FactoryBot.create(:location_machine_xref, location: portland_location, machine: FactoryBot.create(:machine, id: 201, name: 'Bawb'))
+      FactoryBot.create(:location_machine_xref, location: seattle_location, machine: FactoryBot.create(:machine, id: 202, name: 'Sassy'))
+      get '/api/v1/locations/top_cities_by_machine.json'
+
+      portland = JSON.parse(response.body)[0]
+      expect(portland['machine_count']).to eq(2)
+      expect(portland['city']).to eq('Portland')
+      seattle = JSON.parse(response.body)[1]
+      expect(seattle['machine_count']).to eq(1)
+      expect(seattle['city']).to eq('Seattle')
+    end
+  end
+
+  describe '#type_count' do
+    it 'returns a count of location types' do
+      lt = FactoryBot.create(:location_type, name: 'type')
+      lt2 = FactoryBot.create(:location_type, name: 'type2')
+      FactoryBot.create(:location, location_type: lt)
+      FactoryBot.create(:location, location_type: lt)
+      FactoryBot.create(:location, location_type: lt2)
+
+      get '/api/v1/locations/type_count.json'
+
+      type = JSON.parse(response.body)[0]
+      expect(type['type_count']).to eq(2)
+      expect(type['name']).to eq('type')
+      type2 = JSON.parse(response.body)[1]
+      expect(type2['type_count']).to eq(1)
+      expect(type2['name']).to eq('type2')
+    end
+  end
+
   describe '#autocomplete_city' do
     it 'should do a fuzzy search on city name and return a list of in-scope city names + state' do
       FactoryBot.create(:location, city: 'Portland', state: 'ME')

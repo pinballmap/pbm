@@ -270,6 +270,55 @@ module Api
           []
         )
       end
+
+      api :GET, '/api/v1/locations/top_cities.json', 'Fetch top 10 cities by number of locations'
+      description 'Fetch top 10 cities by number of locations'
+      formats ['json']
+      def top_cities
+        top_cities = Location.select(
+          [
+            :city, :state, Arel.star.count.as('location_count')
+          ]
+        ).order(:location_count).reverse_order.group(:city, :state).limit(10)
+
+        return_response(top_cities, nil)
+      end
+
+      api :GET, '/api/v1/locations/top_cities_by_machine.json', 'Fetch top 10 cities by number of machines'
+      description 'Fetch top 10 cities by number of machines'
+      formats ['json']
+      def top_cities_by_machine
+        xid = Arel::Table.new('location_machine_xrefs')
+        lid = Arel::Table.new('locations')
+        top_cities_by_machine = Location.select(
+          [
+            :city, :state, Arel.star.count.as('machine_count')
+          ]
+        ).joins(
+          Location.arel_table.join(LocationMachineXref.arel_table).on(xid[:location_id].eq(lid[:id])).join_sources
+        ).order(:machine_count).reverse_order.group(:city, :state).limit(10)
+
+        return_response(top_cities_by_machine, nil)
+      end
+
+      api :GET, '/api/v1/locations/type_count.json', 'Fetch a count of each location type'
+      description 'Fetch a count of each location type'
+      formats ['json']
+      def type_count
+        l = Arel::Table.new('locations')
+        t = Arel::Table.new('location_types')
+        type_count = Location.select(
+          [
+            t[:name], Arel.star.count.as('type_count')
+          ]
+        ).joins(
+          Location.arel_table.join(LocationType.arel_table).on(
+            l[:location_type_id].eq(t[:id])
+          ).join_sources
+        ).order(:type_count).reverse_order.group(t[:name])
+
+        return_response(type_count, nil)
+      end
     end
   end
 end

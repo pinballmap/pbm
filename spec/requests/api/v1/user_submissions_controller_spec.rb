@@ -126,11 +126,29 @@ describe Api::V1::UserSubmissionsController, type: :request do
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-
       get '/api/v1/user_submissions/total_user_submission_count.json'
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['total_user_submission_count']).to eq(3)
+    end
+  end
+
+  describe '#top_users' do
+    it 'returns the top users by submission count' do
+      user1 = FactoryBot.create(:user, username: 'sass')
+      user2 = FactoryBot.create(:user, username: 'cleo')
+      FactoryBot.create(:user_submission, user: user1, submission_type: UserSubmission::NEW_LMX_TYPE)
+      FactoryBot.create(:user_submission, user: user1, submission_type: UserSubmission::NEW_LMX_TYPE)
+      FactoryBot.create(:user_submission, user: user2, submission_type: UserSubmission::NEW_LMX_TYPE)
+      get '/api/v1/user_submissions/top_users.json'
+
+      expect(response).to be_successful
+      sass = JSON.parse(response.body)[0]
+      expect(sass['submission_count']).to eq(2)
+      expect(sass['username']).to eq('sass')
+      cleo = JSON.parse(response.body)[1]
+      expect(cleo['submission_count']).to eq(1)
+      expect(cleo['username']).to eq('cleo')
     end
   end
 end

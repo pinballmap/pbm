@@ -17,6 +17,7 @@ Rails.application.routes.draw do
           get :list_within_range
           get :location
           get :total_user_submission_count
+          get :top_users
         end
       end
 
@@ -60,6 +61,9 @@ Rails.application.routes.draw do
           get :closest_by_address
           get :autocomplete
           get :autocomplete_city
+          get :top_cities
+          get :top_cities_by_machine
+          get :type_count
           post :suggest
         end
       end
