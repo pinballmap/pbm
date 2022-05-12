@@ -17,6 +17,7 @@ Rails.application.routes.draw do
           get :list_within_range
           get :location
           get :total_user_submission_count
+          get :top_users
         end
       end
 
