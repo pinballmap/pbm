@@ -21,7 +21,7 @@ class Ability
     end
 
     if user.region.name == 'portland'
-      can :manage, [Region, Machine, MachineGroup, BannedIp, LocationType]
+      can :manage, [Region, Machine, MachineGroup, LocationType]
     elsif user.is_machine_admin
       can %i[update read], [Region], id: user.region_id
       can :manage, [Machine, MachineGroup]

@@ -1,2 +1,0 @@
-class BannedIp < ApplicationRecord
-end
