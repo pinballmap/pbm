@@ -53,6 +53,28 @@ class ApplicationController < ActionController::Base
     operator = params['location_operator']&.is_a?(Integer) || params['location_operator']&.match?(/^[0-9]+$/) ? Operator.find(params['location_operator']) : Operator.find_by_name(params['location_operator'])
     zone = params['location_zone']&.is_a?(Integer) || params['location_zone']&.match?(/^[0-9]+$/) ? Zone.find(params['location_zone']) : Zone.find_by_name(params['location_zone'])
 
+    user_inputted_address = [params['location_street'], params['location_city'], params['location_state'], params['location_zip']].join(', ')
+
+    (geocoded_results, lat, lon, street, city, state, zip) = ''
+
+    geocoded_results = Geocoder.search(user_inputted_address).first unless Rails.env.test?
+
+    unless geocoded_results.blank?
+      lat, lon = geocoded_results.coordinates
+      street = geocoded_results.street_address
+      city = geocoded_results.city
+      state = geocoded_results.state_code
+      zip = geocoded_results.postal_code
+    end
+
+    if !region.blank?
+      region = region
+    elsif region.blank? && !params[:region_id]
+      region = Region.near([lat, lon], :effective_radius).first
+    elsif region.blank? && !params[:region_id] && geocoded_results.blank?
+      region = Region.near([params[:lat], params[:lon]], :effective_radius).first
+    end
+
     body = <<BODY
     Dear Admin: You can approve this location with the click of a button at #{request.protocol}#{request.host_with_port}#{rails_admin_path}/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
 Location Name: #{params['location_name']}\n
@@ -79,20 +101,6 @@ BODY
     )
 
     UserSubmission.create(region_id: region ? region.id : nil, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE, submission: body, user_id: user ? user.id : nil)
-
-    user_inputted_address = [params['location_street'], params['location_city'], params['location_state'], params['location_zip']].join(', ')
-
-    (geocoded_results, lat, lon, street, city, state, zip) = ''
-
-    geocoded_results = Geocoder.search(user_inputted_address).first unless Rails.env.test?
-
-    unless geocoded_results.blank?
-      lat, lon = geocoded_results.coordinates
-      street = geocoded_results.street_address
-      city = geocoded_results.city
-      state = geocoded_results.state_code
-      zip = geocoded_results.postal_code
-    end
 
     SuggestedLocation.create(region_id: region ? region.id : nil, name: params['location_name'], street: street || params['location_street'], city: city || params['location_city'], state: state || params['location_state'], zip: zip || params['location_zip'], country: params['location_country'], phone: params['location_phone'], website: params['location_website'], location_type: location_type, operator: operator, zone: zone, comments: params['location_comments'], machines: params['location_machines'], lat: lat, lon: lon, user_inputted_address: user_inputted_address)
   end
