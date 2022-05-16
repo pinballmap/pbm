@@ -67,12 +67,14 @@ class ApplicationController < ActionController::Base
       zip = geocoded_results.postal_code
     end
 
-    if !region.blank?
-      region = region
-    elsif region.blank? && !params[:region_id]
-      region = Region.near([lat, lon], :effective_radius).first
-    elsif region.blank? && !params[:region_id] && geocoded_results.blank?
-      region = Region.near([params[:lat], params[:lon]], :effective_radius).first
+    region = region unless params[:region_id].blank? || region.blank?
+
+    if region.blank?
+      if !geocoded_results.blank?
+        region = Region.near([lat, lon], :effective_radius).first
+      else
+        region = Region.near([params[:lat], params[:lon]], :effective_radius).first
+      end
     end
 
     body = <<BODY
