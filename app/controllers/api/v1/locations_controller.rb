@@ -41,8 +41,6 @@ module Api
         region = nil
         if params[:region_id]
           region = Region.find(params['region_id'])
-        else
-          region = Region.near([params[:lat], params[:lon]], :effective_radius).first
         end
 
         send_new_location_notification(params, region, user)
