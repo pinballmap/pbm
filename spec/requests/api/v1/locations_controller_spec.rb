@@ -134,13 +134,13 @@ HERE
       expect(SuggestedLocation.first.zone).to eq(z)
     end
 
-    it 'Does not search boundary boxes by transmitted lat/lon (but instead geocodes)' do
+    it 'Searches boundary boxes by transmitted lat/lon (geocoded, not user location)' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          to: ['super_admin@bar.com'],
+          to: ['lat@guy.com'],
           bcc: ['super_admin@bar.com'],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - New location suggested for pinball map',
+          subject: 'PBM - New location suggested for the seattle pinball map',
           body: <<HERE
     Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
 Location Name: name\n

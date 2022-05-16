@@ -39,9 +39,7 @@ module Api
         end
 
         region = nil
-        if params[:region_id]
-          region = Region.find(params['region_id'])
-        end
+        region = Region.find(params['region_id']) unless params[:region_id].blank?
 
         send_new_location_notification(params, region, user)
 
