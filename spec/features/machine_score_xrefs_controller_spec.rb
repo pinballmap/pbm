@@ -125,7 +125,7 @@ describe MachineScoreXrefsController do
 
       sleep(1)
 
-      expect(URI.parse(page.find_link('cap')['href']).to_s).to match(%r{\/users\/#{@user.username}\/profile})
+      expect(URI.parse(page.find_link('cap')['href']).to_s).to match(%r{/users/#{@user.username}/profile})
     end
   end
 end

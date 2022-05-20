@@ -4,7 +4,7 @@ class SuggestedLocation < ApplicationRecord
   validates_presence_of :name, :machines, on: :create
   validates_presence_of :street, :city, :zip, on: :update
 
-  validates :website, format: { with: %r{^http[s]?:\/\/}, message: 'must begin with http:// or https://', multiline: true }, if: :website?, on: :update
+  validates :website, format: { with: %r{http(s?)://}, message: 'must begin with http:// or https://', multiline: true }, if: :website?, on: :update
   validates :name, :street, :city, format: { with: /^\S.*/, message: "Can't start with a blank", multiline: true }, on: :update
   validates :lat, :lon, presence: { message: 'Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon' }, on: :update
 
@@ -19,7 +19,7 @@ class SuggestedLocation < ApplicationRecord
   after_create :massage_fields
 
   def massage_fields
-    self.website = "http://#{website}" if website && !website.blank? && website !~ /\A#{URI.regexp(%w[http https])}\z/
+    self.website = "http://#{website}" if website && !website.blank? && website !~ /\A#{URI::DEFAULT_PARSER.make_regexp(%w[http https])}\z/
     self.country = 'US' if country.blank?
 
     save

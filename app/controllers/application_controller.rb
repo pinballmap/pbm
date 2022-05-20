@@ -59,7 +59,7 @@ class ApplicationController < ActionController::Base
 
     geocoded_results = Geocoder.search(user_inputted_address).first unless Rails.env.test?
 
-    unless geocoded_results.blank?
+    if geocoded_results.present?
       lat, lon = geocoded_results.coordinates
       street = geocoded_results.street_address
       city = geocoded_results.city
@@ -67,10 +67,14 @@ class ApplicationController < ActionController::Base
       zip = geocoded_results.postal_code
     end
 
-    region = region unless params[:region_id].blank? || region.blank?
+    if params[:region_id].blank? || region.blank?
+      region = nil
+    else
+      region
+    end
 
     if region.blank?
-      if !geocoded_results.blank?
+      if geocoded_results.present?
         region = Region.near([lat, lon], :effective_radius).first
       else
         region = Region.near([params[:lat], params[:lon]], :effective_radius).first

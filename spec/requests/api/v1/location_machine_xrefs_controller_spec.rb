@@ -352,9 +352,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
         FactoryBot.create(:location_machine_xref, machine: third_machine, location: FactoryBot.create(:location, id: 333 + index, region: chicago))
       end
 
-      1.times do |index|
-        FactoryBot.create(:location_machine_xref, machine: fourth_machine, location: FactoryBot.create(:location, id: 444 + index, region: chicago))
-      end
+      FactoryBot.create(:location_machine_xref, machine: fourth_machine, location: FactoryBot.create(:location, id: 444, region: chicago))
 
       get '/api/v1/location_machine_xrefs/top_n_machines.json?n=2'
       expect(response).to be_successful

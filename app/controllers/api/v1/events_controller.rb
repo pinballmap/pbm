@@ -37,7 +37,7 @@ module Api
         sorted_events = {}
 
         events.each do |e|
-          category = e.category.blank? ? 'General' : e.category
+          category = e.category.presence || 'General'
           (sorted_events[category] ||= []) << e
         end
 

@@ -1,56 +1,78 @@
-require: rubocop-rspec
+require:
+- rubocop-rspec
 
-Layout/AlignHash:
+Layout/HashAlignment:
   Enabled: false
-LineLength:
+Layout/LineLength:
   Enabled: false
-Documentation:
+Style/Documentation:
   Enabled: false
-MethodLength:
+Metrics/MethodLength:
   Enabled: false
-ClassLength:
+Metrics/ClassLength:
   Enabled: false
-GuardClause:
+Style/GuardClause:
   Enabled: false
-PerlBackrefs:
+Style/PerlBackrefs:
   Enabled: false
-CyclomaticComplexity:
-  Max: 25
-PerceivedComplexity:
-  Max: 25
-AbcSize:
+Metrics/CyclomaticComplexity:
+  Max: 40
+Metrics/PerceivedComplexity:
+  Max: 40
+Metrics/AbcSize:
   Enabled: false
 Metrics/BlockLength:
   Enabled: false
 Metrics/ModuleLength:
   Max: 150
-IndentArray:
+Naming/VariableNumber:
   Enabled: false
-RequireParentheses:
+Layout/FirstArrayElementIndentation:
   Enabled: false
-IfInsideElse:
+Lint/RequireParentheses:
   Enabled: false
-IdenticalConditionalBranches:
+Lint/RedundantSafeNavigation:
   Enabled: false
-NonLocalExitFromIterator:
+Lint/UselessMethodDefinition:
   Enabled: false
-FrozenStringLiteralComment:
+Style/IfInsideElse:
   Enabled: false
-MultilineOperationIndentation:
+Style/IdenticalConditionalBranches:
   Enabled: false
-IndentHeredoc:
+Lint/NonLocalExitFromIterator:
+  Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Layout/MultilineOperationIndentation:
+  Enabled: false
+Lint/HeredocIndentation:
+  Enabled: false
+Lint/EmptyConditionalBody:
+  Enabled: false
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
+Lint/UselessAssignment:
+  Enabled: false
+Style/CombinableLoops:
   Enabled: false
 Style/ExpandPathArguments:
   Enabled: false
 Style/ConditionalAssignment:
   Enabled: false
-ParameterLists:
+Style/RedundantAssignment:
+  Enabled: false
+Style/StringConcatenation:
+  Enabled: false
+Style/RedundantRegexpEscape:
+  Enabled: false
+Metrics/ParameterLists:
   Max: 6
+  MaxOptionalParameters: 4
 RSpec:
   Enabled: false
-Capybara/CurrentPathExpectation:
+RSpec/Capybara:
   Enabled: false
-FactoryBot/CreateList:
+RSpec/FactoryBot:
   Enabled: false
 
 AllCops:

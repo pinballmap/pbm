@@ -19,7 +19,7 @@ Coveralls.wear!
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
 
 RSpec.configure do |config|
   config.verbose_retry = true
@@ -41,8 +41,8 @@ RSpec.configure do |config|
     Capybara::Selenium::Driver.new(app, browser: :chrome, desired_capabilities: capabilities)
   end
 
-  Capybara.javascript_driver = :selenium_chrome_headless
-  # Capybara.javascript_driver = :chrome
+  # Capybara.javascript_driver = :selenium_chrome_headless
+  Capybara.javascript_driver = :chrome
 
   # == Mock Framework
   #
