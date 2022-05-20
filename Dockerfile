@@ -1,4 +1,4 @@
-FROM ruby:2.6.9-alpine3.15
+FROM ruby:2.7.6-alpine3.15
 
 WORKDIR /pbm
 

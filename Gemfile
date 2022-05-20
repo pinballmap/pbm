@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.6.9'
+ruby '2.7.6'
 
 gem 'pg'
 gem 'rails'
@@ -55,6 +55,7 @@ group :test do
   gem 'rspec-rails'
   gem 'rspec-retry'
   gem 'rubocop'
+  gem 'rubocop-performance', require: false
   gem 'rubocop-rspec'
   gem 'selenium-webdriver'
   gem 'simplecov'

@@ -5,7 +5,7 @@ class Location < ApplicationRecord
 
   validates_presence_of :name, :street, :city, :country
   validates :phone, phone: { possible: true, allow_blank: true }
-  validates :website, format: { with: %r{^http[s]?:\/\/}, message: 'must begin with http:// or https://', multiline: true }, if: :website?
+  validates :website, format: { with: %r{http(s?)://}, message: 'must begin with http:// or https://', multiline: true }, if: :website?
   validates :name, :street, :city, format: { with: /^\S.*/, message: "Can't start with a blank", multiline: true }
   validates :lat, :lon, presence: { message: 'Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon' }
 
@@ -150,7 +150,7 @@ class Location < ApplicationRecord
     old_description = description
     self.description = new_description.slice(0, 549)
 
-    if !description.match?(%r{http[s]?:\/\/})
+    if !description.match?(%r{http(s?)://})
       if ENV['RAKISMET_KEY'] && spam?
         self.description = old_description
         @validation_errors.push('This description was flagged as spam. ')
