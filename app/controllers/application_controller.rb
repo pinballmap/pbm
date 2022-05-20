@@ -67,11 +67,7 @@ class ApplicationController < ActionController::Base
       zip = geocoded_results.postal_code
     end
 
-    if params[:region_id].blank? || region.blank?
-      region = nil
-    else
-      region
-    end
+    region = region unless params[:region_id].blank? || region.blank?
 
     if region.blank?
       if geocoded_results.present?

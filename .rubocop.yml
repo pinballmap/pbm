@@ -51,6 +51,8 @@ Lint/EmptyConditionalBody:
   Enabled: false
 Lint/ConstantDefinitionInBlock:
   Enabled: false
+Lint/SelfAssignment:
+  Enabled: false
 Lint/UselessAssignment:
   Enabled: false
 Style/CombinableLoops:
