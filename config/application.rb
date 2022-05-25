@@ -46,21 +46,7 @@ module Pbm
     config.assets.version = '1.4'
 
     # unfortunate inability to use wildcards because of a bug in rails admin
-    config.assets.precompile += %w(
-      normalize.css
-      mobile-application.css
-      mediaqueries.css
-      highslide-ie6.css
-      highslide.css
-      rails_admin.css
-      rails_admin/rails_admin.css
-      highslide.min.js
-      jquery.form.js
-      jquery.remotipart.js
-      rails.js
-      rails_admin.js
-      rails_admin/rails_admin.js
-    )
+    config.assets.precompile = ["manifest.js"]
 
     config.rakismet.key = ENV['RAKISMET_KEY']
     config.rakismet.url = 'https://pinballmap.com/'
