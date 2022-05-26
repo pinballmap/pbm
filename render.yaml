@@ -3,88 +3,37 @@
 # Schema documented at https://render.com/docs/yaml-spec
 services:
   - type: web # valid values: https://render.com/docs/yaml-spec#type
-    name: glowing-dusk-5085
-    env: docker # valid values: https://render.com/docs/yaml-spec#environment
-    dockerfilePath: Dockerfile.render
+    name: glowing-dusk-5085b
+    env: ruby # valid values: https://render.com/docs/yaml-spec#environment
+    buildCommand: bin/render-build.sh
+    startCommand: bundle exec puma -C config/puma.rb
     plan: standard # optional; defaults to starter
     numInstances: 1
     domains: # custom domains
       - 'pinballmap.com'
       - 'www.pinballmap.com'
     envVars:
-      - key: APP_NAME # Imported from Heroku app
-        value: glowing-dusk-5085
-      - key: AWS_REGION # Imported from Heroku app
-        value: us-east-1
-      - key: ERROR_PAGE_URL # Imported from Heroku app
-        value: //www.herokucdn.com/error-pages/application-error.html
-      - key: GEM_PATH # Imported from Heroku app
-        value: vendor/bundle/ruby/1.9.1
-      - key: GOOGLE_ANALYTICS # Imported from Heroku app
-        value: UA-33321299-1
-      - key: LANG # Imported from Heroku app
-        value: en_US.UTF-8
-      - key: LETS_ENCRYPT_LONG_CODE # Imported from Heroku app
-        value: 9DLKZO0O_P_ltNeoboH6q4Gorrhl_R_468vLTK7q9Lw.lVnmXXRLAFfhzkcpSTs8X89vkGiRN6NNNKNCtXNinJg
-      - key: MAINTENANCE_PAGE_URL # Imported from Heroku app
-        value: //www.herokucdn.com/error-pages/maintenance-mode.html
-      - key: MEMCACHIER_SERVERS # Imported from Heroku app
-        value: mc3.dev.ec2.memcachier.com:11211
-      - key: MEMCACHIER_USERNAME # Imported from Heroku app
-        value: baede0
-      - key: PATH # Imported from Heroku app
-        value: bin:vendor/bundle/ruby/1.9.1/bin:/usr/local/bin:/usr/bin:/bin
-      - key: RACK_ENV # Imported from Heroku app
-        value: production
-      - key: RAILS_ENV # Imported from Heroku app
-        value: production
-      - key: RAILS_MAX_THREADS # Imported from Heroku app
-        value: 4
-      - key: RUBY_GC_HEAP_FREE_SLOTS # Imported from Heroku app
-        value: 738113
-      - key: RUBY_GC_HEAP_GROWTH_FACTOR # Imported from Heroku app
-        value: 1.03
-      - key: RUBY_GC_HEAP_GROWTH_MAX_SLOTS # Imported from Heroku app
-        value: 148437
-      - key: RUBY_GC_HEAP_INIT_SLOTS # Imported from Heroku app
-        value: 448713
-      - key: RUBY_GC_HEAP_OLDOBJECT_LIMIT_FACTOR # Imported from Heroku app
-        value: 2.0
-      - key: RUBY_GC_MALLOC_LIMIT # Imported from Heroku app
-        value: 23488203
-      - key: RUBY_GC_MALLOC_LIMIT_GROWTH_FACTOR # Imported from Heroku app
-        value: 1.32
-      - key: RUBY_GC_MALLOC_LIMIT_MAX # Imported from Heroku app
-        value: 42278765
-      - key: RUBY_GC_OLDMALLOC_LIMIT # Imported from Heroku app
-        value: 23221058
-      - key: RUBY_GC_OLDMALLOC_LIMIT_GROWTH_FACTOR # Imported from Heroku app
-        value: 1.2
-      - key: RUBY_GC_OLDMALLOC_LIMIT_MAX # Imported from Heroku app
-        value: 41797904
-      - key: RUBY_GC_SPY # Imported from Heroku app
-        value: 
-      - key: RUBY_GC_TUNE # Imported from Heroku app
-        value: 
-      - key: S3_BUCKET_NAME # Imported from Heroku app
-        value: pbm-images
-      - key: SCHEDULER_URL # Imported from Heroku app
-        value: http://enx70kbmdjn42iapy5bbtyot0@heroku-scheduler.herokuapp.com/
-      - key: TZ # Imported from Heroku app
-        value: America/Los_Angeles
-      - key: WEB_CONCURRENCY # Imported from Heroku app
-        value: 1
+      - fromGroup: pbm-env
       - key: DATABASE_URL # Render managed PostgreSQL database
         fromDatabase:
           name: singing-avidly-3904
           property: connectionString
-      # - key: DATABASE_URL # Render managed PostgreSQL database
-      #   fromDatabase:
-      #     name: smiling-nobly-5018
-      #     property: connectionString
-
+  - name: notify_super_admins
+    type: cron
+    env: ruby
+    schedule: 0 20 * * 5
+    buildCommand: bin/render-build.sh
+    startCommand: >
+      bundle exec rake notify_super_admins
+    envVars:
+      - fromGroup: pbm-env
+      - key: DATABASE_URL # Render managed PostgreSQL database
+        fromDatabase:
+          name: singing-avidly-3904
+          property: connectionString
+envVarGroups:
+  - name: pbm-env
 databases: # Render PostgreSQL managed database
   - name: singing-avidly-3904
     ipAllowList: [] # only allow internal connections
-  # - name: smiling-nobly-5018
-  #   ipAllowList: [] # only allow internal connections
+
