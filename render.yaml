@@ -32,7 +32,7 @@ services:
           name: singing-avidly-3904
           property: connectionString
 envVarGroups:
-  - pbm-env
+  - name: pbm-env
 databases: # Render PostgreSQL managed database
   - name: singing-avidly-3904
     ipAllowList: [] # only allow internal connections
