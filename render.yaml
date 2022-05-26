@@ -22,7 +22,7 @@ services:
     type: cron
     env: ruby
     schedule: 0 20 * * 5
-    buildCommand: bundle install
+    buildCommand: bin/render-build.sh
     startCommand: >
       bundle exec rake notify_super_admins
     envVars:
