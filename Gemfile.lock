@@ -1746,7 +1746,7 @@ DEPENDENCIES
   puma_worker_killer
   rack-attack
   rack_session_access
-  rails (~> 6.0.1)
+  rails
   rails-controller-testing
   rails_12factor
   rails_admin
