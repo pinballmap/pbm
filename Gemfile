@@ -21,7 +21,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'kaminari'
 gem 'memcachier'
-gem 'paperclip'
+gem "kt-paperclip", "~> 6.4", ">= 6.4.1"
 gem 'phonelib'
 gem 'platform-api'
 gem 'pony'
