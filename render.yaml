@@ -13,7 +13,7 @@ services:
       - 'pinballmap.com'
       - 'www.pinballmap.com'
     envVars:
-      - fromGroup: git-scm-shared
+      - fromGroup: pbm-env
       - key: DATABASE_URL # Render managed PostgreSQL database
         fromDatabase:
           name: singing-avidly-3904
@@ -26,7 +26,7 @@ services:
     startCommand: >
       bundle exec rake notify_super_admins
     envVars:
-      - fromGroup: git-scm-shared
+      - fromGroup: pbm-env
       - key: DATABASE_URL # Render managed PostgreSQL database
         fromDatabase:
           name: singing-avidly-3904
