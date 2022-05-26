@@ -41,10 +41,6 @@ gem 'tunemygc'
 gem 'tzinfo-data'
 gem 'webpacker'
 
-group :production do
-  gem 'rails_12factor'
-end
-
 group :test do
   gem 'capybara'
   gem 'capybara-screenshot'
@@ -61,7 +57,7 @@ group :test do
   gem 'simplecov'
   gem 'spork'
   gem 'timecop'
-  gem 'webdrivers', '~> 4.0'
+  gem 'webdrivers'
 end
 
 group :development, :test do
