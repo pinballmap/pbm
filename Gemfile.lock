@@ -1302,6 +1302,8 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.18)
     benchmark-ips (2.10.0)
+    bootsnap (1.11.1)
+      msgpack (~> 1.2)
     builder (3.2.4)
     bullet (7.0.1)
       activesupport (>= 3.0.0)
@@ -1482,6 +1484,7 @@ GEM
     mini_portile2 (2.8.0)
     minitest (5.15.0)
     moneta (1.0.0)
+    msgpack (1.5.2)
     multi_json (1.15.0)
     nested_form (0.3.2)
     netrc (0.11.0)
@@ -1726,6 +1729,7 @@ PLATFORMS
 DEPENDENCIES
   apipie-rails
   aws-sdk
+  bootsnap
   bullet
   cancancan
   capybara

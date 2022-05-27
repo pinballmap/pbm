@@ -6,6 +6,7 @@ gem 'rails'
 
 gem 'apipie-rails'
 gem 'aws-sdk'
+gem 'bootsnap', require: false
 gem 'cancancan'
 gem 'country_select'
 gem 'dalli'
@@ -20,8 +21,8 @@ gem 'jbuilder'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'kaminari'
+gem 'kt-paperclip', '~> 6.4', '>= 6.4.1'
 gem 'memcachier'
-gem "kt-paperclip", "~> 6.4", ">= 6.4.1"
 gem 'phonelib'
 gem 'platform-api'
 gem 'pony'
