@@ -3,7 +3,7 @@
 # Schema documented at https://render.com/docs/yaml-spec
 services:
   - type: web # valid values: https://render.com/docs/yaml-spec#type
-    name: glowing-dusk-5085b
+    name: glowing-dusk-5085
     env: ruby # valid values: https://render.com/docs/yaml-spec#environment
     buildCommand: bin/render-build.sh
     startCommand: bundle exec puma -C config/puma.rb

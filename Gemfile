@@ -6,6 +6,7 @@ gem 'rails'
 
 gem 'apipie-rails'
 gem 'aws-sdk'
+gem 'bootsnap', require: false
 gem 'cancancan'
 gem 'country_select'
 gem 'dalli'
@@ -20,8 +21,8 @@ gem 'jbuilder'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'kaminari'
+gem 'kt-paperclip', '~> 6.4', '>= 6.4.1'
 gem 'memcachier'
-gem 'paperclip'
 gem 'phonelib'
 gem 'platform-api'
 gem 'pony'
@@ -41,10 +42,6 @@ gem 'tunemygc'
 gem 'tzinfo-data'
 gem 'uglifier'
 
-group :production do
-  gem 'rails_12factor'
-end
-
 group :test do
   gem 'capybara'
   gem 'capybara-screenshot'
@@ -61,7 +58,7 @@ group :test do
   gem 'simplecov'
   gem 'spork'
   gem 'timecop'
-  gem 'webdrivers', '~> 4.0'
+  gem 'webdrivers'
 end
 
 group :development, :test do

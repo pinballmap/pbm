@@ -444,7 +444,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/portland\?utf8=%E2%9C%93&region=portland$/)
+      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/portland\?region=portland$/)
 
       visit '/map'
 
@@ -452,7 +452,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/map\?utf8=%E2%9C%93$/)
+      expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/map\?$/)
     end
 
     it 'respects a region param' do

@@ -1,9 +1,9 @@
 - content_for :presearch_sidebar do
-  %p.local_logo 
-    =link_to image_tag('iowa/iowa-pinball-club-logo.png'),'http://iowapinballclub.com/', :target => '_blank' 
+  %p.local_logo
+    =link_to image_tag('iowa/iowa-pinball-club-logo.png'),'http://iowapinballclub.com/', :target => '_blank'
     %br/
     %br/
     The
-    =link_to 'Iowa Pinball Club', 'http://iowapinballclub.com/', :target => '_blank' 
+    =link_to 'Iowa Pinball Club', 'http://iowapinballclub.com/', :target => '_blank'
     supports and maintains this map.
-= render :file => 'pages/region'
+= render :template => 'pages/region'

@@ -54,7 +54,7 @@ class Location < ApplicationRecord
   })
   scope :by_machine_name, (lambda { |name|
     machine = Machine.find_by_name(name)
-    return Location.none if machine.nil?
+    return Location.default_scoped.none if machine.nil?
 
     machines = machine.machine_group_id ? Machine.where('machine_group_id = ?', machine.machine_group_id).map(&:all_machines_in_machine_group).flatten : [machine]
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
