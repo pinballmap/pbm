@@ -1308,7 +1308,7 @@ GEM
     bullet (7.0.1)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
-    cancancan (2.3.0)
+    cancancan (3.3.0)
     capybara (3.37.1)
       addressable
       matrix
