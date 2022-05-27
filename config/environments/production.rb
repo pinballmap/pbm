@@ -130,5 +130,6 @@ Rails.application.configure do
                         "remote_ip: \"#{req.remote_ip}\"," <<
                         "path: \"#{req.path}\", " <<
                         "headers: #{request_headers.inspect}"
+    end
   end
 end
