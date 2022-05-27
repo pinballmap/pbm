@@ -40,7 +40,7 @@ gem 'simple_form'
 gem 'simple_token_authentication'
 gem 'tunemygc'
 gem 'tzinfo-data'
-gem 'webpacker'
+gem 'uglifier'
 
 group :test do
   gem 'capybara'
