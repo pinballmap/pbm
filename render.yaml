@@ -18,6 +18,7 @@ services:
         fromDatabase:
           name: singing-avidly-3904
           property: connectionString
+    autoDeploy: false
   - name: notify_super_admins
     type: cron
     env: ruby
@@ -31,6 +32,7 @@ services:
         fromDatabase:
           name: singing-avidly-3904
           property: connectionString
+    autoDeploy: false
 envVarGroups:
   - name: pbm-env
 databases: # Render PostgreSQL managed database
