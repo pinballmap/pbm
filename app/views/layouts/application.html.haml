@@ -17,7 +17,7 @@
     = stylesheet_link_tag 'normalize', 'application', 'mediaqueries', 'https://unpkg.com/maplibre-gl@1.14.0/dist/maplibre-gl.css', :media => ""
     - if mobile_device?
       = stylesheet_link_tag 'mobile-application'
-    = javascript_include_tag 'application', 'jquery.form', 'jquery.remotipart', 'highslide.min', 'maplibre-gl-1.14.0.js'
+    = javascript_include_tag 'application', 'jquery.form', 'jquery.remotipart', 'highslide.min', 'https://unpkg.com/maplibre-gl@1.14.0/dist/maplibre-gl.js'
     = csrf_meta_tag
     = render 'application/favicon'
 
