@@ -98,7 +98,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'errors if not authed' do
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', {}
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json'
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationMachineXrefsController::AUTH_REQUIRED_MSG)
