@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.7.6'
+ruby '3.0.4'
 
 gem 'pg'
 gem 'rails'
@@ -41,6 +41,7 @@ gem 'simple_token_authentication'
 gem 'tunemygc'
 gem 'tzinfo-data'
 gem 'uglifier'
+gem 'webrick'
 
 group :test do
   gem 'capybara'
