@@ -1,4 +1,4 @@
-#footer{:class => "#{current_page?(saved_path) || current_page?(map_path) || current_page?(region_homepage_path) ? 'footer_fixed' : '' }"}
+#footer{:class => "#{current_page?(saved_path) || current_page?(map_path) || ((defined? @region) and current_page?(region_homepage_path)) ? 'footer_fixed' : '' }"}
   - if (@region)
     =link_to 'Contact', about_path, :class => 'footer_contact'
   - else
