@@ -63,7 +63,7 @@ class PagesController < ApplicationController
   end
 
   def region
-    @locations = Location.where('region_id = ?', @region.id).includes(:location_type)
+    @locations = Location.where('region_id = ?', @region.id).includes(:location_type, :operator)
     @location_count = @locations.count
     @lmx_count = @region.machines_count
 
