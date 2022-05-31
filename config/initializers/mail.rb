@@ -4,6 +4,6 @@ ActionMailer::Base.smtp_settings = {
   :authentication => :plain,
   :user_name      => 'apikey',
   :password       => ENV['SENDGRID_API_KEY'],
-  :domain         => 'heroku.com'
+  :domain         => 'pinballmap.com'
 }
 ActionMailer::Base.delivery_method = :smtp
