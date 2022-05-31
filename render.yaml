@@ -34,6 +34,20 @@ services:
           name: singing-avidly-3904
           property: connectionString
     autoDeploy: false
+  - name: import_ifpa
+    type: cron
+    env: ruby
+    schedule: 0 0 * * *
+    buildCommand: bin/render-build.sh
+    startCommand: >
+      bundle exec rake import_ifpa_tournaments
+    envVars:
+      - fromGroup: pbm-env
+      - key: DATABASE_URL # Render managed PostgreSQL database
+        fromDatabase:
+          name: singing-avidly-3904
+          property: connectionString
+    autoDeploy: false
   - name: daily_admin_digests
     type: cron
     env: ruby
@@ -49,9 +63,35 @@ services:
           name: singing-avidly-3904
           property: connectionString
     autoDeploy: false
+  - name: notify_operators
+    type: cron
+    env: ruby
+    schedule: 30 18 * * *
+    buildCommand: bin/render-build.sh
+    startCommand: >
+      bundle exec rake notify_operators
+    envVars:
+      - fromGroup: pbm-env
+      - key: DATABASE_URL # Render managed PostgreSQL database
+        fromDatabase:
+          name: singing-avidly-3904
+          property: connectionString
+    autoDeploy: false
+  - name: delete_empty_locations
+    type: cron
+    env: ruby
+    schedule: 30 3 * * 0
+    buildCommand: bin/render-build.sh
+    startCommand: >
+      bundle exec rake delete_opted_in_empty_locations
+    envVars:
+      - fromGroup: pbm-env
+      - key: DATABASE_URL # Render managed PostgreSQL database
+        fromDatabase:
+          name: singing-avidly-3904
+          property: connectionString
+    autoDeploy: false
 envVarGroups:
   - name: pbm-env
 databases: # Render PostgreSQL managed database
   - name: singing-avidly-3904
-    ipAllowList: [] # only allow internal connections
-
