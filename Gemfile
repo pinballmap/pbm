@@ -5,7 +5,7 @@ gem 'pg'
 gem 'rails'
 
 gem 'apipie-rails'
-gem 'aws-sdk'
+gem 'aws-sdk-s3'
 gem 'bootsnap', require: false
 gem 'cancancan'
 gem 'country_select'
@@ -46,7 +46,7 @@ gem 'webrick'
 group :test do
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'coveralls', require: false
+  gem 'coveralls_reborn', require: false
   gem 'factory_bot_rails'
   gem 'launchy'
   gem 'rails-controller-testing'
