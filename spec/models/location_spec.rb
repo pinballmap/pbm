@@ -48,16 +48,12 @@ describe Location do
         '+47 930 48 892'
       ].each do |p|
         @l.phone = p
-        expect(lambda do
-          @l.save!
-        end).to_not raise_error
+        expect{@l.save!}.to_not raise_error
       end
 
       @l.phone = 'ABC'
 
-      expect(lambda do
-        @l.save!
-      end).to raise_error
+      expect {@l.save!}.to raise_error
     end
   end
 
@@ -95,25 +91,17 @@ describe Location do
 
     it 'should allow blank websites' do
       @l.update(website: '')
-      expect(lambda do
-        @l.save!
-      end).to_not raise_error
+      expect{@l.save!}.to_not raise_error
     end
     it 'should not update location with websites that do not start with http:// or https://' do
       @l.update(website: 'lol.com')
-      expect(lambda do
-        @l.save!
-      end).to raise_error
+      expect{@l.save!}.to raise_error
 
       @l.update(website: 'http://lol.com')
-      expect(lambda do
-        @l.save!
-      end).to_not raise_error
+      expect{@l.save!}.to_not raise_error
 
       @l.update(website: 'https://lol.com')
-      expect(lambda do
-        @l.save!
-      end).to_not raise_error
+      expect{@l.save!}.to_not raise_error
     end
   end
 
