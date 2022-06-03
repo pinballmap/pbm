@@ -46,7 +46,7 @@ gem 'webrick'
 group :test do
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'coveralls', require: false
+  gem 'coveralls_reborn', require: false
   gem 'factory_bot_rails'
   gem 'launchy'
   gem 'rails-controller-testing'

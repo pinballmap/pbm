@@ -1335,12 +1335,11 @@ GEM
     country_select (6.0.0)
       countries (~> 4.0)
       sort_alphabetical (~> 1.1)
-    coveralls (0.7.1)
-      multi_json (~> 1.3)
-      rest-client
-      simplecov (>= 0.7)
-      term-ansicolor
-      thor
+    coveralls_reborn (0.24.0)
+      simplecov (>= 0.18.1, < 0.22.0)
+      term-ansicolor (~> 1.6)
+      thor (>= 0.20.3, < 2.0)
+      tins (~> 1.16)
     crass (1.0.6)
     dalli (2.7.9)
     database_cleaner (2.0.1)
@@ -1372,8 +1371,6 @@ GEM
       devise (>= 2.1.0)
     diff-lcs (1.5.0)
     docile (1.4.0)
-    domain_name (0.5.20190701)
-      unf (>= 0.0.5, < 1.0.0)
     email_spec (2.2.0)
       htmlentities (~> 4.3.3)
       launchy (~> 2.1)
@@ -1421,9 +1418,6 @@ GEM
       nokogiri (>= 1.6.0)
       ruby_parser (~> 3.5)
     htmlentities (4.3.4)
-    http-accept (1.7.0)
-    http-cookie (1.0.5)
-      domain_name (~> 0.5)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     i18n_data (0.13.0)
@@ -1492,7 +1486,6 @@ GEM
     msgpack (1.5.2)
     multi_json (1.15.0)
     nested_form (0.3.2)
-    netrc (0.11.0)
     nio4r (2.5.8)
     nokogiri (1.13.6)
       mini_portile2 (~> 2.8.0)
@@ -1590,11 +1583,6 @@ GEM
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
-    rest-client (2.1.0)
-      http-accept (>= 1.7.0, < 2.0)
-      http-cookie (>= 1.0.2, < 2.0)
-      mime-types (>= 1.16, < 4.0)
-      netrc (~> 0.8)
     rexml (3.2.5)
     rspec-core (3.11.0)
       rspec-support (~> 3.11.0)
@@ -1701,9 +1689,6 @@ GEM
       tzinfo (>= 1.0.0)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
-    unf (0.1.4)
-      unf_ext
-    unf_ext (0.0.8.2)
     unicode-display_width (2.1.0)
     unicode_utils (1.4.0)
     uniform_notifier (1.16.0)
@@ -1736,7 +1721,7 @@ DEPENDENCIES
   capybara
   capybara-screenshot
   country_select
-  coveralls
+  coveralls_reborn
   dalli
   database_cleaner
   derailed_benchmarks
