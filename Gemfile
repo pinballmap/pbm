@@ -5,7 +5,7 @@ gem 'pg'
 gem 'rails'
 
 gem 'apipie-rails'
-gem 'aws-sdk'
+gem 'aws-sdk-s3'
 gem 'bootsnap', require: false
 gem 'cancancan'
 gem 'country_select'
