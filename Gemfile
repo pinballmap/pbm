@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '3.0.4'
 
 gem 'pg'
-gem 'rails', '~> 6.1.6'
+gem 'rails'
 
 gem 'apipie-rails'
 gem 'aws-sdk'
