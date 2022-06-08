@@ -28,7 +28,7 @@
       %span.grey Location Type:
       %span
       - if l.region
-        =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?utf8=✓&by_type_id=#{l.location_type.id}"
+        =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?by_type_id=#{l.location_type.id}"
       - else
         #{l.location_type.name}
     .clear
