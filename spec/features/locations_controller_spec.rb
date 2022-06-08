@@ -459,14 +459,14 @@ describe LocationsController do
       regionless_location = FactoryBot.create(:location, region: nil, name: 'Regionless place')
       FactoryBot.create(:location_machine_xref, location: regionless_location, machine: @machine)
 
-      visit "/map?utf8=%E2%9C%93&by_machine_id=#{@machine.id}"
+      visit "/map?by_machine_id=#{@machine.id}"
 
       sleep 1
 
       expect(find('#search_results')).to have_content('Regionless place')
       expect(find('#search_results')).to have_content('Cleo')
 
-      visit "/portland?utf8=%E2%9C%93&region=portland&by_machine_id=#{@machine.id}"
+      visit "/portland?region=portland&by_machine_id=#{@machine.id}"
 
       sleep 1
 
