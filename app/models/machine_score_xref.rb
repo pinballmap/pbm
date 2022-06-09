@@ -12,7 +12,7 @@ class MachineScoreXref < ApplicationRecord
   })
 
   scope :region, (lambda { |name|
-    r = Region.find_by_name(name)
+    r = Region.find_by_name(name.downcase)
     joins(:location_machine_xref).joins(:location).where("
       location_machine_xrefs.id = machine_score_xrefs.location_machine_xref_id
       and locations.id = location_machine_xrefs.location_id
