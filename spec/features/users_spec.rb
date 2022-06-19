@@ -110,11 +110,11 @@ describe UsersController do
       login(@user)
       visit "/users/#{@user.id}/profile"
 
-      expect(page).to have_content('Update email or password')
+      expect(page).to have_content('Update Email / Update Password / Delete Account')
 
       visit "/users/#{not_your_user.id}/profile"
 
-      expect(page).to_not have_content('Update email or password')
+      expect(page).to have_content('LOGIN to Update Email / Update Password / Delete Account')
     end
   end
 end
