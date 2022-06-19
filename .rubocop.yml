@@ -23,6 +23,8 @@ Metrics/AbcSize:
   Enabled: false
 Metrics/BlockLength:
   Enabled: false
+Metrics/BlockNesting:
+  Enabled: false
 Metrics/ModuleLength:
   Max: 150
 Naming/VariableNumber:
