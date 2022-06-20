@@ -53,22 +53,20 @@ body {
   width: 203px;
   margin: auto;
 }
-#header div.menu_link {
-  position: absolute;
-  left: 0;
-  top: 45px;
-  border: none;
-  line-height: 18px;
-  height: auto;
-  width: 100%;
-  float: none;
+#menu_container {
+  display: inline-block;
   text-align: left;
+  margin: 0 auto;
+  float: none;
+  width: 100%;
+  background-color: #e0f1ff;
+  visibility: visible;
+  box-shadow: 0 10px 10px rgba(90, 100, 117, 0.2);
+  top: 45px;
+  transform: translateX(-100vw);
 }
 #menu {
   margin: auto;
-}
-#menu img.header_menu {
-  height: 26px;
 }
 #header_app {
   margin: auto;
@@ -80,36 +78,20 @@ body {
   background-color: white;
   margin-right: 5px;
 }
-#header #nav {
-  display: block;
-  float: left;
-}
-#header #nav.js {
-  display: none;
-}
-#header div.menu_link ul {
-  display: inline-block;
-  text-align: left;
-  margin: 0 auto;
+#header ul {
   padding: 0 0 10px 0;
-  float: none;
-  width: 100%;
-  background-color: #e0f1ff;
-  visibility: visible;
-  box-shadow: none;
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
+  margin-top: 0;
 }
-#header div.menu_link ul:before {
+#header ul:before {
   display: none;
 }
-#header div.menu_link ul li {
+#header ul li {
   display: block;
   line-height: 24px;
   background: none;
   background: #e0f1ff;
 }
-#header div.menu_link ul li a {
+#header ul li a {
   float: none;
   display: inline;
   background: transparent;
@@ -177,9 +159,6 @@ body {
   display: block;
   margin: 0 auto;
 }
-#header div.menu_link ul li.mobile_hide {
-  display: none;
-}
 #header.header_home, #header.header_image_home {
   min-width: 320px;
 }
@@ -192,11 +171,11 @@ body {
   display: inline;
   font-weight: 700;
 }
-#header div.menu_link ul li.login_list {
+#header ul li.login_list {
   display: inline;
   text-align: center;
 }
-#header div.menu_link ul li.login_list a {
+#header ul li.login_list a {
   color: #fd0091;
   font-size: 16px !important;
 }
@@ -228,7 +207,7 @@ span.login_list {
 .header_image_a {
   display: block;
 }
-#header .region_logo_dropdown {
+#header .region_logo {
     float: none;
     background: #97a5af;
     width: auto;

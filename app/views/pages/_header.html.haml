@@ -1,11 +1,12 @@
 - if !mobile_device?
   #header{:class => "#{@region ? '' : (defined? @region) and current_page?(region_homepage_path) ? 'header_fixed' : ''} #{current_page?(map_path) ? 'header_fixed' : '' } #{current_page?(saved_path) ? 'header_fixed' : '' }"}
     =link_to image_tag('pinballmap-logo.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => "logo_link"
-    %div{:class => "header_buttons_container"}
-      %div.menu_link
-        #menu
-          =image_tag 'menu.svg', :class => 'header_menu', :alt => 'Pinball Map Menu'
-        %ul#nav.js
+    %div.header_buttons_container
+      %div#menu_button
+        %input{:type => "checkbox", :id => "menu", :autocomplete => "off"}
+          %label{:for => "menu"}
+            %span
+        %div#menu_container
           = render :partial => 'pages/menu'
       .header_buttons_child.header_menu_02{:class => "#{@region ? 'header_menu_region' : ''}"}
         - if !user_signed_in?
@@ -33,45 +34,21 @@
           =image_tag( 'heart-empty.png', :alt => 'heart icon', :class => 'fave_icon')
           =link_to 'Saved Locations', saved_path, :class => "bold"
       - if (@region)
-        %div.region_logo_dropdown.header_buttons_child
+        %div.region_logo.header_buttons_child
           %span.region_name_page
             =link_to "#{@region.full_name}", region_homepage_path
 - else
   #header{:class => "#{@region ? '' : 'header_home'}"}
-    #menu
-      =image_tag 'menu.svg', :class => 'header_menu', :alt => 'Pinball Map Menu'
+    %div#menu_button
+      %input{:type => "checkbox", :id => "menu", :autocomplete => "off"}
+        %label{:for => "menu"}
+          %span
+        %div#menu_container
+          = render :partial => 'pages/menu'
     #header_image
       =link_to image_tag('pinballmap-logo.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => 'logo_link'
     #header_app
       =link_to 'use app', app_path
-    %div.menu_link
-      %ul#nav.js
-        - if !user_signed_in?
-          %span.login_list
-            %li.login_list= link_to 'Login', new_user_session_path
-            %span.login_slash.darkgrey
-              |
-            %li.login_list= link_to 'Join', new_user_registration_path
-        - else
-          %span.login_list
-            %li.login_list= link_to 'Logout', destroy_user_session_path, method: :delete
-            - if (current_user && !current_user.region_id.blank?)
-              %span.login_slash.darkgrey
-                |
-              %li.login_list= link_to 'Admin', rails_admin_path
-        = render :partial => 'pages/menu'
   - if (@region)
     .region_name_page
       =link_to "#{@region.full_name}", region_homepage_path
-
-:javascript
-  $().ready(function() {
-    $("#menu").click(function() {
-      $("#nav").toggle();
-    });
-    $(document).on('click', function(event) {
-      if (!$(event.target).closest('#menu').length) {
-        $("#nav").css('display', 'none');
-      }
-    });
-  });

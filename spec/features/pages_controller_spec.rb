@@ -426,13 +426,13 @@ describe PagesController do
   describe 'admin', type: :feature, js: true do
     it 'presents a link to the admin pages if you are an admin' do
       visit '/'
-      find('#menu').click
+      find('#menu_button').click
 
       expect(page).to_not have_content('Admin')
       expect(page).to have_content('Login')
 
       visit '/portland'
-      find('#menu').click
+      find('#menu_button').click
 
       expect(page).to_not have_content('Admin')
       expect(page).to have_content('Login')
@@ -441,13 +441,13 @@ describe PagesController do
       page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
 
       visit '/'
-      find('#menu').click
+      find('#menu_button').click
 
       expect(page).to_not have_content('Admin')
       expect(page).to have_content('Logout')
 
       visit '/portland'
-      find('#menu').click
+      find('#menu_button').click
 
       expect(page).to_not have_content('Admin')
       expect(page).to have_content('Logout')
@@ -456,13 +456,13 @@ describe PagesController do
       page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
 
       visit '/'
-      find('#menu').click
+      find('#menu_button').click
 
       expect(page).to have_content('Admin')
       expect(page).to have_content('Logout')
 
       visit '/portland'
-      find('#menu').click
+      find('#menu_button').click
 
       expect(page).to have_content('Admin')
       expect(page).to have_content('Logout')

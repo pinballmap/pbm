@@ -144,7 +144,7 @@
   .header_menu_02.header_menu_region {
     display: none;
   }
-  #header .menu_link ul li.menu_header_02 {
+  #header ul li.menu_header_02 {
     display: block;
   }
   .header_buttons_child.header_menu_02.header_menu_region {
@@ -196,7 +196,7 @@
   .header_menu_03 {
     display: none;
   }
-  #header .menu_link ul li.menu_header_03 {
+  #header ul li.menu_header_03 {
     display: block;
   }
   .header_buttons_child.header_menu_03 {
@@ -208,7 +208,7 @@
   .header_menu_01, .header_menu_02 {
     display: none;
   }
-  #header .menu_link ul li.menu_header_01, #header .menu_link ul li.menu_header_02 {
+  #header ul li.menu_header_01, #header ul li.menu_header_02 {
     display: block;
   }
   .header_buttons_child.header_menu_01, .header_buttons_child.header_menu_02 {
