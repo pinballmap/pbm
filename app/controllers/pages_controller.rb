@@ -175,7 +175,7 @@ class PagesController < ApplicationController
     @states = []
 
     if @region
-      @states = Location.where(['region_id = ?', @region.id]).map(&:state).uniq.sort
+      @states = Location.where(['region_id = ?', @region.id]).where.not(state: [nil, '']).map(&:state).uniq.sort
       @states.unshift('')
 
       @operators = Operator.where(['region_id = ?', @region.id]).map(&:name).uniq.sort
