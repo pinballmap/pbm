@@ -73,7 +73,7 @@
             = render :partial => 'locations/render_location_detail', :locals => {l: l}
         - else
           %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id});"}
-            %ul
+            %ul{:style => 'margin-bottom:0;'}
               %li.name.bold.font20= l.name
               - if (!params[:show_location_distance].blank? && !params[:lat].blank? && !params[:lon].blank?)
                 %li.location_types= " distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
