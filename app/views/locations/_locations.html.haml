@@ -88,8 +88,18 @@
               .clear
               %li.machine_names
                 %ul
-                  - l.machine_names.each do |machine|
+                  - l.machine_names.take(20).each do |machine|
                     %li #{machine.html_safe}
+              - if (location.machines.size > 20)
+                %li.black
+                  and
+                  - the_rest = (location.machines.size - 20)
+                  #{the_rest}
+                  more
+                  - if the_rest == 1
+                    machine...
+                  - else
+                    machines...
           .clear
           %div.location_detail[l, :location_detail]{:style => 'display:none;'}
 
