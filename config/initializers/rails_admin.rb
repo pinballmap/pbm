@@ -769,6 +769,7 @@ RailsAdmin.config do |config|
         required false
       end
       field :website, :string
+      field :comments, :string
     end
     show do
       field :full_street_address, :string do
