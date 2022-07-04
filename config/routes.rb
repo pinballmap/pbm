@@ -60,6 +60,7 @@ Rails.application.routes.draw do
         collection do
           get :closest_by_lat_lon
           get :closest_by_address
+          get :within_bounding_box
           get :autocomplete
           get :autocomplete_city
           get :top_cities
