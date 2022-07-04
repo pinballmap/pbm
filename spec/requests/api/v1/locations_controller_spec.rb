@@ -706,6 +706,29 @@ HERE
     end
   end
 
+  describe '#within_bounding_box' do
+    it 'sends you locations within the transmitted bounding box, along with machines at the locations' do
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.49035574474385, swlon: -122.63006168000643, nelat: 45.50337485147459, nelon: -122.61434785688468 }
+
+      expect(JSON.parse(response.body)['errors']).to eq('No locations found within bounding box.')
+
+      FactoryBot.create(:location, name: 'Close_1', region: @region, lat: 45.526112069408704, lon: -122.60884314086321)
+      FactoryBot.create(:location, name: 'Close_2', region: @region, lat: 45.53007190362438, lon: -122.60795065851514)
+      FactoryBot.create(:location, name: 'Far_Bar', region: @region, lat: 46.491, lon: -122.63)
+      FactoryBot.create(:location, region: @region, lat: 5.49, lon: 22.63)
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427 }
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      locations = parsed_body['locations']
+      expect(response.body).to_not include('Far_Bar')
+      expect(response.body).to include('Close_1')
+      expect(response.body).to include('Close_2')
+    end
+  end
+
   describe '#machine_details' do
     it 'throws an error if the location does not exist' do
       get '/api/v1/locations/666/machine_details.json'

@@ -147,6 +147,31 @@ module Api
         end
       end
 
+      api :GET, '/api/v1/locations/within_bounding_box.json', 'Returns locations within transmitted bounding box'
+      description 'This sends locations within the sw_corner and ne_corner bounding box. It includes a list of machines at the location.'
+      param :swlat, String, 'SW_Latitude', required: true
+      param :swlon, String, 'SW_Longitude', required: true
+      param :nelat, String, 'NE_Latitude', required: true
+      param :nelon, String, 'NE_Longitude', required: true
+      param :by_type_id, Integer, desc: 'Location type ID to search by', required: false
+      param :by_machine_id, Integer, desc: 'Machine ID to find in locations', required: false
+      param :by_operator_id, Integer, desc: 'Operator ID to search by', required: false
+      param :by_at_least_n_machines_type, Integer, desc: 'Only locations with N or more machines', required: false
+      param :no_details, Integer, desc: 'Omit data that app does not need from pull', required: false
+      formats ['json']
+      def within_bounding_box
+        except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone] : nil
+
+        bounds = [params[:swlat], params[:swlon], params[:nelat], params[:nelon]]
+        locations_within = apply_scopes(Location).includes(:machines).within_bounding_box(bounds)
+
+        if !locations_within.empty?
+          return_response(locations_within, 'location', [], %i[machine_names machine_ids], 200, except)
+        else
+          return_response('No locations found within bounding box.', 'errors')
+        end
+      end
+
       api :GET, '/api/v1/locations/closest_by_address.json', 'Returns the closest location to transmitted address'
       description "This sends you the closest location to your address (defaults to within #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles). It includes a list of machines at the location."
       param :address, String, desc: 'Address', required: true
