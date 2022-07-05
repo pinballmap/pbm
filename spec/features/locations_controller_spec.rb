@@ -266,6 +266,27 @@ describe LocationsController do
       end
     end
 
+    it 'displays a max of 20 machines per location when multiple locations in results' do
+      cleo = FactoryBot.create(:location, id: 51, region: @region, name: 'Cleo')
+      zelda = FactoryBot.create(:location, id: 61, region: @region, name: 'Zelda')
+
+      5.times do |index|
+        FactoryBot.create(:location_machine_xref, machine: FactoryBot.create(:machine, id: 1111 + index, name: 'machine ' + index.to_s), location: cleo)
+      end
+
+      25.times do |index|
+        FactoryBot.create(:location_machine_xref, machine: FactoryBot.create(:machine, id: 2222 + index, name: 'machine ' + index.to_s), location: zelda)
+      end
+
+      visit '/portland'
+
+      click_on 'location_search_button'
+
+      within('div#show_location_detail_location_61') do
+        expect(page).to have_content('and 5 more machines')
+      end
+    end
+
     it 'favors by_location_name when search by both by_location_id and by_location_name' do
       FactoryBot.create(:location, region: @region, name: 'Cleo')
       FactoryBot.create(:location, region: @region, name: 'Zelda')
