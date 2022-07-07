@@ -130,7 +130,7 @@ class Location < ApplicationRecord
     total_num_machines = machine_names.size
 
     content += "<div class=\"gm_machines\" id=\"gm_machines_#{id}\">#{machines.join}</div>"
-    if (total_num_machines > 5)
+    if total_num_machines > 5
       the_rest = total_num_machines - 5
       content += "<div>... and #{the_rest} more</div>"
     end
