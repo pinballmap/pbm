@@ -113,5 +113,5 @@
   - if (@locations.size == 1)
     :javascript
       $(function() {
-        locationLookupMapCenter(#{@locations.first.id});
+        showInfowindow(#{@locations.first.id});
       });

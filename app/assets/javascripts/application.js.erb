@@ -248,7 +248,7 @@ function findClosestLocations(region) {
 }
 
 function showLocationDetail(locationID) {
-  locationLookupMapCenter(locationID);
+  showInfowindow(locationID);
   $('.location_detail_location').hide();
 
   if ($('#location_detail_location_' + locationID).is(":hidden") ) {
@@ -264,7 +264,7 @@ function showLocationDetail(locationID) {
   }
 }
 
-function locationLookupMapCenter(locationID) {
+function showInfowindow(locationID) {
   var index = jQuery.inArray(locationID, locationIDs);
   clearInfoWindows();
   markers[index].togglePopup();
