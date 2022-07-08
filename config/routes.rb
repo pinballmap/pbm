@@ -133,6 +133,7 @@ Rails.application.routes.draw do
       get :update_desc
       get :update_metadata
       get :autocomplete
+      get :autocomplete_city
     end
     member do
       get :confirm

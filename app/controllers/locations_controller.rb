@@ -17,6 +17,11 @@ class LocationsController < InheritedResources::Base
     render json: @searchable_locations.select { |l| l.name.tr('’', "'") =~ /#{Regexp.escape params[:term].tr('’', "'") || ''}/i }.sort_by(&:name).map { |l| { label: "#{l.name} (#{l.city}#{l.state.blank? ? '' : ', '}#{l.state})", value: l.name, id: l.id } }
   end
 
+  def autocomplete_city
+    @searchable_cities = Location.select { |l| "#{l.city.tr('’', "'")} #{l.state}" =~ /#{Regexp.escape params[:term].tr('’', "'").tr(',', '') || ''}/i }.sort_by(&:city).map { |l| { label: "#{l.city}#{l.state.blank? ? '' : ', '}#{l.state}", value: "#{l.city}#{l.state.blank? ? '' : ', '}#{l.state}" } }
+    render json: @searchable_cities.uniq
+  end
+
   def index
     @region = Region.find_by_name(params[:region])
 

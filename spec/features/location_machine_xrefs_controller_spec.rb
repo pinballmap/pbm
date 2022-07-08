@@ -447,6 +447,24 @@ describe LocationMachineXrefsController do
       expect(page).to_not have_xpath('//div[contains(text(), "Sassy")]')
     end
 
+    it 'searches by city name from input' do
+
+      FactoryBot.create(:location, id: 122, region: @region, name: 'Cleo North', city: 'Portland', state: 'OR')
+      FactoryBot.create(:location, id: 123, region: @region, name: 'Cleo South', city: 'Portland', state: 'ME')
+      FactoryBot.create(:location, id: 124, region: @region, name: 'Sassy', city: 'San Diego', state: 'CA')
+
+      visit "/map"
+
+      fill_in('address', with: 'port')
+
+      page.execute_script %{ $('#address').trigger('focus') }
+      page.execute_script %{ $('#address').trigger('keydown') }
+
+      expect(page).to have_xpath('//div[contains(text(), "Portland, OR")]')
+      expect(page).to have_xpath('//div[contains(text(), "Portland, ME")]')
+      expect(page).to_not have_xpath('//div[contains(text(), "San Diego, CA")]')
+    end
+
     it 'escape input' do
       FactoryBot.create(
         :location_machine_xref,
