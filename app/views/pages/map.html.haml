@@ -133,4 +133,12 @@
       $('#by_machine_id').val(ui.item.id);
       $('#by_machine_name').val(ui.item.value);
     });
+
+    $('#address').autocomplete({source: '/locations/autocomplete_city'});
+    $('#address').bind('autocompleteselect', function(event, ui) {
+      event.preventDefault();
+      $('#by_location_id').val('');
+      $('#by_location_name').val('');
+      $('#address').val(ui.item.value);
+    });
   });
