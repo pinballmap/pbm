@@ -1,0 +1,6 @@
+{
+  "cron": [{
+    "command": "rake notify_super_admins",
+    "schedule": "0 20 * * 7"
+  }]
+}
