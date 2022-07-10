@@ -448,12 +448,11 @@ describe LocationMachineXrefsController do
     end
 
     it 'searches by city name from input' do
-
       FactoryBot.create(:location, id: 122, region: @region, name: 'Cleo North', city: 'Portland', state: 'OR')
       FactoryBot.create(:location, id: 123, region: @region, name: 'Cleo South', city: 'Portland', state: 'ME')
       FactoryBot.create(:location, id: 124, region: @region, name: 'Sassy', city: 'San Diego', state: 'CA')
 
-      visit "/map"
+      visit '/map'
 
       fill_in('address', with: 'port')
 
