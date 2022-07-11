@@ -419,6 +419,8 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    scout_apm (5.2.0)
+      parser
     selenium-webdriver (4.2.1)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
@@ -546,6 +548,7 @@ DEPENDENCIES
   ruby-growl
   sanitize
   sass-rails
+  scout_apm
   selenium-webdriver
   simple_form
   simple_token_authentication
