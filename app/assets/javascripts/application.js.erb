@@ -131,7 +131,7 @@ function zoomCheck() {
 function redo() {
   var mapupdater;
   zoomLevel = map.getZoom();
-  map.on('moveend', function() {
+  map.on('dragend', function() {
     zoomLevel = map.getZoom();
     if (zoomLevel < 9) {
       document.getElementById("zoom_in_more").style.display = "block";
