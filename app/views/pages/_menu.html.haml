@@ -2,14 +2,14 @@
   - if (mobile_device? and !user_signed_in?)
     %span.login_list
       %li.login_list= link_to 'Login', new_user_session_path
-      %span.login_slash.darkgrey
+      %span.login_slash
         |
       %li.login_list= link_to 'Join', new_user_registration_path
   - elsif (mobile_device? and user_signed_in?)
     %span.login_list
       %li.login_list= link_to 'Logout', destroy_user_session_path, method: :delete
       - if (current_user && !current_user.region_id.blank?)
-        %span.login_slash.darkgrey
+        %span.login_slash
           |
         %li.login_list= link_to 'Admin', rails_admin_path
   - elsif (!mobile_device? and !user_signed_in?)

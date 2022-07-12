@@ -58,7 +58,9 @@
 $sans: 'Nunito',Helvetica,Arial,sans-serif;
 $serif: 'Lato',"Lucida Grande",Tahoma,sans-serif;
 $red: #fd0091;
+$lightpink: #fff1f1;
 $blue: #e0f1ff;
+$darkblue: #232347;
 $purple: #e0e0ff;
 $grey: #7f7fa0;
 $lightgrey: #fafaff;
@@ -539,11 +541,15 @@ p.notice {
   width: 100%;
   min-width: 768px;
   height: 52px;
-  background: $blue;
+  background: $darkblue;
 }
 #header a {
   text-decoration: none;
   font-size: 14px;
+  color: $lightgrey;
+}
+#header a:hover {
+  color: #f8f18e;
 }
 #page_home {
   width: 800px;
@@ -592,6 +598,7 @@ p.notice {
   font-size: 16px;
   line-height: 16px;
   font-weight: $bold;
+  color: #383838;
 }
 #header ul li a:hover {
   color: $darkgrey;
@@ -615,7 +622,7 @@ p.notice {
   display: inline-block;
   width: 32px;
   height: 4px;
-  background-color: black;
+  background-color: #f8f18e;
   border-radius: 3px;
   text-align: left;
   cursor: pointer;
@@ -629,7 +636,7 @@ p.notice {
   position: absolute;
   width: 32px;
   height: 4px;
-  background-color: black;
+  background-color: #f8f18e;
   border-radius: 3px;
 }
 #menu ~ label span::after {
@@ -665,6 +672,9 @@ a.logo_link {
 }
 #header .region_logo {
   width: 164px;
+}
+.login_slash {
+  color: #f8f18e;
 }
 .feed_icon:before {
   content:"";
@@ -719,7 +729,7 @@ a.logo_link {
 }
 .region_name_page,
 #header span.region_name_page a {
-  color: $red;
+  color: #fff1f1;
   font-size: 20px;
   line-height: 22px;
   font-family: $sans;
@@ -905,7 +915,7 @@ span.or {
   background: $darkgrey;
   text-decoration: none;
   border-color: #642501;
-  color: $red !important;
+  color: $lightpink !important;
   cursor: pointer;
 }
 #locations p {
@@ -1002,13 +1012,13 @@ form select#by_location_id, form select#by_machine_id {
 }
 .active_section_link {
   background-color: $darkgrey !important;
-  color: $lightgrey !important;
+  color: $lightpink !important;
   box-shadow: none !important;
   -moz-box-shadow: none !important;
   -webkit-box-shadow: none !important;
 }
 a.active_section_link:hover {
-  background: #1C150B !important;
+  background: $lightpink !important;
 }
 
 /** Search Results **/
@@ -2128,13 +2138,11 @@ div.region_name_container {
   flex-direction: row;
   justify-content: center;
   margin: 0 auto;
-  background-color: #fafaff;
+  background-color: #f5f5ff;
   flex-wrap: wrap;
 }
 .div_01_outer {
-  margin-top: 2px;
   text-align: center;
-  background-color: #f5f5ff;
   z-index:100;
   background-size: 5px;
 }
