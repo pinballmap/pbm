@@ -64,19 +64,21 @@ function showLocations(ids, lats, lons, contents, latLng) {
     var el = document.createElement('div');
     el.className = 'marker';
 
-    (function(el, index) {
-      var locationID = locationIDs[index];
+    if (contents.length > 1) {
+      (function(el, index) {
+        var locationID = locationIDs[index];
 
-      el.id = 'marker_' + locationID;
-      el.addEventListener('click', function() {
-        showLocationDetail(locationID);
-        var index = jQuery.inArray(locationID, locationIDs);
-        markers[index].togglePopup();
+        el.id = 'marker_' + locationID;
+        el.addEventListener('click', function() {
+          showLocationDetail(locationID);
+          var index = jQuery.inArray(locationID, locationIDs);
+          markers[index].togglePopup();
 
-        document.getElementById('location_detail_location_' + locationID).scrollIntoView(true);
-        window.scrollBy(0, -140);
-      });
-    })(el, i);
+          document.getElementById('location_detail_location_' + locationID).scrollIntoView(true);
+          window.scrollBy(0, -140);
+        });
+      })(el, i);
+    }
 
     var popup = new maplibregl.Popup({ offset: 25 })
       .setHTML(contents[i]);
