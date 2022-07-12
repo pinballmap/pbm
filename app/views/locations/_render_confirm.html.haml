@@ -6,7 +6,7 @@
         - if user_signed_in?
           %span.confirm_button
       %span.last_updated{:id => "last_updated_location_#{l.id}"}
-        #{l.date_last_updated ? "Location last updated: #{l.date_last_updated.strftime("%b-%d-%Y")}" : ''}
+        #{l.date_last_updated ? "Last updated: #{l.date_last_updated.strftime("%b-%d-%Y")}" : ''}
         - if l.last_updated_by_user
           by
           %span.last_updated_username

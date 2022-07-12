@@ -44,7 +44,7 @@ describe LocationMachineXrefsController do
 
         expect(find("#show_machines_location_#{location.id}")).to have_content(@machine_to_add.name)
         expect(find("#gm_machines_#{location.id}")).to have_content(@machine_to_add.name)
-        expect(find("#last_updated_location_#{location.id}")).to have_content("Location last updated: #{Time.now.strftime('%b-%d-%Y')}")
+        expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b-%d-%Y')}")
 
         expect(LocationMachineXref.where(location_id: location.id, machine_id: @machine_to_add.id).first.user_id).to eq(@user.id)
 
@@ -235,7 +235,7 @@ describe LocationMachineXrefsController do
 
       expect(find("#machine_condition_display_lmx_#{@lmx.id}")).to have_content("This is a new condition\nUpdated: #{@lmx.current_condition.created_at.strftime('%b-%d-%Y')} by ssw")
       expect(@lmx.reload.location.date_last_updated).to eq(Date.today)
-      expect(find("#last_updated_location_#{@location.id}")).to have_content("Location last updated: #{@location.date_last_updated.strftime('%b-%d-%Y')} by ssw")
+      expect(find("#last_updated_location_#{@location.id}")).to have_content("Last updated: #{@location.date_last_updated.strftime('%b-%d-%Y')} by ssw")
       expect(URI.parse(page.find_link('ssw', match: :first)['href']).to_s).to match(%r{/users/ssw/profile})
     end
 
