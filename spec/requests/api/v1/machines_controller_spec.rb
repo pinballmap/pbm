@@ -96,7 +96,7 @@ describe Api::V1::MachinesController, type: :request do
     it 'handles creation by machine name.. new machine name' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "Bawb\nGround Kontrol\nportland\n(entered from 127.0.0.1 via  by ssw (foo@bar.com))",
+          body: "Bawb\nGround Kontrol\n(entered from 127.0.0.1 via  by ssw (foo@bar.com))",
           subject: 'PBM - New machine name',
           to: [],
           from: 'admin@pinballmap.com'
@@ -111,7 +111,7 @@ describe Api::V1::MachinesController, type: :request do
     it 'handles creation by machine name.. new machine name - authed' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          body: "Auth Bawb\nGround Kontrol\nportland\n(entered from 127.0.0.1 via  by ssw (foo@bar.com))",
+          body: "Auth Bawb\nGround Kontrol\n(entered from 127.0.0.1 via  by ssw (foo@bar.com))",
           subject: 'PBM - New machine name',
           to: [],
           from: 'admin@pinballmap.com'

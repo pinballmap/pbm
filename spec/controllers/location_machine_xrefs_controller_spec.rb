@@ -17,11 +17,11 @@ describe LocationMachineXrefsController, type: :controller do
           to: ['foo@bar.com'],
           from: 'admin@pinballmap.com',
           subject: 'PBM - New machine name',
-          body: "foo\nTest Location Name\nportland\n(entered from 0.0.0.0 via #{request.user_agent} by ssw (ssw@yeah.com))"
+          body: "foo\nTest Location Name\n(entered from 0.0.0.0 via #{request.user_agent} by ssw (ssw@yeah.com))"
         )
       end
 
-      post 'create', params: { region: 'portland', add_machine_by_name_1: 'foo', add_machine_by_id_1: '', location_id: @location.id }
+      post 'create', params: { add_machine_by_name_1: 'foo', add_machine_by_id_1: '', location_id: @location.id }
     end
 
     it 'should send email on new machine creation - notifies if staging site origin' do
