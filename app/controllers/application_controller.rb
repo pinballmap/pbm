@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
       to: Region.find_by_name('portland').users.map(&:email),
       from: 'admin@pinballmap.com',
       subject: add_host_info_to_subject('PBM - New machine name'),
-      body: [machine.name, location.name, location.region.name, "(entered from #{request.remote_ip} via #{request.user_agent}#{user_info})"].join("\n")
+      body: [machine.name, location.name, "(entered from #{request.remote_ip} via #{request.user_agent}#{user_info})"].join("\n")
     )
   end
 
