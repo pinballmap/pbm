@@ -1,6 +1,36 @@
 {
-  "cron": [{
-    "command": "rake notify_super_admins",
-    "schedule": "0 20 * * 0"
-  }]
+  "cron": [
+    {
+      "command": "rake notify_super_admins",
+      "schedule": "0 20 * * 5"
+    },
+    {
+      "command": "rake notify_admins",
+      "schedule": "0 19 * * 5"
+    },
+    {
+      "command": "rake send_daily_digest_machine_removal_email",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "command": "rake send_daily_digest_machine_condition_email",
+      "schedule": "0 8 * * *"
+    },
+    {
+      "command": "rake notify_operators",
+      "schedule": "30 18 * * *"
+    },
+    {
+      "command": "rake delete_opted_in_empty_locations",
+      "schedule": "30 3 * * 0"
+    },
+    {
+      "command": "rake import_ifpa_tournaments",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "command": "rake tag_opdb",
+      "schedule": "30 12 * * 1"
+    }
+  ]
 }

@@ -76,7 +76,7 @@
   - if mobile_device?
     .read_more
     .read_less
-#div_container_column{:style => 'background-color:#f5f5ff'}
+#div_container_column
   .div_05
     %p.p1.red.font18.sans.bold
       Regional Maps
@@ -85,7 +85,7 @@
       = link_to 'big map', map_path
       isn't cutting it for you, you can search for machines in one select area. Please pick a "regional" map below. Regions are predefined geographical areas - they can be a city, county, state, or even a country - that an administrator and the local users created. Each regional map is curated by a local administrator, often with the support of a league.
 - if !mobile_device?
-  #div_container_column{:style => 'background-color:#f5f5ff'}
+  #div_container_column
     .div_02
       #region_map
 #div_container_column
