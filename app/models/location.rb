@@ -129,12 +129,12 @@ class Location < ApplicationRecord
     machines = machine_names.take(5).map { |m| m.gsub("'", "\\\\'") + '<br />' }
     total_num_machines = machine_names.size
 
-    content += "<div class=\"gm_machines\" id=\"gm_machines_#{id}\">#{machines.join}</div>"
+    content += "<div class=\"gm_machines\" id=\"gm_machines_#{id}\">#{machines.join}"
     if total_num_machines > 5
       the_rest = total_num_machines - 5
       content += "<div>... and #{the_rest} more</div>"
     end
-    content += "</div>'"
+    content += "</div></div>'"
 
     content.html_safe
   end

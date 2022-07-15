@@ -44,7 +44,20 @@ class LocationsController < InheritedResources::Base
   end
 
   def render_machine_names_for_infowindow
-    render plain: Location.find(params[:id]).machine_names.join('<br />')
+    infowindow_machines = Location.find(params[:id]).machine_names.take(5).join('<br />')
+
+    total_num_machines = Location.find(params[:id]).machine_names.size
+
+    if total_num_machines > 5
+      the_rest = total_num_machines - 5
+      and_more_machines = '<br />' + '... and ' + the_rest.to_s + ' more'
+    else
+      and_more_machines = nil
+    end
+
+    new_infowindow_content = infowindow_machines + and_more_machines.to_s
+
+    render plain: new_infowindow_content
   end
 
   def render_scores
