@@ -1,11 +1,3 @@
-- machine_count = location.machines.size
-- if machine_count > 0
-  %div.black.p_10.font18.center.lmx_count
-    #{location.machines.size}
-    - if machine_count == 1
-      machine
-    - else
-      machines
 %div[location, :show_machines]
 
 :javascript
