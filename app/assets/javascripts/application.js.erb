@@ -52,11 +52,11 @@ function showLocations(ids, lats, lons, contents, latLng) {
   var curHr = today.getHours();
 
   if (mapAdjusted === 0) {
-      map = new maplibregl.Map({
-        container: 'map_canvas',
-        style: 'https://tiles.pinballmap.com/styles/basic-preview/style.json',
-      });
-      map.addControl(new maplibregl.NavigationControl(), 'top-left');
+    map = new maplibregl.Map({
+      container: 'map_canvas',
+      style: 'https://tiles.pinballmap.com/styles/basic-preview/style.json',
+    });
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
   }
 
   for (i in ids) {
@@ -288,7 +288,6 @@ function hideSearchModal() {
   }
 }
 
-
 function setRegion(regionName) {
   region = regionName;
 }
@@ -298,52 +297,52 @@ function setSearchSections(newSearchSections) {
 }
 
 function updateLocationUpdatedText(id) {
-    $('#last_updated_location_' + id).load('/locations/' + id + '/render_last_updated');
-    $('#stale_' + id).hide();
-    return false;
+  $('#last_updated_location_' + id).load('/locations/' + id + '/render_last_updated');
+  $('#stale_' + id).hide();
+  return false;
 }
 
 function initializeRegionMap(ids, lats, lons, contents) {
-    var bounds = new maplibregl.LngLatBounds();
-    var regionMap = new maplibregl.Map({
-      container: 'region_map',
-      style: 'https://tiles.pinballmap.com/styles/basic-preview/style.json',
-    });
-    regionMap.addControl(new maplibregl.NavigationControl(), 'top-right');
+  var bounds = new maplibregl.LngLatBounds();
+  var regionMap = new maplibregl.Map({
+    container: 'region_map',
+    style: 'https://tiles.pinballmap.com/styles/basic-preview/style.json',
+  });
+  regionMap.addControl(new maplibregl.NavigationControl(), 'top-right');
 
-    for (i in ids) {
-      var el = document.createElement('div');
-      el.className = 'markersm';
+  for (i in ids) {
+    var el = document.createElement('div');
+    el.className = 'markersm';
 
-      var popup = new maplibregl.Popup({ offset: 25 })
-        .setHTML(contents[i]);
+    var popup = new maplibregl.Popup({ offset: 25 })
+      .setHTML(contents[i]);
 
-      var marker = new maplibregl.Marker(el)
-        .setLngLat([lons[i], lats[i]])
-        .setPopup(popup)
-        .on('click', function(e) { map.setView(e.latlng, 13) })
-        .addTo(regionMap);
+    var marker = new maplibregl.Marker(el)
+      .setLngLat([lons[i], lats[i]])
+      .setPopup(popup)
+      .on('click', function(e) { map.setView(e.latlng, 13) })
+      .addTo(regionMap);
 
-      markers.push(marker);
-      bounds.extend([lons[i], lats[i]]);
-    }
+    markers.push(marker);
+    bounds.extend([lons[i], lats[i]]);
+  }
 
-    regionMap.fitBounds(bounds, {padding: 50, animate: false});
+  regionMap.fitBounds(bounds, {padding: 50, animate: false});
 }
 
 var fade_flash = function() {
-    $("#flash_notice").delay(2000).fadeOut("slow");
-    $("#flash_alert").delay(2000).fadeOut("slow");
-    $("#flash_error").delay(2000).fadeOut("slow");
+  $("#flash_notice").delay(2000).fadeOut("slow");
+  $("#flash_alert").delay(2000).fadeOut("slow");
+  $("#flash_error").delay(2000).fadeOut("slow");
 };
 fade_flash();
 
 var show_ajax_message = function(msg, type) {
-    $("#flash-message").html('<div id="flash_'+type+'">'+msg+'</div>');
-    fade_flash();
+  $("#flash-message").html('<div id="flash_'+type+'">'+msg+'</div>');
+  fade_flash();
 };
 
 function show_new_machine_message() {
-    $("#flash-message").html('<div id="flash_alert">'+'Thank you. Since this is a new machine name, we are moderating this submission.'+'</div>');
-    fade_flash();
+  $("#flash-message").html('<div id="flash_alert">'+'Thank you. Since this is a new machine name, we are moderating this submission.'+'</div>');
+  fade_flash();
 };
