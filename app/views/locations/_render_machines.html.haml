@@ -1,11 +1,3 @@
-- machine_count = location_machine_xrefs.size
-- if machine_count > 0
-  %div.black.p_10.font18.center.lmx_count
-    #{machine_count}
-    - if machine_count == 1
-      machine
-    - else
-      machines
 - location_machine_xrefs.sort{|a,b| a.machine.massaged_name <=> b.machine.massaged_name}.each do |lmx|
   %div.machine_names[lmx, :machine]
     = render :partial => 'location_machine_xrefs/list_machine', :locals => {:lmx => lmx}

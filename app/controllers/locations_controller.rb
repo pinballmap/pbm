@@ -43,6 +43,20 @@ class LocationsController < InheritedResources::Base
     render partial: 'locations/render_machines', locals: { location_machine_xrefs: LocationMachineXref.where(location_id: params[:id]).includes(:machine, machine_score_xrefs: :user, machine_conditions: :user) }
   end
 
+  def render_machines_count
+    total_num_machines = Location.find(params[:id]).machine_names.size
+
+    if total_num_machines == 1
+      location_machine_count = total_num_machines.to_s + ' machine'
+    elsif total_num_machines > 1
+      location_machine_count = total_num_machines.to_s + ' machines'
+    else
+      location_machine_count = 'No machines'
+    end
+
+    render plain: location_machine_count
+  end
+
   def render_machine_names_for_infowindow
     infowindow_machines = Location.find(params[:id]).machine_names.take(5).join('<br />')
 

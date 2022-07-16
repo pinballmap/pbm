@@ -22,8 +22,10 @@
 
     $.post(this.action, $(this).serialize(), function (data) {
       $('#show_machines_location_#{l.id}').load('/locations/#{l.id}/render_machines', function() {
-        $('#gm_machines_#{l.id}').load('/locations/#{l.id}/render_machine_names_for_infowindow', function() {
-          updateLocationUpdatedText(#{l.id});
+        $('#show_machines_location_count_#{l.id}').load('/locations/#{l.id}/render_machines_count', function() {
+          $('#gm_machines_#{l.id}').load('/locations/#{l.id}/render_machine_names_for_infowindow', function() {
+            updateLocationUpdatedText(#{l.id});
+          });
         });
       });
     });

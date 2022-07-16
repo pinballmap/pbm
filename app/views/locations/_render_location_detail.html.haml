@@ -29,6 +29,7 @@
 	- if user_signed_in?
 		= render :partial => 'locations/add_machine', :locals => {:location => l}
 		= render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
+	= render :partial => 'locations/render_machines_count', :locals => {:location => l}
 	= render :partial => 'locations/show_machines', :locals => {:location => l}
 
 :javascript

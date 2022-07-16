@@ -6,10 +6,12 @@
     if (confirm("Remove this machine?")) {
       $('#machine_lmx_#{lmx.id}').fadeOut('slow', function() {
         updateLocationUpdatedText(#{lmx.location_id});
-        $('#gm_machines_#{lmx.location_id}').load('/locations/#{lmx.location_id}/render_machine_names_for_infowindow', function() {});
+        $('#gm_machines_#{lmx.location_id}').load('/locations/#{lmx.location_id}/render_machine_names_for_infowindow', function() {
+          $('#show_machines_location_count_#{lmx.location_id}').load('/locations/#{lmx.location_id}/render_machines_count', function() {});
+        });
       });
+
       $(this).callRemote();
     }
-
     return false;
   });
