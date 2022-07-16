@@ -1,0 +1,7 @@
+- machine_count = location.location_machine_xrefs.size
+%div{:id => "show_machines_location_count_#{location.id}", :class => 'black p_10 font18 center lmx_count'}
+  #{machine_count}
+  - if machine_count == 1
+    machine
+  - else
+    machines
