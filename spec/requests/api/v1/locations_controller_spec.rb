@@ -287,9 +287,10 @@ HERE
     end
 
     it 'respects regionless_only filter' do
-      FactoryBot.create(:location, region: @region, name: 'Cleo')
-      FactoryBot.create(:location, region: nil, name: 'Regionless')
-      get '/api/v1/locations.json', params: { regionless_only: 1 }
+      location_type = FactoryBot.create(:location_type)
+      FactoryBot.create(:location, region: @region, name: 'Cleo', location_type: location_type)
+      FactoryBot.create(:location, region: nil, name: 'Regionless', location_type: location_type)
+      get '/api/v1/locations.json', params: { regionless_only: 1, by_type_id: location_type.id }
 
       expect(response.body).to include('Regionless')
       expect(response.body).to_not include('Cleo')
