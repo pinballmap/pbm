@@ -22,7 +22,7 @@
     },
     {
       "command": "rake delete_opted_in_empty_locations",
-      "schedule": "30 3 * * 0"
+      "schedule": "30 22 * * 0"
     },
     {
       "command": "rake import_ifpa_tournaments",
