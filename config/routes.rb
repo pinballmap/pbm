@@ -120,7 +120,7 @@ Rails.application.routes.draw do
     get '/links' => 'pages#links'
     get '/high_rollers' => 'pages#high_rollers'
     get '/suggest' => 'pages#suggest_new_location'
-    get '/submitted_new_location' => 'pages#submitted_new_location'
+    post '/submitted_new_location' => 'pages#submitted_new_location'
     get '/flier' => 'pages#flier'
 
     get 'all_region_data.json', to: 'regions#all_region_data', format: 'json'
@@ -192,7 +192,7 @@ Rails.application.routes.draw do
   get 'saved' => 'pages#map', user_faved: true
   get 'map_location_data' => 'pages#map_location_data'
   get 'suggest' => 'pages#suggest_new_location', as: 'map_location_suggest'
-  get 'submitted_new_location' => 'pages#submitted_new_location', as: 'map_submitted_new_location'
+  post 'submitted_new_location' => 'pages#submitted_new_location', as: 'map_submitted_new_location'
   get 'flier' => 'pages#flier', as: 'map_flier'
 
   # legacy names for regions
