@@ -5,7 +5,7 @@
       - if user_signed_in?
         %p.serif Submit a new location to the map. We review all location submissions. Please be patient after submitting. Thanks for contributing!
         #location_maker
-          = form_tag @region ? submitted_new_location_path : map_submitted_new_location_path, :method => 'get' do
+          = form_tag @region ? submitted_new_location_path : map_submitted_new_location_path, :method => 'post' do
             %form#submit_location
               %ul
                 %li{:class => "first"}
