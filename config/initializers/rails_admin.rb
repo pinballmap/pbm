@@ -146,7 +146,9 @@ RailsAdmin.config do |config|
       field :lon, :decimal
       field :website, :string
       field :updated_at, :datetime
-      field :description, :string
+      field :description do
+        html_attributes rows: 5, cols: 50
+      end
       field :is_stern_army, :boolean do
         visible do
           bindings[:view]._current_user.is_super_admin
@@ -188,7 +190,9 @@ RailsAdmin.config do |config|
       end
       field :website, :string
       field :updated_at, :datetime
-      field :description, :string
+      field :description do
+        html_attributes rows: 5, cols: 50
+      end
       field :region_id do
         render do
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, :object_type => 'location'}
@@ -234,7 +238,9 @@ RailsAdmin.config do |config|
         required false
       end
       field :website, :string
-      field :description, :string
+      field :description do
+        html_attributes rows: 5, cols: 50
+      end
       field :region_id do
         render do
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.region_id, :object_type => 'location'}
@@ -769,7 +775,9 @@ RailsAdmin.config do |config|
         required false
       end
       field :website, :string
-      field :comments, :string
+      field :comments do
+        html_attributes rows: 5, cols: 50
+      end
     end
     show do
       field :full_street_address, :string do
@@ -792,7 +800,9 @@ RailsAdmin.config do |config|
       field :lat, :decimal
       field :lon, :decimal
       field :website, :string
-      field :comments, :string
+      field :comments do
+        html_attributes rows: 5, cols: 50
+      end
       field :user_inputted_address, :string
       field :machines, :string
       field :created_at, :datetime
