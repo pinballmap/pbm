@@ -34,6 +34,11 @@ describe SuggestedLocation do
       location_with_incomplete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', website: 'bar.com')
       expect(location_with_incomplete_website.website).to eq('http://bar.com')
     end
+
+    it 'should strip starting and ending whitespace' do
+      location_with_whitespace = FactoryBot.create(:suggested_location, name: ' foo ', machines: 'Batman')
+      expect(location_with_whitespace.name).to eq('foo')
+    end
   end
 
   describe '#address_incomplete?' do
