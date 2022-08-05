@@ -132,15 +132,17 @@ class LocationsController < InheritedResources::Base
     lats = []
     lons = []
     contents = []
+    num_machines = []
 
     locations.each do |l|
       ids      << l.id
       lats     << l.lat
       lons     << l.lon
       contents << l.content_for_infowindow
+      num_machines << l.machines.size
     end
 
-    [ids, lats, lons, contents]
+    [ids, lats, lons, contents, num_machines]
   end
 
   def newest_machine_name

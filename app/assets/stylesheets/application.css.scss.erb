@@ -2342,9 +2342,14 @@ div.score_list {
 
 /** Map API **/
 
+.maplibregl-popup {
+  max-width: 200px;
+}
 .maplibregl-popup-content {
   overflow-y: auto;
   max-height: 300px;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
 }
 .gm_location_name {
   font-weight: 600 !important;
@@ -2360,7 +2365,7 @@ div.score_list {
 #region_map .gm_region_name a:hover {
   color: $red;
 }
-.marker,.markersm {
+.markersm {
   background: url(<%= asset_path 'teardrop200.png' %>) no-repeat;
   background-size: cover;
   width: 45px;
@@ -2370,6 +2375,21 @@ div.score_list {
 .markersm {
   width: 35px;
   height: 35px;
+}
+
+.marker span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+  color: #f5f5ff;
+  background: #616182;
+  border: 2px solid #fee7f5;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 /** Rails Admin **/

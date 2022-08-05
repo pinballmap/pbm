@@ -39,7 +39,7 @@ function clearClosest() {
   $(".mask").hide();
 }
 
-function showLocations(ids, lats, lons, contents, latLng) {
+function showLocations(ids, lats, lons, contents, num_machines, latLng) {
   clearMarkers();
   clearInfoWindows();
   clearClosest();
@@ -63,12 +63,14 @@ function showLocations(ids, lats, lons, contents, latLng) {
 
     var el = document.createElement('div');
     el.className = 'marker';
+    el.innerHTML = '<span><b>' + num_machines[i] + '</b></span>';
 
     if (contents.length > 1) {
       (function(el, index) {
         var locationID = locationIDs[index];
 
         el.id = 'marker_' + locationID;
+        el.innerHTML = '<span><b>' + num_machines[i] + '</b></span>';
         el.addEventListener('click', function() {
           showLocationDetail(locationID);
           var index = jQuery.inArray(locationID, locationIDs);
@@ -83,7 +85,7 @@ function showLocations(ids, lats, lons, contents, latLng) {
     var popup = new maplibregl.Popup({ offset: 25 })
       .setHTML(contents[i]);
 
-    var marker = new maplibregl.Marker(el)
+    var marker = new maplibregl.Marker(el, {anchor: 'center'})
       .setLngLat([lons[i], lats[i]])
       .setPopup(popup)
       .addTo(map);
