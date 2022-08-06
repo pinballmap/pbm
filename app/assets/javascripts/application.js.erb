@@ -243,7 +243,13 @@ function findClosestLocations(region) {
             locationIds.push(response.locations[i].id)
           }
 
-          window.location.href = 'https://pinballmap.com/'+ region + '/?show_location_distance=1;lat=' + position.coords.latitude + ';lon=' + position.coords.longitude + ';by_location_id=' + locationIds.join('_');
+          var url = '/locations?show_location_distance=1;lat=' + position.coords.latitude + ';lon=' + position.coords.longitude + ';by_location_id=' + locationIds.join('_');
+
+          $('#locations').html(loadingHTML());
+          $.get(url, function(data) {
+            $('#locations').html(data);
+          });
+
       }
     });
   }, function() {
