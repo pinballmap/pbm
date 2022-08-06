@@ -11,10 +11,10 @@
   #search_link_wrapper.hide_button.toggle_btn_reg
     =link_to "Link to this Search Result", "", :id => "search_link"
   #mapFollow_wrapper.hide_button.toggle_btn_reg
-    %p.red{:style => 'line-height:16px;', :id => "zoom_in_more"}
+    %span.red.font16.p_5.m_5{:style => 'background-color:#fff1f1;', :id => "zoom_in_more"}
       Zoom in further to refresh results!
     %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :class => "m_0"}
-    Redo results when map is moved?
+    %span.font16 Redo results when map is moved?
   #lookup
     #locations
       = render :partial => 'pages/intro'
