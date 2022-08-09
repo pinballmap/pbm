@@ -75,20 +75,31 @@ module Api
         except = params[:no_details] ? %i[phone website description created_at updated_at date_last_updated last_updated_by_user_id region_id] : nil
 
         locations = nil
-        if params[:no_details]
+        if params[:no_details] || params[:by_is_stern_army]
           locations = apply_scopes(Location).includes(:machines, :last_updated_by_user).order('locations.name')
         else
           locations = apply_scopes(Location).includes({ location_machine_xrefs: :user }, { machine_conditions: :user }, :machines, :last_updated_by_user).order('locations.name')
         end
 
-        return_response(
-          locations,
-          'locations',
-          params[:no_details] ? nil : [location_machine_xrefs: { include: { machine_conditions: { methods: :username }, machine: { methods: :machine_group_id } }, methods: :last_updated_by_username }],
-          %i[last_updated_by_username num_machines],
-          200,
-          except
-        )
+        if params[:by_is_stern_army]
+          return_response(
+            locations,
+            'locations',
+            [],
+            %i[machine_names last_updated_by_username num_machines],
+            200,
+            except
+          )
+        else
+          return_response(
+            locations,
+            'locations',
+            params[:no_details] ? nil : [location_machine_xrefs: { include: { machine_conditions: { methods: :username }, machine: { methods: :machine_group_id } }, methods: :last_updated_by_username }],
+            %i[last_updated_by_username num_machines],
+            200,
+            except
+          )
+        end
       end
 
       api :PUT, '/api/v1/locations/:id.json', 'Update attributes on a location'
