@@ -116,7 +116,7 @@ Rails.application.routes.draw do
     get '/' => 'pages#region', as: 'region_homepage'
     get '/about' => 'pages#about'
     get '/contact' => 'pages#contact'
-    get '/contact_sent' => 'pages#contact_sent'
+    post '/contact_sent' => 'pages#contact_sent'
     get '/links' => 'pages#links'
     get '/high_rollers' => 'pages#high_rollers'
     get '/suggest' => 'pages#suggest_new_location'

@@ -10,7 +10,7 @@
           = @region.full_name
           Pinball Map administrator
       #contact_maker.pb_10
-        = form_tag contact_sent_path, :method => 'get' do
+        = form_tag contact_sent_path, :method => 'post' do
           %ul.pl_0
             - if !user_signed_in?
               %li
