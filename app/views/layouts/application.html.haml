@@ -14,10 +14,10 @@
     %meta{:property => "og:image", :content => image_path("pbm-og-image.png")}
     %meta{:content => "JFE_WxE-R1LZtdT0omEkIKOlZr7oq1fPBW9mr3cdyx4", :name => "google-site-verification"}/
 
-    = stylesheet_link_tag 'normalize', 'application', 'mediaqueries', 'https://unpkg.com/maplibre-gl@1.14.0/dist/maplibre-gl.css', :media => ""
+    = stylesheet_link_tag 'normalize', 'application', 'mediaqueries', 'https://unpkg.com/maplibre-gl@2.3.0/dist/maplibre-gl.css', :media => ""
     - if mobile_device?
       = stylesheet_link_tag 'mobile-application'
-    = javascript_include_tag 'application', 'jquery.form', 'jquery.remotipart', 'highslide.min', 'https://unpkg.com/maplibre-gl@1.14.0/dist/maplibre-gl.js'
+    = javascript_include_tag 'application', 'jquery.form', 'jquery.remotipart', 'highslide.min', 'https://unpkg.com/maplibre-gl@2.3.0/dist/maplibre-gl.js'
     = csrf_meta_tag
     = render 'application/favicon'
 
