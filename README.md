@@ -1,10 +1,18 @@
 [![Build Status](https://app.travis-ci.com/pinballmap/pbm.svg?branch=master)](https://app.travis-ci.com/pinballmap/pbm)
 [![Coverage Status](https://coveralls.io/repos/scottwainstock/pbm/badge.png)](https://coveralls.io/r/scottwainstock/pbm)
 
+Code License: [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+The [GPL v3](LICENSE) license applies to the _code_ in this repository.
+
+Data License: [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
+
+The _data_ is not included in this repository. Rather, it is accessed via the public API. This data is under a [CC BY-SA](LICENSE-CC-BY-SA) license (and not GPL v3). Amongst other things, this license requires attribution when using the data.
+
+
 *sweet pinballin' brah*
 
 This repo is the codebase for [pinballmap.com](https://pinballmap.com). The code for the [Pinball Map mobile app is here](https://github.com/pinballmap/pbm-react). If you have an app issue, please use that repo.
-
 
 ## API Documentation
 
