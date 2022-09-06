@@ -71,10 +71,16 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
 
         el.id = 'marker_' + locationID;
         el.innerHTML = '<span><b>' + num_machines[i] + '</b></span>';
+        el.addEventListener('touchstart', function() {
+          showLocationDetail(locationID);
+          showInfowindow(locationID);
+
+          document.getElementById('location_detail_location_' + locationID).scrollIntoView(true);
+          window.scrollBy(0, -140);
+          el.preventDefault();
+        });
         el.addEventListener('click', function() {
           showLocationDetail(locationID);
-          var index = jQuery.inArray(locationID, locationIDs);
-          markers[index].togglePopup();
 
           document.getElementById('location_detail_location_' + locationID).scrollIntoView(true);
           window.scrollBy(0, -140);
@@ -258,7 +264,6 @@ function findClosestLocations(region) {
 }
 
 function showLocationDetail(locationID) {
-  showInfowindow(locationID);
   $('.location_detail_location').hide();
 
   if ($('#location_detail_location_' + locationID).is(":hidden") ) {

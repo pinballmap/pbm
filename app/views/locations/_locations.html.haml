@@ -73,7 +73,7 @@
           %div.location_detail[l, :location_detail]
             = render :partial => 'locations/render_location_detail', :locals => {l: l}
         - else
-          %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id});"}
+          %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id}); showInfowindow(#{l.id});"}
             %ul{:style => 'margin-bottom:0;'}
               %li.name.bold.font20= l.name
               - if (!params[:show_location_distance].blank? && !params[:lat].blank? && !params[:lon].blank?)
