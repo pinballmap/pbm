@@ -123,11 +123,11 @@
 
           switch (componentType) {
             case "street_number": {
-              addressio = component.long_name;
+              street_number = component.long_name;
               break;
             }
             case "route": {
-              document.getElementById('location_street').value = addressio + " " + component.short_name;
+              document.getElementById('location_street').value = street_number + " " + component.short_name;
               break;
             }
             case "locality": {
