@@ -10,31 +10,31 @@
               %ul
                 %li{:class => "first"}
                   %label{:for => "location_name"} Location Name:
-                  %input{type: "text", name: "location_name", params: "location_name", class: "text", required: true}
+                  %input{type: "text", id: "location_name", name: "location_name", params: "location_name", class: "text", required: true}
                 %li
                   %label{:for => "location_street"} Street:
-                  %input{:type => "text", :name => "location_street", :params => "location_street", :class => "text"}
+                  %input{:type => "text", id: "location_street", :name => "location_street", :params => "location_street", :class => "text"}
                 %li{:class => "first"}
                   %label{:for => "location_city"} City:
-                  %input{:type => "text", :name => "location_city", :params => "location_city", :class => "text"}
+                  %input{:type => "text", id:"location_city", :name => "location_city", :params => "location_city", :class => "text"}
                 %li
                   %label{:for => "location_state"} State:
                   - if @states.size > 0
                     = select_tag :location_state, options_for_select(@states)
                   - else
-                    %input{:type => "text", :name => "location_state", :params => "location_state", :class => "text"}
+                    %input{:type => "text", id:"location_state", :name => "location_state", :params => "location_state", :class => "text"}
                 %li{:class => "first"}
                   %label{:for => "location_zip"} Zip:
-                  %input{:type => "text", :name => "location_zip", :params => "location_zip", :class => "text"}
+                  %input{:type => "text",  id:"location_zip", :name => "location_zip", :params => "location_zip", :class => "text"}
                 %li
                   %label{:for => "location_country"} Country:
-                  = country_select('suggested_location', 'location_country', {include_blank: true}, {name: 'location_country'})
+                  = country_select('suggested_location', 'location_country', {include_blank: true}, {id:"location_country", name: 'location_country'})
                 %li{:class => "first"}
                   %label{:for => "location_phone"} Phone:
-                  %input{:type => "text", :name => "location_phone", :params => "location_phone", :class => "text"}
+                  %input{:type => "text", id:"location_phone", :name => "location_phone", :params => "location_phone", :class => "text"}
                 %li
                   %label{:for => "location_website"} Website:
-                  %input{:type => "text", :name => "location_website", :params => "location_website", :class => "text"}
+                  %input{:type => "text", id:"location_website", :name => "location_website", :params => "location_website", :class => "text"}
                 %li{:class => "first"}
                   %label{:for => "location_type"} Location Type:
                   = select_tag :location_type, options_for_select(@location_types)
@@ -103,3 +103,52 @@
           But first! We ask that you
           = link_to 'Login.', new_user_session_path, :class => "darkgrey font18 sans bold"
           Thank you!
+:javascript
+
+  function initialize() {
+    var input = document.getElementById('location_name');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+        var place = autocomplete.getPlace();
+        document.getElementById('location_name').value = place.name;
+        if (place.formatted_phone_number) {
+          document.getElementById('location_phone').value = place.formatted_phone_number;
+        }
+        if (place.website) {
+          document.getElementById('location_website').value = place.website;
+        }
+
+        for (const component of place.address_components) {
+          const componentType = component.types[0];
+
+          switch (componentType) {
+            case "street_number": {
+              addressio = component.long_name;
+              break;
+            }
+            case "route": {
+              document.getElementById('location_street').value = addressio + " " + component.short_name;
+              break;
+            }
+            case "locality": {
+              document.getElementById('location_city').value = component.long_name;
+              break;
+            }
+            case "administrative_area_level_1": {
+              document.getElementById('location_state').value = component.short_name;
+              break;
+            }
+            case "country": {
+              document.getElementById('location_country').value = component.short_name;
+              break;
+            }
+            case "postal_code": {
+              document.getElementById('location_zip').value = component.long_name;
+              break;
+            }
+
+          }
+        }
+    });
+  }
+  google.maps.event.addDomListener(window, 'load', initialize);

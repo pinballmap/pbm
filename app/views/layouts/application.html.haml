@@ -17,7 +17,7 @@
     = stylesheet_link_tag 'normalize', 'application', 'mediaqueries', 'https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css', :media => ""
     - if mobile_device?
       = stylesheet_link_tag 'mobile-application'
-    = javascript_include_tag 'application', 'jquery.form', 'jquery.remotipart', 'highslide.min', 'https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js'
+    = javascript_include_tag 'application', 'jquery.form', 'jquery.remotipart', 'highslide.min', 'https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js', 'https://maps.googleapis.com/maps/api/js?libraries=places&key=' + ENV['GOOGLE_MAPS_API_KEY'].to_s
     = csrf_meta_tag
     = render 'application/favicon'
 
