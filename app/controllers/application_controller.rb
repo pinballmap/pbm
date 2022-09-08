@@ -59,9 +59,11 @@ class ApplicationController < ActionController::Base
 
     geocoded_results = Geocoder.search(user_inputted_address).first unless Rails.env.test?
 
+    street_address = [geocoded_results.address_components_of_type(:street_number).dig(0, 'long_name'), geocoded_results.address_components_of_type(:route).dig(0, 'short_name')].compact.join(' ') unless Rails.env.test?
+
     if geocoded_results.present?
       lat, lon = geocoded_results.coordinates
-      street = geocoded_results.street_address
+      street = street_address
       city = geocoded_results.city
       state = geocoded_results.state_code
       zip = geocoded_results.postal_code
