@@ -36,19 +36,16 @@
   #lookup.map_lookup
     #locations
       #intro.serif
-        %p.red.font18.sans.bold News!
         %p
-          We completely redesigned the app! Read our
-          = link_to "release notes", "http://blog.pinballmap.com/2019/06/18/pinball-map-app-update-5-0", :class => "bold"
-          or
-          = link_to "watch this demo video", "https://youtu.be/FfbIhYt_DTE", :class => "bold", :target => "_blank"
-        %p
-          You can now save your favorite locations! Click the
-          =image_tag( 'heart-empty.png', :alt => 'heart icon', :class => 'fave_icon')
-          next to each location name. Then view them all on the
-          = link_to "Saved Map", saved_path, :class => "bold"
-        %p
-          = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold"
+          %span.red.font16.sans.bold This map is best maintained with the help of YOU.
+          Please
+          %span.red.font16.sans.bold "add"
+          and
+          %span.red.font16.sans.bold "remove"
+          machines to/from locations to keep things up to date. And
+          %span
+            =link_to 'submit new locations', map_location_suggest_path
+          that aren't on the map.
         %p
           Pinball Map is currently listing a total of
           %span.red.font18.sans.bold
@@ -58,17 +55,10 @@
             #{number_with_delimiter(LocationMachineXref.count,:delimiter => ",")}
           machines.
         %p
-          This search experience is in
-          %span.bold.red
-            BETA!
-          That means it’s not in its final form. We’ll be continuously enhancing the search experience. But to do so, it would help if you used it and
-          = link_to "gave us feedback!", about_path('portland')
+          Check out our
+          =link_to 'mobile app.', app_path
         %p
-          You can
-          = link_to "submit locations here.", map_location_suggest_path
-        %p
-          If you prefer to navigate the map via your trusted home region,
-          = link_to "go here to find it.", root_path
+          = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold"
 
 :javascript
   $('#address_search_form').on('submit', function(e) {

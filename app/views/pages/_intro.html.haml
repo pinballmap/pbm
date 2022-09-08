@@ -11,12 +11,6 @@
         =link_to 'here', "/#{@region.name.downcase}/?by_location_id=#{random_location_id}", :id => random_location_id
         for a random location!
   %p
-    Looking for spots outside of this region? Try the
-    =link_to 'One Big Map.', map_path, :class => "bold"
-  %p
-    We also recommend trying out our
-    =link_to 'mobile app.', app_path
-  %p
     %span.red.font16.sans.bold This map is best maintained with the help of YOU.
     Please
     %span.red.font16.sans.bold "add"
@@ -26,14 +20,20 @@
     %span
       =link_to 'submit new locations', suggest_path
     that aren't on the map.
+  %p
+    We are tracking
+    %span.dark #{@location_count} locations
+    and
+    %span.dark #{@lmx_count} machines around #{@region.full_name}.
   - if !mobile_device?
     %p
       Want to help spread the word about the #{@region.full_name} Pinball Map?
       %span.red.font16.sans.bold
         = link_to 'Print out this flier!', flier_path
   %p
-    We are tracking
-    %span.dark #{@location_count} locations
-    and
-    %span.dark #{@lmx_count} machines.
+    Looking for spots outside of this region? Try the
+    =link_to 'One Big Map.', map_path, :class => "bold"
+  %p
+    Check out our
+    =link_to 'mobile app.', app_path
 
