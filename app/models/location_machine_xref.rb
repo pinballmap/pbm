@@ -24,7 +24,7 @@ class LocationMachineXref < ApplicationRecord
   end
 
   def add_host_info_to_subject(subject, host)
-    server_name = host&.match?(/pinballmapstaging/) ? '(STAGING) ' : ''
+    server_name = host&.match?(/pbmstaging/) ? '(STAGING) ' : ''
 
     server_name + subject
   end

@@ -27,7 +27,7 @@ describe LocationMachineXrefsController, type: :controller do
     it 'should send email on new machine creation - notifies if staging site origin' do
       login(@user)
 
-      @request.host = 'pinballmapstaging.herokuapp.com'
+      @request.host = 'pbmstaging.com'
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
