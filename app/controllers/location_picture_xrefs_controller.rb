@@ -17,6 +17,21 @@ class LocationPictureXrefsController < InheritedResources::Base
     )
   end
 
+  def destroy
+    lpx = LocationPictureXref.find_by_id(params[:id])
+
+    Pony.mail(
+      to: 'admin@pinballmap.com',
+      from: 'admin@pinballmap.com',
+      subject: 'PBM - Someone removed a picture',
+      body: "This is photo ID: #{lpx.id}. It was at location: #{lpx.location.name}. "
+    )
+
+    lpx.destroy
+
+    render nothing: true
+  end
+
   private
 
   def location_picture_xref_params

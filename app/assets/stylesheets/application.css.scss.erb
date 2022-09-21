@@ -1295,6 +1295,16 @@ form.remove_machine_condition {
 .add_machine_location form select option {
   font-size: 16px;
 }
+.remove_picture_button {
+  color: red;
+  background: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0 5px;
+  font-size: 24px;
+  text-decoration: none;
+  margin-left: -30px;
+}
 .remove_button {
   margin: 0 auto;
   text-align: center;
@@ -1750,13 +1760,14 @@ input.score {
   overflow: hidden;
   text-align: center;
 }
-.location_thumbs a {
-  margin: 0 5px 5px;
+.location_thumbs a.highslide {
+  margin: 0 6px 8px;
   display: inline-block;
   max-width: 200px;
   max-height: 200px;
   overflow: hidden;
   vertical-align: top;
+  border: 4px solid $darkgrey;
 }
 .location_thumbs a img {
   opacity: 1;
