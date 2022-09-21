@@ -81,7 +81,7 @@ HERE
     end
 
     it 'email should notify if it was sent from the staging server' do
-      @request.host = 'pinballmapstaging.herokuapp.com'
+      @request.host = 'pbmstaging.com'
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
@@ -217,7 +217,7 @@ HERE
       end
 
       it 'should send an email - notifies if sent from the staging server' do
-        @request.host = 'pinballmapstaging.herokuapp.com'
+        @request.host = 'pbmstaging.com'
 
         expect(Pony).to receive(:mail) do |mail|
           expect(mail).to include(

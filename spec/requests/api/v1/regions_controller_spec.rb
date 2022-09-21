@@ -356,7 +356,7 @@ HERE
         )
       end
 
-      host! 'pinballmapstaging.herokuapp.com'
+      host! 'pbmstaging.com'
 
       post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
     end
@@ -425,7 +425,7 @@ HERE
         )
       end
 
-      host! 'pinballmapstaging.herokuapp.com'
+      host! 'pbmstaging.com'
 
       post '/api/v1/regions/app_comment.json', params: { region_id: @la.id.to_s, os: 'os', os_version: 'os version', device_type: 'device type', app_version: 'app version', email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
     end

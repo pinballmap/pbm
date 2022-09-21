@@ -85,7 +85,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
         )
       end
 
-      host! 'pinballmapstaging.herokuapp.com'
+      host! 'pbmstaging.com'
       delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
     end
 
@@ -295,7 +295,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
         )
       end
 
-      host! 'pinballmapstaging.herokuapp.com'
+      host! 'pbmstaging.com'
       put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, params: { condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
     end
 
@@ -306,7 +306,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'returns an error message if you are not authed' do
-      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, params: { condition: 'foo', HTTP_HOST: 'pinballmapstaging.herokuapp.com' }
+      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, params: { condition: 'foo', HTTP_HOST: 'pbmstaging.com' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationMachineXrefsController::AUTH_REQUIRED_MSG)

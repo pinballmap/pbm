@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   end
 
   def add_host_info_to_subject(subject)
-    server_name = request.host.match?(/pinballmapstaging/) ? '(STAGING) ' : ''
+    server_name = request.host.match?(/pbmstaging/) ? '(STAGING) ' : ''
 
     server_name + subject
   end
