@@ -967,8 +967,8 @@ describe LocationMachineXrefsController do
 
       sleep(1)
 
-      expect(page).to have_link('View machine on IPDB', href: 'http://foo.com')
-      expect(page).to have_link('View machine on IPDB', href: 'http://ipdb.org/search.pl?name=bar;qh=checked;searchtype=advanced')
+      expect(page).to have_link('IPDB', href: 'http://foo.com')
+      expect(page).to have_link('IPDB', href: 'http://ipdb.org/search.pl?name=bar;qh=checked;searchtype=advanced')
     end
   end
 end
