@@ -103,12 +103,12 @@ html {
   min-height: 100%;
   position: relative;
   box-sizing: border-box;
-  background: $lightgrey;
+  background: #FFFFFF;
 }
 body {
   margin: 0 auto;
   padding: 0px;
-  background-color: $lightgrey;
+  background-color: #FFFFFF;
   background-size: 4px auto;
   color: $black;
   font-family: $sans;
@@ -125,7 +125,7 @@ h1 {
   font-size: 36px;
 }
 hr {
-  border: 1px solid $blue;
+  border: 1px solid $medgrey;
   width: 90%;
 }
 a {
@@ -774,7 +774,7 @@ form#address_search_form input.lookup_search_input {
   height: 20px;
   text-align: center;
   line-height: 20px;
-  background: $blue;
+  background: $lightgrey;
 }
 #footer.footer_fixed {
   position: fixed;
@@ -1119,8 +1119,10 @@ li.address_full {
   color: #ffffff;
   height: 100%;
   width: 100%;
-  padding: 3px 12px 3px 8px;
+  padding: 6px 12px;
   margin-left: -13px;
+  margin-top: -8px;
+  @include radius(20px);
 }
 #search_results .machine_names ul {
   color: $red;
@@ -1189,7 +1191,6 @@ span.machine_year_man {
   color: #333333;
   text-decoration: none;
   font-family: $sans;
-  font-weight: $bold;
 }
 .machine_condition_new_line span {
   display: inline;
@@ -1284,7 +1285,7 @@ form.remove_machine_condition {
   font-size: 14px;
   line-height: 14px;
   margin-left: 10px;
-  padding: 5px 0px;
+  padding: 10px 0px;
 }
 .add_picture_location span.info, .add_machine_location span.info, .show_machines_location span.info {
   padding: 0 5px 5px 0;
