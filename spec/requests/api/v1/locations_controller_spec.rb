@@ -537,6 +537,32 @@ HERE
       expect(response.body.scan('is_stern_army').size).to_not eq(0)
     end
 
+    it 'sets a max_distance limit of 500 when no_details is not used' do
+      close_location_one = FactoryBot.create(:location, region: @region, lat: 45.49, lon: -122.63)
+      close_location_two = FactoryBot.create(:location, region: @region, lat: 45.43627781006716, lon: -109.8149020864871)
+
+      get '/api/v1/locations/closest_by_address.json', params: { address: '97202', send_all_within_distance: 1, max_distance: 800 }
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      locations = parsed_body['locations']
+      expect(locations.size).to eq(1)
+    end
+
+    it 'sets a max_distance limit of 800 when no_details is used' do
+      close_location_one = FactoryBot.create(:location, region: @region, lat: 45.49, lon: -122.63)
+      close_location_two = FactoryBot.create(:location, region: @region, lat: 45.43627781006716, lon: -109.8149020864871)
+
+      get '/api/v1/locations/closest_by_address.json', params: { address: '97202', send_all_within_distance: 1, no_details: 1, max_distance: 800 }
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      locations = parsed_body['locations']
+      expect(locations.size).to eq(2)
+    end
+
     it 'respects manufacturer filter' do
       stern_closest = FactoryBot.create(:location, region: @region, name: 'Closest Stern Location', street: '123 pine', city: 'portland', phone: '503-924-9188', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
       FactoryBot.create(:location_machine_xref, location: stern_closest, machine: FactoryBot.create(:machine, name: 'Cleo', manufacturer: 'Stern'))
@@ -624,6 +650,32 @@ HERE
       expect(response.body.scan('lon').size).to_not eq(0)
       expect(response.body.scan('city').size).to_not eq(0)
       expect(response.body.scan('is_stern_army').size).to_not eq(0)
+    end
+
+    it 'sets a max_distance limit of 500 when no_details is not used' do
+      close_location_one = FactoryBot.create(:location, region: @region, lat: 45.49, lon: -122.63)
+      close_location_two = FactoryBot.create(:location, region: @region, lat: 45.43627781006716, lon: -109.8149020864871)
+
+      get '/api/v1/locations/closest_by_address.json', params: { address: '97202', send_all_within_distance: 1, max_distance: 800 }
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      locations = parsed_body['locations']
+      expect(locations.size).to eq(1)
+    end
+
+    it 'sets a max_distance limit of 800 when no_details is used' do
+      close_location_one = FactoryBot.create(:location, region: @region, lat: 45.49, lon: -122.63)
+      close_location_two = FactoryBot.create(:location, region: @region, lat: 45.43627781006716, lon: -109.8149020864871)
+
+      get '/api/v1/locations/closest_by_address.json', params: { address: '97202', send_all_within_distance: 1, no_details: 1, max_distance: 800 }
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      locations = parsed_body['locations']
+      expect(locations.size).to eq(2)
     end
 
     it 'respects filters' do
