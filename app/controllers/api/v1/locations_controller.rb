@@ -138,12 +138,20 @@ module Api
       param :by_machine_id, Integer, desc: 'Machine ID to find in locations', required: false
       param :by_operator_id, Integer, desc: 'Operator ID to search by', required: false
       param :by_at_least_n_machines_type, Integer, desc: 'Only locations with N or more machines', required: false
-      param :max_distance, String, desc: 'Closest location within "max_distance" miles', required: false
+      param :max_distance, String, desc: 'Closest location within "max_distance" miles, with a max of 500', required: false
       param :no_details, Integer, desc: 'Omit data that app does not need from pull', required: false
       param :send_all_within_distance, String, desc: "Send all locations within max_distance param, or #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles.", required: false
       formats ['json']
       def closest_by_lat_lon
-        max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
+        if params[:max_distance].blank?
+          max_distance = MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
+        elsif !params[:no_details] && params[:max_distance].to_i > 500
+          max_distance = 500
+        elsif params[:no_details] && params[:max_distance].to_i > 800
+          max_distance = 800
+        else
+          max_distance = params[:max_distance]
+        end
 
         except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone] : nil
 
@@ -186,14 +194,22 @@ module Api
       api :GET, '/api/v1/locations/closest_by_address.json', 'Returns the closest location to transmitted address'
       description "This sends you the closest location to your address (defaults to within #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles). It includes a list of machines at the location."
       param :address, String, desc: 'Address', required: true
-      param :max_distance, String, desc: 'Closest location within "max_distance" miles', required: false
+      param :max_distance, String, desc: 'Closest location within "max_distance" miles, max 500', required: false
       param :send_all_within_distance, String, desc: "Send all locations within max_distance param, or #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles.", required: false
       param :no_details, Integer, desc: 'Omit data that app does not need from pull', required: false
       param :manufacturer, String, desc: 'Locations with machines from this manufacturer', required: false
       param :by_machine_group_id, String, desc: 'Machine Group to search for', required: false
       formats ['json']
       def closest_by_address
-        max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
+        if params[:max_distance].blank?
+          max_distance = MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
+        elsif !params[:no_details] && params[:max_distance].to_i > 500
+          max_distance = 500
+        elsif params[:no_details] && params[:max_distance].to_i > 800
+          max_distance = 800
+        else
+          max_distance = params[:max_distance]
+        end
 
         except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone] : nil
 

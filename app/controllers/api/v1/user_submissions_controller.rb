@@ -59,11 +59,17 @@ module Api
       api :GET, '/api/v1/user_submissions/list_within_range.json', 'Fetch user submissions within N miles of provided lat/lon'
       param :lat, String, desc: 'Latitude', required: true
       param :lon, String, desc: 'Longitude', required: true
-      param :max_distance, String, desc: 'Closest location within "max_distance" miles', required: false
+      param :max_distance, String, desc: 'Closest location within "max_distance" miles, max of 250', required: false
       param :min_date_of_submission, String, desc: 'Earliest date to consider updates from, format YYYY-MM-DD', required: false
       param :submission_type, String, desc: 'Type of submission to filter to', required: false
       def list_within_range
-        max_distance = params[:max_distance] ||= MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS
+        if params[:max_distance].blank?
+          max_distance = MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS
+        elsif params[:max_distance] > 250
+          max_distance = 250
+        else
+          max_distance = params[:max_distance]
+        end
         min_date_of_submission = params[:min_date_of_submission] ? params[:min_date_of_submission].to_date.beginning_of_day : 1.month.ago.beginning_of_day
 
         locations = apply_scopes(Location).near([params[:lat], params[:lon]], max_distance)
