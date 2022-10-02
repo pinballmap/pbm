@@ -65,7 +65,7 @@ module Api
       def list_within_range
         if params[:max_distance].blank?
           max_distance = MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS
-        elsif params[:max_distance] > 250
+        elsif params[:max_distance].to_i > 250
           max_distance = 250
         else
           max_distance = params[:max_distance]
