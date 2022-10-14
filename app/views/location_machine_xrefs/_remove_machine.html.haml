@@ -1,5 +1,5 @@
-%div.remove_button
-  = button_to "Remove machine",  location_machine_xref_path(:id => lmx.id), :id => "remove_machine_#{lmx.id}", :method => 'delete', :remote => true, :class => "remove_machine_button"
+= button_to location_machine_xref_path(:id => lmx.id), :id => "remove_machine_#{lmx.id}", :method => 'delete', :remote => true, :class => "remove_machine_button" do
+  =image_tag('icons/trash-can-outline.svg', alt: 'Remove Machine')
 
 :javascript
   $('#remove_machine_#{lmx.id}').click(function () {

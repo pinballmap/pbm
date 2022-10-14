@@ -74,35 +74,38 @@
             = render :partial => 'locations/render_location_detail', :locals => {l: l}
         - else
           %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id}); showInfowindow(#{l.id});"}
-            %ul{:style => 'margin-bottom:0;'}
-              %li.name.bold.font20= l.name
-              - if (!params[:show_location_distance].blank? && !params[:lat].blank? && !params[:lon].blank?)
-                %li.location_types= " distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
-              - if (l.location_type)
-                %li.location_types= " (#{l.location_type.name})"
-              .clear
-              - if (l.state.blank?)
-                %li.address
-                  %span.address_name[l, :location_summary] #{[l.street, l.city].join(', ')}
-              - else
-                %li.address
-                  %span.address_name[l, :location_summary] #{[l.street, l.city, l.state].join(', ')}
-              .clear
-              %li.machine_names
-                %ul
-                  - l.machine_names.take(20).each do |machine|
-                    %li #{machine.html_safe}
-              - if (location.machines.size > 20)
-                %li.black
-                  and
-                  - the_rest = (location.machines.size - 20)
-                  #{the_rest}
-                  more
-                  - if the_rest == 1
-                    machine...
+            %div.name.bold.font20
+              = l.name
+            - if (l.location_type)
+              %div.location_type
+                - if (l.location_type.icon)
+                  =image_tag("icons/#{l.location_type.icon}.svg", :alt => "#{l.location_type.icon}")
+                %span
+                  - if l.region
+                    =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?by_type_id=#{l.location_type.id}"
                   - else
-                    machines...
-          .clear
+                    #{l.location_type.name}
+            - if (!params[:show_location_distance].blank? && !params[:lat].blank? && !params[:lon].blank?)
+              %div.location_types= "distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
+            - if (l.state.blank?)
+              %div.address
+                %span.address_name[l, :location_summary] #{[l.street, l.city].join(', ')}
+            - else
+              %div.address
+                %span.address_name[l, :location_summary] #{[l.street, l.city, l.state].join(', ')}
+            %div.machine_names
+              - l.machine_names.take(20).each do |machine|
+                %div #{machine.html_safe}
+            - if (location.machines.size > 20)
+              %div.black
+                and
+                - the_rest = (location.machines.size - 20)
+                #{the_rest}
+                more
+                - if the_rest == 1
+                  machine...
+                - else
+                  machines...
           %div.location_detail[l, :location_detail]{:style => 'display:none;'}
 
       - l = nil
@@ -111,6 +114,8 @@
     #search_results_count
       %span
         #{@locations.size} Locations & #{total_num_machines} machines in results
+      %span
+
   - if (@locations.size == 1)
     :javascript
       $(function() {

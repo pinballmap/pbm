@@ -1,44 +1,54 @@
 %div.metadata[l, :metadata_show]
+  - if mobile_device?
+    - if (l.state.blank?)
+      %div.address_full= [l.street, l.city + " " + l.zip].join(', ')
+    - else
+      %div.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
+  - if (l.location_type && l.location_type.icon)
+    %div.location_type
+      =image_tag("icons/#{l.location_type.icon}.svg", :alt => "#{l.location_type.icon}")
+      %span
+        - if l.region
+          =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?by_type_id=#{l.location_type.id}"
+        - else
+          #{l.location_type.name}
+  - if !mobile_device?
+    - if (l.state.blank?)
+      %div.address_full= [l.street, l.city + " " + l.zip].join(', ')
+    - else
+      %div.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
   - if mobile_device? && !l.phone.nil?
-    %li.phone= link_to l.phone, "tel:" + l.phone, :type => 'tel'
-    .clear
+    %div.phone
+      = image_tag('icons/phone.svg', :class => 'meta_icon')
+      = link_to l.phone, "tel:" + l.phone, :type => 'tel'
   - else
     - if l.phone?
-      %li.phone= l.phone
-      .clear
+      %div.phone
+        = image_tag('icons/phone.svg', :class => 'meta_icon')
+        = l.phone
   - if l.website?
-    %li.website= link_to "Website", l.website, :class => 'website', :target => 'blank'
-    .clear
+    %div.website
+      = image_tag('icons/web.svg', :class => 'meta_icon')
+      = link_to "Website", l.website, :class => 'website', :target => 'blank'
   - if (l.operator_id)
-    %li.operator
+    %div.operator
       %span.grey Operated by:
       - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
         %span &nbsp;#{l.operator.name}
       - else
         %span
           =link_to "#{l.operator.name}", "#{l.operator.website}", :target => "_blank"
-    .clear
     - if (l.operator.operator_has_email)
-      %li.operator.operator_comments.location_actual_description (This operator receives machine comments)
+      %div.operator_comments.grey (This operator receives machine comments)
     - else
-      %li.operator.operator_comments.location_actual_description (This operator does not receive machine comments)
-  .clear
-  - if (l.location_type)
-    %li.location_type
-      %span.grey Location Type:
-      %span
-      - if l.region
-        =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?by_type_id=#{l.location_type.id}"
-      - else
-        #{l.location_type.name}
-    .clear
+      %div.operator_comments.grey (This operator does not receive machine comments)
   - if ((current_page?(map_location_data_path) || request.referer =~ /map/) && l.region)
-    %li.location_type
+    %div.region_name
       %span.grey Region:
       %span
-      =link_to "#{l.region.full_name}", "/#{l.region.name.downcase}"
-      .clear
-  .clear
+        =link_to "#{l.region.full_name}", "/#{l.region.name.downcase}"
+  %div[l, :desc]
+    = render :partial => 'locations/render_desc', :locals => {:l => l}
 %div[l, :metadata_edit]{:style => 'display:none'}
   = form_tag update_metadata_locations_path(:action => 'update_metadata', id: l.id), :id => "update_metadata_#{l.id}", :method => 'get' do
     = hidden_field_tag :id, l.id

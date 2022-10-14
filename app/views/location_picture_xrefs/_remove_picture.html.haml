@@ -1,4 +1,4 @@
-= link_to "x", location_picture_xref_path(:id => lpx.id), :id => "remove_picture_#{lpx.id}", :method => 'delete', :remote => true, :class => "remove_picture_button"
+= button_to "x", location_picture_xref_path(:id => lpx.id), :id => "remove_picture_#{lpx.id}", :method => 'delete', :remote => true, :class => "remove_picture_button"
 
 :javascript
   $('#remove_picture_#{lpx.id}').click(function () {

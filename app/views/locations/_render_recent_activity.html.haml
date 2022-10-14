@@ -1,0 +1,9 @@
+- icon_path = image_tag('icons/newspaper-variant-outline.svg', :alt => 'Recent Activity Icon', :class => 'banner_icon')
+= banner('recent_location_activity_location', 'Location activity', icon_path, location)
+%div[location, :recent_location_activity]{:style => 'display:none'}
+  - location.recent_activity.take(20).each do |recent_activity|
+    %div.recent_activity_container
+      %div.recent_activity_icon
+        =image_tag("icons/#{recent_activity.submission_type}.svg", :alt => "#{recent_activity.submission_type}", :class => '')
+      %div.recent_activity_date.sans.font14.bold #{recent_activity.created_at.strftime("%b %d, %Y")}
+      %div.recent_activity_submission.serif.font14 #{recent_activity.submission}

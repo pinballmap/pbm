@@ -1,67 +1,37 @@
-%div.location_name
-	%ul
-		%li.name.bold.font20
-			=l.name
-		%div.location_tools.pointer
-			- if user_signed_in?
-				=image_tag('comment-4.png', :class => 'comment_image')
-				=image_tag('pencil-eraser-100.png', :class => 'meta_image')
-				=image_tag( l.user_fave?(current_user.id) ? 'heart-filled.png' : 'heart-empty.png', :alt => 'fave this location', :id => "fave_location_img_#{l.id}", :class => 'fave_location')
-			=link_to image_tag( 'link.png' ), "/#{@region ? l.region.name.downcase : 'map'}/?by_location_id=#{l.id}", :id => l.id, :alt => 'link to this location', :class => 'permalink'
-		.clear
-		- if (l.state.blank?)
-			%li.address_full= [l.street, l.city + " " + l.zip].join(', ')
-		- else
-			%li.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
-		%div[l, :metadata]
-			= render :partial => 'locations/render_update_metadata', :locals => {:l => l}
-		%div[l, :desc]
-			= render :partial => 'locations/render_desc', :locals => {:l => l}
-		%div.location_thumbs[l, :thumbs]
-			= render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
-		%div.more_pictures[l, :more]
-		%div.less_pictures[l, :less]
-		%div.location_confirm.sans
-			= render :partial => 'locations/render_confirm', :locals => {:l => l}
-		%div.login_alert
-			- if !user_signed_in?
-				= link_to link_to 'LOGIN to update this location! Click here', "https://#{request.host_with_port}/users/login"
+%div.name.bold.font20
+	=l.name
+%div.location_tools.pointer
 	- if user_signed_in?
-		= render :partial => 'locations/add_machine', :locals => {:location => l}
-		= render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
-	= render :partial => 'locations/render_machines_count', :locals => {:location => l}
-	= render :partial => 'locations/show_machines', :locals => {:location => l}
+		=image_tag('icons/comment-text.svg', :class => 'comment_image')
+		=image_tag('icons/lead-pencil.svg', :class => 'meta_image')
+		=image_tag( l.user_fave?(current_user.id) ? 'icons/heart-filled.svg' : 'icons/heart-empty.svg', :alt => 'fave this location', :id => "fave_location_img_#{l.id}", :class => 'fave_location')
+	=link_to image_tag( 'icons/link-variant.svg' ), "/#{@region ? l.region.name.downcase : 'map'}/?by_location_id=#{l.id}", :id => l.id, :alt => 'link to this location', :class => 'permalink'
+%div.m_10[l, :metadata]
+	= render :partial => 'locations/render_update_metadata', :locals => {:l => l}
+%div.location_thumbs[l, :thumbs]
+	= render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
+%div.location_confirm.sans
+	= render :partial => 'locations/render_confirm', :locals => {:l => l}
+- if !user_signed_in?
+	%div.login_alert
+		= link_to link_to 'LOGIN to update this location! Click here', "https://#{request.host_with_port}/users/login"
+= render :partial => 'locations/render_recent_activity', :locals => {:location => l}
+- if user_signed_in?
+	= render :partial => 'locations/add_machine', :locals => {:location => l}
+	= render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
+= render :partial => 'locations/render_machines_count', :locals => {:location => l}
+= render :partial => 'locations/show_machines', :locals => {:location => l}
 
 :javascript
 	$(function () {
-		if ($("#thumbs_location_#{l.id} img").length > 0) {
-			$("#location_detail_location_#{l.id} .more_pictures").css("display","block");
-			$("#location_detail_location_#{l.id} .less_pictures").css("display","none");
-		} else {
-			$("#location_detail_location_#{l.id} .more_pictures,#location_detail_location_#{l.id} .less_pictures").css("display","none");
-		}
-		$("#location_detail_location_#{l.id} .more_pictures").click(function() {
-			$("#location_detail_location_#{l.id} .location_thumbs").addClass("toggle_picture_height_off",500);
-			$("#location_detail_location_#{l.id} .more_pictures").css("display","none");
-			$("#location_detail_location_#{l.id} .less_pictures").css("display","block");
-		});
-		$("#location_detail_location_#{l.id} .less_pictures").click(function() {
-			$("#location_detail_location_#{l.id} .location_thumbs").removeClass("toggle_picture_height_off",500);
-			$("#location_detail_location_#{l.id} .more_pictures").css("display","block");
-			$("#location_detail_location_#{l.id} .less_pictures").css("display","none");
-		});
 		$("#fave_location_img_#{l.id}").click(function() {
 			$.post('/users/#{current_user ? current_user.id : 'null'}/toggle_fave_location.json', {location_id: #{l.id}}, function(data) {
-				if ($("#fave_location_img_#{l.id}").attr('src') === '#{asset_path('heart-filled.png')}') {
-					$("#fave_location_img_#{l.id}").attr('src', '#{asset_path('heart-empty.png')}');
+				if ($("#fave_location_img_#{l.id}").attr('src') === '#{asset_path('icons/heart-filled.svg')}') {
+					$("#fave_location_img_#{l.id}").attr('src', '#{asset_path('icons/heart-empty.svg')}');
 				} else {
-					$("#fave_location_img_#{l.id}").attr('src', '#{asset_path('heart-filled.png')}');
+					$("#fave_location_img_#{l.id}").attr('src', '#{asset_path('icons/heart-filled.svg')}');
 				}
 			});
 		});
-		$("#location_detail_location_#{l.id} .less_pictures").click(function() {
-			$("#location_detail_location_#{l.id} .location_thumbs").removeClass("toggle_picture_height_off",500);
-			$("#location_detail_location_#{l.id} .more_pictures").css("display","block");
-			$("#location_detail_location_#{l.id} .less_pictures").css("display","none");
-		});
+
 	});

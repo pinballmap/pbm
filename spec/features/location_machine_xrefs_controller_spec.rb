@@ -689,8 +689,8 @@ describe LocationMachineXrefsController do
 
       expect(page).to have_content('Test Location Name')
       expect(page).to have_content('303 Southeast 3rd Avenue, Portland, OR 97214')
-      expect(page).to have_content('UPLOAD A PICTURE')
-      expect(page).to have_content('ADD A MACHINE')
+      expect(page).to have_content('Upload a picture')
+      expect(page).to have_content('Add a machine')
     end
 
     it 'searches by city' do
@@ -809,7 +809,7 @@ describe LocationMachineXrefsController do
 
       page.find('input#location_search_button').click
 
-      expect(page).to have_content("Cleo\n(bar)")
+      expect(page).to have_content("Cleo\nbar")
       expect(page).to have_content('Bawb')
     end
 

@@ -30,8 +30,8 @@
         .header_buttons_child.header_menu_01
           =link_to 'Add Location', suggest_path, :class => "bold"
       - if (current_user)
-        .header_buttons_child.header_menu_03
-          =image_tag( 'heart-empty.png', :alt => 'heart icon', :class => 'fave_icon')
+        .header_buttons_child.header_menu_03.flex_center
+          =image_tag( 'icons/heart-filled.svg', :alt => 'heart icon', :class => 'fave_icon')
           =link_to 'Saved Locations', saved_path, :class => "bold"
       - if (@region)
         %div.region_logo.header_buttons_child

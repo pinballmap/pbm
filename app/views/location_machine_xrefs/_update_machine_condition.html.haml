@@ -16,6 +16,7 @@
           DELETED USER
 - if user_signed_in?
   %div[lmx, :machine_condition]
+    =image_tag("icons/comment-text.svg", :alt => "Leave a Comment", :class => "machine_comment_icon")
     %div.add_condition Add machine condition
   %div[lmx, :machine_condition_edit]{:style => 'display:none'}
     = form_tag update_machine_condition_location_machine_xrefs_path(:action => 'update_machine_condition', :id => lmx.id), :id => "update_machine_condition_#{lmx.id}", :method => 'get' do

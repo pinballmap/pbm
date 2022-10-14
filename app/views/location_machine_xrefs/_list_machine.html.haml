@@ -1,3 +1,6 @@
-%span.machine_name.font22.sans.bold
-  #{lmx.machine.name}
-  %span.machine_year_man #{lmx.machine.year_and_manufacturer}
+%div.machine_name_container
+  %span.machine_name.font22.sans.bold
+    #{lmx.machine.name}
+    %span.machine_year_man #{lmx.machine.year_and_manufacturer}
+  - if user_signed_in?
+    = render :partial => 'location_machine_xrefs/remove_machine', :locals => {:lmx => lmx}
