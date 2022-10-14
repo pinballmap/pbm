@@ -143,8 +143,7 @@ describe LocationMachineXrefsController do
       sleep 1
 
       expect(page).to_not have_selector('span.condition_button.condition_button_new')
-      page.find("div#desc_show_location_#{@location.id}").click
-      expect(page).to_not have_content('Cancel')
+      expect(page).to_not have_css('comment_image')
     end
   end
 
