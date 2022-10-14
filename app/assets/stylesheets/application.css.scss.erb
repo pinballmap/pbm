@@ -224,6 +224,10 @@ ul li li {
   background-color: $blue;
 }
 
+.w_100 {
+  width: 100%;
+}
+
 .w_320 {
   width: 320px;
 }
@@ -1912,23 +1916,28 @@ input.score {
 div.location_type {
   float: right;
   @include radius(5px);
-  padding: 10px;
+  padding: 6px 5px;
   margin: 0 5px 5px;
-  text-align: center;
   background: #f5f5ff;
-  max-width: 100px;
 }
 
-.location_type a {
+div.location_type_container {
+  display: flex;
+  justify-content: center;
+  width: 70px;
+  flex-wrap: wrap;
+}
+
+.location_type a,
+.location_type span {
+  text-align: center;
   padding: 2px;
   font-size: 11px;
-  line-height: 11px;
+  line-height: 14px;
 }
 
 .location_type img {
   width: 50px;
-  display: block;
-  margin: 0 auto;
 }
 
 .edit_mode {

@@ -6,12 +6,13 @@
       %div.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
   - if (l.location_type && l.location_type.icon)
     %div.location_type
-      =image_tag("icons/#{l.location_type.icon}.svg", :alt => "#{l.location_type.icon}")
-      %span
-        - if l.region
-          =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?by_type_id=#{l.location_type.id}"
-        - else
-          #{l.location_type.name}
+      %div.location_type_container
+        =image_tag("icons/#{l.location_type.icon}.svg", :alt => "#{l.location_type.icon}")
+        %span
+          - if l.region
+            =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?by_type_id=#{l.location_type.id}"
+          - else
+            #{l.location_type.name}
   - if !mobile_device?
     - if (l.state.blank?)
       %div.address_full= [l.street, l.city + " " + l.zip].join(', ')
