@@ -13,7 +13,7 @@
           #{@user.contributor_rank}
           %span
             =image_tag("rank/Rank_#{@user.contributor_rank_int}.png", :class => "rank_icon_profile rank_icon_#{@user.contributor_rank_int}")
-      %p.darkgrey{:style => "font-size:16px;"} Member since: #{@user.created_at.strftime('%b-%d-%Y')}
+      %p.darkgrey{:style => "font-size:16px;"} Member since: #{@user.created_at.strftime('%b %d, %Y')}
       - if current_user && (@user.id == current_user.id)
         %p
           =link_to "Update Email / Update Password / Delete Account", edit_user_registration_path

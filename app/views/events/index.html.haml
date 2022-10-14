@@ -20,9 +20,9 @@
             - @sorted_events[key].sort{|a,b| a.start_date.to_s <=> b.start_date.to_s}.each do |e|
               %li
                 - if e.start_date
-                  %span.event_date #{e.start_date.strftime("%b-%d-%Y").to_s}
+                  %span.event_date #{e.start_date.strftime("%b %d, %Y").to_s}
                   - if e.end_date
-                    %span.event_date - #{e.end_date.strftime("%b-%d-%Y").to_s}:
+                    %span.event_date - #{e.end_date.strftime("%b %d, %Y").to_s}:
                 = link_to e.name, e.external_link, :class => 'event_link', :target => '_blank'
                 - if (e.location)
                   %span @

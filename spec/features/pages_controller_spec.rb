@@ -192,8 +192,8 @@ describe PagesController do
 
       visit '/portland/events'
 
-      expect(page).to have_content("event 3 @ Test Location Name\n#{Date.today.strftime('%b-%d-%Y')}")
-      expect(page).to have_content("event 1 @ Test Location Name\n#{(Date.today + 1).strftime('%b-%d-%Y')}")
+      expect(page).to have_content("event 3 @ Test Location Name\n#{Date.today.strftime('%b %d, %Y')}")
+      expect(page).to have_content("event 1 @ Test Location Name\n#{(Date.today + 1).strftime('%b %d, %Y')}")
       expect(page).to have_content('event 2 @ Test Location Name')
     end
 

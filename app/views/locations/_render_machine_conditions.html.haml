@@ -12,7 +12,7 @@
     %span.machine_condition= "#{mcx.comment}"
     .clear
     - if !mcx.created_at.nil?
-      %span.machine_condition_date= mcx.created_at.strftime("%b-%d-%Y")
+      %span.machine_condition_date= mcx.created_at.strftime("%b %d, %Y")
       - if mcx.user_id
         by
         %span.machine_condition_name.bold

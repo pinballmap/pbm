@@ -62,7 +62,7 @@ describe LocationsController do
         sleep 1
 
         expect(location.reload.date_last_updated).to eq(Date.today)
-        expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b-%d-%Y')} by ssw")
+        expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')} by ssw")
         expect(URI.parse(page.find_link('ssw')['href']).to_s).to match(%r{/users/#{@user.username}/profile})
       end
     end
@@ -75,7 +75,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + location.id.to_s
 
-      expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b-%d-%Y')}")
+      expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')}")
     end
   end
 
@@ -167,7 +167,7 @@ describe LocationsController do
 
         expect(LocationMachineXref.all).to eq([])
         expect(location.reload.date_last_updated).to eq(Date.today)
-        expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b-%d-%Y')}")
+        expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')}")
 
         expect(UserSubmission.count).to eq(2)
         submission = UserSubmission.second
@@ -646,11 +646,11 @@ describe LocationsController do
       expect(@location.phone).to eq('503-285-3928')
       expect(@location.operator_id).to eq(o.id)
       expect(@location.location_type_id).to eq(t.id)
-      expect(@location.date_last_updated.strftime('%b-%d-%Y')).to eq(Time.now.strftime('%b-%d-%Y'))
+      expect(@location.date_last_updated.strftime('%b %d, %Y')).to eq(Time.now.strftime('%b %d, %Y'))
       expect(@location.last_updated_by_user).to eq(@user)
 
       expect(page).to_not have_css('div#flash_error')
-      expect(page).to have_content("Last updated: #{Time.now.strftime('%b-%d-%Y')}")
+      expect(page).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')}")
     end
 
     it 'allows users to update a location metadata - TWICE' do
@@ -738,10 +738,10 @@ describe LocationsController do
       sleep 1
 
       expect(Location.find(@location.id).description).to eq('COOL DESC')
-      expect(Location.find(@location.id).date_last_updated.strftime('%b-%d-%Y')).to eq(Time.now.strftime('%b-%d-%Y'))
+      expect(Location.find(@location.id).date_last_updated.strftime('%b %d, %Y')).to eq(Time.now.strftime('%b %d, %Y'))
       expect(Location.find(@location.id).last_updated_by_user).to eq(@user)
 
-      expect(page).to have_content("Last updated: #{Time.now.strftime('%b-%d-%Y')}")
+      expect(page).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')}")
     end
 
     it 'allows users to update a location description - TWICE' do

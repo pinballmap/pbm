@@ -79,7 +79,8 @@
             - if (l.location_type)
               %div.location_type
                 - if (l.location_type.icon)
-                  =image_tag("icons/#{l.location_type.icon}.svg", :alt => "#{l.location_type.icon}")
+                  %div.location_type_container
+                    =image_tag("icons/#{l.location_type.icon}.svg", :alt => "#{l.location_type.icon}")
                 %span
                   - if l.region
                     =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?by_type_id=#{l.location_type.id}"

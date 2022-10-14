@@ -1924,8 +1924,9 @@ div.location_type {
 div.location_type_container {
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
   width: 70px;
-  flex-wrap: wrap;
 }
 
 .location_type a,
@@ -1934,6 +1935,8 @@ div.location_type_container {
   padding: 2px;
   font-size: 11px;
   line-height: 14px;
+  width: 100%;
+  display: block;
 }
 
 .location_type img {
@@ -1954,10 +1957,6 @@ div.location_type_container {
   min-height: 28px;
   margin-bottom: 10px;
   font-family: $serif;
-}
-
-.location_confirm {
-  height: 50px;
 }
 
 .confirm_location {
@@ -2111,13 +2110,13 @@ input.score {
   background: $lightgrey;
   margin-bottom: 12px;
   border-radius: 10px;
+  min-height: 130px;
 }
 
 .show_location_detail_location div.location_type {
-  border: none;
   padding: 0;
   margin: 5px;
-  width: 80px;
+  width: 70px;
 }
 
 .show_location_detail_location .name {
