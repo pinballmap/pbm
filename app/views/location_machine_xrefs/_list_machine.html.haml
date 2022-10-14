@@ -1,5 +1,5 @@
 %div.machine_name_container
-  %span.machine_name.font22.sans.bold
+  %span{:class => ["bold sans font22 machine_name", ("w_100" unless user_signed_in?)]}
     #{lmx.machine.name}
     %span.machine_year_man #{lmx.machine.year_and_manufacturer}
   - if user_signed_in?

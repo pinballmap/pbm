@@ -1,4 +1,4 @@
-%div.name.bold.font20
+%div{:class => ["bold font20 name", ("pr_30" unless user_signed_in?)]}
 	=l.name
 %div.location_tools.pointer
 	- if user_signed_in?

@@ -1,6 +1,7 @@
-%div[l, :desc_show]
-  %span.location_actual_description= (l.description.to_s == '') ? '' : l.description
-  .clear
+- if l.description
+  %div[l, :desc_show]
+    %span.location_actual_description= (l.description.to_s == '') ? '' : l.description
+    .clear
 %div[l, :desc_edit]{:style => 'display:none'}
   - if user_signed_in?
     = form_tag update_desc_locations_path(:action => 'update_desc', :id => l.id), :id => "update_desc_#{l.id}", :method => 'get' do

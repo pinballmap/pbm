@@ -1,9 +1,4 @@
 %div.metadata[l, :metadata_show]
-  - if mobile_device?
-    - if (l.state.blank?)
-      %div.address_full= [l.street, l.city + " " + l.zip].join(', ')
-    - else
-      %div.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
   - if (l.location_type && l.location_type.icon)
     %div.location_type
       %div.location_type_container
@@ -13,11 +8,10 @@
             =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?by_type_id=#{l.location_type.id}"
           - else
             #{l.location_type.name}
-  - if !mobile_device?
-    - if (l.state.blank?)
-      %div.address_full= [l.street, l.city + " " + l.zip].join(', ')
-    - else
-      %div.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
+  - if (l.state.blank?)
+    %div.address_full= [l.street, l.city + " " + l.zip].join(', ')
+  - else
+    %div.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
   - if mobile_device? && !l.phone.nil?
     %div.phone
       = image_tag('icons/phone.svg', :class => 'meta_icon')
