@@ -27,6 +27,7 @@
       = link_to "Website", l.website, :class => 'website', :target => 'blank'
   - if (l.operator_id)
     %div.operator
+      = image_tag('icons/wrench-outline.svg', :class => 'meta_icon')
       %span.grey Operated by:
       - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
         %span &nbsp;#{l.operator.name}

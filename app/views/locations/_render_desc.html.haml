@@ -1,6 +1,7 @@
-- if l.description
+- if !l.description.blank?
   %div[l, :desc_show]
-    %span.location_actual_description= (l.description.to_s == '') ? '' : l.description
+    = image_tag('icons/clock-time-four-outline.svg', :class => 'meta_icon')
+    = l.description
     .clear
 %div[l, :desc_edit]{:style => 'display:none'}
   - if user_signed_in?

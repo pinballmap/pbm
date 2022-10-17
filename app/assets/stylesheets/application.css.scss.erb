@@ -1111,7 +1111,7 @@ span.or {
   background: $darkgrey;
   text-decoration: none;
   border-color: #642501;
-  color: $lightpink  !important;
+  color: $lightpink !important;
   cursor: pointer;
 }
 
@@ -1232,15 +1232,15 @@ form select#by_machine_id {
 }
 
 .active_section_link {
-  background-color: $darkgrey  !important;
-  color: $lightpink  !important;
+  background-color: $darkgrey !important;
+  color: $lightpink !important;
   box-shadow: none !important;
   -moz-box-shadow: none !important;
   -webkit-box-shadow: none !important;
 }
 
 a.active_section_link:hover {
-  background: $lightpink  !important;
+  background: $lightpink !important;
 }
 
 /** Search Results **/
@@ -1310,6 +1310,7 @@ a.active_section_link:hover {
 .operator_comments {
   font-size: 12px;
   font-style: italic;
+  margin: 0 0 10px 10px;
 }
 
 .location_tools {
@@ -2079,17 +2080,6 @@ input.score {
   @include radius(10px);
 }
 
-.location_actual_description {
-  font-style: italic;
-  color: $grey;
-  padding: 5px 0 0;
-  display: block;
-  font-size: 13px;
-  line-height: 15px;
-  font-family: $serif;
-  white-space: pre-wrap;
-}
-
 .desc_button {
   color: $darkgrey;
   line-height: 20px;
@@ -2101,8 +2091,13 @@ input.score {
 }
 
 .desc_show_location {
-  padding-bottom: 5px;
   width: 100%;
+  font-style: italic;
+  color: $grey;
+  padding: 0 0 5px;
+  font-size: 13px;
+  line-height: 15px;
+  font-family: $serif;
 }
 
 .desc_edit_location {
@@ -2319,7 +2314,7 @@ img.small_banner_icon {
 .app_title {
   background-color: $purple;
   padding: 5px;
-  color: $red  !important;
+  color: $red !important;
   margin-top: 0;
 }
 
