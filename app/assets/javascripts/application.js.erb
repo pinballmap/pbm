@@ -173,7 +173,8 @@ function redo() {
     } else if (zoomLevel >= 9) {
       document.getElementById("zoom_in_more").style.display = "none";
       zoomLevel = map.getZoom();
-    } else if ($("#followCheck").is(':checked')) {
+    }
+    if ($("#followCheck").is(':checked') && (zoomLevel >= 9)) {
       document.getElementById("zoom_in_more").style.display = "none";
       window.clearTimeout(mapupdater);
       mapupdater = window.setTimeout(function() {
