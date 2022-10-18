@@ -1,4 +1,4 @@
-#div_container_column.div_01_outer
+.div_container_column.div_01_outer
   .div_01
     %p.red.font18.sans.bold.p1
       %span{:style => 'width:42px;margin-right: 5px;'}
@@ -24,7 +24,7 @@
       ago
     %p
       =(@top_machines)
-#div_container_row
+.div_container_row
   .div_01b.serif
     %p.red.font18.sans.bold News!
     %p
@@ -81,7 +81,18 @@
   - if mobile_device?
     .read_more
     .read_less
-#div_container_column
+.div_container_column
+  %p.p1.red.font18.sans.bold
+    Recent Blog Posts
+  - url = 'https://blog.pinballmap.com/feed.xml'
+  - xml = HTTParty.get(url).body
+  - feed = Feedjira.parse(xml)
+  - feed.entries.take(5).each do |entry|
+    %div.m_5.center
+      =link_to entry.title, 'https://blog.pinballmap.com/' + entry.url, :target => '_blank', :class => 'bold font20'
+      %span.block.center.m_5 #{entry.published.strftime("%b %d, %Y")}
+
+.div_container_column.bg_purple
   .div_05
     %p.p1.red.font18.sans.bold
       Regional Maps
@@ -90,10 +101,10 @@
       = link_to 'big map', map_path
       isn&rsquo;t cutting it for you, you can search for machines in one select area. Please pick a "regional" map below. Regions are predefined geographical areas - they can be a city, county, state, or even a country - that an administrator and the local users created. Each regional map is curated by a local administrator, often with the support of a league.
 - if !mobile_device?
-  #div_container_column
+  .div_container_column.bg_purple
     .div_02
       #region_map
-#div_container_column
+.div_container_column.bg_purple
   .div_04
     #map_summaries
       #region_list
