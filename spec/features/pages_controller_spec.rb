@@ -117,35 +117,6 @@ describe PagesController do
       expect(find('#search_results')).to_not have_content('Rip City Retail SW')
     end
 
-    it 'displays region name in location detail' do
-      rip_location = FactoryBot.create(:location, region: nil, name: 'Rip City Retail SW')
-      clark_location = FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'Portland', full_name: 'Portland'), name: "Clark's Corner")
-      renee_location = FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'Chicago', full_name: 'Chicago'), name: "Renee's Rental")
-      FactoryBot.create(:location_machine_xref, location: rip_location, machine: FactoryBot.create(:machine, name: 'Sass'))
-      FactoryBot.create(:location_machine_xref, location: clark_location, machine: FactoryBot.create(:machine, name: 'Sass 2'))
-      FactoryBot.create(:location_machine_xref, location: renee_location, machine: FactoryBot.create(:machine, name: 'Sass 3'))
-
-      visit '/map'
-
-      fill_in('by_machine_name', with: 'Sass')
-      click_on 'location_search_button'
-      expect(find('#search_results')).to_not have_content('Region:')
-
-      fill_in('by_machine_name', with: 'Sass 2')
-      click_on 'location_search_button'
-      expect(find('#search_results')).to have_content('Region: Portland')
-
-      fill_in('by_machine_name', with: 'Sass 3')
-      click_on 'location_search_button'
-      expect(find('#search_results')).to have_content('Region: Chicago')
-
-      visit '/map/?by_location_id=' + rip_location.id.to_s
-      expect(find('#search_results')).to_not have_content('Region:')
-
-      visit '/map/?by_location_id=' + clark_location.id.to_s
-      expect(find('#search_results')).to have_content('Region: Portland')
-    end
-
     it 'machine search blanks out machine_id when you search, honors machine_name scope' do
       rip_location = FactoryBot.create(:location, region: nil, name: 'Rip City Retail SW')
       clark_location = FactoryBot.create(:location, region: nil, name: "Clark's Corner")

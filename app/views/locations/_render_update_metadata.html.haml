@@ -38,11 +38,6 @@
       %div.operator_comments.grey (This operator receives machine comments)
     - else
       %div.operator_comments.grey (This operator does not receive machine comments)
-  - if ((current_page?(map_location_data_path) || request.referer =~ /map/) && l.region)
-    %div.region
-      %span.grey Region:
-      %span
-        =link_to "#{l.region.full_name}", "/#{l.region.name.downcase}"
   %div[l, :desc]
     = render :partial => 'locations/render_desc', :locals => {:l => l}
 %div[l, :metadata_edit]{:style => 'display:none'}
