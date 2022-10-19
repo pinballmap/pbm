@@ -349,12 +349,6 @@ div.pick_a_map {
   line-height: 24px;
 }
 
-#map_summaries {
-  margin: 0;
-  text-align: center;
-  width: 100%;
-}
-
 .map_summary_outer {
   display: inline-block;
   float: none;
@@ -1196,52 +1190,29 @@ p.notice {
   }
 }
 
-/* read more */
-
-.read_more:before,
-.read_less:before {
-  cursor: pointer;
-  display: block;
-  padding: 0 .5em;
-  color: #666;
-  font-size: 18px;
-  line-height: 2;
-  border: 1px solid #ddd;
-  border-radius: .25em;
-  text-align: center;
-}
-
-.read_more:before {
-  content: "read more";
-}
-
-.read_less:before {
-  content: "read less";
-}
-
-.read_more_wrap {
-  display: none;
-}
-
-.read_more,
-.read_less {
-  margin-bottom: 10px;
-}
-
-.div_01 .p1,
-.div_01 .p3 {
+.p1 {
   font-size: 24px;
   line-height: 24px;
 }
 
-.div_01 .p2 {
-  font-size: 16px;
-  line-height: 24px;
+p.welcome {
+  font-size: 16px !important;
+  line-height: 24px !important;
 }
 
-.div_01b {
-  margin: 5px 10px 10px 10px;
+.news {
   width: auto;
+  min-width: 100%;
+  margin: 0;
+}
+
+.news p,
+.region_map p {
+  margin: 10px;
+}
+
+.mobile_flex {
+  flex-direction: column;
 }
 
 .p3 a:hover {

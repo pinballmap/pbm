@@ -1,32 +1,29 @@
-.div_container_column.div_01_outer
-  .div_01
-    %p.red.font18.sans.bold.p1
-      %span{:style => 'width:42px;margin-right: 5px;'}
-        =image_tag( 'icon-color-noBGsvg.svg', :alt => 'splash', :style => 'height:42px;', :class => 'splash')
-      Welcome to Pinball Map!
-    %p.p2
-      %span{:style => 'max-width:500px;min-width:100px'}
-        Founded in 2008, Pinball Map is an open source, crowdsourced worldwide map of public pinball machines.
-    %p.bold.p3
-      = link_to 'Explore the Map', map_path
-    %p.p2
-      %span
-        - if mobile_device?
-          Better yet! Use the
-        - else
-          And check out the
-        award-winning
-        = link_to "mobile app", app_path, :style => "color: #fd0091;"
-    %p.italic.flex_center
-      =image_tag( 'machine-pink.png', :alt => 'machine', :style => 'height:32px;margin-right:5px;', :class => 'splash')
-      The map was last updated
-      =distance_of_time_in_words(Time.now, @last_updated_time)
-      ago
-    %p
-      =(@top_machines)
-.div_container_row
-  .div_01b.serif
-    %p.red.font18.sans.bold News!
+%div.flex_center.flex_column
+  %p.red.sans.bold.p1
+    %span{:style => 'width:42px;margin-right: 5px;'}
+      =image_tag( 'icon-color-noBGsvg.svg', :alt => 'splash', :style => 'height:42px;', :class => 'splash')
+    Welcome to Pinball Map!
+  %p.welcome.font20.center.mt_0{:style => 'max-width:540px;min-width:100px;line-height:32px;'}
+    Founded in 2008, Pinball Map is an open source, crowdsourced worldwide map of public pinball machines.
+  %p.explore
+    = link_to 'Explore the Map', map_path
+  %p.welcome.font20.center.m_15
+    %span
+      - if mobile_device?
+        Better yet! Use the
+      - else
+        Check out the
+      award-winning
+      = link_to "mobile app", app_path, :style => "color: #fd0091;"
+  %p.italic.flex_center
+    =image_tag( 'machine-pink.png', :alt => 'machine', :style => 'height:32px;margin-right:5px;', :class => 'splash')
+    The map was last updated
+    =distance_of_time_in_words(Time.now, @last_updated_time)
+    ago
+%div.flex_center.bg_purple
+  %p.red.font28.sans.bold.mt_20.mb_5 News
+%div.flex_center.mobile_flex.flex_top.bg_purple
+  .news.serif
     %p
       The Fall 2022 stickers are IN! They might be our shiniest stickers yet. Brushed gold with black ink. Buy them on our
       = link_to 'Pinball Map official sanctioned licensed and bonded store!', store_path, :class => "bold"
@@ -54,8 +51,7 @@
       and
       = link_to 'Scorbit', 'https://scorbit.io/', :target => '_blank'
       and many others! If you use the data, please provide attribution!
-  .div_01b.serif.read_more_wrap
-    %p.red.font18.sans.bold And more
+  .news.serif
     %p
       Pinball Map is listing
       %span.red.font18.sans.bold
@@ -78,61 +74,37 @@
       = link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
     %p
       = link_to 'Contact us!', 'portland/about'
-  - if mobile_device?
-    .read_more
-    .read_less
-.div_container_column
-  %p.p1.red.font18.sans.bold
+%div.flex_center.flex_column
+  %p.red.font28.sans.bold.mt_20.mb_5
     Recent Blog Posts
   - url = 'https://blog.pinballmap.com/feed.xml'
   - xml = HTTParty.get(url).body
   - feed = Feedjira.parse(xml)
   - feed.entries.take(5).each do |entry|
     %div.m_5.center
-      =link_to entry.title, 'https://blog.pinballmap.com' + entry.url, :target => '_blank', :class => 'bold font20'
+      =link_to entry.title, 'https://blog.pinballmap.com' + entry.url, :target => '_blank', :class => 'bold font18'
       %span.block.center.m_5 #{entry.published.strftime("%b %d, %Y")}
 
-.div_container_column.bg_purple
-  .div_05
-    %p.p1.red.font18.sans.bold
+%div.flex_center.flex_column.bg_purple.mb_20
+  .region_map
+    %p.red.font28.sans.bold.mt_20.mb_5.center
       Regional Maps
     %p
       If the
       = link_to 'big map', map_path
       isn&rsquo;t cutting it for you, you can search for machines in one select area. Please pick a "regional" map below. Regions are predefined geographical areas - they can be a city, county, state, or even a country - that an administrator and the local users created. Each regional map is curated by a local administrator, often with the support of a league.
-- if !mobile_device?
-  .div_container_column.bg_purple
-    .div_02
+    - if !mobile_device?
       #region_map
-.div_container_column.bg_purple
-  .div_04
-    #map_summaries
-      #region_list
-        - @all_regions.each.map {|r| r.state}.uniq.each do |s|
-          %div.state_name_container
-            %div.state_name
-              %span.state_name #{s}
-            %div.region_name_container
-              - @all_regions.select {|r| r.state == s}.each do |r|
-                %div.region_name
-                  =link_to "/#{r.name}" do
-                    #{r.full_name}
-    .clear
-    %br/
-
-:javascript
-  $().ready(function(){
-    $(".read_less").css("display","none");
-    $(".read_more").css("display","block");
-    $(".read_more").click(function() {
-      $(".read_more").css("display","none");
-      $(".read_less,.read_more_wrap").css("display","block");
-    });
-    $(".read_less").click(function() {
-      $(".read_more_wrap,.read_less").css("display","none");
-      $(".read_more").css("display","block");
-    });
-  });
+    #region_list
+      - @all_regions.each.map {|r| r.state}.uniq.each do |s|
+        %div.state_name_container
+          %div.state_name
+            %span.state_name #{s}
+          %div.region_name_container
+            - @all_regions.select {|r| r.state == s}.each do |r|
+              %div.region_name
+                =link_to "/#{r.name}" do
+                  #{r.full_name}
 
 - unless Rails.env.test?
   :javascript

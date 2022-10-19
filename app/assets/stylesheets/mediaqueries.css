@@ -95,12 +95,6 @@ only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (or
   }
 }
 
-@media (max-width: 1800px) {
-  .div_03 {
-    display: none;
-  }
-}
-
 @media (max-width: 1295px) {
   .header_buttons_child {
     width: 89px;

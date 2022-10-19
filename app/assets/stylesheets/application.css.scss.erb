@@ -268,6 +268,10 @@ ul li li {
   margin: 10px;
 }
 
+.m_15 {
+  margin: 15px;
+}
+
 .mt_0 {
   margin-top: 0 !important;
 }
@@ -280,12 +284,24 @@ ul li li {
   margin-top: 10px;
 }
 
+.mt_20 {
+  margin-top: 20px;
+}
+
 .mt_30 {
   margin-top: 30px;
 }
 
 .mb_0 {
   margin-bottom: 0;
+}
+
+.mb_5 {
+  margin-bottom: 5px;
+}
+
+.mb_20 {
+  margin-bottom: 20px;
 }
 
 .ml_5 {
@@ -364,6 +380,22 @@ ul li li {
   justify-content: center;
 }
 
+.flex_top {
+  align-items: flex-start;
+}
+
+.flex_column {
+  flex-direction: column;
+}
+
+.flex_row {
+  flex-direction: row;
+}
+
+.mobile_flex {
+  flex-direction: row;
+}
+
 .shadow_none {
   box-shadow: none;
   -webkit-box-shadow: none;
@@ -389,6 +421,7 @@ ul li li {
 
 .font18 {
   font-size: 18px;
+  line-height: 22px;
 }
 
 .font16 {
@@ -2601,39 +2634,9 @@ div.region_name_container {
   background: #ffffff;
 }
 
-.div_container_column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.div_container_row {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin: 0 auto;
-  background-color: #f5f5ff;
-  flex-wrap: wrap;
-}
-
-.div_01_outer {
-  text-align: center;
-  z-index: 100;
-  background-size: 5px;
-}
-
-.div_01 {
-  max-width: 900px;
-  min-width: 200px;
-  width: 100%;
-  padding: 0 20px;
-}
-
-.div_01 .p1 {
+.p1 {
   font-size: 32px;
   line-height: 32px;
-  display: block;
   margin-top: 30px;
   margin-bottom: 10px;
   display: flex;
@@ -2641,29 +2644,9 @@ div.region_name_container {
   justify-content: center;
 }
 
-.div_01 .p2 {
-  font-size: 20px;
-  line-height: 30px;
-  display: block;
-  font-family: $serif;
-  margin: 0 auto;
-  flex-direction: row;
-  flex-wrap: wrap;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.div_01 .p3 {
+.explore a {
   font-size: 32px;
-  line-height: 32px;
-  display: block;
-  font-weight: 600;
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
-
-.p3 a {
+  font-weight: bold;
   border: 2px solid #ae9bd1;
   border-radius: 30px;
   padding: 2px 10px;
@@ -2673,62 +2656,32 @@ div.region_name_container {
   color: #6d49b0;
 }
 
-.p3 a:hover {
+.explore a:hover {
   border: 2px solid #e9d7f8;
   background: #fffdfe;
   box-shadow: 3px 3px 12px #ae9bd1;
   text-decoration: underline;
 }
 
-.p3 a:active {
+.explore a:active {
   box-shadow: none;
 }
 
-.div_01b {
-  flex-direction: row;
+.news {
   max-width: 450px;
   min-width: 300px;
   margin: 0 20px;
 }
 
-.div_01c {
-  max-width: 450px;
-  min-width: 450px;
-}
-
-.div_02 {
-  flex-direction: row;
+.region_map {
   max-width: 700px;
   min-width: 300px;
-}
-
-.div_03 {
-  width: 300px;
-}
-
-.div_04 {
-  width: 100%;
-  max-width: 650px;
-}
-
-.div_05 {
-  flex-direction: row;
-  max-width: 700px;
-  min-width: 300px;
-  padding: 0 10px;
-  font-family: $serif;
-}
-
-.div_05 .p1 {
-  font-size: 28px;
-  line-height: 28px;
-  display: block;
-  margin-top: 30px;
-  text-align: center;
 }
 
 #region_list {
   margin: 0 auto 20px;
+  width: 100%;
+  max-width: 650px;
 }
 
 div.state_name_container {
