@@ -19,7 +19,7 @@
     #locations
       = render :partial => 'pages/intro'
       - if !@region.motd.blank?
-        %p.gray_bg
+        %p.bg_vlightpurple.radius5
           %span.red.font18.sans.bold Message of the Day:
           = @region.html_motd
       = yield :presearch_sidebar

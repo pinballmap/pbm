@@ -1,6 +1,6 @@
 #page_body
   .column_container.serif
-    .column.bg_gray.w_450
+    .column.bg_vlightpurple.w_450
       %p.red.font18.sans.bold
         Contact
         - if (@region.name == 'portland')
@@ -29,7 +29,7 @@
                 %input{:type => "text", :name => "security_test", :params => "security_test", :class => "text w_400"}
             %li.submit{:style => "clear:both;"}
               %input{:type => "submit", :value => "Submit Comment", :class => "submit_button"}
-    .column.bg_gray.w_450
+    .column.bg_vlightpurple.w_450
       %p.red.font18.sans.bold
         About the
         = @region.full_name
@@ -74,13 +74,12 @@
         .machine_quantity
           %p
             = link_to "#{lmx.machine.name}: with #{lmx.machine_count} machines", "/#{@region.name}/?by_machine_id=#{lmx.machine.id}"
-      .column.w_450
-        - if (@links.size > 0)
-          - @links.keys.sort.each do |key|
-            %p.red.font18.sans.bold.links_category #{key}
-            - @links[key].sort_by! { |rlx| rlx.sort_order || 0 }.each do |l|
-              %p.links_content
-                = link_to l.name, l.url, :target => '_blank'
-                %br/
-                %span #{l.description}
-        - else
+      - if (@links.size > 0)
+        - @links.keys.sort.each do |key|
+          %p.red.font18.sans.bold.links_category #{key}
+          - @links[key].sort_by! { |rlx| rlx.sort_order || 0 }.each do |l|
+            %p.links_content
+              = link_to l.name, l.url, :target => '_blank'
+              %br/
+              %span #{l.description}
+      - else

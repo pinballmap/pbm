@@ -69,11 +69,11 @@ $sans: 'Nunito', Helvetica, Arial, sans-serif;
 $serif: 'Lato', "Lucida Grande", Tahoma, sans-serif;
 $red: #fd0091;
 $lightpink: #fff1f1;
-$blue: #e0f1ff;
 $darkblue: #232347;
 $purple: #e0e0ff;
 $grey: #7f7fa0;
-$lightgrey: #fafaff;
+$vlightpurple: #fafaff;
+$lightpurple: #f5f5ff;
 $medgrey: #aeb1d2;
 $darkgrey: #47475f;
 $black: #000e18;
@@ -192,7 +192,7 @@ input[type=checkbox] {
 
 ul {
   font-size: 16px;
-  line-height: 16px;
+  line-height: 18px;
 }
 
 li {
@@ -216,16 +216,16 @@ ul li li {
   letter-spacing: .3px;
 }
 
-.bg_gray {
-  background-color: $lightgrey;
-}
-
-.bg_blue {
-  background-color: $blue;
-}
-
 .bg_purple {
-  background-color: #f5f5ff;
+  background-color: $purple;
+}
+
+.bg_lightpurple {
+  background-color: $lightpurple;
+}
+
+.bg_vlightpurple {
+  background-color: $vlightpurple;
 }
 
 .w_320 {
@@ -369,14 +369,8 @@ ul li li {
   height: auto !important;
 }
 
-.gray_bg {
+.radius5 {
   @include radius(5px);
-  background-color: $lightgrey;
-}
-
-.blue_bg {
-  @include radius(5px);
-  background-color: $blue;
 }
 
 .flex_center {
@@ -463,10 +457,6 @@ ul li li {
   color: $grey;
 }
 
-.lightgrey {
-  color: $lightgrey;
-}
-
 .lh_30 {
   line-height: 30px;
 }
@@ -495,7 +485,7 @@ h1 {
 
 #login {
   background: white;
-  border: 4px solid $blue;
+  border: 4px solid $purple;
   padding: 0 15px 10px;
   border-radius: 10px;
 }
@@ -532,7 +522,7 @@ form.edit_user .form-actions {
 .error_notification {
   color: $red;
   line-height: 16px;
-  background: $blue;
+  background: $purple;
   text-align: center;
   font-style: italic;
   padding: 4px;
@@ -563,7 +553,7 @@ form.edit_user .form-actions {
   margin-left: 10px;
   margin-top: -3px;
   background: $black;
-  color: $lightgrey;
+  color: $vlightpurple;
   padding: 5px;
   font-weight: $bold;
   font-family: $sans;
@@ -620,7 +610,7 @@ div.stats {
 }
 
 span.stats {
-  background: $blue;
+  background: $purple;
   font-size: 32px;
   line-height: 32px;
   padding: 5px;
@@ -669,7 +659,7 @@ p.alert {
 #flash-message #flash_notice,
 #flash-message #flash_alert,
 #flash_error {
-  color: $blue;
+  color: $purple;
   font-size: 28px;
   text-align: center;
   top: 200px;
@@ -702,7 +692,7 @@ p.alert {
 
 .store_img {
   margin-top: 2px;
-  border: 2px solid $blue;
+  border: 2px solid $purple;
 }
 
 .store_shirt {
@@ -725,7 +715,7 @@ p.alert {
 #header a {
   text-decoration: none;
   font-size: 14px;
-  color: $lightgrey;
+  color: $vlightpurple;
 }
 
 #header a:hover {
@@ -748,7 +738,7 @@ p.alert {
 #menu_container {
   box-shadow: 5px 10px 10px rgba(90, 100, 117, 0.3);
   width: 180px;
-  background: $lightgrey;
+  background: $vlightpurple;
   position: fixed;
   top: 52px;
   left: 0;
@@ -792,7 +782,7 @@ p.alert {
 
 #header ul li a:hover {
   color: $darkgrey;
-  background-color: $blue;
+  background-color: $purple;
 }
 
 #header ul li.menu_header_01,
@@ -989,7 +979,7 @@ form#address_search_form input.lookup_search_input {
   height: 20px;
   text-align: center;
   line-height: 20px;
-  background: $lightgrey;
+  background: $vlightpurple;
 }
 
 #footer.footer_fixed {
@@ -1057,7 +1047,7 @@ form#address_search_form input.lookup_search_input {
   line-height: 16px;
   border: 0px;
   color: $darkgrey;
-  background-color: $lightgrey;
+  background-color: $vlightpurple;
   @include radius(5px);
   margin-left: 5px;
   box-shadow: 2px 5px 10px #d0d5d9;
@@ -1100,7 +1090,7 @@ span.or {
   @include radius(10px);
   padding: 5px 25px;
   background: $darkgrey;
-  color: $lightgrey;
+  color: $vlightpurple;
   font-weight: $bold;
   float: right;
   box-shadow: 2px 5px 10px #d0d5d9;
@@ -1389,7 +1379,7 @@ li.address_full {
 .lmx_count {
   margin: 0 auto 10px;
   width: fit-content;
-  border-bottom: 5px solid $blue;
+  border-bottom: 5px solid $purple;
 }
 
 .machine_name_container {
@@ -1428,7 +1418,7 @@ span.machine_year_man {
   font-size: 18px;
   font-weight: 400;
   font-style: italic;
-  color: $lightgrey;
+  color: $vlightpurple;
 }
 
 .machine_lmx {
@@ -1482,7 +1472,7 @@ span.machine_year_man {
 
 .machine_condition_lmx:hover {
   cursor: pointer;
-  background-color: $blue;
+  background-color: $purple;
   @include radius(10px);
 }
 
@@ -1547,7 +1537,7 @@ div.machine_condition_meta {
   color: #666666;
   font-size: 14px;
   line-height: 18px;
-  border-bottom: 1px solid $blue;
+  border-bottom: 1px solid $purple;
   margin-bottom: 8px;
 }
 
@@ -1606,7 +1596,7 @@ div.machine_condition_meta {
 
 .add_picture_location,
 .add_machine_location {
-  background-color: $lightgrey;
+  background-color: $vlightpurple;
 }
 
 .add_machine_location form select option {
@@ -1719,7 +1709,7 @@ br.clear {
 #form select,
 form select {
   border: 2px solid $medgrey;
-  background-color: $lightgrey;
+  background-color: $vlightpurple;
   height: 28px;
   @include radius(5px);
   font-size: 15px;
@@ -1770,7 +1760,7 @@ form select:hover {
   text-transform: uppercase;
   height: 28px;
   background: $darkgrey;
-  color: $lightgrey;
+  color: $vlightpurple;
   font-weight: $bold;
 }
 
@@ -1787,7 +1777,7 @@ input.search:active,
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
   transform: translate(1px, 1px);
-  background: $blue;
+  background: $purple;
 }
 
 .save_button {
@@ -1796,9 +1786,9 @@ input.search:active,
 }
 
 input:focus {
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px $blue;
-  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px $blue;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px $blue;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px $purple;
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px $purple;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px $purple;
 }
 
 input.search:hover,
@@ -1951,7 +1941,7 @@ input.score {
 .show_scores_lmx_toggle:hover,
 .show_conditions_lmx_toggle:hover,
 .add_scores_lmx_toggle:hover {
-  background-color: $blue;
+  background-color: $purple;
   color: #333333;
 }
 
@@ -2087,7 +2077,7 @@ div.location_type_container {
   margin-left: 5px;
   margin-top: 8px;
   background: $black;
-  color: $lightgrey;
+  color: $vlightpurple;
   padding: 5px;
   font-weight: $bold;
   font-family: $sans;
@@ -2120,7 +2110,7 @@ input.score {
 
 .location_detail_sub {
   padding: 10px;
-  background: $lightgrey;
+  background: $vlightpurple;
 }
 
 .location_name {
@@ -2130,7 +2120,7 @@ input.score {
 .desc_button {
   color: $darkgrey;
   line-height: 20px;
-  background: $lightgrey;
+  background: $vlightpurple;
   margin: 5px 0;
   border-top: 1px solid #CAC6C6;
   border-bottom: 1px solid #CAC6C6;
@@ -2153,7 +2143,7 @@ input.score {
 
 .show_location_detail_location {
   padding: 0;
-  background: $lightgrey;
+  background: $vlightpurple;
   margin-bottom: 12px;
   border-radius: 10px;
   min-height: 130px;
@@ -2396,7 +2386,7 @@ img.small_banner_icon {
   50% {
     color: $darkgrey;
     text-shadow: 1px 1px 5px #CCCCCC;
-    background-color: $blue;
+    background-color: $purple;
   }
 
   100% {
@@ -2412,7 +2402,7 @@ img.small_banner_icon {
   50% {
     color: $darkgrey;
     text-shadow: 1px 1px 5px #CCCCCC;
-    background-color: $blue;
+    background-color: $purple;
   }
 
   100% {
@@ -2428,7 +2418,7 @@ img.small_banner_icon {
   50% {
     color: $darkgrey;
     text-shadow: 1px 1px 5px #CCCCCC;
-    background-color: $blue;
+    background-color: $purple;
   }
 
   100% {
@@ -2444,7 +2434,7 @@ img.small_banner_icon {
   50% {
     color: $darkgrey;
     text-shadow: 1px 1px 5px #CCCCCC;
-    background-color: $blue;
+    background-color: $purple;
   }
 
   100% {
@@ -2455,7 +2445,7 @@ img.small_banner_icon {
 span.begin {
   padding: 10px;
   display: block;
-  background-color: $lightgrey;
+  background-color: $vlightpurple;
 
   -webkit-animation-duration: 5s;
   -webkit-animation-name: colorChange;
@@ -2491,7 +2481,7 @@ span.begin {
   width: 700px;
   height: 450px;
   margin: 10px 0;
-  border: 5px solid $blue;
+  border: 5px solid $purple;
   box-shadow: 1px 2px 7px rgba(90, 100, 117, 0.3);
 }
 
@@ -2519,7 +2509,7 @@ span.begin {
 
 .closest_button {
   border: 3px solid $darkgrey;
-  background: $blue;
+  background: $purple;
   @include radius(10px);
   font-size: 22px;
   text-align: center;
@@ -2597,7 +2587,7 @@ span.begin {
 .local_logo img {
   max-width: 460px;
   padding: 10px;
-  background-color: $lightgrey;
+  background-color: $vlightpurple;
   @include radius(5px);
 }
 
@@ -2803,12 +2793,12 @@ span.stats_list span.score_meta_gen {
 div.score_list span.score_machine,
 span.stats_list span.score_machine {
   text-decoration: underline;
-  background: $lightgrey;
+  background: $vlightpurple;
 }
 
 div.score_list {
   margin-bottom: 15px;
-  border-bottom: 1px solid $blue;
+  border-bottom: 1px solid $purple;
 }
 
 /** Map API **/
@@ -2956,7 +2946,7 @@ div.score_list {
 .ui-menu-item:hover,
 .ui-menu-item a:hover,
 {
-background: $blue;
+background: $purple;
 padding: 1px 5px;
 color: $black;
 }
@@ -2964,7 +2954,7 @@ color: $black;
 .ui-menu-item-wrapper:hover,
 .ui-menu-item-wrapper:active,
 .ui-menu-item-wrapper:focus {
-  background: $blue;
+  background: $purple;
   color: $black;
 }
 
