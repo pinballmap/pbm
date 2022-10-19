@@ -89,7 +89,7 @@
   - feed = Feedjira.parse(xml)
   - feed.entries.take(5).each do |entry|
     %div.m_5.center
-      =link_to entry.title, 'https://blog.pinballmap.com/' + entry.url, :target => '_blank', :class => 'bold font20'
+      =link_to entry.title, 'https://blog.pinballmap.com' + entry.url, :target => '_blank', :class => 'bold font20'
       %span.block.center.m_5 #{entry.published.strftime("%b %d, %Y")}
 
 .div_container_column.bg_purple
