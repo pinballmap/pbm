@@ -7,19 +7,19 @@
     Founded in 2008, Pinball Map is an open source, crowdsourced worldwide map of public pinball machines.
   %p.explore
     = link_to 'Explore the Map', map_path
-  %p.welcome.font20.center.m_15
-    %span
-      - if mobile_device?
-        Better yet! Use the
-      - else
-        Check out the
-      award-winning
-      = link_to "mobile app", app_path, :style => "color: #fd0091;"
-  %p.italic.flex_center
+  %p.welcome.font20.center.mt10.mb_5
+    - if mobile_device?
+      Better yet! Use the
+    - else
+      Check out the
+    award-winning
+    = link_to "mobile app", app_path, :style => "color: #fd0091;"
+  %p.italic.flex_center.mlr_10
     =image_tag( 'machine-pink.png', :alt => 'machine', :style => 'height:32px;margin-right:5px;', :class => 'splash')
-    The map was last updated
-    =distance_of_time_in_words(Time.now, @last_updated_time)
-    ago
+    The map was last updated&nbsp;
+    %span{:style => 'background: #f8f18e'}
+      =distance_of_time_in_words(Time.now, @last_updated_time)
+      ago&nbsp;
 %div.flex_center.bg_purple
   %p.red.font28.sans.bold.mt_20.mb_5 News
 %div.flex_center.mobile_flex.flex_top.bg_purple
@@ -74,7 +74,7 @@
       = link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
     %p
       = link_to 'Contact us!', 'portland/about'
-%div.flex_center.flex_column
+%div.flex_center.flex_column.mb_20
   %p.red.font28.sans.bold.mt_20.mb_5
     Recent Blog Posts
   - url = 'https://blog.pinballmap.com/feed.xml'
