@@ -158,9 +158,9 @@ module Api
         closest_locations = apply_scopes(Location).includes(:machines).near([params[:lat], params[:lon]], max_distance)
 
         if !closest_locations.empty? && !params[:send_all_within_distance]
-          return_response(closest_locations.first, 'location', [], %i[machine_names machine_ids], 200, except)
+          return_response(closest_locations.first, 'location', [], %i[machine_names machine_ids num_machines], 200, except)
         elsif !closest_locations.empty?
-          return_response(closest_locations, 'locations', [], %i[machine_names machine_ids], 200, except)
+          return_response(closest_locations, 'locations', [], %i[machine_names machine_ids num_machines], 200, except)
         else
           return_response("No locations within #{max_distance} miles.", 'errors')
         end
@@ -185,7 +185,7 @@ module Api
         locations_within = apply_scopes(Location).includes(:machines).within_bounding_box(bounds)
 
         if !locations_within.empty?
-          return_response(locations_within, 'location', [], %i[machine_names machine_ids], 200, except)
+          return_response(locations_within, 'location', [], %i[machine_names machine_ids num_machines], 200, except)
         else
           return_response('No locations found within bounding box.', 'errors')
         end
@@ -231,9 +231,9 @@ module Api
 
         if params[:send_all_within_distance]
           closest_locations = apply_scopes(Location).includes(:machines).near([lat, lon], max_distance)
-          return_response(closest_locations, 'locations', location_details, [:machine_names], 200, except)
+          return_response(closest_locations, 'locations', location_details, %i[machine_names machine_ids num_machines], 200, except)
         elsif closest_location
-          return_response(closest_location, 'location', location_details, [:machine_names], 200, except)
+          return_response(closest_location, 'location', location_details, %i[machine_names machine_ids num_machines], 200, except)
         else
           return_response("No locations within #{max_distance} miles.", 'errors')
         end
