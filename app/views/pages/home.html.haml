@@ -74,21 +74,8 @@
       = link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
     %p
       = link_to 'Contact us!', 'portland/about'
-%div.flex_center.flex_column.mb_20
-  %p.red.font28.sans.bold.mt_20.mb_5
-    Recent Blog Posts
-  - url = 'https://blog.pinballmap.com/feed.xml'
-  - xml = HTTParty.get(url).body
-  - if !xml.blank?
-    - feed = Feedjira.parse(xml)
-    - feed.entries.take(5).each do |entry|
-      %div.m_5.center
-        =link_to entry.title, 'https://blog.pinballmap.com' + entry.url, :target => '_blank', :class => 'bold font18'
-        %span.block.center.m_5 #{entry.published.strftime("%b %d, %Y")}
-  - else
-    %div.m_5.center None found
 
-%div.flex_center.flex_column.bg_lightpurple.mb_20
+%div.flex_center.flex_column.mb_20
   .region_map
     %p.red.font28.sans.bold.mt_20.mb_5.center
       Regional Maps
