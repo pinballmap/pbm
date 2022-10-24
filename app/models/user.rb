@@ -129,7 +129,7 @@ class User < ApplicationRecord
   end
 
   def last_50_edited_location_submissions
-    edited_location_submissions.limit(50)
+    edited_location_submissions.includes([:location]).limit(50)
   end
 
   def edited_location_submissions
@@ -142,7 +142,7 @@ class User < ApplicationRecord
       UserSubmission::REMOVE_MACHINE_TYPE,
       UserSubmission::NEW_SCORE_TYPE,
       UserSubmission::CONFIRM_LOCATION_TYPE
-    ).includes('location').order('created_at desc')
+    ).order('created_at desc')
   end
 
   def num_total_submissions
