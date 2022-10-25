@@ -123,7 +123,7 @@ class Location < ApplicationRecord
   def content_for_infowindow
     content = "'<div class=\"infowindow\" id=\"infowindow_#{id}\">"
     content += "<div class=\"gm_location_name\">#{name.gsub("'", "\\\\'")}</div>"
-    content += "<div class=\"gm_address\">#{[street.gsub("'", "\\\\'"), [city.gsub("'", "\\\\'"), state, zip].join(', '), phone].join('<br />')}</div>"
+    content += "<div class=\"gm_address\">#{[street.gsub("'", "\\\\'"), [city.gsub("'", "\\\\'"), state, zip].compact.split('').flatten.join(', '), phone].join('<br />')}</div>"
     content += '<hr />'
 
     machines = machine_names.take(5).map { |m| m.gsub("'", "\\\\'") + '<br />' }
