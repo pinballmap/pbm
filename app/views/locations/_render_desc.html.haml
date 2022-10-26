@@ -1,8 +1,6 @@
 - if !l.description.blank?
-  %div[l, :desc_show]
-    = image_tag('icons/clock-time-four-outline.svg', :class => 'meta_icon')
-    = l.description
-    .clear
+  = image_tag('icons/clock-time-four-outline.svg', :class => 'meta_icon float_l')
+  %div[l, :desc_show]= l.description
 %div[l, :desc_edit]{:style => 'display:none'}
   - if user_signed_in?
     = form_tag update_desc_locations_path(:action => 'update_desc', :id => l.id), :id => "update_desc_#{l.id}", :method => 'get' do
