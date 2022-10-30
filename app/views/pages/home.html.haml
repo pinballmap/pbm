@@ -14,12 +14,12 @@
       Check out the
     award-winning
     = link_to "mobile app", app_path, :style => "color: #fd0091;"
-  %p.italic.flex_center.mlr_10
-    =image_tag( 'machine-pink.png', :alt => 'machine', :style => 'height:32px;margin-right:5px;', :class => 'splash')
-    The map was last updated&nbsp;
-    %span{:style => 'background: #f8f18e'}
+  %div.m_10
+    %div.flex_center.italic.darkgrey
+      =image_tag( 'machine-pink.png', :alt => 'machine', :style => 'height:32px;margin-right:5px;', :class => 'splash')
+      The map was last updated
       =distance_of_time_in_words(Time.now, @last_updated_time)
-      ago&nbsp;
+      ago
 %div.flex_center.bg_lightpurple
   %p.red.font28.sans.bold.mt_20.mb_5 News
 %div.flex_center.mobile_flex.flex_top.bg_lightpurple
