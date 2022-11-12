@@ -199,7 +199,7 @@ Rails.application.routes.draw do
   get '/milwaukee' => redirect('/wisconsin')
   get '/regionless' => redirect('/map')
   get '/central-indiana' => redirect('/indiana')
-  get '/mid-michigan' => redirect('/michigan-mid')
+  get '/mid-michigan' => redirect('/map')
   get '/burlington' => redirect('/vermont')
   get '/apps' => redirect('/app')
   get '/apps/support' => redirect('/app/support')
@@ -210,6 +210,8 @@ Rails.application.routes.draw do
   get '/orlando' => redirect('/florida-central')
   get '/london' => redirect('/uk')
   get '/chico' => redirect('/map')
+  get '/michigan-west' => redirect('/map')
+  get '/michigan-mid' => redirect('/map')
 
   root to: 'pages#home'
 end
