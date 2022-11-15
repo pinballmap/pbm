@@ -129,7 +129,7 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
 
 function zoomCheck() {
   zoomLevel = map.getZoom();
-  if (zoomLevel < 9) {
+  if (zoomLevel < 6) {
     document.getElementById("zoom_in_more").style.display = "block";
   } else {
     document.getElementById("zoom_in_more").style.display = "none";
@@ -143,7 +143,7 @@ function redo() {
   zoomLevel = map.getZoom();
   map.on('dragend', function() {
     zoomLevel = map.getZoom();
-    if (zoomLevel < 9) {
+    if (zoomLevel < 6) {
       document.getElementById("zoom_in_more").style.display = "block";
       zoomLevel = map.getZoom();
     } else if ($("#followCheck").is(':checked')) {
@@ -167,14 +167,15 @@ function redo() {
 
   map.on('zoomend', function() {
     zoomLevel = map.getZoom();
-    if (zoomLevel < 9) {
+    console.log(zoomLevel);
+    if (zoomLevel < 6) {
       document.getElementById("zoom_in_more").style.display = "block";
       zoomLevel = map.getZoom();
-    } else if (zoomLevel >= 9) {
+    } else if (zoomLevel >= 6) {
       document.getElementById("zoom_in_more").style.display = "none";
       zoomLevel = map.getZoom();
     }
-    if ($("#followCheck").is(':checked') && (zoomLevel >= 9)) {
+    if ($("#followCheck").is(':checked') && (zoomLevel >= 6)) {
       document.getElementById("zoom_in_more").style.display = "none";
       window.clearTimeout(mapupdater);
       mapupdater = window.setTimeout(function() {
