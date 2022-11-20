@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.pbm",
+            "sha256_cert_fingerprints": [
+                "48:30:1E:F4:4A:E4:70:BF:B8:93:5E:D4:49:E4:F1:EA:B0:80:21:35:15:98:66:50:BF:74:FA:9D:35:5B:22:7F"
+            ]
+        }
+    }
+]
