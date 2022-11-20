@@ -90,6 +90,7 @@ Rails.application.routes.draw do
   get '/store' => 'pages#store'
   get '/donate' => 'pages#donate'
   get '.well-known/apple-app-site-association' => 'pages#apple_app_site_association'
+  get '.well-known/assetlinks.json' => 'pages#assetlinks.json'
 
   scope ':region', constraints: lambda { |request| Region.where('lower(name) = ?', request[:region].downcase).any? } do
     get 'app' => redirect('/app')
