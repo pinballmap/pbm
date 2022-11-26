@@ -7,7 +7,7 @@ class RegistrationsController < Devise::RegistrationsController
     @user = User.new(user_params)
     if @answers.any? { |w| @user.security_test[w] }
       if @user.save
-        redirect_to root_path, notice: 'Great! Now confirm your account. A confirmation link has been sent to your email address.'
+        redirect_to root_path, notice: 'Please confirm your account. A link has been emailed to you.'
       else
         render action: 'new'
       end
