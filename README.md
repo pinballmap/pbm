@@ -21,11 +21,11 @@ Available here: [http://pinballmap.com/api/v1/docs](http://pinballmap.com/api/v1
 ## Mac Environment Setup
 Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhanifin) undertook to get the site up and running on OS X 10.9. If you would like to contribute, and have any trouble, please ask.
 
-* Follow the Ruby install instructions at [railsapps.github.io/installrubyonrails-mac.html](http://railsapps.github.io/installrubyonrails-mac.html). Make sure you also download ruby-3.0.4
+* Follow the Ruby install instructions at [railsapps.github.io/installrubyonrails-mac.html](http://railsapps.github.io/installrubyonrails-mac.html). Make sure you also download ruby-3.0.5
 * `cd /Projects-Path/`
 * `git clone https://github.com/pinballmap/pbm.git` (*I used the SourceTree app instead.*)
 * `cd /Projects-Path/pbm`
-* `rvm --default use ruby-3.0.4`
+* `rvm --default use ruby-3.0.5`
 * `bundle install`
 * `selenium install`
 * `brew update`
@@ -71,8 +71,8 @@ or read:
 4. Install and setup ruby and rvm:
 
 * `curl -L https://get.rvm.io | bash -s stable --ruby`
-* `rvm install ruby-3.0.4`
-* `rvm --default use ruby-3.0.4`
+* `rvm install ruby-3.0.5`
+* `rvm --default use ruby-3.0.5`
 * `gem install bundler`
 * `bundle install`
 * `cp config/database.yml.example config/database.yml` to create your database.yml for development
