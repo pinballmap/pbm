@@ -516,6 +516,8 @@ RailsAdmin.config do |config|
       field :email, :string
       field :username, :string
       field :region, :belongs_to_association
+      field :created_at, :datetime
+      field :confirmed_at, :datetime
       field :is_disabled, :boolean
       field :last_sign_in_at, :datetime
     end
@@ -523,6 +525,8 @@ RailsAdmin.config do |config|
       field :email, :string
       field :username, :string
       field :region, :belongs_to_association
+      field :created_at, :datetime
+      field :confirmed_at, :datetime
       field :is_disabled, :boolean
       field :last_sign_in_at, :datetime
     end
