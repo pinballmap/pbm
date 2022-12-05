@@ -2,7 +2,7 @@
     "applinks": {
         "details": [
             {
-                "appID": "X8ZE3634DQ.net.isaacruiz.ppm",
+                "appID": "3NCUYHG3MJ.net.isaacruiz.ppm",
                 "paths": [
                 "NOT /store",
                 "NOT /app/*",
@@ -22,7 +22,7 @@
                 "/*" ]
             },
             {
-                "appIDs": [ "X8ZE3634DQ.net.isaacruiz.ppm" ],
+                "appIDs": [ "3NCUYHG3MJ.net.isaacruiz.ppm" ],
                 "components": [
                     {
                         "/": "/store",
@@ -103,10 +103,10 @@
         ]
     },
     "activitycontinuation": {
-        "apps": [ "X8ZE3634DQ.net.isaacruiz.ppm" ]
+        "apps": [ "3NCUYHG3MJ.net.isaacruiz.ppm" ]
     },
     "webcredentials": {
-        "apps": [ "X8ZE3634DQ.net.isaacruiz.ppm" ]
+        "apps": [ "3NCUYHG3MJ.net.isaacruiz.ppm" ]
     }
 }
 
