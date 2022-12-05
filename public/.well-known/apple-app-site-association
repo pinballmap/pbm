@@ -1,6 +1,27 @@
 {
     "applinks": {
+        "apps": [],
         "details": [
+            {
+                "appID": "3NCUYHG3MJ.net.isaacruiz.ppm",
+                "paths": [
+                "NOT /store",
+                "NOT /app/*",
+                "NOT /donate",
+                "NOT /users/*",
+                "NOT /faq",
+                "NOT /privacy",
+                "NOT /admin/*",
+                "NOT /*/flier",
+                "NOT /flier",
+                "NOT /*/high_rollers",
+                "NOT /location_machine_xrefs.rss",
+                "NOT /*/location_machine_xrefs.rss",
+                "NOT /*/machine_score_xrefs.rss",
+                "NOT /*/events.rss",
+                "NOT /api/*",
+                "/*" ]
+            },
             {
                 "appIDs": [ "3NCUYHG3MJ.net.isaacruiz.ppm" ],
                 "components": [
