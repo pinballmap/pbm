@@ -210,8 +210,8 @@ Rails.application.routes.draw do
   get '/orlando' => redirect('/florida-central')
   get '/london' => redirect('/uk')
   get '/chico' => redirect('/map')
-  get '/michigan-west' => redirect('/map')
-  get '/michigan-mid' => redirect('/map')
+  get '/michigan-west' => redirect('/michigan-sw')
+  get '/michigan-mid' => redirect('/michigan-north')
 
   root to: 'pages#home'
 end
