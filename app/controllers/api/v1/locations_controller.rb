@@ -185,7 +185,7 @@ module Api
         locations_within = apply_scopes(Location).includes(:machines).within_bounding_box(bounds)
 
         if !locations_within.empty?
-          return_response(locations_within, 'location', [], %i[machine_names machine_ids num_machines], 200, except)
+          return_response(locations_within, 'locations', [], %i[machine_names machine_ids num_machines], 200, except)
         else
           return_response('No locations found within bounding box.', 'errors')
         end
