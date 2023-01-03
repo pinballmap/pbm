@@ -169,9 +169,6 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
-    feedjira (3.2.1)
-      loofah (>= 2.3.1)
-      sax-machine (>= 1.0)
     ffi (1.15.5)
     geocoder (1.8.0)
     get_process_mem (0.2.5)
@@ -203,9 +200,6 @@ GEM
       nokogiri (>= 1.6.0)
       ruby_parser (~> 3.5)
     htmlentities (4.3.4)
-    httparty (0.20.0)
-      mime-types (~> 3.0)
-      multi_xml (>= 0.5.2)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     i18n_data (0.13.0)
@@ -273,7 +267,6 @@ GEM
     moneta (1.0.0)
     msgpack (1.5.2)
     multi_json (1.15.0)
-    multi_xml (0.6.0)
     nested_form (0.3.2)
     nio4r (2.5.8)
     nokogiri (1.13.9)
@@ -426,7 +419,6 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    sax-machine (1.3.2)
     scout_apm (5.2.0)
       parser
     selenium-webdriver (4.2.1)
@@ -519,11 +511,9 @@ DEPENDENCIES
   email_spec
   exception_notification
   factory_bot_rails
-  feedjira
   geocoder
   haml-rails
   has_scope
-  httparty
   inherited_resources
   jbuilder
   jquery-rails
