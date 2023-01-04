@@ -62,6 +62,7 @@
 
 :javascript
   $('#address_search_form').on('submit', function(e) {
+    storeMachineID();
     hideSearchModal();
     $(".mask").hide();
     if (mapAdjusted = 1) { //reset checkbox

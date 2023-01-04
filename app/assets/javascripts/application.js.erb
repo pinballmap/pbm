@@ -5,6 +5,7 @@
 var map;
 var region;
 var ismap;
+var searchMachineID;
 var mapAdjusted = 0;
 var search_string;
 var zoomLevel;
@@ -66,12 +67,12 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
     el.innerHTML = '<span><b>' + num_machines[i] + '</b></span>';
 
     if (contents.length > 1) {
-      (function(el, index) {
+      (function (el, index) {
         var locationID = locationIDs[index];
 
         el.id = 'marker_' + locationID;
         el.innerHTML = '<span><b>' + num_machines[i] + '</b></span>';
-        el.addEventListener('touchstart', function() {
+        el.addEventListener('touchstart', function () {
           showLocationDetail(locationID);
           showInfowindow(locationID);
 
@@ -79,7 +80,7 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
           window.scrollBy(0, -140);
           el.preventDefault();
         });
-        el.addEventListener('click', function() {
+        el.addEventListener('click', function () {
           showLocationDetail(locationID);
 
           document.getElementById('location_detail_location_' + locationID).scrollIntoView(true);
@@ -91,7 +92,7 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
     var popup = new maplibregl.Popup({ offset: 25 })
       .setHTML(contents[i]);
 
-    var marker = new maplibregl.Marker(el, {anchor: 'center'})
+    var marker = new maplibregl.Marker(el, { anchor: 'center' })
       .setLngLat([lons[i], lats[i]])
       .setPopup(popup)
       .addTo(map);
@@ -109,16 +110,16 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
         document.getElementById("not_found").style.display = "none";
       }
     } else if (contents.length == 0 && latLng.length === 1) {
-      document.getElementById("map_canvas").innerHTML="<p id='not_found' class='font28 red bold'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
+      document.getElementById("map_canvas").innerHTML = "<p id='not_found' class='font28 red bold'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
     } else if (contents.length == 0 && latLng.length === 2) {
-      map.fitBounds(bounds, {padding: 50, animate: false});
+      map.fitBounds(bounds, { padding: 50, animate: false });
       map.setZoom(18);
       zoomCheck();
       if (document.getElementById("not_found")) {
         document.getElementById("not_found").style.display = "none";
       }
     } else {
-      map.fitBounds(bounds, {padding: 50, animate: false});
+      map.fitBounds(bounds, { padding: 50, animate: false });
       zoomCheck();
       if (document.getElementById("not_found")) {
         document.getElementById("not_found").style.display = "none";
@@ -138,10 +139,14 @@ function zoomCheck() {
   redo();
 }
 
+function storeMachineID() {
+  searchMachineID = document.getElementById("by_machine_id").value;
+}
+
 function redo() {
   var mapupdater;
   zoomLevel = map.getZoom();
-  map.on('dragend', function() {
+  map.on('dragend', function () {
     zoomLevel = map.getZoom();
     if (zoomLevel < 6) {
       document.getElementById("zoom_in_more").style.display = "block";
@@ -149,25 +154,43 @@ function redo() {
     } else if ($("#followCheck").is(':checked')) {
       document.getElementById("zoom_in_more").style.display = "none";
       window.clearTimeout(mapupdater);
-      mapupdater = window.setTimeout(function() {
-        if (ismap == 1) {
-          var url = '/locations?map_location_data=' + ';by_center_point_and_ne_boundary=' + map.getBounds().getCenter().toArray().join() + ',' + map.getBounds().getNorthEast().toArray().join();
-        }
-        else {
-          var url = '/locations?region=' + region + ';by_center_point_and_ne_boundary=' + map.getBounds().getCenter().toArray().join() + ',' + map.getBounds().getNorthEast().toArray().join();
-        }
-        document.getElementById('search_link_wrapper').style.display = "none";
-        $('#locations').html(loadingHTML());
-        $.get(url, function(data) {
-          $('#locations').html(data);
+      mapupdater = window.setTimeout(function () {
+
+        var bounds = map.getBounds();
+        var sw = bounds.getSouthWest();
+        var ne = bounds.getNorthEast();
+        var searchMachineIDString = searchMachineID ? ';by_machine_id=' + searchMachineID : '';
+
+        var dfd = $.getJSON('/api/v1/locations/within_bounding_box.json?swlat=' + sw.lat + ';swlon=' + sw.lng + ';nelat=' + ne.lat + ';nelon=' + ne.lng + searchMachineIDString);
+
+        dfd.done(function (response) {
+          if (!response.locations) {
+            document.getElementById("map_canvas").innerHTML = "<p id='not_found' class='font28 red bold'>" + "No pinball found on this map within 50 miles of your location." + "</p>";
+          } else {
+            var locationIds = [];
+            for (var i = 0; i < response.locations.length; i++) {
+              locationIds.push(response.locations[i].id)
+            }
+            if (ismap == 1) {
+              var url = '/locations?map_location_data=;by_location_id=' + locationIds.join('_');
+            }
+            else {
+              var url = '/locations?region=' + region + '&by_location_id=' + locationIds.join('_');
+            }
+
+            document.getElementById('search_link_wrapper').style.display = "none";
+            $('#locations').html(loadingHTML());
+            $.get(url, function (data) {
+              $('#locations').html(data);
+            });
+          }
         });
       }, REDO_TIMEOUT);
     }
   });
 
-  map.on('zoomend', function() {
+  map.on('zoomend', function () {
     zoomLevel = map.getZoom();
-    console.log(zoomLevel);
     if (zoomLevel < 6) {
       document.getElementById("zoom_in_more").style.display = "block";
       zoomLevel = map.getZoom();
@@ -178,17 +201,36 @@ function redo() {
     if ($("#followCheck").is(':checked') && (zoomLevel >= 6)) {
       document.getElementById("zoom_in_more").style.display = "none";
       window.clearTimeout(mapupdater);
-      mapupdater = window.setTimeout(function() {
-        if (ismap == 1) {
-          var url = '/locations?map_location_data=' + ';by_center_point_and_ne_boundary=' + map.getBounds().getCenter().toArray().join() + ',' + map.getBounds().getNorthEast().toArray().join();
-        }
-        else {
-          var url = '/locations?region=' + region + ';by_center_point_and_ne_boundary=' + map.getBounds().getCenter().toArray().join() + ',' + map.getBounds().getNorthEast().toArray().join();
-        }
-        document.getElementById('search_link_wrapper').style.display = "none";
-        $('#locations').html(loadingHTML());
-        $.get(url, function(data) {
-          $('#locations').html(data);
+      mapupdater = window.setTimeout(function () {
+
+        var bounds = map.getBounds();
+        var sw = bounds.getSouthWest();
+        var ne = bounds.getNorthEast();
+        var searchMachineIDString = searchMachineID ? ';by_machine_id=' + searchMachineID : '';
+
+        var dfd = $.getJSON('/api/v1/locations/within_bounding_box.json?swlat=' + sw.lat + ';swlon=' + sw.lng + ';nelat=' + ne.lat + ';nelon=' + ne.lng + searchMachineIDString);
+
+        dfd.done(function (response) {
+          if (!response.locations) {
+            document.getElementById("map_canvas").innerHTML = "<p id='not_found' class='font28 red bold'>" + "No pinball found on this map within 50 miles of your location." + "</p>";
+          } else {
+            var locationIds = [];
+            for (var i = 0; i < response.locations.length; i++) {
+              locationIds.push(response.locations[i].id)
+            }
+            if (ismap == 1) {
+              var url = '/locations?map_location_data=;by_location_id=' + locationIds.join('_');
+            }
+            else {
+              var url = '/locations?region=' + region + '&by_location_id=' + locationIds.join('_');
+            }
+
+            document.getElementById('search_link_wrapper').style.display = "none";
+            $('#locations').html(loadingHTML());
+            $.get(url, function (data) {
+              $('#locations').html(data);
+            });
+          }
         });
       }, REDO_TIMEOUT);
     }
@@ -200,7 +242,7 @@ function scrollToMiddle(id) {
   var window_height = $(window).height();
   var y = elem_position - window_height / 2;
 
-  window.scrollTo(0,y);
+  window.scrollTo(0, y);
 }
 
 function loadingHTML() {
@@ -210,7 +252,7 @@ function loadingHTML() {
 function setOtherSearchOptions(newSection) {
   var html = "<span class='black_text'>Search:</span>";
   for (section in searchSections) {
-      html += "  <button id='" + searchSections[section] + "_section_link' onclick='switchSection(\"" + searchSections[section] + "\");'>" + searchSections[section] + "</button>\n"
+    html += "  <button id='" + searchSections[section] + "_section_link' onclick='switchSection(\"" + searchSections[section] + "\");'>" + searchSections[section] + "</button>\n"
   }
 
   $('#other_search_options').html(html);
@@ -233,34 +275,34 @@ function initSearch(userFaved, operatorIDs, locationIDs, locationTypeIDs, zoneID
     var url = '/locations?user_faved=' + userFaved + ';by_location_id=' + locationIDs + ';by_operator_id=' + operatorIDs + ';by_type_id=' + locationTypeIDs + ';by_zone_id=' + zoneIDs + ';by_machine_id=' + machineIDs + ';by_city_id=' + cityName + ';by_machine_group_id=' + machineGroupId + ';by_ipdb_id=' + ipdbIDs + ';by_opdb_id=' + opdbIDs + ';show_location_distance=' + showLocationDistance + ';lat=' + lat + ';lon=' + lon + ';by_at_least_n_machines_city=' + byAtLeastNMachinesCity + ';by_at_least_n_machines_type=' + byAtLeastNMachinesType + ';by_at_least_n_machines_zone=' + byAtLeastNMachinesZone + ';region=' + region;
 
     $('#locations').html(loadingHTML());
-    $.get(url, function(data) {
+    $.get(url, function (data) {
       $('#locations').html(data);
     });
   }
 }
 
 function findClosestLocations(region) {
-  navigator.geolocation.getCurrentPosition(function(position) {
-    var dfd = $.getJSON('/api/v1/locations/closest_by_lat_lon.json', {lat: position.coords.latitude, lon: position.coords.longitude, max_distance: 50, send_all_within_distance: 1});
-    dfd.done(function(response) {
+  navigator.geolocation.getCurrentPosition(function (position) {
+    var dfd = $.getJSON('/api/v1/locations/closest_by_lat_lon.json', { lat: position.coords.latitude, lon: position.coords.longitude, max_distance: 50, send_all_within_distance: 1 });
+    dfd.done(function (response) {
       if (!response.locations) {
-        document.getElementById("map_canvas").innerHTML="<p id='not_found' class='font28 red bold'>" + "No pinball found on this map within 50 miles of your location." + "</p>";
+        document.getElementById("map_canvas").innerHTML = "<p id='not_found' class='font28 red bold'>" + "No pinball found on this map within 50 miles of your location." + "</p>";
       } else {
-          var locationIds = [];
-          for (var i = 0; i < response.locations.length; i++) {
-            locationIds.push(response.locations[i].id)
-          }
+        var locationIds = [];
+        for (var i = 0; i < response.locations.length; i++) {
+          locationIds.push(response.locations[i].id)
+        }
 
-          var url = '/locations?show_location_distance=1;lat=' + position.coords.latitude + ';lon=' + position.coords.longitude + ';by_location_id=' + locationIds.join('_');
+        var url = '/locations?show_location_distance=1;lat=' + position.coords.latitude + ';lon=' + position.coords.longitude + ';by_location_id=' + locationIds.join('_');
 
-          $('#locations').html(loadingHTML());
-          $.get(url, function(data) {
-            $('#locations').html(data);
-          });
+        $('#locations').html(loadingHTML());
+        $.get(url, function (data) {
+          $('#locations').html(data);
+        });
 
       }
     });
-  }, function() {
+  }, function () {
     // User has blocked access to their location or something else went wrong
   });
 }
@@ -268,14 +310,14 @@ function findClosestLocations(region) {
 function showLocationDetail(locationID) {
   $('.location_detail_location').hide();
 
-  if ($('#location_detail_location_' + locationID).is(":hidden") ) {
+  if ($('#location_detail_location_' + locationID).is(":hidden")) {
     $('#show_location_detail_location_' + locationID).hide();
     $('.sub_nav_location').hide();
     $('.back_to_results').show();
     toggleData('location_detail_location', locationID);
 
     $('#location_detail_location_' + locationID).html(loadingHTML());
-    $.get('/locations/' + locationID + '/render_location_detail', function(data) {
+    $.get('/locations/' + locationID + '/render_location_detail', function (data) {
       $('#location_detail_location_' + locationID).html(data);
     });
   }
@@ -289,7 +331,7 @@ function showInfowindow(locationID) {
 
 function backToResults() {
   $('.back_to_results').hide();
-  $('.sub_nav_location').show("slide", {direction: "left"}, 400);
+  $('.sub_nav_location').show("slide", { direction: "left" }, 400);
   $('.location_detail_location').hide();
 }
 
@@ -298,7 +340,7 @@ function showSearchModal() {
 }
 
 function hideSearchModal() {
-  if ($('.search_modal').css('display') == 'block' ) {
+  if ($('.search_modal').css('display') == 'block') {
     $('#form_container').hide(400);
   }
 }
@@ -335,29 +377,29 @@ function initializeRegionMap(ids, lats, lons, contents) {
     var marker = new maplibregl.Marker(el)
       .setLngLat([lons[i], lats[i]])
       .setPopup(popup)
-      .on('click', function(e) { map.setView(e.latlng, 13) })
+      .on('click', function (e) { map.setView(e.latlng, 13) })
       .addTo(regionMap);
 
     markers.push(marker);
     bounds.extend([lons[i], lats[i]]);
   }
 
-  regionMap.fitBounds(bounds, {padding: 50, animate: false});
+  regionMap.fitBounds(bounds, { padding: 50, animate: false });
 }
 
-var fade_flash = function() {
+var fade_flash = function () {
   $("#flash_notice").delay(2000).fadeOut("slow");
   $("#flash_alert").delay(2000).fadeOut("slow");
   $("#flash_error").delay(2000).fadeOut("slow");
 };
 fade_flash();
 
-var show_ajax_message = function(msg, type) {
-  $("#flash-message").html('<div id="flash_'+type+'">'+msg+'</div>');
+var show_ajax_message = function (msg, type) {
+  $("#flash-message").html('<div id="flash_' + type + '">' + msg + '</div>');
   fade_flash();
 };
 
 function show_new_machine_message() {
-  $("#flash-message").html('<div id="flash_alert">'+'Thank you. Since this is a new machine name, we are moderating this submission.'+'</div>');
+  $("#flash-message").html('<div id="flash_alert">' + 'Thank you. Since this is a new machine name, we are moderating this submission.' + '</div>');
   fade_flash();
 };

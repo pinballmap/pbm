@@ -44,6 +44,7 @@
   $(function () {
     var ismap = 0;
     $('.location_search').on('submit', function(e) {
+      storeMachineID();
       hideSearchModal();
       $(".mask").hide();
       ismap = 0;
