@@ -33,8 +33,8 @@ class Machine < ApplicationRecord
       m = Machine.find_by_opdb_id(r['opdb_id'])
       next unless m
 
-      m.type = r['type']
-      m.display = r['display']
+      m.machine_type = r['type']
+      m.machine_display = r['display']
       m.save
     end
   end

@@ -326,8 +326,8 @@ RailsAdmin.config do |config|
       field :opdb_img, :string
       field :opdb_img_height, :integer
       field :opdb_img_width, :integer
-      field :type, :string
-      field :display, :string
+      field :machine_type, :string
+      field :machine_display, :string
       field :machine_group, :belongs_to_association
     end
     show do
@@ -340,8 +340,8 @@ RailsAdmin.config do |config|
       field :opdb_img, :string
       field :opdb_img_height, :integer
       field :opdb_img_width, :integer
-      field :type, :string
-      field :display, :string
+      field :machine_type, :string
+      field :machine_display, :string
       field :machine_group, :belongs_to_association
     end
     edit do
@@ -354,8 +354,8 @@ RailsAdmin.config do |config|
       field :opdb_img, :string
       field :opdb_img_height, :integer
       field :opdb_img_width, :integer
-      field :type, :string
-      field :display, :string
+      field :machine_type, :string
+      field :machine_display, :string
       field :is_active, :boolean
       field :machine_group, :belongs_to_association
     end
