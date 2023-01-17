@@ -28,6 +28,18 @@ class Machine < ApplicationRecord
     machine_group_id ? Machine.where('machine_group_id = ?', machine_group_id).to_a : [self]
   end
 
+  def self.tag_with_opdb_type_json(opdb_json)
+    JSON.parse(opdb_json).each do |r|
+      m = Machine.find_by_opdb_id(r['opdb_id'])
+      next unless m
+
+        m.type = r['type']
+        m.display = r['display']
+        m.save
+      end
+    end
+  end
+
   def self.tag_with_opdb_json(opdb_json)
     JSON.parse(opdb_json).each do |r|
       m = Machine.find_by_opdb_id(r['opdb_id'])

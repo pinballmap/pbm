@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_03_045549) do
+ActiveRecord::Schema.define(version: 2023_01_17_174254) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -45,17 +46,17 @@ ActiveRecord::Schema.define(version: 2022_06_03_045549) do
 
   create_table "events", id: :serial, force: :cascade do |t|
     t.integer "region_id"
-    t.string "name"
+    t.string "name", limit: 255
     t.text "long_desc"
-    t.string "external_link"
+    t.string "external_link", limit: 255
     t.integer "category_no"
     t.date "start_date"
     t.date "end_date"
     t.integer "location_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "category"
-    t.string "external_location_name"
+    t.string "category", limit: 255
+    t.string "external_location_name", limit: 255
     t.integer "ifpa_calendar_id"
     t.integer "ifpa_tournament_id"
     t.index ["ifpa_calendar_id"], name: "index_events_on_ifpa_calendar_id"
@@ -71,7 +72,7 @@ ActiveRecord::Schema.define(version: 2022_06_03_045549) do
     t.integer "machine_id"
     t.text "condition"
     t.date "condition_date"
-    t.string "ip"
+    t.string "ip", limit: 255
     t.integer "user_id"
     t.integer "machine_score_xrefs_count"
     t.index ["location_id"], name: "index_location_machine_xrefs_on_location_id"
@@ -85,8 +86,8 @@ ActiveRecord::Schema.define(version: 2022_06_03_045549) do
     t.datetime "updated_at"
     t.text "description"
     t.integer "user_id"
-    t.string "photo_file_name"
-    t.string "photo_content_type"
+    t.string "photo_file_name", limit: 255
+    t.string "photo_content_type", limit: 255
     t.integer "photo_file_size"
     t.datetime "photo_updated_at"
     t.index ["location_id"], name: "index_location_picture_xrefs_on_location_id"
@@ -96,21 +97,21 @@ ActiveRecord::Schema.define(version: 2022_06_03_045549) do
   create_table "location_types", id: :serial, force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "name"
+    t.string "name", limit: 255
     t.string "icon"
     t.string "library"
   end
 
   create_table "locations", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "street"
-    t.string "city"
-    t.string "state"
-    t.string "zip"
-    t.string "phone"
+    t.string "name", limit: 255
+    t.string "street", limit: 255
+    t.string "city", limit: 255
+    t.string "state", limit: 255
+    t.string "zip", limit: 255
+    t.string "phone", limit: 255
     t.decimal "lat", precision: 18, scale: 12
     t.decimal "lon", precision: 18, scale: 12
-    t.string "website"
+    t.string "website", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "zone_id"
@@ -141,7 +142,7 @@ ActiveRecord::Schema.define(version: 2022_06_03_045549) do
   end
 
   create_table "machine_groups", id: :serial, force: :cascade do |t|
-    t.string "name", null: false
+    t.string "name", limit: 255, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -151,36 +152,38 @@ ActiveRecord::Schema.define(version: 2022_06_03_045549) do
     t.bigint "score"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "ip"
+    t.string "ip", limit: 255
     t.integer "user_id"
-    t.string "rank"
+    t.string "rank", limit: 255
     t.index ["location_machine_xref_id"], name: "index_machine_score_xrefs_on_location_machine_xref_id"
     t.index ["user_id"], name: "index_machine_score_xrefs_on_user_id"
   end
 
   create_table "machines", id: :serial, force: :cascade do |t|
-    t.string "name"
+    t.string "name", limit: 255
     t.boolean "is_active"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "ipdb_link"
+    t.string "ipdb_link", limit: 255
     t.integer "year"
-    t.string "manufacturer"
+    t.string "manufacturer", limit: 255
     t.integer "machine_group_id"
     t.integer "ipdb_id"
     t.text "opdb_id"
     t.text "opdb_img"
     t.integer "opdb_img_height"
     t.integer "opdb_img_width"
+    t.string "type"
+    t.string "display"
     t.index ["machine_group_id"], name: "index_machines_on_machine_group_id"
   end
 
   create_table "operators", id: :serial, force: :cascade do |t|
-    t.string "name"
+    t.string "name", limit: 255
     t.integer "region_id"
-    t.string "email"
-    t.string "website"
-    t.string "phone"
+    t.string "email", limit: 255
+    t.string "website", limit: 255
+    t.string "phone", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["region_id"], name: "index_operators_on_region_id"
@@ -191,39 +194,65 @@ ActiveRecord::Schema.define(version: 2022_06_03_045549) do
     t.text "username"
     t.integer "item"
     t.text "table"
-    t.integer "month", limit: 2
+    t.integer "month"
     t.bigint "year"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["item", "table", "month", "year"], name: "index_rails_admin_histories"
+    t.index ["item", "table", "month", "year"], name: "index_histories_on_item_and_table_and_month_and_year"
   end
 
   create_table "region_link_xrefs", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "url"
-    t.string "description"
-    t.string "category"
+    t.string "name", limit: 255
+    t.string "url", limit: 255
+    t.string "description", limit: 255
+    t.string "category", limit: 255
     t.integer "region_id"
     t.integer "sort_order"
     t.index ["region_id"], name: "index_region_link_xrefs_on_region_id"
   end
 
   create_table "regions", id: :serial, force: :cascade do |t|
-    t.string "name"
+    t.string "name", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "full_name"
-    t.string "motd", default: "To help keep Pinball Map running, consider a donation! https://pinballmap.com/donate"
+    t.string "full_name", limit: 255
+    t.string "motd", limit: 255, default: "To help keep Pinball Map running, consider a donation! https://pinballmap.com/donate"
     t.decimal "lat", precision: 18, scale: 12
     t.decimal "lon", precision: 18, scale: 12
     t.integer "n_search_no"
-    t.string "default_search_type"
+    t.string "default_search_type", limit: 255
     t.boolean "should_email_machine_removal"
     t.boolean "should_auto_delete_empty_locations"
     t.boolean "send_digest_comment_emails"
     t.boolean "send_digest_removal_emails"
     t.text "state"
     t.float "effective_radius", default: 200.0
+  end
+
+  create_table "ssw_lpx_backup", id: false, force: :cascade do |t|
+    t.integer "id"
+    t.integer "location_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text "description"
+    t.integer "user_id"
+    t.string "photo_file_name", limit: 255
+    t.string "photo_content_type", limit: 255
+    t.integer "photo_file_size"
+    t.datetime "photo_updated_at"
+  end
+
+  create_table "ssw_tmp_weird_empty_lmxes", id: false, force: :cascade do |t|
+    t.integer "id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer "location_id"
+    t.integer "machine_id"
+    t.text "condition"
+    t.date "condition_date"
+    t.string "ip", limit: 255
+    t.integer "user_id"
+    t.integer "machine_score_xrefs_count"
   end
 
   create_table "suggested_locations", id: :serial, force: :cascade do |t|
@@ -268,41 +297,45 @@ ActiveRecord::Schema.define(version: 2022_06_03_045549) do
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
-    t.string "email"
-    t.string "encrypted_password"
-    t.integer "sign_in_count"
+    t.string "email", limit: 255, default: "", null: false
+    t.string "encrypted_password", limit: 128, default: "", null: false
+    t.string "password_salt", limit: 255, default: "", null: false
+    t.string "reset_password_token", limit: 255
+    t.string "remember_token", limit: 255
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string "current_sign_in_ip"
-    t.string "last_sign_in_ip"
+    t.string "current_sign_in_ip", limit: 255
+    t.string "last_sign_in_ip", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "region_id"
-    t.string "initials"
+    t.string "initials", limit: 255
     t.datetime "reset_password_sent_at"
     t.boolean "is_machine_admin"
     t.boolean "is_primary_email_contact"
     t.boolean "is_super_admin"
     t.text "username"
-    t.string "confirmation_token"
+    t.string "confirmation_token", limit: 255
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.boolean "is_disabled"
     t.string "authentication_token", limit: 30
-    t.string "reset_password_token"
     t.string "security_test"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["region_id"], name: "index_users_on_region_id"
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   create_table "zones", id: :serial, force: :cascade do |t|
-    t.string "name"
+    t.string "name", limit: 255
     t.integer "region_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "short_name"
+    t.string "short_name", limit: 255
     t.boolean "is_primary"
     t.index ["region_id"], name: "index_zones_on_region_id"
   end
