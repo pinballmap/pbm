@@ -173,7 +173,7 @@ GEM
     geocoder (1.8.0)
     get_process_mem (0.2.5)
       ffi (~> 1.0)
-    globalid (1.0.0)
+    globalid (1.0.1)
       activesupport (>= 5.0)
     haml (5.2.2)
       temple (>= 0.8.0)
@@ -263,7 +263,7 @@ GEM
     mini_histogram (0.3.1)
     mini_mime (1.1.2)
     mini_portile2 (2.8.1)
-    minitest (5.16.2)
+    minitest (5.17.0)
     moneta (1.0.0)
     msgpack (1.5.2)
     multi_json (1.15.0)
@@ -464,7 +464,7 @@ GEM
     tins (1.31.1)
       sync
     tunemygc (1.0.71)
-    tzinfo (2.0.4)
+    tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     tzinfo-data (1.2018.9)
       tzinfo (>= 1.0.0)
@@ -488,7 +488,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.0)
+    zeitwerk (2.6.6)
 
 PLATFORMS
   ruby
