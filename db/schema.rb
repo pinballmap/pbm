@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_17_174254) do
+ActiveRecord::Schema.define(version: 2023_01_17_183514) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -175,6 +175,8 @@ ActiveRecord::Schema.define(version: 2023_01_17_174254) do
     t.integer "opdb_img_width"
     t.string "type"
     t.string "display"
+    t.string "machine_type"
+    t.string "machine_display"
     t.index ["machine_group_id"], name: "index_machines_on_machine_group_id"
   end
 
