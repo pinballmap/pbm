@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_17_183514) do
+ActiveRecord::Schema.define(version: 2023_01_21_051546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -295,6 +295,11 @@ ActiveRecord::Schema.define(version: 2023_01_17_183514) do
     t.integer "user_id"
     t.integer "location_id"
     t.integer "machine_id"
+    t.string "comment"
+    t.string "user_name"
+    t.string "location_name"
+    t.string "machine_name"
+    t.bigint "high_score"
     t.index ["region_id"], name: "index_user_submissions_on_region_id"
   end
 
