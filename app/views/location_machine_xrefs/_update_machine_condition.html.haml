@@ -1,23 +1,7 @@
-%div.machine_condition_text
-  %span.machine_condition_text= lmx.current_condition ? lmx.current_condition.comment.to_s : ''
-  - if (lmx.current_condition && !lmx.current_condition.created_at.nil?)
-    %span.machine_condition_date= 'Updated: ' + lmx.current_condition.created_at.strftime("%b %d, %Y")
-    - if lmx.current_condition.user_id
-      by
-      %span.machine_condition_name.bold
-        - if lmx.current_condition.user
-          = link_to lmx.current_condition.user.username, "http://#{request.host_with_port}/users/#{lmx.current_condition.user.username}/profile"
-          - user = lmx.current_condition.user
-          - rank_int = user.admin? ? user.admin_rank_int : user.contributor_rank_int
-          - if rank_int.present?
-            %span{:class => "rank_icon_#{rank_int} rank_icon_comment"}
-              = image_tag("rank/Rank_#{rank_int}.png", :class => "rank_icon")
-        - else
-          DELETED USER
 - if user_signed_in?
   %div[lmx, :machine_condition]
     =image_tag("icons/comment-text.svg", :alt => "Leave a Comment", :class => "machine_comment_icon")
-    %div.add_condition Add machine condition
+    %div.add_condition Add machine comment
   %div[lmx, :machine_condition_edit]{:style => 'display:none'}
     = form_tag update_machine_condition_location_machine_xrefs_path(:action => 'update_machine_condition', :id => lmx.id), :id => "update_machine_condition_#{lmx.id}", :method => 'get' do
       = hidden_field_tag :id, lmx.id
@@ -28,14 +12,13 @@
 
 :javascript
   $('#update_machine_condition_#{lmx.id}').submit(function () {
-    $('#machine_condition_display_#{lmx.id}').html(loadingHTML());
 
     var form = $(this);
     $.get(form.attr('action'), form.serialize(), function (data) {
-      $('#machine_condition_display_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_machine_condition');
       $('#show_conditions_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_machine_conditions');
       updateLocationUpdatedText(#{lmx.location_id});
     });
+    $('#update_machine_condition_#{lmx.id} #new_machine_condition_#{lmx.id}').val('');
 
     return false;
   });

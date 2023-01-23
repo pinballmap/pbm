@@ -182,21 +182,6 @@ describe LocationMachineXref do
     end
   end
 
-  describe '#current_condition' do
-    it 'should return the most recent machine condition' do
-      @r = FactoryBot.create(:region, name: 'Portland', should_email_machine_removal: 1)
-      @l = FactoryBot.create(:location, region: @r, name: 'Cool Bar', city: 'Portland')
-      @m = FactoryBot.create(:machine, name: 'Sassy')
-      @lmx = FactoryBot.create(:location_machine_xref, location: @l, machine: @m)
-
-      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'foo')
-      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
-      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'baz')
-
-      expect(@lmx.current_condition.comment).to eq('baz')
-    end
-  end
-
   describe '#last_updated_by_username' do
     it 'should return the most recent comments username' do
       lmx = FactoryBot.create(:location_machine_xref)
@@ -223,21 +208,6 @@ describe LocationMachineXref do
       expect(submission.machine).to eq(@m)
       expect(submission.submission).to eq("#{@m.name} was added to #{@l.name} in #{@l.city} by #{user.name}")
       expect(submission.submission_type).to eq(UserSubmission::NEW_LMX_TYPE)
-    end
-  end
-
-  describe '#current_condition' do
-    it 'should return the most recent machine condition' do
-      @r = FactoryBot.create(:region, name: 'Portland', should_email_machine_removal: 1)
-      @l = FactoryBot.create(:location, region: @r, name: 'Cool Bar')
-      @m = FactoryBot.create(:machine, name: 'Sassy')
-      @lmx = FactoryBot.create(:location_machine_xref, location: @l, machine: @m)
-
-      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'foo')
-      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
-      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'baz')
-
-      expect(@lmx.current_condition.comment).to eq('baz')
     end
   end
 

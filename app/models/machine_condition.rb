@@ -1,5 +1,5 @@
 class MachineCondition < ApplicationRecord
-  MAX_HISTORY_SIZE_TO_DISPLAY = 6
+  MAX_HISTORY_SIZE_TO_DISPLAY = 12
 
   belongs_to :user, optional: true
   belongs_to :location_machine_xref, optional: true

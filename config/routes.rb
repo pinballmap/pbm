@@ -165,7 +165,6 @@ Rails.application.routes.draw do
       get :condition_update_confirmation
       get :create_confirmation
       get :remove_confirmation
-      get :render_machine_condition
       get :render_machine_conditions
     end
   end
