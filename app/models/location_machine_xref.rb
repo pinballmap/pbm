@@ -67,8 +67,7 @@ class LocationMachineXref < ApplicationRecord
   end
 
   def sorted_machine_conditions
-    # Offset by 1 so that we don't show the current machine condition
-    machine_conditions.limited.offset(1)
+    machine_conditions.limited
   end
 
   def update_location
@@ -108,10 +107,6 @@ class LocationMachineXref < ApplicationRecord
 
   def create_user_submission
     UserSubmission.create(user_name: user.username, machine_name: machine.name, location_name: location.name, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_LMX_TYPE, submission: "#{machine.name} was added to #{location.name} in #{location.city}#{user.nil? ? '' : ' by ' + user.name}", user: user)
-  end
-
-  def current_condition
-    machine_conditions.first
   end
 
   def last_updated_by_username

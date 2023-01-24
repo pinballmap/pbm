@@ -83,13 +83,9 @@ class LocationMachineXrefsController < InheritedResources::Base
     render nothing: true
   end
 
-  def render_machine_condition
-    render partial: 'location_machine_xrefs/update_machine_condition', locals: { lmx: LocationMachineXref.find(params[:id]) }
-  end
-
   def render_machine_conditions
     lmx = LocationMachineXref.find(params[:id])
-    render partial: 'locations/render_machine_conditions', locals: { conditions: lmx.sorted_machine_conditions, lmx: lmx }
+    render partial: 'locations/render_machine_conditions', locals: { conditions: lmx.sorted_machine_conditions.includes([:user]), lmx: lmx }
   end
 
   def index
