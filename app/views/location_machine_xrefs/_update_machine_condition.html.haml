@@ -3,12 +3,16 @@
     =image_tag("icons/comment-text.svg", :alt => "Leave a Comment", :class => "machine_comment_icon")
     %div.add_condition Add machine comment
   %div[lmx, :machine_condition_edit]{:style => 'display:none'}
-    = form_tag update_machine_condition_location_machine_xrefs_path(:action => 'update_machine_condition', :id => lmx.id), :id => "update_machine_condition_#{lmx.id}", :method => 'get' do
+    = form_tag update_machine_condition_location_machine_xrefs_path(:action => 'update_machine_condition', :id => lmx.id), :id => "update_machine_condition_#{lmx.id}", :class => "update_machine_condition_lmx", :method => 'get' do
       = hidden_field_tag :id, lmx.id
       = text_area_tag "new_machine_condition_#{lmx.id}", '', :cols => 20, :rows => 3, :class => 'edit_mode', :placeholder => '(note: if this machine is gone, please just remove it. no need to leave a comment saying it is gone)'
+      %div{:style => "margin: 5px;line-height: 16px;"}
+        %span.bold Operators:
+        if you've fixed an issue, please leave a comment saying so. But please do not comment simply to "whitewash" people's comments that bother you. This is getting to be an issue.
       %br/
       = submit_tag 'Save', :id => "save_machine_condition_#{lmx.id}", :class => "save_button"
     = submit_tag 'Cancel', :id => "cancel_machine_condition_#{lmx.id}", :class => "cancel_button"
+
 
 :javascript
   $('#update_machine_condition_#{lmx.id}').submit(function () {
