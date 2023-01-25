@@ -241,14 +241,20 @@ module Api
 
       api :GET, '/api/v1/locations/:id.json', 'Display the details of this location'
       param :id, Integer, desc: 'ID of location', required: true
+      param :no_details, Integer, desc: 'Omit lmx/condition data from pull', required: false
       formats ['json']
       def show
-        location = Location.includes(location_machine_xrefs: %i[user machine machine_conditions machine_score_xrefs]).find(params[:id])
+        location = nil
+        if params[:no_details]
+          location = Location.includes(:machines, :last_updated_by_user).find(params[:id])
+        else
+          location = Location.includes(location_machine_xrefs: %i[user machine machine_conditions machine_score_xrefs]).find(params[:id])
+        end
 
         return_response(
           location,
           nil,
-          [location_machine_xrefs: { include: { machine_conditions: { methods: :username }, machine_score_xrefs: { methods: :username } }, methods: :last_updated_by_username }],
+          params[:no_details] ? :location_machine_xrefs : [location_machine_xrefs: { include: { machine_conditions: { methods: :username }, machine_score_xrefs: { methods: :username } }, methods: :last_updated_by_username }],
           %i[last_updated_by_username num_machines]
         )
       rescue ActiveRecord::RecordNotFound
