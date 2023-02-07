@@ -1,6 +1,7 @@
 .external_machine_link
   - if (lmx.machine.ipdb_link.blank?)
     = link_to "IPDB", "http://ipdb.org/search.pl?name=#{lmx.machine.name};qh=checked;searchtype=advanced"
+    = link_to image_tag( 'open-in-new-black.png', :alt => 'open in new window', :class => 'external_machine_link_icon'), "http://ipdb.org/search.pl?name=#{lmx.machine.name};qh=checked;searchtype=advanced", :target => '_blank'
   - else
     = link_to "IPDB", lmx.machine.ipdb_link, :target => '_blank'
-  = image_tag( 'open-in-new-black.png', :alt => 'open in new window', :class => 'external_machine_link_icon')
+    = link_to image_tag( 'open-in-new-black.png', :alt => 'open in new window', :class => 'external_machine_link_icon'), lmx.machine.ipdb_link, :target => '_blank'
