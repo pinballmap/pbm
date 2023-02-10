@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_21_051546) do
+ActiveRecord::Schema.define(version: 2023_02_07_174904) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 2023_01_21_051546) do
     t.string "ip", limit: 255
     t.integer "user_id"
     t.integer "machine_score_xrefs_count"
+    t.boolean "ic_enabled"
     t.index ["location_id"], name: "index_location_machine_xrefs_on_location_id"
     t.index ["machine_id"], name: "index_location_machine_xrefs_on_machine_id"
     t.index ["user_id"], name: "index_location_machine_xrefs_on_user_id"
@@ -123,6 +124,7 @@ ActiveRecord::Schema.define(version: 2023_01_21_051546) do
     t.integer "last_updated_by_user_id"
     t.boolean "is_stern_army"
     t.text "country"
+    t.boolean "ic_active"
     t.index ["is_stern_army"], name: "index_locations_on_is_stern_army"
     t.index ["last_updated_by_user_id"], name: "index_locations_on_last_updated_by_user_id"
     t.index ["location_type_id"], name: "index_locations_on_location_type_id"
@@ -177,6 +179,7 @@ ActiveRecord::Schema.define(version: 2023_01_21_051546) do
     t.string "display"
     t.string "machine_type"
     t.string "machine_display"
+    t.boolean "ic_eligible"
     t.index ["machine_group_id"], name: "index_machines_on_machine_group_id"
   end
 

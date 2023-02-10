@@ -49,8 +49,6 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
   locationIDs = ids;
 
   var bounds = new maplibregl.LngLatBounds();
-  var today = new Date();
-  var curHr = today.getHours();
 
   if (mapAdjusted === 0) {
     map = new maplibregl.Map({

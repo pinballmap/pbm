@@ -166,6 +166,7 @@ Rails.application.routes.draw do
       get :create_confirmation
       get :remove_confirmation
       get :render_machine_conditions
+      patch :ic_toggle
     end
   end
 

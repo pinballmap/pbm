@@ -1,0 +1,18 @@
+- if !user_signed_in?
+  = button_to new_user_session_path, :class => ["bold pointer ic_button", (lmx.ic_enabled == nil ? "ic_button_unknown_#{lmx.id} ic_unknown" : lmx.ic_enabled ? "ic_yes ic_button_#{lmx.id}" : "ic_no ic_button_#{lmx.id}")] do
+    Insider Connected
+- else
+  = button_to ic_toggle_location_machine_xref_path(lmx), method: :patch, remote: :true, :class => ["bold pointer ic_button", (lmx.ic_enabled == nil ? "ic_button_unknown_#{lmx.id} ic_unknown" : lmx.ic_enabled ? "ic_yes ic_button_#{lmx.id}" : "ic_no ic_button_#{lmx.id}")] do
+    Insider Connected
+
+  :javascript
+    $(".ic_button_unknown_#{lmx.id}").click(function(event){
+      if (event.target.classList.contains('ic_unknown')) {
+        $(this).removeClass("ic_unknown").addClass("ic_yes");
+      } else {
+        $(this).toggleClass("ic_no ic_yes");
+      }
+    })
+    $(".ic_button_#{lmx.id}").click(function(){
+      $(".ic_button_#{lmx.id}").toggleClass('ic_yes ic_no');
+    });

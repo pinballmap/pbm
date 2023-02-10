@@ -42,6 +42,13 @@ class LocationMachineXrefsController < InheritedResources::Base
 
     user_id = current_user.nil? ? nil : current_user.id
 
+    lmx.ic_enabled = false
+    lmx.save
+    if lmx.location.location_machine_xrefs.where(ic_enabled: true).length.empty?
+      lmx.location.ic_active = false
+      lmx.location.save
+    end
+
     lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: user_id) unless lmx&.nil?
 
     render nothing: true
@@ -97,9 +104,22 @@ class LocationMachineXrefsController < InheritedResources::Base
 
   def remove_confirmation; end
 
+  def ic_toggle
+    lmx = LocationMachineXref.find(params[:id])
+    lmx.toggle!(:ic_enabled)
+    render partial: 'location_machine_xrefs/ic_button', locals: { lmx: lmx }
+    if (lmx.ic_enabled == true) && (lmx.location.ic_active != true)
+      lmx.location.ic_active = true
+      lmx.location.save
+    elsif lmx.location.location_machine_xrefs.where(ic_enabled: true).length.zero?
+      lmx.location.ic_active = false
+      lmx.location.save
+    end
+  end
+
   private
 
-  def event_params
-    params.require(:location_machine_xref).permit(:machine_id, :location_id, :condition, :condition_date, :ip, :user_id)
+  def location_machine_xref_params
+    params.require(:location_machine_xref).permit(:machine_id, :location_id, :condition, :condition_date, :ip, :user_id, :ic_enabled)
   end
 end

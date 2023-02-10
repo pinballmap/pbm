@@ -328,6 +328,7 @@ RailsAdmin.config do |config|
       field :opdb_img_width, :integer
       field :machine_type, :string
       field :machine_display, :string
+      field :ic_eligible, :boolean
       field :machine_group, :belongs_to_association
     end
     show do
@@ -342,6 +343,7 @@ RailsAdmin.config do |config|
       field :opdb_img_width, :integer
       field :machine_type, :string
       field :machine_display, :string
+      field :ic_eligible, :boolean
       field :machine_group, :belongs_to_association
     end
     edit do
@@ -356,6 +358,7 @@ RailsAdmin.config do |config|
       field :opdb_img_width, :integer
       field :machine_type, :string
       field :machine_display, :string
+      field :ic_eligible, :boolean
       field :is_active, :boolean
       field :machine_group, :belongs_to_association
     end
