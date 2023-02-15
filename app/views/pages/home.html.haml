@@ -113,6 +113,8 @@
                 =link_to "/#{r.name}" do
                   #{r.full_name}
 
+- testMode = Rails.env.production? ? false : true
+
 - unless Rails.env.test?
   :javascript
     $().ready(function(){

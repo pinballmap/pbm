@@ -7,11 +7,14 @@
 
 - lat = local_assigns.has_key?(:lat) ? lat : @region.lat
 - lon = local_assigns.has_key?(:lon) ? lon : @region.lon
+- testMode = Rails.env.production? ? false : true
 
 :javascript
-  map = new maplibregl.Map({
+  mapboxgl.accessToken = 'pk.eyJ1IjoicnlhbnRnIiwiYSI6ImNsZTV5dW11YTBoankzbnFsZTEzcnQycWsifQ._0FYgeHFSQCQJ6VboGXl8A';
+  map = new mapboxgl.Map({
     container: 'map_canvas',
-    style: 'https://tiles.pinballmap.com/styles/basic-preview/style.json',
+    testMode: #{testMode},
+    style: 'mapbox://styles/mapbox/streets-v12',
     center: [#{lon}, #{lat}],
     zoom: 12
   });
