@@ -49,11 +49,14 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
 
   locationIDs = ids;
 
+  mapboxgl.accessToken = 'pk.eyJ1IjoicnlhbnRnIiwiYSI6ImNsZTV5dW11YTBoankzbnFsZTEzcnQycWsifQ._0FYgeHFSQCQJ6VboGXl8A';
+
   var bounds = new mapboxgl.LngLatBounds();
 
   if (mapAdjusted === 0) {
     map = new mapboxgl.Map({
       container: 'map_canvas',
+      testMode: testMode,
       style: 'mapbox://styles/mapbox/streets-v12',
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');

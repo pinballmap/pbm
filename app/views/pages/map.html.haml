@@ -23,7 +23,7 @@
         = image_submit_tag('search_icon.png', :class => 'map search', :id => "location_search_button")
 
   #map
-    = render :partial => 'locations/map', locals: { lat: @random_lat, lon: @random_lon }
+    = render :partial => 'locations/map'
 
   #search_link_wrapper.hide_button.toggle_btn_reg
     =link_to "Link to this Search Result", "", :id => "search_link"
