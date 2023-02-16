@@ -358,36 +358,6 @@ function updateLocationUpdatedText(id) {
   return false;
 }
 
-function initializeRegionMap(ids, lats, lons, contents) {
-  mapboxgl.accessToken = 'pk.eyJ1IjoicnlhbnRnIiwiYSI6ImNsZTV5dW11YTBoankzbnFsZTEzcnQycWsifQ._0FYgeHFSQCQJ6VboGXl8A';
-  var bounds = new mapboxgl.LngLatBounds();
-  var regionMap = new mapboxgl.Map({
-    testMode: testMode,
-    container: 'region_map',
-    style: 'mapbox://styles/mapbox/streets-v12',
-  });
-  regionMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
-
-  for (i in ids) {
-    var el = document.createElement('div');
-    el.className = 'markersm';
-
-    var popup = new mapboxgl.Popup({ offset: 25 })
-      .setHTML(contents[i]);
-
-    var marker = new mapboxgl.Marker(el)
-      .setLngLat([lons[i], lats[i]])
-      .setPopup(popup)
-      .on('click', function (e) { map.setView(e.latlng, 13) })
-      .addTo(regionMap);
-
-    markers.push(marker);
-    bounds.extend([lons[i], lats[i]]);
-  }
-
-  regionMap.fitBounds(bounds, { padding: 50, animate: false });
-}
-
 var fade_flash = function () {
   $("#flash_notice").delay(2000).fadeOut("slow");
   $("#flash_alert").delay(2000).fadeOut("slow");

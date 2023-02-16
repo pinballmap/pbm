@@ -100,8 +100,6 @@
       If the
       = link_to 'big map', map_path
       isn&rsquo;t cutting it for you, you can search for machines in one select area. Please pick a "regional" map below. Regions are predefined geographical areas - they can be a city, county, state, or even a country - that an administrator and the local users created. Each regional map is curated by a local administrator, often with the support of a league.
-    - if !mobile_device?
-      #region_map
     #region_list
       - @all_regions.each.map {|r| r.state}.uniq.each do |s|
         %div.state_name_container
@@ -112,17 +110,3 @@
               %div.region_name
                 =link_to "/#{r.name}" do
                   #{r.full_name}
-
-- testMode = Rails.env.production? ? false : true
-
-- unless Rails.env.test?
-  :javascript
-    $().ready(function(){
-        initializeRegionMap(
-          [#{@region_data[0].join(', ')}],
-          [#{@region_data[1].join(', ')}],
-          [#{@region_data[2].join(', ')}],
-          [#{@region_data[3].join(', ').html_safe}]
-        );
-    });
-
