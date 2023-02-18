@@ -19,7 +19,7 @@
   - if (!l.date_last_updated.blank?) && (l.date_last_updated < 2.years.ago)
     - dateDiff = distance_of_time_in_words(Time.now, l.date_last_updated)
     %div{:class => "stale", :id => "stale_#{l.id}"}
-      This location has not been updated in #{dateDiff}! The info may be out of date. Please remove the machines if they're gone.
+      This location has not been updated in #{dateDiff}! The listing may be out of date. Please remove the machines if they're gone.
 
 :javascript
   $('#confirm_location_button_#{l.id}').click(function () {
