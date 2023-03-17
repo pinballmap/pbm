@@ -54,7 +54,7 @@ describe Api::V1::UserSubmissionsController, type: :request do
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE)
       FactoryBot.create(:user_submission, created_at: (Date.today - 32).strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE)
 
-      get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606'}
+      get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606' }
 
       expect(response).to be_successful
       json = JSON.parse(response.body)['user_submissions']

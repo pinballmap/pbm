@@ -2172,14 +2172,14 @@ input.score {
   text-align: center;
 }
 
-.location_thumbs a.highslide {
+.location_thumbs a {
   margin: 0 6px 8px;
   display: inline-block;
   max-width: 100px;
   max-height: 100px;
   overflow: hidden;
   vertical-align: top;
-  border: 4px solid $darkgrey;
+  @include radius(5px);
 }
 
 .location_thumbs a img {
