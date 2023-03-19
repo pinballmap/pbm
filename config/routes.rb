@@ -48,6 +48,7 @@ Rails.application.routes.draw do
         end
       end
       resources :location_machine_xrefs, only: [:create, :destroy, :update, :show] do
+        put :ic_toggle
         collection do
           get :top_n_machines
         end
