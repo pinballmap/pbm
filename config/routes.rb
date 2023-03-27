@@ -214,6 +214,7 @@ Rails.application.routes.draw do
   get '/michigan-west' => redirect('/michigan-sw')
   get '/michigan-mid' => redirect('/michigan-north')
   get '/roanoke' => redirect('/map')
+  get '/redding' => redirect('/map')
 
   root to: 'pages#home'
 end

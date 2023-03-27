@@ -95,7 +95,7 @@ class LocationMachineXref < ApplicationRecord
     user = nil
     user = User.find(options[:user_id]) if options[:user_id]
 
-    UserSubmission.create(user_name: user.nil? ? nil : user.username, machine_name: machine.name, location_name: location.name, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: "#{machine.name} was removed from #{location.name} in #{location.city}#{user.nil? ? '' : ' by ' + user.name}", user: user)
+    UserSubmission.create(user_name: user.nil? ? nil : user.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: "#{machine.name_and_year} was removed from #{location.name} in #{location.city}#{user.nil? ? '' : ' by ' + user.name}", user: user)
 
     location.date_last_updated = Date.today
     location.last_updated_by_user_id = user.nil? ? nil : user.id
@@ -106,7 +106,7 @@ class LocationMachineXref < ApplicationRecord
   end
 
   def create_user_submission
-    UserSubmission.create(user_name: user.nil? ? nil : user.username, machine_name: machine.name, location_name: location.name, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_LMX_TYPE, submission: "#{machine.name} was added to #{location.name} in #{location.city}#{user.nil? ? '' : ' by ' + user.name}", user: user)
+    UserSubmission.create(user_name: user.nil? ? nil : user.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_LMX_TYPE, submission: "#{machine.name_and_year} was added to #{location.name} in #{location.city}#{user.nil? ? '' : ' by ' + user.name}", user: user)
   end
 
   def last_updated_by_username

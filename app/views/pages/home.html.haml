@@ -81,6 +81,8 @@
   %p.red.font28.sans.bold.mt_20.mb_5
     Recent Blog Posts
   %div.m_5.center
+    =link_to 'Pinball Map App Update 5.2.18', 'https://blog.pinballmap.com/2023/03/05/pinball-map-app-update-5-2-18/', :target => '_blank', :class => 'bold font18'
+    %span.block.center.m_5 March 5, 2023
     =link_to 'RSS to Twitter Bot Using Ruby', 'https://blog.pinballmap.com/2022/11/30/Ruby-Twitterbot/', :target => '_blank', :class => 'bold font18'
     %span.block.center.m_5 Nov 30, 2022
     =link_to 'Moving from Heroku to Dokku', 'https://blog.pinballmap.com/2022/08/05/pinball-map-moves-from-heroku-to-dokku/', :target => '_blank', :class => 'bold font18'
@@ -89,8 +91,6 @@
     %span.block.center.m_5 Apr 20, 2022
     =link_to '2021 TWIPY Award for Best Pinball App', 'https://blog.pinballmap.com/2022/03/29/2021-TWIPY-Award/', :target => '_blank', :class => 'bold font18'
     %span.block.center.m_5 Mar 29, 2022
-    =link_to 'Ranks and Other Notes', 'https://blog.pinballmap.com/2022/03/24/ranks-and-other-notes/', :target => '_blank', :class => 'bold font18'
-    %span.block.center.m_5 Mar 24, 2022
 
 %div.flex_center.flex_column.bg_lightpurple.mb_20
   .region_map
@@ -99,9 +99,7 @@
     %p
       If the
       = link_to 'big map', map_path
-      isn&rsquo;t cutting it for you, you can search for machines in one select area. Please pick a "regional" map below. Regions are predefined geographical areas - they can be a city, county, state, or even a country - that an administrator and the local users created. Each regional map is curated by a local administrator, often with the support of a league.
-    - if !mobile_device?
-      #region_map
+      isn&rsquo;t cutting it for you, you can search for machines in one select area. Please pick a "regional" map below. Regions are predefined geographical areas - they can be a city, county, state, or even a country - that an administrator and the local users created (a long time ago!). Each regional map is curated by a local administrator, often with the support of a league.
     #region_list
       - @all_regions.each.map {|r| r.state}.uniq.each do |s|
         %div.state_name_container
@@ -112,15 +110,3 @@
               %div.region_name
                 =link_to "/#{r.name}" do
                   #{r.full_name}
-
-- unless Rails.env.test?
-  :javascript
-    $().ready(function(){
-        initializeRegionMap(
-          [#{@region_data[0].join(', ')}],
-          [#{@region_data[1].join(', ')}],
-          [#{@region_data[2].join(', ')}],
-          [#{@region_data[3].join(', ').html_safe}]
-        );
-    });
-

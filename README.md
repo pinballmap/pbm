@@ -1,4 +1,3 @@
-[![Build Status](https://app.travis-ci.com/pinballmap/pbm.svg?branch=master)](https://app.travis-ci.com/pinballmap/pbm)
 [![Coverage Status](https://coveralls.io/repos/scottwainstock/pbm/badge.png)](https://coveralls.io/r/scottwainstock/pbm)
 
 Code License: [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)

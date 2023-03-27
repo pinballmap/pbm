@@ -1,5 +1,5 @@
 - location_picture_xrefs.each do |lpx|
   - if lpx.photo?
-    = link_to image_tag(lpx.photo.url(:medium)), lpx.photo.url(:large), :class => "location_picture_xref_#{lpx.id} highslide", :onclick => 'return hs.expand(this);'
+    = link_to image_tag(lpx.photo.url(:medium)), lpx.photo.url(:large), :class => "location_picture_xref_#{lpx.id}", :"data-lightbox" => "location_thumb"
     - if user_signed_in?
       = render :partial => 'location_picture_xrefs/remove_picture', :locals => {:lpx => lpx}

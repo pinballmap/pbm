@@ -5,13 +5,7 @@
         = link_to 'Click here to find the closest pinball machines!', '#', {:id => 'find_closest_locations'}
         Or Search.
 
-- lat = local_assigns.has_key?(:lat) ? lat : @region.lat
-- lon = local_assigns.has_key?(:lon) ? lon : @region.lon
+- testMode = Rails.env.production? ? false : true
 
 :javascript
-  map = new maplibregl.Map({
-    container: 'map_canvas',
-    style: 'https://tiles.pinballmap.com/styles/basic-preview/style.json',
-    center: [#{lon}, #{lat}],
-    zoom: 12
-  });
+  var testMode = #{testMode}

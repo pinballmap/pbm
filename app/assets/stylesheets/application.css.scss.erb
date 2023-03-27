@@ -403,7 +403,6 @@ ul li li {
 .shadow_none {
   box-shadow: none;
   -webkit-box-shadow: none;
-  -moz-box-shadow: none;
 }
 
 /* Text */
@@ -1060,7 +1059,6 @@ form#address_search_form input.lookup_search_input {
   @include radius(5px);
   margin-left: 5px;
   box-shadow: 2px 5px 10px #d0d5d9;
-  -moz-box-shadow: 2px 5px 10px #d0d5d9;
   -webkit-box-shadow: 2px 5px 10px #d0d5d9;
 }
 
@@ -1103,7 +1101,6 @@ span.or {
   font-weight: $bold;
   float: right;
   box-shadow: 2px 5px 10px #d0d5d9;
-  -moz-box-shadow: 2px 5px 10px #d0d5d9;
   -webkit-box-shadow: 2px 5px 10px #d0d5d9;
 }
 
@@ -1280,7 +1277,6 @@ form select#by_machine_id {
   background-color: $darkgrey !important;
   color: $lightpink !important;
   box-shadow: none !important;
-  -moz-box-shadow: none !important;
   -webkit-box-shadow: none !important;
 }
 
@@ -1544,7 +1540,6 @@ span.machine_year_man {
   margin: 10px auto;
   text-align: center;
   box-shadow: 2px 5px 10px #d0d5d9;
-  -moz-box-shadow: 2px 5px 10px #d0d5d9;
   -webkit-box-shadow: 2px 5px 10px #d0d5d9;
   font-size: 14px;
   height: 26px;
@@ -1834,7 +1829,6 @@ form select:hover {
   border: 2px solid $medgrey;
   @include radius(6px);
   box-shadow: 1px 1px 3px #b7cfc1;
-  -moz-box-shadow: 1px 1px 3px #b7cfc1;
   -webkit-box-shadow: 1px 1px 3px #b7cfc1;
   padding: 4px 8px;
   cursor: pointer;
@@ -1858,7 +1852,6 @@ input.search:active,
 .new_location_picture_xref input.submit_picture:active,
 #login .button:active {
   box-shadow: none;
-  -moz-box-shadow: none;
   -webkit-box-shadow: none;
   transform: translate(1px, 1px);
   background: $purple;
@@ -1871,7 +1864,6 @@ input.search:active,
 
 input:focus {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px $purple;
-  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px $purple;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px $purple;
 }
 
@@ -1884,7 +1876,6 @@ input.submit_button:hover,
 .add_score:hover,
 .new_location_picture_xref input.submit_picture:hover {
   box-shadow: 1px 1px 3px #888;
-  -moz-box-shadow: 1px 1px 3px #888;
   -webkit-box-shadow: 1px 1px 3px #888;
   background: #4c3924;
   color: #EBF1FD;
@@ -1951,7 +1942,6 @@ input.search,
 input.lookup_search_input:focus {
   box-shadow: none;
   -webkit-box-shadow: none;
-  -moz-box-shadow: none;
 }
 
 .metadata_edit_location {
@@ -2008,7 +1998,6 @@ input.score {
   text-align: center;
   width: 300px;
   box-shadow: 2px 5px 10px #d0d5d9;
-  -moz-box-shadow: 2px 5px 10px #d0d5d9;
   -webkit-box-shadow: 2px 5px 10px #d0d5d9;
 }
 
@@ -2067,6 +2056,7 @@ div.location_type_container {
   line-height: 14px;
   width: 100%;
   display: block;
+  color: #383838;
 }
 
 .location_type img {
@@ -2262,14 +2252,14 @@ input.score {
   text-align: center;
 }
 
-.location_thumbs a.highslide {
+.location_thumbs a {
   margin: 0 6px 8px;
   display: inline-block;
   max-width: 100px;
   max-height: 100px;
   overflow: hidden;
   vertical-align: top;
-  border: 4px solid $darkgrey;
+  @include radius(5px);
 }
 
 .location_thumbs a img {
@@ -2586,6 +2576,8 @@ span.begin {
 #map_canvas {
   height: 100% !important;
   margin-left: -42%;
+  position: relative;
+  background: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>) repeat;
 }
 
 .mask {
@@ -2892,11 +2884,11 @@ div.score_list {
 
 /** Map API **/
 
-.maplibregl-popup {
+.mapboxgl-popup {
   max-width: 200px;
 }
 
-.maplibregl-popup-content {
+.mapboxgl-popup-content {
   overflow-y: auto;
   max-height: 310px;
   font-family: 'Open Sans', sans-serif;

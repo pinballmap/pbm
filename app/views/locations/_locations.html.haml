@@ -82,10 +82,7 @@
                   %div.location_type_container
                     =image_tag("icons/#{l.location_type.icon}.svg", :alt => "#{l.location_type.icon}")
                 %span
-                  - if l.region
-                    =link_to "#{l.location_type.name}", "/#{l.region.name.downcase}?by_type_id=#{l.location_type.id}"
-                  - else
-                    #{l.location_type.name}
+                  #{l.location_type.name}
             - if (!params[:show_location_distance].blank? && !params[:lat].blank? && !params[:lon].blank?)
               %div.location_types= "distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
             - if (l.state.blank?)

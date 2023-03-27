@@ -27,6 +27,6 @@ class MachineScoreXref < ApplicationRecord
   def create_user_submission
     user_info = user ? user.username : 'UNKNOWN USER'
 
-    UserSubmission.create(user_name: user.username, machine_name: machine.name, location_name: location.name, high_score: score, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: "#{user_info} added a high score of #{number_with_precision(score, precision: 0, delimiter: ',')} on #{machine.name} at #{location.name} in #{location.city}", user: user)
+    UserSubmission.create(user_name: user.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, high_score: score, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: "#{user_info} added a high score of #{number_with_precision(score, precision: 0, delimiter: ',')} on #{machine.name_and_year} at #{location.name} in #{location.city}", user: user)
   end
 end

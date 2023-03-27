@@ -45,11 +45,6 @@ class PagesController < ApplicationController
 
     params[:user_faved] = user.id if user && !params[:user_faved].blank?
 
-    @region_list = Region.all
-    @region_random = @region_list.sample
-    @random_lat = @region_random.lat
-    @random_lon = @region_random.lon
-
     @big_locations = Location.joins(:location_machine_xrefs).group('id').having('count(location_machine_xrefs)>9')
     @big_locations_sample = @big_locations.sample
     @location_placeholder = @big_locations_sample.nil? ? 'e.g. Ground Kontrol' : 'e.g. ' + @big_locations_sample.name

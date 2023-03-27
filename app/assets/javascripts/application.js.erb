@@ -5,6 +5,7 @@
 var map;
 var region;
 var ismap;
+var testMode;
 var searchMachineID;
 var mapAdjusted = 0;
 var search_string;
@@ -48,14 +49,17 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
 
   locationIDs = ids;
 
-  var bounds = new maplibregl.LngLatBounds();
+  mapboxgl.accessToken = 'pk.eyJ1IjoicnlhbnRnIiwiYSI6ImNsZTV5dW11YTBoankzbnFsZTEzcnQycWsifQ._0FYgeHFSQCQJ6VboGXl8A';
+
+  var bounds = new mapboxgl.LngLatBounds();
 
   if (mapAdjusted === 0) {
-    map = new maplibregl.Map({
+    map = new mapboxgl.Map({
       container: 'map_canvas',
-      style: 'https://tiles.pinballmap.com/styles/basic-preview/style.json',
+      testMode: testMode,
+      style: 'mapbox://styles/mapbox/streets-v12',
     });
-    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
   }
 
   for (i in ids) {
@@ -87,10 +91,10 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
       })(el, i);
     }
 
-    var popup = new maplibregl.Popup({ offset: 25 })
+    var popup = new mapboxgl.Popup({ offset: 25 })
       .setHTML(contents[i]);
 
-    var marker = new maplibregl.Marker(el, { anchor: 'center' })
+    var marker = new mapboxgl.Marker(el, { anchor: 'center' })
       .setLngLat([lons[i], lats[i]])
       .setPopup(popup)
       .addTo(map);
@@ -355,34 +359,6 @@ function updateLocationUpdatedText(id) {
   $('#last_updated_location_' + id).load('/locations/' + id + '/render_last_updated');
   $('#stale_' + id).hide();
   return false;
-}
-
-function initializeRegionMap(ids, lats, lons, contents) {
-  var bounds = new maplibregl.LngLatBounds();
-  var regionMap = new maplibregl.Map({
-    container: 'region_map',
-    style: 'https://tiles.pinballmap.com/styles/basic-preview/style.json',
-  });
-  regionMap.addControl(new maplibregl.NavigationControl(), 'top-right');
-
-  for (i in ids) {
-    var el = document.createElement('div');
-    el.className = 'markersm';
-
-    var popup = new maplibregl.Popup({ offset: 25 })
-      .setHTML(contents[i]);
-
-    var marker = new maplibregl.Marker(el)
-      .setLngLat([lons[i], lats[i]])
-      .setPopup(popup)
-      .on('click', function (e) { map.setView(e.latlng, 13) })
-      .addTo(regionMap);
-
-    markers.push(marker);
-    bounds.extend([lons[i], lats[i]]);
-  }
-
-  regionMap.fitBounds(bounds, { padding: 50, animate: false });
 }
 
 var fade_flash = function () {
