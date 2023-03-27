@@ -44,7 +44,7 @@ class LocationMachineXrefsController < InheritedResources::Base
 
     lmx.ic_enabled = false
     lmx.save
-    if lmx.location.location_machine_xrefs.where(ic_enabled: true).length.empty?
+    if lmx.location.location_machine_xrefs.where(ic_enabled: true).length.zero?
       lmx.location.ic_active = false
       lmx.location.save
     end
