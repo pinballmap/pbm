@@ -1,3 +1,7 @@
+- if lmx.ic_enabled?
+  - has_text = "Has"
+- else
+  - has_text = "No"
 - if !user_signed_in?
   = button_to new_user_session_path, :class => ["bold pointer ic_button", (lmx.ic_enabled == nil ? "ic_button_unknown_#{lmx.id} ic_unknown" : lmx.ic_enabled ? "ic_yes ic_button_#{lmx.id}" : "ic_no ic_button_#{lmx.id}")] do
     Insider Connected

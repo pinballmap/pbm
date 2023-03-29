@@ -1499,23 +1499,27 @@ span.machine_year_man {
 }
 
 .ic_yes:before {
-  content: "";
-  background: url(<%= asset_path 'icons/ic_yes.svg' %>) no-repeat;
-  display: inline-block;
-  height: 15px;
-  margin: 0 10px 3px 0px;
-  width: 15px;
-  vertical-align: middle;
+  content: "Has";
+  background: url(<%= asset_path 'icons/ic_yes.svg' %>);
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  padding-left: 18px;
+  background-size: 15px;
+  position: relative;
+  white-space: nowrap;
+  margin-right: 3px;
 }
 
 .ic_no:before {
-  content: "";
+  content: "No";
   background: url(<%= asset_path 'icons/ic_no.svg' %>) no-repeat;
-  display: inline-block;
-  height: 20px;
-  margin: -2px 10px 0px 0px;
-  width: 20px;
-  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: -1px -1px;
+  padding-left: 20px;
+  background-size: 18px;
+  position: relative;
+  white-space: nowrap;
+  margin-right: 3px;
 }
 
 .ic_unknown:before {
