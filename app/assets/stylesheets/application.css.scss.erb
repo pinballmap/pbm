@@ -1891,6 +1891,18 @@ input.lookup_search_input:focus {
   margin-top: 10px;
 }
 
+.metadata_edit_location textarea.edit_mode {
+  max-width: 300px;
+  min-width: 300px;
+  width: 300px;
+  height: 70px;
+  max-height: 100px;
+  min-height: 28px;
+  margin-bottom: 10px;
+  font-family: $serif;
+  float: right;
+}
+
 input.score {
   width: 80%;
 }
@@ -1986,17 +1998,6 @@ div.location_type_container {
 .edit_mode {
   font-size: 15px;
   font-family: Helvetica, Arial, sans-serif;
-}
-
-.desc_edit_location .edit_mode {
-  max-width: 380px;
-  min-width: 380px;
-  width: 380px;
-  height: 70px;
-  max-height: 100px;
-  min-height: 28px;
-  margin-bottom: 10px;
-  font-family: $serif;
 }
 
 .confirm_location {
@@ -2113,6 +2114,31 @@ input.score {
 
 .location_name {
   @include radius(10px);
+}
+
+.meta_image + .meta_image_tooltip {
+  visibility: hidden;
+  line-height: 14px;
+  font-size: 16px;
+  margin-left: -30px;
+  margin-top: 30px;
+  background: $black;
+  color: $vlightpurple;
+  padding: 5px;
+  font-weight: $bold;
+  font-family: $sans;
+  position: absolute;
+  text-align: center;
+}
+
+.meta_image + .meta_image_tooltip::after {
+  content: "";
+  position: absolute;
+}
+
+.meta_image:hover + .meta_image_tooltip {
+  visibility: visible;
+  width: 180px;
 }
 
 .desc_button {

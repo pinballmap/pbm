@@ -37,8 +37,9 @@
       %div.operator_comments.grey (This operator receives machine comments)
     - else
       %div.operator_comments.grey (This operator does not receive machine comments)
-  %div[l, :desc]
-    = render :partial => 'locations/render_desc', :locals => {:l => l}
+  - if !l.description.blank?
+    = image_tag('icons/notebook-outline.svg', :class => 'meta_icon float_l')
+    %div[l, :desc_show]= l.description
 %div[l, :metadata_edit]{:style => 'display:none'}
   = form_tag update_metadata_locations_path(:action => 'update_metadata', id: l.id), :id => "update_metadata_#{l.id}", :method => 'get' do
     = hidden_field_tag :id, l.id
@@ -53,6 +54,9 @@
     .clear
     = label_tag "Location Type: "
     = select_tag "new_location_type_#{l.id}", options_for_select([['']]) + options_from_collection_for_select(LocationType.all, 'id', 'name', l.location_type_id)
+    .clear
+    = label_tag "Location Description: "
+    = text_area_tag "new_desc_#{l.id}", (l.description.to_s == '') ? '' : l.description, :cols => 20, :rows => 3, :class => 'edit_mode', :placeholder => 'Update location description/hours/etc'
     .clear
     = submit_tag 'Save', :class => "save_button", :id => "save_metadata_#{l.id}"
   = submit_tag 'Cancel', :id => "metadata_cancel_#{l.id}", :class => "cancel_button"

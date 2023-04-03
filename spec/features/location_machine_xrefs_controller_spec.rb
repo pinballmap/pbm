@@ -807,9 +807,9 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}"
       page.find('input#location_search_button').click
 
-      page.find("#location_detail_location_#{@location.id} .comment_image").click
+      page.find("#location_detail_location_#{@location.id} .meta_image").click
       fill_in("new_desc_#{@location.id}", with: 'New Condition')
-      click_on("save_desc_#{@location.id}")
+      click_on 'Save'
 
       expect(page).to have_content('New Condition')
     end
