@@ -2116,7 +2116,9 @@ input.score {
   @include radius(10px);
 }
 
-.meta_image + .meta_image_tooltip {
+.meta_image + .meta_image_tooltip,
+.fave_location + .fave_location_tooltip,
+.permalink + .permalink_tooltip {
   visibility: hidden;
   line-height: 14px;
   font-size: 16px;
@@ -2131,12 +2133,16 @@ input.score {
   text-align: center;
 }
 
-.meta_image + .meta_image_tooltip::after {
+.meta_image + .meta_image_tooltip::after,
+.fave_location + .fave_location_tooltip::after,
+.permalink + .permalink_tooltip::after {
   content: "";
   position: absolute;
 }
 
-.meta_image:hover + .meta_image_tooltip {
+.meta_image:hover + .meta_image_tooltip,
+.fave_location:hover + .fave_location_tooltip,
+.permalink:hover + .permalink_tooltip {
   visibility: visible;
   width: 180px;
 }
