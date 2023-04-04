@@ -12,7 +12,7 @@ class EventsController < InheritedResources::Base
   end
 
   def index
-    @events = apply_scopes(Event.includes(:location))
+    @events = apply_scopes(Event)
     @events.select!(&:active?)
 
     respond_to do |format|
