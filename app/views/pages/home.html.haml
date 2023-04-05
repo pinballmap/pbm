@@ -21,12 +21,12 @@
 %div.flex_center.bg_lightpurple
   %p.red.font28.sans.bold.mt_20.mb_5 Use the App
 %div.flex_center.mobile_flex.bg_lightpurple
-  .news.serif
-    =image_tag( 'purple-machine.png', :alt => 'machine', :style => 'height:130px;text-align: center;margin: 0 auto;display: block;', :class => 'splash')
+  .news.serif{:style => 'display: flex;justify-content: center;'}
+    =image_tag( 'purple-machine.png', :alt => 'machine', :style => 'height:130px;', :class => 'splash')
   .news.serif
     %p
-      Check out the award-winning
-      = link_to "Pinball Map mobile app", app_path, :style => "color: #fe46b0;"
+      On the go? Use the award-winning
+      = link_to "Pinball Map mobile app", app_path, :class => "red"
     %p
       Available for both
       %span.bold
@@ -36,11 +36,11 @@
         iOS.
       It is FREE! No ads, no tracking. Just pinball!
 %div.flex_center.mb_10
-  %p.red.font28.sans.bold.mt_20.mb_5 About
+  %p.brightpurple.font28.sans.bold.mt_20.mb_5 About
 %div.flex_center.mobile_flex
   .news.serif
     %p
-      This is a user-powered map. Create an account and then keep it up to date by adding and removing machines, submitting new locations, and telling your friends to use it!
+      This is a user-powered map. Create an account and then keep the map up to date by adding and removing machines, submitting new locations, and telling your friends to use it!
     %p
       The data is managed by over 100 administrators and thousands of active users.
     %p
@@ -49,7 +49,7 @@
     %p
       = link_to 'Contact us!', 'portland/about', :class => "bold"
   .news.serif{:style => 'display: flex;justify-content: center;'}
-    =image_tag( 'oldgraphic.png', :alt => 'machine',:style => 'height:220px;', :class => 'splash')
+    =image_tag( 'portland/app_logo-350.jpg', :alt => 'portland logo',:style => 'height:260px;', :class => 'splash')
 %div.flex_center.bg_lightpurple
   %p.red.font28.sans.bold.mt_20.mb_5 Stickers
 %div.flex_center.mobile_flex.bg_lightpurple
@@ -70,7 +70,7 @@
       Purchase them through the
       = link_to 'Pinball Map store!', store_path, :class => "bold"
 %div.flex_center
-  %p.red.font28.sans.bold.mt_20.mb_5 Support Us
+  %p.brightpurple.font28.sans.bold.mt_20.mb_5 Support Us
 %div.flex_center.mobile_flex
   .news.serif
     %p
@@ -86,7 +86,7 @@
   %p.red.font28.sans.bold.mt_20.mb_5 Keep in Touch
 %div.flex_center.mobile_flex.bg_lightpurple
   .news.serif
-    =image_tag( 'mappin-logo-600.orig.png', :alt => 'machine', :style => 'height: 300px;', :class => 'splash')
+    =image_tag( 'mappin-logo-600.orig.png', :alt => 'mapping logo', :style => 'height: 340px;', :class => 'splash')
   .news.serif
     %p
       Check the
@@ -113,12 +113,14 @@
       = link_to "Mappin' Around with Scott & Ryan.", 'https://pod.pinballmap.com/', :target => '_blank', :class => 'bold'
       It has not been active in a few years, but whatever.
 %div.flex_center
-  %p.red.font28.sans.bold.mt_20.mb_5 API
+  %p.brightpurple.font28.sans.bold.mt_20.mb_5 API
 %div.flex_center.mobile_flex
   .news.serif
     %p
-      Did you know
-      = link_to 'Pinball Map has an open API?', apipie_apipie_path
+      Not only is the Pinball Map website and app open source, but there is also
+      = link_to 'an API!', apipie_apipie_path
+      With it, you can pull down map data and use it on your cool app.
+    %p
       = link_to 'Stern Pinball', 'https://sternpinball.com/pinball-locator/', :target => '_blank'
       uses our data for their machine locator. Our API is also used by
       = link_to 'Matchplay Events', 'https://matchplay.events/', :target => '_blank'
@@ -131,8 +133,8 @@
       and many others!
     %p
       %span.bold If you use the data, please provide attribution!
-  .news.serif
-    =image_tag( 'pbm-play-store-2.png', :alt => 'machine', :style => 'height: 180px;', :class => 'splash')
+  .news.serif{:style => 'display: flex;justify-content: center;'}
+    =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;', :class => 'splash')
 %div.flex_center.flex_column.mb_10.bg_lightpurple
   %p.red.font28.sans.bold.mt_20.mb_5.bg_lightpurple
     Recent Blog Posts
@@ -150,7 +152,7 @@
 
 %div.flex_center.flex_column.mb_20
   .region_map
-    %p.red.font28.sans.bold.mt_20.mb_5.center
+    %p.brightpurple.font28.sans.bold.mt_20.mb_5.center
       Regional Maps
     %p
       If the
