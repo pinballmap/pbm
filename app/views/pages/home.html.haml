@@ -1,4 +1,4 @@
-%div.flex_center.flex_column
+%div.flex_center.flex_column{:style => 'margin-bottom: 20px;'}
   %p.red.sans.bold.p1
     %span{:style => 'width:42px;margin-right: 5px;'}
       =image_tag( 'icon-color-noBGsvg.svg', :alt => 'splash', :style => 'height:42px;', :class => 'splash')
@@ -7,42 +7,115 @@
     Founded in 2008, Pinball Map is an open source, crowdsourced worldwide map of public pinball machines.
   %p.explore
     = link_to 'Explore the Map', map_path
-  %p.welcome.font20.center.mt10.mb_5
-    - if mobile_device?
-      Better yet! Use the
-    - else
-      Check out the
-    award-winning
-    = link_to "mobile app", app_path, :style => "color: #fd0091;"
-  %div.m_10
-    %div.flex_center.italic.darkgrey
-      =image_tag( 'machine-pink.png', :alt => 'machine', :style => 'height:32px;margin-right:5px;', :class => 'splash')
-      The map was last updated
-      =distance_of_time_in_words(Time.now, @last_updated_time)
-      ago
+  %p
+    %span.red.font18.sans.bold
+      #{number_with_delimiter(Location.all.count,:delimiter => ",")}
+    locations and
+    %span.red.font18.sans.bold
+      #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")}
+    machines
+  %div.flex_center.italic.darkgrey
+    The map was last updated
+    =distance_of_time_in_words(Time.now, @last_updated_time)
+    ago
 %div.flex_center.bg_lightpurple
-  %p.red.font28.sans.bold.mt_20.mb_5 News
-%div.flex_center.mobile_flex.flex_top.bg_lightpurple
+  %p.red.font28.sans.bold.mt_20.mb_5 Use the App
+%div.flex_center.mobile_flex.bg_lightpurple
+  .news.serif
+    =image_tag( 'purple-machine.png', :alt => 'machine', :style => 'height:130px;text-align: center;margin: 0 auto;display: block;', :class => 'splash')
   .news.serif
     %p
-      %span.bold Dec 2022:
-      We have new
-      %span{:style => 'background-color: #fee7f5'}pink and black
-      stickers! And also brushed gold with black ink ones. Purchase them through the
+      Check out the award-winning
+      = link_to "Pinball Map mobile app", app_path, :style => "color: #fe46b0;"
+    %p
+      Available for both
+      %span.bold
+        Android
+      and
+      %span.bold
+        iOS.
+      It is FREE! No ads, no tracking. Just pinball!
+%div.flex_center.mb_10
+  %p.red.font28.sans.bold.mt_20.mb_5 About
+%div.flex_center.mobile_flex
+  .news.serif
+    %p
+      This is a user-powered map. Create an account and then keep it up to date by adding and removing machines, submitting new locations, and telling your friends to use it!
+    %p
+      The data is managed by over 100 administrators and thousands of active users.
+    %p
+      Pinball Map is not monetized - no ads or premium membership. The
+      = link_to 'code is open source.', 'https://github.com/pinballmap/pbm'
+    %p
+      = link_to 'Contact us!', 'portland/about', :class => "bold"
+  .news.serif{:style => 'display: flex;justify-content: center;'}
+    =image_tag( 'oldgraphic.png', :alt => 'machine',:style => 'height:220px;', :class => 'splash')
+%div.flex_center.bg_lightpurple
+  %p.red.font28.sans.bold.mt_20.mb_5 Stickers
+%div.flex_center.mobile_flex.bg_lightpurple
+  .news.serif
+    =link_to image_tag('pbm-both-stickers.png', :alt => 'Pinball Map Store', :style => 'width: 100%;'), store_path, :target => "_blank"
+  .news.serif
+    %p
+      We have
+      %span.bold{:style => 'color:#fe46b0;'}
+        pink
+      and
+      %span.bold{:style => 'color:#47475f;'}
+        black
+      stickers!
+    %p
+      And also brushed gold with black ink ones.
+    %p
+      Purchase them through the
       = link_to 'Pinball Map store!', store_path, :class => "bold"
+%div.flex_center
+  %p.red.font28.sans.bold.mt_20.mb_5 Support Us
+%div.flex_center.mobile_flex
+  .news.serif
+    %p
+      = link_to "Support Pinball Map via Patreon.", "https://patreon.com/pinballmap", :class => "bold", :target => '_blank'
+      All our operating costs are covered by supporters!
     %p
       Pinball Map was voted Best Pinball App in the 2021
       = link_to "TWIPy Awards!", "https://twipys.com/", :target => '_blank'
       = link_to "Thank you for voting for us!", "https://blog.pinballmap.com/2022/03/29/2021-TWIPY-Award/", :target => '_blank', :class => "bold"
+  .news.serif
+    =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'width: 100%;'), "https://patreon.com/pinballmap", :target => "_blank"
+%div.flex_center.bg_lightpurple
+  %p.red.font28.sans.bold.mt_20.mb_5 Keep in Touch
+%div.flex_center.mobile_flex.bg_lightpurple
+  .news.serif
+    =image_tag( 'mappin-logo-600.orig.png', :alt => 'machine', :style => 'height: 300px;', :class => 'splash')
+  .news.serif
     %p
       Check the
       = link_to "blog", "https://blog.pinballmap.com/", :class => "bold"
       to keep up with map news.
-      = link_to "Support Pinball Map via Patreon.", "https://patreon.com/pinballmap", :class => "bold", :target => '_blank'
     %p
-      Looking for a fun and friendly way to chat with us, as well as with other pinball lovers? Join
-      = link_to 'The Pinball People', 'https://discord.gg/XffPx6VKTv', :class => "bold", :target => '_blank'
+      Looking for a fun and friendly way to chat with us, as well as with other pinball lovers? Join the
+      = link_to 'Pinball People', 'https://discord.gg/XffPx6VKTv', :class => "bold", :target => '_blank'
       Discord!
+    %p
+      Follow us on Twitter for a massive amount of map updates.
+      = link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
+    %p
+      We also have an
+      = link_to 'open thread on TiltForums', 'http://tiltforums.com/t/pinball-map-open-thread/901', :target => '_blank'
+    %p
+      Twitter bot that posts random locations:
+      = link_to '@oddpinballmap', 'https://twitter.com/oddpinballmap', :target => '_blank'
+      %br/
+      And the same bot on
+      = link_to 'Mastodon', 'https://botsin.space/@OddPinballMap', :target => '_blank', :class => "bold"
+    %p
+      We even had a podcast for a bit!
+      = link_to "Mappin' Around with Scott & Ryan.", 'https://pod.pinballmap.com/', :target => '_blank', :class => 'bold'
+      It has not been active in a few years, but whatever.
+%div.flex_center
+  %p.red.font28.sans.bold.mt_20.mb_5 API
+%div.flex_center.mobile_flex
+  .news.serif
     %p
       Did you know
       = link_to 'Pinball Map has an open API?', apipie_apipie_path
@@ -53,32 +126,15 @@
       = link_to 'Pindigo', 'https://pindigo.app/', :target => '_blank'
       and
       = link_to 'Scorbit', 'https://scorbit.io/', :target => '_blank'
-      and many others! If you use the data, please provide attribution!
+      and
+      = link_to 'Kineticist', 'https://www.kineticist.co/', :target => '_blank'
+      and many others!
+    %p
+      %span.bold If you use the data, please provide attribution!
   .news.serif
-    %p
-      Pinball Map is listing
-      %span.red.font18.sans.bold
-        #{number_with_delimiter(Location.all.count,:delimiter => ",")}
-      locations and
-      %span.red.font18.sans.bold
-        #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")}
-      machines.
-    %p
-      This is a user-powered map. You can help keep it up to date by adding and removing machines, submitting new locations, and telling your friends to use it!
-    %p
-      The data is managed by over 100 administrators and thousands of active users.
-    %p
-      We have a free
-      = link_to 'mobile app for iOS and Android.', app_path
-    %p
-      Pinball Map is not monetized - no ads or premium membership. The
-      = link_to 'code is open source.', 'https://github.com/pinballmap/pbm'
-      Follow us on Twitter for a massive amount of map updates.
-      = link_to '@pinballmapcom', 'https://twitter.com/pinballmapcom', :target => '_blank'
-    %p
-      = link_to 'Contact us!', 'portland/about'
-%div.flex_center.flex_column.mb_10
-  %p.red.font28.sans.bold.mt_20.mb_5
+    =image_tag( 'pbm-play-store-2.png', :alt => 'machine', :style => 'height: 180px;', :class => 'splash')
+%div.flex_center.flex_column.mb_10.bg_lightpurple
+  %p.red.font28.sans.bold.mt_20.mb_5.bg_lightpurple
     Recent Blog Posts
   %div.m_5.center
     =link_to 'Pinball Map App Update 5.2.18', 'https://blog.pinballmap.com/2023/03/05/pinball-map-app-update-5-2-18/', :target => '_blank', :class => 'bold font18'
@@ -92,7 +148,7 @@
     =link_to '2021 TWIPY Award for Best Pinball App', 'https://blog.pinballmap.com/2022/03/29/2021-TWIPY-Award/', :target => '_blank', :class => 'bold font18'
     %span.block.center.m_5 Mar 29, 2022
 
-%div.flex_center.flex_column.bg_lightpurple.mb_20
+%div.flex_center.flex_column.mb_20
   .region_map
     %p.red.font28.sans.bold.mt_20.mb_5.center
       Regional Maps
