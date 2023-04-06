@@ -1,7 +1,7 @@
 class LocationsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   has_scope :by_location_name, :by_location_id, :by_ipdb_id, :by_opdb_id, :by_machine_id, :by_machine_name, :by_city_id, :by_state_id, :by_machine_group_id, :by_zone_id, :by_operator_id, :by_type_id, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :by_center_point_and_ne_boundary, :region, :by_is_stern_army, :user_faved, :manufacturer
-  before_action :authenticate_user!, only: %i[update_desc update_metadata confirm]
+  before_action :authenticate_user!, only: %i[update_metadata confirm]
 
   def create
     @location = Location.new(location_params)
@@ -78,10 +78,6 @@ class LocationsController < InheritedResources::Base
     render partial: 'locations/render_scores', locals: { lmx: LocationMachineXref.find(params[:id]) }
   end
 
-  def render_desc
-    render partial: 'locations/render_desc', locals: { l: Location.find(params[:id]) }
-  end
-
   def render_update_metadata
     render partial: 'locations/render_update_metadata', locals: { l: Location.find(params[:id]) }
   end
@@ -106,7 +102,8 @@ class LocationsController < InheritedResources::Base
       phone: params["new_phone_#{l.id}"],
       website: params["new_website_#{l.id}"],
       operator_id: params["new_operator_#{l.id}"],
-      location_type_id: params["new_location_type_#{l.id}"]
+      location_type_id: params["new_location_type_#{l.id}"],
+      description: params["new_desc_#{l.id}"]
     )
 
     if message_type == 'errors'
@@ -114,17 +111,6 @@ class LocationsController < InheritedResources::Base
     else
       render nothing: true
     end
-  end
-
-  def update_desc
-    l = Location.find(params[:id])
-
-    l.update_metadata(
-      current_user.nil? ? nil : current_user,
-      description: params["new_desc_#{l.id}"]
-    )
-
-    render nothing: true
   end
 
   def self.locations_javascript_data(locations)

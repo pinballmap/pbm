@@ -620,32 +620,20 @@ RailsAdmin.config do |config|
   end
   config.model MachineScoreXref do
     list do
-      field :location_machine_xref_id do
-        label "Machine"
-        pretty_value do
-          bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object].location_machine_xref_id}
-        end
-        searchable [Location => :name]
-      end
       field :score
+      field :location, :belongs_to_association
+      field :user do
+        searchable :username
+      end
     end
     show do
-      field :location_machine_xref_id do
-        label "Machine"
-        pretty_value do
-          bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object].location_machine_xref_id}
-        end
-      end
       field :score
+      field :location, :belongs_to_association
+      field :user do
+        searchable :username
+      end
     end
     edit do
-      field :location_machine_xref_id do
-        read_only true
-        label "Machine"
-        pretty_value do
-          bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object].location_machine_xref_id}
-        end
-      end
       field :score
     end
     export do; end
@@ -693,12 +681,6 @@ RailsAdmin.config do |config|
     list do
       field :updated_at
       field :condition
-      field :location_id do
-        label "Machine"
-        pretty_value do
-          bindings[:view].render :partial => 'show_location_and_machine', :locals => {:location_machine_xref_id => bindings[:object]}
-        end
-      end
     end
   end
   config.model UserSubmission do

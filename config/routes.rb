@@ -131,7 +131,6 @@ Rails.application.routes.draw do
 
   resources :locations, only: [:index, :show] do
     collection do
-      get :update_desc
       get :update_metadata
       get :autocomplete
       get :autocomplete_city
@@ -141,7 +140,6 @@ Rails.application.routes.draw do
       get :locations_for_machine
       get :newest_machine_name
       get :render_add_machine
-      get :render_desc
       get :render_update_metadata
       get :render_machine_names_for_infowindow
       get :render_machines_count

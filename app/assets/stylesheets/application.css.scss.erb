@@ -27,47 +27,35 @@
   /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
-/* lato-regular - latin */
 @font-face {
-  font-family: 'Lato';
+  font-family: 'PTSans';
   font-style: normal;
   font-weight: 400;
   src: local(''),
-    url(<%= asset_path 'fonts/lato-v20-latin-regular.woff2' %>) format('woff2'),
-    /* Chrome 26+, Opera 23+, Firefox 39+ */
-    url(<%= asset_path 'fonts/lato-v20-latin-regular.woff' %>) format('woff');
-  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    url(<%= asset_path 'fonts/PTS55F-webfont.woff' %>) format('woff'),
 }
 
-/* lato-700 - latin */
 @font-face {
-  font-family: 'Lato';
+  font-family: 'PTSans';
   font-style: normal;
   font-weight: 700;
   src: local(''),
-    url(<%= asset_path 'fonts/lato-v20-latin-700.woff2' %>) format('woff2'),
-    /* Chrome 26+, Opera 23+, Firefox 39+ */
-    url(<%= asset_path 'fonts/lato-v20-latin-700.woff' %>) format('woff');
-  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    url(<%= asset_path 'fonts/PTS75F-webfont.woff' %>) format('woff'),
 }
 
-/* lato-italic - latin */
 @font-face {
-  font-family: 'Lato';
+  font-family: 'PTSans';
   font-style: italic;
   font-weight: 400;
   src: local(''),
-    url(<%= asset_path 'fonts/lato-v20-latin-italic.woff2' %>) format('woff2'),
-    /* Chrome 26+, Opera 23+, Firefox 39+ */
-    url(<%= asset_path 'fonts/lato-v20-latin-italic.woff' %>) format('woff');
-  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    url(<%= asset_path 'fonts/PTS56F-webfont.woff' %>) format('woff'),
 }
 
 /** variables **/
 
 $sans: 'Nunito', Helvetica, Arial, sans-serif;
-$serif: 'Lato', "Lucida Grande", Tahoma, sans-serif;
-$red: #fd0091;
+$serif: 'PTSans', "Lucida Grande", Tahoma, sans-serif;
+$red: #fe46b0;
 $lightpink: #fff1f1;
 $brightpurple: #66017b;
 $darkblue: #232347;
@@ -1975,6 +1963,18 @@ input.lookup_search_input:focus {
   margin-top: 10px;
 }
 
+.metadata_edit_location textarea.edit_mode {
+  max-width: 300px;
+  min-width: 300px;
+  width: 300px;
+  height: 70px;
+  max-height: 100px;
+  min-height: 28px;
+  margin-bottom: 10px;
+  font-family: $serif;
+  float: right;
+}
+
 input.score {
   width: 80%;
 }
@@ -2070,17 +2070,6 @@ div.location_type_container {
 .edit_mode {
   font-size: 15px;
   font-family: Helvetica, Arial, sans-serif;
-}
-
-.desc_edit_location .edit_mode {
-  max-width: 380px;
-  min-width: 380px;
-  width: 380px;
-  height: 70px;
-  max-height: 100px;
-  min-height: 28px;
-  margin-bottom: 10px;
-  font-family: $serif;
 }
 
 .confirm_location {
@@ -2197,6 +2186,37 @@ input.score {
 
 .location_name {
   @include radius(10px);
+}
+
+.meta_image + .meta_image_tooltip,
+.fave_location + .fave_location_tooltip,
+.permalink + .permalink_tooltip {
+  visibility: hidden;
+  line-height: 14px;
+  font-size: 16px;
+  margin-left: -30px;
+  margin-top: 30px;
+  background: $black;
+  color: $vlightpurple;
+  padding: 5px;
+  font-weight: $bold;
+  font-family: $sans;
+  position: absolute;
+  text-align: center;
+}
+
+.meta_image + .meta_image_tooltip::after,
+.fave_location + .fave_location_tooltip::after,
+.permalink + .permalink_tooltip::after {
+  content: "";
+  position: absolute;
+}
+
+.meta_image:hover + .meta_image_tooltip,
+.fave_location:hover + .fave_location_tooltip,
+.permalink:hover + .permalink_tooltip {
+  visibility: visible;
+  width: 180px;
 }
 
 .desc_button {
@@ -2753,7 +2773,12 @@ div.region_name_container {
 .news {
   max-width: 450px;
   min-width: 300px;
-  margin: 0 20px;
+  margin: 0 20px 20px 20px;
+}
+
+.news p {
+  font-size: 18px;
+  line-height: 22px;
 }
 
 .region_map {

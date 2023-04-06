@@ -2,10 +2,15 @@
 	=l.name
 %div.location_tools.pointer
 	- if user_signed_in?
-		=image_tag('icons/comment-text.svg', :class => 'comment_image')
 		=image_tag('icons/lead-pencil.svg', :class => 'meta_image')
+		%span.meta_image_tooltip
+			Update Location Info
 		=image_tag( l.user_fave?(current_user.id) ? 'icons/heart-filled.svg' : 'icons/heart-empty.svg', :alt => 'fave this location', :id => "fave_location_img_#{l.id}", :class => 'fave_location')
+		%span.fave_location_tooltip
+			Favorite This Location
 	=link_to image_tag( 'icons/link-variant.svg' ), "/#{@region ? l.region.name.downcase : 'map'}/?by_location_id=#{l.id}", :id => l.id, :alt => 'link to this location', :class => 'permalink'
+	%span.permalink_tooltip
+		Location Permalink
 %div.m_10[l, :metadata]
 	= render :partial => 'locations/render_update_metadata', :locals => {:l => l}
 %div.location_thumbs[l, :thumbs]
