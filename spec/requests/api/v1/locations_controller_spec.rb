@@ -425,7 +425,7 @@ HERE
     end
 
     it 'responds with an error if an invalid phone number is sent' do
-      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { phone: 'baz', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { phone: 'NOT A PHONE NUMBER', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
 
@@ -437,7 +437,7 @@ HERE
 
       expect(JSON.parse(response.body)['errors']).to eq(['Invalid phone format.'])
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { phone: '11-444-4444', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { phone: '11-444-4444-11-44', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
 

@@ -47,7 +47,7 @@ module Api
 
         if lmx.nil?
           status_code = 201
-          lmx = LocationMachineXref.create(location_id: location_id, machine_id: machine_id, user_id: user ? user.id : nil)
+          lmx = LocationMachineXref.create(location_id: location_id, machine_id: machine_id, user_id: user&.id)
         end
 
         if condition
@@ -56,7 +56,7 @@ module Api
             remote_ip: request.remote_ip,
             request_host: request.host,
             user_agent: request.user_agent,
-            user_id: user ? user.id : nil
+            user_id: user&.id
           )
         end
 
@@ -78,7 +78,7 @@ module Api
           remote_ip: request.remote_ip,
           request_host: request.host,
           user_agent: request.user_agent,
-          user_id: user ? user.id : nil
+          user_id: user&.id
         )
 
         return_response(lmx, 'location_machine', [], %i[last_updated_by_username machine_conditions])
@@ -99,7 +99,7 @@ module Api
           remote_ip: request.remote_ip,
           request_host: request.host,
           user_agent: request.user_agent,
-          user_id: user ? user.id : nil
+          user_id: user&.id
         )
 
         return_response('Successfully deleted lmx #' + lmx.id.to_s, 'msg')

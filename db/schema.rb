@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_20_182301) do
-
+ActiveRecord::Schema[7.0].define(version: 2023_04_06_195208) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -21,7 +20,7 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -33,8 +32,8 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
     t.text "metadata"
     t.string "service_name", null: false
     t.bigint "byte_size", null: false
-    t.string "checksum", null: false
-    t.datetime "created_at", null: false
+    t.string "checksum"
+    t.datetime "created_at", precision: nil, null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -53,8 +52,8 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
     t.date "start_date"
     t.date "end_date"
     t.integer "location_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "category", limit: 255
     t.string "external_location_name", limit: 255
     t.integer "ifpa_calendar_id"
@@ -66,8 +65,8 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
   end
 
   create_table "location_machine_xrefs", id: :serial, force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "location_id"
     t.integer "machine_id"
     t.text "condition"
@@ -83,21 +82,21 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
 
   create_table "location_picture_xrefs", id: :serial, force: :cascade do |t|
     t.integer "location_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.text "description"
     t.integer "user_id"
     t.string "photo_file_name", limit: 255
     t.string "photo_content_type", limit: 255
     t.integer "photo_file_size"
-    t.datetime "photo_updated_at"
+    t.datetime "photo_updated_at", precision: nil
     t.index ["location_id"], name: "index_location_picture_xrefs_on_location_id"
     t.index ["user_id"], name: "index_location_picture_xrefs_on_user_id"
   end
 
   create_table "location_types", id: :serial, force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "name", limit: 255
     t.string "icon"
     t.string "library"
@@ -113,8 +112,8 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
     t.decimal "lat", precision: 18, scale: 12
     t.decimal "lon", precision: 18, scale: 12
     t.string "website", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "zone_id"
     t.integer "region_id"
     t.integer "location_type_id"
@@ -136,8 +135,8 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
   create_table "machine_conditions", id: :serial, force: :cascade do |t|
     t.text "comment"
     t.integer "location_machine_xref_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "user_id"
     t.index ["location_machine_xref_id"], name: "index_machine_conditions_on_location_machine_xref_id"
     t.index ["user_id"], name: "index_machine_conditions_on_user_id"
@@ -145,15 +144,15 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
 
   create_table "machine_groups", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "machine_score_xrefs", id: :serial, force: :cascade do |t|
     t.integer "location_machine_xref_id"
     t.bigint "score"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "ip", limit: 255
     t.integer "user_id"
     t.string "rank", limit: 255
@@ -164,8 +163,8 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
   create_table "machines", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
     t.boolean "is_active"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "ipdb_link", limit: 255
     t.integer "year"
     t.string "manufacturer", limit: 255
@@ -189,8 +188,8 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
     t.string "email", limit: 255
     t.string "website", limit: 255
     t.string "phone", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.index ["region_id"], name: "index_operators_on_region_id"
   end
 
@@ -201,8 +200,8 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
     t.text "table"
     t.integer "month"
     t.bigint "year"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.index ["item", "table", "month", "year"], name: "index_histories_on_item_and_table_and_month_and_year"
   end
 
@@ -218,8 +217,8 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
 
   create_table "regions", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "full_name", limit: 255
     t.string "motd", limit: 255, default: "To help keep Pinball Map running, consider a donation! https://pinballmap.com/donate"
     t.decimal "lat", precision: 18, scale: 12
@@ -237,20 +236,20 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
   create_table "ssw_lpx_backup", id: false, force: :cascade do |t|
     t.integer "id"
     t.integer "location_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.text "description"
     t.integer "user_id"
     t.string "photo_file_name", limit: 255
     t.string "photo_content_type", limit: 255
     t.integer "photo_file_size"
-    t.datetime "photo_updated_at"
+    t.datetime "photo_updated_at", precision: nil
   end
 
   create_table "ssw_tmp_weird_empty_lmxes", id: false, force: :cascade do |t|
     t.integer "id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "location_id"
     t.integer "machine_id"
     t.text "condition"
@@ -276,8 +275,8 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
     t.text "user_inputted_address"
     t.decimal "lat", precision: 18, scale: 12
     t.decimal "lon", precision: 18, scale: 12
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "zone_id"
     t.text "country"
   end
@@ -285,16 +284,16 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
   create_table "user_fave_locations", force: :cascade do |t|
     t.integer "user_id"
     t.integer "location_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "user_submissions", id: :serial, force: :cascade do |t|
     t.text "submission_type"
     t.text "submission"
     t.integer "region_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "user_id"
     t.integer "location_id"
     t.integer "machine_id"
@@ -313,24 +312,24 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
     t.string "password_salt", limit: 255, default: "", null: false
     t.string "reset_password_token", limit: 255
     t.string "remember_token", limit: 255
-    t.datetime "remember_created_at"
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip", limit: 255
     t.string "last_sign_in_ip", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "region_id"
     t.string "initials", limit: 255
-    t.datetime "reset_password_sent_at"
+    t.datetime "reset_password_sent_at", precision: nil
     t.boolean "is_machine_admin"
     t.boolean "is_primary_email_contact"
     t.boolean "is_super_admin"
     t.text "username"
     t.string "confirmation_token", limit: 255
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
     t.boolean "is_disabled"
     t.string "authentication_token", limit: 30
     t.string "security_test"
@@ -341,11 +340,33 @@ ActiveRecord::Schema.define(version: 2023_02_20_182301) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "version_associations", force: :cascade do |t|
+    t.integer "version_id"
+    t.string "foreign_key_name", null: false
+    t.integer "foreign_key_id"
+    t.string "foreign_type"
+    t.index ["foreign_key_name", "foreign_key_id", "foreign_type"], name: "index_version_associations_on_foreign_key"
+    t.index ["version_id"], name: "index_version_associations_on_version_id"
+  end
+
+  create_table "versions", force: :cascade do |t|
+    t.string "item_type", null: false
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.text "object_changes"
+    t.integer "transaction_id"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+    t.index ["transaction_id"], name: "index_versions_on_transaction_id"
+  end
+
   create_table "zones", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
     t.integer "region_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "short_name", limit: 255
     t.boolean "is_primary"
     t.index ["region_id"], name: "index_zones_on_region_id"

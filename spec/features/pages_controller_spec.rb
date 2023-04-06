@@ -24,18 +24,18 @@ describe PagesController do
       fill_in('by_location_name', with: 'foo')
 
       fill_in('by_machine_name', with: 'bar')
-      expect(find('#by_location_id', visible: false).value).to eq('')
+      expect(find('#by_location_id', visible: :hidden).value).to eq('')
       expect(find('#by_location_name').value).to eq('')
       expect(find('#address').value).to eq('')
 
       fill_in('address', with: 'baz')
-      expect(find('#by_location_id', visible: false).value).to eq('')
+      expect(find('#by_location_id', visible: :hidden).value).to eq('')
       expect(find('#by_location_name').value).to eq('')
-      expect(find('#by_machine_id', visible: false).value).to eq('')
+      expect(find('#by_machine_id', visible: :hidden).value).to eq('')
       expect(find('#by_machine_name').value).to eq('bar')
 
       fill_in('by_machine_name', with: 'bang')
-      expect(find('#by_location_id', visible: false).value).to eq('')
+      expect(find('#by_location_id', visible: :hidden).value).to eq('')
       expect(find('#by_location_name').value).to eq('')
       expect(find('#address').value).to eq('baz')
 
@@ -444,14 +444,14 @@ describe PagesController do
     it 'redirects you to your user profile page if you are logged in' do
       visit '/inspire_profile'
 
-      expect(current_path).to eql(inspire_profile_path)
+      expect(page).to have_current_path(inspire_profile_path)
 
       user = FactoryBot.create(:user, id: 10)
       page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
 
       visit '/inspire_profile'
 
-      expect(current_path).to eql(profile_user_path(user.id))
+      expect(page).to have_current_path(profile_user_path(user.id))
     end
   end
 end

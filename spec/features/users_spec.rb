@@ -33,7 +33,7 @@ describe UsersController do
       title = @user.username + "'s User Profile - Pinball Map"
 
       desc_tag = "meta[property=\"og:title\"][content=\"#{title}\"]"
-      expect(page.body).to have_css(desc_tag, visible: false)
+      expect(page.body).to have_css(desc_tag, visible: :hidden)
       expect(page.title).to eq(title)
     end
 

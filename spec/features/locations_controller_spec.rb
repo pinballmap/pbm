@@ -221,9 +221,9 @@ describe LocationsController do
         og_title_tag = "meta[property=\"og:title\"][content=\"#{old_style_title}\"]"
 
         expect(page.title).to eq("#{region ? region.name + ' ' : ''}Pinball Map")
-        expect(page.body).to have_css(desc_tag, visible: false)
-        expect(page.body).to have_css(og_title_tag, visible: false)
-        expect(page.body).to have_css(og_desc_tag, visible: false)
+        expect(page.body).to have_css(desc_tag, visible: :hidden)
+        expect(page.body).to have_css(og_title_tag, visible: :hidden)
+        expect(page.body).to have_css(og_desc_tag, visible: :hidden)
 
         fill_in('by_location_name', with: 'Zelda')
         click_on 'location_search_button'
@@ -234,9 +234,9 @@ describe LocationsController do
         og_desc_tag = "meta[property=\"og:description\"][content=\"#{single_location_description}\"]"
         og_title_tag = "meta[property=\"og:title\"][content=\"#{single_location_title}\"]"
         expect(page.title).to eq(single_location_title)
-        expect(page.body).to have_css(desc_tag, visible: false)
-        expect(page.body).to have_css(og_desc_tag, visible: false)
-        expect(page.body).to have_css(og_title_tag, visible: false) if region
+        expect(page.body).to have_css(desc_tag, visible: :hidden)
+        expect(page.body).to have_css(og_desc_tag, visible: :hidden)
+        expect(page.body).to have_css(og_title_tag, visible: :hidden) if region
 
         fill_in('by_location_name', with: '')
         click_on 'location_search_button'
@@ -247,9 +247,9 @@ describe LocationsController do
         og_desc_tag = "meta[property=\"og:description\"][content=\"#{old_style_description}\"]"
         title_tag = "meta[property=\"og:title\"][content=\"#{old_style_title}\"]"
         expect(page.title).to eq("#{region ? region.name + ' ' : ''}Pinball Map")
-        expect(page.body).to have_css(desc_tag, visible: false)
-        expect(page.body).to have_css(title_tag, visible: false)
-        expect(page.body).to have_css(og_desc_tag, visible: false)
+        expect(page.body).to have_css(desc_tag, visible: :hidden)
+        expect(page.body).to have_css(title_tag, visible: :hidden)
+        expect(page.body).to have_css(og_desc_tag, visible: :hidden)
       end
     end
 
