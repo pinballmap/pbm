@@ -1,4 +1,5 @@
 class Event < ApplicationRecord
+  has_paper_trail
   belongs_to :region, optional: true
   belongs_to :location, optional: true
 

@@ -1,4 +1,5 @@
 class MachineScoreXref < ApplicationRecord
+  has_paper_trail
   include ActionView::Helpers::NumberHelper
   belongs_to :user, optional: true
   belongs_to :location_machine_xref, optional: true, counter_cache: true

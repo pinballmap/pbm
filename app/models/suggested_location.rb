@@ -1,6 +1,7 @@
 require 'uri'
 
 class SuggestedLocation < ApplicationRecord
+  has_paper_trail
   validates_presence_of :name, :machines, on: :create
   validates_presence_of :street, :city, :zip, on: :update
 
@@ -85,16 +86,16 @@ class SuggestedLocation < ApplicationRecord
       delete
 
       ActiveRecord::Base.connection.execute(<<HERE)
-insert into rails_admin_histories values (
-  nextval('rails_admin_histories_id_seq'),
+insert into versions values (
+  nextval('versions_id_seq'),
+  'Location',
+  #{location.id},
   'converted from suggested location',
   '#{user_email}',
-  #{location.id},
-  'Location',
-  NULL,
   NULL,
   now(),
-  now()
+  NULL,
+  NULL
 )
 HERE
     end

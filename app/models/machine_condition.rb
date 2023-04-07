@@ -1,4 +1,5 @@
 class MachineCondition < ApplicationRecord
+  has_paper_trail
   MAX_HISTORY_SIZE_TO_DISPLAY = 12
 
   belongs_to :user, optional: true

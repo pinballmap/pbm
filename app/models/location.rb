@@ -1,5 +1,6 @@
 class Location < ApplicationRecord
   include Rakismet::Model
+  has_paper_trail
 
   rakismet_attrs content: :description
 

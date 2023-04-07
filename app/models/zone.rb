@@ -1,4 +1,5 @@
 class Zone < ApplicationRecord
+  has_paper_trail
   validates_presence_of :name
   belongs_to :region, optional: true
   has_many :locations

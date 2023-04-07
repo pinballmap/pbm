@@ -1,4 +1,5 @@
 class LocationMachineXref < ApplicationRecord
+  has_paper_trail
   include Rakismet::Model
 
   rakismet_attrs content: :condition

@@ -10,6 +10,19 @@ RailsAdmin.config do |config|
 
   config.audit_with :paper_trail, 'User', 'PaperTrail::Version'
 
+  config.actions do
+    dashboard                     # mandatory
+    index                         # mandatory
+    new
+    export
+    bulk_delete
+    show
+    edit
+    delete
+    history_index
+    history_show
+  end
+
   config.main_app_name = ['Pinball Map', 'Admin']
   config.excluded_models = []
 
