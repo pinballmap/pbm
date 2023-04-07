@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
-ruby '3.0.6'
+ruby '3.1.4'
 
 gem 'pg'
-gem 'rails', '~> 7.0.4.3'
+gem 'rails'
 
 gem 'apipie-rails'
 gem 'aws-sdk-s3'
@@ -74,5 +74,4 @@ group :development, :test do
   gem 'pry'
   gem 'rack_session_access'
   gem 'rails_real_favicon'
-  gem 'ruby-growl'
 end

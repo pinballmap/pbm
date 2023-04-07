@@ -69,6 +69,8 @@ Style/StringConcatenation:
   Enabled: false
 Style/RedundantRegexpEscape:
   Enabled: false
+Style/HashSyntax:
+  EnforcedShorthandSyntax: either
 Metrics/ParameterLists:
   Max: 6
   MaxOptionalParameters: 4
