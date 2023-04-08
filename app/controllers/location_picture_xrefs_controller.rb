@@ -13,7 +13,7 @@ class LocationPictureXrefsController < InheritedResources::Base
       to: @location_picture_xref.location.region_id && @location_picture_xref.location.region.users.map(&:email).present? ? @location_picture_xref.location.region.users.map(&:email) : User.where("is_super_admin = 't'").map(&:email),
       from: 'admin@pinballmap.com',
       subject: 'PBM - Someone added a picture',
-      body: "This is photo ID: #{@location_picture_xref.id}. It's at location: #{@location_picture_xref.location.name}. Region: #{@location_picture_xref.location.region_id ? @location_picture_xref.location.region.full_name : 'REGIONLESS'}.\n\n\nYou can view the picture here #{@location_picture_xref.photo.url(:large)}\n\n\nNo need to approve it, it's already live."
+      body: "This is photo ID: #{@location_picture_xref.id}. It's at location: #{@location_picture_xref.location.name}. Region: #{@location_picture_xref.location.region_id ? @location_picture_xref.location.region.full_name : 'REGIONLESS'}.\n\n\nYou can view the picture here https:/#{@location_picture_xref.photo.url(:large)}\n\n\nNo need to approve it, it's already live."
     )
   end
 
