@@ -1,6 +1,7 @@
 require 'uri'
 
 class SuggestedLocation < ApplicationRecord
+  has_paper_trail
   validates_presence_of :name, :machines, on: :create
   validates_presence_of :street, :city, :zip, on: :update
 
