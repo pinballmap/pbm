@@ -1,6 +1,5 @@
 require 'json'
 class Machine < ApplicationRecord
-  has_paper_trail
   belongs_to :location_machine_xref, optional: true
   belongs_to :machine_group, optional: true
 

@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  has_paper_trail
   include ActionView::Helpers::NumberHelper
   acts_as_token_authenticatable
 

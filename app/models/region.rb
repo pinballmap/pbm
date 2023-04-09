@@ -1,5 +1,4 @@
 class Region < ApplicationRecord
-  has_paper_trail
   has_many :locations
   has_many :zones
   has_many :users, (-> { order 'users.id' })

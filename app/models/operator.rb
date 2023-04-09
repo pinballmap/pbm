@@ -1,5 +1,4 @@
 class Operator < ApplicationRecord
-  has_paper_trail
   belongs_to :region, optional: true
   has_many :locations
   has_many :suggested_locations

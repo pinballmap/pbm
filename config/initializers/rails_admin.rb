@@ -8,8 +8,6 @@ RailsAdmin.config do |config|
 
   config.current_user_method(&:current_user)
 
-  config.audit_with :paper_trail, 'User', 'PaperTrail::Version'
-
   config.actions do
     dashboard                     # mandatory
     index                         # mandatory
@@ -19,8 +17,6 @@ RailsAdmin.config do |config|
     show
     edit
     delete
-    history_index
-    history_show
   end
 
   config.main_app_name = ['Pinball Map', 'Admin']
