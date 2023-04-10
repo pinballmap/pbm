@@ -710,10 +710,10 @@ RailsAdmin.config do |config|
       field :zip, :string
       field :country, :string
       field :phone, :string
+      field :website, :string
       field :operator, :belongs_to_association
       field :zone, :belongs_to_association
       field :created_at, :datetime
-      field :updated_at, :datetime
     end
     edit do
       field :name, :string
