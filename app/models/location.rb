@@ -1,5 +1,5 @@
 class Location < ApplicationRecord
-  has_paper_trail ignore: %i[location_type_id operator_id phone website description updated_at]
+  has_paper_trail only: %i[name street city state region zone lat lon is_stern_army]
   include Rakismet::Model
 
   rakismet_attrs content: :description
