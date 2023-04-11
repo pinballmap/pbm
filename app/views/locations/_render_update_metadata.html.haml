@@ -38,8 +38,9 @@
     - else
       %div.operator_comments.grey (This operator does not receive machine comments)
   - if !l.description.blank?
-    = image_tag('icons/notebook-outline.svg', :class => 'meta_icon float_l')
-    %div[l, :desc_show]= l.description
+    %div.description
+      = image_tag('icons/notebook-outline.svg', :class => 'meta_icon float_l')
+      %div[l, :desc_show]= l.description
 %div[l, :metadata_edit]{:style => 'display:none'}
   = form_tag update_metadata_locations_path(:action => 'update_metadata', id: l.id), :id => "update_metadata_#{l.id}", :method => 'get' do
     = hidden_field_tag :id, l.id
