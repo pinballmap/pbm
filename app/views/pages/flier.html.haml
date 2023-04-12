@@ -3,122 +3,66 @@
     Print out this page, cut it into four, and then spread the word! THANKS!
   #promote_container
     .promote_subcontainer
-      %p.bold.m_0.black.sans.font18.lh_30
-        Find pinball machines to play on
-        - if (@region)
-          the #{@region.full_name}
-        Pinball Map!
-      %p.m_0.p_0.font16.sans
-        - if (@region)
-          pinballmap.com#{region_homepage_path}
-        - else
-          pinballmap.com
+      %p.bold.m_0.black.sans.font28
+        Find pinball machines to play!
       %p.m_0.p_0.font16.serif
-        %span Tracking
-        - if (@region)
-          %span.bold #{@lmx_count}
-          pinball machines in #{@region.full_name}
-          %br/
-          %span.italic.font16.sans
-            and #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} across the world!
-        - else
-          #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} pinball machines across the world!
-      %p.m_0.p_0.red.bold.font20.sans
-        Help keep the map up to date!
+        %span
+          Listing over
+          %span.bold 35,000
+          machines across the world!
       %p.m_0.p_0
-        =image_tag'App_Store.svg', :alt => 'ios app store logo', :class => 'app_logo'
-        =image_tag'google-play-badge.png', :alt => 'google play store logo', :class => 'app_logo'
-      %p.m_0.p_0.red.bold.font20
-        Download the free app!
+        =image_tag('pinballmap-qr.png', :alt => 'pinball map qr code', :class => 'app_logo')
+      %p.m_0.p_0.font16.sans
+        pinballmap.com
+      %p.m_0.p_0.brightpurple.bold.font20
+        Plus a free app!
       %p.m_0.p_0
-        =image_tag'pinballmap-logo.png', :alt => 'Pinball Map Logo', :class => 'promote_logo'
+        =image_tag('pinballmap-logo.png', :alt => 'Pinball Map Logo', :class => 'promote_logo')
     .promote_subcontainer
-      %p.bold.m_0.black.sans.font18.lh_30
-        Find pinball machines to play on
-        - if (@region)
-          the #{@region.full_name}
-        Pinball Map!
-      %p.m_0.p_0.font16.sans
-        - if (@region)
-          pinballmap.com#{region_homepage_path}
-        - else
-          pinballmap.com
+      %p.bold.m_0.black.sans.font28
+        Find pinball machines to play!
       %p.m_0.p_0.font16.serif
-        %span Tracking
-        - if (@region)
-          %span.bold #{@lmx_count}
-          pinball machines in #{@region.full_name}
-          %br/
-          %span.italic.font16.sans
-            and #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} across the world!
-        - else
-          #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} pinball machines across the world!
-      %p.m_0.p_0.red.bold.sans.font20
-        Help keep the map up to date!
+        %span
+          Listing over
+          %span.bold 35,000
+          machines across the world!
       %p.m_0.p_0
-        =image_tag'App_Store.svg', :alt => 'ios app store logo', :class => 'app_logo'
-        =image_tag'google-play-badge.png', :alt => 'google play store logo', :class => 'app_logo'
-      %p.m_0.p_0.red.bold.font20
-        Download the free app!
+        =image_tag('pinballmap-qr.png', :alt => 'pinball map qr code', :class => 'app_logo')
+      %p.m_0.p_0.font16.sans
+        pinballmap.com
+      %p.m_0.p_0.brightpurple.bold.font20
+        Plus a free app!
       %p.m_0.p_0
-        =image_tag'pinballmap-logo.png', :alt => 'Pinball Map Logo', :class => 'promote_logo'
+        =image_tag('pinballmap-logo.png', :alt => 'Pinball Map Logo', :class => 'promote_logo')
     .promote_subcontainer
-      %p.bold.m_0.black.sans.font18.lh_30
-        Find pinball machines to play on
-        - if (@region)
-          the #{@region.full_name}
-        Pinball Map!
-      %p.m_0.p_0.font16.sans
-        - if (@region)
-          pinballmap.com#{region_homepage_path}
-        - else
-          pinballmap.com
+      %p.bold.m_0.black.sans.font28
+        Find pinball machines to play!
       %p.m_0.p_0.font16.serif
-        %span Tracking
-        - if (@region)
-          %span.bold #{@lmx_count}
-          pinball machines in #{@region.full_name}
-          %br/
-          %span.italic.font16.sans
-            and #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} across the world!
-        - else
-          #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} pinball machines across the world!
-      %p.m_0.p_0.red.bold.sans.font20
-        Help keep the map up to date!
+        %span
+          Listing over
+          %span.bold 35,000
+          machines across the world!
       %p.m_0.p_0
-        =image_tag'App_Store.svg', :alt => 'ios app store logo', :class => 'app_logo'
-        =image_tag'google-play-badge.png', :alt => 'google play store logo', :class => 'app_logo'
-      %p.m_0.p_0.red.bold.font20
-        Download the free app!
+        =image_tag('pinballmap-qr.png', :alt => 'pinball map qr code', :class => 'app_logo')
+      %p.m_0.p_0.font16.sans
+        pinballmap.com
+      %p.m_0.p_0.brightpurple.bold.font20
+        Plus a free app!
       %p.m_0.p_0
-        =image_tag'pinballmap-logo.png', :alt => 'Pinball Map Logo', :class => 'promote_logo'
+        =image_tag('pinballmap-logo.png', :alt => 'Pinball Map Logo', :class => 'promote_logo')
     .promote_subcontainer
-      %p.bold.m_0.black.sans.font18.lh_30
-        Find pinball machines to play on
-        - if (@region)
-          the #{@region.full_name}
-        Pinball Map!
-      %p.m_0.p_0.font16.sans
-        - if (@region)
-          pinballmap.com#{region_homepage_path}
-        - else
-          pinballmap.com
+      %p.bold.m_0.black.sans.font28
+        Find pinball machines to play!
       %p.m_0.p_0.font16.serif
-        %span Tracking
-        - if (@region)
-          %span.bold #{@lmx_count}
-          pinball machines in #{@region.full_name}
-          %br/
-          %span.italic.font16.sans
-            and #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} across the world!
-        - else
-          #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")} pinball machines across the world!
-      %p.m_0.p_0.red.bold.sans.font20
-        Help keep the map up to date!
+        %span
+          Listing over
+          %span.bold 35,000
+          machines across the world!
       %p.m_0.p_0
-        =image_tag'App_Store.svg', :alt => 'ios app store logo', :class => 'app_logo'
-        =image_tag'google-play-badge.png', :alt => 'google play store logo', :class => 'app_logo'
-      %p.m_0.p_0.red.bold.font20
-        Download the free app!
+        =image_tag('pinballmap-qr.png', :alt => 'pinball map qr code', :class => 'app_logo')
+      %p.m_0.p_0.font16.sans
+        pinballmap.com
+      %p.m_0.p_0.brightpurple.bold.font20
+        Plus a free app!
       %p.m_0.p_0
-        =image_tag'pinballmap-logo.png', :alt => 'Pinball Map Logo', :class => 'promote_logo'
+        =image_tag('pinballmap-logo.png', :alt => 'Pinball Map Logo', :class => 'promote_logo')

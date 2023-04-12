@@ -27,9 +27,9 @@
     %span.dark #{@lmx_count} machines around #{@region.full_name}.
   - if !mobile_device?
     %p
-      Want to help spread the word about the #{@region.full_name} Pinball Map?
+      Spread the word about Pinball Map!
       %span.red.font16.sans.bold
-        = link_to 'Print out this flier!', flier_path
+        = link_to 'Print out this flier!', map_flier_path
   %p
     Looking for spots outside of this region? Try the
     =link_to 'One Big Map.', map_path, :class => "bold"
