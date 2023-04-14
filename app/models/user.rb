@@ -13,6 +13,7 @@ class User < ApplicationRecord
 
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, multiline: true
   validates :username, length: { maximum: 20 }
+  strip_attributes only: [:username, :password]
 
   validate :validate_username
 

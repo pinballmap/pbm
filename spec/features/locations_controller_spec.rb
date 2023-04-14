@@ -622,7 +622,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(@location.reload.website).to eq('')
+      expect(@location.reload.website).to eq(nil)
     end
 
     it 'allows users to update a location metadata - stubbed out spam detection' do
@@ -776,7 +776,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(@location.reload.description).to eq('')
+      expect(@location.reload.description).to eq(nil)
     end
 
     it 'updates last updated' do

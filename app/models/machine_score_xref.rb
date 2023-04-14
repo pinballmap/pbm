@@ -4,6 +4,7 @@ class MachineScoreXref < ApplicationRecord
   belongs_to :location_machine_xref, optional: true, counter_cache: true
   has_one :location, through: :location_machine_xref
   has_one :machine, through: :location_machine_xref
+  strip_attributes
 
   scope :zone_id, (lambda { |id|
     joins(:location_machine_xref).joins(:location).where("
