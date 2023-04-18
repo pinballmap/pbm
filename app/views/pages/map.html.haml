@@ -16,7 +16,7 @@
         .map_input.inline
           %span Near
           = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => @big_cities_placeholder
-          = image_tag('my-location.svg', :class => 'my_location', :onclick => "findClosestLocations()")
+          = image_tag('my-location.svg', :class => 'my_location', :onclick => "findClosestLocations();hideSearchModal();")
           %span.my_location_tooltip
             Show Nearby Venues
         %hr
