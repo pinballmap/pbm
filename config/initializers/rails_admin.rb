@@ -1,37 +1,6 @@
-module RailsAdmin
-  module Extensions
-    module CanCanCan2
-      class AuthorizationAdapter < RailsAdmin::Extensions::CanCanCan::AuthorizationAdapter
-        def authorize(action, abstract_model = nil, model_object = nil)
-          return unless action
-          reaction, subject = fetch_action_and_subject(action, abstract_model, model_object)
-          @controller.current_ability.authorize!(reaction, subject)
-        end
-
-        def authorized?(action, abstract_model = nil, model_object = nil)
-          return unless action
-          reaction, subject = fetch_action_and_subject(action, abstract_model, model_object)
-          @controller.current_ability.can?(reaction, subject)
-        end
-
-        def fetch_action_and_subject(action, abstract_model, model_object)
-          reaction = action
-          subject = model_object || abstract_model&.model
-          unless subject
-            subject = reaction
-            reaction = :read
-          end
-          return reaction, subject
-        end
-      end
-    end
-  end
-end
-
-RailsAdmin.add_extension(:cancancan2, RailsAdmin::Extensions::CanCanCan2, authorization: true)
-
 RailsAdmin.config do |config|
-  config.authorize_with :cancancan2
+  config.asset_source = :sprockets
+  config.authorize_with :cancancan
 
   config.authenticate_with do
     warden.authenticate! scope: :user
@@ -39,7 +8,24 @@ RailsAdmin.config do |config|
 
   config.current_user_method(&:current_user)
 
-  config.audit_with :history, User
+  config.audit_with :paper_trail, 'User', 'PaperTrail::Version'
+
+  config.actions do
+    dashboard                     # mandatory
+    index                         # mandatory
+    new
+    export
+    bulk_delete
+    show
+    edit
+    delete
+    history_index do
+      only ['Location', 'SuggestedLocation', 'Operator', 'RegionLinkXref', 'Zone', 'Region']
+    end
+    history_show do
+      only ['Location', 'SuggestedLocation', 'Operator', 'RegionLinkXref', 'Zone', 'Region']
+    end
+  end
 
   config.main_app_name = ['Pinball Map', 'Admin']
   config.excluded_models = []
@@ -727,10 +713,10 @@ RailsAdmin.config do |config|
       field :zip, :string
       field :country, :string
       field :phone, :string
+      field :website, :string
       field :operator, :belongs_to_association
       field :zone, :belongs_to_association
       field :created_at, :datetime
-      field :updated_at, :datetime
     end
     edit do
       field :name, :string

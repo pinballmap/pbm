@@ -1,10 +1,11 @@
 require 'uri'
 
 class SuggestedLocation < ApplicationRecord
+  has_paper_trail
   validates_presence_of :name, :machines, on: :create
   validates_presence_of :street, :city, :zip, on: :update
 
-  validates :website, format: { with: %r{http(s?)://}, message: 'must begin with http:// or https://', multiline: true }, if: :website?, on: :update
+  validates :website, format: { with: %r{http(s?)://}, message: 'must begin with http:// or https://' }, if: :website?, on: :update
   validates :name, :street, :city, format: { with: /^\S.*/, message: "Can't start with a blank", multiline: true }, on: :update
   validates :lat, :lon, presence: { message: 'Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon' }, on: :update
 
@@ -15,12 +16,12 @@ class SuggestedLocation < ApplicationRecord
 
   geocoded_by :full_street_address, latitude: :lat, longitude: :lon
   before_validation :geocode, unless: :skip_geocoding?
+  strip_attributes
 
   after_create :massage_fields
 
   def massage_fields
     self.country = 'US' if country.blank?
-    self.name = name.strip unless name.blank?
     self.website = "http://#{website}" if website && !website.blank? && website !~ /\A#{URI::DEFAULT_PARSER.make_regexp(%w[http https])}\z/
 
     save
@@ -85,16 +86,16 @@ class SuggestedLocation < ApplicationRecord
       delete
 
       ActiveRecord::Base.connection.execute(<<HERE)
-insert into rails_admin_histories values (
-  nextval('rails_admin_histories_id_seq'),
+insert into versions values (
+  nextval('versions_id_seq'),
+  'Location',
+  #{location.id},
   'converted from suggested location',
   '#{user_email}',
-  #{location.id},
-  'Location',
-  NULL,
   NULL,
   now(),
-  now()
+  NULL,
+  NULL
 )
 HERE
     end

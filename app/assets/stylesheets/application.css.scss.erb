@@ -1068,6 +1068,30 @@ span.or {
   padding-right: 5px;
 }
 
+.my_location {
+  height: 22px;
+  margin-bottom: -7px;
+  margin-left: -30px;
+}
+
+.my_location:hover {
+  cursor: pointer;
+}
+
+.my_location:hover:after {
+  content: "Show Near My Location";
+  position: absolute;
+  line-height: 14px;
+  font-size: 16px;
+  margin-left: 5px;
+  margin-top: 8px;
+  background: $black;
+  color: $vlightpurple;
+  padding: 5px;
+  font-weight: $bold;
+  font-family: $sans;
+}
+
 .search_field_container {
   width: 55%;
   height: 28px;
@@ -1318,6 +1342,7 @@ a.active_section_link:hover {
   background-color: $grey;
   @include radius(10px 10px 0 0);
   padding: 10px 120px 10px 10px;
+  font-family: $sans;
 }
 
 .pr_30 {
@@ -1327,7 +1352,8 @@ a.active_section_link:hover {
 .phone,
 .website,
 .operator,
-.region {
+.region,
+.description {
   padding: 2px 0 6px 0;
 }
 
@@ -2190,7 +2216,8 @@ input.score {
 
 .meta_image + .meta_image_tooltip,
 .fave_location + .fave_location_tooltip,
-.permalink + .permalink_tooltip {
+.permalink + .permalink_tooltip,
+.my_location + .my_location_tooltip {
   visibility: hidden;
   line-height: 14px;
   font-size: 16px;
@@ -2205,16 +2232,23 @@ input.score {
   text-align: center;
 }
 
+.my_location + .my_location_tooltip {
+  margin-top: 2px;
+  margin-left: 10px;
+}
+
 .meta_image + .meta_image_tooltip::after,
 .fave_location + .fave_location_tooltip::after,
-.permalink + .permalink_tooltip::after {
+.permalink + .permalink_tooltip::after,
+.my_location + .my_location_tooltip::after {
   content: "";
   position: absolute;
 }
 
 .meta_image:hover + .meta_image_tooltip,
 .fave_location:hover + .fave_location_tooltip,
-.permalink:hover + .permalink_tooltip {
+.permalink:hover + .permalink_tooltip,
+.my_location:hover + .my_location_tooltip {
   visibility: visible;
   width: 180px;
 }
@@ -2232,7 +2266,6 @@ input.score {
 .desc_show_location {
   font-style: italic;
   color: $grey;
-  padding: 0 0 5px;
   font-size: 13px;
   line-height: 15px;
   font-family: $serif;
@@ -2979,40 +3012,6 @@ div.score_list {
   width: auto;
 }
 
-.ui-dialog .ui-dialog-titlebar-close {
-  top: 35px !important;
-  margin-right: -5px !important;
-  z-index: 6000;
-}
-
-.ui-dialog .ui-dialog-titlebar {
-  padding: 0 1em !important;
-}
-
-.ui-dialog {
-  width: 135px !important;
-  border: 2px solid #6E5335;
-  padding: 5px;
-}
-
-.ui-dialog .ui-dialog-title {
-  margin: 0.1em 0px 0.1em 0 !important;
-}
-
-.ui-widget-content a {
-  margin-right: 15px !important;
-}
-
-.ui-dialog .ui-dialog-content {
-  overflow: hidden !important;
-  padding: 0.5em 1em 0 !important;
-}
-
-.ui-widget-header {
-  background: none repeat scroll 0 0 #FFECD6;
-  border: 1px solid #D56C24;
-}
-
 /** Autofill Override **/
 
 .ui-menu .ui-menu-item {
@@ -3054,8 +3053,7 @@ div.score_list {
 }
 
 .ui-menu-item:hover,
-.ui-menu-item a:hover,
-{
+.ui-menu-item a:hover {
 background: $purple;
 padding: 1px 5px;
 color: $black;
@@ -3070,36 +3068,31 @@ color: $black;
 
 /** Promote **/
 #page_body.promote_body {
-  width: 670px;
-  max-width: 670px;
-  min-width: 670px;
+  width: 800px;
+  max-width: 800px;
+  min-width: 800px;
   margin-bottom: 20px;
 }
 
 #promote_container {
   text-align: center;
-  height: 880px;
 }
 
 .promote_subcontainer {
   margin: 10px;
   height: calc(50% - 20px);
   float: left;
-  padding: 10px;
+  padding: 8px;
   width: calc(50% - 20px);
   border: 2px solid $black;
   display: flex;
-  display: -webkit-flex;
-  /* Safari 8 */
   flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
-  /* Safari 8 */
   justify-content: center;
-  -webkit-justify-content: center;
-  /* Safari 8 */
+  align-items: center;
 }
 
-#promote_container img.promote_logo {
+#promote_container img.promote_logo,
+#promote_container p {
   width: 100%;
 }
 
@@ -3108,5 +3101,5 @@ color: $black;
 }
 
 #promote_container img.app_logo {
-  width: 47%;
+  width: 65%;
 }

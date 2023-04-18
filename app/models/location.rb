@@ -1,11 +1,12 @@
 class Location < ApplicationRecord
+  has_paper_trail only: %i[name street city state region zone lat lon is_stern_army]
   include Rakismet::Model
 
   rakismet_attrs content: :description
 
   validates_presence_of :name, :street, :city, :country
   validates :phone, phone: { possible: true, allow_blank: true }
-  validates :website, format: { with: %r{http(s?)://}, message: 'must begin with http:// or https://', multiline: true }, if: :website?
+  validates :website, format: { with: %r{http(s?)://}, message: 'must begin with http:// or https://' }, if: :website?
   validates :name, :street, :city, format: { with: /^\S.*/, message: "Can't start with a blank", multiline: true }
   validates :lat, :lon, presence: { message: 'Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon' }
 
@@ -22,6 +23,7 @@ class Location < ApplicationRecord
 
   geocoded_by :full_street_address, latitude: :lat, longitude: :lon
   before_validation :geocode, unless: :skip_geocoding?
+  strip_attributes
 
   MAP_SCALE = 0.75
 
@@ -93,7 +95,7 @@ class Location < ApplicationRecord
     LocationMachineXref.where(location_id: record.id).destroy_all
     UserFaveLocation.where(location_id: record.id).destroy_all
 
-    UserSubmission.create(region_id: region ? region.id : nil, location: self, submission_type: UserSubmission::DELETE_LOCATION_TYPE, submission: "Deleted #{name} (#{id})")
+    UserSubmission.create(region_id: region&.id, location: self, submission_type: UserSubmission::DELETE_LOCATION_TYPE, submission: "Deleted #{name} (#{id})")
   end
 
   def skip_geocoding?
@@ -190,13 +192,17 @@ class Location < ApplicationRecord
 
   def update_website(new_website)
     old_website = website
-    self.website = new_website
+    if new_website && !new_website.blank?
+      self.website = new_website
 
-    if valid?
-      @updates.push('Changed website to ' + website)
-    else
-      self.website = old_website
-      @validation_errors.push('Website must begin with http:// or https://')
+      if valid?
+        @updates.push('Changed website to ' + website)
+      else
+        self.website = old_website
+        @validation_errors.push('Website must begin with http:// or https://')
+      end
+    elsif new_website&.blank?
+      self.website = nil
     end
   end
 
@@ -226,10 +232,10 @@ class Location < ApplicationRecord
 
     if save && errors.count.zero? && @validation_errors.empty?
       self.date_last_updated = Date.today
-      self.last_updated_by_user_id = user ? user.id : nil
+      self.last_updated_by_user_id = user&.id
       save
 
-      UserSubmission.create(region_id: region&.id, location: self, submission_type: UserSubmission::LOCATION_METADATA_TYPE, submission: @updates.join("\n") + " to #{name}", user_id: user ? user.id : nil)
+      UserSubmission.create(region_id: region&.id, location: self, submission_type: UserSubmission::LOCATION_METADATA_TYPE, submission: @updates.join("\n") + " to #{name}", user_id: user&.id)
 
       [self, 'location']
     else
@@ -249,7 +255,7 @@ class Location < ApplicationRecord
     self.date_last_updated = Date.today
     self.last_updated_by_user = user
 
-    UserSubmission.create(user_name: user.nil? ? nil : user.username, location_name: name, city_name: city, region_id: region&.id, location: self, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE, submission: "#{user ? user.username : 'Someone'} confirmed the lineup at #{name} in #{city}", user: user)
+    UserSubmission.create(user_name: user&.username, location_name: name, city_name: city, region_id: region&.id, location: self, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE, submission: "#{user ? user.username : 'Someone'} confirmed the lineup at #{name} in #{city}", user: user)
 
     save(validate: false)
   end

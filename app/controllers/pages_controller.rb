@@ -212,11 +212,7 @@ class PagesController < ApplicationController
     redirect_to about_path
   end
 
-  def flier
-    @locations = !@region.nil? ? Location.where('region_id = ?', @region.id) : ''
-    @location_count = !@region.nil? ? @locations.count : ''
-    @lmx_count = !@region.nil? ? @region.machines_count : ''
-  end
+  def flier; end
 
   def home
     @machine_and_location_count_by_region = Region.machine_and_location_count_by_region

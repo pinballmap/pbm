@@ -122,7 +122,6 @@ Rails.application.routes.draw do
     get '/high_rollers' => 'pages#high_rollers'
     get '/suggest' => 'pages#suggest_new_location'
     post '/submitted_new_location' => 'pages#submitted_new_location'
-    get '/flier' => 'pages#flier'
 
     get 'all_region_data.json', to: 'regions#all_region_data', format: 'json'
 
