@@ -1541,7 +1541,7 @@ span.machine_year_man {
 
 .ic_no:before {
   content: "Not";
-  background: url(<%= asset_path 'icons/ic_no.svg' %>) no-repeat;
+  background: url(<%= asset_path 'icons/ic_no.svg' %>);
   background-repeat: no-repeat;
   background-position: -1px -1px;
   padding-left: 20px;
@@ -1553,10 +1553,12 @@ span.machine_year_man {
 
 .ic_unknown:before {
   content: "";
-  background: url(<%= asset_path 'icons/ic_unknown.svg' %>) no-repeat;
+  background: url(<%= asset_path 'icons/ic_unknown.svg' %>);
+  background-repeat: no-repeat;
   display: inline-block;
+  background-position: -2px 1px;
   height: 20px;
-  margin: -2px 10px 0px 0px;
+  margin: -4px 10px 0px 0px;
   width: 20px;
   vertical-align: middle;
 }
