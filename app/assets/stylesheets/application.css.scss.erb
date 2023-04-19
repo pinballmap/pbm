@@ -1482,6 +1482,21 @@ span.machine_year_man {
   font-family: $sans;
 }
 
+.ic_button:hover:after {
+  content: "Toggle Insider Connected Status";
+  position: absolute;
+  line-height: 14px;
+  font-size: 16px;
+  margin-left: 480px;
+  width: 260px;
+  margin-top: 0px;
+  background: $black;
+  color: $vlightpurple;
+  padding: 5px;
+  font-weight: $bold;
+  font-family: $sans;
+}
+
 .ic_button.ic_yes {
   color: #66017b;
   background: #ecbcf5;
@@ -1525,7 +1540,7 @@ span.machine_year_man {
 }
 
 .ic_no:before {
-  content: "No";
+  content: "Not";
   background: url(<%= asset_path 'icons/ic_no.svg' %>) no-repeat;
   background-repeat: no-repeat;
   background-position: -1px -1px;
@@ -2167,7 +2182,7 @@ div.location_type_container {
 }
 
 .confirm_location_button:hover:after {
-  content: "Confirm location is up to date";
+  content: "Confirm Line-Up";
   position: absolute;
   line-height: 14px;
   font-size: 16px;
