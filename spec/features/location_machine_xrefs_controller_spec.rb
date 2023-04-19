@@ -333,6 +333,52 @@ describe LocationMachineXrefsController do
     end
   end
 
+  describe 'insider connected', type: :feature, js: true do
+    before(:each) do
+      @user = FactoryBot.create(:user, id: 11, username: 'ssw', email: 'foo@bar.com')
+
+      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
+    end
+
+    it 'only show button on eligible machines' do
+      FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 10, year: 2010, manufacturer: 'Williams', ic_eligible: true))
+      FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 11, year: 2011, manufacturer: 'Williams', ic_eligible: false))
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      expect(page).to have_css('.ic_button', count: 1)
+    end
+
+    it 'initial state is null' do
+      FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 10, year: 2010, manufacturer: 'Williams', ic_eligible: true))
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      expect(page).to have_css('.ic_unknown')
+    end
+
+    it 'allows user to toggle on flag' do
+      @lmx = FactoryBot.create(:location_machine_xref, id: 11, location: @location, machine: FactoryBot.create(:machine, id: 10, year: 2010, manufacturer: 'Williams', ic_eligible: true))
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find('.ic_button').click
+
+      expect(page).to have_css('.ic_yes')
+    end
+
+    it 'allows user to toggle off flag' do
+      @lmx = FactoryBot.create(:location_machine_xref, id: 11, location: @location, machine: FactoryBot.create(:machine, id: 10, year: 2010, manufacturer: 'Williams', ic_eligible: true))
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find('.ic_unknown').click
+      find('.ic_yes').click
+
+      expect(page).to have_css('.ic_no')
+    end
+  end
+
   describe 'autocomplete', type: :feature, js: true do
     before(:each) do
       FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, year: 2010, manufacturer: 'Williams'))

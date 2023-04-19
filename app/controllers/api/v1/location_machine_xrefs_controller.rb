@@ -129,6 +129,41 @@ HERE
 
         return_response(records_array, 'machines')
       end
+
+      api :PUT, '/api/v1/location_machine_xrefs/:id/ic_toggle.json', "Toggle a machine's Insider Connected status"
+      # param :id, Integer, desc: 'LMX id', required: true
+      formats ['json']
+      def ic_toggle
+        return return_response(AUTH_REQUIRED_MSG, 'errors') unless current_user
+
+        lmx = LocationMachineXref.find(params[:id])
+
+        success = ActiveRecord::Base.transaction do
+          ic_enabled = lmx.ic_enabled || false
+          lmx.ic_enabled = !ic_enabled
+
+          lmx.save!
+
+          # update the location's insider connected status if needed
+          if lmx.ic_enabled && lmx.location.ic_active != true
+            lmx.location.ic_active = true
+            lmx.location.save!
+          elsif lmx.location.location_machine_xrefs.where(ic_enabled: true).length.zero?
+            lmx.location.ic_active = false
+            lmx.location.save!
+          end
+
+          true
+        end
+
+        if success
+          return_response(lmx, 'location_machine')
+        else
+          return_response('Could not update Insider Connect for this machine', 'errors')
+        end
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find machine', 'errors')
+      end
     end
   end
 end
