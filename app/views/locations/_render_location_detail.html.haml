@@ -21,6 +21,7 @@
 	%div.login_alert
 		= link_to link_to 'LOGIN to update this location! Click here', "https://#{request.host_with_port}/users/login"
 = render :partial => 'locations/render_recent_activity', :locals => {:location => l}
+= render :partial => 'locations/render_former_machines', :locals => {:location => l}
 - if user_signed_in?
 	= render :partial => 'locations/add_machine', :locals => {:location => l}
 	= render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}

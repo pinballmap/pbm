@@ -145,6 +145,10 @@ class Location < ApplicationRecord
     UserSubmission.where.not(submission_type: 'location_metadata', location_id: self).where(location_id: self, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC')
   end
 
+  def former_machines
+    UserSubmission.where.not(machine_name: nil).where(submission_type: 'remove_machine', location_id: self).where(location_id: self, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC')
+  end
+
   def full_street_address
     [street, city, state, zip].join(', ')
   end

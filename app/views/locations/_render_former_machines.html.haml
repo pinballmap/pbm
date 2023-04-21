@@ -1,0 +1,11 @@
+- icon_path = image_tag('icons/newspaper-variant-outline.svg', :alt => 'Recent Activity Icon', :class => 'banner_icon')
+= banner('former_machines_location', 'Former machines', icon_path, location)
+%div[location, :former_machines]{:style => 'display:none;'}
+  %span.serif.font16.center.block.mb_20.mt_20 Machines that used to be here (since 2019)
+  - location.former_machines.each do |former_machines|
+    %div.recent_activity_container{:style => 'padding-left: 20px;'}
+      %div.recent_activity_submission.sans.font20.brightpurple #{former_machines.machine_name}
+      %div.former_machines_date.sans.font14
+        Removed on
+        %br/
+        #{former_machines.created_at.strftime("%b %d, %Y")}
