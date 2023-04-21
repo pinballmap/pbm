@@ -991,7 +991,7 @@ describe LocationMachineXrefsController do
     end
 
     it 'has ipdb links with generic or specific info when appropriate' do
-      FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, name: 'foo', ipdb_link: 'http://foo.com'))
+      FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, name: 'foo', ipdb_id: 555))
       FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, name: 'bar'))
 
       visit "/#{@region.name}"
@@ -999,7 +999,7 @@ describe LocationMachineXrefsController do
 
       sleep(1)
 
-      expect(page).to have_link('IPDB', href: 'http://foo.com')
+      expect(page).to have_link('IPDB', href: 'http://www.ipdb.org/machine.cgi?id=555')
       expect(page).to have_link('IPDB', href: 'http://ipdb.org/search.pl?name=bar;qh=checked;searchtype=advanced')
     end
   end
