@@ -19,10 +19,16 @@ module Api
 
       api :GET, '/api/v1/user_submissions/location.json', 'Fetch user submissions for a location'
       param :id, Integer, desc: 'ID of location', required: true
+      param :submission_type, String, desc: 'Type of submission to filter to', required: false
       formats ['json']
       def location
         location = Location.find(params[:id])
-        user_submissions = UserSubmission.where(location_id: location, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day)
+
+        if params[:submission_type]
+          user_submissions = UserSubmission.where(location_id: location, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day, submission_type: params[:submission_type])
+        else
+          user_submissions = UserSubmission.where(location_id: location, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day)
+        end
         sorted_submissions = user_submissions.order('created_at DESC')
 
         return_response(sorted_submissions, 'user_submissions')
