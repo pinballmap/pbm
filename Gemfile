@@ -69,6 +69,7 @@ end
 group :development, :test do
   gem 'bullet'
   gem 'database_cleaner'
+  gem 'debug', require: false
   gem 'derailed_benchmarks'
   gem 'email_spec'
   gem 'listen'
