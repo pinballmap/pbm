@@ -45,6 +45,10 @@ Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhan
 Start server: `bundle exec rails s`
 
 Run tests: `bundle exec rspec`
+8. Run the debug server
+* Start server: `bin/debug`
+* Install VSCode command line tools via command palette. From the VSCode top Menu: `View | Command Palette` then search for: `Shell Command: Install 'code' command in path`
+* Attach via VSCode debugger and set breakpoints
 
 If the site loads properly it will be an empty version of pinballmap.com, then ask Scott for a data dump so you can have a full set of data to work with.
 
