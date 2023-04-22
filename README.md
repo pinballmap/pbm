@@ -20,31 +20,36 @@ Available here: [http://pinballmap.com/api/v1/docs](http://pinballmap.com/api/v1
 ## Mac Environment Setup
 Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhanifin) undertook to get the site up and running on OS X 10.9. If you would like to contribute, and have any trouble, please ask.
 
+1. Fork it on Github. Then:
+* `git clone https://github.com/{you}/pbm.git`
+* `git remote add upstream git://github.com/pinballmap/pbm.git`
+
+2. Install Ruby and a Ruby version manager
 * Follow the Ruby install instructions at [railsapps.github.io/installrubyonrails-mac.html](http://railsapps.github.io/installrubyonrails-mac.html). Make sure you also download ruby-3.1.4
-* `cd /Projects-Path/`
-* `git clone https://github.com/pinballmap/pbm.git` (*I used the SourceTree app instead.*)
-* `cd /Projects-Path/pbm`
-* `rvm --default use ruby-3.1.4`
+* (optional if using RVM): `rvm --default use ruby-3.1.4` (or use one of the the more recommended ruby version managers like asdf or rbenv that set the ruby version automatically)
+
+3. Install dependencies
 * `bundle install`
 * `selenium install`
 * `brew update`
-* `cp config/database.yml.example config/database.yml` to create your database.yml for development
 
+4. Install and configure the database
+* Download [Postgres App](http://postgresapp.com/).
+* `cp config/database.yml.example config/database.yml` to create your database.yml for development
 * `brew install postgresql`
 * `initdb /usr/local/var/postgres -E utf8`
-* Download [Postgres App](http://postgresapp.com/). (*I have mine run at startup on my "Dev" profile.*)
 * `CREATEDB pbm_dev`
-* `bundle exec rake db:create ; RAILS_ENV=test bundle exec rake db:create`
-* `bundle exec rake db:migrate ; RAILS_ENV=test bundle exec rake db:migrate`
-* `rake doc:app`  (*I think this generates documentation for the app, which sounds helpful for later.*)
-* `curl get.pow.cx | sh`
-* `cd ~/.pow`
-* `ln -s /Projects-Path/pbm`
-* `open http://pbm.dev`
+* `bin/rake db:create ; RAILS_ENV=test bin/rake db:create`
+* `bin/rake db:migrate ; RAILS_ENV=test bin/rake db:migrate`
 
-Start server: `bundle exec rails s`
+5. Run the development server
+* `bin/rails s`
 
-Run tests: `bundle exec rspec`
+6. Run the tests
+* `bundle exec rspec`
+
+7. Get a database dump from Scott. Then:
+* `pg_restore --verbose --clean --no-acl --no-owner -h localhost -d pbm_dev dump.file`
 
 If the site loads properly it will be an empty version of pinballmap.com, then ask Scott for a data dump so you can have a full set of data to work with.
 
@@ -75,13 +80,13 @@ or read:
 * `gem install bundler`
 * `bundle install`
 * `cp config/database.yml.example config/database.yml` to create your database.yml for development
-* `bundle exec rake db:create ; RAILS_ENV=test bundle exec rake db:create`
-* `bundle exec rake db:migrate ; RAILS_ENV=test bundle exec rake db:migrate`
+* `bin/rake db:create ; RAILS_ENV=test bin/rake db:create`
+* `bin/rake db:migrate ; RAILS_ENV=test bin/rake db:migrate`
 
 5. Get a database dump from Scott. Then:
 * `pg_restore --verbose --clean --no-acl --no-owner -h localhost -d pbm_dev dump.file`
 
-Start server: `bundle exec rails s`
+Start server: `bin/rails s`
 
 Run tests: `bundle exec rspec`
 
@@ -102,6 +107,6 @@ Run tests: `bundle exec rspec`
 #### Postgres only
 If you just want to run postgres in a container and use your local filesystem for running Rails, you can use the postgres only compose file.
 * Run `docker-compose -f docker-compose.postgres.yml up -d`
-* If first time running, run `bundle exec rake db:create db:migrate` to populate the postgres container.
+* If first time running, run `bin/rake db:create db:migrate` to populate the postgres container.
 * Bring down containers with `docker-compose -f docker-compose.postgres.yml down`
   * By default, the database will keep its state as a [docker volume](https://docs.docker.com/storage/volumes/). If you want to start fresh, run `docker-compose -f docker-compose.postgres.yml down -v` to destroy the volume.
