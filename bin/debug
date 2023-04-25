@@ -1,0 +1,3 @@
+#! /usr/bin/env sh
+
+bundle exec rdbg --open --nonstop bin/rails s

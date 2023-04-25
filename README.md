@@ -48,6 +48,13 @@ Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhan
 6. Run the tests
 * `bundle exec rspec`
 
+Run tests: `bundle exec rspec`
+
+8. Run the debug server
+* Start server: `bin/debug`
+* Install VSCode command line tools via command palette. From the VSCode top Menu: `View | Command Palette` then search for: `Shell Command: Install 'code' command in path`
+* Attach via VSCode debugger and set breakpoints
+
 7. Get a database dump from Scott. Then:
 * `pg_restore --verbose --clean --no-acl --no-owner -h localhost -d pbm_dev dump.file`
 

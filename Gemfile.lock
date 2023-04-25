@@ -135,6 +135,9 @@ GEM
     database_cleaner-core (2.0.1)
     date (3.3.3)
     dead_end (4.0.0)
+    debug (1.7.2)
+      irb (>= 1.5.0)
+      reline (>= 0.3.1)
     derailed_benchmarks (2.1.2)
       benchmark-ips (~> 2)
       dead_end
@@ -207,6 +210,9 @@ GEM
       has_scope (~> 0.6)
       railties (>= 5.2, < 7.1)
       responders (>= 2, < 4)
+    io-console (0.6.0)
+    irb (1.6.4)
+      reline (>= 0.3.0)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -368,6 +374,8 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     regexp_parser (2.7.0)
+    reline (0.3.3)
+      io-console (~> 0.5)
     remotipart (1.4.4)
     request_store (1.5.1)
       rack (>= 1.4)
@@ -512,6 +520,7 @@ DEPENDENCIES
   coveralls_reborn
   dalli
   database_cleaner
+  debug
   derailed_benchmarks
   devise
   devise-encryptable
