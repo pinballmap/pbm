@@ -40,7 +40,11 @@ class LocationsController < InheritedResources::Base
   end
 
   def render_machines
-    render partial: 'locations/render_machines', locals: { location_machine_xrefs: LocationMachineXref.where(location_id: params[:id]).includes(:machine, machine_score_xrefs: :user) }
+    machines = LocationMachineXref.where(location_id: params[:id]).includes(:machine, machine_score_xrefs: :user)
+    machines = machines.sort{ |a,b| a.machine.massaged_name <=> b.machine.massaged_name }
+    logged_in = current_user ? 'logged_in' : 'logged_out'
+
+    render partial: 'locations/render_machines', locals: { location_machine_xrefs: machines, logged_in: logged_in }
   end
 
   def render_machines_count
