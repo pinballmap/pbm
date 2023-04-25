@@ -22,5 +22,5 @@ LocationMachineXref.create(location: locations.first, machine: machines.last)
 LocationMachineXref.create(location: locations.last, machine: machines.first)
 
 Event.create([
-  { region: regions.first, name: 'A Cool event', long_desc: 'This is a super long description of cool stuff', link: 'http://crazyflipperfingers.com/talk', category_no: 1, start_date: '2011-04-08', end_date: '2011-04-10', location: locations.first }
+  { region: regions.first, name: 'A Cool event', long_desc: 'This is a super long description of cool stuff', external_link: 'http://crazyflipperfingers.com/talk', category_no: 1, start_date: '2011-04-08', end_date: '2011-04-10', location: locations.first }
 ])
