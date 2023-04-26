@@ -8,6 +8,17 @@
       "type": "rdbg",
       "name": "Attach with rdbg",
       "request": "attach"
+    },
+    {
+      "type": "rdbg",
+      "name": "Run rake spec - current file",
+      "request": "launch",
+      "useBundler": true,
+      "command": "rspec",
+      "script": "${file}",
+      "args": [],
+      "askParameters": false,
+      "waitLaunchTime": 10
     }
   ]
 }
