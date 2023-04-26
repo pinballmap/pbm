@@ -123,6 +123,7 @@ RSpec.configure do |config|
   end
 
   config.after do
+    Rails.cache.clear
     DatabaseCleaner.clean
     Warden.test_reset!
   end
