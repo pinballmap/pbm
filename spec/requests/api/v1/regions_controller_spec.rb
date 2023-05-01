@@ -220,7 +220,7 @@ Their Email: email\n
 Message: message\n
 Username: ssw\n
 Site Email: foo@bar.com\n
-(entered from 127.0.0.1 via cleOS)\n
+(entered from 127.0.0.1 via  cleOS)\n
 HERE
         )
       end
@@ -244,7 +244,7 @@ HERE
 Their Name: name\n
 Their Email: email\n
 Message: message\n\n\n
-(entered from 127.0.0.1 via cleOS)\n
+(entered from 127.0.0.1 via  cleOS)\n
 HERE
         )
       end
@@ -270,7 +270,7 @@ Their Email: email\n
 Message: message\n
 Username: ssw\n
 Site Email: foo@bar.com\n
-(entered from 127.0.0.1 via cleOS)\n
+(entered from 127.0.0.1 via  cleOS)\n
 HERE
         )
       end
@@ -291,7 +291,7 @@ Their Email: email\n
 Message: message\n
 Username: ssw\n
 Site Email: foo@bar.com\n
-(entered from 127.0.0.1 via cleOS)\n
+(entered from 127.0.0.1 via  cleOS)\n
 HERE
         )
       end
@@ -314,7 +314,7 @@ Their Email: email\n
 Message: message\n
 Username: ssw\n
 Site Email: foo@bar.com\n
-(entered from 127.0.0.1 via cleOS)\n
+(entered from 127.0.0.1 via  cleOS)\n
 HERE
         )
       end
@@ -335,7 +335,7 @@ Their Email: email\n
 Message: message\n
 Username: ssw\n
 Site Email: foo@bar.com\n
-(entered from 127.0.0.1 via cleOS)\n
+(entered from 127.0.0.1 via  cleOS)\n
 HERE
         )
       end

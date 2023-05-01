@@ -74,7 +74,7 @@ Operator: operator\n
 Zone: zone\n
 Comments: comments\n
 Machines: machines\n
-(entered from 127.0.0.1 via cleOS by cibw (foo@bar.com))\n
+(entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))\n
 HERE
         )
       end
@@ -117,7 +117,7 @@ Operator: operator\n
 Zone: zone\n
 Comments: comments\n
 Machines: machines\n
-(entered from 127.0.0.1 via cleOS by cibw (foo@bar.com))\n
+(entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))\n
 HERE
         )
       end
@@ -156,7 +156,7 @@ Operator: \n
 Zone: \n
 Comments: \n
 Machines: machines\n
-(entered from 127.0.0.1 via cleOS by cibw (foo@bar.com))\n
+(entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))\n
 HERE
         )
       end
@@ -206,7 +206,7 @@ Operator: cool operator\n
 Zone: cool zone\n
 Comments: comments\n
 Machines: machines\n
-(entered from 127.0.0.1 via cleOS by cibw (foo@bar.com))\n
+(entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))\n
 HERE
         )
       end

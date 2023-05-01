@@ -94,7 +94,7 @@ Operator: #{operator ? operator.name : ''}\n
 Zone: #{zone ? zone.name : ''}\n
 Comments: #{params['location_comments']}\n
 Machines: #{params['location_machines']}\n
-(entered from #{request.remote_ip} via #{request.user_agent}#{user_info})\n
+(entered from #{request.remote_ip} via #{request.headers['AppVersion']} #{request.user_agent}#{user_info})\n
 BODY
     Pony.mail(
       to: region ? region.users.map(&:email) : User.all.select(&:is_super_admin).map(&:email),
@@ -132,7 +132,7 @@ Their Name: #{params[:name]}\n
 Their Email: #{params[:email]}\n
 Message: #{params[:message]}\n
 #{user_info}\n
-(entered from #{request.remote_ip} via #{request.user_agent})\n
+(entered from #{request.remote_ip} via #{request.headers['AppVersion']} #{request.user_agent})\n
 BODY
     to_users = region.nil? ? User.all.select(&:is_super_admin).map(&:email) : region.users.map(&:email)
     Pony.mail(
