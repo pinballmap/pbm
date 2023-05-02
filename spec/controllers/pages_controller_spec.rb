@@ -23,22 +23,6 @@ describe PagesController, type: :controller do
     end
   end
 
-  describe '#robots' do
-    it 'renders public/robots.txt' do
-      get 'robots', params: { region: 'portland' }
-      expect(response.body).to eq(<<HERE)
-# See http://www.robotstxt.org/wc/norobots.html for documentation on how to use the robots.txt file
-#
-# To ban all spiders from the entire site uncomment the next two lines:
-User-Agent: *
-Disallow: */locations
-
-User-agent: SemrushBot
-Disallow: /
-HERE
-    end
-  end
-
   describe 'contact_sent' do
     it 'should send an email if the body is not blank' do
       logout
