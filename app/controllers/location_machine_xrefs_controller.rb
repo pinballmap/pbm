@@ -1,7 +1,7 @@
 class LocationMachineXrefsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   has_scope :region
-  before_action :authenticate_user!, only: %i[update_machine_condition create_confirmation remove_confirmation]
+  before_action :authenticate_user!, only: %i[update_machine_condition]
 
   def create
     machine = nil
@@ -31,10 +31,6 @@ class LocationMachineXrefsController < InheritedResources::Base
 
     LocationMachineXref.where(['location_id = ? and machine_id = ?', location.id, machine.id]).first ||
       LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user.id)
-  end
-
-  def create_confirmation
-    @lmx = LocationMachineXref.find(params[:id])
   end
 
   def destroy
@@ -99,10 +95,6 @@ class LocationMachineXrefsController < InheritedResources::Base
     @lmxs = apply_scopes(LocationMachineXref).order('location_machine_xrefs.id desc').limit(50).includes({ location: :region }, :machine, :user)
     respond_with(@lmxs)
   end
-
-  def condition_update_confirmation; end
-
-  def remove_confirmation; end
 
   def ic_toggle
     lmx = LocationMachineXref.find(params[:id])

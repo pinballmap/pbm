@@ -35,10 +35,6 @@ class LocationsController < InheritedResources::Base
     end
   end
 
-  def locations_for_machine
-    @locations = @region.location_machine_xrefs.select { |lmx| lmx.machine_id.to_s == params[:id] }.map(&:location).sort_by(&:name)
-  end
-
   def render_machines
     machines = LocationMachineXref.where(location_id: params[:id]).includes(:machine, machine_score_xrefs: :user)
     machines = machines.sort{ |a,b| a.machine.massaged_name <=> b.machine.massaged_name }
@@ -133,10 +129,6 @@ class LocationsController < InheritedResources::Base
     end
 
     [ids, lats, lons, contents, num_machines]
-  end
-
-  def newest_machine_name
-    render plain: Location.find(params[:id]).newest_machine_xref.machine.name
   end
 
   def confirm

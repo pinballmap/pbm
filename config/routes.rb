@@ -107,9 +107,6 @@ Rails.application.routes.draw do
 
     resources :pages
 
-    # xml/rss mismatch to support rss-formatted output with $region.xml urls, $region.rss is already expected by mobile devices, and is expected to be formatted without hrefs
-    get ':region' + '.xml' => 'location_machine_xrefs#index', format: 'rss'
-
     get ':region' + '.rss' => 'location_machine_xrefs#index', format: 'xml'
     get ':region' + '_scores.rss' => 'machine_score_xrefs#index', format: 'xml'
     get '/robots.txt', to: 'pages#robots'
@@ -123,8 +120,6 @@ Rails.application.routes.draw do
     get '/suggest' => 'pages#suggest_new_location'
     post '/submitted_new_location' => 'pages#submitted_new_location'
 
-    get 'all_region_data.json', to: 'regions#all_region_data', format: 'json'
-
     get '*page', to: 'locations#unknown_route'
   end
 
@@ -136,8 +131,6 @@ Rails.application.routes.draw do
     end
     member do
       get :confirm
-      get :locations_for_machine
-      get :newest_machine_name
       get :render_add_machine
       get :render_update_metadata
       get :render_machine_names_for_infowindow
@@ -160,9 +153,6 @@ Rails.application.routes.draw do
       get :update_machine_condition
     end
     member do
-      get :condition_update_confirmation
-      get :create_confirmation
-      get :remove_confirmation
       get :render_machine_conditions
       patch :ic_toggle
     end

@@ -153,10 +153,6 @@ class Location < ApplicationRecord
     [street, city, state, zip].join(', ')
   end
 
-  def newest_machine_xref
-    location_machine_xrefs.max_by(&:created_at)
-  end
-
   def massaged_name
     name.sub(/^the /i, '')
   end

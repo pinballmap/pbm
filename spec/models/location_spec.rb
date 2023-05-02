@@ -138,12 +138,6 @@ describe Location do
     end
   end
 
-  describe '#newest_machine_xref' do
-    it 'should return the latest machine that has been added' do
-      expect(@l.newest_machine_xref).to eq(@lmx2)
-    end
-  end
-
   describe '#massaged_name' do
     it 'ignores "the" in names' do
       the_location = FactoryBot.create(:location, name: 'The Hilt')
