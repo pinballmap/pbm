@@ -1,7 +1,7 @@
 class MachineScoreXrefsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   has_scope :region
-  before_action :authenticate_user!, only: %i[create update destroy]
+  before_action :authenticate_user!, except: %i[index show]
 
   def create
     score = params[:score]

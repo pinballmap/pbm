@@ -1,7 +1,7 @@
 class LocationPictureXrefsController < InheritedResources::Base
   respond_to :html, :xml, :json, :rss, only: %i[index show]
   has_scope :region
-  before_action :authenticate_user!, only: %i[destroy create update]
+  before_action :authenticate_user!, except: %i[index show]
 
   def create
     @location_picture_xref = LocationPictureXref.new(location_picture_xref_params)

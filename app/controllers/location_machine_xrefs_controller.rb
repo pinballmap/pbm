@@ -1,7 +1,7 @@
 class LocationMachineXrefsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   has_scope :region
-  before_action :authenticate_user!, only: %i[update_machine_condition destroy create ic_toggle]
+  before_action :authenticate_user!, except: %i[index show render_machine_conditions]
 
   def create
     machine = nil
