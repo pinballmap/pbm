@@ -1,5 +1,6 @@
 class MachineConditionsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
+  before_action :authenticate_user!
 
   def create
     @machine_condition = MachineCondition.new(machine_condition_params)
