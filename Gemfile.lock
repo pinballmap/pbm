@@ -352,10 +352,6 @@ GEM
       actionview (> 3.1)
       activesupport (> 3.1)
       railties (> 3.1)
-    rails_real_favicon (0.1.1)
-      json (>= 1.7, < 3)
-      rails
-      rubyzip (~> 2)
     railties (7.0.4.3)
       actionpack (= 7.0.4.3)
       activesupport (= 7.0.4.3)
@@ -550,7 +546,6 @@ DEPENDENCIES
   rails-controller-testing
   rails_admin
   rails_autolink
-  rails_real_favicon
   rake
   rakismet
   remotipart

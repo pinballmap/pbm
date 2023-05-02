@@ -74,5 +74,4 @@ group :development, :test do
   gem 'listen'
   gem 'pry'
   gem 'rack_session_access'
-  gem 'rails_real_favicon'
 end
