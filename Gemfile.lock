@@ -254,7 +254,6 @@ GEM
       net-smtp
     marcel (1.0.2)
     matrix (0.4.2)
-    memcachier (0.0.2)
     memory_profiler (1.0.1)
     method_source (1.0.0)
     mime-types (3.4.1)
@@ -530,7 +529,6 @@ DEPENDENCIES
   kt-paperclip (~> 6.4, >= 6.4.1)
   launchy
   listen
-  memcachier
   paper_trail
   paper_trail-association_tracking
   pg
