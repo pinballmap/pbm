@@ -20,7 +20,7 @@ module Api
 
         last_updated = machines.reduce(100.years.ago) { |memo, machine| (machine&.updated_at || 100.years.ago) > memo ? machine.updated_at : memo }
 
-        return_response({machines: machines, last_updated: last_updated}, nil, nil, nil, 200, except)
+        return_response({machines: machines, lastUpdated: last_updated}, nil, nil, nil, 200, except)
       end
 
       api :POST, '/api/v1/machines.json', 'Create a new canonical machine'
