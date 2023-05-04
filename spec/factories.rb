@@ -50,6 +50,9 @@ FactoryBot.define do
     name { 'Test Location Type' }
   end
 
+  factory :status do
+  end
+
   factory :zone do
     name { 'Test Zone' }
   end

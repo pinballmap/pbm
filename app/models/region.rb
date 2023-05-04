@@ -80,6 +80,14 @@ HERE
     @high_rollers
   end
 
+  before_save do
+    Status.where(status_type: 'regions').update({ updated_at: Time.current })
+  end
+
+  before_destroy do
+    Status.where(status_type: 'regions').update({ updated_at: Time.current })
+  end
+
   def all_admin_email_addresses
     if users.empty?
       ['email_not_found@noemailfound.noemail']

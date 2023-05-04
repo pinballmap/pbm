@@ -10,6 +10,14 @@ class Operator < ApplicationRecord
     email.blank? ? false : true
   end
 
+  before_save do
+    Status.where(status_type: 'operators').update({ updated_at: Time.current })
+  end
+
+  before_destroy do
+    Status.where(status_type: 'operators').update({ updated_at: Time.current })
+  end
+
   def send_recent_comments
     return if email.to_s == ''
 

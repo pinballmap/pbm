@@ -18,6 +18,11 @@ class Machine < ApplicationRecord
   before_destroy do |record|
     MachineScoreXref.where("location_machine_xref_id in (select id from location_machine_xrefs where machine_id = #{record.id})").destroy_all
     LocationMachineXref.where(machine_id: record.id).destroy_all
+    Status.where(status_type: 'machines').update({ updated_at: Time.current })
+  end
+
+  before_save do
+    Status.where(status_type: 'machines').update({ updated_at: Time.current })
   end
 
   def massaged_name

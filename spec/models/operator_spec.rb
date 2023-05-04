@@ -8,6 +8,33 @@ describe Operator do
     @no_email_operator = FactoryBot.create(:operator, region: @r)
   end
 
+  describe '#before_destroy' do
+    it 'should update timestamp in status table' do
+      @status = FactoryBot.create(:status, status_type: 'operators', updated_at: Time.current - 1.day)
+      @o.destroy
+
+      expect(@status.reload.updated_at).to be_within(1.second).of Time.current
+    end
+  end
+
+  describe '#create' do
+    it 'should update timestamp in status table' do
+      @status = FactoryBot.create(:status, status_type: 'operators', updated_at: Time.current - 1.day)
+      FactoryBot.create(:operator, name: 'Sassy Moves Today')
+
+      expect(@status.reload.updated_at).to be_within(1.second).of Time.current
+    end
+  end
+
+  describe '#update' do
+    it 'should update timestamp in status table' do
+      @status = FactoryBot.create(:status, status_type: 'operators', updated_at: Time.current - 1.day)
+      @no_email_operator.update(email: 'foo@bar.com')
+
+      expect(@status.reload.updated_at).to be_within(1.second).of Time.current
+    end
+  end
+
   describe '#send_recent_comments' do
     it 'Skips operators with no email address set' do
       expect(Pony).to_not receive(:mail)

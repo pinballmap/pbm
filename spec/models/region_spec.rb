@@ -6,6 +6,33 @@ describe Region do
     @other_region = FactoryBot.create(:region, name: 'chicago')
   end
 
+  describe '#before_destroy' do
+    it 'should update timestamp in status table' do
+      @status = FactoryBot.create(:status, status_type: 'regions', updated_at: Time.current - 1.day)
+      @region.destroy
+
+      expect(@status.reload.updated_at).to be_within(1.second).of Time.current
+    end
+  end
+
+  describe '#create' do
+    it 'should update timestamp in status table' do
+      @status = FactoryBot.create(:status, status_type: 'regions', updated_at: Time.current - 1.day)
+      FactoryBot.create(:region, name: 'glendale')
+
+      expect(@status.reload.updated_at).to be_within(1.second).of Time.current
+    end
+  end
+
+  describe '#update' do
+    it 'should update timestamp in status table' do
+      @status = FactoryBot.create(:status, status_type: 'regions', updated_at: Time.current - 1.day)
+      @other_region.update(full_name: 'Chicago')
+
+      expect(@status.reload.updated_at).to be_within(1.second).of Time.current
+    end
+  end
+
   describe '#machine_and_location_count_by_region' do
     it 'should send back a count of all locations and machines in a region' do
       clark_location = FactoryBot.create(:location, region: @region, name: 'Clark')

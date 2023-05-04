@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       resources :machine_score_xrefs, only: [:create, :show]
       resources :machines, only: [:index, :show, :create]
       resources :operators, only: [:index, :show]
+      resources :statuses, only: [:index, :show]
 
       resources :user_submissions, only: [:list_within_range, :location, :total_user_submission_count] do
         collection do
