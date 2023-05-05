@@ -7,6 +7,7 @@ describe Machine do
     @m = FactoryBot.create(:machine, name: 'Sassy', machine_group: @machine_group)
     @lmx = FactoryBot.create(:location_machine_xref, location: @l, machine: @m)
     @msx = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx)
+    @status = FactoryBot.create(:status, status_type: 'machines', updated_at: Time.current - 1.day)
   end
 
   describe '#before_destroy' do
@@ -19,7 +20,6 @@ describe Machine do
     end
 
     it 'should update timestamp in status table' do
-      @status = FactoryBot.create(:status, status_type: 'machines', updated_at: Time.current - 1.day)
       @m.destroy
 
       expect(@status.reload.updated_at).to be_within(1.second).of Time.current
@@ -28,7 +28,6 @@ describe Machine do
 
   describe '#create' do
     it 'should update timestamp in status table' do
-      @status = FactoryBot.create(:status, status_type: 'machines', updated_at: Time.current - 1.day)
       FactoryBot.create(:machine, name: 'Solomon', machine_group: @machine_group)
 
       expect(@status.reload.updated_at).to be_within(1.second).of Time.current
@@ -37,7 +36,6 @@ describe Machine do
 
   describe '#update' do
     it 'should update timestamp in status table' do
-      @status = FactoryBot.create(:status, status_type: 'machines', updated_at: Time.current - 1.day)
       @m.update(manufacturer: 'Stern')
 
       expect(@status.reload.updated_at).to be_within(1.second).of Time.current

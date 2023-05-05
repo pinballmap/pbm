@@ -6,11 +6,11 @@ describe Operator do
     @o = FactoryBot.create(:operator, region: @r, email: 'foo@bar.com')
     @no_changes_operator = FactoryBot.create(:operator, region: @r, email: 'bar@baz.com')
     @no_email_operator = FactoryBot.create(:operator, region: @r)
+    @status = FactoryBot.create(:status, status_type: 'operators', updated_at: Time.current - 1.day)
   end
 
   describe '#before_destroy' do
     it 'should update timestamp in status table' do
-      @status = FactoryBot.create(:status, status_type: 'operators', updated_at: Time.current - 1.day)
       @o.destroy
 
       expect(@status.reload.updated_at).to be_within(1.second).of Time.current
@@ -19,7 +19,6 @@ describe Operator do
 
   describe '#create' do
     it 'should update timestamp in status table' do
-      @status = FactoryBot.create(:status, status_type: 'operators', updated_at: Time.current - 1.day)
       FactoryBot.create(:operator, name: 'Sassy Moves Today')
 
       expect(@status.reload.updated_at).to be_within(1.second).of Time.current
@@ -28,7 +27,6 @@ describe Operator do
 
   describe '#update' do
     it 'should update timestamp in status table' do
-      @status = FactoryBot.create(:status, status_type: 'operators', updated_at: Time.current - 1.day)
       @no_email_operator.update(email: 'foo@bar.com')
 
       expect(@status.reload.updated_at).to be_within(1.second).of Time.current
