@@ -49,6 +49,25 @@ describe MachinesController, type: :controller do
       expect(response.body).not_to include('Dredd')
     end
 
+    it 'should fail when the key is disabled or caching is off' do
+      # stub out the cache key to purposefully fail to cache and test for that
+      # also acts as a sanity check that caching is enabled correctly
+      allow_any_instance_of(MachinesController).to receive(:get_cache_key).and_return("10")
+
+      get :autocomplete, format: :json, params: {}
+      expect(response.body).to include('Cleo')
+      expect(response.body).to include('Dredd')
+
+      FactoryBot.create(:machine, id: 777, name: 'Foo Fighters')
+
+      get :autocomplete, format: :json, params: {}
+      sleep 0.5
+
+      expect(response.body).to include('Cleo')
+      expect(response.body).to include('Dredd')
+      expect(response.body).not_to include('Foo Fighters')
+    end
+
     it 'should respect the cache' do
       get :autocomplete, format: :json, params: { term: 'abc' }
 
@@ -56,21 +75,25 @@ describe MachinesController, type: :controller do
       expect(response.body).not_to include('Dredd')
 
       get :autocomplete, format: :json, params: { term: 'cle' }
+      sleep 0.5 # unfortunately needed to let the cache get synced
 
       expect(response.body).to include('Cleo')
       expect(response.body).not_to include('Dredd')
 
-      machine3 = FactoryBot.create(:machine, id:777, name: 'Foo Fighters')
+      machine3 = FactoryBot.create(:machine, id: 777, name: 'Foo Fighters')
 
       get :autocomplete, format: :json, params: { term: 'fight' }
+      sleep 0.5
 
       expect(response.body).not_to include('Cleo')
       expect(response.body).not_to include('Dredd')
       expect(response.body).to include('Foo Fighters')
 
+
       @machine2.update(name: "lost")
 
-      get :autocomplete, format: :json, params: { }
+      get :autocomplete, format: :json, params: {}
+      sleep 0.5
 
       expect(response.body).to include('Cleo')
       expect(response.body).to include('lost')
