@@ -7,8 +7,20 @@ describe MachinesController, type: :controller do
   end
 
   describe '#index' do
+    it 'should return all records' do
+      get :index, format: :json, params: {}
+
+      expect(response.body).to include('Cleo')
+      expect(response.body).to include('Dredd')
+    end
+
     it 'should honor the by_name scope' do
-      get :index, format: :json, params: { region: 'portland' }
+      get :index, format: :json, params: { name: 'Cleo' }
+
+      expect(response.body).to include('Cleo')
+      expect(response.body).not_to include('Dredd')
+    end
+  end
 
       expect(response.body).to include('Cleo')
     end

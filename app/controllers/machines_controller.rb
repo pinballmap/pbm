@@ -1,6 +1,5 @@
 class MachinesController < InheritedResources::Base
   respond_to :xml, :json, only: %i[index show]
-  has_scope :by_name
 
   def create
     @machine = Machine.new(machine_params)
@@ -18,7 +17,7 @@ class MachinesController < InheritedResources::Base
   end
 
   def index
-    respond_with(@machines = apply_scopes(Machine).all)
+    respond_with(@machines = Machine.by_name(params[:name]))
   end
 
   private
