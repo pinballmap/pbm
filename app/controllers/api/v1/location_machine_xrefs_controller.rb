@@ -111,7 +111,7 @@ module Api
       param :n, String, desc: 'Number of machines to show', required: false
       formats ['json']
       def top_n_machines
-        top_n = params[:n] ||= DEFAULT_TOP_N_MACHINES
+        top_n = params[:n].to_i.zero? ? DEFAULT_TOP_N_MACHINES : params[:n].to_i
 
         records_array = ActiveRecord::Base.connection.exec_query(<<HERE).to_a
 select

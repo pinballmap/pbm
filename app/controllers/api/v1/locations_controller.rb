@@ -150,7 +150,7 @@ module Api
         elsif params[:no_details] && params[:max_distance].to_i > 800
           max_distance = 800
         else
-          max_distance = params[:max_distance]
+          max_distance = params[:max_distance].to_i
         end
 
         except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone] : nil
@@ -208,7 +208,7 @@ module Api
         elsif params[:no_details] && params[:max_distance].to_i > 800
           max_distance = 800
         else
-          max_distance = params[:max_distance]
+          max_distance = params[:max_distance].to_i
         end
 
         except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone] : nil

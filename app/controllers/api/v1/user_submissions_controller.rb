@@ -74,7 +74,7 @@ module Api
         elsif params[:max_distance].to_i > 250
           max_distance = 250
         else
-          max_distance = params[:max_distance]
+          max_distance = params[:max_distance].to_i
         end
         min_date_of_submission = params[:min_date_of_submission] ? params[:min_date_of_submission].to_date.beginning_of_day : 1.month.ago.beginning_of_day
 
