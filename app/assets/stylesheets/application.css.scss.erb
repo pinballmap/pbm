@@ -948,14 +948,32 @@ a.logo_link {
 /** map **/
 
 form#address_search_form input.lookup_search_input {
+  @include radius(10px);
+  vertical-align: bottom;
+}
+
+.map_input {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   margin-bottom: 5px;
-  @include radius(5px);
 }
 
 .map_input span {
   width: 100px;
   display: inline-block;
   padding-left: 15px;
+}
+
+.hr {
+  display: flex;
+  flex-direction: row;
+  }
+.hr:before, .hr:after{
+  content: "";
+  flex: 1 1;
+  border-bottom: 1px solid;
+  margin: 10px 20px 15px;
 }
 
 #lookup.map_lookup {
@@ -1044,7 +1062,7 @@ form#address_search_form input.lookup_search_input {
   border: 0px;
   color: $darkgrey;
   background-color: $vlightpurple;
-  @include radius(5px);
+  @include radius(10px);
   margin-left: 5px;
   box-shadow: 2px 5px 10px #d0d5d9;
   -webkit-box-shadow: 2px 5px 10px #d0d5d9;
@@ -1068,28 +1086,19 @@ span.or {
   padding-right: 5px;
 }
 
+.map_input span.my_location_container {
+  padding-left: 0;
+  width: auto;
+  height: 22px;
+}
+
 .my_location {
   height: 22px;
-  margin-bottom: -7px;
-  margin-left: -30px;
+  margin-left: -25px;
 }
 
 .my_location:hover {
   cursor: pointer;
-}
-
-.my_location:hover:after {
-  content: "Show Near My Location";
-  position: absolute;
-  line-height: 14px;
-  font-size: 16px;
-  margin-left: 5px;
-  margin-top: 8px;
-  background: $black;
-  color: $vlightpurple;
-  padding: 5px;
-  font-weight: $bold;
-  font-family: $sans;
 }
 
 .search_field_container {
@@ -1117,7 +1126,7 @@ span.or {
 }
 
 .location_search .map.search {
-  margin: 0 2px 0 0;
+  margin: 0 2px 0 10px;
 }
 
 .search_other_button {
@@ -2253,7 +2262,7 @@ input.score {
 }
 
 .my_location + .my_location_tooltip {
-  margin-top: 2px;
+  margin-top: 0;
   margin-left: 10px;
 }
 
