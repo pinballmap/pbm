@@ -45,16 +45,13 @@ class PagesController < ApplicationController
 
     params[:user_faved] = user.id if user && !params[:user_faved].blank?
 
-    @big_locations = Location.joins(:location_machine_xrefs).group('id').having('count(location_machine_xrefs)>9')
-    @big_locations_sample = @big_locations.sample
+    @big_locations_sample = Location.select('name, random() as r').joins(:location_machine_xrefs).group('id').having('count(location_machine_xrefs)>9').order('r').first
     @location_placeholder = @big_locations_sample.nil? ? 'e.g. Ground Kontrol' : 'e.g. ' + @big_locations_sample.name
 
-    @machine_list = Machine.all
-    @machine_sample = @machine_list.sample
+    @machine_sample = Machine.select('name, random() as r').order('r').limit(1).first
     @machine_placeholder = @machine_sample.nil? ? 'e.g. Lord of the Rings' : 'e.g. ' + @machine_sample.name
 
-    @big_cities = Location.select(%i[city state]).having('count(city)>9', 'count(state)>0').group('city', 'state')
-    @big_cities_sample = @big_cities.sample
+    @big_cities_sample = Location.select(%i[city state], 'random() as r').having('count(city)>9', 'count(state)>0').group('city', 'state').order('r').limit(1).first
     @big_cities_placeholder = @big_cities_sample.nil? ? 'e.g. Portland, OR' : 'e.g. ' + @big_cities_sample.city + ', ' + @big_cities_sample.state
   end
 
