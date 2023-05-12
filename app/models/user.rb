@@ -146,6 +146,10 @@ class User < ApplicationRecord
     ).order('created_at desc')
   end
 
+  def list_fave_locations
+    user_fave_locations.includes([:location])
+  end
+
   def num_total_submissions
     user_submissions.count
   end

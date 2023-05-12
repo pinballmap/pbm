@@ -65,7 +65,7 @@
                 - location = Location.find(location_array[0])
                 - if location
                   %span.location_edited.inline
-                    = link_to(location.name, (location.region ? region_homepage_path(location.region.name) : map_path) + "/?by_location_id=#{location.id}")
+                    = link_to(location.name, map_path + "/?by_location_id=#{location.id}")
                   %br/
       - if !@user.profile_list_of_high_scores.empty?
         %div.darkgrey.stats.font18.sans.bold
@@ -82,12 +82,12 @@
                 %span.score_meta_gen.inline #{location_name}
                 %span.score_meta.inline on
                 %span.score_meta_gen.inline #{date_created}
-      - if !@user.user_fave_locations.empty?
+      - if !@user.list_fave_locations.empty?
         %div.darkgrey.stats.font18.sans.bold
           %div.ml_5
             Saved Locations:
             %span.stats_list
-              - @user.user_fave_locations.each do |fave_location|
+              - @user.list_fave_locations.each do |fave_location|
                 %span.location_edited.inline
-                  = link_to(fave_location.location.name, (fave_location.location.region ? region_homepage_path(fave_location.location.region.name) : map_path) + "/?by_location_id=#{fave_location.location.id}")
+                  = link_to(fave_location.location.name, map_path + "/?by_location_id=#{fave_location.location.id}")
                 %br/
