@@ -168,9 +168,9 @@ Rails.application.routes.draw do
       end
   end
 
-  resources :users, only: [:profile, :fave_locations, :toggle_fave_location] do
+  resources :users, only: [:profile, :toggle_fave_location] do
     member do
-      get :profile, :fave_locations
+      get :profile
       post :toggle_fave_location
     end
   end

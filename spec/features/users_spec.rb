@@ -1,26 +1,6 @@
 require 'spec_helper'
 
 describe UsersController do
-  describe 'Fave Locations', type: :feature, js: true do
-    before(:each) do
-      @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
-      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
-    end
-
-    it 'lists fave locations for users' do
-      FactoryBot.create(:user_fave_location, user: @user, location: FactoryBot.create(:location, name: 'Foo'))
-      FactoryBot.create(:user_fave_location, user: @user, location: FactoryBot.create(:location, name: 'Bar'))
-      FactoryBot.create(:user_fave_location, location: FactoryBot.create(:location, name: 'Baz'))
-
-      visit "/users/#{@user.id}/fave_locations"
-
-      expect(page).to have_link('Foo')
-      expect(page).to have_link('Bar')
-
-      expect(page).to_not have_link('Baz')
-    end
-  end
-
   describe 'Profile', type: :feature, js: true do
     before(:each) do
       @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
