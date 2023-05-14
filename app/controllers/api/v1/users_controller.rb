@@ -12,8 +12,14 @@ module Api
       formats ['json']
       def list_fave_locations
         user = User.find(params[:id])
+        locations = user.user_fave_locations.includes([location: %i[location_type machines]])
 
-        return_response(user.user_fave_locations.includes([location: %i[location_type machines]]), 'user_fave_locations', [location: { include: %i[location_type machines] }])
+        return_response(
+          locations,
+          'user_fave_locations',
+          [location: { include: { location_type: {}, machines: { except: %i[is_active created_at updated_at ipdb_link machine_group_id ipdb_id opdb_id opdb_img opdb_img_height opdb_img_width display machine_type machine_display ic_eligible] } },
+          except: %i[phone website created_at updated_at zone_id region_id description operator_id is_stern_army country is_active] }]
+        )
       rescue ActiveRecord::RecordNotFound
         return_response('Unknown user', 'errors')
       end
