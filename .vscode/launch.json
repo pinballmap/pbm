@@ -19,6 +19,17 @@
       "args": [],
       "askParameters": false,
       "waitLaunchTime": 500
+    },
+    {
+      "type": "rdbg",
+      "name": "Run single test", // will run only the test that is under the current line
+      "request": "launch",
+      "useBundler": true,
+      "command": "rspec",
+      "script": "${file}:${lineNumber}",
+      "args": [],
+      "askParameters": false,
+      "waitLaunchTime": 500
     }
   ]
 }
