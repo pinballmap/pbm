@@ -121,11 +121,11 @@ class User < ApplicationRecord
   end
 
   def profile_list_of_edited_locations
-    user_submissions = UserSubmission.where(user: self).order(created_at: 'DESC').limit(50)
+    user_submissions = UserSubmission.where(user: self).order(created_at: 'DESC').includes([:location]).limit(50)
 
     user_submission_locations_hash = {}
     user_submissions.each do |user_sub|
-      next unless user_sub.location_name
+      next if user_sub.location.nil? || user_sub.location_name.nil?
 
       user_submission_locations_hash[user_sub.location_id] = [user_sub.location_id, user_sub.location_name]
     end
