@@ -121,16 +121,15 @@ class User < ApplicationRecord
   end
 
   def profile_list_of_edited_locations
-    submissions = last_50_edited_location_submissions
-    submissions = submissions.select { |s| s.location_id && Location.exists?(id: s.location_id) }
-    submissions = submissions.reverse.uniq(&:location_id)
-    submissions = submissions.reverse
+    user_submissions = UserSubmission.where(user: self).order(created_at: 'DESC').limit(50)
 
-    submissions.map { |s| [s.location_id, s.location.name, s.location.region_id] }
-  end
+    user_submission_locations_hash = {}
+    user_submissions.each do |user_sub|
+      next unless user_sub.location_name
 
-  def last_50_edited_location_submissions
-    edited_location_submissions.includes([:location]).limit(50)
+      user_submission_locations_hash[user_sub.location_id] = [user_sub.location_id, user_sub.location_name]
+    end
+    user_submission_locations_hash.values
   end
 
   def edited_location_submissions

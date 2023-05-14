@@ -340,20 +340,20 @@ describe Api::V1::UsersController, type: :request do
       location = FactoryBot.create(:location, id: 100, region_id: 1000, name: 'location')
       another_location = FactoryBot.create(:location, id: 101, region_id: 1001, name: 'another location')
 
-      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::NEW_LMX_TYPE)
-      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
-      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
-      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-02', location: another_location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::NEW_LMX_TYPE, location_name: 'location', location_id: 100)
+      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, location_name: 'location', location_id: 100)
+      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, location_name: 'location', location_id: 100)
+      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE, location_name: 'location', location_id: 100)
+      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE, location_name: 'location', location_id: 100)
+      FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-02', location: another_location, submission_type: UserSubmission::NEW_CONDITION_TYPE, location_name: 'another location', location_id: 101)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
 
-      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 1234 on Cheetah at Bottles')
-      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-02', submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 12 on Machine at Location')
-      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-02', submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 14 on Machine at Location')
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 1234 on Cheetah at Bottles', location_name: 'location', location_id: 100)
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-02', submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 12 on Machine at Location', location_name: 'location', location_id: 100)
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-02', submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 14 on Machine at Location', location_name: 'location', location_id: 100)
 
       get '/api/v1/users/111/profile_info.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
@@ -368,8 +368,8 @@ describe Api::V1::UsersController, type: :request do
       expect(json['num_locations_edited']).to eq(2)
       expect(json['created_at']).to eq('2016-01-01T00:00:00.000-08:00')
       expect(json['profile_list_of_edited_locations']).to eq([
-        [101, 'another location', 1001],
-        [100, 'location', 1000]
+        [101, 'another location'],
+        [100, 'location']
       ])
       expect(json['profile_list_of_high_scores']).to eq([
         ['Location', 'Machine', '14', 'Jan 02, 2016'],

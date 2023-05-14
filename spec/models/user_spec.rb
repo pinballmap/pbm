@@ -100,18 +100,18 @@ describe User do
     it 'should return a list of edited locations for their profile page' do
       location = FactoryBot.create(:location, id: 1, region_id: 100, name: 'foo', created_at: '2017-01-02')
       another_location = FactoryBot.create(:location, id: 2, region_id: 200, name: 'bar', created_at: '2017-01-01')
+      machine = FactoryBot.create(:machine, name: 'First Machine')
 
-      FactoryBot.create(:user_submission, user: @user, created_at: '2016-01-01', location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
-      FactoryBot.create(:user_submission, user: @user, created_at: '2016-01-02', location: another_location, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
+      FactoryBot.create(:user_submission, user: @user, created_at: '2018-01-01', machine: machine, location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE, submission: 'ssw added a high score of 100 on First Machine at First Location', location_name: 'foo', location_id: 1)
+      FactoryBot.create(:user_submission, user: @user, created_at: '2018-01-02', location: another_location, submission_type: UserSubmission::LOCATION_METADATA_TYPE, location_name: 'bar', location_id: 2)
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::LOCATION_METADATA_TYPE, location_name: 'foo', location_id: 1)
 
-      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
-
-      expect(@user.profile_list_of_edited_locations).to eq([[another_location.id, another_location.name, another_location.region_id], [location.id, location.name, location.region_id]])
+      expect(@user.profile_list_of_edited_locations).to eq([[1, 'foo'], [2, 'bar']])
     end
 
     it 'should return the most recent 50' do
       51.times do |i|
-        FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, name: i.to_s), submission_type: UserSubmission::LOCATION_METADATA_TYPE, created_at: Date.new(2016, 1, 1).next_day(i).to_s)
+        FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, name: i.to_s), submission_type: UserSubmission::LOCATION_METADATA_TYPE, location_name: i.to_s, location_id: i.to_i, created_at: Date.new(2016, 1, 1).next_day(i).to_s)
       end
 
       expect(@user.profile_list_of_edited_locations.size).to eq(50)
@@ -122,10 +122,10 @@ describe User do
     it 'should not return locations that no longer exist' do
       location = FactoryBot.create(:location, id: 1, region_id: 11, name: 'foo')
 
-      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE)
-      FactoryBot.create(:user_submission, user: @user, location_id: -1, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE, location_name: 'foo', location_id: 1)
+      FactoryBot.create(:user_submission, user: @user, location_id: -1, submission_type: UserSubmission::NEW_CONDITION_TYPE, location_name: nil)
 
-      expect(@user.profile_list_of_edited_locations).to eq([[location.id, location.name, location.region_id]])
+      expect(@user.profile_list_of_edited_locations).to eq([[location.id, location.name]])
     end
   end
 
