@@ -9,10 +9,10 @@
     = link_to 'Explore the Map', map_path
   %p
     %span.red.font18.sans.bold
-      #{number_with_delimiter(Location.all.count,:delimiter => ",")}
+      #{number_with_delimiter(@locations_count_total,:delimiter => ",")}
     locations and
     %span.red.font18.sans.bold
-      #{number_with_delimiter(LocationMachineXref.all.count,:delimiter => ",")}
+      #{number_with_delimiter(@machines_count_total,:delimiter => ",")}
     machines
   %div.flex_center.italic.darkgrey
     The map was last updated
@@ -137,8 +137,45 @@
       %span.bold If you use the data, please provide attribution!
   .news.serif{:style => 'display: flex;justify-content: center;'}
     =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;', :class => 'splash')
-%div.flex_center.flex_column.mb_10.bg_lightpurple
-  %p.red.font28.sans.bold.mt_20.mb_5.bg_lightpurple
+%div.flex_center.bg_lightpurple
+  %p.red.font28.sans.bold.mt_20.mb_5 Stack
+%div.flex_center.mobile_flex.bg_lightpurple
+  .news.serif.center
+    =link_to image_tag( 'stack-dokku-logo.svg', :alt => 'dokku logo', :style => 'width: 220px;', :class => 'pb_15'), 'https://dokku.com/', :target => '_blank'
+    %br/
+    =link_to image_tag( 'stack-expo-logo.png', :alt => 'expo logo', :style => 'width: 220px;', :class => 'pt_5'), 'https://expo.dev/', :target => '_blank'
+    %br/
+    =link_to image_tag( 'stack-scout-logo.png', :alt => 'scout APM logo', :style => 'width: 220px;', :class => 'pt_5'), 'https://scoutapm.com/', :target => '_blank'
+  .news.serif
+    %p
+      The Pinball Map website, API, and app make extensive use of many free and/or open source services (as well as paid services). The website uses 
+      =link_to 'Ruby on Rails', 'https://rubyonrails.org/', :target => '_blank', :class => 'bold'
+      along with open source gems. The app uses 
+      =link_to 'React Native', 'https://reactnative.dev/', :target => '_blank', :class => 'bold'
+      and likewise is aided by many open source modules.
+    %p
+      =link_to 'Dokku.', 'https://dokku.com/', :target => '_blank', :class => 'bold'
+      We use Dokku to build and deploy Pinball Map! It is a free service, though we support it with a monthly donation.
+    %p 
+      =link_to 'DigitalOcean', 'https://www.digitalocean.com/', :target => '_blank', :class => 'bold'
+      hosts our server and Postgresql database. This is fully paid for via our Patreon supporters.
+    %p
+      =link_to 'Mapbox', 'https://www.mapbox.com/', :target => '_blank', :class => 'bold'
+      is used for map tiles. 
+    %p
+      =link_to 'Expo', 'https://expo.dev/', :target => '_blank', :class => 'bold'
+      manages, among many things, the app development and build processes. 
+    %p
+      =link_to 'Scout APM', 'https://scoutapm.com/', :target => '_blank', :class => 'bold'
+      tracks performance monitoring for the website and API.
+    %p
+      =link_to 'Sentry', 'https://sentry.io/', :target => '_blank', :class => 'bold'
+      is used for crash reporting on the app!
+    %p
+      =link_to 'Google Maps', 'https://developers.google.com/maps', :target => '_blank', :class => 'bold'
+      processes the geocoding requests. We also use the Places API for location submissions.
+%div.flex_center.flex_column.mb_10
+  %p.brightpurple.font28.sans.bold.mt_20.mb_5
     Recent Blog Posts
   %div.m_5.center
     =link_to 'Pinball Map App Update 5.2.18', 'https://blog.pinballmap.com/2023/03/05/pinball-map-app-update-5-2-18/', :target => '_blank', :class => 'bold font18'
@@ -152,9 +189,9 @@
     =link_to '2021 TWIPY Award for Best Pinball App', 'https://blog.pinballmap.com/2022/03/29/2021-TWIPY-Award/', :target => '_blank', :class => 'bold font18'
     %span.block.center.m_5 Mar 29, 2022
 
-%div.flex_center.flex_column.mb_20
+%div.flex_center.flex_column.mb_20.bg_lightpurple
   .region_map
-    %p.brightpurple.font28.sans.bold.mt_20.mb_5.center
+    %p.red.font28.sans.bold.mt_20.mb_5.center.bg_lightpurple
       Regional Maps
     %p
       If the

@@ -33,23 +33,6 @@ describe Region do
     end
   end
 
-  describe '#machine_and_location_count_by_region' do
-    it 'should send back a count of all locations and machines in a region' do
-      clark_location = FactoryBot.create(:location, region: @region, name: 'Clark')
-      FactoryBot.create(:location, region: @region, name: 'Ripley')
-      FactoryBot.create(:location, region: @other_region, name: 'Cleo')
-
-      FactoryBot.create(:location_machine_xref, location: clark_location, machine: FactoryBot.create(:machine))
-      FactoryBot.create(:location_machine_xref, location: clark_location, machine: FactoryBot.create(:machine))
-      FactoryBot.create(:location_machine_xref, location: clark_location, machine: FactoryBot.create(:machine))
-
-      expect(Region.machine_and_location_count_by_region).to include(
-        @region.id => { 'locations_count' => 2, 'machines_count' => 3 },
-        @other_region.id => { 'locations_count' => 1, 'machines_count' => 0 }
-      )
-    end
-  end
-
   describe '#delete_empty_regionless_locations' do
     it 'should remove all empty regionless locations' do
       FactoryBot.create(:location, region: nil)
@@ -430,24 +413,6 @@ HERE
       FactoryBot.create(:location, region: @region, name: 'Cleo', operator: FactoryBot.create(:operator, name: 'Quarter Bean', region: @region))
 
       expect(@region.reload.available_search_sections).to eq("['location', 'city', 'machine', 'type', 'operator', 'zone']")
-    end
-  end
-
-  describe '#content_for_infowindow' do
-    it 'generate the html that the infowindow wants to use' do
-      r = FactoryBot.create(:region, full_name: 'Portland')
-
-      location = FactoryBot.create(:location, region: r, name: 'Sassy')
-      another_location = FactoryBot.create(:location, region: r, name: 'Cleo')
-
-      machine = FactoryBot.create(:machine, name: 'Sassy')
-      another_machine = FactoryBot.create(:machine, name: 'Cleo')
-
-      FactoryBot.create(:location_machine_xref, location: location, machine: machine)
-      FactoryBot.create(:location_machine_xref, location: another_location, machine: machine)
-      FactoryBot.create(:location_machine_xref, location: another_location, machine: another_machine)
-
-      expect(r.content_for_infowindow(2, 3).chomp).to eq("'<div class=\"infowindow\" id=\"infowindow_#{r.id}\"><div class=\"gm_region_name\"><a href=\"#{r.name}\">Portland</a></div><hr /><div class=\"gm_location_count\">2 Locations</div><div class=\"gm_machine_count\">3 Machines</div></div>'")
     end
   end
 
