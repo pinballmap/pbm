@@ -414,6 +414,16 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(ic_enabled).to be false
     end
 
+    it 'creates a user submission for the toggle - authed' do
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { id: @lmx.id, ic_enabled: true, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      expect(response).to be_successful
+
+      get "/api/v1/user_submissions/location.json?id=#{@lmx.location.id}"
+      expect(response).to be_successful
+
+      expect(JSON.parse(response.body)['user_submissions'][0]['submission_type']).to eq(UserSubmission::IC_TOGGLE_TYPE)
+    end
+
     # check nil, toggle one machine, toggle both machines, toggle back one, toggle both off, toggle the final one to off.
     it 'toggles insider connected status on the Location correctly - authed' do
       # check nil

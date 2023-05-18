@@ -134,14 +134,15 @@ class User < ApplicationRecord
 
   def edited_location_submissions
     UserSubmission.where(
-      'location_id is not null and user_id = ? and submission_type in (?,?,?,?,?,?)',
+      'location_id is not null and user_id = ? and submission_type in (?,?,?,?,?,?,?)',
       id,
       UserSubmission::NEW_CONDITION_TYPE,
       UserSubmission::LOCATION_METADATA_TYPE,
       UserSubmission::NEW_LMX_TYPE,
       UserSubmission::REMOVE_MACHINE_TYPE,
       UserSubmission::NEW_SCORE_TYPE,
-      UserSubmission::CONFIRM_LOCATION_TYPE
+      UserSubmission::CONFIRM_LOCATION_TYPE,
+      UserSubmission::IC_TOGGLE_TYPE
     ).order('created_at desc')
   end
 

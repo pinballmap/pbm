@@ -364,7 +364,15 @@ describe LocationMachineXrefsController do
 
       find('.ic_button').click
 
+      sleep 0.5
+
       expect(page).to have_css('.ic_yes')
+
+      user_submission = UserSubmission.last
+
+      expect(user_submission.user_id).to eq(@user.id)
+      expect(user_submission.machine_id).to eq(10)
+      expect(user_submission.submission_type).to eq(UserSubmission::IC_TOGGLE_TYPE)
     end
 
     it 'allows user to toggle off flag' do

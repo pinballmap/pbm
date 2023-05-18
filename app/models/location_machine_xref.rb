@@ -109,6 +109,10 @@ class LocationMachineXref < ApplicationRecord
     UserSubmission.create(user_name: user&.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_LMX_TYPE, submission: "#{machine.name_and_year} was added to #{location.name} in #{location.city}#{user.nil? ? '' : ' by ' + user.name}", user: user)
   end
 
+  def create_ic_user_submission(user)
+    UserSubmission.create(user_name: user.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::IC_TOGGLE_TYPE, submission: "Insider Connected toggled on #{machine.name_and_year} at #{location.name} in #{location.city} by #{user.username}", user: user)
+  end
+
   def last_updated_by_username
     user ? user.username : ''
   end

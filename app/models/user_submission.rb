@@ -15,6 +15,7 @@ class UserSubmission < ApplicationRecord
   NEW_SCORE_TYPE = 'new_msx'.freeze
   CONFIRM_LOCATION_TYPE = 'confirm_location'.freeze
   DELETE_LOCATION_TYPE = 'delete_location'.freeze
+  IC_TOGGLE_TYPE = 'ic_toggle'.freeze
 
   def user_email
     user ? user.email : ''

@@ -98,6 +98,7 @@ class LocationMachineXrefsController < InheritedResources::Base
 
   def ic_toggle
     lmx = LocationMachineXref.find(params[:id])
+    user = current_user
     lmx.toggle!(:ic_enabled)
     render partial: 'location_machine_xrefs/ic_button', locals: { lmx: lmx }
     if (lmx.ic_enabled == true) && (lmx.location.ic_active != true)
@@ -107,6 +108,7 @@ class LocationMachineXrefsController < InheritedResources::Base
       lmx.location.ic_active = false
       lmx.location.save
     end
+    lmx.create_ic_user_submission(user)
   end
 
   private
