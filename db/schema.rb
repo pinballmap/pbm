@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_04_162149) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_18_001533) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -174,8 +174,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_04_162149) do
     t.text "opdb_img"
     t.integer "opdb_img_height"
     t.integer "opdb_img_width"
-    t.string "type"
-    t.string "display"
     t.string "machine_type"
     t.string "machine_display"
     t.boolean "ic_eligible"
@@ -339,6 +337,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_04_162149) do
     t.boolean "is_disabled"
     t.string "authentication_token", limit: 30
     t.string "security_test"
+    t.integer "user_submissions_count"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["region_id"], name: "index_users_on_region_id"

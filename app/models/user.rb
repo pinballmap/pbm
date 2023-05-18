@@ -150,11 +150,11 @@ class User < ApplicationRecord
   end
 
   def num_total_submissions
-    user_submissions.count
+    user_submissions.size
   end
 
   def contributor_rank_int
-    case user_submissions.count
+    case user_submissions.size
     when 0...50
       nil
     when 50...250

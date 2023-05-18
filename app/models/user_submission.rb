@@ -1,6 +1,6 @@
 class UserSubmission < ApplicationRecord
   belongs_to :region, optional: true
-  belongs_to :user, optional: true
+  belongs_to :user, optional: true, counter_cache: true
   belongs_to :location, optional: true
   belongs_to :machine, optional: true
 

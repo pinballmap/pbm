@@ -153,6 +153,20 @@ describe User do
     end
   end
 
+  describe '#user_submissions_count' do
+    it 'should return the total number of user submissions by the user' do
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_LMX_TYPE)
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE)
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE)
+      FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+
+      expect(@user.user_submissions_count).to eq(7)
+    end
+  end
+
   describe '#as_json' do
     it 'should default to only return id' do
       expect(@user.to_json).to eq("{\"id\":#{@user.id}}")
