@@ -137,14 +137,13 @@ HERE
         return return_response(AUTH_REQUIRED_MSG, 'errors') unless current_user
 
         lmx = LocationMachineXref.find(params[:id])
-        user = current_user.nil? ? nil : current_user
 
         success = ActiveRecord::Base.transaction do
           ic_enabled = lmx.ic_enabled || false
           lmx.ic_enabled = !ic_enabled
 
           lmx.save!
-          lmx.create_ic_user_submission(user)
+          lmx.create_ic_user_submission(current_user)
 
           # update the location's insider connected status if needed
           if lmx.ic_enabled && lmx.location.ic_active != true
