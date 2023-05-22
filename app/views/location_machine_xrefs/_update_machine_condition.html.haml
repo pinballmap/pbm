@@ -23,6 +23,7 @@
       updateLocationUpdatedText(#{lmx.location_id});
     });
     $('#update_machine_condition_#{lmx.id} #new_machine_condition_#{lmx.id}').val('');
+    $('#machine_condition_edit_lmx_#{lmx.id}').slideToggle('slow');
 
     return false;
   });
