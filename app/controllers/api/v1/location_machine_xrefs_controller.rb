@@ -134,9 +134,10 @@ HERE
       param :id, Integer, desc: 'LMX id', required: true
       formats ['json']
       def ic_toggle
-        return return_response(AUTH_REQUIRED_MSG, 'errors') unless current_user
-
+        user = current_user.nil? ? nil : current_user
         lmx = LocationMachineXref.find(params[:id])
+
+        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 
         success = ActiveRecord::Base.transaction do
           ic_enabled = lmx.ic_enabled || false
