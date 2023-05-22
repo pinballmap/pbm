@@ -131,7 +131,7 @@ HERE
       end
 
       api :PUT, '/api/v1/location_machine_xrefs/:id/ic_toggle.json', "Toggle a machine's Insider Connected status"
-      # param :id, Integer, desc: 'LMX id', required: true
+      param :id, Integer, desc: 'LMX id', required: true
       formats ['json']
       def ic_toggle
         return return_response(AUTH_REQUIRED_MSG, 'errors') unless current_user
