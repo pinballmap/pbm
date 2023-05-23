@@ -130,14 +130,13 @@ HERE
         return_response(records_array, 'machines')
       end
 
-      api :PUT, '/api/v1/location_machine_xrefs/:id/ic_toggle.json', "Toggle a machine's Insider Connected status"
-      param :id, Integer, desc: 'LMX id', required: true
+      api :PUT, '/api/v1/location_machine_xrefs/:location_machine_xref_id/ic_toggle.json', "Toggle a machine's Insider Connected status"
+      param :location_machine_xref_id, Integer, desc: 'LMX id', required: true
       formats ['json']
       def ic_toggle
-        user = current_user.nil? ? nil : current_user
-        lmx = LocationMachineXref.find(params[:id])
+        return return_response(AUTH_REQUIRED_MSG, 'errors') unless current_user
 
-        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
+        lmx = LocationMachineXref.find(params[:location_machine_xref_id])
 
         success = ActiveRecord::Base.transaction do
           ic_enabled = lmx.ic_enabled || false

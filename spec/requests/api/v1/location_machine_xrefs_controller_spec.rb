@@ -389,7 +389,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'toggles insider connected to be able to be toggled - authed' do
-      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { id: @lmx.id, ic_enabled: true, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['location_machine']['ic_enabled']).to eq(true)
@@ -401,7 +401,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       ic_enabled = lmx['ic_enabled']
       expect(ic_enabled).to be true
 
-      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { id: @lmx.id, ic_enabled: true, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['location_machine']['ic_enabled']).to eq(false)
@@ -415,7 +415,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'creates a user submission for the toggle - authed' do
-      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { id: @lmx.id, ic_enabled: true, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_successful
 
       get "/api/v1/user_submissions/location.json?id=#{@lmx.location.id}"
@@ -432,39 +432,38 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(location["ic_active"]).to be nil
 
       # toggle one on
-      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { id: @lmx.id, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       get "/api/v1/locations/#{@lmx.location.id}.json"
       location = JSON.parse(response.body)
       expect(location["ic_active"]).to be true
 
       # toggle both on
-      put "/api/v1/location_machine_xrefs/#{@lmx2.id}/ic_toggle.json", params: { id: @lmx2.id, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx2.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       get "/api/v1/locations/#{@lmx.location.id}.json"
       location = JSON.parse(response.body)
       expect(location["ic_active"]).to be true
 
       # toggle one off
-      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { id: @lmx.id, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       get "/api/v1/locations/#{@lmx.location.id}.json"
       location = JSON.parse(response.body)
       expect(location["ic_active"]).to be true
 
       # toggle the other off
-      put "/api/v1/location_machine_xrefs/#{@lmx2.id}/ic_toggle.json", params: { id: @lmx2.id, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx2.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       get "/api/v1/locations/#{@lmx2.location.id}.json"
       location = JSON.parse(response.body)
       expect(location["ic_active"]).to be false
 
       # toggle one back on
-      put "/api/v1/location_machine_xrefs/#{@lmx2.id}/ic_toggle.json", params: { id: @lmx2.id, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx2.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       get "/api/v1/locations/#{@lmx2.location.id}.json"
       location = JSON.parse(response.body)
       expect(location["ic_active"]).to be true
     end
 
-
     it 'should not allow insider connect to be toggled when unauthed' do
-      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { id: @lmx.id, ic_enabled: true, HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { HTTP_USER_AGENT: 'cleOS' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to match(/Authentication is required/)
