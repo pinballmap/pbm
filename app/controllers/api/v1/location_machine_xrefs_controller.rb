@@ -160,7 +160,7 @@ HERE
         if success
           return_response(lmx, 'location_machine')
         else
-          return_response('Could not update Insider Connect for this machine', 'errors')
+          return_response('Could not update Insider Connected for this machine', 'errors')
         end
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find machine', 'errors')
