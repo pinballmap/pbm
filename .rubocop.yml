@@ -1,5 +1,5 @@
 require:
-- rubocop-rspec
+  - rubocop-rspec
 
 Layout/HashAlignment:
   Enabled: false
