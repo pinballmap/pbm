@@ -47,7 +47,7 @@ Style/FrozenStringLiteralComment:
   Enabled: false
 Layout/MultilineOperationIndentation:
   Enabled: false
-Lint/HeredocIndentation:
+Layout/HeredocIndentation:
   Enabled: false
 Lint/EmptyConditionalBody:
   Enabled: false
@@ -82,6 +82,7 @@ RSpec/FactoryBot:
   Enabled: false
 
 AllCops:
+  NewCops: disable
   Exclude:
     - 'db/**/*'
     - 'config/**/*'
