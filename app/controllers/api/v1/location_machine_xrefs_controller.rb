@@ -137,24 +137,26 @@ HERE
         return return_response(AUTH_REQUIRED_MSG, 'errors') unless current_user
 
         lmx = LocationMachineXref.find(params[:location_machine_xref_id])
+        if lmx.machine.ic_eligible
 
-        success = ActiveRecord::Base.transaction do
-          ic_enabled = lmx.ic_enabled || false
-          lmx.ic_enabled = !ic_enabled
+          success = ActiveRecord::Base.transaction do
+            ic_enabled = lmx.ic_enabled || false
+            lmx.ic_enabled = !ic_enabled
 
-          lmx.save!
-          lmx.create_ic_user_submission(current_user)
+            lmx.save!
+            lmx.create_ic_user_submission(current_user)
 
-          # update the location's insider connected status if needed
-          if lmx.ic_enabled && lmx.location.ic_active != true
-            lmx.location.ic_active = true
-            lmx.location.save!
-          elsif lmx.location.location_machine_xrefs.where(ic_enabled: true).length.zero?
-            lmx.location.ic_active = false
-            lmx.location.save!
+            # update the location's insider connected status if needed
+            if lmx.ic_enabled && lmx.location.ic_active != true
+              lmx.location.ic_active = true
+              lmx.location.save!
+            elsif lmx.location.location_machine_xrefs.where(ic_enabled: true).length.zero?
+              lmx.location.ic_active = false
+              lmx.location.save!
+            end
+
+            true
           end
-
-          true
         end
 
         if success

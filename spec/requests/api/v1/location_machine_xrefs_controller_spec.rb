@@ -386,6 +386,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     before(:each) do
       @lmx = FactoryBot.create(:location_machine_xref, id: 11, ic_enabled: nil, location: @location, machine: FactoryBot.create(:machine, id: 10, year: 2010, manufacturer: 'Williams', ic_eligible: true))
       @lmx2 = FactoryBot.create(:location_machine_xref, id: 12, ic_enabled: nil, location: @location, machine: FactoryBot.create(:machine, id: 22, year: 2012, manufacturer: 'Stern', ic_eligible: true))
+      @lmx3 = FactoryBot.create(:location_machine_xref, id: 13, ic_enabled: nil, location: @location, machine: FactoryBot.create(:machine, id: 32, year: 2014, manufacturer: 'Stern', ic_eligible: false))
     end
 
     it 'toggles insider connected to be able to be toggled - authed' do
@@ -412,6 +413,20 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       lmx = JSON.parse(response.body)['location_machine']
       ic_enabled = lmx['ic_enabled']
       expect(ic_enabled).to be false
+    end
+
+    it 'does not allow non-eligible machines to be toggled - authed' do
+      put "/api/v1/location_machine_xrefs/#{@lmx3.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to match(/Could not update Insider Connected for this machine/)
+
+      get "/api/v1/location_machine_xrefs/#{@lmx3.id}.json"
+      expect(response).to be_successful
+
+      lmx = JSON.parse(response.body)['location_machine']
+      ic_enabled = lmx['ic_enabled']
+      expect(ic_enabled).to be nil
     end
 
     it 'creates a user submission for the toggle - authed' do
