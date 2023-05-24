@@ -132,6 +132,7 @@ HERE
 
       api :PUT, '/api/v1/location_machine_xrefs/:location_machine_xref_id/ic_toggle.json', "Toggle a machine's Insider Connected status"
       param :location_machine_xref_id, Integer, desc: 'LMX id', required: true
+      param :ic_enabled, [true, false], desc: 'Sets the Insider Connected status for this machine', required: false
       formats ['json']
       def ic_toggle
         return return_response(AUTH_REQUIRED_MSG, 'errors') unless current_user
@@ -140,11 +141,15 @@ HERE
         if lmx.machine.ic_eligible
 
           success = ActiveRecord::Base.transaction do
-            ic_enabled = lmx.ic_enabled || false
-            lmx.ic_enabled = !ic_enabled
+            if params.key?(:ic_enabled)
+              lmx.update!(ic_enabled: params[:ic_enabled])
+            else
+              ic_enabled = lmx.ic_enabled || false
+              lmx.ic_enabled = !ic_enabled
+              lmx.save!
+            end
 
-            lmx.save!
-            lmx.create_ic_user_submission(current_user)
+            lmx.create_ic_user_submission!(current_user)
 
             # update the location's insider connected status if needed
             if lmx.ic_enabled && lmx.location.ic_active != true
