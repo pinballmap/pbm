@@ -199,12 +199,17 @@ HERE
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(JSON.parse(response.body)['errors']).to eq('A message is required.')
+      expect(JSON.parse(response.body)['errors']).to eq('A message and email is required.')
 
       expect(Pony).to_not receive(:mail)
       post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, message: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(JSON.parse(response.body)['errors']).to eq('A message is required.')
+      expect(JSON.parse(response.body)['errors']).to eq('A message and email is required.')
+
+      expect(Pony).to_not receive(:mail)
+      post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, message: 'hello', user_email: '', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('A message and email is required.')
     end
 
     it 'emails region admins with incoming message and account info if logged in' do

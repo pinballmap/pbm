@@ -20,15 +20,15 @@
                 %input{:type => "text", :name => "contact_name", :params => "contact_name", :class => "text w_400"}
               %li
                 %label{:for => "contact_email"} Your Email:
-                %input{:type => "text", :name => "contact_email", :params => "contact_email", :class => "text w_400"}
+                %input{:type => "text", :name => "contact_email", :params => "contact_email", :class => "text w_400", required: true}
             %li.msg.h_auto
               %label{:for => "contact_msg"} Message:
-              %textarea{:type => "text", :name => "contact_msg", :params => "contact_msg", :class => "text w_400"}
+              %textarea{:type => "text", :name => "contact_msg", :params => "contact_msg", :class => "text w_400", required: true}
             - if !user_signed_in?
               %li
                 %span.red.serif Security Question (required)
                 %label{:for => "security_test", } What are we mapping on this site?
-                %input{:type => "text", :name => "security_test", :params => "security_test", :class => "text w_400"}
+                %input{:type => "text", :name => "security_test", :params => "security_test", :class => "text w_400", required: true}
             %li.submit{:style => "clear:both;"}
               %input{:type => "submit", :value => "Submit Comment", :class => "submit_button"}
     .column.bg_vlightpurple.w_450

@@ -111,7 +111,7 @@ class PagesController < ApplicationController
   end
 
   def contact_sent
-    return if params['contact_msg'].nil? || params['contact_msg'].empty? || params['contact_msg'].match?(/vape/) || params['contact_msg'].match?(/seo/)
+    return if params['contact_msg'].nil? || params['contact_msg'].empty? || params['contact_email'].nil? || params['contact_email'].empty? || params['contact_msg'].match?(/vape/) || params['contact_msg'].match?(/seo/) || params['contact_msg'].match?(/Ezoic/)
 
     user = current_user.nil? ? nil : current_user
     @answers = %w[pinball Pinball PINBALL]
