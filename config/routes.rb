@@ -45,7 +45,6 @@ Rails.application.routes.draw do
           get  :location_and_machine_counts
           post :suggest
           post :contact
-          post :app_comment
         end
       end
       resources :location_machine_xrefs, only: [:create, :destroy, :update, :show] do

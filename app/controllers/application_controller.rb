@@ -146,25 +146,6 @@ BODY
     UserSubmission.create(region_id: region&.id, submission_type: UserSubmission::CONTACT_US_TYPE, submission: body, user_id: user&.id)
   end
 
-  def send_app_comment(params, region)
-    Pony.mail(
-      to: 'map@pinballmap.com',
-      cc: User.all.select(&:is_super_admin).map(&:email),
-      from: 'admin@pinballmap.com',
-      subject: add_host_info_to_subject('PBM - App feedback'),
-      body: <<BODY
-OS: #{params['os']}\n
-OS Version: #{params['os_version']}\n
-Device Type: #{params['device_type']}\n
-App Version: #{params['app_version']}\n
-Region: #{region.name}\n
-Their Name: #{params['name']}\n
-Their Email: #{params['email']}\n
-Message: #{params['message']}\n
-BODY
-    )
-  end
-
   def return_response(data, root, includes = [], methods = [], http_status = 200, except = [])
     json_data = data.as_json(include: includes, methods: methods, root: false, except: except)
 

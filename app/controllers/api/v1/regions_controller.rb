@@ -125,39 +125,6 @@ module Api
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find region', 'errors')
       end
-
-      api :POST, '/api/v1/regions/app_comment.json', 'Send comments about the app'
-      description 'Send a message to app maintainers about the app'
-      param :region_id, Integer, desc: 'ID of the region to send a message to', required: true
-      param :os, String, desc: 'OS Type', required: true
-      param :os_version, String, desc: 'OS Version', required: true
-      param :device_type, String, desc: 'Device Type', required: true
-      param :app_version, String, desc: 'App version', required: true
-      param :email, String, desc: 'Your email address', required: true
-      param :name, String, desc: 'Your name', required: false
-      param :message, String, desc: 'Message to app maintainer', required: true
-      formats ['json']
-      def app_comment
-        user = current_user.nil? ? nil : current_user
-
-        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
-
-        region = Region.find(params['region_id'])
-
-        required_fields = %w[region_id os os_version device_type app_version email message]
-
-        required_fields.each do |field|
-          if params[field].blank?
-            return_response(required_fields.join(', ') + ' are all required.', 'errors')
-            return
-          end
-        end
-
-        send_app_comment(params, region)
-        return_response('Thanks for the message.', 'msg')
-      rescue ActiveRecord::RecordNotFound
-        return_response('Failed to find region', 'errors')
-      end
     end
   end
 end
