@@ -444,37 +444,37 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       # check nil
       get "/api/v1/locations/#{@lmx.location.id}.json"
       location = JSON.parse(response.body)
-      expect(location["ic_active"]).to be nil
+      expect(location['ic_active']).to be nil
 
       # toggle one on
       put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       get "/api/v1/locations/#{@lmx.location.id}.json"
       location = JSON.parse(response.body)
-      expect(location["ic_active"]).to be true
+      expect(location['ic_active']).to be true
 
       # toggle both on
       put "/api/v1/location_machine_xrefs/#{@lmx2.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       get "/api/v1/locations/#{@lmx.location.id}.json"
       location = JSON.parse(response.body)
-      expect(location["ic_active"]).to be true
+      expect(location['ic_active']).to be true
 
       # toggle one off
       put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       get "/api/v1/locations/#{@lmx.location.id}.json"
       location = JSON.parse(response.body)
-      expect(location["ic_active"]).to be true
+      expect(location['ic_active']).to be true
 
       # toggle the other off
       put "/api/v1/location_machine_xrefs/#{@lmx2.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       get "/api/v1/locations/#{@lmx2.location.id}.json"
       location = JSON.parse(response.body)
-      expect(location["ic_active"]).to be false
+      expect(location['ic_active']).to be false
 
       # toggle one back on
       put "/api/v1/location_machine_xrefs/#{@lmx2.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       get "/api/v1/locations/#{@lmx2.location.id}.json"
       location = JSON.parse(response.body)
-      expect(location["ic_active"]).to be true
+      expect(location['ic_active']).to be true
     end
 
     it 'it should toggle via the ic_enabled param' do

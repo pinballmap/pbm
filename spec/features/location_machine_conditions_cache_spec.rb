@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-RSpec.feature "LocationMachineConditionsCaches", type: :feature do
-
+RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
   before(:each) do
     @region = FactoryBot.create(:region, name: 'portland', full_name: 'Portland')
     @location = FactoryBot.create(:location, id: 1, region: @region)

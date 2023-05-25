@@ -73,7 +73,7 @@ group :development, :test do
   gem 'listen'
   gem 'pry'
   gem 'rack_session_access'
-  gem "solargraph", "~> 0.49.0"
-  gem "solargraph-rails", "~> 1.1"
+  gem 'solargraph', '~> 0.49.0'
+  gem 'solargraph-rails', '~> 1.1'
 end
 
