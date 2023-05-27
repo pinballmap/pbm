@@ -256,7 +256,21 @@ HERE
       expect(response.body).to include('Cleo')
     end
 
-    it 'returns all locations in a region within scope along with lmx data' do
+    it 'respects with_lmx filter' do
+      FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'chicago'), name: 'Bawb')
+
+      lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 777, name: 'Cleo'))
+      FactoryBot.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'foo bar')
+
+      get "/api/v1/region/#{@region.name}/locations.json", params: { with_lmx: 1 }
+
+      expect(response.body).to include('Satchmo')
+      expect(response.body).to include('777')
+      expect(response.body).to include('foo bar')
+      expect(response.body).to_not include('Bawb')
+    end
+
+    it 'returns all locations in a region within scope without all lmx data' do
       FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'chicago'), name: 'Bawb')
 
       lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 777, name: 'Cleo'))
@@ -266,7 +280,7 @@ HERE
 
       expect(response.body).to include('Satchmo')
       expect(response.body).to include('777')
-      expect(response.body).to include('foo bar')
+      expect(response.body).to_not include('foo bar')
       expect(response.body).to_not include('Bawb')
     end
 
@@ -277,13 +291,13 @@ HERE
 
       expect(response.body).to include('Satchmo')
       expect(response.body).to include('777')
-      expect(response.body).to include('foo bar')
+      expect(response.body).to_not include('foo bar')
 
       get "/api/v1/region/#{@region.name}/locations.json", params: { by_opdb_id: 'b33f' }
 
       expect(response.body).to include('Satchmo')
       expect(response.body).to include('777')
-      expect(response.body).to include('foo bar')
+      expect(response.body).to_not include('foo bar')
     end
 
     it 'respects regionless_only filter' do
@@ -304,11 +318,11 @@ HERE
       expect(response.body).to_not include('Satchmo')
     end
 
-    it 'returns username' do
+    it 'returns username with with_lmx filter' do
       ssw = FactoryBot.create(:user, username: 'ssw')
       lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 777, name: 'Cleo'), user: ssw)
       FactoryBot.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'baz', user: ssw)
-      get "/api/v1/region/#{@region.name}/locations.json"
+      get "/api/v1/region/#{@region.name}/locations.json", params: { with_lmx: 1 }
 
       expect(response.body.scan('ssw').size).to eq(3)
     end

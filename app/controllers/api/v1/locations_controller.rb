@@ -67,18 +67,21 @@ module Api
       param :by_at_least_n_machines_type, Integer, desc: 'Only locations with N or more machines', required: false
       param :by_is_stern_army, Integer, desc: 'Send only locations labeled as Stern Army', required: false
       param :no_details, Integer, desc: 'Omit lmx/condition data from pull', required: false
+      param :with_lmx, Integer, desc: 'Include location machine details such as comments', required: false
       param :regionless_only, Integer, desc: 'Show only regionless locations', required: false
       formats ['json']
       def index
-        return return_response(FILTERING_REQUIRED_MSG, 'errors') unless params[:region] || params[:by_location_name] || params[:by_location_id] || params[:by_machine_id] || params[:by_ipdb_id] || params[:by_opdb_id] || params[:by_machine_name] || params[:by_city_id] || params[:by_machine_group_id] || params[:by_zone_id] || params[:by_operator_id] || params[:by_type_id] || params[:by_at_least_n_machines_type] || params[:by_is_stern_army]
+        return return_response(FILTERING_REQUIRED_MSG, 'errors') unless params[:region] || params[:by_location_name] || params[:by_location_id] || params[:by_machine_id] || params[:by_ipdb_id] || params[:by_opdb_id] || params[:by_machine_name] || params[:by_city_id] || params[:by_machine_group_id] || params[:by_zone_id] || params[:by_operator_id] || params[:by_type_id] || params[:by_at_least_n_machines_type] || params[:by_is_stern_army] || params[:regionless_only]
 
         except = params[:no_details] ? %i[phone website description created_at updated_at date_last_updated last_updated_by_user_id region_id] : nil
 
         locations = nil
         if params[:no_details] || params[:by_is_stern_army]
           locations = apply_scopes(Location).includes(:machines, :last_updated_by_user).order('locations.name')
+        elsif params[:with_lmx]
+          locations = apply_scopes(Location).includes({ location_machine_xrefs: %i[user machine_conditions] }, :machines, :last_updated_by_user).order('locations.name')
         else
-          locations = apply_scopes(Location).includes({ location_machine_xrefs: :user }, { machine_conditions: :user }, :machines, :last_updated_by_user).order('locations.name')
+          locations = apply_scopes(Location).includes(:machines, :last_updated_by_user).order('locations.name')
         end
 
         if params[:by_is_stern_army]
@@ -90,11 +93,20 @@ module Api
             200,
             except
           )
-        else
+        elsif params[:with_lmx]
           return_response(
             locations,
             'locations',
             params[:no_details] ? nil : [location_machine_xrefs: { include: { machine_conditions: { methods: :username }, machine: { methods: :machine_group_id } }, methods: :last_updated_by_username }],
+            %i[last_updated_by_username num_machines],
+            200,
+            except
+          )
+        else
+          return_response(
+            locations,
+            'locations',
+            params[:no_details] ? nil : [location_machine_xrefs: { include: { machine: { except: %i[created_at condition opdb_img opdb_img_height opdb_img_width display machine_type machine_display ic_eligible is_active] } }, except: %i[condition ip machine_score_xrefs_count condition_date user_id created_at updated_at] }],
             %i[last_updated_by_username num_machines],
             200,
             except
