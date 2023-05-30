@@ -1086,21 +1086,6 @@ span.or {
   padding-right: 5px;
 }
 
-.map_input span.my_location_container {
-  padding-left: 0;
-  width: auto;
-  height: 22px;
-}
-
-.my_location {
-  height: 22px;
-  margin-left: -25px;
-}
-
-.my_location:hover {
-  cursor: pointer;
-}
-
 .search_field_container {
   width: 55%;
   height: 28px;
@@ -2245,8 +2230,7 @@ input.score {
 
 .meta_image + .meta_image_tooltip,
 .fave_location + .fave_location_tooltip,
-.permalink + .permalink_tooltip,
-.my_location + .my_location_tooltip {
+.permalink + .permalink_tooltip {
   visibility: hidden;
   line-height: 14px;
   font-size: 16px;
@@ -2261,23 +2245,16 @@ input.score {
   text-align: center;
 }
 
-.my_location + .my_location_tooltip {
-  margin-top: 0;
-  margin-left: 10px;
-}
-
 .meta_image + .meta_image_tooltip::after,
 .fave_location + .fave_location_tooltip::after,
-.permalink + .permalink_tooltip::after,
-.my_location + .my_location_tooltip::after {
+.permalink + .permalink_tooltip::after {
   content: "";
   position: absolute;
 }
 
 .meta_image:hover + .meta_image_tooltip,
 .fave_location:hover + .fave_location_tooltip,
-.permalink:hover + .permalink_tooltip,
-.my_location:hover + .my_location_tooltip {
+.permalink:hover + .permalink_tooltip {
   visibility: visible;
   width: 180px;
 }
