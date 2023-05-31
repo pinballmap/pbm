@@ -187,6 +187,7 @@ module Api
       param :by_type_id, Integer, desc: 'Location type ID to search by', required: false
       param :by_machine_id, Integer, desc: 'Machine ID to find in locations', required: false
       param :by_operator_id, Integer, desc: 'Operator ID to search by', required: false
+      param :user_faved, Integer, desc: 'User ID of Faved Locations', required: false
       param :by_at_least_n_machines_type, Integer, desc: 'Only locations with N or more machines', required: false
       param :no_details, Integer, desc: 'Omit data that app does not need from pull', required: false
       formats ['json']
@@ -194,7 +195,14 @@ module Api
         except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone] : nil
 
         bounds = [params[:swlat], params[:swlon], params[:nelat], params[:nelon]]
-        locations_within = apply_scopes(Location).includes(:machines).within_bounding_box(bounds)
+        if params[:user_faved]
+          user = User.find(params[:user_faved])
+          fave_locations = UserFaveLocation.select(:location_id).where(user_id: user)
+
+          locations_within = apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds)
+        else
+          locations_within = apply_scopes(Location).includes(:machines).within_bounding_box(bounds)
+        end
 
         if !locations_within.empty?
           return_response(locations_within, 'locations', [], %i[machine_names machine_ids num_machines], 200, except)

@@ -779,10 +779,18 @@ HERE
 
       expect(JSON.parse(response.body)['errors']).to eq('No locations found within bounding box.')
 
-      FactoryBot.create(:location, name: 'Close_1', region: @region, lat: 45.526112069408704, lon: -122.60884314086321)
-      FactoryBot.create(:location, name: 'Close_2', region: @region, lat: 45.53007190362438, lon: -122.60795065851514)
+      close_location_one = FactoryBot.create(:location, name: 'Close_1', region: @region, lat: 45.526112069408704, lon: -122.60884314086321, location_type_id: 1, operator_id: 1)
+      close_location_two = FactoryBot.create(:location, name: 'Close_2', region: @region, lat: 45.53007190362438, lon: -122.60795065851514, location_type_id: 2, operator_id: 2)
       FactoryBot.create(:location, name: 'Far_Bar', region: @region, lat: 46.491, lon: -122.63)
       FactoryBot.create(:location, region: @region, lat: 5.49, lon: 22.63)
+      machine = FactoryBot.create(:machine)
+      machine_two = FactoryBot.create(:machine)
+      machine_three = FactoryBot.create(:machine)
+      FactoryBot.create(:location_machine_xref, location: close_location_one, machine_id: machine.id)
+      FactoryBot.create(:location_machine_xref, location: close_location_two, machine_id: machine_two.id)
+      FactoryBot.create(:location_machine_xref, location: close_location_two, machine_id: machine_three.id)
+
+      FactoryBot.create(:user_fave_location, user: @user, location: close_location_one)
 
       get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427 }
 
@@ -793,6 +801,31 @@ HERE
       expect(response.body).to_not include('Far_Bar')
       expect(response.body).to include('Close_1')
       expect(response.body).to include('Close_2')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, by_type_id: 1 }
+
+      expect(response.body).to include('Close_1')
+      expect(response.body).to_not include('Close_2')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, by_machine_id: machine.id }
+
+      expect(response.body).to include('Close_1')
+      expect(response.body).to_not include('Close_2')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, by_operator_id: 1 }
+
+      expect(response.body).to include('Close_1')
+      expect(response.body).to_not include('Close_2')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, by_at_least_n_machines_type: 2 }
+
+      expect(response.body).to_not include('Close_1')
+      expect(response.body).to include('Close_2')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, user_faved: @user.id }
+
+      expect(response.body).to include('Close_1')
+      expect(response.body).to_not include('Close_2')
     end
   end
 
