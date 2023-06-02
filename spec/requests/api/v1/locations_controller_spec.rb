@@ -783,9 +783,10 @@ HERE
       close_location_two = FactoryBot.create(:location, name: 'Close_2', region: @region, lat: 45.53007190362438, lon: -122.60795065851514, location_type_id: 2, operator_id: 2)
       FactoryBot.create(:location, name: 'Far_Bar', region: @region, lat: 46.491, lon: -122.63)
       FactoryBot.create(:location, region: @region, lat: 5.49, lon: 22.63)
+      machine_group = FactoryBot.create(:machine_group, id: 1001, name: 'Sass')
       machine = FactoryBot.create(:machine)
-      machine_two = FactoryBot.create(:machine)
-      machine_three = FactoryBot.create(:machine)
+      machine_two = FactoryBot.create(:machine, machine_group_id: 1001)
+      machine_three = FactoryBot.create(:machine, machine_group_id: 1001)
       FactoryBot.create(:location_machine_xref, location: close_location_one, machine_id: machine.id)
       FactoryBot.create(:location_machine_xref, location: close_location_two, machine_id: machine_two.id)
       FactoryBot.create(:location_machine_xref, location: close_location_two, machine_id: machine_three.id)
@@ -807,10 +808,11 @@ HERE
       expect(response.body).to include('Close_1')
       expect(response.body).to_not include('Close_2')
 
-      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, by_machine_id: machine.id }
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, by_machine_id: machine_two.id }
 
-      expect(response.body).to include('Close_1')
-      expect(response.body).to_not include('Close_2')
+      expect(response.body).to_not include('Close_1')
+      expect(response.body).to include('Close_2')
+      expect(response.body.scan('Close_2').size).to eq(1)
 
       get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, by_operator_id: 1 }
 

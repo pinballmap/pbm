@@ -77,11 +77,11 @@ module Api
 
         locations = nil
         if params[:no_details] || params[:by_is_stern_army]
-          locations = apply_scopes(Location).includes(:machines, :last_updated_by_user).order('locations.name')
+          locations = apply_scopes(Location).includes(:machines, :last_updated_by_user).order('locations.name').uniq
         elsif params[:with_lmx]
-          locations = apply_scopes(Location).includes({ location_machine_xrefs: %i[user machine_conditions] }, :machines, :last_updated_by_user).order('locations.name')
+          locations = apply_scopes(Location).includes({ location_machine_xrefs: %i[user machine_conditions] }, :machines, :last_updated_by_user).order('locations.name').uniq
         else
-          locations = apply_scopes(Location).includes(:machines, :last_updated_by_user).order('locations.name')
+          locations = apply_scopes(Location).includes(:machines, :last_updated_by_user).order('locations.name').uniq
         end
 
         if params[:by_is_stern_army]
@@ -167,7 +167,7 @@ module Api
 
         except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone] : nil
 
-        closest_locations = apply_scopes(Location).includes(:machines).near([params[:lat], params[:lon]], max_distance)
+        closest_locations = apply_scopes(Location).includes(:machines).near([params[:lat], params[:lon]], max_distance).uniq
 
         if !closest_locations.empty? && !params[:send_all_within_distance]
           return_response(closest_locations.first, 'location', [], %i[machine_names machine_ids num_machines], 200, except)
@@ -199,9 +199,9 @@ module Api
           user = User.find(params[:user_faved])
           fave_locations = UserFaveLocation.select(:location_id).where(user_id: user)
 
-          locations_within = apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds)
+          locations_within = apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds).uniq
         else
-          locations_within = apply_scopes(Location).includes(:machines).within_bounding_box(bounds)
+          locations_within = apply_scopes(Location).includes(:machines).within_bounding_box(bounds).uniq
         end
 
         if !locations_within.empty?
