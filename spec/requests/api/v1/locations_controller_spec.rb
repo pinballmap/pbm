@@ -781,6 +781,7 @@ HERE
 
       close_location_one = FactoryBot.create(:location, name: 'Close_1', region: @region, lat: 45.526112069408704, lon: -122.60884314086321, location_type_id: 1, operator_id: 1)
       close_location_two = FactoryBot.create(:location, name: 'Close_2', region: @region, lat: 45.53007190362438, lon: -122.60795065851514, location_type_id: 2, operator_id: 2)
+      close_location_three = FactoryBot.create(:location, name: 'Close_3', region: @region, lat: 45.53007190362438, lon: -122.60795065851514, location_type_id: 3, operator_id: 3)
       FactoryBot.create(:location, name: 'Far_Bar', region: @region, lat: 46.491, lon: -122.63)
       FactoryBot.create(:location, region: @region, lat: 5.49, lon: 22.63)
       machine_group = FactoryBot.create(:machine_group, id: 1001, name: 'Sass')
@@ -808,11 +809,24 @@ HERE
       expect(response.body).to include('Close_1')
       expect(response.body).to_not include('Close_2')
 
+      FactoryBot.create(:location_machine_xref, location: close_location_three, machine_id: machine_three.id)
       get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, by_machine_id: machine_two.id }
 
       expect(response.body).to_not include('Close_1')
       expect(response.body).to include('Close_2')
       expect(response.body.scan('Close_2').size).to eq(1)
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, by_machine_group_id: 1001 }
+
+      expect(response.body).to_not include('Close_1')
+      expect(response.body).to include('Close_2')
+      expect(response.body).to include('Close_3')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, by_machine_single_id: machine_two.id }
+
+      expect(response.body).to_not include('Close_1')
+      expect(response.body).to include('Close_2')
+      expect(response.body).to_not include('Close_3')
 
       get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, by_operator_id: 1 }
 
