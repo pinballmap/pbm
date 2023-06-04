@@ -115,8 +115,8 @@ module Api
           region = Region.near([params[:lat], params[:lon]], :effective_radius).first
         end
 
-        if params['message'].blank? || params['email'].blank?
-          return_response('A message and email is required.', 'errors')
+        if params['message'].blank?
+          return_response('A message is required.', 'errors')
           return
         end
 
