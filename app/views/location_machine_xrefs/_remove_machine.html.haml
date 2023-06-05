@@ -3,7 +3,7 @@
 
 :javascript
   $('#remove_machine_#{lmx.id}').click(function () {
-    if (confirm("Remove this machine?")) {
+    if (confirm("Remove this machine? Please do not remove it just to clear out comments and re-add it.")) {
       $('#machine_lmx_#{lmx.id}').fadeOut('slow', function() {
         updateLocationUpdatedText(#{lmx.location_id});
         $('#gm_machines_#{lmx.location_id}').load('/locations/#{lmx.location_id}/render_machine_names_for_infowindow', function() {

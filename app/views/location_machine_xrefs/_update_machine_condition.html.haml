@@ -7,8 +7,15 @@
       = hidden_field_tag :id, lmx.id
       = text_area_tag "new_machine_condition_#{lmx.id}", '', :cols => 20, :rows => 3, :class => 'edit_mode', :placeholder => '(note: if this machine is gone, please just remove it. no need to leave a comment saying it is gone)'
       %div.brightpurple{:style => "margin: 5px;line-height: 16px;"}
+        %span.bold Everyone:
+        Sometimes it's better to tell technicians about small and very temporary issues on-site (note or call) rather than leaving them "on the record" here.
+        %br/
+        %br/
+        That said, please be descriptive about machine issues and also considerate of the time and effort needed to maintain machines.
+        %br/
+        %br/
         %span.bold Operators:
-        if you've fixed an issue, please leave a comment saying so. But please do not comment simply to "whitewash" people's comments that bother you. This is getting to be an issue.
+        if you've fixed an issue, please leave a comment saying so.
       %br/
       = submit_tag 'Save', :id => "save_machine_condition_#{lmx.id}", :class => "save_button"
     = submit_tag 'Cancel', :id => "cancel_machine_condition_#{lmx.id}", :class => "cancel_button"
