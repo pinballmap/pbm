@@ -24,6 +24,9 @@ describe PagesController, type: :controller do
   end
 
   describe 'contact_sent' do
+    before(:each) do
+      @user = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+    end
     it 'should send an email if the body is not blank' do
       logout
 
@@ -45,8 +48,7 @@ describe PagesController, type: :controller do
     end
 
     it 'should include user info if you are logged in' do
-      user = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
-      login(user)
+      login(@user)
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
@@ -60,7 +62,7 @@ describe PagesController, type: :controller do
 
       post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz' }
       submission = @region.reload.user_submissions.first
-      expect(submission.user).to eq(user)
+      expect(submission.user).to eq(@user)
       expect(submission.submission).to eq("Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\nUsername: ssw\n\nSite Email: yeah@ok.com\n\n(entered from 0.0.0.0 via  Rails Testing)\n\n")
     end
 
@@ -82,8 +84,16 @@ describe PagesController, type: :controller do
       post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: nil, security_test: 'pinball' }
     end
 
-    it 'should not send an email if the email is blank' do
+    it 'should not send an email if the email is blank when logged out' do
+      logout
       expect(Pony).to_not receive(:mail)
+
+      post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: nil, contact_msg: 'hello', security_test: 'pinball' }
+    end
+
+    it 'should send an email if the email is blank when logged in' do
+      login(@user)
+      expect(Pony).to receive(:mail)
 
       post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: nil, contact_msg: 'hello', security_test: 'pinball' }
     end
