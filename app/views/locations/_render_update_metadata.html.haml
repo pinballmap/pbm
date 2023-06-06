@@ -11,7 +11,7 @@
     %div.address_full= [l.street, l.city, l.state].join(', ')
   - else
     %div.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
-  - if mobile_device? && !l.phone.nil?
+  - if mobile_device? && !l.phone.blank?
     %div.phone
       = image_tag('icons/phone.svg', :class => 'meta_icon')
       = link_to l.phone, "tel:" + l.phone, :type => 'tel'

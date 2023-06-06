@@ -1,5 +1,5 @@
 %div.flex_center.flex_column{:style => 'margin-bottom: 20px;'}
-  %p.red.sans.bold.p1
+  %p.red.bold.p1
     %span{:style => 'width:42px;margin-right: 5px;'}
       =image_tag( 'icon-color-noBGsvg.svg', :alt => 'splash', :style => 'height:42px;', :class => 'splash')
     Welcome to Pinball Map!
@@ -8,10 +8,10 @@
   %p.explore
     = link_to 'Explore the Map', map_path
   %p
-    %span.red.font18.sans.bold
+    %span.red.font18.bold
       #{number_with_delimiter(@locations_count_total,:delimiter => ",")}
     locations and
-    %span.red.font18.sans.bold
+    %span.red.font18.bold
       #{number_with_delimiter(@machines_count_total,:delimiter => ",")}
     machines
   %div.flex_center.italic.darkgrey
@@ -19,11 +19,11 @@
     =distance_of_time_in_words(Time.now, @last_updated_time)
     ago
 %div.flex_center.bg_lightpurple
-  %p.red.font28.sans.bold.mt_20.mb_5 Use the App
+  %p.red.font28.bold.mt_20.mb_5 Use the App
 %div.flex_center.mobile_flex.bg_lightpurple
-  .news.serif{:style => 'display: flex;justify-content: center;'}
+  .news{:style => 'display: flex;justify-content: center;'}
     =image_tag( 'purple-machine.png', :alt => 'machine', :style => 'height:130px;', :class => 'splash')
-  .news.serif
+  .news
     %p
       On the go? Use the award-winning
       = link_to "Pinball Map mobile app", app_path, :class => "red"
@@ -36,9 +36,9 @@
         iOS.
       It is FREE! No ads, no tracking. Just pinball!
 %div.flex_center.mb_10
-  %p.brightpurple.font28.sans.bold.mt_20.mb_5 About
+  %p.brightpurple.font28.bold.mt_20.mb_5 About
 %div.flex_center.mobile_flex
-  .news.serif
+  .news
     %p
       This is a user-powered map. Create an account and then keep the map up to date by adding and removing machines, submitting new locations, and
       =link_to 'telling your friends', map_flier_path
@@ -50,14 +50,14 @@
       = link_to 'code is open source.', 'https://github.com/pinballmap/pbm'
     %p
       = link_to 'Contact us!', 'portland/about', :class => "bold"
-  .news.serif{:style => 'display: flex;justify-content: center;'}
+  .news{:style => 'display: flex;justify-content: center;'}
     =image_tag( 'portland/app_logo-350.jpg', :alt => 'portland logo',:style => 'height:260px;', :class => 'splash')
 %div.flex_center.bg_lightpurple
-  %p.red.font28.sans.bold.mt_20.mb_5 Stickers
+  %p.red.font28.bold.mt_20.mb_5 Stickers
 %div.flex_center.mobile_flex.bg_lightpurple
-  .news.serif
+  .news
     =link_to image_tag('pbm-both-stickers.png', :alt => 'Pinball Map Store', :style => 'width: 100%;'), store_path, :target => "_blank"
-  .news.serif
+  .news
     %p
       We have
       %span.bold{:style => 'color:#fe46b0;'}
@@ -72,9 +72,9 @@
       Purchase them through the
       = link_to 'Pinball Map store!', store_path, :class => "bold"
 %div.flex_center
-  %p.brightpurple.font28.sans.bold.mt_20.mb_5 Support Us
+  %p.brightpurple.font28.bold.mt_20.mb_5 Support Us
 %div.flex_center.mobile_flex
-  .news.serif
+  .news
     %p
       = link_to "Support Pinball Map via Patreon.", "https://patreon.com/pinballmap", :class => "bold", :target => '_blank'
       All our operating costs are covered by supporters!
@@ -82,14 +82,14 @@
       Pinball Map was voted Best Pinball App in the 2021
       = link_to "TWIPy Awards!", "https://twipys.com/", :target => '_blank'
       = link_to "Thank you for voting for us!", "https://blog.pinballmap.com/2022/03/29/2021-TWIPY-Award/", :target => '_blank', :class => "bold"
-  .news.serif
+  .news
     =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'width: 100%;'), "https://patreon.com/pinballmap", :target => "_blank"
 %div.flex_center.bg_lightpurple
-  %p.red.font28.sans.bold.mt_20.mb_5 Keep in Touch
+  %p.red.font28.bold.mt_20.mb_5 Keep in Touch
 %div.flex_center.mobile_flex.bg_lightpurple
-  .news.serif
+  .news
     =image_tag( 'mappin-logo-600.orig.png', :alt => 'mapping logo', :style => 'height: 340px;', :class => 'splash')
-  .news.serif
+  .news
     %p
       Check the
       = link_to "blog", "https://blog.pinballmap.com/", :class => "bold"
@@ -115,9 +115,9 @@
       = link_to "Mappin' Around with Scott & Ryan.", 'https://pod.pinballmap.com/', :target => '_blank', :class => 'bold'
       It has not been active in a few years, but whatever.
 %div.flex_center
-  %p.brightpurple.font28.sans.bold.mt_20.mb_5 API
+  %p.brightpurple.font28.bold.mt_20.mb_5 API
 %div.flex_center.mobile_flex
-  .news.serif
+  .news
     %p
       Not only is the Pinball Map website and app open source, but there is also
       = link_to 'an API!', apipie_apipie_path
@@ -135,18 +135,18 @@
       and many others!
     %p
       %span.bold If you use the data, please provide attribution!
-  .news.serif{:style => 'display: flex;justify-content: center;'}
+  .news{:style => 'display: flex;justify-content: center;'}
     =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;', :class => 'splash')
 %div.flex_center.bg_lightpurple
-  %p.red.font28.sans.bold.mt_20.mb_5 Stack
+  %p.red.font28.bold.mt_20.mb_5 Stack
 %div.flex_center.mobile_flex.bg_lightpurple
-  .news.serif.center
+  .news.center
     =link_to image_tag( 'stack-dokku-logo.svg', :alt => 'dokku logo', :style => 'width: 220px;', :class => 'pb_15'), 'https://dokku.com/', :target => '_blank'
     %br/
     =link_to image_tag( 'stack-expo-logo.png', :alt => 'expo logo', :style => 'width: 220px;', :class => 'pt_5'), 'https://expo.dev/', :target => '_blank'
     %br/
     =link_to image_tag( 'stack-scout-logo.png', :alt => 'scout APM logo', :style => 'width: 220px;', :class => 'pt_5'), 'https://scoutapm.com/', :target => '_blank'
-  .news.serif
+  .news
     %p
       The Pinball Map website, API, and app make extensive use of many free and/or open source services (as well as paid services). The website uses 
       =link_to 'Ruby on Rails', 'https://rubyonrails.org/', :target => '_blank', :class => 'bold'
@@ -175,7 +175,7 @@
       =link_to 'Google Maps', 'https://developers.google.com/maps', :target => '_blank', :class => 'bold'
       processes the geocoding requests. We also use the Places API for location submissions.
 %div.flex_center.flex_column.mb_10
-  %p.brightpurple.font28.sans.bold.mt_20.mb_5
+  %p.brightpurple.font28.bold.mt_20.mb_5
     Recent Blog Posts
   %div.m_5.center
     =link_to 'Pinball Map App Update 5.2.18', 'https://blog.pinballmap.com/2023/03/05/pinball-map-app-update-5-2-18/', :target => '_blank', :class => 'bold font18'
@@ -191,7 +191,7 @@
 
 %div.flex_center.flex_column.mb_20.bg_lightpurple
   .region_map
-    %p.red.font28.sans.bold.mt_20.mb_5.center.bg_lightpurple
+    %p.red.font28.bold.mt_20.mb_5.center.bg_lightpurple
       Regional Maps
     %p
       If the

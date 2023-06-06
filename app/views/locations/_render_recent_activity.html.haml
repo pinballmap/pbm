@@ -5,5 +5,5 @@
     %div.recent_activity_container
       %div.recent_activity_icon
         =image_tag("icons/#{recent_activity.submission_type}.svg", :alt => "#{recent_activity.submission_type}", :class => '')
-      %div.recent_activity_date.sans.font14.bold #{recent_activity.created_at.strftime("%b %d, %Y")}
-      %div.recent_activity_submission.serif.font14 #{recent_activity.submission}
+      %div.recent_activity_date.font14.bold #{recent_activity.created_at.strftime("%b %d, %Y")}
+      %div.recent_activity_submission.font14 #{recent_activity.submission}

@@ -2,59 +2,85 @@
  *= require jquery-ui
  */
 
-
 /* nunito-regular - latin */
 @font-face {
-  font-family: 'Nunito';
+  font-family: 'Nunito_400Regular';
   font-style: normal;
-  font-weight: 400;
+  font-weight: normal;
   src: local(''),
-    url(<%= asset_path 'fonts/nunito-v16-latin-regular.woff2' %>) format('woff2'),
-    /* Chrome 26+, Opera 23+, Firefox 39+ */
-    url(<%= asset_path 'fonts/nunito-v16-latin-regular.woff' %>) format('woff');
+    url(<%= asset_path 'fonts/nunito-v25-latin-regular.woff2' %>) format('woff2');
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* nunito-regular-italic - latin */
+@font-face {
+  font-family: 'Nunito_400Regular_Italic';
+  font-style: normal;
+  font-weight: normal;
+  src: local(''),
+    url(<%= asset_path 'fonts/nunito-v25-latin-italic.woff2' %>) format('woff2');
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* nunito-500 - latin */
+@font-face {
+  font-family: 'Nunito_500Medium';
+  font-style: normal;
+  font-weight: normal;
+  src: local(''),
+    url(<%= asset_path 'fonts/nunito-v25-latin-500.woff2' %>) format('woff2');
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* nunito-600 - latin */
+@font-face {
+  font-family: 'Nunito_600SemiBold';
+  font-style: normal;
+  font-weight: normal;
+  src: local(''),
+    url(<%= asset_path 'fonts/nunito-v25-latin-600.woff2' %>) format('woff2');
   /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 /* nunito-700 - latin */
 @font-face {
-  font-family: 'Nunito';
+  font-family: 'Nunito_700Bold';
   font-style: normal;
-  font-weight: 700;
+  font-weight: normal;
   src: local(''),
-    url(<%= asset_path 'fonts/nunito-v16-latin-700.woff2' %>) format('woff2'),
-    /* Chrome 26+, Opera 23+, Firefox 39+ */
-    url(<%= asset_path 'fonts/nunito-v16-latin-700.woff' %>) format('woff');
+    url(<%= asset_path 'fonts/nunito-v25-latin-700.woff2' %>) format('woff2');
   /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
+/* nunito-800 - latin */
 @font-face {
-  font-family: 'PTSans';
+  font-family: 'Nunito_800ExtraBold';
   font-style: normal;
-  font-weight: 400;
+  font-weight: normal;
   src: local(''),
-    url(<%= asset_path 'fonts/PTS55F-webfont.woff' %>) format('woff'),
+    url(<%= asset_path 'fonts/nunito-v25-latin-800.woff2' %>) format('woff2');
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
+/* nunito-900 - latin */
 @font-face {
-  font-family: 'PTSans';
+  font-family: 'Nunito_900Black';
   font-style: normal;
-  font-weight: 700;
+  font-weight: normal;
   src: local(''),
-    url(<%= asset_path 'fonts/PTS75F-webfont.woff' %>) format('woff'),
-}
-
-@font-face {
-  font-family: 'PTSans';
-  font-style: italic;
-  font-weight: 400;
-  src: local(''),
-    url(<%= asset_path 'fonts/PTS56F-webfont.woff' %>) format('woff'),
+    url(<%= asset_path 'fonts/nunito-v25-latin-900.woff2' %>) format('woff2');
+  /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 /** variables **/
 
-$sans: 'Nunito', Helvetica, Arial, sans-serif;
-$serif: 'PTSans', "Lucida Grande", Tahoma, sans-serif;
+$Nunito_400Regular: 'Nunito_400Regular', Helvetica, Arial, sans-serif;
+$italic: 'Nunito_400Regular_Italic', Helvetica, Arial, sans-serif;
+$Nunito_500Medium: 'Nunito_500Medium', Helvetica, Arial, sans-serif;
+$Nunito_600SemiBold: 'Nunito_600SemiBold', Helvetica, Arial, sans-serif;
+$Nunito_700Bold: 'Nunito_700Bold', Helvetica, Arial, sans-serif;
+$Nunito_800ExtraBold: 'Nunito_800ExtraBold', Helvetica, Arial, sans-serif;
+$Nunito_900Black: 'Nunito_900Black', Helvetica, Arial, sans-serif;
 $red: #fe46b0;
 $lightpink: #fff1f1;
 $brightpurple: #66017b;
@@ -66,7 +92,6 @@ $lightpurple: #f5f5ff;
 $medgrey: #aeb1d2;
 $darkgrey: #47475f;
 $black: #000e18;
-$bold: 700;
 
 /** mixins **/
 
@@ -119,7 +144,7 @@ body {
   background-color: #FFFFFF;
   background-size: 4px auto;
   color: $black;
-  font-family: $sans;
+  font-family: $Nunito_400Regular;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -164,7 +189,7 @@ button:hover,
 input,
 textarea {
   -webkit-appearance: none;
-  font-family: $serif;
+  font-family: $Nunito_400Regular;
 }
 
 input[type=checkbox] {
@@ -173,14 +198,6 @@ input[type=checkbox] {
 
 .float_l {
   float: left;
-}
-
-.serif {
-  font-family: $serif;
-}
-
-.sans {
-  font-family: $sans;
 }
 
 ul {
@@ -201,7 +218,7 @@ ul li li {
 }
 
 .notbold {
-  font-weight: normal;
+  font-family: $Nunito_400Regular;
 }
 
 .subpage_text {
@@ -463,16 +480,15 @@ h1 {
   padding: 0;
   margin: 15px 0;
   text-align: center;
-  font-family: $sans;
-  font-weight: $bold;
+  font-family: $Nunito_800ExtraBold;
 }
 
 .italic {
-  font-style: italic;
+  font-family: $italic;
 }
 
 .bold {
-  font-weight: $bold;
+  font-family: $Nunito_700Bold;
 }
 
 /** END Core **/
@@ -520,7 +536,7 @@ form.edit_user .form-actions {
   line-height: 16px;
   background: $purple;
   text-align: center;
-  font-style: italic;
+  font-family: $italic;
   padding: 4px;
 }
 
@@ -551,8 +567,7 @@ form.edit_user .form-actions {
   background: $black;
   color: $vlightpurple;
   padding: 5px;
-  font-weight: $bold;
-  font-family: $sans;
+  font-family: $Nunito_600SemiBold;
   text-align: center;
 }
 
@@ -772,7 +787,7 @@ p.alert {
   width: auto !important;
   font-size: 16px;
   line-height: 16px;
-  font-weight: $bold;
+  font-family: $Nunito_600SemiBold;
   color: #383838;
 }
 
@@ -881,7 +896,7 @@ a.logo_link {
 .header_buttons_container {
   display: flex;
   flex-flow: row wrap;
-  font-weight: $bold;
+  font-family: $Nunito_700Bold;
   text-align: center;
   max-width: 1100px;
   height: 100%;
@@ -904,14 +919,12 @@ a.logo_link {
 .login_new a,
 .login_alert a {
   color: $red;
-  font-weight: $bold;
 }
 
 .login_alert {
-  font-style: italic;
+  font-family: $italic;
   background: #fff1f1;
   line-height: 22px;
-  font-family: $sans;
 }
 
 .location_detail .login_alert {
@@ -923,12 +936,12 @@ a.logo_link {
 }
 
 #login .error {
-  font-style: italic;
+  font-family: $italic;
   color: red;
 }
 
 #login a {
-  font-weight: $bold;
+  font-family: $Nunito_700Bold;
   font-size: 16px;
 }
 
@@ -937,10 +950,9 @@ a.logo_link {
   color: #fff1f1;
   font-size: 20px;
   line-height: 22px;
-  font-family: $sans;
+  font-family: $Nunito_800ExtraBold;
   text-align: center;
   display: block;
-  font-weight: $bold;
 }
 
 /** END Header **/
@@ -1066,6 +1078,7 @@ form#address_search_form input.lookup_search_input {
   margin-left: 5px;
   box-shadow: 2px 5px 10px #d0d5d9;
   -webkit-box-shadow: 2px 5px 10px #d0d5d9;
+  font-family: $Nunito_600SemiBold;
 }
 
 .section {
@@ -1082,7 +1095,7 @@ span.or {
   width: 22px;
   text-align: center;
   color: #FFFFFF;
-  font-style: italic;
+  font-family: $italic;
   padding-right: 5px;
 }
 
@@ -1104,7 +1117,7 @@ span.or {
   padding: 5px 25px;
   background: $darkgrey;
   color: $vlightpurple;
-  font-weight: $bold;
+  font-family: $Nunito_600SemiBold;
   float: right;
   box-shadow: 2px 5px 10px #d0d5d9;
   -webkit-box-shadow: 2px 5px 10px #d0d5d9;
@@ -1125,12 +1138,11 @@ span.or {
   height: 24px;
   width: 72%;
   padding-left: 10px;
-  font-family: $serif;
+  font-family: $Nunito_400Regular;
 }
 
 .location_search .info {
-  font-family: $serif;
-  font-weight: 400;
+  font-family: $Nunito_400Regular;
   margin: 0 5px;
   font-size: 12px;
 }
@@ -1166,7 +1178,7 @@ span.or {
 #locations p {
   margin: 0px 20px 15px;
   padding: 10px;
-  font-family: $serif;
+  font-family: $Nunito_400Regular;
 }
 
 #form {
@@ -1240,7 +1252,7 @@ span.or {
 
 #search_link_wrapper a {
   color: $grey;
-  font-style: italic;
+  font-family: $italic;
   text-decoration: none;
 }
 
@@ -1337,7 +1349,7 @@ a.active_section_link:hover {
   background-color: $grey;
   @include radius(10px 10px 0 0);
   padding: 10px 120px 10px 10px;
-  font-family: $sans;
+  font-family: $Nunito_800ExtraBold;
 }
 
 .pr_30 {
@@ -1360,7 +1372,7 @@ a.active_section_link:hover {
 
 .operator_comments {
   font-size: 12px;
-  font-style: italic;
+  font-family: $italic;
   margin: -4px 0 10px 22px;
 }
 
@@ -1383,7 +1395,7 @@ img.fave_icon {
 .address_full {
   font-size: 16px;
   line-height: 20px;
-  font-family: $serif;
+  font-family: $Nunito_500Medium;
 }
 
 li.address_full {
@@ -1430,8 +1442,7 @@ li.address_full {
 
 span.machine_year_man {
   font-size: 18px;
-  font-weight: 400;
-  font-style: italic;
+  font-family: $italic;
   color: $vlightpurple;
 }
 
@@ -1474,7 +1485,7 @@ span.machine_year_man {
   @include radius(10px);
   margin: 10px auto 0;
   border: none;
-  font-family: $sans;
+  font-family: $Nunito_600SemiBold;
 }
 
 .ic_button:hover:after {
@@ -1488,8 +1499,7 @@ span.machine_year_man {
   background: $black;
   color: $vlightpurple;
   padding: 5px;
-  font-weight: $bold;
-  font-family: $sans;
+  font-family: $Nunito_600SemiBold;
 }
 
 .ic_button.ic_yes {
@@ -1576,7 +1586,7 @@ span.machine_year_man {
   line-height: 26px;
   color: #333333;
   text-decoration: none;
-  font-family: $sans;
+  font-family: $Nunito_600SemiBold;
 }
 
 .machine_condition_lmx {
@@ -1600,7 +1610,7 @@ span.machine_year_man {
   font-size: 14px;
   margin: 6px 0 0;
   display: inline-block;
-  font-family: $serif;
+  font-family: $Nunito_400Regular;
 }
 
 img.machine_comment_icon {
@@ -1621,15 +1631,14 @@ div.machine_condition_text {
 span.machine_condition_text {
   font-size: 14px;
   line-height: 16px;
-  font-family: $serif;
-  font-weight: 400;
+  font-family: $Nunito_400Regular;
   display: block;
   color: #333333;
   margin-right: 20px;
 }
 
 .machine_condition_display_lmx span.machine_condition_name {
-  font-weight: $bold;
+  font-family: $Nunito_700Bold;
   line-height: 14px;
   margin: 0;
   display: inline;
@@ -1640,7 +1649,7 @@ span.machine_condition_text {
   display: inline-block;
   color: $grey;
   font-size: 13px;
-  font-family: $serif;
+  font-family: $Nunito_400Regular;
 }
 
 div.machine_condition_meta {
@@ -1656,8 +1665,7 @@ div.machine_condition_meta {
 }
 
 .machine_condition_new_line .machine_condition {
-  font-family: $serif;
-  font-weight: 400;
+  font-family: $Nunito_400Regular;
   color: #333333;
 }
 
@@ -1668,7 +1676,7 @@ div.machine_condition_meta {
   height: 80px;
   max-height: 120px;
   min-height: 28px;
-  font-family: $serif;
+  font-family: $Nunito_400Regular;
   padding: 5px;
   margin-bottom: 5px;
 }
@@ -1758,10 +1766,9 @@ br.clear {
   line-height: 30px;
   height: 30px;
   font-size: 16px;
-  font-weight: 400;
   color: #f9f9f9;
   cursor: pointer;
-  font-family: $sans;
+  font-family: $Nunito_500Medium;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1788,7 +1795,7 @@ br.clear {
 .sub_nav_location {
   font-size: 14px;
   line-height: 16px;
-  font-weight: 400;
+  font-family: $Nunito_600SemiBold;
   color: #f9f9f9;
   cursor: pointer;
   height: 100%;
@@ -1864,12 +1871,11 @@ form select:hover {
   cursor: pointer;
   margin-right: 4px;
   font-size: 14px;
-  font-family: $sans;
+  font-family: $Nunito_600SemiBold;
   text-transform: uppercase;
   height: 28px;
   background: $darkgrey;
   color: $vlightpurple;
-  font-weight: $bold;
 }
 
 input.search:active,
@@ -2009,7 +2015,7 @@ input.lookup_search_input:focus {
   max-height: 100px;
   min-height: 28px;
   margin-bottom: 10px;
-  font-family: $serif;
+  font-family: $Nunito_400Regular;
   float: right;
 }
 
@@ -2034,7 +2040,7 @@ input.score {
 .recent_location_activity_location_toggle,
 .former_machines_location_toggle {
   color: $black;
-  font-weight: $bold;
+  font-family: $Nunito_600SemiBold;
   background: white;
   @include radius(10px);
   margin: 10px auto;
@@ -2109,7 +2115,7 @@ div.location_type_container {
 
 .edit_mode {
   font-size: 15px;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: $Nunito_400Regular;
 }
 
 .confirm_location {
@@ -2117,8 +2123,7 @@ div.location_type_container {
   background: #FFFFFF;
   font-size: 13px;
   line-height: 18px;
-  font-style: italic;
-  font-weight: 400;
+  font-family: $italic;
   width: 100%;
   display: flex;
   align-items: center;
@@ -2127,16 +2132,15 @@ div.location_type_container {
 .confirm_location span.last_updated {
   font-style: normal;
   font-size: 16px;
-  font-weight: $bold;
+  font-family: $Nunito_700Bold;
   color: #5d5d5d;
   padding: 8px;
 }
 
 .confirm_location span .last_updated_username {
   color: $red;
-  font-family: $sans;
+  font-family: $Nunito_700Bold;
   font-size: 16px;
-  font-weight: $bold;
 }
 
 .confirm_inner {
@@ -2190,13 +2194,12 @@ div.location_type_container {
   background: $black;
   color: $vlightpurple;
   padding: 5px;
-  font-weight: $bold;
-  font-family: $sans;
+  font-family: $Nunito_600SemiBold;
 }
 
 .stale {
   padding: 10px;
-  font-family: $serif;
+  font-family: $Nunito_500Medium;
   color: #e4606a;
   line-height: 20px;
 }
@@ -2208,9 +2211,8 @@ input.score {
 .location_detail {
   font-size: 16px;
   line-height: 18px;
-  font-weight: 400;
   height: 100%;
-  font-family: $serif;
+  font-family: $Nunito_400Regular;
   @include radius(10px);
   color: $darkgrey;
 }
@@ -2239,8 +2241,7 @@ input.score {
   background: $black;
   color: $vlightpurple;
   padding: 5px;
-  font-weight: $bold;
-  font-family: $sans;
+  font-family: $Nunito_600SemiBold;
   position: absolute;
   text-align: center;
 }
@@ -2270,11 +2271,10 @@ input.score {
 }
 
 .desc_show_location {
-  font-style: italic;
   color: $grey;
   font-size: 13px;
   line-height: 15px;
-  font-family: $serif;
+  font-family: $italic;
   white-space: pre-wrap;
   margin-left: 20px;
 }
@@ -2355,7 +2355,7 @@ input.score {
 #file_chooser_button {
   border: none;
   background: inherit;
-  font-family: $sans;
+  font-family: $Nunito_600SemiBold;
   margin-bottom: 10px;
 }
 
@@ -2433,8 +2433,7 @@ img.small_banner_icon {
 #contact_maker label {
   display: block;
   color: #2E2322;
-  font-family: $sans;
-  font-weight: $bold;
+  font-family: $Nunito_600SemiBold;
 }
 
 #location_maker ul {
@@ -2475,8 +2474,7 @@ img.small_banner_icon {
   font-size: 18px;
   padding-left: 10px;
   list-style-type: none;
-  font-family: $sans;
-  font-weight: $bold;
+  font-family: $Nunito_700Bold;
 }
 
 .event_info a {
@@ -2485,9 +2483,8 @@ img.small_banner_icon {
 
 .event_description {
   font-size: 12px;
-  font-weight: 400;
   color: #55413F;
-  font-family: $serif;
+  font-family: $Nunito_400Regular;
 }
 
 .machine_quantity {
@@ -2508,14 +2505,13 @@ img.small_banner_icon {
 
 .question {
   font-size: 20px;
-  font-weight: $bold;
   color: $darkgrey;
-  font-family: $sans;
+  font-family: $Nunito_700Bold;
 }
 
 .answer {
   font-size: 16px;
-  font-family: $serif;
+  font-family: $Nunito_400Regular;
 }
 
 /** Map/intro **/
@@ -2753,7 +2749,7 @@ span.begin {
 }
 
 div.map_summary_info {
-  font-family: $serif;
+  font-family: $Nunito_400Regular;
   font-size: 16px;
   line-height: 26px;
   color: $darkgrey;
@@ -2769,7 +2765,7 @@ div.map_summary_info {
 div.region_name {
   padding: 6px 10px;
   font-size: 16px;
-  font-weight: 400;
+  font-family: $Nunito_600SemiBold;
   display: inline-block;
   text-align: center;
 }
@@ -2791,7 +2787,7 @@ div.region_name_container {
 
 .explore a {
   font-size: 32px;
-  font-weight: bold;
+  font-family: $Nunito_800ExtraBold;
   border-left: 5px solid #ae9bd1;
   border-top: 5px solid #ae9bd1;
   border-right: 5px solid #d4c8ee;
@@ -2821,7 +2817,7 @@ div.region_name_container {
 }
 
 .news p {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 22px;
 }
 
@@ -2845,8 +2841,7 @@ span.state_name {
   color: $red;
   font-size: 20px;
   line-height: 22px;
-  font-family: $sans;
-  font-weight: 600;
+  font-family: $Nunito_700Bold;
 }
 
 li span.state_name {
@@ -2859,7 +2854,7 @@ li span.state_name {
 
 .info {
   font-size: 11px;
-  font-style: italic;
+  font-family: $italic;
   color: #675a5a;
 }
 
@@ -2897,7 +2892,7 @@ li span.state_name {
 /** High Rollers **/
 
 .high_score_new_line {
-  font-family: $serif;
+  font-family: $Nunito_400Regular;
   color: #333333;
   display: block;
   line-height: 15px;
@@ -2923,18 +2918,17 @@ span.stats_list span {
   font-size: 16px;
   color: $darkgrey;
   display: block;
-  font-weight: $bold;
+  font-family: $Nunito_700Bold;
 }
 
 div.score_list span.score_meta,
 span.stats_list span.score_meta {
   padding-bottom: 10px;
   font-size: 14px;
-  font-style: italic;
+  font-family: $italic;
   color: #666;
   font-weight: normal;
   display: inline;
-  font-family: $serif;
 }
 
 div.score_list span.score_meta_gen,
@@ -2968,7 +2962,8 @@ div.score_list {
 }
 
 .gm_location_name {
-  font-weight: 600 !important;
+  font-family: $Nunito_700Bold !important;
+  font-weight: normal !important;
   font-size: 14px !important;
 }
 
@@ -2977,7 +2972,8 @@ div.score_list {
 }
 
 #region_map .gm_region_name a {
-  font-weight: $bold;
+  font-family: $Nunito_700Bold !important;
+  font-weight: normal !important;
   color: $darkgrey;
 }
 
