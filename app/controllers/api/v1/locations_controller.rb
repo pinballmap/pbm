@@ -194,7 +194,7 @@ module Api
       param :no_details, Integer, desc: 'Omit data that app does not need from pull', required: false
       formats ['json']
       def within_bounding_box
-        except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone] : nil
+        except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at] : nil
 
         bounds = [params[:swlat], params[:swlon], params[:nelat], params[:nelon]]
         if params[:user_faved]
