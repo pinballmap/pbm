@@ -15,3 +15,5 @@ logfile
 
 # local env vars
 .env.local
+
+/config/master.key
