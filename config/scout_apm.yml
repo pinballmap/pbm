@@ -46,4 +46,5 @@ test:
 
 staging:
   <<: *defaults
+  monitor: false
 
