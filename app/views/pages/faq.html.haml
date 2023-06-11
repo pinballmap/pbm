@@ -28,7 +28,9 @@
       %p.question This location has moved. Should I remove the machines from it and re-submit?
       %ul.answer
         %li
-          No. Administrators can change the address. Please let us know if a location has moved. It's preferable to simply change the address because that retains the location history.
+          No. Administrators can change the address. Please 
+          = link_to 'let us know', about_path('portland')
+          if a location has moved. It's preferable to simply change the address because that retains the location history.
       %hr
       %p.question I see you have a ranking system for contributors. How do I earn a contributor badge and title?
       %ul.answer
