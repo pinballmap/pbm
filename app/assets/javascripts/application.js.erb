@@ -58,6 +58,7 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
       container: 'map_canvas',
       testMode: testMode,
       style: 'mapbox://styles/mapbox/streets-v12',
+      projection: 'naturalEarth'
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
   }
