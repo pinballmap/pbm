@@ -54,7 +54,9 @@
       %p.question When I search for a city, the city is listed twice (and maybe the second instance of it is misspelled). Or, I see the same location listed twice. Or, the place is in the wrong spot on the map. Etc.
       %ul.answer
         %li
-          These are data entry mistakes. Please contact us so we can fix them.
+          These are data entry mistakes. Please 
+          = link_to 'contact us', about_path('portland')
+          so we can fix them.
       %hr
       %p.question How do I get listed as an operator?
       %ul.answer
