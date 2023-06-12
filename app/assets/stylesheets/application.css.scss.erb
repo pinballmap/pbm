@@ -2118,70 +2118,21 @@ div.location_type_container {
   font-family: $Nunito_400Regular;
 }
 
-.confirm_location {
-  padding: 0 0 0 10px;
-  background: #FFFFFF;
-  font-size: 13px;
-  line-height: 18px;
-  font-family: $italic;
-  width: 100%;
-  display: flex;
-  align-items: center;
+div.last_updated {
+  padding: 0 0 8px 0;
 }
 
-.confirm_location span.last_updated {
+span.last_updated {
   font-style: normal;
-  font-size: 16px;
-  font-family: $Nunito_700Bold;
+  font-size: 13px;
+  font-family: $italic;
   color: #5d5d5d;
-  padding: 8px;
 }
 
-.confirm_location span .last_updated_username {
+span .last_updated_username {
   color: $red;
   font-family: $Nunito_700Bold;
-  font-size: 16px;
-}
-
-.confirm_inner {
-  height: 50px;
-  width: 100%;
-  padding-top: 0;
-  padding-right: 20px;
-}
-
-.confirm_logged:hover {
-  cursor: pointer;
-}
-
-.confirm_location_button {
-  color: $darkgrey;
-  line-height: 20px;
-  margin: 5px 5px 0 0;
-  font-size: 12px;
-}
-
-.confirm_location_button img {
-  height: 40px;
-  float: left;
-  cursor: pointer;
-  margin: 5px 5px;
-}
-
-.confirm_button {
-  height: 40px;
-  width: 40px;
-  display: inline-block;
-  background-size: 40px !important;
-  background: url(<%= asset_path 'confirm-sprites.png' %>) no-repeat 0px top;
-}
-
-.confirm_button:hover {
-  background-position: 0px -40px;
-}
-
-.confirm_button:active {
-  background-position: 0px -80px;
+  font-size: 13px;
 }
 
 .confirm_location_button:hover:after {
@@ -2200,6 +2151,7 @@ div.location_type_container {
 .stale {
   padding: 10px;
   font-family: $Nunito_500Medium;
+  font-size: 14px;
   color: #e4606a;
   line-height: 20px;
 }
@@ -2217,6 +2169,10 @@ input.score {
   color: $darkgrey;
 }
 
+.metadata_show_location {
+  min-height: 80px;
+}
+
 .location_detail .address_full {
   margin: 5px 0 5px 0;
 }
@@ -2232,7 +2188,8 @@ input.score {
 
 .meta_image + .meta_image_tooltip,
 .fave_location + .fave_location_tooltip,
-.permalink + .permalink_tooltip {
+.permalink + .permalink_tooltip,
+.confirm_button + .confirm_location_tooltip {
   visibility: hidden;
   line-height: 14px;
   font-size: 16px;
@@ -2248,14 +2205,16 @@ input.score {
 
 .meta_image + .meta_image_tooltip::after,
 .fave_location + .fave_location_tooltip::after,
-.permalink + .permalink_tooltip::after {
+.permalink + .permalink_tooltip::after,
+.confirm_button + .confirm_location_tooltip::after {
   content: "";
   position: absolute;
 }
 
 .meta_image:hover + .meta_image_tooltip,
 .fave_location:hover + .fave_location_tooltip,
-.permalink:hover + .permalink_tooltip {
+.permalink:hover + .permalink_tooltip,
+.confirm_button:hover + .confirm_location_tooltip {
   visibility: visible;
   width: 180px;
 }
@@ -2276,7 +2235,7 @@ input.score {
   line-height: 15px;
   font-family: $italic;
   white-space: pre-wrap;
-  margin-left: 20px;
+  margin-left: 23px;
 }
 
 .desc_edit_location {

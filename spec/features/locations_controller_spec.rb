@@ -57,7 +57,7 @@ describe LocationsController do
 
         sleep 1
 
-        find("#confirm_location_button_#{location.id} span.confirm_button").click
+        find("#confirm_location_button_#{location.id}.confirm_button").click
 
         sleep 1
 

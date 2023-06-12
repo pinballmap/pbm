@@ -41,6 +41,8 @@
     %div.description
       = image_tag('icons/notebook-outline.svg', :class => 'meta_icon float_l')
       %div[l, :desc_show]= l.description
+  %div.last_updated[l, :last_updated]
+    = render :partial => 'locations/render_last_updated', :locals => {:l => l}
 %div[l, :metadata_edit]{:style => 'display:none'}
   = form_tag update_metadata_locations_path(:action => 'update_metadata', id: l.id), :id => "update_metadata_#{l.id}", :method => 'get' do
     = hidden_field_tag :id, l.id

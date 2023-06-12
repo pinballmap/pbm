@@ -2,6 +2,9 @@
 	=l.name
 %div.location_tools.pointer
 	- if user_signed_in?
+		=image_tag('icons/confirm-location.svg', :class => 'confirm_button', :id => "confirm_location_button_#{l.id}")
+		%span.confirm_location_tooltip
+			Confirm Line-Up
 		=image_tag('icons/lead-pencil.svg', :class => 'meta_image')
 		%span.meta_image_tooltip
 			Update Location Info
@@ -15,8 +18,6 @@
 	= render :partial => 'locations/render_update_metadata', :locals => {:l => l}
 %div.location_thumbs[l, :thumbs]
 	= render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
-%div.location_confirm
-	= render :partial => 'locations/render_confirm', :locals => {:l => l}
 - if !user_signed_in?
 	%div.login_alert
 		= link_to link_to 'LOGIN to update this location! Click here', "https://#{request.host_with_port}/users/login"
@@ -37,6 +38,11 @@
 				} else {
 					$("#fave_location_img_#{l.id}").attr('src', '#{asset_path('icons/heart-filled.svg')}');
 				}
+			});
+		});
+		$('#confirm_location_button_#{l.id}').click(function () {
+			$.get('/locations/#{l.id}/confirm', {}, function(data) {
+			updateLocationUpdatedText(#{l.id});
 			});
 		});
 
