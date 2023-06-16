@@ -2,7 +2,7 @@ require 'pony'
 
 class PagesController < ApplicationController
   respond_to :xml, :json, :html, :js, :rss
-  has_scope :by_location_name, :by_location_id, :by_machine_name, :by_machine_id, :user_faved
+  has_scope :by_location_name, :by_location_id, :by_machine_name, :by_machine_id, :by_machine_single_id, :user_faved
 
   def params
     request.parameters
@@ -11,10 +11,10 @@ class PagesController < ApplicationController
   def map_location_data
     @locations = []
 
-    if params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:user_faved].blank?
+    if params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:user_faved].blank?
       @locations = []
     else
-      params.delete(:by_machine_name) unless params[:by_machine_id].blank?
+      params.delete(:by_machine_name) unless params[:by_machine_id].blank? && params[:by_machine_single_id].blank?
 
       @lat, @lon = ''
       unless params[:address].blank?

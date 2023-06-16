@@ -6,7 +6,8 @@ var map;
 var region;
 var ismap;
 var testMode;
-var searchMachineID;
+var searchMachineIDString;
+var single_id;
 var mapAdjusted = 0;
 var search_string;
 var zoomLevel;
@@ -144,6 +145,7 @@ function zoomCheck() {
 
 function storeMachineID() {
   searchMachineID = document.getElementById("by_machine_id").value;
+  searchMachineIDString = searchMachineID ? ';by_machine_id=' + searchMachineID : ''
 }
 
 function redo() {
@@ -162,7 +164,6 @@ function redo() {
         var bounds = map.getBounds();
         var sw = bounds.getSouthWest();
         var ne = bounds.getNorthEast();
-        var searchMachineIDString = searchMachineID ? ';by_machine_id=' + searchMachineID : '';
 
         var dfd = $.getJSON('/api/v1/locations/within_bounding_box.json?swlat=' + sw.lat + ';swlon=' + sw.lng + ';nelat=' + ne.lat + ';nelon=' + ne.lng + searchMachineIDString);
 
@@ -209,7 +210,6 @@ function redo() {
         var bounds = map.getBounds();
         var sw = bounds.getSouthWest();
         var ne = bounds.getNorthEast();
-        var searchMachineIDString = searchMachineID ? ';by_machine_id=' + searchMachineID : '';
 
         var dfd = $.getJSON('/api/v1/locations/within_bounding_box.json?swlat=' + sw.lat + ';swlon=' + sw.lng + ';nelat=' + ne.lat + ';nelon=' + ne.lng + searchMachineIDString);
 
@@ -268,14 +268,14 @@ function switchSection(newSection) {
   $("#" + newSection + "_section_link").toggleClass("active_section_link");
 }
 
-function initSearch(userFaved, operatorIDs, locationIDs, locationTypeIDs, zoneIDs, machineIDs, ipdbIDs, opdbIDs, cityName, machineGroupId, showLocationDistance, lat, lon, byAtLeastNMachinesCity, byAtLeastNMachinesType, byAtLeastNMachinesZone, region) {
-  if (userFaved || operatorIDs || locationIDs || locationTypeIDs || zoneIDs || machineIDs || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || region) {
+function initSearch(userFaved, operatorIDs, locationIDs, locationTypeIDs, zoneIDs, machineIDs, machineID, ipdbIDs, opdbIDs, cityName, machineGroupId, showLocationDistance, lat, lon, byAtLeastNMachinesCity, byAtLeastNMachinesType, byAtLeastNMachinesZone, region) {
+  if (userFaved || operatorIDs || locationIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || region) {
 
-    if (region && !(userFaved || operatorIDs || locationIDs || locationTypeIDs || zoneIDs || machineIDs || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone)) {
+    if (region && !(userFaved || operatorIDs || locationIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone)) {
       return;
     }
 
-    var url = '/locations?user_faved=' + userFaved + ';by_location_id=' + locationIDs + ';by_operator_id=' + operatorIDs + ';by_type_id=' + locationTypeIDs + ';by_zone_id=' + zoneIDs + ';by_machine_id=' + machineIDs + ';by_city_id=' + cityName + ';by_machine_group_id=' + machineGroupId + ';by_ipdb_id=' + ipdbIDs + ';by_opdb_id=' + opdbIDs + ';show_location_distance=' + showLocationDistance + ';lat=' + lat + ';lon=' + lon + ';by_at_least_n_machines_city=' + byAtLeastNMachinesCity + ';by_at_least_n_machines_type=' + byAtLeastNMachinesType + ';by_at_least_n_machines_zone=' + byAtLeastNMachinesZone + ';region=' + region;
+    var url = '/locations?user_faved=' + userFaved + ';by_location_id=' + locationIDs + ';by_operator_id=' + operatorIDs + ';by_type_id=' + locationTypeIDs + ';by_zone_id=' + zoneIDs + ';by_machine_id=' + machineIDs + ';by_machine_single_id=' + machineID + ';by_city_id=' + cityName + ';by_machine_group_id=' + machineGroupId + ';by_ipdb_id=' + ipdbIDs + ';by_opdb_id=' + opdbIDs + ';show_location_distance=' + showLocationDistance + ';lat=' + lat + ';lon=' + lon + ';by_at_least_n_machines_city=' + byAtLeastNMachinesCity + ';by_at_least_n_machines_type=' + byAtLeastNMachinesType + ';by_at_least_n_machines_zone=' + byAtLeastNMachinesZone + ';region=' + region;
 
     $('#locations').html(loadingHTML());
     $.get(url, function (data) {

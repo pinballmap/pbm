@@ -55,7 +55,8 @@ class Location < ApplicationRecord
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
   })
   scope :by_machine_single_id, (lambda { |id|
-    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in(?)', id.split('_').map(&:to_i))
+    machine = Machine.where('id in (?)', id.split('_').map(&:to_i))
+    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machine.map(&:id))
   })
   scope :by_machine_name, (lambda { |name|
     machine = Machine.find_by_name(name)

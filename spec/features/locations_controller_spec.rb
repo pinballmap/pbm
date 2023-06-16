@@ -392,6 +392,23 @@ describe LocationsController do
       expect(find('#search_results')).to_not have_content('Barb')
     end
 
+    it 'by_machine_single_id' do
+      machine_group = FactoryBot.create(:machine_group, id: 1001, name: 'Sass')
+      sass_reg_ed = FactoryBot.create(:machine, name: 'Sass Reg Ed', machine_group_id: 1001)
+      sass_tourn_ed = FactoryBot.create(:machine, name: 'Sass Tournament Ed', machine_group_id: 1001)
+      machine_group_location = FactoryBot.create(:location, region: @region)
+      machine_group_location2 = FactoryBot.create(:location, region: @region)
+
+      FactoryBot.create(:location_machine_xref, location: machine_group_location, machine: sass_reg_ed)
+      FactoryBot.create(:location_machine_xref, location: machine_group_location2, machine: sass_tourn_ed)
+
+      visit '/portland/?by_machine_single_id=' + sass_reg_ed.id.to_s
+
+      expect(find('#search_results')).to have_content('Sass Reg Ed')
+      expect(find('#search_results')).to_not have_content('Sass Tournament Ed')
+      expect(find('#search_results')).to_not have_content('Barb')
+    end
+
     it 'by_location_id' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 

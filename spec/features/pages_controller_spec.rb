@@ -67,6 +67,32 @@ describe PagesController do
       expect(page.body).to_not have_content('No Way')
     end
 
+    it 'shows single version checkbox if machine is in a group' do
+      @machine_group = FactoryBot.create(:machine_group)
+      rip_city_location = FactoryBot.create(:location, region: nil, name: 'Rip City', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
+      FactoryBot.create(:location_machine_xref, location: rip_city_location, machine: FactoryBot.create(:machine, name: 'Sass', machine_group: nil))
+      FactoryBot.create(:location_machine_xref, location: rip_city_location, machine: FactoryBot.create(:machine, name: 'Dude', machine_group: @machine_group))
+
+      visit '/map'
+
+      fill_in('by_machine_name', with: 'Sass')
+      page.execute_script %{ $('#by_machine_name').trigger('focus') }
+      page.execute_script %{ $('#by_machine_name').trigger('keydown') }
+      find(:xpath, '//div[contains(text(), "Sass")]').click
+
+      expect(page.body).to have_css('#singleVersion', visible: :hidden)
+
+      visit '/map'
+
+      fill_in('by_machine_name', with: 'Dude')
+      page.execute_script %{ $('#by_machine_name').trigger('focus') }
+      page.execute_script %{ $('#by_machine_name').trigger('keydown') }
+      find(:xpath, '//div[contains(text(), "Dude")]').click
+
+      expect(page.body).to have_content('Exact machine version?')
+      expect(page.body).to have_css('#singleVersion', visible: true)
+    end
+
     it 'respects user_faved filter' do
       user = FactoryBot.create(:user)
       page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
@@ -139,6 +165,16 @@ describe PagesController do
       expect(find('#search_results')).to have_content('Renee')
       expect(find('#search_results')).to_not have_content('Clark')
       expect(find('#search_results')).to_not have_content('Rip City')
+
+      fill_in('by_location_name', with: "Clark's Corner")
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(find('#search_results')).to_not have_content('Rip City')
+      expect(find('#search_results')).to have_content('Clark')
+      expect(find('#search_results')).to_not have_content('Renee')
 
       fill_in('by_machine_name', with: 'Sass')
 
@@ -282,7 +318,7 @@ describe PagesController do
     end
 
     it 'Mixing sort_order and nil sort_order links does not error' do
-      FactoryBot.create(:region_link_xref, region: @region, name: 'Minnesota Pinball - The "Pin Cities"', url: 'https://www.facebook.com/groups/minnesotapinball/', description: 'Your best source for everything pinball in Minnesota!  Events, leagues, locations, games and more!', category: 'Pinball Map Links', sort_order: 1)
+      FactoryBot.create(:region_link_xref, region: @region, name: 'Minnesota Pinball - The "Pin Cities"', url: 'https://somesite.site', description: 'Your best source for everything pinball in Minnesota!  Events, leagues, locations, games and more!', category: 'Pinball Map Links', sort_order: 1)
       FactoryBot.create(:region_link_xref, region: @region, name: 'Pinball Map Store', url: 'http://blog.pinballmap.com', description: 'News, questions, feelings.', category: 'Pinball Map Links', sort_order: nil)
 
       visit "/#{@region.name}/about"
