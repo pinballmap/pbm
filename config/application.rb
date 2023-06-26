@@ -31,7 +31,5 @@ module Pbm
 
     config.rakismet.key = ENV['RAKISMET_KEY']
     config.rakismet.url = 'https://pinballmap.com/'
-
-    config.middleware.use Rack::Attack
   end
 end
