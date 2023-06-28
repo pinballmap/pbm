@@ -72,7 +72,7 @@
                       })
                       .autocomplete({
                         minLength: 2,
-                        delay: 600,
+                        delay: 500,
                         source: function( request, response ) {
                           $.getJSON( '/machines/autocomplete', {
                             term: extractLast( request.term )

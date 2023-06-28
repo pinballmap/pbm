@@ -34,7 +34,7 @@
             $('#by_#{key}_name').autocomplete({
               source: '/#{key}s/autocomplete?region_level_search=1;region=#{params[:region]}',
               minLength: 2,
-              delay: 600
+              delay: 500
               });
             $('#by_#{key}_name').bind('autocompleteselect', function(event, ui) {
               event.preventDefault();

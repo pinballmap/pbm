@@ -12,7 +12,7 @@
     $('#add_machine_by_name_#{l.id}').autocomplete({ 
       source: '#{autocomplete_machines_path}',
       minLength: 2,
-      delay: 600 
+      delay: 500 
       });
     $('#add_machine_by_name_#{l.id}').bind('autocompleteselect', function(event, ui) {
       event.preventDefault();

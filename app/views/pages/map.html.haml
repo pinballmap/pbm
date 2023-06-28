@@ -100,7 +100,7 @@
     $('#by_location_name').autocomplete({
       source: '/locations/autocomplete',
       minLength: 3,
-      delay: 600
+      delay: 500
       });
     $('#by_location_name').bind('autocompleteselect', function(event, ui) {
       event.preventDefault();
@@ -118,7 +118,7 @@
     $('#by_machine_name').autocomplete({
       source: '/machines/autocomplete',
       minLength: 2,
-      delay: 600
+      delay: 500
     });
     $('#by_machine_name').bind('autocompleteselect', function(event, ui) {
       event.preventDefault();
@@ -140,7 +140,7 @@
     $('#address').autocomplete({
       source: '/locations/autocomplete_city',
       minLength: 3,
-      delay: 600
+      delay: 500
       });
     $('#address').bind('autocompleteselect', function(event, ui) {
       event.preventDefault();
