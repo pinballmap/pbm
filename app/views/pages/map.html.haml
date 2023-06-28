@@ -97,7 +97,11 @@
       $('#by_location_name').val('');
     });
 
-    $('#by_location_name').autocomplete({source: '/locations/autocomplete'});
+    $('#by_location_name').autocomplete({
+      source: '/locations/autocomplete',
+      minLength: 3,
+      delay: 600
+      });
     $('#by_location_name').bind('autocompleteselect', function(event, ui) {
       event.preventDefault();
       $('#by_machine_id').val('');
@@ -112,7 +116,9 @@
     });
 
     $('#by_machine_name').autocomplete({
-      source: '/machines/autocomplete'
+      source: '/machines/autocomplete',
+      minLength: 2,
+      delay: 600
     });
     $('#by_machine_name').bind('autocompleteselect', function(event, ui) {
       event.preventDefault();
@@ -131,7 +137,11 @@
       }
     });
 
-    $('#address').autocomplete({source: '/locations/autocomplete_city'});
+    $('#address').autocomplete({
+      source: '/locations/autocomplete_city',
+      minLength: 3,
+      delay: 600
+      });
     $('#address').bind('autocompleteselect', function(event, ui) {
       event.preventDefault();
       $('#by_location_id').val('');
