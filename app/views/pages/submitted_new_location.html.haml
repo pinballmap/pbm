@@ -1,12 +1,12 @@
 #page_body.notbold
   .column_container
     .column.w_560
-      %p.alert= alert
+      %p.alert= @submit_thanks
       %p.center
         =image_tag 'PPM-Splash-200.png', :alt => 'Thanks'
       %p.center
-        In 3 seconds we'll take you back to the
+        In 5 seconds we'll take you back to the
         =link_to "#{@region ? @region.full_name : ''} Pinball Map", @region ? region_homepage_path : map_path
 
 :javascript
-  window.setTimeout(function(){ window.location.href = './' },3000);
+  window.setTimeout(function(){ window.location.href = './' },5000);

@@ -117,11 +117,11 @@ class PagesController < ApplicationController
     @answers = %w[pinball Pinball PINBALL]
 
     if user
-      flash.now[:alert] = 'Thanks for contacting us!'
+      @contact_thanks = 'Thanks for contacting us!'.freeze
       send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
     else
       if @answers.any? { |w| params['security_test'][w] }
-        flash.now[:alert] = 'Thanks for contacting us!'
+        @contact_thanks = 'Thanks for contacting us!'.freeze
         send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
       else
         flash.now[:alert] = 'You failed the security test. Please go back and try again.'
@@ -155,7 +155,7 @@ class PagesController < ApplicationController
   end
 
   def submitted_new_location
-    flash.now[:alert] = "Thanks for your submission! We'll review and add it soon. Be patient!"
+    @submit_thanks = "Thanks for your submission! Please allow us 0-7 days to review and add it. No need to re-submit it or remind us (unless it's opening day!). Note that you usually won't get a message from us confirming that it's been added.".freeze
 
     user = current_user.nil? ? nil : current_user
     send_new_location_notification(params, @region, user)
