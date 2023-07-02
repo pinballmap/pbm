@@ -1,0 +1,2 @@
+class BannedIp < ApplicationRecord
+end
