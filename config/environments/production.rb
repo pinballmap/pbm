@@ -130,13 +130,15 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
-    ActiveSupport::Notifications.subscribe('rack.attack') do |name, start, finish, request_id, req|
+
+  ActiveSupport::Notifications.subscribe(/rack_attack/) do |name, start, finish, request_id, payload|
+    req = payload[:request]
     if req.env["rack.attack.match_type"] == :throttle
       request_headers = { "CF-RAY" => req.env["HTTP_CF_RAY"],
                           "X-Amzn-Trace-Id" => req.env["HTTP_X_AMZN_TRACE_ID"] }
 
       Rails.logger.info "[Rack::Attack][Blocked]" <<
-                        "remote_ip: \"#{req.remote_ip}\"," <<
+                        "remote_ip: \"#{req.ip}\"," <<
                         "path: \"#{req.path}\", " <<
                         "headers: #{request_headers.inspect}"
     end
