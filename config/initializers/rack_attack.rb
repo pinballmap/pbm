@@ -15,5 +15,6 @@ unless Rails.env.test?
   # Blocklist malicious IP addresses
   Rack::Attack.blocklist_ip("185.11.61.144")
   Rack::Attack.blocklist_ip("23.95.173.12")
+  Rack::Attack.blocklist_ip("146.70.178.94")
 
 end
