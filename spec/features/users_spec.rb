@@ -29,6 +29,15 @@ describe UsersController do
       expect(page.title).to eq(title)
     end
 
+    it 'works when username has a period' do
+      @user_period = FactoryBot.create(:user, username: 'ssw.pbm', email: 'ssw.pbm@yeah.com', created_at: '02/02/2016')
+      title = @user_period.username + "'s User Profile - Pinball Map"
+
+      visit "/users/#{@user_period.username}/profile"
+
+      expect(page.title).to eq(title)
+    end
+
     it 'lists saved locations' do
       FactoryBot.create(:user_fave_location, user: @user, location: FactoryBot.create(:location, name: 'Foo'))
       FactoryBot.create(:user_fave_location, user: @user, location: FactoryBot.create(:location, name: 'Bar'))

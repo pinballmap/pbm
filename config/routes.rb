@@ -169,7 +169,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:profile, :toggle_fave_location] do
     member do
-      get :profile
+      get :profile, constraints: { id: /[^\/]+/ }
       post :toggle_fave_location
     end
   end
