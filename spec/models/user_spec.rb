@@ -111,12 +111,13 @@ describe User do
 
     it 'should return the most recent 50' do
       51.times do |i|
-        FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, name: "Location #{i}"), submission_type: UserSubmission::LOCATION_METADATA_TYPE, location_name: "Location #{i}", location_id: i.to_i, created_at: Date.new(2016, 1, 1).next_day(i).to_s)
+        location = FactoryBot.create(:location, name: "Location #{i}", id: i.to_i)
+        FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::LOCATION_METADATA_TYPE, location_name: location.name, location_id: location.id, created_at: '2017-01-01')
       end
 
       expect(@user.profile_list_of_edited_locations.size).to eq(50)
-      expect(@user.profile_list_of_edited_locations.map { |s| s[1] }[0]).to eq('Location 50')
-      expect(@user.profile_list_of_edited_locations.map { |s| s[1] }[49]).to eq('Location 1')
+      expect(@user.profile_list_of_edited_locations.map { |s| s[1] }[0]).to eq('Location 0')
+      expect(@user.profile_list_of_edited_locations.map { |s| s[1] }[49]).to eq('Location 49')
     end
 
     it 'should not return locations that no longer exist' do
