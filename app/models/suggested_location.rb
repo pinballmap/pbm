@@ -46,6 +46,12 @@ class SuggestedLocation < ApplicationRecord
       return
     end
 
+    if Phonelib.invalid? phone
+      errors.add(:base, 'Phone format not valid. Try adding the country code.')
+
+      return
+    end
+
     location = Location.create(name: name, street: street, city: city, state: state, zip: zip, country: country, phone: phone, lat: lat, lon: lon, website: website, description: comments, region_id: region_id, location_type_id: location_type_id, operator_id: operator_id, zone_id: zone_id)
 
     if !location.valid?
