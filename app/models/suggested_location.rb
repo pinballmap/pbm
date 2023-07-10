@@ -46,7 +46,7 @@ class SuggestedLocation < ApplicationRecord
       return
     end
 
-    if Phonelib.invalid? phone
+    if !phone.blank? && (Phonelib.invalid? phone)
       errors.add(:base, 'Phone format not valid. Try adding the country code.')
 
       return
