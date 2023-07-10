@@ -176,7 +176,6 @@ RailsAdmin.config do |config|
         required false
       end
       field :website, :string
-      field :updated_at, :datetime
       field :description do
         html_attributes rows: 5, cols: 50
       end
