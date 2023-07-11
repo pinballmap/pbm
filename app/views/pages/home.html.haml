@@ -18,7 +18,7 @@
     The map was last updated
     =distance_of_time_in_words(Time.now, @last_updated_time)
     ago
-%div.flex_center.bg_lightpurple
+%div.flex_center.bg_lightpurple#app
   %p.red.font28.bold.mt_20.mb_5 Use the App
 %div.flex_center.mobile_flex.bg_lightpurple
   .news{:style => 'display: flex;justify-content: center;'}
@@ -35,7 +35,7 @@
       %span.bold
         iOS.
       It is FREE! No ads, no tracking. Just pinball!
-%div.flex_center.mb_10
+%div.flex_center.mb_10#about
   %p.brightpurple.font28.bold.mt_20.mb_5 About
 %div.flex_center.mobile_flex
   .news
@@ -52,7 +52,7 @@
       = link_to 'Contact us!', 'portland/about', :class => "bold"
   .news{:style => 'display: flex;justify-content: center;'}
     =image_tag( 'portland/app_logo-350.jpg', :alt => 'portland logo',:style => 'height:260px;', :class => 'splash')
-%div.flex_center.bg_lightpurple
+%div.flex_center.bg_lightpurple#stickers
   %p.red.font28.bold.mt_20.mb_5 Stickers
 %div.flex_center.mobile_flex.bg_lightpurple
   .news
@@ -71,7 +71,7 @@
     %p
       Purchase them through the
       = link_to 'Pinball Map store!', store_path, :class => "bold"
-%div.flex_center
+%div.flex_center#support
   %p.brightpurple.font28.bold.mt_20.mb_5 Support Us
 %div.flex_center.mobile_flex
   .news
@@ -84,7 +84,7 @@
       = link_to "Thank you for voting for us!", "https://blog.pinballmap.com/2022/03/29/2021-TWIPY-Award/", :target => '_blank', :class => "bold"
   .news
     =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'width: 100%;'), "https://patreon.com/pinballmap", :target => "_blank"
-%div.flex_center.bg_lightpurple
+%div.flex_center.bg_lightpurple#more
   %p.red.font28.bold.mt_20.mb_5 Keep in Touch
 %div.flex_center.mobile_flex.bg_lightpurple
   .news
@@ -114,7 +114,7 @@
       We even had a podcast for a bit!
       = link_to "Mappin' Around with Scott & Ryan.", 'https://pod.pinballmap.com/', :target => '_blank', :class => 'bold'
       It has not been active in a few years, but whatever.
-%div.flex_center
+%div.flex_center#api
   %p.brightpurple.font28.bold.mt_20.mb_5 API
 %div.flex_center.mobile_flex
   .news
@@ -137,7 +137,7 @@
       %span.bold If you use the data, please provide attribution!
   .news{:style => 'display: flex;justify-content: center;'}
     =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;', :class => 'splash')
-%div.flex_center.bg_lightpurple
+%div.flex_center.bg_lightpurple#stack
   %p.red.font28.bold.mt_20.mb_5 Stack
 %div.flex_center.mobile_flex.bg_lightpurple
   .news.center
@@ -174,7 +174,7 @@
     %p
       =link_to 'Google Maps', 'https://developers.google.com/maps', :target => '_blank', :class => 'bold'
       processes the geocoding requests. We also use the Places API for location submissions.
-%div.flex_center.flex_column.mb_10
+%div.flex_center.flex_column.mb_10#blog
   %p.brightpurple.font28.bold.mt_20.mb_5
     Recent Blog Posts
   %div.m_5.center
@@ -189,7 +189,7 @@
     =link_to '2021 TWIPY Award for Best Pinball App', 'https://blog.pinballmap.com/2022/03/29/2021-TWIPY-Award/', :target => '_blank', :class => 'bold font18'
     %span.block.center.m_5 Mar 29, 2022
 
-%div.flex_center.flex_column.mb_20.bg_lightpurple
+%div.flex_center.flex_column.mb_20.bg_lightpurple#regions
   .region_map
     %p.red.font28.bold.mt_20.mb_5.center.bg_lightpurple
       Regional Maps
