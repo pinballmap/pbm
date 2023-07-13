@@ -106,7 +106,7 @@ module Api
           return_response(
             locations,
             'locations',
-            params[:no_details] ? nil : [location_machine_xrefs: { include: { machine: { except: %i[created_at condition opdb_img opdb_img_height opdb_img_width display machine_type machine_display ic_eligible is_active] } }, except: %i[condition ip machine_score_xrefs_count condition_date user_id created_at updated_at] }],
+            params[:no_details] ? nil : [location_machine_xrefs: { include: { machine: { except: %i[created_at condition opdb_img opdb_img_height opdb_img_width display machine_type machine_display ic_eligible is_active] } }, except: %i[condition ip machine_score_xrefs_count condition_date user_id] }],
             %i[last_updated_by_username num_machines],
             200,
             except
