@@ -57,7 +57,7 @@ describe User do
         FactoryBot.create(:user_submission, region: region, location: @location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: "ssw added a high score of 100 on #{machine.name} at First Location", user: @user, created_at: Date.new(2016, 1, 1).next_day(i).to_s)
       end
 
-      expect(@user.profile_list_of_high_scores.size).to eq(50)
+      expect(@user.profile_list_of_high_scores.length).to eq(50)
       expect(@user.profile_list_of_high_scores.map { |s| s[3] }[0]).to eq('Feb 20, 2016')
       expect(@user.profile_list_of_high_scores.map { |s| s[3] }[49]).to eq('Jan 02, 2016')
     end
@@ -115,7 +115,7 @@ describe User do
         FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::LOCATION_METADATA_TYPE, location_name: location.name, location_id: location.id, created_at: '2017-01-01')
       end
 
-      expect(@user.profile_list_of_edited_locations.size).to eq(50)
+      expect(@user.profile_list_of_edited_locations.length).to eq(50)
       expect(@user.profile_list_of_edited_locations.map { |s| s[1] }[0]).to eq('Location 0')
       expect(@user.profile_list_of_edited_locations.map { |s| s[1] }[49]).to eq('Location 49')
     end
