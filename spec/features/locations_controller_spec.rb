@@ -56,8 +56,9 @@ describe LocationsController do
         visit "/#{region ? region.name : 'map'}/?by_location_id=" + location.id.to_s
 
         sleep 1
-
-        find("#confirm_location_button_#{location.id}.confirm_button").click
+        page.accept_alert 'Thanks for confirming this line-up!' do
+          find("#confirm_location_button_#{location.id}.confirm_button").click
+        end
 
         sleep 1
 
