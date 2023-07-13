@@ -67,6 +67,106 @@ describe PagesController do
       expect(page.body).to_not have_content('No Way')
     end
 
+    it 'lets you filter by location type and number of machines with address and machine name' do
+      bar_type = FactoryBot.create(:location_type, id: 4, name: 'bar')
+      cleo = FactoryBot.create(:location, id: 38, zip: '97203', lat: 45.590502800000, lon: -122.754940100000, name: 'Cleo', location_type: bar_type)
+      bawb = FactoryBot.create(:location, id: 39, zip: '97203', lat: 45.593049200000, lon: -122.732620200000, name: 'Bawb')
+      sass = FactoryBot.create(:location, id: 40, zip: '97203', lat: 45.593049200000, lon: -122.732620200000, name: 'Sass', location_type: bar_type)
+      FactoryBot.create(:location_machine_xref, location: sass, machine: FactoryBot.create(:machine, name: 'Solomon', machine_group: nil))
+
+      5.times do |index|
+        FactoryBot.create(:location_machine_xref, machine: FactoryBot.create(:machine, id: 1111 + index, name: 'machine ' + index.to_s), location: cleo)
+      end
+
+      25.times do |index|
+        FactoryBot.create(:location_machine_xref, machine: FactoryBot.create(:machine, id: 2222 + index, name: 'machine ' + index.to_s), location: sass)
+      end
+
+      visit '/map'
+
+      fill_in('address', with: '97203')
+
+      page.find('#form .limit select#by_type_id').click
+      select('bar', from: 'by_type_id')
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(page).to have_content('Cleo')
+      expect(page).to_not have_content('Bawb')
+      expect(page).to have_content('Sass')
+
+      visit '/map'
+
+      fill_in('address', with: '97203')
+
+      page.find('#form .limit select#by_at_least_n_machines').click
+      select('10+', from: 'by_at_least_n_machines')
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(page).to_not have_content('Cleo')
+      expect(page).to_not have_content('Bawb')
+      expect(page).to have_content('Sass')
+
+      visit '/map'
+
+      fill_in('by_machine_name', with: 'Solomon')
+      page.execute_script %{ $('#by_machine_name').trigger('focus') }
+      page.execute_script %{ $('#by_machine_name').trigger('keydown') }
+      find(:xpath, '//div[contains(text(), "Solomon")]').click
+
+      page.find('#form .limit select#by_type_id').click
+      select('bar', from: 'by_type_id')
+
+      page.find('#form .limit select#by_at_least_n_machines').click
+      select('10+', from: 'by_at_least_n_machines')
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(page).to_not have_content('Cleo')
+      expect(page).to_not have_content('Bawb')
+      expect(page).to have_content('Sass')
+
+      visit '/map'
+
+      page.find('#form .limit select#by_type_id').click
+      select('bar', from: 'by_type_id')
+
+      page.find('#form .limit select#by_at_least_n_machines').click
+      select('10+', from: 'by_at_least_n_machines')
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(page.body).to have_content('0 Locations & 0 machines in results')
+      expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
+
+      visit '/map?by_type_id=4'
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(page.body).to have_content('0 Locations & 0 machines in results')
+      expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
+
+      visit '/map?by_at_least_n_machines=5'
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(page.body).to have_content('0 Locations & 0 machines in results')
+      expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
+    end
+
     it 'shows single version checkbox if machine is in a group' do
       @machine_group = FactoryBot.create(:machine_group)
       rip_city_location = FactoryBot.create(:location, region: nil, name: 'Rip City', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)

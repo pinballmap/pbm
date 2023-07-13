@@ -268,10 +268,10 @@ function switchSection(newSection) {
   $("#" + newSection + "_section_link").toggleClass("active_section_link");
 }
 
-function initSearch(userFaved, operatorIDs, locationIDs, locationTypeIDs, zoneIDs, machineIDs, machineID, ipdbIDs, opdbIDs, cityName, machineGroupId, showLocationDistance, lat, lon, byAtLeastNMachinesCity, byAtLeastNMachinesType, byAtLeastNMachinesZone, region) {
-  if (userFaved || operatorIDs || locationIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || region) {
+function initSearch(userFaved, operatorIDs, locationIDs, locationTypeIDs, zoneIDs, machineIDs, machineID, ipdbIDs, opdbIDs, cityName, machineGroupId, showLocationDistance, lat, lon, byAtLeastMachines, byAtLeastNMachinesCity, byAtLeastNMachinesType, byAtLeastNMachinesZone, region) {
+  if (userFaved || operatorIDs || locationIDs || zoneIDs || machineIDs || machineID || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || region) {
 
-    if (region && !(userFaved || operatorIDs || locationIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone)) {
+    if (region && !(userFaved || operatorIDs || locationIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastMachines || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone)) {
       return;
     }
 

@@ -65,6 +65,9 @@ class Location < ApplicationRecord
     machines = machine.machine_group_id ? Machine.where('machine_group_id = ?', machine.machine_group_id).map(&:all_machines_in_machine_group).flatten : [machine]
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
   })
+  scope :by_at_least_n_machines, (lambda { |n|
+    where(Location.by_at_least_n_machines_sql(n))
+  })
   scope :by_at_least_n_machines_city, (lambda { |n|
     where(Location.by_at_least_n_machines_sql(n))
   })

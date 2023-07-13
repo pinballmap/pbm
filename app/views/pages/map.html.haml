@@ -20,6 +20,14 @@
         .map_input
           %span.input_title Near
           = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => @big_cities_placeholder
+        .map_input
+          %div.limit.filter
+            %span.info Limit to
+            = select_tag "by_at_least_n_machines", "<option></option><option value=\"2\">2+</option><option value=\"5\">5+</option><option value=\"10\">10+</option><option value=\"20\">20+</option>".html_safe
+            %span.info machines.
+          %div.limit.filter
+            %span.info Filter by location type
+            = select_tag "by_type_id", options_for_select([['All', '']]) + options_from_collection_for_select(LocationType.all, 'id', 'name', params["by_type_id"])
         .hr or
         .map_input
           %span.input_title Venue
