@@ -41,6 +41,7 @@
 			});
 		});
 		$('#confirm_location_button_#{l.id}').click(function () {
+			window.alert("Thanks for confirming this line-up!");
 			$.get('/locations/#{l.id}/confirm', {}, function(data) {
 			updateLocationUpdatedText(#{l.id});
 			});
