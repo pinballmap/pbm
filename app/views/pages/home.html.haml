@@ -137,9 +137,22 @@
       %span.bold If you use the data, please provide attribution!
   .news{:style => 'display: flex;justify-content: center;'}
     =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;', :class => 'splash')
-%div.flex_center.bg_lightpurple#stack
-  %p.red.font28.bold.mt_20.mb_5 Stack
+%div.flex_center.bg_lightpurple#operators
+  %p.red.font28.bold.mt_20.mb_5 Operators
 %div.flex_center.mobile_flex.bg_lightpurple
+  .news
+    %p
+      Over the years we have created tools to help out operators. You can register your business in our system, tag all your locations, and receive email notifications when people leave comments on your machines.
+    %p
+      If you want to quickly look up all your locations, try this special map!
+    %p.explore.center{:style => 'line-height: 50px;'}
+      = link_to 'Operators Map', operators_path
+    %p 
+      To be added to our system, and to receive email notifications (please specify that you want this), 
+      = link_to 'Contact us!', 'portland/about', :class => "bold"
+%div.flex_center#stack
+  %p.brightpurple.font28.bold.mt_20.mb_5 Stack
+%div.flex_center.mobile_flex
   .news.center
     =link_to image_tag( 'stack-dokku-logo.svg', :alt => 'dokku logo', :style => 'width: 220px;', :class => 'pb_15'), 'https://dokku.com/', :target => '_blank'
     %br/
@@ -174,10 +187,10 @@
     %p
       =link_to 'Google Maps', 'https://developers.google.com/maps', :target => '_blank', :class => 'bold'
       processes the geocoding requests. We also use the Places API for location submissions.
-%div.flex_center.flex_column.mb_10#blog
-  %p.brightpurple.font28.bold.mt_20.mb_5
+%div.flex_center.flex_column.mb_10.bg_lightpurple#blog
+  %p.red.font28.bold.mt_20.mb_5
     Recent Blog Posts
-  %div.m_5.center
+  %div.m_5.center.bg_lightpurple
     =link_to 'Pinball Map App Update 5.2.18', 'https://blog.pinballmap.com/2023/03/05/pinball-map-app-update-5-2-18/', :target => '_blank', :class => 'bold font18'
     %span.block.center.m_5 March 5, 2023
     =link_to 'RSS to Twitter Bot Using Ruby', 'https://blog.pinballmap.com/2022/11/30/Ruby-Twitterbot/', :target => '_blank', :class => 'bold font18'
@@ -189,9 +202,9 @@
     =link_to '2021 TWIPY Award for Best Pinball App', 'https://blog.pinballmap.com/2022/03/29/2021-TWIPY-Award/', :target => '_blank', :class => 'bold font18'
     %span.block.center.m_5 Mar 29, 2022
 
-%div.flex_center.flex_column.mb_20.bg_lightpurple#regions
+%div.flex_center.flex_column.mb_20#regions
   .region_map
-    %p.red.font28.bold.mt_20.mb_5.center.bg_lightpurple
+    %p.brightpurple.font28.bold.mt_20.mb_5.center
       Regional Maps
     %p
       If the

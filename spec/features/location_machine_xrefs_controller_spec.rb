@@ -797,6 +797,16 @@ describe LocationMachineXrefsController do
         expect(page).to have_content('Cleo')
         expect(page).to_not have_content('Bawb')
       end
+
+      visit '/operators'
+
+      select('Quarter Bean', from: 'by_operator_id')
+      page.find('input#location_search_button').click
+
+      within('div.search_result') do
+        expect(page).to have_content('Cleo')
+        expect(page).to_not have_content('Bawb')
+      end
     end
 
     it 'searches by operator - displays website when available' do

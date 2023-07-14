@@ -1,9 +1,10 @@
 #map_canvas
   .mask
-    .closest_button
-      %span.bold{:onclick => "findClosestLocations('#{@region ? @region.name : 'map'}')"}
-        = link_to 'Click here to find the closest pinball machines!', '#', {:id => 'find_closest_locations'}
-        Or Search.
+    - unless current_page?(operators_path)
+      .closest_button
+        %span.bold{:onclick => "findClosestLocations('#{@region ? @region.name : 'map'}')"}
+          = link_to 'Click here to find the closest pinball machines!', '#', {:id => 'find_closest_locations'}
+          Or Search.
 
 - testMode = Rails.env.production? ? false : true
 

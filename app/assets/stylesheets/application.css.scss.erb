@@ -1005,6 +1005,10 @@ form#address_search_form input.lookup_search_input {
   padding: 165px 10px 10px 10px;
 }
 
+#lookup.operators_lookup {
+  padding: 95px 10px 10px 10px;
+}
+
 /** END map **/
 
 /** Footer **/
@@ -1311,7 +1315,8 @@ input.single_hide {
 }
 
 form select#by_location_id,
-form select#by_machine_id {
+form select#by_machine_id,
+form select#by_operator_id {
   width: 42%;
   font-size: 16px !important;
   @include radius(5px 0 0 5px);
@@ -1362,6 +1367,10 @@ a.active_section_link:hover {
   right: 0;
   display: flex;
   justify-content: center;
+}
+
+#search_results_count.operators_results_count {
+  top: 55px;
 }
 
 .map_lookup #search_results_count {

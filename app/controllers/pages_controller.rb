@@ -2,7 +2,7 @@ require 'pony'
 
 class PagesController < ApplicationController
   respond_to :xml, :json, :html, :js, :rss
-  has_scope :by_location_name, :by_location_id, :by_machine_name, :by_machine_id, :by_machine_single_id, :by_at_least_n_machines, :by_type_id, :user_faved
+  has_scope :by_location_name, :by_location_id, :by_machine_name, :by_machine_id, :by_machine_single_id, :by_at_least_n_machines, :by_type_id, :by_operator_id, :user_faved
 
   def params
     request.parameters
@@ -34,6 +34,14 @@ class PagesController < ApplicationController
         @near_distance += 100
       end
     end
+
+    @location_data = LocationsController.locations_javascript_data(@locations)
+
+    render partial: 'locations/locations', layout: false
+  end
+
+  def operator_location_data
+    @locations = Location.where(operator_id: params[:by_operator_id]).includes(:location_type, :machines, :region)
 
     @location_data = LocationsController.locations_javascript_data(@locations)
 

@@ -1,0 +1,70 @@
+#region_page_body
+  - if mobile_device?
+    %div.search_modal{:onclick => "showSearchModal();"}
+      %button SEARCH
+  #form_container
+    #form
+      - if mobile_device?
+        %div.close_button{:onclick => "hideSearchModal();"}
+          X
+      #other_search_options
+        %span.black_text Select an operator
+      = form_tag operator_location_data_path, :method => 'get', :id => 'address_search_form', :class => 'location_search' do
+        = select_tag "by_operator_id", options_for_select([['', '']]) + options_from_collection_for_select(Operator.order(:name).all, 'id', 'name', params["by_operator_id"])
+        %span.or or
+        %div.search_field_container
+          = text_field_tag "by_operator_name", params["by_operator_name"], :class => 'lookup_search_input'
+          - if !mobile_device?
+            = image_submit_tag('search_icon.png', :class => 'search', :id => "location_search_button")
+        - if mobile_device?
+          = image_submit_tag('search_icon.png', :class => 'search', :id => "location_search_button")
+
+  #map
+    = render :partial => 'locations/map'
+
+  #search_link_wrapper.hide_button.toggle_btn_reg
+    =link_to "Link to this Search Result", "", :id => "search_link"
+
+  #lookup.operators_lookup
+    #locations
+      #intro
+        %p
+          %span.red.font16.bold Hi operators!
+          This map has a simple search, so you can easily select your business and find all your locations. Hopefully this will make it easier to update all your machines at once.
+        %p 
+          We know that comments made by users can sometimes be frustrating. We cannot control what people type. But we have found that if people report an issue, and you fix it (or the issue wasn't real), it's best to leave a new comment stating that the issue has been resolved. This dialog is really appreciated by all users of the site.
+        %p
+          Please do not remove machines and re-add them just to get rid of comments that bother you.
+
+:javascript    
+  $(function () {
+    $('#by_operator_name').autocomplete({
+      source: '/operators/autocomplete',
+      minLength: 3,
+      delay: 500
+      });
+    $('#by_operator_name').bind('autocompleteselect', function(event, ui) {
+      event.preventDefault();
+      $('#by_operator_id').val(ui.item.id);
+      $('#by_operator_name').val(ui.item.value);
+    });
+  });
+
+  $('#address_search_form').on('submit', function(e) {
+
+    hideSearchModal();
+    $(".mask").hide();
+
+    e.preventDefault();
+    search_string = $("#address_search_form :input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
+
+    var form = $(this);
+
+    $('#locations').html(loadingHTML());
+
+    $.get(form.attr('action'), form.serialize(), function(data, textStatus, jqxhr) {
+      $('#locations').html(data);
+    });
+
+    return false;
+  });

@@ -1,5 +1,5 @@
 - if !mobile_device?
-  #header{:class => "#{@region ? '' : (defined? @region) and current_page?(region_homepage_path) ? 'header_fixed' : ''} #{current_page?(map_path) ? 'header_fixed' : '' } #{current_page?(saved_path) ? 'header_fixed' : '' }"}
+  #header{:class => "#{(defined? @region and current_page?(region_homepage_path)) || current_page?(map_path) || current_page?(saved_path) || current_page?(operators_path) ? 'header_fixed' : '' }"}
     =link_to image_tag('pinballmap-logo-base4.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => "logo_link"
     %div.header_buttons_container
       %div#menu_button

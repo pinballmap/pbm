@@ -148,6 +148,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :operators, only: [:autocomplete] do
+    collection do
+      get :autocomplete
+    end
+  end
+
   resources :location_machine_xrefs do
     collection do
       get :update_machine_condition
@@ -177,6 +183,8 @@ Rails.application.routes.draw do
   get 'inspire_profile' => 'pages#inspire_profile'
   get 'pages/home'
   get 'map' => 'pages#map'
+  get 'operators' => 'pages#operators'
+  get 'operator_location_data' => 'pages#operator_location_data'
   get 'saved' => 'pages#map', user_faved: true
   get 'map_location_data' => 'pages#map_location_data'
   get 'suggest' => 'pages#suggest_new_location', as: 'map_location_suggest'
