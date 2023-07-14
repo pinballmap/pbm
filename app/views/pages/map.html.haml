@@ -175,6 +175,9 @@
         }
       else {searchMachineIDString = ''}
     }
+
+    numMachinesVal = ';by_at_least_n_machines=' + $('#by_at_least_n_machines').val();
+    locationTypeVal = ';by_type_id=' + $('#by_type_id').val();
     
     hideSearchModal();
     $(".mask").hide();

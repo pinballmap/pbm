@@ -7,6 +7,8 @@ var region;
 var ismap;
 var testMode;
 var searchMachineIDString;
+var numMachinesVal;
+var locationTypeVal;
 var single_id;
 var mapAdjusted = 0;
 var search_string;
@@ -165,7 +167,7 @@ function redo() {
         var sw = bounds.getSouthWest();
         var ne = bounds.getNorthEast();
 
-        var dfd = $.getJSON('/api/v1/locations/within_bounding_box.json?swlat=' + sw.lat + ';swlon=' + sw.lng + ';nelat=' + ne.lat + ';nelon=' + ne.lng + searchMachineIDString);
+        var dfd = $.getJSON('/api/v1/locations/within_bounding_box.json?swlat=' + sw.lat + ';swlon=' + sw.lng + ';nelat=' + ne.lat + ';nelon=' + ne.lng + searchMachineIDString + numMachinesVal + locationTypeVal);
 
         dfd.done(function (response) {
           if (!response.locations) {
@@ -211,7 +213,7 @@ function redo() {
         var sw = bounds.getSouthWest();
         var ne = bounds.getNorthEast();
 
-        var dfd = $.getJSON('/api/v1/locations/within_bounding_box.json?swlat=' + sw.lat + ';swlon=' + sw.lng + ';nelat=' + ne.lat + ';nelon=' + ne.lng + searchMachineIDString);
+        var dfd = $.getJSON('/api/v1/locations/within_bounding_box.json?swlat=' + sw.lat + ';swlon=' + sw.lng + ';nelat=' + ne.lat + ';nelon=' + ne.lng + searchMachineIDString + numMachinesVal + locationTypeVal);
 
         dfd.done(function (response) {
           if (!response.locations) {
