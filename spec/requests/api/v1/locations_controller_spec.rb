@@ -1037,6 +1037,16 @@ HERE
 
       expect(response.body).to eq('[]')
     end
+
+    it 'should return an empty array if below minimum character threshold' do
+      FactoryBot.create(:location, city: 'Portland', state: 'ME')
+      FactoryBot.create(:location, city: 'Portland', state: 'OR')
+      FactoryBot.create(:location, city: 'Beaverton')
+
+      get '/api/v1/locations/autocomplete_city', params: { name: 'df' }
+
+      expect(response.body).to eq('[]')
+    end
   end
 
   describe '#autocomplete' do
@@ -1045,7 +1055,7 @@ HERE
       bar = FactoryBot.create(:location, name: 'bar')
       barfoo = FactoryBot.create(:location, name: 'barfoo')
 
-      get '/api/v1/locations/autocomplete', params: { name: 'ar' }
+      get '/api/v1/locations/autocomplete', params: { name: 'bar' }
 
       expect(response.body).to eq(<<HERE.strip)
 [{"label":"bar (Portland, OR)","value":"bar","id":#{bar.id}},{"label":"barfoo (Portland, OR)","value":"barfoo","id":#{barfoo.id}}]
@@ -1058,6 +1068,16 @@ HERE
       FactoryBot.create(:location, name: 'barfoo')
 
       get '/api/v1/locations/autocomplete', params: { name: 'asdf' }
+
+      expect(response.body).to eq('[]')
+    end
+
+    it 'should return an empty array if below minimum character threshold' do
+      FactoryBot.create(:location, name: 'foo')
+      FactoryBot.create(:location, name: 'bar')
+      FactoryBot.create(:location, name: 'barfoo')
+
+      get '/api/v1/locations/autocomplete', params: { name: 'as' }
 
       expect(response.body).to eq('[]')
     end
