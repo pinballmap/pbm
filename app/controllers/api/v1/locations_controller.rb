@@ -331,7 +331,9 @@ module Api
       formats ['json']
       def autocomplete_city
         if params.fetch(:name, '').length > 2
-          locations = Location.select { |l| "#{l.city.tr('’', "'")} #{l.state}" =~ /#{Regexp.escape params[:name].tr('’', "'") || ''}/i }.sort_by(&:city).map { |l| { label: "#{l.city}#{l.state.blank? ? '' : ', '}#{l.state}", value: "#{l.city}#{l.state.blank? ? '' : ', '}#{l.state}" } }
+          locations = Location.select { |l| "#{l.city.tr('’', "'")} #{l.state}" =~ /#{Regexp.escape params[:name].tr('’', "'") || ''}/i }
+                              .sort_by(&:city)
+                              .map { |l| { label: "#{l.city}#{l.state.blank? ? '' : ', '}#{l.state}", value: "#{l.city}#{l.state.blank? ? '' : ', '}#{l.state}" } }
         else
           locations = []
         end
@@ -348,7 +350,8 @@ module Api
       formats ['json']
       def autocomplete
         if params.fetch(:name, '').length > 2
-          locations = Location.select { |l| l.name.tr('’', "'") =~ /#{Regexp.escape params[:name].tr('’', "'") || ''}/i }.sort_by(&:name).map { |l| { label: "#{l.name} (#{l.city}#{l.state.blank? ? '' : ', '}#{l.state})", value: l.name, id: l.id } }
+          locations = Location.select { |l| l.name.tr('’', "'") =~ /#{Regexp.escape params[:name].tr('’', "'") || ''}/i }
+                              .sort_by(&:name).map { |l| { label: "#{l.name} (#{l.city}#{l.state.blank? ? '' : ', '}#{l.state})", value: l.name, id: l.id } }
         else
           locations = []
         end
