@@ -61,7 +61,6 @@ group :test do
   gem 'simplecov'
   gem 'spork'
   gem 'timecop'
-  gem 'webdrivers'
 end
 
 group :development, :test do

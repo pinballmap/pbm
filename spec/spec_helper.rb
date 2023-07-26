@@ -10,7 +10,6 @@ require 'coveralls'
 require 'rack_session_access/capybara'
 require 'rspec/retry'
 require 'selenium/webdriver'
-require 'webdrivers'
 
 include Sprockets::Rails::Helper
 
@@ -29,11 +28,11 @@ RSpec.configure do |config|
     ex.run_with_retry retry: 3
   end
 
-  Capybara.register_driver :chrome do |app|
+  Capybara.register_driver :selenium_chrome do |app|
     Capybara::Selenium::Driver.new(app, browser: :chrome)
   end
 
-  Capybara.register_driver :headless_chrome do |app|
+  Capybara.register_driver :selenium_headless_chrome do |app|
     capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
       chromeOptions: { args: %w[headless disable-gpu window-size=2000,1000] }
     )
@@ -41,8 +40,8 @@ RSpec.configure do |config|
     Capybara::Selenium::Driver.new(app, browser: :chrome, desired_capabilities: capabilities)
   end
 
-  Capybara.javascript_driver = :selenium_chrome_headless
-  # Capybara.javascript_driver = :chrome
+  # Capybara.javascript_driver = :selenium_chrome_headless
+  Capybara.javascript_driver = :selenium_chrome
 
   # == Mock Framework
   #

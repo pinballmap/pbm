@@ -1,0 +1,6 @@
+{
+    "workbench.editor.wrapTabs": false,
+    "editor.guides.indentation": false,
+    "editor.guides.highlightActiveIndentation": true,
+    "editor.renderLineHighlight": "gutter"
+}
