@@ -64,8 +64,8 @@ group :test do
 end
 
 group :development, :test do
-  gem 'bullet'
   gem 'brakeman'
+  gem 'bullet'
   gem 'database_cleaner'
   gem 'debug', require: false
   gem 'derailed_benchmarks'
@@ -76,4 +76,3 @@ group :development, :test do
   gem 'solargraph', '~> 0.49.0'
   gem 'solargraph-rails', '~> 1.1'
 end
-

@@ -80,6 +80,8 @@ RSpec/Capybara:
   Enabled: false
 RSpec/FactoryBot:
   Enabled: false
+Capybara/VisibilityMatcher:
+  Enabled: false
 
 AllCops:
   NewCops: disable

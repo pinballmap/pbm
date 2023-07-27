@@ -155,7 +155,7 @@ HERE
             if lmx.ic_enabled && lmx.location.ic_active != true
               lmx.location.ic_active = true
               lmx.location.save!
-            elsif lmx.location.location_machine_xrefs.where(ic_enabled: true).length.zero?
+            elsif lmx.location.location_machine_xrefs.where(ic_enabled: true).empty?
               lmx.location.ic_active = false
               lmx.location.save!
             end
