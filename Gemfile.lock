@@ -119,7 +119,7 @@ GEM
     climate_control (0.2.0)
     coderay (1.1.3)
     concurrent-ruby (1.2.2)
-    countries (5.3.2)
+    countries (5.5.0)
       unaccent (~> 0.3)
     country_select (8.0.1)
       countries (~> 5.0)
@@ -129,7 +129,7 @@ GEM
       thor (~> 1.2)
       tins (~> 1.32)
     crass (1.0.6)
-    dalli (3.2.4)
+    dalli (3.2.5)
     database_cleaner (2.0.2)
       database_cleaner-active_record (>= 2, < 3)
     database_cleaner-active_record (2.1.0)
@@ -181,7 +181,7 @@ GEM
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
     ffi (1.15.5)
-    geocoder (1.8.1)
+    geocoder (1.8.2)
     get_process_mem (0.2.7)
       ffi (~> 1.0)
     globalid (1.1.0)
@@ -296,8 +296,9 @@ GEM
     paper_trail-association_tracking (2.2.1)
       paper_trail (>= 12.0)
     parallel (1.22.1)
-    parser (3.2.2.0)
+    parser (3.2.2.3)
       ast (~> 2.4.1)
+      racc
     pg (1.4.6)
     phonelib (0.8.2)
     platform-api (3.5.0)
@@ -439,7 +440,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    scout_apm (5.3.3)
+    scout_apm (5.3.5)
       parser
     selenium-webdriver (4.10.0)
       rexml (~> 3.2, >= 3.2.5)
