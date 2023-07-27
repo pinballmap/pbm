@@ -72,7 +72,7 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.4)
       public_suffix (>= 2.0.2, < 6.0)
-    apipie-rails (0.9.3)
+    apipie-rails (1.2.2)
       actionpack (>= 5.0)
       activesupport (>= 5.0)
     ast (2.4.2)
@@ -242,11 +242,11 @@ GEM
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
-    kt-paperclip (6.4.2)
+    kt-paperclip (7.2.0)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
+      marcel (~> 1.0.1)
       mime-types
-      mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
     launchy (2.5.2)
       addressable (~> 2.8)
@@ -268,9 +268,6 @@ GEM
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2023.0218.1)
-    mimemagic (0.3.10)
-      nokogiri (~> 1)
-      rake
     mini_histogram (0.3.1)
     mini_mime (1.1.2)
     mini_portile2 (2.8.4)
@@ -557,7 +554,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   kaminari
-  kt-paperclip (~> 6.4, >= 6.4.1)
+  kt-paperclip
   launchy
   listen
   paper_trail
