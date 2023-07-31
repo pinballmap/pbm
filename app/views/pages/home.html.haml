@@ -19,7 +19,7 @@
     =distance_of_time_in_words(Time.now, @last_updated_time)
     ago
 %div.flex_center.bg_lightpurple#app
-  %p.red.font28.bold.mt_20.mb_5 Use the App
+  =link_to 'Use the App', '#app', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
   .news{:style => 'display: flex;justify-content: center;'}
     =image_tag( 'purple-machine.png', :alt => 'machine', :style => 'height:130px;', :class => 'splash')
@@ -36,7 +36,7 @@
         iOS.
       It is FREE! No ads, no tracking. Just pinball!
 %div.flex_center.mb_10#about
-  %p.brightpurple.font28.bold.mt_20.mb_5 About
+  =link_to 'About', '#about', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
   .news
     %p
@@ -53,7 +53,7 @@
   .news{:style => 'display: flex;justify-content: center;'}
     =image_tag( 'portland/app_logo-350.jpg', :alt => 'portland logo',:style => 'height:260px;', :class => 'splash')
 %div.flex_center.bg_lightpurple#stickers
-  %p.red.font28.bold.mt_20.mb_5 Stickers
+  =link_to 'Stickers', '#stickers', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
   .news
     =link_to image_tag('pbm-both-stickers.png', :alt => 'Pinball Map Store', :style => 'width: 100%;'), store_path, :target => "_blank"
@@ -72,7 +72,7 @@
       Purchase them through the
       = link_to 'Pinball Map store!', store_path, :class => "bold"
 %div.flex_center#support
-  %p.brightpurple.font28.bold.mt_20.mb_5 Support Us
+  =link_to 'Support Us', '#support', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
   .news
     %p
@@ -85,7 +85,7 @@
   .news
     =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'width: 100%;'), "https://patreon.com/pinballmap", :target => "_blank"
 %div.flex_center.bg_lightpurple#more
-  %p.red.font28.bold.mt_20.mb_5 Keep in Touch
+  =link_to 'Keep in Touch', '#more', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
   .news
     =image_tag( 'mappin-logo-600.orig.png', :alt => 'mapping logo', :style => 'height: 340px;', :class => 'splash')
@@ -109,7 +109,7 @@
       = link_to "Mappin' Around with Scott & Ryan.", 'https://pod.pinballmap.com/', :target => '_blank', :class => 'bold'
       It has not been active in a few years, but whatever.
 %div.flex_center#api
-  %p.brightpurple.font28.bold.mt_20.mb_5 API
+  =link_to 'API', '#api', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
   .news
     %p
@@ -132,7 +132,7 @@
   .news{:style => 'display: flex;justify-content: center;'}
     =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;', :class => 'splash')
 %div.flex_center.bg_lightpurple#operators
-  %p.red.font28.bold.mt_20.mb_5 Operators
+  =link_to 'Operators', '#operators', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
   .news
     %p
@@ -145,7 +145,7 @@
       To be added to our system, and to receive email notifications (please specify that you want this), 
       = link_to 'Contact us!', 'portland/about', :class => "bold"
 %div.flex_center#stack
-  %p.brightpurple.font28.bold.mt_20.mb_5 Stack
+  =link_to 'Stack', '#stack', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
   .news.center
     =link_to image_tag( 'stack-dokku-logo.svg', :alt => 'dokku logo', :style => 'width: 220px;', :class => 'pb_15'), 'https://dokku.com/', :target => '_blank'
@@ -182,8 +182,7 @@
       =link_to 'Google Maps', 'https://developers.google.com/maps', :target => '_blank', :class => 'bold'
       processes the geocoding requests. We also use the Places API for location submissions.
 %div.flex_center.flex_column.mb_10.bg_lightpurple#blog
-  %p.red.font28.bold.mt_20.mb_5
-    Recent Blog Posts
+  =link_to 'Recent Blog Posts', '#blog', :class => "red font28 bold mt_20 mb_5 no_underline"
   %div.m_5.center.bg_lightpurple
     =link_to 'Operators Map', 'https://blog.pinballmap.com/2023/07/29/operators-map/', :target => '_blank', :class => 'bold font18'
     %span.block.center.m_5 July 29, 2023
@@ -197,8 +196,8 @@
     %span.block.center.m_5 Apr 20, 2022
 %div.flex_center.flex_column.mb_20#regions
   .region_map
-    %p.brightpurple.font28.bold.mt_20.mb_5.center
-      Regional Maps
+    %p.center
+      =link_to 'Regional Maps', '#regions', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
     %p
       If the
       = link_to 'big map', map_path
