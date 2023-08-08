@@ -14,7 +14,7 @@
     },
     {
       "command": "rake notify_operators",
-      "schedule": "30 18 * * *"
+      "schedule": "30 15 * * *"
     },
     {
       "command": "rake delete_opted_in_empty_locations",
