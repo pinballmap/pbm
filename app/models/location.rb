@@ -125,6 +125,10 @@ class Location < ApplicationRecord
     machines.sort_by(&:massaged_name).map(&:name_and_year)
   end
 
+  def machine_names_unmapped
+    machines.sort_by(&:massaged_name)
+  end
+
   def machine_names_first
     machines.take(5).sort_by(&:massaged_name).map(&:name_and_year)
   end
