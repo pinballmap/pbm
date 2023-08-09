@@ -1471,16 +1471,17 @@ li.address_full {
 }
 
 #search_results .machine_names div {
-  color: $red;
+  // color: $red;
   font-size: 18px;
   padding: 5px 0 !important;
   line-height: 20px;
   list-style-type: none;
+  font-family: $Nunito_700Bold;
 }
 
 span.man_year {
-  color: #47475f; 
-  font-size: 17px;
+  color: $grey; 
+  font-size: 16px;
   font-family: $Nunito_400Regular;
 }
 
@@ -2309,8 +2310,12 @@ input.score {
   padding: 10px;
 }
 
-.show_location_detail_location>div {
-  padding: 5px 10px;
+.show_location_detail_location > div {
+  padding: 10px 10px 0px 15px;
+}
+
+.show_location_detail_location > div.pb_15 {
+  padding-bottom: 15px;
 }
 
 .show_location_detail_location .location_type img {

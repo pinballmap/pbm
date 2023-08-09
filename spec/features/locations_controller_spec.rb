@@ -284,7 +284,7 @@ describe LocationsController do
       click_on 'location_search_button'
 
       within('div#show_location_detail_location_61') do
-        expect(page).to have_content('and 5 more machines')
+        expect(page).to have_content('plus 5 more machines')
       end
     end
 

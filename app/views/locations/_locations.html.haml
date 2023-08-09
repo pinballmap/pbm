@@ -74,7 +74,7 @@
             = render :partial => 'locations/render_location_detail', :locals => {l: l}
         - else
           %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id}); showInfowindow(#{l.id});"}
-            %div.name.bold.font20
+            %div.name.bold.font22
               = l.name
             - if (l.location_type)
               %div.location_type
@@ -93,19 +93,19 @@
                 %span.address_name[l, :location_summary] #{[l.street, l.city, l.state].join(', ')}
             %div.machine_names
               - l.machines_sorted.first(20).each do |machine|
-                %div 
+                %div.brightpurple
                   #{machine.name} 
                   %span.man_year (#{[machine.manufacturer, machine.year].reject(&:blank?).join(', ')})
             - if (location.machines.size > 20)
-              %div.black
-                and
+              %div.darkgrey.italic.pb_15
+                plus
                 - the_rest = (location.machines.size - 20)
                 #{the_rest}
                 more
                 - if the_rest == 1
-                  machine...
+                  machine
                 - else
-                  machines...
+                  machines
           %div.location_detail[l, :location_detail]{:style => 'display:none;'}
 
       - l = nil
