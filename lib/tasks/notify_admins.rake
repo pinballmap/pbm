@@ -21,6 +21,13 @@ task notify_admins: :environment do
       )
     end
   end
+rescue StandardError => e
+  Pony.mail(
+    to: 'admin@pinballmap.com',
+    from: 'admin@pinballmap.com',
+    subject: "Pbm Rake Task Error - Weekly Digest - #{Date.today.strftime('%m/%d/%Y')}",
+    body: "Weekly digest rake task error\n\n" + e.to_s
+  )
 end
 
 desc 'Sends admins a daily digest email of all new machine conditions'
@@ -60,6 +67,13 @@ task send_daily_digest_machine_condition_email: :environment do
       )
     end
   end
+rescue StandardError => e
+  Pony.mail(
+    to: 'admin@pinballmap.com',
+    from: 'admin@pinballmap.com',
+    subject: "Pbm Rake Task Error - Daily Comments - #{Date.today.strftime('%m/%d/%Y')}",
+    body: "Daily comments rake task error\n\n" + e.to_s
+  )
 end
 
 desc 'Sends admins a daily digest email of all machine removals'
@@ -99,4 +113,11 @@ task send_daily_digest_machine_removal_email: :environment do
       )
     end
   end
+rescue StandardError => e
+  Pony.mail(
+    to: 'admin@pinballmap.com',
+    from: 'admin@pinballmap.com',
+    subject: "Pbm Rake Task Error - Daily Removals - #{Date.today.strftime('%m/%d/%Y')}",
+    body: "Daily removals rake task error\n\n" + e.to_s
+  )
 end

@@ -25,4 +25,11 @@ task notify_super_admins: :environment do
       )
     end
   end
+rescue StandardError => e
+  Pony.mail(
+    to: 'admin@pinballmap.com',
+    from: 'admin@pinballmap.com',
+    subject: "Pbm Rake Task Error - Weekly Super Admins - #{Date.today.strftime('%m/%d/%Y')}",
+    body: "Weekly super admins rake task error\n\n" + e.to_s
+  )
 end
