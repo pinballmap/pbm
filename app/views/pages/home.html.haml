@@ -85,32 +85,33 @@
   .news
     =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'width: 100%;'), "https://patreon.com/pinballmap", :target => "_blank"
 %div.flex_center.bg_lightpurple#more
-  =link_to 'Keep in Touch', '#more', :class => "red font28 bold mt_20 mb_5 no_underline"
+  =link_to 'Keep Up', '#more', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
   .news
-    =image_tag( 'mappin-logo-600.orig.png', :alt => 'mapping logo', :style => 'height: 340px;', :class => 'splash')
+    =image_tag( 'mappin-logo-600.orig.png', :alt => 'mapping logo', :style => 'height: 310px;', :class => 'splash')
   .news
     %p
       Check the
       = link_to "blog", "https://blog.pinballmap.com/", :class => "bold"
       to keep up with map news.
     %p
-      Looking for a fun and friendly way to chat with us, as well as with other pinball lovers? Join the
-      = link_to 'Pinball People', 'https://discord.gg/XffPx6VKTv', :class => "bold", :target => '_blank'
-      Discord!
-    %p
-      We also have an
-      = link_to 'open thread on TiltForums', 'http://tiltforums.com/t/pinball-map-open-thread/901', :target => '_blank'
-    %p
       Our current meager social media presence is
-      = link_to 'on Mastodon', 'https://fosstodon.org/@pinballmap', :target => '_blank', :class => "bold"
+      = link_to 'on Mastodon.', 'https://fosstodon.org/@pinballmap', :target => '_blank', :class => "bold"
     %p
-      Also, Mastodon bot that posts random locations:
+      We can be regularly found in the
+      = link_to 'Pinball People Discord.', 'https://discord.gg/XffPx6VKTv', :class => "bold", :target => '_blank'
+      It's a fun and friendly way to chat with other pinballers!
+    %p
+      We have a monthly
+      = link_to 'article series on Kineticist', 'https://www.kineticist.co/blog-category/pinball-map-update', :class => "bold", :target => '_blank'
+      that hightlights new and notable locations added to the map.
+    %p
+      What else... also got a Mastodon bot that posts random locations:
       = link_to '@OddPinballMap', 'https://botsin.space/@OddPinballMap', :target => '_blank', :class => "bold"
     %p
       We even had a podcast for a bit!
       = link_to "Mappin' Around with Scott & Ryan.", 'https://pod.pinballmap.com/', :target => '_blank', :class => 'bold'
-      It has not been active in a few years, but whatever.
+      It has not been active in a few years, but that is fine.
 %div.flex_center#api
   =link_to 'API', '#api', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
