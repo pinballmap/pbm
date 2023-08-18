@@ -54,18 +54,6 @@ task send_daily_digest_machine_condition_email: :environment do
         body: email_body
       )
     end
-
-    email_bodies.push(Region.generate_daily_digest_regionless_comments_email_body)
-
-    User.where(is_super_admin: 'Y').each do |u|
-      Pony.mail(
-        to: u.email,
-        from: 'admin@pinballmap.com',
-        subject: "PBM - Daily admin machine comment digest for ALL locations - #{(Date.today - 1.day).strftime('%m/%d/%Y')}",
-        body: 'CHECK THE ATTACHMENT, PLEASE',
-        attachments: { 'daily_all_location_comments_info.txt' => email_bodies.join("\n\n") }
-      )
-    end
   end
 rescue StandardError => e
   Pony.mail(
@@ -98,18 +86,6 @@ task send_daily_digest_machine_removal_email: :environment do
         from: 'admin@pinballmap.com',
         subject: email_subject,
         body: email_body
-      )
-    end
-
-    email_bodies.push(Region.generate_daily_digest_regionless_removals_email_body)
-
-    User.where(is_super_admin: 'Y').each do |u|
-      Pony.mail(
-        to: u.email,
-        from: 'admin@pinballmap.com',
-        subject: "PBM - Daily admin machine removal digest for ALL locations - #{(Date.today - 1.day).strftime('%m/%d/%Y')}",
-        body: 'CHECK THE ATTACHMENT, PLEASE',
-        attachments: { 'daily_all_machine_deletion_info.txt' => email_bodies.join("\n\n") }
       )
     end
   end
