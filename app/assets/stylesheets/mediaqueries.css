@@ -94,6 +94,9 @@ only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (or
   .header_buttons_child {
     width: 89px;
   }
+  .map_input .limit #by_type_id {
+    width: 120px;
+  }
 }
 
 @media (min-width: 1555px) {
