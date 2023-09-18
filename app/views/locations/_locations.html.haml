@@ -92,14 +92,14 @@
               %div.address
                 %span.address_name[l, :location_summary] #{[l.street, l.city, l.state].join(', ')}
             %div.machine_names
-              - l.machines_sorted.first(20).each do |machine|
+              - l.machines_sorted.first(5).each do |machine|
                 %div.brightpurple
                   #{machine.name} 
                   %span.man_year (#{[machine.manufacturer, machine.year].reject(&:blank?).join(', ')})
-            - if (location.machines.size > 20)
+            - if (location.machines.size > 5)
               %div.darkgrey.italic.pb_15
                 plus
-                - the_rest = (location.machines.size - 20)
+                - the_rest = (location.machines.size - 5)
                 #{the_rest}
                 more
                 - if the_rest == 1
