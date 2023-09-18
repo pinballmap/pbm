@@ -267,7 +267,7 @@ describe LocationsController do
       end
     end
 
-    it 'displays a max of 20 machines per location when multiple locations in results' do
+    it 'displays a max of 5 machines per location when multiple locations in results' do
       cleo = FactoryBot.create(:location, id: 51, region: @region, name: 'Cleo')
       zelda = FactoryBot.create(:location, id: 61, region: @region, name: 'Zelda')
 
@@ -284,7 +284,7 @@ describe LocationsController do
       click_on 'location_search_button'
 
       within('div#show_location_detail_location_61') do
-        expect(page).to have_content('plus 5 more machines')
+        expect(page).to have_content('plus 20 more machines')
       end
     end
 
