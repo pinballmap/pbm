@@ -172,7 +172,8 @@ function redo() {
 
         dfd.done(function (response) {
           if (!response.locations) {
-            document.getElementById("map_canvas").innerHTML = "<p id='not_found' class='font28 red bold'>" + "No pinball found on this map within 50 miles of your location." + "</p>";
+            var locationIds = [];
+            document.getElementById("locations").innerHTML = "<p id='not_found' class='font28 red bold'>" + "No pinball found in this area." + "</p>";
           } else {
             var locationIds = [];
             for (var i = 0; i < response.locations.length; i++) {
@@ -218,7 +219,8 @@ function redo() {
 
         dfd.done(function (response) {
           if (!response.locations) {
-            document.getElementById("map_canvas").innerHTML = "<p id='not_found' class='font28 red bold'>" + "No pinball found on this map within 50 miles of your location." + "</p>";
+            var locationIds = [];
+            document.getElementById("locations").innerHTML = "<p id='not_found' class='font28 red bold'>" + "No pinball found in this area." + "</p>";
           } else {
             var locationIds = [];
             for (var i = 0; i < response.locations.length; i++) {
@@ -292,7 +294,8 @@ function findClosestLocations(region) {
     var dfd = $.getJSON('/api/v1/locations/closest_by_lat_lon.json', { lat: position.coords.latitude, lon: position.coords.longitude, max_distance: 50, send_all_within_distance: 1 });
     dfd.done(function (response) {
       if (!response.locations) {
-        document.getElementById("map_canvas").innerHTML = "<p id='not_found' class='font28 red bold'>" + "No pinball found on this map within 50 miles of your location." + "</p>";
+        var locationIds = [];
+        document.getElementById("locations").innerHTML = "<p id='not_found' class='font28 red bold'>" + "No pinball found in this area." + "</p>";
       } else {
         var locationIds = [];
         for (var i = 0; i < response.locations.length; i++) {
