@@ -273,7 +273,6 @@ module Api
         if params[:no_details]
           location = Location.includes(:machines, :last_updated_by_user).find(params[:id])
         else
-          location = Location.includes(location_machine_xrefs: %i[user machine machine_conditions machine_score_xrefs]).find(params[:id])
           location = Location.includes(location_machine_xrefs: [:user, :machine, { machine_conditions: :user }, { machine_score_xrefs: :user }]).find(params[:id])
         end
 
