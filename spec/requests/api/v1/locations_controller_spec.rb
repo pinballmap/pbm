@@ -855,7 +855,6 @@ HERE
     it 'displays details of machines at location' do
       FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 123, name: 'Cleo', year: 1980, manufacturer: 'Stern', ipdb_link: 'http://www.foo.com', ipdb_id: nil))
       FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 456, name: 'Sass', year: 1960, manufacturer: 'Bally', ipdb_link: 'http://www.bar.com', ipdb_id: 123))
-
       get '/api/v1/locations/' + @location.id.to_s + '/machine_details.json'
       expect(response).to be_successful
 
@@ -874,6 +873,17 @@ HERE
       expect(machines[1]['manufacturer']).to eq('Bally')
       expect(machines[1]['ipdb_link']).to eq('http://www.bar.com')
       expect(machines[1]['ipdb_id']).to eq(123)
+    end
+
+    it 'respects the machines_only flag' do
+      FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 123, name: 'Cleo', year: 1980, manufacturer: 'Stern', ipdb_link: 'http://www.foo.com', ipdb_id: nil))
+      FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 456, name: 'Sass', year: 1960, manufacturer: 'Bally', ipdb_link: 'http://www.bar.com', ipdb_id: 123))
+      get '/api/v1/locations/' + @location.id.to_s + '/machine_details.json', params: { machines_only: 1 }
+      expect(response).to be_successful
+
+      machines = JSON.parse(response.body)['machines']
+      expect(machines[0]).to eq('Cleo (Stern, 1980)')
+      expect(machines[1]).to eq('Sass (Bally, 1960)')
     end
   end
 

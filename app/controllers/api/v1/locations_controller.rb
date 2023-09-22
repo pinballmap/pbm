@@ -288,21 +288,26 @@ module Api
 
       api :GET, '/api/v1/locations/:id/machine_details.json', 'Display the details of the machines at this location'
       param :id, Integer, desc: 'ID of location', required: true
+      param :machines_only, Integer, desc: 'Simple list of only machine names', required: false
       formats ['json']
       def machine_details
         location = Location.find(params[:id])
 
         machines = []
-        location.machines.sort_by(&:name).each do |m|
-          machines.push(
-            id: m.id,
-            name: m.name,
-            year: m.year,
-            manufacturer: m.manufacturer,
-            ipdb_link: m.ipdb_link,
-            ipdb_id: m.ipdb_id,
-            opdb_id: m.opdb_id
-          )
+        if params[:machines_only]
+          machines = location.machine_names
+        else
+          location.machines.sort_by(&:name).each do |m|
+            machines.push(
+              id: m.id,
+              name: m.name,
+              year: m.year,
+              manufacturer: m.manufacturer,
+              ipdb_link: m.ipdb_link,
+              ipdb_id: m.ipdb_id,
+              opdb_id: m.opdb_id
+            )
+          end
         end
 
         return_response(machines, 'machines')
