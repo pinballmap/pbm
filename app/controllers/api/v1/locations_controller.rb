@@ -195,7 +195,7 @@ module Api
       param :by_at_least_n_machines, Integer, desc: 'Only locations with N or more machines', required: false
       param :by_at_least_n_machines_type, Integer, desc: 'Only locations with N or more machines', required: false
       param :no_details, Integer, desc: 'Omit data that app does not need from pull', required: false
-      formats ['json']
+      formats %w[json geojson]
       def within_bounding_box
         except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at] : nil
 
@@ -209,33 +209,35 @@ module Api
           locations_within = apply_scopes(Location).includes(:machines).within_bounding_box(bounds).uniq
         end
 
-        locations_geojson = locations_within.map do |location|
-          {
-            type: 'Feature',
-            id: location.id,
-            geometry: {
-              type: 'Point',
-              coordinates: [location.lon.to_f, location.lat.to_f]
-            },
-            properties: {
-              name: location.name,
-              street: location.street,
-              city: location.city,
-              state: location.state,
-              updated_at: location.updated_at,
-              location_type_id: location.location_type_id,
-              operator_id: location.operator_id,
-              machine_ids: location.machine_ids,
-              machine_names_first: location.machine_names_first,
-              num_machines: location.num_machines
+        if params[:format] == 'geojson'
+          locations_geojson = locations_within.map do |location|
+            {
+              type: 'Feature',
+              id: location.id,
+              geometry: {
+                type: 'Point',
+                coordinates: [location.lon.to_f, location.lat.to_f]
+              },
+              properties: {
+                name: location.name,
+                street: location.street,
+                city: location.city,
+                state: location.state,
+                updated_at: location.updated_at,
+                location_type_id: location.location_type_id,
+                operator_id: location.operator_id,
+                machine_ids: location.machine_ids,
+                machine_names_first: location.machine_names_first,
+                num_machines: location.num_machines
+              }
             }
+          end
+
+          container_geojson = {
+            type: 'FeatureCollection',
+            features: locations_geojson
           }
         end
-
-        container_geojson = {
-          type: 'FeatureCollection',
-          features: locations_geojson
-        }
 
         if !locations_within.empty?
           respond_to do |format|
