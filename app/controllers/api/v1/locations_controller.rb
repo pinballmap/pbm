@@ -180,7 +180,7 @@ module Api
         end
       end
 
-      api :GET, '/api/v1/locations/within_bounding_box.json', 'Returns locations within transmitted bounding box'
+      api :GET, '/api/v1/locations/within_bounding_box(.:format)', 'Returns locations within transmitted bounding box'
       description 'This sends locations within the sw_corner and ne_corner bounding box. It includes a list of machines at the location.'
       param :swlat, String, 'SW_Latitude', required: true
       param :swlon, String, 'SW_Longitude', required: true
@@ -209,8 +209,39 @@ module Api
           locations_within = apply_scopes(Location).includes(:machines).within_bounding_box(bounds).uniq
         end
 
+        locations_geojson = locations_within.map do |location|
+          {
+            type: 'Feature',
+            id: location.id,
+            geometry: {
+              type: 'Point',
+              coordinates: [location.lon.to_f, location.lat.to_f]
+            },
+            properties: {
+              name: location.name,
+              street: location.street,
+              city: location.city,
+              state: location.state,
+              updated_at: location.updated_at,
+              location_type_id: location.location_type_id,
+              operator_id: location.operator_id,
+              machine_ids: location.machine_ids,
+              machine_names_first: location.machine_names_first,
+              num_machines: location.num_machines
+            }
+          }
+        end
+
+        container_geojson = {
+          type: 'FeatureCollection',
+          features: locations_geojson
+        }
+
         if !locations_within.empty?
-          return_response(locations_within, 'locations', [], %i[machine_names_first machine_ids num_machines], 200, except)
+          respond_to do |format|
+            format.json { return_response(locations_within, 'locations', [], %i[machine_names_first machine_ids num_machines], 200, except) }
+            format.geojson { render json: container_geojson.to_json }
+          end
         else
           return_response('No locations found within bounding box.', 'errors')
         end

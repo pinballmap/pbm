@@ -842,6 +842,15 @@ HERE
 
       expect(response.body).to include('Close_1')
       expect(response.body).to_not include('Close_2')
+
+      get '/api/v1/locations/within_bounding_box.geojson', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427 }
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(2)
+
+      locations = parsed_body['locations']
+      expect(response.body).to include('FeatureCollection')
+      expect(response.body).to include('Point')
     end
   end
 
