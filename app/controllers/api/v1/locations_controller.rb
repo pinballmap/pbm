@@ -223,6 +223,7 @@ module Api
                 street: location.street,
                 city: location.city,
                 state: location.state,
+                zip: location.zip,
                 updated_at: location.updated_at,
                 location_type_id: location.location_type_id,
                 operator_id: location.operator_id,
