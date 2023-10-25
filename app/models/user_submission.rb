@@ -4,6 +4,8 @@ class UserSubmission < ApplicationRecord
   belongs_to :location, optional: true
   belongs_to :machine, optional: true
 
+  geocoded_by :lat_and_lon, latitude: :lat, longitude: :lon
+
   scope :region, (->(name) { where(region_id: Region.find_by_name(name.downcase).id) })
 
   NEW_LMX_TYPE = 'new_lmx'.freeze

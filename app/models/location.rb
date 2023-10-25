@@ -270,7 +270,7 @@ class Location < ApplicationRecord
     self.date_last_updated = Date.today
     self.last_updated_by_user = user
 
-    UserSubmission.create(user_name: user&.username, location_name: name, city_name: city, region_id: region&.id, location: self, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE, submission: "#{user ? user.username : 'Someone'} confirmed the lineup at #{name} in #{city}", user: user)
+    UserSubmission.create(user_name: user&.username, location_name: name, city_name: city, lat: lat, lon: lon, region_id: region&.id, location: self, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE, submission: "#{user ? user.username : 'Someone'} confirmed the lineup at #{name} in #{city}", user: user)
 
     save(validate: false)
   end
