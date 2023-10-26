@@ -22,4 +22,8 @@ class UserSubmission < ApplicationRecord
   def user_email
     user ? user.email : ''
   end
+
+  def lat_and_lon
+    [lat, lon].join(', ')
+  end
 end

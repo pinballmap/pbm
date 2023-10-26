@@ -78,13 +78,11 @@ module Api
         end
         min_date_of_submission = params[:min_date_of_submission] ? params[:min_date_of_submission].to_date.beginning_of_day : 1.month.ago.beginning_of_day
 
-        locations = apply_scopes(Location).near([params[:lat], params[:lon]], max_distance)
-
         user_submissions = nil
         if params[:submission_type]
-          user_submissions = UserSubmission.where(created_at: min_date_of_submission..Date.today.end_of_day, location_id: locations.map(&:id), submission_type: params[:submission_type])
+          user_submissions = UserSubmission.where.not(lat: nil).where(created_at: min_date_of_submission..Date.today.end_of_day, submission_type: params[:submission_type]).near([params[:lat], params[:lon]], max_distance, order: false)
         else
-          user_submissions = UserSubmission.where(created_at: min_date_of_submission..Date.today.end_of_day, location_id: locations.map(&:id))
+          user_submissions = UserSubmission.where.not(lat: nil).where(created_at: min_date_of_submission..Date.today.end_of_day).near([params[:lat], params[:lon]], max_distance, order: false)
         end
 
         sorted_submissions = user_submissions.order('created_at DESC')
