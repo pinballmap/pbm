@@ -8,6 +8,8 @@ module Api
       has_scope :region, :limit
 
       DEFAULT_TOP_N_MACHINES = 25
+      DEFAULT_MOST_RECENT_MACHINES = 3
+      MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION = 50
 
       api :GET, '/api/v1/region/:region/location_machine_xrefs.json', 'Get all machines at locations in a single region'
       param :region, String, desc: 'Name of the Region you want to see events for', required: true
@@ -128,6 +130,37 @@ limit #{top_n}
 HERE
 
         return_response(records_array, 'machines')
+      end
+
+      api :GET, '/api/v1/location_machine_xrefs/most_recent_by_lat_lon.json', 'Returns the most recently added machines near transmitted lat/lon'
+      description "This sends you the most recent machines added near your lat/lon (defaults to within #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles)."
+      param :lat, String, desc: 'Latitude', required: true
+      param :lon, String, desc: 'Longitude', required: true
+      param :max_distance, String, desc: 'Closest location within "max_distance" miles, with a max of 500', required: false
+      formats ['json']
+      def most_recent_by_lat_lon
+        if params[:max_distance].blank?
+          max_distance = MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
+        elsif params[:max_distance].to_i > 500
+          max_distance = 500
+        else
+          max_distance = params[:max_distance].to_i
+        end
+
+        closest_locations = apply_scopes(Location).includes(:machines).near([params[:lat], params[:lon]], max_distance).uniq
+        
+        last_N_machines_added = Hash.new
+        closest_locations.each do |l|
+          l.location_machine_xrefs.each do |lmx|
+            last_N_machines_added[lmx.created_at] = "#{lmx.machine.name} @ #{l.name}"
+          end
+        end
+      
+        if !closest_locations.empty?
+          return_response(last_N_machines_added.sort.last(DEFAULT_MOST_RECENT_MACHINES).collect {|a| a[1]}, 'most_recently_added_machines', [], %i[], 200)
+        else
+          return_response("No locations within #{max_distance} miles.", 'errors')
+        end
       end
 
       api :PUT, '/api/v1/location_machine_xrefs/:location_machine_xref_id/ic_toggle.json', "Toggle a machine's Insider Connected status"

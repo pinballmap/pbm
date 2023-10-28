@@ -51,6 +51,7 @@ Rails.application.routes.draw do
         put :ic_toggle
         collection do
           get :top_n_machines
+          get :most_recent_by_lat_lon
         end
       end
       resources :locations, only: [:index, :show, :update] do
