@@ -20,8 +20,9 @@
 				<div class="form-inputs">
 					<span class="font14 grey">(How about your initials?)</span>
 					<%= f.input :username, :required => true, :autofocus => true, as: :string %>
+					<span class="font14 grey mt_10 block">(Disposable emails are not allowed and you will get banned)</span>
 					<%= f.input :email, :required => true, :autofocus => true, :input_html => {:minlength => 4} %>
-					<span class="font14 pt_5 grey block">(Choose a password that you don't use elsewhere)</span>
+					<span class="font14 pt_5 grey block mt_10">(Choose a password that you don't use elsewhere)</span>
 					<%= f.input :password, :required => true %>
 					<%= f.input :password_confirmation, :required => true %>
 					<p class="red">Security Question (required)</p>
