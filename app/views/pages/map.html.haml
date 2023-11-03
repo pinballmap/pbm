@@ -40,7 +40,7 @@
   #mapFollow_wrapper.hide_button.toggle_btn_reg
     %span.red.font14.p_5{:id => "zoom_in_more"}
       Zoom in further to refresh results!
-    %button{:onclick => "refreshResults"} Search Here
+    %button{:onclick => "refreshResults()"} Search Here
   #search_link_wrapper.hide_button.toggle_btn_reg
     =link_to "Link to this Search Result", "", :id => "search_link"
 
