@@ -65,6 +65,7 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
     });
     map.addControl(new mapboxgl.ScaleControl({unit: 'imperial'}), 'bottom-right');
     map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+    map.addControl(new mapboxgl.FullscreenControl(), 'top-right');
   }
 
   for (i in ids) {
