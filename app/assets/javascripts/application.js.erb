@@ -63,7 +63,8 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
       style: 'mapbox://styles/mapbox/streets-v12',
       projection: 'mercator'
     });
-    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.ScaleControl({unit: 'imperial'}), 'bottom-right');
+    map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
   }
 
   for (i in ids) {
