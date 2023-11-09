@@ -59,6 +59,22 @@
     $('meta[property="og:description"]').attr("content", "#{desc_for_path(request.path, @region)}");
   }
 
+  let topbutton = document.getElementById("top_button");
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 40 || document.documentElement.scrollTop > 40) {
+      topbutton.style.display = "block";
+    } else {
+      topbutton.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  } 
+
 #results_container
   #search_results
     - unless @locations.size == 1
