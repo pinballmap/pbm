@@ -51,9 +51,12 @@
   });
 
   $('#address_search_form').on('submit', function(e) {
-
     hideSearchModal();
-    $(".mask").hide();
+    operatorVal = '?by_operator_id=' + $('#by_operator_id').val();
+
+    $('#search_link_wrapper').css('display','block');
+
+    window.location.href = operatorVal
 
     e.preventDefault();
     search_string = $("#address_search_form :input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
