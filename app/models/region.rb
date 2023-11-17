@@ -268,10 +268,10 @@ HERE
 
   def delete_all_expired_events
     events.each do |e|
-      if e.end_date && (e.end_date < 1.week.ago)
-        e.destroy
-      elsif e.start_date && (e.start_date < 1.week.ago)
-        e.destroy
+      if e.start_date && !e.end_date
+        e.destroy if e.start_date < 1.week.ago
+      elsif e.end_date
+        e.destroy if e.end_date < 1.week.ago
       end
     end
   end
