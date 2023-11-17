@@ -23,6 +23,10 @@
     {
       "command": "rake import_ifpa_tournaments",
       "schedule": "0 0 * * *"
+    },
+    {
+      "command": "rake delete_expired_events",
+      "schedule": "30 20 * * 0"
     }
   ]
 }

@@ -68,6 +68,20 @@ describe Region do
     end
   end
 
+  describe '#delete_all_expired_events' do
+    it 'should remove all expired events' do
+      FactoryBot.create(:event, region: @region, name: 'Old Event 1', start_date: Date.today - 2.week, end_date: Date.today - 2.week)
+      FactoryBot.create(:event, region: @region, name: 'Old Event 2', start_date: Date.today - 2.week)
+      FactoryBot.create(:event, region: @region, name: 'New Event 1', start_date: Date.today, end_date: Date.today)
+      FactoryBot.create(:event, region: @region, name: 'New Event 2', start_date: Date.today)
+
+      @region.delete_all_expired_events
+
+      expect(Event.all.count).to eq(2)
+      expect(Event.first.name).to eq('New Event 1')
+    end
+  end
+
   describe '#generate_daily_digest_comments_email_body' do
     it 'should return nil if there are no comments that day' do
       FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)

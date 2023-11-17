@@ -266,6 +266,16 @@ HERE
     end
   end
 
+  def delete_all_expired_events
+    events.each do |e|
+      if e.end_date && (e.end_date < 1.week.ago)
+        e.destroy
+      elsif e.start_date && (e.start_date < 1.week.ago)
+        e.destroy
+      end
+    end
+  end
+
   def move_to_new_region(new_region)
     locations.each do |l|
       l.region = new_region
