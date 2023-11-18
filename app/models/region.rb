@@ -266,11 +266,19 @@ HERE
     end
   end
 
+  def self.delete_all_regionless_events
+    Event.where('region_id is null').each do |e|
+      e.destroy
+    end
+  end
+
   def delete_all_expired_events
     events.each do |e|
-      if e.start_date && !e.end_date
+      if e.start_date.blank? && !e.end_date.blank?
+        e.destroy
+      elsif !e.start_date.blank? && e.end_date.blank?
         e.destroy if e.start_date < 1.week.ago
-      elsif e.end_date
+      elsif !e.end_date.blank?
         e.destroy if e.end_date < 1.week.ago
       end
     end
