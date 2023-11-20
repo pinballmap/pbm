@@ -69,7 +69,7 @@ describe Region do
   end
 
   describe '#delete_all_regionless_events' do
-    it 'should remove all expired events' do
+    it 'should remove all regionless events' do
       FactoryBot.create(:event, region: @region, name: 'New Event 1', start_date: Date.today, end_date: Date.today)
       FactoryBot.create(:event, region: nil, name: 'Event No Region', start_date: Date.today - 1.day)
 
