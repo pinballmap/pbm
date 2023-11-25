@@ -75,11 +75,14 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default_url_options = { :protocol => 'https', :host => 'pinballmap.com' }
   config.middleware.use ExceptionNotification::Rack,
+    ignore_crawlers: %w{Googlebot bingbot AhrefsBot},
+    ignore_exceptions: ['ActionController::ParameterMissing', 'ActionView::Template::Error'] + ExceptionNotifier.ignored_exceptions,
     :email => {
       :email_prefix => "[PBM Exception] ",
       :sender_address => %{"PBM Exceptions" <exceptions@pinballmap.com>},
       :exception_recipients => %w{admin@pinballmap.com}
-    }
+    },
+    error_grouping: true
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
