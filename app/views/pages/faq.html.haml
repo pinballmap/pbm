@@ -6,98 +6,102 @@
         On this page, we'll respond to some frequently asked questions (and frequently commented comments). If you have a question or comment,
         = link_to 'contact us.', about_path('portland')
     .column.w_560.mt_5
-      %p.question#1 Can I use Pinball Map data on my own site?
-      %ul.answer
-        %li
-          You can use our public API to fetch data and use it for your app. When using Pinball Map data, you must include attribution and a link back to this site. If you need bulk data for a project, please get in touch. We have collaborated with many folks on their projects, from student projects to services by major pinball companies. Please do not just scrape large amounts of this site for your own arcade/pinball mapping site, with no attribution. Thousands of people have been contributing their time and effort to this site since 2008.
-      %p.question#2 This machine is no longer at this location.
-      %ul.answer
-        %li
-          This is a user-powered map, and YOU can remove the machine from the location. On the website, just click the "remove" button that's below the machine name. On the app, click on the machine name, and then look for a "remove" button or trash can icon.
+      %p.question#1 
+        =link_to 'Can I use Pinball Map data on my own site?', '#1', :class => "no_underline"
+      %p.answer
+        You can use our public API to fetch data and use it for your app. When using Pinball Map data, you must include attribution and a link back to this site. If you need bulk data for a project, please get in touch. We have collaborated with many folks on their projects, from student projects to services by major pinball companies. Please do not just scrape large amounts of this site for your own arcade/pinball mapping site, with no attribution. Thousands of people have been contributing their time and effort to this site since 2008.
       %hr
-      %p.question#3 This location closed/no longer has machines.
-      %ul.answer
-        %li
-          Simply remove all the machines from it. We get notified once a week about empty locations, and then we delete them (sometimes we wait longer to delete them because we want to verify that the machines are really gone). So, no need to tell us. But still, thanks for telling us and for updating the map!
+      %p.question#2 
+        =link_to 'This machine is no longer at this location.', '#2', :class => "no_underline"
+      %p.answer
+        This is a user-powered map, and YOU can remove the machine from the location. On the website, just click the "remove" button that's below the machine name. On the app, click on the machine name, and then look for a "remove" button or trash can icon.
       %hr
-      %p.question#4 This location is temporarily closed. Should I remove the machines from it?
-      %ul.answer
-        %li
-          No. If a place is seasonal or closed due to restrictions, and is expected to re-open, please do not remove the machines from it. Just edit the location description to say it's temporarily closed. You can also make sure the phone number is listed, so that people can easily call and check on the status.
+      %p.question#3
+        =link_to 'This location closed/no longer has machines.', '#3', :class => "no_underline"
+      %p.answer
+        Simply remove all the machines from it. We get notified once a week about empty locations, and then we delete them (sometimes we wait longer to delete them because we want to verify that the machines are really gone). So, no need to tell us. But still, thanks for telling us and for updating the map!
       %hr
-      %p.question#5 This location has moved. Should I remove the machines from it and re-submit?
-      %ul.answer
-        %li
-          No. Administrators can change the address. Please 
-          = link_to 'let us know', about_path('portland')
-          if a location has moved. It's preferable to simply change the address because that retains the location history.
+      %p.question#4 
+        =link_to 'This location is temporarily closed. Should I remove the machines from it?', '#4', :class => "no_underline"
+      %p.answer
+        No. If a place is seasonal or closed due to restrictions, and is expected to re-open, please do not remove the machines from it. Just edit the location description to say it's temporarily closed. You can also make sure the phone number is listed, so that people can easily call and check on the status.
       %hr
-      %p.question#6 I see you have a ranking system for contributors. How do I earn a contributor badge and title?
-      %ul.answer
-        %li
-          Great question! As a small token of acknowledgement of your contributions to the map, if you make more than 50 contributions, we christen you a "Super Mapper". After 250 contributions, you are a "Legendary Mapper". And after 500 amazing map contributions, you are a "Grand Champ Mapper"!
+      %p.question#5 
+        =link_to 'This location has moved. Should I remove the machines from it and re-submit?', '#5', :class => "no_underline"
+      %p.answer
+        No. Administrators can change the address. Please 
+        = link_to 'let us know', about_path('portland')
+        if a location has moved. It's preferable to simply change the address because that retains the location history.
       %hr
-      %p.question#7 How do I add a new location?
-      %ul.answer
-        %li
-          Fill out
-          =link_to 'this form.', map_location_suggest_path
+      %p.question#6 
+        =link_to 'I see you have a ranking system for contributors. How do I earn a contributor badge and title?', '#6', :class => "no_underline"
+      %p.answer
+        Great question! As a small token of acknowledgement of your contributions to the map, if you make more than 50 contributions, we christen you a "Super Mapper". After 250 contributions, you are a "Legendary Mapper". And after 500 amazing map contributions, you are a "Grand Champ Mapper"!
       %hr
-      %p.question#8 Can I add my private collection to the map?
-      %ul.answer
-        %li
-          No. Pinball Map only lists publicly-accessible locations. The definition of 'public' varies - some places have entrance fees, or limited hours. But overall, the location has to be inclusive and accessible. So please don't submit your house or a private club that excludes people from becoming members.
+      %p.question#7
+        =link_to 'How do I add a new location?', '#7', :class => "no_underline"
+      %p.answer
+        Fill out
+        =link_to 'this form.', map_location_suggest_path
       %hr
-      %p.question#9 How do I remove a machine from a location?
-      %ul.answer
-        %li
-          While logged in, click the "trash can" icon next to a machine name.
+      %p.question#8 
+        =link_to 'Can I add my private collection to the map?', '#8', :class => "no_underline"
+      %p.answer
+        No. Pinball Map only lists publicly-accessible locations. The definition of 'public' varies - some places have entrance fees, or limited hours. But overall, the location has to be inclusive and accessible. So please don't submit your house or a private club that excludes people from becoming members.
       %hr
-      %p.question#10 When I search for a city, the city is listed twice (and maybe the second instance of it is misspelled). Or, I see the same location listed twice. Or, the place is in the wrong spot on the map. Etc.
-      %ul.answer
-        %li
-          These are data entry mistakes. Please 
-          = link_to 'contact us', about_path('portland')
-          so we can fix them.
+      %p.question#9 
+        =link_to 'How do I remove a machine from a location?', '#9', :class => "no_underline"
+      %p.answer
+        While logged in, click the "trash can" icon next to a machine name.
       %hr
-      %p.question#11 How do I get listed as an operator?
-      %ul.answer
-        %li
-          = link_to 'Contact us', about_path('portland')
-          and we'll add you. Check this
-          = link_to 'blog post', 'https://blog.pinballmap.com/2015/10/22/operators-we-want-you/', :target => '_blank'
-          about the benefits of being listed in our system!
+      %p.question#10 
+        =link_to 'When I search for a city, the city is listed twice (and maybe the second instance of it is misspelled). Or, I see the same location listed twice. Or, the place is in the wrong spot on the map. Etc.', '#10', :class => "no_underline"
+      %p.answer
+        These are data entry mistakes. Please 
+        = link_to 'contact us', about_path('portland')
+        so we can fix them.
       %hr
-      %p.question#12 I am an operator, and people are leaving annoying comments on my machines. Can you make them stop, or disable comments on my machines?
-      %ul.answer
-        %li
-          We can't control the comments that people make, nor will we disable comments at an individual venue. Some operators find reports of technical issues to be very useful; and some do not. Some operators wish that folks would only leave "general" machine comments and not "specific" comments. On the other hand, most regular users find machine comments to be a very valuable feature. It is difficult to perfectly cater to everyone. Our suggestions to operators (and regular users):
-        %br
-        %ul
-          %li
-            A comment about a machine issue is not going to hurt your business in the short term. Pinball Map often gets blamed for "making" operators rush across town to fix and issue and write a comment saying the issue is fixed.
-          %li
-            Users definitely notice when operators remove and re-add the same machine in order to clear out comments they don't like. It makes it seem like the operator is whitewashing comments rather than fixing issues. We strongly discourage doing this, and instead ask that operators simply write a note saying the issue is fixed! This history is actually really valuable.
-          %li
-            To regular users leaving comments: It is generally preferable to directly tell operators about problems. For example, in person or with a note to staff at the venue. Many pinball issues are minor and temporary, and leaving a comment about them on the map puts it "on the record" and creates a burden for the operator to then write a comment about the issue being fixed.
-          %li
-            We regularly get messages from operators and owners demanding that a user be banned from leaving comments on their location. Most often, the comments in question are not slanderous, but have some sass or "off-topic" messages. These requests are a big headache for us, especially because they do not warrant any action toward the user. So please, help us! Be mindful that operators are very sensitive about the content on this site, and they take it out on us.
+      %p.question#11 
+        =link_to 'How do I get listed as an operator?', '#11', :class => "no_underline"
+      %p.answer
+        = link_to 'Contact us', about_path('portland')
+        and we'll add you. Check this
+        = link_to 'blog post', 'https://blog.pinballmap.com/2015/10/22/operators-we-want-you/', :target => '_blank'
+        about the benefits of being listed in our system!
       %hr
-      %p.question#13 Why was my comment removed?
-      %ul.answer
+      %p.question#12 
+        =link_to "I am an operator or business owner, and people are leaving comments that I don't like on my machines. Can you make them stop, or disable comments on my machines?", '#12', :class => "no_underline"
+      %p.answer
+        The short answer is that we will/can not disable comments at an individual venue or for an individual user. We understand that users and operators tend to want conflicting things. Some operators find reports of technical issues to be very useful; and some do not. Some operators wish that folks would only leave "general" machine comments and not "specific" comments. On the other hand, most regular users find machine comments to be a very valuable feature. It is difficult to perfectly cater to everyone, and we cannot control the comments that people make.
+      %p.answer
+        Comments may be removed in some cases (see the next FAQ item). We will always look into your concerns. But please try not to waste our time with your requests. 
+      %p.answer
+        Some suggestions to operators (and regular users):
+      %ul
         %li
-          Our moderators may deem your machine or location comment to be inappropriate because:
-        %br
-        %ul
-          %li
-            It contains a personal attack
-          %li
-            It isn't relevant (for example, promoting a tournament in a machine comment) or constructive
-          %li
-            It is offensive
+          A comment about a machine issue is not going to hurt your business in the short term. Pinball Map often gets blamed for "making" operators rush across town to fix and issue and write a comment saying the issue is fixed.
+        %li
+          Users definitely notice when operators remove and re-add the same machine in order to clear out comments they don't like. It makes it seem like the operator is whitewashing comments rather than fixing issues. We strongly discourage doing this, and instead ask that operators simply write a note saying the issue is fixed! This history is actually really valuable.
+        %li
+          To regular users leaving comments: It is generally preferable to directly tell operators about problems. For example, in person or with a note to staff at the venue. Many pinball issues are minor and temporary, and leaving a comment about them on the map puts it "on the record" and creates a burden for the operator to then write a comment about the issue being fixed.
+        %li
+          We regularly get messages from operators and owners demanding that a user be banned from leaving comments on their location. Most often, the comments in question are not slanderous, but have some sass or "off-topic" messages. These requests are a big headache for us, especially because they do not warrant any action toward the user. So please, help us! Be mindful that operators are very sensitive about the content on this site, and they take it out on us.
       %hr
-      %p.question#14 Why was my account disabled?
-      %ul.answer
+      %p.question#13 
+        =link_to 'Why was my comment removed?', '#13', :class => "no_underline"
+      %p.answer
+        Our moderators may deem your machine or location comment to be inappropriate because:
+      %ul
+        %li
+          It contains a personal attack
+        %li
+          It isn't relevant (for example, promoting a tournament in a machine comment) or constructive
+        %li
+          It is offensive
+      %hr
+      %p.question#14 
+        =link_to 'Why was my account disabled?', '#14', :class => "no_underline"
+      %ul
         %li
           If your account has been used to mess with data on the site, then we may ban it. Bad behavior includes, but is not limited to: deleting machines that are at a location; adding machines that are not at a location; leaving lots of inappropriate/abusive comments.
         %li
