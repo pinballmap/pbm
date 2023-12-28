@@ -3,12 +3,19 @@
     .column.w_320.bg_vlightpurple.center
       %p.red.font18.bold
         Create an Account
-      %p.darkgrey.red
+      %p.darkgrey
         =link_to "Join", new_user_registration_path
         and update Pinball Map! Then you can check this page to see an overview of your contributions.
-      %p
+      %p.bold
         Already have an account?
         =link_to "Login", new_user_session_path
+      %p.darkgrey
+        Once logged in you can Update Email / Update Password / Delete Account by going to the 
+        =link_to "user edit", edit_user_registration_path
+        page.
+      %p.darkgrey
+        Have questions or problems?
+        =link_to "Contact us", about_path('portland')
     .column.w_560.mt_5
       %div.darkgrey.stats.font18.bold
         %div.stat_num_o
