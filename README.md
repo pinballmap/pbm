@@ -18,15 +18,12 @@ This repo is the codebase for [pinballmap.com](https://pinballmap.com). The code
 Available here: [http://pinballmap.com/api/v1/docs](http://pinballmap.com/api/v1/docs)
 
 ## Mac Environment Setup
-Below is a summary of the steps that [Brian Hanifin](https://github.com/brianhanifin) undertook to get the site up and running on OS X 10.9. If you would like to contribute, and have any trouble, please ask.
 
 1. Fork it on Github. Then:
 * `git clone https://github.com/{you}/pbm.git`
 * `git remote add upstream git://github.com/pinballmap/pbm.git`
 
-2. Install Ruby and a Ruby version manager
-* Follow the Ruby install instructions at [railsapps.github.io/installrubyonrails-mac.html](http://railsapps.github.io/installrubyonrails-mac.html). Make sure you also download ruby-3.1.4
-* (optional if using RVM): `rvm --default use ruby-3.1.4` (or use one of the the more recommended ruby version managers like asdf or rbenv that set the ruby version automatically)
+2. Install the [correct ruby version](https://github.com/pinballmap/pbm/blob/master/.ruby-version)
 
 3. Install dependencies
 * `bundle install`
@@ -74,16 +71,8 @@ If the site loads properly it will be an empty version of pinballmap.com, then a
 * createuser --interactive
 * createdb pbm_dev
 
-or read:
+4. Install the [correct ruby version](https://github.com/pinballmap/pbm/blob/master/.ruby-version)
 
-* ubuntu/debian/linux mint: [maybe this](https://www.codeproject.com/Articles/898303/Installing-and-Configuring-PostgreSQL-on-Linux-Min)
-* arch/manjaro: [this](http://rmaicle.github.io/posts/b1n4mAMm9P34wNR) and [then this](https://wiki.archlinux.org/index.php/PostgreSQL)
-
-4. Install and setup ruby and rvm:
-
-* `curl -L https://get.rvm.io | bash -s stable --ruby`
-* `rvm install ruby-3.1.4`
-* `rvm --default use ruby-3.1.4`
 * `gem install bundler`
 * `bundle install`
 * `cp config/database.yml.example config/database.yml` to create your database.yml for development
