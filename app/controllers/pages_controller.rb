@@ -125,11 +125,11 @@ class PagesController < ApplicationController
     @answers = %w[pinball Pinball PINBALL]
 
     if user
-      @contact_thanks = 'Thanks for contacting us!'.freeze
+      @contact_thanks = 'Thanks for contacting us! If you are expecting a reply, check your spam folder or whitelist admin@pinballmap.com'.freeze
       send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
     else
       if @answers.any? { |w| params['security_test'][w] }
-        @contact_thanks = 'Thanks for contacting us!'.freeze
+        @contact_thanks = 'Thanks for contacting us! If you are expecting a reply, check your spam folder or whitelist admin@pinballmap.com'.freeze
         send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
       else
         flash.now[:alert] = 'You failed the security test. Please go back and try again.'
