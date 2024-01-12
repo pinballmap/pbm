@@ -62,10 +62,12 @@ Here's a list of comments made on your pinball machines yesterday on Pinball Map
 Comment: Sassy Comment
 Location: Cleo Corner - 303 Southeast 3rd Avenue, Portland, OR, 97214
 Machine: Sassy
+Date: #{lmx1.created_at.strftime('%b %d, %Y - %I:%M%p %Z')}
 
 Comment: Cleo Comment
 Location: Cleo Corner - 303 Southeast 3rd Avenue, Portland, OR, 97214
 Machine: Cleo
+Date: #{lmx2.created_at.strftime('%b %d, %Y - %I:%M%p %Z')}
 HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
@@ -97,10 +99,12 @@ Here's a list of comments made on your pinball machines yesterday on Pinball Map
 Comment: Sassy Comment
 Location: Cleo Corner - 303 Southeast 3rd Avenue, Portland, OR, 97214
 Machine: Sassy
+Date: #{lmx1.created_at.strftime('%b %d, %Y - %I:%M%p %Z')}
 
 Comment: Cleo Comment
 Location: Cleo Corner - 303 Southeast 3rd Avenue, Portland, OR, 97214
 Machine: Cleo
+Date: #{lmx2.created_at.strftime('%b %d, %Y - %I:%M%p %Z')}
 HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
