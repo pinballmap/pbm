@@ -52,9 +52,9 @@ describe Operator do
       lmx1 = FactoryBot.create(:location_machine_xref, location: l, machine: m1)
       lmx2 = FactoryBot.create(:location_machine_xref, location: l, machine: m2)
 
-      FactoryBot.create(:machine_condition, location_machine_xref: lmx1, comment: 'Sassy Comment', created_at: (Time.now - 1.day).beginning_of_day)
-      FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Cleo Comment', created_at: (Time.now - 1.day).beginning_of_day)
-      FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Old Cleo Comment', created_at: Date.today - 2.days)
+      mc1 = FactoryBot.create(:machine_condition, location_machine_xref: lmx1, comment: 'Sassy Comment', created_at: (Time.now - 1.day).beginning_of_day)
+      mc2 = FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Cleo Comment', created_at: (Time.now - 1.day).beginning_of_day)
+      mc3 = FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Old Cleo Comment', created_at: Date.today - 2.days)
 
       body = <<HERE
 Here's a list of comments made on your pinball machines yesterday on Pinball Map. We're sending this in the hope that it will help you identify, and fix, problems. If you don't want to receive these messages, please contact map@pinballmap.com.
@@ -62,12 +62,12 @@ Here's a list of comments made on your pinball machines yesterday on Pinball Map
 Comment: Sassy Comment
 Location: Cleo Corner - 303 Southeast 3rd Avenue, Portland, OR, 97214
 Machine: Sassy
-Date: #{lmx1.created_at.strftime('%b %d, %Y - %I:%M%p %Z')}
+Date: #{mc1.updated_at.strftime('%b %d, %Y - %I:%M%p %Z')}
 
 Comment: Cleo Comment
 Location: Cleo Corner - 303 Southeast 3rd Avenue, Portland, OR, 97214
 Machine: Cleo
-Date: #{lmx2.created_at.strftime('%b %d, %Y - %I:%M%p %Z')}
+Date: #{mc2.updated_at.strftime('%b %d, %Y - %I:%M%p %Z')}
 HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
@@ -89,9 +89,9 @@ HERE
       lmx1 = FactoryBot.create(:location_machine_xref, location: l, machine: m1)
       lmx2 = FactoryBot.create(:location_machine_xref, location: l, machine: m2)
 
-      FactoryBot.create(:machine_condition, location_machine_xref: lmx1, comment: 'Sassy Comment', created_at: (Time.now - 1.day).beginning_of_day)
-      FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Cleo Comment', created_at: (Time.now - 1.day).beginning_of_day)
-      FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Old Cleo Comment', created_at: Date.today - 2.days)
+      mc1 = FactoryBot.create(:machine_condition, location_machine_xref: lmx1, comment: 'Sassy Comment', created_at: (Time.now - 1.day).beginning_of_day)
+      mc2 = FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Cleo Comment', created_at: (Time.now - 1.day).beginning_of_day)
+      mc3 = FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Old Cleo Comment', created_at: Date.today - 2.days)
 
       body = <<HERE
 Here's a list of comments made on your pinball machines yesterday on Pinball Map. We're sending this in the hope that it will help you identify, and fix, problems. If you don't want to receive these messages, please contact map@pinballmap.com.
@@ -99,12 +99,12 @@ Here's a list of comments made on your pinball machines yesterday on Pinball Map
 Comment: Sassy Comment
 Location: Cleo Corner - 303 Southeast 3rd Avenue, Portland, OR, 97214
 Machine: Sassy
-Date: #{lmx1.created_at.strftime('%b %d, %Y - %I:%M%p %Z')}
+Date: #{mc1.updated_at.strftime('%b %d, %Y - %I:%M%p %Z')}
 
 Comment: Cleo Comment
 Location: Cleo Corner - 303 Southeast 3rd Avenue, Portland, OR, 97214
 Machine: Cleo
-Date: #{lmx2.created_at.strftime('%b %d, %Y - %I:%M%p %Z')}
+Date: #{mc2.updated_at.strftime('%b %d, %Y - %I:%M%p %Z')}
 HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(

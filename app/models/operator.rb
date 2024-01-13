@@ -40,7 +40,7 @@ class Operator < ApplicationRecord
 Comment: #{mc.comment}
 Location: #{mc.location_machine_xref.location.name} - #{mc.location_machine_xref.location.full_street_address}
 Machine: #{mc.location_machine_xref.machine.name}
-Date: #{mc.location_machine_xref.created_at.strftime('%b %d, %Y - %I:%M%p %Z')}
+Date: #{mc.updated_at.strftime('%b %d, %Y - %I:%M%p %Z')}
 HERE
     end
 
