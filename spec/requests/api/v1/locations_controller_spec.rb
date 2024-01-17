@@ -247,6 +247,12 @@ HERE
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::FILTERING_REQUIRED_MSG)
     end
 
+    it 'forces filters to have a param value' do
+      get '/api/v1/locations.json?region='
+
+      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::FILTERING_REQUIRED_MSG)
+    end
+
     it 'respects stern_army filter' do
       FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'la'), name: 'Cleo', is_stern_army: 't')
       FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'chicago'), name: 'Bawb')
@@ -268,6 +274,15 @@ HERE
       expect(response.body).to include('777')
       expect(response.body).to include('foo bar')
       expect(response.body).to_not include('Bawb')
+    end
+
+    it 'disrespects to the combination of regionless_only and with_lmx by not including all lmx' do
+      location_type = FactoryBot.create(:location_type)
+      FactoryBot.create(:location, region: nil, name: 'Regionless')
+      get '/api/v1/locations.json', params: { regionless_only: 1, with_lmx: 1 }
+
+      expect(response.body).to include('Regionless')
+      expect(response.body).to_not include('machine_conditions')
     end
 
     it 'returns all locations in a region within scope without all lmx data' do

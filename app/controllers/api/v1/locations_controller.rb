@@ -72,14 +72,14 @@ module Api
       param :regionless_only, Integer, desc: 'Show only regionless locations', required: false
       formats ['json']
       def index
-        return return_response(FILTERING_REQUIRED_MSG, 'errors') unless params[:region] || params[:by_location_name] || params[:by_location_id] || params[:by_machine_id] || params[:by_ipdb_id] || params[:by_opdb_id] || params[:by_machine_name] || params[:by_city_id] || params[:by_machine_group_id] || params[:by_zone_id] || params[:by_operator_id] || params[:by_type_id] || params[:by_at_least_n_machines_type] || params[:by_at_least_n_machines] || params[:by_is_stern_army] || params[:regionless_only]
+        return return_response(FILTERING_REQUIRED_MSG, 'errors') unless %i[region by_location_name by_location_id by_machine_id by_ipdb_id by_opdb_id by_machine_name by_city_id by_machine_group_id by_zone_id by_operator_id by_type_id by_at_least_n_machines_type by_at_least_n_machines by_is_stern_army regionless_only].any? { params[_1].present? }
 
         except = params[:no_details] ? %i[phone website description created_at updated_at date_last_updated last_updated_by_user_id region_id] : nil
 
         locations = nil
         if params[:no_details] || params[:by_is_stern_army]
           locations = apply_scopes(Location).includes(:machines, :last_updated_by_user).order('locations.name').uniq
-        elsif params[:with_lmx]
+        elsif params[:with_lmx] && !params[:regionless_only]
           locations = apply_scopes(Location).includes({ location_machine_xrefs: %i[user machine_conditions] }, :machines, :last_updated_by_user).order('locations.name').uniq
         else
           locations = apply_scopes(Location).includes(:machines, :last_updated_by_user).order('locations.name').uniq
@@ -94,7 +94,7 @@ module Api
             200,
             except
           )
-        elsif params[:with_lmx]
+        elsif params[:with_lmx] && !params[:regionless_only]
           return_response(
             locations,
             'locations',
