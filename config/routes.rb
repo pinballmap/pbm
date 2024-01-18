@@ -54,6 +54,7 @@ Rails.application.routes.draw do
           get :most_recent_by_lat_lon
         end
       end
+      resources :location_picture_xrefs, only: [:create, :destroy, :show]
       resources :locations, only: [:index, :show, :update] do
         member do
           get :machine_details
