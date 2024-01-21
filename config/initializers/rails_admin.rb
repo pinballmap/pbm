@@ -606,6 +606,7 @@ RailsAdmin.config do |config|
   config.model MachineScoreXref do
     list do
       field :score
+      field :machine, :belongs_to_association
       field :location, :belongs_to_association
       field :user do
         searchable :username
@@ -613,6 +614,7 @@ RailsAdmin.config do |config|
     end
     show do
       field :score
+      field :machine, :belongs_to_association
       field :location, :belongs_to_association
       field :user do
         searchable :username
