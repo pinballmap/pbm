@@ -95,12 +95,15 @@
       event.preventDefault();
       $('#by_location_id').val('');
       $('#by_location_name').val('');
-      $('#by_machine_id').val('');
-      $('#by_machine_name').val(ui.item.value);
-      $('#by_machine_single_id').val('');
-      $('#by_machine_group_id').val('');
-      $('.single_hide').hide();
-      $('#singleVersion').prop('checked', false);
+      if ($('#by_machine_name').val().length === 0) {
+        $('#by_machine_id').val('');
+        $('#by_machine_name').val('');
+        $('#by_machine_single_id').val('');
+        $('#by_machine_group_id').val('');
+        $('.single_hide').hide();
+        $('#singleVersion').prop('checked', false);
+        single_id = '';
+      }
     });
 
     $('#address').bind('input', function(event, ui) {
