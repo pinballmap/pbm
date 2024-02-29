@@ -2,8 +2,39 @@
 = banner('recent_location_activity_location', 'Location activity', icon_path, location)
 %div[location, :recent_location_activity]{:style => 'display:none'}
   - location.recent_activity.take(20).each do |recent_activity|
+    - if (!recent_activity.user_name.blank?)
+      - recent_activity_user =  " by #{recent_activity.user_name}"
+    - else
+      - recent_activity_user = ""
     %div.recent_activity_container
       %div.recent_activity_icon
         =image_tag("icons/#{recent_activity.submission_type}.svg", :alt => "#{recent_activity.submission_type}", :class => '')
       %div.recent_activity_date.font14.bold #{recent_activity.created_at.strftime("%b %d, %Y")}
-      %div.recent_activity_submission.font14 #{recent_activity.submission}
+      %div.recent_activity_submission.font14 
+        - if (recent_activity.submission_type == 'new_lmx')
+          #{recent_activity.machine_name} added
+          - if (!recent_activity.user_name.blank?)
+            by 
+            %span.brightpurple.bold #{recent_activity.user_name}
+        - elsif (recent_activity.submission_type == 'new_condition')
+          - if (recent_activity.comment.blank?)
+            #{recent_activity.submission}
+          - else
+            "#{recent_activity.comment}"
+            - if (!recent_activity.user_name.blank?)
+              %span.brightpurple.bold - #{recent_activity.user_name}
+        - elsif (recent_activity.submission_type == 'remove_machine')
+          #{recent_activity.machine_name} removed
+          - if (!recent_activity.user_name.blank?)
+            by 
+            %span.brightpurple.bold #{recent_activity.user_name}
+        - elsif (recent_activity.submission_type == 'new_msx')
+          High score: #{recent_activity.high_score}
+          - if (!recent_activity.user_name.blank?)
+            by 
+            %span.brightpurple.bold #{recent_activity.user_name}
+        - elsif (recent_activity.submission_type == 'confirm_location')
+          Line-up confirmed
+          - if (!recent_activity.user_name.blank?)
+            by 
+            %span.brightpurple.bold #{recent_activity.user_name}
