@@ -323,7 +323,7 @@ GEM
       get_process_mem (~> 0.2)
       puma (>= 2.7)
     racc (1.7.3)
-    rack (2.2.7)
+    rack (2.2.8.1)
     rack-attack (6.6.1)
       rack (>= 1.0, < 3)
     rack-test (2.1.0)
@@ -528,7 +528,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    yard (0.9.34)
+    yard (0.9.35)
     zeitwerk (2.6.9)
 
 PLATFORMS
