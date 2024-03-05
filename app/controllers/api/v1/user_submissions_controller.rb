@@ -49,7 +49,7 @@ module Api
       def top_users
         sid = Arel::Table.new('user_submissions')
         uid = Arel::Table.new('users')
-        top_users = UserSubmission.where(sid[:user_id].not_eq(13)).select(
+        top_users = UserSubmission.select(
           [
             sid[:user_id], uid[:username], Arel.star.count.as('submission_count')
           ]
