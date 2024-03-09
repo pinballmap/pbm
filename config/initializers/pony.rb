@@ -1,11 +1,11 @@
 Pony.options = {
   :via => :smtp,
   :via_options => {
-    :address => 'smtp.sendgrid.net',
-    :port => '587',
+    :address => 'mail.smtp2go.com',
+    :port => '2525',
     :domain => 'pinballmap.com',
-    :user_name => 'apikey',
-    :password => ENV['SENDGRID_API_KEY'],
+    :user_name => 'pinballmapsmtp2go',
+    :password => ENV['SMTP2GO_API_KEY'],
     :authentication => :plain,
     :enable_starttls_auto => true
   }
