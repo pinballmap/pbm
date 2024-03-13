@@ -5,7 +5,7 @@
 				Why join?
 			</h2>
 			<p>
-				Because updating pinball maps is fun! The maps are kept up to date by you! Signing up is simple, and will allow you to add and remove machines from places, add comments about machines, etc. Plus you can track your contributions.
+				Because updating pinball maps is fun! Also, it's useful to others and it's maintained entirely by people like you! Signing up is simple, and will allow you to add and remove machines from places, add comments about machines, etc. Plus you can track your contributions.
 			</p>
 			<p>
 				We won't share your email address with anyone! View <%= link_to 'Privacy Policy', privacy_path %>.
@@ -28,6 +28,7 @@
 					<p class="red">Security Question (required)</p>
 					<%= f.input :security_test, label: "What are we mapping on this site?" %>
 				</div>
+				<div style="margin-top: 10px;">If you don't receive a confirmation email, <span class="bold brightpurple">check your SPAM folder!</span> And if it's not in there, then contact us.</div>
 				<div class="form-actions">
 					<%= f.button :submit, "Submit" %>
 				</div>
