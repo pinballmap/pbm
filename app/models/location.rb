@@ -157,7 +157,7 @@ class Location < ApplicationRecord
   end
 
   def recent_activity
-    UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confim_location], location_id: self, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC')
+    UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], location_id: self, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC')
   end
 
   def former_machines
