@@ -33,17 +33,17 @@
           - if (!recent_activity.user_name.blank?)
             by 
             %span.red #{recent_activity.user_name}
-        - elsif (recent_activity.submission_type == 'new_msx')
-          - if (recent_activity.high_score.blank?)
-            #{recent_activity.submission}
-          - else
-            High score: 
-            %span.bold #{number_with_precision(recent_activity.high_score, precision: 0, delimiter: ',')}
-            %br/
-            %span.brightpurple.mt_8.inline_block #{recent_activity.machine_name}
-            - if (!recent_activity.user_name.blank?)
-              by 
-              %span.red #{recent_activity.user_name}
+          - elsif (recent_activity.submission_type == 'new_msx')
+            - if (recent_activity.high_score.blank?)
+              #{recent_activity.submission}
+            - else
+              High score: 
+              %span.bold #{number_with_precision(recent_activity.high_score, precision: 0, delimiter: ',')}
+              %br/
+              %span.brightpurple.mt_8.inline_block #{recent_activity.machine_name}
+              - if (!recent_activity.user_name.blank?)
+                by 
+                %span.red #{recent_activity.user_name}
         - elsif (recent_activity.submission_type == 'confirm_location')
           Line-up confirmed
           - if (!recent_activity.user_name.blank?)
