@@ -219,7 +219,7 @@ describe LocationMachineXrefsController do
         expect(mail[:body]).to match(/#{@lmx.location.name}/)
         expect(mail[:body]).to match(/portland/)
         expect(mail[:body]).to match(/entered from 127.0.0.1/)
-        expect(mail[:subject]).to match(/PBM - Someone entered a machine condition/)
+        expect(mail[:subject]).to match(/Pinball Map - New machine condition/)
         expect(mail[:to]).to eq([])
         expect(mail[:from]).to eq('admin@pinballmap.com')
       end

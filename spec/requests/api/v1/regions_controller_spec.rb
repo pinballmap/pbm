@@ -170,7 +170,7 @@ describe Api::V1::RegionsController, type: :request do
         expect(mail).to include(
           to: ['portland@admin.com'],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - New region suggestion',
+          subject: 'Pinball Map - New region suggestion',
           body: <<HERE
 Their Name: ssw\n
 Their Email: foo@bar.com\n
@@ -218,7 +218,7 @@ HERE
           to: ['la@admin.com'],
           cc: ['portland@admin.com'],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - Message from the Los Angeles region',
+          subject: 'Pinball Map - Message (Los Angeles)',
           body: <<HERE
 Their Name: name\n
 Their Email: email\n
@@ -244,7 +244,7 @@ HERE
           to: ['la@admin.com'],
           cc: ['portland@admin.com'],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - Message from the Los Angeles region',
+          subject: 'Pinball Map - Message (Los Angeles)',
           body: <<HERE
 Their Name: name\n
 Their Email: email\n
@@ -268,7 +268,7 @@ HERE
           to: ['portland@admin.com'],
           cc: [],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - Message',
+          subject: 'Pinball Map - Message',
           body: <<HERE
 Their Name: name\n
 Their Email: email\n
@@ -289,7 +289,7 @@ HERE
           to: ['portland@admin.com'],
           cc: [],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - Message',
+          subject: 'Pinball Map - Message',
           body: <<HERE
 Their Name: name\n
 Their Email: email\n
@@ -312,7 +312,7 @@ HERE
           to: ['portland@admin.com'],
           cc: ['portland@admin.com'],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - Message from the Portland region',
+          subject: 'Pinball Map - Message (Portland)',
           body: <<HERE
 Their Name: name\n
 Their Email: email\n
@@ -333,7 +333,7 @@ HERE
           to: ['la@admin.com'],
           cc: ['portland@admin.com'],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - Message from the Los Angeles region',
+          subject: 'Pinball Map - Message (Los Angeles)',
           body: <<HERE
 Their Name: name\n
 Their Email: email\n
@@ -357,7 +357,7 @@ HERE
     it 'emails region admins with incoming message - notifies if sent from staging server' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          subject: '(STAGING) PBM - Message from the Los Angeles region'
+          subject: '(STAGING) Pinball Map - Message (Los Angeles)'
         )
       end
 

@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
     Pony.mail(
       to: Region.find_by_name('portland').users.map(&:email),
       from: 'admin@pinballmap.com',
-      subject: add_host_info_to_subject('PBM - New machine name'),
+      subject: add_host_info_to_subject('Pinball Map - New machine name'),
       body: [machine.name, location.name, "(entered from #{request.remote_ip} via #{request.user_agent}#{user_info})"].join("\n")
     )
   end
@@ -100,7 +100,7 @@ BODY
       to: region ? region.users.map(&:email) : User.all.select(&:is_super_admin).map(&:email),
       bcc: User.all.select(&:is_super_admin).map(&:email),
       from: 'admin@pinballmap.com',
-      subject: add_host_info_to_subject("PBM - New location suggested for#{region ? ' the ' + region.name : ''} pinball map"),
+      subject: add_host_info_to_subject("Pinball Map - New location suggested#{region ? ' (' + region.name + ')' : ''}"),
       body: body
     )
 
@@ -113,7 +113,7 @@ BODY
     Pony.mail(
       to: Region.where('lower(name) = ?', 'portland').first.users.map(&:email),
       from: 'admin@pinballmap.com',
-      subject: add_host_info_to_subject('PBM - New region suggestion'),
+      subject: add_host_info_to_subject('Pinball Map - New region suggestion'),
       body: <<BODY
 Their Name: #{params['name']}\n
 Their Email: #{params['email']}\n
@@ -139,7 +139,7 @@ BODY
       to: to_users,
       cc: region.nil? ? [] : User.all.select(&:is_super_admin).map(&:email),
       from: 'admin@pinballmap.com',
-      subject: add_host_info_to_subject(region.nil? ? 'PBM - Message' : "PBM - Message from the #{region.full_name} region"),
+      subject: add_host_info_to_subject(region.nil? ? 'Pinball Map - Message' : "Pinball Map - Message (#{region.full_name})"),
       body: body
     )
 

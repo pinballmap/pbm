@@ -35,7 +35,7 @@ describe PagesController, type: :controller do
           to: ['foo@bar.com'],
           cc: ['super_admin@bar.com'],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - Message from the Portland region',
+          subject: 'Pinball Map - Message (Portland)',
           body: "Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\n\n\n(entered from 0.0.0.0 via  Rails Testing)\n\n"
         )
       end
@@ -55,7 +55,7 @@ describe PagesController, type: :controller do
           to: ['foo@bar.com'],
           cc: ['super_admin@bar.com'],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - Message from the Portland region',
+          subject: 'Pinball Map - Message (Portland)',
           body: "Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\nUsername: ssw\n\nSite Email: yeah@ok.com\n\n(entered from 0.0.0.0 via  Rails Testing)\n\n"
         )
       end
@@ -71,7 +71,7 @@ describe PagesController, type: :controller do
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          subject: '(STAGING) PBM - Message from the Portland region'
+          subject: '(STAGING) Pinball Map - Message (Portland)'
         )
       end
 
@@ -167,7 +167,7 @@ HERE
             to: region.nil? ? ['super_admin@bar.com'] : ['foo@bar.com'],
             bcc: ['super_admin@bar.com'],
             from: 'admin@pinballmap.com',
-            subject: "PBM - New location suggested for#{region.nil? ? '' : ' the ' + region} pinball map",
+            subject: "Pinball Map - New location suggested#{region.nil? ? '' : ' (' + region + ')'}",
             body: body
           )
         end
@@ -208,7 +208,7 @@ HERE
             to: region ? ['foo@bar.com'] : ['super_admin@bar.com'],
             bcc: ['super_admin@bar.com'],
             from: 'admin@pinballmap.com',
-            subject: "PBM - New location suggested for#{region.nil? ? '' : ' the ' + region} pinball map",
+            subject: "Pinball Map - New location suggested#{region.nil? ? '' : ' (' + region + ')'}",
             body: body
           )
         end
@@ -221,7 +221,7 @@ HERE
 
         expect(Pony).to receive(:mail) do |mail|
           expect(mail).to include(
-            subject: "(STAGING) PBM - New location suggested for#{region.nil? ? '' : ' the ' + region} pinball map"
+            subject: "(STAGING) Pinball Map - New location suggested#{region.nil? ? '' : ' (' + region + ')'}"
           )
         end
 

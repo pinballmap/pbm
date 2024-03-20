@@ -72,7 +72,7 @@ HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           body: body,
-          subject: "Pinball Map - Daily Digest of comments made on your machines - #{Date.today.strftime('%m/%d/%Y')}",
+          subject: "Pinball Map - Daily digest of comments on your machines - #{Date.today.strftime('%m/%d/%Y')}",
           to: 'foo@bar.com',
           from: 'admin@pinballmap.com'
         )
@@ -109,7 +109,7 @@ HERE
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           body: body,
-          subject: "Pinball Map - Daily Digest of comments made on your machines - #{Date.today.strftime('%m/%d/%Y')}",
+          subject: "Pinball Map - Daily digest of comments on your machines - #{Date.today.strftime('%m/%d/%Y')}",
           to: 'foo@bar.com',
           from: 'admin@pinballmap.com'
         )

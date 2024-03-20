@@ -36,7 +36,7 @@ describe LocationMachineXref do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           body: "foo\nSassy\nCool Bar\nPortland\nPortland\n(entered from  via  by ssw (foo@bar.com))",
-          subject: 'PBM - Someone entered a machine condition',
+          subject: 'Pinball Map - New machine condition',
           to: ['foo@bar.com'],
           from: 'admin@pinballmap.com'
         )
@@ -50,7 +50,7 @@ describe LocationMachineXref do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           body: "bar\nSassy\nCool Bar\nPortland\nPortland\n(entered from 0.0.0.0 via cleOS by ssw (foo@bar.com))",
-          subject: 'PBM - Someone entered a machine condition',
+          subject: 'Pinball Map - New machine condition',
           to: ['foo@bar.com'],
           from: 'admin@pinballmap.com'
         )
@@ -130,7 +130,7 @@ describe LocationMachineXref do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           body: "Cool Bar\nPortland\nSassy\nPortland\n(user_id: 1) (entered from  via  by ssw (foo@bar.com))",
-          subject: 'PBM - Someone removed a machine from a location',
+          subject: 'Pinball Map - Machine removed',
           to: ['foo@bar.com'],
           from: 'admin@pinballmap.com'
         )
@@ -141,7 +141,7 @@ describe LocationMachineXref do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           body: "Cool Bar\nPortland\nSassy\nPortland\n(user_id: ) (entered from 0.0.0.0 via cleOS)",
-          subject: 'PBM - Someone removed a machine from a location',
+          subject: 'Pinball Map - Machine removed',
           to: ['foo@bar.com'],
           from: 'admin@pinballmap.com'
         )

@@ -16,7 +16,7 @@ describe LocationMachineXrefsController, type: :controller do
         expect(mail).to include(
           to: ['foo@bar.com'],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - New machine name',
+          subject: 'Pinball Map - New machine name',
           body: "foo\nTest Location Name\n(entered from 0.0.0.0 via #{request.user_agent} by ssw (ssw@yeah.com))"
         )
       end
@@ -31,7 +31,7 @@ describe LocationMachineXrefsController, type: :controller do
 
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          subject: '(STAGING) PBM - New machine name'
+          subject: '(STAGING) Pinball Map - New machine name'
         )
       end
 

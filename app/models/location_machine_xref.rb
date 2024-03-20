@@ -53,7 +53,7 @@ class LocationMachineXref < ApplicationRecord
       Pony.mail(
         to: location.region.users.map(&:email),
         from: 'admin@pinballmap.com',
-        subject: add_host_info_to_subject('PBM - Someone entered a machine condition', options[:request_host]),
+        subject: add_host_info_to_subject('Pinball Map - New machine condition', options[:request_host]),
         body: [condition, machine.name, location.name, location.city, location.region.name, "(entered from #{options[:remote_ip]} via #{options[:user_agent]}#{user_info})"].join("\n")
       )
     end
@@ -87,7 +87,7 @@ class LocationMachineXref < ApplicationRecord
       Pony.mail(
         to: location.region.users.map(&:email),
         from: 'admin@pinballmap.com',
-        subject: add_host_info_to_subject('PBM - Someone removed a machine from a location', options[:request_host]),
+        subject: add_host_info_to_subject('Pinball Map - Machine removed', options[:request_host]),
         body: [location.name, location.city, machine.name, location.region.name, "(user_id: #{options[:user_id]}) (entered from #{options[:remote_ip]} via #{options[:user_agent]}#{user_info})"].join("\n")
       )
     end

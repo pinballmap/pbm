@@ -25,7 +25,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           body: "#{@location.name}\n#{@location.city}\n#{@machine.name}\n#{@location.region.name}\n(user_id: 111) (entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
-          subject: 'PBM - Someone removed a machine from a location',
+          subject: 'Pinball Map - Machine removed',
           to: [],
           from: 'admin@pinballmap.com'
         )
@@ -42,7 +42,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           body: "#{@location.name}\n#{@location.city}\n#{@machine.name}\n#{@location.region.name}\n(user_id: 111) (entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
-          subject: 'PBM - Someone removed a machine from a location',
+          subject: 'Pinball Map - Machine removed',
           to: [],
           from: 'admin@pinballmap.com'
         )
@@ -81,7 +81,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'sends a deletion email when appropriate - notifies if origin was staging server' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          subject: '(STAGING) PBM - Someone removed a machine from a location'
+          subject: '(STAGING) Pinball Map - Machine removed'
         )
       end
 
@@ -259,7 +259,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           body: "foo\nCleo\nGround Kontrol\nPortland\nPortland\n(entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
-          subject: 'PBM - Someone entered a machine condition',
+          subject: 'Pinball Map - New machine condition',
           to: [],
           from: 'admin@pinballmap.com'
         )
@@ -291,7 +291,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'email notifies if origin was the staging server' do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
-          subject: '(STAGING) PBM - Someone entered a machine condition'
+          subject: '(STAGING) Pinball Map - New machine condition'
         )
       end
 

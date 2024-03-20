@@ -52,7 +52,7 @@ HERE
     Pony.mail(
       to: email,
       from: 'admin@pinballmap.com',
-      subject: "Pinball Map - Daily Digest of comments made on your machines - #{Date.today.strftime('%m/%d/%Y')}",
+      subject: "Pinball Map - Daily digest of comments on your machines - #{Date.today.strftime('%m/%d/%Y')}",
       body: body
     )
   end

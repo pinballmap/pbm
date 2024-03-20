@@ -58,7 +58,7 @@ describe Api::V1::LocationsController, type: :request do
           to: ['foo@bar.com'],
           bcc: ['super_admin@bar.com'],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - New location suggested for the portland pinball map',
+          subject: 'Pinball Map - New location suggested (portland)',
           body: <<HERE
     Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
 Location Name: name\n
@@ -101,7 +101,7 @@ HERE
           to: ['super_admin@bar.com'],
           from: 'admin@pinballmap.com',
           bcc: ['super_admin@bar.com'],
-          subject: 'PBM - New location suggested for pinball map',
+          subject: 'Pinball Map - New location suggested',
           body: <<HERE
     Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
 Location Name: name\n
@@ -140,7 +140,7 @@ HERE
           to: ['lat@guy.com'],
           bcc: ['super_admin@bar.com'],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - New location suggested for the seattle pinball map',
+          subject: 'Pinball Map - New location suggested (seattle)',
           body: <<HERE
     Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
 Location Name: name\n
@@ -190,7 +190,7 @@ HERE
           to: ['foo@bar.com'],
           bcc: ['super_admin@bar.com'],
           from: 'admin@pinballmap.com',
-          subject: 'PBM - New location suggested for the portland pinball map',
+          subject: 'Pinball Map - New location suggested (portland)',
           body: <<HERE
     Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
 Location Name: name\n

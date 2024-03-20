@@ -149,7 +149,7 @@ describe LocationsController do
         if region
           expect(Pony).to receive(:mail) do |mail|
             expect(mail).to include(
-              subject: 'PBM - Someone removed a machine from a location',
+              subject: 'Pinball Map - Machine removed',
               to: [],
               from: 'admin@pinballmap.com'
             )
