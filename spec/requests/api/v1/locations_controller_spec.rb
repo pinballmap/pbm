@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe Api::V1::LocationsController, type: :request do
   before(:each) do
-    @region = FactoryBot.create(:region, name: 'portland', lat: 10, lon: 10)
-    @another_region = FactoryBot.create(:region, name: 'seattle', lat: 20, lon: 20)
-    @out_of_bounds_region = FactoryBot.create(:region, name: 'vancouver', lat: 100, lon: 100)
+    @region = FactoryBot.create(:region, name: 'portland', full_name: 'Portland', lat: 10, lon: 10)
+    @another_region = FactoryBot.create(:region, name: 'seattle', full_name: 'Seattle', lat: 20, lon: 20)
+    @out_of_bounds_region = FactoryBot.create(:region, name: 'vancouver', full_name: 'Vancouver', lat: 100, lon: 100)
     @location = FactoryBot.create(:location, region: @region, name: 'Satchmo', state: 'OR', zip: '97203', lat: 42.18, lon: -71.18)
     @user = FactoryBot.create(:user, id: 111, username: 'cibw', email: 'foo@bar.com', region: @region, authentication_token: '1G8_s7P-V-4MGojaKD7a')
     @another_region_admin_user = FactoryBot.create(:user, id: 222, username: 'latguy', email: 'lat@guy.com', region: @another_region)
@@ -58,7 +58,7 @@ describe Api::V1::LocationsController, type: :request do
           to: ['foo@bar.com'],
           bcc: ['super_admin@bar.com'],
           from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - New location suggested (portland)',
+          subject: 'Pinball Map - New location suggested (Portland)',
           body: <<HERE
 Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
 Location Name: name\n
@@ -140,7 +140,7 @@ HERE
           to: ['lat@guy.com'],
           bcc: ['super_admin@bar.com'],
           from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - New location suggested (seattle)',
+          subject: 'Pinball Map - New location suggested (Seattle)',
           body: <<HERE
 Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
 Location Name: name\n
@@ -190,7 +190,7 @@ HERE
           to: ['foo@bar.com'],
           bcc: ['super_admin@bar.com'],
           from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - New location suggested (portland)',
+          subject: 'Pinball Map - New location suggested (Portland)',
           body: <<HERE
 Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
 Location Name: name\n
