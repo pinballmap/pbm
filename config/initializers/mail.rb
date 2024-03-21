@@ -1,6 +1,6 @@
 ActionMailer::Base.smtp_settings = {
   :address        => 'mail.smtp2go.com',
-  :port           => '2525',
+  :port           => '587',
   :authentication => :plain,
   :user_name      => 'pinballmapsmtp2go',
   :password       => ENV['SMTP2GO_API_KEY'],
