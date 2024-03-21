@@ -221,7 +221,7 @@ describe LocationMachineXrefsController do
         expect(mail[:body]).to match(/entered from 127.0.0.1/)
         expect(mail[:subject]).to match(/Pinball Map - New machine condition/)
         expect(mail[:to]).to eq([])
-        expect(mail[:from]).to eq('admin@pinballmap.com')
+        expect(mail[:from]).to eq('Pinball Map <admin@pinballmap.com>')
       end
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"

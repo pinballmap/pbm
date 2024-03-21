@@ -151,7 +151,7 @@ describe LocationsController do
             expect(mail).to include(
               subject: 'Pinball Map - Machine removed',
               to: [],
-              from: 'admin@pinballmap.com'
+              from: 'Pinball Map <admin@pinballmap.com>'
             )
           end
         else

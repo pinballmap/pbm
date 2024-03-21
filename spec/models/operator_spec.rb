@@ -57,7 +57,7 @@ describe Operator do
       mc3 = FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Old Cleo Comment', created_at: Date.today - 2.days)
 
       body = <<HERE
-Here's a list of comments made on your pinball machines yesterday on Pinball Map. We're sending this in the hope that it will help you identify, and fix, problems. If you don't want to receive these messages, please contact map@pinballmap.com.
+Here's a list of comments made on your pinball machines yesterday on Pinball Map. We're sending this in the hope that it will help you identify, and fix, problems. If you don't want to receive these messages, just reply to this message and tell us!
 
 Comment: Sassy Comment
 Location: Cleo Corner - 303 Southeast 3rd Avenue, Portland, OR, 97214
@@ -74,7 +74,7 @@ HERE
           body: body,
           subject: "Pinball Map - Daily digest of comments on your machines - #{Date.today.strftime('%m/%d/%Y')}",
           to: 'foo@bar.com',
-          from: 'admin@pinballmap.com'
+          from: 'Pinball Map <admin@pinballmap.com>'
         )
       end
 
@@ -94,7 +94,7 @@ HERE
       mc3 = FactoryBot.create(:machine_condition, location_machine_xref: lmx2, comment: 'Old Cleo Comment', created_at: Date.today - 2.days)
 
       body = <<HERE
-Here's a list of comments made on your pinball machines yesterday on Pinball Map. We're sending this in the hope that it will help you identify, and fix, problems. If you don't want to receive these messages, please contact map@pinballmap.com.
+Here's a list of comments made on your pinball machines yesterday on Pinball Map. We're sending this in the hope that it will help you identify, and fix, problems. If you don't want to receive these messages, just reply to this message and tell us!
 
 Comment: Sassy Comment
 Location: Cleo Corner - 303 Southeast 3rd Avenue, Portland, OR, 97214
@@ -111,7 +111,7 @@ HERE
           body: body,
           subject: "Pinball Map - Daily digest of comments on your machines - #{Date.today.strftime('%m/%d/%Y')}",
           to: 'foo@bar.com',
-          from: 'admin@pinballmap.com'
+          from: 'Pinball Map <admin@pinballmap.com>'
         )
       end
 

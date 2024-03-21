@@ -8,7 +8,7 @@ task delete_opted_in_empty_locations: :environment do
 rescue StandardError => e
   Pony.mail(
     to: 'admin@pinballmap.com',
-    from: 'admin@pinballmap.com',
+    from: 'Pinball Map <admin@pinballmap.com>',
     subject: "Pbm Rake Task Error - Delete Empty Locations - #{Date.today.strftime('%m/%d/%Y')}",
     body: "Delete empty locations rake task error\n\n" + e.to_s
   )

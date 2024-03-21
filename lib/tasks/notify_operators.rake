@@ -4,7 +4,7 @@ task notify_operators: :environment do
 rescue StandardError => e
   Pony.mail(
     to: 'admin@pinballmap.com',
-    from: 'admin@pinballmap.com',
+    from: 'Pinball Map <admin@pinballmap.com>',
     subject: "Pbm Rake Task Error - Notify Operators - #{Date.today.strftime('%m/%d/%Y')}",
     body: "Notify operators rake task error\n\n" + e.to_s
   )

@@ -46,12 +46,12 @@ HERE
 
     unless Rails.env.test?
       puts body
-      sleep(5) # Sendgrid is throttling us :<
+      sleep(10) # Sendgrid is throttling us :<
     end
 
     Pony.mail(
       to: email,
-      from: 'admin@pinballmap.com',
+      from: 'Pinball Map <admin@pinballmap.com>',
       subject: "Pinball Map - Daily digest of comments on your machines - #{Date.today.strftime('%m/%d/%Y')}",
       body: body
     )

@@ -17,7 +17,7 @@ describe LocationPictureXrefsController, type: :controller do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: ['foo@bar.com'],
-          from: 'admin@pinballmap.com',
+          from: 'Pinball Map <admin@pinballmap.com>',
           subject: 'Pinball Map - Picture added',
           body: "This is photo ID: 1. It's at location: Sassy. Region: Portland.\n\n\nYou can view the picture here https:/photos/large/missing.png\n\n\nNo need to approve it, it's already live."
         )
@@ -31,7 +31,7 @@ describe LocationPictureXrefsController, type: :controller do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: ['baz@bong.com'],
-          from: 'admin@pinballmap.com',
+          from: 'Pinball Map <admin@pinballmap.com>',
           subject: 'Pinball Map - Picture added',
           body: "This is photo ID: 2. It's at location: Bawb. Region: REGIONLESS.\n\n\nYou can view the picture here https:/photos/large/missing.png\n\n\nNo need to approve it, it's already live."
         )
@@ -45,7 +45,7 @@ describe LocationPictureXrefsController, type: :controller do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: ['baz@bong.com'],
-          from: 'admin@pinballmap.com',
+          from: 'Pinball Map <admin@pinballmap.com>',
           subject: 'Pinball Map - Picture added',
           body: "This is photo ID: 3. It's at location: Cleo. Region: Seattle.\n\n\nYou can view the picture here https:/photos/large/missing.png\n\n\nNo need to approve it, it's already live."
         )

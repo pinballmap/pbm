@@ -38,7 +38,7 @@ describe LocationMachineXref do
           body: "foo\nSassy\nCool Bar\nPortland\nPortland\n(entered from  via  by ssw (foo@bar.com))",
           subject: 'Pinball Map - New machine condition',
           to: ['foo@bar.com'],
-          from: 'admin@pinballmap.com'
+          from: 'Pinball Map <admin@pinballmap.com>'
         )
       end
 
@@ -52,7 +52,7 @@ describe LocationMachineXref do
           body: "bar\nSassy\nCool Bar\nPortland\nPortland\n(entered from 0.0.0.0 via cleOS by ssw (foo@bar.com))",
           subject: 'Pinball Map - New machine condition',
           to: ['foo@bar.com'],
-          from: 'admin@pinballmap.com'
+          from: 'Pinball Map <admin@pinballmap.com>'
         )
       end
 
@@ -132,7 +132,7 @@ describe LocationMachineXref do
           body: "Cool Bar\nPortland\nSassy\nPortland\n(user_id: 1) (entered from  via  by ssw (foo@bar.com))",
           subject: 'Pinball Map - Machine removed',
           to: ['foo@bar.com'],
-          from: 'admin@pinballmap.com'
+          from: 'Pinball Map <admin@pinballmap.com>'
         )
       end
 
@@ -143,7 +143,7 @@ describe LocationMachineXref do
           body: "Cool Bar\nPortland\nSassy\nPortland\n(user_id: ) (entered from 0.0.0.0 via cleOS)",
           subject: 'Pinball Map - Machine removed',
           to: ['foo@bar.com'],
-          from: 'admin@pinballmap.com'
+          from: 'Pinball Map <admin@pinballmap.com>'
         )
       end
 

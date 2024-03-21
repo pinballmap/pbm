@@ -27,7 +27,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
           body: "#{@location.name}\n#{@location.city}\n#{@machine.name}\n#{@location.region.name}\n(user_id: 111) (entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
           subject: 'Pinball Map - Machine removed',
           to: [],
-          from: 'admin@pinballmap.com'
+          from: 'Pinball Map <admin@pinballmap.com>'
         )
       end
 
@@ -44,7 +44,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
           body: "#{@location.name}\n#{@location.city}\n#{@machine.name}\n#{@location.region.name}\n(user_id: 111) (entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
           subject: 'Pinball Map - Machine removed',
           to: [],
-          from: 'admin@pinballmap.com'
+          from: 'Pinball Map <admin@pinballmap.com>'
         )
       end
 
@@ -261,7 +261,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
           body: "foo\nCleo\nGround Kontrol\nPortland\nPortland\n(entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
           subject: 'Pinball Map - New machine condition',
           to: [],
-          from: 'admin@pinballmap.com'
+          from: 'Pinball Map <admin@pinballmap.com>'
         )
       end
 

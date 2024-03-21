@@ -34,7 +34,7 @@ describe PagesController, type: :controller do
         expect(mail).to include(
           to: ['foo@bar.com'],
           cc: ['super_admin@bar.com'],
-          from: 'admin@pinballmap.com',
+          from: 'Pinball Map <admin@pinballmap.com>',
           subject: 'Pinball Map - Message (Portland)',
           body: "Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\n\n\n(entered from 0.0.0.0 via  Rails Testing)\n\n"
         )
@@ -54,7 +54,7 @@ describe PagesController, type: :controller do
         expect(mail).to include(
           to: ['foo@bar.com'],
           cc: ['super_admin@bar.com'],
-          from: 'admin@pinballmap.com',
+          from: 'Pinball Map <admin@pinballmap.com>',
           subject: 'Pinball Map - Message (Portland)',
           body: "Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\nUsername: ssw\n\nSite Email: yeah@ok.com\n\n(entered from 0.0.0.0 via  Rails Testing)\n\n"
         )
@@ -166,7 +166,7 @@ HERE
           expect(mail).to include(
             to: region.nil? ? ['super_admin@bar.com'] : ['foo@bar.com'],
             bcc: ['super_admin@bar.com'],
-            from: 'admin@pinballmap.com',
+            from: 'Pinball Map <admin@pinballmap.com>',
             subject: "Pinball Map - New location suggested#{region.nil? ? '' : ' (' + region + ')'}",
             body: body
           )
@@ -207,7 +207,7 @@ HERE
           expect(mail).to include(
             to: region ? ['foo@bar.com'] : ['super_admin@bar.com'],
             bcc: ['super_admin@bar.com'],
-            from: 'admin@pinballmap.com',
+            from: 'Pinball Map <admin@pinballmap.com>',
             subject: "Pinball Map - New location suggested#{region.nil? ? '' : ' (' + region + ')'}",
             body: body
           )

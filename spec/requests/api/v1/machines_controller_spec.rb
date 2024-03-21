@@ -99,7 +99,7 @@ describe Api::V1::MachinesController, type: :request do
           body: "Bawb\nGround Kontrol\n(entered from 127.0.0.1 via  by ssw (foo@bar.com))",
           subject: 'Pinball Map - New machine name',
           to: [],
-          from: 'admin@pinballmap.com'
+          from: 'Pinball Map <admin@pinballmap.com>'
         )
       end
 
@@ -114,7 +114,7 @@ describe Api::V1::MachinesController, type: :request do
           body: "Auth Bawb\nGround Kontrol\n(entered from 127.0.0.1 via  by ssw (foo@bar.com))",
           subject: 'Pinball Map - New machine name',
           to: [],
-          from: 'admin@pinballmap.com'
+          from: 'Pinball Map <admin@pinballmap.com>'
         )
       end
 

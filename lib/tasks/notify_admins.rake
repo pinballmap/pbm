@@ -15,7 +15,7 @@ task notify_admins: :environment do
 
       Pony.mail(
         to: email_to,
-        from: 'admin@pinballmap.com',
+        from: 'Pinball Map <admin@pinballmap.com>',
         subject: email_subject,
         body: email_body
       )
@@ -24,7 +24,7 @@ task notify_admins: :environment do
 rescue StandardError => e
   Pony.mail(
     to: 'admin@pinballmap.com',
-    from: 'admin@pinballmap.com',
+    from: 'Pinball Map <admin@pinballmap.com>',
     subject: "Pbm Rake Task Error - Weekly Digest - #{Date.today.strftime('%m/%d/%Y')}",
     body: "Weekly digest rake task error\n\n" + e.to_s
   )
@@ -49,7 +49,7 @@ task send_daily_digest_machine_condition_email: :environment do
 
       Pony.mail(
         to: email_to,
-        from: 'admin@pinballmap.com',
+        from: 'Pinball Map <admin@pinballmap.com>',
         subject: email_subject,
         body: email_body
       )
@@ -58,7 +58,7 @@ task send_daily_digest_machine_condition_email: :environment do
 rescue StandardError => e
   Pony.mail(
     to: 'admin@pinballmap.com',
-    from: 'admin@pinballmap.com',
+    from: 'Pinball Map <admin@pinballmap.com>',
     subject: "Pbm Rake Task Error - Daily Comments - #{Date.today.strftime('%m/%d/%Y')}",
     body: "Daily comments rake task error\n\n" + e.to_s
   )
@@ -83,7 +83,7 @@ task send_daily_digest_machine_removal_email: :environment do
 
       Pony.mail(
         to: email_to,
-        from: 'admin@pinballmap.com',
+        from: 'Pinball Map <admin@pinballmap.com>',
         subject: email_subject,
         body: email_body
       )
@@ -92,7 +92,7 @@ task send_daily_digest_machine_removal_email: :environment do
 rescue StandardError => e
   Pony.mail(
     to: 'admin@pinballmap.com',
-    from: 'admin@pinballmap.com',
+    from: 'Pinball Map <admin@pinballmap.com>',
     subject: "Pbm Rake Task Error - Daily Removals - #{Date.today.strftime('%m/%d/%Y')}",
     body: "Daily removals rake task error\n\n" + e.to_s
   )

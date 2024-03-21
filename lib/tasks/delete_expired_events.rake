@@ -8,7 +8,7 @@ task delete_expired_events: :environment do
 rescue StandardError => e
   Pony.mail(
     to: 'admin@pinballmap.com',
-    from: 'admin@pinballmap.com',
+    from: 'Pinball Map <admin@pinballmap.com>',
     subject: "Pbm Rake Task Error - Delete Expired Events - #{Date.today.strftime('%m/%d/%Y')}",
     body: "Delete expired events rake task error\n\n" + e.to_s
   )

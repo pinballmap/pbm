@@ -5,7 +5,7 @@ task tag_opdb: :environment do
 rescue StandardError => e
   Pony.mail(
     to: 'admin@pinballmap.com',
-    from: 'admin@pinballmap.com',
+    from: 'Pinball Map <admin@pinballmap.com>',
     subject: "Pbm Rake Task Error - Tag OPDB - #{Date.today.strftime('%m/%d/%Y')}",
     body: "Tag OPDB rake task error\n\n" + e.to_s
   )

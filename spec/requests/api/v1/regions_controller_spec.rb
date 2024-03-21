@@ -169,7 +169,7 @@ describe Api::V1::RegionsController, type: :request do
       expect(Pony).to receive(:mail) do |mail|
         expect(mail).to include(
           to: ['portland@admin.com'],
-          from: 'admin@pinballmap.com',
+          from: 'Pinball Map <admin@pinballmap.com>',
           subject: 'Pinball Map - New region suggestion',
           body: <<HERE
 Their Name: ssw\n
@@ -217,7 +217,7 @@ HERE
         expect(mail).to include(
           to: ['la@admin.com'],
           cc: ['portland@admin.com'],
-          from: 'admin@pinballmap.com',
+          from: 'Pinball Map <admin@pinballmap.com>',
           subject: 'Pinball Map - Message (Los Angeles)',
           body: <<HERE
 Their Name: name\n
@@ -243,7 +243,7 @@ HERE
         expect(mail).to include(
           to: ['la@admin.com'],
           cc: ['portland@admin.com'],
-          from: 'admin@pinballmap.com',
+          from: 'Pinball Map <admin@pinballmap.com>',
           subject: 'Pinball Map - Message (Los Angeles)',
           body: <<HERE
 Their Name: name\n
@@ -267,7 +267,7 @@ HERE
         expect(mail).to include(
           to: ['portland@admin.com'],
           cc: [],
-          from: 'admin@pinballmap.com',
+          from: 'Pinball Map <admin@pinballmap.com>',
           subject: 'Pinball Map - Message',
           body: <<HERE
 Their Name: name\n
@@ -288,7 +288,7 @@ HERE
         expect(mail).to include(
           to: ['portland@admin.com'],
           cc: [],
-          from: 'admin@pinballmap.com',
+          from: 'Pinball Map <admin@pinballmap.com>',
           subject: 'Pinball Map - Message',
           body: <<HERE
 Their Name: name\n
@@ -311,7 +311,7 @@ HERE
         expect(mail).to include(
           to: ['portland@admin.com'],
           cc: ['portland@admin.com'],
-          from: 'admin@pinballmap.com',
+          from: 'Pinball Map <admin@pinballmap.com>',
           subject: 'Pinball Map - Message (Portland)',
           body: <<HERE
 Their Name: name\n
@@ -332,7 +332,7 @@ HERE
         expect(mail).to include(
           to: ['la@admin.com'],
           cc: ['portland@admin.com'],
-          from: 'admin@pinballmap.com',
+          from: 'Pinball Map <admin@pinballmap.com>',
           subject: 'Pinball Map - Message (Los Angeles)',
           body: <<HERE
 Their Name: name\n
