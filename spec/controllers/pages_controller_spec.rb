@@ -145,7 +145,7 @@ describe PagesController, type: :controller do
         logout
 
         body = <<HERE
-    Dear Admin: You can approve this location with the click of a button at http://test.host/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
+Dear Admin: You can approve this location with the click of a button at http://test.host/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
 Location Name: name\n
 Street: street\n
 City: city\n
@@ -187,7 +187,7 @@ HERE
         login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com'))
 
         body = <<HERE
-    Dear Admin: You can approve this location with the click of a button at http://test.host/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
+Dear Admin: You can approve this location with the click of a button at http://test.host/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
 Location Name: name\n
 Street: street\n
 City: city\n

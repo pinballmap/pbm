@@ -19,6 +19,7 @@ task notify_admins: :environment do
         subject: email_subject,
         body: email_body
       )
+      sleep(10)
     end
   end
 rescue StandardError => e
@@ -53,6 +54,7 @@ task send_daily_digest_machine_condition_email: :environment do
         subject: email_subject,
         body: email_body
       )
+      sleep(10)
     end
   end
 rescue StandardError => e
@@ -87,6 +89,7 @@ task send_daily_digest_machine_removal_email: :environment do
         subject: email_subject,
         body: email_body
       )
+      sleep(10)
     end
   end
 rescue StandardError => e
