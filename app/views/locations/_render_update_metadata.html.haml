@@ -44,6 +44,9 @@
   %div.last_updated[l, :last_updated]
     = render :partial => 'locations/render_last_updated', :locals => {:l => l}
 %div[l, :metadata_edit]{:style => 'display:none'}
+  %div.red.mb_8 
+    Want to update the location name?
+    = link_to 'Contact us!', about_path('portland')
   = form_tag update_metadata_locations_path(:action => 'update_metadata', id: l.id), :id => "update_metadata_#{l.id}", :method => 'get' do
     = hidden_field_tag :id, l.id
     = label_tag "Phone #: "
