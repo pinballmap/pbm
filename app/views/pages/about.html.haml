@@ -38,23 +38,12 @@
         Pinball Map
       %p
         This map lists all the pinball machines in the
-        %span.red.font18.bold= @region.full_name
+        %span.red.bold= @region.full_name
         region. The data is kept up to date by YOU!
-      %p
-        = link_to 'pinballmap.com', root_path
-        was developed by Scott and Ryan.
-        - if (@region.name == 'portland')
-          Contact us via that form over there.
-        - else
-          = link_to 'contact us via the Portland region page.', about_path('portland')
-        Read the
-        = link_to 'FAQ.', faq_path
-      %p
-        Spread the word about Pinball Map by
-        = link_to 'distributing this flier!', map_flier_path
-      %p
-        View the
-        =link_to 'Pinball Map Privacy Policy', privacy_path
+      %p Pinball Map was founded in 2008 in Portland, Oregon.
+      %p== Study the #{link_to 'FAQ', faq_path}.
+      %p== Spread the word about Pinball Map by #{link_to 'distributing this flier', map_flier_path}!
+      %p== View the #{link_to 'Pinball Map Privacy Policy', privacy_path}.
     - if (@region.operators.size > 0)
       .column.w_450
         %p.red.font18.bold.links_category

@@ -13,9 +13,9 @@
   %p
     %span.red.font16.bold This map is best maintained with your help!
     Please
-    %span.red.font16.bold "add"
+    %span.red.font16.bold add
     and
-    %span.red.font16.bold "remove"
+    %span.red.font16.bold remove
     machines to/from locations to keep things up to date. And
     %span
       =link_to 'submit new locations', suggest_path
@@ -26,14 +26,7 @@
     and
     %span.dark #{@lmx_count} machines around #{@region.full_name}.
   - if !mobile_device?
-    %p
-      Spread the word about Pinball Map!
-      %span.red.font16.bold
-        = link_to 'Print out this flier!', map_flier_path
-  %p
-    Looking for spots outside of this region? Try the
-    =link_to 'One Big Map.', map_path, :class => "bold"
-  %p
-    Check out our
-    =link_to 'mobile app.', app_path
+    %p== Spread the word about Pinball Map! #{link_to 'Print out this flier', map_flier_path, :class => "font16 bold"}!
+  %p== Looking for spots outside of this region? Try the #{link_to 'One Big Map', map_path, :class => "bold"}.
+  %p== Check out our #{link_to 'mobile app', app_path}.
 

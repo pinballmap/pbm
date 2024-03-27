@@ -53,26 +53,23 @@
         %p
           %span.red.font16.bold This map is best maintained with your help!
           Please
-          %span.red.font16.bold "add"
+          %span.red.font16.bold add
           and
-          %span.red.font16.bold "remove"
+          %span.red.font16.bold remove
           machines to/from locations to keep things up to date. And
           %span
             =link_to 'submit new locations', map_location_suggest_path
           that aren't on the map.
         %p
           Pinball Map is currently listing a total of
-          %span.red.font18.bold
+          %span.red.bold
             #{number_with_delimiter(Location.count,:delimiter => ",")}
           locations and
-          %span.red.font18.bold
+          %span.red.bold
             #{number_with_delimiter(LocationMachineXref.count,:delimiter => ",")}
           machines.
-        %p
-          Check out our
-          =link_to 'mobile app.', app_path
-        %p
-          = link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold"
+        %p== Check out our #{link_to 'mobile app', app_path}.
+        %p== #{link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold"}.
 
 :javascript
   var ismap = 1;

@@ -2,9 +2,7 @@
   .column_container
     .column.w_560.bg_vlightpurple
       %p.question.red.font18.bold Pinball Map FAQ
-      %p
-        On this page, we'll respond to some frequently asked questions (and frequently commented comments). If you have a question or comment,
-        = link_to 'contact us.', about_path('portland')
+      %p== On this page, we'll respond to some frequently asked questions (and frequently commented comments). If you have a question or comment, #{link_to 'contact us', about_path('portland')}.
     .column.w_560.mt_5
       %p.question#1 
         =link_to 'Can I use Pinball Map data on my own site?', '#1', :class => "no_underline"
