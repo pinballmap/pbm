@@ -24,17 +24,15 @@
   .news{:style => 'display: flex;justify-content: center;'}
     =image_tag( 'purple-machine.png', :alt => 'machine', :style => 'height:130px;', :class => 'splash')
   .news
+    %p== On the go? Use the award-winning #{link_to "Pinball Map mobile app", app_path, :class => "red"} to find places to play near you.
     %p
-      On the go? Use the award-winning
-      = link_to "Pinball Map mobile app", app_path, :class => "red"
-    %p
-      Available for both
+      Available for
       %span.bold
         Android
       and
       %span.bold
         iOS.
-      It is FREE! No ads, no tracking. Just pinball!
+      It's free and open source (no ads, no tracking). Just pinball!
 %div.flex_center.mb_10#about
   =link_to 'About', '#about', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
@@ -43,16 +41,15 @@
       =image_tag( 'portland/app_logo-350.jpg', :alt => 'portland logo',:style => 'height:260px;', :class => 'splash')
   .news
     %p
-      This is a user-powered map. Create an account and then keep the map up to date by adding and removing machines, submitting new locations, and
+      Pinball Map is a user-powered map. Create an account to help maintain it by adding and removing machines, submitting new locations, and
       =link_to 'telling your friends', map_flier_path
       about it!
     %p
       The data is managed by over 100 administrators and thousands of active users.
     %p
-      Pinball Map is not monetized - no ads or premium membership. The
+      Pinball Map is not monetized and the
       = link_to 'code is open source.', 'https://github.com/pinballmap/pbm'
-    %p
-      = link_to 'Contact us!', 'portland/about', :class => "bold"
+    %p== You can #{link_to 'contact us', 'portland/about', :class => "bold"} and #{link_to 'read the FAQ', faq_path, :class => "bold"}.
   - if !mobile_device?
     .news{:style => 'display: flex;justify-content: center;'}
       =image_tag( 'portland/app_logo-350.jpg', :alt => 'portland logo',:style => 'height:260px;', :class => 'splash')
@@ -73,7 +70,9 @@
     %p
       And also brushed gold with black ink ones.
     %p
-      Purchase them through the
+      And also pink and black and white ones.
+    %p
+      Confused? Don't be! Purchase them through the
       = link_to 'Pinball Map store!', store_path, :class => "bold"
 %div.flex_center#support
   =link_to 'Support Us', '#support', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
@@ -82,13 +81,9 @@
     .news
       =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'width: 100%;'), "https://patreon.com/pinballmap", :target => "_blank"
   .news
+    %p== #{link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold", :target => '_blank'}. All our operating costs are covered by supporters!
     %p
-      = link_to "Support Pinball Map via Patreon.", "https://patreon.com/pinballmap", :class => "bold", :target => '_blank'
-      All our operating costs are covered by supporters!
-    %p
-      Pinball Map was voted Best Pinball App in the 2021
-      = link_to "TWIPy Awards!", "https://twipys.com/", :target => '_blank'
-      = link_to "Thank you for voting for us!", "https://blog.pinballmap.com/2022/03/29/2021-TWIPY-Award/", :target => '_blank', :class => "bold"
+      You can also support the map by telling people about it and updating it.
   - if !mobile_device?
     .news
       =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'width: 100%;'), "https://patreon.com/pinballmap", :target => "_blank"
@@ -102,20 +97,9 @@
       Check the
       = link_to "blog", "https://blog.pinballmap.com/", :class => "bold"
       to keep up with map news.
-    %p
-      Our current meager social media presence is
-      = link_to 'on Mastodon.', 'https://fosstodon.org/@pinballmap', :target => '_blank', :class => "bold"
-    %p
-      We can be regularly found in the
-      = link_to 'Pinball People Discord.', 'https://discord.gg/XffPx6VKTv', :class => "bold", :target => '_blank'
-      It's a fun and friendly way to chat with other pinballers!
-    %p
-      What else... also got a Mastodon bot that posts random locations:
-      = link_to '@OddPinballMap', 'https://botsin.space/@OddPinballMap', :target => '_blank', :class => "bold"
-    %p
-      The podcast is back!
-      = link_to "Mappin' Around with Scott & Ryan.", 'https://pod.pinballmap.com/', :target => '_blank', :class => 'bold'
-      After four cold and dreary years, we are again making new episodes.
+    %p== Our current meager social media presence is #{link_to 'on Mastodon', 'https://fosstodon.org/@pinballmap', :target => '_blank', :class => "bold"}. And we have a #{link_to 'bot that periodically posts random locations', 'https://botsin.space/@OddPinballMap', :target => '_blank'}.
+    %p== The podcast is back! #{link_to "Mappin' Around with Scott & Ryan", 'https://pod.pinballmap.com/', :target => '_blank', :class => 'bold'}. After four cold and dreary years, we are again making new episodes.
+    %p== We can be regularly found in the #{link_to 'Pinball People Discord', 'https://discord.gg/XffPx6VKTv', :class => "bold", :target => '_blank'}. It's a fun and friendly way to chat with other pinball fans!
 %div.flex_center#api
   =link_to 'API', '#api', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
@@ -123,10 +107,7 @@
     .news{:style => 'display: flex;justify-content: center;'}
       =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;', :class => 'splash')
   .news
-    %p
-      Not only is the Pinball Map website and app open source, but there is also
-      = link_to 'an API!', apipie_apipie_path
-      With it, you can pull down map data and use it on your cool app.
+    %p== Not only is the Pinball Map website and app open source, but there is also #{link_to 'an API', apipie_apipie_path}. With it, you can pull down map data and use it on your cool app.
     %p
       = link_to 'Stern Pinball', 'https://sternpinball.com/pinball-locator/', :target => '_blank'
       uses our data for their machine locator. Our API is also used by
@@ -139,7 +120,7 @@
       = link_to 'Kineticist', 'https://www.kineticist.co/', :target => '_blank'
       and many others!
     %p
-      %span.bold If you use the data, please provide attribution!
+      %span.bold If you use the data, provide attribution!
   - if !mobile_device?
     .news{:style => 'display: flex;justify-content: center;'}
       =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;', :class => 'splash')
@@ -155,9 +136,7 @@
       If you want to quickly look up all your locations, try this special map!
     %p.explore.center{:style => 'line-height: 50px;margin: 20px 0;'}
       = link_to 'Operators Map', operators_path
-    %p 
-      To be added to our system, and to receive email notifications (please specify that you want this), 
-      = link_to 'Contact us!', 'portland/about', :class => "bold"
+    %p== To be added to our system, and to receive email notifications (please specify that you want this), #{link_to 'contact us', 'portland/about', :class => "bold"}.
 %div.flex_center#stack
   =link_to 'Stack', '#stack', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
