@@ -24,15 +24,9 @@
   .news{:style => 'display: flex;justify-content: center;'}
     =image_tag( 'purple-machine.png', :alt => 'machine', :style => 'height:130px;', :class => 'splash')
   .news
-    %p== On the go? Use the award-winning #{link_to "Pinball Map mobile app", app_path, :class => "red"} to find places to play near you.
+    %p== On the go? Use the award-winning #{link_to "Pinball Map mobile app", app_path, :class => "red bold"} to find places to play near you.
     %p
-      Available for
-      %span.bold
-        Android
-      and
-      %span.bold
-        iOS.
-      It's free and open source (no ads, no tracking). Just pinball!
+      Available for Android and iOS, the app is free and contains no ads, tracking, or tricks. Just pinball!
 %div.flex_center.mb_10#about
   =link_to 'About', '#about', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
@@ -41,15 +35,11 @@
       =image_tag( 'portland/app_logo-350.jpg', :alt => 'portland logo',:style => 'height:260px;', :class => 'splash')
   .news
     %p
-      Pinball Map is a user-powered map. Create an account to help maintain it by adding and removing machines, submitting new locations, and
-      =link_to 'telling your friends', map_flier_path
-      about it!
+      Pinball Map is a user-powered map. To help maintain it, create an account and add and remove machines and submit new locations. You can also add machine comments, edit location info, and add high scores.
     %p
       The data is managed by over 100 administrators and thousands of active users.
-    %p
-      Pinball Map is not monetized and the
-      = link_to 'code is open source.', 'https://github.com/pinballmap/pbm'
-    %p== You can #{link_to 'contact us', 'portland/about', :class => "bold"} and #{link_to 'read the FAQ', faq_path, :class => "bold"}.
+    %p== Pinball Map is not monetized and the #{link_to 'code is', 'https://github.com/pinballmap/pbm'} #{link_to 'open source', 'https://github.com/pinballmap/pbm-react'}.
+    %p== You can #{link_to 'contact us', 'portland/about', :class => "bold"} and you can even #{link_to 'master the FAQ', faq_path}.
   - if !mobile_device?
     .news{:style => 'display: flex;justify-content: center;'}
       =image_tag( 'portland/app_logo-350.jpg', :alt => 'portland logo',:style => 'height:260px;', :class => 'splash')
@@ -81,7 +71,9 @@
   .news
     %p== #{link_to "Support Pinball Map via Patreon", "https://patreon.com/pinballmap", :class => "bold", :target => '_blank'}. All our operating costs are covered by supporters!
     %p
-      You can also support the map by telling people about it and updating it.
+      You can also support the map by
+      =link_to 'telling your friends', map_flier_path
+      about it (there's a handy flier) and updating it.
   - if !mobile_device?
     .news
       =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'width: 100%;'), "https://patreon.com/pinballmap", :target => "_blank"
@@ -97,7 +89,7 @@
       to keep up with map news.
     %p== Our current meager social media presence is #{link_to 'on Mastodon', 'https://fosstodon.org/@pinballmap', :target => '_blank', :class => "bold"}. And we have a #{link_to 'bot that periodically posts random locations', 'https://botsin.space/@OddPinballMap', :target => '_blank'}.
     %p== The podcast is back! #{link_to "Mappin' Around with Scott & Ryan", 'https://pod.pinballmap.com/', :target => '_blank', :class => 'bold'}. After four cold and dreary years, we are again making new episodes.
-    %p== We can be regularly found in the #{link_to 'Pinball People Discord', 'https://discord.gg/XffPx6VKTv', :class => "bold", :target => '_blank'}. It's a fun and friendly way to chat with other pinball fans!
+    %p== We can regularly be found in the #{link_to 'Pinball People Discord', 'https://discord.gg/XffPx6VKTv', :class => "bold", :target => '_blank'}. It's a fun and friendly way to chat with other pinball fans!
 %div.flex_center#api
   =link_to 'API', '#api', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
