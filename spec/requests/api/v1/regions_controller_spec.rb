@@ -126,30 +126,6 @@ describe Api::V1::RegionsController, type: :request do
     end
   end
 
-  describe '#index' do
-    it 'sends back additional, non-db fields' do
-      FactoryBot.create(:user, region: @portland, email: 'not@primary.com')
-      FactoryBot.create(:user, region: @portland, email: 'is@primary.com', is_primary_email_contact: 1)
-
-      get '/api/v1/regions.json'
-      expect(response).to be_successful
-
-      parsed_body = JSON.parse(response.body)
-      expect(parsed_body.size).to eq(1)
-
-      regions = parsed_body['regions']
-      expect(regions.size).to eq(2)
-
-      expect(regions[0]['name']).to eq('portland')
-      expect(regions[0]['primary_email_contact']).to eq('is@primary.com')
-      expect(regions[0]['all_admin_email_addresses']).to eq(['is@primary.com', 'not@primary.com', 'portland@admin.com'])
-
-      expect(regions[1]['name']).to eq('la')
-      expect(regions[1]['primary_email_contact']).to eq('la@admin.com')
-      expect(regions[1]['all_admin_email_addresses']).to eq(['la@admin.com'])
-    end
-  end
-
   describe '#suggest' do
     it 'errors when required fields are not sent' do
       expect(Pony).to_not receive(:mail)

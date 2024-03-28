@@ -58,9 +58,10 @@ module Api
       api :GET, '/api/v1/regions.json', 'Fetch all regions'
       description 'Fetch data about all regions'
       def index
-        regions = Region.includes(:users).all
+        regions = Region.all
+        except = %i[n_search_no default_search_type should_email_machine_removal should_auto_delete_empty_locations send_digest_comment_emails send_digest_removal_emails primary_email_contact all_admin_email_addresses]
 
-        return_response(regions, 'regions', [], %i[primary_email_contact all_admin_email_addresses])
+        return_response(regions, 'regions', [], [], 200, except)
       end
 
       api :GET, '/api/v1/regions/:id.json', 'Fetch information for a single region'
@@ -68,8 +69,9 @@ module Api
       param :id, String, desc: 'ID of the Region you want to see details about', required: true
       def show
         region = Region.find(params[:id])
+        except = %i[n_search_no default_search_type should_email_machine_removal should_auto_delete_empty_locations send_digest_comment_emails send_digest_removal_emails primary_email_contact all_admin_email_addresses filtered_region_links n_high_rollers]
 
-        return_response(region, 'region', [], %i[primary_email_contact all_admin_email_addresses filtered_region_links n_high_rollers])
+        return_response(region, 'region', [], [], 200, except)
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find region', 'errors')
       end
