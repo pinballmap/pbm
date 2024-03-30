@@ -93,6 +93,8 @@ class LocationMachineXrefsController < InheritedResources::Base
 
   def index
     @lmxs = apply_scopes(LocationMachineXref).order('location_machine_xrefs.id desc').limit(50).includes({ location: :region }, :machine, :user)
+    @lmxs = @lmxs.where('machine_id = ?', params[:machine_id]) if params[:machine_id].present? && params[:machine_id].match?(/[0-9]+/)
+
     respond_with(@lmxs)
   end
 

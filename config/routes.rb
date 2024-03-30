@@ -104,7 +104,7 @@ Rails.application.routes.draw do
 
     resources :events, only: [:index, :show]
     resources :regions, only: [:index, :show]
-    resources :location_machine_xrefs, only: [:index], format: 'rss', :as => :lmx_rss
+    get '/location_machine_xrefs/(:machine_id)', to: 'location_machine_xrefs#index', format: 'rss', :as => :lmx_rss
     resources :machine_score_xrefs, only: [:index], format: 'rss', :as => :msx_rss
 
     resources :pages
