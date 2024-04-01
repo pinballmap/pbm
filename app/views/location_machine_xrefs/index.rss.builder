@@ -1,7 +1,7 @@
 xml.instruct! :xml, version: '1.0'
 xml.rss version: '2.0' do
   xml.channel do
-    xml.title "#{@region ? @region.full_name : ''} Pinball Map - New Machine List"
+    xml.title "#{@region ? @region.full_name + ' ' : ''}Pinball Map - New Machine List#{request.path_info.include?('machine_id') ? ' - ' + @lmxs.first.machine.name : ''}"
     xml.description 'Find pinball machines!'
     xml.link [request.protocol, request.host_with_port].join('')
 

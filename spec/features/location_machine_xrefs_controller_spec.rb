@@ -130,6 +130,19 @@ describe LocationMachineXrefsController do
       expect(page.body).to have_content('Twilight Zone')
       expect(page.body).to_not have_content('Spider-Man')
     end
+
+    it 'should support an lmx machine_id when using /machine_id path and only show that machine in the feed' do
+      machine_1 = FactoryBot.create(:machine, name: 'Twilight Zone', id: 1)
+      machine_2 = FactoryBot.create(:machine, name: 'Hammer Time', id: 2)
+
+      FactoryBot.create(:location_machine_xref, location: @location, machine: machine_1)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: machine_2)
+
+      visit "/#{@region.name}/location_machine_xrefs/machine_id/1.rss"
+
+      expect(page.body).to have_content('Twilight Zone')
+      expect(page.body).to_not have_content('Hammer Time')
+    end
   end
 
   describe 'machine descriptions - no auth', type: :feature, js: true do

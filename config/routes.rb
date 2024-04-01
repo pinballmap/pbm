@@ -104,7 +104,8 @@ Rails.application.routes.draw do
 
     resources :events, only: [:index, :show]
     resources :regions, only: [:index, :show]
-    get '/location_machine_xrefs/(:machine_id)', to: 'location_machine_xrefs#index', format: 'rss', :as => :lmx_rss
+    resources :location_machine_xrefs, only: [:index], format: 'rss', :as => :lmx_rss
+    get '/location_machine_xrefs/machine_id(/:machine_id)', to: 'location_machine_xrefs#index', format: 'rss', :as => :single_lmx_rss_region
     resources :machine_score_xrefs, only: [:index], format: 'rss', :as => :msx_rss
 
     resources :pages
@@ -155,6 +156,8 @@ Rails.application.routes.draw do
       get :autocomplete
     end
   end
+
+  get '/location_machine_xrefs/machine_id(/:machine_id)', to: 'location_machine_xrefs#index', format: 'rss', :as => :single_lmx_rss_global
 
   resources :location_machine_xrefs do
     collection do
