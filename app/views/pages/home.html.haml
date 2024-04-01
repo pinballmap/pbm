@@ -176,8 +176,11 @@
   =link_to 'Recent Blog Posts', '#blog', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
   .news{:style => 'display: flex;justify-content: center;'}
-    =image_tag( 'sassy.jpg', :alt => 'sassy', :style => 'height: 260px;', :class => 'splash')
+    =image_tag( 'sassy.jpg', :alt => 'sassy', :style => 'height: 300px;', :class => 'splash')
   .news
+    %p
+      =link_to 'Individual Machine RSS', 'https://blog.pinballmap.com/2024/04/01/individual-machine-rss/', :target => '_blank', :class => 'bold font18'
+      %span.block.italic.m_5 April 1, 2024
     %p
       =link_to 'The Podcast is Back', 'https://blog.pinballmap.com/2024/03/26/podcast-is-back/', :target => '_blank', :class => 'bold font18'
       %span.block.italic.m_5 March 26, 2024
@@ -190,9 +193,6 @@
     %p
       =link_to 'Pinball Map Seminar at Pinball Expo 2023', 'https://blog.pinballmap.com/2023/10/22/pinball-map-seminar-at-pinball-expo/', :target => '_blank', :class => 'bold font18'
       %span.block.italic.m_5 October 22, 2023
-    %p
-      =link_to 'Pinball Map App 5.3.0', 'https://blog.pinballmap.com/2023/08/31/pinball-map-app-5-3-0/', :target => '_blank', :class => 'bold font18'
-      %span.block.italic.m_5 August 31, 2023
 %div.flex_center.flex_column.mb_20#regions
   .region_map
     %p.center
