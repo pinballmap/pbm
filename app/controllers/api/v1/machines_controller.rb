@@ -13,7 +13,7 @@ module Api
       param :manufacturer, String, desc: 'show only machines from this manufacturer', required: false
       formats ['json']
       def index
-        except = params[:no_details] ? %i[is_active created_at updated_at ipdb_link ipdb_id opdb_id machine_group_id] : nil
+        except = params[:no_details] ? %i[is_active created_at updated_at ipdb_link ipdb_id machine_type machine_display] : nil
         machines = params[:region_id] ? Region.find(params[:region_id]).machines : Machine.all
 
         machines = machines.select { |m| m.manufacturer == params[:manufacturer] } if params[:manufacturer]
