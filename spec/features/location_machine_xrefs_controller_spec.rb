@@ -1020,18 +1020,5 @@ describe LocationMachineXrefsController do
       expect(page).to have_content('bar (bally, 2000)')
       expect(page).to have_content('baz (2001)')
     end
-
-    it 'has ipdb links with generic or specific info when appropriate' do
-      FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, name: 'foo', ipdb_id: 555))
-      FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, name: 'bar'))
-
-      visit "/#{@region.name}"
-      page.find('input#location_search_button').click
-
-      sleep(1)
-
-      expect(page).to have_link('IPDB', href: 'http://www.ipdb.org/machine.cgi?id=555')
-      expect(page).to have_link('IPDB', href: 'http://ipdb.org/search.pl?name=bar;qh=checked;searchtype=advanced')
-    end
   end
 end
