@@ -17,7 +17,7 @@ module Api
         return_response(
           locations,
           'user_fave_locations',
-          [location: { include: { location_type: {}, machines: { except: %i[is_active created_at updated_at ipdb_link machine_group_id ipdb_id opdb_id opdb_img opdb_img_height opdb_img_width display machine_type machine_display ic_eligible] } },
+          [location: { include: { location_type: {}, machines: { except: %i[is_active created_at updated_at ipdb_link machine_group_id ipdb_id kineticist_url opdb_id opdb_img opdb_img_height opdb_img_width display machine_type machine_display ic_eligible] } },
           except: %i[phone website created_at updated_at zone_id region_id description operator_id is_stern_army country is_active] }]
         )
       rescue ActiveRecord::RecordNotFound

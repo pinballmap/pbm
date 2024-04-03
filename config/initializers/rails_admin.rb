@@ -305,6 +305,7 @@ RailsAdmin.config do |config|
       field :manufacturer, :string
       field :year, :integer
       field :is_active, :boolean
+      field :kineticist_url, :string
       field :ipdb_link, :string
       field :ipdb_id, :integer
       field :opdb_id, :string
@@ -320,6 +321,7 @@ RailsAdmin.config do |config|
       field :name, :string
       field :is_active, :boolean
       field :updated_at, :datetime
+      field :kineticist_url, :string
       field :ipdb_link, :string
       field :ipdb_id, :integer
       field :opdb_id, :string
@@ -335,6 +337,7 @@ RailsAdmin.config do |config|
       field :name, :string
       field :manufacturer, :string
       field :year, :integer
+      field :kineticist_url, :string
       field :ipdb_link, :string
       field :ipdb_id, :integer
       field :opdb_id, :string
