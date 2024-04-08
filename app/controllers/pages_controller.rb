@@ -59,7 +59,7 @@ class PagesController < ApplicationController
     @machine_sample = Machine.select('name, random() as r').order('r').limit(1).first
     @machine_placeholder = @machine_sample.nil? ? 'e.g. Lord of the Rings' : 'e.g. ' + @machine_sample.name
 
-    @big_cities_sample = Location.select(%i[city state], 'random() as r').having('count(city)>9', 'count(state)>0').group('city', 'state').order('r').limit(1).first
+    @big_cities_sample = Location.select(%i[city state], 'random() as r').having('count(city)>9').where.not(state: [nil, '']).group('city', 'state').order('r').limit(1).first
     @big_cities_placeholder = @big_cities_sample.nil? ? 'e.g. Portland, OR' : 'e.g. ' + @big_cities_sample.city + ', ' + @big_cities_sample.state
   end
 
