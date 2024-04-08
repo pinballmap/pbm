@@ -11,15 +11,22 @@
         %span.bold according to our data license you must include attribution and a link back to this site. 
         If you need bulk data for a project, please get in touch. We have collaborated with many folks on their projects, from student projects to services by major pinball companies. Please do not just scrape large amounts of this site for your own arcade/pinball mapping site, with no attribution. Thousands of people have been contributing their time and effort to this site since 2008.
       %hr
+      %p.question#9
+        =link_to 'How do I add a machine to a location?', '#9', :class => "no_underline"
+      %p.answer
+        First, log in. On the website, lookup the location, then click the "Add a machine" button. Choose a machine. Click Add. 
+      %p.answer 
+        On the app, lookup the location, then click the + (plus) icon, or click the menu icon and choose "Add machine". Then select a machine and add it.
+      %hr
+      %p.question#2
+        =link_to 'How do I remove a machine from a location?', '#2', :class => "no_underline"
+      %p.answer
+        First, log in. On the website, click the "remove" button that's below the machine name. On the app, click on the machine name, and then look for a "remove" button or trash can icon.
+      %hr
       %p.question#15
         =link_to 'Location name has changed - how do I change it?', '#15', :class => "no_underline"
       %p.answer
         Only administrators can change the name of a location. Just contact us and we'll change it!
-      %hr
-      %p.question#2
-        =link_to 'This machine is no longer at this location.', '#2', :class => "no_underline"
-      %p.answer
-        This is a user-powered map, and YOU can remove the machine from the location. On the website, just click the "remove" button that's below the machine name. On the app, click on the machine name, and then look for a "remove" button or trash can icon.
       %hr
       %p.question#3
         =link_to 'This location closed/no longer has machines.', '#3', :class => "no_underline"
@@ -61,11 +68,6 @@
         =link_to 'Can I add my private collection to the map?', '#8', :class => "no_underline"
       %p.answer
         No. Pinball Map only lists publicly-accessible locations. The definition of 'public' varies - some places have entrance fees, or limited hours. But overall, the location has to be inclusive and accessible. So please don't submit your house or a private club that excludes people from becoming members.
-      %hr
-      %p.question#9 
-        =link_to 'How do I remove a machine from a location?', '#9', :class => "no_underline"
-      %p.answer
-        While logged in, click the "trash can" icon next to a machine name.
       %hr
       %p.question#10 
         =link_to 'When I search for a city, the city is listed twice (and maybe the second instance of it is misspelled). Or, I see the same location listed twice. Or, the place is in the wrong spot on the map. Etc.', '#10', :class => "no_underline"
