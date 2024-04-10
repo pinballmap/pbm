@@ -726,7 +726,7 @@ RailsAdmin.config do |config|
       field :name, :string
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, :object_type => 'suggested_location'}
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:object].region_id, :object_type => 'suggested_location'}
         end
       end
       field :location_type_id do

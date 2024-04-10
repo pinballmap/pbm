@@ -13,7 +13,8 @@ class Ability
       can :manage, [Operator, Location, User, UserSubmission, SuggestedLocation, MachineCondition, BannedIp, LocationPictureXref, MachineScoreXref]
     else
       can :manage, [Location, Operator], region_id: user.region_id
-      can %i[update read destroy], [SuggestedLocation], region_id: user.region_id
+      can %i[read destroy], [SuggestedLocation], region_id: user.region_id
+      can %i[update], [SuggestedLocation]
       can %i[update read destroy], [MachineCondition], location: { region_id: user.region_id }
       can %i[update read destroy], [MachineScoreXref], location: { region_id: user.region_id }
       can %i[read], [UserSubmission], region_id: user.region_id
