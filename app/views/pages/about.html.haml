@@ -10,7 +10,9 @@
           = @region.full_name
           Pinball Map administrator
       %p
-        If you are writing to tell us that a location no longer has machines - NO NEED! Please just remove the machines from the location, and we will auto-delete it within a week.
+        If a location no longer has machines, NO NEED to tell us! Please just remove the machines from the location, and we will auto-delete it within a week.
+      %p
+        If a location has moved or changed names, tell us which location you're referring to! 
       #contact_maker.pb_10
         = form_tag contact_sent_path, :method => 'post' do
           %ul.pl_0
@@ -33,15 +35,9 @@
               %input{:type => "submit", :value => "Submit Comment", :class => "submit_button"}
     .column.bg_vlightpurple.w_450
       %p.red.font18.bold
-        About the
-        = @region.full_name
-        Pinball Map
-      %p
-        This map lists all the pinball machines in the
-        %span.red.bold= @region.full_name
-        region. The data is kept up to date by YOU!
-      %p Pinball Map was founded in 2008 in Portland, Oregon.
-      %p== Study the #{link_to 'FAQ', faq_path}.
+        About Pinball Map
+      %p Pinball Map was founded in 2008 in Portland, Oregon, by Scott & Ryan. It's an open source project, with numerous contributors writing code and adding features (notably, Beth on the app; and Elijah for various operations), over 100 administrators managing data, and thousands of users keeping it up to date.
+      %p== Study the #{link_to 'FAQ', faq_path}. If you contact us for something that is answered in the FAQ, we will point you to the FAQ (and then will expect you to acknowledge that you've read it). Please be sensitive to your demands on our time.
       %p== Spread the word about Pinball Map by #{link_to 'distributing this flier', map_flier_path}!
       %p== View the #{link_to 'Pinball Map Privacy Policy', privacy_path}.
     - if (@region.operators.size > 0)
