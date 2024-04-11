@@ -16,16 +16,14 @@
       %p.question#2
         =link_to 'How do I remove a machine from a location?', '#2', :class => "no_underline"
       %p.answer
-        First, log in. On the website, click the "remove" button that's below the machine name. On the app, click on the machine name, and then look for a "remove" button or trash can icon.
+        First, log in. On the website, click the "remove" button that's below the machine name. On the app, click on the machine name, and then look for the "remove" button or trash can icon.
       %hr
       %p.question#7
         =link_to 'How do I add a new location?', '#7', :class => "no_underline"
-      %p.answer
-        Fill out
-        =link_to 'this form.', map_location_suggest_path
+      %p.answer== Fill out #{link_to 'this form', map_location_suggest_path}. Our administrators moderate submissions, so please allow 0 - 7 days or so for it to be approved. The more accurate and thorough your submission, the quicker it will get added!
       %hr
       %p.question#3
-        =link_to 'This location closed/no longer has machines.', '#3', :class => "no_underline"
+        =link_to 'This location closed/no longer has machines. What do I do - do I need to tell you?', '#3', :class => "no_underline"
       %p.answer
         Simply remove all the machines from it. We get notified once a week about empty locations, and then we delete them (sometimes we wait longer to delete them because we want to verify that the machines are really gone). So, no need to tell us. But still, thanks for telling us and for updating the map!
       %hr
@@ -35,16 +33,15 @@
         No. If a place is seasonal or closed due to restrictions, and is expected to re-open, please do not remove the machines from it. Just edit the location description to say it's temporarily closed. You can also make sure the phone number is listed, so that people can easily call and check on the status.
       %hr
       %p.question#15
-        =link_to 'Location name has changed - how do I change it?', '#15', :class => "no_underline"
-      %p.answer
-        Only administrators can change the name of a location. Just contact us and we'll change it!
+        =link_to 'Location name has changed. Can I change it?', '#15', :class => "no_underline"
+      %p.answer== Only administrators can edit location names. #{link_to 'Contact us', about_path('portland')}, and make sure to tell us the name of the location.
       %hr
       %p.question#5 
-        =link_to 'This location has moved. Should I remove the machines from it and re-submit?', '#5', :class => "no_underline"
+        =link_to 'This location has moved. Should I add a location description that no administrator will ever see? Or should I remove the machines from it and re-submit?', '#5', :class => "no_underline"
       %p.answer
-        No. Administrators can change the address. Please 
+        Neither. Administrators can change the address. Please 
         = link_to 'let us know', about_path('portland')
-        if a location has moved. It's preferable for us to simply change the address because that retains the location history.
+        if a location has moved, and make sure to tell us the name of the location that has moved. It's preferable for us to simply change the address because that retains the location history.
       %p.font18.center.bold.pbt_5.bg_lightpurple#data-usage
         =link_to 'Data Usage', '#data-usage', :class => "no_underline brightpurple"
       %p.question#1 
@@ -111,7 +108,7 @@
         On the app: log in with your user account, lookup the location, click the "menu" icon and then select "Edit Location Details". Choose your operator business from the list. Then save.
       %hr
       %p.question#12 
-        =link_to "I am an operator or business owner, and people are leaving comments that I don't like on my machines. Can you make them stop, or disable comments on my machines?", '#12', :class => "no_underline"
+        =link_to "I'm operator or business owner, and people are leaving comments that I don't like on my machines. Can you make them stop, or disable comments on my machines?", '#12', :class => "no_underline"
       %p.answer
         The short answer is that we will/can not disable comments at an individual venue or for an individual user. We understand that users and operators tend to want conflicting things. Some operators find reports of technical issues to be very useful; and some do not. Some operators wish that folks would only leave "general" machine comments and not "specific" comments. On the other hand, most regular users find machine comments to be a very valuable feature. It is difficult to perfectly cater to everyone, and we cannot control the comments that people make.
       %p.answer
