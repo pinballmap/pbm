@@ -2,7 +2,7 @@
   .column_container
     .column.w_560.bg_vlightpurple
       %p.question.red.font18.bold Pinball Map FAQ
-      %p== On this page, we'll respond to some frequently asked questions (and frequently commented comments). If you have a question or comment, #{link_to 'contact us', about_path('portland')}.
+      %p== On this page, we'll respond to some frequently asked questions. If you asked us something that we have answered many times, you may find yourself on this page. If you have a question or comment, #{link_to 'contact us', about_path('portland')}.
     .column.w_560
       %p.font18.center.bold.pbt_5.bg_lightpurple#updating
         =link_to 'Updating the Map', '#updating', :class => "no_underline brightpurple"
@@ -74,6 +74,22 @@
         These are data entry mistakes. Please 
         = link_to 'contact us', about_path('portland')
         so we can fix them.
+      %hr
+      %p.question#18
+        =link_to 'I submitted a new location but it never showed up on the map. What is wrong with you?', '#18', :class => "no_underline"
+      %p.answer
+        There are numerous reasons why a new location was not added to the map. Here are some:
+      %ul
+        %li 
+          Not enough time has passed. Please allow 0-7 days before a location is approved. Submissions go to different people, depending on where the location is in the world. And these people work at different paces. Reminder, we're all volunteers with the goal of having a very clean data set.
+        %li
+          The location you submitted isn't open yet. Many locations are submitted by the business owners themselves (and people helping out those businesses), and we are honored that they think of us when they are prepping to launch their business. But guess who are also eager folks? Pinball players! So if a location gets added to the map before it's open to the world, people will drive all the way there, discover an un-opened business, and then... you guessed it! They then yell at us about it. It doesn't matter if there's a location description saying "Opens on May 5." People <i>do not read</i> (except you).
+        %li
+          Your submission didn't utilize the "machine autocomplete". In the "machines" field of the submission form, you gotta start typing a machine name, and then select the correct machine from the list that pops up (note, this magically adds a comma after the machine name). When we approve the location, our system can correctly read the machine name, match it to a machine in our database, and successfully add it to the location. If instead you type in a machine name, then it's not formatted in a way that will match to the database. The end result is that we'll approve the location and the location will have zero machines (unless the admin happens to notice that the machine list is weird and then manually adds the machine after it's on the map), and then a week later the location will get auto-deleted from the map. 
+        %li
+          The location you submitted is a private residence. Or private in some other way. See 
+          =link_to 'this', '#8'
+          FAQ item.
       %p.font18.center.bold.pbt_5.bg_lightpurple#operators
         =link_to 'Operators', '#operators', :class => "no_underline brightpurple"
       %p.question#11 
