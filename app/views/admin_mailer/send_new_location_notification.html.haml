@@ -1,0 +1,37 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  %body
+    %p
+      Dear Admin: You can approve this location with the click of a button! In the Suggested Locations section, click the "(i)", and then the big "APPROVE LOCATION" button at the top.
+    %p 
+      But first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!
+    %p 
+      Location Name: #{@location_name}
+    %p 
+      Street: #{@location_street}
+    %p 
+      City: #{@location_city}
+    %p 
+      State: #{@location_state}
+    %p 
+      Zip: #{@location_zip}
+    %p 
+      Country: #{@location_country}
+    %p 
+      Phone: #{@location_phone}
+    %p 
+      Website: #{@location_website}
+    %p 
+      Type: #{@location_type}
+    %p 
+      Operator: #{@operator}
+    %p 
+      Zone: #{@zone}
+    %p 
+      Comments: #{@location_comments}
+    %p 
+      Machines: #{@location_machines}
+    %p
+      (entered from #{@remote_ip} via #{@headers} #{@user_agent}#{@user_info}) 

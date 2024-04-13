@@ -69,10 +69,7 @@ task import_ifpa_tournaments: :environment do
     end
   end
 rescue StandardError => e
-  Pony.mail(
-    to: 'admin@pinballmap.com',
-    from: 'Pinball Map <admin@pinballmap.com>',
-    subject: "Pbm Rake Task Error - Import IFPA - #{Date.today.strftime('%m/%d/%Y')}",
-    body: "Import IFPA rake task error\n\n" + e.to_s
-  )
+  error_subject = 'Import IFPA rake task error'
+  error = e.to_s
+  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_now
 end

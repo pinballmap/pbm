@@ -2,10 +2,7 @@ desc 'Sends emails to operators with recent comments on their machines'
 task notify_operators: :environment do
   Operator.all.each(&:send_recent_comments) unless Rails.env.staging?
 rescue StandardError => e
-  Pony.mail(
-    to: 'admin@pinballmap.com',
-    from: 'Pinball Map <admin@pinballmap.com>',
-    subject: "Pbm Rake Task Error - Notify Operators - #{Date.today.strftime('%m/%d/%Y')}",
-    body: "Notify operators rake task error\n\n" + e.to_s
-  )
+  error_subject = 'Notify operators rake task error'
+  error = e.to_s
+  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_now
 end

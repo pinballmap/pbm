@@ -1,0 +1,14 @@
+- if ( @email.present? )
+  Name: #{@name}
+
+  Email: #{@email}
+
+Message: #{@message}
+
+- if ( @user_name.present? )
+
+  Username: #{@user_name}
+
+  Email: #{@user_email}
+
+(entered from #{@remote_ip} via #{@headers} #{@user_agent})

@@ -1,0 +1,41 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  %body
+    %p
+      Here is a weekly overview of your pinball map region! Thanks for keeping your region updated! Questions/concerns? Contact admin@pinballmap.com
+    %h3
+      #{@region_name} Weekly Overview
+    %p
+      %strong List of Empty Locations:
+      %br
+      - @machineless_locations.each do |ml|
+        = ml
+        %br
+    %p
+      %strong List of Suggested Locations:
+      %br
+      - @suggested_locations.each do |sl|
+        = sl
+        %br
+    %p
+      #{@suggested_locations_count} location(s) submitted
+      %br
+      #{@locations_added_count} location(s) added
+      %br
+      #{@locations_deleted_count} location(s) deleted
+      %br
+      #{@machine_comments_count} machine comment(s)
+      %br
+      #{@machines_added_count} machine(s) added
+      %br
+      #{@machines_removed_count} machine(s) removed
+    %p
+      #{@full_name} is listing #{@machines_count} machines and #{@locations_count} locations
+      %br
+      #{@events_count} event(s) listed
+      %br
+      #{@events_new_count} event(s) added this week
+      %br
+      #{@contact_messages_count} "contact us" message(s) sent

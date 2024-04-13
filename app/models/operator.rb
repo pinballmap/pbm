@@ -35,6 +35,8 @@ class Operator < ApplicationRecord
     body = "Here's a list of comments made on your pinball machines yesterday on Pinball Map. We're sending this in the hope that it will help you identify, and fix, problems. If you don't want to receive these messages, just reply to this message and tell us!\n"
 
     machine_conditions_to_email.sort.each do |mc|
+      # OperatorMailer.with(email: email, comment: mc.comment, location_name: mc.location_machine_xref.location.name, location_address: mc.location_machine_xref.location.full_street_address, machine: mc.location_machine_xref.machine.name, date: mc.updated_at.strftime('%b %d, %Y - %I:%M%p %Z')).send_recent_comments.deliver_now
+
       body += <<HERE
 
 Comment: #{mc.comment}
@@ -46,14 +48,16 @@ HERE
 
     unless Rails.env.test?
       puts body
-      sleep(10) # Sendgrid is throttling us :<
+      sleep(10) # throttle potection
     end
 
-    Pony.mail(
-      to: email,
-      from: 'Pinball Map <admin@pinballmap.com>',
-      subject: "Pinball Map - Daily digest of comments on your machines - #{Date.today.strftime('%m/%d/%Y')}",
-      body: body
-    )
+    OperatorMailer.with(email: email, body: body).send_recent_comments.deliver_now
+
+    # Pony.mail(
+    #   to: email,
+    #   from: 'Pinball Map <admin@pinballmap.com>',
+    #   subject: "Pinball Map - Daily digest of comments on your machines - #{Date.today.strftime('%m/%d/%Y')}",
+    #   body: body
+    # )
   end
 end

@@ -1,0 +1,17 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  %body
+    %p
+      #{@condition}
+      %br
+      #{@machine_name}
+      %br
+      #{@location_name}
+      %br 
+      #{@location_city}
+      %br
+      #{@location_region}
+    %p
+      (entered from #{@remote_ip} via #{@headers} #{@user_agent}#{@user_info}) 

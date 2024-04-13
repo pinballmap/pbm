@@ -47,15 +47,10 @@ class LocationMachineXref < ApplicationRecord
 
     return if condition.nil? || condition.blank? || location.region_id.blank?
 
-    user_info = location.last_updated_by_user ? " by #{location.last_updated_by_user.username} (#{location.last_updated_by_user.email})" : ''
+    if location.region&.send_digest_comment_emails?
+      user_info = location.last_updated_by_user ? " by #{location.last_updated_by_user.username} (#{location.last_updated_by_user.email})" : ''
 
-    unless location.region&.send_digest_comment_emails?
-      Pony.mail(
-        to: location.region.users.map(&:email),
-        from: 'Pinball Map <admin@pinballmap.com>',
-        subject: add_host_info_to_subject('Pinball Map - New machine condition', options[:request_host]),
-        body: [condition, machine.name, location.name, location.city, location.region.name, "(entered from #{options[:remote_ip]} via #{options[:user_agent]}#{user_info})"].join("\n")
-      )
+      AdminMailer.with(to_users: location.region.users.map(&:email), subject: add_host_info_to_subject('Pinball Map - New machine condition'), condition: condition, machine_name: machine.name, location_name: location.name, location_city: location.city, location_region: location.region.name, remote_ip: request.remote_ip, headers: request.headers['AppVersion'], user_agent: request.user_agent, user_info: user_info).new_machine_condition.deliver_now
     end
   end
 
@@ -84,12 +79,7 @@ class LocationMachineXref < ApplicationRecord
         user_info = " by #{user.username} (#{user.email})"
       end
 
-      Pony.mail(
-        to: location.region.users.map(&:email),
-        from: 'Pinball Map <admin@pinballmap.com>',
-        subject: add_host_info_to_subject('Pinball Map - Machine removed', options[:request_host]),
-        body: [location.name, location.city, machine.name, location.region.name, "(user_id: #{options[:user_id]}) (entered from #{options[:remote_ip]} via #{options[:user_agent]}#{user_info})"].join("\n")
-      )
+      AdminMailer.with(to_users: location.region.users.map(&:email), subject: add_host_info_to_subject('Pinball Map - Machine removed'), machine_name: machine.name, location_name: location.name, location_city: location.city, location_region: location.region.name, remote_ip: options[:remote_ip], headers: request.headers['AppVersion'], user_agent: options[:user_agent], user_info: user_info).machine_removal.deliver_now
     end
 
     user = nil

@@ -76,28 +76,6 @@ module Api
         return_response('Failed to find region', 'errors')
       end
 
-      api :POST, '/api/v1/regions/suggest.json', 'Suggest a new region to add to the map'
-      description "This doesn't actually create a new region, it just sends region information to pdx admins"
-      param :region_name, String, desc: 'Region name', required: true
-      param :comments, String, desc: 'Things we should know about this region', required: false
-      formats ['json']
-      def suggest
-        user = current_user.nil? ? nil : current_user
-
-        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
-
-        if params['region_name'].blank?
-          return_response('The name of the region you want added is a required field.', 'errors')
-          return
-        end
-
-        params['name'] = user.username
-        params['email'] = user.email
-
-        send_new_region_notification(params)
-        return_response("Thanks for suggesting that region. We'll be in touch.", 'msg')
-      end
-
       api :POST, '/api/v1/regions/contact.json', 'Contact regional administrator'
       description 'Send a message to the admins for a region'
       param :message, String, desc: 'Message to admins', required: true

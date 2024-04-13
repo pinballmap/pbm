@@ -151,12 +151,12 @@ HERE
     end
   end
 
-  describe '#generate_daily_digest_regionless_removals_email_body' do
+  describe '#generate_daily_digest_regionless_removal_email_body' do
     it 'should return nil if there are no removals that day' do
       FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(Region.generate_daily_digest_regionless_removals_email_body).to eq(nil)
+      expect(Region.generate_daily_digest_regionless_removal_email_body).to eq(nil)
     end
 
     it 'should generate a string containing all machine removals from the day' do
@@ -166,7 +166,7 @@ HERE
       FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(Region.generate_daily_digest_regionless_removals_email_body).to eq(<<HERE)
+      expect(Region.generate_daily_digest_regionless_removal_email_body).to eq(<<HERE)
 Here is a list of all the machines that were removed from regionless locations on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
 
 REGIONLESS Daily Machine Removals
@@ -178,12 +178,12 @@ HERE
     end
   end
 
-  describe '#generate_daily_digest_removals_email_body' do
+  describe '#generate_daily_digest_removal_email_body' do
     it 'should return nil if there are no removals that day' do
       FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(@region.generate_daily_digest_removals_email_body).to eq(nil)
+      expect(@region.generate_daily_digest_removal_email_body).to eq(nil)
     end
 
     it 'should generate a string containing all machine removals from the day' do
@@ -193,7 +193,7 @@ HERE
       FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(@region.generate_daily_digest_removals_email_body).to eq(<<HERE)
+      expect(@region.generate_daily_digest_removal_email_body).to eq(<<HERE)
 Here is a list of all the machines that were removed from your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact map@pinballmap.com
 
 Portland Daily Machine Removals

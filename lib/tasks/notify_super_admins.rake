@@ -8,28 +8,43 @@ task notify_super_admins: :environment do
       email_bodies.push(email_body)
     end
 
-    User.where(is_super_admin: 'Y').each do |u|
-      Pony.mail(
-        to: u.email,
-        from: 'Pinball Map <admin@pinballmap.com>',
-        subject: "Pinball Map - Weekly admin digest for all regions - #{Date.today.strftime('%m/%d/%Y')}",
-        body: "CHECK THE ATTACHMENT, BROH. Right now we have #{Location.count} locations and #{LocationMachineXref.count} total machines.",
-        attachments: { 'all_region_info.txt' => email_bodies.join("\n\n") }
-      )
+    weekly_regionless_email_body = Region.generate_weekly_regionless_email_body
 
-      Pony.mail(
-        to: u.email,
-        from: 'Pinball Map <admin@pinballmap.com>',
-        subject: "Pinball Map - Weekly admin REGIONLESS digest - #{Date.today.strftime('%m/%d/%Y')}",
-        body: Region.generate_weekly_regionless_email_body
-      )
+    User.where(is_super_admin: 'Y').each do |user|
+      AdminMailer.with(user: user.email, email_bodies: email_bodies).weekly_admin_digest_all_regions.deliver_now
+      AdminMailer.with(user: user.email, machines_count: weekly_regionless_email_body[:regionless_machines_count], locations_count: weekly_regionless_email_body[:regionless_locations_count], machineless_locations: weekly_regionless_email_body[:machineless_locations], suggested_locations: weekly_regionless_email_body[:suggested_locations], suggested_locations_count: weekly_regionless_email_body[:suggested_locations_count], locations_added_count: weekly_regionless_email_body[:locations_added_count], locations_deleted_count: weekly_regionless_email_body[:locations_deleted_count], machine_comments_count: weekly_regionless_email_body[:machine_comments_count], machines_added_count: weekly_regionless_email_body[:machines_added_count], machines_removed_count: weekly_regionless_email_body[:machines_removed_count]).weekly_admin_digest_regionless.deliver_now
     end
   end
 rescue StandardError => e
-  Pony.mail(
-    to: 'admin@pinballmap.com',
-    from: 'Pinball Map <admin@pinballmap.com>',
-    subject: "Pbm Rake Task Error - Weekly Super Admins - #{Date.today.strftime('%m/%d/%Y')}",
-    body: "Weekly super admins rake task error\n\n" + e.to_s
-  )
+  error_subject = 'Weekly super admins rake task error'
+  error = e.to_s
+  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_now
+end
+
+desc 'Sends super admins a daily digest email of all new regionless machine conditions'
+task send_daily_digest_regionless_machine_condition_email: :environment do
+  unless Rails.env.staging?
+    regionless_comment_daily_email_body = Region.generate_daily_digest_regionless_comments_email_body
+    submissions = regionless_comment_daily_email_body[:submissions]
+
+    unless submissions.blank?
+      User.where(is_super_admin: 'Y').each do |user|
+        AdminMailer.with(user: user.email, submissions: submissions).send_daily_digest_regionless_machine_condition_email.deliver_now
+      end
+    end
+  end
+end
+
+desc 'Sends super admins a daily digest email of all regionless machine removals'
+task send_daily_digest_regionless_machine_removal_email: :environment do
+  unless Rails.env.staging?
+    regionless_removals_daily_email_body = Region.generate_daily_digest_regionless_removal_email_body
+    submissions = regionless_removals_daily_email_body[:submissions]
+
+    unless submissions.blank?
+      User.where(is_super_admin: 'Y').each do |user|
+        AdminMailer.with(user: user.email, submissions: submissions).send_daily_digest_regionless_machine_removal_email.deliver_now
+      end
+    end
+  end
 end

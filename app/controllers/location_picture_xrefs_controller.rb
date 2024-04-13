@@ -10,23 +10,15 @@ class LocationPictureXrefsController < InheritedResources::Base
       format.js if @location_picture_xref.save
     end
 
-    Pony.mail(
-      to: @location_picture_xref.location.region_id && @location_picture_xref.location.region.users.map(&:email).present? ? @location_picture_xref.location.region.users.map(&:email) : User.where("is_super_admin = 't'").map(&:email),
-      from: 'Pinball Map <admin@pinballmap.com>',
-      subject: 'Pinball Map - Picture added',
-      body: "This is photo ID: #{@location_picture_xref.id}. It's at location: #{@location_picture_xref.location.name}. Region: #{@location_picture_xref.location.region_id ? @location_picture_xref.location.region.full_name : 'REGIONLESS'}.\n\n\nYou can view the picture here https:#{@location_picture_xref.photo.url(:large)}\n\n\nNo need to approve it, it's already live."
-    )
+    to_users = @location_picture_xref.location.region_id && @location_picture_xref.location.region.users.map(&:email).present? ? @location_picture_xref.location.region.users.map(&:email) : User.where("is_super_admin = 't'").map(&:email)
+
+    AdminMailer.with(to_users: to_users, subject: 'Pinball Map - Picture added', photo_id: @location_picture_xref.id, location_name: @location_picture_xref.location.name, region_name: @location_picture_xref.location.region_id ? @location_picture_xref.location.region.full_name : 'REGIONLESS', photo_url: @location_picture_xref.photo.url(:large)).picture_added.deliver_now
   end
 
   def destroy
     lpx = LocationPictureXref.find_by_id(params[:id])
 
-    Pony.mail(
-      to: 'admin@pinballmap.com',
-      from: 'Pinball Map <admin@pinballmap.com>',
-      subject: 'Pinball Map - Picture removed',
-      body: "This is photo ID: #{lpx.id}. It was at location: #{lpx.location.name}. "
-    )
+    AdminMailer.with(photo_id: lpx.id, location_name: lpx.location.name).picture_removed.deliver_now
 
     lpx.destroy
 

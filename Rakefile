@@ -6,24 +6,6 @@ require 'pony'
 
 Pbm::Application.load_tasks
 
-desc 'Email admins about empty locations'
-task report_empty_locations: :environment do
-  # rubocop wants you to use next, but next isn't available on an ActiveRecord::Relation, only each.. https://github.com/bbatsov/rubocop/issues/1238
-  # rubocop:disable Style/Next
-  Region.all.each do |r|
-    machineless_locations = r.machineless_locations
-    unless machineless_locations.empty?
-      Pony.mail(
-        to: r.users.map(&:email),
-        from: 'Pinball Map <admin@pinballmap.com>',
-        subject: 'Pinball Map - List of empty locations',
-        body: "The following locations don't have machines at them anymore. You may want to consider removing them from the map. This check will happen again, automatically, in one week.\n\n" + machineless_locations.each.map { |ml| ml.name + " (#{ml.city}, #{ml.state})" }.sort.join("\n")
-      )
-    end
-  end
-  # rubocop:enable Style/Next
-end
-
 desc 'Move region contents'
 task move_region_contents: :environment do
   ARGV.each { |a| task a.to_sym }

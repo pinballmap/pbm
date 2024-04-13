@@ -6,10 +6,7 @@ task delete_expired_events: :environment do
   puts('Deleting all regionless events')
   Region.delete_all_regionless_events
 rescue StandardError => e
-  Pony.mail(
-    to: 'admin@pinballmap.com',
-    from: 'Pinball Map <admin@pinballmap.com>',
-    subject: "Pbm Rake Task Error - Delete Expired Events - #{Date.today.strftime('%m/%d/%Y')}",
-    body: "Delete expired events rake task error\n\n" + e.to_s
-  )
+  error_subject = 'Delete expired events rake task error'
+  error = e.to_s
+  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_now
 end

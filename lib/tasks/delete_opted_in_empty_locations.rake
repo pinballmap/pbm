@@ -6,10 +6,7 @@ task delete_opted_in_empty_locations: :environment do
   puts('Deleting empty_regionless locations')
   Region.delete_empty_regionless_locations
 rescue StandardError => e
-  Pony.mail(
-    to: 'admin@pinballmap.com',
-    from: 'Pinball Map <admin@pinballmap.com>',
-    subject: "Pbm Rake Task Error - Delete Empty Locations - #{Date.today.strftime('%m/%d/%Y')}",
-    body: "Delete empty locations rake task error\n\n" + e.to_s
-  )
+  error_subject = 'Delete empty locations rake task error'
+  error = e.to_s
+  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_now
 end

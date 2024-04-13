@@ -126,44 +126,6 @@ describe Api::V1::RegionsController, type: :request do
     end
   end
 
-  describe '#suggest' do
-    it 'errors when required fields are not sent' do
-      expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/suggest.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_successful
-      expect(JSON.parse(response.body)['errors']).to eq('The name of the region you want added is a required field.')
-    end
-
-    it 'errors when not authed' do
-      expect(Pony).to_not receive(:mail)
-      post '/api/v1/regions/suggest.json', params: { region_name: 'region name', comments: 'region comments' }
-      expect(response).to be_successful
-      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::RegionsController::AUTH_REQUIRED_MSG)
-    end
-
-    it 'emails portland admins on new region submission' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['portland@admin.com'],
-          from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - New region suggestion',
-          body: <<HERE
-Their Name: ssw\n
-Their Email: foo@bar.com\n
-Region Name: region name\n
-Region Comments: region comments\n
-(entered from 127.0.0.1 via cleOS)\n
-HERE
-        )
-      end
-
-      post '/api/v1/regions/suggest.json', params: { region_name: 'region name', comments: 'region comments', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(response).to be_successful
-
-      expect(JSON.parse(response.body)['msg']).to eq("Thanks for suggesting that region. We'll be in touch.")
-    end
-  end
-
   describe '#contact' do
     it 'throws an error if the region does not exist' do
       post '/api/v1/regions/contact.json', params: { region_id: -1, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }

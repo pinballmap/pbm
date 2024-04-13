@@ -38,12 +38,7 @@ class ApplicationController < ActionController::Base
 
     user_info = user ? " by #{user.username} (#{user.email})" : ''
 
-    Pony.mail(
-      to: Region.find_by_name('portland').users.map(&:email),
-      from: 'Pinball Map <admin@pinballmap.com>',
-      subject: add_host_info_to_subject('Pinball Map - New machine name'),
-      body: [machine.name, location.name, "(entered from #{request.remote_ip} via #{request.user_agent}#{user_info})"].join("\n")
-    )
+    AdminMailer.with(to_users: Region.find_by_name('portland').users.map(&:email), subject: add_host_info_to_subject('Pinball Map - New machine name'), machine_name: machine.name, location_name: location.name, remote_ip: request.remote_ip, user_agent: request.user_agent, user_info: user_info).new_machine_name.deliver_now
   end
 
   def send_new_location_notification(params, region, user = nil)
@@ -79,69 +74,17 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    body = <<BODY
-Dear Admin: You can approve this location with the click of a button at #{request.protocol}#{request.host_with_port}#{rails_admin_path}/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
-Location Name: #{params['location_name']}\n
-Street: #{params['location_street']}\n
-City: #{params['location_city']}\n
-State: #{params['location_state']}\n
-Zip: #{params['location_zip']}\n
-Country: #{params['location_country']}\n
-Phone: #{params['location_phone']}\n
-Website: #{params['location_website']}\n
-Type: #{location_type ? location_type.name : ''}\n
-Operator: #{operator ? operator.name : ''}\n
-Zone: #{zone ? zone.name : ''}\n
-Comments: #{params['location_comments']}\n
-Machines: #{params['location_machines']}\n
-(entered from #{request.remote_ip} via #{request.headers['AppVersion']} #{request.user_agent}#{user_info})\n
-BODY
-    Pony.mail(
-      to: region ? region.users.map(&:email) : User.all.select(&:is_super_admin).map(&:email),
-      bcc: User.all.select(&:is_super_admin).map(&:email),
-      from: 'Pinball Map <admin@pinballmap.com>',
-      subject: add_host_info_to_subject("Pinball Map - New location suggested#{region ? ' (' + region.full_name + ')' : ''}"),
-      body: body
-    )
+    AdminMailer.with(to_users: region ? region.users.map(&:email) : User.all.select(&:is_super_admin).map(&:email), cc_users: User.all.select(&:is_super_admin).map(&:email), subject: add_host_info_to_subject("Pinball Map - New location suggested#{region ? ' (' + region.full_name + ')' : ''}"), location_name: params['location_name'], location_street: params['location_street'], location_city: params['location_city'], location_state: params['location_state'], location_zip: params['location_zip'], location_country: params['location_country'], location_phone: params['location_phone'], location_website: params['location_website'], location_type: location_type ? location_type.name : '', operator: operator ? operator.name : '', zone: zone ? zone.name : '', location_comments: params['location_comments'], location_machines: params['location_machines'], remote_ip: request.remote_ip, headers: request.headers['AppVersion'], user_agent: request.user_agent, user_info: user_info).send_new_location_notification.deliver_now
 
     UserSubmission.create(region_id: region&.id, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE, submission: body, user_id: user&.id)
 
     SuggestedLocation.create(region_id: region&.id, name: params['location_name'], street: street || params['location_street'], city: city || params['location_city'], state: state || params['location_state'], zip: zip || params['location_zip'], country: params['location_country'], phone: params['location_phone'], website: params['location_website'], location_type: location_type, operator: operator, zone: zone, comments: params['location_comments'], machines: params['location_machines'], lat: lat, lon: lon, user_inputted_address: user_inputted_address)
   end
 
-  def send_new_region_notification(params)
-    Pony.mail(
-      to: Region.where('lower(name) = ?', 'portland').first.users.map(&:email),
-      from: 'Pinball Map <admin@pinballmap.com>',
-      subject: add_host_info_to_subject('Pinball Map - New region suggestion'),
-      body: <<BODY
-Their Name: #{params['name']}\n
-Their Email: #{params['email']}\n
-Region Name: #{params['region_name']}\n
-Region Comments: #{params['comments']}\n
-(entered from #{request.remote_ip} via #{request.user_agent})\n
-BODY
-    )
-  end
-
   def send_admin_notification(params, region, user = nil)
-    user_info = user ? "Username: #{user.username}\n\nSite Email: #{user.email}" : ''
+    body = "Their Name: #{params[:name]} Their Email: #{params[:email]} Message: #{params[:message]} Username: #{user&.username} Site Email: #{user&.email} (entered from #{request.remote_ip} via #{request.headers['AppVersion']} #{request.user_agent})"
 
-    body = <<BODY
-Their Name: #{params[:name]}\n
-Their Email: #{params[:email]}\n
-Message: #{params[:message]}\n
-#{user_info}\n
-(entered from #{request.remote_ip} via #{request.headers['AppVersion']} #{request.user_agent})\n
-BODY
-    to_users = region.nil? ? User.all.select(&:is_super_admin).map(&:email) : region.users.map(&:email)
-    Pony.mail(
-      to: to_users,
-      cc: region.nil? ? [] : User.all.select(&:is_super_admin).map(&:email),
-      from: 'Pinball Map <admin@pinballmap.com>',
-      subject: add_host_info_to_subject(region.nil? ? 'Pinball Map - Message' : "Pinball Map - Message (#{region.full_name})"),
-      body: body
-    )
+    AdminMailer.with(name: params[:name], email: params[:email], message: params[:message], user_name: user&.username, user_email: user&.email, to_users: region.nil? ? User.all.select(&:is_super_admin).map(&:email) : region.users.map(&:email), cc_users: region.nil? ? [] : User.all.select(&:is_super_admin).map(&:email), subject: add_host_info_to_subject(region.nil? ? 'Pinball Map - Message' : "Pinball Map - Message (#{region.full_name})"), remote_ip: request.remote_ip, headers: request.headers['AppVersion'], user_agent: request.user_agent).send_admin_notification.deliver_now
 
     UserSubmission.create(region_id: region&.id, submission_type: UserSubmission::CONTACT_US_TYPE, submission: body, user_id: user&.id)
   end
