@@ -1,7 +1,7 @@
 %div.flex_center.flex_column{:style => 'margin-bottom: 20px;'}
   %p.red.bold.p1
     %span{:style => 'width:42px;margin-right: 5px;'}
-      =image_tag( 'icon-color-noBGsvg.svg', :alt => 'splash', :style => 'height:42px;', :class => 'splash')
+      =image_tag( 'icon-color-noBGsvg.svg', :alt => 'splash', :style => 'height:42px;')
     Welcome to Pinball Map!
   %p.welcome.font20.center.mt_0{:style => 'max-width:540px;min-width:100px;line-height:32px;'}
     Founded in 2008, Pinball Map is an open source, crowdsourced worldwide map of public pinball machines.
@@ -22,7 +22,7 @@
   =link_to 'Use the App', '#app', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
   .news{:style => 'display: flex;justify-content: center;'}
-    =image_tag( 'purple-machine.png', :alt => 'machine', :style => 'height:130px;', :class => 'splash')
+    =image_tag( 'purple-machine.png', :alt => 'machine', :style => 'height:130px;')
   .news
     %p== On the go? Use the award-winning #{link_to "Pinball Map mobile app", app_path, :class => "red bold"} to find places to play near you.
     %p
@@ -32,7 +32,7 @@
 %div.flex_center.mobile_flex
   - if mobile_device?
     .news{:style => 'display: flex;justify-content: center;'}
-      =image_tag( 'portland/app_logo-350.jpg', :alt => 'portland logo',:style => 'height:260px;', :class => 'splash')
+      =image_tag( 'portland/app_logo-350.jpg', :alt => 'portland logo',:style => 'height:260px;border-radius: 10px;')
   .news
     %p
       Pinball Map is a user-powered map. To help maintain it, create an account and add and remove machines and submit new locations. You can also add machine comments, edit location info, and add high scores.
@@ -42,26 +42,18 @@
     %p== You can #{link_to 'contact us', 'portland/about', :class => "bold"} and you can even #{link_to 'master the FAQ', faq_path}.
   - if !mobile_device?
     .news{:style => 'display: flex;justify-content: center;'}
-      =image_tag( 'portland/app_logo-350.jpg', :alt => 'portland logo',:style => 'height:260px;', :class => 'splash')
-%div.flex_center.bg_lightpurple#stickers
-  =link_to 'Stickers', '#stickers', :class => "red font28 bold mt_20 mb_5 no_underline"
+      =image_tag( 'portland/app_logo-350.jpg', :alt => 'portland logo',:style => 'height:260px;;border-radius: 10px;')
+%div.flex_center.bg_lightpurple#store
+  =link_to 'Store', '#store', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
   .news
-    =link_to image_tag('pbm-both-stickers.png', :alt => 'Pinball Map Store', :style => 'width: 100%;'), store_path, :target => "_blank"
+    =link_to image_tag('beanie-three-500.jpg', :alt => 'Pinball Map Store', :style => 'height: 260px;border-radius: 10px;'), store_path, :target => "_blank"
   .news
     %p
-      We have
-      %span.bold{:style => 'color:#fe46b0;'}
-        pink
-      and
-      %span.bold{:style => 'color:#47475f;'}
-        black
-      stickers!
+      We have beanies! They're waffle-knit with the classic Pinball Map ball logo embroidered in pink. No text.
     %p
-      And also brushed gold with black ink ones.
-    %p
-      And also pink and black and white ones.
-    %p== Confused? Don't be! Purchase them through the #{link_to 'Pinball Map store', store_path, :class => "bold"}!
+      We also have stickers!
+    %p== Purchase them through the #{link_to 'Pinball Map store', store_path, :class => "bold"}!
 %div.flex_center#support
   =link_to 'Support Us', '#support', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
@@ -81,7 +73,7 @@
   =link_to 'Keep Up', '#more', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
   .news
-    =image_tag( 'mappin-logo-600.orig.png', :alt => 'mapping logo', :style => 'height: 310px;', :class => 'splash')
+    =image_tag( 'mappin-logo-600.orig.png', :alt => 'mapping logo', :style => 'height: 310px;border-radius: 10px;')
   .news
     %p
       Check the
@@ -95,7 +87,7 @@
 %div.flex_center.mobile_flex
   - if mobile_device?
     .news{:style => 'display: flex;justify-content: center;'}
-      =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;', :class => 'splash')
+      =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;')
   .news
     %p== Not only is the Pinball Map website and app open source, but there is also #{link_to 'an API', apipie_apipie_path}. With it, you can pull down map data and use it on your cool app.
     %p
@@ -113,12 +105,12 @@
       %span.bold If you use the data, provide attribution!
   - if !mobile_device?
     .news{:style => 'display: flex;justify-content: center;'}
-      =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;', :class => 'splash')
+      =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;')
 %div.flex_center.bg_lightpurple#operators
   =link_to 'Operators', '#operators', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
   .news{:style => 'display: flex;justify-content: center;'}
-    =image_tag( 'playing.jpg', :alt => 'playing', :style => 'height: 260px;', :class => 'splash')
+    =image_tag( 'playing.jpg', :alt => 'playing', :style => 'height: 260px;border-radius: 10px;')
   .news
     %p
       Over the years we have created tools to help out operators. You can register your business in our system, tag all your locations, and receive email notifications when people leave comments on your machines.
@@ -176,7 +168,7 @@
   =link_to 'Recent Blog Posts', '#blog', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
   .news{:style => 'display: flex;justify-content: center;'}
-    =image_tag( 'sassy.jpg', :alt => 'sassy', :style => 'height: 300px;', :class => 'splash')
+    =image_tag( 'sassy.jpg', :alt => 'sassy', :style => 'height: 300px;border-radius: 10px;')
   .news
     %p
       =link_to 'Individual Machine RSS', 'https://blog.pinballmap.com/2024/04/01/individual-machine-rss/', :target => '_blank', :class => 'bold'
