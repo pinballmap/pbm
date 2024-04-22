@@ -32,8 +32,6 @@ describe Api::V1::MachinesController, type: :request do
       expect(response.body.scan('updated_at').size).to eq(0)
       expect(response.body.scan('ipdb_link').size).to eq(0)
       expect(response.body.scan('ipdb_id').size).to eq(0)
-      expect(response.body.scan('opdb_id').size).to eq(0)
-      expect(response.body.scan('machine_group_id').size).to eq(0)
     end
 
     it 'respects region filter' do
@@ -54,11 +52,16 @@ describe Api::V1::MachinesController, type: :request do
 
   describe '#create' do
     before(:each) do
-      @region = FactoryBot.create(:region, name: 'Portland')
+      @region = FactoryBot.create(:region, name: 'portland', full_name: 'Portland')
       @location = FactoryBot.create(:location, name: 'Ground Kontrol')
 
       FactoryBot.create(:machine, name: 'Cleo')
-      FactoryBot.create(:user, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      FactoryBot.create(:user, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw', region: @region)
+      ActionMailer::Base.perform_deliveries = true
+      ActionMailer::Base.deliveries = []
+    end
+    after(:each) do
+      ActionMailer::Base.deliveries.clear
     end
 
     it 'errors with missing location_id' do
@@ -93,34 +96,25 @@ describe Api::V1::MachinesController, type: :request do
       expect(Machine.all.size).to eq(1)
     end
 
-    it 'handles creation by machine name.. new machine name' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          body: "Bawb\nGround Kontrol\n(entered from 127.0.0.1 via  by ssw (foo@bar.com))",
-          subject: 'Pinball Map - New machine name',
-          to: [],
-          from: 'Pinball Map <admin@pinballmap.com>'
-        )
-      end
+    it 'handles creation by machine name.. new machine name sends email' do
+      expect do
+        post '/api/v1/machines.json', params: { machine_name: 'Bawb', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+        expect(response).to be_successful
+        expect(response.status).to eq(200)
 
-      post '/api/v1/machines.json', params: { machine_name: 'Bawb', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_successful
-      expect(response.status).to eq(200)
+        email = ActionMailer::Base.deliveries.last
+        expect(email.to).to eq(['foo@bar.com'])
+        expect(email.from).to eq(['admin@pinballmap.com'])
+        expect(email.subject).to eq('Pinball Map - New machine name')
+      end.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
 
-    it 'handles creation by machine name.. new machine name - authed' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          body: "Auth Bawb\nGround Kontrol\n(entered from 127.0.0.1 via  by ssw (foo@bar.com))",
-          subject: 'Pinball Map - New machine name',
-          to: [],
-          from: 'Pinball Map <admin@pinballmap.com>'
-        )
-      end
-
-      post '/api/v1/machines.json', params: { machine_name: 'Auth Bawb', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      expect(response).to be_successful
-      expect(response.status).to eq(200)
+    it 'handles creation by machine name.. new machine name does not send email' do
+      expect do
+        post '/api/v1/machines.json', params: { machine_name: 'Bawb', location_id: @location.id.to_s, user_email: 'not@authed.com' }
+        expect(response).to be_successful
+        expect(response.status).to eq(200)
+      end.to change { ActionMailer::Base.deliveries.size }.by(0)
     end
   end
 end

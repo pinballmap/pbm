@@ -131,7 +131,7 @@ class Region < ApplicationRecord
 
   def generate_daily_digest_comments_email_body
     start_of_day = (Time.now - 1.day).beginning_of_day
-    end_of_day = (Time.now - 1.day).now.end_of_day
+    end_of_day = (Time.now - 1.day).end_of_day
 
     { submissions: user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE }.collect(&:submission) }
   end
@@ -175,9 +175,9 @@ class Region < ApplicationRecord
   def generate_weekly_admin_email_body
     start_of_week = (Time.now - 1.week).beginning_of_day
     end_of_week = Time.now.end_of_day
-    { full_name: r.full_name,
-    machines_count: r.machines_count,
-    locations_count: r.locations_count,
+    { full_name: full_name,
+    machines_count: machines_count,
+    locations_count: locations_count,
     events_count: events.select(&:active?).count,
     events_new_count: events.select { |e| !e.created_at.nil? && e.created_at.between?(start_of_week, end_of_week) && (e.end_date.nil? || e.end_date >= Date.today) }.count,
     contact_messages_count: user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::CONTACT_US_TYPE }.count,

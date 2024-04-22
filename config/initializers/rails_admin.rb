@@ -427,7 +427,6 @@ RailsAdmin.config do |config|
       field :effective_radius, :decimal
       field :n_search_no, :integer
       field :default_search_type, :string
-      field :should_email_machine_removal, :boolean
       field :should_auto_delete_empty_locations, :boolean
       field :send_digest_comment_emails, :boolean
       field :send_digest_removal_emails, :boolean
@@ -447,7 +446,6 @@ RailsAdmin.config do |config|
       field :effective_radius, :decimal
       field :n_search_no, :integer
       field :default_search_type, :string
-      field :should_email_machine_removal, :boolean
       field :should_auto_delete_empty_locations, :boolean
       field :send_digest_comment_emails, :boolean
       field :send_digest_removal_emails, :boolean
@@ -463,7 +461,6 @@ RailsAdmin.config do |config|
       field :effective_radius, :decimal
       field :n_search_no, :integer
       field :default_search_type, :string
-      field :should_email_machine_removal, :boolean
       field :should_auto_delete_empty_locations, :boolean
       field :send_digest_comment_emails, :boolean
       field :send_digest_removal_emails, :boolean

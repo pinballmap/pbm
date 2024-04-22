@@ -48,7 +48,7 @@ HERE
 
     unless Rails.env.test?
       puts body
-      sleep(10) # throttle potection
+      sleep(8) # throttle potection
     end
 
     OperatorMailer.with(email: email, body: body).send_recent_comments.deliver_now

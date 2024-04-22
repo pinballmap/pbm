@@ -101,7 +101,7 @@ describe Region do
       FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
-      expect(@region.generate_daily_digest_comments_email_body).to eq(nil)
+      expect(@region.generate_daily_digest_comments_email_body[:submissions]).to be_empty
     end
 
     it 'should generate a string containing all machine comments from the day' do
@@ -111,15 +111,7 @@ describe Region do
       FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
-      expect(@region.generate_daily_digest_comments_email_body).to eq(<<HERE)
-Here is a list of all the comments that were placed in your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact map@pinballmap.com
-
-Portland Daily Comments
-
-bar
-
-foo
-HERE
+      expect(@region.generate_daily_digest_comments_email_body[:submissions]).to eq(%w[foo bar])
     end
   end
 
@@ -129,7 +121,7 @@ HERE
       FactoryBot.create(:user_submission, region: @region, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
       FactoryBot.create(:user_submission, region_id: nil, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
-      expect(Region.generate_daily_digest_regionless_comments_email_body).to eq(nil)
+      expect(Region.generate_daily_digest_regionless_comments_email_body[:submissions]).to be_empty
     end
 
     it 'should generate a string containing all machine comments from the day' do
@@ -139,15 +131,7 @@ HERE
       FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
-      expect(Region.generate_daily_digest_regionless_comments_email_body).to eq(<<HERE)
-Here is a list of all the comments that were placed in regionless locations on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
-
-REGIONLESS Daily Comments
-
-bar
-
-foo
-HERE
+      expect(Region.generate_daily_digest_regionless_comments_email_body[:submissions]).to eq(%w[foo bar])
     end
   end
 
@@ -156,7 +140,7 @@ HERE
       FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(Region.generate_daily_digest_regionless_removal_email_body).to eq(nil)
+      expect(Region.generate_daily_digest_regionless_removal_email_body[:submissions]).to be_empty
     end
 
     it 'should generate a string containing all machine removals from the day' do
@@ -166,15 +150,7 @@ HERE
       FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(Region.generate_daily_digest_regionless_removal_email_body).to eq(<<HERE)
-Here is a list of all the machines that were removed from regionless locations on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
-
-REGIONLESS Daily Machine Removals
-
-bar
-
-foo
-HERE
+      expect(Region.generate_daily_digest_regionless_removal_email_body[:submissions]).to eq(%w[foo bar])
     end
   end
 
@@ -183,7 +159,7 @@ HERE
       FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(@region.generate_daily_digest_removal_email_body).to eq(nil)
+      expect(@region.generate_daily_digest_removal_email_body[:submissions]).to be_empty
     end
 
     it 'should generate a string containing all machine removals from the day' do
@@ -193,15 +169,7 @@ HERE
       FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(@region.generate_daily_digest_removal_email_body).to eq(<<HERE)
-Here is a list of all the machines that were removed from your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact map@pinballmap.com
-
-Portland Daily Machine Removals
-
-bar
-
-foo
-HERE
+      expect(@region.generate_daily_digest_removal_email_body[:submissions]).to eq(%w[foo bar])
     end
   end
 
@@ -234,27 +202,14 @@ HERE
       FactoryBot.create(:suggested_location, region: nil, name: 'SL 1', machines: 'Batman')
       FactoryBot.create(:suggested_location, region: nil, name: 'SL 2', machines: 'Batman')
 
-      expect(Region.generate_weekly_regionless_email_body).to eq(<<HERE)
-Here is an overview of regionless locations! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact map@pinballmap.com
-
-Regionless Weekly Overview
-
-List of Empty Locations:
-Another Empty Location (Rochester, OR)
-Empty Location (Troy, OR)
-
-List of Suggested Locations:
-SL 1
-SL 2
-
-2 Location(s) submitted to you this week
-2 Location(s) added by you this week
-3 Location(s) deleted this week
-2 machine comment(s) by users this week
-1 machine(s) added by users this week
-2 machine(s) removed by users this week
-REGIONLESS is listing 3 machines and 3 locations
-HERE
+      expect(Region.generate_weekly_regionless_email_body[:suggested_locations]).to eq(['SL 1', 'SL 2'])
+      expect(Region.generate_weekly_regionless_email_body[:machineless_locations]).to eq(['Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)'])
+      expect(Region.generate_weekly_regionless_email_body[:suggested_locations_count]).to eq(2)
+      expect(Region.generate_weekly_regionless_email_body[:locations_added_count]).to eq(2)
+      expect(Region.generate_weekly_regionless_email_body[:locations_deleted_count]).to eq(3)
+      expect(Region.generate_weekly_regionless_email_body[:machine_comments_count]).to eq(2)
+      expect(Region.generate_weekly_regionless_email_body[:machines_added_count]).to eq(1)
+      expect(Region.generate_weekly_regionless_email_body[:machines_removed_count]).to eq(2)
     end
   end
 
@@ -299,30 +254,18 @@ HERE
       FactoryBot.create(:suggested_location, region: @region, name: 'SL 1', machines: 'Batman')
       FactoryBot.create(:suggested_location, region: @region, name: 'SL 2', machines: 'Batman')
 
-      expect(@region.generate_weekly_admin_email_body).to eq(<<HERE)
-Here is an overview of your pinball map region! Thanks for keeping your region updated! Please remove any empty locations and add any submitted ones. Questions/concerns? Contact map@pinballmap.com
-
-Portland Weekly Overview
-
-List of Empty Locations:
-Another Empty Location (Rochester, OR)
-Empty Location (Troy, OR)
-
-List of Suggested Locations:
-SL 1
-SL 2
-
-2 Location(s) submitted to you this week
-2 Location(s) added by you this week
-3 Location(s) deleted this week
-2 machine comment(s) by users this week
-1 machine(s) added by users this week
-2 machine(s) removed by users this week
-Portland is listing 3 machines and 3 locations
-4 event(s) listed
-3 event(s) added this week
-5 "contact us" message(s) sent to you
-HERE
+      expect(@region.generate_weekly_admin_email_body[:suggested_locations]).to eq(['SL 1', 'SL 2'])
+      expect(@region.generate_weekly_admin_email_body[:machineless_locations]).to eq(['Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)'])
+      expect(@region.generate_weekly_admin_email_body[:suggested_locations_count]).to eq(2)
+      expect(@region.generate_weekly_admin_email_body[:locations_added_count]).to eq(2)
+      expect(@region.generate_weekly_admin_email_body[:locations_deleted_count]).to eq(3)
+      expect(@region.generate_weekly_admin_email_body[:machine_comments_count]).to eq(2)
+      expect(@region.generate_weekly_admin_email_body[:machines_added_count]).to eq(1)
+      expect(@region.generate_weekly_admin_email_body[:machines_removed_count]).to eq(2)
+      expect(@region.generate_weekly_admin_email_body[:contact_messages_count]).to eq(5)
+      expect(@region.generate_weekly_admin_email_body[:events_count]).to eq(4)
+      expect(@region.generate_weekly_admin_email_body[:events_new_count]).to eq(3)
+      expect(@region.generate_weekly_admin_email_body[:full_name]).to eq('Portland')
     end
   end
 

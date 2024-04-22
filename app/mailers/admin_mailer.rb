@@ -75,33 +75,6 @@ class AdminMailer < ApplicationMailer
     mail(to: params[:user], subject: "Pinball Map - Daily admin REGIONLESS machine removal digest - #{(Date.today - 1.day).strftime('%m/%d/%Y')}")
   end
 
-  def new_machine_condition
-    @condition = params[:condition]
-    @machine_name = params[:machine_name]
-    @location_name = params[:location_name]
-    @location_city = params[:location_city]
-    @location_region = params[:location_region]
-    @remote_ip = params[:remote_ip]
-    @headers = params[:headers]
-    @user_agent = params[:user_agent]
-    @user_info = params[:user_info]
-
-    mail(to: params[:to_users], subject: params[:subject])
-  end
-
-  def machine_removal
-    @machine_name = params[:machine_name]
-    @location_name = params[:location_name]
-    @location_city = params[:location_city]
-    @location_region = params[:location_region]
-    @remote_ip = params[:remote_ip]
-    @headers = params[:headers]
-    @user_agent = params[:user_agent]
-    @user_info = params[:user_info]
-
-    mail(to: params[:to_users], subject: params[:subject])
-  end
-
   def picture_added
     @photo_id = params[:photo_id]
     @location_name = params[:location_name]

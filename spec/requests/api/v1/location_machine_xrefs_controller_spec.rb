@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Api::V1::LocationMachineXrefsController, type: :request do
   before(:each) do
-    @region = FactoryBot.create(:region, id: 3, name: 'portland', should_email_machine_removal: 1)
+    @region = FactoryBot.create(:region, id: 3, name: 'portland', should_email_machine_removal: 0)
     @location = FactoryBot.create(:location, id: 1, name: 'Ground Kontrol', region: @region)
     @machine = FactoryBot.create(:machine, id: 2, name: 'Cleo')
 
@@ -16,40 +16,6 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(response.status).to eq(200)
-
-      expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
-      expect(LocationMachineXref.all.size).to eq(0)
-    end
-
-    it 'sends a deletion email when appropriate' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          body: "#{@location.name}\n#{@location.city}\n#{@machine.name}\n#{@location.region.name}\n(user_id: 111) (entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
-          subject: 'Pinball Map - Machine removed',
-          to: [],
-          from: 'Pinball Map <admin@pinballmap.com>'
-        )
-      end
-
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(response).to be_successful
-
-      expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
-      expect(LocationMachineXref.all.size).to eq(0)
-    end
-
-    it 'sends a deletion email when appropriate - authed' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          body: "#{@location.name}\n#{@location.city}\n#{@machine.name}\n#{@location.region.name}\n(user_id: 111) (entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
-          subject: 'Pinball Map - Machine removed',
-          to: [],
-          from: 'Pinball Map <admin@pinballmap.com>'
-        )
-      end
-
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(response).to be_successful
 
       expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
       expect(LocationMachineXref.all.size).to eq(0)
@@ -76,17 +42,6 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
       expect(submission.submission).to eq('Cleo was removed from Ground Kontrol in Portland by ssw')
       expect(submission.user_id).to eq(111)
-    end
-
-    it 'sends a deletion email when appropriate - notifies if origin was staging server' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          subject: '(STAGING) Pinball Map - Machine removed'
-        )
-      end
-
-      host! 'pbmstaging.com'
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
     end
 
     it 'errors if lmx id does not exist' do
@@ -256,15 +211,6 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'updates condition' do
       FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
 
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          body: "foo\nCleo\nGround Kontrol\nPortland\nPortland\n(entered from 127.0.0.1 via cleOS by ssw (foo@bar.com))",
-          subject: 'Pinball Map - New machine condition',
-          to: [],
-          from: 'Pinball Map <admin@pinballmap.com>'
-        )
-      end
-
       put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, params: { condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['location_machine']['condition']).to eq('foo')
@@ -286,17 +232,6 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       @lmx.reload
       expect(@lmx.location.last_updated_by_user.id).to eq(111)
-    end
-
-    it 'email notifies if origin was the staging server' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          subject: '(STAGING) Pinball Map - New machine condition'
-        )
-      end
-
-      host! 'pbmstaging.com'
-      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, params: { condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
     end
 
     it 'returns an error message if the lmx does not exist' do

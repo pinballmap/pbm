@@ -26,80 +26,88 @@ describe PagesController, type: :controller do
   describe 'contact_sent' do
     before(:each) do
       @user = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      ActionMailer::Base.perform_deliveries = true
+      ActionMailer::Base.deliveries = []
+    end
+    after(:each) do
+      ActionMailer::Base.deliveries.clear
     end
     it 'should send an email if the body is not blank' do
       logout
 
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['foo@bar.com'],
-          cc: ['super_admin@bar.com'],
-          from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - Message (Portland)',
-          body: "Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\n\n\n(entered from 0.0.0.0 via  Rails Testing)\n\n"
-        )
-      end
+      expect do
+        post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_test: 'pinball' }
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq('Pinball Map - Message (Portland)')
+        expect(email.from).to eq(['admin@pinballmap.com'])
+        expect(email.to).to eq(['foo@bar.com'])
+        expect(email.cc).to eq(['super_admin@bar.com'])
+        expect(email.body).to have_content('Name: foo')
+        expect(email.body).to have_content('Email: bar')
+        expect(email.body).to have_content('Message: baz')
+        expect(email.body).to have_content('(entered from 0.0.0.0 via  Rails Testing)')
 
-      post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_test: 'pinball' }
-      expect(@region.reload.user_submissions.count).to eq(1)
-      submission = @region.user_submissions.first
-      expect(submission.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
-      expect(submission.submission).to eq("Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\n\n\n(entered from 0.0.0.0 via  Rails Testing)\n\n")
+        expect(@region.reload.user_submissions.count).to eq(1)
+        submission = @region.user_submissions.first
+        expect(submission.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
+        expect(submission.submission).to eq('Their Name: foo Their Email: bar Message: baz Username:  Site Email:  (entered from 0.0.0.0 via  Rails Testing)')
+      end.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
 
     it 'should include user info if you are logged in' do
       login(@user)
 
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['foo@bar.com'],
-          cc: ['super_admin@bar.com'],
-          from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - Message (Portland)',
-          body: "Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\nUsername: ssw\n\nSite Email: yeah@ok.com\n\n(entered from 0.0.0.0 via  Rails Testing)\n\n"
-        )
-      end
-
-      post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz' }
-      submission = @region.reload.user_submissions.first
-      expect(submission.user).to eq(@user)
-      expect(submission.submission).to eq("Their Name: foo\n\nTheir Email: bar\n\nMessage: baz\n\nUsername: ssw\n\nSite Email: yeah@ok.com\n\n(entered from 0.0.0.0 via  Rails Testing)\n\n")
+      expect do
+        post 'contact_sent', params: { region: 'portland', contact_msg: 'baz' }
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq('Pinball Map - Message (Portland)')
+        expect(email.from).to eq(['admin@pinballmap.com'])
+        expect(email.to).to eq(['foo@bar.com'])
+        expect(email.cc).to eq(['super_admin@bar.com'])
+        expect(email.body).to have_content('Username: ssw')
+        expect(email.body).to have_content('Email: yeah@ok.com')
+        expect(email.body).to have_content('Message: baz')
+        expect(email.body).to have_content('(entered from 0.0.0.0 via  Rails Testing)')
+        submission = @region.reload.user_submissions.first
+        expect(submission.user).to eq(@user)
+        expect(submission.submission).to eq('Their Name:  Their Email:  Message: baz Username: ssw Site Email: yeah@ok.com (entered from 0.0.0.0 via  Rails Testing)')
+      end.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
 
     it 'email should notify if it was sent from the staging server' do
       @request.host = 'pbmstaging.com'
 
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          subject: '(STAGING) Pinball Map - Message (Portland)'
-        )
-      end
-
-      post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_test: 'pinball' }
+      expect do
+        post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_test: 'pinball' }
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq('(STAGING) Pinball Map - Message (Portland)')
+      end.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
 
     it 'should not send an email if the body is blank' do
-      expect(Pony).to_not receive(:mail)
+      expect(ActionMailer::Base.deliveries.count).to eq(0)
 
       post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: nil, security_test: 'pinball' }
     end
 
     it 'should not send an email if the email is blank when logged out' do
       logout
-      expect(Pony).to_not receive(:mail)
+
+      expect(ActionMailer::Base.deliveries.count).to eq(0)
 
       post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: nil, contact_msg: 'hello', security_test: 'pinball' }
     end
 
     it 'should send an email if the email is blank when logged in' do
       login(@user)
-      expect(Pony).to receive(:mail)
 
-      post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: nil, contact_msg: 'hello', security_test: 'pinball' }
+      expect do
+        post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: nil, contact_msg: 'hello', security_test: 'pinball' }
+      end.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
 
     it 'should not send an email if the body contains a spam keyword' do
-      expect(Pony).to_not receive(:mail)
+      expect(ActionMailer::Base.deliveries.count).to eq(0)
 
       post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'vape', security_test: 'pinball' }
     end
@@ -107,10 +115,9 @@ describe PagesController, type: :controller do
     it 'should flash an error message if security test fails' do
       logout
 
-      expect(Pony).to_not receive(:mail)
+      expect(ActionMailer::Base.deliveries.count).to eq(0)
 
       post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_test: 'dunno' }
-
       expect(request.flash[:alert]).to eq('You failed the security test. Please go back and try again.')
     end
   end
@@ -137,6 +144,13 @@ describe PagesController, type: :controller do
 
   ['portland', nil].each do |region|
     describe 'submitted_new_location' do
+      before(:each) do
+        ActionMailer::Base.perform_deliveries = true
+        ActionMailer::Base.deliveries = []
+      end
+      after(:each) do
+        ActionMailer::Base.deliveries.clear
+      end
       it 'should send an email' do
         FactoryBot.create(:location_type, name: 'type')
         FactoryBot.create(:operator, name: 'operator')
@@ -144,40 +158,23 @@ describe PagesController, type: :controller do
 
         logout
 
-        body = <<HERE
-Dear Admin: You can approve this location with the click of a button at http://test.host/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
-Location Name: name\n
-Street: street\n
-City: city\n
-State: state\n
-Zip: zip\n
-Country: country\n
-Phone: phone\n
-Website: website\n
-Type: type\n
-Operator: operator\n
-Zone: zone\n
-Comments: comments\n
-Machines: machines\n
-(entered from 0.0.0.0 via  Rails Testing)\n
-HERE
+        expect do
+          post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
 
-        expect(Pony).to receive(:mail) do |mail|
-          expect(mail).to include(
-            to: region.nil? ? ['super_admin@bar.com'] : ['foo@bar.com'],
-            bcc: ['super_admin@bar.com'],
-            from: 'Pinball Map <admin@pinballmap.com>',
-            subject: "Pinball Map - New location suggested#{region.nil? ? '' : ' (' + @region.full_name + ')'}",
-            body: body
-          )
-        end
+          email = ActionMailer::Base.deliveries.last
+          expect(email.to).to eq(region.nil? ? ['super_admin@bar.com'] : ['foo@bar.com'])
+          expect(email.from).to eq(['admin@pinballmap.com'])
+          expect(email.subject).to eq("Pinball Map - New location suggested#{region.nil? ? '' : ' (' + @region.full_name + ')'}")
+          expect(email.body).to have_content('Dear Admin: You can approve this location with the click of a button! In the Suggested Locations section, click the "(i)", and then the big "APPROVE LOCATION" button at the top.')
+          expect(email.body).to have_content('Location Name: name')
+          expect(email.body).to have_content('Machines: machines')
+          expect(email.body).to have_content('Street: street')
 
-        post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
-
-        expect(region.nil? ? UserSubmission.count : @region.user_submissions.count).to eq(1)
-        submission = region.nil? ? UserSubmission.first : @region.user_submissions.first
-        expect(submission.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
-        expect(submission.submission).to eq(body)
+          expect(region.nil? ? UserSubmission.count : @region.user_submissions.count).to eq(1)
+          submission = region.nil? ? UserSubmission.first : @region.user_submissions.first
+          expect(submission.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
+          expect(submission.submission).to eq('Location Name: name Street: street City: city State: state Zip: zip Country: country Phone: phone Website: website Type: type Operator: operator Zone: zone Comments: comments Machines: machines (entered from 0.0.0.0 via  Rails Testing)')
+        end.to change { ActionMailer::Base.deliveries.size }.by(1)
       end
 
       it 'should send an email - includes user info if available' do
@@ -186,46 +183,31 @@ HERE
 
         login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com'))
 
-        body = <<HERE
-Dear Admin: You can approve this location with the click of a button at http://test.host/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
-Location Name: name\n
-Street: street\n
-City: city\n
-State: state\n
-Zip: zip\n
-Country: country\n
-Phone: phone\n
-Website: website\n
-Type: type\n
-Operator: operator\n
-Zone: \n
-Comments: comments\n
-Machines: machines\n
-(entered from 0.0.0.0 via  Rails Testing by ssw (yeah@ok.com))\n
-HERE
-        expect(Pony).to receive(:mail) do |mail|
-          expect(mail).to include(
-            to: region ? ['foo@bar.com'] : ['super_admin@bar.com'],
-            bcc: ['super_admin@bar.com'],
-            from: 'Pinball Map <admin@pinballmap.com>',
-            subject: "Pinball Map - New location suggested#{region.nil? ? '' : ' (' + @region.full_name + ')'}",
-            body: body
-          )
-        end
+        expect do
+          post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
 
-        post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
+          email = ActionMailer::Base.deliveries.last
+          expect(email.to).to eq(region.nil? ? ['super_admin@bar.com'] : ['foo@bar.com'])
+          expect(email.from).to eq(['admin@pinballmap.com'])
+          expect(email.subject).to eq("Pinball Map - New location suggested#{region.nil? ? '' : ' (' + @region.full_name + ')'}")
+          expect(email.body).to have_content('Location Name: name')
+
+          expect(region.nil? ? UserSubmission.count : @region.user_submissions.count).to eq(1)
+          submission = region.nil? ? UserSubmission.first : @region.user_submissions.first
+          expect(submission.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
+          expect(submission.submission).to have_content('Rails Testing by ssw (yeah@ok.com))')
+        end.to change { ActionMailer::Base.deliveries.size }.by(1)
       end
 
       it 'should send an email - notifies if sent from the staging server' do
         @request.host = 'pbmstaging.com'
 
-        expect(Pony).to receive(:mail) do |mail|
-          expect(mail).to include(
-            subject: "(STAGING) Pinball Map - New location suggested#{region.nil? ? '' : ' (' + @region.full_name + ')'}"
-          )
-        end
+        expect do
+          post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
 
-        post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
+          email = ActionMailer::Base.deliveries.last
+          expect(email.subject).to eq("(STAGING) Pinball Map - New location suggested#{region.nil? ? '' : ' (' + @region.full_name + ')'}")
+        end.to change { ActionMailer::Base.deliveries.size }.by(1)
       end
 
       it 'should create a suggested location object' do

@@ -7,4 +7,4 @@ ActionMailer::Base.smtp_settings = {
   :domain         => 'pinballmap.com',
   :enable_starttls_auto => true
 }
-ActionMailer::Base.delivery_method = :smtp
+# ActionMailer::Base.delivery_method = :smtp

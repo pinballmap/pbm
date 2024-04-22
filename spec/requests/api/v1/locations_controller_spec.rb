@@ -12,23 +12,30 @@ describe Api::V1::LocationsController, type: :request do
   end
 
   describe '#suggest' do
+    before(:each) do
+      ActionMailer::Base.perform_deliveries = true
+      ActionMailer::Base.deliveries = []
+    end
+    after(:each) do
+      ActionMailer::Base.deliveries.clear
+    end
     it 'errors when required fields are not sent' do
-      expect(Pony).to_not receive(:mail)
+      expect(ActionMailer::Base.deliveries.count).to eq(0)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
 
-      expect(Pony).to_not receive(:mail)
+      expect(ActionMailer::Base.deliveries.count).to eq(0)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_machines: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
 
-      expect(Pony).to_not receive(:mail)
+      expect(ActionMailer::Base.deliveries.count).to eq(0)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'baz', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
 
-      expect(Pony).to_not receive(:mail)
+      expect(ActionMailer::Base.deliveries.count).to eq(0)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'baz', location_machines: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
@@ -48,120 +55,47 @@ describe Api::V1::LocationsController, type: :request do
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::AUTH_REQUIRED_MSG)
     end
 
-    it 'emails admins on new location submission' do
+    it 'emails admins on new location submission, lets you enter by operator_id and location_type_id and zone_id' do
       lt = FactoryBot.create(:location_type, name: 'type')
       o = FactoryBot.create(:operator, name: 'operator')
       z = FactoryBot.create(:zone, name: 'zone')
 
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['foo@bar.com'],
-          bcc: ['super_admin@bar.com'],
-          from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - New location suggested (Portland)',
-          body: <<HERE
-Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
-Location Name: name\n
-Street: street\n
-City: city\n
-State: state\n
-Zip: zip\n
-Country: \n
-Phone: phone\n
-Website: website\n
-Type: type\n
-Operator: operator\n
-Zone: zone\n
-Comments: comments\n
-Machines: machines\n
-(entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))\n
-HERE
-        )
-      end
+      expect do
+        post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
+        expect(response).to be_successful
 
-      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(response).to be_successful
+        email = ActionMailer::Base.deliveries.last
+        expect(email.to).to eq(['foo@bar.com'])
+        expect(email.cc).to eq(['super_admin@bar.com'])
+        expect(email.from).to eq(['admin@pinballmap.com'])
+        expect(email.subject).to eq('Pinball Map - New location suggested (Portland)')
 
-      expect(JSON.parse(response.body)['msg']).to eq("Thanks for your submission! We'll review and add it soon. Be patient!")
-      expect(UserSubmission.all.count).to eq(1)
-      expect(UserSubmission.first.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
+        submission = @region.user_submissions.first
+        expect(submission.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
+        expect(submission.submission).to eq('Location Name: name Street: street City: city State: state Zip: zip Country:  Phone: phone Website: website Type: type Operator: operator Zone: zone Comments: comments Machines: machines (entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))')
 
-      expect(SuggestedLocation.first.location_type).to eq(lt)
-      expect(SuggestedLocation.first.operator).to eq(o)
-      expect(SuggestedLocation.first.zone).to eq(z)
-    end
-
-    it 'emails super admins on new location submission where user has no lat/lon reported' do
-      lt = FactoryBot.create(:location_type, name: 'type')
-      o = FactoryBot.create(:operator, name: 'operator')
-      z = FactoryBot.create(:zone, name: 'zone')
-
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['super_admin@bar.com'],
-          from: 'Pinball Map <admin@pinballmap.com>',
-          bcc: ['super_admin@bar.com'],
-          subject: 'Pinball Map - New location suggested',
-          body: <<HERE
-Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
-Location Name: name\n
-Street: street\n
-City: city\n
-State: state\n
-Zip: zip\n
-Country: \n
-Phone: phone\n
-Website: website\n
-Type: type\n
-Operator: operator\n
-Zone: zone\n
-Comments: comments\n
-Machines: machines\n
-(entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))\n
-HERE
-        )
-      end
-
-      post '/api/v1/locations/suggest.json', params: { location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(response).to be_successful
-
-      expect(JSON.parse(response.body)['msg']).to eq("Thanks for your submission! We'll review and add it soon. Be patient!")
-      expect(UserSubmission.all.count).to eq(1)
-      expect(UserSubmission.first.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
-
-      expect(SuggestedLocation.first.location_type).to eq(lt)
-      expect(SuggestedLocation.first.operator).to eq(o)
-      expect(SuggestedLocation.first.zone).to eq(z)
+        expect(JSON.parse(response.body)['msg']).to eq("Thanks for your submission! We'll review and add it soon. Be patient!")
+        expect(UserSubmission.all.count).to eq(1)
+        expect(SuggestedLocation.first.location_type).to eq(lt)
+        expect(SuggestedLocation.first.operator).to eq(o)
+        expect(SuggestedLocation.first.zone).to eq(z)
+      end.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
 
     it 'Searches boundary boxes by transmitted lat/lon (geocoded, not user location)' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['lat@guy.com'],
-          bcc: ['super_admin@bar.com'],
-          from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - New location suggested (Seattle)',
-          body: <<HERE
-Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
-Location Name: name\n
-Street: \n
-City: \n
-State: \n
-Zip: \n
-Country: \n
-Phone: \n
-Website: \n
-Type: \n
-Operator: \n
-Zone: \n
-Comments: \n
-Machines: machines\n
-(entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))\n
-HERE
-        )
-      end
+      expect do
+        post '/api/v1/locations/suggest.json', params: { region_id: nil, location_name: 'name', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', lat: 20, lon: 20 }, headers: { HTTP_USER_AGENT: 'cleOS' }
 
-      post '/api/v1/locations/suggest.json', params: { region_id: nil, location_name: 'name', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', lat: 20, lon: 20 }, headers: { HTTP_USER_AGENT: 'cleOS' }
+        email = ActionMailer::Base.deliveries.last
+        expect(email.to).to eq(['lat@guy.com'])
+        expect(email.cc).to eq(['super_admin@bar.com'])
+        expect(email.from).to eq(['admin@pinballmap.com'])
+        expect(email.subject).to eq('Pinball Map - New location suggested (Seattle)')
+
+        submission = UserSubmission.last
+        expect(submission.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
+        expect(submission.submission).to eq('Location Name: name Street:  City:  State:  Zip:  Country:  Phone:  Website:  Type:  Operator:  Zone:  Comments:  Machines: machines (entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))')
+      end.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
 
     it 'tags a user when appropriate' do
@@ -178,52 +112,6 @@ HERE
       expect(SuggestedLocation.first.location_type).to eq(nil)
       expect(SuggestedLocation.first.operator).to eq(nil)
       expect(SuggestedLocation.first.zone).to eq(nil)
-    end
-
-    it 'lets you enter by operator_id and location_type_id and zone_id' do
-      lt = FactoryBot.create(:location_type, name: 'cool type')
-      o = FactoryBot.create(:operator, name: 'cool operator')
-      z = FactoryBot.create(:zone, name: 'cool zone')
-
-      expect(Pony).to receive(:mail).twice do |mail|
-        expect(mail).to include(
-          to: ['foo@bar.com'],
-          bcc: ['super_admin@bar.com'],
-          from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - New location suggested (Portland)',
-          body: <<HERE
-Dear Admin: You can approve this location with the click of a button at http://www.example.com/admin/suggested_location\n\nClick the "(i)" to the right, and then click the big "APPROVE LOCATION" button at the top.\n\nBut first, check that the location is not already on the map, add any missing fields (like Type, Phone, and Website), confirm the address via https://maps.google.com, and make sure it's a public venue. Thanks!!\n
-Location Name: name\n
-Street: street\n
-City: city\n
-State: state\n
-Zip: zip\n
-Country: \n
-Phone: phone\n
-Website: website\n
-Type: cool type\n
-Operator: cool operator\n
-Zone: cool zone\n
-Comments: comments\n
-Machines: machines\n
-(entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))\n
-HERE
-        )
-      end
-
-      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: lt.id, location_operator: o.id, location_zone: z.id, location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(response).to be_successful
-
-      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: lt.id, location_operator: o.id, location_zone: z.id, location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }, as: :json
-      expect(response).to be_successful
-
-      expect(SuggestedLocation.first.location_type).to eq(lt)
-      expect(SuggestedLocation.first.operator).to eq(o)
-      expect(SuggestedLocation.first.zone).to eq(z)
-
-      expect(SuggestedLocation.second.location_type).to eq(lt)
-      expect(SuggestedLocation.second.operator).to eq(o)
-      expect(SuggestedLocation.second.zone).to eq(z)
     end
   end
 

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe LocationsController do
   before(:each) do
-    @region = FactoryBot.create(:region, name: 'portland', full_name: 'portland', lat: 1, lon: 2, motd: 'This is a MOTD', n_search_no: 4, should_email_machine_removal: 1)
+    @region = FactoryBot.create(:region, name: 'portland', full_name: 'portland', lat: 1, lon: 2, motd: 'This is a MOTD', n_search_no: 4, should_email_machine_removal: 0)
   end
 
   describe 'add as fave', type: :feature, js: true do
@@ -146,18 +146,6 @@ describe LocationsController do
 
         FactoryBot.create(:location_machine_xref, location: location, machine: @machine)
 
-        if region
-          expect(Pony).to receive(:mail) do |mail|
-            expect(mail).to include(
-              subject: 'Pinball Map - Machine removed',
-              to: [],
-              from: 'Pinball Map <admin@pinballmap.com>'
-            )
-          end
-        else
-          expect(Pony).to_not receive(:mail)
-        end
-
         visit "/#{region ? region.name : 'map'}/?by_location_id=" + location.id.to_s
 
         page.accept_confirm do
@@ -182,8 +170,6 @@ describe LocationsController do
 
     it 'removes a machine from a location - allows you to cancel out of remove' do
       lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
-
-      expect(Pony).to_not receive(:mail)
 
       visit '/portland/?by_location_id=' + @location.id.to_s
 

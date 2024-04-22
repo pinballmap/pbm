@@ -18,7 +18,7 @@ describe LocationMachineXrefsController do
 
   describe 'add machines', type: :feature, js: true do
     before(:each) do
-      @user = FactoryBot.create(:user)
+      @user = FactoryBot.create(:user, email: 'ssw@bar.com', region: @region)
       @machine_to_add = FactoryBot.create(:machine, name: 'Medieval Madness')
       FactoryBot.create(:machine, name: 'Star Wars')
 
@@ -29,8 +29,10 @@ describe LocationMachineXrefsController do
       it 'Should add by id' do
         region = region ? @region : nil
         location = FactoryBot.create(:location, id: 11, region: region)
+        login(@user)
 
         visit "/#{region ? region.name : 'map'}/?by_location_id=#{location.id}"
+        sleep 1
 
         find("#add_machine_location_banner_#{location.id}").click
         select(@machine_to_add.name, from: 'add_machine_by_id_11')
@@ -226,17 +228,6 @@ describe LocationMachineXrefsController do
     end
 
     it 'should let me add a new machine description' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail[:body]).to match(/This is a new condition/)
-        expect(mail[:body]).to match(/#{@lmx.machine.name}/)
-        expect(mail[:body]).to match(/#{@lmx.location.name}/)
-        expect(mail[:body]).to match(/portland/)
-        expect(mail[:body]).to match(/entered from 127.0.0.1/)
-        expect(mail[:subject]).to match(/Pinball Map - New machine condition/)
-        expect(mail[:to]).to eq([])
-        expect(mail[:from]).to eq('Pinball Map <admin@pinballmap.com>')
-      end
-
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click

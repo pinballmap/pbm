@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Api::V1::MachineScoreXrefsController, type: :request do
   before(:each) do
-    @region = FactoryBot.create(:region, name: 'portland', should_email_machine_removal: 1)
+    @region = FactoryBot.create(:region, name: 'portland', should_email_machine_removal: 0)
     @location = FactoryBot.create(:location, name: 'Ground Kontrol', region: @region)
     @machine = FactoryBot.create(:machine, name: 'Cleo')
     @lmx = FactoryBot.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)

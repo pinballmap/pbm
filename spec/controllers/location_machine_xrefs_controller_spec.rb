@@ -6,45 +6,47 @@ describe LocationMachineXrefsController, type: :controller do
     @location = FactoryBot.create(:location, id: 1)
     @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com')
     FactoryBot.create(:user, email: 'foo@bar.com', region: @region)
+
+    ActionMailer::Base.perform_deliveries = true
+    ActionMailer::Base.deliveries = []
+  end
+
+  after(:each) do
+    ActionMailer::Base.deliveries.clear
   end
 
   describe 'create' do
     it 'should send email on new machine creation' do
       login(@user)
 
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['foo@bar.com'],
-          from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - New machine name',
-          body: "foo\nTest Location Name\n(entered from 0.0.0.0 via #{request.user_agent} by ssw (ssw@yeah.com))"
-        )
-      end
-
-      post 'create', params: { add_machine_by_name_1: 'foo', add_machine_by_id_1: '', location_id: @location.id }
+      expect do
+        post 'create', params: { add_machine_by_name_1: 'foo', add_machine_by_id_1: '', location_id: @location.id }
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq('Pinball Map - New machine name')
+        expect(email.from).to eq(['admin@pinballmap.com'])
+        expect(email.to).to eq(['foo@bar.com'])
+        expect(email.body).to have_content('Machine name: foo')
+        expect(email.body).to have_content('Location: Test Location Name')
+        expect(email.body).to have_content('(entered from 0.0.0.0 Rails Testing by ssw (ssw@yeah.com))')
+      end.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
 
     it 'should send email on new machine creation - notifies if staging site origin' do
       login(@user)
 
       @request.host = 'pbmstaging.com'
-
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          subject: '(STAGING) Pinball Map - New machine name'
-        )
-      end
-
-      post 'create', params: { region: 'portland', add_machine_by_name_1: 'foo', add_machine_by_id_1: '', location_id: @location.id }
+      expect do
+        post 'create', params: { region: 'portland', add_machine_by_name_1: 'foo', add_machine_by_id_1: '', location_id: @location.id }
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq('(STAGING) Pinball Map - New machine name')
+      end.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
 
     it "should return undef if you don't supply a machine name or id" do
       login(@user)
-
-      expect(Pony).to_not receive(:mail)
+      expect(ActionMailer::Base.deliveries.count).to eq(0)
 
       post 'create', params: { region: 'portland', add_machine_by_id_1: '', add_machine_by_name_1: '', location_id: @location.id }
-
       expect(LocationMachineXref.all.size).to eq(0)
     end
   end

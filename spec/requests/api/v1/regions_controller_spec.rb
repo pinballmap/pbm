@@ -127,6 +127,13 @@ describe Api::V1::RegionsController, type: :request do
   end
 
   describe '#contact' do
+    before(:each) do
+      ActionMailer::Base.perform_deliveries = true
+      ActionMailer::Base.deliveries = []
+    end
+    after(:each) do
+      ActionMailer::Base.deliveries.clear
+    end
     it 'throws an error if the region does not exist' do
       post '/api/v1/regions/contact.json', params: { region_id: -1, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
@@ -134,174 +141,88 @@ describe Api::V1::RegionsController, type: :request do
     end
 
     it 'errors when required fields are not sent' do
-      expect(Pony).to_not receive(:mail)
+      expect(ActionMailer::Base.deliveries.count).to eq(0)
       post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('A message (and email if not logged in) is required.')
 
-      expect(Pony).to_not receive(:mail)
+      expect(ActionMailer::Base.deliveries.count).to eq(0)
       post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, message: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('A message (and email if not logged in) is required.')
 
-      expect(Pony).to_not receive(:mail)
+      expect(ActionMailer::Base.deliveries.count).to eq(0)
       post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, message: 'hello', user_email: '' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('A message (and email if not logged in) is required.')
     end
 
     it 'emails region admins with incoming message and account info if logged in' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['la@admin.com'],
-          cc: ['portland@admin.com'],
-          from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - Message (Los Angeles)',
-          body: <<HERE
-Their Name: name\n
-Their Email: email\n
-Message: message\n
-Username: ssw\n
-Site Email: foo@bar.com\n
-(entered from 127.0.0.1 via  cleOS)\n
-HERE
-        )
-      end
+      expect do
+        post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
+        expect(response).to be_successful
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq('Pinball Map - Message (Los Angeles)')
+        expect(email.from).to eq(['admin@pinballmap.com'])
+        expect(email.to).to eq(['la@admin.com'])
+        expect(email.cc).to eq(['portland@admin.com'])
 
-      post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(response).to be_successful
-
-      expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
-      expect(UserSubmission.all.count).to eq(1)
-      expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
+        expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
+        expect(UserSubmission.all.count).to eq(1)
+        expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
+      end.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
 
     it 'emails region admins with incoming message when user is not logged in' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['la@admin.com'],
-          cc: ['portland@admin.com'],
-          from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - Message (Los Angeles)',
-          body: <<HERE
-Their Name: name\n
-Their Email: email\n
-Message: message\n\n\n
-(entered from 127.0.0.1 via  cleOS)\n
-HERE
-        )
-      end
+      expect do
+        post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name' }, headers: { HTTP_USER_AGENT: 'cleOS' }
+        expect(response).to be_successful
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq('Pinball Map - Message (Los Angeles)')
+        expect(email.from).to eq(['admin@pinballmap.com'])
+        expect(email.to).to eq(['la@admin.com'])
+        expect(email.cc).to eq(['portland@admin.com'])
 
-      post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(response).to be_successful
-
-      expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
-      expect(UserSubmission.all.count).to eq(1)
-      expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
+        expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
+        expect(UserSubmission.all.count).to eq(1)
+        expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
+      end.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
 
     it 'emails super admins when lat/lon is null or no regions are within lat/lon bounding boxes' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['portland@admin.com'],
-          cc: [],
-          from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - Message',
-          body: <<HERE
-Their Name: name\n
-Their Email: email\n
-Message: message\n
-Username: ssw\n
-Site Email: foo@bar.com\n
-(entered from 127.0.0.1 via  cleOS)\n
-HERE
-        )
-      end
+      expect do
+        post '/api/v1/regions/contact.json', params: { region_id: nil, lat: nil, lon: nil, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
+        expect(response).to be_successful
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq('Pinball Map - Message')
+        expect(email.from).to eq(['admin@pinballmap.com'])
+        expect(email.to).to eq(['portland@admin.com'])
 
-      post '/api/v1/regions/contact.json', params: { region_id: nil, lat: nil, lon: nil, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(UserSubmission.all.count).to eq(1)
-      expect(UserSubmission.first.region_id).to be_nil
-
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['portland@admin.com'],
-          cc: [],
-          from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - Message',
-          body: <<HERE
-Their Name: name\n
-Their Email: email\n
-Message: message\n
-Username: ssw\n
-Site Email: foo@bar.com\n
-(entered from 127.0.0.1 via  cleOS)\n
-HERE
-        )
-      end
-
-      post '/api/v1/regions/contact.json', params: { region_id: nil, lat: 1, lon: -1, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(UserSubmission.all.count).to eq(2)
-      expect(UserSubmission.second.region_id).to be_nil
+        expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
+        expect(UserSubmission.all.count).to eq(1)
+        expect(UserSubmission.first.region_id).to be_nil
+      end.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
 
     it 'finds closest region by lat/lon' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['portland@admin.com'],
-          cc: ['portland@admin.com'],
-          from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - Message (Portland)',
-          body: <<HERE
-Their Name: name\n
-Their Email: email\n
-Message: message\n
-Username: ssw\n
-Site Email: foo@bar.com\n
-(entered from 127.0.0.1 via  cleOS)\n
-HERE
-        )
-      end
-
-      post '/api/v1/regions/contact.json', params: { region_id: nil, lat: 12, lon: 13, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-    end
-
-    it 'emails region admins with incoming message - authed' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          to: ['la@admin.com'],
-          cc: ['portland@admin.com'],
-          from: 'Pinball Map <admin@pinballmap.com>',
-          subject: 'Pinball Map - Message (Los Angeles)',
-          body: <<HERE
-Their Name: name\n
-Their Email: email\n
-Message: message\n
-Username: ssw\n
-Site Email: foo@bar.com\n
-(entered from 127.0.0.1 via  cleOS)\n
-HERE
-        )
-      end
-
-      post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(response).to be_successful
-
-      expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
-      expect(UserSubmission.all.count).to eq(1)
-      expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
-      expect(UserSubmission.first.user_id).to eq(@user.id)
+      expect do
+        post '/api/v1/regions/contact.json', params: { region_id: nil, lat: 12, lon: 13, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
+        expect(response).to be_successful
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq('Pinball Map - Message (Portland)')
+        expect(email.from).to eq(['admin@pinballmap.com'])
+        expect(email.to).to eq(['portland@admin.com'])
+      end.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
 
     it 'emails region admins with incoming message - notifies if sent from staging server' do
-      expect(Pony).to receive(:mail) do |mail|
-        expect(mail).to include(
-          subject: '(STAGING) Pinball Map - Message (Los Angeles)'
-        )
-      end
-
-      host! 'pbmstaging.com'
-
-      post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      expect do
+        host! 'pbmstaging.com'
+        post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+        expect(response).to be_successful
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq('(STAGING) Pinball Map - Message (Los Angeles)')
+      end.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
   end
 end

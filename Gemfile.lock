@@ -311,8 +311,6 @@ GEM
       heroics (~> 0.1.1)
       moneta (~> 1.0.0)
       rate_throttle_client (~> 0.1.0)
-    pony (1.13.1)
-      mail (>= 2.0)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -569,7 +567,6 @@ DEPENDENCIES
   pg
   phonelib
   platform-api
-  pony
   pry
   puma
   puma_worker_killer

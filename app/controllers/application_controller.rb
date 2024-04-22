@@ -1,5 +1,3 @@
-require 'pony'
-
 class ApplicationController < ActionController::Base
   FILTERING_REQUIRED_MSG = 'Filtering is required for this action. Please provide a filter when using this endpoint.'.freeze
   AUTH_REQUIRED_MSG = 'Authentication is required for this action. If you are using the app, you may need to confirm your account (see the email from us) or log out and back in.'.freeze
@@ -73,6 +71,8 @@ class ApplicationController < ActionController::Base
         region = Region.near([params[:lat], params[:lon]], :effective_radius).first
       end
     end
+
+    body = "Location Name: #{params['location_name']} Street: #{params['location_street']} City: #{params['location_city']} State: #{params['location_state']} Zip: #{params['location_zip']} Country: #{params['location_country']} Phone: #{params['location_phone']} Website: #{params['location_website']} Type: #{location_type ? location_type.name : ''} Operator: #{operator ? operator.name : ''} Zone: #{zone ? zone.name : ''} Comments: #{params['location_comments']} Machines: #{params['location_machines']} (entered from #{request.remote_ip} via #{request.headers['AppVersion']} #{request.user_agent}#{user_info})"
 
     AdminMailer.with(to_users: region ? region.users.map(&:email) : User.all.select(&:is_super_admin).map(&:email), cc_users: User.all.select(&:is_super_admin).map(&:email), subject: add_host_info_to_subject("Pinball Map - New location suggested#{region ? ' (' + region.full_name + ')' : ''}"), location_name: params['location_name'], location_street: params['location_street'], location_city: params['location_city'], location_state: params['location_state'], location_zip: params['location_zip'], location_country: params['location_country'], location_phone: params['location_phone'], location_website: params['location_website'], location_type: location_type ? location_type.name : '', operator: operator ? operator.name : '', zone: zone ? zone.name : '', location_comments: params['location_comments'], location_machines: params['location_machines'], remote_ip: request.remote_ip, headers: request.headers['AppVersion'], user_agent: request.user_agent, user_info: user_info).send_new_location_notification.deliver_now
 

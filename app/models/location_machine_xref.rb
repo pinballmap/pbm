@@ -46,12 +46,6 @@ class LocationMachineXref < ApplicationRecord
     MachineCondition.create(comment: condition, location_machine_xref: self, user_id: location.last_updated_by_user_id)
 
     return if condition.nil? || condition.blank? || location.region_id.blank?
-
-    if location.region&.send_digest_comment_emails?
-      user_info = location.last_updated_by_user ? " by #{location.last_updated_by_user.username} (#{location.last_updated_by_user.email})" : ''
-
-      AdminMailer.with(to_users: location.region.users.map(&:email), subject: add_host_info_to_subject('Pinball Map - New machine condition'), condition: condition, machine_name: machine.name, location_name: location.name, location_city: location.city, location_region: location.region.name, remote_ip: request.remote_ip, headers: request.headers['AppVersion'], user_agent: request.user_agent, user_info: user_info).new_machine_condition.deliver_now
-    end
   end
 
   def as_json(options = {})
@@ -72,16 +66,6 @@ class LocationMachineXref < ApplicationRecord
   end
 
   def destroy(options = {})
-    if location.region&.should_email_machine_removal && !location.region&.send_digest_removal_emails
-      user_info = nil
-      if options[:user_id]
-        user = User.find(options[:user_id])
-        user_info = " by #{user.username} (#{user.email})"
-      end
-
-      AdminMailer.with(to_users: location.region.users.map(&:email), subject: add_host_info_to_subject('Pinball Map - Machine removed'), machine_name: machine.name, location_name: location.name, location_city: location.city, location_region: location.region.name, remote_ip: options[:remote_ip], headers: request.headers['AppVersion'], user_agent: options[:user_agent], user_info: user_info).machine_removal.deliver_now
-    end
-
     user = nil
     user = User.find(options[:user_id]) if options[:user_id]
 
