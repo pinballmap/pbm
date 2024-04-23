@@ -4,7 +4,7 @@
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
   %body
     %p
-      #{@heading}
+      = simple_format(@heading)
     - @comments.each do |comment|
       %p 
         = simple_format(comment)

@@ -5,7 +5,7 @@
   %body
     %p 
       Here is a list of all the comments that were placed in regionless locations on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
-    #h3
+    %h3
       REGIONLESS Daily Comments
     - @submissions.each do |subs|
       %p 
