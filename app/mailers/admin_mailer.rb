@@ -36,7 +36,7 @@ class AdminMailer < ApplicationMailer
     @machines_added_count = params[:machines_added_count]
     @machines_removed_count = params[:machines_removed_count]
 
-    mail(to: params[:email_to], subject: email_subject)
+    mail(to: params[:email_to], subject: params[:email_subject])
   end
 
   def send_admin_notification
