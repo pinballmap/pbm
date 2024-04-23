@@ -4,7 +4,7 @@
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
   %body
     %p 
-      Here is a list of all the machines that were removed from regionless locations on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
+      Here are the machines removed from regionless locations on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
     %h3
       REGIONLESS Daily Machine Removals
     - @submissions.each do |subs|

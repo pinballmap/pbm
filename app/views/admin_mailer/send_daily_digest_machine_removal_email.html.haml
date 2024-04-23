@@ -4,7 +4,7 @@
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
   %body
     %p 
-      Here is a list of all the machines that were removed from your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact map@pinballmap.com
+      Here are the machines removed from your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
     %h3
       #{@region_name} Daily Machine Removals
     - @submissions.each do |subs|

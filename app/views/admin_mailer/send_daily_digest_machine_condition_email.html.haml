@@ -4,7 +4,7 @@
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
   %body
     %p 
-      Here is a list of all the comments that were placed in your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}. Questions/concerns? Contact map@pinballmap.com
+      Here are the comments left in your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
     %h3
       #{@region_name} Daily Machine Comments
     - @submissions.each do |subs|
