@@ -37,8 +37,8 @@ class Operator < ApplicationRecord
 
     machine_conditions_to_email.sort.each do |mc|
       comment = "Comment: #{mc.comment}\nLocation: #{mc.location_machine_xref.location.name} - #{mc.location_machine_xref.location.full_street_address}\nMachine: #{mc.location_machine_xref.machine.name}\nDate: #{mc.updated_at.strftime('%b %d, %Y - %I:%M%p %Z')}"
+      comments << comment
     end
-    comments << comment
 
     OperatorMailer.with(email: email, heading: heading, comments: comments).send_recent_comments.deliver_now
 
