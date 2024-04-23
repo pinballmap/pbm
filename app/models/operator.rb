@@ -32,11 +32,13 @@ class Operator < ApplicationRecord
 
     return if machine_conditions_to_email.empty?
 
+    comments = []
     heading = "Here's a list of comments made on your pinball machines yesterday on Pinball Map. We hope this helps you identify and fix problems. You opted in to receive these, but if you don't want them anymore reply to this message and tell us! Also, see our FAQ: https://pinballmap.com/faq#operators"
 
     machine_conditions_to_email.sort.each do |mc|
-      comments += "Comment: #{mc.comment}\nLocation: #{mc.location_machine_xref.location.name} - #{mc.location_machine_xref.location.full_street_address}\nMachine: #{mc.location_machine_xref.machine.name}\nDate: #{mc.updated_at.strftime('%b %d, %Y - %I:%M%p %Z')}"
+      comment = "Comment: #{mc.comment}\nLocation: #{mc.location_machine_xref.location.name} - #{mc.location_machine_xref.location.full_street_address}\nMachine: #{mc.location_machine_xref.machine.name}\nDate: #{mc.updated_at.strftime('%b %d, %Y - %I:%M%p %Z')}"
     end
+    comments << comment
 
     OperatorMailer.with(email: email, heading: heading, comments: comments).send_recent_comments.deliver_now
 
