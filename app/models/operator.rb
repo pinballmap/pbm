@@ -24,7 +24,7 @@ class Operator < ApplicationRecord
     machine_conditions_to_email = []
     locations.each do |l|
       l.location_machine_xrefs.each do |lmx|
-        lmx.machine_conditions.where('created_at BETWEEN ? AND ?', (Time.now - 1.day).beginning_of_day, (Time.now - 1.day).end_of_day).each do |mc|
+        lmx.machine_conditions.where('created_at BETWEEN ? AND ?', (Time.now - 10.day).beginning_of_day, Time.now.end_of_day).each do |mc|
           machine_conditions_to_email.push(mc)
         end
       end
@@ -32,32 +32,18 @@ class Operator < ApplicationRecord
 
     return if machine_conditions_to_email.empty?
 
-    body = "Here's a list of comments made on your pinball machines yesterday on Pinball Map. We're sending this in the hope that it will help you identify, and fix, problems. If you don't want to receive these messages, just reply to this message and tell us!\n"
+    comments = []
+    heading = "Here's a list of comments made on your pinball machines yesterday on Pinball Map. We hope this helps you identify and fix problems. You opted in to receive these, but if you don't want to get them anymore please reply to this message and tell us!"
 
     machine_conditions_to_email.sort.each do |mc|
-      # OperatorMailer.with(email: email, comment: mc.comment, location_name: mc.location_machine_xref.location.name, location_address: mc.location_machine_xref.location.full_street_address, machine: mc.location_machine_xref.machine.name, date: mc.updated_at.strftime('%b %d, %Y - %I:%M%p %Z')).send_recent_comments.deliver_now
-
-      body += <<HERE
-
-Comment: #{mc.comment}
-Location: #{mc.location_machine_xref.location.name} - #{mc.location_machine_xref.location.full_street_address}
-Machine: #{mc.location_machine_xref.machine.name}
-Date: #{mc.updated_at.strftime('%b %d, %Y - %I:%M%p %Z')}
-HERE
+      comment = "Comment: #{mc.comment}\nLocation: #{mc.location_machine_xref.location.name} - #{mc.location_machine_xref.location.full_street_address}\nMachine: #{mc.location_machine_xref.machine.name}\nDate: #{mc.updated_at.strftime('%b %d, %Y - %I:%M%p %Z')}"
+      comments << comment
     end
+
+    OperatorMailer.with(email: email, heading: heading, comments: comments).send_recent_comments.deliver_now
 
     unless Rails.env.test?
-      puts body
       sleep(8) # throttle potection
     end
-
-    OperatorMailer.with(email: email, body: body).send_recent_comments.deliver_now
-
-    # Pony.mail(
-    #   to: email,
-    #   from: 'Pinball Map <admin@pinballmap.com>',
-    #   subject: "Pinball Map - Daily digest of comments on your machines - #{Date.today.strftime('%m/%d/%Y')}",
-    #   body: body
-    # )
   end
 end
