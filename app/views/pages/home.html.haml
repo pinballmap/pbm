@@ -53,7 +53,7 @@
       We have beanies! They're waffle-knit with the classic Pinball Map ball logo embroidered in pink. No text.
     %p
       We also have stickers!
-    %p== Purchase them through the #{link_to 'Pinball Map store', store_path, :class => "bold"}!
+    %p== Purchase them through the #{link_to 'Pinball Map store', store_path, :class => "bold"}.
 %div.flex_center#support
   =link_to 'Support Us', '#support', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
@@ -110,10 +110,9 @@
   =link_to 'Operators', '#operators', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
   .news{:style => 'display: flex;justify-content: center;'}
-    =image_tag( 'playing.jpg', :alt => 'playing', :style => 'height: 260px;border-radius: 10px;')
+    =image_tag( 'playing.jpg', :alt => 'playing', :style => 'height: 310px;border-radius: 10px;')
   .news
-    %p
-      Over the years we have created tools to help out operators. You can register your business in our system, tag all your locations, and receive email notifications when people leave comments on your machines.
+    %p== We have tools to help out operators. You can register your business in our system, tag all your locations, and receive email notifications when people leave comments on your machines. Check this section of #{link_to 'the FAQ', faq_path(anchor: 'operators')} for operator-specific tips.
     %p
       If you want to quickly look up all your locations, try this special map!
     %p.explore.center{:style => 'line-height: 50px;margin: 20px 0;'}
@@ -168,21 +167,21 @@
   =link_to 'Recent Blog Posts', '#blog', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
   .news{:style => 'display: flex;justify-content: center;'}
-    =image_tag( 'sassy.jpg', :alt => 'sassy', :style => 'height: 300px;border-radius: 10px;')
+    =image_tag( 'sassy.jpg', :alt => 'sassy', :style => 'height: 310px;border-radius: 10px;')
   .news
-    %p
+    %p.mobile_center
       =link_to 'Individual Machine RSS', 'https://blog.pinballmap.com/2024/04/01/individual-machine-rss/', :target => '_blank', :class => 'bold'
       %span.block.italic.m_5 April 1, 2024
-    %p
+    %p.mobile_center
       =link_to 'The Podcast is Back', 'https://blog.pinballmap.com/2024/03/26/podcast-is-back/', :target => '_blank', :class => 'bold'
       %span.block.italic.m_5 March 26, 2024
-    %p
+    %p.mobile_center
       =link_to 'Reflecting on 2023', 'https://blog.pinballmap.com/2023/12/28/reflecting-on-2023/', :target => '_blank', :class => 'bold'
       %span.block.italic.m_5 December 28, 2023
-    %p
+    %p.mobile_center
       =link_to 'Pinball Map App Now Available On Tidbyt', 'https://blog.pinballmap.com/2023/11/04/tidbyt-app/', :target => '_blank', :class => 'bold'
       %span.block.italic.m_5 November 4, 2023
-    %p
+    %p.mobile_center
       =link_to 'Pinball Map Seminar at Pinball Expo 2023', 'https://blog.pinballmap.com/2023/10/22/pinball-map-seminar-at-pinball-expo/', :target => '_blank', :class => 'bold'
       %span.block.italic.m_5 October 22, 2023
 %div.flex_center.flex_column.mb_20#regions
