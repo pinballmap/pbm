@@ -7,11 +7,11 @@
     Founded in 2008, Pinball Map is an open source, crowdsourced worldwide map of public pinball machines.
   %p.explore
     = link_to 'Explore the Map', map_path
-  %p
-    %span.red.font18.bold
+  %p.flex_center
+    %span{:style => 'padding-right: 5px;', :class => 'red font18 bold'}
       #{number_with_delimiter(@locations_count_total,:delimiter => ",")}
     locations and
-    %span.red.font18.bold
+    %span{:style => 'padding-left: 5px;padding-right: 5px;', :class => 'red font18 bold'}
       #{number_with_delimiter(@machines_count_total,:delimiter => ",")}
     machines
   %div.flex_center.italic.darkgrey
@@ -39,7 +39,7 @@
     %p
       The data is managed by over 100 administrators and thousands of active users.
     %p== Pinball Map is not monetized and the #{link_to 'code is', 'https://github.com/pinballmap/pbm'} #{link_to 'open source', 'https://github.com/pinballmap/pbm-react'}.
-    %p== You can #{link_to 'contact us', 'portland/about', :class => "bold"} and you can even #{link_to 'master the FAQ', faq_path}.
+    %p== You can #{link_to 'contact us', 'portland/about', :class => "bold"}, and you also might find wisdom #{link_to 'in the FAQ', faq_path}.
   - if !mobile_device?
     .news{:style => 'display: flex;justify-content: center;'}
       =image_tag( 'portland/app_logo-350.jpg', :alt => 'portland logo',:style => 'height:260px;;border-radius: 10px;')
