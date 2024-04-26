@@ -1,7 +1,7 @@
 - if !mobile_device?
   #header{:class => "#{(defined? @region and current_page?(region_homepage_path)) || current_page?(map_path) || current_page?(saved_path) || current_page?(operators_path) ? 'header_fixed' : '' }"}
     %div.header_logo_container
-      =link_to image_tag('pinball.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Ball Logo', :style => "height: 42px;padding-right: 3px;"), root_path, :class => "logo_link"
+      =link_to image_tag('icon-color-noBGsvg.svg', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Ball Logo', :style => "height: 42px;padding-right: 3px;"), root_path, :class => "logo_link"
       =link_to image_tag('pinballmap-logo-base4.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => "logo_link"
     %div.header_buttons_container
       %div#menu_button
