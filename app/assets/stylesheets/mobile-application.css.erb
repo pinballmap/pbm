@@ -43,13 +43,11 @@ body {
   align-items: center;
   min-width: 320px;
   height: 46px;
-  padding: 5px 0 5px;
   margin: 0 auto;
   z-index: 600;
 }
 
 #header a.logo_link {
-  height: 30px;
   float: none;
   padding: 0;
   margin: 0;
@@ -59,11 +57,27 @@ body {
   margin: auto;
 }
 
-#header a.logo_link img {
+#header #header_image {
   padding: 0;
-  height: 30px;
-  width: 203px;
   margin: auto;
+  display: flex;
+  align-items: center;
+}
+
+#header #header_image img {
+  height: 30px;
+}
+
+#header #menu_button {
+  width: 32px;
+  margin-left: 10px;
+  margin-right: 8px;
+  height: 26px;
+  margin-top: 0;
+}
+
+#menu ~ label {
+  padding: 0;
 }
 
 #menu_container {
@@ -87,11 +101,10 @@ body {
 }
 
 #header_app a {
-  font-size: 12px;
-  padding: 3px 10px;
+  font-size: 11px;
+  padding: 3px 6px;
   border-radius: 10px;
   background-color: white;
-  margin-right: 5px;
   color: #383838;
 }
 
@@ -288,8 +301,8 @@ div.pick_a_map {
 }
 
 @media only screen and (max-width: 340px) {
-  #header_app a {
-    font-size: 10px;
+  #header_app {
+    display: none;
   }
 }
 
