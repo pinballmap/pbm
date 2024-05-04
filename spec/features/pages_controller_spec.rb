@@ -503,9 +503,6 @@ describe PagesController do
       visit '/app'
       expect(page).to have_title('App')
 
-      visit '/app/support'
-      expect(page).to have_title('App')
-
       visit '/donate'
       expect(page).to have_title('Donate')
 

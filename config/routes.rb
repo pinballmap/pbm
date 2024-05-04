@@ -87,7 +87,6 @@ Rails.application.routes.draw do
   end
 
   get '/app' => 'pages#app'
-  get '/app/support' => 'pages#app_support'
   get '/privacy' => 'pages#privacy'
   get '/faq' => 'pages#faq'
   get '/store' => 'pages#store'
@@ -96,7 +95,7 @@ Rails.application.routes.draw do
 
   scope ':region', constraints: lambda { |request| Region.where('lower(name) = ?', request[:region].downcase).any? } do
     get 'app' => redirect('/app')
-    get 'app/support' => redirect('/app/support')
+    get 'app/support' => redirect('/faq')
     get 'privacy' => redirect('/privacy')
     get 'faq' => redirect('/faq')
     get 'store' => redirect('/store')
@@ -203,7 +202,8 @@ Rails.application.routes.draw do
   get '/mid-michigan' => redirect('/map')
   get '/burlington' => redirect('/vermont')
   get '/apps' => redirect('/app')
-  get '/apps/support' => redirect('/app/support')
+  get '/apps/support' => redirect('/faq')
+  get '/app/support' => redirect('/faq')
   get '/profile' => redirect('/inspire_profile')
   get '/twincities' => redirect('/minnesota')
   get '/maryland-north' => redirect('/baltimore')

@@ -16,7 +16,9 @@
 			%p.bold (entered from xxx.xxx.xxx.xx via PinballMap/20 (iPhone; iOS 8.3; Scale/2.00))
 			%p We sometimes use this generic device info for troubleshooting problems (such as, "it looks like this person is experiencing issues on the iOS app").
 			%p.question Location Services
-			%p When you use the mobile app, and have Location Services enabled, the app uses the location data (to, for example, tell you the closest locations with pinball machines). We do not collect or store this information (so, of course, we cannot associate it with an IP address, device info, or username). We do not know where you are, and we do not care where you are.
+			%p When you use the mobile app and have Location Services enabled and grant the app permission to use it, the app uses your phone's location when you first open the app (to show you the closest locations with pinball machines). In our logs, this is a request to to the API for locations "near" a latitude/longitude, and the request doesn't contain your username or direct identifying information (but it does contain your public IP address). This request doesn't look any different to a request where you pan the map to some place random and load locations there. That is, if we inspected the logs showing requests, it would be unclear if that's where you are or where you're searching (plus, again, your username isn't associated with the request - so there's no "you" there). 
+			
+			We do not know where you are, and we do not care where you are.
 			%p.question We do not share:
 			%p We do not share any user data with anyone.
 			%p.question Analytics

@@ -19,10 +19,6 @@ describe PagesHelper, type: :helper do
         expect(helper.title_for_path(app_path)).to eq('App - Pinball Map')
       end
 
-      it 'displays the correct app support title' do
-        expect(helper.title_for_path(app_support_path)).to eq('App Support - Pinball Map')
-      end
-
       it 'displays the suggest location title' do
         expect(helper.title_for_path(map_location_suggest_path)).to eq('Suggest a New Location - Pinball Map')
       end

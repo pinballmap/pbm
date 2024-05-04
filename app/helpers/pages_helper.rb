@@ -41,8 +41,6 @@ module PagesHelper
   def title_for_map_path(path)
     title = if path == app_path
               'App - '
-            elsif path == app_support_path
-              'App Support - '
             elsif path == faq_path
               'FAQ - '
             elsif path == privacy_path
@@ -97,13 +95,11 @@ module PagesHelper
 
   def desc_for_map_path(path)
     desc = if path == app_path
-             'Pinball Map App for iOS and Android. Find pinball machines to play near you! Update the app like the true champ you are.'
-           elsif path == app_support_path
-             'Pinball Map iOS screenshots, support, and FAQ'
+             'Pinball Map App for iOS and Android. Find pinball machines to play near you!'
            elsif path == faq_path
-             'Pinball Map Frequently Asked Questions (FAQ). Got a question? It may be answered here.'
+             'Pinball Map Support and Frequently Asked Questions (FAQ).'
            elsif path == privacy_path
-             'Pinball Map Privacy Policy. We take privacy srsly. Read this for details.'
+             'Pinball Map Privacy Policy.'
            elsif path == store_path
              'Pinball Map Store!'
            elsif path == donate_path

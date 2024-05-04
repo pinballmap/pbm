@@ -199,8 +199,6 @@ class PagesController < ApplicationController
 
   def app; end
 
-  def app_support; end
-
   def privacy; end
 
   def store; end
