@@ -15,7 +15,7 @@
     .column.w_450
       - if (@sorted_events.size > 0)
         - @sorted_events.keys.sort.each do |key|
-          %p.red.font18.bold.links_category #{key}
+          %p.red.font18.bold.links_category.center #{key}
           %ul.event_info
             - @sorted_events[key].sort{|a,b| a.start_date.to_s <=> b.start_date.to_s}.each do |e|
               %li

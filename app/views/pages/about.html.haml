@@ -1,7 +1,7 @@
 #page_body
   .column_container
     .column.bg_vlightpurple.w_450
-      %p.red.font18.bold
+      %p.red.font18.bold.center
         Contact
         - if (@region.name == 'portland')
           Pinball Map HQ
@@ -34,7 +34,7 @@
             %li.submit{:style => "clear:both;"}
               %input{:type => "submit", :value => "Submit Comment", :class => "submit_button"}
     .column.bg_vlightpurple.w_450
-      %p.red.font18.bold
+      %p.red.font18.bold.center
         About Pinball Map
       %p Pinball Map was founded in 2008 in Portland, Oregon, by Scott & Ryan. It's an open source project, with numerous contributors writing code and adding features (notably, Beth on the app; and Elijah for various operations), over 100 administrators managing data, and thousands of users keeping it up to date.
       %p== Study the #{link_to 'FAQ', faq_path}. If you contact us for something that is answered in the FAQ, we will point you to the FAQ (and then will expect you to acknowledge that you've read it). Please be sensitive to your demands on our time.
@@ -42,7 +42,7 @@
       %p== View the #{link_to 'Pinball Map Privacy Policy', privacy_path}.
     - if (@region.operators.size > 0)
       .column.w_450
-        %p.red.font18.bold.links_category
+        %p.red.font18.bold.links_category.center
           Operators in this Region
           - @region.operators.each do |o|
             - if o.locations
@@ -52,14 +52,15 @@
                 - else
                   =link_to "#{o.name}", "#{o.website}", :target => "_blank"
     .column.w_450
-      %p.red.font18.bold.links_category Top 10 Machines in this Region
+      %p.red.font18.bold.links_category.center 
+        Top 10 Machines in this Region
       - @top_machines.each do |lmx|
         .machine_quantity
           %p
             = link_to "#{lmx.machine.name}: with #{lmx.machine_count} machines", "/#{@region.name}/?by_machine_id=#{lmx.machine.id}"
       - if (@links.size > 0)
         - @links.keys.sort.each do |key|
-          %p.red.font18.bold.links_category #{key}
+          %p.red.font18.bold.links_category.center #{key}
           - @links[key].sort_by! { |rlx| rlx.sort_order || 0 }.each do |l|
             %p.links_content
               = link_to l.name, l.url, :target => '_blank'
