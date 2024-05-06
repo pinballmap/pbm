@@ -9,7 +9,8 @@
       %p
         Email: #{@email}
     %p
-      Message: #{@message}
+      Message:
+      = simple_format(@message)
     - if ( @user_name.present? )
       %p 
         Username: #{@user_name}
