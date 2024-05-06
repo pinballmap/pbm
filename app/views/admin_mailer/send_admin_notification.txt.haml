@@ -1,12 +1,11 @@
+= simple_format(@message)
+
 - if ( @email.present? )
   Name: #{@name}
 
   Email: #{@email}
 
-Message: #{@message}
-
-- if ( @user_name.present? )
-
+- else
   Username: #{@user_name}
 
   Email: #{@user_email}

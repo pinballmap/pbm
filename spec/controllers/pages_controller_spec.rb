@@ -44,7 +44,7 @@ describe PagesController, type: :controller do
         expect(email.cc).to eq(['super_admin@bar.com'])
         expect(email.body).to have_content('Name: foo')
         expect(email.body).to have_content('Email: bar')
-        expect(email.body).to have_content('Message: baz')
+        expect(email.body).to have_content('baz')
         expect(email.body).to have_content('(entered from 0.0.0.0 via  Rails Testing)')
 
         expect(@region.reload.user_submissions.count).to eq(1)
@@ -66,7 +66,7 @@ describe PagesController, type: :controller do
         expect(email.cc).to eq(['super_admin@bar.com'])
         expect(email.body).to have_content('Username: ssw')
         expect(email.body).to have_content('Email: yeah@ok.com')
-        expect(email.body).to have_content('Message: baz')
+        expect(email.body).to have_content('baz')
         expect(email.body).to have_content('(entered from 0.0.0.0 via  Rails Testing)')
         submission = @region.reload.user_submissions.first
         expect(submission.user).to eq(@user)
