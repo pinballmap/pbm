@@ -25,12 +25,12 @@
       %p.question#3
         =link_to 'This location closed/no longer has machines. What do I do - do I need to tell you?', '#3', :class => "no_underline"
       %p.answer
-        Simply remove all the machines from it. We get notified once a week about empty locations, and then we delete them (sometimes we wait longer to delete them because we want to verify that the machines are really gone). So, no need to tell us. But still, thanks for telling us and for updating the map!
+        Simply remove all the machines from it. Empty locations are periodically removed.
       %hr
       %p.question#4 
         =link_to 'This location is temporarily closed. Should I remove the machines from it?', '#4', :class => "no_underline"
       %p.answer
-        No. If a place is seasonal or closed due to restrictions, and is expected to re-open, please do not remove the machines from it. Just edit the location description to say it's temporarily closed. You can also make sure the phone number is listed, so that people can easily call and check on the status.
+        No. If a place is seasonal or closed due to restrictions, and is expected to re-open, please do not remove the machines from it. Just edit the location description to say it's temporarily closed. You can also make sure the phone number is listed so that people can easily call and check on the status.
       %hr
       %p.question#15
         =link_to 'Location name has changed. Can I change it?', '#15', :class => "no_underline"
@@ -56,7 +56,7 @@
         =link_to 'Can you include bat games, or other non-pinball but pinball-adjacent games?', '#16', :class => "no_underline"
       %p.answer== We fully understand that pitch and bat games resemble pinball machines and the collectors that collect them also usually collect pinball machines. The short answer is, no, no bat games. In general we use #{link_to 'OPDB.org', 'https://opdb.org', :target => "_blank"} as a guide for what machines to include. The overall goal of this site is to map pinball, and though we understand that you may passionately think bat games should also be included because etc etc, please note that in our polling of the general public basically no one else wants bat games on the map. At any rate, thank you for that question and your feedback, and if you want more details about this decision, please #{link_to 'read this blog post', 'https://blog.pinballmap.com/2021/05/31/more-spring-cleaning/', :target => "_blank" }. Please do not send us a message about this without reading that blog post. 
       
-      %p.answer In the past, we made an unfortunate exception for the 1991 Williams bat game, SlugFest. This was only done because when it's not on the map, users add the 1952 Williams pinball machine, Slugfest, to the map, and then comment that it's actually the bat game from 1991. Since we abhor ugly, incorrect data, we granted an exception. However, this resulted in being "called out" for being inconsistent. You'll be happy to know we're now consistently not including SlugFest on the map! If you add the 1952 pinball machine as a proxy for the 1991 bat game, we will give you a warning. If you do it again, we may disable your account. We want good clean data!
+      %p.answer In the past, we made an unfortunate exception for the 1991 Williams bat game, SlugFest. This was only done because when it's not on the map, users add the 1952 Williams pinball machine, Slugfest, to the map, and then comment that it's actually the bat game from 1991. Since we abhor ugly, incorrect data, we granted an exception. However, this resulted in being "called out" for being inconsistent about including all of them. You'll be happy to know we're now consistently not including SlugFest on the map! If you add the 1952 pinball machine as a proxy for the 1991 bat game, we will give you a warning. If you do it again, we may disable your account. We want good clean data and we only want to map pinball! And we also want you to stop telling us how upset you are about this.
 
       %p.answer We do include some pre-pinball flipperless games. Are we missing some?
       %hr
@@ -108,22 +108,25 @@
         On the app: log in with your user account, lookup the location, click the "menu" icon and then select "Edit Location Details". Choose your operator business from the list. Then save.
       %hr
       %p.question#12 
-        =link_to "I'm an operator or business owner, and people are leaving comments that I don't like on my machines. Can you make them stop, or disable comments on my machines?", '#12', :class => "no_underline"
+        =link_to "I'm an operator or business owner, and people are leaving comments on my machines that I don't like. Can you make them stop, or disable comments on my machines?", '#12', :class => "no_underline"
       %p.answer
-        The short answer is can't disable comments at an individual venue or for an individual user. We understand that users and operators sometimes want conflicting things. Some operators find reports of technical issues to be very useful; and some do not. Some operators wish that folks would only leave "general" machine comments and not "specific" comments. On the other hand, most regular users find machine comments to be a very valuable feature. It is difficult to perfectly cater to everyone, and we cannot control the comments that people make.
+        The short answer is can't disable comments at an individual venue or for an individual user. We understand that users and operators sometimes want conflicting things. Some operators find reports of technical issues to be very useful; and some do not. Some operators wish that folks would only leave "general" machine comments and not "specific" comments (we can't control this). On the other hand, most regular users find machine comments to be a very valuable feature. It is difficult to perfectly cater to everyone, and we cannot control the comments that people make.
       %p.answer
         In some circumstances, comments may be removed and/or accounts can be disabled (see the elsewhere in the FAQ). We will always look into your concerns. But please try not to waste our time with your requests. 
       %p.answer
-        Some suggestions to operators (and regular users):
+        To users leaving comments:
+      %ul
+        %li
+          To regular users leaving comments: Most operators prefer you directly tell them about problems. For example, in person or with a note to staff at the venue. Many pinball issues are minor and temporary, and leaving a comment about them on the map puts it "on the record" and it may remain there long after the issue is resolved.
+      %p.answer
+        Some suggestions to operators:
       %ul
         %li
           A comment about a machine issue is not going to hurt your business in the short term. Pinball Map often gets blamed for "making" operators rush across town to fix and issue and write a comment saying the issue is fixed. Pinball Map does not make you do this.
         %li
-          According to nearly everyone, it is really valuable to see a history of comments (thing is broken, thing is fixed, etc.). It indicates that the operator cares about the place. Everyone gets that machines break all the time. Seeing a dialog demonstrates that upkeep is occurring, and the actual "latest comment" noting a problem is not particularly important to users and will not drive them away. Some operators choose to delete machines and re-add them in order to clear out comments rather than simply responding to a comment. This is bad practice - both for your business and for the map - and can result in your account being disabled.It makes it seem like the operator is whitewashing comments rather than fixing issues, and we strongly discourage it. 
+          According to nearly everyone, it is really valuable to see a history of comments (thing is broken, thing is fixed, etc.). Everyone understands that machines break all the time. Seeing a dialog demonstrates that upkeep is occurring. The "latest comment" noting a problem is not particularly important to users and will not drive them away. Some operators choose to delete machines and re-add them in order to clear out comments rather than simply responding to a comment. This is bad practice - both for your business and for the map - and can result in your account being disabled. It makes it seem like the operator is whitewashing comments rather than fixing issues. Users definitely notice this, and we strongly discourage it. 
         %li
-          To regular users leaving comments: It is generally preferable to directly tell operators about problems. For example, in person or with a note to staff at the venue. Many pinball issues are minor and temporary, and leaving a comment about them on the map puts it "on the record" and creates a burden for the operator to then write a comment about the issue being fixed.
-        %li
-          We regularly get messages from operators and owners demanding that a user be banned from leaving comments on their location. Most often, the comments in question are not slanderous, but have some sass or "off-topic" messages. These requests are a big headache for us, especially because they do not warrant any action toward the user. So please, help us! Be mindful that operators are very sensitive about the content on this site, and they take it out on us.
+          We regularly get messages from operators and owners demanding that a user be banned from leaving comments on their location. Most often, the comments in question are not slanderous, but have some sass or "off-topic" messages (or like, "the comment is about price and not condition!!"). These requests are a big headache for us, especially because they do not warrant any action toward the user. So please, help us! Be mindful that operators are very sensitive about the content on this site, and they take it out on us.
       %p.font20.center.bold.pbt_5.bg_lightpurple#users
         =link_to 'Users', '#users', :class => "no_underline brightpurple"
       %p.question#6 
@@ -131,23 +134,27 @@
       %p.answer
         Great question! As a small token of acknowledgement of your contributions to the map, if you make more than 50 contributions, we christen you a "Super Mapper". After 250 contributions, you are a "Legendary Mapper". And after 500 amazing map contributions, you are a "Grand Champ Mapper"!
       %hr
-      %p.question#13 
+      %p.question#19
+        =link_to 'Can I change my username?', '#6', :class => "no_underline"
+      %p.answer== Only administrators can change your username. #{link_to 'Contact us', about_path('portland')} and we'll be happy to change it.
+      %hr
+      %p.question#13
         =link_to 'Why was my comment removed?', '#13', :class => "no_underline"
       %p.answer
         Our moderators may deem your machine or location comment to be inappropriate because:
       %ul
         %li
-          It contains a personal attack
+          It contains a personal attack.
         %li
-          It isn't relevant (for example, promoting a tournament in a machine comment) or constructive
+          It isn't relevant (for example, promoting a tournament in a machine comment) or constructive.
         %li
-          It is offensive
+          It is offensive.
       %hr
-      %p.question#14 
+      %p.question#14
         =link_to 'Why was my account disabled?', '#14', :class => "no_underline"
       %ul
         %li
-          If your account has been used to mess with data on the site, then we may ban it. Bad behavior includes, but is not limited to: deleting machines that are at a location; adding machines that are not at a location; leaving lots of inappropriate/abusive comments.
+          If your account has been used to mess with data on the site, then we may disable it. Bad behavior includes, but is not limited to: removing machines that are at a location (or removing+adding to clear out comments); adding machines that are not at a location; leaving lots of inappropriate/abusive comments; or adding Slugfest over and over (see above).
         %li
           You created a sockpuppet account to hype your location and/or disparage the competition. This is unethical and it makes the site worse. Don't do this. Look in the mirror.
         %li
