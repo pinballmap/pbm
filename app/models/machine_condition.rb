@@ -1,6 +1,8 @@
 class MachineCondition < ApplicationRecord
   MAX_HISTORY_SIZE_TO_DISPLAY = 12
 
+  has_paper_trail
+
   belongs_to :user, optional: true
   belongs_to :location_machine_xref, optional: true, touch: true
   has_one :location, through: :location_machine_xref
@@ -10,6 +12,24 @@ class MachineCondition < ApplicationRecord
   after_create :create_user_submission
 
   scope :limited, (-> { order('created_at DESC').limit(MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY) })
+
+  def destroy(options = {})
+    if location_machine_xref.machine_conditions.size == 1
+      location_machine_xref.condition = nil
+      location_machine_xref.condition_date = nil
+
+      location_machine_xref.save(validate: false)
+      location_machine_xref
+    elsif location_machine_xref.machine_conditions.size > 1 && location_machine_xref.machine_conditions.first == self
+      location_machine_xref.condition = location_machine_xref.machine_conditions.second.comment
+      location_machine_xref.condition_date = location_machine_xref.machine_conditions.second.updated_at
+
+      location_machine_xref.save(validate: false)
+      location_machine_xref
+    end
+
+    super()
+  end
 
   def create_user_submission
     user_info = user ? user.username : 'UNKNOWN USER'

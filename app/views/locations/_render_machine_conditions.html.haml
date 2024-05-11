@@ -27,3 +27,17 @@
                 = image_tag("rank/Rank_#{rank_int}.png", :class => "rank_icon")
           - else
             DELETED USER
+      - if current_user  && (mcx.user_id == current_user.id)
+        = form_tag machine_condition_path(id: mcx.id), :id => "remove_condition_#{mcx.id}", :method => 'delete' do
+          = submit_tag 'Remove Condition'
+
+        :javascript
+          $('#remove_condition_#{mcx.id}').submit(function () {
+              var form = $(this);
+              if (confirm("Remove this condition?")) {
+                $('#past_machine_condition_#{mcx.id}').fadeOut('slow', function() {
+                  $.post(form.attr('action'), form.serialize(), function (data) {});
+                });
+              }
+              return false;
+            });

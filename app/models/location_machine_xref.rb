@@ -44,8 +44,6 @@ class LocationMachineXref < ApplicationRecord
     save
 
     MachineCondition.create(comment: condition, location_machine_xref: self, user_id: location.last_updated_by_user_id)
-
-    return if condition.nil? || condition.blank? || location.region_id.blank?
   end
 
   def as_json(options = {})

@@ -170,6 +170,32 @@ describe LocationMachineXrefsController do
       page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
     end
 
+    it 'allows you to delete a machine condition if you were the one that entered it' do
+        @lmx.update_condition('great', { user_id: @user.id })
+
+        visit "/map/?by_location_id=" + @lmx.location.id.to_s
+        page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
+
+        expect(page).to have_selector("input[type=submit][value='Remove Condition']")
+
+        page.accept_confirm do
+          click_button 'Remove Condition'
+        end
+
+        sleep 1
+
+        expect(@lmx.reload.condition).to eq(nil)
+    end
+
+    it 'will not allow you to delete a machine condition if you were not the one that entered it' do
+        @lmx.update_condition('great', { user_id: nil })
+
+        visit "/map/?by_location_id=" + @lmx.location.id.to_s
+        page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
+
+        expect(page).to_not have_selector("input[type=submit][value='Remove Condition']")
+    end
+
     it 'does not save spam' do
       stub_const('ENV', 'RAKISMET_KEY' => 'asdf', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
 
@@ -386,6 +412,8 @@ describe LocationMachineXrefsController do
 
       find('.ic_unknown').click
       find('.ic_yes').click
+
+      sleep 1
 
       expect(page).to have_css('.ic_no')
     end
