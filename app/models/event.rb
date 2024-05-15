@@ -4,7 +4,7 @@ class Event < ApplicationRecord
 
   default_scope { order :id }
 
-  scope :region, (->(name) { where(region_id: Region.find_by_name(name.downcase).id).to_a })
+  scope :region, ->(name) { where(region_id: Region.find_by_name(name.downcase).id).to_a }
 
   def active?
     if start_date && !end_date

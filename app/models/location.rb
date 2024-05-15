@@ -27,73 +27,73 @@ class Location < ApplicationRecord
 
   MAP_SCALE = 0.75
 
-  scope :region, (lambda { |name|
+  scope :region, lambda { |name|
     r = Region.find_by_name(name.downcase) || Region.where(name: 'portland').first
     where(region_id: r.id)
-  })
-  scope :by_type_id, (->(id) { where('location_type_id in (?)', id.split('_').map(&:to_i)) })
-  scope :by_location_id, (->(id) { where('id in (?)', id.split('_').map(&:to_i)) })
-  scope :by_operator_id, (->(id) { where('operator_id in (?)', id.split('_').map(&:to_i)) })
-  scope :by_zone_id, (->(id) { where('zone_id in (?)', id.split('_').map(&:to_i)) })
-  scope :by_city_id, (->(city) { where(city: city) })
-  scope :by_state_id, (->(state) { where(state: state) })
-  scope :by_location_name, (->(name) { where("lower(regexp_replace(name, '’', '''', 'gi')) ilike ?", '%' + name.downcase.tr('’', "'") + '%') })
-  scope :by_ipdb_id, (lambda { |id|
+  }
+  scope :by_type_id, ->(id) { where('location_type_id in (?)', id.split('_').map(&:to_i)) }
+  scope :by_location_id, ->(id) { where('id in (?)', id.split('_').map(&:to_i)) }
+  scope :by_operator_id, ->(id) { where('operator_id in (?)', id.split('_').map(&:to_i)) }
+  scope :by_zone_id, ->(id) { where('zone_id in (?)', id.split('_').map(&:to_i)) }
+  scope :by_city_id, ->(city) { where(city: city) }
+  scope :by_state_id, ->(state) { where(state: state) }
+  scope :by_location_name, ->(name) { where("lower(regexp_replace(name, '’', '''', 'gi')) ilike ?", '%' + name.downcase.tr('’', "'") + '%') }
+  scope :by_ipdb_id, lambda { |id|
     machines = Machine.where('ipdb_id in (?)', id.split('_').map(&:to_i)).map(&:all_machines_in_machine_group).flatten
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
-  })
-  scope :by_opdb_id, (lambda { |id|
+  }
+  scope :by_opdb_id, lambda { |id|
     machines = Machine.where('opdb_id in (?)', id.split('_')).map(&:all_machines_in_machine_group).flatten
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
-  })
-  scope :by_machine_id, (lambda { |id|
+  }
+  scope :by_machine_id, lambda { |id|
     machines = Machine.where('id in (?)', id.split('_').map(&:to_i)).map(&:all_machines_in_machine_group).flatten
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
-  })
-  scope :by_machine_group_id, (lambda { |id|
+  }
+  scope :by_machine_group_id, lambda { |id|
     machines = Machine.where('machine_group_id in (?)', id)
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
-  })
-  scope :by_machine_single_id, (lambda { |id|
+  }
+  scope :by_machine_single_id, lambda { |id|
     machine = Machine.where('id in (?)', id.split('_').map(&:to_i))
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machine.map(&:id))
-  })
-  scope :by_machine_name, (lambda { |name|
+  }
+  scope :by_machine_name, lambda { |name|
     machine = Machine.find_by_name(name)
     return Location.default_scoped.none if machine.nil?
 
     machines = machine.machine_group_id ? Machine.where('machine_group_id = ?', machine.machine_group_id).map(&:all_machines_in_machine_group).flatten : [machine]
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
-  })
-  scope :by_at_least_n_machines, (lambda { |n|
+  }
+  scope :by_at_least_n_machines, lambda { |n|
     where(Location.by_at_least_n_machines_sql(n))
-  })
-  scope :by_at_least_n_machines_city, (lambda { |n|
+  }
+  scope :by_at_least_n_machines_city, lambda { |n|
     where(Location.by_at_least_n_machines_sql(n))
-  })
-  scope :by_at_least_n_machines_zone, (lambda { |n|
+  }
+  scope :by_at_least_n_machines_zone, lambda { |n|
     where(Location.by_at_least_n_machines_sql(n))
-  })
-  scope :by_at_least_n_machines_type, (lambda { |n|
+  }
+  scope :by_at_least_n_machines_type, lambda { |n|
     where(Location.by_at_least_n_machines_sql(n))
-  })
-  scope :by_center_point_and_ne_boundary, (lambda { |boundaries|
+  }
+  scope :by_center_point_and_ne_boundary, lambda { |boundaries|
     boundary_lat_lons = boundaries.split(',').collect(&:to_f)
     distance = Geocoder::Calculations.distance_between([boundary_lat_lons[1], boundary_lat_lons[0]], [boundary_lat_lons[3], boundary_lat_lons[2]])
     box = Geocoder::Calculations.bounding_box([boundary_lat_lons[1], boundary_lat_lons[0]], distance * MAP_SCALE)
     Location.within_bounding_box(box)
-  })
-  scope :by_is_stern_army, (->(_non_blank_param) { where(is_stern_army: true) })
-  scope :regionless_only, (->(_non_blank_param) { where(region_id: nil) })
-  scope :zoneless, (-> { where(zone_id: nil) })
-  scope :user_faved, (lambda { |user_id|
+  }
+  scope :by_is_stern_army, ->(_non_blank_param) { where(is_stern_army: true) }
+  scope :regionless_only, ->(_non_blank_param) { where(region_id: nil) }
+  scope :zoneless, -> { where(zone_id: nil) }
+  scope :user_faved, lambda { |user_id|
     fave_ids = UserFaveLocation.where(user_id: user_id).map(&:location_id)
     where(id: fave_ids)
-  })
-  scope :manufacturer, (lambda { |manufacturer|
+  }
+  scope :manufacturer, lambda { |manufacturer|
     machines = Machine.where('manufacturer = ?', manufacturer)
     joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id)).distinct
-  })
+  }
 
   before_destroy do |record|
     Event.where(location_id: record.id).destroy_all

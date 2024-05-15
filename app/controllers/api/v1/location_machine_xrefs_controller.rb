@@ -148,16 +148,16 @@ HERE
         end
 
         closest_locations = apply_scopes(Location).includes(:machines).near([params[:lat], params[:lon]], max_distance).uniq
-        
-        last_N_machines_added = Hash.new
+
+        last_n_machines_added = {}
         closest_locations.each do |l|
           l.location_machine_xrefs.each do |lmx|
-            last_N_machines_added[lmx.created_at] = "#{lmx.machine.name} @ #{l.name}"
+            last_n_machines_added[lmx.created_at] = "#{lmx.machine.name} @ #{l.name}"
           end
         end
-      
+
         if !closest_locations.empty?
-          return_response(last_N_machines_added.sort.last(DEFAULT_MOST_RECENT_MACHINES).collect {|a| a[1]}, 'most_recently_added_machines', [], %i[], 200)
+          return_response(last_n_machines_added.sort.last(DEFAULT_MOST_RECENT_MACHINES).collect { |a| a[1] }, 'most_recently_added_machines', [], %i[], 200)
         else
           return_response("No locations within #{max_distance} miles.", 'errors')
         end

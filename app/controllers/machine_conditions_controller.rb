@@ -18,6 +18,13 @@ class MachineConditionsController < InheritedResources::Base
     render nothing: true
   end
 
+  def update
+    mcx = MachineCondition.find(params[:id])
+    mcx.update(params)
+
+    render nothing: true
+  end
+
   private
 
   def condition_params

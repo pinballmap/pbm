@@ -170,6 +170,61 @@ describe LocationMachineXrefsController do
       page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
     end
 
+    it 'allows you to delete a machine condition if you were the one that entered it' do
+      @lmx.update_condition('great', { user_id: @user.id })
+
+      visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
+
+      expect(page).to have_selector("input[type=submit][value='Remove Condition']")
+
+      page.accept_confirm do
+        click_button 'Remove Condition'
+      end
+
+      sleep 1
+
+      expect(@lmx.reload.condition).to eq(nil)
+    end
+
+    it 'will not allow you to delete a machine condition if you were not the one that entered it' do
+      @lmx.update_condition('great', { user_id: nil })
+
+      visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
+
+      expect(page).to_not have_selector("input[type=submit][value='Remove Condition']")
+    end
+
+    it 'allows you to update a machine condition if you were the one that entered it' do
+      @lmx.update_condition('great', { user_id: @user.id })
+
+      visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
+
+      find('a#edit_condition_' + @lmx.machine_conditions.first.id.to_s + '.button').click
+      fill_in 'comment', with: 'bad'
+
+      page.accept_confirm do
+        click_button 'Update Condition'
+      end
+
+      sleep 1
+
+      @lmx.reload
+      expect(@lmx.condition).to eq('bad')
+      expect(@lmx.machine_conditions.first.comment).to eq('bad')
+    end
+
+    it 'will not allow you to update a machine condition if you were not the one that entered it' do
+      @lmx.update_condition('great', { user_id: nil })
+
+      visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
+
+      expect(page).to_not have_selector('a#edit_condition_' + @lmx.machine_conditions.first.id.to_s + '.button')
+    end
+
     it 'does not save spam' do
       stub_const('ENV', 'RAKISMET_KEY' => 'asdf', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
 
@@ -322,8 +377,8 @@ describe LocationMachineXrefsController do
       expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content('by ssw')
 
       page.find("div#machineconditions_container_lmx_#{@lmx.id}.machineconditions_container_lmx").click
-      expect(find("#past_machine_condition_#{@lmx.id}")).to have_content('test')
-      expect(find("#past_machine_condition_#{@lmx.id}")).to have_content('by ssw')
+      expect(find("#showing_past_machine_condition_#{@lmx.id}")).to have_content('test')
+      expect(find("#showing_past_machine_condition_#{@lmx.id}")).to have_content('by ssw')
     end
 
     it 'should let me cancel adding a new machine description' do
@@ -386,6 +441,8 @@ describe LocationMachineXrefsController do
 
       find('.ic_unknown').click
       find('.ic_yes').click
+
+      sleep 1
 
       expect(page).to have_css('.ic_no')
     end

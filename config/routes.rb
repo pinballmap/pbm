@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :location_types, only: [:index, :show]
-      resources :machine_conditions, only: [:destroy]
+      resources :machine_conditions, only: [:destroy, :update]
       resources :machine_score_xrefs, only: [:create, :show]
       resources :machines, only: [:index, :show, :create]
       resources :operators, only: [:index, :show]
