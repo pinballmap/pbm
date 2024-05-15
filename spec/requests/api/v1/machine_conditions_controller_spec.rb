@@ -17,7 +17,7 @@ describe Api::V1::MachineConditionsController, type: :request do
       owned_condition = FactoryBot.create(:machine_condition, user: @user)
 
       delete '/api/v1/machine_conditions/' + owned_condition.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-  
+
       expect(response).to be_successful
       expect(JSON.parse(response.body)['machine_condition']).to eq('Successfully removed machine condition')
       expect(MachineCondition.all.size).to eq(0)
@@ -51,7 +51,7 @@ describe Api::V1::MachineConditionsController, type: :request do
       owned_condition = FactoryBot.create(:machine_condition, user: @user, comment: 'foo')
 
       put '/api/v1/machine_conditions/' + owned_condition.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', comment: 'bar' }
-  
+
       expect(response).to be_successful
       expect(JSON.parse(response.body)['machine_condition']).to eq('Successfully updated machine condition')
       expect(MachineCondition.first.comment).to eq('bar')

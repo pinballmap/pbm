@@ -4,7 +4,7 @@ class Machine < ApplicationRecord
   belongs_to :location_machine_xref, optional: true
   belongs_to :machine_group, optional: true
 
-  scope :by_name, (proc { |name| where(:name.matches => "%#{name}%") })
+  scope :by_name, proc { |name| where(:name.matches => "%#{name}%") }
 
   validates_presence_of :name
 

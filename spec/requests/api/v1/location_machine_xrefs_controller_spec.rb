@@ -452,12 +452,12 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(JSON.parse(response.body)['errors']).to eq('No locations within 50 miles.')
 
       location = FactoryBot.create(:location, id: 10, region: @region, name: 'Location A', lat: 45.49, lon: -122.63)
-      FactoryBot.create(:location_machine_xref, created_at: "2023-10-26T18:00:00", location: location, machine: FactoryBot.create(:machine, id: 200, name: 'Cleo'))
-      FactoryBot.create(:location_machine_xref, created_at: "2023-10-26T18:01:00", location: location, machine: FactoryBot.create(:machine, id: 300, name: 'Steven'))
+      FactoryBot.create(:location_machine_xref, created_at: '2023-10-26T18:00:00', location: location, machine: FactoryBot.create(:machine, id: 200, name: 'Cleo'))
+      FactoryBot.create(:location_machine_xref, created_at: '2023-10-26T18:01:00', location: location, machine: FactoryBot.create(:machine, id: 300, name: 'Steven'))
 
       another_location = FactoryBot.create(:location, id: 11, region: @region, name: 'Location B', lat: 45.49, lon: -122.63)
-      FactoryBot.create(:location_machine_xref, created_at: "2023-10-26T18:02:00", location: another_location, machine: FactoryBot.create(:machine, id: 301, name: 'Garth'))
-      FactoryBot.create(:location_machine_xref, created_at: "2023-10-26T18:03:00", location: another_location, machine: FactoryBot.create(:machine, id: 302, name: 'Zelda'))
+      FactoryBot.create(:location_machine_xref, created_at: '2023-10-26T18:02:00', location: another_location, machine: FactoryBot.create(:machine, id: 301, name: 'Garth'))
+      FactoryBot.create(:location_machine_xref, created_at: '2023-10-26T18:03:00', location: another_location, machine: FactoryBot.create(:machine, id: 302, name: 'Zelda'))
 
       get '/api/v1/location_machine_xrefs/most_recent_by_lat_lon.json', params: { lat: location.lat, lon: location.lon }
 

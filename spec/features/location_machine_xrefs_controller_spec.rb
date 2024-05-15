@@ -171,58 +171,58 @@ describe LocationMachineXrefsController do
     end
 
     it 'allows you to delete a machine condition if you were the one that entered it' do
-        @lmx.update_condition('great', { user_id: @user.id })
+      @lmx.update_condition('great', { user_id: @user.id })
 
-        visit "/map/?by_location_id=" + @lmx.location.id.to_s
-        page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
+      visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
-        expect(page).to have_selector("input[type=submit][value='Remove Condition']")
+      expect(page).to have_selector("input[type=submit][value='Remove Condition']")
 
-        page.accept_confirm do
-          click_button 'Remove Condition'
-        end
+      page.accept_confirm do
+        click_button 'Remove Condition'
+      end
 
-        sleep 1
+      sleep 1
 
-        expect(@lmx.reload.condition).to eq(nil)
+      expect(@lmx.reload.condition).to eq(nil)
     end
 
     it 'will not allow you to delete a machine condition if you were not the one that entered it' do
-        @lmx.update_condition('great', { user_id: nil })
+      @lmx.update_condition('great', { user_id: nil })
 
-        visit "/map/?by_location_id=" + @lmx.location.id.to_s
-        page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
+      visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
-        expect(page).to_not have_selector("input[type=submit][value='Remove Condition']")
+      expect(page).to_not have_selector("input[type=submit][value='Remove Condition']")
     end
 
     it 'allows you to update a machine condition if you were the one that entered it' do
-        @lmx.update_condition('great', { user_id: @user.id })
+      @lmx.update_condition('great', { user_id: @user.id })
 
-        visit "/map/?by_location_id=" + @lmx.location.id.to_s
-        page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
+      visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
-        find('a#edit_condition_' + @lmx.machine_conditions.first.id.to_s + '.button').click
-        fill_in 'comment', with: 'bad'
+      find('a#edit_condition_' + @lmx.machine_conditions.first.id.to_s + '.button').click
+      fill_in 'comment', with: 'bad'
 
-        page.accept_confirm do
-          click_button 'Update Condition'
-        end
+      page.accept_confirm do
+        click_button 'Update Condition'
+      end
 
-        sleep 1
+      sleep 1
 
-        @lmx.reload
-        expect(@lmx.condition).to eq('bad')
-        expect(@lmx.machine_conditions.first.comment).to eq('bad')
+      @lmx.reload
+      expect(@lmx.condition).to eq('bad')
+      expect(@lmx.machine_conditions.first.comment).to eq('bad')
     end
 
     it 'will not allow you to update a machine condition if you were not the one that entered it' do
-        @lmx.update_condition('great', { user_id: nil })
+      @lmx.update_condition('great', { user_id: nil })
 
-        visit "/map/?by_location_id=" + @lmx.location.id.to_s
-        page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
+      visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
-        expect(page).to_not have_selector('a#edit_condition_' + @lmx.machine_conditions.first.id.to_s + '.button')
+      expect(page).to_not have_selector('a#edit_condition_' + @lmx.machine_conditions.first.id.to_s + '.button')
     end
 
     it 'does not save spam' do

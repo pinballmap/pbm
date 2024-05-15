@@ -6,20 +6,20 @@ class MachineScoreXref < ApplicationRecord
   has_one :machine, through: :location_machine_xref
   strip_attributes
 
-  scope :zone_id, (lambda { |id|
+  scope :zone_id, lambda { |id|
     joins(:location_machine_xref).joins(:location).where("
       locations.zone_id = #{id}
     ")
-  })
+  }
 
-  scope :region, (lambda { |name|
+  scope :region, lambda { |name|
     r = Region.find_by_name(name.downcase)
     joins(:location_machine_xref).joins(:location).where("
       location_machine_xrefs.id = machine_score_xrefs.location_machine_xref_id
       and locations.id = location_machine_xrefs.location_id
       and locations.region_id = #{r.id}
     ")
-  })
+  }
 
   def username
     user ? user.username : ''

@@ -6,7 +6,7 @@ class UserSubmission < ApplicationRecord
 
   geocoded_by :lat_and_lon, latitude: :lat, longitude: :lon
 
-  scope :region, (->(name) { where(region_id: Region.find_by_name(name.downcase).id) })
+  scope :region, ->(name) { where(region_id: Region.find_by_name(name.downcase).id) }
 
   NEW_LMX_TYPE = 'new_lmx'.freeze
   CONTACT_US_TYPE = 'contact_us'.freeze

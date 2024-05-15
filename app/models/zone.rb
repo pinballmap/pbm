@@ -7,5 +7,5 @@ class Zone < ApplicationRecord
 
   default_scope { order 'name' }
 
-  scope :region, (->(name) { where(region_id: Region.find_by_name(name.downcase).id) })
+  scope :region, ->(name) { where(region_id: Region.find_by_name(name.downcase).id) }
 end

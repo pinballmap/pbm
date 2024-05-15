@@ -19,8 +19,8 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :trackable, :validatable, authentication_keys: [:login], confirmation_keys: [:login]
 
-  scope :admins, (-> { where('region_id is not null') })
-  scope :non_admins, (-> { where('region_id is null') })
+  scope :admins, -> { where('region_id is not null') }
+  scope :non_admins, -> { where('region_id is null') }
 
   attr_accessor :login
 

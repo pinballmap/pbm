@@ -101,7 +101,6 @@ describe Operator do
         expect(email.body).to include('Comment: Cleo Comment')
         expect(email.body).to include('Location: Cleo Corner - 303 Southeast 3rd Avenue, Portland, OR, 97214')
       end.to change { ActionMailer::Base.deliveries.size }.by(1)
-
     end
   end
 end

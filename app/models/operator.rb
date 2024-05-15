@@ -4,7 +4,7 @@ class Operator < ApplicationRecord
   has_many :locations
   has_many :suggested_locations
 
-  scope :region, (->(name) { where(region_id: Region.find_by_name(name.downcase).id) })
+  scope :region, ->(name) { where(region_id: Region.find_by_name(name.downcase).id) }
 
   def operator_has_email
     email.blank? ? false : true

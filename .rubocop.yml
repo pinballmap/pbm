@@ -18,7 +18,7 @@ Style/PerlBackrefs:
 Metrics/CyclomaticComplexity:
   Max: 40
 Metrics/PerceivedComplexity:
-  Max: 40
+  Max: 45
 Metrics/AbcSize:
   Enabled: false
 Metrics/BlockLength:
@@ -81,6 +81,10 @@ RSpec/Capybara:
 RSpec/FactoryBot:
   Enabled: false
 Capybara/VisibilityMatcher:
+  Enabled: false
+FactoryBot/CreateList:
+  Enabled: false
+Style/SymbolProc:
   Enabled: false
 
 AllCops:

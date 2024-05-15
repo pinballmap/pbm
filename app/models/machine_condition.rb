@@ -11,25 +11,22 @@ class MachineCondition < ApplicationRecord
 
   after_create :create_user_submission
 
-  scope :limited, (-> { order('created_at DESC').limit(MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY) })
+  scope :limited, -> { order('created_at DESC').limit(MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY) }
 
   def update(options = {})
-    if (options[:comment])
+    if options[:comment]
       self.comment = options[:comment]
 
-      if (
-        location_machine_xref.machine_conditions.first == self ||
-        (location_machine_xref.machine_conditions.size > 1 && location_machine_xref.machine_conditions.first == self)
-      )
-        self.location_machine_xref.condition = self.comment
-        self.location_machine_xref.save
+      if location_machine_xref.machine_conditions.first == self || (location_machine_xref.machine_conditions.size > 1 && location_machine_xref.machine_conditions.first == self)
+        location_machine_xref.condition = comment
+        location_machine_xref.save
       end
 
       save
     end
   end
 
-  def destroy(options = {})
+  def destroy(*)
     if location_machine_xref.machine_conditions.size == 1
       location_machine_xref.condition = nil
       location_machine_xref.condition_date = nil

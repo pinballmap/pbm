@@ -2,11 +2,11 @@ class Region < ApplicationRecord
   has_paper_trail
   has_many :locations
   has_many :zones
-  has_many :users, (-> { order 'users.id' })
-  has_many :events, (-> { order 'events.id' })
+  has_many :users, -> { order 'users.id' }
+  has_many :events, -> { order 'events.id' }
   has_many :operators
   has_many :suggested_locations
-  has_many :region_link_xrefs, (-> { order 'region_link_xrefs.id' })
+  has_many :region_link_xrefs, -> { order 'region_link_xrefs.id' }
   has_many :user_submissions
   has_many :location_machine_xrefs, through: :locations
   has_many :machine_score_xrefs, through: :location_machine_xrefs

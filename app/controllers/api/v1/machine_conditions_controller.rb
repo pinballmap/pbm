@@ -16,14 +16,13 @@ module Api
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 
         if machine_condition.user == user
-          machine_condition.update({comment: params[:comment]})
+          machine_condition.update({ comment: params[:comment] })
           return_response('Successfully updated machine condition', 'machine_condition')
         else
           return_response('You can only update machine conditions that you own', 'errors')
         end
-
-        rescue ActiveRecord::RecordNotFound
-          return_response('Failed to find machine condition', 'errors')
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find machine condition', 'errors')
       end
 
       api :DESTROY, '/api/v1/machine_conditions/:id.json', 'Destroy a single machine condition'
@@ -41,7 +40,6 @@ module Api
         else
           return_response('You can only delete machine conditions that you own', 'errors')
         end
-
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find machine condition', 'errors')
       end
