@@ -13,6 +13,22 @@ class MachineCondition < ApplicationRecord
 
   scope :limited, (-> { order('created_at DESC').limit(MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY) })
 
+  def update(options = {})
+    if (options[:comment])
+      self.comment = options[:comment]
+
+      if (
+        location_machine_xref.machine_conditions.first == self ||
+        (location_machine_xref.machine_conditions.size > 1 && location_machine_xref.machine_conditions.first == self)
+      )
+        self.location_machine_xref.condition = self.comment
+        self.location_machine_xref.save
+      end
+
+      save
+    end
+  end
+
   def destroy(options = {})
     if location_machine_xref.machine_conditions.size == 1
       location_machine_xref.condition = nil

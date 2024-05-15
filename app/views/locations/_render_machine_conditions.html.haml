@@ -10,34 +10,67 @@
 %div.center.m_15.red.font16 Machine comments may not reflect current conditions!
 
 - conditions.each do |mcx|
-  %div.machine_condition_new_line{:id => "past_machine_condition_#{mcx.id}"}
-    %span.machine_condition= "#{mcx.comment}"
-    .clear
-    - if !mcx.created_at.nil?
-      %span.machine_condition_date= mcx.created_at.strftime("%b %d, %Y")
-      - if mcx.user_id
-        by
-        %span.machine_condition_name.bold
-          - if mcx.user
-            = link_to mcx.user.username, "#{request.scheme}://#{request.host_with_port}/users/#{mcx.user.username}/profile"
-            - user = mcx.user
-            - rank_int = user.admin? ? user.admin_rank_int : user.contributor_rank_int
-            - if rank_int.present?
-              %span{:class => "rank_icon_#{rank_int} rank_icon_past_comment"}
-                = image_tag("rank/Rank_#{rank_int}.png", :class => "rank_icon")
-          - else
-            DELETED USER
+  %div.machine_condition_new_line{:id => "container_past_machine_condition_#{mcx.id}"}
+    %div.machine_condition_new_line{:id => "editing_past_machine_condition_#{mcx.id}", :style=>"display:none;"}
+      = form_tag machine_condition_path(id: mcx.id), :id => "update_condition_#{mcx.id}", :method => 'put' do
+        = text_area_tag 'comment', "#{mcx.comment}", :cols => 20, :rows => 3, :class => 'edit_mode'
+        .clear
+        = submit_tag 'Update Condition'
+        %a.button{:id => "cancel_update_condition_#{mcx.id}"} Cancel Update
+    %div.machine_condition_new_line{:id => "showing_past_machine_condition_#{mcx.id}"}
+      %span.machine_condition= "#{mcx.comment}"
+      .clear
+      - if !mcx.updated_at.nil?
+        %span.machine_condition_date= mcx.updated_at.strftime("%b %d, %Y")
+        - if mcx.user_id
+          by
+          %span.machine_condition_name.bold
+            - if mcx.user
+              = link_to mcx.user.username, "#{request.scheme}://#{request.host_with_port}/users/#{mcx.user.username}/profile"
+              - user = mcx.user
+              - rank_int = user.admin? ? user.admin_rank_int : user.contributor_rank_int
+              - if rank_int.present?
+                %span{:class => "rank_icon_#{rank_int} rank_icon_past_comment"}
+                  = image_tag("rank/Rank_#{rank_int}.png", :class => "rank_icon")
+            - else
+              DELETED USER
       - if current_user  && (mcx.user_id == current_user.id)
         = form_tag machine_condition_path(id: mcx.id), :id => "remove_condition_#{mcx.id}", :method => 'delete' do
           = submit_tag 'Remove Condition'
+        %a.button{:id => "edit_condition_#{mcx.id}"} Edit Condition
 
         :javascript
+          $('#cancel_update_condition_#{mcx.id}').click(function () {
+            $('#editing_past_machine_condition_#{mcx.id}').css('display', 'none')
+            $('#showing_past_machine_condition_#{mcx.id}').css('display', 'block')
+
+            return false;
+            });
+          $('#edit_condition_#{mcx.id}').click(function () {
+            $('#editing_past_machine_condition_#{mcx.id}').css('display', 'block')
+            $('#showing_past_machine_condition_#{mcx.id}').css('display', 'none')
+
+            return false;
+            });
+          $('#update_condition_#{mcx.id}').submit(function () {
+              var form = $(this);
+              if (confirm("Update this condition?")) {
+                $.post(form.attr('action'), form.serialize(), function (data) {
+                  $('#editing_past_machine_condition_#{mcx.id}').css('display', 'none');
+                  $('#showing_past_machine_condition_#{mcx.id}').css('display', 'block');
+                  $('#show_conditions_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_machine_conditions');
+                });
+              }
+
+              return false;
+            });
           $('#remove_condition_#{mcx.id}').submit(function () {
               var form = $(this);
               if (confirm("Remove this condition?")) {
-                $('#past_machine_condition_#{mcx.id}').fadeOut('slow', function() {
+                $('#showing_past_machine_condition_#{mcx.id}').fadeOut('slow', function() {
                   $.post(form.attr('action'), form.serialize(), function (data) {});
                 });
               }
+
               return false;
             });

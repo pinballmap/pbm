@@ -2,8 +2,50 @@ require 'spec_helper'
 
 describe MachineCondition do
   context 'keep a lot of lmx conditions' do
+    describe '#update' do
+      it 'correctly updates lmx condition metadata: updates lmx if you update the most recent of many conditions' do
+        location = FactoryBot.create(:location, region: FactoryBot.create(:region))
+        machine = FactoryBot.create(:machine)
+        lmx = FactoryBot.create(:location_machine_xref, location: location, machine: machine)
+
+        lmx.update_condition('foo')
+        lmx.update_condition('bar')
+        lmx.update_condition('baz')
+        mc = lmx.machine_conditions.first
+
+        expect(mc.created_at).to eq(mc.updated_at)
+        expect(mc.comment).to eq('baz')
+
+        mc.update({ comment: 'dang' })
+        lmx.reload
+
+        expect(mc.created_at).to_not eq(mc.updated_at)
+        expect(mc.comment).to eq('dang')
+        expect(lmx.condition).to eq('dang')
+      end
+
+      it 'correctly updates lmx condition metadata: leaves lmx alone if you did not update the most recent condition' do
+        location = FactoryBot.create(:location, region: FactoryBot.create(:region))
+        machine = FactoryBot.create(:machine)
+        lmx = FactoryBot.create(:location_machine_xref, location: location, machine: machine)
+
+        lmx.update_condition('foo')
+        lmx.update_condition('bar')
+        lmx.update_condition('baz')
+        mc = lmx.machine_conditions.third
+
+        expect(lmx.condition).to eq('baz')
+
+        mc.update({ comment: 'WHOOPS' })
+
+        expect(mc.created_at).to_not eq(mc.updated_at)
+        expect(mc.comment).to eq('WHOOPS')
+        expect(lmx.condition).to eq('baz')
+      end
+    end
+
     describe '#destroy' do
-      it 'correctly updates lmx condition metadata: leaves updates lmx if you delete the most recent of many conditions' do
+      it 'correctly updates lmx condition metadata: updates lmx if you delete the most recent of many conditions' do
         location = FactoryBot.create(:location, region: FactoryBot.create(:region))
         machine = FactoryBot.create(:machine)
         lmx = FactoryBot.create(:location_machine_xref, location: location, machine: machine)

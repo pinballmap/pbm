@@ -16,8 +16,7 @@ module Api
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 
         if machine_condition.user == user
-          machine_condition.comment = params[:comment]
-          machine_condition.save
+          machine_condition.update({comment: params[:comment]})
           return_response('Successfully updated machine condition', 'machine_condition')
         else
           return_response('You can only update machine conditions that you own', 'errors')
