@@ -617,15 +617,10 @@ form.edit_user .form-actions {
   width: 130px;
 }
 
-.rank_icon_comment:hover:after {
-  margin-top: 2px;
-}
-
 .rank_icon_past_comment:hover::after {
   margin-top: 5px;
 }
 
-.rank_icon_comment,
 .rank_icon_past_comment {
   margin-left: 1px;
 }
@@ -1680,6 +1675,32 @@ span.machine_year_man {
   font-family: $Nunito_400Regular;
 }
 
+.machine_condition_author {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 5px;
+}
+
+.delete_condition_button {
+  border-width: 0;
+  cursor: pointer;
+  margin-left: 4px;
+  font-size: 14px;
+  font-family: $Nunito_400Regular;
+  color: $darkgrey;
+  background: transparent;
+  text-decoration: underline;
+}
+
+.delete_condition_button:hover {
+  color: $red;
+}
+
+.update_condition_button {
+  color: $darkgrey;
+}
+
 img.machine_comment_icon {
   width: 22px;
   padding-right: 5px;
@@ -1712,10 +1733,8 @@ span.machine_condition_text {
 }
 
 .machine_condition_new_line span.machine_condition_date {
-  margin: 8px 0 2px;
-  display: inline-block;
+  margin: 0 5px;
   color: $grey;
-  font-size: 13px;
   font-family: $Nunito_400Regular;
 }
 
@@ -1724,11 +1743,11 @@ div.machine_condition_meta {
 }
 
 .machine_condition_new_line {
-  color: #666666;
   font-size: 14px;
   line-height: 18px;
   border-bottom: 1px solid $purple;
   margin-bottom: 8px;
+  padding-bottom: 5px;
 }
 
 .machine_condition_new_line .machine_condition {
@@ -1736,7 +1755,9 @@ div.machine_condition_meta {
   color: #333333;
 }
 
-.machine_condition_edit_lmx .edit_mode {
+.machine_condition_edit_lmx .edit_mode,
+.machine_condition_new_line .edit_mode
+ {
   width: 100%;
   max-width: 100%;
   min-width: 100%;
@@ -1924,6 +1945,7 @@ form select:hover {
 .save_button,
 .cancel_button,
 .add_score,
+.update_condition_submit,
 #add,
 #location_picture_xref_submit,
 .new_location_picture_xref input.submit_picture,
@@ -1950,6 +1972,7 @@ input.search:active,
 .save_button:active,
 .cancel_button:active,
 .add_score:active,
+.update_condition_submit:active
 #add:active,
 #location_picture_xref_submit:active,
 .new_location_picture_xref input.submit_picture:active,
@@ -2255,7 +2278,8 @@ input.score {
 .meta_image + .meta_image_tooltip,
 .fave_location + .fave_location_tooltip,
 .permalink + .permalink_tooltip,
-.confirm_button + .confirm_location_tooltip {
+.confirm_button + .confirm_location_tooltip,
+.comment_edited_asterisk + .comment_edited_tooltip {
   visibility: hidden;
   line-height: 14px;
   font-size: 16px;
@@ -2269,10 +2293,16 @@ input.score {
   text-align: center;
 }
 
+.comment_edited_asterisk + .comment_edited_tooltip {
+  margin-left: 0;
+  margin-top: 50px;
+}
+
 .meta_image + .meta_image_tooltip::after,
 .fave_location + .fave_location_tooltip::after,
 .permalink + .permalink_tooltip::after,
-.confirm_button + .confirm_location_tooltip::after {
+.confirm_button + .confirm_location_tooltip::after,
+.comment_edited_asterisk + .comment_edited_tooltip::after {
   content: "";
   position: absolute;
 }
@@ -2283,6 +2313,16 @@ input.score {
 .confirm_button:hover + .confirm_location_tooltip {
   visibility: visible;
   width: 180px;
+}
+
+.comment_edited_asterisk:hover + .comment_edited_tooltip {
+  visibility: visible;
+  width: 220px;
+}
+
+.comment_edited_asterisk {
+  margin-left: -4px;
+  cursor: default;
 }
 
 .desc_button {

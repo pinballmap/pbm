@@ -176,10 +176,10 @@ describe LocationMachineXrefsController do
       visit '/map/?by_location_id=' + @lmx.location.id.to_s
       page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
-      expect(page).to have_selector("input[type=submit][value='Remove Condition']")
+      expect(page).to have_selector("input[type=submit][value='delete']")
 
       page.accept_confirm do
-        click_button 'Remove Condition'
+        click_button 'delete'
       end
 
       sleep 1
@@ -193,7 +193,7 @@ describe LocationMachineXrefsController do
       visit '/map/?by_location_id=' + @lmx.location.id.to_s
       page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
-      expect(page).to_not have_selector("input[type=submit][value='Remove Condition']")
+      expect(page).to_not have_selector("input[type=submit][value='delete']")
     end
 
     it 'allows you to update a machine condition if you were the one that entered it' do
@@ -206,7 +206,7 @@ describe LocationMachineXrefsController do
       fill_in 'comment', with: 'bad'
 
       page.accept_confirm do
-        click_button 'Update Condition'
+        click_button 'Update Comment'
       end
 
       sleep 1
@@ -293,7 +293,7 @@ describe LocationMachineXrefsController do
 
       page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
-      expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("This is a new condition\n#{@lmx.created_at.strftime('%b %d, %Y')} by ssw")
+      expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("This is a new condition\nssw\n#{@lmx.created_at.strftime('%b %d, %Y')}")
       expect(@lmx.reload.location.date_last_updated).to eq(Date.today)
       expect(find("#last_updated_location_#{@location.id}")).to have_content("#{@location.date_last_updated.strftime('%b %d, %Y')} by ssw")
       expect(URI.parse(page.find_link('ssw', match: :first)['href']).to_s).to match(%r{/users/ssw/profile})
@@ -306,7 +306,7 @@ describe LocationMachineXrefsController do
 
       page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
-      expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("Test Comment\n#{@lmx.created_at.strftime('%b %d, %Y')} by cibw")
+      expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("Test Comment\ncibw\n#{@lmx.created_at.strftime('%b %d, %Y')}")
       expect(URI.parse(page.find_link('cibw')['href']).to_s).to match(%r{/users/cibw/profile})
     end
 
@@ -317,7 +317,7 @@ describe LocationMachineXrefsController do
 
       page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
-      expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("Test Comment\n#{@lmx.created_at.strftime('%b %d, %Y')} by DELETED USER")
+      expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("Test Comment\nDELETED USER\n#{@lmx.created_at.strftime('%b %d, %Y')}")
     end
 
     it 'only displays the 6 most recent descriptions' do
@@ -374,11 +374,11 @@ describe LocationMachineXrefsController do
       page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
       expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content('This is a new condition')
-      expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content('by ssw')
+      expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content('ssw')
 
       page.find("div#machineconditions_container_lmx_#{@lmx.id}.machineconditions_container_lmx").click
       expect(find("#showing_past_machine_condition_#{@lmx.id}")).to have_content('test')
-      expect(find("#showing_past_machine_condition_#{@lmx.id}")).to have_content('by ssw')
+      expect(find("#showing_past_machine_condition_#{@lmx.id}")).to have_content('ssw')
     end
 
     it 'should let me cancel adding a new machine description' do
