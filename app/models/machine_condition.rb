@@ -14,7 +14,7 @@ class MachineCondition < ApplicationRecord
   scope :limited, -> { order('created_at DESC').limit(MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY) }
 
   def update(options = {})
-    if options[:comment]
+    if options[:comment] && !options[:comment].blank? && (comment != options[:comment])
       self.comment = options[:comment]
 
       # retain legacy "above the fold" comment until we can verify it is safe to remove from code

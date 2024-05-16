@@ -42,6 +42,26 @@ describe MachineCondition do
         expect(mc.comment).to eq('WHOOPS')
         expect(lmx.condition).to eq('baz')
       end
+
+      it 'does nothing if the new condition is blank or the same condition that was there before' do
+        location = FactoryBot.create(:location, region: FactoryBot.create(:region))
+        machine = FactoryBot.create(:machine)
+        lmx = FactoryBot.create(:location_machine_xref, location: location, machine: machine)
+        lmx.update_condition('foo')
+        mc = lmx.machine_conditions.first
+
+        mc.update({ comment: '' })
+        mc.reload
+
+        expect(mc.comment).to eq('foo')
+        expect(mc.created_at).to eq(mc.updated_at)
+
+        mc.update({ comment: 'foo' })
+        mc.reload
+
+        expect(mc.comment).to eq('foo')
+        expect(mc.created_at).to eq(mc.updated_at)
+      end
     end
 
     describe '#destroy' do
