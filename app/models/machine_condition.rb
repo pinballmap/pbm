@@ -17,7 +17,8 @@ class MachineCondition < ApplicationRecord
     if options[:comment]
       self.comment = options[:comment]
 
-      if location_machine_xref.machine_conditions.first == self || (location_machine_xref.machine_conditions.size > 1 && location_machine_xref.machine_conditions.first == self)
+      # retain legacy "above the fold" comment until we can verify it is safe to remove from code
+      if location_machine_xref.machine_conditions.first == self
         location_machine_xref.condition = comment
         location_machine_xref.save
       end

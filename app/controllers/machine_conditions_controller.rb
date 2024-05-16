@@ -12,15 +12,19 @@ class MachineConditionsController < InheritedResources::Base
   end
 
   def destroy
+    user = current_user.nil? ? nil : current_user
     mcx = MachineCondition.find(params[:id])
-    mcx.destroy
+
+    mcx.destroy if user && (user.id == mcx.user_id)
 
     render nothing: true
   end
 
   def update
+    user = current_user.nil? ? nil : current_user
     mcx = MachineCondition.find(params[:id])
-    mcx.update(params)
+
+    mcx.update(condition_params) if user && (user.id == mcx.user_id)
 
     render nothing: true
   end
@@ -28,6 +32,6 @@ class MachineConditionsController < InheritedResources::Base
   private
 
   def condition_params
-    params.require(:machine_condition).permit(:comment, :location_machine_xref, :user, :user_id)
+    params.permit(:comment)
   end
 end
