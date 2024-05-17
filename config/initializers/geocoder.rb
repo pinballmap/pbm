@@ -1,6 +1,6 @@
 Geocoder.configure(
 
-  timeout: 2,
+  timeout: 20,
 
   google: {
     api_key: ENV['GOOGLE_MAPS_API_KEY'] ? ENV['GOOGLE_MAPS_API_KEY'] : ''
