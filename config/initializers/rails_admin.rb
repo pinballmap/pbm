@@ -20,10 +20,10 @@ RailsAdmin.config do |config|
     edit
     delete
     history_index do
-      only ['Location', 'SuggestedLocation', 'Operator', 'RegionLinkXref', 'Zone', 'Region', 'BannedIp', 'Machine', 'LocationType', 'MachineCondition', 'UserSubmission']
+      only ['Location', 'SuggestedLocation', 'Operator', 'RegionLinkXref', 'Zone', 'Region', 'BannedIp', 'Machine', 'LocationType', 'MachineCondition']
     end
     history_show do
-      only ['Location', 'SuggestedLocation', 'Operator', 'RegionLinkXref', 'Zone', 'Region', 'BannedIp', 'Machine', 'LocationType', 'MachineCondition', 'UserSubmission']
+      only ['Location', 'SuggestedLocation', 'Operator', 'RegionLinkXref', 'Zone', 'Region', 'BannedIp', 'Machine', 'LocationType', 'MachineCondition']
     end
   end
 
