@@ -1,13 +1,14 @@
 Geocoder.configure(
-  # street address geocoding service (default :nominatim)
-  lookup: :google,
-  # lookup: :nominatim,
 
-  # to use an API key:
-  api_key: ENV['GOOGLE_MAPS_API_KEY'] ? ENV['GOOGLE_MAPS_API_KEY'] : '',
+  timeout: 2,
 
-  # geocoding service request timeout, in seconds (default 3):
-  timeout: 20,
+  google: {
+    api_key: ENV['GOOGLE_MAPS_API_KEY'] ? ENV['GOOGLE_MAPS_API_KEY'] : ''
+  },
+
+  mapbox: {
+    api_key: ENV['MAPBOX_GEOCODE_API_KEY'] ? ENV['MAPBOX_GEOCODE_API_KEY'] : ''
+  },
 
   use_https: false,
 
