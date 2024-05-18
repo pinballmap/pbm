@@ -15,6 +15,6 @@ Geocoder.configure(
   timeout: 20,
   use_https: true,
   language: :en,
-  logger: Rails.logger,
-  kernel_logger_level: ::Logger::DEBUG
+  # logger: Rails.logger,
+  # kernel_logger_level: ::Logger::DEBUG
 )
