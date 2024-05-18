@@ -4,7 +4,7 @@ Geocoder.configure(
   api_key: ENV['GOOGLE_MAPS_API_KEY'] ? ENV['GOOGLE_MAPS_API_KEY'] : '',
 
   nominatim: {
-    http_headers: { "User-Agent" => "admin@pinballmap.com" }
+    http_headers: { "User-Agent" => "Pinball Map - admin@pinballmap.com" }
   },
   
   # geocoding service request timeout, in seconds (default 3):
