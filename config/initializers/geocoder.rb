@@ -8,9 +8,8 @@ Geocoder.configure(
 
   # geocoding service request timeout, in seconds (default 3):
   timeout: 20,
-
   use_https: false,
-
-  language: :en
-
+  language: :en,
+  logger: Rails.logger,
+  kernel_logger_level: ::Logger::DEBUG
 )
