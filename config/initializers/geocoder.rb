@@ -3,6 +3,10 @@ Geocoder.configure(
   lookup: :google,
   api_key: ENV['GOOGLE_MAPS_API_KEY'] ? ENV['GOOGLE_MAPS_API_KEY'] : '',
 
+  here: {
+    api_key: ENV['HERE_MAPS_API_KEY'] ? ENV['HERE_MAPS_API_KEY'] : '',
+  },
+
   nominatim: {
     http_headers: { "User-Agent" => "Pinball Map - admin@pinballmap.com" }
   },
