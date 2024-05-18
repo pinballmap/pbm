@@ -22,7 +22,7 @@ class PagesController < ApplicationController
           @lon = -122.754940100000
         else
           results = Geocoder.search(params[:address])
-          results = Geocoder.search(params[:address], lookup: :google, api_key: ENV['GOOGLE_MAPS_API_KEY']) if results.blank?
+          results = Geocoder.search(params[:address], lookup: :nominatim) if results.blank?
           @lat, @lon = results.first.coordinates
         end
       end
