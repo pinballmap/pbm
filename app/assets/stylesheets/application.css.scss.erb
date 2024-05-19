@@ -330,6 +330,10 @@ ul li li {
   margin-left: 5px;
 }
 
+.ml_8 {
+  margin-left: 8px;
+}
+
 .mlr_10 {
   margin-left: 10px;
   margin-right: 10px;
@@ -1686,9 +1690,12 @@ span.machine_year_man {
 .delete_condition_button {
   border-width: 0;
   cursor: pointer;
-  margin-left: 4px;
+  margin-left: 8px;
+  padding-left: 0;
+  padding-right: 0;
   font-size: 14px;
   font-family: $Nunito_400Regular;
+  font-weight: normal;
   color: $darkgrey;
   background: transparent;
   text-decoration: underline;
@@ -1734,7 +1741,7 @@ span.machine_condition_text {
 }
 
 .machine_condition_new_line span.machine_condition_date {
-  margin: 0 0 0 5px;
+  margin: 0 0 0 8px;
   color: $grey;
   font-family: $Nunito_400Regular;
 }
@@ -1989,11 +1996,6 @@ input.search:active,
   margin-left: 5px;
 }
 
-input:focus {
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px $purple;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px $purple;
-}
-
 input.search:hover,
 input#add:hover,
 input#location_picture_xref_submit:hover,
@@ -2107,10 +2109,6 @@ input.lookup_search_input:focus {
   margin-bottom: 10px;
   font-family: $Nunito_400Regular;
   float: right;
-}
-
-input.score {
-  width: 80%;
 }
 
 .show_conditions_lmx {
@@ -2248,6 +2246,7 @@ span .last_updated_username {
 
 input.score {
   margin: 0 0 10px 9px;
+  width: 80%;
 }
 
 .location_detail {

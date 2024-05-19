@@ -39,7 +39,7 @@
             %span.comment_edited_tooltip
               Comment has been edited
         - if current_user && (mcx.user_id == current_user.id)
-          %a.ml_5.update_condition_button.button{:id => "edit_condition_#{mcx.id}"} edit
+          %a.ml_8.update_condition_button.button{:id => "edit_condition_#{mcx.id}"} edit
           = form_tag machine_condition_path(id: mcx.id), :id => "remove_condition_#{mcx.id}", :method => 'delete' do
             = submit_tag 'delete', :class => 'delete_condition_button'
 
