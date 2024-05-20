@@ -99,7 +99,7 @@
       and
       = link_to 'Scorbit', 'https://scorbit.io/', :target => '_blank'
       and
-      = link_to 'Kineticist', 'https://www.kineticist.co/', :target => '_blank'
+      = link_to 'Kineticist', 'https://www.kineticist.com/', :target => '_blank'
       and many others!
     %p
       %span.bold If you use the data, provide attribution!
@@ -153,9 +153,7 @@
     %p
       =link_to 'Sentry', 'https://sentry.io/', :target => '_blank', :class => 'bold'
       is used for crash reporting on the app!
-    %p
-      =link_to 'Google Maps', 'https://developers.google.com/maps', :target => '_blank', :class => 'bold'
-      processes the geocoding requests. We also use the Places API for location submissions.
+    %p== The geocoding requests are processed by #{link_to 'Google Maps', 'https://developers.google.com/maps', :target => '_blank', :class => 'bold'} and #{link_to 'HERE Maps', 'https://developer.here.com/', :target => '_blank', :class => 'bold'} and #{link_to 'Nominatim', 'https://nominatim.org/', :target => '_blank', :class => 'bold'}. We also use the Google Places API for location submissions.
   - if !mobile_device?
     .news.center
       =link_to image_tag( 'stack-dokku-logo.svg', :alt => 'dokku logo', :style => 'width: 220px;', :class => 'pb_15'), 'https://dokku.com/', :target => '_blank'
