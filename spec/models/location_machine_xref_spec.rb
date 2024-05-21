@@ -16,9 +16,6 @@ describe LocationMachineXref do
 
       regionless_lmx.update_condition('regionless condish', user_id: @u.id)
 
-      expect(regionless_lmx.condition).to eq('regionless condish')
-      expect(regionless_lmx.condition_date.to_s).to eq(Time.now.to_s.split(' ')[0])
-
       expect(MachineCondition.all.count).to eq(1)
       expect(MachineCondition.first.comment).to eq('regionless condish')
     end
@@ -26,19 +23,17 @@ describe LocationMachineXref do
     it 'should update the condition of the lmx and timestamp it' do
       @lmx.update_condition('foo', user_id: @u.id)
 
-      expect(@lmx.condition).to eq('foo')
-      expect(@lmx.condition_date.to_s).to eq(Time.now.to_s.split(' ')[0])
+      expect(@lmx.machine_conditions.first.comment).to eq('foo')
+      expect(@lmx.updated_at.to_s).to eq(Time.now.to_s)
 
       @lmx.update_condition('bar', remote_ip: '0.0.0.0', user_agent: 'cleOS', user_id: @u.id)
     end
 
     it 'should do nothing if your condition is the same as the previous condition' do
-      @lmx.condition = 'baz'
+      @lmx.update_condition('baz', user_id: @u.id)
+      @lmx.update_condition('baz', user_id: @u.id)
 
-      @lmx.update_condition('baz')
-
-      expect(MachineCondition.all.count).to eq(0)
-      expect(@lmx.condition_date).to be_nil
+      expect(MachineCondition.all.count).to eq(1)
     end
 
     it 'should create MachineConditions' do

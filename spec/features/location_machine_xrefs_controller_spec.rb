@@ -212,7 +212,6 @@ describe LocationMachineXrefsController do
       sleep 1
 
       @lmx.reload
-      expect(@lmx.condition).to eq('bad')
       expect(@lmx.machine_conditions.first.comment).to eq('bad')
     end
 
@@ -271,7 +270,7 @@ describe LocationMachineXrefsController do
 
         sleep 1
 
-        expect(lmx.reload.condition).to eq('THIS IS NOT SPAM')
+        expect(lmx.reload.machine_conditions.first.comment).to eq('THIS IS NOT SPAM')
 
         user_submission = UserSubmission.last
 

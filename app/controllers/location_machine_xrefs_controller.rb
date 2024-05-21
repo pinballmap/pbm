@@ -59,14 +59,9 @@ class LocationMachineXrefsController < InheritedResources::Base
     if condition.match?(/<a href/)
       lmx
     elsif ENV['RAKISMET_KEY']
-      old_condition = lmx.condition
-
-      lmx.condition = condition
       if lmx.spam?
-        lmx.condition = old_condition
         nil
       else
-        lmx.condition = old_condition
         lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: current_user&.id)
         lmx.location.date_last_updated = Date.today
         lmx.location.last_updated_by_user_id = current_user&.id
@@ -116,6 +111,6 @@ class LocationMachineXrefsController < InheritedResources::Base
   private
 
   def location_machine_xref_params
-    params.require(:location_machine_xref).permit(:machine_id, :location_id, :condition, :condition_date, :ip, :user_id, :ic_enabled)
+    params.require(:location_machine_xref).permit(:machine_id, :location_id, :ic_enabled)
   end
 end

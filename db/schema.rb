@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_03_171756) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_21_021328) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -75,9 +75,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_03_171756) do
     t.datetime "updated_at", precision: nil
     t.integer "location_id"
     t.integer "machine_id"
-    t.text "condition"
-    t.date "condition_date"
-    t.string "ip", limit: 255
     t.integer "user_id"
     t.integer "machine_score_xrefs_count"
     t.boolean "ic_enabled"
@@ -159,7 +156,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_03_171756) do
     t.bigint "score"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
-    t.string "ip", limit: 255
     t.integer "user_id"
     t.string "rank", limit: 255
     t.index ["location_machine_xref_id"], name: "index_machine_score_xrefs_on_location_machine_xref_id"

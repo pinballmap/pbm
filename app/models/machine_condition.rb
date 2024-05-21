@@ -17,32 +17,8 @@ class MachineCondition < ApplicationRecord
     if options[:comment] && !options[:comment].blank? && (comment != options[:comment])
       self.comment = options[:comment]
 
-      # retain legacy "above the fold" comment until we can verify it is safe to remove from code
-      if location_machine_xref.machine_conditions.first == self
-        location_machine_xref.condition = comment
-        location_machine_xref.save
-      end
-
       save
     end
-  end
-
-  def destroy(*)
-    if location_machine_xref.machine_conditions.size == 1
-      location_machine_xref.condition = nil
-      location_machine_xref.condition_date = nil
-
-      location_machine_xref.save(validate: false)
-      location_machine_xref
-    elsif location_machine_xref.machine_conditions.size > 1 && location_machine_xref.machine_conditions.first == self
-      location_machine_xref.condition = location_machine_xref.machine_conditions.second.comment
-      location_machine_xref.condition_date = location_machine_xref.machine_conditions.second.updated_at
-
-      location_machine_xref.save(validate: false)
-      location_machine_xref
-    end
-
-    super()
   end
 
   def create_user_submission

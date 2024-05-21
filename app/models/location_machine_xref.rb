@@ -30,11 +30,9 @@ class LocationMachineXref < ApplicationRecord
   end
 
   def update_condition(condition, options = {})
-    return if condition == self.condition
+    return if condition == machine_conditions.first&.comment
     return if condition.blank?
 
-    self.condition = condition
-    self.condition_date = Date.today
     self.user_id = options[:user_id]
 
     location.date_last_updated = Date.today

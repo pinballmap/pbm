@@ -107,7 +107,7 @@ module Api
           return_response(
             locations,
             'locations',
-            params[:no_details] ? nil : [location_machine_xrefs: { include: { machine: { except: %i[created_at condition opdb_img opdb_img_height opdb_img_width display machine_type machine_display ic_eligible is_active] } }, except: %i[condition ip machine_score_xrefs_count condition_date user_id] }],
+            params[:no_details] ? nil : [location_machine_xrefs: { include: { machine: { except: %i[created_at opdb_img opdb_img_height opdb_img_width display machine_type machine_display ic_eligible is_active] } }, except: %i[machine_score_xrefs_count user_id] }],
             %i[last_updated_by_username num_machines],
             200,
             except
@@ -286,7 +286,7 @@ module Api
         end
 
         closest_location = apply_scopes(Location).includes(:machines).near([lat, lon], max_distance).first
-        location_details = [location_machine_xrefs: { include: { machine: { methods: :machine_group_id, except: params[:no_details] ? %i[is_active created_at updated_at ipdb_link] : nil } }, except: params[:no_details] ? %i[condition created_at updated_at condition_date ip user_id machine_score_xrefs_count] : nil }]
+        location_details = [location_machine_xrefs: { include: { machine: { methods: :machine_group_id, except: params[:no_details] ? %i[is_active created_at updated_at ipdb_link] : nil } }, except: params[:no_details] ? %i[created_at updated_at user_id machine_score_xrefs_count] : nil }]
 
         if params[:send_all_within_distance]
           closest_locations = apply_scopes(Location).includes(:machines).near([lat, lon], max_distance)
