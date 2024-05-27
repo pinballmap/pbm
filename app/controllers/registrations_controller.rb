@@ -3,9 +3,8 @@ class RegistrationsController < Devise::RegistrationsController
   prepend_before_action :create, only: [:create]
 
   def create
-    @answers = %w[pinball Pinball PINBALL]
     @user = User.new(user_params)
-    if @answers.any? { |w| @user.security_test[w] }
+    if @user.security_test =~ /pinball/i
       if @user.save
         redirect_to root_path, notice: 'Please confirm your account. A link has been emailed to you. If you do not see it, check your SPAM!'
       else

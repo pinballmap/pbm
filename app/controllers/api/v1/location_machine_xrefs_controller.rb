@@ -12,7 +12,7 @@ module Api
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION = 50
 
       api :GET, '/api/v1/region/:region/location_machine_xrefs.json', 'Get all machines at locations in a single region'
-      param :region, String, desc: 'Name of the Region you want to see events for', required: true
+      param :region, String, desc: 'Name of the Region you want to see machines for', required: true
       param :limit, Integer, desc: 'Limit the number of results that are returned', required: false
       formats ['json']
       def index

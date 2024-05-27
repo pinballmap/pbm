@@ -121,13 +121,11 @@ class PagesController < ApplicationController
     user = current_user.nil? ? nil : current_user
     return if params['contact_msg'].blank? || (!user && params['contact_email'].blank?) || params['contact_msg'].match?(/vape/) || params['contact_msg'].match?(/seo/) || params['contact_msg'].match?(/Ezoic/)
 
-    @answers = %w[pinball Pinball PINBALL]
-
     if user
       @contact_thanks = 'Thanks for contacting us! If you are expecting a reply, check your spam folder or whitelist admin@pinballmap.com'.freeze
       send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
     else
-      if @answers.any? { |w| params['security_test'][w] }
+      if params['security_test'] =~ /pinball/i
         @contact_thanks = 'Thanks for contacting us! If you are expecting a reply, check your spam folder or whitelist admin@pinballmap.com'.freeze
         send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
       else
