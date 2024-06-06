@@ -931,6 +931,21 @@ describe Api::V1::LocationsController, type: :request do
     end
   end
 
+  describe '#countries' do
+    it 'returns a count of number of locations by countries' do
+      FactoryBot.create(:location, city: 'Portland', state: 'OR', country: 'US')
+      FactoryBot.create(:location, city: 'Portland', state: 'OR', country: 'US')
+      FactoryBot.create(:location, city: 'Toronto', state: 'ON', country: 'CA')
+
+      get '/api/v1/locations/countries.json'
+
+      US = JSON.parse(response.body)[0]
+      expect(US['location_count']).to eq(3)
+      CA = JSON.parse(response.body)[1]
+      expect(CA['location_count']).to eq(1)
+    end
+  end
+
   describe '#autocomplete_city' do
     it 'should do a fuzzy search on city name and return a list of in-scope city names + state' do
       FactoryBot.create(:location, city: 'Portland', state: 'ME')

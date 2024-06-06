@@ -69,6 +69,7 @@ Rails.application.routes.draw do
           get :top_cities
           get :top_cities_by_machine
           get :type_count
+          get :countries
           post :suggest
         end
       end

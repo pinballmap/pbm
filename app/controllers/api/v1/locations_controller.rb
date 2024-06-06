@@ -450,6 +450,19 @@ module Api
 
         return_response(type_count, nil)
       end
+
+      api :GET, '/api/v1/locations/countries.json', 'Fetch countries by number of locations'
+      description 'Fetch countries by number of locations'
+      formats ['json']
+      def countries
+        countries = Location.select(
+          [
+            :country, Arel.star.count.as('location_count')
+          ]
+        ).order(:location_count).reverse_order.group(:country)
+
+        return_response(countries, nil)
+      end
     end
   end
 end
