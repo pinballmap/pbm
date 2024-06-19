@@ -54,8 +54,6 @@
 
   $('#address_search_form').on('submit', function(e) {
     hideSearchModal();
-    operatorVal = '?by_operator_id=' + $('#by_operator_id').val();
-    history.replaceState({}, 'foo', `${operatorVal}`)
 
     $('#search_link_wrapper').css('display','block');
 
