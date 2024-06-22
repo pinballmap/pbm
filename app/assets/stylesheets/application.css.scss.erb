@@ -2379,15 +2379,17 @@ input.score {
 }
 
 .location_thumbs {
-  margin: 0 6px;
   overflow-y: auto;
   overflow-x: hidden;
   text-align: center;
   max-height: 120px;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
-  background-image: linear-gradient(#fff, #eeeef8);
   @include radius(15px);
+}
+
+.location_thumbs_bg {
+  background-image: linear-gradient(#fff, #eeeef8);
 }
 
 .location_thumbs::-webkit-scrollbar {

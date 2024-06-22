@@ -47,4 +47,7 @@
 			});
 		});
 
+		if ( $("#thumbs_location_#{l.id}").prop('scrollHeight') > $("#thumbs_location_#{l.id}").height() ) {
+			$("#thumbs_location_#{l.id}").addClass('location_thumbs_bg');
+		} 
 	});
