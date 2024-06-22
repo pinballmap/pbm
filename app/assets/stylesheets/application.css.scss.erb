@@ -1462,7 +1462,7 @@ li.address_full {
 }
 
 .lmx_count {
-  margin: 0 auto 10px;
+  margin: 20px auto 10px;
   width: fit-content;
   border-bottom: 5px solid $purple;
 }
@@ -1839,6 +1839,7 @@ div.machine_condition_meta {
 .remove_machine_button {
   background: none;
   border: none;
+  height: 33px;
 }
 
 .remove_machine_button img {
@@ -2378,9 +2379,19 @@ input.score {
 }
 
 .location_thumbs {
-  margin: 5px 6px 0 6px;
-  overflow: hidden;
+  margin: 0 6px;
+  overflow-y: auto;
+  overflow-x: hidden;
   text-align: center;
+  max-height: 120px;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  background-image: linear-gradient(#fff, #eeeef8);
+  @include radius(15px);
+}
+
+.location_thumbs::-webkit-scrollbar {
+    display: none;
 }
 
 .location_thumbs a {
