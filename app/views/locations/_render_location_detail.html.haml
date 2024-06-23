@@ -1,7 +1,18 @@
-%div{:class => ["bold font22 name", ("pr_30" unless user_signed_in?)]}
+%div{:class => "bold font22 name"}
 	=l.name
 %div.location_tools.pointer
-	- if user_signed_in?
+	- if !user_signed_in?
+		=link_to new_user_session_path, :class => "no_underline" do
+			=image_tag('icons/confirm-location.svg', :class => 'confirm_button')
+			%span.confirm_location_tooltip
+				Confirm Line-Up
+			=image_tag('icons/lead-pencil.svg', :class => 'meta_image_notlogged')
+			%span.meta_image_tooltip
+				Update Location Info
+			=image_tag( 'icons/heart-empty.svg', :alt => 'fave this location', :class => 'fave_location')
+			%span.fave_location_tooltip
+				Favorite This Location
+	- else
 		=image_tag('icons/confirm-location.svg', :class => 'confirm_button', :id => "confirm_location_button_#{l.id}")
 		%span.confirm_location_tooltip
 			Confirm Line-Up
@@ -18,14 +29,10 @@
 	= render :partial => 'locations/render_update_metadata', :locals => {:l => l}
 %div.location_thumbs[l, :thumbs]
 	= render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
-- if !user_signed_in?
-	%div.login_alert
-		= link_to link_to 'LOGIN to update this location! Click here', "#{request.scheme}://#{request.host_with_port}/users/login"
 = render :partial => 'locations/render_recent_activity', :locals => {:location => l}
 = render :partial => 'locations/render_former_machines', :locals => {:location => l}
-- if user_signed_in?
-	= render :partial => 'locations/add_machine', :locals => {:location => l}
-	= render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
+= render :partial => 'locations/add_machine', :locals => {:location => l}
+= render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
 = render :partial => 'locations/render_machines_count', :locals => {:location => l}
 = render :partial => 'locations/show_machines', :locals => {:location => l}
 

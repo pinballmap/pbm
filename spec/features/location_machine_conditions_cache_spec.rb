@@ -40,9 +40,8 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
 
       page.find("#show_conditions_lmx_banner_#{@lmx.id}").click
       expect(page).to have_content('This is a new condition1')
-      expect(page).to have_content('LOGIN to update this location! Click here')
-      expect(page).not_to have_content('Add machine comment')
-      expect(page).not_to have_content('Add high score')
+      expect(page).to have_content('Add machine comment')
+      expect(page).to have_content('Add high score')
 
       Capybara.using_session(:logged_in_user2) do
         # login as a second user and add a machine condition and expect the server to save it
@@ -51,7 +50,6 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
         visit "/#{@region.name}/?by_location_id=#{@location.id}&initials=#{@user2.username}"
         sleep 0.5
 
-        expect(page).not_to have_content('LOGIN to update this location! Click here')
         expect(page).to have_content('Add machine comment')
         expect(page).to have_content('Add high score')
 
@@ -70,9 +68,8 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
       page.find("#show_conditions_lmx_banner_#{@lmx.id}").click
       expect(page).to have_content('This is a new condition1')
       expect(page).to have_content('This is a new condition2')
-      expect(page).to have_content('LOGIN to update this location! Click here')
-      expect(page).not_to have_content('Add machine comment')
-      expect(page).not_to have_content('Add high score')
+      expect(page).to have_content('Add machine comment')
+      expect(page).to have_content('Add high score')
 
       Capybara.using_session(:logged_in) do
         # Visit the page again as the first logged in user and expect the new content
@@ -83,7 +80,6 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
         page.find("#show_conditions_lmx_banner_#{@lmx.id}").click
         expect(page).to have_content('This is a new condition1')
         expect(page).to have_content('This is a new condition2')
-        expect(page).not_to have_content('LOGIN to update this location! Click here')
         expect(page).to have_content('Add machine comment')
         expect(page).to have_content('Add high score')
       end

@@ -1,4 +1,9 @@
-- if user_signed_in?
+- if !user_signed_in?
+  =link_to new_user_session_path, :class => "no_underline" do
+    %div.machine_condition_lmx
+      =image_tag('icons/comment-text.svg', alt: 'Leave a Comment', :class => "machine_comment_icon")
+      %div.add_condition Add machine comment
+- else
   %div[lmx, :machine_condition]
     =image_tag("icons/comment-text.svg", :alt => "Leave a Comment", :class => "machine_comment_icon")
     %div.add_condition Add machine comment

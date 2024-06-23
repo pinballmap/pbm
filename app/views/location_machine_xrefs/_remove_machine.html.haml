@@ -1,17 +1,22 @@
-= button_to location_machine_xref_path(:id => lmx.id), :id => "remove_machine_#{lmx.id}", :method => 'delete', :remote => true, :class => "remove_machine_button" do
-  =image_tag('icons/trash-can-outline.svg', alt: 'Remove Machine')
+- if !user_signed_in?
+  =link_to new_user_session_path, :class => "no_underline" do
+    %div.remove_machine_button
+      =image_tag('icons/trash-can-outline.svg', alt: 'Remove Machine')
+- else
+  = button_to location_machine_xref_path(:id => lmx.id), :id => "remove_machine_#{lmx.id}", :method => 'delete', :remote => true, :class => "remove_machine_button" do
+    =image_tag('icons/trash-can-outline.svg', alt: 'Remove Machine')
 
-:javascript
-  $('#remove_machine_#{lmx.id}').click(function () {
-    if (confirm("Remove this machine? Please do not remove and re-add the same machine because you want to clear out comments.")) {
-      $('#machine_lmx_#{lmx.id}').fadeOut('slow', function() {
-        updateLocationUpdatedText(#{lmx.location_id});
-        $('#gm_machines_#{lmx.location_id}').load('/locations/#{lmx.location_id}/render_machine_names_for_infowindow', function() {
-          $('#show_machines_location_count_#{lmx.location_id}').load('/locations/#{lmx.location_id}/render_machines_count', function() {});
+  :javascript
+    $('#remove_machine_#{lmx.id}').click(function () {
+      if (confirm("Remove this machine? Please do not remove and re-add the same machine because you want to clear out comments.")) {
+        $('#machine_lmx_#{lmx.id}').fadeOut('slow', function() {
+          updateLocationUpdatedText(#{lmx.location_id});
+          $('#gm_machines_#{lmx.location_id}').load('/locations/#{lmx.location_id}/render_machine_names_for_infowindow', function() {
+            $('#show_machines_location_count_#{lmx.location_id}').load('/locations/#{lmx.location_id}/render_machines_count', function() {});
+          });
         });
-      });
 
-      $(this).callRemote();
-    }
-    return false;
-  });
+        $(this).callRemote();
+      }
+      return false;
+    });
