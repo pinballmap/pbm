@@ -155,11 +155,12 @@ describe PagesController, type: :controller do
         FactoryBot.create(:location_type, name: 'type')
         FactoryBot.create(:operator, name: 'operator')
         FactoryBot.create(:zone, name: 'zone')
+        FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
 
         logout
 
         expect do
-          post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
+          post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines_ids: [20], submitter_name: 'subname', submitter_email: 'subemail' }
 
           email = ActionMailer::Base.deliveries.last
           expect(email.to).to eq(region.nil? ? ['super_admin@bar.com'] : ['foo@bar.com'])
@@ -167,24 +168,25 @@ describe PagesController, type: :controller do
           expect(email.subject).to eq("Pinball Map - New location suggested#{region.nil? ? '' : ' (' + @region.full_name + ')'}")
           expect(email.body).to have_content('Dear Admin: You can approve this location with the click of a button! In the Suggested Locations section, click the "(i)", and then the big "APPROVE LOCATION" button at the top.')
           expect(email.body).to have_content('Location Name: name')
-          expect(email.body).to have_content('Machines: machines')
+          expect(email.body).to have_content('Machines: Jolene (Pro) (Burrito, 1995)')
           expect(email.body).to have_content('Street: street')
 
           expect(region.nil? ? UserSubmission.count : @region.user_submissions.count).to eq(1)
           submission = region.nil? ? UserSubmission.first : @region.user_submissions.first
           expect(submission.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
-          expect(submission.submission).to eq('Location Name: name Street: street City: city State: state Zip: zip Country: country Phone: phone Website: website Type: type Operator: operator Zone: zone Comments: comments Machines: machines (entered from 0.0.0.0 via  Rails Testing)')
+          expect(submission.submission).to eq('Location Name: name Street: street City: city State: state Zip: zip Country: country Phone: phone Website: website Type: type Operator: operator Zone: zone Comments: comments Machines: Jolene (Pro) (Burrito, 1995),  (entered from 0.0.0.0 via  Rails Testing)')
         end.to change { ActionMailer::Base.deliveries.size }.by(1)
       end
 
       it 'should send an email - includes user info if available' do
         FactoryBot.create(:location_type, name: 'type')
         FactoryBot.create(:operator, name: 'operator')
+        FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
 
         login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com'))
 
         expect do
-          post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
+          post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines_ids: [20], submitter_name: 'subname', submitter_email: 'subemail' }
 
           email = ActionMailer::Base.deliveries.last
           expect(email.to).to eq(region.nil? ? ['super_admin@bar.com'] : ['foo@bar.com'])
@@ -200,10 +202,11 @@ describe PagesController, type: :controller do
       end
 
       it 'should send an email - notifies if sent from the staging server' do
+        FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
         @request.host = 'pbmstaging.com'
 
         expect do
-          post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
+          post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines_ids: [20], submitter_name: 'subname', submitter_email: 'subemail' }
 
           email = ActionMailer::Base.deliveries.last
           expect(email.subject).to eq("(STAGING) Pinball Map - New location suggested#{region.nil? ? '' : ' (' + @region.full_name + ')'}")
@@ -214,8 +217,9 @@ describe PagesController, type: :controller do
         location_type = FactoryBot.create(:location_type, name: 'type')
         operator = FactoryBot.create(:operator, name: 'operator')
         zone = FactoryBot.create(:zone, name: 'zone')
+        FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
 
-        post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', location_zone: 'zone', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail' }
+        post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', location_zone: 'zone', location_operator: 'operator', location_comments: 'comments', location_machines_ids: [20], submitter_name: 'subname', submitter_email: 'subemail' }
 
         expect(SuggestedLocation.all.size).to eq(1)
 
@@ -233,7 +237,7 @@ describe PagesController, type: :controller do
         expect(sl.zone).to eq(zone)
         expect(sl.operator).to eq(operator)
         expect(sl.comments).to eq('comments')
-        expect(sl.machines).to eq('machines')
+        expect(sl.machines).to eq("[\"20\"]")
         expect(sl.user_inputted_address).to eq('street, city, state, zip')
       end
     end

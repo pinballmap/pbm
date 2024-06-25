@@ -51,54 +51,10 @@
                   %label{:for => "location_comments"} Comments:
                   %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text"}
                 %li.brightpurple
-                  Please use the AUTOCOMPLETE in the "Machines" form below. Start typing, then select a result. If you don't, then your submission will take longer to be approved.
-                %li.textbox
-                  %label{:for => "location_machines"} Machines:
-                  %textarea{type: "text", id: "location_machines", name: "location_machines", params: "location_machines", class: "text", required: true}
-                  :javascript
-                    $(function () {
-                      function split( val ) {
-                        return val.split( /,\s*/ );
-                      }
-                      function extractLast( term ) {
-                        return split( term ).pop();
-                      }
-                      $('#location_machines')
-                      .on( "keydown", function( event ) {
-                        if ( event.keyCode === $.ui.keyCode.TAB &&
-                        $( this ).autocomplete( "instance" ).menu.active ) {
-                          event.preventDefault();
-                        }
-                      })
-                      .autocomplete({
-                        minLength: 2,
-                        delay: 500,
-                        source: function( request, response ) {
-                          $.getJSON( '/machines/autocomplete', {
-                            term: extractLast( request.term )
-                          }, response );
-                        },
-                        search: function() {
-                          var term = extractLast( this.value );
-                          if ( term.length < 2 ) {
-                            return false;
-                          }
-                        },
-                        focus: function() {
-                          return false;
-                        },
-                        select: function( event, ui ) {
-                          var terms = split( this.value );
-                          terms.pop();
-                          terms.push( ui.item.value );
-                          terms.push( "" );
-                          this.value = terms.join( ", " );
-                          return false;
-                        }
-                      });
-                    });
-                %li.brightpurple
                   Unsure what "model" the machine is (e.g., Pro, Premium, LE, etc.)? The safest assumption is Pro (the baseline model).
+                %li.machines_textinput
+                  %label{:for => "location_type"} Machines:
+                  = select_tag "location_machines", options_from_collection_for_select(Machine.all.sort_by(&:massaged_name), 'id', 'name_and_year', params["location_machines_ids"]), multiple: "multiple", :class => 'location_machines', :id => 'location_machines', name: "location_machines_ids[]", required: true
                 %li.submit.mt_5{:style => "clear:both;"}
                   %input{:type => "submit", :value => "Submit New Location", :class => "submit_button"}
       - else
@@ -155,3 +111,6 @@
     });
   }
   google.maps.event.addDomListener(window, 'load', initialize);
+  $(document).ready(function() {
+    $('.location_machines').select2();
+  });

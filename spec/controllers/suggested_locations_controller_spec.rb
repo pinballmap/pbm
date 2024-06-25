@@ -7,20 +7,17 @@ describe SuggestedLocationsController, type: :controller do
     @o = FactoryBot.create(:operator, name: 'o', region: @r)
     @z = FactoryBot.create(:zone, name: 'z', region: @r)
 
-    @sl = FactoryBot.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', country: 'US', phone: '503-391-9288', lat: 11.11, lon: 22.22, website: 'http://www.cool.com', region: @r, location_type: @lt, operator: @o, zone: @z, machines: 'The Dark Knight (Stern, 2008), Star Trek (Pro) [Stern - 2013], Challenger [Gottlieb - 1971], The Bally Game Show (Bally, 1990), this will not match')
+    @sl = FactoryBot.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', country: 'US', phone: '503-391-9288', lat: 11.11, lon: 22.22, website: 'http://www.cool.com', region: @r, location_type: @lt, operator: @o, zone: @z, machines: [21, 22, 23, 24])
 
     login
   end
 
   describe '#convert_to_location' do
     it 'should create a corresponding location, delete itself, redirect to admin page' do
-      m_one = FactoryBot.create(:machine, name: 'The Dark Knight', manufacturer: 'Stern', year: '2008')
-      m_two = FactoryBot.create(:machine, name: 'Challenger', manufacturer: 'Gottlieb', year: '1971')
-      m_three = FactoryBot.create(:machine, name: 'Star Trek (Pro)', manufacturer: 'Stern', year: '2013')
-      m_four = FactoryBot.create(:machine, name: 'The Bally Game Show', manufacturer: 'Bally', year: '1990')
-
-      FactoryBot.create(:machine, name: 'Challenger', manufacturer: 'Stern', year: '1971')
-      FactoryBot.create(:machine, name: 'Challenger', manufacturer: 'Gottlieb', year: '2222')
+      m_one = FactoryBot.create(:machine, name: 'The Dark Knight', manufacturer: 'Stern', year: '2008', id: 21)
+      m_two = FactoryBot.create(:machine, name: 'Challenger', manufacturer: 'Gottlieb', year: '1971', id: 22)
+      m_three = FactoryBot.create(:machine, name: 'Star Trek (Pro)', manufacturer: 'Stern', year: '2013', id: 23)
+      m_four = FactoryBot.create(:machine, name: 'The Bally Game Show', manufacturer: 'Bally', year: '1990', id: 24)
 
       post :convert_to_location, format: :json, params: { id: @sl.id }
       l = Location.find_by_name('name')
@@ -45,9 +42,9 @@ describe SuggestedLocationsController, type: :controller do
       expect(lmx_one.location).to eq(l)
       expect(lmx_one.machine).to eq(m_one)
       expect(lmx_two.location).to eq(l)
-      expect(lmx_two.machine).to eq(m_three)
+      expect(lmx_two.machine).to eq(m_two)
       expect(lmx_three.location).to eq(l)
-      expect(lmx_three.machine).to eq(m_two)
+      expect(lmx_three.machine).to eq(m_three)
       expect(lmx_four.location).to eq(l)
       expect(lmx_four.machine).to eq(m_four)
 

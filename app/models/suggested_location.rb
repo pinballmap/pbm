@@ -57,7 +57,7 @@ class SuggestedLocation < ApplicationRecord
     if !location.valid?
       errors.add(:base, location.errors.first)
     else
-      if machines
+      if !machines&.start_with?('[')
         machines.tr!('[', '(')
         machines.tr!(']', ')')
         machines.gsub!(/ - /, ', ')
@@ -85,6 +85,12 @@ class SuggestedLocation < ApplicationRecord
 
           machine = Machine.find_by(name: name, year: year, manufacturer: manufacturer)
 
+          LocationMachineXref.create(location_id: location.id, machine_id: machine.id) unless machine.nil?
+        end
+      else
+        machine_ids = machines.gsub(/[\[\]" ]/, '').split(',').map(&:to_i)
+        machine_ids&.each do |machine_id|
+          machine = Machine.find_by(id: machine_id)
           LocationMachineXref.create(location_id: location.id, machine_id: machine.id) unless machine.nil?
         end
       end

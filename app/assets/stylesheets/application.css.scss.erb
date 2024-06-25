@@ -2507,9 +2507,13 @@ img.small_banner_icon {
   font-family: $Nunito_600SemiBold;
 }
 
+#location_maker {
+  padding-left: 15px;
+}
+
 #location_maker ul {
   width: 600px;
-  padding-left: 15px;
+  padding-left: 0;
 }
 
 .first {
@@ -2944,6 +2948,11 @@ li span.state_name {
   width: 280px;
 }
 
+#location_maker li.machines_textinput select {
+  width: 575px;
+  height: 28px;
+}
+
 #contact_maker textarea {
   margin: 0;
   max-width: 400px;
@@ -2962,6 +2971,26 @@ li span.state_name {
   font-size: 14px;
   resize: both;
   overflow: auto;
+}
+
+#location_maker li.machines_textinput textarea {
+  height: 28px;
+  min-height: 28px;
+  width: 575px;
+  max-width: 575px;
+  min-width: 575px;
+  margin: 0;
+  font-size: 14px;
+  resize: none;
+  overflow: auto;
+  border: none;
+  background: transparent;
+}
+
+/** Select2 **/
+
+.select2-container .select2-selection--multiple {
+  border: 2px solid #aeb1d2 !important;
 }
 
 /** High Rollers **/

@@ -59,9 +59,10 @@ describe Api::V1::LocationsController, type: :request do
       lt = FactoryBot.create(:location_type, name: 'type')
       o = FactoryBot.create(:operator, name: 'operator')
       z = FactoryBot.create(:zone, name: 'zone')
+      FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
 
       expect do
-        post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
+        post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
         expect(response).to be_successful
 
         email = ActionMailer::Base.deliveries.last
@@ -72,7 +73,7 @@ describe Api::V1::LocationsController, type: :request do
 
         submission = @region.user_submissions.first
         expect(submission.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
-        expect(submission.submission).to eq('Location Name: name Street: street City: city State: state Zip: zip Country:  Phone: phone Website: website Type: type Operator: operator Zone: zone Comments: comments Machines: machines (entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))')
+        expect(submission.submission).to eq('Location Name: name Street: street City: city State: state Zip: zip Country:  Phone: phone Website: website Type: type Operator: operator Zone: zone Comments: comments Machines: Jolene (Pro) (Burrito, 1995), (entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))')
 
         expect(JSON.parse(response.body)['msg']).to eq("Thanks for your submission! We'll review and add it soon. Be patient!")
         expect(UserSubmission.all.count).to eq(1)
@@ -83,8 +84,9 @@ describe Api::V1::LocationsController, type: :request do
     end
 
     it 'Searches boundary boxes by transmitted lat/lon (geocoded, not user location)' do
+      FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
       expect do
-        post '/api/v1/locations/suggest.json', params: { region_id: nil, location_name: 'name', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', lat: 20, lon: 20 }, headers: { HTTP_USER_AGENT: 'cleOS' }
+        post '/api/v1/locations/suggest.json', params: { region_id: nil, location_name: 'name', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', lat: 20, lon: 20 }, headers: { HTTP_USER_AGENT: 'cleOS' }
 
         email = ActionMailer::Base.deliveries.last
         expect(email.to).to eq(['lat@guy.com'])
@@ -94,24 +96,33 @@ describe Api::V1::LocationsController, type: :request do
 
         submission = UserSubmission.last
         expect(submission.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
-        expect(submission.submission).to eq('Location Name: name Street:  City:  State:  Zip:  Country:  Phone:  Website:  Type:  Operator:  Zone:  Comments:  Machines: machines (entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))')
+        expect(submission.submission).to eq('Location Name: name Street:  City:  State:  Zip:  Country:  Phone:  Website:  Type:  Operator:  Zone:  Comments:  Machines: Jolene (Pro) (Burrito, 1995), (entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))')
       end.to change { ActionMailer::Base.deliveries.size }.by(1)
     end
 
     it 'tags a user when appropriate' do
-      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
+      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
 
       expect(response).to be_successful
       expect(UserSubmission.first.user_id).to eq(111)
     end
 
     it 'does not bomb out when operator and type and zone are blank' do
-      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: nil, location_zone: '', location_operator: '', location_comments: 'comments', location_machines: 'machines', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
+      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: nil, location_zone: '', location_operator: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
 
       expect(response).to be_successful
       expect(SuggestedLocation.first.location_type).to eq(nil)
       expect(SuggestedLocation.first.operator).to eq(nil)
       expect(SuggestedLocation.first.zone).to eq(nil)
+    end
+
+    it 'does not bomb out if machine list contains string of machine names' do
+      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: nil, location_zone: '', location_operator: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995), Happy Dog (Premium) (Burrito, 2001),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+
+      expect(response).to be_successful
+      expect(SuggestedLocation.first.machines).to eq('Jolene (Pro) (Burrito, 1995), Happy Dog (Premium) (Burrito, 2001),')
     end
   end
 
