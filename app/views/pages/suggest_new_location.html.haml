@@ -112,5 +112,7 @@
   }
   google.maps.event.addDomListener(window, 'load', initialize);
   $(document).ready(function() {
-    $('.location_machines').select2();
+    $('.location_machines').select2({
+      placeholder: 'Select the machines at this location',
+    });
   });
