@@ -13,6 +13,8 @@
     %meta{:property => "og:url", :content => "https://#{request.host+request.fullpath}" }
     %meta{:property => "og:image", :content => image_path("pbm-og-image.jpg")}
     %meta{:content => "JFE_WxE-R1LZtdT0omEkIKOlZr7oq1fPBW9mr3cdyx4", :name => "google-site-verification"}/
+    - if Rails.env.staging?
+      %meta{content: "noindex,nofollow", name: "robots"}/
 
     = stylesheet_link_tag 'normalize', 'application', 'mediaqueries', :media => ""
     - if mobile_device?
