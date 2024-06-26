@@ -50,11 +50,11 @@
                 %li.textbox
                   %label{:for => "location_comments"} Comments:
                   %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text"}
-                %li.brightpurple
-                  Unsure what "model" the machine is (e.g., Pro, Premium, LE, etc.)? The safest assumption is Pro (the baseline model).
                 %li.machines_textinput
                   %label{:for => "location_type"} Machines:
                   = select_tag "location_machines", options_from_collection_for_select(Machine.all.sort_by(&:massaged_name), 'id', 'name_and_year', params["location_machines_ids"]), multiple: "multiple", :class => 'location_machines', :id => 'location_machines', name: "location_machines_ids[]", required: true
+                %li.brightpurple
+                  Unsure what "model" the machine is (e.g., Pro, Premium, LE, etc.)? The safest assumption is Pro (the baseline model).
                 %li.submit.mt_5{:style => "clear:both;"}
                   %input{:type => "submit", :value => "Submit New Location", :class => "submit_button"}
       - else
