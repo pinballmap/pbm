@@ -9,13 +9,13 @@ task notify_admins: :environment do
 
     next if email_to.blank? || email_to.nil?
 
-    AdminMailer.with(email_to: email_to, email_subject: email_subject, region_name: email_body[:full_name], machines_count: email_body[:machines_count], locations_count: email_body[:locations_count], events_count: email_body[:events_count], events_new_count: email_body[:events_new_count], contact_messages_count: email_body[:contact_messages_count], machineless_locations: email_body[:machineless_locations], suggested_locations: email_body[:suggested_locations], suggested_locations_count: email_body[:suggested_locations_count], locations_added_count: email_body[:locations_added_count], locations_deleted_count: email_body[:locations_deleted_count], machine_comments_count: email_body[:machine_comments_count], machines_added_count: email_body[:machines_added_count], machines_removed_count: email_body[:machines_removed_count]).notify_admins.deliver_now
+    AdminMailer.with(email_to: email_to, email_subject: email_subject, region_name: email_body[:full_name], machines_count: email_body[:machines_count], locations_count: email_body[:locations_count], events_count: email_body[:events_count], events_new_count: email_body[:events_new_count], contact_messages_count: email_body[:contact_messages_count], machineless_locations: email_body[:machineless_locations], suggested_locations: email_body[:suggested_locations], suggested_locations_count: email_body[:suggested_locations_count], locations_added_count: email_body[:locations_added_count], locations_deleted_count: email_body[:locations_deleted_count], machine_comments_count: email_body[:machine_comments_count], machines_added_count: email_body[:machines_added_count], machines_removed_count: email_body[:machines_removed_count]).notify_admins.deliver_later
     sleep(8)
   end
 rescue StandardError => e
   error_subject = 'Weekly digest rake task error'
   error = e.to_s
-  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_now
+  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_later
 end
 
 desc 'Sends admins a daily digest email of all new machine conditions'
@@ -31,13 +31,13 @@ task send_daily_digest_machine_condition_email: :environment do
 
     next if email_to.blank? || email_to.nil?
 
-    AdminMailer.with(email_to: email_to, email_subject: email_subject, submissions: submissions, region_name: r.full_name).send_daily_digest_machine_condition_email.deliver_now
+    AdminMailer.with(email_to: email_to, email_subject: email_subject, submissions: submissions, region_name: r.full_name).send_daily_digest_machine_condition_email.deliver_later
     sleep(8)
   end
 rescue StandardError => e
   error_subject = 'Daily comments rake task error'
   error = e.to_s
-  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_now
+  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_later
 end
 
 desc 'Sends admins a daily digest email of all machine removals'
@@ -53,11 +53,11 @@ task send_daily_digest_machine_removal_email: :environment do
 
     next if email_to.blank? || email_to.nil?
 
-    AdminMailer.with(email_to: email_to, email_subject: email_subject, submissions: submissions, region_name: r.full_name).send_daily_digest_machine_removal_email.deliver_now
+    AdminMailer.with(email_to: email_to, email_subject: email_subject, submissions: submissions, region_name: r.full_name).send_daily_digest_machine_removal_email.deliver_later
     sleep(8)
   end
 rescue StandardError => e
   error_subject = 'Daily removals rake task error'
   error = e.to_s
-  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_now
+  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_later
 end

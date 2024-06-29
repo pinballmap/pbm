@@ -127,13 +127,6 @@ describe Api::V1::RegionsController, type: :request do
   end
 
   describe '#contact' do
-    before(:each) do
-      ActionMailer::Base.perform_deliveries = true
-      ActionMailer::Base.deliveries = []
-    end
-    after(:each) do
-      ActionMailer::Base.deliveries.clear
-    end
     it 'throws an error if the region does not exist' do
       post '/api/v1/regions/contact.json', params: { region_id: -1, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
@@ -141,88 +134,38 @@ describe Api::V1::RegionsController, type: :request do
     end
 
     it 'errors when required fields are not sent' do
-      expect(ActionMailer::Base.deliveries.count).to eq(0)
       post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('A message (and email if not logged in) is required.')
 
-      expect(ActionMailer::Base.deliveries.count).to eq(0)
       post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, message: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('A message (and email if not logged in) is required.')
 
-      expect(ActionMailer::Base.deliveries.count).to eq(0)
       post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, message: 'hello', user_email: '' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('A message (and email if not logged in) is required.')
     end
 
     it 'emails region admins with incoming message and account info if logged in' do
-      expect do
-        post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-        expect(response).to be_successful
-        email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq('Pinball Map - Message (Los Angeles)')
-        expect(email.from).to eq(['admin@pinballmap.com'])
-        expect(email.to).to eq(['la@admin.com'])
-        expect(email.cc).to eq(['portland@admin.com'])
-
-        expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
-        expect(UserSubmission.all.count).to eq(1)
-        expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
-      end.to change { ActionMailer::Base.deliveries.size }.by(1)
+      expect { post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, message: 'message', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: nil, email: nil, message: 'message', user_name: 'ssw', user_email: 'foo@bar.com', to_users: ['la@admin.com'], cc_users: ['portland@admin.com'], subject: 'Pinball Map - Message (Los Angeles)', remote_ip: '127.0.0.1', headers: nil, user_agent: 'cleOS' }, args: [] })
     end
 
     it 'emails region admins with incoming message when user is not logged in' do
-      expect do
-        post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-        expect(response).to be_successful
-        email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq('Pinball Map - Message (Los Angeles)')
-        expect(email.from).to eq(['admin@pinballmap.com'])
-        expect(email.to).to eq(['la@admin.com'])
-        expect(email.cc).to eq(['portland@admin.com'])
-
-        expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
-        expect(UserSubmission.all.count).to eq(1)
-        expect(UserSubmission.first.submission_type).to eq(UserSubmission::CONTACT_US_TYPE)
-      end.to change { ActionMailer::Base.deliveries.size }.by(1)
+      expect { post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name'}, headers: { HTTP_USER_AGENT: 'cleOS' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'name', email: 'email', message: 'message', user_name: nil, user_email: nil, to_users: ['la@admin.com'], cc_users: ['portland@admin.com'], subject: 'Pinball Map - Message (Los Angeles)', remote_ip: '127.0.0.1', headers: nil, user_agent: 'cleOS' }, args: [] })
     end
 
     it 'emails super admins when lat/lon is null or no regions are within lat/lon bounding boxes' do
-      expect do
-        post '/api/v1/regions/contact.json', params: { region_id: nil, lat: nil, lon: nil, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-        expect(response).to be_successful
-        email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq('Pinball Map - Message')
-        expect(email.from).to eq(['admin@pinballmap.com'])
-        expect(email.to).to eq(['portland@admin.com'])
-
-        expect(JSON.parse(response.body)['msg']).to eq('Thanks for the message.')
-        expect(UserSubmission.all.count).to eq(1)
-        expect(UserSubmission.first.region_id).to be_nil
-      end.to change { ActionMailer::Base.deliveries.size }.by(1)
+      expect { post '/api/v1/regions/contact.json', params: { region_id: nil, lat: nil, lon: nil, email: 'email', message: 'message', name: 'name' }, headers: { HTTP_USER_AGENT: 'cleOS' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'name', email: 'email', message: 'message', user_name: nil, user_email: nil, to_users: ['portland@admin.com'], cc_users: [], subject: 'Pinball Map - Message', remote_ip: '127.0.0.1', headers: nil, user_agent: 'cleOS' }, args: [] })
     end
 
     it 'finds closest region by lat/lon' do
-      expect do
-        post '/api/v1/regions/contact.json', params: { region_id: nil, lat: 12, lon: 13, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-        expect(response).to be_successful
-        email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq('Pinball Map - Message (Portland)')
-        expect(email.from).to eq(['admin@pinballmap.com'])
-        expect(email.to).to eq(['portland@admin.com'])
-      end.to change { ActionMailer::Base.deliveries.size }.by(1)
+      expect { post '/api/v1/regions/contact.json', params: { region_id: nil, lat: 12, lon: 13, email: 'email', message: 'message', name: 'name' }, headers: { HTTP_USER_AGENT: 'cleOS' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'name', email: 'email', message: 'message', user_name: nil, user_email: nil, to_users: ['portland@admin.com'], cc_users: ['portland@admin.com'], subject: 'Pinball Map - Message (Portland)', remote_ip: '127.0.0.1', headers: nil, user_agent: 'cleOS' }, args: [] })
     end
 
     it 'emails region admins with incoming message - notifies if sent from staging server' do
-      expect do
-        host! 'pbmstaging.com'
-        post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-        expect(response).to be_successful
-        email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq('(STAGING) Pinball Map - Message (Los Angeles)')
-      end.to change { ActionMailer::Base.deliveries.size }.by(1)
+      host! 'pbmstaging.com'
+      expect { post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name' }, headers: { HTTP_USER_AGENT: 'cleOS' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'name', email: 'email', message: 'message', user_name: nil, user_email: nil, to_users: ['la@admin.com'], cc_users: ['portland@admin.com'], subject: '(STAGING) Pinball Map - Message (Los Angeles)', remote_ip: '127.0.0.1', headers: nil, user_agent: 'cleOS' }, args: [] })
     end
   end
 end

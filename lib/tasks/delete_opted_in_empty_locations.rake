@@ -8,5 +8,5 @@ task delete_opted_in_empty_locations: :environment do
 rescue StandardError => e
   error_subject = 'Delete empty locations rake task error'
   error = e.to_s
-  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_now
+  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_later
 end

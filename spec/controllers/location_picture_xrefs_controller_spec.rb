@@ -9,65 +9,25 @@ describe LocationPictureXrefsController, type: :controller do
     @no_admin_location = FactoryBot.create(:location, name: 'Cleo', region: @seattle)
     @user = FactoryBot.create(:user, region: @portland, email: 'foo@bar.com')
     FactoryBot.create(:user, region: FactoryBot.create(:region), email: 'baz@bong.com', is_super_admin: 't')
-
-    ActionMailer::Base.perform_deliveries = true
-    ActionMailer::Base.deliveries = []
-  end
-
-  after(:each) do
-    ActionMailer::Base.deliveries.clear
   end
 
   describe '#create' do
     it 'sends an email' do
       login(@user)
 
-      expect do
-        post 'create', format: :js, params: { location_picture_xref: { location_id: @location.id } }
-        email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq('Pinball Map - Picture added')
-        expect(email.from).to eq(['admin@pinballmap.com'])
-        expect(email.to).to eq(['foo@bar.com'])
-        expect(email.body).to have_content('Photo ID: 1')
-        expect(email.body).to have_content('Location: Sassy')
-        expect(email.body).to have_content('Photo: /photos/large/missing.png')
-        expect(email.body).to have_content('Region: Portland')
-        expect(email.body).to have_content("No need to approve it, it's already live.")
-      end.to change { ActionMailer::Base.deliveries.size }.by(1)
+      expect { post 'create', format: :js, params: { location_picture_xref: { location_id: @location.id } } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'picture_added', 'deliver_now', { params: { to_users: ['foo@bar.com'], subject: 'Pinball Map - Picture added', photo_id: 1, location_name: 'Sassy', region_name: 'Portland', photo_url: '/photos/large/missing.png' }, args: [] })
     end
 
     it 'sends an email - works for regionless' do
       login(@user)
 
-      expect do
-        post 'create', format: :js, params: { location_picture_xref: { location_id: @regionless_location.id } }
-        email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq('Pinball Map - Picture added')
-        expect(email.from).to eq(['admin@pinballmap.com'])
-        expect(email.to).to eq(['baz@bong.com'])
-        expect(email.body).to have_content('Photo ID: 2')
-        expect(email.body).to have_content('Location: Bawb')
-        expect(email.body).to have_content('Photo: /photos/large/missing.png')
-        expect(email.body).to have_content('Region: REGIONLESS')
-        expect(email.body).to have_content("No need to approve it, it's already live.")
-      end.to change { ActionMailer::Base.deliveries.size }.by(1)
+      expect { post 'create', format: :js, params: { location_picture_xref: { location_id: @regionless_location.id } } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'picture_added', 'deliver_now', { params: { to_users: ['baz@bong.com'], subject: 'Pinball Map - Picture added', photo_id: 1, location_name: 'Bawb', region_name: 'REGIONLESS', photo_url: '/photos/large/missing.png' }, args: [] })
     end
 
     it 'sends an email - works for regions that do not have an admin' do
       login(@user)
 
-      expect do
-        post 'create', format: :js, params: { location_picture_xref: { location_id: @no_admin_location.id } }
-        email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq('Pinball Map - Picture added')
-        expect(email.from).to eq(['admin@pinballmap.com'])
-        expect(email.to).to eq(['baz@bong.com'])
-        expect(email.body).to have_content('Photo ID: 3')
-        expect(email.body).to have_content('Location: Cleo')
-        expect(email.body).to have_content('Photo: /photos/large/missing.png')
-        expect(email.body).to have_content('Region: Seattle')
-        expect(email.body).to have_content("No need to approve it, it's already live.")
-      end.to change { ActionMailer::Base.deliveries.size }.by(1)
+      expect { post 'create', format: :js, params: { location_picture_xref: { location_id: @no_admin_location.id } } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'picture_added', 'deliver_now', { params: { to_users: ['baz@bong.com'], subject: 'Pinball Map - Picture added', photo_id: 1, location_name: 'Cleo', region_name: 'Seattle', photo_url: '/photos/large/missing.png' }, args: [] })
     end
   end
 

@@ -13,17 +13,57 @@ RSpec.describe AdminMailer, type: :mailer do
       assert_equal ['foo@bar.com'], email.to
       assert_equal "Pinball Map - Weekly admin REGIONLESS digest - #{Date.today.strftime('%m/%d/%Y')}", email.subject
     end
+  end
+  describe 'new_machine_name' do
+    it 'should send email on new machine creation' do
+      email = AdminMailer.with(to_users: ['foo@bar.com'], add_machine_by_name_1: 'foo', subject: 'Pinball Map - New machine name', location_id: 'Sassy Mo').new_machine_name
 
-    # let(:mail) { AdminMailer.weekly_admin_digest_regionless }
+      assert_emails 1 do
+        email.deliver_later
+      end
 
-    # it 'renders the headers' do
-    #   expect(mail.subject).to include('Pinball Map - Weekly admin REGIONLESS digest')
-    #   # expect(mail.to).to eq(['to@example.org'])
-    #   expect(mail.from).to eq(['admin@pinballmap.com'])
-    # end
+      assert_equal email.to, ['foo@bar.com']
+      assert_equal email.from, ['admin@pinballmap.com']
+      assert_equal email.subject, 'Pinball Map - New machine name'
+    end
+  end
+  describe 'picture added' do
+    it 'should send email on new picture added' do
+      email = AdminMailer.with(to_users: ['foo@bar.com'], location_picture_xref: { location_id: 'Sassy Mo' }).picture_added
 
-    # it 'renders the body' do
-    #   expect(mail.body.encoded).to match('Here is a weekly overview of regionless locations')
-    # end
+      assert_emails 1 do
+        email.deliver_later
+      end
+
+      assert_equal email.to, ['foo@bar.com']
+      assert_equal email.from, ['admin@pinballmap.com']
+      assert_equal email.subject, 'Pinball Map - Picture added'
+    end
+  end
+  describe 'new location submitted' do
+    it 'should send email on new location submission' do
+      email = AdminMailer.with(to_users: ['foo@bar.com'], region_id: nil, location_name: 'name', subject: 'Pinball Map - New location suggested', location_machine: 'machine').send_new_location_notification
+
+      assert_emails 1 do
+        email.deliver_later
+      end
+
+      assert_equal email.to, ['foo@bar.com']
+      assert_equal email.from, ['admin@pinballmap.com']
+      assert_equal email.subject, 'Pinball Map - New location suggested'
+    end
+  end
+  describe 'send admin notification' do
+    it 'should send email on new location submission' do
+      email = AdminMailer.with(to_users: ['foo@bar.com'], email: 'email', name: 'name', message: 'message', subject: 'Pinball Map - Message').send_admin_notification
+
+      assert_emails 1 do
+        email.deliver_later
+      end
+
+      assert_equal email.to, ['foo@bar.com']
+      assert_equal email.from, ['admin@pinballmap.com']
+      assert_equal email.subject, 'Pinball Map - Message'
+    end
   end
 end

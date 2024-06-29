@@ -8,5 +8,5 @@ task delete_expired_events: :environment do
 rescue StandardError => e
   error_subject = 'Delete expired events rake task error'
   error = e.to_s
-  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_now
+  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_later
 end

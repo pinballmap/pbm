@@ -40,7 +40,7 @@ class Operator < ApplicationRecord
       comments << comment
     end
 
-    OperatorMailer.with(email: email, heading: heading, comments: comments).send_recent_comments.deliver_now
+    OperatorMailer.with(email: email, heading: heading, comments: comments).send_recent_comments.deliver_later
 
     unless Rails.env.test?
       sleep(8) # throttle potection

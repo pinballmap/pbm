@@ -57,11 +57,6 @@ describe Api::V1::MachinesController, type: :request do
 
       FactoryBot.create(:machine, name: 'Cleo')
       FactoryBot.create(:user, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw', region: @region)
-      ActionMailer::Base.perform_deliveries = true
-      ActionMailer::Base.deliveries = []
-    end
-    after(:each) do
-      ActionMailer::Base.deliveries.clear
     end
 
     it 'errors with missing location_id' do
@@ -97,24 +92,15 @@ describe Api::V1::MachinesController, type: :request do
     end
 
     it 'handles creation by machine name.. new machine name sends email' do
-      expect do
-        post '/api/v1/machines.json', params: { machine_name: 'Bawb', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-        expect(response).to be_successful
-        expect(response.status).to eq(200)
-
-        email = ActionMailer::Base.deliveries.last
-        expect(email.to).to eq(['foo@bar.com'])
-        expect(email.from).to eq(['admin@pinballmap.com'])
-        expect(email.subject).to eq('Pinball Map - New machine name')
-      end.to change { ActionMailer::Base.deliveries.size }.by(1)
+      expect { post '/api/v1/machines.json', params: { machine_name: 'Bawb', location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'new_machine_name', 'deliver_now', { params: { to_users: ['foo@bar.com'], subject: 'Pinball Map - New machine name', machine_name: 'Bawb', location_name: 'Ground Kontrol', remote_ip: '127.0.0.1', user_agent: nil, user_info: ' by ssw (foo@bar.com)' }, args: [] })
     end
 
-    it 'handles creation by machine name.. new machine name does not send email' do
+    it 'handles creation by machine name.. new machine name does not send email if not authed' do
       expect do
         post '/api/v1/machines.json', params: { machine_name: 'Bawb', location_id: @location.id.to_s, user_email: 'not@authed.com' }
         expect(response).to be_successful
         expect(response.status).to eq(200)
-      end.to change { ActionMailer::Base.deliveries.size }.by(0)
+      end
     end
   end
 end

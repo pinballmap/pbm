@@ -69,5 +69,5 @@ task import_ifpa_tournaments: :environment do
 rescue StandardError => e
   error_subject = 'Import IFPA rake task error'
   error = e.to_s
-  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_now
+  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_later
 end

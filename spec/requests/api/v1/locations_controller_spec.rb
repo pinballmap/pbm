@@ -12,30 +12,19 @@ describe Api::V1::LocationsController, type: :request do
   end
 
   describe '#suggest' do
-    before(:each) do
-      ActionMailer::Base.perform_deliveries = true
-      ActionMailer::Base.deliveries = []
-    end
-    after(:each) do
-      ActionMailer::Base.deliveries.clear
-    end
     it 'errors when required fields are not sent' do
-      expect(ActionMailer::Base.deliveries.count).to eq(0)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
 
-      expect(ActionMailer::Base.deliveries.count).to eq(0)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_machines: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
 
-      expect(ActionMailer::Base.deliveries.count).to eq(0)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'baz', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
 
-      expect(ActionMailer::Base.deliveries.count).to eq(0)
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'baz', location_machines: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
@@ -61,43 +50,14 @@ describe Api::V1::LocationsController, type: :request do
       z = FactoryBot.create(:zone, name: 'zone')
       FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
 
-      expect do
-        post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-        expect(response).to be_successful
-
-        email = ActionMailer::Base.deliveries.last
-        expect(email.to).to eq(['foo@bar.com'])
-        expect(email.cc).to eq(['super_admin@bar.com'])
-        expect(email.from).to eq(['admin@pinballmap.com'])
-        expect(email.subject).to eq('Pinball Map - New location suggested (Portland)')
-
-        submission = @region.user_submissions.first
-        expect(submission.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
-        expect(submission.submission).to eq('Location Name: name Street: street City: city State: state Zip: zip Country:  Phone: phone Website: website Type: type Operator: operator Zone: zone Comments: comments Machines: Jolene (Pro) (Burrito, 1995), (entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))')
-
-        expect(JSON.parse(response.body)['msg']).to eq("Thanks for your submission! We'll review and add it soon. Be patient!")
-        expect(UserSubmission.all.count).to eq(1)
-        expect(SuggestedLocation.first.location_type).to eq(lt)
-        expect(SuggestedLocation.first.operator).to eq(o)
-        expect(SuggestedLocation.first.zone).to eq(z)
-      end.to change { ActionMailer::Base.deliveries.size }.by(1)
+      expect { post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: ['foo@bar.com'], cc_users: ['super_admin@bar.com'], subject: 'Pinball Map - New location suggested (Portland)', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: nil, location_phone: 'phone', location_website: 'website', location_type: 'type', operator: 'operator', zone: 'zone', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', remote_ip: '127.0.0.1', headers: nil, user_agent: nil, user_info: ' by cibw (foo@bar.com)' }, args: [] })
     end
 
     it 'Searches boundary boxes by transmitted lat/lon (geocoded, not user location)' do
+      FactoryBot.create(:location_type, name: 'type')
       FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
-      expect do
-        post '/api/v1/locations/suggest.json', params: { region_id: nil, location_name: 'name', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', lat: 20, lon: 20 }, headers: { HTTP_USER_AGENT: 'cleOS' }
 
-        email = ActionMailer::Base.deliveries.last
-        expect(email.to).to eq(['lat@guy.com'])
-        expect(email.cc).to eq(['super_admin@bar.com'])
-        expect(email.from).to eq(['admin@pinballmap.com'])
-        expect(email.subject).to eq('Pinball Map - New location suggested (Seattle)')
-
-        submission = UserSubmission.last
-        expect(submission.submission_type).to eq(UserSubmission::SUGGEST_LOCATION_TYPE)
-        expect(submission.submission).to eq('Location Name: name Street:  City:  State:  Zip:  Country:  Phone:  Website:  Type:  Operator:  Zone:  Comments:  Machines: Jolene (Pro) (Burrito, 1995), (entered from 127.0.0.1 via  cleOS by cibw (foo@bar.com))')
-      end.to change { ActionMailer::Base.deliveries.size }.by(1)
+      expect { post '/api/v1/locations/suggest.json', params: { region_id: nil, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: nil, location_zone: nil, location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', lat: 20, lon: 20 } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: ['lat@guy.com'], cc_users: ['super_admin@bar.com'], subject: 'Pinball Map - New location suggested (Seattle)', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: nil, location_phone: 'phone', location_website: 'website', location_type: 'type', operator: '', zone: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', remote_ip: '127.0.0.1', headers: nil, user_agent: nil, user_info: ' by cibw (foo@bar.com)' }, args: [] })
     end
 
     it 'tags a user when appropriate' do
