@@ -184,7 +184,8 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(@lmx.reload.condition).to eq(nil)
+      @lmx.reload
+      expect(@lmx.machine_conditions.size).to eq(0)
     end
 
     it 'will not allow you to delete a machine condition if you were not the one that entered it' do
@@ -237,7 +238,8 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(@lmx.reload.condition).to eq(nil)
+      @lmx.reload
+      expect(@lmx.machine_conditions.size).to eq(0)
     end
 
     it 'does not save conditions with <a href in it' do
@@ -249,7 +251,8 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(@lmx.reload.condition).to eq(nil)
+      @lmx.reload
+      expect(@lmx.machine_conditions.size).to eq(0)
     end
 
     [true, false].each do |region|
@@ -321,10 +324,6 @@ describe LocationMachineXrefsController do
 
     it 'only displays the 6 most recent descriptions' do
       login
-
-      lmx = @lmx.reload
-      lmx.condition = 'Condition 7'
-      lmx.save
 
       12.times do |i|
         FactoryBot.create(:machine_condition, location_machine_xref: @lmx.reload, comment: "Condition #{i + 1}", created_at: "199#{i + 1}-01-01")

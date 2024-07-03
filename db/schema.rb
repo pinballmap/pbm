@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_21_021328) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_03_041704) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -286,6 +286,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_21_021328) do
     t.datetime "updated_at", precision: nil
     t.integer "zone_id"
     t.text "country"
+    t.integer "user_id"
   end
 
   create_table "user_fave_locations", force: :cascade do |t|

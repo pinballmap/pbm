@@ -52,7 +52,7 @@ class SuggestedLocation < ApplicationRecord
       return
     end
 
-    location = Location.create(name: name, street: street, city: city, state: state, zip: zip, country: country, phone: phone, lat: lat, lon: lon, website: website, description: comments, region_id: region_id, location_type_id: location_type_id, operator_id: operator_id, zone_id: zone_id)
+    location = Location.create(name: name, street: street, city: city, state: state, zip: zip, country: country, phone: phone, lat: lat, lon: lon, website: website, description: comments, region_id: region_id, location_type_id: location_type_id, operator_id: operator_id, zone_id: zone_id, last_updated_by_user_id: user_id)
 
     if !location.valid?
       errors.add(:base, location.errors.first)

@@ -228,7 +228,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
   describe '#get' do
     it 'sends all detail about this lmx (including machine conditions)' do
       chicago = FactoryBot.create(:region, id: 11, name: 'chicago')
-      lmx = FactoryBot.create(:location_machine_xref, id: 100, machine: @machine, location: FactoryBot.create(:location, id: 11, name: 'Chicago Location', region: chicago), condition: 'condition')
+      lmx = FactoryBot.create(:location_machine_xref, id: 100, machine: @machine, location: FactoryBot.create(:location, id: 11, name: 'Chicago Location', region: chicago))
       FactoryBot.create(:machine_condition, id: 1, location_machine_xref: lmx.reload, comment: 'foo')
       FactoryBot.create(:machine_condition, id: 2, location_machine_xref: lmx.reload, comment: 'bar')
 
@@ -237,8 +237,6 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       lmx = JSON.parse(response.body)['location_machine']
       machine_conditions = lmx['machine_conditions']
-
-      expect(lmx['condition']).to eq('condition')
 
       expect(machine_conditions.size).to eq(2)
       expect(machine_conditions[0]['comment']).to eq('bar')
