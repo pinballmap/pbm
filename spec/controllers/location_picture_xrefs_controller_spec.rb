@@ -21,13 +21,13 @@ describe LocationPictureXrefsController, type: :controller do
     it 'sends an email - works for regionless' do
       login(@user)
 
-      expect { post 'create', format: :js, params: { location_picture_xref: { location_id: @regionless_location.id } } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'picture_added', 'deliver_now', { params: { to_users: ['baz@bong.com'], subject: 'Pinball Map - Picture added', photo_id: 1, location_name: 'Bawb', region_name: 'REGIONLESS', photo_url: '/photos/large/missing.png' }, args: [] })
+      expect { post 'create', format: :js, params: { location_picture_xref: { location_id: @regionless_location.id } } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'picture_added', 'deliver_now', { params: { to_users: ['baz@bong.com'], subject: 'Pinball Map - Picture added', photo_id: 2, location_name: 'Bawb', region_name: 'REGIONLESS', photo_url: '/photos/large/missing.png' }, args: [] })
     end
 
     it 'sends an email - works for regions that do not have an admin' do
       login(@user)
 
-      expect { post 'create', format: :js, params: { location_picture_xref: { location_id: @no_admin_location.id } } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'picture_added', 'deliver_now', { params: { to_users: ['baz@bong.com'], subject: 'Pinball Map - Picture added', photo_id: 1, location_name: 'Cleo', region_name: 'Seattle', photo_url: '/photos/large/missing.png' }, args: [] })
+      expect { post 'create', format: :js, params: { location_picture_xref: { location_id: @no_admin_location.id } } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'picture_added', 'deliver_now', { params: { to_users: ['baz@bong.com'], subject: 'Pinball Map - Picture added', photo_id: 3, location_name: 'Cleo', region_name: 'Seattle', photo_url: '/photos/large/missing.png' }, args: [] })
     end
   end
 
