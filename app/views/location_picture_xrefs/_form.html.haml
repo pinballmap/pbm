@@ -1,6 +1,6 @@
+%span.red.font14.p_10.block Choose a picture that gives a feel for the place. No need to include a picture of every single machine.
 = form_for LocationPictureXref.new, :id => "new_location_picture_xref_#{location.id}", :html => {:id => "new_location_picture_xref_#{location.id}", :multipart => true}, :remote => true do |f|
   = f.hidden_field :location_id, { :value => location.id }
-  = f.label :photo, 'Photo To Upload:'
   = f.file_field :photo, :id => 'file_chooser_button'
   %br/
   = f.submit "Upload", :class => 'submit_picture'
