@@ -52,7 +52,7 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
 
   locationIDs = ids;
 
-  mapboxgl.accessToken = 'pk.eyJ1IjoicnlhbnRnIiwiYSI6ImNsZTV5dW11YTBoankzbnFsZTEzcnQycWsifQ._0FYgeHFSQCQJ6VboGXl8A';
+  mapboxgl.accessToken = '<%= ENV.fetch("MAPBOX_KEY", "pk.eyJ1IjoicnlhbnRnIiwiYSI6ImNsZTV5dW11YTBoankzbnFsZTEzcnQycWsifQ._0FYgeHFSQCQJ6VboGXl8A") %>';
 
   var bounds = new mapboxgl.LngLatBounds();
 
