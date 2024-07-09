@@ -25,6 +25,6 @@ class LocationPictureXref < ApplicationRecord
   def create_user_submission
     user_info = user ? user.username : 'UNKNOWN USER'
 
-    UserSubmission.create(user_name: user.username, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, submission_type: UserSubmission::NEW_PICTURE_TYPE, submission: "#{user_info} added a picture of #{location.name} in #{location.city}#{photo.url(:large)}", user: user)
+    UserSubmission.create(user_name: user.username, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, submission_type: UserSubmission::NEW_PICTURE_TYPE, submission: "#{user_info} added a picture of #{location.name} in #{location.city}#{photo.nil? ? '' : ': https:' + photo.url(:large)}", user: user)
   end
 end
