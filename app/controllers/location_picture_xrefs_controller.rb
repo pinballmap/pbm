@@ -21,8 +21,6 @@ class LocationPictureXrefsController < InheritedResources::Base
   def destroy
     lpx = LocationPictureXref.find_by_id(params[:id])
 
-    AdminMailer.with(photo_id: lpx.id, location_name: lpx.location.name).picture_removed.deliver_later
-
     lpx.destroy
 
     render nothing: true

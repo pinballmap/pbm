@@ -84,13 +84,6 @@ class AdminMailer < ApplicationMailer
     mail(to: params[:to_users], subject: 'Pinball Map - Picture added')
   end
 
-  def picture_removed
-    @photo_id = params[:photo_id]
-    @location_name = params[:location_name]
-
-    mail(to: 'admin@pinballmap.com', subject: 'Pinball Map - Picture removed')
-  end
-
   def new_machine_name
     @machine_name = params[:machine_name]
     @location_name = params[:location_name]
