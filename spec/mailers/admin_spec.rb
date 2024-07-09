@@ -27,19 +27,6 @@ RSpec.describe AdminMailer, type: :mailer do
       assert_equal email.subject, 'Pinball Map - New machine name'
     end
   end
-  describe 'picture added' do
-    it 'should send email on new picture added' do
-      email = AdminMailer.with(to_users: ['foo@bar.com'], location_picture_xref: { location_id: 'Sassy Mo' }).picture_added
-
-      assert_emails 1 do
-        email.deliver_later
-      end
-
-      assert_equal email.to, ['foo@bar.com']
-      assert_equal email.from, ['admin@pinballmap.com']
-      assert_equal email.subject, 'Pinball Map - Picture added'
-    end
-  end
   describe 'new location submitted' do
     it 'should send email on new location submission' do
       email = AdminMailer.with(to_users: ['foo@bar.com'], region_id: nil, location_name: 'name', subject: 'Pinball Map - New location suggested', location_machine: 'machine').send_new_location_notification

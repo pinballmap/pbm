@@ -75,13 +75,15 @@ class AdminMailer < ApplicationMailer
     mail(to: params[:user], subject: "Pinball Map - Daily admin REGIONLESS machine removal digest - #{(Date.today - 1.day).strftime('%m/%d/%Y')}")
   end
 
-  def picture_added
-    @photo_id = params[:photo_id]
-    @location_name = params[:location_name]
+  def send_daily_digest_picture_added_email
+    @submissions = params[:submissions]
     @region_name = params[:region_name]
-    @photo_url = params[:photo_url]
+    mail(to: params[:email_to], subject: params[:email_subject])
+  end
 
-    mail(to: params[:to_users], subject: 'Pinball Map - Picture added')
+  def send_daily_digest_regionless_picture_added_email
+    @submissions = params[:submissions]
+    mail(to: params[:user], subject: params[:email_subject])
   end
 
   def new_machine_name

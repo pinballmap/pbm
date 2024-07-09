@@ -1,0 +1,12 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  %body
+    %p 
+      Here are pictures added on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
+    %h3
+      Daily Pictures Added
+    - @submissions.each do |subs|
+      %p 
+        = subs

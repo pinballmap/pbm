@@ -42,3 +42,20 @@ task send_daily_digest_regionless_machine_removal_email: :environment do
     end
   end
 end
+
+desc 'Sends super admins a daily digest of regionless pictures added'
+task send_daily_digest_regionless_picture_added_email: :environment do
+  regionless_picture_added_daily_email_body = Region.generate_daily_digest_regionless_picture_added_email_body
+  submissions = regionless_picture_added_daily_email_body[:submissions]
+  email_subject = "Pinball Map - Daily regionless pictures added digest (#{r.full_name}) - #{(Date.today - 1.day).strftime('%m/%d/%Y')}"
+
+  unless submissions.empty?
+    User.where(is_super_admin: 'Y').each do |user|
+      AdminMailer.with(user: user.email, submissions: submissions, email_subject: email_subject).send_daily_digest_regionless_picture_added_email.deliver_later
+    end
+  end
+rescue StandardError => e
+  error_subject = 'Daily regionless picture added rake task error'
+  error = e.to_s
+  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_later
+end

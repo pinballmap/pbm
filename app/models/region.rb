@@ -136,6 +136,20 @@ class Region < ApplicationRecord
     { submissions: user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE }.collect(&:submission) }
   end
 
+  def generate_daily_digest_picture_added_email_body
+    start_of_day = (Time.now - 1.day).beginning_of_day
+    end_of_day = (Time.now - 1.day).end_of_day
+
+    { submissions: user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_PICTURE_TYPE }.collect(&:submission) }
+  end
+
+  def self.generate_daily_digest_regionless_picture_added_email_body
+    start_of_day = (Time.now - 1.day).beginning_of_day
+    end_of_day = (Time.now - 1.day).end_of_day
+
+    { submissions: UserSubmission.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_PICTURE_TYPE && us.region_id.nil? }.collect(&:submission) }
+  end
+
   def self.generate_daily_digest_regionless_removal_email_body
     start_of_day = (Time.now - 1.day).beginning_of_day
     end_of_day = (Time.now - 1.day).end_of_day

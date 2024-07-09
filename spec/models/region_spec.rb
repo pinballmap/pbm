@@ -173,6 +173,44 @@ describe Region do
     end
   end
 
+  describe '#generate_daily_digest_picture_added_email_body' do
+    it 'should return nil if there are no pictures added that day' do
+      FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_PICTURE_TYPE)
+
+      expect(@region.generate_daily_digest_picture_added_email_body[:submissions]).to be_empty
+    end
+
+    it 'should generate a string containing all pictures added from the day' do
+      FactoryBot.create(:user_submission, region: @region, submission: 'foo', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
+
+      FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_PICTURE_TYPE)
+
+      expect(@region.generate_daily_digest_picture_added_email_body[:submissions]).to eq(%w[foo bar])
+    end
+  end
+
+  describe '#generate_daily_digest_regionless_picture_added_email_body' do
+    it 'should return nil if there are no pictures added that day' do
+      FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_PICTURE_TYPE)
+
+      expect(Region.generate_daily_digest_regionless_picture_added_email_body[:submissions]).to be_empty
+    end
+
+    it 'should generate a string containing all pictures added from the day' do
+      FactoryBot.create(:user_submission, region: nil, submission: 'foo', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
+
+      FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_PICTURE_TYPE)
+
+      expect(Region.generate_daily_digest_regionless_picture_added_email_body[:submissions]).to eq(%w[foo bar])
+    end
+  end
+
   describe '#generate_weekly_regionless_email_body' do
     it 'should generate a string containing metrics about regionless locations' do
       FactoryBot.create(:location, region: @region, name: 'Another Region Location')

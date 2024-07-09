@@ -5,6 +5,14 @@
       "schedule": "0 19 * * 5"
     },
     {
+      "command": "rake send_daily_digest_picture_added_email",
+      "schedule": "0 10 * * *"
+    },
+    {
+      "command": "rake send_daily_digest_regionless_picture_added_email",
+      "schedule": "0 11 * * *"
+    },
+    {
       "command": "rake send_daily_digest_machine_removal_email",
       "schedule": "0 9 * * *"
     },
