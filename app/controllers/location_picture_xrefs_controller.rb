@@ -10,6 +10,9 @@ class LocationPictureXrefsController < InheritedResources::Base
       format.js if @location_picture_xref.save
     end
 
+    @location_picture_xref.user = current_user
+    @location_picture_xref.create_user_submission
+
     to_users = @location_picture_xref.location.region_id && @location_picture_xref.location.region.users.map(&:email).present? ? @location_picture_xref.location.region.users.map(&:email) : User.where("is_super_admin = 't'").map(&:email)
 
     AdminMailer.with(to_users: to_users, subject: 'Pinball Map - Picture added', photo_id: @location_picture_xref.id, location_name: @location_picture_xref.location.name, region_name: @location_picture_xref.location.region_id ? @location_picture_xref.location.region.full_name : 'REGIONLESS', photo_url: @location_picture_xref.photo.url(:large)).picture_added.deliver_later

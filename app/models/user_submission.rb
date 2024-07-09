@@ -18,6 +18,7 @@ class UserSubmission < ApplicationRecord
   CONFIRM_LOCATION_TYPE = 'confirm_location'.freeze
   DELETE_LOCATION_TYPE = 'delete_location'.freeze
   IC_TOGGLE_TYPE = 'ic_toggle'.freeze
+  NEW_PICTURE_TYPE = 'new_picture'.freeze
 
   def user_email
     user ? user.email : ''

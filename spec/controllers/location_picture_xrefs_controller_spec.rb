@@ -29,6 +29,17 @@ describe LocationPictureXrefsController, type: :controller do
 
       expect { post 'create', format: :js, params: { location_picture_xref: { location_id: @no_admin_location.id } } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'picture_added', 'deliver_now', { params: { to_users: ['baz@bong.com'], subject: 'Pinball Map - Picture added', photo_id: 3, location_name: 'Cleo', region_name: 'Seattle', photo_url: '/photos/large/missing.png' }, args: [] })
     end
+
+    it 'creates a user submission' do
+      login(@user)
+
+      post 'create', format: :js, params: { location_picture_xref: { location_id: @location.id } }
+
+      user_submission = UserSubmission.last
+
+      expect(user_submission.user_id).to eq(@user.id)
+      expect(user_submission.submission_type).to eq(UserSubmission::NEW_PICTURE_TYPE)
+    end
   end
 
   describe 'add picture - not authed', type: :feature, js: true do

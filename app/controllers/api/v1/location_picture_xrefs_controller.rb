@@ -28,6 +28,9 @@ module Api
         return return_response('Missing photo to add', 'errors') if photo.nil?
 
         lpx = LocationPictureXref.create({ photo: photo, location_id: location_id, user_id: current_user.id })
+        lpx.user = current_user
+        lpx.create_user_submission
+
         return_response(lpx, 'location_picture', [], [], 201)
       end
 

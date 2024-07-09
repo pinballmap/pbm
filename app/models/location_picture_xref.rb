@@ -21,4 +21,10 @@ class LocationPictureXref < ApplicationRecord
   do_not_validate_attachment_file_type :photo
 
   def rails_admin_default_object_label_method; end
+
+  def create_user_submission
+    user_info = user ? user.username : 'UNKNOWN USER'
+
+    UserSubmission.create(user_name: user.username, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, submission_type: UserSubmission::NEW_PICTURE_TYPE, submission: "#{user_info} added a picture of #{location.name} in #{location.city}", user: user)
+  end
 end
