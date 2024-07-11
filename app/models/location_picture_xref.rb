@@ -6,7 +6,7 @@ class LocationPictureXref < ApplicationRecord
                     storage: :s3,
                     bucket: 'pbm-images',
                     path: 'location_picture_xref/photo/:id/:style/:filename',
-                    url: 'https://s3.amazonaws.com/pbm-images/location_picture_xref/photo/:id/medium/:filename',
+                    url: ENV.fetch('AWS_PICTURE_PATH', 'https://s3.amazonaws.com/pbm-images/location_picture_xref/photo/:id/medium/:filename'),
                     styles: {
                       thumb: '36x25>',
                       medium: '300x300>',
