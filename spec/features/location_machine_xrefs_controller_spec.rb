@@ -225,23 +225,6 @@ describe LocationMachineXrefsController do
       expect(page).to_not have_selector('a#edit_condition_' + @lmx.machine_conditions.first.id.to_s + '.button')
     end
 
-    it 'does not save spam' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
-
-      expect(Rakismet).to receive(:akismet_call).and_return('true')
-
-      visit '/portland/?by_location_id=' + @location.id.to_s
-
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
-      fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS SPAM')
-      page.find("input#save_machine_condition_#{@lmx.id}").click
-
-      sleep 1
-
-      @lmx.reload
-      expect(@lmx.machine_conditions.size).to eq(0)
-    end
-
     it 'does not save conditions with <a href in it' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
@@ -255,33 +238,28 @@ describe LocationMachineXrefsController do
       expect(@lmx.machine_conditions.size).to eq(0)
     end
 
-    [true, false].each do |region|
-      it 'allows users to update a location machine condition - stubbed out spam detection' do
-        region = region ? @region : nil
-        location = FactoryBot.create(:location, id: 111, region: region)
+    it 'allows users to update a location machine condition' do
+      region = region ? @region : nil
+      location = FactoryBot.create(:location, id: 111, region: region)
 
-        lmx = FactoryBot.create(:location_machine_xref, location: location, machine: FactoryBot.create(:machine))
-        stub_const('ENV', 'RAKISMET_KEY' => 'asdf', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
+      lmx = FactoryBot.create(:location_machine_xref, location: location, machine: FactoryBot.create(:machine))
 
-        expect(Rakismet).to receive(:akismet_call).and_return('false')
+      visit "/#{location.region ? location.region.name : 'map'}/?by_location_id=" + location.id.to_s
 
-        visit "/#{location.region ? location.region.name : 'map'}/?by_location_id=" + location.id.to_s
+      page.find("div#machine_condition_lmx_#{lmx.id}.machine_condition_lmx .add_condition").click
+      fill_in("new_machine_condition_#{lmx.id}", with: 'THIS IS NOT SPAM')
+      page.find("input#save_machine_condition_#{lmx.id}").click
 
-        page.find("div#machine_condition_lmx_#{lmx.id}.machine_condition_lmx .add_condition").click
-        fill_in("new_machine_condition_#{lmx.id}", with: 'THIS IS NOT SPAM')
-        page.find("input#save_machine_condition_#{lmx.id}").click
+      sleep 1
 
-        sleep 1
+      expect(lmx.reload.machine_conditions.first.comment).to eq('THIS IS NOT SPAM')
 
-        expect(lmx.reload.machine_conditions.first.comment).to eq('THIS IS NOT SPAM')
+      user_submission = UserSubmission.last
 
-        user_submission = UserSubmission.last
-
-        expect(user_submission.user_id).to eq(@user.id)
-        expect(user_submission.region).to eq(location.region)
-        expect(user_submission.submission_type).to eq(UserSubmission::NEW_CONDITION_TYPE)
-        expect(user_submission.submission).to eq("#{@user.username} commented on #{lmx.machine.name} at #{lmx.location.name} in #{lmx.location.city}. They said: THIS IS NOT SPAM")
-      end
+      expect(user_submission.user_id).to eq(@user.id)
+      expect(user_submission.region).to eq(location.region)
+      expect(user_submission.submission_type).to eq(UserSubmission::NEW_CONDITION_TYPE)
+      expect(user_submission.submission).to eq("#{@user.username} commented on #{lmx.machine.name} at #{lmx.location.name} in #{lmx.location.city}. They said: THIS IS NOT SPAM")
     end
 
     it 'should let me add a new machine description' do

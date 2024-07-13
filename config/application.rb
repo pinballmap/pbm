@@ -28,8 +28,5 @@ module Pbm
     config.assets.version = '1.4'
 
     config.assets.precompile = ["manifest.js"]
-
-    config.rakismet.key = ENV['RAKISMET_KEY']
-    config.rakismet.url = 'https://pinballmap.com/'
   end
 end

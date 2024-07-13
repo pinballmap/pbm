@@ -563,10 +563,6 @@ describe LocationsController do
     end
 
     it 'does not save data if any formats are invalid - website and phone' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
-
-      expect(Rakismet).to receive(:akismet_call).twice.and_return('false')
-
       o = FactoryBot.create(:operator, region: @location.region, name: 'Quarterworld')
 
       visit '/portland/?by_location_id=' + @location.id.to_s
@@ -603,10 +599,6 @@ describe LocationsController do
     end
 
     it 'does not save spam - website and phone' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
-
-      expect(Rakismet).to receive(:akismet_call).twice.and_return('true')
-
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.meta_image').click
@@ -658,10 +650,6 @@ describe LocationsController do
     end
 
     it 'allows users to update a location metadata - TWICE' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
-
-      expect(Rakismet).to receive(:akismet_call).twice.and_return('false')
-
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.meta_image').click
@@ -681,22 +669,6 @@ describe LocationsController do
 
       expect(Location.find(@location.id).website).to eq('http://www.bar.com')
       expect(page).to_not have_css('div#flash_error')
-    end
-
-    it 'does not save spam' do
-      stub_const('ENV', 'RAKISMET_KEY' => 'asdf', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
-
-      expect(Rakismet).to receive(:akismet_call).and_return('true')
-
-      visit '/portland/?by_location_id=' + @location.id.to_s
-
-      find("#location_detail_location_#{@location.id} .meta_image").click
-      fill_in("new_desc_#{@location.id}", with: 'THIS IS SPAM')
-      click_on 'Save'
-
-      sleep 1
-
-      expect(@location.reload.description).to eq(nil)
     end
 
     it 'does not allow descs with http://- stubbed out spam detection' do

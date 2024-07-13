@@ -1,8 +1,4 @@
 class LocationMachineXref < ApplicationRecord
-  include Rakismet::Model
-
-  rakismet_attrs content: :condition
-
   belongs_to :location, optional: true
   belongs_to :machine, optional: true
   belongs_to :user, optional: true

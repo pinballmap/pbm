@@ -1,8 +1,5 @@
 class Location < ApplicationRecord
   has_paper_trail only: %i[name street city state region zone lat lon is_stern_army]
-  include Rakismet::Model
-
-  rakismet_attrs content: :description
 
   validates_presence_of :name, :street, :city, :country
   validates :phone, phone: { possible: true, allow_blank: true, message: 'Phone format not valid.' }
@@ -177,12 +174,7 @@ class Location < ApplicationRecord
     self.description = new_description.slice(0, 549)
 
     if !description.match?(%r{http(s?)://})
-      if ENV['RAKISMET_KEY'] && spam?
-        self.description = old_description
-        @validation_errors.push('This description was flagged as spam. ')
-      else
-        @updates.push('Changed location description to ' + description)
-      end
+      @updates.push('Changed location description to ' + description)
     else
       self.description = old_description
       @validation_errors.push('Location descriptions cannot include http. Please try again. ')
@@ -240,8 +232,6 @@ class Location < ApplicationRecord
     update_website(options[:website]) if options[:website]
     update_operator(options[:operator_id]) if options[:operator_id]
     update_location_type(options[:location_type_id]) if options[:location_type_id]
-
-    @validation_errors.push('This update was flagged as spam.') if ENV['RAKISMET_KEY'] && spam?
 
     @validation_errors.push('Invalid') unless valid?
 
