@@ -180,4 +180,18 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(cleo['username']).to eq('cleo')
     end
   end
+
+  describe '#delete_location' do
+    it 'returns a list of deleted locations from the past year' do
+      FactoryBot.create(:user_submission, created_at: Date.today, submission_type: UserSubmission::DELETE_LOCATION_TYPE)
+      FactoryBot.create(:user_submission, created_at: Date.today.strftime('%Y-%m-%d'), submission_type: UserSubmission::DELETE_LOCATION_TYPE)
+      FactoryBot.create(:user_submission, created_at: Date.today - 2.years, submission_type: UserSubmission::DELETE_LOCATION_TYPE)
+
+      get '/api/v1/user_submissions/delete_location.json'
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(2)
+    end
+  end
 end

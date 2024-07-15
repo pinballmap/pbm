@@ -20,6 +20,7 @@ Rails.application.routes.draw do
           get :location
           get :total_user_submission_count
           get :top_users
+          get :delete_location
         end
       end
 

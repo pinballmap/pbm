@@ -36,6 +36,19 @@ module Api
         return_response('Failed to find location', 'errors')
       end
 
+      api :GET, '/api/v1/user_submissions/delete_location.json', 'Fetch list of deleted locations from the past year'
+      formats ['json']
+      def delete_location
+        except = %i[user_id machine_id comment user_name location_name machine_name high_score city_name lat lon]
+        user_submissions = apply_scopes(UserSubmission)
+        user_submissions = UserSubmission.where(created_at: (1.year.ago)..(Date.today.end_of_day), submission_type: UserSubmission::DELETE_LOCATION_TYPE)
+        sorted_submissions = user_submissions.order('created_at DESC')
+
+        return_response(sorted_submissions, 'user_submissions', [], [], 200, except)
+      rescue ActiveRecord::RecordNotFound
+        return_response('Failed to find location', 'errors')
+      end
+
       api :GET, '/api/v1/user_submissions/total_user_submission_count.json', 'Fetch total count of user submissions'
       description 'Fetch total count of user submissions'
       formats ['json']
