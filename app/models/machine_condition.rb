@@ -23,8 +23,10 @@ class MachineCondition < ApplicationRecord
 
   def create_user_submission
     user_info = user ? user.username : 'UNKNOWN USER'
+    submission = "#{user_info} commented on #{machine.name_and_year} at #{location.name} in #{location.city}. They said: #{comment}"
 
-    UserSubmission.create(user_name: user&.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, comment: comment, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_CONDITION_TYPE, submission: "#{user_info} commented on #{machine.name_and_year} at #{location.name} in #{location.city}. They said: #{comment}", user: user)
+    UserSubmission.create(user_name: user&.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, comment: comment, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_CONDITION_TYPE, submission: submission, user: user)
+    Rails.logger.info submission
   end
 
   def username
