@@ -45,6 +45,10 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {:address => 'localhost', :port => 1025}
 
+  # config.log_level = :info
+
+  # config.log_tags = [ :request_id, lambda { |request| request.headers['AppVersion'] }, lambda { |request| request.user_agent } ]
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
