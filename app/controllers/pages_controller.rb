@@ -187,7 +187,7 @@ class PagesController < ApplicationController
   end
 
   def robots
-    robots = File.read(Rails.root + 'public/robots.txt')
+    robots = File.read(Rails.root.join('config', "robots.#{Rails.env}.txt"))
     render plain: robots
   end
 
