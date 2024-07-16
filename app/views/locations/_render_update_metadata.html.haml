@@ -47,7 +47,7 @@
   %div.red.mb_8 
     Want to update the location name?
     = link_to 'Contact us!', about_path('portland')
-  = form_tag update_metadata_locations_path(:action => 'update_metadata', id: l.id), :id => "update_metadata_#{l.id}", :method => 'get' do
+  = form_tag update_metadata_locations_path(:action => 'update_metadata', id: l.id), :id => "update_metadata_#{l.id}", :method => 'patch' do
     = hidden_field_tag :id, l.id
     = label_tag "Phone #: "
     = text_field_tag "new_phone_#{l.id}", l.phone, :class => 'edit_mode'
@@ -73,7 +73,7 @@
     $('#metadata_location_#{l.id}').html(loadingHTML());
 
     var form = $(this);
-    $.get(form.attr('action'), form.serialize(), function (data) {
+    $.post(form.attr('action'), form.serialize(), function (data) {
       if (typeof data["error"] !== 'undefined') {
         show_ajax_message(JSON.stringify(data["error"]), 'error');
       }

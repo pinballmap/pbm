@@ -129,7 +129,7 @@ Rails.application.routes.draw do
 
   resources :locations, only: [:index, :show] do
     collection do
-      get :update_metadata
+      patch :update_metadata
       get :autocomplete
       get :autocomplete_city
     end
@@ -162,7 +162,7 @@ Rails.application.routes.draw do
 
   resources :location_machine_xrefs do
     collection do
-      get :update_machine_condition
+      patch :update_machine_condition
     end
     member do
       get :render_machine_conditions
