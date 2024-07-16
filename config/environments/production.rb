@@ -53,12 +53,18 @@ Rails.application.configure do
     }
   }
 
-  # Include generic and useful information about system operation, but avoid logging too much
-  # information to avoid inadvertent exposure of personally identifiable information (PII).
-  config.log_level = :info
+  # "info" includes generic and useful information about system operation, but avoids logging too much
+  # information to avoid inadvertent exposure of personally identifiable information (PII). If you
+  # want to log everything, set the level to "debug".
+  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id, lambda { |request| request.headers['AppVersion'] }, lambda { |request| request.user_agent } ]
+
+  # Log to STDOUT by default
+  config.logger = ActiveSupport::Logger.new(STDOUT)
+  .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
+  .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
   # Use a different cache store in production.
   config.cache_store = :mem_cache_store
@@ -97,20 +103,6 @@ Rails.application.configure do
   # Tell Active Support which deprecation messages to disallow.
   config.active_support.disallowed_deprecation_warnings = []
 
-  # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
-
-  # Use a different logger for distributed setups.
-  # require "syslog/logger"
-  # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
-
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
-    logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
-    logger.datetime_format = "%Y-%m-%d %H:%M:%S"
-  end
-
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
@@ -138,13 +130,9 @@ Rails.application.configure do
   ActiveSupport::Notifications.subscribe(/rack_attack/) do |name, start, finish, request_id, payload|
     req = payload[:request]
     if req.env["rack.attack.match_type"] == :throttle
-      request_headers = { "CF-RAY" => req.env["HTTP_CF_RAY"],
-                          "X-Amzn-Trace-Id" => req.env["HTTP_X_AMZN_TRACE_ID"] }
-
       Rails.logger.info "[Rack::Attack][Blocked]" <<
                         "remote_ip: \"#{req.ip}\"," <<
-                        "path: \"#{req.path}\", " <<
-                        "headers: #{request_headers.inspect}"
+                        "path: \"#{req.path}\", "
     end
   end
 end
