@@ -27,6 +27,6 @@ class LocationPictureXref < ApplicationRecord
     submission = "#{user_info} added a picture of #{location.name} in #{location.city}#{photo.nil? ? '' : ': https:' + photo.url(:large)}"
 
     UserSubmission.create(user_name: user.username, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, submission_type: UserSubmission::NEW_PICTURE_TYPE, submission: submission, user: user)
-    Rails.logger.info submission
+    Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
   end
 end

@@ -30,6 +30,6 @@ class MachineScoreXref < ApplicationRecord
     submission = "#{user_info} added a high score of #{number_with_precision(score, precision: 0, delimiter: ',')} on #{machine.name_and_year} at #{location.name} in #{location.city}"
 
     UserSubmission.create(user_name: user.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, high_score: score, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: submission, user: user)
-    Rails.logger.info submission
+    Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
   end
 end

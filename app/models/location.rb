@@ -262,7 +262,7 @@ class Location < ApplicationRecord
     submission = "#{user ? user.username : 'Someone'} confirmed the lineup at #{name} in #{city}"
 
     UserSubmission.create(user_name: user&.username, location_name: name, city_name: city, lat: lat, lon: lon, region_id: region&.id, location: self, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE, submission: submission, user: user)
-    Rails.logger.info submission
+    Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
 
     save(validate: false)
   end

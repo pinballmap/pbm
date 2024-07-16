@@ -69,7 +69,7 @@ class LocationMachineXref < ApplicationRecord
     submission = "#{machine.name_and_year} was removed from #{location.name} in #{location.city}#{user.nil? ? '' : ' by ' + user.name}"
 
     UserSubmission.create(user_name: user&.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: submission, user: user)
-    Rails.logger.info submission
+    Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
 
     location.date_last_updated = Date.today
     location.last_updated_by_user_id = user.nil? ? nil : user.id
@@ -82,13 +82,13 @@ class LocationMachineXref < ApplicationRecord
   def create_user_submission
     submission = "#{machine.name_and_year} was added to #{location.name} in #{location.city}#{user.nil? ? '' : ' by ' + user.name}"
     UserSubmission.create(user_name: user&.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_LMX_TYPE, submission: submission, user: user)
-    Rails.logger.info submission
+    Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
   end
 
   def create_ic_user_submission(user)
     submission = "Insider Connected toggled on #{machine.name_and_year} at #{location.name} in #{location.city} by #{user.username}"
     UserSubmission.create(user_name: user.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::IC_TOGGLE_TYPE, submission: submission, user: user)
-    Rails.logger.info submission
+    Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
   end
 
   def create_ic_user_submission!(user)
