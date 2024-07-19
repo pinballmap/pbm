@@ -6,6 +6,7 @@ var map;
 var region;
 var ismap;
 var testMode;
+var bot_detected;
 var searchMachineIDString;
 var numMachinesVal;
 var locationTypeVal;
@@ -52,7 +53,11 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
 
   locationIDs = ids;
 
-  mapboxgl.accessToken = '<%= ENV.fetch("MAPBOX_KEY", "pk.eyJ1IjoicnlhbnRnIiwiYSI6ImNsZTV5dW11YTBoankzbnFsZTEzcnQycWsifQ._0FYgeHFSQCQJ6VboGXl8A") %>';
+  if (bot_detected != true) {
+    mapboxgl.accessToken = '<%= ENV.fetch("MAPBOX_API_KEY", "pk.eyJ1IjoicnlhbnRnIiwiYSI6ImNsZTV5dW11YTBoankzbnFsZTEzcnQycWsifQ._0FYgeHFSQCQJ6VboGXl8A") %>';
+  } else {
+    mapboxgl.accessToken = ''
+  }
 
   var bounds = new mapboxgl.LngLatBounds();
 

@@ -102,6 +102,7 @@ GEM
       msgpack (~> 1.2)
     brakeman (6.1.2)
       racc
+    browser (6.0.0)
     builder (3.3.0)
     bullet (7.1.6)
       activesupport (>= 3.0.0)
@@ -540,6 +541,7 @@ DEPENDENCIES
   aws-sdk-s3
   bootsnap
   brakeman
+  browser
   bullet
   cancancan
   capybara

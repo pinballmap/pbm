@@ -11,6 +11,8 @@
           Or Search.
 
 - testMode = Rails.env.production? ? false : true
+- bot_detected = true if browser.bot?
 
 :javascript
   var testMode = #{testMode}
+  var bot_detected = #{bot_detected}
