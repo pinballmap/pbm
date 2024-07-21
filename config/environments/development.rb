@@ -21,7 +21,7 @@ Rails.application.configure do
   # Run rails dev:cache to toggle caching.
   if Rails.root.join('tmp', 'caching-dev.txt').exist?
     config.action_controller.perform_caching = true
-    config.action_controller.enable_fragment_cache_logging = true
+    config.action_controller.enable_fragment_cache_logging = false
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
@@ -48,9 +48,17 @@ Rails.application.configure do
   # "info" includes generic and useful information about system operation, but avoids logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII). If you
   # want to log everything, set the level to "debug".
-  # config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
+  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
-  # config.log_tags = [ :request_id, lambda { |request| request.headers['AppVersion'] }, lambda { |request| request.user_agent } ]
+  config.rails_semantic_logger.add_file_appender = false
+  config.semantic_logger.add_appender(
+    io: STDOUT,
+    level: config.log_level,
+    formatter: config.rails_semantic_logger.format
+  )
+
+  # Prepend all log lines with the following tags.
+  config.log_tags = [ :request_id, lambda { |request| request.ip }, lambda { |request| request.headers['AppVersion'] }, lambda { |request| request.user_agent } ]
 
   # Log to STDOUT by default
   # config.logger = ActiveSupport::Logger.new(STDOUT)

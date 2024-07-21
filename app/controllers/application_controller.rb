@@ -2,6 +2,12 @@ class ApplicationController < ActionController::Base
   FILTERING_REQUIRED_MSG = 'Filtering is required for this action. Please provide a filter when using this endpoint.'.freeze
   AUTH_REQUIRED_MSG = 'Authentication is required for this action. If you are using the app, you may need to confirm your account (see the email from us) or log out and back in.'.freeze
 
+  def append_info_to_payload(payload)
+    super
+    payload[:user_id] = current_user&.id
+    payload[:bot_or_not] = browser.bot? ? 'IsBot' : 'NotBot'
+  end
+
   acts_as_token_authentication_handler_for User, fallback: :none
 
   protect_from_forgery prepend: true

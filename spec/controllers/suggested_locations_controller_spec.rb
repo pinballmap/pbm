@@ -8,8 +8,8 @@ describe SuggestedLocationsController, type: :controller do
     @z = FactoryBot.create(:zone, name: 'z', region: @r)
 
     @sl = FactoryBot.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', country: 'US', phone: '503-391-9288', lat: 11.11, lon: 22.22, website: 'http://www.cool.com', region: @r, location_type: @lt, operator: @o, zone: @z, machines: [21, 22, 23, 24])
-
-    login
+    @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', id: 1112)
+    login(@user)
   end
 
   describe '#convert_to_location' do

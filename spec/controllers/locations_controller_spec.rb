@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe LocationsController, type: :controller do
   before(:each) do
-    login
+    @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', id: 1111)
+    login(@user)
 
     region = FactoryBot.create(:region, name: 'portland')
     @location = FactoryBot.create(:location, id: 777, region: region)

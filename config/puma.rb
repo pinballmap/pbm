@@ -41,3 +41,8 @@ workers ENV.fetch("WEB_CONCURRENCY") { 2 }
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+on_worker_boot do
+  # Re-open appenders after forking the process
+  SemanticLogger.reopen
+end

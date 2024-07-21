@@ -356,6 +356,10 @@ GEM
       actionview (> 3.1)
       activesupport (> 3.1)
       railties (> 3.1)
+    rails_semantic_logger (4.17.0)
+      rack
+      railties (>= 5.1)
+      semantic_logger (~> 4.16)
     railties (7.0.8.4)
       actionpack (= 7.0.8.4)
       activesupport (= 7.0.8.4)
@@ -451,6 +455,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    semantic_logger (4.16.0)
+      concurrent-ruby (~> 1.0)
     simple_form (5.3.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -581,6 +587,7 @@ DEPENDENCIES
   rails-controller-testing
   rails_admin
   rails_autolink
+  rails_semantic_logger
   rake
   remotipart
   rspec-rails
