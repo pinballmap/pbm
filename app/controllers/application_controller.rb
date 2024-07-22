@@ -37,14 +37,6 @@ class ApplicationController < ActionController::Base
     server_name + subject
   end
 
-  def send_new_machine_notification(machine, location, user)
-    render js: 'show_new_machine_message();'
-
-    user_info = user ? " by #{user.username} (#{user.email})" : ''
-
-    AdminMailer.with(to_users: Region.find_by_name('portland').users.map(&:email), subject: add_host_info_to_subject('Pinball Map - New machine name'), machine_name: machine.name, location_name: location.name, remote_ip: request.remote_ip, user_agent: request.user_agent, user_info: user_info).new_machine_name.deliver_later
-  end
-
   def send_new_location_notification(params, region, user = nil)
     user_info = user ? " by #{user.username} (#{user.email})" : ''
 

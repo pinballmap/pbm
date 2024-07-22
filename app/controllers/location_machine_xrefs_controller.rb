@@ -14,10 +14,7 @@ class LocationMachineXrefsController < InheritedResources::Base
       machine = Machine.where(['lower(name) = ?', params["add_machine_by_name_#{location.id}"].downcase]).first
 
       if machine.nil?
-        machine = Machine.new
-        machine.name = params["add_machine_by_name_#{location.id}"]
-
-        send_new_machine_notification(machine, location, user)
+        render js: 'show_new_machine_message();'
         return
       end
     else

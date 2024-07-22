@@ -86,16 +86,6 @@ class AdminMailer < ApplicationMailer
     mail(to: params[:user], subject: params[:email_subject])
   end
 
-  def new_machine_name
-    @machine_name = params[:machine_name]
-    @location_name = params[:location_name]
-    @remote_ip = params[:remote_ip]
-    @user_agent = params[:user_agent]
-    @user_info = params[:user_info]
-
-    mail(to: params[:to_users], subject: params[:subject])
-  end
-
   def send_new_location_notification
     @location_name = params[:location_name]
     @location_street = params[:location_street]

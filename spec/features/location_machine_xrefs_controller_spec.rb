@@ -91,7 +91,9 @@ describe LocationMachineXrefsController do
 
       find("#add_machine_location_banner_#{@location.id}").click
       fill_in('add_machine_by_name_1', with: 'New Machine Name')
-      click_on 'add'
+      page.accept_alert 'Please choose a machine from the list. If the machine is not in the list, it is likely a game (e.g., a non-pinball game) that we do not include on Pinball Map. If you think the list is missing a pinball machine, please contact us.' do
+        click_on 'add'
+      end
 
       sleep 1
 

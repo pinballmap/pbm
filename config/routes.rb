@@ -10,7 +10,7 @@ Rails.application.routes.draw do
       resources :location_types, only: [:index, :show]
       resources :machine_conditions, only: [:destroy, :update]
       resources :machine_score_xrefs, only: [:create, :show]
-      resources :machines, only: [:index, :show, :create]
+      resources :machines, only: [:index, :show]
       resources :operators, only: [:index, :show]
       resources :statuses, only: [:index, :show]
 

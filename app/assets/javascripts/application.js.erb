@@ -388,6 +388,5 @@ var show_ajax_message = function (msg, type) {
 };
 
 function show_new_machine_message() {
-  $("#flash-message").html('<div id="flash_alert">' + 'Thank you. Since this is a new machine name, we are moderating this submission.' + '</div>');
-  fade_flash();
+  alert('Please choose a machine from the list. If the machine is not in the list, it is likely a game (e.g., a non-pinball game) that we do not include on Pinball Map. If you think the list is missing a pinball machine, please contact us.');
 };
