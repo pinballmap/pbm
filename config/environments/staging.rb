@@ -73,7 +73,20 @@ Rails.application.configure do
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
+  config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:          'mail.smtp2go.com',
+    port:             587,
+    authentication:   'plain',
+    user_name:        'pinballmapsmtp2go',
+    password:         ENV['SMTP2GO_API_KEY'],
+    domain:           'pinballmap.com',
+    enable_starttls:  true,
+    open_timeout:     5,
+    read_timeout:     5
+  }
   config.action_mailer.default_url_options = { :protocol => 'https', :host => 'pinballmap.com' }
   config.middleware.use ExceptionNotification::Rack,
     :email => {
