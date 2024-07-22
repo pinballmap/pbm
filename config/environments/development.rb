@@ -51,6 +51,7 @@ Rails.application.configure do
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
   config.rails_semantic_logger.add_file_appender = false
+  config.rails_semantic_logger.format = :color
   config.semantic_logger.add_appender(
     io: STDOUT,
     level: config.log_level,
