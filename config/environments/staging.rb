@@ -85,7 +85,7 @@ Rails.application.configure do
     domain:           'pinballmap.com',
     enable_starttls:  true,
     open_timeout:     5,
-    read_timeout:     5
+    read_timeout:     10
   }
   config.action_mailer.default_url_options = { :protocol => 'https', :host => 'pinballmap.com' }
   config.middleware.use ExceptionNotification::Rack,
