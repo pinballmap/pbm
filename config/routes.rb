@@ -94,6 +94,7 @@ Rails.application.routes.draw do
   get '/store' => 'pages#store'
   get '/donate' => 'pages#donate'
   get '.well-known/apple-app-site-association' => 'pages#apple_app_site_association'
+  get '/robots.txt' => 'pages#robots'
 
   scope ':region', constraints: lambda { |request| Region.where('lower(name) = ?', request[:region].downcase).any? } do
     get 'app' => redirect('/app')
@@ -113,7 +114,6 @@ Rails.application.routes.draw do
 
     get ':region' + '.rss' => 'location_machine_xrefs#index', format: 'xml'
     get ':region' + '_scores.rss' => 'machine_score_xrefs#index', format: 'xml'
-    get '/robots.txt', to: 'pages#robots'
 
     get '/' => 'pages#region', as: 'region_homepage'
     get '/about' => 'pages#about'
