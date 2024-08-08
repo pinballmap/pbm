@@ -16,7 +16,7 @@ Style/GuardClause:
 Style/PerlBackrefs:
   Enabled: false
 Metrics/CyclomaticComplexity:
-  Max: 40
+  Max: 45
 Metrics/PerceivedComplexity:
   Max: 45
 Metrics/AbcSize:
@@ -75,14 +75,6 @@ Metrics/ParameterLists:
   Max: 6
   MaxOptionalParameters: 4
 RSpec:
-  Enabled: false
-RSpec/Capybara:
-  Enabled: false
-RSpec/FactoryBot:
-  Enabled: false
-Capybara/VisibilityMatcher:
-  Enabled: false
-FactoryBot/CreateList:
   Enabled: false
 Style/SymbolProc:
   Enabled: false

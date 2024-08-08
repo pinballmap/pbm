@@ -158,7 +158,7 @@ describe PagesController, type: :controller do
         expect(sl.zone).to eq(zone)
         expect(sl.operator).to eq(operator)
         expect(sl.comments).to eq('comments')
-        expect(sl.machines).to eq("[\"20\"]")
+        expect(sl.machines).to eq('["20"]')
         expect(sl.user_inputted_address).to eq('street, city, state, zip')
       end
     end

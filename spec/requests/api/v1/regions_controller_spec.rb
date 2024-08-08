@@ -152,7 +152,7 @@ describe Api::V1::RegionsController, type: :request do
     end
 
     it 'emails region admins with incoming message when user is not logged in' do
-      expect { post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name'}, headers: { HTTP_USER_AGENT: 'cleOS' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'name', email: 'email', message: 'message', user_name: nil, user_email: nil, to_users: ['la@admin.com'], cc_users: ['portland@admin.com'], subject: 'Pinball Map - Message (Los Angeles)', remote_ip: '127.0.0.1', headers: nil, user_agent: 'cleOS' }, args: [] })
+      expect { post '/api/v1/regions/contact.json', params: { region_id: @la.id.to_s, email: 'email', message: 'message', name: 'name' }, headers: { HTTP_USER_AGENT: 'cleOS' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'name', email: 'email', message: 'message', user_name: nil, user_email: nil, to_users: ['la@admin.com'], cc_users: ['portland@admin.com'], subject: 'Pinball Map - Message (Los Angeles)', remote_ip: '127.0.0.1', headers: nil, user_agent: 'cleOS' }, args: [] })
     end
 
     it 'emails super admins when lat/lon is null or no regions are within lat/lon bounding boxes' do
