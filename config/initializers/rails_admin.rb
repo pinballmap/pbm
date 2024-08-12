@@ -600,16 +600,28 @@ RailsAdmin.config do |config|
   config.model MachineScoreXref do
     list do
       field :score
-      field :machine, :belongs_to_association
-      field :location, :belongs_to_association
+      field :machine do
+        eager_load true
+        searchable [:name]
+      end
+      field :location do
+        eager_load true
+        searchable [:name]
+      end
       field :user do
         searchable :username
       end
     end
     show do
       field :score
-      field :machine, :belongs_to_association
-      field :location, :belongs_to_association
+      field :machine do
+        eager_load true
+        searchable [:name]
+      end
+      field :location do
+        eager_load true
+        searchable [:name]
+      end
       field :user do
         searchable :username
       end
@@ -627,8 +639,14 @@ RailsAdmin.config do |config|
       field :user do
         searchable :username
       end
-      field :machine, :belongs_to_association
-      field :location, :belongs_to_association
+      field :machine do
+        eager_load true
+        searchable [:name]
+      end
+      field :location do
+        eager_load true
+        searchable [:name]
+      end
       field :created_at, :date
       field :updated_at, :date
     end
@@ -638,8 +656,14 @@ RailsAdmin.config do |config|
       field :user do
         searchable :username
       end
-      field :machine, :belongs_to_association
-      field :location, :belongs_to_association
+      field :machine do
+        eager_load true
+        searchable [:name]
+      end
+      field :location do
+        eager_load true
+        searchable [:name]
+      end
       field :created_at, :date
       field :updated_at, :date
     end
