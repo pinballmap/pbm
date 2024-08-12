@@ -19,6 +19,8 @@ module Pbm
     config.time_zone = "Pacific Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    config.active_record.schema_format = :sql
+
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
