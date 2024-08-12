@@ -371,7 +371,7 @@ module Api
       formats ['json']
       def autocomplete_city
         if params.fetch(:name, '').length > 2
-          locations = Location.where("clean_items(city) ilike '%' || clean_items(?) || '%'", params[:term]).sort_by(&:city).map { |l| { label: "#{l.city}#{l.state.blank? ? '' : ', '}#{l.state}", value: "#{l.city}#{l.state.blank? ? '' : ', '}#{l.state}" } }
+          locations = Location.where("clean_items(city) ilike '%' || clean_items(?) || '%'", params[:name]).sort_by(&:city).map { |l| { label: "#{l.city}#{l.state.blank? ? '' : ', '}#{l.state}", value: "#{l.city}#{l.state.blank? ? '' : ', '}#{l.state}" } }
         else
           locations = []
         end
@@ -388,7 +388,7 @@ module Api
       formats ['json']
       def autocomplete
         if params.fetch(:name, '').length > 2
-          locations = Location.where("clean_items(name) ilike '%' || clean_items(?) || '%'", params[:term]).sort_by(&:name).map { |l| { label: "#{l.name} (#{l.city}#{l.state.blank? ? '' : ', '}#{l.state})", value: l.name, id: l.id } }
+          locations = Location.where("clean_items(name) ilike '%' || clean_items(?) || '%'", params[:name]).sort_by(&:name).map { |l| { label: "#{l.name} (#{l.city}#{l.state.blank? ? '' : ', '}#{l.state})", value: l.name, id: l.id } }
         else
           locations = []
         end
