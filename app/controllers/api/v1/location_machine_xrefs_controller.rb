@@ -41,12 +41,16 @@ module Api
         location_id = params[:location_id]
         machine_id = params[:machine_id]
         condition = params[:condition]
+        status_code = 200
 
         return return_response('Failed to find machine', 'errors') if machine_id.nil? || location_id.nil? || !Machine.exists?(machine_id) || !Location.exists?(location_id)
 
         lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine_id)
 
-        lmx = LocationMachineXref.create(location_id: location_id, machine_id: machine_id, user_id: user&.id) if lmx.nil?
+        if lmx.nil?
+          status_code = 201
+          lmx = LocationMachineXref.create(location_id: location_id, machine_id: machine_id, user_id: user&.id)
+        end
 
         if condition
           lmx.update_condition(
@@ -58,7 +62,7 @@ module Api
           )
         end
 
-        return_response(lmx, 'location_machine', [], [:last_updated_by_username])
+        return_response(lmx, 'location_machine', [], [:last_updated_by_username], status_code)
       end
 
       api :PUT, '/api/v1/location_machine_xrefs/:id.json', "Update a machine's condition at a location"
