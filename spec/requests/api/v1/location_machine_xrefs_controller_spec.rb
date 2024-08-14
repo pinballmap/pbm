@@ -125,7 +125,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       post '/api/v1/location_machine_xrefs.json', params: { machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(response.status).to eq(201)
+      expect(response.status).to eq(200)
 
       expect(LocationMachineXref.all.size).to eq(2)
     end
@@ -143,7 +143,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       post '/api/v1/location_machine_xrefs.json', params: { machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(response.status).to eq(201)
+      expect(response.status).to eq(200)
       expect(LocationMachineXref.all.size).to eq(2)
     end
 
@@ -152,7 +152,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       post '/api/v1/location_machine_xrefs.json', params: { machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(response.status).to eq(201)
+      expect(response.status).to eq(200)
 
       expect(MachineCondition.all.size).to eq(0)
     end
