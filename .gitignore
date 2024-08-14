@@ -17,3 +17,4 @@ logfile
 .env.local
 
 /config/master.key
+.vscode/extensions.json
