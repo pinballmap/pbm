@@ -12,9 +12,11 @@ class MachinesController < InheritedResources::Base
   end
 
   def autocomplete
-    machines = params[:region_level_search].nil? ? Machine.all : @region.machines
-
-    render json: machines.select { |m| m.name_and_year =~ /#{Regexp.escape params[:term] || ''}/i }.sort_by(&:name).map { |m| { label: m.name_and_year, value: m.name_and_year, id: m.id, group_id: m.machine_group_id } }
+    if params[:region_level_search].nil?
+      render json: Machine.where("clean_items(name) ilike '%' || clean_items(?) || '%'", params[:term]).sort_by(&:name).map { |m| { label: m.name_and_year, value: m.name_and_year, id: m.id, group_id: m.machine_group_id } }
+    else
+      render json: @region.machines.select { |m| m.name_and_year =~ /#{Regexp.escape params[:term] || ''}/i }.sort_by(&:name).map { |m| { label: m.name_and_year, value: m.name_and_year, id: m.id, group_id: m.machine_group_id } }
+    end
   end
 
   def index

@@ -5,6 +5,8 @@ class AddFastSearchIndexes < ActiveRecord::Migration[7.0]
       DROP INDEX if exists location_names_fast_search_idx;
       DROP INDEX if exists location_city_fast_search_idx;
       DROP INDEX if exists machine_names_fast_search_idx;
+      DROP INDEX if exists ix_fast_search_name;
+      DROP INDEX if exists ix_fast_search_city;
       CREATE INDEX location_names_fast_search_idx on locations USING gin( (clean_items(name)) gin_trgm_ops);
       CREATE INDEX location_city_fast_search_idx on locations USING gin( (clean_items(city)) gin_trgm_ops);
       CREATE INDEX machine_names_fast_search_idx on machines USING gin( (clean_items(name)) gin_trgm_ops);

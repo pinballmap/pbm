@@ -10,6 +10,34 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_stat_statements IS 'track planning and execution statistics of all SQL statements executed';
+
+
+--
+-- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
+
+
+--
 -- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -146,8 +174,8 @@ ALTER SEQUENCE public.active_storage_variant_records_id_seq OWNED BY public.acti
 CREATE TABLE public.ar_internal_metadata (
     key character varying NOT NULL,
     value character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -189,17 +217,17 @@ ALTER SEQUENCE public.banned_ips_id_seq OWNED BY public.banned_ips.id;
 CREATE TABLE public.events (
     id integer NOT NULL,
     region_id integer,
-    name character varying,
+    name character varying(255),
     long_desc text,
-    external_link character varying,
+    external_link character varying(255),
     category_no integer,
     start_date date,
     end_date date,
     location_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    category character varying,
-    external_location_name character varying,
+    category character varying(255),
+    external_location_name character varying(255),
     ifpa_calendar_id integer,
     ifpa_tournament_id integer
 );
@@ -210,7 +238,6 @@ CREATE TABLE public.events (
 --
 
 CREATE SEQUENCE public.events_id_seq
-    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -246,7 +273,6 @@ CREATE TABLE public.location_machine_xrefs (
 --
 
 CREATE SEQUENCE public.location_machine_xrefs_id_seq
-    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -272,8 +298,8 @@ CREATE TABLE public.location_picture_xrefs (
     updated_at timestamp without time zone,
     description text,
     user_id integer,
-    photo_file_name character varying,
-    photo_content_type character varying,
+    photo_file_name character varying(255),
+    photo_content_type character varying(255),
     photo_file_size integer,
     photo_updated_at timestamp without time zone
 );
@@ -284,7 +310,6 @@ CREATE TABLE public.location_picture_xrefs (
 --
 
 CREATE SEQUENCE public.location_picture_xrefs_id_seq
-    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -307,7 +332,7 @@ CREATE TABLE public.location_types (
     id integer NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    name character varying,
+    name character varying(255),
     icon character varying,
     library character varying
 );
@@ -318,8 +343,7 @@ CREATE TABLE public.location_types (
 --
 
 CREATE SEQUENCE public.location_types_id_seq
-    AS integer
-    START WITH 1
+    START WITH 34
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -339,15 +363,15 @@ ALTER SEQUENCE public.location_types_id_seq OWNED BY public.location_types.id;
 
 CREATE TABLE public.locations (
     id integer NOT NULL,
-    name character varying,
-    street character varying,
-    city character varying,
-    state character varying,
-    zip character varying,
-    phone character varying,
+    name character varying(255),
+    street character varying(255),
+    city character varying(255),
+    state character varying(255),
+    zip character varying(255),
+    phone character varying(255),
     lat numeric(18,12),
     lon numeric(18,12),
-    website character varying,
+    website character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     zone_id integer,
@@ -368,7 +392,6 @@ CREATE TABLE public.locations (
 --
 
 CREATE SEQUENCE public.locations_id_seq
-    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -402,7 +425,6 @@ CREATE TABLE public.machine_conditions (
 --
 
 CREATE SEQUENCE public.machine_conditions_id_seq
-    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -423,7 +445,7 @@ ALTER SEQUENCE public.machine_conditions_id_seq OWNED BY public.machine_conditio
 
 CREATE TABLE public.machine_groups (
     id integer NOT NULL,
-    name character varying NOT NULL,
+    name character varying(255) NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -434,7 +456,6 @@ CREATE TABLE public.machine_groups (
 --
 
 CREATE SEQUENCE public.machine_groups_id_seq
-    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -460,7 +481,7 @@ CREATE TABLE public.machine_score_xrefs (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     user_id integer,
-    rank character varying
+    rank character varying(255)
 );
 
 
@@ -469,7 +490,6 @@ CREATE TABLE public.machine_score_xrefs (
 --
 
 CREATE SEQUENCE public.machine_score_xrefs_id_seq
-    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -490,13 +510,13 @@ ALTER SEQUENCE public.machine_score_xrefs_id_seq OWNED BY public.machine_score_x
 
 CREATE TABLE public.machines (
     id integer NOT NULL,
-    name character varying,
+    name character varying(255),
     is_active boolean,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    ipdb_link character varying,
+    ipdb_link character varying(255),
     year integer,
-    manufacturer character varying,
+    manufacturer character varying(255),
     machine_group_id integer,
     ipdb_id integer,
     opdb_id text,
@@ -515,7 +535,6 @@ CREATE TABLE public.machines (
 --
 
 CREATE SEQUENCE public.machines_id_seq
-    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -536,11 +555,11 @@ ALTER SEQUENCE public.machines_id_seq OWNED BY public.machines.id;
 
 CREATE TABLE public.operators (
     id integer NOT NULL,
-    name character varying,
+    name character varying(255),
     region_id integer,
-    email character varying,
-    website character varying,
-    phone character varying,
+    email character varying(255),
+    website character varying(255),
+    phone character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -551,8 +570,7 @@ CREATE TABLE public.operators (
 --
 
 CREATE SEQUENCE public.operators_id_seq
-    AS integer
-    START WITH 1
+    START WITH 34
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -576,7 +594,7 @@ CREATE TABLE public.rails_admin_histories (
     username text,
     item integer,
     "table" text,
-    month smallint,
+    month integer,
     year bigint,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
@@ -588,7 +606,6 @@ CREATE TABLE public.rails_admin_histories (
 --
 
 CREATE SEQUENCE public.rails_admin_histories_id_seq
-    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -609,10 +626,10 @@ ALTER SEQUENCE public.rails_admin_histories_id_seq OWNED BY public.rails_admin_h
 
 CREATE TABLE public.region_link_xrefs (
     id integer NOT NULL,
-    name character varying,
-    url character varying,
-    description character varying,
-    category character varying,
+    name character varying(255),
+    url character varying(255),
+    description character varying(255),
+    category character varying(255),
     region_id integer,
     sort_order integer
 );
@@ -623,8 +640,7 @@ CREATE TABLE public.region_link_xrefs (
 --
 
 CREATE SEQUENCE public.region_link_xrefs_id_seq
-    AS integer
-    START WITH 1
+    START WITH 2
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -644,15 +660,15 @@ ALTER SEQUENCE public.region_link_xrefs_id_seq OWNED BY public.region_link_xrefs
 
 CREATE TABLE public.regions (
     id integer NOT NULL,
-    name character varying,
+    name character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    full_name character varying,
-    motd character varying DEFAULT 'To help keep Pinball Map running, consider a donation! https://pinballmap.com/donate'::character varying,
+    full_name character varying(255),
+    motd character varying(255) DEFAULT 'To help keep Pinball Map running, consider a donation! https://pinballmap.com/donate'::character varying,
     lat numeric(18,12),
     lon numeric(18,12),
     n_search_no integer,
-    default_search_type character varying,
+    default_search_type character varying(255),
     should_email_machine_removal boolean,
     should_auto_delete_empty_locations boolean,
     send_digest_comment_emails boolean,
@@ -667,8 +683,7 @@ CREATE TABLE public.regions (
 --
 
 CREATE SEQUENCE public.regions_id_seq
-    AS integer
-    START WITH 1
+    START WITH 24
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -687,7 +702,43 @@ ALTER SEQUENCE public.regions_id_seq OWNED BY public.regions.id;
 --
 
 CREATE TABLE public.schema_migrations (
-    version character varying NOT NULL
+    version character varying(255) NOT NULL
+);
+
+
+--
+-- Name: ssw_lpx_backup; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ssw_lpx_backup (
+    id integer,
+    location_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    description text,
+    user_id integer,
+    photo_file_name character varying(255),
+    photo_content_type character varying(255),
+    photo_file_size integer,
+    photo_updated_at timestamp without time zone
+);
+
+
+--
+-- Name: ssw_tmp_weird_empty_lmxes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ssw_tmp_weird_empty_lmxes (
+    id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    location_id integer,
+    machine_id integer,
+    condition text,
+    condition_date date,
+    ip character varying(255),
+    user_id integer,
+    machine_score_xrefs_count integer
 );
 
 
@@ -756,7 +807,6 @@ CREATE TABLE public.suggested_locations (
 --
 
 CREATE SEQUENCE public.suggested_locations_id_seq
-    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -833,7 +883,6 @@ CREATE TABLE public.user_submissions (
 --
 
 CREATE SEQUENCE public.user_submissions_id_seq
-    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -854,28 +903,31 @@ ALTER SEQUENCE public.user_submissions_id_seq OWNED BY public.user_submissions.i
 
 CREATE TABLE public.users (
     id integer NOT NULL,
-    email character varying,
-    encrypted_password character varying,
-    sign_in_count integer,
+    email character varying(255) DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying(128) DEFAULT ''::character varying NOT NULL,
+    password_salt character varying(255) DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying(255),
+    remember_token character varying(255),
+    remember_created_at timestamp without time zone,
+    sign_in_count integer DEFAULT 0,
     current_sign_in_at timestamp without time zone,
     last_sign_in_at timestamp without time zone,
-    current_sign_in_ip character varying,
-    last_sign_in_ip character varying,
+    current_sign_in_ip character varying(255),
+    last_sign_in_ip character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     region_id integer,
-    initials character varying,
+    initials character varying(255),
     reset_password_sent_at timestamp without time zone,
     is_machine_admin boolean,
     is_primary_email_contact boolean,
     is_super_admin boolean,
     username text,
-    confirmation_token character varying,
+    confirmation_token character varying(255),
     confirmed_at timestamp without time zone,
     confirmation_sent_at timestamp without time zone,
     is_disabled boolean,
     authentication_token character varying(30),
-    reset_password_token character varying,
     security_test character varying,
     user_submissions_count integer
 );
@@ -886,8 +938,7 @@ CREATE TABLE public.users (
 --
 
 CREATE SEQUENCE public.users_id_seq
-    AS integer
-    START WITH 1
+    START WITH 31
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -975,11 +1026,11 @@ ALTER SEQUENCE public.versions_id_seq OWNED BY public.versions.id;
 
 CREATE TABLE public.zones (
     id integer NOT NULL,
-    name character varying,
+    name character varying(255),
     region_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    short_name character varying,
+    short_name character varying(255),
     is_primary boolean
 );
 
@@ -989,8 +1040,7 @@ CREATE TABLE public.zones (
 --
 
 CREATE SEQUENCE public.zones_id_seq
-    AS integer
-    START WITH 1
+    START WITH 185
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -1260,11 +1310,11 @@ ALTER TABLE ONLY public.locations
 
 
 --
--- Name: machine_conditions machine_conditions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: machine_conditions machine_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.machine_conditions
-    ADD CONSTRAINT machine_conditions_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT machine_comments_pkey PRIMARY KEY (id);
 
 
 --
@@ -1321,14 +1371,6 @@ ALTER TABLE ONLY public.region_link_xrefs
 
 ALTER TABLE ONLY public.regions
     ADD CONSTRAINT regions_pkey PRIMARY KEY (id);
-
-
---
--- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.schema_migrations
-    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
 
 
 --
@@ -1452,6 +1494,13 @@ CREATE INDEX index_events_on_region_id ON public.events USING btree (region_id);
 
 
 --
+-- Name: index_histories_on_item_and_table_and_month_and_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_histories_on_item_and_table_and_month_and_year ON public.rails_admin_histories USING btree (item, "table", month, year);
+
+
+--
 -- Name: index_location_machine_xrefs_on_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1571,13 +1620,6 @@ CREATE INDEX index_operators_on_region_id ON public.operators USING btree (regio
 
 
 --
--- Name: index_rails_admin_histories; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_rails_admin_histories ON public.rails_admin_histories USING btree (item, "table", month, year);
-
-
---
 -- Name: index_region_link_xrefs_on_region_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1610,6 +1652,13 @@ CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 --
 
 CREATE INDEX index_users_on_region_id ON public.users USING btree (region_id);
+
+
+--
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING btree (reset_password_token);
 
 
 --
@@ -1655,17 +1704,31 @@ CREATE INDEX index_zones_on_region_id ON public.zones USING btree (region_id);
 
 
 --
--- Name: ix_fast_search_city; Type: INDEX; Schema: public; Owner: -
+-- Name: location_city_fast_search_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX ix_fast_search_city ON public.locations USING btree (public.clean_items((city)::text));
+CREATE INDEX location_city_fast_search_idx ON public.locations USING gin (public.clean_items((city)::text) public.gin_trgm_ops);
 
 
 --
--- Name: ix_fast_search_name; Type: INDEX; Schema: public; Owner: -
+-- Name: location_names_fast_search_idx; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX ix_fast_search_name ON public.locations USING btree (public.clean_items((name)::text));
+CREATE INDEX location_names_fast_search_idx ON public.locations USING gin (public.clean_items((name)::text) public.gin_trgm_ops);
+
+
+--
+-- Name: machine_names_fast_search_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX machine_names_fast_search_idx ON public.machines USING gin (public.clean_items((name)::text) public.gin_trgm_ops);
+
+
+--
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX unique_schema_migrations ON public.schema_migrations USING btree (version);
 
 
 --
@@ -1752,6 +1815,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20120331225504'),
 ('20120407204619'),
 ('20120407205003'),
+('20120408220929'),
 ('20120520190325'),
 ('20120520190845'),
 ('20130303070120'),
@@ -1816,6 +1880,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220526191634'),
 ('20220602214055'),
 ('20220603045549'),
+('20230117174145'),
+('20230117174254'),
 ('20230117183500'),
 ('20230117183514'),
 ('20230121051546'),
@@ -1840,6 +1906,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240521021315'),
 ('20240521021328'),
 ('20240703041704'),
-('20240812034312');
+('20240812034312'),
+('20240817222440');
 
 
