@@ -70,9 +70,6 @@
     google.maps.event.addListener(autocomplete, 'place_changed', function () {
         var place = autocomplete.getPlace();
         document.getElementById('location_name').value = place.name;
-        if (place.international_phone_number) {
-          document.getElementById('location_phone').value = place.international_phone_number;
-        }
         if (place.website) {
           document.getElementById('location_website').value = place.website;
         }
@@ -98,6 +95,11 @@
               break;
             }
             case "country": {
+              if (component.short_name == 'US' && place.formatted_phone_number) {
+                document.getElementById('location_phone').value = place.formatted_phone_number; 
+              } else if (component.short_name != 'US' && place.international_phone_number) {
+                document.getElementById('location_phone').value = place.international_phone_number; 
+              }
               document.getElementById('location_country').value = component.short_name;
               break;
             }
