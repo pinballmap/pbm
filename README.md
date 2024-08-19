@@ -8,6 +8,8 @@ Data License: [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC_
 
 The _data_ is not included in this repository. Rather, it is accessed via the public API. This data is under a [CC BY-SA](LICENSE-CC-BY-SA) license (and not GPL v3). Amongst other things, this license requires attribution when using the data.
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P411XZAM)
+
 
 *sweet pinballin' brah*
 
