@@ -49,7 +49,7 @@
                 .clear
                 %li.textbox
                   %label{:for => "location_comments"} Comments:
-                  %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text", :placeholder => 'Hours; what type of payment system(s) they use (door fee, cash, cards)'}
+                  %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text", :placeholder => 'Hours; what type of payment system(s) they use (door fee, cash, cards); opening date'}
                 %li.machines_textinput
                   %label{:for => "location_type"} Machines:
                   = select_tag "location_machines", options_from_collection_for_select(Machine.all.sort_by(&:massaged_name), 'id', 'name_and_year', params["location_machines_ids"]), multiple: "multiple", :class => 'location_machines', :id => 'location_machines', name: "location_machines_ids[]", required: true
