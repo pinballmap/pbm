@@ -6,9 +6,9 @@
             "background_color": "#ebecff",
             "margin": "14%",
             "assets": {
-                "ios6_and_prior_icons": false,
-                "ios7_and_later_icons": false,
-                "precomposed_icons": false,
+                "ios6_and_prior_icons": true,
+                "ios7_and_later_icons": true,
+                "precomposed_icons": true,
                 "declare_only_default_icon": true
             }
         },
