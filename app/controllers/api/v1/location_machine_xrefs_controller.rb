@@ -124,6 +124,7 @@ select
   count(*) as machine_count
 from
   location_machine_xrefs lmx inner join machines m on m.id=lmx.machine_id
+  where m.opdb_id is not null
 group by 1
 order by 5 desc
 limit #{top_n}
