@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '3.3.1'
 
 gem 'pg'
-gem 'rails', '~> 7.0.0.x'
+gem 'rails', '~> 7.1.x'
 
 gem 'amazing_print'
 gem 'apipie-rails'
