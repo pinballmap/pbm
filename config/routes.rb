@@ -75,7 +75,7 @@ Rails.application.routes.draw do
         end
       end
 
-      scope 'region/:region', constraints: lambda { |request| Region.where('lower(name) = ?', request[:region].downcase).any? } do
+      scope 'region/:region', constraints: lambda { |request| Region.where('lower(name) = ?', request.params[:region].downcase).any? } do
         resources :events, only: [:index, :show]
         resources :location_machine_xrefs, only: [:index]
         resources :locations, only: [:index, :show]
@@ -97,7 +97,7 @@ Rails.application.routes.draw do
   get '/apple-app-site-association' => 'pages#apple_app_site_association'
   get '/robots.txt' => 'pages#robots'
 
-  scope ':region', constraints: lambda { |request| Region.where('lower(name) = ?', request[:region].downcase).any? } do
+  scope ':region', constraints: lambda { |request| Region.where('lower(name) = ?', request.params[:region].downcase).any? } do
     get 'app' => redirect('/app')
     get 'app/support' => redirect('/faq')
     get 'privacy' => redirect('/privacy')

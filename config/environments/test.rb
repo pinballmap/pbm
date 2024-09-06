@@ -7,6 +7,9 @@ ENV['SKIP_GEOCODE'] = "1"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+  config.hosts = []
+
+  config.middleware.use RackSessionAccess::Middleware 
 
   # While tests run files are not watched, reloading is not necessary.
   config.enable_reloading = false
