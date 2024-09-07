@@ -4,7 +4,7 @@ describe UsersController do
   describe 'Profile', type: :feature, js: true do
     before(:each) do
       @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
-      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
+      login(@user)
     end
 
     it 'sets page title appropriately' do

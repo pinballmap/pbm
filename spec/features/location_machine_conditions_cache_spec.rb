@@ -20,7 +20,7 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
 
       Capybara.using_session(:logged_in) do
         # login and add a machine condition and expect the server to save it
-        page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
+        login(@user)
 
         visit "/#{@region.name}/?by_location_id=#{@location.id}&initials=#{@user.username}"
         sleep 0.5
@@ -45,7 +45,7 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
 
       Capybara.using_session(:logged_in_user2) do
         # login as a second user and add a machine condition and expect the server to save it
-        page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user2))
+        login(@user2)
 
         visit "/#{@region.name}/?by_location_id=#{@location.id}&initials=#{@user2.username}"
         sleep 0.5

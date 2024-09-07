@@ -220,7 +220,7 @@ describe PagesController do
 
     it 'respects user_faved filter' do
       user = FactoryBot.create(:user)
-      page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
+      login(user)
 
       FactoryBot.create(:user_fave_location, user: user, location: FactoryBot.create(:location, name: 'Foo'))
       FactoryBot.create(:user_fave_location, user: user, location: FactoryBot.create(:location, name: 'Bar'))
@@ -455,7 +455,7 @@ describe PagesController do
   describe 'Location suggestions', type: :feature, js: true do
     it 'limits state dropdown to unique states within a region' do
       @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
-      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
+      login(@user)
       chicago = FactoryBot.create(:region, name: 'chicago')
 
       FactoryBot.create(:location, region: @region, state: 'WA')
@@ -573,7 +573,7 @@ describe PagesController do
       expect(page).to have_content('Login')
 
       user = FactoryBot.create(:user)
-      page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
+      login(user)
 
       visit '/'
       find('#menu_button').click
@@ -588,7 +588,7 @@ describe PagesController do
       expect(page).to have_content('Logout')
 
       user = FactoryBot.create(:user, region_id: @region.id)
-      page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
+      login(user)
 
       visit '/'
       find('#menu_button').click
@@ -611,7 +611,7 @@ describe PagesController do
       expect(page).to have_current_path(inspire_profile_path)
 
       user = FactoryBot.create(:user, id: 10)
-      page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
+      login(user)
 
       visit '/inspire_profile'
 

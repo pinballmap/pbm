@@ -16,7 +16,7 @@ describe LocationsController do
 
     it 'toggles between faved and unfaved when clicked' do
       user = FactoryBot.create(:user)
-      page.set_rack_session("warden.user.user.key": User.serialize_into_session(user))
+      login(user)
 
       location = FactoryBot.create(:location, region: @region, name: 'Cleo')
 
@@ -46,7 +46,7 @@ describe LocationsController do
   describe 'confirm location', type: :feature, js: true do
     before(:each) do
       @user = FactoryBot.create(:user, username: 'ssw')
-      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
+      login(@user)
     end
 
     [Region.find_by_name('portland'), nil].each do |region|
@@ -112,7 +112,6 @@ describe LocationsController do
       @location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
       @machine = FactoryBot.create(:machine, name: 'Bawb')
 
-      page.set_rack_session("warden.user.user.key": nil)
     end
 
     it 'removes a machine from a location' do
@@ -133,7 +132,7 @@ describe LocationsController do
   describe 'remove machine', type: :feature, js: true do
     before(:each) do
       @user = FactoryBot.create(:user, id: 1001, username: 'ssw', email: 'ssw@test.com')
-      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
+      login(@user)
 
       @location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
       @machine = FactoryBot.create(:machine, name: 'Bawb')
@@ -530,7 +529,8 @@ describe LocationsController do
   describe 'update_metadata', type: :feature, js: true do
     before(:each) do
       @user = FactoryBot.create(:user)
-      page.set_rack_session("warden.user.user.key": User.serialize_into_session(@user))
+      login(@user)
+
 
       @location = FactoryBot.create(:location, region: @region, name: 'Cleo')
     end
