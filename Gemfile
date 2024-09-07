@@ -75,6 +75,6 @@ group :development, :test do
   gem 'pry'
   gem 'rack_session_access'
   gem 'rails_real_favicon'
-  gem 'solargraph', '~> 0.49.0'
-  gem 'solargraph-rails', '~> 1.1'
+  gem 'solargraph'
+  gem 'solargraph-rails'
 end

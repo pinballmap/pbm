@@ -484,7 +484,7 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
-    solargraph (0.49.0)
+    solargraph (0.50.0)
       backport (~> 1.2)
       benchmark
       bundler (~> 2.0)
@@ -617,8 +617,8 @@ DEPENDENCIES
   simple_form
   simple_token_authentication
   simplecov
-  solargraph (~> 0.49.0)
-  solargraph-rails (~> 1.1)
+  solargraph
+  solargraph-rails
   spork
   sprockets-rails
   strip_attributes
