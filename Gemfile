@@ -73,7 +73,6 @@ group :development, :test do
   gem 'email_spec'
   gem 'listen'
   gem 'pry'
-  gem 'rack_session_access'
   gem 'rails_real_favicon'
   gem 'solargraph'
   gem 'solargraph-rails'

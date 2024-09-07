@@ -8,7 +8,6 @@ require 'rspec/rails'
 require 'capybara/rspec'
 require 'simplecov'
 require 'coveralls'
-require 'rack_session_access/capybara'
 require 'rspec/retry'
 require 'selenium/webdriver'
 
