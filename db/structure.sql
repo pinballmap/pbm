@@ -343,7 +343,7 @@ CREATE TABLE public.location_types (
 --
 
 CREATE SEQUENCE public.location_types_id_seq
-    START WITH 34
+    START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -570,7 +570,7 @@ CREATE TABLE public.operators (
 --
 
 CREATE SEQUENCE public.operators_id_seq
-    START WITH 34
+    START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -640,7 +640,7 @@ CREATE TABLE public.region_link_xrefs (
 --
 
 CREATE SEQUENCE public.region_link_xrefs_id_seq
-    START WITH 2
+    START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -683,7 +683,7 @@ CREATE TABLE public.regions (
 --
 
 CREATE SEQUENCE public.regions_id_seq
-    START WITH 24
+    START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -902,7 +902,7 @@ CREATE TABLE public.users (
 --
 
 CREATE SEQUENCE public.users_id_seq
-    START WITH 31
+    START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -1004,7 +1004,7 @@ CREATE TABLE public.zones (
 --
 
 CREATE SEQUENCE public.zones_id_seq
-    START WITH 185
+    START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -1718,6 +1718,7 @@ ALTER TABLE ONLY public.active_storage_attachments
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240910004435'),
 ('20240909234323'),
 ('20240817222440'),
 ('20240812034312'),
