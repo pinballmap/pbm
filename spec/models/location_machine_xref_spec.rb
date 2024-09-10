@@ -21,10 +21,12 @@ describe LocationMachineXref do
     end
 
     it 'should update the condition of the lmx and timestamp it' do
-      @lmx.update_condition('foo', user_id: @u.id)
+      freeze_time do
+        @lmx.update_condition('foo', user_id: @u.id)
 
-      expect(@lmx.machine_conditions.first.comment).to eq('foo')
-      expect(@lmx.updated_at.to_s).to eq(Time.now.to_s)
+        expect(@lmx.machine_conditions.first.comment).to eq('foo')
+        expect(@lmx.updated_at).to eq(Time.current)
+      end
 
       @lmx.update_condition('bar', remote_ip: '0.0.0.0', user_agent: 'cleOS', user_id: @u.id)
     end
