@@ -74,6 +74,4 @@ group :development, :test do
   gem 'listen'
   gem 'pry'
   gem 'rails_real_favicon'
-  gem 'solargraph'
-  gem 'solargraph-rails'
 end
