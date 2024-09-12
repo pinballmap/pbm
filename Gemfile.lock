@@ -299,6 +299,7 @@ GEM
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     orm_adapter (0.5.0)
+    ostruct (0.6.0)
     paper_trail (15.1.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
@@ -554,6 +555,7 @@ DEPENDENCIES
   kt-paperclip
   launchy
   listen
+  ostruct
   paper_trail
   paper_trail-association_tracking
   pg
