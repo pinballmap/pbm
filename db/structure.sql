@@ -59,7 +59,7 @@ CREATE FUNCTION public.clean_items(item text) RETURNS text
     LANGUAGE plpgsql IMMUTABLE STRICT
     AS $$
         BEGIN
-          RETURN regexp_replace(unaccent(item), '[[:punct:]]', '', 'g');
+          RETURN regexp_replace(public.unaccent(item::text), '[[:punct:]]', '', 'g');
         END;
         $$;
 
