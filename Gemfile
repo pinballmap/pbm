@@ -67,6 +67,7 @@ end
 group :development, :test do
   gem 'brakeman'
   gem 'bullet'
+  gem 'bundler-audit'
   gem 'database_cleaner'
   gem 'debug', require: false
   gem 'derailed_benchmarks'
