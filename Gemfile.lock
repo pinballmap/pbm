@@ -564,7 +564,7 @@ DEPENDENCIES
   phonelib
   pry
   puma
-  rack (~> 2.2.9)
+  rack
   rack-attack
   rails (~> 7.2.x)
   rails-controller-testing
