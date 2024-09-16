@@ -1,4 +1,5 @@
 require_relative "boot"
+require_relative '../lib/middleware/semicolon_handling'
 
 require "rails/all"
 
@@ -35,5 +36,7 @@ module Pbm
     config.assets.version = '1.4'
 
     config.assets.precompile = ["manifest.js"]
+
+    config.middleware.insert_after Rack::Runtime, ReplaceSemicolonWithAmpersand
   end
 end
