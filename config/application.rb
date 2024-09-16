@@ -37,6 +37,6 @@ module Pbm
 
     config.assets.precompile = ["manifest.js"]
 
-    config.middleware.insert_after Rack::Runtime, Middleware::ReplaceSemicolonWithAmpersand
+    config.middleware.insert_after Rack::Runtime, Middleware::SemicolonHandling
   end
 end

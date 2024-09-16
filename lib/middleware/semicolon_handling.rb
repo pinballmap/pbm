@@ -1,5 +1,5 @@
 module Middleware
-  class ReplaceSemicolonWithAmpersand
+  class SemicolonHandling
     def initialize(app)
       @app = app
     end
