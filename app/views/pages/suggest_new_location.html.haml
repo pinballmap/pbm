@@ -58,10 +58,7 @@
                 %li.submit.mt_5{:style => "clear:both;"}
                   %input{:type => "submit", :value => "Submit New Location", :class => "submit_button"}
       - else
-        %p.center
-          But first! We ask that you
-          = link_to 'Login.', new_user_session_path, :class => "darkgrey font18 bold"
-          Thank you!
+        %p.center== To suggest a new location you first need to #{link_to 'login', new_user_session_path, :class => "red bold"}. Thank you!
 :javascript
 
   function initialize() {
