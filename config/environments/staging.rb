@@ -61,6 +61,7 @@ Rails.application.configure do
 
   config.rails_semantic_logger.add_file_appender = false
   config.rails_semantic_logger.format = :color
+  config.rails_semantic_logger.quiet_assets = true
   config.semantic_logger.add_appender(
     io: STDOUT,
     level: config.log_level,
@@ -82,6 +83,9 @@ Rails.application.configure do
   # Use a real queuing backend for Active Job (and separate queues per environment).
   config.active_job.queue_adapter = :async
   # config.active_job.queue_name_prefix = "pbm_production"
+
+  # Suppress logger output for asset requests.
+  config.assets.quiet = true
 
   # Disable caching for Action Mailer templates even if Action Controller
   # caching is enabled.

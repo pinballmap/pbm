@@ -52,6 +52,7 @@ Rails.application.configure do
 
   config.rails_semantic_logger.add_file_appender = false
   config.rails_semantic_logger.format = :color
+  config.rails_semantic_logger.quiet_assets = true
   config.semantic_logger.add_appender(
     io: STDOUT,
     level: config.log_level,
