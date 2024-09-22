@@ -63,7 +63,6 @@
             %span.stats_list
               - @user.profile_list_of_edited_locations.each do |location_array|
                 - location_id, location_name = location_array
-                -# - location = Location.find(location_array[0])
                 %span.location_edited.inline
                   = link_to(location_name, map_path + "/?by_location_id=#{location_id}")
                 %br/
