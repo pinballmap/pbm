@@ -30,11 +30,6 @@ module Pbm
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
-    config.assets.enabled = true
-    config.serve_static_files = true
-    config.assets.initialize_on_precompile = false
-    config.assets.version = '1.4'
-
     config.assets.precompile = ["manifest.js"]
 
     config.middleware.insert_after Rack::Runtime, Middleware::SemicolonHandling
