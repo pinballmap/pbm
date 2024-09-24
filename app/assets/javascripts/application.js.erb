@@ -74,6 +74,7 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
         var locationID = locationIDs[index];
 
         el.id = 'marker_' + locationID;
+        el.style.cssText += 'z-index:' + num_machines[i];
         el.innerHTML = '<span><b>' + num_machines[i] + '</b></span>';
         el.addEventListener('touchstart', function () {
           showLocationDetail(locationID);
