@@ -81,11 +81,11 @@ only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (or
     padding-left: 0;
   }
 
-  div.mapboxgl-ctrl-top-left {
+  div.maplibregl-ctrl-top-left {
     left: 0% !important;
   }
 
-  div.mapboxgl-ctrl-bottom-right {
+  div.maplibregl-ctrl-bottom-right {
     right: 0% !important;
   }
 }
@@ -120,11 +120,11 @@ only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (or
 }
 
 @media (max-width: 1555px) {
-  .mapboxgl-ctrl-top-left {
+  .maplibregl-ctrl-top-left {
     left: 30% !important;
   }
 
-  .mapboxgl-ctrl-bottom-right {
+  .maplibregl-ctrl-bottom-right {
     right: 30% !important;
   }
 }

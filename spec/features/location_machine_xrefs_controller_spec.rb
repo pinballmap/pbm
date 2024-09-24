@@ -658,7 +658,6 @@ describe LocationMachineXrefsController do
     end
 
     it 'allows case insensitive searches of a region' do
-      stub_const('ENV', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
 
       chicago_region = FactoryBot.create(:region, name: 'chicago', full_name: 'Chicago')
       FactoryBot.create(:location, id: 23, region: chicago_region, name: 'Chicago Location')
@@ -902,8 +901,6 @@ describe LocationMachineXrefsController do
     end
 
     it 'displays appropriate values in location description' do
-      stub_const('ENV', 'MAPBOX_DEV_API_KEY' => ENV['MAPBOX_DEV_API_KEY'])
-
       @user = FactoryBot.create(:user)
       login(@user)
 

@@ -2696,14 +2696,6 @@ span.begin {
   background: #ffffff;
 }
 
-#region_map {
-  width: 700px;
-  height: 450px;
-  margin: 10px 0;
-  border: 5px solid $purple;
-  box-shadow: 1px 2px 7px rgba(90, 100, 117, 0.3);
-}
-
 #map {
   left: 42%;
   width: 100%;
@@ -3059,12 +3051,12 @@ div.score_list {
 
 /** Map API **/
 
-.mapboxgl-popup {
+.maplibregl-popup {
   max-width: 200px;
   z-index: 500;
 }
 
-.mapboxgl-popup-content {
+.maplibregl-popup-content {
   overflow-y: auto;
   max-height: 310px;
   font-family: 'Open Sans', sans-serif;
@@ -3080,30 +3072,7 @@ div.score_list {
   color: black;
 }
 
-#region_map .gm_region_name a {
-  font-family: $Nunito_700Bold !important;
-  font-weight: normal !important;
-  color: $darkgrey;
-}
-
-#region_map .gm_region_name a:hover {
-  color: $red;
-}
-
-.markersm {
-  background: url(<%= asset_path 'teardrop200.png' %>) no-repeat;
-  background-size: cover;
-  width: 45px;
-  height: 45px;
-  cursor: pointer;
-}
-
-.markersm {
-  width: 35px;
-  height: 35px;
-}
-
-.marker span {
+.marker {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -3111,9 +3080,9 @@ div.score_list {
   width: 40px;
   height: 40px;
   font-size: 16px;
-  color: #f5f5ff;
-  background: #616182;
-  border: 2px solid #fee7f5;
+  color: #440152;
+  background: #ffffff;
+  border: 2px solid #979797;
   border-radius: 50%;
   cursor: pointer;
 }

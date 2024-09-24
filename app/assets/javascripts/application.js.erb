@@ -5,8 +5,6 @@
 var map;
 var region;
 var ismap;
-var testMode;
-var bot_detected;
 var searchMachineIDString;
 var numMachinesVal;
 var locationTypeVal;
@@ -53,24 +51,16 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
 
   locationIDs = ids;
 
-  if (bot_detected != true) {
-    mapboxgl.accessToken = '<%= ENV.fetch("MAPBOX_API_KEY", "pk.eyJ1IjoicnlhbnRnIiwiYSI6ImNsZTV5dW11YTBoankzbnFsZTEzcnQycWsifQ._0FYgeHFSQCQJ6VboGXl8A") %>';
-  } else {
-    mapboxgl.accessToken = ''
-  }
-
-  var bounds = new mapboxgl.LngLatBounds();
+  var bounds = new maplibregl.LngLatBounds();
 
   if (mapAdjusted === 0) {
-    map = new mapboxgl.Map({
+    map = new maplibregl.Map({
       container: 'map_canvas',
-      testMode: testMode,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      projection: 'mercator'
+      style: 'https://tiles.openfreemap.org/styles/bright',
     });
-    map.addControl(new mapboxgl.ScaleControl({unit: 'imperial'}), 'bottom-right');
-    map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
-    map.addControl(new mapboxgl.FullscreenControl(), 'top-right');
+    map.addControl(new maplibregl.ScaleControl({unit: 'imperial'}), 'bottom-right');
+    map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
+    map.addControl(new maplibregl.FullscreenControl(), 'top-right');
   }
 
   for (i in ids) {
@@ -84,7 +74,6 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
         var locationID = locationIDs[index];
 
         el.id = 'marker_' + locationID;
-        el.style.cssText += 'z-index:' + num_machines[i]; 
         el.innerHTML = '<span><b>' + num_machines[i] + '</b></span>';
         el.addEventListener('touchstart', function () {
           showLocationDetail(locationID);
@@ -103,10 +92,10 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
       })(el, i);
     }
 
-    var popup = new mapboxgl.Popup({ offset: 25 })
+    var popup = new maplibregl.Popup({ offset: 25 })
       .setHTML(contents[i]);
 
-    var marker = new mapboxgl.Marker(el, { anchor: 'center' })
+    var marker = new maplibregl.Marker({element: el}, { anchor: 'center' })
       .setLngLat([lons[i], lats[i]])
       .setPopup(popup)
       .addTo(map);
