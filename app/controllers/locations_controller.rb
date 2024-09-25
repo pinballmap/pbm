@@ -36,7 +36,7 @@ class LocationsController < InheritedResources::Base
   end
 
   def render_machines
-    machines = LocationMachineXref.where(location_id: params[:id]).includes(:machine)
+    machines = LocationMachineXref.where(location_id: params[:id]).includes(:machine, machine_score_xrefs: [:user])
     machines = machines.sort { |a, b| a.machine.massaged_name <=> b.machine.massaged_name }
     logged_in = current_user ? 'logged_in' : 'logged_out'
 
