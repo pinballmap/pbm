@@ -21,8 +21,8 @@ module Api
       def create
         return return_response(AUTH_REQUIRED_MSG, 'errors') if current_user.nil?
 
-        location_id = params[:location_id]
-        return return_response('Failed to find location', 'errors') if location_id.nil? || !Location.exists?(location_id)
+        location_id = params[:location_id].to_i
+        return return_response('Failed to find location', 'errors') if location_id.zero? || !Location.exists?(location_id)
 
         photo = params[:photo]
         return return_response('Missing photo to add', 'errors') if photo.nil?

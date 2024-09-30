@@ -5,8 +5,8 @@ class SuggestedLocation < ApplicationRecord
   validates_presence_of :name, :machines, on: :create
   validates_presence_of :street, :city, :zip, on: :update
 
-  validates :website, format: { with: %r{http(s?)://}, message: 'must begin with http:// or https://' }, if: :website?, on: :update
-  validates :name, :street, :city, format: { with: /^\S.*/, message: "Can't start with a blank", multiline: true }, on: :update
+  validates :website, format: { with: %r{\Ahttp(s?)://}, message: 'must begin with http:// or https://' }, if: :website?, on: :update
+  validates :name, :street, :city, format: { with: /\A\S.*/, message: "Can't start with a blank", multiline: true }, on: :update
   validates :lat, :lon, presence: { message: 'Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon' }, on: :update
 
   belongs_to :region, optional: true
@@ -97,19 +97,21 @@ class SuggestedLocation < ApplicationRecord
 
       delete
 
-      ActiveRecord::Base.connection.execute(<<HERE)
+      sql = <<HERE
 insert into versions values (
   nextval('versions_id_seq'),
   'Location',
-  #{location.id},
+  :location_id,
   'converted from suggested location',
-  '#{user_email}',
+  :user_email,
   NULL,
   now(),
   NULL,
   NULL
 )
 HERE
+      sanitized_sql = ActiveRecord::Base.sanitize_sql_array([sql, { location_id: location.id, user_email: user_email }])
+      ActiveRecord::Base.connection.execute(sanitized_sql)
     end
   end
 end
