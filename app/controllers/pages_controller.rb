@@ -52,7 +52,7 @@ class PagesController < ApplicationController
 
     params[:user_faved] = user.id if user && !params[:user_faved].blank?
 
-    if !params[:by_location_id].blank? && loc = Location.where(id: params[:by_location_id]).first
+    if !params[:by_location_id].blank? && (loc = Location.where(id: params[:by_location_id]).first)
       @title_params[:title] = loc.name
       location_type = loc.location_type.name + ' - ' unless loc.location_type.nil?
       machine_list = ' - ' + loc.machine_names_first_no_year.join(', ') unless loc.machine_names_first_no_year.empty?
@@ -74,7 +74,7 @@ class PagesController < ApplicationController
     @location_count = @locations.count
     @lmx_count = @region.machines_count
 
-    if !params[:by_location_id].blank? && loc = Location.where(id: params[:by_location_id]).first
+    if !params[:by_location_id].blank? && (loc = Location.where(id: params[:by_location_id]).first)
       @title_params[:title] = loc.name
       location_type = loc.location_type.name + ' - ' unless loc.location_type.nil?
       machine_list = ' - ' + loc.machine_names_first_no_year.join(', ') unless loc.machine_names_first_no_year.empty?

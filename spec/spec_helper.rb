@@ -14,7 +14,6 @@ require 'selenium/webdriver'
 include Sprockets::Rails::Helper
 include ActiveSupport::Testing::TimeHelpers
 
-
 SimpleCov.start
 Coveralls.wear!
 

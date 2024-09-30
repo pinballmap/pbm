@@ -831,7 +831,7 @@ describe Api::V1::LocationsController, type: :request do
     it 'respects no_details and shows fewer location fields' do
       lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 7777, name: 'Cleo'))
       FactoryBot.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'foo bar')
-      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, score: 567890)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, score: 567_890)
       get "/api/v1/locations/#{@location.id}.json", params: { no_details: 1 }
 
       expect(response.body).to include('Satchmo')
