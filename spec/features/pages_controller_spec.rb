@@ -527,7 +527,7 @@ describe PagesController do
       visit "/#{@region.name}/high_rollers"
       expect(page).to have_title('High Scores')
 
-      visit "/map/?by_location_id=1234"
+      visit '/map/?by_location_id=1234'
       expect(page).to have_title('Pinball Map')
 
       visit "/map/?by_location_id=#{@location.id}"

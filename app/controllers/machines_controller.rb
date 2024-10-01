@@ -28,11 +28,11 @@ class MachinesController < InheritedResources::Base
       sanitized_sql = ActiveRecord::Base.sanitize_sql_array([sql, { term: params[:term] }])
 
       results = ActiveRecord::Base.connection.select_all(sanitized_sql)
-        .map do |m|
-          name_year = "#{m['name']} (#{m['manufacturer']}, #{m['year']})"
+                                  .map do |m|
+        name_year = "#{m['name']} (#{m['manufacturer']}, #{m['year']})"
 
-          { label: name_year, value: name_year, id: m['id'], group_id: m['machine_group_id'] }
-        end
+        { label: name_year, value: name_year, id: m['id'], group_id: m['machine_group_id'] }
+      end
 
     end
 

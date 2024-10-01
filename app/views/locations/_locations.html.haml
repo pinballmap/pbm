@@ -15,7 +15,7 @@
       [#{[@lat, @lon].join(', ')}]
     );
 
-    var hrefOrig = '#{request.scheme}://#{request.host_with_port}/#{@region ? @region.name.downcase : @operators_map ? @operators_map : "map"}?';
+    var hrefOrig = '#{request.scheme}://#{request.host_with_port}/#{@region ? h(@region.name.downcase) : @operators_map ? @operators_map : "map"}?';
     var def_value = window.location.href;
 
     var url = '';

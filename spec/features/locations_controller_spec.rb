@@ -111,7 +111,6 @@ describe LocationsController do
     before(:each) do
       @location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
       @machine = FactoryBot.create(:machine, name: 'Bawb')
-
     end
 
     it 'removes a machine from a location' do
@@ -530,7 +529,6 @@ describe LocationsController do
     before(:each) do
       @user = FactoryBot.create(:user)
       login(@user)
-
 
       @location = FactoryBot.create(:location, region: @region, name: 'Cleo')
     end

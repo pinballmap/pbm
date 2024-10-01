@@ -1,0 +1,94 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Format Validation",
+      "warning_code": 30,
+      "fingerprint": "06f9be88a8af832b07095516dcafa96909e3f7770c63c803906d29d94ed9f5fc",
+      "check_name": "ValidationRegex",
+      "message": "Insufficient validation for `website` using `/\\Ahttp(s?):\\/\\//`. Use `\\A` and `\\z` as anchors",
+      "file": "app/models/location.rb",
+      "line": 6,
+      "link": "https://brakemanscanner.org/docs/warning_types/format_validation/",
+      "code": null,
+      "render_path": null,
+      "location": {
+        "type": "model",
+        "model": "Location"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "cwe_id": [
+        777
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Format Validation",
+      "warning_code": 30,
+      "fingerprint": "06f9be88a8af832b07095516dcafa96909e3f7770c63c803906d29d94ed9f5fc",
+      "check_name": "ValidationRegex",
+      "message": "Insufficient validation for `name` using `/\\A\\S.*/`. Use `\\A` and `\\z` as anchors",
+      "file": "app/models/location.rb",
+      "line": 7,
+      "link": "https://brakemanscanner.org/docs/warning_types/format_validation/",
+      "code": null,
+      "render_path": null,
+      "location": {
+        "type": "model",
+        "model": "Location"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "cwe_id": [
+        777
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Format Validation",
+      "warning_code": 30,
+      "fingerprint": "8b632b14ee9e862130a926be342087e1f1ec9d174f244c2d61fc2a4514afd2f7",
+      "check_name": "ValidationRegex",
+      "message": "Insufficient validation for `website` using `/\\Ahttp(s?):\\/\\//`. Use `\\A` and `\\z` as anchors",
+      "file": "app/models/suggested_location.rb",
+      "line": 8,
+      "link": "https://brakemanscanner.org/docs/warning_types/format_validation/",
+      "code": null,
+      "render_path": null,
+      "location": {
+        "type": "model",
+        "model": "SuggestedLocation"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "cwe_id": [
+        777
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Format Validation",
+      "warning_code": 30,
+      "fingerprint": "8b632b14ee9e862130a926be342087e1f1ec9d174f244c2d61fc2a4514afd2f7",
+      "check_name": "ValidationRegex",
+      "message": "Insufficient validation for `name` using `/\\A\\S.*/`. Use `\\A` and `\\z` as anchors",
+      "file": "app/models/suggested_location.rb",
+      "line": 9,
+      "link": "https://brakemanscanner.org/docs/warning_types/format_validation/",
+      "code": null,
+      "render_path": null,
+      "location": {
+        "type": "model",
+        "model": "SuggestedLocation"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "cwe_id": [
+        777
+      ],
+      "note": ""
+    }
+  ],
+  "updated": "2024-09-29 19:42:12 -0700",
+  "brakeman_version": "6.2.1"
+}

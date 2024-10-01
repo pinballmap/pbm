@@ -38,12 +38,12 @@ module Api
 
         return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
 
-        location_id = params[:location_id]
-        machine_id = params[:machine_id]
+        location_id = params[:location_id].to_i
+        machine_id = params[:machine_id].to_i
         condition = params[:condition]
         status_code = 200
 
-        return return_response('Failed to find machine', 'errors') if machine_id.nil? || location_id.nil? || !Machine.exists?(machine_id) || !Location.exists?(location_id)
+        return return_response('Failed to find machine', 'errors') if machine_id.zero? || location_id.zero? || !Machine.exists?(machine_id) || !Location.exists?(location_id)
 
         lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine_id)
 
