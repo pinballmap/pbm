@@ -49,7 +49,6 @@ gem 'webrick'
 group :test do
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'coveralls_reborn', require: false
   gem 'factory_bot_rails'
   gem 'launchy'
   gem 'rails-controller-testing'
@@ -60,6 +59,7 @@ group :test do
   gem 'rubocop-rspec'
   gem 'selenium-webdriver'
   gem 'simplecov'
+  gem 'simplecov-cobertura'
   gem 'spork'
   gem 'timecop'
 end

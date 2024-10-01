@@ -7,7 +7,7 @@ require 'factory_bot_rails'
 require 'rspec/rails'
 require 'capybara/rspec'
 require 'simplecov'
-require 'coveralls'
+require 'simplecov-cobertura'
 require 'rspec/retry'
 require 'selenium/webdriver'
 
@@ -15,7 +15,7 @@ include Sprockets::Rails::Helper
 include ActiveSupport::Testing::TimeHelpers
 
 SimpleCov.start
-Coveralls.wear!
+SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
