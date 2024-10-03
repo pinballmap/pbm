@@ -1,4 +1,74 @@
-{
+var	background = "hsl(20, 20%, 95%)";
+var earth = "hsl(20, 20%, 95%)";
+var landuse_park = "hsl(110, 55%, 80%)";
+var landuse_urban_green = "hsl(110, 55%, 88%)";
+var landuse_hospital = "hsl(0, 50%, 92%)";
+var landuse_industrial = "hsl(20, 11%, 91%)";
+var landuse_school = "hsl(40, 50%, 88%)";
+var landuse_beach = "hsl(52, 65%, 86%)";
+var landuse_zoo = "#c6dcdc";
+var landuse_military = "hsl(225, 60%, 92%)";
+var landuse_wood_0 = "#d0ded0";
+var landuse_wood_12 = "hsl(110, 52%, 82%)";
+var landuse_scrub_0 = "#d0ded0";
+var landuse_scrub_12 = "hsl(110, 52%, 82%)";
+var landuse_glacier = "hsl(200, 70%, 90%)";
+var landuse_sand = "hsl(52, 65%, 86%)";
+var landuse_aerodrome = "hsl(225, 60%, 92%)";
+var transit_runway = "hsl(225, 52%, 87%)";
+var transit_taxiway = "hsl(225, 52%, 87%)";
+var water = "hsl(200, 100%, 80%)";
+var water_stream = "hsl(200, 100%, 80%)";
+var water_river = "hsl(200, 100%, 80%)";
+var landuse_pedestrian = "hsl(20, 20%, 95%)";
+var landuse_pier = "hsl(20, 32%, 95%)";
+var roads_tunnels_other_casing = "hsl(220, 13%, 72%)";
+var roads_tunnels_minor_casing = "hsl(220, 13%, 72%)";
+var roads_tunnels_link_casing = "hsl(220, 20%, 85%)";
+var roads_tunnels_medium_casing = "hsl(220, 13%, 72%)";
+var roads_tunnels_major_casing = "hsl(220, 20%, 97%)";
+var roads_tunnels_highway_casing = "hsl(0, 0%, 100%)";
+var roads_tunnels_other = "hsl(0, 0%, 100%)";
+var roads_tunnels_minor = "hsl(0, 0%, 100%)";
+var roads_tunnels_link = "hsl(0, 0%, 100%)";
+var roads_tunnels_medium = "hsl(0, 0%, 100%)";
+var roads_tunnels_major = "hsl(0, 0%, 100%)";
+var roads_tunnels_highway = "hsl(40, 90%, 70%)";
+var buildings = "hsl(20, 15%, 85%)";
+var transit_pier = "hsl(35, 25%, 82%)";
+var roads_minor_service_casing = "hsl(220, 20%, 85%)";
+var roads_minor_casing = "hsl(220, 20%, 85%)";
+var roads_link_casing = "hsl(0, 0%, 100%)";
+var roads_medium_casing = "hsl(220, 20%, 85%)";
+var roads_major_casing_late = "hsl(220, 20%, 97%)";
+var roads_highway_casing_late = "hsl(40, 90%, 70%)";
+var roads_other = "hsl(0, 0%, 100%)";
+var roads_link = "hsl(40, 90%, 70%)";
+var roads_minor_service = "hsl(0, 0%, 100%)";
+var roads_minor_11 = "hsl(0, 0%, 100%)";
+var roads_minor_16 = "hsl(0, 0%, 100%)";
+var roads_medium = "hsl(0, 0%, 100%)";
+var roads_major_casing_early = "hsl(220, 20%, 97%)";
+var roads_major = "hsl(0, 0%, 100%)";
+var roads_highway_casing_early = "hsl(220, 20%, 97%)";
+var roads_highway = "hsl(40, 90%, 70%)";
+var transit_railway = "hsl(35, 25%, 82%)";
+var boundaries_country = "hsl(240, 50%, 65%)";
+var boundaries = "#adadad";
+var roads_bridges_other_casing = "hsl(220, 20%, 97%)";
+var roads_bridges_link_casing = "hsl(220, 20%, 97%)";
+var roads_bridges_minor_casing = "hsl(220, 20%, 97%)";
+var roads_bridges_medium_casing = "hsl(220, 20%, 97%)";
+var roads_bridges_major_casing = "hsl(220, 20%, 97%)";
+var roads_bridges_other = "hsl(0, 0%, 100%)";
+var roads_bridges_minor = "hsl(0, 0%, 100%)";
+var roads_bridges_link = "hsl(40, 90%, 70%)";
+var roads_bridges_medium = "hsl(0, 0%, 100%)";
+var roads_bridges_major = "hsl(0, 0%, 100%)";
+var roads_bridges_highway_casing = "hsl(40, 90%, 70%)";
+var roads_bridges_highway = "hsl(40, 90%, 70%)";
+
+var map_style_obj = {
   "version": 8,
   "glyphs": "<%= ENV['PMTILES_GLYPHS'] %>",
   "sprite": "<%= ENV['PMTILES_SPRITE'] %>",
@@ -14,7 +84,7 @@
         "id": "background",
         "type": "background",
         "paint": {
-            "background-color": "hsl(20, 20%, 95%)"
+            "background-color": background
         }
     },
     {
@@ -30,7 +100,7 @@
         "source": "protomaps",
         "source-layer": "earth",
         "paint": {
-            "fill-color": "hsl(20, 20%, 95%)"
+            "fill-color": earth
         }
     },
     {
@@ -62,9 +132,9 @@
                     "zoom"
                 ],
                 0,
-                "hsl(110, 55%, 80%)",
+                landuse_park,
                 12,
-                "hsl(110, 55%, 80%)"
+                landuse_park
             ]
         }
     },
@@ -84,7 +154,7 @@
             ]
         ],
         "paint": {
-            "fill-color": "hsl(110, 55%, 88%)",
+            "fill-color": landuse_urban_green,
             "fill-opacity": 0.7
         }
     },
@@ -102,7 +172,7 @@
             ]
         ],
         "paint": {
-            "fill-color": "hsl(0, 50%, 92%)"
+            "fill-color": landuse_hospital
         }
     },
     {
@@ -119,7 +189,7 @@
             ]
         ],
         "paint": {
-            "fill-color": "hsl(20, 11%, 91%)"
+            "fill-color": landuse_industrial
         }
     },
     {
@@ -138,7 +208,7 @@
             ]
         ],
         "paint": {
-            "fill-color": "hsl(40, 50%, 88%)"
+            "fill-color": landuse_school
         }
     },
     {
@@ -155,7 +225,7 @@
             ]
         ],
         "paint": {
-            "fill-color": "hsl(52, 65%, 86%)"
+            "fill-color": landuse_beach
         }
     },
     {
@@ -172,7 +242,7 @@
             ]
         ],
         "paint": {
-            "fill-color": "#c6dcdc"
+            "fill-color": landuse_zoo
         }
     },
     {
@@ -191,7 +261,7 @@
             ]
         ],
         "paint": {
-            "fill-color": "hsl(225, 60%, 92%)"
+            "fill-color": landuse_military
         }
     },
     {
@@ -219,9 +289,9 @@
                     "zoom"
                 ],
                 0,
-                "#d0ded0",
+                landuse_wood_0,
                 12,
-                "hsl(110, 52%, 82%)"
+                landuse_wood_12
             ]
         }
     },
@@ -247,9 +317,9 @@
                     "zoom"
                 ],
                 0,
-                "#d0ded0",
+                landuse_scrub_0,
                 12,
-                "hsl(110, 52%, 82%)"
+                landuse_scrub_12
             ]
         }
     },
@@ -264,7 +334,7 @@
             "glacier"
         ],
         "paint": {
-            "fill-color": "hsl(200, 70%, 90%)"
+            "fill-color": landuse_glacier
         }
     },
     {
@@ -278,7 +348,7 @@
             "sand"
         ],
         "paint": {
-            "fill-color": "hsl(52, 65%, 86%)"
+            "fill-color": landuse_sand
         }
     },
     {
@@ -295,7 +365,7 @@
             ]
         ],
         "paint": {
-            "fill-color": "hsl(225, 60%, 92%)"
+            "fill-color": landuse_aerodrome
         }
     },
     {
@@ -312,7 +382,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(225, 52%, 87%)",
+            "line-color": transit_runway,
             "line-width": [
                 "interpolate",
                 [
@@ -346,7 +416,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(225, 52%, 87%)",
+            "line-color": transit_taxiway,
             "line-width": [
                 "interpolate",
                 [
@@ -378,7 +448,7 @@
         "source": "protomaps",
         "source-layer": "water",
         "paint": {
-            "fill-color": "hsl(200, 100%, 80%)"
+            "fill-color": water
         }
     },
     {
@@ -393,7 +463,7 @@
             "stream"
         ],
         "paint": {
-            "line-color": "hsl(200, 100%, 80%)",
+            "line-color": water_stream,
             "line-width": 0.5
         }
     },
@@ -409,7 +479,7 @@
             "river"
         ],
         "paint": {
-            "line-color": "hsl(200, 100%, 80%)",
+            "line-color": water_river,
             "line-width": [
                 "interpolate",
                 [
@@ -442,7 +512,7 @@
             ]
         ],
         "paint": {
-            "fill-color": "hsl(20, 20%, 95%)"
+            "fill-color": landuse_pedestrian
         }
     },
     {
@@ -459,7 +529,7 @@
             ]
         ],
         "paint": {
-            "fill-color": "hsl(20, 32%, 95%)"
+            "fill-color": landuse_pier
         }
     },
     {
@@ -482,7 +552,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 13%, 72%)",
+            "line-color": roads_tunnels_other_casing,
             "line-gap-width": [
                 "interpolate",
                 [
@@ -518,7 +588,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 13%, 72%)",
+            "line-color": roads_tunnels_minor_casing,
             "line-dasharray": [
                 3,
                 2
@@ -576,7 +646,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 20%, 85%)",
+            "line-color": roads_tunnels_link_casing,
             "line-dasharray": [
                 3,
                 2
@@ -632,7 +702,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 13%, 72%)",
+            "line-color": roads_tunnels_medium_casing,
             "line-dasharray": [
                 3,
                 2
@@ -688,7 +758,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 20%, 97%)",
+            "line-color": roads_tunnels_major_casing,
             "line-dasharray": [
                 3,
                 2
@@ -749,7 +819,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(0, 0%, 100%)",
+            "line-color": roads_tunnels_highway_casing,
             "line-dasharray": [
                 6,
                 0.5
@@ -808,7 +878,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(0, 0%, 100%)",
+            "line-color": roads_tunnels_other,
             "line-dasharray": [
                 4.5,
                 0.5
@@ -848,7 +918,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(0, 0%, 100%)",
+            "line-color": roads_tunnels_minor,
             "line-width": [
                 "interpolate",
                 [
@@ -888,7 +958,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(0, 0%, 100%)",
+            "line-color": roads_tunnels_link,
             "line-width": [
                 "interpolate",
                 [
@@ -926,7 +996,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(0, 0%, 100%)",
+            "line-color": roads_tunnels_medium,
             "line-width": [
                 "interpolate",
                 [
@@ -966,7 +1036,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(0, 0%, 100%)",
+            "line-color": roads_tunnels_major,
             "line-width": [
                 "interpolate",
                 [
@@ -1011,7 +1081,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(40, 90%, 70%)",
+            "line-color": roads_tunnels_highway,
             "line-width": [
                 "interpolate",
                 [
@@ -1040,7 +1110,7 @@
         "source": "protomaps",
         "source-layer": "buildings",
         "paint": {
-            "fill-color": "hsl(20, 15%, 85%)",
+            "fill-color": buildings,
             "fill-opacity": 0.8
         }
     },
@@ -1058,7 +1128,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(35, 25%, 82%)",
+            "line-color": transit_pier,
             "line-width": [
                 "interpolate",
                 [
@@ -1102,7 +1172,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 20%, 85%)",
+            "line-color": roads_minor_service_casing,
             "line-gap-width": [
                 "interpolate",
                 [
@@ -1157,7 +1227,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 20%, 85%)",
+            "line-color": roads_minor_casing,
             "line-gap-width": [
                 "interpolate",
                 [
@@ -1207,7 +1277,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(0, 0%, 100%)",
+            "line-color": roads_link_casing,
             "line-gap-width": [
                 "interpolate",
                 [
@@ -1259,7 +1329,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 20%, 85%)",
+            "line-color": roads_medium_casing,
             "line-gap-width": [
                 "interpolate",
                 [
@@ -1314,7 +1384,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 20%, 97%)",
+            "line-color": roads_major_casing_late,
             "line-gap-width": [
                 "interpolate",
                 [
@@ -1374,7 +1444,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(40, 90%, 70%)",
+            "line-color": roads_highway_casing_late,
             "line-gap-width": [
                 "interpolate",
                 [
@@ -1429,7 +1499,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(0, 0%, 100%)",
+            "line-color": roads_other,
             "line-dasharray": [
                 3,
                 1
@@ -1464,7 +1534,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(40, 90%, 70%)",
+            "line-color": roads_link,
             "line-width": [
                 "interpolate",
                 [
@@ -1507,7 +1577,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(0, 0%, 100%)",
+            "line-color": roads_minor_service,
             "line-width": [
                 "interpolate",
                 [
@@ -1558,9 +1628,9 @@
                     "zoom"
                 ],
                 11,
-                "hsl(0, 0%, 100%)",
+                roads_minor_11,
                 16,
-                "hsl(0, 0%, 100%)"
+                roads_minor_16
             ],
             "line-width": [
                 "interpolate",
@@ -1601,7 +1671,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(0, 0%, 100%)",
+            "line-color": roads_medium,
             "line-width": [
                 "interpolate",
                 [
@@ -1642,7 +1712,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 20%, 97%)",
+            "line-color": roads_major_casing_early,
             "line-gap-width": [
                 "interpolate",
                 [
@@ -1694,7 +1764,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(0, 0%, 100%)",
+            "line-color": roads_major,
             "line-width": [
                 "interpolate",
                 [
@@ -1740,7 +1810,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 20%, 97%)",
+            "line-color": roads_highway_casing_early,
             "line-gap-width": [
                 "interpolate",
                 [
@@ -1797,7 +1867,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(40, 90%, 70%)",
+            "line-color": roads_highway,
             "line-width": [
                 "interpolate",
                 [
@@ -1839,7 +1909,7 @@
                 0.75
             ],
             "line-opacity": 0.5,
-            "line-color": "hsl(35, 25%, 82%)",
+            "line-color": transit_railway,
             "line-width": [
                 "interpolate",
                 [
@@ -1869,7 +1939,7 @@
             2
         ],
         "paint": {
-            "line-color": "hsl(240, 50%, 65%)",
+            "line-color": boundaries_country,
             "line-width": 1,
             "line-dasharray": [
                 3,
@@ -1888,7 +1958,7 @@
             2
         ],
         "paint": {
-            "line-color": "#adadad",
+            "line-color": boundaries,
             "line-width": 0.5,
             "line-dasharray": [
                 3,
@@ -1917,7 +1987,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 20%, 97%)",
+            "line-color": roads_bridges_other_casing,
             "line-gap-width": [
                 "interpolate",
                 [
@@ -1954,7 +2024,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 20%, 97%)",
+            "line-color": roads_bridges_link_casing,
             "line-gap-width": [
                 "interpolate",
                 [
@@ -2007,7 +2077,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 20%, 97%)",
+            "line-color": roads_bridges_minor_casing,
             "line-gap-width": [
                 "interpolate",
                 [
@@ -2062,7 +2132,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 20%, 97%)",
+            "line-color": roads_bridges_medium_casing,
             "line-gap-width": [
                 "interpolate",
                 [
@@ -2117,7 +2187,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(220, 20%, 97%)",
+            "line-color": roads_bridges_major_casing,
             "line-gap-width": [
                 "interpolate",
                 [
@@ -2171,7 +2241,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(0, 0%, 100%)",
+            "line-color": roads_bridges_other,
             "line-dasharray": [
                 2,
                 1
@@ -2212,7 +2282,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(0, 0%, 100%)",
+            "line-color": roads_bridges_minor,
             "line-width": [
                 "interpolate",
                 [
@@ -2253,7 +2323,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(40, 90%, 70%)",
+            "line-color": roads_bridges_link,
             "line-width": [
                 "interpolate",
                 [
@@ -2292,7 +2362,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(0, 0%, 100%)",
+            "line-color": roads_bridges_medium,
             "line-width": [
                 "interpolate",
                 [
@@ -2333,7 +2403,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(0, 0%, 100%)",
+            "line-color": roads_bridges_major,
             "line-width": [
                 "interpolate",
                 [
@@ -2379,7 +2449,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(40, 90%, 70%)",
+            "line-color": roads_bridges_highway_casing,
             "line-gap-width": [
                 "interpolate",
                 [
@@ -2438,7 +2508,7 @@
             ]
         ],
         "paint": {
-            "line-color": "hsl(40, 90%, 70%)",
+            "line-color": roads_bridges_highway,
             "line-width": [
                 "interpolate",
                 [
@@ -6080,7 +6150,8 @@
             "text-transform": "uppercase"
         },
         "paint": {
-            "text-color": "#ffffff"
+            "text-color": "#34446e",
+            
         }
     },
     {
@@ -6990,7 +7061,7 @@
             "text-max-width": 9
         },
         "paint": {
-            "text-color": "#ffffff"
+            "text-color": "#34446e",
         }
     },
     {
@@ -10998,4 +11069,4 @@
         }
     }
   ]
-}
+};
