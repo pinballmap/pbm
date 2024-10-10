@@ -16,6 +16,7 @@
     %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :class => "m_0"}
     %label{ for: "followCheck" }
       %span.font16.semiBold.pointer Redo results when map is moved?
+  %button#top_button{onclick: "topFunction()", title: "Go to top"} Top
   #lookup
     #locations
       = render :partial => 'pages/intro'
