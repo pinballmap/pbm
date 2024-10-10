@@ -4,12 +4,12 @@
       %p.red.font18.bold
         =link_to @user.username, profile_user_path(@user.id)
       - if @user.admin_rank_int
-        %p.red.bold.bg_purple.radius5.p_10.inline_block
+        %p.red.bold.bg_lightpurple.radius5.p_10.inline_block
           #{@user.admin_title}
           %span
             =image_tag("rank/Rank_#{@user.admin_rank_int}.png", :class => "rank_icon_profile rank_icon_#{@user.admin_rank_int}")
       - elsif @user.contributor_rank_int
-        %p.red.bold.bg_purple.radius5.p_10.inline_block
+        %p.red.bold.bg_lightpurple.radius5.p_10.inline_block
           #{@user.contributor_rank}
           %span
             =image_tag("rank/Rank_#{@user.contributor_rank_int}.png", :class => "rank_icon_profile rank_icon_#{@user.contributor_rank_int}")

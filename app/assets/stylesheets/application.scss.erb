@@ -2,6 +2,57 @@
  *= require jquery-ui
  */
 
+:root {
+  --red: #fe46b0;
+  --lightpink: #fff1f1;
+  --brightpurple: #66017b;
+  --darkblue: #232347;
+  --purple: #e0e0ff;
+  --grey: #7f7fa0;
+  --bg_vlightpurple: #fafaff;
+  --vlightpurple: #fafaff;
+  --lightpurple: #f5f5ff;
+  --medgrey: #aeb1d2;
+  --darkgrey: #47475f;
+  --black: #000e18;
+  --white: #ffffff;
+  --ahref: #383838;
+  --dark: #0b252b;
+  --shadow: #d0d5d9;
+  --lookup: #ffffff;
+  --buttons: #ffffff;
+  --border: #aeb1d2;
+  --machinename: #66017b;
+  --mask: rgba(245, 251, 255, 0.7);
+  --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>) repeat;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --red: #f6d3fc;
+    --lightpink: #47475f;
+    --brightpurple: #f6ddfa;
+    --darkblue: #1d1c1d;
+    --purple: #e0e0ff;
+    --grey: #88788a;
+    --bg_vlightpurple: #5f5063;
+    --vlightpurple: #fafaff;
+    --lightpurple: #413244;
+    --medgrey: #dfdaf0;
+    --darkgrey: #ece1ee;
+    --black: #f9f2fa;
+    --white: #1d1c1d;
+    --ahref: #f9f2fa;
+    --dark: #f5f5ff;
+    --shadow: rgba(15, 18, 24, 0.7);
+    --lookup: #ffffff;
+    --buttons: #ac9fc7;
+    --border: #88788a;
+    --machinename: #f9f2fa;
+    --mask: transparent;
+    --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Simple.png' %>) repeat;
+  }
+}
+
 /* nunito-regular - latin */
 @font-face {
   font-family: 'Nunito_400Regular';
@@ -81,17 +132,6 @@ $Nunito_600SemiBold: 'Nunito_600SemiBold', Helvetica, Arial, sans-serif;
 $Nunito_700Bold: 'Nunito_700Bold', Helvetica, Arial, sans-serif;
 $Nunito_800ExtraBold: 'Nunito_800ExtraBold', Helvetica, Arial, sans-serif;
 $Nunito_900Black: 'Nunito_900Black', Helvetica, Arial, sans-serif;
-$red: #fe46b0;
-$lightpink: #fff1f1;
-$brightpurple: #66017b;
-$darkblue: #232347;
-$purple: #e0e0ff;
-$grey: #7f7fa0;
-$vlightpurple: #fafaff;
-$lightpurple: #f5f5ff;
-$medgrey: #aeb1d2;
-$darkgrey: #47475f;
-$black: #000e18;
 
 /** mixins **/
 
@@ -135,15 +175,15 @@ html {
   min-height: 100%;
   position: relative;
   box-sizing: border-box;
-  background: #FFFFFF;
+  background: var(--white);
 }
 
 body {
   margin: 0 auto;
   padding: 0px;
-  background-color: #FFFFFF;
+  background-color: var(--white);
   background-size: 4px auto;
-  color: $black;
+  color: var(--black);
   font-family: $Nunito_400Regular;
   -webkit-font-smoothing: antialiased;
 }
@@ -164,12 +204,12 @@ h1 {
 }
 
 hr {
-  border: 1px solid $medgrey;
+  border: 1px solid var(--medgrey);
   width: 90%;
 }
 
 a {
-  color: #383838;
+  color: var(--ahref);
   text-decoration: underline;
   border: 0;
 }
@@ -177,7 +217,7 @@ a {
 a:hover,
 a:active {
   text-decoration: underline;
-  color: $red;
+  color: var(--red);
 }
 
 button:hover,
@@ -231,15 +271,15 @@ ul li li {
 }
 
 .bg_purple {
-  background-color: $purple;
+  background-color: var(--purple);
 }
 
 .bg_lightpurple {
-  background-color: $lightpurple;
+  background-color: var(--lightpurple);
 }
 
 .bg_vlightpurple {
-  background-color: $vlightpurple;
+  background-color: var(--bg_vlightpurple);
 }
 
 .w_320 {
@@ -468,27 +508,31 @@ ul li li {
 }
 
 .dark {
-  color: #0b252b;
+  color: var(--dark);
 }
 
 .red {
-  color: $red;
+  color: var(--red);
 }
 
 .darkgrey {
-  color: $darkgrey;
+  color: var(--darkgrey);
 }
 
 .black {
-  color: $black;
+  color: var(--black);
 }
 
 .grey {
-  color: $grey;
+  color: var(--grey);
+}
+
+.medgrey {
+  color: var(--medgrey);
 }
 
 .brightpurple {
-  color: $brightpurple;
+  color: var(--brightpurple);
 }
 
 .lh_30 {
@@ -521,8 +565,8 @@ h1 {
 /** Login **/
 
 #login {
-  background: white;
-  border: 4px solid $purple;
+  background: var(--lightpurple);
+  border: 4px solid var(--purple);
   padding: 0 15px 10px;
   border-radius: 10px;
 }
@@ -537,7 +581,7 @@ h1 {
 #login input.boolean {
   @include set(16px, 16px, 0, 0 5px 0 0);
   font-size: 12px;
-  border: 1px solid $darkgrey;
+  border: 1px solid var(--darkgrey);
 }
 
 form.new_user .input,
@@ -557,9 +601,9 @@ form.edit_user .form-actions {
 }
 
 .error_notification {
-  color: $red;
+  color: var(--red);
   line-height: 16px;
-  background: $purple;
+  background: var(--purple);
   text-align: center;
   font-family: $italic;
   padding: 4px;
@@ -589,8 +633,8 @@ form.edit_user .form-actions {
   font-size: 16px;
   margin-left: 10px;
   margin-top: -3px;
-  background: $black;
-  color: $vlightpurple;
+  background: var(--darkblue);
+  color: var(--vlightpurple);
   padding: 5px;
   font-family: $Nunito_600SemiBold;
   text-align: center;
@@ -631,7 +675,7 @@ form.edit_user .form-actions {
 
 div.stats {
   line-height: 22px;
-  border-bottom: 1px solid $red;
+  border-bottom: 1px solid var(--red);
   padding: 20px 0;
 }
 
@@ -641,14 +685,14 @@ div.stats {
 }
 
 span.stats {
-  background: $purple;
+  background: var(--lightpurple);
   font-size: 32px;
   line-height: 32px;
   padding: 5px;
   float: left;
   margin-top: -10px;
   margin-left: 5px;
-  color: $red;
+  color: var(--red);
 }
 
 .stats_text {
@@ -663,7 +707,7 @@ span.stats {
 /** Home **/
 
 p.notice {
-  color: $red;
+  color: var(--red);
   font-size: 18px;
   text-align: center;
   margin: -10px auto 10px;
@@ -676,7 +720,7 @@ p.alert {
   line-height: 36px;
   text-align: center;
   margin: 25px auto 0;
-  color: $red;
+  color: var(--red);
   border-bottom: 1px solid #c3c0bc;
   border-top: 1px solid #c3c0bc;
   padding: 10px;
@@ -690,7 +734,7 @@ p.alert {
 #flash-message #flash_notice,
 #flash-message #flash_alert,
 #flash_error {
-  color: $purple;
+  color: var(--purple);
   font-size: 28px;
   text-align: center;
   top: 50%;
@@ -720,7 +764,7 @@ p.alert {
 
 .store_img {
   margin-top: 2px;
-  border: 2px solid $purple;
+  border: 2px solid var(--purple);
 }
 
 .store_shirt {
@@ -737,13 +781,13 @@ p.alert {
   width: 100%;
   min-width: 768px;
   height: 52px;
-  background: $darkblue;
+  background: var(--darkblue);
 }
 
 #header a {
   text-decoration: none;
   font-size: 14px;
-  color: $vlightpurple;
+  color: var(--vlightpurple);
 }
 
 #header a:hover {
@@ -764,9 +808,9 @@ p.alert {
 }
 
 #menu_container {
-  box-shadow: 5px 10px 10px rgba(90, 100, 117, 0.3);
+  box-shadow: 5px 10px 10px var(--shadow);
   width: 180px;
-  background: $vlightpurple;
+  background: var(--bg_vlightpurple);
   position: absolute;
   top: 52px;
   left: 0;
@@ -781,7 +825,7 @@ p.alert {
 
 #header hr {
   height: 1px;
-  background: $red;
+  background: var(--red);
   border: 0;
 }
 
@@ -805,12 +849,12 @@ p.alert {
   font-size: 16px;
   line-height: 16px;
   font-family: $Nunito_600SemiBold;
-  color: #383838;
+  color: var(--ahref);
 }
 
 #header ul li a:hover {
-  color: $darkgrey;
-  background-color: $purple;
+  color: var(--darkgrey);
+  background-color: var(--lightpurple);
 }
 
 #header ul li.menu_header_01,
@@ -933,11 +977,11 @@ a.logo_link img {
 
 .login a,
 .login_new a {
-  color: $red;
+  color: var(--red);
 }
 
 #login .button:hover {
-  background: $grey;
+  background: var(--grey);
 }
 
 #login .error {
@@ -952,7 +996,7 @@ a.logo_link img {
 
 .region_name_page,
 #header span.region_name_page a {
-  color: $lightpink;
+  color: #fff1f1;
   font-size: 20px;
   line-height: 22px;
   font-family: $Nunito_800ExtraBold;
@@ -966,6 +1010,7 @@ a.logo_link img {
 
 form#address_search_form input.lookup_search_input {
   @include radius(10px);
+  border-color: var(--border);
   vertical-align: bottom;
 }
 
@@ -1027,7 +1072,7 @@ form#address_search_form input.lookup_search_input {
   height: 20px;
   text-align: center;
   line-height: 20px;
-  background: $vlightpurple;
+  background: var(--bg_vlightpurple);
 }
 
 #footer.footer_fixed {
@@ -1094,12 +1139,12 @@ form#address_search_form input.lookup_search_input {
   font-size: 16px;
   line-height: 16px;
   border: 0px;
-  color: $darkgrey;
-  background-color: $vlightpurple;
+  color: var(--darkgrey);
+  background-color: var(--bg_vlightpurple);
   @include radius(10px);
   margin-left: 5px;
-  box-shadow: 2px 5px 10px #d0d5d9;
-  -webkit-box-shadow: 2px 5px 10px #d0d5d9;
+  box-shadow: 2px 5px 10px var(--shadow);
+  -webkit-box-shadow: 2px 5px 10px var(--shadow);
   font-family: $Nunito_600SemiBold;
 }
 
@@ -1111,22 +1156,21 @@ form#address_search_form input.lookup_search_input {
 span.or {
   font-size: 16px;
   position: absolute;
-  background: $medgrey;
+  background: var(--border);
   height: 28px;
   line-height: 26px;
   width: 22px;
   text-align: center;
-  color: #FFFFFF;
+  color: var(--vlightpurple);
   font-family: $italic;
-  padding-right: 5px;
 }
 
 .search_field_container {
   width: 55%;
   height: 28px;
-  border: 2px solid $medgrey;
+  border: 2px solid var(--border);
   float: right;
-  background: #FFFFFF;
+  background: var(--white);
   @include radius(0 10px 10px 0);
 }
 
@@ -1137,12 +1181,12 @@ span.or {
   margin: -2px -2px 0 0;
   @include radius(10px);
   padding: 5px 25px;
-  background: $darkgrey;
-  color: $vlightpurple;
+  background: var(--grey);
+  color: var(--vlightpurple);
   font-family: $Nunito_600SemiBold;
   float: right;
-  box-shadow: 2px 5px 10px #d0d5d9;
-  -webkit-box-shadow: 2px 5px 10px #d0d5d9;
+  box-shadow: 2px 5px 10px var(--shadow);
+  -webkit-box-shadow: 2px 5px 10px var(--shadow);
 }
 
 .location_search .map.search {
@@ -1190,10 +1234,10 @@ span.or {
 }
 
 #other_search_options button:hover {
-  background: $darkgrey;
+  background: var(--darkgrey);
   text-decoration: none;
   border-color: #642501;
-  color: $lightpink !important;
+  color: var(--medgrey) !important;
   cursor: pointer;
 }
 
@@ -1210,8 +1254,8 @@ span.or {
   z-index: 20;
   @include radius(0 0 5px 5px);
   padding: 4px;
-  background-color: #f5f5ff;
-  box-shadow: 0 5px 10px #d0d5d9;
+  background-color: var(--lightpurple);
+  box-shadow: 0 5px 10px var(--shadow);
 }
 
 #lookup_map,
@@ -1235,7 +1279,7 @@ span.or {
   float: left;
   padding: 95px 15px 15px 15px;
   width: 42%;
-  background: #FFFFFF;
+  background: var(--white);
   position: relative;
   -webkit-transform: translateZ(0);
 }
@@ -1270,7 +1314,7 @@ input.single_hide {
   position: fixed;
   top: 100px;
   width: 110px;
-  background: #ffffff;
+  background: var(--lightpink);
   text-align: center;
   padding: 5px;
   @include radius(10px);
@@ -1284,7 +1328,7 @@ input.single_hide {
 }
 
 #search_link_wrapper a {
-  color: $grey;
+  color: var(--ahref);
   font-family: $italic;
   text-decoration: none;
 }
@@ -1296,8 +1340,8 @@ input.single_hide {
 
 #mapFollow_wrapper {
   top: 220px;
-  color: $darkgrey;
-  background-color: $lightpink;
+  color: var(--darkgrey);
+  background-color: var(--lightpink);
 }
 
 .toggle_btn_reg {
@@ -1328,14 +1372,10 @@ form select#by_operator_id {
 }
 
 .active_section_link {
-  background-color: $darkgrey !important;
-  color: $lightpink !important;
+  background-color: var(--grey) !important;
+  color: #fff1f1 !important;
   box-shadow: none !important;
   -webkit-box-shadow: none !important;
-}
-
-a.active_section_link:hover {
-  background: $lightpink !important;
 }
 
 /** Search Results **/
@@ -1360,12 +1400,12 @@ a.active_section_link:hover {
 }
 
 .show_location_detail_location:hover {
-  background-color: $purple;
+  background-color: var(--bg_vlightpurple);
   @include radius(10px);
 }
 
 #search_results_count {
-  color: $red;
+  color: var(--red);
   position: absolute;
   top: 95px;
   left: 0;
@@ -1385,7 +1425,7 @@ a.active_section_link:hover {
 .name {
   height: 100%;
   color: #f5f5ff;
-  background-color: $grey;
+  background-color: var(--grey);
   @include radius(10px 10px 0 0);
   padding: 10px 120px 10px 10px;
   font-family: $Nunito_800ExtraBold;
@@ -1449,18 +1489,19 @@ li.address_full {
 .lmx_count {
   margin: 20px auto 10px;
   width: fit-content;
-  border-bottom: 5px solid $purple;
+  border-bottom: 5px solid var(--purple);
 }
 
 .machine_name_container {
-  background-color: $darkgrey;
-  color: #ffffff;
+  color: var(--machinename);
+  font-family: $Nunito_800ExtraBold;
   height: 100%;
   width: 100%;
-  padding: 6px 6px 6px 12px;
-  @include radius(20px);
+  padding: 6px 6px 6px 0px;
   display: flex;
   align-items: center;
+  font-size: 24px;
+  line-height: 28px;
 }
 
 .machine_name {
@@ -1472,7 +1513,6 @@ li.address_full {
 }
 
 #search_results .machine_names div {
-  // color: $red;
   font-size: 18px;
   padding: 5px 0 !important;
   line-height: 20px;
@@ -1481,7 +1521,7 @@ li.address_full {
 }
 
 span.man_year {
-  color: $grey; 
+  color: var(--darkgrey); 
   font-size: 16px;
   font-family: $Nunito_400Regular;
 }
@@ -1492,9 +1532,9 @@ span.man_year {
 }
 
 span.machine_year_man {
-  font-size: 18px;
+  font-size: 24px;
   font-family: $italic;
-  color: $vlightpurple;
+  color: var(--darkgrey);
 }
 
 .machine_lmx {
@@ -1529,9 +1569,9 @@ span.machine_year_man {
   align-items: center;
   width: 220px;
   text-align: center;
-  box-shadow: 2px 5px 10px #d0d5d9;
-  -moz-box-shadow: 2px 5px 10px #d0d5d9;
-  -webkit-box-shadow: 2px 5px 10px #d0d5d9;
+  box-shadow: 2px 5px 10px var(--shadow);
+  -moz-box-shadow: 2px 5px 10px var(--shadow);
+  -webkit-box-shadow: 2px 5px 10px var(--shadow);
   padding: 5px 10px;
   @include radius(10px);
   margin: 10px auto 0;
@@ -1548,8 +1588,8 @@ span.machine_year_man {
   margin-left: 480px;
   width: 260px;
   margin-top: 0px;
-  background: $black;
-  color: $vlightpurple;
+  background: var(--darkblue);
+  color: var(--vlightpurple);
   padding: 5px;
   font-family: $Nunito_600SemiBold;
 }
@@ -1627,16 +1667,16 @@ span.machine_year_man {
 .high_score .sub_nav_item,
 .score_container_lmx>.sub_nav_item {
   width: 220px;
-  background: white;
+  background: var(--buttons);
   @include radius(10px);
   margin: 10px auto;
   text-align: center;
-  box-shadow: 2px 5px 10px #d0d5d9;
-  -webkit-box-shadow: 2px 5px 10px #d0d5d9;
+  box-shadow: 2px 5px 10px var(--shadow);
+  -webkit-box-shadow: 2px 5px 10px var(--shadow);
   font-size: 14px;
   height: 26px;
   line-height: 26px;
-  color: #333333;
+  color: #000e18;
   text-decoration: none;
   font-family: $Nunito_600SemiBold;
 }
@@ -1646,19 +1686,13 @@ span.machine_year_man {
   justify-content: center;
 }
 
-.machine_condition_lmx:hover {
-  cursor: pointer;
-  background-color: $purple;
-  @include radius(10px);
-}
-
 .machine_condition_new_line span {
   display: inline;
 }
 
 .machine_condition_display_lmx span.machine_condition_date,
 .machine_condition_display_lmx span.machine_condition_name {
-  color: $grey;
+  color: var(--medgrey);
   font-size: 14px;
   margin: 6px 0 0;
   display: inline-block;
@@ -1682,17 +1716,17 @@ span.machine_year_man {
   font-size: 14px;
   font-family: $Nunito_400Regular;
   font-weight: normal;
-  color: $darkgrey;
+  color: var(--darkgrey);
   background: transparent;
   text-decoration: underline;
 }
 
 .delete_condition_button:hover {
-  color: $red;
+  color: var(--red);
 }
 
 .update_condition_button {
-  color: $darkgrey;
+  color: var(--darkgrey);
 }
 
 img.machine_comment_icon {
@@ -1728,8 +1762,8 @@ span.machine_condition_text {
 
 .machine_condition_new_line span.machine_condition_date {
   margin: 0 0 0 8px;
-  color: $grey;
-  font-family: $Nunito_400Regular;
+  color: var(--medgrey);
+  font-family: $italic;
 }
 
 div.machine_condition_meta {
@@ -1739,14 +1773,14 @@ div.machine_condition_meta {
 .machine_condition_new_line {
   font-size: 14px;
   line-height: 18px;
-  border-bottom: 1px solid $purple;
+  border-bottom: 1px solid var(--purple);
   margin-bottom: 10px;
   padding-bottom: 5px;
 }
 
 .machine_condition_new_line .machine_condition {
   font-family: $Nunito_400Regular;
-  color: #333333;
+  color: var(--darkgrey);
 }
 
 .machine_condition_edit_lmx .edit_mode,
@@ -1795,7 +1829,7 @@ div.machine_condition_meta {
 
 .add_picture_location,
 .add_machine_location {
-  background-color: $vlightpurple;
+  background-color: var(--bg_vlightpurple);
 }
 
 .add_machine_location form select option {
@@ -1804,7 +1838,7 @@ div.machine_condition_meta {
 
 .remove_picture_button {
   color: red;
-  background: white;
+  background: var(--white);
   border: none;
   border-radius: 5px;
   padding: 0 5px;
@@ -1879,42 +1913,38 @@ br.clear {
   font-size: 14px;
   line-height: 16px;
   font-family: $Nunito_600SemiBold;
-  color: #f9f9f9;
   cursor: pointer;
   height: 100%;
   padding: 2px 0 1px 2px;
 }
 
 .sub_nav_location div.address {
-  color: $grey;
-}
-
-.sub_nav_location .location_type {
-  background: transparent;
+  color: var(--darkgrey);
 }
 
 .search_result {
+  background: var(--lightpurple);
   height: 100%;
   @include radius(10px);
-  box-shadow: 2px 5px 10px #d0d5d9;
+  box-shadow: 2px 5px 10px var(--shadow);
 }
 
 .search_result div.location_types {
   margin: 6px 0 4px;
-  color: $grey;
+  color: var(--grey);
   font-size: 14px;
 }
 
 #form select,
 form select {
-  border: 2px solid $medgrey;
-  background-color: $vlightpurple;
+  border: 2px solid var(--border);
+  background-color: var(--bg_vlightpurple);
   height: 28px;
   @include radius(10px);
   font-size: 15px;
   padding-right: 3px;
   padding-left: 3px;
-  color: $darkgrey;
+  color: var(--darkgrey);
 }
 
 #form select:hover,
@@ -1947,10 +1977,10 @@ form select:hover {
 .metadata_edit_location input.save_button,
 .metadata_edit_location input.cancel_button,
 #login .button {
-  border: 2px solid $medgrey;
+  border: 2px solid var(--medgrey);
   @include radius(10px);
-  box-shadow: 1px 1px 3px #b7cfc1;
-  -webkit-box-shadow: 1px 1px 3px #b7cfc1;
+  box-shadow: 1px 1px 3px var(--shadow);
+  -webkit-box-shadow: 1px 1px 3px var(--shadow);
   padding: 4px 8px;
   cursor: pointer;
   margin-right: 4px;
@@ -1958,8 +1988,8 @@ form select:hover {
   font-family: $Nunito_600SemiBold;
   text-transform: uppercase;
   height: 28px;
-  background: $darkgrey;
-  color: $vlightpurple;
+  background: var(--darkgrey);
+  color: var(--bg_vlightpurple);
 }
 
 input.search:active,
@@ -1975,7 +2005,7 @@ input.search:active,
   box-shadow: none;
   -webkit-box-shadow: none;
   transform: translate(1px, 1px);
-  background: $purple;
+  background: var(--purple);
 }
 
 .save_button {
@@ -1991,8 +2021,8 @@ input.submit_button:hover,
 .cancel_button:hover,
 .add_score:hover,
 .new_location_picture_xref input.submit_picture:hover {
-  box-shadow: 1px 1px 3px #888;
-  -webkit-box-shadow: 1px 1px 3px #888;
+  box-shadow: 1px 1px 3px var(--shadow);
+  -webkit-box-shadow: 1px 1px 3px var(--shadow);
   background: #4c3924;
   color: #EBF1FD;
   background: #5a5a5a !important;
@@ -2010,11 +2040,11 @@ input.submit_button:hover,
 input.score,
 #add_machine_by_name,
 .lookup_search_input {
-  background: #FFFFFF;
+  background: var(--white);
   padding: 0 5px;
   height: 28px;
-  border: 2px solid $medgrey;
-  color: #000;
+  border: 2px solid var(--border);
+  color: var(--black);
   @include radius(10px);
 }
 
@@ -2025,7 +2055,7 @@ input.search,
 .metadata_edit_location input.cancel_button,
 .location_detail input.cancel_button,
 .location_detail input.save_button {
-  box-shadow: 1px 1px 3px #888;
+  box-shadow: 1px 1px 3px var(--shadow);
 }
 
 .metadata_edit_location input.cancel_button {
@@ -2038,8 +2068,8 @@ input.search,
   height: 28px;
   font-size: 16px;
   margin: 0 0 0 4px;
-  background: #FFFFFF;
-  color: $black;
+  background: var(--white);
+  color: var(--black);
   font-family: $Nunito_400Regular;
   margin: 0;
   padding-left: 4px;
@@ -2106,7 +2136,7 @@ input.lookup_search_input:focus {
 .show_scores_lmx,
 .show_conditions_lmx {
   padding: 5px 0 5px 5px;
-  background-color: #ffffff;
+  background-color: var(--lightpurple);
   width: 100%;
 }
 
@@ -2114,26 +2144,15 @@ input.lookup_search_input:focus {
 .add_machine_location_toggle,
 .recent_location_activity_location_toggle,
 .former_machines_location_toggle {
-  color: $black;
+  color: #000e18;
   font-family: $Nunito_600SemiBold;
-  background: white;
+  background: var(--buttons);
   @include radius(10px);
   margin: 10px auto;
   text-align: center;
   width: 300px;
-  box-shadow: 2px 5px 10px #d0d5d9;
-  -webkit-box-shadow: 2px 5px 10px #d0d5d9;
-}
-
-.add_picture_location_toggle:hover,
-.add_machine_location_toggle:hover,
-.recent_location_activity_location_toggle:hover,
-.former_machines_location_toggle:hover {
-  background: $grey;
-}
-
-.add_scores_lmx_toggle {
-  color: #333333;
+  box-shadow: 2px 5px 10px var(--shadow);
+  -webkit-box-shadow: 2px 5px 10px var(--shadow);
 }
 
 .add_scores_lmx label {
@@ -2142,8 +2161,13 @@ input.lookup_search_input:focus {
 
 .show_scores_lmx_toggle:hover,
 .show_conditions_lmx_toggle:hover,
-.add_scores_lmx_toggle:hover {
-  background-color: $purple;
+.add_scores_lmx_toggle:hover,
+.machine_condition_lmx:hover,
+.add_picture_location_toggle:hover,
+.add_machine_location_toggle:hover,
+.recent_location_activity_location_toggle:hover,
+.former_machines_location_toggle:hover {
+  background-color: var(--purple);
   color: #333333;
 }
 
@@ -2154,7 +2178,7 @@ input.lookup_search_input:focus {
 
 .operator a:hover,
 .location_type a:hover {
-  color: $red;
+  color: var(--red);
 }
 
 div.location_type {
@@ -2162,7 +2186,8 @@ div.location_type {
   @include radius(5px);
   padding: 6px 5px;
   margin: 0 5px 5px;
-  background: #f5f5ff;
+  background: var(--purple);
+  width: 80px;
 }
 
 div.location_type_container {
@@ -2181,7 +2206,11 @@ div.location_type_container {
   line-height: 14px;
   width: 100%;
   display: block;
-  color: #383838;
+  color: var(--ahref);
+}
+
+.location_type span {
+  color: var(--grey);
 }
 
 .location_type img {
@@ -2201,11 +2230,11 @@ span.last_updated {
   font-style: normal;
   font-size: 13px;
   font-family: $italic;
-  color: #5d5d5d;
+  color: var(--ahref);
 }
 
 span .last_updated_username {
-  color: $red;
+  color: var(--red);
   font-family: $Nunito_700Bold;
   font-size: 13px;
 }
@@ -2217,8 +2246,8 @@ span .last_updated_username {
   font-size: 16px;
   margin-left: 5px;
   margin-top: 8px;
-  background: $black;
-  color: $vlightpurple;
+  background: var(--darkblue);
+  color: var(--vlightpurple);
   padding: 5px;
   font-family: $Nunito_600SemiBold;
 }
@@ -2242,7 +2271,7 @@ input.score {
   height: 100%;
   font-family: $Nunito_400Regular;
   @include radius(10px);
-  color: $darkgrey;
+  color: var(--darkgrey);
 }
 
 .metadata_show_location {
@@ -2255,7 +2284,7 @@ input.score {
 
 .location_detail_sub {
   padding: 10px;
-  background: $vlightpurple;
+  background: var(--bg_vlightpurple);
 }
 
 .location_name {
@@ -2273,8 +2302,8 @@ input.score {
   font-size: 16px;
   margin-left: -30px;
   margin-top: 30px;
-  background: $black;
-  color: $vlightpurple;
+  background: var(--darkblue);
+  color: var(--vlightpurple);
   padding: 5px;
   font-family: $Nunito_600SemiBold;
   position: absolute;
@@ -2315,9 +2344,9 @@ input.score {
 }
 
 .desc_button {
-  color: $darkgrey;
+  color: var(--darkgrey);
   line-height: 20px;
-  background: $vlightpurple;
+  background: var(--bg_vlightpurple);
   margin: 5px 0;
   border-top: 1px solid #CAC6C6;
   border-bottom: 1px solid #CAC6C6;
@@ -2325,7 +2354,7 @@ input.score {
 }
 
 .desc_show_location {
-  color: $grey;
+  color: var(--medgrey);
   font-size: 13px;
   line-height: 15px;
   font-family: $italic;
@@ -2339,28 +2368,27 @@ input.score {
 
 .show_location_detail_location {
   padding: 0;
-  background: $vlightpurple;
+  background: var(--lightpurple);
   margin-bottom: 12px;
   border-radius: 10px;
   min-height: 130px;
 }
 
-.show_location_detail_location div.location_type {
-  padding: 0;
-  margin: 5px;
-  width: 70px;
+.show_location_detail_location .location_type {
+  margin: -30px 15px 5px;
 }
 
 .show_location_detail_location .name {
-  padding: 10px;
+  padding-bottom: 10px;
 }
 
-.show_location_detail_location > div {
+.show_location_detail_location .address,
+.show_location_detail_location .machine_names {
   padding: 10px 10px 0px 15px;
 }
 
 .show_location_detail_location > div.pb_15 {
-  padding-bottom: 15px;
+  padding: 10px 10px 15px 15px;
 }
 
 .show_location_detail_location .location_type img {
@@ -2504,8 +2532,9 @@ img.small_banner_icon {
 #location_maker label,
 #contact_maker label {
   display: block;
-  color: #2E2322;
+  color: var(--black);
   font-family: $Nunito_600SemiBold;
+  margin-bottom: 5px;
 }
 
 #location_maker {
@@ -2569,9 +2598,9 @@ img.small_banner_icon {
 
 .links_category,
 .app_title {
-  background-color: $purple;
+  background-color: var(--lightpurple);
   padding: 5px;
-  color: $red !important;
+  color: var(--red) !important;
   margin-top: 0;
 }
 
@@ -2581,7 +2610,7 @@ img.small_banner_icon {
 
 .question {
   font-size: 20px;
-  color: $darkgrey;
+  color: var(--darkgrey);
   font-family: $Nunito_700Bold;
 }
 
@@ -2597,103 +2626,15 @@ img.small_banner_icon {
   padding: 5px;
 }
 
-@-webkit-keyframes colorChange {
-  0% {
-    color: #2e2322;
-  }
-
-  50% {
-    color: $darkgrey;
-    text-shadow: 1px 1px 5px #CCCCCC;
-    background-color: $purple;
-  }
-
-  100% {
-    color: #2e2322;
-  }
-}
-
-@-moz-keyframes colorChange {
-  0% {
-    color: #2e2322;
-  }
-
-  50% {
-    color: $darkgrey;
-    text-shadow: 1px 1px 5px #CCCCCC;
-    background-color: $purple;
-  }
-
-  100% {
-    color: #2e2322;
-  }
-}
-
-@keyframes colorChange {
-  0% {
-    color: #2e2322;
-  }
-
-  50% {
-    color: $darkgrey;
-    text-shadow: 1px 1px 5px #CCCCCC;
-    background-color: $purple;
-  }
-
-  100% {
-    color: #2e2322;
-  }
-}
-
-@-o-keyframes colorChange {
-  0% {
-    color: #2e2322;
-  }
-
-  50% {
-    color: $darkgrey;
-    text-shadow: 1px 1px 5px #CCCCCC;
-    background-color: $purple;
-  }
-
-  100% {
-    color: #2e2322;
-  }
-}
-
 span.begin {
   padding: 10px;
   display: block;
-  background-color: $vlightpurple;
-
-  -webkit-animation-duration: 5s;
-  -webkit-animation-name: colorChange;
-  -webkit-animation-delay: 1s;
-  -webkit-animation-timing-function: ease-in-out;
-  -webkit-animation-iteration-count: 1;
-
-  -moz-animation-duration: 5s;
-  -moz-animation-name: colorChange;
-  -moz-animation-delay: 1s;
-  -moz-animation-timing-function: ease-in-out;
-  -moz-animation-iteration-count: 1;
-
-  -o-animation-duration: 5s;
-  -o-animation-name: colorChange;
-  -o-animation-delay: 1s;
-  -o-animation-timing-function: ease-in-out;
-  -o-animation-iteration-count: 1;
-
-  animation-duration: 5s;
-  animation-name: colorChange;
-  animation-delay: 1s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: 1;
+  background-color: var(--bg_vlightpurple);
 }
 
 #map,
 #map_canvas {
-  background: #ffffff;
+  background: var(--white);
 }
 
 #map {
@@ -2709,11 +2650,11 @@ span.begin {
   height: 100% !important;
   margin-left: -42%;
   position: relative;
-  background: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>) repeat;
+  background: var(--splashtile);
 }
 
 .mask {
-  background-color: rgba(245, 251, 255, 0.7);
+  background-color: var(--mask);
   position: absolute;
   z-index: 9999;
   height: 100%;
@@ -2721,8 +2662,9 @@ span.begin {
 }
 
 .closest_button {
-  border: 3px solid $darkgrey;
-  background: $purple;
+  border: 3px solid var(--border);
+  background: var(--lightpurple);
+  color: var(--darkgrey);
   @include radius(10px);
   font-size: 22px;
   text-align: center;
@@ -2739,17 +2681,16 @@ span.begin {
   align-items: center;
   z-index: 150;
   line-height: 42px;
-  box-shadow: 5px 7px 10px rgba(90, 100, 117, 0.5);
+  box-shadow: 5px 7px 10px var(--shadow);
 }
 
 .closest_button a {
   text-decoration: none;
-  color: $darkgrey;
+  font-family: $Nunito_700Bold;
 }
 
 .closest_button a:hover {
-  text-decoration: none;
-  color: $red;
+  text-decoration: underline;
 }
 
 #intro {
@@ -2800,12 +2741,12 @@ span.begin {
 .local_logo img {
   max-width: 460px;
   padding: 10px;
-  background-color: $vlightpurple;
+  background-color: var(--bg_vlightpurple);
   @include radius(5px);
 }
 
 .black_text {
-  color: #383838;
+  color: var(--black);
   font-size: 16px;
   margin-top: 0;
 }
@@ -2820,7 +2761,7 @@ div.map_summary_info {
   font-family: $Nunito_400Regular;
   font-size: 16px;
   line-height: 26px;
-  color: $darkgrey;
+  color: var(--darkgrey);
   font-weight: normal;
   text-decoration: none;
   padding-top: 5px;
@@ -2840,7 +2781,7 @@ div.region_name {
 
 div.region_name_container {
   text-align: center;
-  background: #ffffff;
+  background: var(--white);
 }
 
 .p1 {
@@ -2906,7 +2847,7 @@ div.state_name_container {
 }
 
 span.state_name {
-  color: $red;
+  color: var(--red);
   font-size: 20px;
   line-height: 22px;
   font-family: $Nunito_700Bold;
@@ -2923,7 +2864,6 @@ li span.state_name {
 .info {
   font-size: 11px;
   font-family: $italic;
-  color: #675a5a;
 }
 
 /** Contact/Submission Forms **/
@@ -2986,7 +2926,9 @@ li span.state_name {
 /** Select2 **/
 
 .select2-container .select2-selection--multiple {
-  border: 2px solid #aeb1d2 !important;
+  border: 2px solid var(--border) !important;
+  background-color: var(--white) !important;
+  border-radius: 10px !important;
 }
 
 /** High Rollers **/
@@ -3004,19 +2946,19 @@ li span.state_name {
 .high_score_date {
   margin: 2px 0 10px;
   display: inline-block;
-  color: $grey;
+  color: var(--medgrey);
   font-size: 12px;
 }
 
 .column .sub_nav_item {
-  background: $medgrey;
+  background: var(--grey);
 }
 
 div.score_list span,
 span.stats_list span {
   line-height: 20px;
   font-size: 16px;
-  color: $darkgrey;
+  color: var(--darkgrey);
   display: block;
   font-family: $Nunito_700Bold;
 }
@@ -3026,7 +2968,7 @@ span.stats_list span.score_meta {
   padding-bottom: 10px;
   font-size: 14px;
   font-family: $italic;
-  color: #666;
+  color: var(--darkgrey);
   font-weight: normal;
   display: inline;
 }
@@ -3034,19 +2976,19 @@ span.stats_list span.score_meta {
 div.score_list span.score_meta_gen,
 span.stats_list span.score_meta_gen {
   display: inline;
-  color: #666;
+  color: var(--darkgrey);
   font-size: 14px;
 }
 
 div.score_list span.score_machine,
 span.stats_list span.score_machine {
   text-decoration: underline;
-  background: $vlightpurple;
+  background: var(--bg_vlightpurple);
 }
 
 div.score_list {
   margin-bottom: 15px;
-  border-bottom: 1px solid $purple;
+  border-bottom: 1px solid var(--purple);
 }
 
 /** Map API **/
@@ -3130,26 +3072,26 @@ div.score_list {
 .ui-menu .ui-menu-item a.ui-state-focus,
 .ui-menu .ui-menu-item a.ui-state-active,
 .ui-menu .ui-menu-item a {
-  background: #ffffff none no-repeat;
+  background: var(--white) none no-repeat;
   margin: 0;
   display: block;
   border: 0;
   border-collapse: collapse;
-  color: $black;
+  color: var(--black);
 }
 
 .ui-menu-item:hover,
 .ui-menu-item a:hover {
-background: $purple;
+background: var(--lightpurple);
 padding: 1px 5px;
-color: $black;
+color: var(--black);
 }
 
 .ui-menu-item-wrapper:hover,
 .ui-menu-item-wrapper:active,
 .ui-menu-item-wrapper:focus {
-  background: $purple;
-  color: $black;
+  background: var(--lightpurple);
+  color: var(--black);
 }
 
 /** Promote **/
@@ -3170,7 +3112,7 @@ color: $black;
   float: left;
   padding: 8px;
   width: calc(50% - 20px);
-  border: 2px solid $black;
+  border: 2px solid var(--black);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -3200,14 +3142,14 @@ color: $black;
   z-index: 99; 
   border: none;
   outline: none;
-  background-color: #9718b1; 
-  color: white; 
+  background-color: var(--brightpurple); 
+  color: var(--white); 
   cursor: pointer; 
   font-family: $Nunito_700Bold;
   padding: 10px; 
   border-radius: 10px; 
   font-size: 18px; 
-  box-shadow: 5px 5px 5px rgba(90, 100, 117, 0.5);
+  box-shadow: 5px 5px 5px var(--shadow);
 }
 
 #top_button:hover {

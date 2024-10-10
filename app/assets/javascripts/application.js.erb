@@ -56,10 +56,21 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
 
   var bounds = new maplibregl.LngLatBounds();
 
+  if (window.matchMedia) {
+    // Check if the dark-mode Media-Query matches
+    if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+      var map_style = map_style_obj_dark;
+    } else {
+      var map_style = map_style_obj;
+    }
+  } else {
+    var map_style = map_style_obj;
+  }
+
   if (mapAdjusted === 0) {
     map = new maplibregl.Map({
       container: 'map_canvas',
-      style: map_style_obj
+      style: map_style
     });
     map.addControl(new maplibregl.ScaleControl({unit: 'imperial'}), 'bottom-right');
     map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
