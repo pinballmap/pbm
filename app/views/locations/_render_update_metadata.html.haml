@@ -27,16 +27,16 @@
   - if (l.operator_id)
     %div.operator
       = image_tag('icons/wrench-outline.svg', :class => 'meta_icon')
-      %span.medgrey Operated by:
+      %span.darkgrey Operated by:
       - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
         %span &nbsp;#{l.operator.name}
       - else
         %span
           =link_to "#{l.operator.name}", "#{l.operator.website}", :target => "_blank"
     - if (l.operator.operator_has_email)
-      %div.operator_comments.medgrey (This operator receives machine comments)
+      %div.operator_comments.darkgrey (This operator receives machine comments)
     - else
-      %div.operator_comments.medgrey (This operator does not receive machine comments)
+      %div.operator_comments.darkgrey (This operator does not receive machine comments)
   - if !l.description.blank?
     %div.description
       = image_tag('icons/notebook-outline.svg', :class => 'meta_icon float_l')
