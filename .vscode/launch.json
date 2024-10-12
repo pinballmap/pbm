@@ -21,6 +21,20 @@
       "name": "Run single test", // will run only the test that is under the current line
       "request": "launch",
       "program": "bundle exec rspec ${file}:${lineNumber}",
+    },
+    {
+      "type": "ruby_lsp",
+      "name": "Run rake spec - current file with full chrome",
+      "request": "launch",
+      "env": {"NO_HEADLESS_CHROME": "true"},
+      "program": "bundle exec rspec ${file}",
+    },
+    {
+      "type": "ruby_lsp",
+      "name": "Run single test - full chrome", // will run only the test that is under the current line
+      "request": "launch",
+      "env": {"NO_HEADLESS_CHROME": "true"},
+      "program": "bundle exec rspec ${file}:${lineNumber}",
     }
   ]
 }
