@@ -29,20 +29,29 @@ RSpec.configure do |config|
     ex.run_with_retry retry: 3
   end
 
+  service = Selenium::WebDriver::Service.chrome
+  if ENV.fetch('CHROME_SERVICE_PATH', false) # rubocop:disable Style/IfUnlessModifier
+    service.executable_path = File.expand_path(ENV.fetch('CHROME_SERVICE_PATH'))
+  end
+
   Capybara.register_driver :selenium_chrome do |app|
-    Capybara::Selenium::Driver.new(app, browser: :chrome)
-  end
+    options = Selenium::WebDriver::Chrome::Options.new
+    unless ENV.fetch('NO_HEADLESS_CHROME', false)
+      options.add_argument('--headless')
+      options.add_argument('--window-size=2000,1000')
+    end
 
-  Capybara.register_driver :selenium_headless_chrome do |app|
-    capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-      chromeOptions: { args: %w[headless disable-gpu window-size=2000,1000] }
+    options.add_argument('--disable-gpu')
+
+    Capybara::Selenium::Driver.new(
+      app,
+      browser: :chrome,
+      options: options,
+      service: service
     )
-
-    Capybara::Selenium::Driver.new(app, browser: :chrome, desired_capabilities: capabilities)
   end
 
-  Capybara.javascript_driver = :selenium_chrome_headless
-  # Capybara.javascript_driver = :selenium_chrome
+  Capybara.javascript_driver = :selenium_chrome
 
   # == Mock Framework
   #
