@@ -176,6 +176,7 @@ describe LocationMachineXrefsController do
       @lmx.update_condition('great', { user_id: @user.id })
 
       visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
       page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
       expect(page).to have_selector("input[type=submit][value='delete']")
@@ -194,6 +195,7 @@ describe LocationMachineXrefsController do
       @lmx.update_condition('great', { user_id: nil })
 
       visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
       page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
       expect(page).to_not have_selector("input[type=submit][value='delete']")
@@ -203,6 +205,7 @@ describe LocationMachineXrefsController do
       @lmx.update_condition('great', { user_id: @user.id })
 
       visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
       page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
       find('a#edit_condition_' + @lmx.machine_conditions.first.id.to_s + '.button').click
@@ -222,6 +225,7 @@ describe LocationMachineXrefsController do
       @lmx.update_condition('great', { user_id: nil })
 
       visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
       page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
       expect(page).to_not have_selector('a#edit_condition_' + @lmx.machine_conditions.first.id.to_s + '.button')
@@ -230,6 +234,7 @@ describe LocationMachineXrefsController do
     it 'does not save conditions with <a href in it' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
       page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS SPAM <a href')
       page.find("input#save_machine_condition_#{@lmx.id}").click
@@ -248,6 +253,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{location.region ? location.region.name : 'map'}/?by_location_id=" + location.id.to_s
 
+      page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
       page.find("div#machine_condition_lmx_#{lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{lmx.id}", with: 'THIS IS NOT SPAM')
       page.find("input#save_machine_condition_#{lmx.id}").click
@@ -267,6 +273,7 @@ describe LocationMachineXrefsController do
     it 'should let me add a new machine description' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
       page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}.save_button").click
@@ -286,6 +293,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
       page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
       expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("Test Comment\ncibw\n#{@lmx.created_at.strftime('%b %d, %Y')}")
@@ -297,6 +305,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
       page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
       expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("Test Comment\nDELETED USER\n#{@lmx.created_at.strftime('%b %d, %Y')}")
@@ -311,6 +320,7 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
       page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
       expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 12')
@@ -339,12 +349,14 @@ describe LocationMachineXrefsController do
     it 'should add past conditions when you add a new condition and a condition exists' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
       page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'test')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
       page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}").click
@@ -362,6 +374,7 @@ describe LocationMachineXrefsController do
     it 'should let me cancel adding a new machine description' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
       page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#cancel_machine_condition_#{@lmx.id}").click
@@ -378,18 +391,20 @@ describe LocationMachineXrefsController do
     end
 
     it 'only show button on eligible machines' do
-      FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 10, year: 2010, manufacturer: 'Williams', ic_eligible: true))
-      FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 11, year: 2011, manufacturer: 'Williams', ic_eligible: false))
+      @lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 10, year: 2010, manufacturer: 'Williams', ic_eligible: true))
+      @lmx2 = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 11, year: 2011, manufacturer: 'Williams', ic_eligible: false))
 
       visit '/portland/?by_location_id=' + @location.id.to_s
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
 
       expect(page).to have_css('.ic_button', count: 1)
     end
 
     it 'initial state is null' do
-      FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 10, year: 2010, manufacturer: 'Williams', ic_eligible: true))
+      @lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 10, year: 2010, manufacturer: 'Williams', ic_eligible: true))
 
       visit '/portland/?by_location_id=' + @location.id.to_s
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
 
       expect(page).to have_css('.ic_unknown')
     end
@@ -398,6 +413,7 @@ describe LocationMachineXrefsController do
       @lmx = FactoryBot.create(:location_machine_xref, id: 11, location: @location, machine: FactoryBot.create(:machine, id: 10, year: 2010, manufacturer: 'Williams', ic_eligible: true))
 
       visit '/portland/?by_location_id=' + @location.id.to_s
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
 
       find('.ic_button').click
 
@@ -416,6 +432,7 @@ describe LocationMachineXrefsController do
       @lmx = FactoryBot.create(:location_machine_xref, id: 11, location: @location, machine: FactoryBot.create(:machine, id: 10, year: 2010, manufacturer: 'Williams', ic_eligible: true))
 
       visit '/portland/?by_location_id=' + @location.id.to_s
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
 
       find('.ic_unknown').click
       find('.ic_yes').click
@@ -1002,6 +1019,7 @@ describe LocationMachineXrefsController do
       FactoryBot.create(:machine_condition, location_machine_xref: lmx, comment: 'cool machine description')
 
       visit "/#{@region.name}/?by_location_id=#{screen_location.id}"
+      page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
       page.find("div#show_conditions_lmx_banner_#{lmx.id}").click
 
       within('div.search_result') do

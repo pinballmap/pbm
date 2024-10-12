@@ -1,7 +1,7 @@
 class LocationMachineXrefsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   has_scope :region
-  before_action :authenticate_user!, except: %i[index show render_machine_conditions]
+  before_action :authenticate_user!, except: %i[index show render_machine_conditions render_machine_tools]
 
   def create
     machine = nil
@@ -65,6 +65,10 @@ class LocationMachineXrefsController < InheritedResources::Base
     end
 
     render nothing: true
+  end
+
+  def render_machine_tools
+    render partial: 'location_machine_xrefs/render_machine_tools', locals: { lmx: LocationMachineXref.find(params[:id]) }
   end
 
   def render_machine_conditions

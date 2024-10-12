@@ -166,6 +166,7 @@ Rails.application.routes.draw do
       patch :update_machine_condition
     end
     member do
+      get :render_machine_tools
       get :render_machine_conditions
       patch :ic_toggle
     end

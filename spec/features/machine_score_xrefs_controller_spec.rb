@@ -30,6 +30,7 @@ describe MachineScoreXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
+      page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
       page.find("div#add_scores_lmx_banner_#{lmx.id}").click
       fill_in('score', with: 1234)
       click_on('Add Score')
@@ -45,6 +46,7 @@ describe MachineScoreXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
+      page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
       page.find("div#add_scores_lmx_banner_#{lmx.id}").click
       fill_in('score', with: '1,234')
       click_on('Add Score')
@@ -60,6 +62,7 @@ describe MachineScoreXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
+      page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
       page.find("div#add_scores_lmx_banner_#{lmx.id}").click
       fill_in('score', with: 'fword')
       click_on('Add Score')
@@ -110,6 +113,7 @@ describe MachineScoreXrefsController do
       lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine))
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
+      page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
 
       expect(page).to_not have_css("div#show_scores_lmx_banner_#{lmx.id}")
 

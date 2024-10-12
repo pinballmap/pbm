@@ -1,0 +1,9 @@
+- if lmx.machine.ic_eligible
+  = render :partial => 'location_machine_xrefs/ic_button', :locals => {:lmx => lmx}
+= render :partial => 'machine_conditions/show_machine_conditions', :locals => {:lmx => lmx}, cached: true
+= render :partial => 'location_machine_xrefs/update_machine_condition', :locals => {:lmx => lmx}
+= render :partial => 'machine_score_xrefs/add_high_score',  :locals => {:lmx => lmx}
+= render :partial => 'machine_score_xrefs/show_high_scores', :locals => {:lmx => lmx}
+%div.external_link_container
+  = render :partial => 'location_machine_xrefs/pintips', :locals => {:lmx => lmx}
+  = render :partial => 'location_machine_xrefs/kineticist', :locals => {:lmx => lmx}

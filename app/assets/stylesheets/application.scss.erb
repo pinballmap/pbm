@@ -25,6 +25,7 @@
   --machinename: #66017b;
   --mask: rgba(245, 251, 255, 0.7);
   --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>) repeat;
+  --filter: none;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -50,6 +51,7 @@
     --machinename: #f9f2fa;
     --mask: transparent;
     --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Simple.png' %>) repeat;
+    --filter: invert(100%);
   }
 }
 
@@ -581,7 +583,7 @@ h1 {
 #login input.boolean {
   @include set(16px, 16px, 0, 0 5px 0 0);
   font-size: 12px;
-  border: 1px solid var(--darkgrey);
+  border: 1px solid var(--border);
 }
 
 form.new_user .input,
@@ -981,7 +983,7 @@ a.logo_link img {
 }
 
 #login .button:hover {
-  background: var(--grey);
+  background: var(--brightpurple);
 }
 
 #login .error {
@@ -1237,7 +1239,7 @@ span.or {
   background: var(--darkgrey);
   text-decoration: none;
   border-color: #642501;
-  color: var(--medgrey) !important;
+  color: var(--white) !important;
   cursor: pointer;
 }
 
@@ -1447,6 +1449,7 @@ form select#by_operator_id {
   height: 15px;
   margin-right: 5px;
   margin-bottom: -2px;
+  filter: var(--filter);
 }
 
 .operator_comments {
@@ -1500,7 +1503,7 @@ li.address_full {
   padding: 6px 6px 6px 0px;
   display: flex;
   align-items: center;
-  font-size: 24px;
+  font-size: 22px;
   line-height: 28px;
 }
 
@@ -1532,14 +1535,14 @@ span.man_year {
 }
 
 span.machine_year_man {
-  font-size: 24px;
+  font-size: 22px;
   font-family: $italic;
   color: var(--darkgrey);
 }
 
 .machine_lmx {
   padding: 0 5px 5px 5px;
-  min-height: 90px;
+  margin-top: 20px;
 }
 
 .machine_sub_items {
@@ -1559,6 +1562,7 @@ span.machine_year_man {
   width: 12px;
   height: 12px;
   margin-left: 6px;
+  filter: var(--filter);
 }
 
 /* ic_toggle */
@@ -1893,6 +1897,28 @@ br.clear {
 
 .sub_nav_item:hover {
   color: #ffffff;
+}
+
+.machine_tools_lmx_toggle {
+  margin: 10px auto;
+  background-color: var(--bg_vlightpurple);
+  color: var(--darkgrey);  
+  border-radius: 10px;
+  font-size: 14px;
+  height: 28px;
+  width: 220px;
+  font-family: $Nunito_600SemiBold;
+}
+
+.machine_tools_lmx_toggle:hover {
+  color: var(--ahref);
+  text-decoration: underline;
+  background-color: var(--white);
+}
+
+.machine_tools_lmx_toggle img.banner_icon {
+  height: 22px;
+  filter: var(--filter);
 }
 
 .arrow {

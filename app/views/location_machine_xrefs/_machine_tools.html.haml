@@ -1,0 +1,11 @@
+- icon_path = image_tag('icons/details.svg', :alt => 'Machine Details', :class => 'banner_icon')
+= banner('machine_tools_lmx', 'Machine details', icon_path, lmx)
+%div[lmx, :machine_tools]{:style => 'display:none'}
+
+:javascript
+  $(function() {
+    $('#machine_tools_lmx_banner_#{lmx.id}').click(function () {
+      $('#machine_tools_lmx_#{lmx.id}').html(loadingHTML());
+      $('#machine_tools_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_machine_tools');
+    });
+  });
