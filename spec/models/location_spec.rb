@@ -128,13 +128,13 @@ describe Location do
       l = FactoryBot.create(:location)
       ['Foo', 'Bar', 'Baz', "Beans'"].each { |name| FactoryBot.create(:location_machine_xref, location: l, machine: FactoryBot.create(:machine, name: name)) }
 
-      expect(l.content_for_infowindow.chomp).to eq("'<div class=\"infowindow\" id=\"infowindow_#{l.id}\"><div class=\"gm_location_name\">Test Location Name</div><div class=\"gm_address\">303 Southeast 3rd Avenue<br />Portland, OR, 97214<br /></div><hr /><div class=\"gm_machines\" id=\"gm_machines_#{l.id}\">Bar<br />Baz<br />Beans\\'<br />Foo<br /></div></div>'")
+      expect(l.content_for_infowindow.chomp).to eq("'<div class=\"infowindow\" id=\"infowindow_#{l.id}\"><div class=\"gm_location_name\">Test Location Name</div><div class=\"gm_address\">303 Southeast 3rd Avenue<br />Portland, OR, 97214</div><hr /><div class=\"gm_machines\" id=\"gm_machines_#{l.id}\">Bar<br />Baz<br />Beans\\'<br />Foo<br /></div></div>'")
     end
     it 'should only list first five machines' do
       l = FactoryBot.create(:location)
       %w[Foo Bar Baz Beans Sass Cleo].each { |name| FactoryBot.create(:location_machine_xref, location: l, machine: FactoryBot.create(:machine, name: name)) }
 
-      expect(l.content_for_infowindow.chomp).to eq("'<div class=\"infowindow\" id=\"infowindow_#{l.id}\"><div class=\"gm_location_name\">Test Location Name</div><div class=\"gm_address\">303 Southeast 3rd Avenue<br />Portland, OR, 97214<br /></div><hr /><div class=\"gm_machines\" id=\"gm_machines_#{l.id}\">Bar<br />Baz<br />Beans<br />Cleo<br />Foo<br /><div>... and 1 more</div></div></div>'")
+      expect(l.content_for_infowindow.chomp).to eq("'<div class=\"infowindow\" id=\"infowindow_#{l.id}\"><div class=\"gm_location_name\">Test Location Name</div><div class=\"gm_address\">303 Southeast 3rd Avenue<br />Portland, OR, 97214</div><hr /><div class=\"gm_machines\" id=\"gm_machines_#{l.id}\">Bar<br />Baz<br />Beans<br />Cleo<br />Foo<br /><div>... and 1 more</div></div></div>'")
     end
   end
 

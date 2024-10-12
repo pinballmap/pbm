@@ -52,15 +52,15 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
         visit "/#{@region.name}/?by_location_id=#{@location.id}&initials=#{@user2.username}"
         sleep 0.5
 
+        page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
+        page.find("#show_conditions_lmx_banner_#{@lmx.id}").click
         expect(page).to have_content('Add machine comment')
         expect(page).to have_content('Add high score')
 
         # enter a new condition
-        page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
         page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
         fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition2')
         page.find("input#save_machine_condition_#{@lmx.id}.save_button").click
-        page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
         expect(page).to have_content('This is a new condition2')
       end
 
@@ -81,6 +81,7 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
         visit "/#{@region.name}/?by_location_id=#{@location.id}&initials=#{@user.username}"
         sleep 0.5
 
+        page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
         page.find("#show_conditions_lmx_banner_#{@lmx.id}").click
         expect(page).to have_content('This is a new condition1')
         expect(page).to have_content('This is a new condition2')
