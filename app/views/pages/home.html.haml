@@ -144,24 +144,15 @@
       along with open source gems. The app uses 
       =link_to 'React Native', 'https://reactnative.dev/', :target => '_blank', :class => 'bold'
       and likewise is aided by many open source packages.
-    %p
-      =link_to 'Dokku.', 'https://dokku.com/', :target => '_blank', :class => 'bold'
-      We use Dokku to build and deploy Pinball Map! It is a free service, though we support it with a monthly donation.
+    %p== We use #{link_to 'Dokku', 'https://dokku.com/', :target => '_blank', :class => 'bold'} to build and deploy Pinball Map! It is a free service, though we support it with a monthly donation.
     %p 
       =link_to 'DigitalOcean', 'https://www.digitalocean.com/', :target => '_blank', :class => 'bold'
-      hosts our server and Postgresql database. This is fully paid for via our Ko-fi Patreon supporters.
-    %p
-      =link_to 'Mapbox', 'https://www.mapbox.com/', :target => '_blank', :class => 'bold'
-      is used for map tiles. 
+      hosts our server and Postgresql database. This is fully paid for via our Ko-fi and Patreon supporters.
+    %p== #{link_to 'Mapbox', 'https://www.mapbox.com/', :target => '_blank', :class => 'bold'} is used for map tiles on the app. The website uses #{link_to 'Protomaps', 'https://protomaps.com/', :target => '_blank', :class => 'bold'} map tiles self-hosted on #{link_to 'Cloudflare', 'https://cloudflare.com/', :target => '_blank', :class => 'bold'}.
     %p
       =link_to 'Expo', 'https://expo.dev/', :target => '_blank', :class => 'bold'
       manages, among many things, the app development and build processes. 
-    %p
-      =link_to 'Scout APM', 'https://scoutapm.com/', :target => '_blank', :class => 'bold'
-      tracks performance monitoring for the website and API.
-    %p
-      =link_to 'Sentry', 'https://sentry.io/', :target => '_blank', :class => 'bold'
-      is used for crash reporting on the app!
+    %p== #{link_to 'Scout APM', 'https://scoutapm.com/', :target => '_blank', :class => 'bold'} tracks performance monitoring for the website and API. #{link_to 'Sentry', 'https://sentry.io/', :target => '_blank', :class => 'bold'} is used for crash reporting on the app!
     %p== The geocoding requests are processed by #{link_to 'Google Maps', 'https://developers.google.com/maps', :target => '_blank', :class => 'bold'} and #{link_to 'HERE Maps', 'https://developer.here.com/', :target => '_blank', :class => 'bold'} and #{link_to 'Nominatim', 'https://nominatim.org/', :target => '_blank', :class => 'bold'}. We also use the Google Places API for location submissions.
   - if !mobile_device?
     .news.center
