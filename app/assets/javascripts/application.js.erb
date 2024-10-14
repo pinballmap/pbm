@@ -10,6 +10,7 @@ var numMachinesVal;
 var locationTypeVal;
 var single_id;
 var mapAdjusted = 0;
+var mapLoaded = 0;
 var search_string;
 var zoomLevel;
 var markers = new Array();
@@ -67,7 +68,7 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
     var map_style = map_style_obj;
   }
 
-  if (mapAdjusted === 0) {
+  if (mapAdjusted === 0 && mapLoaded == 0) {
     map = new maplibregl.Map({
       container: 'map_canvas',
       style: map_style
@@ -75,6 +76,7 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
     map.addControl(new maplibregl.ScaleControl({unit: 'imperial'}), 'bottom-right');
     map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
     map.addControl(new maplibregl.FullscreenControl(), 'top-right');
+    mapLoaded = 1;
   }
 
   for (i in ids) {
