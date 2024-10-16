@@ -177,7 +177,6 @@ describe LocationMachineXrefsController do
 
       visit '/map/?by_location_id=' + @lmx.location.id.to_s
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
-      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
       expect(page).to have_selector("input[type=submit][value='delete']")
 
@@ -196,7 +195,6 @@ describe LocationMachineXrefsController do
 
       visit '/map/?by_location_id=' + @lmx.location.id.to_s
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
-      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
       expect(page).to_not have_selector("input[type=submit][value='delete']")
     end
@@ -206,7 +204,6 @@ describe LocationMachineXrefsController do
 
       visit '/map/?by_location_id=' + @lmx.location.id.to_s
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
-      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
       find('a#edit_condition_' + @lmx.machine_conditions.first.id.to_s + '.button').click
       fill_in 'comment', with: 'bad'
@@ -226,7 +223,6 @@ describe LocationMachineXrefsController do
 
       visit '/map/?by_location_id=' + @lmx.location.id.to_s
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
-      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
       expect(page).to_not have_selector('a#edit_condition_' + @lmx.machine_conditions.first.id.to_s + '.button')
     end
@@ -280,8 +276,6 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
-
       expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("This is a new condition\nssw\n#{@lmx.created_at.strftime('%b %d, %Y')}")
       expect(@lmx.reload.location.date_last_updated).to eq(Date.today)
       expect(find("#last_updated_location_#{@location.id}")).to have_content("#{@location.date_last_updated.strftime('%b %d, %Y')} by ssw")
@@ -294,7 +288,6 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
-      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
       expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("Test Comment\ncibw\n#{@lmx.created_at.strftime('%b %d, %Y')}")
       expect(URI.parse(page.find_link('cibw')['href']).to_s).to match(%r{/users/cibw/profile})
@@ -306,44 +299,41 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
-      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
       expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("Test Comment\nDELETED USER\n#{@lmx.created_at.strftime('%b %d, %Y')}")
     end
 
-    it 'only displays the 6 most recent descriptions' do
+    it 'only displays the 12 most recent descriptions' do
       login
 
       12.times do |i|
-        FactoryBot.create(:machine_condition, location_machine_xref: @lmx.reload, comment: "Condition #{i + 1}", created_at: "199#{i + 1}-01-01")
+        FactoryBot.create(:machine_condition, location_machine_xref: @lmx.reload, comment: "Condition #{i + 1} words.", created_at: "199#{i + 1}-01-01")
       end
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
-      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 12')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 11')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 10')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 9')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 8')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 7')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 6')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 5')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 4')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 3')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 2')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 1')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 12 words.')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 11 words.')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 10 words.')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 9 words.')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 8 words.')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 7 words.')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 6 words.')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 5 words.')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 4 words.')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 3 words.')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 2 words.')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 1 words.')
 
       page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
       sleep 1
-      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
-      expect(page).to_not have_content('Condition 1')
+      expect(page).to_not have_content('Condition 1 words.')
     end
 
     it 'should add past conditions when you add a new condition and a condition exists' do
@@ -360,8 +350,6 @@ describe LocationMachineXrefsController do
       page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}").click
-
-      page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
       expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content('This is a new condition')
       expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content('ssw')
@@ -1074,7 +1062,6 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{screen_location.id}"
       page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
-      page.find("div#show_conditions_lmx_banner_#{lmx.id}").click
 
       within('div.search_result') do
         expect(page).to have_content('The Screen')

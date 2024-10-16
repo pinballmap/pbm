@@ -1,9 +1,12 @@
-= render :partial => 'location_machine_xrefs/backglass', :locals => {:lmx => lmx}
-= render :partial => 'location_machine_xrefs/ic_button', :locals => {:lmx => lmx}
-= render :partial => 'machine_conditions/show_machine_conditions', :locals => {:lmx => lmx}, cached: true
-= render :partial => 'location_machine_xrefs/update_machine_condition', :locals => {:lmx => lmx}
-= render :partial => 'machine_score_xrefs/add_high_score',  :locals => {:lmx => lmx}
-= render :partial => 'machine_score_xrefs/show_high_scores', :locals => {:lmx => lmx}
-%div.external_link_container
-  = render :partial => 'location_machine_xrefs/pintips', :locals => {:lmx => lmx}
-  = render :partial => 'location_machine_xrefs/kineticist', :locals => {:lmx => lmx}
+- cache [logged_in, lmx] do
+  = render :partial => 'location_machine_xrefs/backglass', :locals => {:lmx => lmx}
+  %div.external_link_container
+    = render :partial => 'location_machine_xrefs/pintips', :locals => {:lmx => lmx}
+    = render :partial => 'location_machine_xrefs/kineticist', :locals => {:lmx => lmx}
+  = render :partial => 'location_machine_xrefs/ic_button', :locals => {:lmx => lmx}
+  %div.machine_comments_container
+    = render :partial => 'machine_conditions/show_machine_conditions', :locals => {:lmx => lmx}, cached: true
+    = render :partial => 'location_machine_xrefs/update_machine_condition', :locals => {:lmx => lmx}
+  %div.machine_scores_container
+    = render :partial => 'machine_score_xrefs/show_high_scores', :locals => {:lmx => lmx}
+    = render :partial => 'machine_score_xrefs/add_high_score',  :locals => {:lmx => lmx}

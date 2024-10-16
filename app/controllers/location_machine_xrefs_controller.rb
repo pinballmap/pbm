@@ -68,7 +68,9 @@ class LocationMachineXrefsController < InheritedResources::Base
   end
 
   def render_machine_tools
-    render partial: 'location_machine_xrefs/render_machine_tools', locals: { lmx: LocationMachineXref.find(params[:id]) }
+    logged_in = current_user ? 'logged_in' : 'logged_out'
+
+    render partial: 'location_machine_xrefs/render_machine_tools', locals: { lmx: LocationMachineXref.find(params[:id]), logged_in: logged_in }
   end
 
   def render_machine_conditions

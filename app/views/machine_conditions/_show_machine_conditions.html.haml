@@ -1,5 +1,8 @@
-%div[lmx, :machineconditions_container]{:style => "display:#{lmx.sorted_machine_conditions.empty? ? 'none' : 'block'}"}
-  - icon_path = image_tag('icons/comment-quote.svg', :alt => 'Show Comments', :class => 'small_banner_icon')
-  = banner('show_conditions_lmx','Show machine comments',icon_path,lmx)
-  %div[lmx, :show_conditions]{:style => 'display:none'}
-    = render :partial => 'locations/render_machine_conditions', :locals => {:conditions => lmx.sorted_machine_conditions, :lmx => lmx}
+%div.bold.font20.center.p_10.brightpurple
+  Machine Comments
+%div[lmx, :machineconditions_container]
+  %div[lmx, :show_conditions]
+    - if lmx.sorted_machine_conditions.empty?
+      %div.grey.center No machine comments yet
+    - else
+      = render :partial => 'locations/render_machine_conditions', :locals => {:conditions => lmx.sorted_machine_conditions, :lmx => lmx}

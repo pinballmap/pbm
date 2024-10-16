@@ -7,7 +7,7 @@
         %span Add high score
   - else
     = banner('add_scores_lmx', 'Add high score', icon_path, lmx)
-    %div[lmx, :add_scores]{:style => 'display:none;', :class => 'add_scores_form'}
+    %div[lmx, :add_scores]{:style => 'display:none;', :class => 'add_scores_form mt_20'}
       = form_tag machine_score_xrefs_path, :id => "add_high_score_#{lmx.id}", :method => 'post' do
         = hidden_field_tag :location_machine_xref_id, lmx.id
         = label_tag :score, 'Score: '
@@ -20,13 +20,7 @@
           event.target.value = (parseInt(event.target.value.replace(/[^\d]+/gi, '')) || 0).toLocaleString('en-US')
         );
         $('#add_high_score_#{lmx.id}').submit(function () {
-          $('#score_container_lmx_#{lmx.id}').css('visibility', 'visible');
-          $('#score_container_lmx_#{lmx.id}').css('display', 'block');
           $('#show_scores_lmx_#{lmx.id}').html(loadingHTML());
-          $('#show_scores_lmx_banner_#{lmx.id}')
-            .animate( { backgroundColor: "#f5f5ff" }, 1000 )
-            .animate( { backgroundColor: "transparent" }, 1000 );
-
 
           var form = $(this);
           $.post(form.attr('action'), form.serialize(), function (data) {

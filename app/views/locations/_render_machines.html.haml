@@ -1,6 +1,5 @@
 - location_machine_xrefs.each do |lmx|
-  - cache [logged_in, lmx] do
-    %div[lmx, :machine]
-      = render :partial => 'location_machine_xrefs/list_machine', :locals => {:lmx => lmx}
-      .clear
-      = render :partial => 'location_machine_xrefs/machine_tools', :locals => {:lmx => lmx}
+  %div[lmx, :machine]
+    = render :partial => 'location_machine_xrefs/list_machine', :locals => {:lmx => lmx}
+    .clear
+    = render :partial => 'location_machine_xrefs/machine_tools', :locals => {:lmx => lmx}

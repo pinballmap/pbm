@@ -206,7 +206,7 @@ h1 {
 }
 
 hr {
-  border: 1px solid var(--medgrey);
+  border: 1px solid var(--purple);
   width: 90%;
 }
 
@@ -1183,8 +1183,8 @@ span.or {
   margin: -2px -2px 0 0;
   @include radius(10px);
   padding: 5px 25px;
-  background: var(--grey);
-  color: var(--vlightpurple);
+  background: #47475f;
+  color: #fafaff;
   font-family: $Nunito_600SemiBold;
   float: right;
   box-shadow: 2px 5px 10px var(--shadow);
@@ -1556,7 +1556,7 @@ span.machine_year_man {
 }
 
 .external_machine_link {
-  margin: 10px;
+  margin: 10px 10px 0 10px;
   display: flex;
   align-items: center;
 }
@@ -1599,7 +1599,7 @@ span.machine_year_man {
   -webkit-box-shadow: 2px 5px 10px var(--shadow);
   padding: 5px 10px;
   @include radius(10px);
-  margin: 10px auto 0;
+  margin: 20px auto 0;
   border: none;
   height: 26px;
   font-family: $Nunito_600SemiBold;
@@ -1759,7 +1759,7 @@ img.machine_comment_icon {
   padding-right: 5px;
 }
 
-img.machine_comment_icon:hover {
+.machine_condition_lmx:hover {
   cursor: pointer;
 }
 
@@ -1787,7 +1787,7 @@ span.machine_condition_text {
 
 .machine_condition_new_line span.machine_condition_date {
   margin: 0 0 0 8px;
-  color: var(--medgrey);
+  color: var(--darkgrey);
   font-family: $italic;
 }
 
@@ -1800,12 +1800,12 @@ div.machine_condition_meta {
   line-height: 18px;
   border-bottom: 1px solid var(--purple);
   margin-bottom: 10px;
-  padding-bottom: 5px;
+  padding: 0 0 5px 10px;
 }
 
 .machine_condition_new_line .machine_condition {
   font-family: $Nunito_400Regular;
-  color: var(--darkgrey);
+  color: var(--dark);
 }
 
 .machine_condition_edit_lmx .edit_mode,
@@ -1820,6 +1820,14 @@ div.machine_condition_meta {
   font-family: $Nunito_400Regular;
   padding: 5px;
   margin-bottom: 5px;
+}
+
+.machine_comments_container,
+.machine_scores_container {
+  padding: 5px 10px 10px 10px;
+  margin: 20px;
+  border-radius: 15px;
+  background: var(--bg_vlightpurple);
 }
 
 #add_machine_by_id {
@@ -2175,15 +2183,8 @@ input.lookup_search_input:focus {
   float: right;
 }
 
-.show_conditions_lmx {
-  padding: 2px;
-}
-
-.add_scores_form,
-.show_scores_lmx,
-.show_conditions_lmx {
-  padding: 5px 0 5px 5px;
-  background-color: var(--lightpurple);
+.add_scores_form {
+  padding: 0 0 5px 10px;
   width: 100%;
 }
 
@@ -2980,23 +2981,39 @@ li span.state_name {
   border-radius: 10px !important;
 }
 
-/** High Rollers **/
+/** High Scores **/
+
+.high_score {
+  margin-bottom: 10px;
+}
 
 .high_score_new_line {
-  font-family: $Nunito_400Regular;
-  color: var(--darkgrey);
+  font-family: $Nunito_600SemiBold;
+  color: var(--black);
   display: block;
-  line-height: 15px;
+  line-height: 16px;
   padding: 4px 0;
-  font-size: 15px;
+  margin-left: 5px;
+  font-size: 16px;
   font-weight: normal;
 }
 
+.high_score_meta {
+  margin: 2px 0 15px 5px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.high_score_user a {
+  font-family: $Nunito_700Bold;
+  color: var(--black);
+  margin-right: 10px;
+}
+
 .high_score_date {
-  margin: 2px 0 10px;
-  display: inline-block;
-  color: var(--medgrey);
-  font-size: 12px;
+  font-family: $italic;
+  color: var(--darkgrey);
 }
 
 .column .sub_nav_item {

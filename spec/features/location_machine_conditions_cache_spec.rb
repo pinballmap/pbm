@@ -30,7 +30,6 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
         page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
         fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition1')
         page.find("input#save_machine_condition_#{@lmx.id}.save_button").click
-        page.find("div#show_conditions_lmx_banner_#{@lmx.id}").click
 
         expect(page).to have_content('This is a new condition1')
       end
@@ -40,7 +39,6 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
       sleep 0.5
 
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
-      page.find("#show_conditions_lmx_banner_#{@lmx.id}").click
       expect(page).to have_content('This is a new condition1')
       expect(page).to have_content('Add machine comment')
       expect(page).to have_content('Add high score')
@@ -53,7 +51,6 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
         sleep 0.5
 
         page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
-        page.find("#show_conditions_lmx_banner_#{@lmx.id}").click
         expect(page).to have_content('Add machine comment')
         expect(page).to have_content('Add high score')
 
@@ -69,7 +66,6 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
       sleep 0.5
 
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
-      page.find("#show_conditions_lmx_banner_#{@lmx.id}").click
       expect(page).to have_content('This is a new condition1')
       expect(page).to have_content('This is a new condition2')
       expect(page).to have_content('Add machine comment')
@@ -82,7 +78,6 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
         sleep 0.5
 
         page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
-        page.find("#show_conditions_lmx_banner_#{@lmx.id}").click
         expect(page).to have_content('This is a new condition1')
         expect(page).to have_content('This is a new condition2')
         expect(page).to have_content('Add machine comment')

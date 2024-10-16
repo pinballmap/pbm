@@ -1,5 +1,8 @@
-%div[lmx, :score_container]{:style => "display:#{lmx.machine_score_xrefs.empty? ? 'none' : 'block'}"}
-  - icon_path = image_tag('icons/star.svg', :alt => 'Show Scores', :class => 'small_banner_icon')
-  = banner('show_scores_lmx', 'Show high scores', icon_path, lmx)
-  %div[lmx, :show_scores]{:style => 'display:none'}
-    = render :partial => 'locations/render_scores', :locals => {:lmx => lmx}
+%div.bold.font20.center.p_10.brightpurple
+  High Scores
+%div[lmx, :score_container]
+  %div[lmx, :show_scores]
+    - if lmx.machine_score_xrefs.empty?
+      %div.grey.center No scores yet
+    - else
+      = render :partial => 'locations/render_scores', :locals => {:lmx => lmx}

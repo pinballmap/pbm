@@ -115,7 +115,7 @@ describe MachineScoreXrefsController do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
       page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
 
-      expect(page).to_not have_css("div#show_scores_lmx_banner_#{lmx.id}")
+      expect(page).to_not have_css('div.high_score_new_line')
 
       page.find("div#add_scores_lmx_banner_#{lmx.id}").click
       fill_in('score', with: 1234)
@@ -123,9 +123,9 @@ describe MachineScoreXrefsController do
 
       sleep(1)
 
-      expect(page).to have_css("div#show_scores_lmx_banner_#{lmx.id}")
+      expect(page).to have_css("div#show_scores_lmx_#{lmx.id}")
 
-      page.find("div#show_scores_lmx_banner_#{lmx.id}").click
+      page.find("div#show_scores_lmx_#{lmx.id}").click
 
       sleep(1)
 
