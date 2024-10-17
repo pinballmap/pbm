@@ -1,15 +1,16 @@
+%div.quick_button_content_header Upload a Picture
 %span.red.font14.p_10.block Choose a picture that gives a feel for the place. No need to include a picture of every single machine.
-= form_for LocationPictureXref.new, :id => "new_location_picture_xref_#{location.id}", :html => {:id => "new_location_picture_xref_#{location.id}", :multipart => true}, :remote => true do |f|
-  = f.hidden_field :location_id, { :value => location.id }
+= form_for LocationPictureXref.new, :id => "new_location_picture_xref_#{l.id}", :html => {:id => "new_location_picture_xref_#{l.id}", :multipart => true}, :remote => true do |f|
+  = f.hidden_field :location_id, { :value => l.id }
   = f.file_field :photo, :id => 'file_chooser_button'
   %br/
   = f.submit "Upload", :class => 'submit_picture'
 
 :javascript
-  $('#new_location_picture_xref_#{location.id}').submit(function () {
+  $('#new_location_picture_xref_#{l.id}').submit(function () {
     var form = $(this);
     $(".submit_picture").attr('disabled', true);
-    $("#add_picture_location_#{location.id} .info").html(loadingHTML());
+    $("#add_picture_location_#{l.id} .info").html(loadingHTML());
     $.ajax({
       url: form.attr('action'),
       type: 'POST',
@@ -18,13 +19,13 @@
       contentType: false,
       success: function(data) {
         window.alert("Thanks for uploading that picture!");
-        toggleData('add_picture_location', #{location.id});
-        document.getElementById('new_location_picture_xref_#{location.id}').reset();
+        toggleData('add_picture_location', #{l.id});
+        document.getElementById('new_location_picture_xref_#{l.id}').reset();
         $(".submit_picture").attr('disabled', false);
 
-        $("#location_detail_location_#{location.id}").html(loadingHTML());
-        $.get("/locations/#{location.id}/render_location_detail", function(data) {
-          $("#location_detail_location_#{location.id}").html(data);
+        $("#location_detail_location_#{l.id}").html(loadingHTML());
+        $.get("/locations/#{l.id}/render_location_detail", function(data) {
+          $("#location_detail_location_#{l.id}").html(data);
         });
       }
     });

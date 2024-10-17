@@ -1,51 +1,49 @@
-- icon_path = image_tag('icons/newspaper-variant-multiple-outline.svg', :alt => 'Recent Activity Icon', :class => 'banner_icon recent_activity')
-= banner('recent_location_activity_location', 'Location activity', icon_path, location)
-%div[location, :recent_location_activity]{:style => 'display:none'}
-  - location.recent_activity.take(20).each do |recent_activity|
-    - if (!recent_activity.user_name.blank?)
-      - recent_activity_user =  " by #{recent_activity.user_name}"
-    - else
-      - recent_activity_user = ""
-    %div.recent_activity_container
-      %div.recent_activity_icon
-        =image_tag("icons/#{recent_activity.submission_type}.svg", :alt => "#{recent_activity.submission_type}", :class => '')
-      %div.recent_activity_date.font14.bold #{recent_activity.created_at.strftime("%b %d, %Y")}
-      %div.recent_activity_submission.font14 
-        - if (recent_activity.submission_type == 'new_lmx')
-          %span.brightpurple #{recent_activity.machine_name} 
-          added
+%div.quick_button_content_header Recent Location Activity
+- l.recent_activity.take(20).each do |recent_activity|
+  - if (!recent_activity.user_name.blank?)
+    - recent_activity_user =  " by #{recent_activity.user_name}"
+  - else
+    - recent_activity_user = ""
+  %div.recent_activity_container
+    %div.recent_activity_icon
+      =image_tag("icons/#{recent_activity.submission_type}.svg", :alt => "#{recent_activity.submission_type}", :class => '')
+    %div.recent_activity_date.font14.bold #{recent_activity.created_at.strftime("%b %d, %Y")}
+    %div.recent_activity_submission.font14 
+      - if (recent_activity.submission_type == 'new_lmx')
+        %span.brightpurple #{recent_activity.machine_name} 
+        added
+        - if (!recent_activity.user_name.blank?)
+          by 
+          %span.red #{recent_activity.user_name}
+      - elsif (recent_activity.submission_type == 'new_condition')
+        - if (recent_activity.comment.blank?)
+          #{recent_activity.submission}
+        - else
+          %span.inline_block.mb_8 "#{recent_activity.comment}"
+          %br/
+          %span.brightpurple #{recent_activity.machine_name}
           - if (!recent_activity.user_name.blank?)
             by 
             %span.red #{recent_activity.user_name}
-        - elsif (recent_activity.submission_type == 'new_condition')
-          - if (recent_activity.comment.blank?)
-            #{recent_activity.submission}
-          - else
-            %span.inline_block.mb_8 "#{recent_activity.comment}"
-            %br/
-            %span.brightpurple #{recent_activity.machine_name}
-            - if (!recent_activity.user_name.blank?)
-              by 
-              %span.red #{recent_activity.user_name}
-        - elsif (recent_activity.submission_type == 'remove_machine')
-          %span.brightpurple #{recent_activity.machine_name} 
-          removed
+      - elsif (recent_activity.submission_type == 'remove_machine')
+        %span.brightpurple #{recent_activity.machine_name} 
+        removed
+        - if (!recent_activity.user_name.blank?)
+          by 
+          %span.red #{recent_activity.user_name}
+      - elsif (recent_activity.submission_type == 'new_msx')
+        - if (recent_activity.high_score.blank?)
+          #{recent_activity.submission}
+        - else
+          High score: 
+          %span.bold #{number_with_precision(recent_activity.high_score, precision: 0, delimiter: ',')}
+          %br/
+          %span.brightpurple.mt_8.inline_block #{recent_activity.machine_name}
           - if (!recent_activity.user_name.blank?)
             by 
             %span.red #{recent_activity.user_name}
-        - elsif (recent_activity.submission_type == 'new_msx')
-          - if (recent_activity.high_score.blank?)
-            #{recent_activity.submission}
-          - else
-            High score: 
-            %span.bold #{number_with_precision(recent_activity.high_score, precision: 0, delimiter: ',')}
-            %br/
-            %span.brightpurple.mt_8.inline_block #{recent_activity.machine_name}
-            - if (!recent_activity.user_name.blank?)
-              by 
-              %span.red #{recent_activity.user_name}
-        - elsif (recent_activity.submission_type == 'confirm_location')
-          Line-up confirmed
-          - if (!recent_activity.user_name.blank?)
-            by 
-            %span.red #{recent_activity.user_name}
+      - elsif (recent_activity.submission_type == 'confirm_location')
+        Line-up confirmed
+        - if (!recent_activity.user_name.blank?)
+          by 
+          %span.red #{recent_activity.user_name}

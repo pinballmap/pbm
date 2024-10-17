@@ -1861,7 +1861,9 @@ div.machine_condition_meta {
 }
 
 .add_picture_location,
-.add_machine_location {
+.add_machine_location,
+.recent_location_activity_location,
+.former_machines_location {
   background-color: var(--bg_vlightpurple);
 }
 
@@ -2188,6 +2190,35 @@ input.lookup_search_input:focus {
   width: 100%;
 }
 
+.quick_buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.quick_button_sub_container {
+  flex-direction: column;
+  align-items: center;
+  max-width: 80px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.quick_button_desc {
+  color: var(--brightpurple);
+  font-family: $Nunito_600SemiBold;
+  font-size: 15px;
+}
+
+.quick_button_content_header {
+  color: var(--dark);
+  font-family: $Nunito_700Bold;
+  font-size: 18px;
+  padding: 15px;
+  text-align: center;
+}
+
 .add_picture_location_toggle,
 .add_machine_location_toggle,
 .recent_location_activity_location_toggle,
@@ -2195,10 +2226,11 @@ input.lookup_search_input:focus {
   color: #000e18;
   font-family: $Nunito_600SemiBold;
   background: var(--buttons);
-  @include radius(10px);
+  @include radius(25px);
   margin: 10px auto;
   text-align: center;
-  width: 300px;
+  width: 50px;
+  height: 50px;
   box-shadow: 2px 5px 10px var(--shadow);
   -webkit-box-shadow: 2px 5px 10px var(--shadow);
 }
@@ -2403,7 +2435,7 @@ input.score {
 .desc_show_location {
   color: var(--darkgrey);
   font-size: 13px;
-  line-height: 15px;
+  line-height: 18px;
   font-family: $italic;
   white-space: pre-wrap;
   margin-left: 23px;
@@ -2542,6 +2574,10 @@ img.banner_icon {
   height: 28px;
   background: none;
   padding: 0 8px 0 0;
+}
+
+.quick_buttons img.banner_icon {
+  padding: 0;
 }
 
 img.score_banner_icon {

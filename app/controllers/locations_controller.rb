@@ -1,7 +1,7 @@
 class LocationsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   has_scope :by_location_name, :by_location_id, :by_ipdb_id, :by_opdb_id, :by_machine_id, :by_machine_single_id, :by_machine_name, :by_city_id, :by_state_id, :by_machine_group_id, :by_zone_id, :by_operator_id, :by_type_id, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :by_center_point_and_ne_boundary, :region, :by_is_stern_army, :user_faved, :manufacturer
-  before_action :authenticate_user!, except: %i[index show autocomplete autocomplete_city render_machines render_machines_count render_machine_names_for_infowindow render_scores render_last_updated render_location_detail]
+  before_action :authenticate_user!, except: %i[index show autocomplete autocomplete_city render_machines render_machines_count render_machine_names_for_infowindow render_scores render_last_updated render_location_detail render_former_machines render_recent_activity]
 
   def create
     @location = Location.new(location_params)
@@ -92,6 +92,14 @@ class LocationsController < InheritedResources::Base
 
   def render_location_detail
     render partial: 'locations/render_location_detail', locals: { l: Location.find(params[:id]) }
+  end
+
+  def render_former_machines
+    render partial: 'locations/render_former_machines', locals: { l: Location.find(params[:id]) }
+  end
+
+  def render_recent_activity
+    render partial: 'locations/render_recent_activity', locals: { l: Location.find(params[:id]) }
   end
 
   def update_metadata

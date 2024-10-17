@@ -144,6 +144,8 @@ Rails.application.routes.draw do
       get :render_location_detail
       get :render_machines
       get :render_scores
+      get :render_former_machines
+      get :render_recent_activity
     end
   end
 
@@ -173,7 +175,11 @@ Rails.application.routes.draw do
   end
 
   resources :machine_score_xrefs
-  resources :location_picture_xrefs
+  resources :location_picture_xrefs do
+    member do
+      get :form
+    end
+  end
   resources :machine_conditions
   resources :suggested_locations, only: [] do
       member do

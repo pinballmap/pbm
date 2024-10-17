@@ -1,0 +1,9 @@
+%div[location, :former_machines]{:style => 'display:none;'}
+
+:javascript
+  $(function() {
+    $('#former_machines_location_banner_#{location.id}').click(function () {
+      $('#former_machines_location_#{location.id}').html(loadingHTML());
+      $('#former_machines_location_#{location.id}').load('/locations/#{location.id}/render_former_machines');
+    });
+  });

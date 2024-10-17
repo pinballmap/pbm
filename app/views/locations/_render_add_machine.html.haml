@@ -1,4 +1,5 @@
-%span.info Select a machine and then click the Add button.
+%div.quick_button_content_header Add a Machine
+%span.red.font14.p_10.block Select a machine and then click the Add button.
 = form_tag location_machine_xrefs_path, :method => 'post', :id => "add_new_machine_#{l.id}" do
   = hidden_field_tag :location_id, l.id
   = select_tag "add_machine_by_id_#{l.id}", options_for_select(['']) + options_from_collection_for_select(Machine.all.sort_by(&:massaged_name), 'id', 'name_and_year', params["add_machine_by_id_#{l.id}"]), :class => 'lookup_search_select'

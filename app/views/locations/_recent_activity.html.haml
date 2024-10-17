@@ -1,0 +1,9 @@
+%div[location, :recent_location_activity]{:style => 'display:none'}
+
+:javascript
+  $(function() {
+    $('#recent_location_activity_location_banner_#{location.id}').click(function () {
+      $('#recent_location_activity_location_#{location.id}').html(loadingHTML());
+      $('#recent_location_activity_location_#{location.id}').load('/locations/#{location.id}/render_recent_activity');
+    });
+  });

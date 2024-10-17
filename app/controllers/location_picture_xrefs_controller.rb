@@ -3,6 +3,10 @@ class LocationPictureXrefsController < InheritedResources::Base
   has_scope :region
   before_action :authenticate_user!, except: %i[index show]
 
+  def form
+    render partial: 'location_picture_xrefs/form', locals: { l: Location.find(params[:id]) }
+  end
+
   def create
     @location_picture_xref = LocationPictureXref.new(location_picture_xref_params)
 

@@ -24,6 +24,29 @@ function toggleData(name, id) {
   $('#' + name + main).toggle();
 }
 
+function toggle_machine_data(name, id) {
+  if (name == 'add_machine_location') {
+    $('#add_machine_location_' + id).toggle();
+  } else {
+    $('#add_machine_location_' + id).hide();
+  }
+  if (name == 'add_picture_location') {
+    $('#add_picture_location_' + id).toggle();
+  } else {
+    $('#add_picture_location_' + id).hide();
+  }
+  if (name == 'recent_location_activity_location') {
+    $('#recent_location_activity_location_' + id).toggle();
+  } else {
+    $('#recent_location_activity_location_' + id).hide();
+  }
+  if (name == 'former_machines_location') {
+    $('#former_machines_location_' + id).toggle();
+  } else {
+    $('#former_machines_location_' + id).hide();
+  }
+}
+
 function clearInfoWindows() {
   if (markers) {
     for (i in markers) {
