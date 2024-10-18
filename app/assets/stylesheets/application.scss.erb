@@ -1424,13 +1424,20 @@ form select#by_operator_id {
   top: 175px;
 }
 
-.name {
+.location_name_container {
   height: 100%;
-  color: #f5f5ff;
   background-color: var(--grey);
   @include radius(10px 10px 0 0);
-  padding: 10px 120px 10px 10px;
+  padding: 10px 10px 10px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.location_name {
+  color: #f5f5ff;
   font-family: $Nunito_800ExtraBold;
+  padding-right: 10px;
 }
 
 .pr_30 {
@@ -1459,9 +1466,8 @@ form select#by_operator_id {
 }
 
 .location_tools {
-  float: right;
-  margin-top: -35px;
-  padding-right: 5px;
+  min-width: 120px;
+  height: 26px;
 }
 
 .location_tools img {
@@ -1852,6 +1858,11 @@ div.machine_condition_meta {
   font-size: 14px;
   line-height: 14px;
   padding: 10px;
+}
+
+.add_machine_location,
+.add_picture_location {
+  padding: 0 10px 10px 10px;
 }
 
 .add_picture_location span.info,
@@ -2460,6 +2471,12 @@ input.score {
 
 .show_location_detail_location .name {
   padding-bottom: 10px;
+  height: 100%;
+  color: #f5f5ff;
+  background-color: var(--grey);
+  border-radius: 10px 10px 0 0;
+  padding: 10px 120px 10px 10px;
+  font-family: "Nunito_800ExtraBold", Helvetica, Arial, sans-serif;
 }
 
 .show_location_detail_location .address {
