@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       resources :machine_conditions, only: [:destroy, :update]
       resources :machine_score_xrefs, only: [:create, :show]
       resources :machines, only: [:index, :show]
+      resources :machine_groups, only: [:index, :show]
       resources :operators, only: [:index, :show]
       resources :statuses, only: [:index, :show]
 

@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Api::V1::MachinesController, type: :request do
   describe '#index' do
     before(:each) do
-      FactoryBot.create(:machine, id: 66, name: 'Cleo', manufacturer: 'Stern')
-      FactoryBot.create(:machine, id: 67, name: 'Bawb', manufacturer: 'Williams')
+      FactoryBot.create(:machine, id: 66, name: 'Cleo', manufacturer: 'Stern', machine_group_id: 1)
+      FactoryBot.create(:machine, id: 67, name: 'Bawb', manufacturer: 'Williams', machine_group_id: 2)
     end
 
     it 'returns all machines in the database' do
@@ -16,6 +16,13 @@ describe Api::V1::MachinesController, type: :request do
 
     it 'respects manufacturer param' do
       get '/api/v1/machines.json?manufacturer=Stern'
+
+      expect(response.body).to include('Cleo')
+      expect(response.body).to_not include('Bawb')
+    end
+
+    it 'respects machine_group+id param' do
+      get '/api/v1/machines.json?machine_group_id=1'
 
       expect(response.body).to include('Cleo')
       expect(response.body).to_not include('Bawb')
