@@ -179,6 +179,6 @@ class ApplicationController < ActionController::Base
   end
 
   def detect_region
-    @region = Region.find_by_name(params[:region].downcase) if params[:region] && (params[:region].is_a? String)
+    @region = Region.find_by_name(params[:region].downcase) if params[:region]&.is_a? String
   end
 end
