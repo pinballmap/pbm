@@ -60,7 +60,7 @@
     $('meta[property="og:description"]').attr("content", "#{desc_for_path(request.path, @region)}");
   }
 
-  let topbutton = document.getElementById("top_button");
+  var topbutton = document.getElementById("top_button");
   window.onscroll = function() {scrollFunction()};
 
   function scrollFunction() {
