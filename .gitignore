@@ -5,7 +5,6 @@ db/*.sqlite3
 log/*.log
 tmp/**/*
 public/uploads/
-database.yml
 .DS_Store
 coverage
 vendor/ruby

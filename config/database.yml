@@ -1,0 +1,19 @@
+default: &default
+  adapter: postgresql
+  encoding: utf8
+  template: template0
+
+development:
+  <<: *default
+  database: pbm_dev
+  host: localhost
+
+test:
+  <<: *default
+  database: pbm_test
+
+staging:
+  url: <%= ENV["DATABASE_URL"] %>
+
+production:
+  url: <%= ENV["DATABASE_URL"] %>

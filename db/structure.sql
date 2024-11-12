@@ -59,7 +59,7 @@ CREATE FUNCTION public.clean_items(item text) RETURNS text
     LANGUAGE plpgsql IMMUTABLE STRICT
     AS $$
         BEGIN
-          RETURN regexp_replace(public.unaccent(item::text), '[[:punct:]]', '', 'g');
+          RETURN regexp_replace(unaccent(item), '[[:punct:]]', '', 'g');
         END;
         $$;
 
@@ -707,6 +707,39 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: solid_cache_entries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_cache_entries (
+    id bigint NOT NULL,
+    key bytea NOT NULL,
+    value bytea NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    key_hash bigint NOT NULL,
+    byte_size integer NOT NULL
+);
+
+
+--
+-- Name: solid_cache_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_cache_entries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_cache_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_cache_entries_id_seq OWNED BY public.solid_cache_entries.id;
+
+
+--
 -- Name: statuses; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1138,6 +1171,13 @@ ALTER TABLE ONLY public.regions ALTER COLUMN id SET DEFAULT nextval('public.regi
 
 
 --
+-- Name: solid_cache_entries id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_cache_entries ALTER COLUMN id SET DEFAULT nextval('public.solid_cache_entries_id_seq'::regclass);
+
+
+--
 -- Name: statuses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1335,6 +1375,14 @@ ALTER TABLE ONLY public.region_link_xrefs
 
 ALTER TABLE ONLY public.regions
     ADD CONSTRAINT regions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_cache_entries solid_cache_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_cache_entries
+    ADD CONSTRAINT solid_cache_entries_pkey PRIMARY KEY (id);
 
 
 --
@@ -1591,6 +1639,27 @@ CREATE INDEX index_region_link_xrefs_on_region_id ON public.region_link_xrefs US
 
 
 --
+-- Name: index_solid_cache_entries_on_byte_size; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_solid_cache_entries_on_byte_size ON public.solid_cache_entries USING btree (byte_size);
+
+
+--
+-- Name: index_solid_cache_entries_on_key_hash; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_solid_cache_entries_on_key_hash ON public.solid_cache_entries USING btree (key_hash);
+
+
+--
+-- Name: index_solid_cache_entries_on_key_hash_and_byte_size; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_solid_cache_entries_on_key_hash_and_byte_size ON public.solid_cache_entries USING btree (key_hash, byte_size);
+
+
+--
 -- Name: index_user_submissions_on_region_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1718,6 +1787,7 @@ ALTER TABLE ONLY public.active_storage_attachments
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241112193702'),
 ('20240910004435'),
 ('20240909234323'),
 ('20240817222440'),
