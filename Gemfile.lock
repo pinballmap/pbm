@@ -463,6 +463,10 @@ GEM
       simplecov (~> 0.19)
     simplecov-html (0.13.1)
     simplecov_json_formatter (0.1.4)
+    solid_cache (1.0.6)
+      activejob (>= 7.2)
+      activerecord (>= 7.2)
+      railties (>= 7.2)
     spork (0.9.2)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
@@ -568,6 +572,7 @@ DEPENDENCIES
   simple_token_authentication
   simplecov
   simplecov-cobertura
+  solid_cache (~> 1.0)
   spork
   sprockets-rails
   strip_attributes
