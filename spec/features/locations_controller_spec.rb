@@ -525,6 +525,52 @@ describe LocationsController do
     end
   end
 
+  describe 'former_machines', type: :feature, js: true do
+    before(:each) do
+      @location = FactoryBot.create(:location, name: 'Cleo')
+      @location2 = FactoryBot.create(:location, name: 'Sassimo')
+    end
+    it 'returns a list of machines that have been removed from the location' do
+      FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location, machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location2, machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+
+      visit '/map/?by_location_id=' + @location.id.to_s
+
+      find("#former_machines_location_banner_#{@location.id}").click
+      sleep(0.5)
+
+      expect(find('.former_machines_location')).to have_content('Sassy Madness')
+      expect(find('.former_machines_location')).to_not have_content('Pizza Attack')
+    end
+  end
+
+  describe 'recent_activity', type: :feature, js: true do
+    before(:each) do
+      @location = FactoryBot.create(:location, name: 'Cleo', city: 'Townville')
+      @location2 = FactoryBot.create(:location, name: 'Sassimo')
+    end
+    it 'returns a list of recent activity at the location' do
+      FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE)
+      FactoryBot.create(:user_submission, created_at: '2022-01-03', location: @location, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, created_at: '2022-01-04', location: @location, user_name: 'ssw', comment: 'be best', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryBot.create(:user_submission, created_at: '2022-01-05', location: @location, user_name: 'ssw', submission_type: UserSubmission::CONFIRM_LOCATION_TYPE)
+      FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user_name: 'ssw', high_score: '2222', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_SCORE_TYPE)
+      FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location2, machine_name: 'Jolene Zone', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+
+      visit '/map/?by_location_id=' + @location.id.to_s
+
+      find("#recent_location_activity_location_banner_#{@location.id}").click
+      sleep(0.5)
+
+      expect(find('.recent_location_activity_location')).to have_content('added')
+      expect(find('.recent_location_activity_location')).to have_content('removed')
+      expect(find('.recent_location_activity_location')).to have_content('score')
+      expect(find('.recent_location_activity_location')).to have_content('confirmed')
+      expect(find('.recent_location_activity_location')).to have_content('be best')
+      expect(find('.recent_location_activity_location')).to_not have_content('Jolene Zone')
+    end
+  end
+
   describe 'update_metadata', type: :feature, js: true do
     before(:each) do
       @user = FactoryBot.create(:user)
