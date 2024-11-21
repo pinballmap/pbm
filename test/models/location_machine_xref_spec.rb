@@ -16,16 +16,16 @@ describe LocationMachineXref do
 
       regionless_lmx.update_condition('regionless condish', user_id: @u.id)
 
-      expect(MachineCondition.all.count).must_equal 1
-      expect(MachineCondition.first.comment).must_equal 'regionless condish'
+      assert_equal 1, MachineCondition.all.count
+      assert_equal 'regionless condish', MachineCondition.first.comment
     end
 
     it 'should update the condition of the lmx and timestamp it' do
       freeze_time do
         @lmx.update_condition('foo', user_id: @u.id)
 
-        expect(@lmx.machine_conditions.first.comment).must_equal 'foo'
-        expect(@lmx.updated_at).must_equal Time.current
+        assert_equal 'foo', @lmx.machine_conditions.first.comment
+        assert_equal Time.current, @lmx.updated_at
       end
 
       @lmx.update_condition('bar', remote_ip: '0.0.0.0', user_agent: 'cleOS', user_id: @u.id)
@@ -35,21 +35,21 @@ describe LocationMachineXref do
       @lmx.update_condition('baz', user_id: @u.id)
       @lmx.update_condition('baz', user_id: @u.id)
 
-      expect(MachineCondition.all.count).must_equal 1
+      assert_equal 1, MachineCondition.all.count
     end
 
     it 'should create MachineConditions' do
       @lmx.update_condition('foo')
 
-      expect(MachineCondition.all.count).must_equal 1
-      expect(MachineCondition.first.comment).must_equal 'foo'
+      assert_equal 1, MachineCondition.all.count
+      assert_equal 'foo', MachineCondition.first.comment
     end
 
     it 'should tag update with a user when given' do
       @lmx.update_condition('foo', user_id: FactoryBot.create(:user, id: 10, username: 'foo').id)
 
-      expect(@lmx.user_id).must_equal 10
-      expect(@lmx.last_updated_by_username).must_equal 'foo'
+      assert_equal 10, @lmx.user_id
+      assert_equal 'foo', @lmx.last_updated_by_username
     end
   end
 
@@ -61,21 +61,21 @@ describe LocationMachineXref do
       user = User.find(1)
       regionless_lmx.destroy(user_id: user.id)
 
-      expect(LocationMachineXref.all).wont_include regionless_lmx
+      refute_includes LocationMachineXref.all, regionless_lmx
       submission = UserSubmission.last
 
-      expect(submission.region).must_equal nil
-      expect(submission.user).must_equal user
-      expect(submission.location).must_equal regionless_lmx.location
-      expect(submission.machine).must_equal regionless_lmx.machine
-      expect(submission.submission).must_equal "#{@m.name} was removed from #{regionless_location.name} in #{regionless_location.city} by #{user.name}"
-      expect(submission.submission_type).must_equal UserSubmission::REMOVE_MACHINE_TYPE
+      assert_equal nil, submission.region
+      assert_equal user, submission.user
+      assert_equal regionless_lmx.location, submission.location
+      assert_equal regionless_lmx.machine, submission.machine
+      assert_equal "#{@m.name} was removed from #{regionless_location.name} in #{regionless_location.city} by #{user.name}", submission.submission
+      assert_equal UserSubmission::REMOVE_MACHINE_TYPE, submission.submission_type
     end
 
     it 'should remove the lmx' do
       @lmx.destroy(remote_ip: '0.0.0.0', user_agent: 'cleOS')
 
-      expect(LocationMachineXref.all).must_equal []
+      assert_equal [], LocationMachineXref.all
     end
 
     it 'auto-creates a user submission' do
@@ -84,12 +84,12 @@ describe LocationMachineXref do
 
       submission = UserSubmission.last
 
-      expect(submission.region).must_equal @l.region
-      expect(submission.user).must_equal user
-      expect(submission.location).must_equal @lmx.location
-      expect(submission.machine).must_equal @lmx.machine
-      expect(submission.submission).must_equal "#{@m.name} was removed from #{@l.name} in #{@l.city} by #{user.name}"
-      expect(submission.submission_type).must_equal UserSubmission::REMOVE_MACHINE_TYPE
+      assert_equal @l.region, submission.region
+      assert_equal user, submission.user
+      assert_equal @lmx.location, submission.location
+      assert_equal @lmx.machine, submission.machine
+      assert_equal "#{@m.name} was removed from #{@l.name} in #{@l.city} by #{user.name}", submission.submission
+      assert_equal UserSubmission::REMOVE_MACHINE_TYPE, submission.submission_type
     end
   end
 
@@ -97,11 +97,11 @@ describe LocationMachineXref do
     it 'should return the most recent comments username' do
       lmx = FactoryBot.create(:location_machine_xref)
 
-      expect(lmx.last_updated_by_username).must_equal ''
+      assert_equal '', lmx.last_updated_by_username
 
       lmx = FactoryBot.create(:location_machine_xref, user: FactoryBot.create(:user, id: 666, username: 'foo'))
 
-      expect(lmx.last_updated_by_username).must_equal 'foo'
+      assert_equal 'foo', lmx.last_updated_by_username
     end
   end
 
@@ -113,12 +113,12 @@ describe LocationMachineXref do
 
       submission = UserSubmission.last
 
-      expect(submission.region).must_equal @l.region
-      expect(submission.user).must_equal user
-      expect(submission.location).must_equal @l
-      expect(submission.machine).must_equal @m
-      expect(submission.submission).must_equal "#{@m.name} was added to #{@l.name} in #{@l.city} by #{user.name}"
-      expect(submission.submission_type).must_equal UserSubmission::NEW_LMX_TYPE
+      assert_equal @l.region, submission.region
+      assert_equal user, submission.user
+      assert_equal @l, submission.location
+      assert_equal @m, submission.machine
+      assert_equal "#{@m.name} was added to #{@l.name} in #{@l.city} by #{user.name}", submission.submission
+      assert_equal UserSubmission::NEW_LMX_TYPE, submission.submission_type
     end
   end
 
@@ -126,11 +126,11 @@ describe LocationMachineXref do
     it 'should return the most recent comments username' do
       lmx = FactoryBot.create(:location_machine_xref)
 
-      expect(lmx.last_updated_by_username).must_equal ''
+      assert_equal '', lmx.last_updated_by_username
 
       lmx = FactoryBot.create(:location_machine_xref, user: FactoryBot.create(:user, id: 666, username: 'foo'))
 
-      expect(lmx.last_updated_by_username).must_equal 'foo'
+      assert_equal 'foo', lmx.last_updated_by_username
     end
   end
 end

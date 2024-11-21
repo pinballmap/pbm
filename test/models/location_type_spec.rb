@@ -10,7 +10,7 @@ describe LocationType do
     it 'should update timestamp in status table' do
       @lt.destroy
 
-      expect(@status.reload.updated_at).must_be_within_delta Time.current, 1.second
+      assert_in_delta Time.current, @status.reload.updated_at, 1.second
     end
   end
 
@@ -18,7 +18,7 @@ describe LocationType do
     it 'should update timestamp in status table' do
       FactoryBot.create(:location_type, name: 'Waterpark')
 
-      expect(@status.reload.updated_at).must_be_within_delta Time.current, 1.second
+      assert_in_delta Time.current, @status.reload.updated_at, 1.second
     end
   end
 
@@ -26,7 +26,7 @@ describe LocationType do
     it 'should update timestamp in status table' do
       @lt.update(library: 'broom')
 
-      expect(@status.reload.updated_at).must_be_within_delta Time.current, 1.second
+      assert_in_delta Time.current, @status.reload.updated_at, 1.second
     end
   end
 end

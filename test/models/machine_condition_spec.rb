@@ -13,14 +13,14 @@ describe MachineCondition do
         lmx.update_condition('baz')
         mc = lmx.machine_conditions.first
 
-        expect(mc.created_at).must_equal mc.updated_at
-        expect(mc.comment).must_equal 'baz'
+        assert_equal mc.updated_at, mc.created_at
+        assert_equal 'baz', mc.comment
 
         mc.update({ comment: 'dang' })
         lmx.reload
 
-        expect(mc.created_at).wont_equal mc.updated_at
-        expect(mc.comment).must_equal 'dang'
+        refute_equal mc.updated_at, mc.created_at
+        assert_equal 'dang', mc.comment
       end
     end
 
@@ -35,12 +35,12 @@ describe MachineCondition do
         lmx.update_condition('baz')
         lmx.reload
 
-        expect(lmx.machine_conditions.first.comment).must_equal 'baz'
+        assert_equal 'baz', lmx.machine_conditions.first.comment
 
         lmx.machine_conditions.first.destroy
         lmx.reload
 
-        expect(lmx.machine_conditions.size).must_equal 2
+        assert_equal 2, lmx.machine_conditions.size
       end
     end
 
@@ -54,12 +54,12 @@ describe MachineCondition do
 
         submission = UserSubmission.second
 
-        expect(submission.region).must_equal lmx.location.region
-        expect(submission.user).must_equal user
-        expect(submission.location).must_equal lmx.location
-        expect(submission.machine).must_equal lmx.machine
-        expect(submission.submission).must_equal "#{user.username} commented on #{lmx.machine.name} at #{lmx.location.name} in #{lmx.location.city}. They said: yep"
-        expect(submission.submission_type).must_equal UserSubmission::NEW_CONDITION_TYPE
+        assert_equal lmx.location.region, submission.region
+        assert_equal user, submission.user
+        assert_equal lmx.location, submission.location
+        assert_equal lmx.machine, submission.machine
+        assert_equal "#{user.username} commented on #{lmx.machine.name} at #{lmx.location.name} in #{lmx.location.city}. They said: yep", submission.submission
+        assert_equal UserSubmission::NEW_CONDITION_TYPE, submission.submission_type
       end
     end
   end

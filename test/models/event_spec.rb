@@ -7,7 +7,7 @@ describe Event do
   describe '#active?' do
     it 'should be active if there is no start or end date' do
       e = FactoryBot.create(:event, start_date: nil, end_date: nil)
-      expect(e.active?).must_be_same_as 1
+      assert_same 1, e.active?
     end
 
     it 'handles start date with no end date' do
