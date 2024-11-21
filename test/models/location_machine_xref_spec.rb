@@ -16,16 +16,16 @@ describe LocationMachineXref do
 
       regionless_lmx.update_condition('regionless condish', user_id: @u.id)
 
-      expect(MachineCondition.all.count).to eq(1)
-      expect(MachineCondition.first.comment).to eq('regionless condish')
+      expect(MachineCondition.all.count).must_equal 1
+      expect(MachineCondition.first.comment).must_equal 'regionless condish'
     end
 
     it 'should update the condition of the lmx and timestamp it' do
       freeze_time do
         @lmx.update_condition('foo', user_id: @u.id)
 
-        expect(@lmx.machine_conditions.first.comment).to eq('foo')
-        expect(@lmx.updated_at).to eq(Time.current)
+        expect(@lmx.machine_conditions.first.comment).must_equal 'foo'
+        expect(@lmx.updated_at).must_equal Time.current
       end
 
       @lmx.update_condition('bar', remote_ip: '0.0.0.0', user_agent: 'cleOS', user_id: @u.id)
@@ -35,21 +35,21 @@ describe LocationMachineXref do
       @lmx.update_condition('baz', user_id: @u.id)
       @lmx.update_condition('baz', user_id: @u.id)
 
-      expect(MachineCondition.all.count).to eq(1)
+      expect(MachineCondition.all.count).must_equal 1
     end
 
     it 'should create MachineConditions' do
       @lmx.update_condition('foo')
 
-      expect(MachineCondition.all.count).to eq(1)
-      expect(MachineCondition.first.comment).to eq('foo')
+      expect(MachineCondition.all.count).must_equal 1
+      expect(MachineCondition.first.comment).must_equal 'foo'
     end
 
     it 'should tag update with a user when given' do
       @lmx.update_condition('foo', user_id: FactoryBot.create(:user, id: 10, username: 'foo').id)
 
-      expect(@lmx.user_id).to eq(10)
-      expect(@lmx.last_updated_by_username).to eq('foo')
+      expect(@lmx.user_id).must_equal 10
+      expect(@lmx.last_updated_by_username).must_equal 'foo'
     end
   end
 
@@ -61,21 +61,21 @@ describe LocationMachineXref do
       user = User.find(1)
       regionless_lmx.destroy(user_id: user.id)
 
-      expect(LocationMachineXref.all).to_not include(regionless_lmx)
+      expect(LocationMachineXref.all).wont_include regionless_lmx
       submission = UserSubmission.last
 
-      expect(submission.region).to eq(nil)
-      expect(submission.user).to eq(user)
-      expect(submission.location).to eq(regionless_lmx.location)
-      expect(submission.machine).to eq(regionless_lmx.machine)
-      expect(submission.submission).to eq("#{@m.name} was removed from #{regionless_location.name} in #{regionless_location.city} by #{user.name}")
-      expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
+      expect(submission.region).must_equal nil
+      expect(submission.user).must_equal user
+      expect(submission.location).must_equal regionless_lmx.location
+      expect(submission.machine).must_equal regionless_lmx.machine
+      expect(submission.submission).must_equal "#{@m.name} was removed from #{regionless_location.name} in #{regionless_location.city} by #{user.name}"
+      expect(submission.submission_type).must_equal UserSubmission::REMOVE_MACHINE_TYPE
     end
 
     it 'should remove the lmx' do
       @lmx.destroy(remote_ip: '0.0.0.0', user_agent: 'cleOS')
 
-      expect(LocationMachineXref.all).to eq([])
+      expect(LocationMachineXref.all).must_equal []
     end
 
     it 'auto-creates a user submission' do
@@ -84,12 +84,12 @@ describe LocationMachineXref do
 
       submission = UserSubmission.last
 
-      expect(submission.region).to eq(@l.region)
-      expect(submission.user).to eq(user)
-      expect(submission.location).to eq(@lmx.location)
-      expect(submission.machine).to eq(@lmx.machine)
-      expect(submission.submission).to eq("#{@m.name} was removed from #{@l.name} in #{@l.city} by #{user.name}")
-      expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
+      expect(submission.region).must_equal @l.region
+      expect(submission.user).must_equal user
+      expect(submission.location).must_equal @lmx.location
+      expect(submission.machine).must_equal @lmx.machine
+      expect(submission.submission).must_equal "#{@m.name} was removed from #{@l.name} in #{@l.city} by #{user.name}"
+      expect(submission.submission_type).must_equal UserSubmission::REMOVE_MACHINE_TYPE
     end
   end
 
@@ -97,11 +97,11 @@ describe LocationMachineXref do
     it 'should return the most recent comments username' do
       lmx = FactoryBot.create(:location_machine_xref)
 
-      expect(lmx.last_updated_by_username).to eq('')
+      expect(lmx.last_updated_by_username).must_equal ''
 
       lmx = FactoryBot.create(:location_machine_xref, user: FactoryBot.create(:user, id: 666, username: 'foo'))
 
-      expect(lmx.last_updated_by_username).to eq('foo')
+      expect(lmx.last_updated_by_username).must_equal 'foo'
     end
   end
 
@@ -113,12 +113,12 @@ describe LocationMachineXref do
 
       submission = UserSubmission.last
 
-      expect(submission.region).to eq(@l.region)
-      expect(submission.user).to eq(user)
-      expect(submission.location).to eq(@l)
-      expect(submission.machine).to eq(@m)
-      expect(submission.submission).to eq("#{@m.name} was added to #{@l.name} in #{@l.city} by #{user.name}")
-      expect(submission.submission_type).to eq(UserSubmission::NEW_LMX_TYPE)
+      expect(submission.region).must_equal @l.region
+      expect(submission.user).must_equal user
+      expect(submission.location).must_equal @l
+      expect(submission.machine).must_equal @m
+      expect(submission.submission).must_equal "#{@m.name} was added to #{@l.name} in #{@l.city} by #{user.name}"
+      expect(submission.submission_type).must_equal UserSubmission::NEW_LMX_TYPE
     end
   end
 
@@ -126,11 +126,11 @@ describe LocationMachineXref do
     it 'should return the most recent comments username' do
       lmx = FactoryBot.create(:location_machine_xref)
 
-      expect(lmx.last_updated_by_username).to eq('')
+      expect(lmx.last_updated_by_username).must_equal ''
 
       lmx = FactoryBot.create(:location_machine_xref, user: FactoryBot.create(:user, id: 666, username: 'foo'))
 
-      expect(lmx.last_updated_by_username).to eq('foo')
+      expect(lmx.last_updated_by_username).must_equal 'foo'
     end
   end
 end

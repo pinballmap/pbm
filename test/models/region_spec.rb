@@ -11,7 +11,7 @@ describe Region do
       @status = FactoryBot.create(:status, status_type: 'regions', updated_at: Time.current - 1.day)
       @region.destroy
 
-      expect(@status.reload.updated_at).to be_within(1.second).of Time.current
+      expect(@status.reload.updated_at).must_be_within_delta Time.current, 1.second
     end
   end
 
@@ -20,7 +20,7 @@ describe Region do
       @status = FactoryBot.create(:status, status_type: 'regions', updated_at: Time.current - 1.day)
       FactoryBot.create(:region, name: 'glendale', id: 23345)
 
-      expect(@status.reload.updated_at).to be_within(1.second).of Time.current
+      expect(@status.reload.updated_at).must_be_within_delta Time.current, 1.second
     end
   end
 
@@ -29,7 +29,7 @@ describe Region do
       @status = FactoryBot.create(:status, status_type: 'regions', updated_at: Time.current - 1.day)
       @other_region.update(full_name: 'Chicago')
 
-      expect(@status.reload.updated_at).to be_within(1.second).of Time.current
+      expect(@status.reload.updated_at).must_be_within_delta Time.current, 1.second
     end
   end
 
@@ -41,8 +41,8 @@ describe Region do
 
       Region.delete_empty_regionless_locations
 
-      expect(Location.all.count).to eq(1)
-      expect(Location.first.name).to eq('not empty')
+      expect(Location.all.count).must_equal 1
+      expect(Location.first.name).must_equal 'not empty'
     end
   end
 
@@ -54,8 +54,8 @@ describe Region do
 
       @region.delete_all_empty_locations
 
-      expect(Location.all.count).to eq(1)
-      expect(Location.first.name).to eq('not empty')
+      expect(Location.all.count).must_equal 1
+      expect(Location.first.name).must_equal 'not empty'
     end
 
     it 'should not remove all empty locations if the region has opted in to this functionality' do
@@ -63,8 +63,8 @@ describe Region do
 
       @other_region.delete_all_empty_locations
 
-      expect(Location.all.count).to eq(1)
-      expect(Location.first.name).to eq('empty')
+      expect(Location.all.count).must_equal 1
+      expect(Location.first.name).must_equal 'empty'
     end
   end
 
@@ -75,8 +75,8 @@ describe Region do
 
       Region.delete_all_regionless_events
 
-      expect(Event.all.count).to eq(1)
-      expect(Event.first.name).to eq('New Event 1')
+      expect(Event.all.count).must_equal 1
+      expect(Event.first.name).must_equal 'New Event 1'
     end
   end
 
@@ -91,8 +91,8 @@ describe Region do
 
       @region.delete_all_expired_events
 
-      expect(Event.all.count).to eq(3)
-      expect(Event.first.name).to eq('New Event 1')
+      expect(Event.all.count).must_equal 3
+      expect(Event.first.name).must_equal 'New Event 1'
     end
   end
 
@@ -101,7 +101,7 @@ describe Region do
       FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region_id: @region.id, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
-      expect(@region.generate_daily_digest_comments_email_body[:submissions]).to be_empty
+      expect(@region.generate_daily_digest_comments_email_body[:submissions]).must_be :empty?
     end
 
     it 'should generate a string containing all machine comments from the day' do
@@ -111,7 +111,7 @@ describe Region do
       FactoryBot.create(:user_submission, region_id: @region.id, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region_id: @region.id, submission: 'qux', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
-      expect(@region.generate_daily_digest_comments_email_body[:submissions]).to eq(%w[foo bar])
+      expect(@region.generate_daily_digest_comments_email_body[:submissions]).must_equal %w[foo bar]
     end
   end
 
@@ -121,7 +121,7 @@ describe Region do
       FactoryBot.create(:user_submission, region_id: @region.id, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region_id: nil, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
-      expect(Region.generate_daily_digest_global_comments_email_body[:submissions]).to be_empty
+      expect(Region.generate_daily_digest_regionless_comments_email_body[:submissions]).must_be :empty?
     end
 
     it 'should generate a string containing all machine comments from the day' do
@@ -132,7 +132,7 @@ describe Region do
       FactoryBot.create(:user_submission, region_id: nil, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region_id: nil, submission: 'qux', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
-      expect(Region.generate_daily_digest_global_comments_email_body[:submissions]).to eq(%w[foo bar bong])
+      expect(Region.generate_daily_digest_regionless_comments_email_body[:submissions]).must_equal %w[foo bar]
     end
   end
 
@@ -142,7 +142,7 @@ describe Region do
       FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(Region.generate_daily_digest_global_removal_email_body[:submissions]).to be_empty
+      expect(Region.generate_daily_digest_regionless_removal_email_body[:submissions]).must_be :empty?
     end
 
     it 'should generate a string containing all machine removals from the day' do
@@ -153,7 +153,7 @@ describe Region do
       FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: nil, submission: 'qux', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(Region.generate_daily_digest_global_removal_email_body[:submissions]).to eq(%w[foo bar bong])
+      expect(Region.generate_daily_digest_regionless_removal_email_body[:submissions]).must_equal %w[foo bar]
     end
   end
 
@@ -162,7 +162,7 @@ describe Region do
       FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(@region.generate_daily_digest_removal_email_body[:submissions]).to be_empty
+      expect(@region.generate_daily_digest_removal_email_body[:submissions]).must_be :empty?
     end
 
     it 'should generate a string containing all machine removals from the day' do
@@ -172,7 +172,7 @@ describe Region do
       FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: @region, submission: 'qux', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(@region.generate_daily_digest_removal_email_body[:submissions]).to eq(%w[foo bar])
+      expect(@region.generate_daily_digest_removal_email_body[:submissions]).must_equal %w[foo bar]
     end
   end
 
@@ -181,7 +181,7 @@ describe Region do
       FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_PICTURE_TYPE)
 
-      expect(@region.generate_daily_digest_picture_added_email_body[:submissions]).to be_empty
+      expect(@region.generate_daily_digest_picture_added_email_body[:submissions]).must_be :empty?
     end
 
     it 'should generate a string containing all pictures added from the day' do
@@ -191,7 +191,7 @@ describe Region do
       FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: @region, submission: 'qux', submission_type: UserSubmission::NEW_PICTURE_TYPE)
 
-      expect(@region.generate_daily_digest_picture_added_email_body[:submissions]).to eq(%w[foo bar])
+      expect(@region.generate_daily_digest_picture_added_email_body[:submissions]).must_equal %w[foo bar]
     end
   end
 
@@ -201,7 +201,7 @@ describe Region do
       FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_PICTURE_TYPE)
 
-      expect(Region.generate_daily_digest_global_picture_added_email_body[:submissions]).to be_empty
+      expect(Region.generate_daily_digest_regionless_picture_added_email_body[:submissions]).must_be :empty?
     end
 
     it 'should generate a string containing all pictures added from the day' do
@@ -212,7 +212,7 @@ describe Region do
       FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: nil, submission: 'qux', submission_type: UserSubmission::NEW_PICTURE_TYPE)
 
-      expect(Region.generate_daily_digest_global_picture_added_email_body[:submissions]).to eq(%w[foo bar bong])
+      expect(Region.generate_daily_digest_regionless_picture_added_email_body[:submissions]).must_equal %w[foo bar]
     end
   end
 
@@ -250,15 +250,15 @@ describe Region do
       FactoryBot.create(:user_submission, region: nil, submission: 'foo', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
       FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
 
-      expect(Region.generate_weekly_global_email_body[:machineless_locations]).to eq([ 'Another Region Location (Portland, OR)', 'Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)' ])
-      expect(Region.generate_weekly_global_email_body[:suggested_locations_count]).to eq(2)
-      expect(Region.generate_weekly_global_email_body[:locations_added_count]).to eq(3)
-      expect(Region.generate_weekly_global_email_body[:locations_deleted_count]).to eq(3)
-      expect(Region.generate_weekly_global_email_body[:machine_comments_count]).to eq(2)
-      expect(Region.generate_weekly_global_email_body[:machines_added_count]).to eq(4)
-      expect(Region.generate_weekly_global_email_body[:machines_removed_count]).to eq(2)
-      expect(Region.generate_weekly_global_email_body[:pictures_added_count]).to eq(2)
-      expect(Region.generate_weekly_global_email_body[:scores_added_count]).to eq(2)
+      expect(Region.generate_weekly_global_email_body[:machineless_locations]).must_equal [ 'Another Region Location (Portland, OR)', 'Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)' ]
+      expect(Region.generate_weekly_global_email_body[:suggested_locations_count]).must_equal 2
+      expect(Region.generate_weekly_global_email_body[:locations_added_count]).must_equal 3
+      expect(Region.generate_weekly_global_email_body[:locations_deleted_count]).must_equal 3
+      expect(Region.generate_weekly_global_email_body[:machine_comments_count]).must_equal 2
+      expect(Region.generate_weekly_global_email_body[:machines_added_count]).must_equal 4
+      expect(Region.generate_weekly_global_email_body[:machines_removed_count]).must_equal 2
+      expect(Region.generate_weekly_global_email_body[:pictures_added_count]).must_equal 2
+      expect(Region.generate_weekly_global_email_body[:scores_added_count]).must_equal 2
     end
   end
 
@@ -317,19 +317,19 @@ describe Region do
       FactoryBot.create(:user_submission, region: @region, submission: 'foo', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
       FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
 
-      expect(@region.generate_weekly_admin_email_body[:suggested_locations]).to eq([ 'SL 1', 'SL 2' ])
-      expect(@region.generate_weekly_admin_email_body[:machineless_locations]).to eq([ 'Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)', 'Test Location Name (Portland, OR)' ])
-      expect(@region.generate_weekly_admin_email_body[:suggested_locations_count]).to eq(2)
-      expect(@region.generate_weekly_admin_email_body[:locations_added_count]).to eq(2)
-      expect(@region.generate_weekly_admin_email_body[:locations_deleted_count]).to eq(3)
-      expect(@region.generate_weekly_admin_email_body[:machine_comments_count]).to eq(2)
-      expect(@region.generate_weekly_admin_email_body[:machines_added_count]).to eq(3)
-      expect(@region.generate_weekly_admin_email_body[:machines_removed_count]).to eq(2)
-      expect(@region.generate_weekly_admin_email_body[:contact_messages_count]).to eq(5)
-      expect(@region.generate_weekly_admin_email_body[:events_count]).to eq(5)
-      expect(@region.generate_weekly_admin_email_body[:pictures_added_count]).to eq(2)
-      expect(@region.generate_weekly_admin_email_body[:scores_added_count]).to eq(2)
-      expect(@region.generate_weekly_admin_email_body[:full_name]).to eq('Portland')
+      expect(@region.generate_weekly_admin_email_body[:suggested_locations]).must_equal [ 'SL 1', 'SL 2' ]
+      expect(@region.generate_weekly_admin_email_body[:machineless_locations]).must_equal [ 'Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)', 'Test Location Name (Portland, OR)' ]
+      expect(@region.generate_weekly_admin_email_body[:suggested_locations_count]).must_equal 2
+      expect(@region.generate_weekly_admin_email_body[:locations_added_count]).must_equal 2
+      expect(@region.generate_weekly_admin_email_body[:locations_deleted_count]).must_equal 3
+      expect(@region.generate_weekly_admin_email_body[:machine_comments_count]).must_equal 2
+      expect(@region.generate_weekly_admin_email_body[:machines_added_count]).must_equal 3
+      expect(@region.generate_weekly_admin_email_body[:machines_removed_count]).must_equal 2
+      expect(@region.generate_weekly_admin_email_body[:contact_messages_count]).must_equal 5
+      expect(@region.generate_weekly_admin_email_body[:events_count]).must_equal 5
+      expect(@region.generate_weekly_admin_email_body[:pictures_added_count]).must_equal 2
+      expect(@region.generate_weekly_admin_email_body[:scores_added_count]).must_equal 2
+      expect(@region.generate_weekly_admin_email_body[:full_name]).must_equal 'Portland'
     end
   end
 
@@ -340,7 +340,7 @@ describe Region do
       two = FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, created_at: '2001-02-01')
       FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, created_at: '2001-03-01')
 
-      expect(@region.n_recent_scores(2)).to eq([ one, two ])
+      expect(@region.n_recent_scores(2)).must_equal [one, two]
     end
   end
 
@@ -352,27 +352,25 @@ describe Region do
       3.times { |n| scores << FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, user: FactoryBot.create(:user, username: "ssw#{n}")) }
       scores << FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, user: User.find_by_username('ssw0'))
 
-      expect(@region.n_high_rollers(1)).to include(
-        'ssw0' => [ scores[3], scores[0] ]
-      )
+      expect(@region.n_high_rollers(1)).must_include 'ssw0' => [scores[3], scores[0]]
     end
   end
 
   describe '#emailContact' do
     it 'should return a default email address if no users are in region' do
-      expect(@region.primary_email_contact).to eq('email_not_found@noemailfound.noemail')
+      expect(@region.primary_email_contact).must_equal 'email_not_found@noemailfound.noemail'
     end
     it 'should return the primary email contact if they are flagged' do
       FactoryBot.create(:user, region: @region, email: 'not@primary.com')
       FactoryBot.create(:user, region: @region, email: 'is@primary.com', is_primary_email_contact: 1)
 
-      expect(@region.primary_email_contact).to eq('is@primary.com')
+      expect(@region.primary_email_contact).must_equal 'is@primary.com'
     end
     it 'should return the first user if there is no primary email contact' do
       FactoryBot.create(:user, region: @region, email: 'first@first.com')
       FactoryBot.create(:user, region: @region, email: 'second@second.com')
 
-      expect(@region.primary_email_contact).to eq('first@first.com')
+      expect(@region.primary_email_contact).must_equal 'first@first.com'
     end
   end
 
@@ -381,7 +379,7 @@ describe Region do
       FactoryBot.create(:location, region: @region)
       FactoryBot.create(:location, region: @region)
 
-      expect(@region.locations_count).to eq(2)
+      expect(@region.locations_count).must_equal 2
     end
   end
 
@@ -394,49 +392,49 @@ describe Region do
 
       FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location, region: @other_region))
 
-      expect(@region.machines_count).to eq(4)
+      expect(@region.machines_count).must_equal 4
     end
   end
 
   describe '#all_admin_email_addresses' do
     it 'should return a default email address if no users are in region' do
-      expect(@region.all_admin_email_addresses).to eq([ 'email_not_found@noemailfound.noemail' ])
+      expect(@region.all_admin_email_addresses).must_equal ['email_not_found@noemailfound.noemail']
     end
     it 'should return all admin email addresses' do
       FactoryBot.create(:user, region: @region, email: 'not@primary.com')
       FactoryBot.create(:user, region: @region, email: 'is@primary.com', is_primary_email_contact: 1)
 
-      expect(@region.all_admin_email_addresses).to eq([ 'is@primary.com', 'not@primary.com' ])
+      expect(@region.all_admin_email_addresses).must_equal ['is@primary.com', 'not@primary.com']
     end
   end
 
   describe '#available_search_sections' do
     it 'should not return zone as a search section if the region has no zones' do
-      expect(@region.available_search_sections).to eq("['location', 'city', 'machine', 'type']")
+      expect(@region.available_search_sections).must_equal "['location', 'city', 'machine', 'type']"
 
       FactoryBot.create(:location, region: @region, name: 'Cleo', zone: FactoryBot.create(:zone, region: @region, name: 'Alberta'))
 
-      expect(@region.reload.available_search_sections).to eq("['location', 'city', 'machine', 'type', 'zone']")
+      expect(@region.reload.available_search_sections).must_equal "['location', 'city', 'machine', 'type', 'zone']"
     end
 
     it 'should not return operator as a search section if the region has no operators OR there are no regionless operators' do
-      expect(@region.available_search_sections).to eq("['location', 'city', 'machine', 'type']")
+      expect(@region.available_search_sections).must_equal "['location', 'city', 'machine', 'type']"
 
       FactoryBot.create(:operator, region: @region)
 
-      expect(@region.reload.available_search_sections).to eq("['location', 'city', 'machine', 'type', 'operator']")
+      expect(@region.reload.available_search_sections).must_equal "['location', 'city', 'machine', 'type', 'operator']"
 
       Operator.delete_all
       FactoryBot.create(:operator, region: nil)
 
-      expect(@region.reload.available_search_sections).to eq("['location', 'city', 'machine', 'type', 'operator']")
+      expect(@region.reload.available_search_sections).must_equal "['location', 'city', 'machine', 'type', 'operator']"
     end
 
     it 'should display all search sections when an operator and zone are present' do
       FactoryBot.create(:location, region: @region, name: 'Cleo', zone: FactoryBot.create(:zone, region: @region, name: 'Alberta'))
       FactoryBot.create(:location, region: @region, name: 'Cleo', operator: FactoryBot.create(:operator, name: 'Quarter Bean', region: @region))
 
-      expect(@region.reload.available_search_sections).to eq("['location', 'city', 'machine', 'type', 'operator', 'zone']")
+      expect(@region.reload.available_search_sections).must_equal "['location', 'city', 'machine', 'type', 'operator', 'zone']"
     end
   end
 
@@ -447,8 +445,8 @@ describe Region do
 
       @region.move_to_new_region(@other_region)
 
-      expect(@region.locations.count).to eq(0)
-      expect(@other_region.locations.count).to eq(2)
+      expect(@region.locations.count).must_equal 0
+      expect(@other_region.locations.count).must_equal 2
     end
 
     it 'moves over all events' do
@@ -457,8 +455,8 @@ describe Region do
 
       @region.move_to_new_region(@other_region)
 
-      expect(@region.events.count).to eq(0)
-      expect(@other_region.events.count).to eq(2)
+      expect(@region.events.count).must_equal 0
+      expect(@other_region.events.count).must_equal 2
     end
 
     it 'moves over all operators' do
@@ -467,8 +465,8 @@ describe Region do
 
       @region.move_to_new_region(@other_region)
 
-      expect(@region.operators.count).to eq(0)
-      expect(@other_region.operators.count).to eq(2)
+      expect(@region.operators.count).must_equal 0
+      expect(@other_region.operators.count).must_equal 2
     end
 
     it 'moves over all region_link_xrefs' do
@@ -477,8 +475,8 @@ describe Region do
 
       @region.move_to_new_region(@other_region)
 
-      expect(@region.region_link_xrefs.count).to eq(0)
-      expect(@other_region.region_link_xrefs.count).to eq(2)
+      expect(@region.region_link_xrefs.count).must_equal 0
+      expect(@other_region.region_link_xrefs.count).must_equal 2
     end
 
     it 'moves over all admins' do
@@ -487,8 +485,8 @@ describe Region do
 
       @region.move_to_new_region(@other_region)
 
-      expect(@region.users.count).to eq(0)
-      expect(@other_region.users.count).to eq(2)
+      expect(@region.users.count).must_equal 0
+      expect(@other_region.users.count).must_equal 2
     end
 
     it 'moves over all zones' do
@@ -497,8 +495,8 @@ describe Region do
 
       @region.move_to_new_region(@other_region)
 
-      expect(@region.zones.count).to eq(0)
-      expect(@other_region.zones.count).to eq(2)
+      expect(@region.zones.count).must_equal 0
+      expect(@other_region.zones.count).must_equal 2
     end
 
     it 'moves over all user submissions' do
@@ -507,19 +505,19 @@ describe Region do
 
       @region.move_to_new_region(@other_region)
 
-      expect(@region.user_submissions.count).to eq(0)
-      expect(@other_region.user_submissions.count).to eq(2)
+      expect(@region.user_submissions.count).must_equal 0
+      expect(@other_region.user_submissions.count).must_equal 2
     end
   end
 
   describe '#motd' do
     it 'should return a default message if field is null or ryan-defined values' do
-      expect(@region.motd).to eq('To help keep Pinball Map running, consider a donation! https://pinballmap.com/donate')
+      expect(@region.motd).must_equal 'To help keep Pinball Map running, consider a donation! https://pinballmap.com/donate'
 
       @region.motd = 'foo'
       @region.save
 
-      expect(@region.reload.motd).to eq('foo')
+      expect(@region.reload.motd).must_equal 'foo'
     end
   end
 end

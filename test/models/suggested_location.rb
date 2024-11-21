@@ -8,51 +8,51 @@ describe SuggestedLocation do
 
   describe 'after_create' do
     it 'should put http:// in front of websites without one' do
-      expect(@suggested_location.website).to be(nil)
+      expect(@suggested_location.website).must_be_same_as nil
 
       location_with_complete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', website: 'http://foo.com')
-      expect(location_with_complete_website.website).to eq('http://foo.com')
+      expect(location_with_complete_website.website).must_equal 'http://foo.com'
 
       location_with_incomplete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', website: 'bar.com')
-      expect(location_with_incomplete_website.website).to eq('http://bar.com')
+      expect(location_with_incomplete_website.website).must_equal 'http://bar.com'
 
       location_with_incomplete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', website: '')
-      expect(location_with_incomplete_website.website).to eq('')
+      expect(location_with_incomplete_website.website).must_equal ''
 
-      expect(@suggested_location.country).to eq('US')
+      expect(@suggested_location.country).must_equal 'US'
 
       filled_in_country = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', country: 'FR')
-      expect(filled_in_country.country).to eq('FR')
+      expect(filled_in_country.country).must_equal 'FR'
     end
 
     it 'should tag the location with US as the country if no country is sent' do
-      expect(@suggested_location.website).to be(nil)
+      expect(@suggested_location.website).must_be_same_as nil
 
       location_with_complete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', website: 'http://foo.com')
-      expect(location_with_complete_website.website).to eq('http://foo.com')
+      expect(location_with_complete_website.website).must_equal 'http://foo.com'
 
       location_with_incomplete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', website: 'bar.com')
-      expect(location_with_incomplete_website.website).to eq('http://bar.com')
+      expect(location_with_incomplete_website.website).must_equal 'http://bar.com'
     end
 
     it 'should strip starting and ending whitespace' do
       location_with_whitespace = FactoryBot.create(:suggested_location, name: ' foo ', machines: 'Batman')
-      expect(location_with_whitespace.name).to eq('foo')
+      expect(location_with_whitespace.name).must_equal 'foo'
     end
   end
 
   describe '#address_incomplete?' do
     it 'should be true based on lack of address' do
-      expect(@suggested_location.address_incomplete?).to be(false)
+      refute @suggested_location.address_incomplete?
 
       @suggested_location.state = nil
-      expect(@suggested_location.address_incomplete?).to be(false)
+      refute @suggested_location.address_incomplete?
 
       @suggested_location.zip = nil
-      expect(@suggested_location.address_incomplete?).to be(false)
+      refute @suggested_location.address_incomplete?
 
       @suggested_location.street = nil
-      expect(@suggested_location.address_incomplete?).to be(true)
+      assert @suggested_location.address_incomplete?
     end
   end
 
@@ -64,14 +64,14 @@ describe SuggestedLocation do
 select event, item_type, item_id from versions order by created_at limit 1
 HERE
 
-      expect(results.values).to eq([ [ 'converted from suggested location', 'Location', 1 ] ])
+      expect(results.values).must_equal [['converted from suggested location', 'Location', 1]]
     end
 
     it 'requires country' do
       @suggested_location.country = nil
       @suggested_location.convert_to_location(@user.email)
 
-      expect(@suggested_location.errors.messages).to include(base: [ 'Country is a required field for conversion.' ])
+      expect(@suggested_location.errors.messages).must_include base: ['Country is a required field for conversion.']
     end
   end
 end

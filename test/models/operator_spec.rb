@@ -13,7 +13,7 @@ describe Operator do
     it 'should update timestamp in status table' do
       @o.destroy
 
-      expect(@status.reload.updated_at).to be_within(1.second).of Time.current
+      expect(@status.reload.updated_at).must_be_within_delta Time.current, 1.second
     end
   end
 
@@ -21,7 +21,7 @@ describe Operator do
     it 'should update timestamp in status table' do
       FactoryBot.create(:operator, name: 'Sassy Moves Today')
 
-      expect(@status.reload.updated_at).to be_within(1.second).of Time.current
+      expect(@status.reload.updated_at).must_be_within_delta Time.current, 1.second
     end
   end
 
@@ -29,7 +29,7 @@ describe Operator do
     it 'should update timestamp in status table' do
       @no_email_operator.update(email: 'foo@bar.com')
 
-      expect(@status.reload.updated_at).to be_within(1.second).of Time.current
+      expect(@status.reload.updated_at).must_be_within_delta Time.current, 1.second
     end
   end
 

@@ -9,10 +9,10 @@ describe MachineScoreXref do
     describe '#username' do
       it 'should display blank when there is no user associated with the score' do
         userless_score = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, user: nil)
-        expect(userless_score.username).to eq('')
+        expect(userless_score.username).must_equal ''
 
         user_score = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, user: FactoryBot.create(:user, username: 'cibw'))
-        expect(user_score.username).to eq('cibw')
+        expect(user_score.username).must_equal 'cibw'
       end
     end
 
@@ -25,11 +25,11 @@ describe MachineScoreXref do
 
         submission = UserSubmission.second
 
-        expect(submission.location).to eq(@lmx.location)
-        expect(submission.machine).to eq(@lmx.machine)
-        expect(submission.user).to eq(user)
-        expect(submission.submission_type).to eq(UserSubmission::NEW_SCORE_TYPE)
-        expect(submission.submission).to eq('cibw added a high score of 100 on Test Machine Name at Test Location Name in Portland')
+        expect(submission.location).must_equal @lmx.location
+        expect(submission.machine).must_equal @lmx.machine
+        expect(submission.user).must_equal user
+        expect(submission.submission_type).must_equal UserSubmission::NEW_SCORE_TYPE
+        expect(submission.submission).must_equal 'cibw added a high score of 100 on Test Machine Name at Test Location Name in Portland'
       end
     end
   end

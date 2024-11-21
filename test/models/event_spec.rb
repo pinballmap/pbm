@@ -7,23 +7,23 @@ describe Event do
   describe '#active?' do
     it 'should be active if there is no start or end date' do
       e = FactoryBot.create(:event, start_date: nil, end_date: nil)
-      expect(e.active?).to be(1)
+      expect(e.active?).must_be_same_as 1
     end
 
     it 'handles start date with no end date' do
       e = FactoryBot.create(:event, start_date: Date.today, end_date: nil)
-      expect(e.active?).to be(true)
+      assert e.active?
 
       e = FactoryBot.create(:event, start_date: Date.today - 2.week, end_date: nil)
-      expect(e.active?).to be(false)
+      refute e.active?
     end
 
     it 'handles end date is present' do
       e = FactoryBot.create(:event, start_date: nil, end_date: Date.today)
-      expect(e.active?).to be(true)
+      assert e.active?
 
       e = FactoryBot.create(:event, start_date: nil, end_date: Date.today - 2.week)
-      expect(e.active?).to be(false)
+      refute e.active?
     end
   end
 end
