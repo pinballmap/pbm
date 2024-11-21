@@ -581,6 +581,7 @@ DEPENDENCIES
   launchy
   listen
   maxminddb
+  minitest
   ostruct
   pagy
   paper_trail
