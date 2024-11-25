@@ -74,11 +74,11 @@ describe UsersController do
 
       expect(page).to have_link('ssw')
       expect(page).to have_content('Member since: Feb 02, 2016')
-      expect(page).to have_content("1\nMachines Added")
-      expect(page).to have_content("2\nMachines Removed")
-      expect(page).to have_content("1\nMachine Comments")
-      expect(page).to have_content("3\nLocations Submitted")
-      expect(page).to have_content("5\nLocations Edited")
+      expect(page).to have_content("1\nMACHINES ADDED")
+      expect(page).to have_content("2\nMACHINES REMOVED")
+      expect(page).to have_content("1\nMACHINE COMMENTS")
+      expect(page).to have_content("3\nLOCATIONS SUBMITTED")
+      expect(page).to have_content("5\nLOCATIONS EDITED")
       expect(page).to have_content("High Scores (Last 50):\nMachine One\n1\nat Location One on Jan 02, 2016\nMachine Two\n3\nat Location Two on Jan 01, 2016")
 
       expect(page).to_not have_content('Saved Locations:')
