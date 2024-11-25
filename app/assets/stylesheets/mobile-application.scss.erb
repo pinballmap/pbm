@@ -1,3 +1,12 @@
+:root {
+  --search_mask: rgba(255, 255, 255, 0.7);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --search_mask: rgba(15, 18, 24, 0.7);
+  }
+}
+
 html {
   position: relative;
   min-height: 100%;
@@ -104,8 +113,8 @@ body {
   font-size: 11px;
   padding: 3px 6px;
   border-radius: 10px;
-  background-color: white;
-  color: #383838;
+  background-color: var(--lightpurple);
+  color: var(--ahref);
 }
 
 #header ul {
@@ -163,12 +172,12 @@ body {
 
 .region_name_page a {
   font-size: 30px;
-  color: #fe46b0;
+  color: var(--red);
   text-decoration: none;
 }
 
 .region_name_page {
-  background: #fafaff;
+  background: var(--bg_vlightpurple);
   padding: 10px 0;
   width: 100%;
   position: relative !important;
@@ -413,7 +422,7 @@ div.state_name_container {
 
 #form_container {
   display: none;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--search_mask);
   height: 100%;
   width: 100%;
   position: fixed;
@@ -424,7 +433,7 @@ div.state_name_container {
 
 #form {
   width: 95%;
-  border: 5px solid #97a5af;
+  border: 5px solid var(--border);
   min-width: 300px;
   height: auto;
   position: fixed;
@@ -436,7 +445,7 @@ div.state_name_container {
 }
 
 .search_modal button {
-  border: 2px solid #97a5af;
+  border: 2px solid var(--border);
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
@@ -582,8 +591,8 @@ span.or {
 }
 
 #form .search_field_container input.lookup_search_input {
-  border: 2px solid #97a5af;
-  background: #FFFFFF;
+  border: 2px solid var(--border);
+  background: var(--white);
   height: 32px;
   width: 100%;
 }
@@ -593,7 +602,7 @@ span.or {
   margin: 10px auto 0;
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
-  border: 2px solid #97a5af;
+  border: 2px solid var(--border);
   box-shadow: 1px 1px 3px #888;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -750,7 +759,7 @@ span.machine_condition_text {
 }
 
 .machine_lmx {
-  padding: 0;
+  padding: 5px 0 0 0;
 }
 
 .machine_condition_display_lmx {
@@ -1023,7 +1032,7 @@ input.score {
 #city_section_link,
 #location_section_link,
 #type_section_link {
-  background-color: #f5f5ff;
+  background-color: var(--bg_vlightpurple);
   font-size: 18px;
   line-height: 18px;
   margin: 6px;

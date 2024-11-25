@@ -17,8 +17,12 @@
   --shadow: #d0d5d9;
   --lookup: #ffffff;
   --buttons: #ffffff;
+  --container: #f5f5ff;
   --border: #aeb1d2;
   --machinename: #66017b;
+  --machinename_bg: #ffffff;
+  --details: #fafaff;
+  --explore: #fffbfd;
   --mask: rgba(245, 251, 255, 0.7);
   --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>) repeat;
   --filter: none;
@@ -43,8 +47,12 @@
     --shadow: rgba(15, 18, 24, 0.7);
     --lookup: #ffffff;
     --buttons: #ac9fc7;
+    --container: #292629;
     --border: #88788a;
     --machinename: #f9f2fa;
+    --machinename_bg: #5f5063;
+    --details: #413244;
+    --explore: #dfdaf0;
     --mask: transparent;
     --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Simple.png' %>) repeat;
     --filter: invert(100%);
@@ -1508,7 +1516,7 @@ li.address_full {
   align-items: center;
   font-size: 24px;
   line-height: 28px;
-  background: var(--white);
+  background: var(--machinename_bg);
   border-radius: 15px;
 }
 
@@ -1940,7 +1948,7 @@ br.clear {
 
 .machine_tools_lmx_toggle {
   margin: 10px auto;
-  background-color: var(--bg_vlightpurple);
+  background-color: var(--details);
   color: var(--darkgrey);  
   border-radius: 10px;
   font-size: 14px;
@@ -1988,7 +1996,7 @@ br.clear {
 }
 
 .search_result {
-  background: var(--lightpurple);
+  background: var(--container);
   height: 100%;
   @include radius(10px);
   box-shadow: 2px 5px 10px var(--shadow);
@@ -2900,7 +2908,7 @@ div.region_name_container {
   border-bottom: 5px solid #d4c8ee;
   box-shadow: 3px 3px 12px #ae9bd1;
   padding: 2px 10px;
-  background: #fffbfd;
+  background: var(--explore);
   text-decoration: none;
   color: #6d49b0;
 }
