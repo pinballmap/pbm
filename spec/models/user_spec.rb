@@ -14,6 +14,14 @@ describe User do
     end
   end
 
+  describe '#render_user_flag' do
+    it 'should return the user selected flag' do
+      flag_user = FactoryBot.create(:user, username: 'ssw', flag: 'us-ca')
+
+      expect(flag_user.flag).to eq('us-ca')
+    end
+  end
+
   describe '#num_machines_added' do
     it 'should return the number of machines this user has added' do
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_LMX_TYPE)

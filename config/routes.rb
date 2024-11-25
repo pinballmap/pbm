@@ -31,6 +31,8 @@ Rails.application.routes.draw do
           get  :list_fave_locations
           get  :profile_info
           post :remove_fave_location
+          get  :render_user_flag
+          post :update_user_flag
         end
         collection do
           get :total_user_count
@@ -188,10 +190,12 @@ Rails.application.routes.draw do
       end
   end
 
-  resources :users, only: [:profile, :toggle_fave_location] do
+  resources :users, only: [:profile, :toggle_fave_location, :update_user_flag, :render_user_flag] do
     member do
       get :profile, constraints: { id: /[^\/]+/ }
       post :toggle_fave_location
+      post :update_user_flag
+      get :render_user_flag
     end
   end
 

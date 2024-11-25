@@ -201,10 +201,30 @@ module Api
           user,
           'profile_info',
           [],
-          %i[admin_rank_int admin_title contributor_rank_int contributor_rank num_total_submissions num_machines_added num_machines_removed num_locations_edited num_locations_suggested num_lmx_comments_left num_msx_scores_added profile_list_of_edited_locations profile_list_of_high_scores created_at]
+          %i[admin_rank_int admin_title contributor_rank_int contributor_rank flag num_total_submissions num_machines_added num_machines_removed num_locations_edited num_locations_suggested num_lmx_comments_left num_msx_scores_added profile_list_of_edited_locations profile_list_of_high_scores created_at]
         )
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find user', 'errors')
+      end
+
+      api :POST, '/api/v1/users/:id/update_user_flag', 'Set a country or U.S. flag icon for your user'
+      param :id, Integer, desc: 'ID of user', required: true
+      param :user_flag, String, desc: 'ISO code for flag', required: false
+      formats ['json']
+      def update_user_flag
+        user = User.find(params[:id])
+
+        if user.authentication_token != params[:user_token]
+          return_response('Unauthorized user update.', 'errors')
+          return
+        end
+
+        user.flag = params[:user_flag]
+        user.save
+
+        return_response(user, 'user', [], %i[flag])
+      rescue ActiveRecord::RecordNotFound
+        return_response('Unknown asset', 'errors')
       end
     end
   end

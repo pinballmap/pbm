@@ -926,7 +926,8 @@ CREATE TABLE public.users (
     is_disabled boolean,
     authentication_token character varying(30),
     security_test character varying,
-    user_submissions_count integer
+    user_submissions_count integer,
+    flag character varying
 );
 
 
@@ -1787,6 +1788,7 @@ ALTER TABLE ONLY public.active_storage_attachments
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241117183403'),
 ('20241112193702'),
 ('20240910004435'),
 ('20240909234323'),

@@ -610,7 +610,7 @@ form.edit_user .form-actions {
 /** Stats **/
 
 .rank_icon {
-  margin-bottom: -3px;
+  margin-bottom: -4px;
   height: 15px;
   width: 15px;
 }
@@ -668,7 +668,7 @@ form.edit_user .form-actions {
 }
 
 .rank_icon_past_comment {
-  margin-left: 1px;
+  margin-left: 6px;
 }
 
 div.stats {
@@ -678,7 +678,7 @@ div.stats {
 }
 
 .stat_num_o {
-  width: 50px;
+  width: 100px;
   float: left;
 }
 
@@ -695,6 +695,7 @@ span.stats {
 
 .stats_text {
   margin-left: 45px;
+  text-transform: uppercase;
 }
 
 .stats_list {
@@ -2311,17 +2312,13 @@ div.location_type_container {
 
 div.last_updated {
   padding: 0 0 8px 0;
-}
-
-span.last_updated {
   font-style: normal;
   font-size: 13px;
   font-family: $italic;
   color: var(--ahref);
 }
 
-span .last_updated_username {
-  color: var(--red);
+span.last_updated_username a {
   font-family: $Nunito_700Bold;
   font-size: 13px;
 }
@@ -3023,6 +3020,29 @@ li span.state_name {
   background: transparent;
 }
 
+.w_320 .select2 {
+  width: 75% !important;
+  float: left;
+}
+
+.user_flag {
+  margin-left: 6px;
+}
+
+.user_flag_updated {
+  margin-left: 4px;
+  margin-right: 2px;
+  margin-bottom: -4px;
+}
+
+.user_flag_profile {
+  margin-left: 10px;
+}
+
+.column.profile > div {
+  margin: 25px 0;
+}
+
 /** Select2 **/
 
 .select2-container .select2-selection--multiple {
@@ -3055,15 +3075,10 @@ li span.state_name {
   font-size: 14px;
 }
 
-.high_score_user a {
-  font-family: $Nunito_700Bold;
-  color: var(--black);
-  margin-right: 10px;
-}
-
 .high_score_date {
   font-family: $italic;
   color: var(--darkgrey);
+  margin-left: 8px;
 }
 
 .column .sub_nav_item {
@@ -3076,7 +3091,6 @@ span.stats_list span {
   font-size: 16px;
   color: var(--darkgrey);
   display: block;
-  font-family: $Nunito_700Bold;
 }
 
 div.score_list span.score_meta,
