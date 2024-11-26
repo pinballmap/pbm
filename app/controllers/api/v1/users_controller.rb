@@ -220,9 +220,11 @@ module Api
         end
 
         user.flag = params[:user_flag]
-        user.save
-
-        return_response(user, 'user', [], %i[flag])
+        if user.save
+          return_response(user, 'user', [], %i[flag])
+        else
+          return_response('Unknown ISO code', 'errors')
+        end
       rescue ActiveRecord::RecordNotFound
         return_response('Unknown asset', 'errors')
       end

@@ -106,4 +106,18 @@ describe UsersController do
       expect(page).to have_content('LOGIN to Update Email / Update Password / Delete Account')
     end
   end
+  describe 'update_user_flag', type: :feature, js: true do
+    before(:each) do
+      @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
+      login(@user)
+    end
+    it 'validates user flag' do
+      @user.flag = 'us-ca'
+      expect(@user).to be_valid
+      expect { @user.save }.to_not raise_error
+
+      @user.flag = 'yyy'
+      expect(@user).to_not be_valid
+    end
+  end
 end

@@ -22,7 +22,7 @@
         %div{:style => 'padding: 0 10px;'}
           = form_tag update_user_flag_user_path(:action => 'update_user_flag', id: @user.id), :id => "update_user_flag_#{@user.id}", :remote => true, :method => 'post' do
             %label{:for => "user_flag", :class => 'mb_8 darkgrey block'} Select a country or U.S. state flag to go with your username:
-            =select_tag :user_flag, options_for_select(UsersController::COUNTRY_ISO.map { |k,v| [v,k] }), { include_blank: true, :class => 'user_flag_select', :id => 'user_flag'}
+            =select_tag :user_flag, options_for_select(Country.list.map { |k,v| [v,k] }), { include_blank: true, :class => 'user_flag_select', :id => 'user_flag'}
             = submit_tag 'Save', :class => "save_button", :id => "save_user_flag_#{@user.id}"
       - else
         %div{:style => 'padding: 0 15px;'}

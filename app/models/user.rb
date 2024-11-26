@@ -13,6 +13,8 @@ class User < ApplicationRecord
 
   validates_format_of :username, with: /\A[a-zA-Z0-9_\.]*\z/, multiline: true
   validates :username, length: { maximum: 20 }
+  validates :flag, inclusion: { in: Country.valid_countries, allow_blank: true, message: 'Country ISO not valid.' }
+
   strip_attributes only: %i[username password]
 
   validate :validate_username
