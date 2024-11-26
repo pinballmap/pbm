@@ -15,17 +15,17 @@
           #{@user.contributor_rank}
           %span
             =image_tag("rank/Rank_#{@user.contributor_rank_int}.png", :class => "rank_icon_profile rank_icon_#{@user.contributor_rank_int}")
-      %div.center.font18 Member since: #{@user.created_at.strftime('%b %d, %Y')}
+      %div.center.font16.semiBold Member since: #{@user.created_at.strftime('%b %d, %Y')}
       - if current_user && (@user.id == current_user.id)
-        %div{:style => 'padding: 0 10px;'}
+        %div.font14{:style => 'padding: 0 10px;'}
           =link_to "Update Email / Update Password / Delete Account", edit_user_registration_path
         %div{:style => 'padding: 0 10px;'}
           = form_tag update_user_flag_user_path(:action => 'update_user_flag', id: @user.id), :id => "update_user_flag_#{@user.id}", :remote => true, :method => 'post' do
-            %label{:for => "user_flag", :class => 'mb_8 darkgrey block'} Select a country or U.S. state flag to go with your username:
+            %label{:for => "user_flag", :class => 'mb_8 font14 darkgrey block'} Select a country or U.S. state flag to go with your username:
             =select_tag :user_flag, options_for_select(Country.list.map { |k,v| [v,k] }), { include_blank: true, :class => 'user_flag_select', :id => 'user_flag'}
             = submit_tag 'Save', :class => "save_button", :id => "save_user_flag_#{@user.id}"
       - else
-        %div{:style => 'padding: 0 15px;'}
+        %div.font14{:style => 'padding: 0 15px;'}
           =link_to "LOGIN to Update Email / Update Password / Delete Account", new_user_session_path
     .column.w_560.mt_5
       %div.darkgrey.stats.font18
