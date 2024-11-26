@@ -927,7 +927,12 @@ CREATE TABLE public.users (
     authentication_token character varying(30),
     security_test character varying,
     user_submissions_count integer,
-    flag character varying
+    flag character varying,
+    num_machines_added integer,
+    num_machines_removed integer,
+    num_locations_suggested integer,
+    num_lmx_comments_left integer,
+    num_msx_scores_added integer
 );
 
 
@@ -1788,6 +1793,7 @@ ALTER TABLE ONLY public.active_storage_attachments
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241126054618'),
 ('20241117183403'),
 ('20241112193702'),
 ('20240910004435'),

@@ -44,6 +44,6 @@ class UsersController < InheritedResources::Base
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :security_test, :remember_me, :region_id, :is_machine_admin, :is_primary_email_contact, :username, :is_disabled, :is_super_admin, :flag)
+    params.require(:user).permit(:email, :password, :password_confirmation, :security_test, :remember_me, :region_id, :is_machine_admin, :is_primary_email_contact, :username, :is_disabled, :is_super_admin, :flag, :num_machines_added, :num_machines_removed, :num_locations_suggested, :num_lmx_comments_left, :num_msx_scores_added)
   end
 end

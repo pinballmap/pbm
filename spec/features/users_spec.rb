@@ -54,20 +54,30 @@ describe UsersController do
 
     it 'display metrics about the users account' do
       FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, id: 100), submission_type: UserSubmission::NEW_LMX_TYPE)
+      @user.update_column(:num_machines_added, 1)
       FactoryBot.create(:user_submission, user: @user, location: Location.find(100), submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      @user.update_column(:num_lmx_comments_left, 1)
       FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, id: 200), submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      @user.update_column(:num_machines_removed, 1)
       FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, id: 300), submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      @user.update_column(:num_machines_removed, 2)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      @user.update_column(:num_locations_suggested, 1)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      @user.update_column(:num_locations_suggested, 2)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      @user.update_column(:num_locations_suggested, 3)
       FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, id: 400), submission_type: UserSubmission::LOCATION_METADATA_TYPE)
       FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, id: 500, name: 'Location One'), machine: FactoryBot.create(:machine, name: 'Machine One'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a high score of 1 on Machine One at Location One', created_at: '2016-01-02')
+      @user.update_column(:num_msx_scores_added, 1)
 
       machine = FactoryBot.create(:machine, name: 'Machine Two')
       FactoryBot.create(:user_submission, user: @user, location: Location.find(400), submission_type: UserSubmission::LOCATION_METADATA_TYPE)
 
       FactoryBot.create(:user_submission, user: @user, location: Location.find(500), machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a high score of 2 on Machine Two at Location One', created_at: '2016-01-01')
+      @user.update_column(:num_msx_scores_added, 2)
       FactoryBot.create(:user_submission, user: @user, location: Location.find(400), machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a high score of 3 on Machine Two at Location Two', created_at: '2016-01-01')
+      @user.update_column(:num_msx_scores_added, 3)
 
       login
       visit "/users/#{@user.id}/profile"

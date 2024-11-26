@@ -31,5 +31,6 @@ class MachineScoreXref < ApplicationRecord
 
     UserSubmission.create(user_name: user.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, high_score: score, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: submission, user: user)
     Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
+    User.increment_counter(:num_msx_scores_added, user&.id)
   end
 end

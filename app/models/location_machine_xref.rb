@@ -75,6 +75,7 @@ class LocationMachineXref < ApplicationRecord
     location.last_updated_by_user_id = user.nil? ? nil : user.id
     location.save(validate: false)
     location
+    User.increment_counter(:num_machines_removed, user&.id)
 
     super()
   end
@@ -83,6 +84,7 @@ class LocationMachineXref < ApplicationRecord
     submission = "#{machine.name_and_year} was added to #{location.name} in #{location.city}#{user.nil? ? '' : ' by ' + user.name}"
     UserSubmission.create(user_name: user&.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_LMX_TYPE, submission: submission, user: user)
     Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
+    User.increment_counter(:num_machines_added, user&.id)
   end
 
   def create_ic_user_submission(user)

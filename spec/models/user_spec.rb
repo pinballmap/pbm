@@ -25,9 +25,12 @@ describe User do
   describe '#num_machines_added' do
     it 'should return the number of machines this user has added' do
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_LMX_TYPE)
+      @user.update_column(:num_machines_added, 1)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_LMX_TYPE)
+      @user.update_column(:num_machines_added, 2)
 
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      @user.update_column(:num_machines_removed, 1)
       FactoryBot.create(:user_submission, user: nil, submission_type: UserSubmission::NEW_LMX_TYPE)
 
       expect(@user.num_machines_added).to eq(2)
@@ -37,9 +40,12 @@ describe User do
   describe '#num_machines_removed' do
     it 'should return the number of machines this user has removed' do
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      @user.update_column(:num_machines_removed, 1)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      @user.update_column(:num_machines_removed, 2)
 
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_LMX_TYPE)
+      @user.update_column(:num_machines_added, 1)
       FactoryBot.create(:user_submission, user: nil, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
       expect(@user.num_machines_removed).to eq(2)
@@ -141,9 +147,12 @@ describe User do
   describe '#num_locations_suggested' do
     it 'should return the number of locations the user has suggested' do
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      @user.update_column(:num_locations_suggested, 1)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      @user.update_column(:num_locations_suggested, 2)
 
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      @user.update_column(:num_lmx_comments_left, 1)
       FactoryBot.create(:user_submission, user: nil, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
 
       expect(@user.num_locations_suggested).to eq(2)
@@ -153,9 +162,12 @@ describe User do
   describe '#num_lmx_comments_left' do
     it 'should return the number of comments a user has made on lmxes' do
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      @user.update_column(:num_lmx_comments_left, 1)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      @user.update_column(:num_lmx_comments_left, 2)
 
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      @user.update_column(:num_locations_suggested, 1)
       FactoryBot.create(:user_submission, user: nil, submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
       expect(@user.num_lmx_comments_left).to eq(2)
@@ -182,7 +194,7 @@ describe User do
     end
 
     it 'should allow you to include additional methods' do
-      expect(@user.to_json(methods: [:num_machines_added])).to eq("{\"id\":#{@user.id},\"num_machines_added\":0}")
+      expect(@user.to_json(methods: [:num_locations_edited])).to eq("{\"id\":#{@user.id},\"num_locations_edited\":0}")
     end
   end
 end

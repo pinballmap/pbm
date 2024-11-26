@@ -341,19 +341,32 @@ describe Api::V1::UsersController, type: :request do
       another_location = FactoryBot.create(:location, id: 101, region_id: 1001, name: 'another location')
 
       FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::NEW_LMX_TYPE, location_name: 'location', location_id: 100)
+      @user.update_column(:num_machines_added, 1)
       FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, location_name: 'location', location_id: 100)
+      @user.update_column(:num_machines_removed, 1)
       FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, location_name: 'location', location_id: 100)
+      @user.update_column(:num_machines_removed, 2)
       FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE, location_name: 'location', location_id: 100)
+      @user.update_column(:num_lmx_comments_left, 1)
       FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-01', location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE, location_name: 'location', location_id: 100)
+      @user.update_column(:num_lmx_comments_left, 2)
       FactoryBot.create(:user_submission, user: @user, created_at: '2017-01-02', location: another_location, submission_type: UserSubmission::NEW_CONDITION_TYPE, location_name: 'another location', location_id: 101)
+      @user.update_column(:num_lmx_comments_left, 3)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      @user.update_column(:num_locations_suggested, 1)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      @user.update_column(:num_locations_suggested, 2)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      @user.update_column(:num_locations_suggested, 3)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
+      @user.update_column(:num_locations_suggested, 4)
 
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 1234 on Cheetah at Bottles', location_name: 'location', location_id: 100)
+      @user.update_column(:num_msx_scores_added, 1)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-02', submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 12 on Machine at Location', location_name: 'location', location_id: 100)
+      @user.update_column(:num_msx_scores_added, 2)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-02', submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 14 on Machine at Location', location_name: 'location', location_id: 100)
+      @user.update_column(:num_msx_scores_added, 3)
 
       get '/api/v1/users/111/profile_info.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 

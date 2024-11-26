@@ -76,30 +76,10 @@ class User < ApplicationRecord
     username
   end
 
-  def num_machines_added
-    UserSubmission.where(user: self, submission_type: UserSubmission::NEW_LMX_TYPE).size
-  end
-
-  def num_machines_removed
-    UserSubmission.where(user: self, submission_type: UserSubmission::REMOVE_MACHINE_TYPE).size
-  end
-
   def num_locations_edited
     unique_edited_location_ids = edited_location_submissions.map(&:location_id).uniq!
 
     unique_edited_location_ids ? unique_edited_location_ids.size : 0
-  end
-
-  def num_locations_suggested
-    UserSubmission.where('user_id = ? and submission_type = ?', id, UserSubmission::SUGGEST_LOCATION_TYPE).size
-  end
-
-  def num_lmx_comments_left
-    UserSubmission.where('user_id = ? and submission_type = ?', id, UserSubmission::NEW_CONDITION_TYPE).size
-  end
-
-  def num_msx_scores_added
-    UserSubmission.where('user_id = ? and submission_type = ?', id, UserSubmission::NEW_SCORE_TYPE).size
   end
 
   def profile_list_of_high_scores
