@@ -3,7 +3,7 @@
     .column.w_320.bg_vlightpurple.profile{:style => 'padding-bottom: 25px;'}
       %div.font22.bold.flex_center.bg_lightpurple{:style => 'padding: 25px 5px;margin: 0 -10px;'}
         =link_to @user.username, profile_user_path(@user.id)
-        %span.render_user_flag
+        %span.render_user_flag{:style => 'height: 21px;'}
           = render :partial => 'users/render_user_flag', :locals => {:user => @user}
       - if @user.admin_rank_int
         %div.red.bold.center.font18
