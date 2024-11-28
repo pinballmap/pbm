@@ -123,7 +123,7 @@ describe UsersController do
 
       visit "/users/#{not_your_user.id}/profile"
 
-      expect(page).to have_content('LOGIN to Update Email / Update Password / Delete Account')
+      expect(page).to_not have_content('Update Email / Update Password / Delete Account')
     end
   end
   describe 'update_user_flag', type: :feature, js: true do
