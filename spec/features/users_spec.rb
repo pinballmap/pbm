@@ -94,6 +94,16 @@ describe UsersController do
       expect(page).to_not have_content('Saved Locations:')
     end
 
+    it 'returns zeros when appropriate' do
+      visit "/users/#{@user.id}/profile"
+
+      expect(page).to have_content("0\nTOTAL CONTRIBUTIONS")
+      expect(page).to have_content("0\nMACHINES ADDED")
+      expect(page).to have_content("0\nMACHINES REMOVED")
+      expect(page).to have_content("0\nMACHINE COMMENTS")
+      expect(page).to have_content("0\nLOCATIONS SUBMITTED")
+    end
+
     it 'adds commas to high scores' do
       FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, id: 500, name: 'Location One'), machine: FactoryBot.create(:machine, name: 'Machine One'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a high score of 1000000 on Machine One at Location One', created_at: '2016-01-02')
 

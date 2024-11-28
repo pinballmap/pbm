@@ -926,13 +926,13 @@ CREATE TABLE public.users (
     is_disabled boolean,
     authentication_token character varying(30),
     security_test character varying,
-    user_submissions_count integer,
+    user_submissions_count integer DEFAULT 0 NOT NULL,
     flag character varying,
-    num_machines_added integer,
-    num_machines_removed integer,
-    num_locations_suggested integer,
-    num_lmx_comments_left integer,
-    num_msx_scores_added integer,
+    num_machines_added integer DEFAULT 0 NOT NULL,
+    num_machines_removed integer DEFAULT 0 NOT NULL,
+    num_locations_suggested integer DEFAULT 0 NOT NULL,
+    num_lmx_comments_left integer DEFAULT 0 NOT NULL,
+    num_msx_scores_added integer DEFAULT 0 NOT NULL,
     contributor_rank character varying,
     admin_title character varying
 );
@@ -1795,6 +1795,8 @@ ALTER TABLE ONLY public.active_storage_attachments
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241128060236'),
+('20241128052830'),
 ('20241127215612'),
 ('20241127054132'),
 ('20241127051246'),
