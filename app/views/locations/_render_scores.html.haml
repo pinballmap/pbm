@@ -5,11 +5,10 @@
       = link_to msx.user.username, "#{request.scheme}://#{request.host_with_port}/users/#{msx.user.username}/profile", :class => 'bold'
       - if !msx.user.flag.blank?
         =image_tag("https://flagcdn.com/24x18/#{msx.user.flag}.png", :class => "user_flag")
-      - user = msx.user
-      - rank_int = user.admin? ? user.admin_rank_int : user.contributor_rank_int
-      - if rank_int.present?
-        %span{:class => "rank_icon_#{rank_int} rank_icon_past_comment"}
-          = image_tag("rank/Rank_#{rank_int}.png", :class => "rank_icon")
+      - if !msx.user.admin_title.blank? || !msx.user.contributor_rank.blank?
+        - rank = msx.user.admin_title.present? ? msx.user.admin_title.gsub(' ', '') : msx.user.contributor_rank.gsub(' ', '')
+        %span{:class => "rank_icon_#{rank} rank_icon_past_comment"}
+          =image_tag("rank/#{rank}.png", :class => "rank_icon")
     - else
       DELETED USER
     %span.high_score_date=msx.created_at ? msx.created_at.strftime("%b %d, %Y") : ''

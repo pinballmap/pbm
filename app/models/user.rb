@@ -150,33 +150,11 @@ class User < ApplicationRecord
     end
   end
 
-  def contributor_rank
-    case contributor_rank_int
-    when nil
-      nil
-    when 5
-      'Super Mapper'
-    when 4
-      'Legendary Mapper'
-    when 3
-      'Grand Champ Mapper'
-    end
-  end
-
   def admin_rank_int
     if region_id == 1 || username == 'pbm'
       1
     elsif !region_id.blank?
       2
-    end
-  end
-
-  def admin_title
-    case admin_rank_int
-    when 1
-      'Global Administrator'
-    when 2
-      'Regional Administrator'
     end
   end
 

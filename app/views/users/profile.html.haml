@@ -5,16 +5,12 @@
         =link_to @user.username, profile_user_path(@user.id)
         %span.render_user_flag{:style => 'height: 21px;'}
           = render :partial => 'users/render_user_flag', :locals => {:user => @user}
-      - if @user.admin_rank_int
+      - if !@user.admin_title.blank? || !@user.contributor_rank.blank?
+        - rank = @user.admin? ? @user.admin_title : @user.contributor_rank
         %div.red.bold.center.font18
-          #{@user.admin_title}
+          #{rank}
           %span
-            =image_tag("rank/Rank_#{@user.admin_rank_int}.png", :class => "rank_icon_profile rank_icon_#{@user.admin_rank_int}")
-      - elsif @user.contributor_rank_int
-        %div.red.bold.center.font18
-          #{@user.contributor_rank}
-          %span
-            =image_tag("rank/Rank_#{@user.contributor_rank_int}.png", :class => "rank_icon_profile rank_icon_#{@user.contributor_rank_int}")
+            =image_tag("rank/#{rank.gsub(' ', '')}.png", :class => "rank_icon_profile rank_icon_#{rank.gsub(' ', '')}")
       %div.center.font16.semiBold Member since: #{@user.created_at.strftime('%b %d, %Y')}
       - if current_user && (@user.id == current_user.id)
         %div.font14{:style => 'padding: 0 10px;'}

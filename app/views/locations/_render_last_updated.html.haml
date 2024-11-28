@@ -9,10 +9,10 @@
       - if !l.last_updated_by_user.flag.blank?
         =image_tag("https://flagcdn.com/24x18/#{l.last_updated_by_user.flag}.png", :class => "user_flag_updated")
       - user = l.last_updated_by_user
-      - rank_int = user.admin? ? user.admin_rank_int : user.contributor_rank_int
-      - if rank_int.present?
-        %span{:class => "rank_icon_#{rank_int}"}
-          = image_tag("rank/Rank_#{rank_int}.png", :class => "rank_icon")
+      - if !user.admin_title.blank? || !user.contributor_rank.blank?
+        - rank = user.admin_title.present? ? user.admin_title.gsub(' ', '') : user.contributor_rank.gsub(' ', '')
+        %span{:class => "rank_icon_#{rank}"}
+          =image_tag("rank/#{rank}.png", :class => "rank_icon")
 
   - if l.date_last_updated < 2.years.ago
     - dateDiff = distance_of_time_in_words(Time.now, l.date_last_updated)

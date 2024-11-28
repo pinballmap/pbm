@@ -25,11 +25,11 @@
           = link_to mcx.user.username, "#{request.scheme}://#{request.host_with_port}/users/#{mcx.user.username}/profile", :class => 'bold'
           - if !mcx.user.flag.blank?
             =image_tag("https://flagcdn.com/24x18/#{mcx.user.flag}.png", :class => "user_flag")
-          - user = mcx.user
-          - rank_int = user.admin? ? user.admin_rank_int : user.contributor_rank_int
-          - if rank_int.present?
-            %span{:class => "rank_icon_#{rank_int} rank_icon_past_comment"}
-              = image_tag("rank/Rank_#{rank_int}.png", :class => "rank_icon")
+          - if !mcx.user.admin_title.blank? || !mcx.user.contributor_rank.blank?
+            - rank = mcx.user.admin_title.present? ? mcx.user.admin_title.gsub(' ', '') : mcx.user.contributor_rank.gsub(' ', '')
+            %span{:class => "rank_icon_#{rank} rank_icon_past_comment"}
+              =image_tag("rank/#{rank}.png", :class => "rank_icon")
+
         - else
           DELETED USER
         - if !mcx.updated_at.nil?

@@ -932,7 +932,9 @@ CREATE TABLE public.users (
     num_machines_removed integer,
     num_locations_suggested integer,
     num_lmx_comments_left integer,
-    num_msx_scores_added integer
+    num_msx_scores_added integer,
+    contributor_rank character varying,
+    admin_title character varying
 );
 
 
@@ -1793,6 +1795,9 @@ ALTER TABLE ONLY public.active_storage_attachments
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241127215612'),
+('20241127054132'),
+('20241127051246'),
 ('20241126054618'),
 ('20241117183403'),
 ('20241112193702'),
