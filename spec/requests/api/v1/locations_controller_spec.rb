@@ -726,6 +726,40 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to include('FeatureCollection')
       expect(response.body).to include('Point')
     end
+
+    it 'respects no_details and shows fewer location fields' do
+      close_location_one = FactoryBot.create(:location, id: 5555, street: '123 Main St', name: 'Close_1', phone: '111-222-3333', website: 'https://website.gov', region: @region, lat: 45.526112069408704, lon: -122.60884314086321, location_type_id: 1, operator_id: 1)
+      machine = FactoryBot.create(:machine)
+      FactoryBot.create(:location_machine_xref, location: close_location_one, machine_id: machine.id)
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, no_details: 1}
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      locations = parsed_body['locations']
+      expect(response.body).to include('Close_1')
+      expect(response.body).to include('5555')
+      expect(response.body).to include('45.5261120')
+      expect(response.body).to include('-122.608843')
+      expect(response.body).to include('123 Main St')
+      expect(response.body).to_not include('111-222-3333')
+      expect(response.body).to_not include('https://website.gov')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, no_details: 2}
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(1)
+
+      locations = parsed_body['locations']
+      expect(response.body).to_not include('Close_1')
+      expect(response.body).to include('5555')
+      expect(response.body).to include('45.5261120')
+      expect(response.body).to include('-122.608843')
+      expect(response.body).to_not include('123 Main St')
+      expect(response.body).to_not include('111-222-3333')
+      expect(response.body).to_not include('https://website.gov')
+    end
   end
 
   describe '#machine_details' do

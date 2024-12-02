@@ -198,7 +198,16 @@ module Api
       param :no_details, Integer, desc: 'Omit data that app does not need from pull', required: false
       formats %w[json geojson]
       def within_bounding_box
-        except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at] : nil
+        if params[:no_details] == '1'
+          except = %i[country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at]
+          except2 = %i[machine_names_first machine_ids num_machines]
+        elsif params[:no_details] == '2'
+          except = %i[name street state zip country updated_at location_type_id operator_id country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at]
+          except2 = []
+        else
+          except = []
+          except2 = %i[machine_names_first machine_ids num_machines]
+        end
 
         bounds = [params[:swlat], params[:swlon], params[:nelat], params[:nelon]]
         if params[:user_faved]
@@ -206,6 +215,8 @@ module Api
           fave_locations = UserFaveLocation.select(:location_id).where(user_id: user)
 
           locations_within = apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds).uniq
+        elsif params[:no_details] == '2'
+          locations_within = apply_scopes(Location).within_bounding_box(bounds).uniq
         else
           locations_within = apply_scopes(Location).includes(:machines).within_bounding_box(bounds).uniq
         end
@@ -243,7 +254,7 @@ module Api
 
         if !locations_within.empty?
           respond_to do |format|
-            format.json { return_response(locations_within, 'locations', [], %i[machine_names_first machine_ids num_machines], 200, except) }
+            format.json { return_response(locations_within, 'locations', [], except2, 200, except) }
             format.geojson { render json: container_geojson.to_json }
           end
         else
