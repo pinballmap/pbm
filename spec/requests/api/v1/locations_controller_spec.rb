@@ -732,7 +732,7 @@ describe Api::V1::LocationsController, type: :request do
       machine = FactoryBot.create(:machine)
       FactoryBot.create(:location_machine_xref, location: close_location_one, machine_id: machine.id)
 
-      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, no_details: 1}
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, no_details: 1 }
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
@@ -746,7 +746,7 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to_not include('111-222-3333')
       expect(response.body).to_not include('https://website.gov')
 
-      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, no_details: 2}
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, no_details: 2 }
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
