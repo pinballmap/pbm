@@ -856,7 +856,7 @@ describe Api::V1::LocationsController, type: :request do
       FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, score: 567_890)
     end
 
-    it 'returns all locations within region scope along with lmx data' do      
+    it 'returns all locations within region scope along with lmx data' do
       get "/api/v1/region/#{@region.name}/locations/#{@location.id}.json"
 
       expect(response.body).to include('Satchmo')
@@ -881,7 +881,7 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to include('7777')
       expect(response.body).to_not include('foo bar')
       expect(response.body).to_not include('567890')
-    
+
       get "/api/v1/locations/#{@location.id}.json", params: { no_details: 2 }
 
       expect(response.body).to include('Satchmo')
