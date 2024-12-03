@@ -202,7 +202,7 @@ module Api
           except = %i[country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at]
           includes = %i[machine_names_first machine_ids num_machines]
         elsif params[:no_details] == '2'
-          except = %i[name street state zip country updated_at location_type_id operator_id country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at]
+          except = %i[name street city state zip country updated_at location_type_id operator_id country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at]
           includes = []
         else
           except = []
