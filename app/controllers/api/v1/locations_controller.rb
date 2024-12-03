@@ -200,13 +200,13 @@ module Api
       def within_bounding_box
         if params[:no_details] == '1'
           except = %i[country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at]
-          except2 = %i[machine_names_first machine_ids num_machines]
+          includes = %i[machine_names_first machine_ids num_machines]
         elsif params[:no_details] == '2'
           except = %i[name street state zip country updated_at location_type_id operator_id country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at]
-          except2 = []
+          includes = []
         else
           except = []
-          except2 = %i[machine_names_first machine_ids num_machines]
+          includes = %i[machine_names_first machine_ids num_machines]
         end
 
         bounds = [params[:swlat], params[:swlon], params[:nelat], params[:nelon]]
@@ -254,7 +254,7 @@ module Api
 
         if !locations_within.empty?
           respond_to do |format|
-            format.json { return_response(locations_within, 'locations', [], except2, 200, except) }
+            format.json { return_response(locations_within, 'locations', [], includes, 200, except) }
             format.geojson { render json: container_geojson.to_json }
           end
         else
@@ -316,18 +316,36 @@ module Api
       formats ['json']
       def show
         location = nil
-        if params[:no_details]
-          location = Location.includes(:machines, :last_updated_by_user).find(params[:id])
+
+        if params[:no_details] == '1'
+          location = Location.includes(:location_machine_xrefs, :machines, :last_updated_by_user).find(params[:id])
+          return_response(
+            location,
+            nil,
+            :location_machine_xrefs,
+            %i[last_updated_by_username num_machines],
+            200,
+            %i[zone_id created_at region_id is_stern_army country]
+          )
+        elsif params[:no_details] == '2'
+          location = Location.find(params[:id])
+          return_response(
+            location,
+            nil,
+            [],
+            %i[machine_names_first_no_year num_machines],
+            200,
+            %i[phone website updated_at region_id description operator_id date_last_updated last_updated_by_user_id ic_active zone_id created_at is_stern_army country]
+          )
         else
           location = Location.includes(location_machine_xrefs: [:user, :machine, { machine_conditions: :user }, { machine_score_xrefs: :user }]).find(params[:id])
+          return_response(
+            location,
+            nil,
+            [location_machine_xrefs: { include: { machine_conditions: { methods: :username }, machine_score_xrefs: { methods: :username } }, methods: :last_updated_by_username }],
+            %i[last_updated_by_username num_machines]
+          )
         end
-
-        return_response(
-          location,
-          nil,
-          params[:no_details] ? :location_machine_xrefs : [location_machine_xrefs: { include: { machine_conditions: { methods: :username }, machine_score_xrefs: { methods: :username } }, methods: :last_updated_by_username }],
-          %i[last_updated_by_username num_machines]
-        )
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find location', 'errors')
       end

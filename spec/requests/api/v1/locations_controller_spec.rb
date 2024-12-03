@@ -850,10 +850,13 @@ describe Api::V1::LocationsController, type: :request do
   end
 
   describe '#show' do
-    it 'returns all regions within scope along with lmx data' do
-      lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 777, name: 'Cleo'))
+    before(:each) do
+      lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 7777, name: 'Cleo'))
       FactoryBot.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'foo bar')
-      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, score: 567)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, score: 567_890)
+    end
+
+    it 'returns all locations within region scope along with lmx data' do      
       get "/api/v1/region/#{@region.name}/locations/#{@location.id}.json"
 
       expect(response.body).to include('Satchmo')
@@ -862,14 +865,28 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to include('567')
     end
 
+    it 'show location info plus comments and scores' do
+      get "/api/v1/locations/#{@location.id}.json"
+
+      expect(response.body).to include('Satchmo')
+      expect(response.body).to include('7777')
+      expect(response.body).to include('foo bar')
+      expect(response.body).to include('567890')
+    end
+
     it 'respects no_details and shows fewer location fields' do
-      lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 7777, name: 'Cleo'))
-      FactoryBot.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'foo bar')
-      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, score: 567_890)
       get "/api/v1/locations/#{@location.id}.json", params: { no_details: 1 }
 
       expect(response.body).to include('Satchmo')
       expect(response.body).to include('7777')
+      expect(response.body).to_not include('foo bar')
+      expect(response.body).to_not include('567890')
+    
+      get "/api/v1/locations/#{@location.id}.json", params: { no_details: 2 }
+
+      expect(response.body).to include('Satchmo')
+      expect(response.body).to include('Cleo')
+      expect(response.body).to_not include('7777')
       expect(response.body).to_not include('foo bar')
       expect(response.body).to_not include('567890')
     end
