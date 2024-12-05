@@ -122,6 +122,13 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
         el.addEventListener('click', function () {
           showLocationDetail(locationID);
 
+          var x = document.getElementsByClassName("marker2  maplibregl-marker maplibregl-marker-anchor-center");
+          var g;
+          for (g = 0; g < x.length; g++) {
+            x[g].className = "marker  maplibregl-marker maplibregl-marker-anchor-center";
+          }
+          el.className = 'marker2 maplibregl-marker maplibregl-marker-anchor-center';
+
           document.getElementById('location_detail_location_' + locationID).scrollIntoView(true);
           window.scrollBy(0, -140);
         });
