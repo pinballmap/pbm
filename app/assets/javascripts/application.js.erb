@@ -43,14 +43,6 @@ function toggle_machine_data(name, id) {
   }
 }
 
-function clearInfoWindows() {
-  if (markers) {
-    for (i in markers) {
-      markers[i].getPopup().remove();
-    }
-  }
-}
-
 function clearMarkers() {
   if (markers) {
     for (i in markers) {
@@ -63,9 +55,8 @@ function clearClosest() {
   $(".mask").hide();
 }
 
-function showLocations(ids, lats, lons, contents, num_machines, latLng) {
+function showLocations(ids, lats, lons, num_machines, latLng) {
   clearMarkers();
-  clearInfoWindows();
   clearClosest();
   markers = new Array();
 
@@ -104,7 +95,7 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
     el.className = 'marker';
     el.innerHTML = '<span><b>' + num_machines[i] + '</b></span>';
 
-    if (contents.length > 1) {
+    if (locationIDs.length > 1) {
       (function (el, index) {
         var locationID = locationIDs[index];
 
@@ -113,7 +104,13 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
         el.innerHTML = '<span><b>' + num_machines[i] + '</b></span>';
         el.addEventListener('touchstart', function () {
           showLocationDetail(locationID);
-          showInfowindow(locationID);
+
+          var x = document.getElementsByClassName("marker2  maplibregl-marker maplibregl-marker-anchor-center");
+          var g;
+          for (g = 0; g < x.length; g++) {
+            x[g].className = "marker  maplibregl-marker maplibregl-marker-anchor-center";
+          }
+          el.className = 'marker2 maplibregl-marker maplibregl-marker-anchor-center';
 
           document.getElementById('location_detail_location_' + locationID).scrollIntoView(true);
           window.scrollBy(0, -140);
@@ -135,12 +132,8 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
       })(el, i);
     }
 
-    var popup = new maplibregl.Popup({ offset: 25 })
-      .setHTML(contents[i]);
-
     var marker = new maplibregl.Marker({element: el}, { anchor: 'center' })
       .setLngLat([lons[i], lats[i]])
-      .setPopup(popup)
       .addTo(map);
 
     markers.push(marker);
@@ -148,16 +141,16 @@ function showLocations(ids, lats, lons, contents, num_machines, latLng) {
   }
 
   if (mapAdjusted === 0) {
-    if (contents.length === 1) {
+    if (locationIDs.length === 1) {
       map.setZoom(18);
       map.setCenter([lons[0], lats[0]]);
       zoomCheck();
       if (document.getElementById("not_found")) {
         document.getElementById("not_found").style.display = "none";
       }
-    } else if (contents.length == 0 && latLng.length === 1) {
+    } else if (locationIDs.length == 0 && latLng.length === 1) {
       document.getElementById("map_canvas").innerHTML = "<p id='not_found' class='font28 red bold'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
-    } else if (contents.length == 0 && latLng.length === 2) {
+    } else if (locationIDs.length == 0 && latLng.length === 2) {
       map.fitBounds(bounds, { padding: 50, animate: false });
       map.setZoom(18);
       zoomCheck();
@@ -329,12 +322,6 @@ function showLocationDetail(locationID) {
       $('#location_detail_location_' + locationID).html(data);
     });
   }
-}
-
-function showInfowindow(locationID) {
-  var index = jQuery.inArray(locationID, locationIDs);
-  clearInfoWindows();
-  markers[index].togglePopup();
 }
 
 function backToResults() {

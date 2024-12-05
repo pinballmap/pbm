@@ -141,7 +141,6 @@ Rails.application.routes.draw do
       get :confirm
       get :render_add_machine
       get :render_update_metadata
-      get :render_machine_names_for_infowindow
       get :render_machines_count
       get :render_last_updated
       get :render_location_detail

@@ -45,7 +45,6 @@ describe LocationMachineXrefsController do
         expect(location.reload.date_last_updated).to eq(Date.today)
 
         expect(find("#show_machines_location_#{location.id}")).to have_content(@machine_to_add.name)
-        expect(find("#gm_machines_#{location.id}")).to have_content(@machine_to_add.name)
         expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')}")
 
         expect(LocationMachineXref.where(location_id: location.id, machine_id: @machine_to_add.id).first.user_id).to eq(@user.id)
@@ -1052,20 +1051,6 @@ describe LocationMachineXrefsController do
       within('div.search_result') do
         expect(page).to have_content('Cleo')
         expect(page).to_not have_content('Bawb')
-      end
-    end
-
-    it 'escapes characters in location address for infowindow' do
-      screen_location = FactoryBot.create(:location, id: 54, region: @region, name: 'The Screen', street: "1600 St. Michael's Drive", city: "Sassy's Ville")
-      lmx = FactoryBot.create(:location_machine_xref, location: screen_location, machine: FactoryBot.create(:machine))
-      FactoryBot.create(:machine_condition, location_machine_xref: lmx, comment: 'cool machine description')
-
-      visit "/#{@region.name}/?by_location_id=#{screen_location.id}"
-      page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
-
-      within('div.search_result') do
-        expect(page).to have_content('The Screen')
-        expect(page).to have_content('cool machine description')
       end
     end
 

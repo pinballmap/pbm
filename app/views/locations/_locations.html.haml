@@ -3,15 +3,13 @@
   :javascript
 
     clearMarkers();
-    clearInfoWindows();
     $("#mapFollow_wrapper,#search_link_wrapper,#min_lookup_wrapper").removeClass("hide_button");
 
     showLocations(
       [#{@location_data[0].join(', ')}],
       [#{@location_data[1].join(', ')}],
       [#{@location_data[2].join(', ')}],
-      [#{@location_data[3].join(', ').html_safe}],
-      [#{@location_data[4].join(', ')}],
+      [#{@location_data[3].join(', ')}],
       [#{[@lat, @lon].join(', ')}]
     );
 
@@ -90,7 +88,7 @@
           %div.location_detail[l, :location_detail]
             = render :partial => 'locations/render_location_detail', :locals => {l: l}
         - else
-          %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id}); showInfowindow(#{l.id});"}
+          %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id});"}
             %div.name.bold.font22
               = l.name
             - if (l.location_type)
@@ -132,9 +130,3 @@
       %span
         #{@locations.size} Locations & #{total_num_machines} machines in results
       %span
-
-  - if (@locations.size == 1)
-    :javascript
-      $(function() {
-        showInfowindow(#{@locations.first.id});
-      });

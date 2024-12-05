@@ -150,25 +150,6 @@ class Location < ApplicationRecord
     machines.sort_by(&:massaged_name).map(&:id)
   end
 
-  def content_for_infowindow
-    content = "'<div class=\"infowindow\" id=\"infowindow_#{id}\">"
-    content += "<div class=\"gm_location_name\">#{name.gsub("'", "\\\\'")}</div>"
-    content += "<div class=\"gm_address\">#{[street.gsub("'", "\\\\'"), [city.gsub("'", "\\\\'"), state, zip].compact.split('').flatten.join(', ')].join('<br />')}</div>"
-    content += '<hr />'
-
-    machines = machine_names.take(5).map { |m| m.gsub("'", "\\\\'") + '<br />' }
-    total_num_machines = machine_names.size
-
-    content += "<div class=\"gm_machines\" id=\"gm_machines_#{id}\">#{machines.join}"
-    if total_num_machines > 5
-      the_rest = total_num_machines - 5
-      content += "<div>... and #{the_rest} more</div>"
-    end
-    content += "</div></div>'"
-
-    content.html_safe
-  end
-
   def recent_activity
     UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], location_id: self, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC').limit(30)
   end

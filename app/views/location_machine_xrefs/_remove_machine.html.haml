@@ -11,9 +11,7 @@
       if (confirm("Remove this machine? Please do not remove and re-add the same machine because you want to clear out comments.")) {
         $('#machine_lmx_#{lmx.id}').fadeOut('slow', function() {
           updateLocationUpdatedText(#{lmx.location_id});
-          $('#gm_machines_#{lmx.location_id}').load('/locations/#{lmx.location_id}/render_machine_names_for_infowindow', function() {
-            $('#show_machines_location_count_#{lmx.location_id}').load('/locations/#{lmx.location_id}/render_machines_count', function() {});
-          });
+          $('#show_machines_location_count_#{lmx.location_id}').load('/locations/#{lmx.location_id}/render_machines_count', function() {});
         });
 
         $(this).callRemote();
