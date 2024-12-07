@@ -5,12 +5,12 @@ default: &default
 
 development:
   <<: *default
-  database: pbm_dev
+  database: <%= ENV.fetch("DATABASE", 'pbm_dev') %>
   host: localhost
 
 test:
   <<: *default
-  database: pbm_test
+  database: <%= ENV.fetch("DATABASE", 'pbm_test') %>
 
 staging:
   url: <%= ENV["DATABASE_URL"] %>
