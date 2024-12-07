@@ -50,7 +50,7 @@ class AdminMailer < ApplicationMailer
     @headers = params[:headers]
     @user_agent = params[:user_agent]
 
-    mail(to: params[:to_users], cc: params[:cc_users], subject: params[:subject])
+    mail(to: params[:to_users], reply_to: params[:user_email] || params[:email], cc: params[:cc_users], subject: params[:subject])
   end
 
   def send_daily_digest_machine_condition_email

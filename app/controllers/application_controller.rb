@@ -95,9 +95,11 @@ class ApplicationController < ActionController::Base
   end
 
   def send_admin_notification(params, region, user = nil)
-    body = "Their Name: #{params[:name]} Their Email: #{params[:email]} Message: #{params[:message]} Username: #{user&.username} Site Email: #{user&.email} (entered from #{request.remote_ip} via #{request.headers['AppVersion']} #{request.user_agent})"
+    sender_name = user&.username || params[:name]
+    sender_string = user&.id ? "Username: #{user.username} User Email: #{user.email}" : "Their Name: #{params[:name]} Their Email: #{params[:email]}"
+    body = "#{sender_string} Message: #{params[:message]} (entered from #{request.remote_ip} via #{request.headers['AppVersion']} #{request.user_agent})"
 
-    AdminMailer.with(name: params[:name], email: params[:email], message: params[:message], user_name: user&.username, user_email: user&.email, to_users: region.nil? ? User.all.select(&:is_super_admin).map(&:email) : region.users.map(&:email), cc_users: region.nil? ? [] : User.all.select(&:is_super_admin).map(&:email), subject: add_host_info_to_subject(region.nil? ? 'Pinball Map - Message' : "Pinball Map - Message (#{region.full_name})"), remote_ip: request.remote_ip, headers: request.headers['AppVersion'], user_agent: request.user_agent).send_admin_notification.deliver_later
+    AdminMailer.with(name: params[:name], email: params[:email], message: params[:message], user_name: user&.username, user_email: user&.email, to_users: region.nil? ? User.all.select(&:is_super_admin).map(&:email) : region.users.map(&:email), cc_users: region.nil? ? [] : User.all.select(&:is_super_admin).map(&:email), subject: add_host_info_to_subject(region.nil? ? "Pinball Map - Message from #{sender_name}" : "Pinball Map - Message (#{region.full_name}) from #{sender_name}"), remote_ip: request.remote_ip, headers: request.headers['AppVersion'], user_agent: request.user_agent).send_admin_notification.deliver_later
 
     UserSubmission.create(region_id: region&.id, submission_type: UserSubmission::CONTACT_US_TYPE, submission: body, user_id: user&.id)
   end
