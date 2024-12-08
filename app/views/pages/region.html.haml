@@ -10,12 +10,13 @@
       = render :partial => 'locations/map'
   #search_link_wrapper.hide_button.toggle_btn_reg
     =link_to "Link to this Search Result", "", :id => "search_link"
-  #mapFollow_wrapper.hide_button.toggle_btn_reg
-    %span.red.font14.p_5{:id => "zoom_in_more"}
+  #refresh_button.toggle_btn_reg
+    %div.refresh_button{:onclick => "zoomCheck();"}
+      Refresh this map area
+  #zoom_in_more.toggle_btn_reg
+    %span.red.font14.p_5
       Zoom in further to refresh results!
-    %input{:type => "checkbox", :id => "followCheck", :name => "followCheck", :class => "m_0"}
-    %label{ for: "followCheck" }
-      %span.font16.semiBold.pointer Redo results when map is moved?
+
   %button#top_button{onclick: "topFunction()", title: "Go to top"} Top
   #lookup
     #locations

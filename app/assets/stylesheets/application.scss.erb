@@ -1316,10 +1316,10 @@ input.single_hide {
   margin-left: 8px;
 }
 
-#mapFollow_wrapper,
+#refresh_button,
+#zoom_in_more,
 #search_link_wrapper {
   position: fixed;
-  top: 100px;
   width: 110px;
   background: var(--lightpink);
   text-align: center;
@@ -1331,7 +1331,7 @@ input.single_hide {
 
 #search_link_wrapper {
   padding-top: 5px;
-  top: 160px;
+  top: 60px;
 }
 
 #search_link_wrapper a {
@@ -1345,10 +1345,27 @@ input.single_hide {
   cursor: pointer;
 }
 
-#mapFollow_wrapper {
+#refresh_button {
   top: 220px;
+  color: #440152;
+  background-color: #e3fae5;
+  font-family: $Nunito_700Bold;
+}
+
+#zoom_in_more {
+  top: 280px;
   color: var(--darkgrey);
   background-color: var(--lightpink);
+}
+
+#refresh_button,
+#zoom_in_more {
+  display: none;
+}
+
+#refresh_button:hover,
+#zoom_in_more:hover {
+  cursor: pointer;
 }
 
 .toggle_btn_reg {
@@ -1993,7 +2010,6 @@ br.clear {
 }
 
 .search_result {
-  background: var(--container);
   height: 100%;
   @include radius(10px);
   box-shadow: 2px 5px 10px var(--shadow);
@@ -2003,6 +2019,10 @@ br.clear {
   margin: 6px 0 4px;
   color: var(--grey);
   font-size: 14px;
+}
+
+.location_details_container {
+  background: var(--container);
 }
 
 #form select,

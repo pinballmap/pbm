@@ -12,7 +12,7 @@ var zoomLevel;
 var markers = new Array();
 var locationIDs = new Array();
 var searchSections = new Array();
-const REDO_TIMEOUT = 1800;
+const REDO_TIMEOUT = 200;
 
 function toggleData(name, id) {
   var main = id ? '_' + id : '';
@@ -105,11 +105,7 @@ function showLocations(ids, lats, lons, num_machines, latLng) {
         el.addEventListener('touchstart', function () {
           showLocationDetail(locationID);
 
-          var x = document.getElementsByClassName("marker2  maplibregl-marker maplibregl-marker-anchor-center");
-          var g;
-          for (g = 0; g < x.length; g++) {
-            x[g].className = "marker  maplibregl-marker maplibregl-marker-anchor-center";
-          }
+          clearSelectedMarker();
           el.className = 'marker2 maplibregl-marker maplibregl-marker-anchor-center';
 
           document.getElementById('location_detail_location_' + locationID).scrollIntoView(true);
@@ -119,11 +115,7 @@ function showLocations(ids, lats, lons, num_machines, latLng) {
         el.addEventListener('click', function () {
           showLocationDetail(locationID);
 
-          var x = document.getElementsByClassName("marker2  maplibregl-marker maplibregl-marker-anchor-center");
-          var g;
-          for (g = 0; g < x.length; g++) {
-            x[g].className = "marker  maplibregl-marker maplibregl-marker-anchor-center";
-          }
+          clearSelectedMarker();
           el.className = 'marker2 maplibregl-marker maplibregl-marker-anchor-center';
 
           document.getElementById('location_detail_location_' + locationID).scrollIntoView(true);
@@ -144,7 +136,8 @@ function showLocations(ids, lats, lons, num_machines, latLng) {
     if (locationIDs.length === 1) {
       map.setZoom(18);
       map.setCenter([lons[0], lats[0]]);
-      zoomCheck();
+      hideRefresh();
+      refreshButton();
       if (document.getElementById("not_found")) {
         document.getElementById("not_found").style.display = "none";
       }
@@ -153,18 +146,31 @@ function showLocations(ids, lats, lons, num_machines, latLng) {
     } else if (locationIDs.length == 0 && latLng.length === 2) {
       map.fitBounds(bounds, { padding: 50, animate: false });
       map.setZoom(18);
-      zoomCheck();
+      hideRefresh();
+      refreshButton();
       if (document.getElementById("not_found")) {
         document.getElementById("not_found").style.display = "none";
       }
     } else {
       map.fitBounds(bounds, { padding: 50, animate: false });
-      zoomCheck();
+      hideRefresh();
       if (document.getElementById("not_found")) {
         document.getElementById("not_found").style.display = "none";
       }
     }
   }
+}
+
+function clearSelectedMarker() {
+  var x = document.getElementsByClassName("marker2 maplibregl-marker maplibregl-marker-anchor-center");
+  var g;
+  for (g = 0; g < x.length; g++) {
+    x[g].className = "marker maplibregl-marker maplibregl-marker-anchor-center";
+  }
+}
+
+function hideRefresh() {
+  document.getElementById("refresh_button").style.display = "none";
 }
 
 function zoomCheck() {
@@ -173,9 +179,9 @@ function zoomCheck() {
     document.getElementById("zoom_in_more").style.display = "block";
   } else {
     document.getElementById("zoom_in_more").style.display = "none";
+    redone();
   }
   mapAdjusted = 1;
-  redo();
 }
 
 function storeMachineID() {
@@ -183,23 +189,16 @@ function storeMachineID() {
   searchMachineIDString = searchMachineID ? ';by_machine_id=' + searchMachineID : ''
 }
 
-function redo() {
-  zoomLevel = map.getZoom();
-  map.on('zoomend', redone);
-  map.on('dragend', redone);
+function refreshButton() {
+  map.on('zoomend', function () { document.getElementById("refresh_button").style.display = "block"; });
+  map.on('dragend', function () { document.getElementById("refresh_button").style.display = "block"; });
 }
 
 function redone() {
+  hideRefresh();
   var mapupdater;
   zoomLevel = map.getZoom();
-  if (zoomLevel < 6) {
-    document.getElementById("zoom_in_more").style.display = "block";
-    zoomLevel = map.getZoom();
-  } else if (zoomLevel >= 6) {
-    document.getElementById("zoom_in_more").style.display = "none";
-    zoomLevel = map.getZoom();
-  }
-  if ($("#followCheck").is(':checked') && (zoomLevel >= 6)) {
+
     document.getElementById("zoom_in_more").style.display = "none";
     window.clearTimeout(mapupdater);
     mapupdater = window.setTimeout(function () {
@@ -234,7 +233,6 @@ function redone() {
         }
       });
     }, REDO_TIMEOUT);
-  }
 }
 
 function scrollToMiddle(id) {
@@ -310,11 +308,13 @@ function findClosestLocations(region) {
 
 function showLocationDetail(locationID) {
   $('.location_detail_location').hide();
+  clearSelectedMarker();
 
   if ($('#location_detail_location_' + locationID).is(":hidden")) {
     $('#show_location_detail_location_' + locationID).hide();
     $('.sub_nav_location').hide();
     $('.back_to_results').show();
+    $('#marker_' + locationID).removeClass('marker').addClass('marker2');
     toggleData('location_detail_location', locationID);
 
     $('#location_detail_location_' + locationID).html(loadingHTML());
@@ -326,8 +326,9 @@ function showLocationDetail(locationID) {
 
 function backToResults() {
   $('.back_to_results').hide();
-  $('.sub_nav_location').show("slide", { direction: "left" }, 400);
+  $('.sub_nav_location').show("slide", { direction: "left" }, 200);
   $('.location_detail_location').hide();
+  clearSelectedMarker();
 }
 
 function showSearchModal() {
