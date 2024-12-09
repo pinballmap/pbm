@@ -39,9 +39,8 @@
 
   #search_link_wrapper.hide_button.toggle_btn_reg
     =link_to "Link to this Search Result", "", :id => "search_link", :class => "font14"
-  #refresh_button.toggle_btn_reg
-    %div.refresh_button{:onclick => "zoomCheck();"}
-      Refresh this map area
+  #refresh_button.toggle_btn_reg{:onclick => "zoomCheck();"}
+    Refresh this map area
   #zoom_in_more.toggle_btn_reg
     %span.red.font14
       Zoom in further to refresh results!
