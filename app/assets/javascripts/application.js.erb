@@ -12,7 +12,6 @@ var zoomLevel;
 var markers = new Array();
 var locationIDs = new Array();
 var searchSections = new Array();
-const REDO_TIMEOUT = 200;
 
 function toggleData(name, id) {
   var main = id ? '_' + id : '';
@@ -196,43 +195,36 @@ function refreshButton() {
 
 function redone() {
   hideRefresh();
-  var mapupdater;
-  zoomLevel = map.getZoom();
 
-    document.getElementById("zoom_in_more").style.display = "none";
-    window.clearTimeout(mapupdater);
-    mapupdater = window.setTimeout(function () {
+  var bounds = map.getBounds();
+  var sw = bounds.getSouthWest();
+  var ne = bounds.getNorthEast();
 
-      var bounds = map.getBounds();
-      var sw = bounds.getSouthWest();
-      var ne = bounds.getNorthEast();
+  var dfd = $.getJSON('/api/v1/locations/within_bounding_box.json?no_details=1;swlat=' + sw.lat + ';swlon=' + sw.lng + ';nelat=' + ne.lat + ';nelon=' + ne.lng + searchMachineIDString + numMachinesVal + locationTypeVal);
 
-      var dfd = $.getJSON('/api/v1/locations/within_bounding_box.json?no_details=1;swlat=' + sw.lat + ';swlon=' + sw.lng + ';nelat=' + ne.lat + ';nelon=' + ne.lng + searchMachineIDString + numMachinesVal + locationTypeVal);
+  dfd.done(function (response) {
+    if (!response.locations) {
+      var locationIds = [];
+      document.getElementById("locations").innerHTML = "<p id='not_found' class='font28 red bold'>" + "No pinball found in this area." + "</p>";
+    } else {
+      var locationIds = [];
+      for (var i = 0; i < response.locations.length; i++) {
+        locationIds.push(response.locations[i].id)
+      }
+      if (ismap == 1) {
+        var url = '/locations?map_location_data=;by_location_id=' + locationIds.join('_');
+      }
+      else {
+        var url = '/locations?region=' + region + '&by_location_id=' + locationIds.join('_');
+      }
 
-      dfd.done(function (response) {
-        if (!response.locations) {
-          var locationIds = [];
-          document.getElementById("locations").innerHTML = "<p id='not_found' class='font28 red bold'>" + "No pinball found in this area." + "</p>";
-        } else {
-          var locationIds = [];
-          for (var i = 0; i < response.locations.length; i++) {
-            locationIds.push(response.locations[i].id)
-          }
-          if (ismap == 1) {
-            var url = '/locations?map_location_data=;by_location_id=' + locationIds.join('_');
-          }
-          else {
-            var url = '/locations?region=' + region + '&by_location_id=' + locationIds.join('_');
-          }
-
-          document.getElementById('search_link_wrapper').style.display = "none";
-          $('#locations').html(loadingHTML());
-          $.get(url, function (data) {
-            $('#locations').html(data);
-          });
-        }
+      document.getElementById('search_link_wrapper').style.display = "none";
+      $('#locations').html(loadingHTML());
+      $.get(url, function (data) {
+        $('#locations').html(data);
       });
-    }, REDO_TIMEOUT);
+    }
+  });
 }
 
 function scrollToMiddle(id) {
