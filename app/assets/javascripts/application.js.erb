@@ -101,16 +101,6 @@ function showLocations(ids, lats, lons, num_machines, latLng) {
         el.id = 'marker_' + locationID;
         el.style.cssText += 'z-index:' + num_machines[i];
         el.innerHTML = '<span><b>' + num_machines[i] + '</b></span>';
-        el.addEventListener('touchstart', function () {
-          showLocationDetail(locationID);
-
-          clearSelectedMarker();
-          el.className = 'marker2 maplibregl-marker maplibregl-marker-anchor-center';
-
-          document.getElementById('location_detail_location_' + locationID).scrollIntoView(true);
-          window.scrollBy(0, -140);
-          el.preventDefault();
-        });
         el.addEventListener('click', function () {
           showLocationDetail(locationID);
 
