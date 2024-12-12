@@ -290,11 +290,8 @@ module Api
             # hardcode a PDX lat/lon during tests
             lat = 45.590502800000
             lon = -122.754940100000
-          elsif params[:manufacturer].present?
-            results = Geocoder.search(params[:address], lookup: :by_manufacturer)
           else
             results = Geocoder.search(params[:address])
-            results = Geocoder.search(params[:address], lookup: :here) if results.blank?
             results = Geocoder.search(params[:address], lookup: :nominatim) if results.blank?
             lat, lon = results.first.coordinates
           end

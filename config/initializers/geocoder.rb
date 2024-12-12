@@ -2,10 +2,6 @@ Geocoder.configure(
   # street address geocoding service (default :nominatim)
   lookup: :google,
   api_key: ENV.fetch('GOOGLE_MAPS_API_KEY', ''),
-
-  by_manufacturer: {
-    api_key: ENV.fetch('GOOGLE_MAPS_API_KEY_BY_ADDRESS', '')
-  },
   
   here: {
     api_key: ENV.fetch('HERE_MAPS_API_KEY', ''),
