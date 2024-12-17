@@ -108,7 +108,7 @@
                 %span.address_name[l, :location_summary] #{[l.street, l.city, l.state].join(', ')}
             %div.machine_names
               - l.machines_sorted.first(5).each do |machine|
-                %div.brightpurple
+                %div
                   #{machine.name} 
                   %span.man_year (#{[machine.manufacturer, machine.year].reject(&:blank?).join(', ')})
             - if (location.machines.size > 5)
