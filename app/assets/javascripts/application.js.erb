@@ -133,6 +133,7 @@ function showLocations(ids, lats, lons, num_machines, latLng) {
       }
     } else if (locationIDs.length == 0 && latLng.length === 1) {
       document.getElementById("map_canvas").innerHTML = "<p id='not_found' class='font28 red bold'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
+      mapLoaded = 0;
       hideRefresh();
     } else if (locationIDs.length == 0 && latLng.length === 2) {
       map.fitBounds(bounds, { padding: 50, animate: false });
@@ -250,14 +251,20 @@ function switchSection(newSection) {
   $("#" + newSection + "_section_link").toggleClass("active_section_link");
 }
 
-function initSearch(userFaved, operatorIDs, locationIDs, locationTypeIDs, zoneIDs, machineIDs, machineID, ipdbIDs, opdbIDs, cityName, machineGroupId, showLocationDistance, lat, lon, byAtLeastMachines, byAtLeastNMachinesCity, byAtLeastNMachinesType, byAtLeastNMachinesZone, region) {
-  if (userFaved || operatorIDs || locationIDs || zoneIDs || machineIDs || machineID || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || region) {
+function initSearch(userFaved, operatorIDs, locationIDs, locationTypeIDs, zoneIDs, machineIDs, machineID, ipdbIDs, opdbIDs, cityName, machineGroupId, showLocationDistance, lat, lon, byAtLeastMachines, byAtLeastNMachinesCity, byAtLeastNMachinesType, byAtLeastNMachinesZone, byCityName, byStateName, region) {
+  if (userFaved || operatorIDs || locationIDs || zoneIDs || machineIDs || machineID || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || (byCityName && byStateName) || region) {
 
-    if (region && !(userFaved || operatorIDs || locationIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone)) {
+    if (region && !(userFaved || operatorIDs || locationIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || (byCityName && byStateName))) {
       return;
     }
 
-    var url = '/locations?user_faved=' + userFaved + '&by_location_id=' + locationIDs + '&by_operator_id=' + operatorIDs + '&by_type_id=' + locationTypeIDs + '&by_zone_id=' + zoneIDs + '&by_machine_id=' + machineIDs + '&by_machine_single_id=' + machineID + '&by_city_id=' + cityName + '&by_machine_group_id=' + machineGroupId + '&by_ipdb_id=' + ipdbIDs + '&by_opdb_id=' + opdbIDs + '&show_location_distance=' + showLocationDistance + '&lat=' + lat + '&lon=' + lon + '&by_at_least_n_machines_city=' + byAtLeastNMachinesCity + '&by_at_least_n_machines_type=' + byAtLeastNMachinesType + '&by_at_least_n_machines_zone=' + byAtLeastNMachinesZone + '&region=' + region;
+    if ((byCityName && !byStateName) || (!byCityName && byStateName)) {
+      return;
+    } else {
+      var cityState = '&by_city_name=' + byCityName + '&by_state_name=' + byStateName;
+    }
+
+    var url = '/locations?user_faved=' + userFaved + '&by_location_id=' + locationIDs + '&by_operator_id=' + operatorIDs + '&by_type_id=' + locationTypeIDs + '&by_zone_id=' + zoneIDs + '&by_machine_id=' + machineIDs + '&by_machine_single_id=' + machineID + '&by_city_id=' + cityName + '&by_machine_group_id=' + machineGroupId + '&by_ipdb_id=' + ipdbIDs + '&by_opdb_id=' + opdbIDs + '&show_location_distance=' + showLocationDistance + '&lat=' + lat + '&lon=' + lon + '&by_at_least_n_machines_city=' + byAtLeastNMachinesCity + '&by_at_least_n_machines_type=' + byAtLeastNMachinesType + '&by_at_least_n_machines_zone=' + byAtLeastNMachinesZone + cityState + '&region=' + region ;
 
     $('#locations').html(loadingHTML());
     $.get(url, function (data) {

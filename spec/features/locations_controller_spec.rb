@@ -378,7 +378,6 @@ describe LocationsController do
     end
 
     it 'by_machine_single_id' do
-      machine_group = FactoryBot.create(:machine_group, id: 1001, name: 'Sass')
       sass_reg_ed = FactoryBot.create(:machine, name: 'Sass Reg Ed', machine_group_id: 1001)
       sass_tourn_ed = FactoryBot.create(:machine, name: 'Sass Tournament Ed', machine_group_id: 1001)
       machine_group_location = FactoryBot.create(:location, region: @region)
@@ -477,6 +476,22 @@ describe LocationsController do
       expect(find('#search_results')).to have_content('Cleo')
       expect(find('#search_results')).to have_content('Zelda')
       expect(find('#search_results')).to_not have_content('Sass')
+    end
+
+    it 'by_city_name' do
+      location = FactoryBot.create(:location, region: @region, city: 'McGannyville', state: 'CA', name: 'Cleo')
+      visit '/map/?by_city_name=' + location.city.to_s + '&by_state_name=' + location.state.to_s
+      FactoryBot.create(:location, region: @region, city: 'Weakerton', state: 'OR', name: 'Plover')
+
+      visit '/map/?by_city_name=' + location.city.to_s + '&by_state_name=' + location.state.to_s
+
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to_not have_content('Plover')
+
+      visit '/map/?by_state_name=' + location.state.to_s
+
+      expect(page).to_not have_content('Cleo')
+      expect(page).to_not have_content('Plover')
     end
 
     it 'provides a "link to results" link filtered appropriately by region (or not)' do

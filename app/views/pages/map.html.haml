@@ -12,6 +12,8 @@
         = hidden_field_tag :by_machine_group_id
         = hidden_field_tag :by_machine_single_id
         = hidden_field_tag :by_location_id
+        = hidden_field_tag :by_city_name
+        = hidden_field_tag :by_state_name
         .map_input
           %span.input_title Machine
           = text_field_tag "by_machine_name", params["by_machine_name"], :class => 'lookup_search_input', :placeholder => @machine_placeholder
@@ -159,6 +161,9 @@
       $('#by_location_id').val('');
       $('#by_location_name').val('');
       $('#address').val(ui.item.value);
+      [city, state] = ui.item.value.split(", ");
+      $('#by_city_name').val(city);
+      $('#by_state_name').val(state);
     });
   });
 

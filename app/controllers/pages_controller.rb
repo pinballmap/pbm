@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
   respond_to :xml, :json, :html, :js, :rss
-  has_scope :by_location_name, :by_location_id, :by_machine_name, :by_machine_id, :by_machine_single_id, :by_at_least_n_machines, :by_type_id, :by_operator_id, :user_faved
+  has_scope :by_location_name, :by_location_id, :by_machine_name, :by_machine_id, :by_machine_single_id, :by_at_least_n_machines, :by_type_id, :by_operator_id, :user_faved, :by_city_name, :by_state_name
 
   def params
     request.parameters
@@ -9,17 +9,19 @@ class PagesController < ApplicationController
   def map_location_data
     @locations = []
 
-    if params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:user_faved].blank?
+    if params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_state_name].blank?
       @locations = []
     else
       params.delete(:by_machine_name) unless params[:by_machine_id].blank? && params[:by_machine_single_id].blank?
 
       @lat, @lon = ''
-      unless params[:address].blank?
+      if !params[:address].blank? || !params[:by_city_name].blank?
         if Rails.env.test?
           # hardcode a PDX lat/lon during tests
           @lat = 45.590502800000
           @lon = -122.754940100000
+        elsif !params[:by_city_name].blank?
+          @locations = apply_scopes(Location).order('locations.name').includes(:location_machine_xrefs, :machines, :region, :location_type)
         else
           results = Geocoder.search(params[:address])
           results = Geocoder.search(params[:address], lookup: :here) if results.blank?
