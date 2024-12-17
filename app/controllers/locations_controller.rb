@@ -17,15 +17,15 @@ class LocationsController < InheritedResources::Base
 
     locations =
       searchable_locations
-        .where("clean_items(name) ilike '%' || clean_items(?) || '%'", params[:term])
-        .sort_by(&:name)
-        .map do |l|
-          {
-            label: "#{l.name} (#{l.city}#{l.state.blank? ? '' : ', '}#{l.state})",
-            value: l.name,
-            id: l.id
-          }
-        end
+      .where("clean_items(name) ilike '%' || clean_items(?) || '%'", params[:term])
+      .sort_by(&:name)
+      .map do |l|
+        {
+          label: "#{l.name} (#{l.city}#{l.state.blank? ? '' : ', '}#{l.state})",
+          value: l.name,
+          id: l.id
+        }
+      end
 
     render json: locations
   end
