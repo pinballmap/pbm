@@ -164,6 +164,12 @@ class Location < ApplicationRecord
     [street, city, state, zip].join(', ')
   end
 
+  # returns "city, state" if state is available otherwise just city
+  def city_and_state
+    state_str = ", #{state}" unless state.blank?
+    "#{city}#{state_str}"
+  end
+
   def massaged_name
     name.sub(/^the /i, '')
   end
