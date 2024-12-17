@@ -10,7 +10,7 @@
     %div.recent_activity_date.font14.bold #{recent_activity.created_at.strftime("%b %d, %Y")}
     %div.recent_activity_submission.font14 
       - if (recent_activity.submission_type == 'new_lmx')
-        %span.brightpurple #{recent_activity.machine_name} 
+        %span.bold #{recent_activity.machine_name} 
         added
         - if (!recent_activity.user_name.blank?)
           by 
@@ -21,12 +21,12 @@
         - else
           %span.inline_block.mb_8 "#{recent_activity.comment}"
           %br/
-          %span.brightpurple #{recent_activity.machine_name}
+          %span.bold #{recent_activity.machine_name}
           - if (!recent_activity.user_name.blank?)
             by 
             %span.red #{recent_activity.user_name}
       - elsif (recent_activity.submission_type == 'remove_machine')
-        %span.brightpurple #{recent_activity.machine_name} 
+        %span.bold #{recent_activity.machine_name} 
         removed
         - if (!recent_activity.user_name.blank?)
           by 
@@ -38,7 +38,7 @@
           High score: 
           %span.bold #{number_with_precision(recent_activity.high_score, precision: 0, delimiter: ',')}
           %br/
-          %span.brightpurple.mt_8.inline_block #{recent_activity.machine_name}
+          %span.bold.mt_8.inline_block #{recent_activity.machine_name}
           - if (!recent_activity.user_name.blank?)
             by 
             %span.red #{recent_activity.user_name}
