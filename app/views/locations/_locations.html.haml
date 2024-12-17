@@ -128,5 +128,5 @@
   - unless @locations.size == 1
     #search_results_count
       %span
-        #{@locations.size} Locations & #{total_num_machines} machines in results
+        #{number_with_delimiter(@locations.size,:delimiter => ",")} Locations & #{number_with_delimiter(total_num_machines,:delimiter => ",")} machines in results
       %span
