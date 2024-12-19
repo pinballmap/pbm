@@ -16,14 +16,16 @@
         = hidden_field_tag :by_state_name
         .map_input
           %span.input_title Machine
-          = text_field_tag "by_machine_name", params["by_machine_name"], :class => 'lookup_search_input', :placeholder => @machine_placeholder
-          #clearButton1 X
+          = text_field_tag "by_machine_name", params["by_machine_name"], class: 'lookup_search_input', placeholder: @machine_placeholder, clear_id: 'clearButton'
+          #clearButton{input_id: "by_machine_name"}
+            X
           %input{:type => "checkbox", :id => "singleVersion", :name => "singleVersion", :class => "m_0 single_hide"}
           %span.single_hide Exact machine version?
         .map_input
           %span.input_title Near
-          = text_field_tag "address", params[:address], :class => 'lookup_search_input', :placeholder => @big_cities_placeholder
-          #clearButton2 X
+          = text_field_tag "address", params[:address], class: 'lookup_search_input', placeholder: @big_cities_placeholder, clear_id: 'clearButton2'
+          #clearButton2{input_id: "address"}
+            X
         .map_input
           %div.limit.filter
             %span.info Limit to
@@ -35,9 +37,10 @@
         .hr or
         .map_input
           %span.input_title Venue
-          = text_field_tag "by_location_name", params["by_location_name"], :class => 'lookup_search_input', :placeholder => @location_placeholder
-          #clearButton3 X
-          = image_submit_tag('search_icon.png', :class => 'map search', :id => "location_search_button")
+          = text_field_tag "by_location_name", params["by_location_name"], class: 'lookup_search_input', placeholder: @location_placeholder, clear_id: 'clearButton3'
+          #clearButton3{input_id: "by_location_name"}
+            X
+          = image_submit_tag('search_icon.png', class: 'map search', id: "location_search_button")
 
   #map
     = render :partial => 'locations/map'
@@ -78,47 +81,35 @@
 
 :javascript
   var ismap = 1;
-  const inputField1 = document.getElementById("by_machine_name");
-  const clearButton1 = document.getElementById("clearButton1");
+
+  const inputField = document.getElementById("by_machine_name");
   const inputField2 = document.getElementById("address");
-  const clearButton2 = document.getElementById("clearButton2");
   const inputField3 = document.getElementById("by_location_name");
+  const clearButton = document.getElementById("clearButton");
+  const clearButton2 = document.getElementById("clearButton2");
   const clearButton3 = document.getElementById("clearButton3");
 
-  inputField1.addEventListener("input", () => {
-    if (inputField1.value.length > 0) {
-      clearButton1.style.display = "block";
+  function inputDisplayToggle(event) {
+    let clearButton = document.getElementById(this.getAttribute("clear_id"));
+    if (event.target.value.length > 0) {
+      clearButton.style.display = "block";
     } else {
-      clearButton1.style.display = "none";
+      clearButton.style.display = "none";
     }
-  });
-  inputField2.addEventListener("input", () => {
-    if (inputField2.value.length > 0) {
-      clearButton2.style.display = "block";
-    } else {
-      clearButton2.style.display = "none";
-    }
-  });
-  inputField3.addEventListener("input", () => {
-    if (inputField3.value.length > 0) {
-      clearButton3.style.display = "block";
-    } else {
-      clearButton3.style.display = "none";
-    }
-  });
+  }
+  inputField.addEventListener("input", inputDisplayToggle);
+  inputField2.addEventListener("input", inputDisplayToggle);
+  inputField3.addEventListener("input", inputDisplayToggle);
 
-  clearButton1.addEventListener("click", () => {
-    inputField1.value = "";
-    clearButton1.style.display = "none";
-  });
-  clearButton2.addEventListener("click", () => {
-    inputField2.value = "";
-    clearButton2.style.display = "none";
-  });
-  clearButton3.addEventListener("click", () => {
-    inputField3.value = "";
-    clearButton3.style.display = "none";
-  });
+  function clear(event) {
+    let inputField = document.getElementById(this.getAttribute("input_id"));
+    inputField.value = "";
+    event.target.style.display = "none";
+  }
+  clearButton.addEventListener("click", clear);
+  clearButton2.addEventListener("click", clear);
+  clearButton3.addEventListener("click", clear);
+
   $(function () {
     $('#by_location_name').bind('input', function(event, ui) {
       event.preventDefault();
