@@ -18,18 +18,18 @@ en:
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
     passwords:
-      send_instructions: 'Please check your email for the reset link. If you do not see it, check your SPAM folder!'
+      send_instructions: 'Please check your email for the reset link. If you do not see it, check your SPAM folder! Make sure that admin@pinballmap.com is whitelisted.'
       updated: 'Your password was changed successfully.'
     confirmations:
-      send_instructions: 'Please check your email and confirm your account. If you do not see it, check your SPAM folder!'
+      send_instructions: 'Please check your email and confirm your account. If you do not see it, check your SPAM folder! Make sure that admin@pinballmap.com is whitelisted.'
       confirmed: 'Your account was successfully confirmed.'
     registrations:
-      signed_up: 'You have signed up successfully. A confirmation email is being sent. If you do not see it, check your SPAM folder!'
+      signed_up: 'You have signed up successfully. A confirmation email is being sent. If you do not see it, check your SPAM folder! Make sure that admin@pinballmap.com is whitelisted.'
       updated: 'You updated your account successfully.'
       destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'
       signed_up_but_unconfirmed: "Please confirm your account. A link has been emailed to you."
     unlocks:
-      send_instructions: 'Instructions have been sent to your email. If you do not see it, check your SPAM folder!'
+      send_instructions: 'Instructions have been sent to your email. If you do not see it, check your SPAM folder! Make sure that admin@pinballmap.com is whitelisted.'
       unlocked: 'Your account was successfully unlocked.'
     mailer:
       confirmation_instructions:
