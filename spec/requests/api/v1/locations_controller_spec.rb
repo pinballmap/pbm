@@ -104,6 +104,14 @@ describe Api::V1::LocationsController, type: :request do
       get '/api/v1/locations.json'
 
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::FILTERING_REQUIRED_MSG)
+
+      get '/api/v1/locations.json?by_at_least_n_machines=1'
+
+      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::FILTERING_REQUIRED_MSG)
+
+      get '/api/v1/locations.json?by_at_least_n_machines_type=1'
+
+      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::FILTERING_REQUIRED_MSG)
     end
 
     it 'forces filters to have a param value' do
