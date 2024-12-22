@@ -52,7 +52,7 @@ module Api
       api :GET, '/api/v1/locations.json', 'Fetch locations for all regions'
       api :GET, '/api/v1/region/:region/locations.json', 'Fetch locations for a single region'
       description 'This will also return a list of machines at each location'
-      param :region, String, desc: 'Name of the Region you want to see events for', required: true
+      param :region, String, desc: 'Name of the Region you want to see locations for', required: true
       param :by_location_name, String, desc: 'Name of location to search for', required: false
       param :by_location_id, Integer, desc: 'Location ID to search for', required: false
       param :by_machine_id, Integer, desc: 'Machine ID to find in locations', required: false
