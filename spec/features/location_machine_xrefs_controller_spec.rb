@@ -302,10 +302,10 @@ describe LocationMachineXrefsController do
       expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("Test Comment\nDELETED USER\n#{@lmx.created_at.strftime('%b %d, %Y')}")
     end
 
-    it 'only displays the 12 most recent descriptions' do
+    it 'only displays the 5 most recent descriptions' do
       login
 
-      12.times do |i|
+      7.times do |i|
         FactoryBot.create(:machine_condition, location_machine_xref: @lmx.reload, comment: "Condition #{i + 1} words.", created_at: "199#{i + 1}-01-01")
       end
 
@@ -313,18 +313,13 @@ describe LocationMachineXrefsController do
 
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
 
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 12 words.')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 11 words.')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 10 words.')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 9 words.')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 8 words.')
       expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 7 words.')
       expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 6 words.')
       expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 5 words.')
       expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 4 words.')
       expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 3 words.')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 2 words.')
-      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 1 words.')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to_not have_content('Condition 2 words.')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to_not have_content('Condition 1 words.')
 
       page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
@@ -332,7 +327,7 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(page).to_not have_content('Condition 1 words.')
+      expect(page).to_not have_content('Condition 3 words.')
     end
 
     it 'should add past conditions when you add a new condition and a condition exists' do

@@ -1,5 +1,5 @@
 class MachineCondition < ApplicationRecord
-  MAX_HISTORY_SIZE_TO_DISPLAY = 12
+  MAX_HISTORY_SIZE_TO_DISPLAY = 5
 
   has_paper_trail
 
