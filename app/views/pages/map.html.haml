@@ -19,8 +19,9 @@
           = text_field_tag "by_machine_name", params["by_machine_name"], class: 'lookup_search_input', placeholder: @machine_placeholder, clear_id: 'clearButton'
           #clearButton{input_id: "by_machine_name"}
             X
-          %input{:type => "checkbox", :id => "singleVersion", :name => "singleVersion", :class => "m_0 single_hide"}
-          %span.single_hide Exact machine version?
+          #single_hide
+            %input{:type => "checkbox", :id => "singleVersion", :name => "singleVersion", :class => "m_0 single_hide"}
+            %span.single_hide Exact machine version?
         .map_input
           %span.input_title Near
           = text_field_tag "address", params[:address], class: 'lookup_search_input', placeholder: @big_cities_placeholder, clear_id: 'clearButton2'
@@ -106,8 +107,25 @@
     inputField.value = "";
     event.target.style.display = "none";
   }
-  clearButton.addEventListener("click", clear);
-  clearButton2.addEventListener("click", clear);
+  function clearMachine(event) {
+    document.getElementById('by_machine_id').value = "";
+    document.getElementById('by_machine_name').value = "";
+    document.getElementById('by_machine_single_id').value = "";
+    document.getElementById('by_machine_group_id').value = "";
+    document.getElementById('single_hide').style.display = "none";
+    document.getElementById('singleVersion').checked = false;
+    single_id = '';
+    event.target.style.display = "none";
+  }
+  function clearLocation(event) {
+    document.getElementById('address').value = "";
+    document.getElementById('by_city_name').value = "";
+    document.getElementById('by_state_name').value = "";
+    event.target.style.display = "none";
+  }
+
+  clearButton.addEventListener("click", clearMachine);
+  clearButton2.addEventListener("click", clearLocation);
   clearButton3.addEventListener("click", clear);
 
   $(function () {
@@ -120,7 +138,7 @@
       $('#by_machine_group_id').val('');
       $('#by_at_least_n_machines').val('');
       $('#by_type_id').val('');
-      $('.single_hide').hide();
+      $('#single_hide').hide();
       $('#singleVersion').prop('checked', false);
       single_id = '';
     });
@@ -134,7 +152,7 @@
         $('#by_machine_name').val('');
         $('#by_machine_single_id').val('');
         $('#by_machine_group_id').val('');
-        $('.single_hide').hide();
+        $('#single_hide').hide();
         $('#singleVersion').prop('checked', false);
         single_id = '';
       }
@@ -159,7 +177,7 @@
       $('#by_machine_group_id').val('');
       $('#by_location_id').val(ui.item.id);
       $('#by_location_name').val(ui.item.value);
-      $('.single_hide').hide();
+      $('#single_hide').hide();
       $('#singleVersion').prop('checked', false);
       single_id = '';
     });
@@ -179,9 +197,9 @@
       $('#by_machine_group_id').val(ui.item.group_id);
       single_id = $('#by_machine_single_id').val();
       if ($('#by_machine_group_id').val().length != 0) {
-        $('.single_hide').show();
+        document.getElementById('single_hide').style.display = "flex";
       } else {
-        $('.single_hide').hide();
+        $('#single_hide').hide();
         $('#singleVersion').prop('checked', false);
       }
     });

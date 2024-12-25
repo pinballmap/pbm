@@ -156,7 +156,6 @@ only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (or
   }
 
   span.single_hide {
-    /* font-size: 10px; */
     width: 60px;
   }
 }
