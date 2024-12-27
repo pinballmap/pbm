@@ -114,13 +114,8 @@
             - if (location.machines.size > 5)
               %div.darkgrey.italic.pb_15
                 plus
-                - the_rest = (location.machines.size - 5)
-                #{the_rest}
-                more
-                - if the_rest == 1
-                  machine
-                - else
-                  machines
+                = pluralize(location.machines.size - 5, 'more machine')
+                  
           %div.location_detail[l, :location_detail]{:style => 'display:none;'}
 
       - l = nil
