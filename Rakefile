@@ -23,3 +23,18 @@ task move_region_contents: :environment do
 
   print("Moved #{from_region_name} to #{to_region_name}\n")
 end
+
+desc 'Create an admin user in development with login as example@example.com and password as example'
+task create_developer_account: :environment do
+  raise StandardError, 'Development environment required. This operation has been stopped.' unless Rails.env.development?
+
+  user = User.new({ id: nil, email: 'example@example.com', password: 'example', password_confirmation: 'example', region_id: 1, initials: 'exa', is_super_admin: true, username: 'exampleuser', authentication_token: '', security_test: 'pinball' })
+
+  begin
+    user.save! && user.update!({ confirmed_at: Time.now })
+    puts 'User created - username: example@example.com pw: example'
+  rescue StandardError => e
+    puts 'Problem creating user'
+    raise e
+  end
+end
