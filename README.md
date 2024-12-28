@@ -40,6 +40,7 @@ Available here: [http://pinballmap.com/api/v1/docs](http://pinballmap.com/api/v1
 * `CREATEDB pbm_dev`
 * `bin/rake db:create ; RAILS_ENV=test bin/rake db:create`
 * `bin/rake db:migrate ; RAILS_ENV=test bin/rake db:migrate`
+* `bin/rails create_developer_account` # creates user: `example@example.com` with password `example`
 
 5. Run the development server
 * `bin/rails s`
@@ -83,6 +84,7 @@ If the site loads properly it will be an empty version of pinballmap.com, then a
 
 5. Get a database dump from Scott. Then:
 * `pg_restore --verbose --clean --no-acl --no-owner -h localhost -d pbm_dev dump.file`
+* `bin/rails create_developer_account` # creates user: `example@example.com` with password `example`
 
 Start server: `bin/rails s`
 
