@@ -16,7 +16,7 @@
       %p.question#2
         =link_to 'How do I remove a machine from a location?', '#2', :class => "no_underline"
       %p.answer
-        First, log in. On the website, click the "remove" button that's below the machine name. On the app, click on the machine name, and then look for the "remove" button or trash can icon.
+        First, log in. On the website, lookup a location then click the red trash can icon that's to the right of the machine name. On the app, click on the machine name, and then look for the "remove" button or trash can icon.
       %hr
       %p.question#7
         =link_to 'How do I add a new location?', '#7', :class => "no_underline"
@@ -56,7 +56,7 @@
         =link_to 'Can you include bat games, or other non-pinball but pinball-adjacent games?', '#16', :class => "no_underline"
       %p.answer== We fully understand that pitch and bat games resemble pinball machines and the collectors that collect them also usually collect pinball machines. The short answer is, no, no bat games. In general we use #{link_to 'OPDB.org', 'https://opdb.org', :target => "_blank"} as a guide for what machines to include. The overall goal of this site is to map pinball, and though we understand that you may passionately think bat games should also be included because etc etc, please note that in our polling of the general public basically no one else wants bat games on the map. At any rate, thank you for that question and your feedback, and if you want more details about this decision, please #{link_to 'read this blog post', 'https://blog.pinballmap.com/2021/05/31/more-spring-cleaning/', :target => "_blank" }. Please do not send us a message about this without reading that blog post. 
       
-      %p.answer In the past, we made an unfortunate exception for the 1991 Williams bat game, SlugFest. This was only done because when it's not on the map, users add the 1952 Williams pinball machine, Slugfest, to the map, and then comment that it's actually the bat game from 1991. Since we abhor ugly, incorrect data, we granted an exception. However, this resulted in being "called out" for being inconsistent about including all of them. You'll be happy to know we're now consistently not including SlugFest on the map! If you add the 1952 pinball machine as a proxy for the 1991 bat game, we will give you a warning. If you do it again, we may disable your account. We want good clean data and we only want to map pinball! And we also want you to stop telling us how upset you are about this.
+      %p.answer Do not add the 1952 Williams pinball machine, Slugfest, to the map as a proxy for the 1991 Williams bar game. Do not add machines to locations as proxies for other games (or coin machines) that are not listed in the machine database. We want good clean data and we only want to map pinball!
 
       %p.answer We do include some pre-pinball flipperless games. Are we missing some?
       %hr
@@ -124,6 +124,15 @@
           According to nearly everyone, it is really valuable to see a history of comments (thing is broken, thing is fixed, etc.). Everyone understands that machines break all the time. Seeing a dialog demonstrates that upkeep is occurring. The "latest comment" noting a problem is not particularly important to users and will not drive them away. Some operators choose to delete machines and re-add them in order to clear out comments rather than simply responding to a comment. This is bad practice - both for your business and for the map - and can result in your account being disabled. It makes it seem like the operator is whitewashing comments rather than fixing issues. Users definitely notice this, and we strongly discourage it. 
         %li
           We regularly get messages from operators and owners demanding that a user be banned from leaving comments on their location. Most often, the comments in question are not slanderous, but have some sass or "off-topic" messages (or like, "the comment is about price and not condition!!"). These requests are a big headache for us, especially because they do not warrant any action toward the user. So please, help us! Be mindful that operators are very sensitive about the content on this site, and they take it out on us.
+      %hr
+      %p.question#21
+        =link_to "Can you make it so only the operator can update a location's line-up of machines?", '#21', :class => "no_underline"
+      %p.answer
+        No. It's not ideal to limit the control of a location listing to a small group of people. Precedence shows that would seriously degrade the quantity of map updates, resulting in an out of date map. The purpose of this map is for all users to have equal power to update the map, and that's what has helped it flourish.
+      %p.question#22
+        =link_to "After a machine issue has been resolved, can you remove the machine comment that mentioned the issue?", '#22', :class => "no_underline"
+      %p.answer
+        No. It may seem "bad" for there to be a public record of problems with your machines, but it's actually good! All machines have problems. What we're showing here is a record of you fixing the machines! Users love that, and we think operators should, too! 
       %p.font20.center.bold.pbt_5.bg_lightpurple#users
         =link_to 'Users', '#users', :class => "no_underline brightpurple"
       %p.question#6 
