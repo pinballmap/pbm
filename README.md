@@ -54,10 +54,11 @@ Run tests: `bundle exec rspec`
 * Install VSCode command line tools via command palette. From the VSCode top Menu: `View | Command Palette` then search for: `Shell Command: Install 'code' command in path`
 * Attach via VSCode debugger and set breakpoints
 
-7. Get a database dump from Scott. Then:
-* `pg_restore --verbose --clean --no-acl --no-owner -h localhost -d pbm_dev dump.file`
+7. Get a database dump.
 
-If the site loads properly it will be an empty version of pinballmap.com, then ask Scott for a data dump so you can have a full set of data to work with.
+If the site loads properly it will be an empty version of pinballmap.com. A database dump can be obtained from [this repo](https://github.com/pinballmap/pbm-db-dump).
+
+* `psql -U username -d pbm_dev < pbm_db_scrubbed.sql`
 
 ## Linux Setup
 
@@ -81,8 +82,11 @@ If the site loads properly it will be an empty version of pinballmap.com, then a
 * `bin/rake db:create ; RAILS_ENV=test bin/rake db:create`
 * `bin/rake db:migrate ; RAILS_ENV=test bin/rake db:migrate`
 
-5. Get a database dump from Scott. Then:
-* `pg_restore --verbose --clean --no-acl --no-owner -h localhost -d pbm_dev dump.file`
+5. Get a database dump
+
+A database dump can be obtained from [this repo](https://github.com/pinballmap/pbm-db-dump).
+
+* `psql -U username -d pbm_dev < pbm_db_scrubbed.sql`
 
 Start server: `bin/rails s`
 
