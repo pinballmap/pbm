@@ -136,6 +136,7 @@ describe Api::V1::LocationsController, type: :request do
       get '/api/v1/locations.json?by_ic_active=true'
 
       expect(response.body).to include('Cleo')
+      expect(response.body).to_not include('Bawb')
     end
 
     it 'respects with_lmx filter' do
