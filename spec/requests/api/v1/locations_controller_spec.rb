@@ -129,6 +129,15 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to include('Cleo')
     end
 
+    it 'respects ic_active filter' do
+      FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'la'), name: 'Cleo', ic_active: 't')
+      FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'chicago'), name: 'Bawb')
+
+      get '/api/v1/locations.json?by_ic_active=true'
+
+      expect(response.body).to include('Cleo')
+    end
+
     it 'respects with_lmx filter' do
       FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'chicago'), name: 'Bawb')
 
@@ -197,6 +206,14 @@ describe Api::V1::LocationsController, type: :request do
       get "/api/v1/region/#{@region.name}/locations.json", params: { by_is_stern_army: 1 }
 
       expect(response.body).to include('Stern Army Place')
+      expect(response.body).to_not include('Satchmo')
+    end
+
+    it 'respects ic_active filter' do
+      FactoryBot.create(:location, region: @region, name: 'IC Active Place', ic_active: 't')
+      get "/api/v1/region/#{@region.name}/locations.json", params: { by_ic_active: true }
+
+      expect(response.body).to include('IC Active Place')
       expect(response.body).to_not include('Satchmo')
     end
 

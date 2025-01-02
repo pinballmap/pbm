@@ -83,6 +83,7 @@ class Location < ApplicationRecord
     Location.within_bounding_box(box)
   }
   scope :by_is_stern_army, ->(_non_blank_param) { where(is_stern_army: true) }
+  scope :by_ic_active, ->(_non_blank_param) { where(ic_active: true) }
   scope :regionless_only, ->(_non_blank_param) { where(region_id: nil) }
   scope :zoneless, -> { where(zone_id: nil) }
   scope :user_faved, lambda { |user_id|

@@ -6,7 +6,7 @@ module Api
 
       before_action :allow_cors
       respond_to :json
-      has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_state_id, :by_zone_id, :by_operator_id, :by_type_id, :by_machine_single_id, :by_machine_group_id, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region, :by_ipdb_id, :by_opdb_id, :by_is_stern_army, :regionless_only, :manufacturer
+      has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_name, :by_city_id, :by_state_id, :by_zone_id, :by_operator_id, :by_type_id, :by_machine_single_id, :by_machine_group_id, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region, :by_ipdb_id, :by_opdb_id, :by_is_stern_army, :regionless_only, :manufacturer, :by_ic_active
 
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION = 50
 
@@ -68,12 +68,13 @@ module Api
       param :by_at_least_n_machines, Integer, desc: 'Only locations with N or more machines', required: false
       param :by_at_least_n_machines_type, Integer, desc: 'Only locations with N or more machines', required: false
       param :by_is_stern_army, Integer, desc: 'Send only locations labeled as Stern Army', required: false
+      param :by_ic_active, Integer, desc: 'Send only locations that have at lesat one machine that is tagged as Stern Insider Connected', required: false
       param :no_details, Integer, desc: 'Omit lmx/condition data from pull', required: false
       param :with_lmx, Integer, desc: 'Include location machine details such as comments', required: false
       param :regionless_only, Integer, desc: 'Show only regionless locations', required: false
       formats ['json']
       def index
-        return return_response(FILTERING_REQUIRED_MSG, 'errors') unless %i[region by_location_name by_location_id by_machine_id by_ipdb_id by_opdb_id by_machine_name by_city_id by_machine_group_id by_zone_id by_operator_id by_type_id by_is_stern_army regionless_only].any? { params[_1].present? }
+        return return_response(FILTERING_REQUIRED_MSG, 'errors') unless %i[region by_location_name by_location_id by_machine_id by_ipdb_id by_opdb_id by_machine_name by_city_id by_machine_group_id by_zone_id by_operator_id by_type_id by_is_stern_army by_ic_active regionless_only].any? { params[_1].present? }
 
         except = params[:no_details] ? %i[phone website description created_at updated_at date_last_updated last_updated_by_user_id region_id] : nil
 
@@ -192,6 +193,7 @@ module Api
       param :by_machine_single_id, Integer, desc: 'Machine ID to find in locations, returns only exact version', required: false
       param :by_machine_group_id, String, desc: 'Machine Group to search for', required: false
       param :by_operator_id, Integer, desc: 'Operator ID to search by', required: false
+      param :by_ic_active, Integer, desc: 'Send only locations that have at lesat one machine that is tagged as Stern Insider Connected', required: false
       param :user_faved, Integer, desc: 'User ID of Faved Locations', required: false
       param :by_at_least_n_machines, Integer, desc: 'Only locations with N or more machines', required: false
       param :by_at_least_n_machines_type, Integer, desc: 'Only locations with N or more machines', required: false
@@ -268,6 +270,7 @@ module Api
       param :max_distance, String, desc: 'Closest location within "max_distance" miles, max 500', required: false
       param :send_all_within_distance, String, desc: "Send all locations within max_distance param, or #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles.", required: false
       param :no_details, Integer, desc: 'Omit data that app does not need from pull', required: false
+      param :by_ic_active, Integer, desc: 'Send only locations that have at lesat one machine that is tagged as Stern Insider Connected', required: false
       param :manufacturer, String, desc: 'Locations with machines from this manufacturer', required: false
       param :by_machine_group_id, String, desc: 'Machine Group to search for', required: false
       formats ['json']
