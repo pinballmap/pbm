@@ -22,6 +22,15 @@ class PagesController < ApplicationController
           @lon = -122.754940100000
         elsif !params[:by_city_name].blank?
           @locations = apply_scopes(Location).order('locations.name').includes(:location_machine_xrefs, :machines, :region, :location_type)
+          if @locations.blank?
+            params.delete(:by_city_name)
+            params.delete(:by_state_name)
+            results = Geocoder.search(params[:address])
+            results = Geocoder.search(params[:address], lookup: :here) if results.blank?
+            results = Geocoder.search(params[:address], lookup: :nominatim) if results.blank?
+            @lat, @lon = results.first.coordinates
+            @locations = apply_scopes(Location.near([@lat, @lon], 100)).order('locations.name').includes(:location_machine_xrefs, :machines, :region, :location_type)
+          end
         else
           results = Geocoder.search(params[:address])
           results = Geocoder.search(params[:address], lookup: :here) if results.blank?
