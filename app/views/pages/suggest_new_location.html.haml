@@ -67,6 +67,7 @@
     google.maps.event.addListener(autocomplete, 'place_changed', function () {
         var place = autocomplete.getPlace();
         document.getElementById('location_name').value = place.name;
+        document.getElementById('location_street').value = place.formatted_address.split(',')[0];
         if (place.website) {
           document.getElementById('location_website').value = place.website;
         }
@@ -77,10 +78,6 @@
           switch (componentType) {
             case "street_number": {
               street_number = component.long_name;
-              break;
-            }
-            case "route": {
-              document.getElementById('location_street').value = street_number + " " + component.short_name;
               break;
             }
             case "locality": {
