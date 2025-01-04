@@ -15,33 +15,21 @@ class PagesController < ApplicationController
       params.delete(:by_machine_name) unless params[:by_machine_id].blank? && params[:by_machine_single_id].blank?
 
       @lat, @lon = ''
-      if !params[:address].blank? || !params[:by_city_name].blank?
-        if Rails.env.test?
-          # hardcode a PDX lat/lon during tests
-          @lat = 45.590502800000
-          @lon = -122.754940100000
-        elsif !params[:by_city_name].blank?
-          @locations = apply_scopes(Location).order('locations.name').includes(:location_machine_xrefs, :machines, :region, :location_type)
-          if @locations.blank?
-            params.delete(:by_city_name)
-            params.delete(:by_state_name)
-            results = Geocoder.search(params[:address])
-            results = Geocoder.search(params[:address], lookup: :here) if results.blank?
-            results = Geocoder.search(params[:address], lookup: :nominatim) if results.blank?
-            @lat, @lon = results.first.coordinates
-            @locations = apply_scopes(Location.near([@lat, @lon], 100)).order('locations.name').includes(:location_machine_xrefs, :machines, :region, :location_type)
-          end
-        else
-          results = Geocoder.search(params[:address])
-          results = Geocoder.search(params[:address], lookup: :here) if results.blank?
-          results = Geocoder.search(params[:address], lookup: :nominatim) if results.blank?
-          @lat, @lon = results.first.coordinates
+      if Rails.env.test?
+        # hardcode a PDX lat/lon during tests
+        @lat = 45.590502800000
+        @lon = -122.754940100000
+      end
+      if params[:address].blank? || !params[:by_city_name].blank?
+        @locations = apply_scopes(Location).order('locations.name').includes(:location_machine_xrefs, :machines, :region, :location_type)
+        if @locations.blank? && !params[:by_city_name].blank?
+          params.delete(:by_city_name)
+          params.delete(:by_state_name)
         end
       end
-      @near_distance = 15
-      while @locations.blank? && @near_distance < 600
-        @locations = apply_scopes(params[:address].blank? ? Location : Location.near([@lat, @lon], @near_distance)).order('locations.name').includes(:location_machine_xrefs, :machines, :region, :location_type)
-        @near_distance += 100
+      if @locations.blank?
+        geocode unless params[:address].blank? || Rails.env.test?
+        find_nearby
       end
     end
 
@@ -56,6 +44,21 @@ class PagesController < ApplicationController
     @location_data = LocationsController.locations_javascript_data(@locations)
 
     render partial: 'locations/locations', layout: false
+  end
+
+  def geocode
+    results = Geocoder.search(params[:address])
+    results = Geocoder.search(params[:address], lookup: :here) if results.blank?
+    results = Geocoder.search(params[:address], lookup: :nominatim) if results.blank?
+    @lat, @lon = results.first.coordinates
+  end
+
+  def find_nearby
+    @near_distance = 15
+    while @locations.blank? && @near_distance < 600
+      @locations = apply_scopes(Location.near([@lat, @lon], @near_distance)).order('locations.name').includes(:location_machine_xrefs, :machines, :region, :location_type)
+      @near_distance += 100
+    end
   end
 
   def map
