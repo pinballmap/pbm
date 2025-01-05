@@ -47,6 +47,7 @@ describe PagesController do
     it 'lets you search by address and machine and respects if you change or clear out the machine search value' do
       rip_city_location = FactoryBot.create(:location, region: nil, name: 'Rip City', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
       no_way_location = FactoryBot.create(:location, region: nil, name: 'No Way', zip: '97203', lat: 45.593049200000, lon: -122.732620200000)
+      FactoryBot.create(:location, region: nil, name: 'Far Off', city: 'Seattle', state: 'WA', zip: '98121', lat: 47.61307324803172, lon: -122.34479886878611)
       FactoryBot.create(:location_machine_xref, location: rip_city_location, machine: FactoryBot.create(:machine, name: 'Sass'))
       FactoryBot.create(:location_machine_xref, location: no_way_location, machine: FactoryBot.create(:machine, name: 'Bawb'))
 
@@ -81,6 +82,26 @@ describe PagesController do
       expect(page.body).to_not have_content('Rip City')
 
       fill_in('by_machine_name', with: '')
+
+      fill_in('address', with: '97203')
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(page.body).to have_content('Rip City')
+      expect(page.body).to have_content('No Way')
+
+      fill_in('address', with: 'Seattle')
+      page.execute_script %{ $('#address').trigger('focus') }
+      page.execute_script %{ $('#address').trigger('keydown') }
+      find(:xpath, '//div[contains(text(), "Seattle, WA")]').click
+
+      click_on 'location_search_button'
+
+      sleep 0.5
+
+      expect(page.body).to have_content('Far Off')
 
       fill_in('address', with: '97203')
 
