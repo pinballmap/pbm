@@ -65,17 +65,7 @@ class LocationsController < InheritedResources::Base
   end
 
   def render_machines_count
-    total_num_machines = Location.find(params[:id]).machine_names.size
-
-    if total_num_machines == 1
-      location_machine_count = total_num_machines.to_s + ' machine'
-    elsif total_num_machines > 1
-      location_machine_count = total_num_machines.to_s + ' machines'
-    else
-      location_machine_count = 'No machines'
-    end
-
-    render plain: location_machine_count
+    render partial: 'locations/render_machines_count', locals: { location: Location.find(params[:id]) }
   end
 
   def render_scores

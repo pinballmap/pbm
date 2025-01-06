@@ -67,7 +67,8 @@
 = render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
 = render :partial => 'locations/recent_activity', :locals => {:location => l}
 = render :partial => 'locations/former_machines', :locals => {:location => l}
-= render :partial => 'locations/render_machines_count', :locals => {:location => l}
+%div{:id => "show_machines_location_count_#{l.id}", :class => 'black font18 center lmx_count'}
+	= render :partial => 'locations/render_machines_count', :locals => {:location => l}
 = render :partial => 'locations/show_machines', :locals => {:location => l}
 
 :javascript
