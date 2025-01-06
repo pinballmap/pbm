@@ -48,7 +48,7 @@ class LocationsController < InheritedResources::Base
 
     params.delete(:by_location_id) if !params[:by_location_name].blank? && !params[:by_location_id].blank?
 
-    @locations = apply_scopes(Location).order('locations.name').includes(:region, :location_type, :location_machine_xrefs, :machines)
+    @locations = apply_scopes(Location).order('locations.name').includes(:location_type, :location_machine_xrefs, :machines)
     @location_data = LocationsController.locations_javascript_data(@locations)
 
     respond_with(@locations) do |format|

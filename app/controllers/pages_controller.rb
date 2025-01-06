@@ -21,7 +21,7 @@ class PagesController < ApplicationController
         @lon = -122.754940100000
       end
       if params[:address].blank? || !params[:by_city_name].blank?
-        @locations = apply_scopes(Location).order('locations.name').includes(:location_machine_xrefs, :machines, :region, :location_type)
+        @locations = apply_scopes(Location).order('locations.name').includes(:location_machine_xrefs, :machines, :location_type)
         if @locations.blank? && !params[:by_city_name].blank?
           params.delete(:by_city_name)
           params.delete(:by_state_name)
@@ -39,7 +39,7 @@ class PagesController < ApplicationController
   end
 
   def operator_location_data
-    @locations = Location.where(operator_id: params[:by_operator_id]).includes(:location_type, :machines, :region)
+    @locations = Location.where(operator_id: params[:by_operator_id]).includes(:location_type, :machines)
 
     @location_data = LocationsController.locations_javascript_data(@locations)
 
@@ -56,7 +56,7 @@ class PagesController < ApplicationController
   def find_nearby
     @near_distance = 15
     while @locations.blank? && @near_distance < 600
-      @locations = apply_scopes(Location.near([@lat, @lon], @near_distance)).order('locations.name').includes(:location_machine_xrefs, :machines, :region, :location_type)
+      @locations = apply_scopes(Location.near([@lat, @lon], @near_distance)).order('locations.name').includes(:location_machine_xrefs, :machines, :location_type)
       @near_distance += 100
     end
   end
