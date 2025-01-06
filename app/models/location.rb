@@ -121,18 +121,6 @@ class Location < ApplicationRecord
     machines.length
   end
 
-  def num_machines_sentence
-    total_num_machines = machines.length
-
-    if total_num_machines == 1
-      total_num_machines.to_s + ' machine'
-    elsif total_num_machines > 1
-      total_num_machines.to_s + ' machines'
-    else
-      'No machines'
-    end
-  end
-
   def machine_names
     machines.sort_by(&:massaged_name).map(&:name_and_year)
   end
