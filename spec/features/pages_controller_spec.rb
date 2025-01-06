@@ -27,6 +27,8 @@ describe PagesController do
       expect(find('#by_location_id', visible: :hidden).value).to eq('')
       expect(find('#by_location_name').value).to eq('')
       expect(find('#address').value).to eq('')
+      expect(find('#by_city_name', visible: :hidden).value).to eq('')
+      expect(find('#by_state_name', visible: :hidden).value).to eq('')
 
       fill_in('address', with: 'baz')
       expect(find('#by_location_id', visible: :hidden).value).to eq('')
@@ -42,6 +44,8 @@ describe PagesController do
       fill_in('by_location_name', with: 'foo')
       expect(find('#by_machine_name').value).to eq('')
       expect(find('#address').value).to eq('')
+      expect(find('#by_city_name', visible: :hidden).value).to eq('')
+      expect(find('#by_state_name', visible: :hidden).value).to eq('')
     end
 
     it 'lets you search by address and machine and respects if you change or clear out the machine search value' do
