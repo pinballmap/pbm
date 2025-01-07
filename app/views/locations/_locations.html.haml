@@ -36,9 +36,9 @@
   var isSingleLocation = #{@locations.size == 1 ? true : false};
 
   if (isSingleLocation) {
-    var locationName = "#{@locations.first&.name}";
+    var locationName = "#{sanitize(@locations.first&.name)}";
 
-    var regionName = "#{@region&.full_name}"
+    var regionName = "#{sanitize(@region&.full_name)}"
 
     newTitle = locationName + " - " + regionName + " Pinball Map";
 
