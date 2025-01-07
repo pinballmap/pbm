@@ -127,6 +127,7 @@ Rails.application.routes.draw do
     get '/high_rollers' => 'pages#high_rollers'
     get '/suggest' => 'pages#suggest_new_location'
     post '/submitted_new_location' => 'pages#submitted_new_location'
+    get '/activity' => 'pages#activity'
 
     get '*page', to: 'locations#unknown_route'
   end

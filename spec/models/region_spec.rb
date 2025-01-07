@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Region do
   before(:each) do
-    @region = FactoryBot.create(:region, name: 'portland', full_name: 'Portland', should_auto_delete_empty_locations: 1)
-    @other_region = FactoryBot.create(:region, name: 'chicago')
+    @region = FactoryBot.create(:region, name: 'portland', full_name: 'Portland', id: 77, should_auto_delete_empty_locations: 1)
+    @other_region = FactoryBot.create(:region, id: 78, name: 'chicago')
   end
 
   describe '#before_destroy' do
@@ -329,6 +329,20 @@ describe Region do
       expect(@region.n_high_rollers(1)).to include(
         'ssw0' => [scores[3], scores[0]]
       )
+    end
+  end
+
+  describe '#recent_activity' do
+    before(:each) do
+      @location = FactoryBot.create(:location, name: 'Cleo', city: 'Townville', region: @region)
+      @other_location = FactoryBot.create(:location, name: 'Zelda', city: 'Cityfield', region: @other_region)
+    end
+    it 'should return the recent activity' do
+      one = FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location, location_name: @location.name, region: @region, region_id: @region.id, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE)
+      two = FactoryBot.create(:user_submission, created_at: '2022-01-03', location: @other_location, location_name: @other_location.name, region: @other_region, region_id: @other_region.id, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+
+      expect(@region.recent_activity.take(2)).to include(one)
+      expect(@region.recent_activity.take(2)).to_not include(two)
     end
   end
 

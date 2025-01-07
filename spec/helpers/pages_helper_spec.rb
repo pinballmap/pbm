@@ -89,6 +89,10 @@ describe PagesHelper, type: :helper do
       it 'displays the high scores title' do
         expect(helper.title_for_path(high_rollers_path(@region.name), @region)).to eq('High Scores - ' + @region.full_name + ' Pinball Map')
       end
+
+      it 'displays the recent activity title' do
+        expect(helper.title_for_path(activity_path(@region.name), @region)).to eq('Recent Activity - ' + @region.full_name + ' Pinball Map')
+      end
     end
   end
 end

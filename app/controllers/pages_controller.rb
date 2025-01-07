@@ -236,6 +236,8 @@ class PagesController < ApplicationController
 
   def profile; end
 
+  def activity; end
+
   def contact
     redirect_to about_path
   end

@@ -23,8 +23,8 @@
     %li.menu_header_03=link_to 'Saved Locations', saved_path
   - if (@region)
     %li.menu_header_01=link_to 'Add Location', suggest_path
-    %li=link_to 'About', about_path
-    %li=link_to 'Contact', about_path
+    %li=link_to 'About / Contact', about_path
+    %li=link_to 'Activity', activity_path
     %li=link_to 'Events', events_path
     %li=link_to 'High Scores', high_rollers_path
     %li=link_to 'Location RSS', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
