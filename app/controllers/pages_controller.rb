@@ -47,8 +47,8 @@ class PagesController < ApplicationController
   end
 
   def geocode
-    results = Geocoder.search(params[:address])
-    results = Geocoder.search(params[:address], lookup: :here) if results.blank?
+    results = Geocoder.search(params[:address], lookup: :here)
+    results = Geocoder.search(params[:address]) if results.blank?
     results = Geocoder.search(params[:address], lookup: :nominatim) if results.blank?
     @lat, @lon = results.first.coordinates
   end
