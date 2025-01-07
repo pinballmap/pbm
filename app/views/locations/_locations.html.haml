@@ -36,12 +36,12 @@
   var isSingleLocation = #{@locations.size == 1 ? true : false};
 
   if (isSingleLocation) {
-    var locationName = "#{@locations.size == 0 ? '' : h(@locations[0].name)}";
+    var locationName = "#{h(@locations.first&.name)}";
 
-    var regionName = "#{@region ? h(@region.full_name) : ''}"
+    var regionName = "#{h(@region&.full_name)}"
 
     newTitle = locationName + " - " + regionName + " Pinball Map";
-    
+
     document.title = newTitle;
     $('meta[property="og:title"]').attr("content", newTitle);
   } else {
