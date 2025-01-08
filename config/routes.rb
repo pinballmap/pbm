@@ -96,6 +96,8 @@ Rails.application.routes.draw do
   get '/faq' => 'pages#faq'
   get '/store' => 'pages#store'
   get '/donate' => 'pages#donate'
+  get '/map' => 'pages#map'
+  get '/operators' => 'pages#operators'
   get '.well-known/apple-app-site-association' => 'pages#apple_app_site_association'
   get '/apple-app-site-association' => 'pages#apple_app_site_association'
   get '/robots.txt' => 'pages#robots'
@@ -119,7 +121,7 @@ Rails.application.routes.draw do
     get ':region' + '.rss' => 'location_machine_xrefs#index', format: 'xml'
     get ':region' + '_scores.rss' => 'machine_score_xrefs#index', format: 'xml'
 
-    get '/' => 'pages#region', as: 'region_homepage'
+    get '/' => 'maps#region', as: 'region_homepage'
     get '/about' => 'pages#about'
     get '/contact' => 'pages#contact'
     post '/contact_sent' => 'pages#contact_sent'
@@ -185,9 +187,9 @@ Rails.application.routes.draw do
   end
   resources :machine_conditions
   resources :suggested_locations, only: [] do
-      member do
-        post :convert_to_location
-      end
+    member do
+      post :convert_to_location
+    end
   end
 
   resources :users, only: [:profile, :toggle_fave_location, :update_user_flag, :render_user_flag] do
@@ -202,10 +204,10 @@ Rails.application.routes.draw do
   get 'inspire_profile' => 'pages#inspire_profile'
   get 'pages/home'
   get 'map' => 'pages#map'
-  get 'operators' => 'pages#operators'
-  get 'operator_location_data' => 'pages#operator_location_data'
+  get 'operators' => 'maps#operators'
+  get 'operator_location_data' => 'maps#operator_location_data'
   get 'saved' => 'pages#map', user_faved: true
-  get 'map_location_data' => 'pages#map_location_data'
+  get 'map_location_data' => 'maps#map_location_data'
   get 'suggest' => 'pages#suggest_new_location', as: 'map_location_suggest'
   post 'submitted_new_location' => 'pages#submitted_new_location', as: 'map_submitted_new_location'
   get 'flier' => 'pages#flier', as: 'map_flier'
