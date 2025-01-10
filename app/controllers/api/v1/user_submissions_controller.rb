@@ -16,7 +16,7 @@ module Api
 
         region_id = Region.where(name: params[:region]).pluck(:id).first
 
-        user_submissions = UserSubmission.where( submission_type: submission_type, region_id: region_id).limit(300).order('created_at DESC')
+        user_submissions = UserSubmission.where(submission_type: submission_type, region_id: region_id).limit(300).order('created_at DESC')
 
         return_response(user_submissions, 'user_submissions')
       end
@@ -88,7 +88,7 @@ module Api
       def list_within_range
         if params[:max_distance].blank?
           max_distance = MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS
-        else 
+        else
           max_distance = [250, params[:max_distance].to_i].min
         end
         min_date_of_submission = params[:min_date_of_submission] ? params[:min_date_of_submission].to_date.beginning_of_day : 1.month.ago.beginning_of_day
