@@ -101,7 +101,7 @@ describe Api::V1::UserSubmissionsController, type: :request do
       FactoryBot.create(:user_submission, region: @region, submission_type: 'remove_machine', submission: 'removed in region')
       FactoryBot.create(:user_submission, region: @other_region, submission_type: 'remove_machine', submission: 'removed elsewhere')
       FactoryBot.create(:user_submission, region: @other_region, submission_type: 'add_lmx', submission: 'added elsewhere')
-      
+
       get "/api/v1/region/#{@region.name}/user_submissions.json"
 
       expect(response).to be_successful
