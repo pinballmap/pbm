@@ -10,7 +10,7 @@ module Api
 
       api :GET, '/api/v1/region/:region/user_submissions.json', 'Fetch user submissions for a single region'
       param :region, String, desc: 'Name of the Region you want to see user submissions for', required: true
-      param :submission_type, String, desc: 'Type of submission to filter to. Multiple filters can be formatted as `;submission_type[]=remove_machine;submission_type[]=new_lmx` etc.', required: false
+      param :submission_type, String, desc: 'Type of submission to filter to. Multiple filters can be formatted as ;submission_type[]=remove_machine;submission_type[]=new_lmx etc.', required: false
       def index
         submission_type = params[:submission_type].blank? ? %w[new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
 
@@ -83,7 +83,7 @@ module Api
       param :lon, String, desc: 'Longitude', required: true
       param :max_distance, String, desc: 'Closest location within "max_distance" miles, max of 250', required: false
       param :min_date_of_submission, String, desc: 'Earliest date to consider updates from, format YYYY-MM-DD', required: false
-      param :submission_type, String, desc: 'Type of submission to filter to. Multiple filters can be formatted as `;submission_type[]=remove_machine;submission_type[]=new_lmx` etc.', required: false
+      param :submission_type, String, desc: 'Type of submission to filter to. Multiple filters can be formatted as ;submission_type[]=remove_machine;submission_type[]=new_lmx etc.', required: false
       param :region_id, String, desc: 'Limit results to a region', required: false
       def list_within_range
         if params[:max_distance].blank?
