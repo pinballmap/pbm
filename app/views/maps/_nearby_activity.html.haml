@@ -1,14 +1,10 @@
 %div#nearby_activity.mt_20.mb_20
   %div.bold.flex_center.red{:style => 'margin: 12px 0;'}
     %span.sorted_submissions
-      #{sorted_submissions.size} recent map edits in the nearby area
+      #{sorted_submissions.size} recent map edit(s) in the nearby area
     %span.close_activity.pointer{:onclick => "closeActivity();"}
       X
   - sorted_submissions.take(200).each do |recent_activity|
-    - if (!recent_activity.user_name.blank?)
-      - recent_activity_user =  " by #{recent_activity.user_name}"
-    - else
-      - recent_activity_user = ""
     %div.recent_activity_container
       %div.recent_activity_icon
         =image_tag("icons/#{recent_activity.submission_type}.svg", :alt => "#{recent_activity.submission_type}", :class => '')
@@ -18,7 +14,7 @@
           %span.bold.red #{recent_activity.machine_name}
           added to
           %span.bold
-            #{recent_activity.location_name}
+            =link_to "#{recent_activity.location_name}", "/map?by_location_id=#{recent_activity.location_id}"
           in #{recent_activity.city_name}
           - if (!recent_activity.user_name.blank?)
             by
@@ -32,7 +28,7 @@
             %span.bold.red #{recent_activity.machine_name}
             %div.mt_5
               %span.bold
-                #{recent_activity.location_name}
+                =link_to "#{recent_activity.location_name}", "/map?by_location_id=#{recent_activity.location_id}"
               in #{recent_activity.city_name}
               - if (!recent_activity.user_name.blank?)
                 by
@@ -41,7 +37,7 @@
           %span.bold.red #{recent_activity.machine_name}
           removed from
           %span.bold
-            #{recent_activity.location_name}
+            =link_to "#{recent_activity.location_name}", "/map?by_location_id=#{recent_activity.location_id}"
           in #{recent_activity.city_name}
           - if (!recent_activity.user_name.blank?)
             by
@@ -56,7 +52,7 @@
             %span.bold.red.mt_8.inline_block #{recent_activity.machine_name}
             %div.mt_5
               %span.bold
-                #{recent_activity.location_name}
+                =link_to "#{recent_activity.location_name}", "/map?by_location_id=#{recent_activity.location_id}"
               in #{recent_activity.city_name}
               - if (!recent_activity.user_name.blank?)
                 by
@@ -64,7 +60,7 @@
         - elsif (recent_activity.submission_type == 'confirm_location')
           Line-up confirmed at
           %span.bold
-            #{recent_activity.location_name}
+            =link_to "#{recent_activity.location_name}", "/map?by_location_id=#{recent_activity.location_id}"
           in #{recent_activity.city_name}
           - if (!recent_activity.user_name.blank?)
             by

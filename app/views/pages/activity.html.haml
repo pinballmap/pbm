@@ -7,21 +7,18 @@
     .clear
 
     .column.w_640
+      - region_name = @region.name
       - @region.recent_activity.take(200).each do |recent_activity|
-        - if (!recent_activity.user_name.blank?)
-          - recent_activity_user =  " by #{recent_activity.user_name}"
-        - else
-          - recent_activity_user = ""
         %div.recent_activity_container
           %div.recent_activity_icon
             =image_tag("icons/#{recent_activity.submission_type}.svg", :alt => "#{recent_activity.submission_type}", :class => '')
           %div.recent_activity_date.font14.bold #{recent_activity.created_at.strftime("%b %d, %Y")}
-          %div.recent_activity_submission.font14 
+          %div.recent_activity_submission.font14
             - if (recent_activity.submission_type == 'new_lmx')
-              %span.bold.red #{recent_activity.machine_name} 
+              %span.bold.red #{recent_activity.machine_name}
               added to
               %span.bold
-                #{recent_activity.location_name}
+                =link_to "#{recent_activity.location_name}", "/#{region_name}?by_location_id=#{recent_activity.location_id}"
               in #{recent_activity.city_name}
               - if (!recent_activity.user_name.blank?)
                 by 
@@ -35,31 +32,31 @@
                 %span.bold.red #{recent_activity.machine_name}
                 %div.mt_5
                   %span.bold
-                    #{recent_activity.location_name}
+                    =link_to "#{recent_activity.location_name}", "/#{region_name}?by_location_id=#{recent_activity.location_id}"
                   in #{recent_activity.city_name}
                   - if (!recent_activity.user_name.blank?)
                     by
                     %span.red.bold #{recent_activity.user_name}
             - elsif (recent_activity.submission_type == 'remove_machine')
-              %span.bold.red #{recent_activity.machine_name} 
+              %span.bold.red #{recent_activity.machine_name}
               removed from
               %span.bold
-                #{recent_activity.location_name}
+                =link_to "#{recent_activity.location_name}", "/#{region_name}?by_location_id=#{recent_activity.location_id}"
               in #{recent_activity.city_name}
               - if (!recent_activity.user_name.blank?)
-                by 
+                by
                 %span.red.bold #{recent_activity.user_name}
             - elsif (recent_activity.submission_type == 'new_msx')
               - if (recent_activity.high_score.blank?)
                 #{recent_activity.submission}
               - else
-                High score: 
+                High score:
                 %span.bold #{number_with_precision(recent_activity.high_score, precision: 0, delimiter: ',')}
                 %br/
                 %span.bold.red.mt_8.inline_block #{recent_activity.machine_name}
                 %div.mt_5
                   %span.bold
-                    #{recent_activity.location_name}
+                    =link_to "#{recent_activity.location_name}", "/#{region_name}?by_location_id=#{recent_activity.location_id}"
                   in #{recent_activity.city_name}
                   - if (!recent_activity.user_name.blank?)
                     by
@@ -67,9 +64,9 @@
             - elsif (recent_activity.submission_type == 'confirm_location')
               Line-up confirmed at
               %span.bold
-                #{recent_activity.location_name}
+                =link_to "#{recent_activity.location_name}", "/#{region_name}?by_location_id=#{recent_activity.location_id}"
               in #{recent_activity.city_name}
               - if (!recent_activity.user_name.blank?)
-                by 
+                by
                 %span.red.bold #{recent_activity.user_name}
 
