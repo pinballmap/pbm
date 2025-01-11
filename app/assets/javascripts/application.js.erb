@@ -210,6 +210,7 @@ function redone() {
       }
 
       document.getElementById('search_link_wrapper').style.display = "none";
+      document.getElementById('nearby_activity_button').style.display = "none";
       $('#locations').html(loadingHTML());
       $.get(url, function (data) {
         $('#locations').html(data);
