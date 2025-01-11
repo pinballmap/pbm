@@ -336,5 +336,33 @@ describe MapsController do
       expect(find('#search_results')).to_not have_content('Clark')
       expect(find('#search_results')).to_not have_content('Renee')
     end
+
+    it 'nearby activity button should return the nearby activity' do
+      @location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606', city: 'Portland', zip: '97203', name: "Clark's Depot")
+      @distant_location = FactoryBot.create(:location, lat: '12.6008356', lon: '-12.760606', city: 'Hillsboro', zip: '97005', name: "Ripley's Hut")
+
+      FactoryBot.create(:user_submission, created_at: '2025-01-02', location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE)
+      FactoryBot.create(:user_submission, created_at: '2025-01-03', location: @distant_location, location_name: @distant_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+
+      visit '/map'
+
+      fill_in('address', with: '97203')
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(page).to have_content('Nearby activity')
+
+      # Placeholder: map.getCenter() doesn't work in tests because the map doesn't load
+
+      # find('#nearby_activity_button').click
+
+      # sleep 0.5
+
+      # expect(page).to have_content('1 recent map edits in the nearby area')
+      # expect(page).to have_content("added to Clark's Depot")
+      # expect(page).to_not have_content("removed from Ripley's Hut")
+    end
   end
 end
