@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe Api::V1::UserSubmissionsController, type: :request do
   before(:each) do
-    @region = FactoryBot.create(:region, name: 'portland')
+    @region = FactoryBot.create(:region, name: 'portland', id: 41)
+    @other_region = FactoryBot.create(:region, name: 'clackamas', id: 42)
   end
 
   describe '#list_within_range' do
@@ -29,7 +30,7 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response).to be_successful
       json = JSON.parse(response.body)['user_submissions']
 
-      expect(json.count).to eq(7)
+      expect(json.count).to eq(6)
     end
 
     it 'sets a max_distance limit of 250 miles' do
@@ -75,30 +76,55 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
       expect(json.count).to eq(1)
     end
+
+    it 'respects region filter' do
+      location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606', region_id: @region.id)
+      other_location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606', region_id: @other_region.id)
+
+      FactoryBot.create(:user_submission, user: @user, location: location, lat: location.lat, lon: location.lon, submission_type: 'new_lmx', created_at: Time.now.strftime('%Y-%m-%d'), region_id: @region.id)
+      FactoryBot.create(:user_submission, user: @user, location: location, lat: location.lat, lon: location.lon, submission_type: 'remove_machine', created_at: Time.now.strftime('%Y-%m-%d'), region_id: @region.id)
+      FactoryBot.create(:user_submission, user: @user, location: other_location, lat: other_location.lat, lon: other_location.lon, submission_type: 'new_lmx', created_at: Time.now.strftime('%Y-%m-%d'), region_id: @other_region.id)
+      FactoryBot.create(:user_submission, user: @user, location: other_location, lat: other_location.lat, lon: other_location.lon, submission_type: 'remove_machine', created_at: Time.now.strftime('%Y-%m-%d'), region_id: @other_region.id)
+
+      get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606', region_id: @region.id }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(2)
+    end
   end
 
   describe '#index' do
     it 'returns all submissions within scope' do
-      FactoryBot.create(:user_submission, region: @region, submission_type: 'remove_machine', submission: 'foo')
-      FactoryBot.create(:user_submission, region: FactoryBot.create(:region, name: 'chicago'), submission_type: 'remove_machine', submission: 'foo')
+      FactoryBot.create(:user_submission, region: @region, submission_type: 'new_lmx', submission: 'added in region')
+      FactoryBot.create(:user_submission, region: @region, submission_type: 'remove_machine', submission: 'removed in region')
+      FactoryBot.create(:user_submission, region: @other_region, submission_type: 'remove_machine', submission: 'removed elsewhere')
+      FactoryBot.create(:user_submission, region: @other_region, submission_type: 'add_lmx', submission: 'added elsewhere')
+
       get "/api/v1/region/#{@region.name}/user_submissions.json"
 
-      expect(response.body).to include('remove_machine')
-      expect(response.body).to include('foo')
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
 
-      expect(response.body).to_not include('bar')
-    end
+      expect(json.count).to eq(2)
+      expect(response.body).to include('added in region')
+      expect(response.body).to include('removed in region')
 
-    it 'only shows remove_machine submissions' do
-      FactoryBot.create(:user_submission, region: @region, submission_type: 'remove_machine', submission: 'removed foo from bar')
-      FactoryBot.create(:user_submission, region: @region, submission_type: 'DO_NOT_SHOW', submission: 'hope this does not show')
-      get "/api/v1/region/#{@region.name}/user_submissions.json"
+      expect(response.body).to_not include('added elsewhere')
+      expect(response.body).to_not include('removed elsewhere')
 
-      expect(response.body).to include('remove_machine')
-      expect(response.body).to include('removed foo from bar')
+      get "/api/v1/region/#{@region.name}/user_submissions.json?submission_type=remove_machine"
 
-      expect(response.body).to_not include('DO_NOT_SHOW')
-      expect(response.body).to_not include('hope this does not show')
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(1)
+      expect(response.body).to_not include('added in region')
+      expect(response.body).to include('removed in region')
+
+      expect(response.body).to_not include('added elsewhere')
+      expect(response.body).to_not include('removed elsewhere')
     end
   end
 
