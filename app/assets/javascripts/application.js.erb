@@ -320,6 +320,10 @@ function backToResults() {
   clearSelectedMarker();
 }
 
+function closeActivity() {
+  document.getElementById('nearby_activity_container').innerHTML = "";
+}
+
 function showSearchModal() {
   $('#form_container').show(400);
 }

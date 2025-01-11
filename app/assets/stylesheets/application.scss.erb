@@ -1345,6 +1345,10 @@ input.single_hide {
   top: 60px;
 }
 
+#nearby_activity_button {
+  top: 140px;
+}
+
 #search_link_wrapper a {
   color: var(--ahref);
   font-family: $italic;
@@ -1369,17 +1373,14 @@ input.single_hide {
   background-color: var(--lightpink);
 }
 
-#nearby_activity_button {
-  top: 320px;
-}
-
 #refresh_button,
 #zoom_in_more {
   display: none;
 }
 
 #refresh_button:hover,
-#zoom_in_more:hover {
+#zoom_in_more:hover,
+#nearby_activity_button:hover {
   cursor: pointer;
 }
 
@@ -1423,7 +1424,8 @@ form select#by_operator_id {
 
 /** Search Results **/
 
-.back_to_results {
+.back_to_results,
+.back_from_activity {
   display: none;
   margin: 5px 0 10px 0;
   padding: 10px;
@@ -1431,8 +1433,13 @@ form select#by_operator_id {
   color: var(--ahref);
 }
 
-.back_to_results:hover {
+.back_to_results:hover,
+.back_from_activity:hover {
   text-decoration: underline;
+}
+
+.back_from_activity {
+  display: block;
 }
 
 .left_arrow {
@@ -2066,6 +2073,21 @@ form select:hover {
 
 #form .limit select {
   padding-right: 0;
+}
+
+.sorted_submissions {
+  margin-right: 8px;
+}
+
+.close_activity {
+  background: #fe46b0;
+  font-size: 22px;
+  color: #fafaff;
+  padding: 2px;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  text-align: center;
 }
 
 .add_picture_location input.submit_picture {

@@ -229,13 +229,13 @@
 
   // show a list of recent user actions
   $('#nearby_activity_button').bind('click', function(event, ui) {
-    savedLocations = $('#locations').html;
-    $('#locations').html(loadingHTML());
+    savedLocations = $('#nearby_activity_container').html;
+    $('#nearby_activity_container').html(loadingHTML());
     let coords = map.getCenter();
     let lat = coords.lat;
     let lng = coords.lng;
     $.get(`/user_submissions/list_within_range?lat=${lat};lon=${lng}`, function(data, textStatus, jqxhr) {
-      $('#locations').html(data);
+      $('#nearby_activity_container').html(data);
     });
     return false;
   });
@@ -258,7 +258,7 @@
 
     numMachinesVal = ';by_at_least_n_machines=' + $('#by_at_least_n_machines').val();
     locationTypeVal = ';by_type_id=' + $('#by_type_id').val();
-    
+
     hideSearchModal();
     $(".mask").hide();
     mapAdjusted = 0;

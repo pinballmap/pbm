@@ -63,7 +63,7 @@
   function topFunction() {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-  } 
+  }
 
 #results_container
   #search_results
@@ -75,6 +75,7 @@
     - @locations.each do |location|
       - l = location.clone
       %div.search_result[l]
+        %div#nearby_activity_container
         - if (@locations.size == 1)
           %div.location_detail[l, :location_detail]
             = render :partial => 'locations/render_location_detail', :locals => {l: l}
@@ -106,7 +107,7 @@
               %div.darkgrey.italic.pb_15
                 plus
                 = pluralize(location.machines.size - 5, 'more machine')
-                  
+
           %div.location_detail[l, :location_detail]{:style => 'display:none;'}
 
       - l = nil
