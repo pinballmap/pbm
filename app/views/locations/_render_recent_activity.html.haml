@@ -1,5 +1,5 @@
-%div.quick_button_content_header Recent Location Activity (max of 30)
-- l.recent_activity.take(20).each do |recent_activity|
+%div.quick_button_content_header Recent Location Activity (max of 50)
+- l.recent_activity.take(50).each do |recent_activity|
   - if (!recent_activity.user_name.blank?)
     - recent_activity_user =  " by #{recent_activity.user_name}"
   - else
