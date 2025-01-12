@@ -17,9 +17,9 @@ describe PagesController do
 
       visit '/portland/events'
 
-      expect(page).to have_content("event 3 @ Test Location Name\n#{Date.today.strftime('%b %d, %Y')}")
-      expect(page).to have_content("event 1 @ Test Location Name\n#{(Date.today + 1).strftime('%b %d, %Y')}")
-      expect(page).to have_content('event 2 @ Test Location Name')
+      expect(page).to have_content("event 3 @ Clark's Depot\n#{Date.today.strftime('%b %d, %Y')}")
+      expect(page).to have_content("event 1 @ Clark's Depot\n#{(Date.today + 1).strftime('%b %d, %Y')}")
+      expect(page).to have_content("event 2 @ Clark's Depot")
     end
 
     it 'is case insensitive for region name' do
@@ -224,7 +224,7 @@ describe PagesController do
       expect(page).to have_title('Pinball Map')
 
       visit "/map/?by_location_id=#{@location.id}"
-      expect(page).to have_title('Test Location Name')
+      expect(page).to have_title("Clark's Depot")
     end
   end
 
