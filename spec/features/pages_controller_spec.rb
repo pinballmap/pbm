@@ -3,7 +3,7 @@ require 'spec_helper'
 describe PagesController do
   before(:each) do
     @region = FactoryBot.create(:region, name: 'portland', full_name: 'Portland')
-    @location = FactoryBot.create(:location, region: @region, state: 'OR')
+    @location = FactoryBot.create(:location, id: 41, region: @region, state: 'OR', name: "Clark's Depot")
   end
 
   describe 'Events', type: :feature, js: true do
@@ -309,6 +309,25 @@ describe PagesController do
       visit '/inspire_profile'
 
       expect(page).to have_current_path(profile_user_path(user.id))
+    end
+  end
+
+  describe 'Activity', type: :feature, js: true do
+    it 'shows region activity' do
+      @other_region_location = FactoryBot.create(:location, city: 'Hillsboro', zip: '97005', name: "Ripley's Hut", region: @other_region)
+      @other_region = FactoryBot.create(:region, name: 'seattle', full_name: 'Seattle')
+
+      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE)
+
+      FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+
+      visit '/portland/activity'
+
+      expect(page).to have_content('Recent Activity')
+      expect(page).to have_content("added to Clark's Depot")
+      expect(page).to_not have_content("removed from Ripley's Hut")
+      expect(page).to have_link("Clark's Depot")
+      # need to add link destination
     end
   end
 end
