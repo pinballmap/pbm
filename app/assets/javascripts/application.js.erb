@@ -130,6 +130,7 @@ function showLocations(ids, lats, lons, num_machines, latLng) {
       document.getElementById("map_canvas").innerHTML = "<p id='not_found' class='font28 red bold'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
       mapLoaded = 0;
       hideRefresh();
+      document.getElementById('nearby_activity_button').style.display = "none";
     } else if (locationIDs.length == 0 && latLng.length === 2) {
       map.fitBounds(bounds, { padding: 50, animate: false });
       map.setZoom(18);
@@ -210,7 +211,6 @@ function redone() {
       }
 
       document.getElementById('search_link_wrapper').style.display = "none";
-      document.getElementById('nearby_activity_button').style.display = "none";
       $('#locations').html(loadingHTML());
       $.get(url, function (data) {
         $('#locations').html(data);
