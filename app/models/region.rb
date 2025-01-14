@@ -113,10 +113,6 @@ class Region < ApplicationRecord
     links
   end
 
-  def recent_activity
-    UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day, region_id: self).order('created_at DESC').limit(200)
-  end
-
   def html_motd
     message = motd.to_s.gsub(%r{(\b(((https?|ftp|file|):\/\/)|www[.])[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])}i) { |s| "<a href =#{s} target=_blank>#{s}</a>" }
     message.html_safe

@@ -328,6 +328,12 @@ describe PagesController do
       expect(page).to_not have_content("removed from Ripley's Hut")
       expect(page).to have_link("Clark's Depot")
       # need to add link destination
+
+      visit '/activity'
+
+      expect(page).to have_content('Recent Activity')
+      expect(page).to have_content("added to Clark's Depot")
+      expect(page).to have_content("removed from Ripley's Hut")
     end
   end
 end

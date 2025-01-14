@@ -101,6 +101,7 @@ Rails.application.routes.draw do
   get '.well-known/apple-app-site-association' => 'pages#apple_app_site_association'
   get '/apple-app-site-association' => 'pages#apple_app_site_association'
   get '/robots.txt' => 'pages#robots'
+  get '/activity' => 'pages#activity'
 
   scope ':region', constraints: lambda { |request| Region.where('lower(name) = ?', request.params[:region].downcase).any? } do
     get 'app' => redirect('/app')

@@ -3,12 +3,11 @@
     .column.bg_vlightpurple.w_640
       %p.red.bold.p1 Recent Activity
       %p
-        This list contains the last 200 edits to the #{@region.full_name} region pinball map.
+        This list contains the last 200 edits to #{@region_fullname} Pinball Map.
     .clear
 
     .column.w_640
-      - region_name = @region.name
-      - @region.recent_activity.take(200).each do |recent_activity|
+      - @recent_activity.take(200).each do |recent_activity|
         %div.recent_activity_container
           %div.recent_activity_icon
             =image_tag("icons/#{recent_activity.submission_type}.svg", :alt => "#{recent_activity.submission_type}", :class => '')
@@ -18,7 +17,7 @@
               %span.bold.red #{recent_activity.machine_name}
               added to
               %span.bold
-                =link_to "#{recent_activity.location_name}", "/#{region_name}?by_location_id=#{recent_activity.location_id}"
+                =link_to "#{recent_activity.location_name}", "/#{@region_name}?by_location_id=#{recent_activity.location_id}"
               in #{recent_activity.city_name}
               - if (!recent_activity.user_name.blank?)
                 by 
@@ -32,7 +31,7 @@
                 %span.bold.red #{recent_activity.machine_name}
                 %div.mt_5
                   %span.bold
-                    =link_to "#{recent_activity.location_name}", "/#{region_name}?by_location_id=#{recent_activity.location_id}"
+                    =link_to "#{recent_activity.location_name}", "/#{@region_name}?by_location_id=#{recent_activity.location_id}"
                   in #{recent_activity.city_name}
                   - if (!recent_activity.user_name.blank?)
                     by
@@ -41,7 +40,7 @@
               %span.bold.red #{recent_activity.machine_name}
               removed from
               %span.bold
-                =link_to "#{recent_activity.location_name}", "/#{region_name}?by_location_id=#{recent_activity.location_id}"
+                =link_to "#{recent_activity.location_name}", "/#{@region_name}?by_location_id=#{recent_activity.location_id}"
               in #{recent_activity.city_name}
               - if (!recent_activity.user_name.blank?)
                 by
@@ -56,7 +55,7 @@
                 %span.bold.red.mt_8.inline_block #{recent_activity.machine_name}
                 %div.mt_5
                   %span.bold
-                    =link_to "#{recent_activity.location_name}", "/#{region_name}?by_location_id=#{recent_activity.location_id}"
+                    =link_to "#{recent_activity.location_name}", "/#{@region_name}?by_location_id=#{recent_activity.location_id}"
                   in #{recent_activity.city_name}
                   - if (!recent_activity.user_name.blank?)
                     by
@@ -64,7 +63,7 @@
             - elsif (recent_activity.submission_type == 'confirm_location')
               Line-up confirmed at
               %span.bold
-                =link_to "#{recent_activity.location_name}", "/#{region_name}?by_location_id=#{recent_activity.location_id}"
+                =link_to "#{recent_activity.location_name}", "/#{@region_name}?by_location_id=#{recent_activity.location_id}"
               in #{recent_activity.city_name}
               - if (!recent_activity.user_name.blank?)
                 by
