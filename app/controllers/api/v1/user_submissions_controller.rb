@@ -91,21 +91,24 @@ module Api
         else
           max_distance = [250, params[:max_distance].to_i].min
         end
-        min_date_of_submission = params[:min_date_of_submission] ? params[:min_date_of_submission].to_date.beginning_of_day : 1.month.ago.beginning_of_day
-
-        user_submissions = nil
 
         submission_type = params[:submission_type].blank? ? %w[new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
 
-        if params[:region_id].blank?
-          user_submissions = UserSubmission.where.not(lat: nil).where(created_at: min_date_of_submission..Date.today.end_of_day, submission_type: submission_type).near([params[:lat], params[:lon]], max_distance, order: false)
-        else
-          user_submissions = UserSubmission.where.not(lat: nil).where(created_at: min_date_of_submission..Date.today.end_of_day, submission_type: submission_type, region_id: params[:region_id]).near([params[:lat], params[:lon]], max_distance, order: false)
+        user_submissions = UserSubmission.where.not(lat: nil).where(submission_type: submission_type)
+
+        if !params[:region_id].blank?
+          user_submissions = user_submissions.where(region_id: params[:region_id])
         end
 
-        sorted_submissions = user_submissions.order('created_at DESC')
+        min_date_of_submission = params[:min_date_of_submission].to_date.beginning_of_day if params[:min_date_of_submission].present?
 
-        return_response(sorted_submissions, 'user_submissions')
+        if min_date_of_submission
+          user_submissions = user_submissions.where(created_at: min_date_of_submission..Date.today.beginning_of_day)
+        end
+
+        user_submissions = user_submissions.near([params[:lat], params[:lon]], max_distance, order: 'created_at desc').limit(200)
+
+        return_response(user_submissions, 'user_submissions')
       end
     end
   end

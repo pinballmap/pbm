@@ -18,7 +18,7 @@
           in #{recent_activity.city_name}
           - if (!recent_activity.user_name.blank?)
             by
-            %span.red.bold #{recent_activity.user_name}
+            %span.bold #{recent_activity.user_name}
         - elsif (recent_activity.submission_type == 'new_condition')
           - if (recent_activity.comment.blank?)
             #{recent_activity.submission}
@@ -32,7 +32,7 @@
               in #{recent_activity.city_name}
               - if (!recent_activity.user_name.blank?)
                 by
-                %span.red.bold #{recent_activity.user_name}
+                %span.bold #{recent_activity.user_name}
         - elsif (recent_activity.submission_type == 'remove_machine')
           %span.bold.red #{recent_activity.machine_name}
           removed from
@@ -41,7 +41,7 @@
           in #{recent_activity.city_name}
           - if (!recent_activity.user_name.blank?)
             by
-            %span.red.bold #{recent_activity.user_name}
+            %span.bold #{recent_activity.user_name}
         - elsif (recent_activity.submission_type == 'new_msx')
           - if (recent_activity.high_score.blank?)
             #{recent_activity.submission}
@@ -56,7 +56,7 @@
               in #{recent_activity.city_name}
               - if (!recent_activity.user_name.blank?)
                 by
-                %span.red.bold #{recent_activity.user_name}
+                %span.bold #{recent_activity.user_name}
         - elsif (recent_activity.submission_type == 'confirm_location')
           Line-up confirmed at
           %span.bold
@@ -64,4 +64,4 @@
           in #{recent_activity.city_name}
           - if (!recent_activity.user_name.blank?)
             by
-            %span.red.bold #{recent_activity.user_name}
+            %span.bold #{recent_activity.user_name}
