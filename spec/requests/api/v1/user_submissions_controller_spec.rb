@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Api::V1::UserSubmissionsController, type: :request do
   before(:each) do
-    @region = FactoryBot.create(:region, name: 'portland', id: 41)
-    @other_region = FactoryBot.create(:region, name: 'clackamas', id: 42)
+    @region = FactoryBot.create(:region, name: 'portland', id: 410)
+    @other_region = FactoryBot.create(:region, name: 'clackamas', id: 422)
   end
 
   describe '#list_within_range' do

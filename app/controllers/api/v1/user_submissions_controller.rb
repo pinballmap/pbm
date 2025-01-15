@@ -23,19 +23,16 @@ module Api
 
       api :GET, '/api/v1/user_submissions/location.json', 'Fetch user submissions for a location'
       param :id, Integer, desc: 'ID of location', required: true
-      param :submission_type, String, desc: 'Type of submission to filter to', required: false
+      param :submission_type, String, desc: 'Type of submission to filter to. Multiple filters can be formatted as ;submission_type[]=remove_machine;submission_type[]=new_lmx etc.', required: false
       formats ['json']
       def location
         location = Location.find(params[:id])
 
-        if params[:submission_type]
-          user_submissions = UserSubmission.where(location_id: location, submission_type: params[:submission_type])
-        else
-          user_submissions = UserSubmission.where(location_id: location)
-        end
-        sorted_submissions = user_submissions.order('created_at DESC')
+        submission_type = params[:submission_type].blank? ? %w[new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
 
-        return_response(sorted_submissions, 'user_submissions')
+        user_submissions = UserSubmission.where(location_id: location, submission_type: submission_type).limit(200).order('created_at DESC')
+
+        return_response(user_submissions, 'user_submissions')
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find location', 'errors')
       end
@@ -44,10 +41,9 @@ module Api
       formats ['json']
       def delete_location
         except = %i[user_id machine_id comment user_name location_name machine_name high_score city_name lat lon]
-        user_submissions = UserSubmission.where(created_at: (1.year.ago)..(Date.today.end_of_day), submission_type: UserSubmission::DELETE_LOCATION_TYPE)
-        sorted_submissions = user_submissions.order('created_at DESC')
+        user_submissions = UserSubmission.where(created_at: (1.year.ago)..(Date.today.end_of_day), submission_type: UserSubmission::DELETE_LOCATION_TYPE).order('created_at DESC')
 
-        return_response(sorted_submissions, 'user_submissions', [], [], 200, except)
+        return_response(user_submissions, 'user_submissions', [], [], 200, except)
       rescue ActiveRecord::RecordNotFound
         return_response('Failed to find location', 'errors')
       end
