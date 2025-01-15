@@ -24,9 +24,9 @@
   - if (@region)
     %li.menu_header_01=link_to 'Add Location', suggest_path
     %li=link_to 'About / Contact', about_path
-    %li=link_to 'Activity', activity_path
     %li=link_to 'Events', events_path
     %li=link_to 'High Scores', high_rollers_path
+    %li=link_to 'Activity Feed', region_activity_path
     %li=link_to 'Location RSS', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
     %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
     %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
@@ -39,6 +39,7 @@
   %li=link_to 'User Profile', current_user.nil? ? inspire_profile_path : profile_user_path(current_user.id)
   %li=link_to 'App', app_path
   - if !(@region)
+    %li=link_to 'Activity Feed', activity_path
     %li=link_to 'Location RSS', "/location_machine_xrefs.rss", {:class => 'feed_icon'}
   %li=link_to 'Blog', 'http://blog.pinballmap.com'
   %li=link_to 'Store', store_path
