@@ -67,6 +67,10 @@ describe PagesHelper, type: :helper do
       it 'displays the correct flier title ' do
         expect(helper.title_for_path(map_flier_path)).to eq('Promote Pinball Map')
       end
+
+      it 'displays the correct activity title ' do
+        expect(helper.title_for_path(activity_path)).to eq('Recent Activity - Pinball Map')
+      end
     end
 
     describe 'with region' do
@@ -91,7 +95,7 @@ describe PagesHelper, type: :helper do
       end
 
       it 'displays the recent activity title' do
-        expect(helper.title_for_path(activity_path(@region.name), @region)).to eq('Recent Activity - ' + @region.full_name + ' Pinball Map')
+        expect(helper.title_for_path(region_activity_path(@region.name), @region)).to eq('Recent Activity - ' + @region.full_name + ' Pinball Map')
       end
     end
   end
