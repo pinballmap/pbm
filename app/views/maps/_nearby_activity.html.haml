@@ -4,7 +4,7 @@
       #{sorted_submissions.size} recent map edit(s) in the nearby area
     %span.close_activity.pointer{:onclick => "closeActivity();"}
       X
-  - sorted_submissions.take(200).each do |recent_activity|
+  - sorted_submissions.each do |recent_activity|
     %div.recent_activity_container
       %div.recent_activity_icon
         =image_tag("icons/#{recent_activity.submission_type}.svg", :alt => "#{recent_activity.submission_type}", :class => '')

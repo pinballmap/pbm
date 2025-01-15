@@ -16,7 +16,7 @@ module Api
 
         region_id = Region.where(name: params[:region]).pluck(:id).first
 
-        user_submissions = UserSubmission.where(submission_type: submission_type, region_id: region_id).limit(300).order('created_at DESC')
+        user_submissions = UserSubmission.where(submission_type: submission_type, region_id: region_id).limit(200).order('created_at DESC')
 
         return_response(user_submissions, 'user_submissions')
       end
@@ -29,9 +29,9 @@ module Api
         location = Location.find(params[:id])
 
         if params[:submission_type]
-          user_submissions = UserSubmission.where(location_id: location, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day, submission_type: params[:submission_type])
+          user_submissions = UserSubmission.where(location_id: location, submission_type: params[:submission_type])
         else
-          user_submissions = UserSubmission.where(location_id: location, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day)
+          user_submissions = UserSubmission.where(location_id: location)
         end
         sorted_submissions = user_submissions.order('created_at DESC')
 

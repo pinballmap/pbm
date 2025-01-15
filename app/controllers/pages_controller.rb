@@ -114,15 +114,13 @@ class PagesController < ApplicationController
 
   def profile; end
 
-  # def activity; end
-
   def activity
     if @region
-      @recent_activity = UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day, region_id: @region.id).order('created_at DESC').limit(200)
+      @recent_activity = UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], region_id: @region.id).order('created_at DESC').limit(200)
       @region_fullname = 'the ' + @region.full_name
       @region_name = @region.name
     else
-      @recent_activity = UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC').limit(200)
+      @recent_activity = UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location]).order('created_at DESC').limit(200)
       @region_fullname = ''
       @region_name = 'map'
     end
