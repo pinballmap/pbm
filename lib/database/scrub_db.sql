@@ -16,6 +16,8 @@ delete from machine_conditions WHERE created_at < NOW() - INTERVAL '3 years';
 delete from machine_score_xrefs WHERE created_at < NOW() - INTERVAL '3 years';
 delete from suggested_locations WHERE created_at < NOW() - INTERVAL '3 years';
 delete from user_submissions WHERE created_at < NOW() - INTERVAL '3 years';
+delete from user_submissions where submission_type = 'suggest_location';
+delete from user_submissions where submission_type = 'contact_us';
 
 UPDATE users
     SET username = CONCAT('user', id, random()),
