@@ -289,6 +289,7 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     ostruct (0.6.0)
+    pagy (9.3.3)
     paper_trail (15.2.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
@@ -545,6 +546,7 @@ DEPENDENCIES
   launchy
   listen
   ostruct
+  pagy
   paper_trail
   paper_trail-association_tracking
   pg
