@@ -343,7 +343,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_successful
 
-      get "/api/v1/user_submissions/location.json?id=#{@lmx.location.id}"
+      get "/api/v1/user_submissions/location.json?id=#{@lmx.location.id};submission_type=ic_toggle"
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['user_submissions'][0]['submission_type']).to eq(UserSubmission::IC_TOGGLE_TYPE)
