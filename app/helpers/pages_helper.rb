@@ -92,7 +92,7 @@ module PagesHelper
            elsif path == high_rollers_path(region.name)
              "High scores for the #{region.full_name} Pinball Map! If you get a high score on a pinball machine, add it to the map!"
            elsif path == region_activity_path(region.name)
-             "Recent Activity for the #{region.full_name} Pinball Map! It's a list of the last 200 map edits!"
+             "Recent Activity for the #{region.full_name} Pinball Map! It's a list of map edits!"
            else
              "Find local places to play pinball! The #{region.full_name} Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."
            end
@@ -127,7 +127,7 @@ module PagesHelper
            elsif path == map_flier_path
              'Print out this cool promotional Pinball Map flier! Spread the word!'
            elsif path == activity_path
-             "Recent Activity for Pinball Map! It's a list of the last 200 map edits!"
+             "Recent Activity for Pinball Map! It's a list of map edits!"
            else
              'The Pinball Map website and free mobile app will help you find places to play pinball! Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
            end
