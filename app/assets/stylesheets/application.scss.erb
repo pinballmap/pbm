@@ -3381,3 +3381,55 @@ color: var(--black);
 #top_button:hover {
   background-color: #555;
 }
+
+/** Pagy **/
+
+.pagy {
+  display: flex;
+  justify-content: center;
+  font-family: sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: var(--darkblue);
+  & > :not([hidden]) ~ :not([hidden]) {
+    --space-reverse: 0;
+    margin-right: calc(0.25rem * var(--space-reverse));
+    margin-left: calc(0.25rem * calc(1 - var(--space-reverse)));
+  }
+
+  a:not(.gap) {
+    display: block;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    background-color: var(--purple);
+    padding: 0.25rem 0.75rem;
+    color: inherit;
+    &:hover {
+      background-color: var(--red);
+    }
+    &:not([href]) { /* disabled links */
+      cursor: default;
+      background-color: var(--lightpink);
+      color: var(--grey);
+    }
+    &.current {
+      background-color: var(--brightpurple);
+      color: var(--white);
+    }
+  }
+
+  label {
+    white-space: nowrap;
+    display: inline-block;
+    border-radius: 0.5rem;
+    background-color: rgb(229, 231, 235);
+    padding: 0.125rem 0.75rem;
+    input {
+      line-height: 1.5rem;
+      border-radius: 0.375rem;
+      border-style: none;
+      background-color: rgb(243, 244, 246);
+    }
+  }
+}

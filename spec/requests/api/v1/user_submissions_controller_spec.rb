@@ -66,7 +66,7 @@ describe Api::V1::UserSubmissionsController, type: :request do
     it 'respects type filter' do
       location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606')
 
-      FactoryBot.create(:user_submission, user: @user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'ssw added a high score of 504,570 on Tag-Team Pinball (Gottlieb, 1985) at Bottles in Portland')
+      FactoryBot.create(:user_submission, user: @user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2020-01-01', submission: 'ssw added a high score of 504,570 on Tag-Team Pinball (Gottlieb, 1985) at Bottles in Portland')
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Machine was added to Location by ssw')
 
       get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606', submission_type: 'new_msx' }
@@ -145,6 +145,16 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response.body).to include('bawb')
       expect(json.count).to eq(2)
       expect(response.body).to_not include('sass')
+    end
+
+    it 'only shows submissions after May 2, 2019' do
+      location = FactoryBot.create(:location, name: 'bawb', id: 111)
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (scott.wainstock@gmail.com) added a high score of 1234 on Cheetah at Bottles')
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2019-06-01', submission: 'sw added a high score of 4567 on Loofah at Bottles')
+      get '/api/v1/user_submissions/location.json', params: { id: 111 }
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+      expect(json.count).to eq(1)
     end
 
     it 'respects type filter' do

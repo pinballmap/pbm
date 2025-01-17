@@ -116,18 +116,13 @@ class PagesController < ApplicationController
 
   def activity
     if @region
-      @pagy, @recent_activity = pagy_countless(UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], region_id: @region.id).order('created_at DESC'), limit: 10)
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], region_id: @region.id, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC'))
       @region_fullname = 'the ' + @region.full_name
       @region_name = @region.name
     else
-      @pagy, @recent_activity = pagy_countless(UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location]).order('created_at DESC'), limit: 10)
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC'))
       @region_fullname = ''
       @region_name = 'map'
-    end
-
-    respond_to do |format|
-      format.html # GET
-      format.turbo_stream # POST
     end
   end
 

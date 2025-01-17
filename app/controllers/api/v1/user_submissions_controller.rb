@@ -16,7 +16,7 @@ module Api
 
         region_id = Region.where(name: params[:region]).pluck(:id).first
 
-        user_submissions = UserSubmission.where(submission_type: submission_type, region_id: region_id).limit(200).order('created_at DESC')
+        user_submissions = UserSubmission.where(submission_type: submission_type, region_id: region_id, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).limit(200).order('created_at DESC')
 
         return_response(user_submissions, 'user_submissions')
       end
@@ -30,7 +30,7 @@ module Api
 
         submission_type = params[:submission_type].blank? ? %w[new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
 
-        user_submissions = UserSubmission.where(location_id: location, submission_type: submission_type).limit(200).order('created_at DESC')
+        user_submissions = UserSubmission.where(location_id: location, submission_type: submission_type, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).limit(200).order('created_at DESC')
 
         return_response(user_submissions, 'user_submissions')
       rescue ActiveRecord::RecordNotFound
@@ -96,7 +96,7 @@ module Api
           user_submissions = user_submissions.where(region_id: params[:region_id])
         end
 
-        min_date_of_submission = params[:min_date_of_submission].to_date.beginning_of_day if params[:min_date_of_submission].present?
+        min_date_of_submission = params[:min_date_of_submission] ? params[:min_date_of_submission].to_date.beginning_of_day : '2019-05-03T07:00:00.00-07:00'
 
         if min_date_of_submission
           user_submissions = user_submissions.where(created_at: min_date_of_submission..Date.today.beginning_of_day)
