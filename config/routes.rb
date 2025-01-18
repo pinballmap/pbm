@@ -96,7 +96,6 @@ Rails.application.routes.draw do
   get '/faq' => 'pages#faq'
   get '/store' => 'pages#store'
   get '/donate' => 'pages#donate'
-  get '/map' => 'pages#map'
   get '/operators' => 'pages#operators'
   get '.well-known/apple-app-site-association' => 'pages#apple_app_site_association'
   get '/apple-app-site-association' => 'pages#apple_app_site_association'
@@ -208,10 +207,10 @@ Rails.application.routes.draw do
 
   get 'inspire_profile' => 'pages#inspire_profile'
   get 'pages/home'
-  get 'map' => 'pages#map'
+  get 'map' => 'maps#map'
   get 'operators' => 'maps#operators'
   get 'operator_location_data' => 'maps#operator_location_data'
-  get 'saved' => 'pages#map', user_faved: true
+  get 'saved' => 'maps#map', user_faved: true
   get 'map_location_data' => 'maps#map_location_data'
   get 'suggest' => 'pages#suggest_new_location', as: 'map_location_suggest'
   post 'submitted_new_location' => 'pages#submitted_new_location', as: 'map_submitted_new_location'
