@@ -25,6 +25,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       # Add or replace dependency steps here
+      - name: Install ImageMagick
+        run : sudo apt install imagemagick
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
         with:
