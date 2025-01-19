@@ -115,14 +115,20 @@ class PagesController < ApplicationController
   def profile; end
 
   def activity
+    submission_type = params[:filterActivity].blank? ? %w[new_lmx remove_machine new_condition new_msx confirm_location] : params[:filterActivity]
+
     if @region
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], region_id: @region.id, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC'))
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, region_id: @region.id, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC'))
       @region_fullname = 'the ' + @region.full_name
       @region_name = @region.name
     else
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC'))
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC'))
       @region_fullname = ''
       @region_name = 'map'
+    end
+    respond_to do |format|
+      format.html
+      format.js
     end
   end
 
