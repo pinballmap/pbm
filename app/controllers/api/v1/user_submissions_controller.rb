@@ -99,7 +99,7 @@ module Api
         min_date_of_submission = params[:min_date_of_submission] ? params[:min_date_of_submission].to_date.beginning_of_day : '2019-05-03T07:00:00.00-07:00'
 
         if min_date_of_submission
-          user_submissions = user_submissions.where(created_at: min_date_of_submission..Date.today.beginning_of_day)
+          user_submissions = user_submissions.where(created_at: min_date_of_submission..Date.today.end_of_day)
         end
 
         user_submissions = user_submissions.near([params[:lat], params[:lon]], max_distance, order: 'created_at desc').limit(200)
