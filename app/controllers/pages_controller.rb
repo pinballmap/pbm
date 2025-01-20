@@ -1,27 +1,6 @@
 class PagesController < ApplicationController
   respond_to :xml, :json, :html, :js, :rss
 
-  def map
-    user = current_user.nil? ? nil : current_user
-
-    params[:user_faved] = user.id if user && !params[:user_faved].blank?
-
-    if !params[:by_location_id].blank? && (loc = Location.where(id: params[:by_location_id]).first)
-      @title_params[:title] = "#{loc.name} - Pinball Map"
-      machine_length = ' - ' + loc.machines.length.to_s + ' ' + 'machine'.pluralize(loc.machines.length) unless loc.machines.empty?
-      machine_list = ' - ' + loc.machine_names_first_no_year.join(', ') unless loc.machine_names_first_no_year.empty?
-      @title_params[:title_meta] = "#{loc.name} on Pinball Map! " + loc.full_street_address + machine_length.to_s + machine_list.to_s
-    end
-
-    @big_locations_sample = Location.select('name, random() as r').joins(:location_machine_xrefs).group('id').having('count(location_machine_xrefs)>9').order('r').first
-    @location_placeholder = @big_locations_sample.nil? ? 'e.g. Ground Kontrol' : 'e.g. ' + @big_locations_sample.name
-
-    @machine_sample = Machine.select('name, random() as r').order('r').limit(1).first
-    @machine_placeholder = @machine_sample.nil? ? 'e.g. Lord of the Rings' : 'e.g. ' + @machine_sample.name
-
-    @big_cities_sample = Location.select(%i[city state], 'random() as r').having('count(city)>9').where.not(state: [nil, '']).group('city', 'state').order('r').limit(1).first
-    @big_cities_placeholder = @big_cities_sample.nil? ? 'e.g. Portland, OR' : 'e.g. ' + @big_cities_sample.city + ', ' + @big_cities_sample.state
-  end
 
   def contact_sent
     user = current_user.nil? ? nil : current_user
