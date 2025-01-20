@@ -128,7 +128,7 @@ class PagesController < ApplicationController
     end
     respond_to do |format|
       format.html
-      format.js
+      format.js { render partial: 'pages/render_activity', layout: false }
     end
   end
 

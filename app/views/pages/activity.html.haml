@@ -6,84 +6,21 @@
         Here's a feed of edits to #{@region_fullname} Pinball Map going back to 2019.
     .clear
 
-    #activity
-      .column.w_640
-        = form_tag activity_path, :method => 'get', id: 'activity_filter' do
-          %input{:type => "checkbox", :id => "filterNewLmx", :name => "filterActivity", :class => "m_0", :value => 'new_lmx'}
-          %span.single_hide Machine added
-          %input{:type => "checkbox", :id => "filterRemoveMachine", :name => "filterActivity", :class => "m_0", :value => 'remove_machine'}
-          %span.single_hide Machine removed
-          %input{:type => "checkbox", :id => "filterNewCondition", :name => "filterActivity", :class => "m_0", :value => 'new_condition'}
-          %span.single_hide New condition
-          %input{:type => "checkbox", :id => "filterNewMsx", :name => "filterActivity", :class => "m_0", :value => 'new_msx'}
-          %span.single_hide Score added
-          %input{:type => "checkbox", :id => "filterConfirmLocation", :name => "filterActivity", :class => "m_0", :value => 'confirm_location'}
-          %span.single_hide Location confirmed
-          = submit_tag 'Submit'
+    .column.w_640
+      = form_tag activity_path, :method => 'get', id: 'activity_filter', :remote => true do
+        %input{:type => "checkbox", :id => "filterNewLmx", :name => "filterActivity", :class => "m_0", :value => 'new_lmx'}
+        %span.single_hide Machine added
+        %input{:type => "checkbox", :id => "filterRemoveMachine", :name => "filterActivity", :class => "m_0", :value => 'remove_machine'}
+        %span.single_hide Machine removed
+        %input{:type => "checkbox", :id => "filterNewCondition", :name => "filterActivity", :class => "m_0", :value => 'new_condition'}
+        %span.single_hide New condition
+        %input{:type => "checkbox", :id => "filterNewMsx", :name => "filterActivity", :class => "m_0", :value => 'new_msx'}
+        %span.single_hide Score added
+        %input{:type => "checkbox", :id => "filterConfirmLocation", :name => "filterActivity", :class => "m_0", :value => 'confirm_location'}
+        %span.single_hide Location confirmed
+        = submit_tag 'Submit'
 
-      .column.w_640
-        - @recent_activity.each do |recent_activity|
-          %div.recent_activity_container
-            %div.recent_activity_icon
-              =image_tag("icons/#{recent_activity.submission_type}.svg", :alt => "#{recent_activity.submission_type}", :class => '')
-            %div.recent_activity_date.font14.bold #{recent_activity.created_at.strftime("%b %d, %Y")}
-            %div.recent_activity_submission.font14
-              - if (recent_activity.submission_type == 'new_lmx')
-                %span.bold.red #{recent_activity.machine_name}
-                added to
-                %span.bold
-                  =link_to "#{recent_activity.location_name}", "/#{@region_name}?by_location_id=#{recent_activity.location_id}"
-                in #{recent_activity.city_name}
-                - if (!recent_activity.user_name.blank?)
-                  by 
-                  %span.bold #{recent_activity.user_name}
-              - elsif (recent_activity.submission_type == 'new_condition')
-                %span.inline_block.mb_8 "#{recent_activity.comment}"
-                %br/
-                %span.bold.red #{recent_activity.machine_name}
-                %div.mt_5
-                  %span.bold
-                    =link_to "#{recent_activity.location_name}", "/#{@region_name}?by_location_id=#{recent_activity.location_id}"
-                  in #{recent_activity.city_name}
-                  - if (!recent_activity.user_name.blank?)
-                    by
-                    %span.bold #{recent_activity.user_name}
-              - elsif (recent_activity.submission_type == 'remove_machine')
-                %span.bold.red #{recent_activity.machine_name}
-                removed from
-                %span.bold
-                  =link_to "#{recent_activity.location_name}", "/#{@region_name}?by_location_id=#{recent_activity.location_id}"
-                in #{recent_activity.city_name}
-                - if (!recent_activity.user_name.blank?)
-                  by
-                  %span.bold #{recent_activity.user_name}
-              - elsif (recent_activity.submission_type == 'new_msx')
-                - if (recent_activity.high_score.blank?)
-                  #{recent_activity.submission}
-                - else
-                  High score:
-                  %span.bold #{number_with_precision(recent_activity.high_score, precision: 0, delimiter: ',')}
-                  %br/
-                  %span.bold.red.mt_8.inline_block #{recent_activity.machine_name}
-                  %div.mt_5
-                    %span.bold
-                      =link_to "#{recent_activity.location_name}", "/#{@region_name}?by_location_id=#{recent_activity.location_id}"
-                    in #{recent_activity.city_name}
-                    - if (!recent_activity.user_name.blank?)
-                      by
-                      %span.bold #{recent_activity.user_name}
-              - elsif (recent_activity.submission_type == 'confirm_location')
-                Line-up confirmed at
-                %span.bold
-                  =link_to "#{recent_activity.location_name}", "/#{@region_name}?by_location_id=#{recent_activity.location_id}"
-                in #{recent_activity.city_name}
-                - if (!recent_activity.user_name.blank?)
-                  by
-                  %span.bold #{recent_activity.user_name}
-          .activity_hr
-
-        #next_link{:style => 'margin: 20px 10px'}
-          != pagy_nav(@pagy)
+    = render partial: 'render_activity'
 
 :javascript
   $('#activity_filter').on('submit', function(e) {
@@ -99,9 +36,11 @@
       data: {
         filterActivity: allVals
       },
+      dataType: "html",
       success: function(data) {
         $("#activity").html(loadingHTML());
         $("#activity").html(data);
       }
     });
+    return false;
   });
