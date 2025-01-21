@@ -93,7 +93,7 @@ class PagesController < ApplicationController
 
   def profile; end
 
-  def activity
+  def set_activities
     submission_type = params[:filterActivity].blank? ? %w[new_lmx remove_machine new_condition new_msx confirm_location] : params[:filterActivity]
 
     if @region
@@ -109,6 +109,18 @@ class PagesController < ApplicationController
     respond_to do |format|
       format.html
       format.js { render partial: 'pages/render_activity', layout: false }
+    end
+  end
+
+  def recent_activity
+    set_activities
+    case request.request_method
+    when 'GET'
+      render 'pages/activity'
+    when 'POST'
+      render partial: 'pages/render_activity', object: @recent_activity
+    else
+      p "unknown request_method: #{request.request_method}"
     end
   end
 
