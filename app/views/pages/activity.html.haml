@@ -25,20 +25,21 @@
 :javascript
   $('#activity_filter').on('submit', function(e) {
     e.preventDefault();
-    allVals = []
+    activeFilters = []
     $("input:checkbox[name=filterActivity]:checked").each(function () {
-      allVals.push(this.value);
+      activeFilters.push(this.value);
     });
+
+    $("#activity").html(loadingHTML());
 
     $.ajax({
       url: '/activity',
-      type: 'GET',
+      type: 'POST',
       data: {
-        filterActivity: allVals
+        filterActivity: activeFilters
       },
       dataType: "html",
       success: function(data) {
-        $("#activity").html(loadingHTML());
         $("#activity").html(data);
       }
     });
