@@ -12,7 +12,7 @@ module Api
       param :region, String, desc: "Name of the Region you want to see operators for", required: true
       param :no_details, Integer, desc: "Omit unnecessary metadata for initial app loading", required: false
       description "Fetch data about all operators for region"
-      formats ["json"]
+      formats [ "json" ]
       def index
         operators = apply_scopes(Operator).order("name")
         except = params[:no_details] ? %i[email phone created_at updated_at region_id] : %i[email phone created_at updated_at]

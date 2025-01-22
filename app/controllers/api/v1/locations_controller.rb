@@ -28,7 +28,7 @@ module Api
       param :location_comments, String, desc: "Comments", required: false
       param :location_machines, String, desc: "List of machines at new location", required: false
       param :location_machines_ids, String, desc: "List of machine ids at new location", required: false
-      formats ["json"]
+      formats [ "json" ]
       def suggest
         user = current_user.nil? ? nil : current_user
 
@@ -72,7 +72,7 @@ module Api
       param :no_details, Integer, desc: "Omit lmx/condition data from pull", required: false
       param :with_lmx, Integer, desc: "Include location machine details such as comments", required: false
       param :regionless_only, Integer, desc: "Show only regionless locations", required: false
-      formats ["json"]
+      formats [ "json" ]
       def index
         return return_response(FILTERING_REQUIRED_MSG, "errors") unless %i[region by_location_name by_location_id by_machine_id by_ipdb_id by_opdb_id by_machine_name by_city_id by_machine_group_id by_zone_id by_operator_id by_type_id by_is_stern_army by_ic_active regionless_only].any? { params[_1].present? }
 
@@ -100,7 +100,7 @@ module Api
           return_response(
             locations,
             "locations",
-            params[:no_details] ? nil : [location_machine_xrefs: { include: { machine_conditions: { methods: :username }, machine: { methods: :machine_group_id } }, methods: :last_updated_by_username }],
+            params[:no_details] ? nil : [ location_machine_xrefs: { include: { machine_conditions: { methods: :username }, machine: { methods: :machine_group_id } }, methods: :last_updated_by_username } ],
             %i[last_updated_by_username num_machines],
             200,
             except
@@ -109,7 +109,7 @@ module Api
           return_response(
             locations,
             "locations",
-            params[:no_details] ? nil : [location_machine_xrefs: { include: { machine: { except: %i[created_at opdb_img opdb_img_height opdb_img_width display machine_type machine_display ic_eligible is_active] } }, except: %i[machine_score_xrefs_count user_id] }],
+            params[:no_details] ? nil : [ location_machine_xrefs: { include: { machine: { except: %i[created_at opdb_img opdb_img_height opdb_img_width display machine_type machine_display ic_eligible is_active] } }, except: %i[machine_score_xrefs_count user_id] } ],
             %i[last_updated_by_username num_machines],
             200,
             except
@@ -124,7 +124,7 @@ module Api
       param :phone, String, desc: "Phone number of location", required: false
       param :location_type, Integer, desc: "ID of location type", required: false
       param :operator_id, Integer, desc: "ID of the operator", required: false
-      formats ["json"]
+      formats [ "json" ]
       def update
         location = Location.find(params[:id])
         user = current_user.nil? ? nil : current_user
@@ -157,7 +157,7 @@ module Api
       param :max_distance, String, desc: 'Closest location within "max_distance" miles, with a max of 500', required: false
       param :no_details, Integer, desc: "Omit data that app does not need from pull", required: false
       param :send_all_within_distance, String, desc: "Send all locations within max_distance param, or #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles.", required: false
-      formats ["json"]
+      formats [ "json" ]
       def closest_by_lat_lon
         if params[:max_distance].blank?
           max_distance = MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
@@ -171,7 +171,7 @@ module Api
 
         except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone] : nil
 
-        closest_locations = apply_scopes(Location).includes(:machines).near([params[:lat], params[:lon]], max_distance).uniq
+        closest_locations = apply_scopes(Location).includes(:machines).near([ params[:lat], params[:lon] ], max_distance).uniq
 
         if !closest_locations.empty? && !params[:send_all_within_distance]
           return_response(closest_locations.first, "location", [], %i[machine_names machine_ids num_machines], 200, except)
@@ -211,7 +211,7 @@ module Api
           includes = %i[machine_names_first machine_ids num_machines]
         end
 
-        bounds = [params[:swlat], params[:swlon], params[:nelat], params[:nelon]]
+        bounds = [ params[:swlat], params[:swlon], params[:nelat], params[:nelon] ]
         if params[:user_faved]
           user = User.find(params[:user_faved])
           fave_locations = UserFaveLocation.select(:location_id).where(user_id: user)
@@ -230,7 +230,7 @@ module Api
               id: location.id,
               geometry: {
                 type: "Point",
-                coordinates: [location.lon.to_f, location.lat.to_f]
+                coordinates: [ location.lon.to_f, location.lat.to_f ]
               },
               properties: {
                 name: location.name,
@@ -273,7 +273,7 @@ module Api
       param :by_ic_active, Integer, desc: "Send only locations that have at lesat one machine that is tagged as Stern Insider Connected", required: false
       param :manufacturer, String, desc: "Locations with machines from this manufacturer", required: false
       param :by_machine_group_id, String, desc: "Machine Group to search for", required: false
-      formats ["json"]
+      formats [ "json" ]
       def closest_by_address
         if params[:max_distance].blank?
           max_distance = MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
@@ -301,11 +301,11 @@ module Api
           end
         end
 
-        closest_location = apply_scopes(Location).includes(:machines).near([lat, lon], max_distance).first
-        location_details = [location_machine_xrefs: { include: { machine: { methods: :machine_group_id, except: params[:no_details] ? %i[is_active created_at updated_at ipdb_link] : nil } }, except: params[:no_details] ? %i[created_at updated_at user_id machine_score_xrefs_count] : nil }]
+        closest_location = apply_scopes(Location).includes(:machines).near([ lat, lon ], max_distance).first
+        location_details = [ location_machine_xrefs: { include: { machine: { methods: :machine_group_id, except: params[:no_details] ? %i[is_active created_at updated_at ipdb_link] : nil } }, except: params[:no_details] ? %i[created_at updated_at user_id machine_score_xrefs_count] : nil } ]
 
         if params[:send_all_within_distance]
-          closest_locations = apply_scopes(Location).includes(:machines).near([lat, lon], max_distance)
+          closest_locations = apply_scopes(Location).includes(:machines).near([ lat, lon ], max_distance)
           return_response(closest_locations, "locations", location_details, %i[machine_names machine_ids num_machines], 200, except)
         elsif closest_location
           return_response(closest_location, "location", location_details, %i[machine_names machine_ids num_machines], 200, except)
@@ -317,7 +317,7 @@ module Api
       api :GET, "/api/v1/locations/:id.json", "Display the details of this location"
       param :id, Integer, desc: "ID of location", required: true
       param :no_details, Integer, desc: "Omit lmx/condition data from pull", required: false
-      formats ["json"]
+      formats [ "json" ]
       def show
         location = nil
 
@@ -342,11 +342,11 @@ module Api
             %i[phone website updated_at region_id description operator_id date_last_updated last_updated_by_user_id ic_active zone_id created_at is_stern_army country]
           )
         else
-          location = Location.includes(location_machine_xrefs: [:user, :machine, { machine_conditions: :user }, { machine_score_xrefs: :user }]).find(params[:id])
+          location = Location.includes(location_machine_xrefs: [ :user, :machine, { machine_conditions: :user }, { machine_score_xrefs: :user } ]).find(params[:id])
           return_response(
             location,
             nil,
-            [location_machine_xrefs: { include: { machine_conditions: { methods: :username }, machine_score_xrefs: { methods: :username } }, methods: :last_updated_by_username }],
+            [ location_machine_xrefs: { include: { machine_conditions: { methods: :username }, machine_score_xrefs: { methods: :username } }, methods: :last_updated_by_username } ],
             %i[last_updated_by_username num_machines]
           )
         end
@@ -357,7 +357,7 @@ module Api
       api :GET, "/api/v1/locations/:id/machine_details.json", "Display the details of the machines at this location"
       param :id, Integer, desc: "ID of location", required: true
       param :machines_only, Integer, desc: "Simple list of only machine names", required: false
-      formats ["json"]
+      formats [ "json" ]
       def machine_details
         location = Location.find(params[:id])
 
@@ -385,7 +385,7 @@ module Api
       end
 
       api :PUT, "/api/v1/locations/:id/confirm.json", "Confirm location information"
-      formats ["json"]
+      formats [ "json" ]
       def confirm
         user = current_user.nil? ? nil : current_user
 
@@ -401,7 +401,7 @@ module Api
 
       api :GET, "/api/v1/locations/autocomplete_city.json", "Send back a list of cities in the DB that fit your search criteria"
       param :name, String, desc: "city/state name part", required: true
-      formats ["json"]
+      formats [ "json" ]
       def autocomplete_city
         if params.fetch(:name, "").length > 2
           locations = Location.where("clean_items(city) ilike '%' || clean_items(?) || '%'", params[:name]).sort_by(&:city).map { |l| { label: "#{l.city}#{l.state.blank? ? '' : ', '}#{l.state}", value: "#{l.city}#{l.state.blank? ? '' : ', '}#{l.state}" } }
@@ -418,7 +418,7 @@ module Api
 
       api :GET, "/api/v1/locations/autocomplete.json", "Send back fuzzy search results of search params"
       param :name, String, desc: "name to fuzzy search with", required: true
-      formats ["json"]
+      formats [ "json" ]
       def autocomplete
         if params.fetch(:name, "").length > 2
           locations = Location.where("clean_items(name) ilike '%' || clean_items(?) || '%'", params[:name]).sort_by(&:name).map { |l| { label: "#{l.name} (#{l.city}#{l.state.blank? ? '' : ', '}#{l.state})", value: l.name, id: l.id } }
@@ -435,7 +435,7 @@ module Api
 
       api :GET, "/api/v1/locations/top_cities.json", "Fetch top 10 cities by number of locations"
       description "Fetch top 10 cities by number of locations"
-      formats ["json"]
+      formats [ "json" ]
       def top_cities
         top_cities = Location.select(
           [
@@ -448,7 +448,7 @@ module Api
 
       api :GET, "/api/v1/locations/top_cities_by_machine.json", "Fetch top 10 cities by number of machines"
       description "Fetch top 10 cities by number of machines"
-      formats ["json"]
+      formats [ "json" ]
       def top_cities_by_machine
         xid = Arel::Table.new("location_machine_xrefs")
         lid = Arel::Table.new("locations")
@@ -465,7 +465,7 @@ module Api
 
       api :GET, "/api/v1/locations/type_count.json", "Fetch a count of each location type"
       description "Fetch a count of each location type"
-      formats ["json"]
+      formats [ "json" ]
       def type_count
         l = Arel::Table.new("locations")
         t = Arel::Table.new("location_types")
@@ -484,7 +484,7 @@ module Api
 
       api :GET, "/api/v1/locations/countries.json", "Fetch countries by number of locations"
       description "Fetch countries by number of locations"
-      formats ["json"]
+      formats [ "json" ]
       def countries
         countries = Location.select(
           [

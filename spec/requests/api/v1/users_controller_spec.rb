@@ -381,12 +381,12 @@ describe Api::V1::UsersController, type: :request do
       expect(json['num_locations_edited']).to eq(2)
       expect(json['created_at']).to eq('2016-01-01T00:00:00.000-08:00')
       expect(json['profile_list_of_edited_locations']).to eq([
-        [101, 'another location'],
-        [100, 'location']
+        [ 101, 'another location' ],
+        [ 100, 'location' ]
       ])
       expect(json['profile_list_of_high_scores']).to eq([
-        ['Location in Portland', 'Machine', '14', 'Jan 02, 2016'],
-        ['Bottles in Portland', 'Cheetah', '1,234', 'Jan 01, 2016']
+        [ 'Location in Portland', 'Machine', '14', 'Jan 02, 2016' ],
+        [ 'Bottles in Portland', 'Cheetah', '1,234', 'Jan 01, 2016' ]
       ])
     end
 

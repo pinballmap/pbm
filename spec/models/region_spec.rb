@@ -240,8 +240,8 @@ describe Region do
       FactoryBot.create(:suggested_location, region: nil, name: 'SL 1', machines: 'Batman')
       FactoryBot.create(:suggested_location, region: nil, name: 'SL 2', machines: 'Batman')
 
-      expect(Region.generate_weekly_regionless_email_body[:suggested_locations]).to eq(['SL 1', 'SL 2'])
-      expect(Region.generate_weekly_regionless_email_body[:machineless_locations]).to eq(['Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)'])
+      expect(Region.generate_weekly_regionless_email_body[:suggested_locations]).to eq([ 'SL 1', 'SL 2' ])
+      expect(Region.generate_weekly_regionless_email_body[:machineless_locations]).to eq([ 'Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)' ])
       expect(Region.generate_weekly_regionless_email_body[:suggested_locations_count]).to eq(2)
       expect(Region.generate_weekly_regionless_email_body[:locations_added_count]).to eq(2)
       expect(Region.generate_weekly_regionless_email_body[:locations_deleted_count]).to eq(3)
@@ -292,8 +292,8 @@ describe Region do
       FactoryBot.create(:suggested_location, region: @region, name: 'SL 1', machines: 'Batman')
       FactoryBot.create(:suggested_location, region: @region, name: 'SL 2', machines: 'Batman')
 
-      expect(@region.generate_weekly_admin_email_body[:suggested_locations]).to eq(['SL 1', 'SL 2'])
-      expect(@region.generate_weekly_admin_email_body[:machineless_locations]).to eq(['Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)'])
+      expect(@region.generate_weekly_admin_email_body[:suggested_locations]).to eq([ 'SL 1', 'SL 2' ])
+      expect(@region.generate_weekly_admin_email_body[:machineless_locations]).to eq([ 'Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)' ])
       expect(@region.generate_weekly_admin_email_body[:suggested_locations_count]).to eq(2)
       expect(@region.generate_weekly_admin_email_body[:locations_added_count]).to eq(2)
       expect(@region.generate_weekly_admin_email_body[:locations_deleted_count]).to eq(3)
@@ -314,7 +314,7 @@ describe Region do
       two = FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, created_at: '2001-02-01')
       FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, created_at: '2001-03-01')
 
-      expect(@region.n_recent_scores(2)).to eq([one, two])
+      expect(@region.n_recent_scores(2)).to eq([ one, two ])
     end
   end
 
@@ -327,7 +327,7 @@ describe Region do
       scores << FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, user: User.find_by_username('ssw0'))
 
       expect(@region.n_high_rollers(1)).to include(
-        'ssw0' => [scores[3], scores[0]]
+        'ssw0' => [ scores[3], scores[0] ]
       )
     end
   end
@@ -385,13 +385,13 @@ describe Region do
 
   describe '#all_admin_email_addresses' do
     it 'should return a default email address if no users are in region' do
-      expect(@region.all_admin_email_addresses).to eq(['email_not_found@noemailfound.noemail'])
+      expect(@region.all_admin_email_addresses).to eq([ 'email_not_found@noemailfound.noemail' ])
     end
     it 'should return all admin email addresses' do
       FactoryBot.create(:user, region: @region, email: 'not@primary.com')
       FactoryBot.create(:user, region: @region, email: 'is@primary.com', is_primary_email_contact: 1)
 
-      expect(@region.all_admin_email_addresses).to eq(['is@primary.com', 'not@primary.com'])
+      expect(@region.all_admin_email_addresses).to eq([ 'is@primary.com', 'not@primary.com' ])
     end
   end
 

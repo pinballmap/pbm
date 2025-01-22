@@ -3,7 +3,7 @@ xml.rss version: "2.0" do
   xml.channel do
     xml.title "#{@region.full_name} Pinball Map - New Score List"
     xml.description "Recent High Scores!"
-    xml.link [request.protocol, request.host_with_port].join("")
+    xml.link [ request.protocol, request.host_with_port ].join("")
 
     @msxs.each do |msx|
       machine = msx.machine

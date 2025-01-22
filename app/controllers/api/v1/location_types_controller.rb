@@ -7,7 +7,7 @@ module Api
       respond_to :json
 
       api :GET, "/api/v1/location_types.json", "Fetch all location types"
-      formats ["json"]
+      formats [ "json" ]
       def index
         location_types = LocationType.all
         except = %i[created_at updated_at]

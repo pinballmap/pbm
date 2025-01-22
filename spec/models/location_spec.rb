@@ -34,7 +34,7 @@ describe Location do
 
       FactoryBot.create(:user_fave_location, location: location)
 
-      expect(Location.user_faved(user.id)).to eq([location, other_location])
+      expect(Location.user_faved(user.id)).to eq([ location, other_location ])
     end
   end
 
@@ -107,7 +107,7 @@ describe Location do
 
   describe '#location_machine_xrefs' do
     it 'should return all machines for this location' do
-      expect(@l.location_machine_xrefs.order(:id)).to eq([@lmx1, @lmx2])
+      expect(@l.location_machine_xrefs.order(:id)).to eq([ @lmx1, @lmx2 ])
     end
   end
 
@@ -119,7 +119,7 @@ describe Location do
 
   describe '#machine_ids' do
     it 'should return all machine ids for this location' do
-      expect(@l.machine_ids).to eq([201, 200])
+      expect(@l.machine_ids).to eq([ 201, 200 ])
     end
   end
 
@@ -179,8 +179,8 @@ describe Location do
       clark_location = FactoryBot.create(:location, name: "Clark's Castle")
       clark_other_location = FactoryBot.create(:location, name: 'Clark’s Castle')
 
-      expect(Location.by_location_name("Clark's")).to eq([clark_location, clark_other_location])
-      expect(Location.by_location_name('Clark’s')).to eq([clark_location, clark_other_location])
+      expect(Location.by_location_name("Clark's")).to eq([ clark_location, clark_other_location ])
+      expect(Location.by_location_name('Clark’s')).to eq([ clark_location, clark_other_location ])
     end
   end
 

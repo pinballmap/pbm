@@ -64,14 +64,14 @@ describe SuggestedLocation do
 select event, item_type, item_id from versions order by created_at limit 1
 HERE
 
-      expect(results.values).to eq([['converted from suggested location', 'Location', 1]])
+      expect(results.values).to eq([ [ 'converted from suggested location', 'Location', 1 ] ])
     end
 
     it 'requires country' do
       @suggested_location.country = nil
       @suggested_location.convert_to_location(@user.email)
 
-      expect(@suggested_location.errors.messages).to include(base: ['Country is a required field for conversion.'])
+      expect(@suggested_location.errors.messages).to include(base: [ 'Country is a required field for conversion.' ])
     end
   end
 end

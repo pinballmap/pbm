@@ -12,7 +12,7 @@ module Api
       param :region_id, Integer, desc: "show only machines from this region", required: false
       param :machine_group_id, Integer, desc: "show only machines from machine group id", required: false
       param :manufacturer, String, desc: "show only machines from this manufacturer", required: false
-      formats ["json"]
+      formats [ "json" ]
       def index
         except = params[:no_details] ? %i[is_active created_at updated_at ipdb_link ipdb_id machine_type machine_display] : nil
         machines = params[:region_id] ? Region.find(params[:region_id]).machines : Machine.all

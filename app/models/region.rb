@@ -66,7 +66,7 @@ class Region < ApplicationRecord
 
   def all_admin_email_addresses
     if users.empty?
-      ["email_not_found@noemailfound.noemail"]
+      [ "email_not_found@noemailfound.noemail" ]
     else
       users.map(&:email).sort
     end
@@ -119,7 +119,7 @@ class Region < ApplicationRecord
   end
 
   def lat_and_lon
-    [lat, lon].join(", ")
+    [ lat, lon ].join(", ")
   end
 
   def self.generate_daily_digest_regionless_comments_email_body

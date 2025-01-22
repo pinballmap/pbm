@@ -128,7 +128,7 @@ class LocationsController < InheritedResources::Base
       num_machines << l.machines.size
     end
 
-    [ids, lats, lons, num_machines]
+    [ ids, lats, lons, num_machines ]
   end
 
   def confirm

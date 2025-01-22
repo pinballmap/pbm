@@ -36,7 +36,7 @@ class SuggestedLocation < ApplicationRecord
   end
 
   def full_street_address
-    [street, city, state, zip].join(", ")
+    [ street, city, state, zip ].join(", ")
   end
 
   def convert_to_location(user_email)
@@ -110,7 +110,7 @@ insert into versions values (
   NULL
 )
 HERE
-      sanitized_sql = ActiveRecord::Base.sanitize_sql_array([sql, { location_id: location.id, user_email: user_email }])
+      sanitized_sql = ActiveRecord::Base.sanitize_sql_array([ sql, { location_id: location.id, user_email: user_email } ])
       ActiveRecord::Base.connection.execute(sanitized_sql)
     end
   end

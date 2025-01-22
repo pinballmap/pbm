@@ -35,7 +35,7 @@ class MachineCondition < ApplicationRecord
   end
 
   def as_json(options = {})
-    options[:methods] = [:username]
+    options[:methods] = [ :username ]
     super
   end
 end

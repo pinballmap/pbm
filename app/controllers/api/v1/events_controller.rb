@@ -10,7 +10,7 @@ module Api
       api :GET, "/api/v1/region/:region/events.json", "Get all events for a single region"
       param :region, String, desc: "Name of the Region you want to see events for", required: true
       param :sorted, String, desc: "If value is present, sort/group by event category", required: false
-      formats ["json"]
+      formats [ "json" ]
       def index
         events = apply_scopes(Event)
         events.select!(&:active?)
@@ -41,7 +41,7 @@ module Api
           (sorted_events[category] ||= []) << e
         end
 
-        return_response([sorted_events], "events")
+        return_response([ sorted_events ], "events")
       end
     end
   end

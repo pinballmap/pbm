@@ -7,28 +7,28 @@ class Ability
     can :access, :rails_admin
     can :read, :dashboard
     can :history, :all
-    can :manage, [Event, RegionLinkXref, Zone], region_id: user.region_id
+    can :manage, [ Event, RegionLinkXref, Zone ], region_id: user.region_id
 
     if user.is_super_admin
-      can :manage, [Operator, Location, User, UserSubmission, SuggestedLocation, MachineCondition, BannedIp, LocationPictureXref, MachineScoreXref]
+      can :manage, [ Operator, Location, User, UserSubmission, SuggestedLocation, MachineCondition, BannedIp, LocationPictureXref, MachineScoreXref ]
     else
-      can :manage, [Location, Operator], region_id: user.region_id
-      can %i[read destroy], [SuggestedLocation], region_id: user.region_id
-      can %i[update], [SuggestedLocation]
-      can %i[update read destroy], [MachineCondition], location: { region_id: user.region_id }
-      can %i[update read destroy], [MachineScoreXref], location: { region_id: user.region_id }
-      can %i[read], [UserSubmission], region_id: user.region_id
-      can %i[update read destroy], [LocationPictureXref], location: { region_id: user.region_id }
+      can :manage, [ Location, Operator ], region_id: user.region_id
+      can %i[read destroy], [ SuggestedLocation ], region_id: user.region_id
+      can %i[update], [ SuggestedLocation ]
+      can %i[update read destroy], [ MachineCondition ], location: { region_id: user.region_id }
+      can %i[update read destroy], [ MachineScoreXref ], location: { region_id: user.region_id }
+      can %i[read], [ UserSubmission ], region_id: user.region_id
+      can %i[update read destroy], [ LocationPictureXref ], location: { region_id: user.region_id }
     end
 
     if user.region.name == "portland"
-      can :manage, [Region, Machine, MachineGroup, BannedIp, LocationType]
+      can :manage, [ Region, Machine, MachineGroup, BannedIp, LocationType ]
     elsif user.is_machine_admin
-      can %i[update read], [Region], id: user.region_id
-      can :manage, [Machine, MachineGroup]
+      can %i[update read], [ Region ], id: user.region_id
+      can :manage, [ Machine, MachineGroup ]
     else
-      can %i[update read], [Region], id: user.region_id
-      can %i[read], [Machine]
+      can %i[update read], [ Region ], id: user.region_id
+      can %i[read], [ Machine ]
     end
   end
 end

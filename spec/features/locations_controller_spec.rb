@@ -49,7 +49,7 @@ describe LocationsController do
       login(@user)
     end
 
-    [Region.find_by_name('portland'), nil].each do |region|
+    [ Region.find_by_name('portland'), nil ].each do |region|
       it 'lets you click a button to update the date_last_updated' do
         location = FactoryBot.create(:location, region: region, name: 'Cleo')
 
@@ -137,7 +137,7 @@ describe LocationsController do
       @machine = FactoryBot.create(:machine, name: 'Bawb')
     end
 
-    [true, false].each do |region|
+    [ true, false ].each do |region|
       it 'removes a machine from a location' do
         region = region ? @region : nil
         location = FactoryBot.create(:location, name: 'Cleo', city: 'Portland', region: region)
@@ -177,7 +177,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(LocationMachineXref.all).to eq([lmx])
+      expect(LocationMachineXref.all).to eq([ lmx ])
     end
   end
 
@@ -185,7 +185,7 @@ describe LocationsController do
     before(:each) do
     end
 
-    [true, false].each do |region|
+    [ true, false ].each do |region|
       it 'sets title and description appropriately if one location is returned' do
         region = region ? @region : nil
         FactoryBot.create(:location, region: region, name: 'Cleo')
@@ -606,7 +606,7 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.meta_image').click
-      expect(page).to have_select("new_operator_#{@location.id}", with_options: ['Quarterworld', 'Regionless operator'])
+      expect(page).to have_select("new_operator_#{@location.id}", with_options: [ 'Quarterworld', 'Regionless operator' ])
     end
 
     it 'regionless page: lets you pick any operator' do
@@ -619,7 +619,7 @@ describe LocationsController do
       visit '/map/?by_location_id=' + regionless_location.id.to_s
 
       find('.meta_image').click
-      expect(page).to have_select("new_operator_#{regionless_location.id}", with_options: ['Other region operator', 'Quarterworld', 'Regionless operator'])
+      expect(page).to have_select("new_operator_#{regionless_location.id}", with_options: [ 'Other region operator', 'Quarterworld', 'Regionless operator' ])
     end
 
     it 'does not save data if any formats are invalid - website and phone' do

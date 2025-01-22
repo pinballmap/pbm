@@ -7,7 +7,7 @@ module Api
       respond_to :json
 
       api :GET, "/api/v1/statuses.json", "Fetch table statuses"
-      formats ["json"]
+      formats [ "json" ]
       def index
         return_response(Status.all, "statuses")
       end

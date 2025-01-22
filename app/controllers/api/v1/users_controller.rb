@@ -9,16 +9,16 @@ module Api
       api :GET, "/api/v1/users/:id/list_fave_locations.json", "Fetch list of favorite locations"
       description "Fetch list of favorite locations"
       param :id, Integer, desc: "ID of user", required: true
-      formats ["json"]
+      formats [ "json" ]
       def list_fave_locations
         user = User.find(params[:id])
-        locations = user.user_fave_locations.includes([location: %i[location_type machines]])
+        locations = user.user_fave_locations.includes([ location: %i[location_type machines] ])
 
         return_response(
           locations,
           "user_fave_locations",
-          [location: { include: { location_type: {}, machines: { except: %i[is_active created_at updated_at ipdb_link machine_group_id ipdb_id kineticist_url opdb_id opdb_img opdb_img_height opdb_img_width display machine_type machine_display ic_eligible] } },
-          except: %i[phone website created_at updated_at zone_id region_id description operator_id is_stern_army country is_active] }]
+          [ location: { include: { location_type: {}, machines: { except: %i[is_active created_at updated_at ipdb_link machine_group_id ipdb_id kineticist_url opdb_id opdb_img opdb_img_height opdb_img_width display machine_type machine_display ic_eligible] } },
+          except: %i[phone website created_at updated_at zone_id region_id description operator_id is_stern_army country is_active] } ]
         )
       rescue ActiveRecord::RecordNotFound
         return_response("Unknown user", "errors")
@@ -26,7 +26,7 @@ module Api
 
       api :GET, "/api/v1/users/total_user_count.json", "Fetch total count of users"
       description "Fetch total count of users"
-      formats ["json"]
+      formats [ "json" ]
       def total_user_count
         return_response({ total_user_count: User.count }, nil)
       end
@@ -35,7 +35,7 @@ module Api
       description "Adds a location to your fave list"
       param :id, Integer, desc: "ID of user", required: true
       param :location_id, Integer, desc: "ID of location to add", required: true
-      formats ["json"]
+      formats [ "json" ]
       def add_fave_location
         user = User.find(params[:id])
         location = Location.find(params[:location_id])
@@ -61,7 +61,7 @@ module Api
       description "Removes a location from your fave list"
       param :id, Integer, desc: "ID of user", required: true
       param :location_id, Integer, desc: "ID of location to remove", required: true
-      formats ["json"]
+      formats [ "json" ]
       def remove_fave_location
         user = User.find(params[:id])
         location = Location.find(params[:location_id])
@@ -193,7 +193,7 @@ module Api
 
       api :GET, "/api/v1/users/:id/profile_info.json", "Fetch profile info for a user"
       param :id, Integer, desc: "ID of user", required: true
-      formats ["json"]
+      formats [ "json" ]
       def profile_info
         user = User.find(params[:id])
 
@@ -210,7 +210,7 @@ module Api
       api :POST, "/api/v1/users/:id/update_user_flag", "Set a country or U.S. flag icon for your user"
       param :id, Integer, desc: "ID of user", required: true
       param :user_flag, String, desc: "ISO code for flag", required: false
-      formats ["json"]
+      formats [ "json" ]
       def update_user_flag
         user = User.find(params[:id])
 

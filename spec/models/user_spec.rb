@@ -9,8 +9,8 @@ describe User do
     it 'should show admins and non_admins based on scopes' do
       admin_user = FactoryBot.create(:user, region_id: 1)
 
-      expect(User.admins).to eq([admin_user])
-      expect(User.non_admins).to eq([@user])
+      expect(User.admins).to eq([ admin_user ])
+      expect(User.non_admins).to eq([ @user ])
     end
   end
 
@@ -59,7 +59,7 @@ describe User do
       FactoryBot.create(:user_submission, region: region, location: FactoryBot.create(:location, name: 'First Location'), machine: FactoryBot.create(:machine, name: 'First Machine'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a high score of 100 on First Machine at First Location', user: @user, created_at: '2016-01-01')
       FactoryBot.create(:user_submission, region: region, location: FactoryBot.create(:location, name: 'Second Location'), machine: FactoryBot.create(:machine, name: 'Second Machine'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a high score of 2000 on Second Machine at Second Location', user: @user, created_at: '2016-01-02')
 
-      expect(@user.profile_list_of_high_scores).to eq([['Second Location', 'Second Machine', '2,000', 'Jan 02, 2016'], ['First Location', 'First Machine', '100', 'Jan 01, 2016']])
+      expect(@user.profile_list_of_high_scores).to eq([ [ 'Second Location', 'Second Machine', '2,000', 'Jan 02, 2016' ], [ 'First Location', 'First Machine', '100', 'Jan 01, 2016' ] ])
     end
 
     it 'only returns the most recent 50' do
@@ -87,7 +87,7 @@ describe User do
       FactoryBot.create(:user_submission, region: region, location: use_this_location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a high score of 2,000 on First Machine at Second Location', user: @user, created_at: Date.new(2016, 1, 1))
 
       expect(@user.profile_list_of_high_scores.size).to eq(1)
-      expect(@user.profile_list_of_high_scores).to eq([['Second Location', 'First Machine', '2,000', 'Jan 01, 2016']])
+      expect(@user.profile_list_of_high_scores).to eq([ [ 'Second Location', 'First Machine', '2,000', 'Jan 01, 2016' ] ])
     end
   end
 
@@ -120,7 +120,7 @@ describe User do
       FactoryBot.create(:user_submission, user: @user, created_at: '2018-01-02', location: another_location, submission_type: UserSubmission::LOCATION_METADATA_TYPE, location_name: 'bar', location_id: 2)
       FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::LOCATION_METADATA_TYPE, location_name: 'foo', location_id: 1)
 
-      expect(@user.profile_list_of_edited_locations).to eq([[1, 'foo'], [2, 'bar']])
+      expect(@user.profile_list_of_edited_locations).to eq([ [ 1, 'foo' ], [ 2, 'bar' ] ])
     end
 
     it 'should return the most recent 50' do
@@ -140,7 +140,7 @@ describe User do
       FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE, location_name: 'foo', location_id: 1)
       FactoryBot.create(:user_submission, user: @user, location_id: -1, submission_type: UserSubmission::NEW_CONDITION_TYPE, location_name: nil)
 
-      expect(@user.profile_list_of_edited_locations).to eq([[location.id, location.name]])
+      expect(@user.profile_list_of_edited_locations).to eq([ [ location.id, location.name ] ])
     end
   end
 
@@ -194,7 +194,7 @@ describe User do
     end
 
     it 'should allow you to include additional methods' do
-      expect(@user.to_json(methods: [:num_locations_edited])).to eq("{\"id\":#{@user.id},\"num_locations_edited\":0}")
+      expect(@user.to_json(methods: [ :num_locations_edited ])).to eq("{\"id\":#{@user.id},\"num_locations_edited\":0}")
     end
   end
 end

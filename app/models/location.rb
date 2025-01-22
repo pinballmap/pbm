@@ -61,7 +61,7 @@ class Location < ApplicationRecord
     machine = Machine.find_by_name(name)
     return Location.default_scoped.none if machine.nil?
 
-    machines = machine.machine_group_id ? Machine.where("machine_group_id = ?", machine.machine_group_id).map(&:all_machines_in_machine_group).flatten : [machine]
+    machines = machine.machine_group_id ? Machine.where("machine_group_id = ?", machine.machine_group_id).map(&:all_machines_in_machine_group).flatten : [ machine ]
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
   }
   scope :by_at_least_n_machines, lambda { |n|
@@ -78,8 +78,8 @@ class Location < ApplicationRecord
   }
   scope :by_center_point_and_ne_boundary, lambda { |boundaries|
     boundary_lat_lons = boundaries.split(",").collect(&:to_f)
-    distance = Geocoder::Calculations.distance_between([boundary_lat_lons[1], boundary_lat_lons[0]], [boundary_lat_lons[3], boundary_lat_lons[2]])
-    box = Geocoder::Calculations.bounding_box([boundary_lat_lons[1], boundary_lat_lons[0]], distance * MAP_SCALE)
+    distance = Geocoder::Calculations.distance_between([ boundary_lat_lons[1], boundary_lat_lons[0] ], [ boundary_lat_lons[3], boundary_lat_lons[2] ])
+    box = Geocoder::Calculations.bounding_box([ boundary_lat_lons[1], boundary_lat_lons[0] ], distance * MAP_SCALE)
     Location.within_bounding_box(box)
   }
   scope :by_is_stern_army, ->(_non_blank_param) { where(is_stern_army: true) }
@@ -150,7 +150,7 @@ class Location < ApplicationRecord
   end
 
   def full_street_address
-    [street, city, state, zip].join(", ")
+    [ street, city, state, zip ].join(", ")
   end
 
   # returns "city, state" if state is available otherwise just city
@@ -236,9 +236,9 @@ class Location < ApplicationRecord
 
       UserSubmission.create(region_id: region&.id, location: self, submission_type: UserSubmission::LOCATION_METADATA_TYPE, submission: @updates.join("\n") + " to #{name}", user_id: user&.id)
 
-      [self, "location"]
+      [ self, "location" ]
     else
-      [(@validation_errors + errors.full_messages).uniq, "errors"]
+      [ (@validation_errors + errors.full_messages).uniq, "errors" ]
     end
   end
 

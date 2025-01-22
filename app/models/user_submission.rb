@@ -27,7 +27,7 @@ class UserSubmission < ApplicationRecord
   end
 
   def lat_and_lon
-    [lat, lon].join(", ")
+    [ lat, lon ].join(", ")
   end
 
   def update_contributor_rank

@@ -19,7 +19,7 @@ class User < ApplicationRecord
 
   validate :validate_username
 
-  devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :trackable, :validatable, authentication_keys: [:login], confirmation_keys: [:login]
+  devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :trackable, :validatable, authentication_keys: [ :login ], confirmation_keys: [ :login ]
 
   scope :admins, -> { where("region_id is not null") }
   scope :non_admins, -> { where("region_id is null") }
@@ -49,7 +49,7 @@ class User < ApplicationRecord
     login = conditions.delete(:login)
 
     if login
-      where(conditions.to_hash).where(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }]).first
+      where(conditions.to_hash).where([ "lower(username) = :value OR lower(email) = :value", { value: login.downcase } ]).first
     elsif conditions.key?(:username) || conditions.key?(:email)
       where(conditions.to_hash).first
     end
@@ -58,7 +58,7 @@ class User < ApplicationRecord
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if (login = conditions.delete(:login))
-      where(conditions).where(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }]).first
+      where(conditions).where([ "lower(username) = :value OR lower(email) = :value", { value: login.downcase } ]).first
     else
       if conditions[:username].nil?
         where(conditions).first
@@ -96,20 +96,20 @@ class User < ApplicationRecord
 
       next unless score && machine_name && location_name
 
-      high_score_hash[machine_name] = [location_name, machine_name, number_with_precision(score, precision: 0, delimiter: ","), msx_sub.created_at.strftime("%b %d, %Y")] if !high_score_hash[machine_name] || high_score_hash[machine_name][2].delete(",").to_i < score.delete(",").to_i
+      high_score_hash[machine_name] = [ location_name, machine_name, number_with_precision(score, precision: 0, delimiter: ","), msx_sub.created_at.strftime("%b %d, %Y") ] if !high_score_hash[machine_name] || high_score_hash[machine_name][2].delete(",").to_i < score.delete(",").to_i
     end
 
     high_score_hash.values
   end
 
   def profile_list_of_edited_locations
-    user_submissions = UserSubmission.where(user: self).order(created_at: "DESC").includes([:location]).limit(50)
+    user_submissions = UserSubmission.where(user: self).order(created_at: "DESC").includes([ :location ]).limit(50)
 
     user_submission_locations_hash = {}
     user_submissions.each do |user_sub|
       next if user_sub.location.nil? || user_sub.location_name.nil?
 
-      user_submission_locations_hash[user_sub.location_id] = [user_sub.location_id, user_sub.location_name]
+      user_submission_locations_hash[user_sub.location_id] = [ user_sub.location_id, user_sub.location_name ]
     end
     user_submission_locations_hash.values
   end
@@ -130,7 +130,7 @@ class User < ApplicationRecord
   end
 
   def list_fave_locations
-    user_fave_locations.includes([:location])
+    user_fave_locations.includes([ :location ])
   end
 
   def num_total_submissions
@@ -159,7 +159,7 @@ class User < ApplicationRecord
   end
 
   def as_json(options = {})
-    super({ only: [:id] }.merge(options))
+    super({ only: [ :id ] }.merge(options))
   end
 
   def self.send_reset_password_instructions(attributes = {})
@@ -194,6 +194,6 @@ class User < ApplicationRecord
   end
 
   def self.find_record(login)
-    where(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }]).first
+    where([ "lower(username) = :value OR lower(email) = :value", { value: login.downcase } ]).first
   end
 end

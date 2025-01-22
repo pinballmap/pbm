@@ -13,7 +13,7 @@ class Machine < ApplicationRecord
   end
 
   def year_and_manufacturer
-    (year.blank? && manufacturer.blank? ? "" : " (#{[manufacturer, year].reject(&:blank?).join(', ')})")
+    (year.blank? && manufacturer.blank? ? "" : " (#{[ manufacturer, year ].reject(&:blank?).join(', ')})")
   end
 
   before_destroy do |record|
@@ -31,7 +31,7 @@ class Machine < ApplicationRecord
   end
 
   def all_machines_in_machine_group
-    machine_group_id ? Machine.where("machine_group_id = ?", machine_group_id).to_a : [self]
+    machine_group_id ? Machine.where("machine_group_id = ?", machine_group_id).to_a : [ self ]
   end
 
   def self.tag_with_opdb_type_json(opdb_json)

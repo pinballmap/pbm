@@ -8,7 +8,7 @@ module Api
 
       api :GET, "/api/v1/machine_groups.json", "Fetch all machine groups"
       description "Machine group IDs"
-      formats ["json"]
+      formats [ "json" ]
       def index
         return_response(MachineGroup.all, "machine_groups", nil, nil, 200)
       end

@@ -25,7 +25,7 @@ describe LocationMachineXrefsController do
       login(@user)
     end
 
-    [true, false].each do |region|
+    [ true, false ].each do |region|
       it 'Should add by id' do
         region = region ? @region : nil
         location = FactoryBot.create(:location, id: 11, region: region)
@@ -511,7 +511,7 @@ describe LocationMachineXrefsController do
 
       sleep(1)
 
-      expect(@location.reload.machines.map { |m| m.name + '-' + m.year.to_s + '-' + m.manufacturer.to_s }.sort).to eq(['Sassy Madness-2010-Bally', 'Test Machine Name-2010-Williams'])
+      expect(@location.reload.machines.map { |m| m.name + '-' + m.year.to_s + '-' + m.manufacturer.to_s }.sort).to eq([ 'Sassy Madness-2010-Bally', 'Test Machine Name-2010-Williams' ])
     end
 
     it 'adds by machine name from input' do
@@ -806,7 +806,7 @@ describe LocationMachineXrefsController do
 
       page.find('div#other_search_options button#machine_section_link').click
 
-      expect(page).to have_select('by_machine_id', with_options: ['Test Machine Name'])
+      expect(page).to have_select('by_machine_id', with_options: [ 'Test Machine Name' ])
     end
 
     it 'automatically loads with machine detail visible on a single location search' do
@@ -929,7 +929,7 @@ describe LocationMachineXrefsController do
 
       page.find('div#other_search_options button#operator_section_link').click
 
-      expect(page).to have_select('by_operator_id', options: ['All', 'Quarter Bean'])
+      expect(page).to have_select('by_operator_id', options: [ 'All', 'Quarter Bean' ])
     end
 
     it 'displays message about operator receiving machine comments' do
@@ -1023,7 +1023,7 @@ describe LocationMachineXrefsController do
       expect(page).to_not have_content('Bawb')
     end
 
-    [Region.find_by_name('portland'), nil].each do |region|
+    [ Region.find_by_name('portland'), nil ].each do |region|
       it 'honors direct link for location' do
         location = FactoryBot.create(:location, id: 111, region: region)
 
@@ -1057,7 +1057,7 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}"
       page.find('div#other_search_options button#machine_section_link').click
 
-      expect(page).to have_select('by_machine_id', with_options: ['foo (stern)', 'bar (bally, 2000)', 'baz (2001)'])
+      expect(page).to have_select('by_machine_id', with_options: [ 'foo (stern)', 'bar (bally, 2000)', 'baz (2001)' ])
     end
 
     it 'has a location dropdown with city' do
@@ -1066,7 +1066,7 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}"
       page.find('div#other_search_options button#location_section_link').click
 
-      expect(page).to have_select('by_location_id', with_options: ['Cleo North', '(Portland)'])
+      expect(page).to have_select('by_location_id', with_options: [ 'Cleo North', '(Portland)' ])
     end
 
     it 'has location summary info that shows machine metadata when available' do

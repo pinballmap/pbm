@@ -14,7 +14,7 @@ module Api
       api :GET, "/api/v1/region/:region/location_machine_xrefs.json", "Get all machines at locations in a single region"
       param :region, String, desc: "Name of the Region you want to see machines for", required: true
       param :limit, Integer, desc: "Limit the number of results that are returned", required: false
-      formats ["json"]
+      formats [ "json" ]
       def index
         lmxes = apply_scopes(LocationMachineXref).order("location_machine_xrefs.id desc").includes(:location, :machine, machine_conditions: :user).order("machine_conditions.created_at desc")
         return_response(lmxes, "location_machine_xrefs", %i[location machine machine_conditions])
@@ -22,7 +22,7 @@ module Api
 
       api :GET, "/api/v1/location_machine_xrefs/:id.json", "Get info about a single lmx"
       param :id, Integer, desc: "LMX id", required: true
-      formats ["json"]
+      formats [ "json" ]
       def show
         lmx = LocationMachineXref.find(params[:id])
         return_response(lmx, "location_machine", [], %i[last_updated_by_username machine_conditions])
@@ -32,7 +32,7 @@ module Api
       param :location_id, Integer, desc: "Location ID to add machine to", required: true
       param :machine_id, Integer, desc: "Machine ID to add to location", required: true
       param :condition, String, desc: "Notes on machine's condition", required: false
-      formats ["json"]
+      formats [ "json" ]
       def create
         user = current_user.nil? ? nil : current_user
 
@@ -62,13 +62,13 @@ module Api
           )
         end
 
-        return_response(lmx, "location_machine", [], [:last_updated_by_username], status_code)
+        return_response(lmx, "location_machine", [], [ :last_updated_by_username ], status_code)
       end
 
       api :PUT, "/api/v1/location_machine_xrefs/:id.json", "Update a machine's condition at a location"
       param :id, Integer, desc: "LMX id", required: true
       param :condition, String, desc: "Notes on machine's condition", required: true
-      formats ["json"]
+      formats [ "json" ]
       def update
         lmx = LocationMachineXref.find(params[:id])
         user = current_user.nil? ? nil : current_user
@@ -90,7 +90,7 @@ module Api
 
       api :DESTROY, "/api/v1/location_machine_xrefs/:id.json", "Remove a machine from a location"
       param :id, Integer, desc: "LMX id", required: true
-      formats ["json"]
+      formats [ "json" ]
       def destroy
         lmx = LocationMachineXref.find(params[:id])
         user = current_user.nil? ? nil : current_user
@@ -111,7 +111,7 @@ module Api
 
       api :GET, "/api/v1/location_machine_xrefs/top_n_machines.json", "Show the top N machines on location"
       param :n, String, desc: "Number of machines to show", required: false
-      formats ["json"]
+      formats [ "json" ]
       def top_n_machines
         top_n = params[:n].to_i.zero? ? DEFAULT_TOP_N_MACHINES : params[:n].to_i
 
@@ -138,7 +138,7 @@ HERE
       param :lat, String, desc: "Latitude", required: true
       param :lon, String, desc: "Longitude", required: true
       param :max_distance, String, desc: 'Closest location within "max_distance" miles, with a max of 500', required: false
-      formats ["json"]
+      formats [ "json" ]
       def most_recent_by_lat_lon
         if params[:max_distance].blank?
           max_distance = MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
@@ -148,7 +148,7 @@ HERE
           max_distance = params[:max_distance].to_i
         end
 
-        closest_locations = apply_scopes(Location).includes(:machines).near([params[:lat], params[:lon]], max_distance).uniq
+        closest_locations = apply_scopes(Location).includes(:machines).near([ params[:lat], params[:lon] ], max_distance).uniq
 
         last_n_machines_added = {}
         closest_locations.each do |l|
@@ -166,8 +166,8 @@ HERE
 
       api :PUT, "/api/v1/location_machine_xrefs/:location_machine_xref_id/ic_toggle.json", "Toggle a machine's Insider Connected status"
       param :location_machine_xref_id, Integer, desc: "LMX id", required: true
-      param :ic_enabled, [true, false], desc: "Sets the Insider Connected status for this machine", required: false
-      formats ["json"]
+      param :ic_enabled, [ true, false ], desc: "Sets the Insider Connected status for this machine", required: false
+      formats [ "json" ]
       def ic_toggle
         return return_response(AUTH_REQUIRED_MSG, "errors") unless current_user
 

@@ -48,7 +48,7 @@ class LocationMachineXref < ApplicationRecord
   end
 
   def sorted_machine_conditions
-    machine_conditions.limited.includes([:user])
+    machine_conditions.limited.includes([ :user ])
   end
 
   def update_location

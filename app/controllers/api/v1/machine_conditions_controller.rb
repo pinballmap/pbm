@@ -8,7 +8,7 @@ module Api
       api :PUT, "/api/v1/machine_conditions/:id.json", "Update attributes on a machine condition"
       param :id, Integer, desc: "ID of machine condition", required: true
       param :comment, String, desc: "Updated condition", required: true
-      formats ["json"]
+      formats [ "json" ]
       def update
         machine_condition = MachineCondition.find(params[:id])
 

@@ -13,7 +13,7 @@ task import_ifpa_tournaments: :environment do
 
   Hash.new { |h, k| h[k] = [] }
 
-  pbm_states = Location.where.not(state: [nil, ""]).pluck(:state).map(&:downcase!).uniq!
+  pbm_states = Location.where.not(state: [ nil, "" ]).pluck(:state).map(&:downcase!).uniq!
 
   # Need to run the request twice to make sure that ifpa is awake
   Net::HTTP.get(URI(IFPA_API_ROOT + "/calendar/active?api_key=" + IFPA_API_KEY.to_s))
@@ -45,7 +45,7 @@ task import_ifpa_tournaments: :environment do
     end
 
     region_ids_to_add_event_to = []
-    Location.near([cd["latitude"].to_f, cd["longitude"].to_f], NUM_MILES_TO_SEARCH).each do |l|
+    Location.near([ cd["latitude"].to_f, cd["longitude"].to_f ], NUM_MILES_TO_SEARCH).each do |l|
       region_ids_to_add_event_to.push(l.region_id)
     end
 

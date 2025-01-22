@@ -57,13 +57,13 @@ class PagesController < ApplicationController
     @states = []
 
     if @region
-      @states = Location.where(["region_id = ?", @region.id]).where.not(state: [nil, ""]).map(&:state).uniq.sort
+      @states = Location.where([ "region_id = ?", @region.id ]).where.not(state: [ nil, "" ]).map(&:state).uniq.sort
       @states.unshift("")
 
-      @operators = Operator.where(["region_id = ?", @region.id]).map(&:name).uniq.sort
+      @operators = Operator.where([ "region_id = ?", @region.id ]).map(&:name).uniq.sort
       @operators.unshift("")
 
-      @zones = Zone.where(["region_id = ?", @region.id]).map(&:name).uniq.sort
+      @zones = Zone.where([ "region_id = ?", @region.id ]).map(&:name).uniq.sort
       @zones.unshift("")
     end
 

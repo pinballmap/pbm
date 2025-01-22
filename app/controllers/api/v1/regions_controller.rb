@@ -11,10 +11,10 @@ module Api
       api :GET, "/api/v1/regions/location_and_machine_counts.json", "Get location and machine counts"
       description "Get location and machine counts"
       param :region_name, String, desc: "region_name to limit counts to", required: false
-      formats ["json"]
+      formats [ "json" ]
       def location_and_machine_counts
         if params[:region_name]
-          region = Region.where(["lower(name) = ?", params[:region_name].downcase]).first
+          region = Region.where([ "lower(name) = ?", params[:region_name].downcase ]).first
 
           if region
             return_response({ num_locations: region.locations.count, num_lmxes: region.location_machine_xrefs.count }, nil)
@@ -29,12 +29,12 @@ module Api
       api :GET, "/api/v1/regions/does_region_exist.json", "Find if name corresponds to a known region"
       description "Find if name corresponds to a known region"
       param :name, String, desc: "name of region", required: true
-      formats ["json"]
+      formats [ "json" ]
       def does_region_exist
         region = Region.find_by(name: params[:name])
 
         if region
-          return_response(region, "region", [], [:id])
+          return_response(region, "region", [], [ :id ])
         else
           return_response("This is not a valid region.", "errors")
         end
@@ -44,12 +44,12 @@ module Api
       description "Find closest region based on lat/lon"
       param :lat, String, desc: "Lat", required: true
       param :lon, String, desc: "Lon", required: true
-      formats ["json"]
+      formats [ "json" ]
       def closest_by_lat_lon
-        closest_region = Region.near([params[:lat], params[:lon]], MAX_MILES_TO_SEARCH_FOR_CLOSEST_REGION).first
+        closest_region = Region.near([ params[:lat], params[:lon] ], MAX_MILES_TO_SEARCH_FOR_CLOSEST_REGION).first
 
         if closest_region
-          return_response(closest_region, "region", [], [:id])
+          return_response(closest_region, "region", [], [ :id ])
         else
           return_response("No regions within #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_REGION} miles.", "errors")
         end
@@ -84,7 +84,7 @@ module Api
       param :lon, String, desc: "Longitude", required: false
       param :name, String, desc: "Sender's name", required: false
       param :email, String, desc: "Sender's email address", required: false
-      formats ["json"]
+      formats [ "json" ]
       def contact
         user = current_user.nil? ? nil : current_user
 
@@ -92,7 +92,7 @@ module Api
         if params[:region_id]
           region = Region.find(params["region_id"])
         else
-          region = Region.near([params[:lat], params[:lon]], :effective_radius).first
+          region = Region.near([ params[:lat], params[:lon] ], :effective_radius).first
         end
 
         if params["message"].blank? || (!user && params["email"].blank?)

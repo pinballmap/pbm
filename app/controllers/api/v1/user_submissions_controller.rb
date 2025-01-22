@@ -24,7 +24,7 @@ module Api
       api :GET, "/api/v1/user_submissions/location.json", "Fetch user submissions for a location"
       param :id, Integer, desc: "ID of location", required: true
       param :submission_type, String, desc: "Type of submission to filter to. Multiple filters can be formatted as ;submission_type[]=remove_machine;submission_type[]=new_lmx etc.", required: false
-      formats ["json"]
+      formats [ "json" ]
       def location
         location = Location.find(params[:id])
 
@@ -38,7 +38,7 @@ module Api
       end
 
       api :GET, "/api/v1/user_submissions/delete_location.json", "Fetch list of deleted locations from the past year"
-      formats ["json"]
+      formats [ "json" ]
       def delete_location
         except = %i[user_id machine_id comment user_name location_name machine_name high_score city_name lat lon]
         user_submissions = UserSubmission.where(created_at: (1.year.ago)..(Date.today.end_of_day), submission_type: UserSubmission::DELETE_LOCATION_TYPE).order("created_at DESC")
@@ -50,14 +50,14 @@ module Api
 
       api :GET, "/api/v1/user_submissions/total_user_submission_count.json", "Fetch total count of user submissions"
       description "Fetch total count of user submissions"
-      formats ["json"]
+      formats [ "json" ]
       def total_user_submission_count
         return_response({ total_user_submission_count: UserSubmission.count }, nil)
       end
 
       api :GET, "/api/v1/user_submissions/top_users.json", "Fetch top 10 users by submission count"
       description "Fetch top 10 users by submission count"
-      formats ["json"]
+      formats [ "json" ]
       def top_users
         sid = Arel::Table.new("user_submissions")
         uid = Arel::Table.new("users")
@@ -85,7 +85,7 @@ module Api
         if params[:max_distance].blank?
           max_distance = MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS
         else
-          max_distance = [250, params[:max_distance].to_i].min
+          max_distance = [ 250, params[:max_distance].to_i ].min
         end
 
         submission_type = params[:submission_type].blank? ? %w[new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
@@ -98,7 +98,7 @@ module Api
 
         user_submissions = user_submissions.where(created_at: min_date_of_submission..Date.today.end_of_day) if min_date_of_submission
 
-        user_submissions = user_submissions.near([params[:lat], params[:lon]], max_distance, order: "created_at desc").limit(200)
+        user_submissions = user_submissions.near([ params[:lat], params[:lon] ], max_distance, order: "created_at desc").limit(200)
 
         return_response(user_submissions, "user_submissions")
       end

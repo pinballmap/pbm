@@ -25,7 +25,7 @@ class MachinesController < InheritedResources::Base
       order by m.name
       SQL
 
-      sanitized_sql = ActiveRecord::Base.sanitize_sql_array([sql, { term: params[:term] }])
+      sanitized_sql = ActiveRecord::Base.sanitize_sql_array([ sql, { term: params[:term] } ])
 
       results = ActiveRecord::Base.connection.select_all(sanitized_sql)
                                   .map do |m|

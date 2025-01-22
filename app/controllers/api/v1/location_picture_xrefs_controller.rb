@@ -8,7 +8,7 @@ module Api
 
       api :GET, "/api/v1/location_picture_xrefs/:id.json", "Get info about a single lpx"
       param :id, Integer, desc: "LPX id", required: true
-      formats ["json"]
+      formats [ "json" ]
       def show
         lpx = LocationPictureXref.find(params[:id])
         return_response(lpx, "location_picture", [], [])
@@ -17,7 +17,7 @@ module Api
       api :POST, "/api/v1/location_picture_xrefs.json", "Add a picture for a location"
       param :location_id, Integer, desc: "Location ID to add picture to", required: true
       param :photo, File, desc: "The picture to add", required: true
-      formats ["json"]
+      formats [ "json" ]
       def create
         return return_response(AUTH_REQUIRED_MSG, "errors") if current_user.nil?
 
@@ -36,7 +36,7 @@ module Api
 
       api :DESTROY, "/api/v1/location_picture_xrefs/:id.json", "Remove a picture from a location"
       param :id, Integer, desc: "LPX id", required: true
-      formats ["json"]
+      formats [ "json" ]
       def destroy
         user = current_user.nil? ? nil : current_user
         return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?

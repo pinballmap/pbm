@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
     operator = params["location_operator"]&.is_a?(Integer) || params["location_operator"]&.match?(/^[0-9]+$/) ? Operator.find(params["location_operator"]) : Operator.find_by_name(params["location_operator"])
     zone = params["location_zone"]&.is_a?(Integer) || params["location_zone"]&.match?(/^[0-9]+$/) ? Zone.find(params["location_zone"]) : Zone.find_by_name(params["location_zone"])
 
-    user_inputted_address = [params["location_street"], params["location_city"], params["location_state"], params["location_zip"]].join(", ")
+    user_inputted_address = [ params["location_street"], params["location_city"], params["location_state"], params["location_zip"] ].join(", ")
 
     (geocoded_results, lat, lon, street, city, state, zip) = ""
 
@@ -67,9 +67,9 @@ class ApplicationController < ActionController::Base
 
     if region.blank?
       if geocoded_results.present?
-        region = Region.near([lat, lon], :effective_radius).first
+        region = Region.near([ lat, lon ], :effective_radius).first
       else
-        region = Region.near([params[:lat], params[:lon]], :effective_radius).first
+        region = Region.near([ params[:lat], params[:lon] ], :effective_radius).first
       end
     end
 

@@ -11,7 +11,7 @@ class LocationMachineXrefsController < InheritedResources::Base
     if !params["add_machine_by_id_#{location.id}"].empty?
       machine = Machine.find(params["add_machine_by_id_#{location.id}"])
     elsif !params["add_machine_by_name_#{location.id}"].empty?
-      machine = Machine.where(["lower(name) = ?", params["add_machine_by_name_#{location.id}"].downcase]).first
+      machine = Machine.where([ "lower(name) = ?", params["add_machine_by_name_#{location.id}"].downcase ]).first
 
       if machine.nil?
         render js: "show_new_machine_message();"
@@ -26,7 +26,7 @@ class LocationMachineXrefsController < InheritedResources::Base
     location.last_updated_by_user_id = user.id
     location.save(validate: false)
 
-    LocationMachineXref.where(["location_id = ? and machine_id = ?", location.id, machine.id]).first ||
+    LocationMachineXref.where([ "location_id = ? and machine_id = ?", location.id, machine.id ]).first ||
       LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user.id)
   end
 
@@ -75,7 +75,7 @@ class LocationMachineXrefsController < InheritedResources::Base
 
   def render_machine_conditions
     lmx = LocationMachineXref.find(params[:id])
-    render partial: "locations/render_machine_conditions", locals: { conditions: lmx.sorted_machine_conditions.includes([:user]), lmx: lmx }
+    render partial: "locations/render_machine_conditions", locals: { conditions: lmx.sorted_machine_conditions.includes([ :user ]), lmx: lmx }
   end
 
   def index

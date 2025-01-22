@@ -20,7 +20,7 @@ class MapsController < InheritedResources::Base
     @machine_sample = Machine.select("name, random() as r").order("r").limit(1).first
     @machine_placeholder = @machine_sample.nil? ? "e.g. Lord of the Rings" : "e.g. " + @machine_sample.name
 
-    @big_cities_sample = Location.select(%i[city state], "random() as r").having("count(city)>9").where.not(state: [nil, ""]).group("city", "state").order("r").limit(1).first
+    @big_cities_sample = Location.select(%i[city state], "random() as r").having("count(city)>9").where.not(state: [ nil, "" ]).group("city", "state").order("r").limit(1).first
     @big_cities_placeholder = @big_cities_sample.nil? ? "e.g. Portland, OR" : "e.g. " + @big_cities_sample.city + ", " + @big_cities_sample.state
   end
 
@@ -74,7 +74,7 @@ class MapsController < InheritedResources::Base
   def find_nearby
     @near_distance = 15
     while @locations.blank? && @near_distance < 600
-      @locations = apply_scopes(Location.near([@lat, @lon], @near_distance)).order("locations.name").includes(:location_machine_xrefs, :machines, :location_type)
+      @locations = apply_scopes(Location.near([ @lat, @lon ], @near_distance)).order("locations.name").includes(:location_machine_xrefs, :machines, :location_type)
       @near_distance += 100
     end
   end

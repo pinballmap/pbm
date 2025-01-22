@@ -1,6 +1,6 @@
 class RegistrationsController < Devise::RegistrationsController
   respond_to :json
-  prepend_before_action :create, only: [:create]
+  prepend_before_action :create, only: [ :create ]
 
   def create
     @user = User.new(user_params)
