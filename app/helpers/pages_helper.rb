@@ -37,100 +37,96 @@ module PagesHelper
     end
 
     title += "#{region.full_name} Pinball Map"
-    title
   end
 
   def title_for_map_path(path)
-    title = if path == app_path
-              "App - "
-            elsif path == faq_path
-              "FAQ - "
-            elsif path == privacy_path
-              "Privacy Policy - "
-            elsif path == store_path
-              "Store - "
-            elsif path == donate_path
-              "Donate - "
-            elsif path.match?(/inspire_profile/)
-              "Sign up! - "
-            elsif path.match?(/profile/)
-              "#{@user.username}'s User Profile - "
-            elsif path.match?(/login/)
-              "Login - "
-            elsif path.match?(/join/)
-              "Join - "
-            elsif path.match?(/password/)
-              "Forgot Password - "
-            elsif path.match?(/confirmation/)
-              "Confirmation Instructions - "
-            elsif path == map_location_suggest_path
-              "Suggest a New Location - "
-            elsif path == map_flier_path
-              "Promote "
-            elsif path == activity_path
-              "Recent Activity - "
-            else
-              ""
-            end
+    title =
+    if path == app_path
+      "App - "
+    elsif path == faq_path
+      "FAQ - "
+    elsif path == privacy_path
+      "Privacy Policy - "
+    elsif path == store_path
+      "Store - "
+    elsif path == donate_path
+      "Donate - "
+    elsif path.match?(/inspire_profile/)
+      "Sign up! - "
+    elsif path.match?(/profile/)
+      "#{@user.username}'s User Profile - "
+    elsif path.match?(/login/)
+      "Login - "
+    elsif path.match?(/join/)
+      "Join - "
+    elsif path.match?(/password/)
+      "Forgot Password - "
+    elsif path.match?(/confirmation/)
+      "Confirmation Instructions - "
+    elsif path == map_location_suggest_path
+      "Suggest a New Location - "
+    elsif path == map_flier_path
+      "Promote "
+    elsif path == activity_path
+      "Recent Activity - "
+    else
+      ""
+    end
 
     title += "Pinball Map"
-    title
   end
 
   def desc_for_path(path, region = nil)
-    desc = region.nil? ? desc_for_map_path(path) : desc_for_region_path(path, region)
-    desc
+    region.nil? ? desc_for_map_path(path) : desc_for_region_path(path, region)
   end
 
   def desc_for_region_path(path, region)
-    desc = if path == suggest_path(region.name)
-             "Add a new location to the #{region.full_name} Pinball Map! This crowdsourced map relies on your knowledge and help!"
-           elsif path == about_path(region.name)
-             "Contact the administrator of the #{region.full_name} Pinball Map. Suggest a new region. Check out the most popular pinball machines on the map!"
-           elsif path == events_path(region.name)
-             "Upcoming pinball events in #{region.full_name}. Tournaments, leagues, charities, launch parties, and more!"
-           elsif path == high_rollers_path(region.name)
-             "High scores for the #{region.full_name} Pinball Map! If you get a high score on a pinball machine, add it to the map!"
-           elsif path == region_activity_path(region.name)
-             "Recent Activity for the #{region.full_name} Pinball Map! It's a list of map edits!"
-           else
-             "Find local places to play pinball! The #{region.full_name} Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."
-           end
-    desc
+    if path == suggest_path(region.name)
+      "Add a new location to the #{region.full_name} Pinball Map! This crowdsourced map relies on your knowledge and help!"
+    elsif path == about_path(region.name)
+      "Contact the administrator of the #{region.full_name} Pinball Map. Suggest a new region. Check out the most popular pinball machines on the map!"
+    elsif path == events_path(region.name)
+      "Upcoming pinball events in #{region.full_name}. Tournaments, leagues, charities, launch parties, and more!"
+    elsif path == high_rollers_path(region.name)
+      "High scores for the #{region.full_name} Pinball Map! If you get a high score on a pinball machine, add it to the map!"
+    elsif path == region_activity_path(region.name)
+      "Recent Activity for the #{region.full_name} Pinball Map! It's a list of map edits!"
+    else
+      "Find local places to play pinball! The #{region.full_name} Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."
+    end
   end
 
   def desc_for_map_path(path)
-    desc = if path == app_path
-             "Pinball Map App for iOS and Android. Find pinball machines to play near you!"
-           elsif path == faq_path
-             "Pinball Map Support and Frequently Asked Questions (FAQ)."
-           elsif path == privacy_path
-             "Pinball Map Privacy Policy."
-           elsif path == store_path
-             "Pinball Map Store!"
-           elsif path == donate_path
-             "Donate to Pinball Map. Donations help us manage the costs of running the site. Thank you!"
-           elsif path.match?(/profile/)
-             "The user profile tracks your Pinball Map contributions. It's a concise overview of your edits, high scores, and favorite locations."
-           elsif path.match?(/login/)
-             "Log in to Pinball Map and help keep it up to date!"
-           elsif path.match?(/join/)
-             "Join Pinball Map and help keep your local pinball map up to date! This site relies on user contributions. Joining is quick and easy!"
-           elsif path.match?(/password/)
-             "If you forgot your Pinball Map password, you can recover it from here."
-           elsif path.match?(/confirmation/)
-             "The email confirmation can be resent from this page."
-           elsif path.match?(/map/)
-             "Find local places to play pinball! The Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."
-           elsif path == map_location_suggest_path
-             "Add a new location to the Pinball Map! This crowdsourced map relies on your knowledge and help!"
-           elsif path == map_flier_path
-             "Print out this cool promotional Pinball Map flier! Spread the word!"
-           elsif path == activity_path
-             "Recent Activity for Pinball Map! It's a list of map edits!"
-           else
-             "The Pinball Map website and free mobile app will help you find places to play pinball! Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."
-           end
-    desc
+    if path == app_path
+      "Pinball Map App for iOS and Android. Find pinball machines to play near you!"
+    elsif path == faq_path
+      "Pinball Map Support and Frequently Asked Questions (FAQ)."
+    elsif path == privacy_path
+      "Pinball Map Privacy Policy."
+    elsif path == store_path
+      "Pinball Map Store!"
+    elsif path == donate_path
+      "Donate to Pinball Map. Donations help us manage the costs of running the site. Thank you!"
+    elsif path.match?(/profile/)
+      "The user profile tracks your Pinball Map contributions. It's a concise overview of your edits, high scores, and favorite locations."
+    elsif path.match?(/login/)
+      "Log in to Pinball Map and help keep it up to date!"
+    elsif path.match?(/join/)
+      "Join Pinball Map and help keep your local pinball map up to date! This site relies on user contributions. Joining is quick and easy!"
+    elsif path.match?(/password/)
+      "If you forgot your Pinball Map password, you can recover it from here."
+    elsif path.match?(/confirmation/)
+      "The email confirmation can be resent from this page."
+    elsif path.match?(/map/)
+      "Find local places to play pinball! The Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."
+    elsif path == map_location_suggest_path
+      "Add a new location to the Pinball Map! This crowdsourced map relies on your knowledge and help!"
+    elsif path == map_flier_path
+      "Print out this cool promotional Pinball Map flier! Spread the word!"
+    elsif path == activity_path
+      "Recent Activity for Pinball Map! It's a list of map edits!"
+    else
+      "The Pinball Map website and free mobile app will help you find places to play pinball! Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."
+    end
   end
 end
