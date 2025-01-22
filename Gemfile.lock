@@ -419,9 +419,22 @@ GEM
       unicode-display_width (>= 2.4.0, < 4.0)
     rubocop-ast (1.37.0)
       parser (>= 3.3.1.0)
+    rubocop-minitest (0.36.0)
+      rubocop (>= 1.61, < 2.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
     rubocop-performance (1.21.1)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
+    rubocop-rails (2.28.0)
+      activesupport (>= 4.2.0)
+      rack (>= 1.1)
+      rubocop (>= 1.52.0, < 2.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
+    rubocop-rails-omakase (1.0.0)
+      rubocop
+      rubocop-minitest
+      rubocop-performance
+      rubocop-rails
     rubocop-rspec (3.0.5)
       rubocop (~> 1.61)
     ruby-progressbar (1.13.0)
@@ -566,6 +579,7 @@ DEPENDENCIES
   rspec-retry
   rubocop
   rubocop-performance
+  rubocop-rails-omakase
   rubocop-rspec
   sanitize
   sassc-rails

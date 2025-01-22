@@ -73,6 +73,7 @@ group :development, :test do
   gem 'email_spec'
   gem 'listen'
   gem 'ostruct' # suppress deprecation warning for pry
+  gem 'rubocop-rails-omakase', require: false
   gem 'pry'
   gem 'rails_real_favicon'
 end
