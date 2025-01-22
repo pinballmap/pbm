@@ -4,17 +4,17 @@ class PagesController < ApplicationController
 
   def contact_sent
     user = current_user.nil? ? nil : current_user
-    return if params['contact_msg'].blank? || (!user && params['contact_email'].blank?) || params['contact_msg'].match?(/vape/) || params['contact_msg'].match?(/seo/) || params['contact_msg'].match?(/Ezoic/)
+    return if params["contact_msg"].blank? || (!user && params["contact_email"].blank?) || params["contact_msg"].match?(/vape/) || params["contact_msg"].match?(/seo/) || params["contact_msg"].match?(/Ezoic/)
 
     if user
-      @contact_thanks = 'Thanks for contacting us! If you are expecting a reply, check your spam folder or whitelist admin@pinballmap.com'.freeze
-      send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
+      @contact_thanks = "Thanks for contacting us! If you are expecting a reply, check your spam folder or whitelist admin@pinballmap.com".freeze
+      send_admin_notification({ email: params["contact_email"], name: params["contact_name"], message: params["contact_msg"] }, @region, user)
     else
-      if params['security_test'] =~ /pinball/i
-        @contact_thanks = 'Thanks for contacting us! If you are expecting a reply, check your spam folder or whitelist admin@pinballmap.com'.freeze
-        send_admin_notification({ email: params['contact_email'], name: params['contact_name'], message: params['contact_msg'] }, @region, user)
+      if params["security_test"] =~ /pinball/i
+        @contact_thanks = "Thanks for contacting us! If you are expecting a reply, check your spam folder or whitelist admin@pinballmap.com".freeze
+        send_admin_notification({ email: params["contact_email"], name: params["contact_name"], message: params["contact_msg"] }, @region, user)
       else
-        flash.now[:alert] = 'You failed the security test. Please go back and try again.'
+        flash.now[:alert] = "You failed the security test. Please go back and try again."
       end
     end
   end
@@ -22,15 +22,15 @@ class PagesController < ApplicationController
   def about
     @links = {}
     @region.region_link_xrefs.each do |rlx|
-      (@links[rlx.category && !rlx.category.blank? ? rlx.category : 'Links'] ||= []) << rlx
+      (@links[rlx.category && !rlx.category.blank? ? rlx.category : "Links"] ||= []) << rlx
     end
 
     @top_machines = LocationMachineXref
                     .includes(:machine)
                     .region(@region.name)
-                    .select('machine_id, count(*) as machine_count')
+                    .select("machine_id, count(*) as machine_count")
                     .group(:machine_id)
-                    .order('machine_count desc')
+                    .order("machine_count desc")
                     .limit(10)
 
     render "#{@region.name}/about" if lookup_context.find_all("#{@region.name}/about").any?
@@ -57,27 +57,27 @@ class PagesController < ApplicationController
     @states = []
 
     if @region
-      @states = Location.where(['region_id = ?', @region.id]).where.not(state: [nil, '']).map(&:state).uniq.sort
-      @states.unshift('')
+      @states = Location.where(["region_id = ?", @region.id]).where.not(state: [nil, ""]).map(&:state).uniq.sort
+      @states.unshift("")
 
-      @operators = Operator.where(['region_id = ?', @region.id]).map(&:name).uniq.sort
-      @operators.unshift('')
+      @operators = Operator.where(["region_id = ?", @region.id]).map(&:name).uniq.sort
+      @operators.unshift("")
 
-      @zones = Zone.where(['region_id = ?', @region.id]).map(&:name).uniq.sort
-      @zones.unshift('')
+      @zones = Zone.where(["region_id = ?", @region.id]).map(&:name).uniq.sort
+      @zones.unshift("")
     end
 
     @location_types = LocationType.all.map(&:name).uniq.sort
-    @location_types.unshift('')
+    @location_types.unshift("")
   end
 
   def robots
-    robots = File.read(Rails.root.join('config', "robots.#{Rails.env}.txt"))
+    robots = File.read(Rails.root.join("config", "robots.#{Rails.env}.txt"))
     render plain: robots
   end
 
   def apple_app_site_association
-    aasa = File.read(Rails.root + '.well-known/apple-app-site-association')
+    aasa = File.read(Rails.root + ".well-known/apple-app-site-association")
     render json: aasa
   end
 
@@ -95,13 +95,13 @@ class PagesController < ApplicationController
 
   def activity
     if @region
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], region_id: @region.id, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC'))
-      @region_fullname = 'the ' + @region.full_name
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], region_id: @region.id, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).order("created_at DESC"))
+      @region_fullname = "the " + @region.full_name
       @region_name = @region.name
     else
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC'))
-      @region_fullname = ''
-      @region_name = 'map'
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).order("created_at DESC"))
+      @region_fullname = ""
+      @region_name = "map"
     end
   end
 

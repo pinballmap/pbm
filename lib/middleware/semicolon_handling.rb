@@ -5,9 +5,9 @@ module Middleware
     end
 
     def call(env)
-      if env['QUERY_STRING']
+      if env["QUERY_STRING"]
         # Modify query string if it exists
-        env['QUERY_STRING'] = env['QUERY_STRING'].gsub(';', '&')
+        env["QUERY_STRING"] = env["QUERY_STRING"].gsub(";", "&")
       end
 
       # Continue the request cycle

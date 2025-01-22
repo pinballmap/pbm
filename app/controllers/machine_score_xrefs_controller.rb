@@ -8,7 +8,7 @@ class MachineScoreXrefsController < InheritedResources::Base
 
     return if score.nil? || score.empty?
 
-    score.gsub!(/[^0-9]/, '')
+    score.gsub!(/[^0-9]/, "")
 
     return if score.nil? || score.empty? || score.to_i.zero?
 
@@ -23,7 +23,7 @@ class MachineScoreXrefsController < InheritedResources::Base
   end
 
   def index
-    @msxs = apply_scopes(MachineScoreXref).order('machine_score_xrefs.id desc').limit(50).includes(%i[location_machine_xref location machine user])
+    @msxs = apply_scopes(MachineScoreXref).order("machine_score_xrefs.id desc").limit(50).includes(%i[location_machine_xref location machine user])
 
     respond_with(@msxs)
   end

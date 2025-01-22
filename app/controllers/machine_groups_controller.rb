@@ -5,9 +5,9 @@ class MachineGroupsController < InheritedResources::Base
   def create
     @machine_group = MachineGroup.new(machine_group_params)
     if @machine_group.save
-      redirect_to @machine_group, notice: 'MachineGroup was successfully created.'
+      redirect_to @machine_group, notice: "MachineGroup was successfully created."
     else
-      render action: 'new'
+      render action: "new"
     end
   end
 

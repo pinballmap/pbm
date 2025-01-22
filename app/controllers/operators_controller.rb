@@ -5,9 +5,9 @@ class OperatorsController < InheritedResources::Base
   def create
     @operator = Operator.new(operator_params)
     if @operator.save
-      redirect_to @operator, notice: 'Operator was successfully created.'
+      redirect_to @operator, notice: "Operator was successfully created."
     else
-      render action: 'new'
+      render action: "new"
     end
   end
 

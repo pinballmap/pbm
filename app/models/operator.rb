@@ -11,20 +11,20 @@ class Operator < ApplicationRecord
   end
 
   before_save do
-    Status.where(status_type: 'operators').update({ updated_at: Time.current })
+    Status.where(status_type: "operators").update({ updated_at: Time.current })
   end
 
   before_destroy do
-    Status.where(status_type: 'operators').update({ updated_at: Time.current })
+    Status.where(status_type: "operators").update({ updated_at: Time.current })
   end
 
   def send_recent_comments
-    return if email.to_s == ''
+    return if email.to_s == ""
 
     machine_conditions_to_email = []
     locations.each do |l|
       l.location_machine_xrefs.each do |lmx|
-        lmx.machine_conditions.where('created_at BETWEEN ? AND ?', (Time.now - 1.day).beginning_of_day, (Time.now - 1.day).end_of_day).each do |mc|
+        lmx.machine_conditions.where("created_at BETWEEN ? AND ?", (Time.now - 1.day).beginning_of_day, (Time.now - 1.day).end_of_day).each do |mc|
           machine_conditions_to_email.push(mc)
         end
       end

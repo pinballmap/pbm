@@ -5,9 +5,9 @@ class MachinesController < InheritedResources::Base
   def create
     @machine = Machine.new(machine_params)
     if @machine.save
-      redirect_to @machine, notice: 'Machine was successfully created.'
+      redirect_to @machine, notice: "Machine was successfully created."
     else
-      render action: 'new'
+      render action: "new"
     end
   end
 
@@ -31,7 +31,7 @@ class MachinesController < InheritedResources::Base
                                   .map do |m|
         name_year = "#{m['name']} (#{m['manufacturer']}, #{m['year']})"
 
-        { label: name_year, value: name_year, id: m['id'], group_id: m['machine_group_id'] }
+        { label: name_year, value: name_year, id: m["id"], group_id: m["machine_group_id"] }
       end
 
     end

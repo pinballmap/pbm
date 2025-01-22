@@ -15,7 +15,7 @@ class AdminMailer < ApplicationMailer
   end
 
   def weekly_admin_digest_all_regions
-    attachments['all_region_info.txt'] = { mime_type: 'text/plain', content: params[:email_bodies].join("\n\n") }
+    attachments["all_region_info.txt"] = { mime_type: "text/plain", content: params[:email_bodies].join("\n\n") }
 
     mail(to: params[:user], subject: "Pinball Map - Weekly admin digest for all regions - #{Date.today.strftime('%m/%d/%Y')}")
   end

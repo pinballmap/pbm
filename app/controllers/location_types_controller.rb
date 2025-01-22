@@ -5,9 +5,9 @@ class LocationTypesController < InheritedResources::Base
   def create
     @location_type = LocationType.new(location_type_params)
     if @location_type.save
-      redirect_to @location_type, notice: 'LocationType was successfully created.'
+      redirect_to @location_type, notice: "LocationType was successfully created."
     else
-      render action: 'new'
+      render action: "new"
     end
   end
 

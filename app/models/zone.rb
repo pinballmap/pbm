@@ -5,7 +5,7 @@ class Zone < ApplicationRecord
   has_many :locations
   has_many :suggested_locations
 
-  default_scope { order 'name' }
+  default_scope { order "name" }
 
   scope :region, ->(name) { where(region_id: Region.find_by_name(name.downcase).id) }
 end

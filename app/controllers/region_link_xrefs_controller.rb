@@ -5,9 +5,9 @@ class RegionLinkXrefsController < InheritedResources::Base
   def create
     @region_link_xref = RegionLinkXref.new(region_link_xref_params)
     if @region_link_xref.save
-      redirect_to @region_link_xref, notice: 'RegionLinkXref was successfully created.'
+      redirect_to @region_link_xref, notice: "RegionLinkXref was successfully created."
     else
-      render action: 'new'
+      render action: "new"
     end
   end
 

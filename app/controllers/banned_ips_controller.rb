@@ -5,9 +5,9 @@ class BannedIpsController < InheritedResources::Base
   def create
     @banned_ip = BannedIps.new(banned_ip_params)
     if @banned_ip.save
-      redirect_to @banned_ip, notice: 'BannedIps was successfully created.'
+      redirect_to @banned_ip, notice: "BannedIps was successfully created."
     else
-      render action: 'new'
+      render action: "new"
     end
   end
 

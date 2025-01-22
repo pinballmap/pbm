@@ -2,16 +2,16 @@ class Location < ApplicationRecord
   has_paper_trail only: %i[name street city state region zone lat lon is_stern_army]
 
   validates_presence_of :name, :street, :city, :country
-  validates :phone, phone: { possible: true, allow_blank: true, message: 'Phone format not valid.' }
-  validates :website, format: { with: %r{\Ahttp(s?)://}, message: 'must begin with http:// or https://' }, if: :website?
+  validates :phone, phone: { possible: true, allow_blank: true, message: "Phone format not valid." }
+  validates :website, format: { with: %r{\Ahttp(s?)://}, message: "must begin with http:// or https://" }, if: :website?
   validates :name, :street, :city, format: { with: /\A\S.*/, message: "Can't start with a blank", multiline: true }
-  validates :lat, :lon, presence: { message: 'Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon' }
+  validates :lat, :lon, presence: { message: "Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon" }
 
   belongs_to :location_type, optional: true
   belongs_to :zone, optional: true
   belongs_to :region, optional: true
   belongs_to :operator, optional: true
-  belongs_to :last_updated_by_user, class_name: 'User', foreign_key: 'last_updated_by_user_id', optional: true
+  belongs_to :last_updated_by_user, class_name: "User", foreign_key: "last_updated_by_user_id", optional: true
   has_many :events
   has_many :location_machine_xrefs
   has_many :location_picture_xrefs
@@ -25,44 +25,44 @@ class Location < ApplicationRecord
   MAP_SCALE = 0.75
 
   scope :region, lambda { |name|
-    r = Region.find_by_name(name.downcase) || Region.where(name: 'portland').first
+    r = Region.find_by_name(name.downcase) || Region.where(name: "portland").first
     where(region_id: r.id)
   }
-  scope :by_type_id, ->(id) { where('location_type_id in (?)', id.split('_').map(&:to_i)) }
-  scope :by_location_id, ->(id) { where('id in (?)', id.split('_').map(&:to_i)) }
-  scope :by_operator_id, ->(id) { where('operator_id in (?)', id.split('_').map(&:to_i)) }
-  scope :by_zone_id, ->(id) { where('zone_id in (?)', id.split('_').map(&:to_i)) }
+  scope :by_type_id, ->(id) { where("location_type_id in (?)", id.split("_").map(&:to_i)) }
+  scope :by_location_id, ->(id) { where("id in (?)", id.split("_").map(&:to_i)) }
+  scope :by_operator_id, ->(id) { where("operator_id in (?)", id.split("_").map(&:to_i)) }
+  scope :by_zone_id, ->(id) { where("zone_id in (?)", id.split("_").map(&:to_i)) }
   scope :by_city_id, ->(city) { where(city: city) }
   scope :by_state_id, ->(state) { where(state: state) }
   scope :by_city_name, ->(city) { where(city: city) }
   scope :by_state_name, ->(state) { where(state: state).where.not(city: nil) }
-  scope :by_location_name, ->(name) { where("lower(regexp_replace(name, '’', '''', 'gi')) ilike ?", '%' + name.downcase.tr('’', "'") + '%') }
+  scope :by_location_name, ->(name) { where("lower(regexp_replace(name, '’', '''', 'gi')) ilike ?", "%" + name.downcase.tr("’", "'") + "%") }
   scope :by_ipdb_id, lambda { |id|
-    machines = Machine.where('ipdb_id in (?)', id.split('_').map(&:to_i)).map(&:all_machines_in_machine_group).flatten
-    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
+    machines = Machine.where("ipdb_id in (?)", id.split("_").map(&:to_i)).map(&:all_machines_in_machine_group).flatten
+    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
   }
   scope :by_opdb_id, lambda { |id|
-    machines = Machine.where('opdb_id in (?)', id.split('_')).map(&:all_machines_in_machine_group).flatten
-    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
+    machines = Machine.where("opdb_id in (?)", id.split("_")).map(&:all_machines_in_machine_group).flatten
+    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
   }
   scope :by_machine_id, lambda { |id|
-    machines = Machine.where('id in (?)', id.split('_').map(&:to_i)).map(&:all_machines_in_machine_group).flatten
-    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
+    machines = Machine.where("id in (?)", id.split("_").map(&:to_i)).map(&:all_machines_in_machine_group).flatten
+    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
   }
   scope :by_machine_group_id, lambda { |id|
-    machines = Machine.where('machine_group_id in (?)', id)
-    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
+    machines = Machine.where("machine_group_id in (?)", id)
+    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
   }
   scope :by_machine_single_id, lambda { |id|
-    machine = Machine.where('id in (?)', id.split('_').map(&:to_i))
-    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machine.map(&:id))
+    machine = Machine.where("id in (?)", id.split("_").map(&:to_i))
+    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machine.map(&:id))
   }
   scope :by_machine_name, lambda { |name|
     machine = Machine.find_by_name(name)
     return Location.default_scoped.none if machine.nil?
 
-    machines = machine.machine_group_id ? Machine.where('machine_group_id = ?', machine.machine_group_id).map(&:all_machines_in_machine_group).flatten : [machine]
-    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id))
+    machines = machine.machine_group_id ? Machine.where("machine_group_id = ?", machine.machine_group_id).map(&:all_machines_in_machine_group).flatten : [machine]
+    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
   }
   scope :by_at_least_n_machines, lambda { |n|
     where(Location.by_at_least_n_machines_sql(n))
@@ -77,7 +77,7 @@ class Location < ApplicationRecord
     where(Location.by_at_least_n_machines_sql(n))
   }
   scope :by_center_point_and_ne_boundary, lambda { |boundaries|
-    boundary_lat_lons = boundaries.split(',').collect(&:to_f)
+    boundary_lat_lons = boundaries.split(",").collect(&:to_f)
     distance = Geocoder::Calculations.distance_between([boundary_lat_lons[1], boundary_lat_lons[0]], [boundary_lat_lons[3], boundary_lat_lons[2]])
     box = Geocoder::Calculations.bounding_box([boundary_lat_lons[1], boundary_lat_lons[0]], distance * MAP_SCALE)
     Location.within_bounding_box(box)
@@ -91,8 +91,8 @@ class Location < ApplicationRecord
     where(id: fave_ids)
   }
   scope :manufacturer, lambda { |manufacturer|
-    machines = Machine.where('manufacturer = ?', manufacturer)
-    joins(:location_machine_xrefs).where('locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)', machines.map(&:id)).distinct
+    machines = Machine.where("manufacturer = ?", manufacturer)
+    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
   }
 
   before_destroy do |record|
@@ -106,7 +106,7 @@ class Location < ApplicationRecord
   end
 
   def skip_geocoding?
-    ENV['SKIP_GEOCODE'] || (lat && lon)
+    ENV["SKIP_GEOCODE"] || (lat && lon)
   end
 
   def self.by_at_least_n_machines_sql(number_of_machines)
@@ -142,15 +142,15 @@ class Location < ApplicationRecord
   end
 
   def recent_activity
-    UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], location_id: self, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC').limit(50)
+    UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], location_id: self, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).order("created_at DESC").limit(50)
   end
 
   def former_machines
-    UserSubmission.where.not(machine_name: nil).where(submission_type: 'remove_machine', location_id: self, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).where(location_id: self).order('created_at DESC').limit(30)
+    UserSubmission.where.not(machine_name: nil).where(submission_type: "remove_machine", location_id: self, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).where(location_id: self).order("created_at DESC").limit(30)
   end
 
   def full_street_address
-    [street, city, state, zip].join(', ')
+    [street, city, state, zip].join(", ")
   end
 
   # returns "city, state" if state is available otherwise just city
@@ -160,7 +160,7 @@ class Location < ApplicationRecord
   end
 
   def massaged_name
-    name.sub(/^the /i, '')
+    name.sub(/^the /i, "")
   end
 
   def update_description(new_description)
@@ -168,23 +168,23 @@ class Location < ApplicationRecord
     self.description = new_description.slice(0, 549)
 
     if !description.match?(%r{http(s?)://})
-      @updates.push('Changed location description to ' + description)
+      @updates.push("Changed location description to " + description)
     else
       self.description = old_description
-      @validation_errors.push('Location descriptions cannot include http. Please try again. ')
+      @validation_errors.push("Location descriptions cannot include http. Please try again. ")
     end
   end
 
   def update_phone(new_phone)
     old_phone = phone
     if new_phone && !new_phone.blank?
-      self.phone = new_phone.empty? ? 'empty' : new_phone
+      self.phone = new_phone.empty? ? "empty" : new_phone
 
       if valid?
-        @updates.push('Changed phone # to ' + phone)
+        @updates.push("Changed phone # to " + phone)
       else
         self.phone = old_phone
-        @validation_errors.push('Invalid phone format.')
+        @validation_errors.push("Invalid phone format.")
       end
     elsif new_phone&.blank?
       self.phone = nil
@@ -197,10 +197,10 @@ class Location < ApplicationRecord
       self.website = new_website
 
       if valid?
-        @updates.push('Changed website to ' + website)
+        @updates.push("Changed website to " + website)
       else
         self.website = old_website
-        @validation_errors.push('Website must begin with http:// or https://')
+        @validation_errors.push("Website must begin with http:// or https://")
       end
     elsif new_website&.blank?
       self.website = nil
@@ -227,7 +227,7 @@ class Location < ApplicationRecord
     update_operator(options[:operator_id]) if options[:operator_id]
     update_location_type(options[:location_type_id]) if options[:location_type_id]
 
-    @validation_errors.push('Invalid') unless valid?
+    @validation_errors.push("Invalid") unless valid?
 
     if save && errors.count.zero? && @validation_errors.empty?
       self.date_last_updated = Date.today
@@ -236,18 +236,18 @@ class Location < ApplicationRecord
 
       UserSubmission.create(region_id: region&.id, location: self, submission_type: UserSubmission::LOCATION_METADATA_TYPE, submission: @updates.join("\n") + " to #{name}", user_id: user&.id)
 
-      [self, 'location']
+      [self, "location"]
     else
-      [(@validation_errors + errors.full_messages).uniq, 'errors']
+      [(@validation_errors + errors.full_messages).uniq, "errors"]
     end
   end
 
   def name_and_city
-    name + ' (' + city + ')'
+    name + " (" + city + ")"
   end
 
   def last_updated_by_username
-    last_updated_by_user ? last_updated_by_user.username : ''
+    last_updated_by_user ? last_updated_by_user.username : ""
   end
 
   def confirm(user)

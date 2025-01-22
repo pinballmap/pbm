@@ -4,9 +4,9 @@ class UsersController < InheritedResources::Base
   def create
     @user = User.new(user_params)
     if @user.save
-      redirect_to @user, notice: 'User was successfully created.'
+      redirect_to @user, notice: "User was successfully created."
     else
-      render action: 'new'
+      render action: "new"
     end
   end
 
@@ -38,7 +38,7 @@ class UsersController < InheritedResources::Base
   end
 
   def render_user_flag
-    render partial: 'users/render_user_flag', locals: { user: User.find(params[:id]) }
+    render partial: "users/render_user_flag", locals: { user: User.find(params[:id]) }
   end
 
   private

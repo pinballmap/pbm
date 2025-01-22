@@ -6,9 +6,9 @@ class LocationsController < InheritedResources::Base
   def create
     @location = Location.new(location_params)
     if @location.save
-      redirect_to @location, notice: 'Location was successfully created.'
+      redirect_to @location, notice: "Location was successfully created."
     else
-      render action: 'new'
+      render action: "new"
     end
   end
 
@@ -48,52 +48,52 @@ class LocationsController < InheritedResources::Base
 
     params.delete(:by_location_id) if !params[:by_location_name].blank? && !params[:by_location_id].blank?
 
-    @locations = apply_scopes(Location).order('locations.name').includes(:location_type, :location_machine_xrefs, :machines)
+    @locations = apply_scopes(Location).order("locations.name").includes(:location_type, :location_machine_xrefs, :machines)
     @location_data = LocationsController.locations_javascript_data(@locations)
 
     respond_with(@locations) do |format|
-      format.html { render partial: 'locations/locations', layout: false }
+      format.html { render partial: "locations/locations", layout: false }
     end
   end
 
   def render_machines
     machines = LocationMachineXref.where(location_id: params[:id]).includes(:machine)
     machines = machines.sort { |a, b| a.machine.massaged_name <=> b.machine.massaged_name }
-    logged_in = current_user ? 'logged_in' : 'logged_out'
+    logged_in = current_user ? "logged_in" : "logged_out"
 
-    render partial: 'locations/render_machines', locals: { location_machine_xrefs: machines, logged_in: logged_in }
+    render partial: "locations/render_machines", locals: { location_machine_xrefs: machines, logged_in: logged_in }
   end
 
   def render_machines_count
-    render partial: 'locations/render_machines_count', locals: { location: Location.find(params[:id]) }
+    render partial: "locations/render_machines_count", locals: { location: Location.find(params[:id]) }
   end
 
   def render_scores
-    render partial: 'locations/render_scores', locals: { lmx: LocationMachineXref.find(params[:id]) }
+    render partial: "locations/render_scores", locals: { lmx: LocationMachineXref.find(params[:id]) }
   end
 
   def render_update_metadata
-    render partial: 'locations/render_update_metadata', locals: { l: Location.find(params[:id]) }
+    render partial: "locations/render_update_metadata", locals: { l: Location.find(params[:id]) }
   end
 
   def render_last_updated
-    render partial: 'locations/render_last_updated', locals: { l: Location.find(params[:id]) }
+    render partial: "locations/render_last_updated", locals: { l: Location.find(params[:id]) }
   end
 
   def render_add_machine
-    render partial: 'locations/render_add_machine', locals: { l: Location.find(params[:id]) }
+    render partial: "locations/render_add_machine", locals: { l: Location.find(params[:id]) }
   end
 
   def render_location_detail
-    render partial: 'locations/render_location_detail', locals: { l: Location.find(params[:id]) }
+    render partial: "locations/render_location_detail", locals: { l: Location.find(params[:id]) }
   end
 
   def render_former_machines
-    render partial: 'locations/render_former_machines', locals: { l: Location.find(params[:id]) }
+    render partial: "locations/render_former_machines", locals: { l: Location.find(params[:id]) }
   end
 
   def render_recent_activity
-    render partial: 'locations/render_recent_activity', locals: { l: Location.find(params[:id]) }
+    render partial: "locations/render_recent_activity", locals: { l: Location.find(params[:id]) }
   end
 
   def update_metadata
@@ -108,8 +108,8 @@ class LocationsController < InheritedResources::Base
       description: params["new_desc_#{l.id}"]
     )
 
-    if message_type == 'errors'
-      render json: { error: values.uniq.join('<br />') }
+    if message_type == "errors"
+      render json: { error: values.uniq.join("<br />") }
     else
       render nothing: true
     end

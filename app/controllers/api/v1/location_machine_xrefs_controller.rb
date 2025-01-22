@@ -11,39 +11,39 @@ module Api
       DEFAULT_MOST_RECENT_MACHINES = 3
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION = 50
 
-      api :GET, '/api/v1/region/:region/location_machine_xrefs.json', 'Get all machines at locations in a single region'
-      param :region, String, desc: 'Name of the Region you want to see machines for', required: true
-      param :limit, Integer, desc: 'Limit the number of results that are returned', required: false
-      formats ['json']
+      api :GET, "/api/v1/region/:region/location_machine_xrefs.json", "Get all machines at locations in a single region"
+      param :region, String, desc: "Name of the Region you want to see machines for", required: true
+      param :limit, Integer, desc: "Limit the number of results that are returned", required: false
+      formats ["json"]
       def index
-        lmxes = apply_scopes(LocationMachineXref).order('location_machine_xrefs.id desc').includes(:location, :machine, machine_conditions: :user).order('machine_conditions.created_at desc')
-        return_response(lmxes, 'location_machine_xrefs', %i[location machine machine_conditions])
+        lmxes = apply_scopes(LocationMachineXref).order("location_machine_xrefs.id desc").includes(:location, :machine, machine_conditions: :user).order("machine_conditions.created_at desc")
+        return_response(lmxes, "location_machine_xrefs", %i[location machine machine_conditions])
       end
 
-      api :GET, '/api/v1/location_machine_xrefs/:id.json', 'Get info about a single lmx'
-      param :id, Integer, desc: 'LMX id', required: true
-      formats ['json']
+      api :GET, "/api/v1/location_machine_xrefs/:id.json", "Get info about a single lmx"
+      param :id, Integer, desc: "LMX id", required: true
+      formats ["json"]
       def show
         lmx = LocationMachineXref.find(params[:id])
-        return_response(lmx, 'location_machine', [], %i[last_updated_by_username machine_conditions])
+        return_response(lmx, "location_machine", [], %i[last_updated_by_username machine_conditions])
       end
 
-      api :POST, '/api/v1/location_machine_xrefs.json', 'Find or create a machine at a location'
-      param :location_id, Integer, desc: 'Location ID to add machine to', required: true
-      param :machine_id, Integer, desc: 'Machine ID to add to location', required: true
+      api :POST, "/api/v1/location_machine_xrefs.json", "Find or create a machine at a location"
+      param :location_id, Integer, desc: "Location ID to add machine to", required: true
+      param :machine_id, Integer, desc: "Machine ID to add to location", required: true
       param :condition, String, desc: "Notes on machine's condition", required: false
-      formats ['json']
+      formats ["json"]
       def create
         user = current_user.nil? ? nil : current_user
 
-        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
+        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
 
         location_id = params[:location_id].to_i
         machine_id = params[:machine_id].to_i
         condition = params[:condition]
         status_code = 200
 
-        return return_response('Failed to find machine', 'errors') if machine_id.zero? || location_id.zero? || !Machine.exists?(machine_id) || !Location.exists?(location_id)
+        return return_response("Failed to find machine", "errors") if machine_id.zero? || location_id.zero? || !Machine.exists?(machine_id) || !Location.exists?(location_id)
 
         lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine_id)
 
@@ -62,18 +62,18 @@ module Api
           )
         end
 
-        return_response(lmx, 'location_machine', [], [:last_updated_by_username], status_code)
+        return_response(lmx, "location_machine", [], [:last_updated_by_username], status_code)
       end
 
-      api :PUT, '/api/v1/location_machine_xrefs/:id.json', "Update a machine's condition at a location"
-      param :id, Integer, desc: 'LMX id', required: true
+      api :PUT, "/api/v1/location_machine_xrefs/:id.json", "Update a machine's condition at a location"
+      param :id, Integer, desc: "LMX id", required: true
       param :condition, String, desc: "Notes on machine's condition", required: true
-      formats ['json']
+      formats ["json"]
       def update
         lmx = LocationMachineXref.find(params[:id])
         user = current_user.nil? ? nil : current_user
 
-        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
+        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
 
         lmx.update_condition(
           params[:condition],
@@ -83,19 +83,19 @@ module Api
           user_id: user&.id
         )
 
-        return_response(lmx, 'location_machine', [], %i[last_updated_by_username machine_conditions])
+        return_response(lmx, "location_machine", [], %i[last_updated_by_username machine_conditions])
       rescue ActiveRecord::RecordNotFound
-        return_response('Failed to find machine', 'errors')
+        return_response("Failed to find machine", "errors")
       end
 
-      api :DESTROY, '/api/v1/location_machine_xrefs/:id.json', 'Remove a machine from a location'
-      param :id, Integer, desc: 'LMX id', required: true
-      formats ['json']
+      api :DESTROY, "/api/v1/location_machine_xrefs/:id.json", "Remove a machine from a location"
+      param :id, Integer, desc: "LMX id", required: true
+      formats ["json"]
       def destroy
         lmx = LocationMachineXref.find(params[:id])
         user = current_user.nil? ? nil : current_user
 
-        return return_response(AUTH_REQUIRED_MSG, 'errors') if user.nil?
+        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
 
         lmx.destroy(
           remote_ip: request.remote_ip,
@@ -104,14 +104,14 @@ module Api
           user_id: user&.id
         )
 
-        return_response('Successfully deleted lmx #' + lmx.id.to_s, 'msg')
+        return_response("Successfully deleted lmx #" + lmx.id.to_s, "msg")
       rescue ActiveRecord::RecordNotFound
-        return_response('Failed to find machine', 'errors')
+        return_response("Failed to find machine", "errors")
       end
 
-      api :GET, '/api/v1/location_machine_xrefs/top_n_machines.json', 'Show the top N machines on location'
-      param :n, String, desc: 'Number of machines to show', required: false
-      formats ['json']
+      api :GET, "/api/v1/location_machine_xrefs/top_n_machines.json", "Show the top N machines on location"
+      param :n, String, desc: "Number of machines to show", required: false
+      formats ["json"]
       def top_n_machines
         top_n = params[:n].to_i.zero? ? DEFAULT_TOP_N_MACHINES : params[:n].to_i
 
@@ -130,15 +130,15 @@ order by 5 desc
 limit #{top_n}
 HERE
 
-        return_response(records_array, 'machines')
+        return_response(records_array, "machines")
       end
 
-      api :GET, '/api/v1/location_machine_xrefs/most_recent_by_lat_lon.json', 'Returns the most recently added machines near transmitted lat/lon'
+      api :GET, "/api/v1/location_machine_xrefs/most_recent_by_lat_lon.json", "Returns the most recently added machines near transmitted lat/lon"
       description "This sends you the most recent machines added near your lat/lon (defaults to within #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles)."
-      param :lat, String, desc: 'Latitude', required: true
-      param :lon, String, desc: 'Longitude', required: true
+      param :lat, String, desc: "Latitude", required: true
+      param :lon, String, desc: "Longitude", required: true
       param :max_distance, String, desc: 'Closest location within "max_distance" miles, with a max of 500', required: false
-      formats ['json']
+      formats ["json"]
       def most_recent_by_lat_lon
         if params[:max_distance].blank?
           max_distance = MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION
@@ -158,18 +158,18 @@ HERE
         end
 
         if !closest_locations.empty?
-          return_response(last_n_machines_added.sort.last(DEFAULT_MOST_RECENT_MACHINES).collect { |a| a[1] }, 'most_recently_added_machines', [], %i[], 200)
+          return_response(last_n_machines_added.sort.last(DEFAULT_MOST_RECENT_MACHINES).collect { |a| a[1] }, "most_recently_added_machines", [], %i[], 200)
         else
-          return_response("No locations within #{max_distance} miles.", 'errors')
+          return_response("No locations within #{max_distance} miles.", "errors")
         end
       end
 
-      api :PUT, '/api/v1/location_machine_xrefs/:location_machine_xref_id/ic_toggle.json', "Toggle a machine's Insider Connected status"
-      param :location_machine_xref_id, Integer, desc: 'LMX id', required: true
-      param :ic_enabled, [true, false], desc: 'Sets the Insider Connected status for this machine', required: false
-      formats ['json']
+      api :PUT, "/api/v1/location_machine_xrefs/:location_machine_xref_id/ic_toggle.json", "Toggle a machine's Insider Connected status"
+      param :location_machine_xref_id, Integer, desc: "LMX id", required: true
+      param :ic_enabled, [true, false], desc: "Sets the Insider Connected status for this machine", required: false
+      formats ["json"]
       def ic_toggle
-        return return_response(AUTH_REQUIRED_MSG, 'errors') unless current_user
+        return return_response(AUTH_REQUIRED_MSG, "errors") unless current_user
 
         lmx = LocationMachineXref.find(params[:location_machine_xref_id])
         if lmx.machine.ic_eligible
@@ -199,12 +199,12 @@ HERE
         end
 
         if success
-          return_response(lmx, 'location_machine')
+          return_response(lmx, "location_machine")
         else
-          return_response('Could not update Insider Connected for this machine', 'errors')
+          return_response("Could not update Insider Connected for this machine", "errors")
         end
       rescue ActiveRecord::RecordNotFound
-        return_response('Failed to find machine', 'errors')
+        return_response("Failed to find machine", "errors")
       end
     end
   end

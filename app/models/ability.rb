@@ -21,7 +21,7 @@ class Ability
       can %i[update read destroy], [LocationPictureXref], location: { region_id: user.region_id }
     end
 
-    if user.region.name == 'portland'
+    if user.region.name == "portland"
       can :manage, [Region, Machine, MachineGroup, BannedIp, LocationType]
     elsif user.is_machine_admin
       can %i[update read], [Region], id: user.region_id

@@ -3,7 +3,7 @@ class LocationMachineXref < ApplicationRecord
   belongs_to :machine, optional: true
   belongs_to :user, optional: true
   has_many :machine_score_xrefs
-  has_many :machine_conditions, -> { order 'created_at desc' }
+  has_many :machine_conditions, -> { order "created_at desc" }
 
   after_create :update_location, :create_user_submission
 
@@ -12,15 +12,15 @@ class LocationMachineXref < ApplicationRecord
 
     return unless r
 
-    joins(:location).where('locations.region_id = ?', r.id)
+    joins(:location).where("locations.region_id = ?", r.id)
   }
 
   def haml_object_ref
-    'lmx'
+    "lmx"
   end
 
   def add_host_info_to_subject(subject, host)
-    server_name = host&.match?(/pbmstaging/) ? '(STAGING) ' : ''
+    server_name = host&.match?(/pbmstaging/) ? "(STAGING) " : ""
 
     server_name + subject
   end
@@ -98,6 +98,6 @@ class LocationMachineXref < ApplicationRecord
   end
 
   def last_updated_by_username
-    user ? user.username : ''
+    user ? user.username : ""
   end
 end

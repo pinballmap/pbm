@@ -2,11 +2,11 @@ class Region < ApplicationRecord
   has_paper_trail
   has_many :locations
   has_many :zones
-  has_many :users, -> { order 'users.id' }
-  has_many :events, -> { order 'events.id' }
+  has_many :users, -> { order "users.id" }
+  has_many :events, -> { order "events.id" }
   has_many :operators
   has_many :suggested_locations
-  has_many :region_link_xrefs, -> { order 'region_link_xrefs.id' }
+  has_many :region_link_xrefs, -> { order "region_link_xrefs.id" }
   has_many :user_submissions
   has_many :location_machine_xrefs, through: :locations
   has_many :machine_score_xrefs, through: :location_machine_xrefs
@@ -42,7 +42,7 @@ class Region < ApplicationRecord
     @high_rollers = {}
 
     machine_score_xrefs.each do |msx|
-      (rollers[msx.user ? msx.user.username : ''] ||= []) << msx
+      (rollers[msx.user ? msx.user.username : ""] ||= []) << msx
     end
 
     rollers.sort { |a, b| b[1].size <=> a[1].size }.each do |roller|
@@ -57,23 +57,23 @@ class Region < ApplicationRecord
   end
 
   before_save do
-    Status.where(status_type: 'regions').update({ updated_at: Time.current })
+    Status.where(status_type: "regions").update({ updated_at: Time.current })
   end
 
   before_destroy do
-    Status.where(status_type: 'regions').update({ updated_at: Time.current })
+    Status.where(status_type: "regions").update({ updated_at: Time.current })
   end
 
   def all_admin_email_addresses
     if users.empty?
-      ['email_not_found@noemailfound.noemail']
+      ["email_not_found@noemailfound.noemail"]
     else
       users.map(&:email).sort
     end
   end
 
   def primary_email_contact
-    return 'email_not_found@noemailfound.noemail' if users.empty?
+    return "email_not_found@noemailfound.noemail" if users.empty?
 
     users.each do |u|
       return u.email if u.is_primary_email_contact
@@ -97,17 +97,17 @@ class Region < ApplicationRecord
   def available_search_sections
     sections = %w[location city machine type]
 
-    sections.push('operator') if operators.present? || Operator.where(region_id: nil).exists?
+    sections.push("operator") if operators.present? || Operator.where(region_id: nil).exists?
 
-    sections.push('zone') unless zones.empty?
+    sections.push("zone") unless zones.empty?
 
-    '[' + sections.map { |s| "'" + s + "'" }.join(', ') + ']'
+    "[" + sections.map { |s| "'" + s + "'" }.join(", ") + "]"
   end
 
   def filtered_region_links
     links = {}
     region_link_xrefs.each do |rlx|
-      (links[rlx.category && !rlx.category.blank? ? rlx.category : 'Links'] ||= []) << rlx
+      (links[rlx.category && !rlx.category.blank? ? rlx.category : "Links"] ||= []) << rlx
     end
 
     links
@@ -119,7 +119,7 @@ class Region < ApplicationRecord
   end
 
   def lat_and_lon
-    [lat, lon].join(', ')
+    [lat, lon].join(", ")
   end
 
   def self.generate_daily_digest_regionless_comments_email_body
@@ -168,17 +168,17 @@ class Region < ApplicationRecord
     start_of_week = (Time.now - 1.week).beginning_of_day
     end_of_week = Time.now.end_of_day
 
-    regionless_locations = Location.where('region_id is null')
-    regionless_user_submissions = UserSubmission.where('region_id is null')
+    regionless_locations = Location.where("region_id is null")
+    regionless_user_submissions = UserSubmission.where("region_id is null")
     regionless_machines_added_by_users_this_week = 0
     regionless_locations.each do |l|
       regionless_machines_added_by_users_this_week += l.location_machine_xrefs.select { |lmx| !lmx.created_at.nil? && lmx.created_at.between?(start_of_week, end_of_week) }.count
     end
 
-    { regionless_locations_count: regionless_locations.count, regionless_machines_count: LocationMachineXref.count_by_sql('select count(*) from location_machine_xrefs lmx inner join locations l on (lmx.location_id = l.id) where l.region_id is null'),
+    { regionless_locations_count: regionless_locations.count, regionless_machines_count: LocationMachineXref.count_by_sql("select count(*) from location_machine_xrefs lmx inner join locations l on (lmx.location_id = l.id) where l.region_id is null"),
     machineless_locations: regionless_locations.select { |location| location.machines.empty? }.each.map { |ml| ml.name + " (#{ml.city}, #{ml.state})" },
-    suggested_locations: SuggestedLocation.where('region_id is null').each.map(&:name),
-    suggested_locations_count: UserSubmission.where('region_id is null').select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::SUGGEST_LOCATION_TYPE }.count,
+    suggested_locations: SuggestedLocation.where("region_id is null").each.map(&:name),
+    suggested_locations_count: UserSubmission.where("region_id is null").select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::SUGGEST_LOCATION_TYPE }.count,
     locations_added_count: regionless_locations.select { |l| !l.created_at.nil? && l.created_at.between?(start_of_week, end_of_week) }.count,
     locations_deleted_count: regionless_user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::DELETE_LOCATION_TYPE }.count,
     machine_comments_count: regionless_user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE }.count,
@@ -206,7 +206,7 @@ class Region < ApplicationRecord
   end
 
   def self.delete_empty_regionless_locations
-    Location.where('region_id is null').each do |l|
+    Location.where("region_id is null").each do |l|
       l.destroy if l.location_machine_xrefs.count.zero?
     end
   end
@@ -220,7 +220,7 @@ class Region < ApplicationRecord
   end
 
   def self.delete_all_regionless_events
-    Event.where('region_id is null').each do |e|
+    Event.where("region_id is null").each do |e|
       e.destroy
     end
   end

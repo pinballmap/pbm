@@ -5,9 +5,9 @@ class SuggestedLocationsController < InheritedResources::Base
   def create
     @suggested_location = SuggestedLocation.new(suggested_location_params)
     if @suggested_location.save
-      redirect_to @suggested_location, notice: 'SuggestedLocation was successfully created.'
+      redirect_to @suggested_location, notice: "SuggestedLocation was successfully created."
     else
-      render action: 'new'
+      render action: "new"
     end
   end
 
@@ -16,7 +16,7 @@ class SuggestedLocationsController < InheritedResources::Base
     sl.convert_to_location(params[:user_email])
 
     if sl.errors.any?
-      redirect_to "/admin/suggested_location/#{sl.id}", flash: { error: sl.errors.full_messages.join(', ') }
+      redirect_to "/admin/suggested_location/#{sl.id}", flash: { error: sl.errors.full_messages.join(", ") }
     else
       redirect_to rails_admin_path
     end

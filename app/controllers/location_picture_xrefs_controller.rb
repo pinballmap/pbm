@@ -4,7 +4,7 @@ class LocationPictureXrefsController < InheritedResources::Base
   before_action :authenticate_user!, except: %i[index show]
 
   def form
-    render partial: 'location_picture_xrefs/form', locals: { l: Location.find(params[:id]) }
+    render partial: "location_picture_xrefs/form", locals: { l: Location.find(params[:id]) }
   end
 
   def create

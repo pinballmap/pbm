@@ -5,9 +5,9 @@ class EventsController < InheritedResources::Base
   def create
     @event = Event.new(event_params)
     if @event.save
-      redirect_to @event, notice: 'Event was successfully created.'
+      redirect_to @event, notice: "Event was successfully created."
     else
-      render action: 'new'
+      render action: "new"
     end
   end
 
@@ -19,7 +19,7 @@ class EventsController < InheritedResources::Base
       format.html do
         @sorted_events = {}
         @events.each do |e|
-          category = e.category.blank? ? 'General' : e.category
+          category = e.category.blank? ? "General" : e.category
           (@sorted_events[category] ||= []) << e
         end
 

@@ -5,9 +5,9 @@ class ZonesController < InheritedResources::Base
   def create
     @zone = Zone.new(zone_params)
     if @zone.save
-      redirect_to @zone, notice: 'Zone was successfully created.'
+      redirect_to @zone, notice: "Zone was successfully created."
     else
-      render action: 'new'
+      render action: "new"
     end
   end
 

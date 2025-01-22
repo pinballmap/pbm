@@ -11,10 +11,10 @@ class LocationMachineXrefsController < InheritedResources::Base
     if !params["add_machine_by_id_#{location.id}"].empty?
       machine = Machine.find(params["add_machine_by_id_#{location.id}"])
     elsif !params["add_machine_by_name_#{location.id}"].empty?
-      machine = Machine.where(['lower(name) = ?', params["add_machine_by_name_#{location.id}"].downcase]).first
+      machine = Machine.where(["lower(name) = ?", params["add_machine_by_name_#{location.id}"].downcase]).first
 
       if machine.nil?
-        render js: 'show_new_machine_message();'
+        render js: "show_new_machine_message();"
         return
       end
     else
@@ -26,7 +26,7 @@ class LocationMachineXrefsController < InheritedResources::Base
     location.last_updated_by_user_id = user.id
     location.save(validate: false)
 
-    LocationMachineXref.where(['location_id = ? and machine_id = ?', location.id, machine.id]).first ||
+    LocationMachineXref.where(["location_id = ? and machine_id = ?", location.id, machine.id]).first ||
       LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user.id)
   end
 
@@ -68,19 +68,19 @@ class LocationMachineXrefsController < InheritedResources::Base
   end
 
   def render_machine_tools
-    logged_in = current_user ? 'logged_in' : 'logged_out'
+    logged_in = current_user ? "logged_in" : "logged_out"
 
-    render partial: 'location_machine_xrefs/render_machine_tools', locals: { lmx: LocationMachineXref.find(params[:id]), logged_in: logged_in }
+    render partial: "location_machine_xrefs/render_machine_tools", locals: { lmx: LocationMachineXref.find(params[:id]), logged_in: logged_in }
   end
 
   def render_machine_conditions
     lmx = LocationMachineXref.find(params[:id])
-    render partial: 'locations/render_machine_conditions', locals: { conditions: lmx.sorted_machine_conditions.includes([:user]), lmx: lmx }
+    render partial: "locations/render_machine_conditions", locals: { conditions: lmx.sorted_machine_conditions.includes([:user]), lmx: lmx }
   end
 
   def index
-    @lmxs = apply_scopes(LocationMachineXref).order('location_machine_xrefs.id desc').limit(50).includes({ location: :region }, :machine, :user)
-    @lmxs = @lmxs.where('machine_id = ?', params[:machine_id]) if params[:machine_id].present? && params[:machine_id].match?(/[0-9]+/)
+    @lmxs = apply_scopes(LocationMachineXref).order("location_machine_xrefs.id desc").limit(50).includes({ location: :region }, :machine, :user)
+    @lmxs = @lmxs.where("machine_id = ?", params[:machine_id]) if params[:machine_id].present? && params[:machine_id].match?(/[0-9]+/)
 
     respond_with(@lmxs)
   end
@@ -89,7 +89,7 @@ class LocationMachineXrefsController < InheritedResources::Base
     lmx = LocationMachineXref.find(params[:id])
     user = current_user
     lmx.toggle!(:ic_enabled)
-    render partial: 'location_machine_xrefs/ic_button', locals: { lmx: lmx }
+    render partial: "location_machine_xrefs/ic_button", locals: { lmx: lmx }
     if (lmx.ic_enabled == true) && (lmx.location.ic_active != true)
       lmx.location.ic_active = true
       lmx.location.save

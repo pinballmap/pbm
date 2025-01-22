@@ -4,9 +4,9 @@ class RegionsController < InheritedResources::Base
   def create
     @region = Region.new(region_params)
     if @region.save
-      redirect_to @region, notice: 'Region was successfully created.'
+      redirect_to @region, notice: "Region was successfully created."
     else
-      render action: 'new'
+      render action: "new"
     end
   end
 
@@ -19,7 +19,7 @@ class RegionsController < InheritedResources::Base
   end
 
   def all_region_data
-    @region = Region.find_by_name(params[:region] || 'portland')
+    @region = Region.find_by_name(params[:region] || "portland")
   end
 
   private

@@ -6,10 +6,10 @@ module Api
       before_action :allow_cors
       respond_to :json
 
-      api :GET, '/api/v1/statuses.json', 'Fetch table statuses'
-      formats ['json']
+      api :GET, "/api/v1/statuses.json", "Fetch table statuses"
+      formats ["json"]
       def index
-        return_response(Status.all, 'statuses')
+        return_response(Status.all, "statuses")
       end
     end
   end
