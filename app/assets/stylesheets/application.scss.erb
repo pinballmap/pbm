@@ -1046,6 +1046,7 @@ form#address_search_form input.lookup_search_input {
 .map_input .limit #by_type_id {
   width: 143px;
 }
+
 .activity_hr {
   border-bottom: 1px solid;
   margin: 5px 20px;
@@ -1054,7 +1055,8 @@ form#address_search_form input.lookup_search_input {
 .hr {
   display: flex;
   flex-direction: row;
-  }
+}
+
 .hr:before, .hr:after{
   content: "";
   flex: 1 1;
@@ -2655,6 +2657,25 @@ input.score {
 
 .recent_activity_submission {
   width: 70%;
+}
+
+#activity_filter {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 15px;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#activity_filter > div {
+  margin: 10px;
+  width: 60px;
+}
+
+#activity_filter input {
+  height: 30px;
 }
 
 img.banner_icon {

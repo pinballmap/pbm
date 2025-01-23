@@ -7,18 +7,33 @@
     .clear
 
     .column.w_640
-      = form_tag activity_path, :method => 'get', id: 'activity_filter', :remote => true do
-        %input{:type => "checkbox", :id => "filterNewLmx", :name => "filterActivity", :class => "m_0", :value => 'new_lmx'}
-        %span.single_hide Machine added
-        %input{:type => "checkbox", :id => "filterRemoveMachine", :name => "filterActivity", :class => "m_0", :value => 'remove_machine'}
-        %span.single_hide Machine removed
-        %input{:type => "checkbox", :id => "filterNewCondition", :name => "filterActivity", :class => "m_0", :value => 'new_condition'}
-        %span.single_hide New condition
-        %input{:type => "checkbox", :id => "filterNewMsx", :name => "filterActivity", :class => "m_0", :value => 'new_msx'}
-        %span.single_hide Score added
-        %input{:type => "checkbox", :id => "filterConfirmLocation", :name => "filterActivity", :class => "m_0", :value => 'confirm_location'}
-        %span.single_hide Location confirmed
-        = submit_tag 'Submit'
+      = form_tag activity_path, :method => 'get', id: 'activity_filter' do
+        %div
+          =image_tag("icons/new_lmx.svg", :alt => "new_lmx", :class => 'recent_activity_icon')
+          %input{:type => "checkbox", :id => "filterNewLmx", :name => "filterActivity", :class => "m_0", :value => 'new_lmx'}
+          %div
+            %span Machine added
+        %div
+          =image_tag("icons/remove_machine.svg", :alt => "remove_machine", :class => 'recent_activity_icon')
+          %input{:type => "checkbox", :id => "filterRemoveMachine", :name => "filterActivity", :class => "m_0", :value => 'remove_machine'}
+          %div
+            %span Machine removed
+        %div
+          =image_tag("icons/new_condition.svg", :alt => "new_condition", :class => 'recent_activity_icon')
+          %input{:type => "checkbox", :id => "filterNewCondition", :name => "filterActivity", :class => "m_0", :value => 'new_condition'}
+          %div
+            %span New condition
+        %div
+          =image_tag("icons/new_msx.svg", :alt => "new_msx", :class => 'recent_activity_icon')
+          %input{:type => "checkbox", :id => "filterNewMsx", :name => "filterActivity", :class => "m_0", :value => 'new_msx'}
+          %div
+            %span Score added
+        %div
+          =image_tag("icons/confirm_location.svg", :alt => "confirm_location", :class => 'recent_activity_icon')
+          %input{:type => "checkbox", :id => "filterConfirmLocation", :name => "filterActivity", :class => "m_0", :value => 'confirm_location'}
+          %div
+            %span Location confirmed
+        = submit_tag 'Apply Filters', :class => "save_button"
 
     = render partial: 'render_activity'
 
