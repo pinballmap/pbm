@@ -36,9 +36,8 @@
       url: '/activity',
       type: 'POST',
       data: {
-        filterActivity: activeFilters
+        submission_type: activeFilters
       },
-      dataType: "html",
       success: function(data) {
         $("#activity").html(data);
       }
