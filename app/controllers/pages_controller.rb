@@ -94,7 +94,17 @@ class PagesController < ApplicationController
   def profile; end
 
   def set_activities
-    submission_type = params[:filterActivity].blank? ? %w[new_lmx remove_machine new_condition new_msx confirm_location] : params[:filterActivity]
+    submission_type = params[:submission_type].blank? ? %w[new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
+
+    if @region && params[:submission_type]
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, region_id: @region.id, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC'), params: { submission_type: submission_type })
+    elsif @region
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, region_id: @region.id, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC'))
+    elsif params[:submission_type]
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC'), params: { submission_type: submission_type })
+    else
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, created_at: '2019-05-03T07:00:00.00-07:00'..Date.today.end_of_day).order('created_at DESC'))
+    end
 
     if @region
       @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, region_id: @region.id, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).order("created_at DESC"))
@@ -108,7 +118,6 @@ class PagesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.js { render partial: 'pages/render_activity', layout: false }
     end
   end
 
