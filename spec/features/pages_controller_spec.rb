@@ -329,11 +329,23 @@ describe PagesController do
       expect(page).to have_link("Clark's Depot")
       # need to add link destination
 
+      find('#filterNewLmx').click
+      find('.save_button').click
+
+      expect(page).to have_content("added to Clark's Depot")
+      expect(page).to_not have_content("removed from Ripley's Hut")
+
       visit '/activity'
 
       expect(page).to have_content('Recent Activity')
       expect(page).to have_content("added to Clark's Depot")
       expect(page).to have_content("removed from Ripley's Hut")
+
+      find('#filterNewLmx').click
+      find('.save_button').click
+
+      expect(page).to have_content("added to Clark's Depot")
+      expect(page).to_not have_content("removed from Ripley's Hut")
     end
   end
 end
