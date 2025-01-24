@@ -93,15 +93,40 @@ class PagesController < ApplicationController
 
   def profile; end
 
-  def activity
+  def set_activities
+    submission_type = params[:submission_type].blank? ? %w[new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
+
+    if @region && params[:submission_type]
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, region_id: @region.id, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).order("created_at DESC"), params: { submission_type: submission_type })
+    elsif @region
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, region_id: @region.id, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).order("created_at DESC"))
+    elsif params[:submission_type]
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).order("created_at DESC"), params: { submission_type: submission_type })
+    else
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).order("created_at DESC"))
+    end
+
     if @region
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], region_id: @region.id, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).order("created_at DESC"))
       @region_fullname = "the " + @region.full_name
       @region_name = @region.name
     else
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition new_msx confirm_location], created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).order("created_at DESC"))
       @region_fullname = ""
       @region_name = "map"
+    end
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def recent_activity
+    set_activities
+    case request.request_method
+    when "GET"
+      render "pages/activity"
+    when "POST"
+      render partial: "pages/render_activity", object: @recent_activity
+    else
+      p "unknown request_method: #{request.request_method}"
     end
   end
 
