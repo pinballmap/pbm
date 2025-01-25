@@ -35,7 +35,8 @@
             %span Location confirmed
         = submit_tag 'Apply Filters', :class => "save_button"
 
-    = render partial: 'render_activity'
+    #activity.column.w_640.center
+      = render partial: 'render_activity'
 
 :javascript
   $('#activity_filter').on('submit', function(e) {
