@@ -107,11 +107,9 @@ class PagesController < ApplicationController
     end
 
     if @region
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, region_id: @region.id, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).order("created_at DESC"))
       @region_fullname = "the " + @region.full_name
       @region_name = @region.name
     else
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).order("created_at DESC"))
       @region_fullname = ""
       @region_name = "map"
     end

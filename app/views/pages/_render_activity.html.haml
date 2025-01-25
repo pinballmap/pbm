@@ -1,4 +1,4 @@
-#activity
+#activity.column.w_640.center
   .column.w_640
     - @recent_activity.each do |recent_activity|
       %div.recent_activity_container
@@ -13,7 +13,7 @@
               =link_to "#{recent_activity.location_name}", "/#{@region_name}?by_location_id=#{recent_activity.location_id}"
             in #{recent_activity.city_name}
             - if (!recent_activity.user_name.blank?)
-              by 
+              by
               %span.bold #{recent_activity.user_name}
           - elsif (recent_activity.submission_type == 'new_condition')
             %span.inline_block.mb_8 "#{recent_activity.comment}"
@@ -62,3 +62,28 @@
 
     #next_link{:style => 'margin: 20px 10px'}
       != pagy_nav(@pagy)
+:javascript
+  $("#next_link > nav > a").on("click", function(e) {
+    e.preventDefault
+
+    $("#activity").html(loadingHTML());
+
+    activityFilters = []
+    $("input:checkbox[name=filterActivity]:checked").each(function () {
+      activityFilters.push(this.value);
+    });
+
+    document.getElementById("activity_filter").scrollIntoView({ "behavior": "smooth" })
+
+    $.ajax({
+      url: `/activity?${e.target.search}`,
+      type: 'POST',
+      data: {
+        submission_type: activityFilters
+      },
+      success: function(data) {
+        $("#activity").html(data);
+      }
+    });
+    return false;
+  });

@@ -52,7 +52,7 @@
       url: '/activity',
       type: 'POST',
       data: {
-        filterActivity: activityFilters
+        submission_type: activityFilters
       },
       success: function(data) {
         $("#activity").html(data);
