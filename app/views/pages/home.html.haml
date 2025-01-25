@@ -15,9 +15,7 @@
       #{number_with_delimiter(@machines_count_total,:delimiter => ",")}
     machines
   %div.flex_center.italic.darkgrey
-    The map was last updated
-    =distance_of_time_in_words(Time.now, @last_updated_time)
-    ago
+    %span== The map was #{link_to "last updated #{distance_of_time_in_words(Time.now, @last_updated_time)} ago", activity_path}
 %div.flex_center.bg_lightpurple#app
   =link_to 'Use the App', '#app', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
