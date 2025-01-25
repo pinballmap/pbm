@@ -130,6 +130,18 @@ class PagesController < ApplicationController
     end
   end
 
+  def recent_activity
+    set_activities
+    case request.request_method
+    when "GET"
+      render "pages/activity"
+    when "POST"
+      render partial: "pages/render_activity", object: @recent_activity
+    else
+      p "unknown request_method: #{request.request_method}"
+    end
+  end
+
   def contact
     redirect_to about_path
   end

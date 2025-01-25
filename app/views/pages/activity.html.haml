@@ -40,9 +40,10 @@
 :javascript
   $('#activity_filter').on('submit', function(e) {
     e.preventDefault();
-    activeFilters = []
+
+    activityFilters = []
     $("input:checkbox[name=filterActivity]:checked").each(function () {
-      activeFilters.push(this.value);
+      activityFilters.push(this.value);
     });
 
     $("#activity").html(loadingHTML());
@@ -51,7 +52,7 @@
       url: '/activity',
       type: 'POST',
       data: {
-        submission_type: activeFilters
+        submission_type: activityFilters
       },
       success: function(data) {
         $("#activity").html(data);
