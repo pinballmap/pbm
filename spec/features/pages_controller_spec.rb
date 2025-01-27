@@ -312,40 +312,122 @@ describe PagesController do
     end
   end
 
-  describe 'Activity', type: :feature, js: true do
-    it 'shows region activity' do
+  describe 'activity page and filtering', type: :feature, js: true do
+    before(:each) do
       @other_region_location = FactoryBot.create(:location, city: 'Hillsboro', zip: '97005', name: "Ripley's Hut", region: @other_region)
       @other_region = FactoryBot.create(:region, name: 'seattle', full_name: 'Seattle')
 
       FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE)
 
+      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+
       FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+
+      FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_LMX_TYPE)
+    end
+    it 'shows region activity' do
 
       visit '/portland/activity'
 
-      expect(page).to have_content('Recent Activity')
+      expect(page).to have_content("Here's a feed of edits to the Portland Pinball Map")
       expect(page).to have_content("added to Clark's Depot")
+      expect(page).to have_content("removed from Clark's Depot")
+      expect(page).to_not have_content("added to Ripley's Hut")
       expect(page).to_not have_content("removed from Ripley's Hut")
       expect(page).to have_link("Clark's Depot")
-      # need to add link destination
+    end
+    it 'filters region activity' do
+      visit '/portland/activity'
 
       find('#filterNewLmx').click
       find('.save_button').click
 
+      expect(page).to have_content("Here's a feed of edits to the Portland Pinball Map")
       expect(page).to have_content("added to Clark's Depot")
+      expect(page).to_not have_content("added to Ripley's Hut")
       expect(page).to_not have_content("removed from Ripley's Hut")
-
+      expect(page).to_not have_content("removed from Clark's Depot")
+    end
+    it 'shows global activity' do
       visit '/activity'
 
       expect(page).to have_content('Recent Activity')
       expect(page).to have_content("added to Clark's Depot")
+      expect(page).to have_content("removed from Clark's Depot")
+      expect(page).to have_content("added to Ripley's Hut")
       expect(page).to have_content("removed from Ripley's Hut")
+    end
+    it 'filters activity' do
+      visit '/activity'
 
       find('#filterNewLmx').click
       find('.save_button').click
 
       expect(page).to have_content("added to Clark's Depot")
+      expect(page).to have_content("added to Ripley's Hut")
       expect(page).to_not have_content("removed from Ripley's Hut")
+      expect(page).to_not have_content("removed from Clark's Depot")
+    end
+  end
+
+  describe 'activity page pagination', type: :feature, js: true do
+    before(:each) do
+      @other_region_location = FactoryBot.create(:location, city: 'Hillsboro', zip: '97005', name: "Ripley's Hut", region: @other_region)
+      @other_region = FactoryBot.create(:region, name: 'seattle', full_name: 'Seattle')
+      20.times do
+        FactoryBot.create(:user_submission, created_at: '2025-01-01', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE)
+
+        FactoryBot.create(:user_submission, created_at: '2025-01-01', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_LMX_TYPE)
+
+        FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+
+        FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+
+        FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE, comment: 'hello there')
+
+        FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_CONDITION_TYPE, comment: 'bye')
+      end
+    end
+    it 'shows region pagination and respects regional results' do
+      visit '/portland/activity'
+
+      expect(page).to have_link("2")
+      expect(page).to_not have_content("Pizza Attack")
+    end
+    it 'respects regional results on next page' do
+      visit '/portland/activity'
+
+      click_link("2")
+
+      expect(page).to_not have_content("Pizza Attack")
+    end
+    it 'shows page 2 content on page 2' do
+      visit '/activity'
+
+      click_link("2")
+
+      expect(page).to have_content("added to Clark's Depot")
+      expect(page).to have_content("added to Ripley's Hut")
+      expect(page).to_not have_content("bye")
+      expect(page).to_not have_content("hello there")
+    end
+    it 'respects filter on next page' do
+      20.times do
+        FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE)
+
+        FactoryBot.create(:user_submission, created_at: '2024-12-31', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Congo', submission_type: UserSubmission::NEW_LMX_TYPE)
+      end
+      visit '/activity'
+
+      find('#filterNewLmx').click
+      find('.save_button').click
+      click_link("2")
+
+      expect(page).to_not have_content("removed from")
+      expect(page).to have_content("Congo")
+      expect(page).to have_content("added to Ripley's Hut")
+      expect(page).to_not have_content("bye")
+      expect(page).to_not have_content("hello there")
     end
   end
 end
