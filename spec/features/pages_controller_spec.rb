@@ -326,7 +326,6 @@ describe PagesController do
       FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_LMX_TYPE)
     end
     it 'shows region activity' do
-
       visit '/portland/activity'
 
       expect(page).to have_content("Here's a feed of edits to the Portland Pinball Map")
