@@ -47,10 +47,12 @@
       activityFilters.push(this.value);
     });
 
+    let url = new URL(window.location.href);
+
     $("#activity").html(loadingHTML());
 
     $.ajax({
-      url: '/activity',
+      url: `${url.pathname}`,
       type: 'POST',
       data: {
         submission_type: activityFilters

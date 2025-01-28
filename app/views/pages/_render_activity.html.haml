@@ -61,28 +61,3 @@
 
   #next_link{:style => 'margin: 20px 10px'}
     != pagy_nav(@pagy)
-:javascript
-  $("#next_link > nav > a").on("click", function(e) {
-    e.preventDefault
-
-    $("#activity").html(loadingHTML());
-
-    activityFilters = []
-    $("input:checkbox[name=filterActivity]:checked").each(function () {
-      activityFilters.push(this.value);
-    });
-
-    document.getElementById("activity_filter").scrollIntoView({ "behavior": "smooth" })
-
-    $.ajax({
-      url: `/activity?${e.target.search}`,
-      type: 'POST',
-      data: {
-        submission_type: activityFilters
-      },
-      success: function(data) {
-        $("#activity").html(data);
-      }
-    });
-    return false;
-  });
