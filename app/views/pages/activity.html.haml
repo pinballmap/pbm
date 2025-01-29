@@ -39,9 +39,18 @@
       = render partial: 'render_activity'
 
 :javascript
-  $('#activity_filter').on('submit', function(e) {
-    e.preventDefault();
+  window.addEventListener("popstate", function(e) {
+    let url = new URL(e.target.location.href)
+    let pagenum = ""
+    if (url.searchParams.has("page")) {
+      pagenum = `?page=${url.searchParams.get("page")}`
+    }
 
+    refreshActivityList(url, pagenum, true)
+  });
+
+  $('#activity_filter').on('submit', function(e){
+    e.preventDefault()
     let url = new URL(window.location.href)
     refreshActivityList(url)
   });
@@ -51,8 +60,6 @@
     $("input:checkbox[name=filterActivity]:checked").each(function () {
       activityFilters.push(this.value);
     });
-
-    let url = new URL(window.location.href);
 
     $("#activity").html(loadingHTML());
 
