@@ -51,14 +51,17 @@
 
     $("#activity").html(loadingHTML());
 
+    let url = new URL(window.location.href)
+
     $.ajax({
-      url: `${url.pathname}`,
+      url: url.pathname,
       type: 'POST',
       data: {
         submission_type: activityFilters
       },
       success: function(data) {
         $("#activity").html(data);
+        window.history.pushState({}, "", url.pathname)
       }
     });
     return false;
