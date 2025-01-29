@@ -63,16 +63,7 @@
     != pagy_nav(@pagy)
 :javascript
   $("#next_link > nav > a").on("click", function(e) {
-    e.preventDefault
-
-    $("#activity").html(loadingHTML());
-
-    activityFilters = []
-    $("input:checkbox[name=filterActivity]:checked").each(function () {
-      activityFilters.push(this.value);
-    });
-
-    document.getElementById("activity_filter").scrollIntoView({ "behavior": "smooth" })
+    e.preventDefault()
 
     let url = new URL(e.target.href)
     let pagenum = ""
@@ -80,16 +71,7 @@
       pagenum = `?page=${url.searchParams.get("page")}`
     }
 
-    $.ajax({
-      url: `${e.target.pathname}${pagenum}`,
-      type: 'POST',
-      data: {
-        submission_type: activityFilters
-      },
-      success: function(data) {
-        $("#activity").html(data);
-        window.history.pushState({}, "", `${e.target.pathname}${pagenum}`)
-      }
-    });
-    return false;
+    document.getElementById("activity_filter").scrollIntoView({ "behavior": "smooth" })
+
+    refreshActivityList(url, pagenum)
   });

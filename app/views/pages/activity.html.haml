@@ -42,6 +42,11 @@
   $('#activity_filter').on('submit', function(e) {
     e.preventDefault();
 
+    let url = new URL(window.location.href)
+    refreshActivityList(url)
+  });
+
+  function refreshActivityList(url, pagenum = "", supressHistory = false) {
     activityFilters = []
     $("input:checkbox[name=filterActivity]:checked").each(function () {
       activityFilters.push(this.value);
@@ -51,18 +56,19 @@
 
     $("#activity").html(loadingHTML());
 
-    let url = new URL(window.location.href)
-
     $.ajax({
-      url: url.pathname,
+      url: `${url.pathname}${pagenum}`,
       type: 'POST',
       data: {
         submission_type: activityFilters
       },
       success: function(data) {
         $("#activity").html(data);
-        window.history.pushState({}, "", url.pathname)
+
+        if (!supressHistory) {
+          window.history.pushState({"page": pagenum}, "", `${url.pathname}${pagenum}`)
+        }
       }
     });
     return false;
-  });
+  };
