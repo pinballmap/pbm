@@ -2,21 +2,7 @@ class LocationPictureXref < ApplicationRecord
   belongs_to :location, optional: true
   belongs_to :user, optional: true
 
-  has_attached_file :photo,
-                    storage: :s3,
-                    bucket: "pbm-images",
-                    path: "location_picture_xref/photo/:id/:style/:filename",
-                    url: ENV.fetch("AWS_PICTURE_PATH", "https://s3.amazonaws.com/pbm-images/location_picture_xref/photo/:id/medium/:filename"),
-                    styles: {
-                      thumb: "36x25>",
-                      medium: "300x300>",
-                      large: "800x800>"
-                    },
-                    s3_credentials: {
-                      access_key_id: ENV["AWS_ACCESS_KEY_ID"],
-                      secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"]
-                    },
-                    s3_region: ENV["AWS_REGION"]
+  has_one_attached :photo
 
   do_not_validate_attachment_file_type :photo
 
@@ -24,7 +10,7 @@ class LocationPictureXref < ApplicationRecord
 
   def create_user_submission
     user_info = user ? user.username : "UNKNOWN USER"
-    submission = "#{user_info} added a picture of #{location.name} in #{location.city}#{photo.nil? ? '' : ': https:' + photo.url(:large)}"
+    submission = "#{user_info} added a picture of #{location.name} in #{location.city}"
 
     UserSubmission.create(user_name: user.username, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, submission_type: UserSubmission::NEW_PICTURE_TYPE, submission: submission, user: user)
     Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"

@@ -1,7 +1,7 @@
 # rubocop:disable Style/MixinUsage
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] = 'test'
-ENV['AWS_REGION'] = 'us-east-1'
+ENV['AWS_REGION'] = 'us-west-1'
 require File.expand_path('../../config/environment', __FILE__)
 require 'factory_bot_rails'
 require 'rspec/rails'

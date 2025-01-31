@@ -1,7 +1,6 @@
 class PagesController < ApplicationController
   respond_to :xml, :json, :html, :js, :rss
 
-
   def contact_sent
     user = current_user.nil? ? nil : current_user
     return if params["contact_msg"].blank? || (!user && params["contact_email"].blank?) || params["contact_msg"].match?(/vape/) || params["contact_msg"].match?(/seo/) || params["contact_msg"].match?(/Ezoic/)
