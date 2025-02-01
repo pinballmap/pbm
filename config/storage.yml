@@ -12,7 +12,8 @@ amazon:
   access_key_id: <%= ENV["AWS_ACCESS_KEY_ID"] %>
   secret_access_key: <%= ENV["AWS_SECRET_ACCESS_KEY"] %>
   region: us-west-1
-  bucket: <%= ENV["AWS_BUCKET_NAME"] %>
+  bucket: <%= ENV["AWS_BUCKET_NAME"] || 'pbmimages-dev' %>
+  # public: true
 
 # Remember not to checkin your GCS keyfile to a repository
 # google:

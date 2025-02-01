@@ -1,5 +1,5 @@
 %div.machine_name_container
-  %span{:class => "machine_name"}
+  %div{:class => "machine_name"}
     #{lmx.machine.name}
     %span.machine_year_man #{lmx.machine.year_and_manufacturer}
   = render :partial => 'location_machine_xrefs/remove_machine', :locals => {:lmx => lmx}

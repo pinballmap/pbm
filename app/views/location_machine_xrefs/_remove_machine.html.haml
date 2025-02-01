@@ -1,10 +1,11 @@
-- if !user_signed_in?
-  =link_to new_user_session_path, :class => "no_underline" do
-    %div.remove_machine_button
+%div.remove_machine_container
+  - if !user_signed_in?
+    =link_to new_user_session_path, :class => "no_underline" do
+      %div.remove_machine_button
+        =image_tag('icons/trash-can-outline.svg', alt: 'Remove Machine')
+  - else
+    = button_to location_machine_xref_path(:id => lmx.id), :id => "remove_machine_#{lmx.id}", :method => 'delete', :remote => true, :class => "remove_machine_button" do
       =image_tag('icons/trash-can-outline.svg', alt: 'Remove Machine')
-- else
-  = button_to location_machine_xref_path(:id => lmx.id), :id => "remove_machine_#{lmx.id}", :method => 'delete', :remote => true, :class => "remove_machine_button" do
-    =image_tag('icons/trash-can-outline.svg', alt: 'Remove Machine')
 
   :javascript
     $('#remove_machine_#{lmx.id}').click(function () {
