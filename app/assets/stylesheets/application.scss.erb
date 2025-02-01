@@ -1565,6 +1565,8 @@ li.address_full {
   width: 100%;
   padding: 6px 6px 6px 10px;
   display: flex;
+  gap: 10px;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   font-size: 24px;
@@ -1573,9 +1575,12 @@ li.address_full {
   border-radius: 15px;
 }
 
-.machine_name_container .remove_machine_container {
+.machine_name_container .remove_machine_container,
+.machine_name_container button {
   height: 33px;
   width: 30px;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .w_100 {
@@ -1955,7 +1960,7 @@ div.machine_condition_meta {
   margin-top: -5px;
 }
 
-.button_to {
+.location_thumbs .button_to {
   display: inline;
 }
 
