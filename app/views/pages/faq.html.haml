@@ -146,6 +146,10 @@
         =link_to 'Can I change my username?', '#19', :class => "no_underline"
       %p.answer== Only administrators can change your username. #{link_to 'Contact us', about_path('portland')} and we'll be happy to change it.
       %hr
+      %p.question#23
+        =link_to 'I forgot my password???', '#23', :class => "no_underline"
+      %p.answer== Go to the #{link_to 'login page', new_user_session_path} and click the "Forgot your password" link. Make sure to check your spam for the reset email.
+      %hr
       %p.question#20
         =link_to 'How do I update my password, or email, or delete my account?', '#19', :class => "no_underline"
       %p.answer== These can be done on your #{link_to 'Profile page', inspire_profile_path}.
