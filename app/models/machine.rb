@@ -45,7 +45,21 @@ class Machine < ApplicationRecord
     end
   end
 
-  def self.tag_with_opdb_json(opdb_json)
+  def self.tag_with_opdb_changelog_json(opdb_json)
+    JSON.parse(opdb_json).each do |r|
+      m = Machine.find_by_opdb_id(r["opdb_id_deleted"])
+      next unless m
+
+      if r["action"] == "move"
+        m.opdb_id = r["opdb_id_replacement"]
+      elsif r["action"] == "delete"
+        m.opdb_id = ""
+      end
+      m.save
+    end
+  end
+
+  def self.tag_with_opdb_image_json(opdb_json)
     JSON.parse(opdb_json).each do |r|
       m = Machine.find_by_opdb_id(r["opdb_id"])
       next unless m

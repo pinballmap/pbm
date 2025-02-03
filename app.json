@@ -25,6 +25,10 @@
       "schedule": "30 15 * * *"
     },
     {
+      "command": "rake tag_opdb_changelog",
+      "schedule": "30 13 * * *"
+    },
+    {
       "command": "rake delete_opted_in_empty_locations",
       "schedule": "30 22 * * 0"
     },
