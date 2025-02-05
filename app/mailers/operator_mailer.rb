@@ -1,8 +1,9 @@
 class OperatorMailer < ApplicationMailer
-  def send_recent_comments
-    @comments = params[:comments]
-    @heading = params[:heading]
+  def send_daily_digest_operator_email
+    @machine_comments = params[:machine_comments]
+    @machines_added = params[:machines_added]
+    @machines_removed = params[:machines_removed]
 
-    mail(to: params[:email], subject: "Pinball Map - Daily digest of comments on your machines - #{Date.today.strftime('%m/%d/%Y')}")
+    mail(to: params[:email_to], subject: "Pinball Map - Daily digest of edits to your locations - #{Date.today.strftime('%m/%d/%Y')}")
   end
 end

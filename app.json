@@ -21,7 +21,7 @@
       "schedule": "0 8 * * *"
     },
     {
-      "command": "rake notify_operators",
+      "command": "rake send_daily_digest_operator_email",
       "schedule": "30 15 * * *"
     },
     {

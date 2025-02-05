@@ -1,17 +1,17 @@
 require 'spec_helper'
 
 RSpec.describe OperatorMailer, type: :mailer do
-  describe 'send_recent_comments' do
-    it 'should send email digest with machine comments' do
-      email = OperatorMailer.with(email: [ 'foo@bar.com' ], location_id: 'Sassy Mo', comments: [ 'foo' ]).send_recent_comments
+  describe 'send_daily_digest_operator_email' do
+    it 'should send email digest with location edits' do
+      email = OperatorMailer.with(to_email: 'foo@bar.com', machine_comments: [ 'foo' ], machines_added: [ 'Pirates of the Pacific' ], machines_removed: [ 'Battle of Midway' ]).send_daily_digest_operator_email
 
       assert_emails 1 do
         email.deliver_later
       end
 
-      assert_equal email.to, [ 'foo@bar.com' ]
+      assert_equal 'foo@bar.com', email.to
       assert_equal [ 'admin@pinballmap.com' ], email.from
-      assert_equal email.subject, "Pinball Map - Daily digest of comments on your machines - #{Date.today.strftime('%m/%d/%Y')}"
+      assert_equal "Pinball Map - Daily digest of edits to your locations - #{Date.today.strftime('%m/%d/%Y')}", email.subject
     end
   end
 end

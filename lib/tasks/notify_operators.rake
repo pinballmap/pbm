@@ -1,6 +1,20 @@
-desc "Sends emails to operators with recent comments on their machines"
-task notify_operators: :environment do
-  Operator.all.each(&:send_recent_comments)
+desc "Sends emails to operators with recent location edits"
+task send_daily_digest_operator_email: :environment do
+  Operator.where.not(email: [ nil, "" ]).each do |o|
+    email_body = o.generate_operator_daily_digest
+    machine_comments = email_body[:machine_comments]
+    machines_added = email_body[:machines_added]
+    machines_removed = email_body[:machines_removed]
+
+    next if machine_comments.empty? && machines_added.empty? && machines_removed.empty?
+
+    puts "machine comments #{machine_comments}"
+
+    email_to = o.email.to_s
+
+    OperatorMailer.with(email_to: email_to, machine_comments: machine_comments, machines_added: machines_added, machines_removed: machines_removed).send_daily_digest_operator_email.deliver_later
+    sleep(8)
+  end
 rescue StandardError => e
   error_subject = "Notify operators rake task error"
   error = e.to_s
