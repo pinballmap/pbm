@@ -22,10 +22,10 @@ class Operator < ApplicationRecord
     start_of_day = (Time.now - 1.day).beginning_of_day
     end_of_day = (Time.now - 1.day).end_of_day
 
-    { machine_comments: UserSubmission.joins(:location).where(location: { operator_id: self}).select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE }.collect(&:submission),
+    { machine_comments: UserSubmission.joins(:location).where(location: { operator_id: self }).select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE }.collect(&:submission),
 
-    machines_added: UserSubmission.joins(:location).where(location: { operator_id: self}).select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_LMX_TYPE }.collect(&:submission),
+    machines_added: UserSubmission.joins(:location).where(location: { operator_id: self }).select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::NEW_LMX_TYPE }.collect(&:submission),
 
-    machines_removed: UserSubmission.joins(:location).where(location: { operator_id: self}).select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.collect(&:submission) }
+    machines_removed: UserSubmission.joins(:location).where(location: { operator_id: self }).select { |us| !us.created_at.nil? && us.created_at.between?(start_of_day, end_of_day) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.collect(&:submission) }
   end
 end
