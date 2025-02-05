@@ -9,7 +9,7 @@ RSpec.describe OperatorMailer, type: :mailer do
         email.deliver_later
       end
 
-      assert_equal 'foo@bar.com', email.to
+      assert_equal [ 'foo@bar.com' ], email.to
       assert_equal [ 'admin@pinballmap.com' ], email.from
       assert_equal "Pinball Map - Daily digest of edits to your locations - #{Date.today.strftime('%m/%d/%Y')}", email.subject
     end

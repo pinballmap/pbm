@@ -18,7 +18,7 @@ describe Region do
   describe '#create' do
     it 'should update timestamp in status table' do
       @status = FactoryBot.create(:status, status_type: 'regions', updated_at: Time.current - 1.day)
-      FactoryBot.create(:region, name: 'glendale')
+      FactoryBot.create(:region, name: 'glendale', id: 23345)
 
       expect(@status.reload.updated_at).to be_within(1.second).of Time.current
     end
@@ -510,7 +510,7 @@ describe Region do
 
   describe '#random_location_id' do
     it 'should return a location_id from within a region' do
-      rand_region = FactoryBot.create(:region, name: 'stjohns')
+      rand_region = FactoryBot.create(:region, name: 'stjohns', id: 23985)
       FactoryBot.create(:location, id: 1000, region: rand_region)
       FactoryBot.create(:location, id: 1001, region: rand_region)
       FactoryBot.create(:location, id: 1002, region: rand_region)
