@@ -8,8 +8,6 @@ task send_daily_digest_operator_email: :environment do
 
     next if machine_comments.empty? && machines_added.empty? && machines_removed.empty?
 
-    puts "machine comments #{machine_comments}"
-
     email_to = o.email.to_s
 
     OperatorMailer.with(email_to: email_to, machine_comments: machine_comments, machines_added: machines_added, machines_removed: machines_removed).send_daily_digest_operator_email.deliver_later

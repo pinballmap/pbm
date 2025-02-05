@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe OperatorMailer, type: :mailer do
   describe 'send_daily_digest_operator_email' do
     it 'should send email digest with location edits' do
-      email = OperatorMailer.with(to_email: 'foo@bar.com', machine_comments: [ 'foo' ], machines_added: [ 'Pirates of the Pacific' ], machines_removed: [ 'Battle of Midway' ]).send_daily_digest_operator_email
+      email = OperatorMailer.with(email_to: 'foo@bar.com', machine_comments: [ 'foo' ], machines_added: [ 'Pirates of the Pacific' ], machines_removed: [ 'Battle of Midway' ]).send_daily_digest_operator_email
 
       assert_emails 1 do
         email.deliver_later
