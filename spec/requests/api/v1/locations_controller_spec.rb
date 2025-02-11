@@ -951,10 +951,10 @@ describe Api::V1::LocationsController, type: :request do
       get '/api/v1/locations/top_cities_by_machine.json'
 
       portland = JSON.parse(response.body)[0]
-      expect(portland['machine_count']).to eq(2)
+      expect(portland['machines_count']).to eq(2)
       expect(portland['city']).to eq('Portland')
       seattle = JSON.parse(response.body)[1]
-      expect(seattle['machine_count']).to eq(1)
+      expect(seattle['machines_count']).to eq(1)
       expect(seattle['city']).to eq('Seattle')
     end
   end

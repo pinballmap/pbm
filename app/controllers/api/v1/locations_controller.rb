@@ -454,11 +454,11 @@ module Api
         lid = Arel::Table.new("locations")
         top_cities_by_machine = Location.select(
           [
-            :city, :state, Arel.star.count.as("machine_count")
+            :city, :state, Arel.star.count.as("machines_count")
           ]
         ).joins(
           Location.arel_table.join(LocationMachineXref.arel_table).on(xid[:location_id].eq(lid[:id])).join_sources
-        ).order(:machine_count).reverse_order.group(:city, :state).limit(10)
+        ).order(:machines_count).reverse_order.group(:city, :state).limit(10)
 
         return_response(top_cities_by_machine, nil)
       end
