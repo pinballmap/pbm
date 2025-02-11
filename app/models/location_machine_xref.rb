@@ -1,5 +1,5 @@
 class LocationMachineXref < ApplicationRecord
-  belongs_to :location, optional: true
+  belongs_to :location, optional: true, counter_cache: :machine_count
   belongs_to :machine, optional: true
   belongs_to :user, optional: true
   has_many :machine_score_xrefs
