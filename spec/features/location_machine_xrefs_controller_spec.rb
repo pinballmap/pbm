@@ -40,7 +40,7 @@ describe LocationMachineXrefsController do
 
         sleep 1
 
-        expect(location.machines.size).to eq(1)
+        expect(location.reload.machine_count).to eq(1)
         expect(location.machines.first).to eq(@machine_to_add)
         expect(location.reload.date_last_updated).to eq(Date.today)
 
@@ -66,7 +66,7 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(@location.machines.size).to eq(1)
+      expect(@location.reload.machine_count).to eq(1)
       expect(@location.machines.first).to eq(@machine_to_add)
 
       expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
@@ -79,7 +79,7 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(@location.machines.size).to eq(1)
+      expect(@location.machine_count).to eq(1)
       expect(@location.machines.first).to eq(@machine_to_add)
 
       expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
@@ -96,7 +96,7 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(@location.machines.size).to eq(0)
+      expect(@location.machine_count).to eq(0)
 
       expect(find("#show_machines_location_#{@location.id}")).to_not have_content('New Machine Name')
     end

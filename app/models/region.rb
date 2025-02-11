@@ -83,7 +83,7 @@ class Region < ApplicationRecord
   end
 
   def machineless_locations
-    locations.select { |location| location.machines.empty? }
+    locations.select { |location| location.machine_count.zero? }
   end
 
   def locations_count
@@ -176,7 +176,7 @@ class Region < ApplicationRecord
     end
 
     { regionless_locations_count: regionless_locations.count, regionless_machines_count: LocationMachineXref.count_by_sql("select count(*) from location_machine_xrefs lmx inner join locations l on (lmx.location_id = l.id) where l.region_id is null"),
-    machineless_locations: regionless_locations.select { |location| location.machines.empty? }.each.map { |ml| ml.name + " (#{ml.city}, #{ml.state})" },
+    machineless_locations: regionless_locations.select { |location| location.machine_count.zero? }.each.map { |ml| ml.name + " (#{ml.city}, #{ml.state})" },
     suggested_locations: SuggestedLocation.where("region_id is null").each.map(&:name),
     suggested_locations_count: UserSubmission.where("region_id is null").select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::SUGGEST_LOCATION_TYPE }.count,
     locations_added_count: regionless_locations.select { |l| !l.created_at.nil? && l.created_at.between?(start_of_week, end_of_week) }.count,

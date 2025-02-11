@@ -118,7 +118,7 @@ class Location < ApplicationRecord
   end
 
   def num_machines
-    machines.length
+    machine_count
   end
 
   def machine_names

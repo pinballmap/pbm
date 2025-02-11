@@ -125,7 +125,7 @@ class LocationsController < InheritedResources::Base
       ids      << l.id
       lats     << l.lat
       lons     << l.lon
-      num_machines << l.machines.size
+      num_machines << l.machine_count
     end
 
     [ ids, lats, lons, num_machines ]

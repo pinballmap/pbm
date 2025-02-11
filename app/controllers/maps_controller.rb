@@ -9,7 +9,7 @@ class MapsController < InheritedResources::Base
 
     if !params[:by_location_id].blank? && (loc = Location.where(id: params[:by_location_id]).first)
       @title_params[:title] = "#{loc.name} - Pinball Map"
-      machine_length = " - " + loc.machines.length.to_s + " " + "machine".pluralize(loc.machines.length) unless loc.machines.empty?
+      machine_length = " - " + loc.machine_count.to_s + " " + "machine".pluralize(loc.machine_count) unless loc.machine_count.zero?
       machine_list = " - " + loc.machine_names_first_no_year.join(", ") unless loc.machine_names_first_no_year.empty?
       @title_params[:title_meta] = "#{loc.name} on Pinball Map! " + loc.full_street_address + machine_length.to_s + machine_list.to_s
     end
@@ -86,7 +86,7 @@ class MapsController < InheritedResources::Base
 
     if !params[:by_location_id].blank? && (loc = Location.where(id: params[:by_location_id]).first)
       @title_params[:title] = "#{loc.name} - #{@region.full_name} Pinball Map"
-      machine_length = " - " + loc.machines.length.to_s + " " + "machine".pluralize(loc.machines.length) unless loc.machines.empty?
+      machine_length = " - " + loc.machine_count.to_s + " " + "machine".pluralize(loc.machine_count) unless loc.machine_count.zero?
       machine_list = " - " + loc.machine_names_first_no_year.join(", ") unless loc.machine_names_first_no_year.empty?
       @title_params[:title_meta] = "#{loc.name} on Pinball Map! " + loc.full_street_address + machine_length.to_s + machine_list.to_s
     end

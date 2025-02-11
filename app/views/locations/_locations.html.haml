@@ -103,15 +103,15 @@
                 %div
                   #{machine.name} 
                   %span.man_year (#{[machine.manufacturer, machine.year].reject(&:blank?).join(', ')})
-            - if (location.machines.size > 5)
+            - if (location.machine_count > 5)
               %div.darkgrey.italic.pb_15
                 plus
-                = pluralize(location.machines.size - 5, 'more machine')
+                = pluralize(location.machine_count - 5, 'more machine')
 
           %div.location_detail[l, :location_detail]{:style => 'display:none;'}
 
       - l = nil
-      - total_num_machines += location.machines.size
+      - total_num_machines += location.machine_count
   - unless @locations.size == 1
     #search_results_count
       %span
