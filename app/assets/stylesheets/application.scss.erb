@@ -53,7 +53,7 @@
     --machinename_bg: #5f5063;
     --details: #413244;
     --explore: #dfdaf0;
-    --mask: transparent;
+    --mask: rgba(90, 100, 117, 0.4);
     --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Simple.png' %>) repeat;
     --filter: invert(100%);
   }
@@ -244,6 +244,10 @@ input[type=checkbox] {
 
 .float_l {
   float: left;
+}
+
+.fixed {
+  position: fixed;
 }
 
 ul {
@@ -1254,7 +1258,7 @@ span.or {
   cursor: pointer;
 }
 
-#locations p {
+#locations p, #lookup p {
   margin: 0px 20px 15px;
   padding: 10px;
 }
@@ -1305,7 +1309,6 @@ span.or {
   border-bottom: 1px solid white;
 }
 
-.hide_search_link,
 .hide_button,
 #single_hide {
   display: none;
@@ -1333,10 +1336,9 @@ input.single_hide {
 }
 
 #refresh_button,
-#zoom_in_more,
-#search_link_wrapper,
-#nearby_activity_button {
-  position: fixed;
+#nearby_activity_button,
+#closest_button,
+.search_modal button {
   width: 110px;
   background: var(--lightpink);
   text-align: center;
@@ -1346,54 +1348,57 @@ input.single_hide {
   box-shadow: 1px 1px 10px rgba(90, 100, 117, 0.5);
 }
 
-#search_link_wrapper {
-  padding-top: 5px;
-  top: 60px;
+.search_modal button {
+  background-color: #47475f;
+  border: 0;
+  color: #fafaff;
+  margin: 10px auto 10px;
+}
+
+#closest_button {
+  top: 65px;
+  color: #440152;
+  background-color: #d5e5ff;
 }
 
 #nearby_activity_button {
   background: var(--red);
   color: var(--white);
-  top: 140px;
-}
-
-#search_link_wrapper a {
-  color: var(--ahref);
-  font-family: $italic;
-  text-decoration: none;
-}
-
-#search_link_wrapper a:hover {
-  text-decoration: underline;
-  cursor: pointer;
+  top: 125px;
 }
 
 #refresh_button {
-  top: 220px;
+  display: none;
+  top: 50%;
   color: #440152;
   background-color: #e3fae5;
   font-family: $Nunito_700Bold;
 }
 
-#zoom_in_more {
-  top: 280px;
-  color: var(--darkgrey);
-  background-color: var(--lightpink);
-}
-
-#refresh_button,
-#zoom_in_more {
-  display: none;
+#operators_page_body #refresh_button {
+  padding: 0;
+  width: 0;
+  box-shadow: none;
 }
 
 #refresh_button:hover,
-#zoom_in_more:hover,
-#nearby_activity_button:hover {
+#nearby_activity_button:hover,
+#closest_button:hover{
   cursor: pointer;
 }
 
 #refresh_button:hover {
   background-color: #CBE7CD;
+}
+
+#closest_button:hover {
+  background-color: #aaccff;
+}
+
+#key_container {
+  bottom: 35px;
+  padding: 4px;
+  background: var(--mask);
 }
 
 .toggle_btn_reg {
@@ -1454,10 +1459,6 @@ form select#by_operator_id {
   font-family: 'Zapf Dingbats';
 }
 
-#search_results {
-  margin-top: 35px;
-}
-
 .show_location_detail_location:hover {
   background-color: var(--bg_vlightpurple);
   @include radius(10px);
@@ -1465,20 +1466,20 @@ form select#by_operator_id {
 
 #search_results_count {
   color: var(--darkgrey);
-  position: absolute;
-  top: 95px;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
-#search_results_count.operators_results_count {
-  top: 55px;
+#search_results_count p {
+  margin-bottom: 0;
 }
 
-.map_lookup #search_results_count {
-  top: 175px;
+#map_page_body #results_container {
+  margin-top: 20px;
+}
+
+#region_page_body #results_container {
+  margin-top: 10px;
 }
 
 .location_name_container {
@@ -2062,8 +2063,8 @@ br.clear {
   box-shadow: 2px 5px 10px var(--shadow);
 }
 
-.search_result div.location_types {
-  margin: 6px 0 4px;
+.search_result div.distance {
+  margin: 15px 0 4px 15px;
   color: var(--grey);
   font-size: 14px;
 }
@@ -2860,46 +2861,6 @@ span.begin {
   background: var(--splashtile);
 }
 
-.mask {
-  background-color: var(--mask);
-  position: absolute;
-  z-index: 9999;
-  height: 100%;
-  width: 100%;
-}
-
-.closest_button {
-  border: 3px solid var(--border);
-  background: var(--lightpurple);
-  color: var(--darkgrey);
-  @include radius(10px);
-  font-size: 22px;
-  text-align: center;
-  top: 220px;
-  right: 0;
-  left: 0;
-  width: 365px;
-  margin: auto;
-  padding: 5px;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 150;
-  line-height: 42px;
-  box-shadow: 5px 7px 10px var(--shadow);
-}
-
-.closest_button a {
-  text-decoration: none;
-  font-family: $Nunito_700Bold;
-}
-
-.closest_button a:hover {
-  text-decoration: underline;
-}
-
 #intro {
   padding: 5px 20px;
 }
@@ -2909,7 +2870,9 @@ span.begin {
   text-align: center;
 }
 
-#region_page_body {
+#region_page_body,
+#map_page_body,
+#operators_page_body {
   display: block;
   margin: 0 auto;
   min-height: 100%;
@@ -3274,6 +3237,16 @@ div.score_list {
   box-shadow: 2px 4px 5px rgba(90, 100, 117, .4);
 }
 
+.marker_light {
+  display: block;
+  padding: 0;
+  background: #ffe8b3;
+  border-radius: 50%;
+  height: 15px;
+  width: 15px;
+  cursor: pointer;
+}
+
 .marker2 {
   display: flex;
   justify-content: center;
@@ -3288,6 +3261,16 @@ div.score_list {
   border-radius: 15px;
   cursor: pointer;
   box-shadow: 2px 4px 5px rgba(90, 100, 117, .4);
+}
+
+.marker2_light {
+  display: block;
+  padding: 0;
+  background: #ae57cf;
+  border-radius: 50%;
+  height: 15px;
+  width: 15px;
+  cursor: pointer;
 }
 
 /** Rails Admin **/

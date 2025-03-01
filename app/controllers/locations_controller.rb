@@ -44,12 +44,39 @@ class LocationsController < InheritedResources::Base
   end
 
   def index
+    @locations = []
     @region = Region.find_by_name(params[:region])
 
     params.delete(:by_location_id) if !params[:by_location_name].blank? && !params[:by_location_id].blank?
 
-    @locations = apply_scopes(Location).order("locations.name").includes(:location_type, :location_machine_xrefs, :machines)
-    @location_data = LocationsController.locations_javascript_data(@locations)
+    @locations = apply_scopes(Location).select(["id","lat","lon","machine_count"])
+
+    @locations_size = @locations.size
+    @machines_sum = @locations.sum(&:machine_count)
+
+    @locations_geojson = @locations.sort {|a,b| a.machine_count - b.machine_count}.map.with_index do |location, index|
+      {
+        type: "Feature",
+        id: location.id,
+        properties: {
+          machine_count: location.machine_count,
+          id: location.id,
+          order: index,
+        },
+        geometry: {
+          type: "Point",
+          coordinates: [ location.lon.to_f, location.lat.to_f ]
+        }
+      }
+    end.to_json
+
+    if @locations.size == 0
+      @locations = []
+    elsif @locations.size == 1
+      @locations = apply_scopes(Location).includes(:location_type)
+    else
+      @locations = apply_scopes(Location).select(["id","lat","lon","name", "location_type_id", "street", "city", "state",  "zip", "machine_count"]).order("locations.name").includes(:location_type).limit(100)
+    end
 
     respond_with(@locations) do |format|
       format.html { render partial: "locations/locations", layout: false }
@@ -113,22 +140,6 @@ class LocationsController < InheritedResources::Base
     else
       render nothing: true
     end
-  end
-
-  def self.locations_javascript_data(locations)
-    ids = []
-    lats = []
-    lons = []
-    num_machines = []
-
-    locations.each do |l|
-      ids      << l.id
-      lats     << l.lat
-      lons     << l.lon
-      num_machines << l.machine_count
-    end
-
-    [ ids, lats, lons, num_machines ]
   end
 
   def confirm

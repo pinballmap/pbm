@@ -1,30 +1,54 @@
 #region_page_body
   - if mobile_device?
-    %div.search_modal{:onclick => "showSearchModal();"}
-      %button SEARCH
+    %div.search_mobile
+      %div.search_modal{:onclick => "showSearchModal();"}
+        %button Search
   #form_container
     #form
       = render :partial => 'locations/form'
   - if mobile_device?
     #map
-      = render :partial => 'locations/map'
-  #search_link_wrapper.hide_button.toggle_btn_reg
-    =link_to "Link to this Search Result", "", :id => "search_link", :class => "font14"
-  #refresh_button.toggle_btn_reg{:onclick => "zoomCheck();"}
-    Refresh this map area
-  #zoom_in_more.toggle_btn_reg
-    %span.red.font14
-      Zoom in further to refresh results!
+      #map_canvas
+  #nearby_activity_button.fixed.hide_button.toggle_btn_reg
+    Nearby activity
+  #refresh_button.fixed.toggle_btn_reg
+    Refresh map area
 
   %button#top_button{onclick: "topFunction()", title: "Go to top"} Top
   #lookup
+    - if (@region_no_params)
+      #intro_container
+        = render :partial => 'pages/intro'
+        - if !@region.motd.blank?
+          %p.bg_vlightpurple.radius5
+            %span.red.font18.bold Message of the Day:
+            = @region.html_motd
     #locations
-      = render :partial => 'pages/intro'
-      - if !@region.motd.blank?
-        %p.bg_vlightpurple.radius5
-          %span.red.font18.bold Message of the Day:
-          = @region.html_motd
       = yield :presearch_sidebar
   - if !mobile_device?
     #map
-      = render :partial => 'locations/map'
+      #map_canvas
+
+- if (@region_no_params)
+  :javascript
+    regionMapLocations(#{@region.id});
+
+:javascript
+  // show a list of recent user actions
+  $('#nearby_activity_button').bind('click', function(event, ui) {
+    savedLocations = $('#nearby_activity_container').html;
+    $('#intro_container').css('display','none');
+    $('#nearby_activity_container').html(loadingHTML());
+    let coords = map.getCenter();
+    let lat = coords.lat;
+    let lng = coords.lng;
+    $.get(`/user_submissions/list_within_range?lat=${lat};lon=${lng}`, function(data, textStatus, jqxhr) {
+      $('#nearby_activity_container').html(data);
+    });
+    return false;
+  });
+
+  // Attach event listener to refresh button
+  document.getElementById("refresh_button").addEventListener("click", function() {
+    getMapBounds();
+  });

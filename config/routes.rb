@@ -96,7 +96,6 @@ Rails.application.routes.draw do
   get '/faq' => 'pages#faq'
   get '/store' => 'pages#store'
   get '/donate' => 'pages#donate'
-  get '/operators' => 'pages#operators'
   get '.well-known/apple-app-site-association' => 'pages#apple_app_site_association'
   get '/apple-app-site-association' => 'pages#apple_app_site_association'
   get '/robots.txt' => 'pages#robots'
@@ -212,6 +211,9 @@ Rails.application.routes.draw do
   get 'operator_location_data' => 'maps#operator_location_data'
   get 'saved' => 'maps#map', user_faved: true
   get 'map_location_data' => 'maps#map_location_data'
+  post 'map_bounds', to: 'maps#get_bounds'
+  post 'map_nearby', to: 'maps#map_nearby'
+  post 'region_init_load', to: 'maps#region_init_load'
   get 'suggest' => 'pages#suggest_new_location', as: 'map_location_suggest'
   post 'submitted_new_location' => 'pages#submitted_new_location', as: 'map_submitted_new_location'
   get 'flier' => 'pages#flier', as: 'map_flier'

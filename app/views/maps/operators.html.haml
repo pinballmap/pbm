@@ -1,7 +1,8 @@
-#region_page_body
+#operators_page_body
   - if mobile_device?
-    %div.search_modal{:onclick => "showSearchModal();"}
-      %button SEARCH
+    %div.search_mobile
+      %div.search_modal{:onclick => "showSearchModal();"}
+        %button Search
   #form_container
     #form
       - if mobile_device?
@@ -19,12 +20,10 @@
         - if mobile_device?
           = image_submit_tag('search_icon.png', :class => 'search', :id => "location_search_button")
 
+  #refresh_button
   #map
-    = render :partial => 'locations/map'
+    #map_canvas
 
-  #search_link_wrapper.hide_button.toggle_btn_reg
-    =link_to "Link to this Search Result", "", :id => "search_link", :class => "font14"
-  #zoom_in_more
   %button#top_button{onclick: "topFunction()", title: "Go to top"} Top
 
   #lookup.operators_lookup
@@ -57,8 +56,6 @@
     hideSearchModal();
     ismap = 0;
     mapAdjusted = 0;
-
-    $('#search_link_wrapper').css('display','block');
 
     e.preventDefault();
     search_string = $("#address_search_form :input").filter(function(index, element) { return $(element).val() != ''; }).serialize();

@@ -21,15 +21,15 @@
       = stylesheet_link_tag 'mobile-application'
     = javascript_include_tag 'https://code.jquery.com/jquery-3.7.1.min.js', 'https://cdn.jsdelivr.net/npm/jquery-ujs@1.2.3/src/rails.min.js', 'https://code.jquery.com/ui/1.14.1/jquery-ui.min.js', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', 'application'
     - if current_page?(saved_path) || current_page?(map_path) || current_page?(operators_path) || ((defined? @region) and current_page?(region_homepage_path))
-      = stylesheet_link_tag 'lightbox', 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css'
-      = javascript_include_tag 'lightbox.min', 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js', 'https://unpkg.com/pmtiles@3.2.0/dist/pmtiles.js', 'map_style', 'map_style_dark'
+      = stylesheet_link_tag 'lightbox', 'https://unpkg.com/maplibre-gl@5.1.0/dist/maplibre-gl.css'
+      = javascript_include_tag 'lightbox.min', 'https://unpkg.com/maplibre-gl@5.1.0/dist/maplibre-gl.js', 'https://unpkg.com/pmtiles@3.2.0/dist/pmtiles.js', 'map_style', 'map_style_dark'
     - if ((defined? @region) and current_page?(suggest_path)) || current_page?(map_location_suggest_path)
       = javascript_include_tag 'https://maps.googleapis.com/maps/api/js?libraries=places&key=' + ENV['GOOGLE_MAPS_API_KEY'].to_s
 
     = csrf_meta_tag
     = render 'application/favicon'
 
-  - init_search = "initSearch('#{params['user_faved']}', '#{params['by_operator_id']}', '#{params['by_location_id']}', '#{params['by_type_id']}', '#{params['by_zone_id']}', '#{params['by_machine_id']}', '#{params['by_machine_single_id']}','#{params['by_ipdb_id']}','#{params['by_opdb_id']}', '#{params['by_city_id']}', '#{params['by_machine_group_id']}', '#{params['show_location_distance']}', '#{params['lat']}', '#{params['lon']}', '#{params['by_at_least_n_machines']}', '#{params['by_at_least_n_machines_city']}', '#{params['by_at_least_n_machines_type']}', '#{params['by_at_least_n_machines_zone']}', '#{params['by_city_name']}', '#{params['by_state_name']}', '#{params['region']}')"
+  - init_search = "initSearch('#{params['user_faved']}', '#{params['by_operator_id']}', '#{params['by_location_id']}', '#{params['by_type_id']}', '#{params['by_zone_id']}', '#{params['by_machine_id']}', '#{params['by_machine_single_id']}','#{params['by_ipdb_id']}','#{params['by_opdb_id']}', '#{params['by_city_id']}', '#{params['by_machine_group_id']}', '#{params['lat']}', '#{params['lon']}', '#{params['by_at_least_n_machines']}', '#{params['by_at_least_n_machines_city']}', '#{params['by_at_least_n_machines_type']}', '#{params['by_at_least_n_machines_zone']}', '#{params['by_city_name']}', '#{params['by_state_name']}', '#{params['by_ic_active']}', '#{params['region']}')"
   %body{ :onload => defined?(@region) ? "setSearchSections(#{@region.available_search_sections}); setRegion('#{@region.name.downcase}'); switchSection('#{(@region.default_search_type && !@region.default_search_type.empty?) ? @region.default_search_type : 'location'}'); #{init_search}" : "#{init_search}" }
     #container
       #page{:class => "#{@region ? '' : (defined? @region) and current_page?(submitted_new_location_path) ? 'page_home submitted' : 'page_home'} #{current_page?(map_flier_path) ? 'flier_print_hide' : ''}"}

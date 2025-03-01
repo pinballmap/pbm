@@ -266,6 +266,7 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
+    maxminddb (0.1.22)
     memory_profiler (1.0.1)
     method_source (1.1.0)
     mime-types (3.5.2)
@@ -566,6 +567,7 @@ DEPENDENCIES
   kt-paperclip
   launchy
   listen
+  maxminddb
   ostruct
   pagy
   paper_trail

@@ -1,75 +1,77 @@
-%div.location_name_container	
-	%div{:class => "bold font22 location_name"}
-		=l.name
-	%div.location_tools.pointer
-		- if !user_signed_in?
-			=link_to new_user_session_path, :class => "no_underline" do
-				=image_tag('icons/confirm-location.svg', :class => 'confirm_button')
+%div#location_detail[l]
+	%div.location_name_container
+		%div{:class => "bold font22 location_name"}
+			=l.name
+		%div.location_tools.pointer
+			- if !user_signed_in?
+				=link_to new_user_session_path, :class => "no_underline" do
+					=image_tag('icons/confirm-location.svg', :class => 'confirm_button')
+					%span.confirm_location_tooltip
+						Confirm Line-Up
+					=image_tag('icons/lead-pencil.svg', :class => 'meta_image_notlogged')
+					%span.meta_image_tooltip
+						Update Location Info
+					=image_tag( 'icons/heart-empty.svg', :alt => 'fave this location', :class => 'fave_location')
+					%span.fave_location_tooltip
+						Favorite This Location
+			- else
+				=image_tag('icons/confirm-location.svg', :class => 'confirm_button', :id => "confirm_location_button_#{l.id}")
 				%span.confirm_location_tooltip
 					Confirm Line-Up
-				=image_tag('icons/lead-pencil.svg', :class => 'meta_image_notlogged')
+				=image_tag('icons/lead-pencil.svg', :class => 'meta_image')
 				%span.meta_image_tooltip
 					Update Location Info
-				=image_tag( 'icons/heart-empty.svg', :alt => 'fave this location', :class => 'fave_location')
+				=image_tag( l.user_fave?(current_user.id) ? 'icons/heart-filled.svg' : 'icons/heart-empty.svg', :alt => 'fave this location', :id => "fave_location_img_#{l.id}", :class => 'fave_location')
 				%span.fave_location_tooltip
 					Favorite This Location
-		- else
-			=image_tag('icons/confirm-location.svg', :class => 'confirm_button', :id => "confirm_location_button_#{l.id}")
-			%span.confirm_location_tooltip
-				Confirm Line-Up
-			=image_tag('icons/lead-pencil.svg', :class => 'meta_image')
-			%span.meta_image_tooltip
-				Update Location Info
-			=image_tag( l.user_fave?(current_user.id) ? 'icons/heart-filled.svg' : 'icons/heart-empty.svg', :alt => 'fave this location', :id => "fave_location_img_#{l.id}", :class => 'fave_location')
-			%span.fave_location_tooltip
-				Favorite This Location
-		=link_to image_tag( 'icons/link-variant.svg' ), "/#{@region ? l.region.name.downcase : 'map'}/?by_location_id=#{l.id}", :id => l.id, :alt => 'link to this location', :class => 'permalink'
-		%span.permalink_tooltip
-			Location Permalink
-%div.m_10[l, :metadata]
-	= render :partial => 'locations/render_update_metadata', :locals => {:l => l}
-%div.location_thumbs[l, :thumbs]
-	= render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
-%div.quick_buttons
-	- icon_path3 = image_tag('icons/plus.svg', :alt => 'Add Machine Icon', :class => 'banner_icon')
-	%div.quick_button_sub_container
-		- if !user_signed_in?
-			=link_to new_user_session_path, :class => "no_underline" do
-				%div.sub_nav_item.add_machine_location_toggle
-					=icon_path3
-			%div.quick_button_desc Add a machine
-		- else
-			= quick_buttons('add_machine_location', icon_path3, l)
-			%div.quick_button_desc Add a machine
+			=link_to image_tag( 'icons/link-variant.svg' ), "/#{@region ? l.region.name.downcase : 'map'}/?by_location_id=#{l.id}", :id => l.id, :alt => 'link to this location', :class => 'permalink'
+			%span.permalink_tooltip
+				Location Permalink
+	%div.m_10[l, :metadata]
+		= render :partial => 'locations/render_update_metadata', :locals => {:l => l}
+	- if ENV['AWS_BUCKET_NAME']
+		%div.location_thumbs[l, :thumbs]
+			= render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
+	%div.quick_buttons
+		- icon_path3 = image_tag('icons/plus.svg', :alt => 'Add Machine Icon', :class => 'banner_icon')
+		%div.quick_button_sub_container
+			- if !user_signed_in?
+				=link_to new_user_session_path, :class => "no_underline" do
+					%div.sub_nav_item.add_machine_location_toggle
+						=icon_path3
+				%div.quick_button_desc Add a machine
+			- else
+				= quick_buttons('add_machine_location', icon_path3, l)
+				%div.quick_button_desc Add a machine
 
-	- icon_path4 = image_tag('icons/image.svg', :alt => 'Upload Picture Icon', :class => 'banner_icon')
-	%div.quick_button_sub_container
-		- if !user_signed_in?
-			=link_to new_user_session_path, :class => "no_underline" do
-				%div.sub_nav_item.add_picture_location_toggle
-					=icon_path4
-			%div.quick_button_desc Upload a picture
-		- else
-			= quick_buttons('add_picture_location', icon_path4, l)
-			%div.quick_button_desc Upload a picture
+		- icon_path4 = image_tag('icons/image.svg', :alt => 'Upload Picture Icon', :class => 'banner_icon')
+		%div.quick_button_sub_container
+			- if !user_signed_in?
+				=link_to new_user_session_path, :class => "no_underline" do
+					%div.sub_nav_item.add_picture_location_toggle
+						=icon_path4
+				%div.quick_button_desc Upload a picture
+			- else
+				= quick_buttons('add_picture_location', icon_path4, l)
+				%div.quick_button_desc Upload a picture
 
-	- icon_path = image_tag('icons/newspaper-variant-multiple-outline.svg', :alt => 'Recent Activity Icon', :class => 'banner_icon recent_activity')
-	%div.quick_button_sub_container
-		= quick_buttons('recent_location_activity_location', icon_path, l)
-		%div.quick_button_desc Recent activity
+		- icon_path = image_tag('icons/newspaper-variant-multiple-outline.svg', :alt => 'Recent Activity Icon', :class => 'banner_icon recent_activity')
+		%div.quick_button_sub_container
+			= quick_buttons('recent_location_activity_location', icon_path, l)
+			%div.quick_button_desc Recent activity
 
-	- icon_path2 = image_tag('machine-pink.png', :alt => 'Recent Activity Icon', :class => 'banner_icon former_machines')
-	%div.quick_button_sub_container
-		= quick_buttons('former_machines_location', icon_path2, l)
-		%div.quick_button_desc Former machines
+		- icon_path2 = image_tag('machine-pink.png', :alt => 'Recent Activity Icon', :class => 'banner_icon former_machines')
+		%div.quick_button_sub_container
+			= quick_buttons('former_machines_location', icon_path2, l)
+			%div.quick_button_desc Former machines
 
-= render :partial => 'locations/add_machine', :locals => {:location => l}
-= render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
-= render :partial => 'locations/recent_activity', :locals => {:location => l}
-= render :partial => 'locations/former_machines', :locals => {:location => l}
-%div{:id => "show_machines_location_count_#{l.id}", :class => 'black font18 center lmx_count'}
-	= render :partial => 'locations/render_machines_count', :locals => {:location => l}
-= render :partial => 'locations/show_machines', :locals => {:location => l}
+	= render :partial => 'locations/add_machine', :locals => {:location => l}
+	= render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
+	= render :partial => 'locations/recent_activity', :locals => {:location => l}
+	= render :partial => 'locations/former_machines', :locals => {:location => l}
+	%div{:id => "show_machines_location_count_#{l.id}", :class => 'black font18 center lmx_count'}
+		= render :partial => 'locations/render_machines_count', :locals => {:location => l}
+	= render :partial => 'locations/show_machines', :locals => {:location => l}
 
 :javascript
 	$(function () {
@@ -91,5 +93,5 @@
 
 		if ( $("#thumbs_location_#{l.id}").prop('scrollHeight') > $("#thumbs_location_#{l.id}").height() ) {
 			$("#thumbs_location_#{l.id}").addClass('location_thumbs_bg');
-		} 
+		}
 	});

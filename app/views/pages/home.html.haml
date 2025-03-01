@@ -152,6 +152,7 @@
       manages, among many things, the app development and build processes. 
     %p== #{link_to 'Scout APM', 'https://scoutapm.com/', :target => '_blank', :class => 'bold'} tracks performance monitoring for the website and API. #{link_to 'Sentry', 'https://sentry.io/', :target => '_blank', :class => 'bold'} is used for crash reporting on the app!
     %p== The geocoding requests are processed by #{link_to 'Google Maps', 'https://developers.google.com/maps', :target => '_blank', :class => 'bold'} and #{link_to 'HERE Maps', 'https://developer.here.com/', :target => '_blank', :class => 'bold'} and #{link_to 'Nominatim', 'https://nominatim.org/', :target => '_blank', :class => 'bold'}. We also use the Google Places API for location submissions.
+    %p== We use GeoLite2 data from #{link_to 'MaxMind', 'https://www.maxmind.com/en/home', :target => '_blank', :class => 'bold'} to geolocate your general area (based on public IP address) and show nearby map results.
     %p== Lastly, Pinball Map maintainers also help maintain the #{link_to 'Open Pinball Database (OPDB)', 'https://opdb.org/', :target => '_blank', :class => 'bold'}, and OPDB supplies the backglass images used on Pinball Map!
   - if !mobile_device?
     .news.center
