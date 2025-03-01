@@ -48,12 +48,11 @@
   $(function () {
     var ismap = 0;
     $('.location_search').on('submit', function(e) {
-      storeMachineID();
       hideSearchModal();
-      $(".mask").hide();
       ismap = 0;
       mapAdjusted = 0;
       $('#search_link_wrapper').css('display','block');
+      $('#intro_container').css('display','none');
       e.preventDefault();
       search_string = $(this).children(":input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
 

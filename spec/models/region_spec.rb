@@ -507,17 +507,4 @@ describe Region do
       expect(@region.reload.motd).to eq('foo')
     end
   end
-
-  describe '#random_location_id' do
-    it 'should return a location_id from within a region' do
-      rand_region = FactoryBot.create(:region, name: 'stjohns', id: 23985)
-      FactoryBot.create(:location, id: 1000, region: rand_region)
-      FactoryBot.create(:location, id: 1001, region: rand_region)
-      FactoryBot.create(:location, id: 1002, region: rand_region)
-
-      srand(0)
-
-      expect(rand_region.random_location_id).to eq(1000)
-    end
-  end
 end

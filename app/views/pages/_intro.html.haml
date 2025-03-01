@@ -1,15 +1,7 @@
 = yield :intro_extra
 #intro
   %p.font28.red.bold
-    Welcome to the #{@region.full_name} Pinball Map!
-  %p.bold
-    %span.begin
-      To begin: Search!
-      - if @location_count > 0
-        - random_location_id = @region.random_location_id
-        Or click
-        =link_to 'here', "/#{@region.name.downcase}/?by_location_id=#{random_location_id}", :id => random_location_id
-        for a random location!
+    Welcome to #{@region_fullname} Pinball Map!
   %p
     %span.red.font16.bold This map is best maintained with your help!
     Please
@@ -18,15 +10,6 @@
     %span.red.font16.bold remove
     machines to/from locations to keep things up to date. And
     %span
-      =link_to 'submit new locations', suggest_path
+      =link_to 'submit new locations', (defined? @region) ? suggest_path : map_location_suggest_path
     that aren&rsquo;t on the map.
-  %p
-    We are tracking
-    %span.dark #{@location_count} locations
-    and
-    %span.dark #{@lmx_count} machines around #{@region.full_name}.
-  - if !mobile_device?
-    %p== Spread the word about Pinball Map! #{link_to 'Print out this flier', map_flier_path, :class => "font16 bold"}!
-  %p== Looking for spots outside of this region? Try the #{link_to 'One Big Map', map_path, :class => "bold"}.
   %p== Check out our #{link_to 'mobile app', app_path}.
-

@@ -250,7 +250,7 @@ describe LocationsController do
       click_on 'location_search_button'
 
       within('div#search_results_count') do
-        expect(page).to have_content('2 Locations')
+        expect(page).to have_content('2 locations')
       end
     end
 
@@ -333,7 +333,6 @@ describe LocationsController do
     it 'displays a location not found message instead of the ocean' do
       visit '/portland/?by_location_id=-1'
 
-      expect(page).to have_content('0 Locations & 0 machines in results')
       expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
     end
   end
@@ -515,7 +514,7 @@ describe LocationsController do
       expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/map\?$/)
     end
 
-    it 'respects a region param' do
+    it 'respects a region param and loads all region locations on initial load' do
       regionless_location = FactoryBot.create(:location, region: nil, name: 'Regionless place')
       FactoryBot.create(:location_machine_xref, location: regionless_location, machine: @machine)
 
@@ -532,14 +531,15 @@ describe LocationsController do
 
       expect(find('#search_results')).to_not have_content('Regionless place')
       expect(find('#search_results')).to have_content('Cleo')
-    end
 
-    it 'respects a region param -- does not start a search just based on presense of region' do
+      sleep 1
+
       visit '/portland'
 
       sleep 1
 
-      expect(page).not_to have_selector('#search_results')
+      expect(find('#search_results')).to_not have_content('Regionless place')
+      expect(find('#search_results')).to have_content('Cleo')
     end
   end
 

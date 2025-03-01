@@ -1,17 +1,23 @@
 var map;
 var region;
+var region_id;
 var ismap;
-var searchMachineIDString;
 var numMachinesVal;
 var locationTypeVal;
-var single_id;
-var mapAdjusted = 0;
+var mapAdjusted;
 var mapLoaded = 0;
 var search_string;
 var zoomLevel;
-var markers = new Array();
 var locationIDs = new Array();
 var searchSections = new Array();
+var refresh_bounds;
+var by_at_least_n_machines;
+var by_type_id;
+var by_machine_id;
+var by_machine_single_id;
+var locations_geojson;
+var position_lat;
+var position_lon;
 
 function toggleData(name, id) {
   var main = id ? '_' + id : '';
@@ -42,189 +48,246 @@ function toggle_machine_data(name, id) {
   }
 }
 
-function clearMarkers() {
-  if (markers) {
-    for (i in markers) {
-      markers[i].remove();
+function regionMapLocations(region_id) {
+  mapAdjusted === 0;
+  var region_id = region_id;
+
+  $('#locations').html(loadingHTML());
+
+  $.ajax({
+    url: "/region_init_load",
+    type: "POST",
+    data: { region_id },
+    success: function(data) {
+      $('#locations').html(data);
+      refresh_bounds = undefined;
+      mapAdjusted = 0;
     }
+  });
+}
+
+function homeMapBounds() {
+  mapAdjusted === 0;
+  var boundsData = {
+    ne: {
+      lat: 51.548723456055654,
+      lng: -62.94988899172626
+    },
+    sw: {
+      lat: 28.455566729679656,
+      lng: -124.99526427873955
+    },
   }
+
+  $('#locations').html(loadingHTML());
+
+  $.ajax({
+    url: "/map_bounds",
+    type: "POST",
+    data: { boundsData: boundsData },
+    success: function(data) {
+      $('#locations').html(data);
+      refresh_bounds = undefined;
+      mapAdjusted = 0;
+    }
+  });
 }
 
-function clearClosest() {
-  $(".mask").hide();
+function getMapBounds(by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id) {
+  refresh_bounds = map.getBounds();
+  var boundsData = {
+    ne: refresh_bounds.getNorthEast(),
+    sw: refresh_bounds.getSouthWest(),
+  };
+  $('#locations').html(loadingHTML());
+
+  document.getElementById('search_link_wrapper').style.display = "none";
+
+  $.ajax({
+    url: "/map_bounds",
+    type: "POST",
+    data: { boundsData: boundsData, by_at_least_n_machines: by_at_least_n_machines, by_type_id: by_type_id, by_machine_id: by_machine_id, by_machine_single_id: by_machine_single_id },
+    success: function(data) {
+      $('#locations').html(data);
+      refresh_bounds = undefined;
+      mapAdjusted = 0;
+      map.getSource("point").setData({
+        'type': 'FeatureCollection',
+        'features': locations_geojson
+      });
+    }
+  });
 }
 
-function showLocations(ids, lats, lons, num_machines, latLng) {
-  clearMarkers();
-  clearClosest();
-  markers = new Array();
-
-  locationIDs = ids;
-
+function showLocations() {
   let protocol = new pmtiles.Protocol();
   maplibregl.addProtocol("pmtiles", protocol.tile);
 
-  var bounds = new maplibregl.LngLatBounds();
-
-  var map_style = map_style_obj;
-  // Check if the dark-mode Media-Query matches
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
-    map_style = map_style_obj_dark;
+  if (typeof refresh_bounds == 'undefined') {
+    var bounds = new maplibregl.LngLatBounds();
+    bounds_padding = 50;
+  } else {
+    var bounds = refresh_bounds;
+    bounds_padding = 0;
   }
 
-  if (mapAdjusted === 0 && mapLoaded == 0) {
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+    var map_style = map_style_obj_dark;
+  } else {
+    var map_style = map_style_obj;
+  }
+
+  if (mapAdjusted === 0 || mapLoaded == 0) {
     map = new maplibregl.Map({
       container: 'map_canvas',
-      style: map_style
+      style: map_style,
     });
+    map.dragRotate.disable();
+    map.keyboard.disable();
+    map.touchZoomRotate.disableRotation();
     map.addControl(new maplibregl.ScaleControl({unit: 'imperial'}), 'bottom-right');
     map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
     map.addControl(new maplibregl.FullscreenControl(), 'top-right');
     mapLoaded = 1;
   }
 
-  for (i in ids) {
+  map.on('load', async () => {
+    marker_1 = await map.loadImage("<%= asset_path('marker-1.png') %>");
+    map.addImage('marker-1', marker_1.data);
 
-    var el = document.createElement('div');
-    el.className = 'marker';
-    el.innerHTML = '<span><b>' + num_machines[i] + '</b></span>';
+    marker_2 = await map.loadImage("<%= asset_path('marker-2.png') %>");
+    map.addImage('marker-2', marker_2.data);
 
-    if (locationIDs.length > 1) {
-      (function (el, index) {
-        var locationID = locationIDs[index];
+    marker_2_1_sel = await map.loadImage("<%= asset_path('marker-2-1-sel.png') %>");
+    map.addImage('marker-2-1-sel', marker_2_1_sel.data);
 
-        el.id = 'marker_' + locationID;
-        el.style.cssText += 'z-index:' + num_machines[i];
-        el.innerHTML = '<span><b>' + num_machines[i] + '</b></span>';
-        el.addEventListener('click', function () {
-          showLocationDetail(locationID);
+    marker_10 = await map.loadImage("<%= asset_path('marker-10.png') %>");
+    map.addImage('marker-10', marker_10.data);
 
-          clearSelectedMarker();
-          el.className = 'marker2 maplibregl-marker maplibregl-marker-anchor-center';
+    marker_10_sel = await map.loadImage("<%= asset_path('marker-10-sel.png') %>");
+    map.addImage('marker-10-sel', marker_10_sel.data);
 
-          document.getElementById('location_detail_location_' + locationID).scrollIntoView(true);
-          window.scrollBy(0, -140);
-        });
-      })(el, i);
-    }
+    marker_z_1 = await map.loadImage("<%= asset_path('marker-z-1.png') %>");
+    map.addImage('marker-z-1', marker_z_1.data);
 
-    var marker = new maplibregl.Marker({element: el}, { anchor: 'center' })
-      .setLngLat([lons[i], lats[i]])
-      .addTo(map);
+    marker_z_2 = await map.loadImage("<%= asset_path('marker-z-2.png') %>");
+    map.addImage('marker-z-2', marker_z_2.data);
 
-    markers.push(marker);
-    bounds.extend([lons[i], lats[i]]);
+    marker_z_10 = await map.loadImage("<%= asset_path('marker-z-10.png') %>");
+    map.addImage('marker-z-10', marker_z_10.data);
+
+    marker_z_sel = await map.loadImage("<%= asset_path('marker-z-sel.png') %>");
+    map.addImage('marker-z-sel', marker_z_sel.data);
+
+    map.addSource('point', {
+      'type': 'geojson',
+      'data': {
+        'type': 'FeatureCollection',
+        'features': locations_geojson
+      }
+    });
+
+    map.addLayer({
+      'id': 'points',
+      'type': 'symbol',
+      'source': 'point',
+      'layout': {
+        'icon-image': [
+          "step", ["zoom"],
+          ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
+            ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
+            'marker-z-10']], 9,
+          ["case", ["<=", ["get", "machine_count"], 1], 'marker-1',
+            ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
+            'marker-10']],
+        ],
+        'icon-size': ["interpolate", ["linear"], ["zoom"], 1, 0.14, 4, 0.18, 9, 0.6, 16, 0.9],
+        "symbol-sort-key": ["get", "order"],
+        'text-field': ["step", ["zoom"],
+          "", 9,
+          ["case", [">", ["get", "machine_count"], 9], ["get", "machine_count"], ""], 12,
+          ["case", [">", ["get", "machine_count"], 1], ["get", "machine_count"], ""],
+          14,
+          ["get", "machine_count"],
+        ],
+
+        "text-font": ["Noto Sans Medium"],
+        'text-size': ["interpolate", ["linear"], ["zoom"], 9, 16, 14, 22],
+
+        "icon-allow-overlap": true,
+        "icon-ignore-placement": true,
+        "text-allow-overlap": true,
+        "text-ignore-placement": false,
+        // "text-optional": true,
+        // "text-overlap": 'never',
+
+        // "text-overlap": 'always',
+        // "icon-allow-overlap": true,
+      }
+    });
+  });
+
+  if (locations_geojson.length === 1) {
+    var location_coords = []
+    locations_geojson.forEach(function(feature) {
+      location_coords = feature.geometry.coordinates;
+    });
+    map.setZoom(18);
+    map.setCenter(location_coords);
+    hideRefresh();
+    refreshButton();
+  } else if (locations_geojson.length == 0) {
+    document.getElementById("map_canvas").innerHTML = "<p id='not_found' class='font28 red bold'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
+    mapLoaded = 0;
+    hideRefresh();
+    document.getElementById('nearby_activity_button').style.display = "none";
+  } else {
+    locations_geojson.forEach(function(feature) {
+      bounds.extend(feature.geometry.coordinates);
+    });
+    map.fitBounds(bounds, { padding: bounds_padding, animate: false });
+    hideRefresh();
+    refreshButton();
   }
 
-  if (mapAdjusted === 0) {
-    if (locationIDs.length === 1) {
-      map.setZoom(18);
-      map.setCenter([lons[0], lats[0]]);
-      hideRefresh();
-      refreshButton();
-      if (document.getElementById("not_found")) {
-        document.getElementById("not_found").style.display = "none";
-        hideRefresh();
-      }
-    } else if (locationIDs.length == 0 && latLng.length === 1) {
-      document.getElementById("map_canvas").innerHTML = "<p id='not_found' class='font28 red bold'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
-      mapLoaded = 0;
-      hideRefresh();
-      document.getElementById('nearby_activity_button').style.display = "none";
-    } else if (locationIDs.length == 0 && latLng.length === 2) {
-      map.fitBounds(bounds, { padding: 50, animate: false });
-      map.setZoom(18);
-      hideRefresh();
-      refreshButton();
-      if (document.getElementById("not_found")) {
-        document.getElementById("not_found").style.display = "none";
-        hideRefresh();
-      }
-    } else {
-      map.fitBounds(bounds, { padding: 50, animate: false });
-      hideRefresh();
-      refreshButton();
-      if (document.getElementById("not_found")) {
-        document.getElementById("not_found").style.display = "none";
-        hideRefresh();
-      }
-    }
-  }
-}
+  // map.on('zoom', () => {
+  //   console.log(map.getZoom());
+  // });
 
-function clearSelectedMarker() {
-  var x = document.getElementsByClassName("marker2 maplibregl-marker maplibregl-marker-anchor-center");
-  var g;
-  for (g = 0; g < x.length; g++) {
-    x[g].className = "marker maplibregl-marker maplibregl-marker-anchor-center";
-  }
+  map.on('click', 'points', function (e) {
+    showLocationDetail(e.features[0].properties.id);
+    map.setLayoutProperty('points', 'icon-image',
+      ["step", ["zoom"],
+      ['match', ['id'], e.features[0].id, 'marker-z-sel',
+        ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
+        ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
+          'marker-z-10']]
+      ],
+      9,
+      ['match', ['id'], e.features[0].id,
+        ["case", ["<=", ["get", "machine_count"], 9], 'marker-2-1-sel',
+          'marker-10-sel'],
+        ["case", ["<=", ["get", "machine_count"], 1], 'marker-1',
+        ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
+          'marker-10']]
+      ]]
+    )
+  });
 }
 
 function hideRefresh() {
   document.getElementById("refresh_button").style.display = "none";
 }
 
-function zoomCheck() {
-  zoomLevel = map.getZoom();
-  if (zoomLevel < 6) {
-    document.getElementById("zoom_in_more").style.display = "block";
-  } else {
-    document.getElementById("zoom_in_more").style.display = "none";
-    redone();
-  }
-  mapAdjusted = 1;
-}
-
-function storeMachineID() {
-  searchMachineID = document.getElementById("by_machine_id").value;
-  searchMachineIDString = searchMachineID ? ';by_machine_id=' + searchMachineID : ''
-}
-
 function refreshButton() {
-  map.on('zoomend', function () { document.getElementById("refresh_button").style.display = "block"; });
-  map.on('dragend', function () { document.getElementById("refresh_button").style.display = "block"; });
-}
-
-function redone() {
-  hideRefresh();
-
-  var bounds = map.getBounds();
-  var sw = bounds.getSouthWest();
-  var ne = bounds.getNorthEast();
-
-  var dfd = $.getJSON('/api/v1/locations/within_bounding_box.json?no_details=2;swlat=' + sw.lat + ';swlon=' + sw.lng + ';nelat=' + ne.lat + ';nelon=' + ne.lng + searchMachineIDString + numMachinesVal + locationTypeVal);
-
-  dfd.done(function (response) {
-    if (!response.locations) {
-      var locationIds = [];
-      document.getElementById("locations").innerHTML = "<p id='not_found' class='font28 red bold'>" + "No pinball found in this area." + "</p>";
-    } else {
-      var locationIds = [];
-      for (var i = 0; i < response.locations.length; i++) {
-        locationIds.push(response.locations[i].id)
-      }
-      if (ismap == 1) {
-        var url = '/locations?map_location_data=;by_location_id=' + locationIds.join('_');
-      }
-      else {
-        var url = '/locations?region=' + region + '&by_location_id=' + locationIds.join('_');
-      }
-
-      document.getElementById('search_link_wrapper').style.display = "none";
-      $('#locations').html(loadingHTML());
-      $.get(url, function (data) {
-        $('#locations').html(data);
-      });
-    }
+  map.on('zoomend', function () {
+    document.getElementById("refresh_button").style.display = "block";
+    mapAdjusted = 1;
   });
-}
-
-function scrollToMiddle(id) {
-  var elem_position = $(id).offset().top;
-  var window_height = $(window).height();
-  var y = elem_position - window_height / 2;
-
-  window.scrollTo(0, y);
+  map.on('dragend', function () {
+    document.getElementById("refresh_button").style.display = "block";
+    mapAdjusted = 1;
+  });
 }
 
 function loadingHTML() {
@@ -247,10 +310,10 @@ function switchSection(newSection) {
   $("#" + newSection + "_section_link").toggleClass("active_section_link");
 }
 
-function initSearch(userFaved, operatorIDs, locationIDs, locationTypeIDs, zoneIDs, machineIDs, machineID, ipdbIDs, opdbIDs, cityName, machineGroupId, showLocationDistance, lat, lon, byAtLeastMachines, byAtLeastNMachinesCity, byAtLeastNMachinesType, byAtLeastNMachinesZone, byCityName, byStateName, region) {
-  if (userFaved || operatorIDs || locationIDs || zoneIDs || machineIDs || machineID || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || (byCityName && byStateName) || region) {
+function initSearch(userFaved, operatorIDs, locationIDs, locationTypeIDs, zoneIDs, machineIDs, machineID, ipdbIDs, opdbIDs, cityName, machineGroupId, showLocationDistance, lat, lon, byAtLeastNMachines, byAtLeastNMachinesCity, byAtLeastNMachinesType, byAtLeastNMachinesZone, byCityName, byStateName, byICActive, region) {
+  if (userFaved || operatorIDs || locationIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastNMachines || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || (byCityName && byStateName) || byICActive || region) {
 
-    if (region && !(userFaved || operatorIDs || locationIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || (byCityName && byStateName))) {
+    if (region && !(userFaved || operatorIDs || locationIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || ipdbIDs || opdbIDs || cityName || machineGroupId || byAtLeastNMachines || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || (byCityName && byStateName) || byICActive)) {
       return;
     }
 
@@ -260,7 +323,7 @@ function initSearch(userFaved, operatorIDs, locationIDs, locationTypeIDs, zoneID
       var cityState = '&by_city_name=' + byCityName + '&by_state_name=' + byStateName;
     }
 
-    var url = '/locations?user_faved=' + userFaved + '&by_location_id=' + locationIDs + '&by_operator_id=' + operatorIDs + '&by_type_id=' + locationTypeIDs + '&by_zone_id=' + zoneIDs + '&by_machine_id=' + machineIDs + '&by_machine_single_id=' + machineID + '&by_city_id=' + cityName + '&by_machine_group_id=' + machineGroupId + '&by_ipdb_id=' + ipdbIDs + '&by_opdb_id=' + opdbIDs + '&show_location_distance=' + showLocationDistance + '&lat=' + lat + '&lon=' + lon + '&by_at_least_n_machines_city=' + byAtLeastNMachinesCity + '&by_at_least_n_machines_type=' + byAtLeastNMachinesType + '&by_at_least_n_machines_zone=' + byAtLeastNMachinesZone + cityState + '&region=' + region ;
+    var url = '/locations?user_faved=' + userFaved + '&by_location_id=' + locationIDs + '&by_operator_id=' + operatorIDs + '&by_type_id=' + locationTypeIDs + '&by_zone_id=' + zoneIDs + '&by_machine_id=' + machineIDs + '&by_machine_single_id=' + machineID + '&by_city_id=' + cityName + '&by_machine_group_id=' + machineGroupId + '&by_ipdb_id=' + ipdbIDs + '&by_opdb_id=' + opdbIDs + '&show_location_distance=' + showLocationDistance + '&lat=' + lat + '&lon=' + lon + '&by_at_least_n_machines=' + byAtLeastNMachines + '&by_at_least_n_machines_city=' + byAtLeastNMachinesCity + '&by_at_least_n_machines_type=' + byAtLeastNMachinesType + '&by_at_least_n_machines_zone=' + byAtLeastNMachinesZone + cityState + '&by_ic_active=' + byICActive + '&region=' + region ;
 
     $('#locations').html(loadingHTML());
     $.get(url, function (data) {
@@ -269,47 +332,40 @@ function initSearch(userFaved, operatorIDs, locationIDs, locationTypeIDs, zoneID
   }
 }
 
-function findClosestLocations(region) {
+function findClosestLocations() {
   navigator.geolocation.getCurrentPosition(function (position) {
-    var dfd = $.getJSON('/api/v1/locations/closest_by_lat_lon.json', { lat: position.coords.latitude, lon: position.coords.longitude, max_distance: 50, send_all_within_distance: 1 });
-    dfd.done(function (response) {
-      if (!response.locations) {
-        var locationIds = [];
-        document.getElementById("locations").innerHTML = "<p id='not_found' class='font28 red bold'>" + "No pinball found in this area." + "</p>";
-      } else {
-        var locationIds = [];
-        for (var i = 0; i < response.locations.length; i++) {
-          locationIds.push(response.locations[i].id)
-        }
+    position_lat = position.coords.latitude;
+    position_lon = position.coords.longitude;
 
-        var url = '/locations?show_location_distance=1&lat=' + position.coords.latitude + '&lon=' + position.coords.longitude + '&by_location_id=' + locationIds.join('_');
-
-        $('#locations').html(loadingHTML());
-        $.get(url, function (data) {
-          $('#locations').html(data);
-        });
-
+    $.ajax({
+      url: "/map_nearby",
+      type: "POST",
+      data: { position_lat: position_lat, position_lon: position_lon },
+      success: function(data) {
+        $('#locations').html(data);
+        mapAdjusted = 0;
       }
     });
+
   }, function () {
-    // User has blocked access to their location or something else went wrong
+    alert('No dice.');
   });
 }
 
 function showLocationDetail(locationID) {
-  $('.location_detail_location').hide();
-  clearSelectedMarker();
+  $('.location_detail').hide();
+  $('#intro_container').css('display','none');
 
-  if ($('#location_detail_location_' + locationID).is(":hidden")) {
+  if ($('#location_detail').is(":hidden")) {
     $('#show_location_detail_location_' + locationID).hide();
     $('.sub_nav_location').hide();
     $('.back_to_results').show();
     $('#marker_' + locationID).removeClass('marker').addClass('marker2');
-    toggleData('location_detail_location', locationID);
+    $('#location_detail').toggle();
 
-    $('#location_detail_location_' + locationID).html(loadingHTML());
+    $('#location_detail').html(loadingHTML());
     $.get('/locations/' + locationID + '/render_location_detail', function (data) {
-      $('#location_detail_location_' + locationID).html(data);
+      $('#location_detail').html(data);
     });
   }
 }
@@ -317,8 +373,16 @@ function showLocationDetail(locationID) {
 function backToResults() {
   $('.back_to_results').hide();
   $('.sub_nav_location').show();
-  $('.location_detail_location').hide();
-  clearSelectedMarker();
+  $('#location_detail').hide();
+  map.setLayoutProperty('points', 'icon-image', [
+          "step", ["zoom"],
+          ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
+            ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
+            'marker-z-10']], 9,
+          ["case", ["<=", ["get", "machine_count"], 1], 'marker-1',
+            ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
+            'marker-10']],
+        ]);
 }
 
 function closeActivity() {

@@ -552,9 +552,9 @@ describe LocationMachineXrefsController do
       page.execute_script %{ $('#by_machine_name').trigger('focus') }
       page.execute_script %{ $('#by_machine_name').trigger('keydown') }
 
-      expect(page).to have_xpath('//div[contains(text(), "Another Test Machine")]')
-      expect(page).to have_xpath('//div[contains(text(), "Test Machine Name")]')
-      expect(page).to_not have_xpath('//div[contains(text(), "Cleo")]')
+      expect(page).to have_selector(".ui-menu-item-wrapper", text: "Another Test Machine")
+      expect(page).to have_selector(".ui-menu-item-wrapper", text: "Test Machine Name")
+      expect(page).to_not have_selector(".ui-menu-item-wrapper", text: "Cleo")
     end
 
     it 'searches by location name from input' do
@@ -572,10 +572,10 @@ describe LocationMachineXrefsController do
       page.execute_script %{ $('#by_location_name').trigger('focus') }
       page.execute_script %{ $('#by_location_name').trigger('keydown') }
 
-      expect(page).to have_xpath('//div[contains(text(), "Cleo North (Portland, OR)")]')
-      expect(page).to have_xpath('//div[contains(text(), "Cleo South (Vancouver, WA)")]')
-      expect(page).to_not have_xpath('//div[contains(text(), "Cleo West")]')
-      expect(page).to_not have_xpath('//div[contains(text(), "Sassy")]')
+      expect(page).to have_selector(".ui-menu-item-wrapper", text: "Cleo North (Portland, OR)")
+      expect(page).to have_selector(".ui-menu-item-wrapper", text: "Cleo South (Vancouver, WA)")
+      expect(page).to_not have_selector(".ui-menu-item-wrapper", text: "Cleo West")
+      expect(page).to_not have_selector(".ui-menu-item-wrapper", text: "Sassy")
     end
 
     it 'searches by city name from input' do
@@ -780,7 +780,6 @@ describe LocationMachineXrefsController do
       page.find('input#machine_search_button').click
 
       expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
-      expect(page).to have_content('0 Locations & 0 machines in results')
     end
 
     it 'lets you search by machine name -- returns grouped machines' do

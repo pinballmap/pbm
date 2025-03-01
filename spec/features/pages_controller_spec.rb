@@ -172,22 +172,6 @@ describe PagesController do
       expect(page).to have_title('Pinball Map')
       expect(page).not_to have_title('App')
     end
-
-    it 'does not show a random location link if there are no locations in the region' do
-      toronto = FactoryBot.create(:region, name: 'toronto', full_name: 'Toronto')
-
-      visit '/toronto'
-
-      expect(page).not_to have_content('Or click here for a random location!')
-
-      FactoryBot.create(:location, region: toronto)
-      FactoryBot.create(:location, region: toronto)
-      FactoryBot.create(:location, region: toronto)
-
-      visit '/toronto'
-
-      expect(page).to have_content('Or click here for a random location!')
-    end
   end
 
   describe 'Pages', type: :feature, js: true do
@@ -240,7 +224,7 @@ describe PagesController do
 
       visit '/portland'
 
-      expect(page).to have_content('2 locations and 2 machines')
+      expect(page).to have_content('2 locations & 2 machines')
     end
 
     it 'shows the proper page title' do

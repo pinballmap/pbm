@@ -64,18 +64,17 @@ class Location < ApplicationRecord
     machines = machine.machine_group_id ? Machine.where("machine_group_id = ?", machine.machine_group_id).map(&:all_machines_in_machine_group).flatten : [ machine ]
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
   }
-  scope :by_at_least_n_machines, lambda { |n|
-    where(Location.by_at_least_n_machines_sql(n))
-  }
-  scope :by_at_least_n_machines_city, lambda { |n|
-    where(Location.by_at_least_n_machines_sql(n))
-  }
-  scope :by_at_least_n_machines_zone, lambda { |n|
-    where(Location.by_at_least_n_machines_sql(n))
-  }
-  scope :by_at_least_n_machines_type, lambda { |n|
-    where(Location.by_at_least_n_machines_sql(n))
-  }
+
+  scope :by_at_least_n_machines, -> machine_count { where("machine_count >= ?", machine_count) }
+
+  scope :by_at_least_n_machines_city, -> machine_count { where("machine_count >= ?", machine_count) }
+
+  scope :by_at_least_n_machines_name, -> machine_count { where("machine_count >= ?", machine_count) }
+
+  scope :by_at_least_n_machines_type, -> machine_count { where("machine_count >= ?", machine_count) }
+
+  scope :by_at_least_n_machines_zone, -> machine_count { where("machine_count >= ?", machine_count) }
+
   scope :by_center_point_and_ne_boundary, lambda { |boundaries|
     boundary_lat_lons = boundaries.split(",").collect(&:to_f)
     distance = Geocoder::Calculations.distance_between([ boundary_lat_lons[1], boundary_lat_lons[0] ], [ boundary_lat_lons[3], boundary_lat_lons[2] ])
@@ -109,10 +108,6 @@ class Location < ApplicationRecord
     ENV["SKIP_GEOCODE"] || (lat && lon)
   end
 
-  def self.by_at_least_n_machines_sql(number_of_machines)
-    "locations.id in (select location_id from (select location_id, count(*) as count from location_machine_xrefs group by location_id) x where x.count >= #{number_of_machines})"
-  end
-
   def user_fave?(user_id)
     UserFaveLocation.where(user_id: user_id, location_id: id).any?
   end
@@ -123,10 +118,6 @@ class Location < ApplicationRecord
 
   def machine_names
     machines.sort_by(&:massaged_name).map(&:name_and_year)
-  end
-
-  def machines_sorted
-    machines.sort_by(&:massaged_name)
   end
 
   def machine_names_first

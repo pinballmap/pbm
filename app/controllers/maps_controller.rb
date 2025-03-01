@@ -24,42 +24,139 @@ class MapsController < InheritedResources::Base
     @big_cities_placeholder = @big_cities_sample.nil? ? "e.g. Portland, OR" : "e.g. " + @big_cities_sample.city + ", " + @big_cities_sample.state
   end
 
-  def map_location_data
+  def nearby_locations
+    coords = [ params[:position_lat], params[:position_lon] ]
+
     @locations = []
 
-    if params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_state_name].blank?
-      @locations = []
-    else
-      params.delete(:by_machine_name) unless params[:by_machine_id].blank? && params[:by_machine_single_id].blank?
+    @locations = apply_scopes(Location.near(coords, 50)).select(["id","lat","lon","name", "location_type_id", "street", "city", "state",  "zip", "machine_count"]).order("locations.name").includes(:location_type, :location_machine_xrefs, :machines)
 
-      @lat, @lon = ""
-      if Rails.env.test?
-        # hardcode a PDX lat/lon during tests
-        @lat = 45.590502800000
-        @lon = -122.754940100000
-      end
-      if params[:address].blank? || !params[:by_city_name].blank?
-        @locations = apply_scopes(Location).order("locations.name").includes(:location_machine_xrefs, :machines, :location_type)
-        if @locations.blank? && !params[:by_city_name].blank?
-          params.delete(:by_city_name)
-          params.delete(:by_state_name)
-        end
-      end
-      if @locations.blank?
-        geocode unless params[:address].blank? || Rails.env.test?
-        find_nearby
-      end
+    construct_geojson
+
+    if @locations.size == 0
+      @locations = []
+    elsif @locations.size == 1
+      @locations = apply_scopes(Location.near(coords, 50)).includes(:location_type, :location_machine_xrefs, :machines)
+    else
+      @locations = apply_scopes(Location.near(coords, 50)).select(["id","lat","lon","name", "location_type_id", "street", "city", "state",  "zip", "machine_count"]).order("locations.name").includes(:location_type).limit(100)
     end
 
-    @location_data = LocationsController.locations_javascript_data(@locations)
+    render partial: "locations/locations", layout: false
+  end
+
+  def region_init_load
+    region_id = params[:region_id]
+    @locations = []
+
+    @locations = apply_scopes(Location).where(region_id: region_id).select(["id","lat","lon","machine_count"])
+
+    construct_geojson
+
+    if @locations.size == 0
+      @locations = []
+    elsif @locations.size == 1
+      @locations = apply_scopes(Location).where([ "region_id = ?", region_id ]).includes(:location_type, :location_machine_xrefs, :machines)
+    else
+      @locations = apply_scopes(Location).where([ "region_id = ?", region_id ]).select(["id","lat","lon","name", "location_type_id", "street", "city", "state",  "zip", "machine_count"]).order("locations.name").includes(:location_type).limit(100)
+    end
+
+    @region = Region.find_by_id(region_id)
+
+    render partial: "locations/locations", layout: false
+  end
+
+  def get_bounds
+    @locations = []
+
+    @bounds = [ params[:boundsData][:sw][:lat], params[:boundsData][:sw][:lng], params[:boundsData][:ne][:lat], params[:boundsData][:ne][:lng] ]
+
+    @locations = apply_scopes(Location).within_bounding_box(@bounds).select(["id","lat","lon","machine_count"])
+
+    construct_geojson
+
+    if @locations.size == 0
+      @locations = []
+    elsif @locations.size == 1
+      @locations = apply_scopes(Location).within_bounding_box(@bounds).includes(:location_type, :location_machine_xrefs, :machines)
+    else
+      @locations = apply_scopes(Location).within_bounding_box(@bounds).select(["id","lat","lon","name", "location_type_id", "street", "city", "state",  "zip", "machine_count"]).order("locations.name").includes(:location_type).limit(100)
+    end
+
+    respond_with(@locations) do |format|
+      format.html { render partial: "locations/locations", layout: false }
+    end
+  end
+
+  def construct_geojson
+    @locations_size = @locations.size
+    @machines_sum = @locations.sum(&:machine_count)
+
+    @locations_geojson = @locations.sort {|a,b| a.machine_count - b.machine_count}.map.with_index do |location, index|
+      {
+        type: "Feature",
+        id: location.id,
+        properties: {
+          machine_count: location.machine_count,
+          id: location.id,
+          order: index,
+        },
+        geometry: {
+          type: "Point",
+          coordinates: [ location.lon.to_f, location.lat.to_f ]
+        }
+      }
+    end.to_json
+  end
+
+  def map_location_data
+    @locations = []
+    @nearby_found = false
+
+    params.delete(:by_machine_name) unless params[:by_machine_id].blank? && params[:by_machine_single_id].blank?
+
+    @lat, @lon = ""
+    if Rails.env.test?
+      # hardcode a PDX lat/lon during tests
+      @lat = 45.590502800000
+      @lon = -122.754940100000
+    end
+    if params[:address].blank? || !params[:by_city_name].blank?
+      @locations = apply_scopes(Location).select(["id","lat","lon","machine_count"])
+      if @locations.blank? && !params[:by_city_name].blank?
+        params.delete(:by_city_name)
+        params.delete(:by_state_name)
+      end
+    end
+    if @locations.blank?
+      geocode unless params[:address].blank? || Rails.env.test?
+      find_nearby
+    end
+
+    construct_geojson
+
+    if @locations.size == 0
+      @locations = []
+    elsif @locations.size == 1
+      @locations = apply_scopes(Location).includes(:location_type, :location_machine_xrefs, :machines)
+    else
+      @locations = apply_scopes(Location).select(["id","lat","lon","name", "location_type_id", "street", "city", "state",  "zip", "machine_count"]).order("locations.name").includes(:location_type).limit(100)
+    end
 
     render partial: "locations/locations", layout: false
   end
 
   def operator_location_data
-    @locations = Location.where(operator_id: params[:by_operator_id]).includes(:location_type, :machines)
+    @locations = Location.where(operator_id: params[:by_operator_id]).select(["id","lat","lon","machine_count"])
 
-    @location_data = LocationsController.locations_javascript_data(@locations)
+    construct_geojson
+
+    if @locations.size == 0
+      @locations = []
+    elsif @locations.size == 1
+      @locations = Location.where(operator_id: params[:by_operator_id]).includes(:location_type, :location_machine_xrefs, :machines)
+    else
+      @locations = Location.where(operator_id: params[:by_operator_id]).select(["id","lat","lon","name", "location_type_id", "street", "city", "state",  "zip", "machine_count"]).order("locations.name").includes(:location_type).limit(100)
+    end
 
     render partial: "locations/locations", layout: false
   end
@@ -74,7 +171,7 @@ class MapsController < InheritedResources::Base
   def find_nearby
     @near_distance = 15
     while @locations.blank? && @near_distance < 600
-      @locations = apply_scopes(Location.near([ @lat, @lon ], @near_distance)).order("locations.name").includes(:location_machine_xrefs, :machines, :location_type)
+      @locations = apply_scopes(Location.near([ @lat, @lon ], @near_distance)).select(["id","lat","lon","machine_count"])
       @near_distance += 100
     end
   end
@@ -89,6 +186,12 @@ class MapsController < InheritedResources::Base
       machine_length = " - " + loc.machine_count.to_s + " " + "machine".pluralize(loc.machine_count) unless loc.machine_count.zero?
       machine_list = " - " + loc.machine_names_first_no_year.join(", ") unless loc.machine_names_first_no_year.empty?
       @title_params[:title_meta] = "#{loc.name} on Pinball Map! " + loc.full_street_address + machine_length.to_s + machine_list.to_s
+    end
+
+    if @region
+      @region_fullname = "the " + @region.full_name
+    else
+      @region_fullname = ""
     end
 
     cities = {}

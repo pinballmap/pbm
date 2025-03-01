@@ -7,15 +7,23 @@ describe MapsController do
   end
 
   describe 'Regionless', type: :feature, js: true do
-    it 'shouldnt perform a search if you dont enter search criteria' do
+    it 'should perform a search on initial load' do
+      visit '/map'
+
+      sleep 1
+
+      expect(page).to have_selector("#search_results")
+      expect(page.body).to have_css('#intro_container', visible: true)
+    end
+    it 'should perform a search with no search criteria' do
       visit '/map'
 
       click_on 'location_search_button'
 
       sleep 1
 
-      expect(page.body).to have_content('0 Locations & 0 machines in results')
-      expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
+      expect(page).to have_selector("#search_results")
+      expect(page.body).to have_css('#intro_container', visible: false)
     end
 
     it 'only lets you search by one thing at a time, OR address + machine' do
@@ -70,6 +78,7 @@ describe MapsController do
 
       expect(page.body).to have_content('Rip City')
       expect(page.body).to_not have_content('No Way')
+      expect(page.body).to have_css('#intro_container', visible: false)
 
       fill_in('by_machine_name', with: 'Bawb')
       page.execute_script %{ $('#by_machine_name').trigger('focus') }
@@ -195,26 +204,25 @@ describe MapsController do
 
       sleep 1
 
-      expect(page.body).to have_content('0 Locations & 0 machines in results')
-      expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
+      expect(page).to_not have_content('Cleo')
+      expect(page).to_not have_content('Bawb')
+      expect(page).to have_content('Sass')
 
       visit '/map?by_type_id=4'
 
-      click_on 'location_search_button'
-
       sleep 1
 
-      expect(page.body).to have_content('0 Locations & 0 machines in results')
-      expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
+      expect(page).to have_content('Cleo')
+      expect(page).to_not have_content('Bawb')
+      expect(page).to have_content('Sass')
 
       visit '/map?by_at_least_n_machines=5'
 
-      click_on 'location_search_button'
-
       sleep 1
 
-      expect(page.body).to have_content('0 Locations & 0 machines in results')
-      expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
+      expect(page).to have_content('Cleo')
+      expect(page).to_not have_content('Bawb')
+      expect(page).to have_content('Sass')
     end
 
     it 'shows single version checkbox if machine is in a group' do
@@ -230,7 +238,9 @@ describe MapsController do
       page.execute_script %{ $('#by_machine_name').trigger('keydown') }
       find(:xpath, '//div[contains(text(), "Sass")]').click
 
-      expect(page.body).to have_css('#singleVersion', visible: :hidden)
+      sleep 1
+
+      expect(page.body).to have_css('#single_hide', visible: false)
 
       visit '/map'
 
@@ -259,7 +269,7 @@ describe MapsController do
       expect(page.body).to_not have_content('Baz')
     end
 
-    it 'lets you search by address -- displays 0 results instead of saying "Not Found"' do
+    it 'lets you search by address -- displays "Not Found" if no results' do
       FactoryBot.create(:location, region: nil, name: 'Troy', zip: '48098', lat: 42.5925, lon: 83.1756)
 
       visit '/map'
@@ -270,8 +280,7 @@ describe MapsController do
 
       sleep 1
 
-      expect(page.body).to have_content('0 Locations & 0 machines in results')
-      expect(page).to_not have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
+      expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
     end
 
     it 'location autocomplete select ensures you only search by a single location' do

@@ -1,3 +1,4 @@
+- no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_state_name].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_city].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_at_least_n_machines_zone].blank? && params[:by_type_id].blank?
 #region_page_body
   - if mobile_device?
     %div.search_modal{:onclick => "showSearchModal();"}
@@ -7,24 +8,48 @@
       = render :partial => 'locations/form'
   - if mobile_device?
     #map
-      = render :partial => 'locations/map'
+      #map_canvas
   #search_link_wrapper.hide_button.toggle_btn_reg
     =link_to "Link to this Search Result", "", :id => "search_link", :class => "font14"
-  #refresh_button.toggle_btn_reg{:onclick => "zoomCheck();"}
+  #nearby_activity_button.hide_button.toggle_btn_reg
+    Nearby activity
+  #refresh_button.toggle_btn_reg
     Refresh this map area
-  #zoom_in_more.toggle_btn_reg
-    %span.red.font14
-      Zoom in further to refresh results!
 
   %button#top_button{onclick: "topFunction()", title: "Go to top"} Top
   #lookup
+    - if (no_params)
+      #intro_container
+        = render :partial => 'pages/intro'
+        - if !@region.motd.blank?
+          %p.bg_vlightpurple.radius5
+            %span.red.font18.bold Message of the Day:
+            = @region.html_motd
     #locations
-      = render :partial => 'pages/intro'
-      - if !@region.motd.blank?
-        %p.bg_vlightpurple.radius5
-          %span.red.font18.bold Message of the Day:
-          = @region.html_motd
       = yield :presearch_sidebar
   - if !mobile_device?
     #map
-      = render :partial => 'locations/map'
+      #map_canvas
+
+- if (no_params)
+  :javascript
+    regionMapLocations(#{@region.id});
+
+:javascript
+  // show a list of recent user actions
+  $('#nearby_activity_button').bind('click', function(event, ui) {
+    savedLocations = $('#nearby_activity_container').html;
+    $('#nearby_activity_container').html(loadingHTML());
+    let coords = map.getCenter();
+    let lat = coords.lat;
+    let lng = coords.lng;
+    $.get(`/user_submissions/list_within_range?lat=${lat};lon=${lng}`, function(data, textStatus, jqxhr) {
+      $('#nearby_activity_container').html(data);
+    });
+    return false;
+  });
+
+  // Attach event listener to refresh button
+  document.getElementById("refresh_button").addEventListener("click", function() {
+    getMapBounds();
+  });

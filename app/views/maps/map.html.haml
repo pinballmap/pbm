@@ -1,3 +1,4 @@
+- no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_state_name].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank?
 #region_page_body
   - if mobile_device?
     %div.search_modal{:onclick => "showSearchModal();"}
@@ -44,43 +45,27 @@
           = image_submit_tag('search_icon.png', class: 'map search', id: "location_search_button")
 
   #map
-    = render :partial => 'locations/map'
+    #map_canvas
 
   #search_link_wrapper.hide_button.toggle_btn_reg
     =link_to "Link to this Search Result", "", :id => "search_link", :class => "font14"
-  #refresh_button.toggle_btn_reg{:onclick => "zoomCheck();"}
-    Refresh this map area
-  #zoom_in_more.toggle_btn_reg
-    %span.red.font14
-      Zoom in further to refresh results!
+  - unless current_page?(operators_path)
+    #closest_button.hide_button.toggle_btn_reg{:onclick => "findClosestLocations()"} Show closest pinball machines!
   #nearby_activity_button.hide_button.toggle_btn_reg
     Nearby activity
+  #refresh_button.toggle_btn_reg Refresh this map area
 
   %button#top_button{onclick: "topFunction()", title: "Go to top"} Top
 
   #lookup.map_lookup
+    - if (current_page?(map_path) && no_params)
+      #intro_container
+        = render :partial => 'pages/intro'
     #locations
-      #intro
-        %p
-          %span.red.font16.bold This map is best maintained with your help!
-          Please
-          %span.red.font16.bold add
-          and
-          %span.red.font16.bold remove
-          machines to/from locations to keep things up to date. And
-          %span
-            =link_to 'submit new locations', map_location_suggest_path
-          that aren't on the map.
-        %p
-          Pinball Map is currently listing a total of
-          %span.red.bold
-            #{number_with_delimiter(Location.count,:delimiter => ",")}
-          locations and
-          %span.red.bold
-            #{number_with_delimiter(LocationMachineXref.count,:delimiter => ",")}
-          machines.
-        %p== Check out our #{link_to 'mobile app', app_path}.
-        %p== #{link_to "Support Pinball Map via Ko-fi", "https://ko-fi.com/pinballmap", :class => "bold"}.
+
+- if (current_page?(map_path) && no_params)
+  :javascript
+    homeMapBounds();
 
 :javascript
   var ismap = 1;
@@ -116,7 +101,6 @@
     document.getElementById('by_machine_group_id').value = "";
     document.getElementById('single_hide').style.display = "none";
     document.getElementById('singleVersion').checked = false;
-    single_id = '';
     event.target.style.display = "none";
   }
   function clearLocation(event) {
@@ -145,7 +129,6 @@
       $('#by_type_id').val('');
       $('#single_hide').hide();
       $('#singleVersion').prop('checked', false);
-      single_id = '';
     });
 
     $('#by_machine_name').bind('input', function(event, ui) {
@@ -159,7 +142,6 @@
         $('#by_machine_group_id').val('');
         $('#single_hide').hide();
         $('#singleVersion').prop('checked', false);
-        single_id = '';
       }
     });
 
@@ -186,7 +168,6 @@
       $('#by_location_name').val(ui.item.value);
       $('#single_hide').hide();
       $('#singleVersion').prop('checked', false);
-      single_id = '';
     });
 
     $('#by_machine_name').autocomplete({
@@ -202,7 +183,6 @@
       $('#by_machine_single_id').val(ui.item.id);
       $('#by_machine_name').val(ui.item.value);
       $('#by_machine_group_id').val(ui.item.group_id);
-      single_id = $('#by_machine_single_id').val();
       if ($('#by_machine_group_id').val().length != 0) {
         document.getElementById('single_hide').style.display = "flex";
       } else {
@@ -240,30 +220,40 @@
     return false;
   });
 
+  // Attach event listener to refresh button
+  document.getElementById("refresh_button").addEventListener("click", function() {
+    by_at_least_n_machines = $('#by_at_least_n_machines').val();
+    by_type_id = $('#by_type_id').val();
+    $('#intro_container').css('display','none');
+    if ($("#singleVersion").is(':checked')) {
+      by_machine_single_id = $('#by_machine_single_id').val();
+      by_machine_id = undefined;
+    } else {
+      by_machine_id = $('#by_machine_id').val();
+      by_machine_single_id = undefined;
+    }
+
+    getMapBounds(by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id);
+  });
+
   $('#address_search_form').on('submit', function(e) {
     if ($("#singleVersion").is(':checked')) {
       $('#by_machine_group_id').val('');
       $('#by_machine_id').val('');
-      $('#by_machine_single_id').val(single_id);
-      searchMachineIDString = single_id ? ';by_machine_single_id=' + single_id : '';
+      $('#by_machine_single_id').val();
     } else {
       $('#by_machine_group_id').val('');
       $('#by_machine_single_id').val('');
-      if (single_id) {
-        $('#by_machine_id').val(single_id);
-        searchMachineIDString = ';by_machine_id=' + single_id;
-        }
-      else {searchMachineIDString = ''}
     }
 
     numMachinesVal = ';by_at_least_n_machines=' + $('#by_at_least_n_machines').val();
     locationTypeVal = ';by_type_id=' + $('#by_type_id').val();
 
     hideSearchModal();
-    $(".mask").hide();
     mapAdjusted = 0;
     $('#nearby_activity_button').css('display','block');
     $('#search_link_wrapper').css('display','block');
+    $('#intro_container').css('display','none');
     e.preventDefault();
     search_string = $("#address_search_form :input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
 

@@ -1,17 +1,10 @@
 - if (@locations)
   - @operators_map = "operators" if request.url.include?('operator_location_data')
   :javascript
+    $("#search_link_wrapper,#min_lookup_wrapper,#nearby_activity_button, #closest_button").removeClass("hide_button");
 
-    clearMarkers();
-    $("#search_link_wrapper,#min_lookup_wrapper,#nearby_activity_button").removeClass("hide_button");
-
-    showLocations(
-      [#{@location_data[0].join(', ')}],
-      [#{@location_data[1].join(', ')}],
-      [#{@location_data[2].join(', ')}],
-      [#{@location_data[3].join(', ')}],
-      [#{[@lat, @lon].join(', ')}]
-    );
+    var locations_geojson = JSON.parse('#{@locations_geojson}');
+    showLocations();
 
     var hrefOrig = '#{request.scheme}://#{request.host_with_port}/#{@region ? h(@region.name.downcase) : @operators_map ? @operators_map : "map"}?';
     var def_value = window.location.href;
@@ -31,11 +24,8 @@
 
       window.history.pushState('', '', a.pathname + a.search);
     }
-
-:javascript
-  var isSingleLocation = #{@locations.size == 1 ? true : false};
-
-  if (isSingleLocation) {
+- if @locations_size == 1
+  :javascript
     var locationName = "#{sanitize(@locations.first&.name)}";
 
     var regionName = "#{sanitize(@region&.full_name)}"
@@ -44,10 +34,12 @@
 
     document.title = newTitle;
     $('meta[property="og:title"]').attr("content", newTitle);
-  } else {
+- else
+  :javascript
     document.title = "#{title_for_path(request.path, @region)}";
     $('meta[property="og:title"]').attr("content", "#{title_for_path(request.path, @region)}");
-  }
+
+:javascript
 
   var topbutton = document.getElementById("top_button");
   window.onscroll = function() {scrollFunction()};
@@ -67,17 +59,24 @@
 
 #results_container
   #search_results
+    - if @locations.size > 1
+      #search_results_count
+        %p.bold.red
+          #{number_with_delimiter(@locations_size,:delimiter => ",")} locations & #{number_with_delimiter(@machines_sum,:delimiter => ",")} machines in map results
+        - if @locations_size > 100
+          %span (Not all locations shown in the below list)
     - unless @locations.size == 1
       %div.back_to_results.font14.bold.pointer{:onclick => "backToResults();"}
         %span.left_arrow &#x2190;
         %span Go back to search results
-    - total_num_machines = 0
-    - @locations.each do |location|
-      - l = location.clone
+
+    %div#location_detail.location_detail{:style => 'display:none;'}
+
+    - @locations.each do |l|
       %div.search_result[l]
         %div#nearby_activity_container
         - if (@locations.size == 1)
-          %div.location_detail[l, :location_detail]
+          %div.location_detail
             = render :partial => 'locations/render_location_detail', :locals => {l: l}
         - else
           %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id});"}
@@ -99,21 +98,11 @@
               %div.address
                 %span.address_name[l, :location_summary] #{[l.street, l.city, l.state].join(', ')}
             %div.machine_names
-              - l.machines_sorted.first(5).each do |machine|
+              - l.machines.limit(5).each do |machine|
                 %div
-                  #{machine.name} 
+                  #{machine.name}
                   %span.man_year (#{[machine.manufacturer, machine.year].reject(&:blank?).join(', ')})
-            - if (location.machine_count > 5)
+            - if (l.machine_count > 5)
               %div.darkgrey.italic.pb_15
                 plus
-                = pluralize(location.machine_count - 5, 'more machine')
-
-          %div.location_detail[l, :location_detail]{:style => 'display:none;'}
-
-      - l = nil
-      - total_num_machines += location.machine_count
-  - unless @locations.size == 1
-    #search_results_count
-      %span
-        #{number_with_delimiter(@locations.size,:delimiter => ",")} Locations & #{number_with_delimiter(total_num_machines,:delimiter => ",")} machines in results
-      %span
+                = pluralize(l.machine_count - 5, 'more machine')
