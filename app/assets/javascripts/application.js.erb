@@ -169,31 +169,14 @@ function showLocations() {
     ]
     const [marker_1, marker_2, marker_2_1_sel, marker_10, marker_10_sel, marker_z_1, marker_z_2, marker_z_10, marker_z_sel] = await Promise.all(promises)
 
-    // marker_1 = await map.loadImage("<%= asset_path('marker-1.png') %>");
     map.addImage('marker-1', marker_1.data);
-
-    // marker_2 = await map.loadImage("<%= asset_path('marker-2.png') %>");
     map.addImage('marker-2', marker_2.data);
-
-    // marker_2_1_sel = await map.loadImage("<%= asset_path('marker-2-1-sel.png') %>");
     map.addImage('marker-2-1-sel', marker_2_1_sel.data);
-
-    // marker_10 = await map.loadImage("<%= asset_path('marker-10.png') %>");
     map.addImage('marker-10', marker_10.data);
-
-    // marker_10_sel = await map.loadImage("<%= asset_path('marker-10-sel.png') %>");
     map.addImage('marker-10-sel', marker_10_sel.data);
-
-    // marker_z_1 = await map.loadImage("<%= asset_path('marker-z-1.png') %>");
     map.addImage('marker-z-1', marker_z_1.data);
-
-    // marker_z_2 = await map.loadImage("<%= asset_path('marker-z-2.png') %>");
     map.addImage('marker-z-2', marker_z_2.data);
-
-    // marker_z_10 = await map.loadImage("<%= asset_path('marker-z-10.png') %>");
     map.addImage('marker-z-10', marker_z_10.data);
-
-    // marker_z_sel = await map.loadImage("<%= asset_path('marker-z-sel.png') %>");
     map.addImage('marker-z-sel', marker_z_sel.data);
 
     map.addSource('point', {
