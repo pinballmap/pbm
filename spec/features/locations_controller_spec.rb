@@ -200,6 +200,8 @@ describe LocationsController do
 
         visit "/#{region ? region.name : 'map'}"
 
+        sleep 1
+
         desc_tag = "meta[name=\"description\"][content=\"#{old_style_description}\"]"
         og_desc_tag = "meta[property=\"og:description\"][content=\"#{old_style_description}\"]"
         og_title_tag = "meta[property=\"og:title\"][content=\"#{old_style_title}\"]"

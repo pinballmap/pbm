@@ -143,6 +143,8 @@ describe MapsController do
 
       visit '/map'
 
+      sleep 1
+
       fill_in('address', with: '97203')
 
       page.find('#form .limit select#by_type_id').click
@@ -158,6 +160,8 @@ describe MapsController do
 
       visit '/map'
 
+      sleep 1
+
       fill_in('address', with: '97203')
 
       page.find('#form .limit select#by_at_least_n_machines').click
@@ -172,6 +176,8 @@ describe MapsController do
       expect(page).to have_content('Sass')
 
       visit '/map'
+
+      sleep 1
 
       fill_in('by_machine_name', with: 'Solomon')
       page.execute_script %{ $('#by_machine_name').trigger('focus') }
@@ -193,6 +199,8 @@ describe MapsController do
       expect(page).to have_content('Sass')
 
       visit '/map'
+
+      sleep 1
 
       page.find('#form .limit select#by_type_id').click
       select('bar', from: 'by_type_id')
@@ -289,6 +297,8 @@ describe MapsController do
 
       visit '/map'
 
+      sleep 1
+
       fill_in('by_location_name', with: 'Rip')
       page.execute_script %{ $('#by_location_name').trigger('focus') }
       page.execute_script %{ $('#by_location_name').trigger('keydown') }
@@ -311,6 +321,8 @@ describe MapsController do
       FactoryBot.create(:location_machine_xref, location: renee_location, machine: FactoryBot.create(:machine, name: 'Bawb'))
 
       visit '/map'
+
+      sleep 1
 
       fill_in('by_machine_name', with: 'Bawb')
       page.execute_script %{ $('#by_machine_name').trigger('focus') }
