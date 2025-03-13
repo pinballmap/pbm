@@ -17,6 +17,7 @@
         = hidden_field_tag :by_location_id
         = hidden_field_tag :by_city_name
         = hidden_field_tag :by_state_name
+        = hidden_field_tag :by_city_no_state
         .map_input
           %span.input_title Machine
           = text_field_tag "by_machine_name", params["by_machine_name"], class: 'lookup_search_input', placeholder: @machine_placeholder, clear_id: 'clearButton'
@@ -117,6 +118,7 @@
     document.getElementById('address').value = "";
     document.getElementById('by_city_name').value = "";
     document.getElementById('by_state_name').value = "";
+    document.getElementById('#by_city_no_state').value = "";
     event.target.style.display = "none";
   }
 
@@ -131,6 +133,7 @@
       $('#address').val('');
       $('#by_city_name').val('');
       $('#by_state_name').val('');
+      $('#by_city_no_state').val('');
       $('#by_machine_id').val('');
       $('#by_machine_name').val('');
       $('#by_machine_single_id').val('');
@@ -161,6 +164,7 @@
       $('#by_location_name').val('');
       $('#by_city_name').val('');
       $('#by_state_name').val('');
+      $('#by_city_no_state').val('');
     });
 
     $('#by_location_name').autocomplete({
@@ -212,8 +216,12 @@
       $('#by_location_name').val('');
       $('#address').val(ui.item.value);
       [city, state] = ui.item.value.split(", ");
-      $('#by_city_name').val(city);
-      $('#by_state_name').val(state);
+      if (typeof state == 'undefined') {
+        $('#by_city_no_state').val(city);
+      } else {
+        $('#by_city_name').val(city);
+        $('#by_state_name').val(state);
+      }
     });
   });
 

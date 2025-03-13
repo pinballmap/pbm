@@ -482,20 +482,58 @@ describe LocationsController do
       expect(find('#search_results')).to_not have_content('Sass')
     end
 
-    it 'by_city_name' do
-      location = FactoryBot.create(:location, region: @region, city: 'McGannyville', state: 'CA', name: 'Cleo')
-      visit '/map/?by_city_name=' + location.city.to_s + '&by_state_name=' + location.state.to_s
-      FactoryBot.create(:location, region: @region, city: 'Weakerton', state: 'OR', name: 'Plover')
+    it 'by_city_name alone includes all locations with that city value regardless of state' do
+      location = FactoryBot.create(:location, city: 'McGannyville', state: 'CA', name: 'Cleo')
+      FactoryBot.create(:location, city: 'McGannyville', state: '', name: 'Sass')
+      FactoryBot.create(:location, city: 'McGannyville', state: 'TX', name: 'Jolene')
+      FactoryBot.create(:location, city: 'Weakerton', state: 'OR', name: 'Plover')
+
+      visit '/map/?by_city_name=' + location.city.to_s
+
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to have_content('Sass')
+      expect(find('#search_results')).to have_content('Jolene')
+      expect(find('#search_results')).to_not have_content('Plover')
+    end
+
+    it 'by_city_name with by_state_name does not include locations that match city but not state' do
+      location = FactoryBot.create(:location, city: 'McGannyville', state: 'CA', name: 'Cleo')
+      FactoryBot.create(:location, city: 'McGannyville', state: '', name: 'Sass')
+      FactoryBot.create(:location, city: 'McGannyville', state: 'TX', name: 'Jolene')
+      FactoryBot.create(:location, city: 'Weakerton', state: 'OR', name: 'Plover')
 
       visit '/map/?by_city_name=' + location.city.to_s + '&by_state_name=' + location.state.to_s
 
       expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to_not have_content('Sass')
+      expect(find('#search_results')).to_not have_content('Jolene')
       expect(find('#search_results')).to_not have_content('Plover')
+    end
+
+    it 'by_state_name alone includes all locations with that state value' do
+      location = FactoryBot.create(:location, region: @region, city: 'McGannyville', state: 'CA', name: 'Cleo')
+      FactoryBot.create(:location, city: 'Weakerton', state: 'CA', name: 'Plover')
+      FactoryBot.create(:location, city: 'Portland', state: 'OR', name: 'Sass')
 
       visit '/map/?by_state_name=' + location.state.to_s
 
-      expect(page).to_not have_content('Cleo')
-      expect(page).to_not have_content('Plover')
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to_not have_content('Sass')
+      expect(find('#search_results')).to have_content('Plover')
+    end
+
+    it 'by_city_no_state only includes locations that do not have a state value' do
+      FactoryBot.create(:location, city: 'McGannyville', state: 'CA', name: 'Cleo')
+      location = FactoryBot.create(:location, city: 'McGannyville', state: '', name: 'Sass')
+      FactoryBot.create(:location, city: 'McGannyville', state: 'TX', name: 'Jolene')
+      FactoryBot.create(:location, city: 'Weakerton', state: 'OR', name: 'Plover')
+
+      visit '/map/?by_city_no_state=' + location.city.to_s
+
+      expect(find('#search_results')).to_not have_content('Cleo')
+      expect(find('#search_results')).to have_content('Sass')
+      expect(find('#search_results')).to_not have_content('Jolene')
+      expect(find('#search_results')).to_not have_content('Plover')
     end
 
     it 'respects a region param and loads all region locations on initial load' do

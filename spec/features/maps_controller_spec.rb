@@ -37,6 +37,7 @@ describe MapsController do
       expect(find('#address').value).to eq('')
       expect(find('#by_city_name', visible: :hidden).value).to eq('')
       expect(find('#by_state_name', visible: :hidden).value).to eq('')
+      expect(find('#by_city_no_state', visible: :hidden).value).to eq('')
 
       fill_in('address', with: 'baz')
       expect(find('#by_location_id', visible: :hidden).value).to eq('')
@@ -54,6 +55,7 @@ describe MapsController do
       expect(find('#address').value).to eq('')
       expect(find('#by_city_name', visible: :hidden).value).to eq('')
       expect(find('#by_state_name', visible: :hidden).value).to eq('')
+      expect(find('#by_city_no_state', visible: :hidden).value).to eq('')
     end
 
     it 'lets you search by address and machine and respects if you change or clear out the machine search value' do

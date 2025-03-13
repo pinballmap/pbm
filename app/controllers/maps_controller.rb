@@ -1,6 +1,6 @@
 class MapsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss, only: %i[index show]
-  has_scope :by_location_name, :by_location_id, :by_machine_name, :by_machine_id, :by_machine_single_id, :by_at_least_n_machines, :by_type_id, :by_operator_id, :user_faved, :by_city_name, :by_state_name
+  has_scope :by_location_name, :by_location_id, :by_machine_name, :by_machine_id, :by_machine_single_id, :by_at_least_n_machines, :by_type_id, :by_operator_id, :user_faved, :by_city_name, :by_state_name, :by_city_no_state
 
   def map
     user = current_user.nil? ? nil : current_user
@@ -23,7 +23,7 @@ class MapsController < InheritedResources::Base
     @big_cities_sample = Location.select(%i[city state], "random() as r").having("count(city)>9").where.not(state: [ nil, "" ]).group("city", "state").order("r").limit(1).first
     @big_cities_placeholder = @big_cities_sample.nil? ? "e.g. Portland, OR" : "e.g. " + @big_cities_sample.city + ", " + @big_cities_sample.state
 
-    @map_no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_city_id].blank? && params[:by_state_name].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank?
+    @map_no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_city_id].blank? && params[:by_state_name].blank? && params[:by_city_no_state].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank?
 
     if @map_no_params
       @nearby_lat = 39.5718
@@ -177,11 +177,12 @@ class MapsController < InheritedResources::Base
       @nearby_lat = 45.5905
       @nearby_lon = -122.7549
     end
-    if params[:address].blank? || !params[:by_city_name].blank?
+    if params[:address].blank? || !params[:by_city_name].blank? || !params[:by_city_no_state].blank?
       @locations = apply_scopes(Location).select(["id","lat","lon","machine_count"])
       if @locations.blank? && !params[:by_city_name].blank?
         params.delete(:by_city_name)
         params.delete(:by_state_name)
+        params.delete(:by_city_no_state)
       end
     end
     if @locations.blank?
@@ -257,7 +258,7 @@ class MapsController < InheritedResources::Base
 
       operators[l.operator_id] = l if l.operator_id
 
-      @region_no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_city_id].blank? && params[:by_state_name].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_city].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_at_least_n_machines_zone].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank?
+      @region_no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_city_id].blank? && params[:by_state_name].blank? && params[:by_city_no_state].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_city].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_at_least_n_machines_zone].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank?
     end
 
     @search_options = {
