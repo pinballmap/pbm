@@ -240,6 +240,10 @@ function showLocations() {
     map.setCenter(location_coords);
     hideRefresh();
     refreshButton();
+  } else if (locations_geojson.length == 0 && typeof refresh_bounds !== 'undefined') {
+    map.fitBounds(bounds, { padding: bounds_padding, animate: false });
+    hideRefresh();
+    refreshButton();
   } else if (locations_geojson.length == 0 && map_init == 0) {
     document.getElementById("map_canvas").innerHTML = "<p id='not_found' class='font28 red bold'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
     mapLoaded = 0;
