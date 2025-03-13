@@ -66,15 +66,15 @@ class Location < ApplicationRecord
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
   }
 
-  scope :by_at_least_n_machines, -> machine_count { where("machine_count >= ?", machine_count) }
+  scope :by_at_least_n_machines, ->(machine_count) { where("machine_count >= ?", machine_count) }
 
-  scope :by_at_least_n_machines_city, -> machine_count { where("machine_count >= ?", machine_count) }
+  scope :by_at_least_n_machines_city, ->(machine_count) { where("machine_count >= ?", machine_count) }
 
-  scope :by_at_least_n_machines_name, -> machine_count { where("machine_count >= ?", machine_count) }
+  scope :by_at_least_n_machines_name, ->(machine_count) { where("machine_count >= ?", machine_count) }
 
-  scope :by_at_least_n_machines_type, -> machine_count { where("machine_count >= ?", machine_count) }
+  scope :by_at_least_n_machines_type, ->(machine_count) { where("machine_count >= ?", machine_count) }
 
-  scope :by_at_least_n_machines_zone, -> machine_count { where("machine_count >= ?", machine_count) }
+  scope :by_at_least_n_machines_zone, ->(machine_count) { where("machine_count >= ?", machine_count) }
 
   scope :by_center_point_and_ne_boundary, lambda { |boundaries|
     boundary_lat_lons = boundaries.split(",").collect(&:to_f)

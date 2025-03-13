@@ -30,7 +30,7 @@ class MapsController < InheritedResources::Base
       @nearby_lon = -99.1066
       @map_init_zoom = 4
 
-      if ENV['GEO_BUCKET']
+      if ENV["GEO_BUCKET"]
         geocode_ip
         if !@nearby_lat.nil?
           @map_init_zoom = 6
@@ -45,7 +45,7 @@ class MapsController < InheritedResources::Base
     if Rails.env.production? || Rails.env.staging?
       @nearby_lat, @nearby_lon = Geocoder.search("#{request.remote_ip}").first.coordinates
     elsif Rails.env.development?
-      @nearby_lat, @nearby_lon = Geocoder.search("174.203.131.43").first.coordinates #random IP instead of localhost
+      @nearby_lat, @nearby_lon = Geocoder.search("174.203.131.43").first.coordinates # random IP instead of localhost
     elsif Rails.env.test?
       # hardcode a PDX lat/lon during tests
       @nearby_lat = 45.5905
@@ -56,7 +56,7 @@ class MapsController < InheritedResources::Base
   def map_nearby
     @locations = []
     @nearby_lat = nil
-    if ENV['GEO_BUCKET']
+    if ENV["GEO_BUCKET"]
       geocode_ip
     end
 
@@ -102,7 +102,7 @@ class MapsController < InheritedResources::Base
     @locations_size = 0
     @machines_sum = 0
 
-    @locations = apply_scopes(Location).where(region_id: region_id).select(["id","lat","lon","machine_count"])
+    @locations = apply_scopes(Location).where(region_id: region_id).select([ "id", "lat", "lon", "machine_count" ])
 
     construct_geojson
 
@@ -111,7 +111,7 @@ class MapsController < InheritedResources::Base
     elsif @locations.size == 1
       @locations = apply_scopes(Location).where([ "region_id = ?", region_id ]).includes(:location_type)
     else
-      @locations = apply_scopes(Location).where([ "region_id = ?", region_id ]).select(["id","lat","lon","name", "location_type_id", "street", "city", "state",  "zip", "machine_count"]).order("locations.name").includes(:location_type).limit(100)
+      @locations = apply_scopes(Location).where([ "region_id = ?", region_id ]).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type).limit(100)
     end
 
     @region = Region.find_by_id(region_id)
@@ -126,7 +126,7 @@ class MapsController < InheritedResources::Base
 
     @bounds = [ params[:boundsData][:sw][:lat], params[:boundsData][:sw][:lng], params[:boundsData][:ne][:lat], params[:boundsData][:ne][:lng] ]
 
-    @locations = apply_scopes(Location).within_bounding_box(@bounds).select(["id","lat","lon","machine_count"])
+    @locations = apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "machine_count" ])
 
     construct_geojson
 
@@ -135,7 +135,7 @@ class MapsController < InheritedResources::Base
     elsif @locations.size == 1
       @locations = apply_scopes(Location).within_bounding_box(@bounds).includes(:location_type)
     else
-      @locations = apply_scopes(Location).within_bounding_box(@bounds).select(["id","lat","lon","name", "location_type_id", "street", "city", "state",  "zip", "machine_count"]).order("locations.name").includes(:location_type).limit(100)
+      @locations = apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type).limit(100)
     end
 
     respond_with(@locations) do |format|
@@ -147,14 +147,14 @@ class MapsController < InheritedResources::Base
     @locations_size = @locations.size
     @machines_sum = @locations.sum(&:machine_count)
 
-    @locations_geojson = @locations.sort {|a,b| a.machine_count - b.machine_count}.map.with_index do |location, index|
+    @locations_geojson = @locations.sort { |a, b| a.machine_count - b.machine_count }.map.with_index do |location, index|
       {
         type: "Feature",
         id: location.id,
         properties: {
           machine_count: location.machine_count,
           id: location.id,
-          order: index,
+          order: index
         },
         geometry: {
           type: "Point",
@@ -178,7 +178,7 @@ class MapsController < InheritedResources::Base
       @nearby_lon = -122.7549
     end
     if params[:address].blank? || !params[:by_city_name].blank? || !params[:by_city_no_state].blank?
-      @locations = apply_scopes(Location).select(["id","lat","lon","machine_count"])
+      @locations = apply_scopes(Location).select([ "id", "lat", "lon", "machine_count" ])
       if @locations.blank? && !params[:by_city_name].blank?
         params.delete(:by_city_name)
         params.delete(:by_state_name)
@@ -197,7 +197,7 @@ class MapsController < InheritedResources::Base
       elsif @locations.size == 1
         @locations = apply_scopes(Location).includes(:location_type)
       else
-        @locations = apply_scopes(Location).select(["id","lat","lon","name", "location_type_id", "street", "city", "state",  "zip", "machine_count"]).order("locations.name").includes(:location_type).limit(100)
+        @locations = apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type).limit(100)
       end
 
       render partial: "locations/locations", layout: false
@@ -207,7 +207,7 @@ class MapsController < InheritedResources::Base
   def operator_location_data
     @locations_size = 0
     @machines_sum = 0
-    @locations = Location.where(operator_id: params[:by_operator_id]).select(["id","lat","lon","machine_count"])
+    @locations = Location.where(operator_id: params[:by_operator_id]).select([ "id", "lat", "lon", "machine_count" ])
 
     construct_geojson
 
@@ -216,7 +216,7 @@ class MapsController < InheritedResources::Base
     elsif @locations.size == 1
       @locations = Location.where(operator_id: params[:by_operator_id]).includes(:location_type)
     else
-      @locations = Location.where(operator_id: params[:by_operator_id]).select(["id","lat","lon","name", "location_type_id", "street", "city", "state",  "zip", "machine_count"]).order("locations.name").includes(:location_type).limit(100)
+      @locations = Location.where(operator_id: params[:by_operator_id]).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type).limit(100)
     end
 
     render partial: "locations/locations", layout: false
