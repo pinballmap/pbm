@@ -39,7 +39,6 @@
 
 :javascript    
   $(function () {
-    var ismap = 0;
     $('#by_operator_name').autocomplete({
       source: '/operators/autocomplete',
       minLength: 3,
@@ -54,7 +53,6 @@
 
   $('#address_search_form').on('submit', function(e) {
     hideSearchModal();
-    ismap = 0;
     mapAdjusted = 0;
 
     e.preventDefault();

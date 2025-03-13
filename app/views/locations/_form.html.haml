@@ -46,10 +46,8 @@
 :javascript
 
   $(function () {
-    var ismap = 0;
     $('.location_search').on('submit', function(e) {
       hideSearchModal();
-      ismap = 0;
       mapAdjusted = 0;
       $('#intro_container').css('display','none');
       e.preventDefault();
