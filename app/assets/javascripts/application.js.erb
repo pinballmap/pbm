@@ -291,6 +291,14 @@ function showLocations() {
       ]]
     )
   });
+
+  map.on('mouseenter', 'points', function (e) {
+    map.getCanvas().style.cursor = 'pointer';
+  });
+
+  map.on('mouseleave', 'points', function () {
+    map.getCanvas().style.cursor = '';
+  });
 }
 
 function hideRefresh() {
