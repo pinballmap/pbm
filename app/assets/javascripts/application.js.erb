@@ -223,7 +223,7 @@ function showLocations() {
         "text-ignore-placement": false,
       },
       'paint': {
-        "text-color": "#FFFFFF",
+        "text-color": ["case", [">", ["get", "machine_count"], 1], "#FFFFFF", "#000000"]
       }
     });
   });
@@ -292,12 +292,33 @@ function showLocations() {
     )
   });
 
+  var popup = new maplibregl.Popup({
+    offset: 15,
+    closeButton: false,
+    closeOnClick: false
+  });
+
   map.on('mouseenter', 'points', function (e) {
     map.getCanvas().style.cursor = 'pointer';
+
+    var coordinates = e.features[0].geometry.coordinates.slice();
+    var popup_count = e.features[0].properties.machine_count
+    if ( popup_count == 1 ) {
+      var description = popup_count + " machine";
+    } else {
+      var description = popup_count + " machines";
+    }
+
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
+
+    popup.setLngLat(coordinates).setHTML(description).addTo(map);
   });
 
   map.on('mouseleave', 'points', function () {
     map.getCanvas().style.cursor = '';
+    popup.remove();
   });
 }
 
