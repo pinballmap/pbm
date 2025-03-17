@@ -109,7 +109,7 @@
       %p.question#12 
         =link_to "I'm an operator or business owner, and people are leaving comments on my machines that I don't like. Can you make them stop, or disable comments on my machines?", '#12', :class => "no_underline"
       %p.answer
-        The short answer is can't disable comments at an individual venue or for an individual user. We understand that users and operators sometimes want conflicting things. Most operators find reports of technical issues to be very useful; and some do not. Some operators wish that folks would only leave "general" machine comments and not "specific" comments (we can't control this). On the other hand, most regular users find machine comments to be a very valuable feature. It is difficult to perfectly cater to everyone, and we cannot control the comments that people make.
+        The short answer is can't disable comments at an individual venue or for an individual user. We understand that users and operators sometimes want conflicting things. Most operators find reports of technical issues to be very useful; and some do not. Some operators wish that folks would only leave very specific types of comments (we can't control this, and it's perfectly fine for users to leave comments about, for example, machine price). On the other hand, most regular users find machine comments to be a very valuable feature. It is difficult to perfectly cater to everyone, and we cannot control the comments that people make.
       %p.answer
         In some circumstances, comments may be removed and/or accounts can be disabled (see the elsewhere in the FAQ). We will always look into your concerns. But please try not to waste our time with your requests. 
       %p.answer
@@ -123,14 +123,12 @@
         %li
           A comment about a machine issue is not going to hurt your business in the short term. Pinball Map often gets blamed for "making" operators rush across town to fix and issue and write a comment saying the issue is fixed. Pinball Map does not make you do this.
         %li
-          According to nearly everyone, it is really valuable to see a history of comments (thing is broken, thing is fixed, etc.). Everyone understands that machines break all the time. Seeing a dialog demonstrates that upkeep is occurring. The "latest comment" noting a problem is not particularly important to users and will not drive them away. Some operators choose to delete machines and re-add them in order to clear out comments rather than simply responding to a comment. This is bad practice - both for your business and for the map - and can result in your account being disabled. It makes it seem like the operator is whitewashing comments rather than fixing issues. Users definitely notice this, and we strongly discourage it. 
-        %li
-          We sometimes get messages from operators and owners demanding that a user be banned from leaving comments on their location. Most often, the comments in question are not slanderous, but have some sass or "off-topic" messages (or like, "the comment is about price and not condition!!"). These requests are a big headache for us, especially because they do not warrant any action toward the user. So please, help us! Be mindful that operators are very sensitive about the content on this site, and they take it out on us.
+          According to nearly everyone, it is really valuable to see a history of comments (thing is broken, thing is fixed, etc.). Everyone understands that machines break all the time. Seeing a dialog demonstrates that upkeep is occurring. The "latest comment" noting a problem is not particularly important to users and will not drive them away. Some operators choose to delete machines and re-add them in order to clear out comments rather than simply responding to a comment. This is bad practice - both for your business and for the map - and can result in your account being disabled. It makes it seem like the operator is whitewashing comments rather than fixing issues. Users definitely notice this, and we strongly discourage it.
       %hr
       %p.question#21
         =link_to "Can you make it so only the operator can update a location's line-up of machines?", '#21', :class => "no_underline"
       %p.answer
-        No. It's not ideal to limit the control of a location listing to a small group of people. Precedence shows that would seriously degrade the quantity of map updates, resulting in an out of date map. The purpose of this map is for all users to have equal power to update the map, and that's what has helped it flourish.
+        No. It's not ideal to limit the control of a location listing to a small group of people. According to the evidence, that would seriously degrade the quantity of map updates, resulting in an out of date map. The purpose of this map is for all users to have equal power to update the map, and that's what has helped it flourish.
       %p.question#22
         =link_to "After a machine issue has been resolved, can you remove the machine comment that mentioned the issue?", '#22', :class => "no_underline"
       %p.answer
@@ -154,6 +152,12 @@
         =link_to 'How do I update my password, or email, or delete my account?', '#19', :class => "no_underline"
       %p.answer== These can be done on your #{link_to 'Profile page', inspire_profile_path}.
       %hr
+      %p.question#24
+        =link_to 'I left a machine comment, but I made a typo. Or, I just woke up and I regret a comment I made last night. Can I edit or delete my comment?', '#24', :class => "no_underline"
+      %p.answer
+        Yes. Click the machine and below your comment you'll see "edit" and "delete" buttons.
+      %p.answer
+        Note that recent/location activity feeds contain a log of the original machine comments. Those are public and cannot be edited or deleted (and kind of serve as a deterrent to people leaving troublesome comments that they intend to delete later).
       %p.question#13
         =link_to 'Why was my machine comment removed?', '#13', :class => "no_underline"
       %p.answer
