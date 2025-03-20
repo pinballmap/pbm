@@ -40,6 +40,7 @@ gem "sassc-rails"
 gem "scout_apm"
 gem "simple_token_authentication"
 gem "solid_cache", "~> 1.0"
+gem "solid_queue", "~> 1.1"
 gem "sprockets-rails"
 gem "strip_attributes"
 gem "tzinfo-data"
@@ -78,5 +79,3 @@ group :development, :test do
   gem "pry"
   gem "rails_real_favicon"
 end
-
-gem "solid_queue", "~> 1.1"
