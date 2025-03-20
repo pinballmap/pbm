@@ -12,27 +12,49 @@
 			</p>
 		</div>
 		<div id="login" class="column w_320">
-			<h2>Join</h2>
+			<h2>Join Pinball Map</h2>
 
-			<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-				<%= f.error_notification %>
+			<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+				<%= render "devise/shared/error_messages", resource: resource %>
 
-				<div class="form-inputs">
-					<span class="font14 grey">(How about your initials?)</span>
-					<%= f.input :username, :required => true, :autofocus => true, as: :string %>
-					<span class="font14 grey mt_10 block">(Disposable emails are not allowed and you will get banned)</span>
-					<%= f.input :email, :required => true, :autofocus => true, :input_html => {:minlength => 4} %>
-					<span class="font14 pt_5 grey block mt_10">(Choose a password that you don't use elsewhere)</span>
-					<%= f.input :password, :required => true %>
-					<%= f.input :password_confirmation, :required => true %>
-					<p class="red">Security Question (required)</p>
-					<%= f.input :security_test, label: "What are we mapping on this site?" %>
+				<div class="field form-inputs">
+					<p><%= f.label :username %></p>
+					<p><%= f.text_field :username, autofocus: true, required: true %></p>
 				</div>
-				<div style="margin-top: 10px;">If you don't receive the email, whitelist admin@pinballmap.com and try again, and <span class="bold brightpurple">check your spam folder</span>.</div>
-				<div class="form-actions">
-					<%= f.button :submit, "Submit" %>
+
+				<div class="field form-inputs">
+					<p><%= f.label :email %></p>
+					<p><%= f.email_field :email, autocomplete: "email", required: true %></p>
+					<span class="font14 pt_5 grey block">(Disposable emails are not allowed and you will get banned)</span>
 				</div>
+
+				<div class="field form-inputs">
+					<p><%= f.label :password %></p>
+					<% if @minimum_password_length %>
+					<p><em>(<%= @minimum_password_length %> characters minimum)</em></p>
+					<% end %>
+					<p><%= f.password_field :password, autocomplete: "new-password", required: true %></p>
+					<span class="font14 pt_5 grey block">(Choose a password that you don't use elsewhere)</span>
+				</div>
+
+				<div class="field form-inputs">
+					<p><%= f.label :password_confirmation %></p>
+					<p><%= f.password_field :password_confirmation, autocomplete: "new-password", required: true %></p>
+				</div>
+
+				<div class="field form-inputs">
+					<p class="red bold">Security Question (required):</p>
+					<%= label_tag :security_question, "What are we mapping on this site?" %><br />
+					<%= text_field_tag :security_question, nil, autocomplete: "off", required: true %>
+				</div>
+
+				<div class="actions">
+					<%= f.submit "Sign up", class: "button" %>
+				</div>
+				<br />
 			<% end %>
+
+			<div style="margin-top: 10px;">If you don't receive the email, whitelist admin@pinballmap.com and try again, and <span class="bold brightpurple">check your spam folder</span>.</div>
 
 			<%= render "devise/shared/links" %>
 		</div>

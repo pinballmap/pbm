@@ -28,7 +28,7 @@ desc 'Create an admin user in development with login as example@example.com and 
 task create_developer_account: :environment do
   raise StandardError, 'Development environment required. This operation has been stopped.' unless Rails.env.development?
 
-  user = User.new({ id: nil, email: 'example@example.com', password: 'example', password_confirmation: 'example', region_id: 1, initials: 'exa', is_super_admin: true, username: 'exampleuser', authentication_token: '', security_test: 'pinball' })
+  user = User.new({ id: nil, email: 'example@example.com', password: 'example', password_confirmation: 'example', region_id: 1, initials: 'exa', is_super_admin: true, username: 'exampleuser', authentication_token: '' })
 
   begin
     user.save! && user.update!({ confirmed_at: Time.now })

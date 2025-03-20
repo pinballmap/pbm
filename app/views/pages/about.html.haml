@@ -29,8 +29,8 @@
             - if !user_signed_in?
               %li
                 %span.red Security Question (required)
-                %label{:for => "security_test", } What are we mapping on this site?
-                %input{:type => "text", :name => "security_test", :params => "security_test", :class => "text w_400", required: true}
+                %label{:for => "security_question", } What are we mapping on this site?
+                %input{:type => "text", :name => "security_question", :params => "security_question", :class => "text w_400", required: true}
             %li.submit{:style => "clear:both;"}
               %input{:type => "submit", :value => "Submit Comment", :class => "submit_button"}
     .column.bg_vlightpurple.w_450

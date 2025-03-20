@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   apipie
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations'}, path: '/users', path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'join'}
+  devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations', passwords: 'passwords'}, path: '/users', path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'join'}
 
   namespace :api do
     namespace :v1 do

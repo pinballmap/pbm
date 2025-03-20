@@ -2,20 +2,21 @@
 	<div id="login" class="w_320 mt_10">
 		<h2>Resend confirmation instructions</h2>
 
-		<%= simple_form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f| %>
-			<%= f.error_notification %>
-			<%= f.full_error :confirmation_token %>
+		<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+			<%= render "devise/shared/error_messages", resource: resource %>
 
-			<div class="form-inputs">
-				<%= f.input :login, :required => true, :autofocus => true, as: :string %>
+			<div class="field form-inputs">
+				<p><%= f.label :login %></p>
+				<p><%= f.text_field :login, autofocus: true, required: true %></p>
 			</div>
 
-			<div style="margin-top: 10px;">If you don't receive the email, whitelist admin@pinballmap.com and try again, and <span class="bold brightpurple">check your spam folder</span>.</div>
-
-			<div class="form-actions confirmation">
-				<%= f.button :submit, "Submit" %>
+			<div class="actions">
+				<%= f.submit "Submit", class: "button" %>
 			</div>
+			<br />
 		<% end %>
+
+		<div style="margin-top: 10px;">If you don't receive the email, whitelist admin@pinballmap.com and try again, and <span class="bold brightpurple">check your spam folder</span>.</div>
 
 		<%= render "devise/shared/links" %>
 	</div>

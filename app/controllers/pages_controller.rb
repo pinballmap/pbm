@@ -9,7 +9,7 @@ class PagesController < ApplicationController
       @contact_thanks = "Thanks for contacting us! If you are expecting a reply, check your spam folder or whitelist admin@pinballmap.com".freeze
       send_admin_notification({ email: params["contact_email"], name: params["contact_name"], message: params["contact_msg"] }, @region, user)
     else
-      if params["security_test"] =~ /pinball/i
+      if params["security_question"] =~ /pinball/i
         @contact_thanks = "Thanks for contacting us! If you are expecting a reply, check your spam folder or whitelist admin@pinballmap.com".freeze
         send_admin_notification({ email: params["contact_email"], name: params["contact_name"], message: params["contact_msg"] }, @region, user)
       else

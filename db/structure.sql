@@ -994,7 +994,6 @@ CREATE TABLE public.users (
     confirmation_sent_at timestamp without time zone,
     is_disabled boolean,
     authentication_token character varying(30),
-    security_test character varying,
     user_submissions_count integer DEFAULT 0 NOT NULL,
     flag character varying,
     num_machines_added integer DEFAULT 0 NOT NULL,
@@ -1908,6 +1907,7 @@ ALTER TABLE ONLY public.active_storage_attachments
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250319234408'),
 ('20250211002039'),
 ('20250129200703'),
 ('20250129200229'),

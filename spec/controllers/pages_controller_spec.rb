@@ -30,7 +30,7 @@ describe PagesController, type: :controller do
     it 'should send an email if the body is not blank' do
       logout
 
-      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_test: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: 'bar', message: 'baz', user_name: nil, user_email: nil, to_users: [ 'foo@bar.com' ], cc_users: [ 'super_admin@bar.com' ], subject: 'Pinball Map - Message (Portland) from foo', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
+      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_question: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: 'bar', message: 'baz', user_name: nil, user_email: nil, to_users: [ 'foo@bar.com' ], cc_users: [ 'super_admin@bar.com' ], subject: 'Pinball Map - Message (Portland) from foo', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
     end
 
     it 'should include user info if you are logged in' do
@@ -42,33 +42,33 @@ describe PagesController, type: :controller do
     it 'email should notify if it was sent from the staging server' do
       @request.host = 'pbmstaging.com'
 
-      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_test: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: 'bar', message: 'baz', user_name: nil, user_email: nil, to_users: [ 'foo@bar.com' ], cc_users: [ 'super_admin@bar.com' ], subject: '(STAGING) Pinball Map - Message (Portland) from foo', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
+      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_question: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: 'bar', message: 'baz', user_name: nil, user_email: nil, to_users: [ 'foo@bar.com' ], cc_users: [ 'super_admin@bar.com' ], subject: '(STAGING) Pinball Map - Message (Portland) from foo', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
     end
 
     it 'should not send an email if the body is blank' do
-      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: nil, security_test: 'pinball' } }.to_not have_enqueued_job
+      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: nil, security_question: 'pinball' } }.to_not have_enqueued_job
     end
 
     it 'should not send an email if the email is blank when logged out' do
       logout
 
-      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: nil, contact_msg: 'hello', security_test: 'pinball' } }.to_not have_enqueued_job
+      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: nil, contact_msg: 'hello', security_question: 'pinball' } }.to_not have_enqueued_job
     end
 
     it 'should send an email if the email is blank when logged in' do
       login(@user)
 
-      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: nil, contact_msg: 'hello', security_test: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: '', message: 'hello', user_name: 'ssw', user_email: 'yeah@ok.com', to_users: [ 'foo@bar.com' ], cc_users: [ 'super_admin@bar.com' ], subject: 'Pinball Map - Message (Portland) from ssw', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
+      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: nil, contact_msg: 'hello', security_question: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: '', message: 'hello', user_name: 'ssw', user_email: 'yeah@ok.com', to_users: [ 'foo@bar.com' ], cc_users: [ 'super_admin@bar.com' ], subject: 'Pinball Map - Message (Portland) from ssw', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
     end
 
     it 'should not send an email if the body contains a spam keyword' do
-      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'vape', security_test: 'pinball' } }.to_not have_enqueued_job
+      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'vape', security_question: 'pinball' } }.to_not have_enqueued_job
     end
 
     it 'should flash an error message if security test fails' do
       logout
 
-      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_test: 'dunno' } }.to_not have_enqueued_job
+      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_question: 'dunno' } }.to_not have_enqueued_job
     end
   end
 

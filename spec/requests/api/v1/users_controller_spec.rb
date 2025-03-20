@@ -3,18 +3,18 @@ require 'spec_helper'
 describe Api::V1::UsersController, type: :request do
   describe '#auth_details' do
     before(:each) do
-      @user = FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc123')
+      @user = FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123')
     end
 
     it 'returns all app-centric user data' do
-      get '/api/v1/users/auth_details.json', params: { login: 'yeah@ok.com', password: 'okokok' }
+      get '/api/v1/users/auth_details.json', params: { login: 'yeah@ok.com', password: 'okokokok' }
 
       expect(response).to be_successful
       expect(response.body).to include('ssw')
       expect(response.body).to include('yeah@ok.com')
       expect(response.body).to include('abc123')
 
-      get '/api/v1/users/auth_details.json', params: { login: 'ssw', password: 'okokok' }
+      get '/api/v1/users/auth_details.json', params: { login: 'ssw', password: 'okokokok' }
 
       expect(response).to be_successful
       expect(response.body).to include('ssw')
@@ -23,14 +23,14 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'handles username/email as case insensitive' do
-      get '/api/v1/users/auth_details.json', params: { login: 'yEAh@ok.com', password: 'okokok' }
+      get '/api/v1/users/auth_details.json', params: { login: 'yEAh@ok.com', password: 'okokokok' }
 
       expect(response).to be_successful
       expect(response.body).to include('ssw')
       expect(response.body).to include('yeah@ok.com')
       expect(response.body).to include('abc123')
 
-      get '/api/v1/users/auth_details.json', params: { login: 'sSW', password: 'okokok' }
+      get '/api/v1/users/auth_details.json', params: { login: 'sSW', password: 'okokokok' }
 
       expect(response).to be_successful
       expect(response.body).to include('ssw')
@@ -39,7 +39,7 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'requires either username or user_email and password' do
-      get '/api/v1/users/auth_details.json', params: { password: 'okokok' }
+      get '/api/v1/users/auth_details.json', params: { password: 'okokokok' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('login and password are required fields')
@@ -51,32 +51,32 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'tells you if your user is not confirmed' do
-      FactoryBot.create(:user, id: 333, username: 'unconfirmed', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc456', confirmed_at: nil)
+      FactoryBot.create(:user, id: 333, username: 'unconfirmed', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc456', confirmed_at: nil)
 
-      get '/api/v1/users/auth_details.json', params: { login: 'unconfirmed', password: 'okokok' }
+      get '/api/v1/users/auth_details.json', params: { login: 'unconfirmed', password: 'okokokok' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('User is not yet confirmed. Please follow emailed confirmation instructions.')
     end
 
     it 'tells you if your user is disabled' do
-      FactoryBot.create(:user, id: 334, username: 'disabled', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc456', is_disabled: true)
+      FactoryBot.create(:user, id: 334, username: 'disabled', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc456', is_disabled: true)
 
-      get '/api/v1/users/auth_details.json', params: { login: 'disabled', password: 'okokok' }
+      get '/api/v1/users/auth_details.json', params: { login: 'disabled', password: 'okokokok' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Your account is disabled. Please contact us if you think this is a mistake.')
     end
 
     it 'tells you if you enter the wrong password' do
-      get '/api/v1/users/auth_details.json', params: { login: 'ssw', password: 'NOT_okokok' }
+      get '/api/v1/users/auth_details.json', params: { login: 'ssw', password: 'NOT_okokokok' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Incorrect password')
     end
 
     it 'tells you if this user does not exist' do
-      get '/api/v1/users/auth_details.json', params: { login: 's', password: 'okokok' }
+      get '/api/v1/users/auth_details.json', params: { login: 's', password: 'okokokok' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unknown user')
@@ -149,7 +149,7 @@ describe Api::V1::UsersController, type: :request do
 
   describe '#signup' do
     it 'returns all app-centric user data if successful' do
-      post '/api/v1/users/signup.json', params: { username: 'foo', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok' }
+      post '/api/v1/users/signup.json', params: { username: 'foo', email: 'yeah@ok.com', password: 'okokokok', confirm_password: 'okokokok' }
 
       expect(response).to be_successful
       expect(response.body).to include('foo')
@@ -158,12 +158,12 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'requires a username and email address' do
-      post '/api/v1/users/signup.json', params: { username: '', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok' }
+      post '/api/v1/users/signup.json', params: { username: '', email: 'yeah@ok.com', password: 'okokokok', confirm_password: 'okokokok' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('username and email are required fields')
 
-      post '/api/v1/users/signup.json', params: { username: 'yeah', email: '', password: 'okokok', confirm_password: 'okokok' }
+      post '/api/v1/users/signup.json', params: { username: 'yeah', email: '', password: 'okokokok', confirm_password: 'okokokok' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('username and email are required fields')
@@ -177,25 +177,25 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'tells you if passwords do not match' do
-      post '/api/v1/users/signup.json', params: { username: 'yeah', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'NOPE' }
+      post '/api/v1/users/signup.json', params: { username: 'yeah', email: 'yeah@ok.com', password: 'okokokok', confirm_password: 'NOPE' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('your entered passwords do not match')
     end
 
     it 'does not allow duplicated usernames' do
-      FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc123')
+      FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123')
 
-      post '/api/v1/users/signup.json', params: { username: 'ssw', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok' }
+      post '/api/v1/users/signup.json', params: { username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', confirm_password: 'okokokok' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('This username already exists')
     end
 
     it 'does not allow duplicated email addresses' do
-      FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokok', password_confirmation: 'okokok', authentication_token: 'abc123')
+      FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123')
 
-      post '/api/v1/users/signup.json', params: { username: 'CLEO', email: 'yeah@ok.com', password: 'okokok', confirm_password: 'okokok' }
+      post '/api/v1/users/signup.json', params: { username: 'CLEO', email: 'yeah@ok.com', password: 'okokokok', confirm_password: 'okokokok' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('This email address already exists')

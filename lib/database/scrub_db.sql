@@ -41,7 +41,6 @@ UPDATE users
         confirmed_at            = null,
         confirmation_sent_at    = null,
         authentication_token = concat('userauth', id),
-        security_test = 'pinball';
 
 UPDATE operators
     SET email = name,
