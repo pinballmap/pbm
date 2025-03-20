@@ -4,8 +4,8 @@ regions = Region.create([
 ])
 
 User.create([
-  { region: regions.first, username: 'pdx', password: 'password', password_confirmation: 'password', email: 'scott.wainstock@gmail.com' },
-  { region: regions.last, username: 'chicago', password: 'password', password_confirmation: 'password', email: 'baron.von.awesome@gmail.com' }
+  { region: regions.first, username: 'pdx', password: 'password', password_confirmation: 'password', email: 'test@email.com' },
+  { region: regions.last, username: 'chicago', password: 'password', password_confirmation: 'password', email: 'test2@email.com' }
 ])
 
 locations = Location.create([
