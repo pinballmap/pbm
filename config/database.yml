@@ -13,7 +13,13 @@ test:
   database: <%= ENV.fetch("DATABASE", 'pbm_test') %>
 
 staging:
-  url: <%= ENV["DATABASE_URL"] %>
+  primary: &primary_staging
+    url: <%= ENV["DATABASE_URL"] %>
+  queue:
+    <<: *primary_staging
 
 production:
-  url: <%= ENV["DATABASE_URL"] %>
+  primary: &primary_production
+    url: <%= ENV["DATABASE_URL"] %>
+  queue:
+    <<: *primary_production
