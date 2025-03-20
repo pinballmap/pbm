@@ -78,3 +78,5 @@ group :development, :test do
   gem "pry"
   gem "rails_real_favicon"
 end
+
+gem "solid_queue", "~> 1.1"
