@@ -1,7 +1,7 @@
 var map;
 var region;
 var region_id;
-var mapAdjusted;
+var mapAdjusted = 0;
 var mapLoaded = 0;
 var search_string;
 var zoomLevel;
@@ -76,18 +76,25 @@ function homeMapBounds() {
 
 function findClosestLocations() {
   $('#intro_container').css('display','none');
+  mapAdjusted = 1;
   $.ajax({
     url: "/map_nearby",
     type: "POST",
     data: { },
     success: function(data) {
       $('#locations').html(data);
+      refresh_bounds = undefined;
       mapAdjusted = 0;
+      map.getSource("point").setData({
+        'type': 'FeatureCollection',
+        'features': locations_geojson
+      });
     }
   });
 }
 
 function getMapBounds(by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id) {
+  mapAdjusted = 1;
   refresh_bounds = map.getBounds();
   var boundsData = {
     ne: refresh_bounds.getNorthEast(),
