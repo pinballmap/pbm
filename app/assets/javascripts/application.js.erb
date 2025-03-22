@@ -1,7 +1,7 @@
 var map;
 var region;
 var region_id;
-var mapAdjusted = 0;
+var mapAdjusted;
 var mapLoaded = 0;
 var search_string;
 var zoomLevel;
@@ -82,12 +82,7 @@ function findClosestLocations() {
     data: { },
     success: function(data) {
       $('#locations').html(data);
-      refresh_bounds = undefined;
       mapAdjusted = 0;
-      map.getSource("point").setData({
-        'type': 'FeatureCollection',
-        'features': locations_geojson
-      });
     }
   });
 }
@@ -134,7 +129,7 @@ function showLocations() {
     var map_style = map_style_obj;
   }
 
-  if (mapAdjusted === 0 && mapLoaded == 0) {
+  if (mapAdjusted === 0 || mapLoaded == 0) {
     if (map_init == 1) {
       map = new maplibregl.Map({
         container: 'map_canvas',
