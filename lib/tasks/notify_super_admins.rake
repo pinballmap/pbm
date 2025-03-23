@@ -47,7 +47,7 @@ desc "Sends super admins a daily digest of regionless pictures added"
 task send_daily_digest_regionless_picture_added_email: :environment do
   regionless_picture_added_daily_email_body = Region.generate_daily_digest_regionless_picture_added_email_body
   submissions = regionless_picture_added_daily_email_body[:submissions]
-  email_subject = "Pinball Map - Daily regionless pictures added digest (#{r.full_name}) - #{(Date.today - 1.day).strftime('%m/%d/%Y')}"
+  email_subject = "Pinball Map - Daily regionless pictures added digest - #{(Date.today - 1.day).strftime('%m/%d/%Y')}"
 
   unless submissions.empty?
     User.where(is_super_admin: "Y").each do |user|
