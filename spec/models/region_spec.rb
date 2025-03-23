@@ -98,18 +98,18 @@ describe Region do
 
   describe '#generate_daily_digest_comments_email_body' do
     it 'should return nil if there are no comments that day' do
-      FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
       expect(@region.generate_daily_digest_comments_email_body[:submissions]).to be_empty
     end
 
     it 'should generate a string containing all machine comments from the day' do
-      FactoryBot.create(:user_submission, region: @region, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
-      FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
 
-      FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region: @region, submission: 'qux', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'qux', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
       expect(@region.generate_daily_digest_comments_email_body[:submissions]).to eq(%w[foo bar])
     end
@@ -118,18 +118,18 @@ describe Region do
   describe '#generate_daily_digest_regionless_comments_email_body' do
     it 'should return nil if there are no comments that day' do
       FactoryBot.create(:user_submission, region_id: nil, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region: @region, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
       FactoryBot.create(:user_submission, region_id: nil, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
       expect(Region.generate_daily_digest_regionless_comments_email_body[:submissions]).to be_empty
     end
 
     it 'should generate a string containing all machine comments from the day' do
-      FactoryBot.create(:user_submission, region: nil, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
-      FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region_id: nil, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region_id: nil, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
 
-      FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region: nil, submission: 'qux', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, region_id: nil, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region_id: nil, submission: 'qux', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
       expect(Region.generate_daily_digest_regionless_comments_email_body[:submissions]).to eq(%w[foo bar])
     end
@@ -260,22 +260,28 @@ describe Region do
 
       FactoryBot.create(:user_submission, region: @region, submission_type: 'suggest_location')
       FactoryBot.create(:user_submission, region: @region, submission_type: 'suggest_location')
+      FactoryBot.create(:user_submission, region: @another_region, submission_type: 'suggest_location')
 
       FactoryBot.create(:user_submission, region: @region, submission_type: 'new_condition')
       FactoryBot.create(:user_submission, region: @region, submission_type: 'new_condition')
+      FactoryBot.create(:user_submission, region: @another_region, submission_type: 'new_condition')
 
       location_added_today = FactoryBot.create(:location, region: @region)
-      FactoryBot.create(:location_machine_xref, location: location_added_today, machine: FactoryBot.create(:machine))
+      FactoryBot.create(:user_submission, region: @region, location: location_added_today, submission_type: 'new_lmx')
 
       FactoryBot.create(:user_submission, region: @region, submission_type: 'remove_machine')
       FactoryBot.create(:user_submission, region: @region, submission_type: 'remove_machine')
+      FactoryBot.create(:user_submission, region: @another_region, submission_type: 'remove_machine')
 
       FactoryBot.create(:user_submission, region: @region, submission_type: 'delete_location')
       FactoryBot.create(:user_submission, region: @region, submission_type: 'delete_location')
       FactoryBot.create(:user_submission, region: @region, submission_type: 'delete_location')
+      FactoryBot.create(:user_submission, region: @another_region, submission_type: 'delete_location')
 
-      FactoryBot.create(:location_machine_xref, location: location_added_today, machine: FactoryBot.create(:machine), created_at: Date.today - 2.week)
-      FactoryBot.create(:location_machine_xref, location: location_added_today, machine: FactoryBot.create(:machine), created_at: Date.today - 2.week)
+      FactoryBot.create(:user_submission, region: @region, submission_type: 'new_lmx')
+      FactoryBot.create(:user_submission, region: @region, submission_type: 'new_lmx')
+      FactoryBot.create(:user_submission, region: @another_region, submission_type: 'new_lmx')
+      FactoryBot.create(:user_submission, region: @region, submission_type: 'new_lmx',  created_at: Date.today - 2.week)
 
       FactoryBot.create(:event, region: @region, created_at: Date.today - 2.week)
       FactoryBot.create(:event, region: @region, end_date: Date.today - 2.week)
@@ -288,21 +294,21 @@ describe Region do
       FactoryBot.create(:user_submission, region: @region, submission_type: 'contact_us')
       FactoryBot.create(:user_submission, region: @region, submission_type: 'contact_us')
       FactoryBot.create(:user_submission, region: @region, submission_type: 'contact_us')
+      FactoryBot.create(:user_submission, region: @another_region, submission_type: 'contact_us')
 
       FactoryBot.create(:suggested_location, region: @region, name: 'SL 1', machines: 'Batman')
       FactoryBot.create(:suggested_location, region: @region, name: 'SL 2', machines: 'Batman')
 
       expect(@region.generate_weekly_admin_email_body[:suggested_locations]).to eq([ 'SL 1', 'SL 2' ])
-      expect(@region.generate_weekly_admin_email_body[:machineless_locations]).to eq([ 'Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)' ])
+      expect(@region.generate_weekly_admin_email_body[:machineless_locations]).to eq([ 'Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)', 'Test Location Name (Portland, OR)' ])
       expect(@region.generate_weekly_admin_email_body[:suggested_locations_count]).to eq(2)
       expect(@region.generate_weekly_admin_email_body[:locations_added_count]).to eq(2)
       expect(@region.generate_weekly_admin_email_body[:locations_deleted_count]).to eq(3)
       expect(@region.generate_weekly_admin_email_body[:machine_comments_count]).to eq(2)
-      expect(@region.generate_weekly_admin_email_body[:machines_added_count]).to eq(1)
+      expect(@region.generate_weekly_admin_email_body[:machines_added_count]).to eq(3)
       expect(@region.generate_weekly_admin_email_body[:machines_removed_count]).to eq(2)
       expect(@region.generate_weekly_admin_email_body[:contact_messages_count]).to eq(5)
       expect(@region.generate_weekly_admin_email_body[:events_count]).to eq(4)
-      expect(@region.generate_weekly_admin_email_body[:events_new_count]).to eq(3)
       expect(@region.generate_weekly_admin_email_body[:full_name]).to eq('Portland')
     end
   end
@@ -347,17 +353,6 @@ describe Region do
       FactoryBot.create(:user, region: @region, email: 'second@second.com')
 
       expect(@region.primary_email_contact).to eq('first@first.com')
-    end
-  end
-
-  describe '#machinesless_locations' do
-    it 'should return any location without a machine' do
-      FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location, region: @region))
-      FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location, region: @region))
-      l = FactoryBot.create(:location, region: @region)
-      l2 = FactoryBot.create(:location, region: @region)
-
-      expect(@region.machineless_locations).to include(l, l2)
     end
   end
 

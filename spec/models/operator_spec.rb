@@ -47,11 +47,11 @@ describe Operator do
 
       FactoryBot.create(:user_submission, created_at: (Time.now - 1.day), location: @l, submission: 'foo', submission_type: UserSubmission::NEW_LMX_TYPE)
 
-      FactoryBot.create(:user_submission, created_at: (Time.now - 1.day).beginning_of_day, location: @l, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, created_at: (Time.now - 1.day), location: @l, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
-      FactoryBot.create(:user_submission, created_at: (Time.now - 1.day).beginning_of_day, location: @l, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryBot.create(:user_submission, created_at: (Time.now - 1.day), location: @l, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      FactoryBot.create(:user_submission, created_at: (Time.now - 3.day).beginning_of_day, location: @l, submission: 'bong', submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryBot.create(:user_submission, created_at: (Time.now - 3.day), location: @l, submission: 'bong', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
       expect(@o.generate_operator_daily_digest[:machine_comments]).to eq(%w[baz])
     end
