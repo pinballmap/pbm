@@ -195,7 +195,7 @@ class Region < ApplicationRecord
       machines_count: machines_count,
       locations_count: locations_count,
 
-      events_count: Event.where("created_at is not null and created_at > ? and created_at < ? and region_id = ?", start_of_week, end_of_week, self).count,
+      events_count: Event.where("region_id = ?", self).count,
 
       contact_messages_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_week, end_of_week, UserSubmission::CONTACT_US_TYPE, self).count,
 

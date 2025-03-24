@@ -318,7 +318,7 @@ describe Region do
       expect(@region.generate_weekly_admin_email_body[:machines_added_count]).to eq(3)
       expect(@region.generate_weekly_admin_email_body[:machines_removed_count]).to eq(2)
       expect(@region.generate_weekly_admin_email_body[:contact_messages_count]).to eq(5)
-      expect(@region.generate_weekly_admin_email_body[:events_count]).to eq(4)
+      expect(@region.generate_weekly_admin_email_body[:events_count]).to eq(5)
       expect(@region.generate_weekly_admin_email_body[:pictures_added_count]).to eq(2)
       expect(@region.generate_weekly_admin_email_body[:full_name]).to eq('Portland')
     end
