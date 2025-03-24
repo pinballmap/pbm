@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 RSpec.describe AdminMailer, type: :mailer do
-  describe 'weekly_admin_digest_regionless' do
+  describe 'send_weekly_admin_digest_global' do
     it 'should send an email' do
-      email = AdminMailer.with(user: 'foo@bar.com', machines_count: 1, locations_count: 1, machineless_locations: [ 'Sassy House' ], suggested_locations: [ 'Lounge Bar' ], suggested_locations_count: 1, locations_added_count: 1, locations_deleted_count: 1, machine_comments_count: 1, machines_added_count: 1, machines_removed_count: 1).weekly_admin_digest_regionless
+      email = AdminMailer.with(user: 'foo@bar.com', machines_count: 1, locations_count: 1, machineless_locations: [ 'Sassy House' ], suggested_locations_count: 1, locations_added_count: 1, locations_deleted_count: 1, machine_comments_count: 1, machines_added_count: 1, machines_removed_count: 1, pictures_added_count: 1, contact_messages_count: 1).send_weekly_admin_digest_global
 
       assert_emails 1 do
         email.deliver_now
@@ -11,7 +11,7 @@ RSpec.describe AdminMailer, type: :mailer do
 
       assert_equal [ 'admin@pinballmap.com' ], email.from
       assert_equal [ 'foo@bar.com' ], email.to
-      assert_equal "Pinball Map - Weekly admin REGIONLESS digest - #{Date.today.strftime('%m/%d/%Y')}", email.subject
+      assert_equal "Pinball Map - Weekly admin global digest - #{Date.today.strftime('%m/%d/%Y')}", email.subject
     end
   end
   describe 'new location submitted' do

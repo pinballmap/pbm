@@ -4,20 +4,14 @@
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
   %body
     %p
-      Here is a weekly overview of regionless locations!
+      Here is a weekly overview of all locations!
     %h3
-      Regionless Weekly Overview
+      Global Weekly Overview
     %p
       %strong List of Empty Locations:
       %br
       - @machineless_locations.each do |ml|
         = ml
-        %br
-    %p
-      %strong List of Suggested Locations:
-      %br
-      - @suggested_locations.each do |sl|
-        = sl
         %br
     %p
       #{@suggested_locations_count} location(s) submitted
@@ -31,5 +25,9 @@
       #{@machines_added_count} machine(s) added
       %br
       #{@machines_removed_count} machine(s) removed
+      %br
+      #{@contact_messages_count} "contact us" message(s) sent
+      %br
+      #{@pictures_added_count} pictures(s) added
     %p
-      Regionless is listing #{@machines_count} machines and #{@locations_count} locations
+      Pinball Map is listing #{@machines_count} machines and #{@locations_count} locations

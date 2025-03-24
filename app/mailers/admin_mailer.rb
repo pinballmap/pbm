@@ -1,26 +1,21 @@
 class AdminMailer < ApplicationMailer
-  def weekly_admin_digest_regionless
+  def send_weekly_admin_digest_global
     @machines_count = params[:machines_count]
     @locations_count = params[:locations_count]
     @machineless_locations = params[:machineless_locations]
-    @suggested_locations = params[:suggested_locations]
     @suggested_locations_count = params[:suggested_locations_count]
     @locations_added_count = params[:locations_added_count]
     @locations_deleted_count = params[:locations_deleted_count]
     @machine_comments_count = params[:machine_comments_count]
     @machines_added_count = params[:machines_added_count]
     @machines_removed_count = params[:machines_removed_count]
+    @pictures_added_count = params[:pictures_added_count]
+    @contact_messages_count = params[:contact_messages_count]
 
-    mail(to: params[:user], subject: "Pinball Map - Weekly admin REGIONLESS digest - #{Date.today.strftime('%m/%d/%Y')}")
+    mail(to: params[:user], subject: "Pinball Map - Weekly admin global digest - #{Date.today.strftime('%m/%d/%Y')}")
   end
 
-  def weekly_admin_digest_all_regions
-    attachments["all_region_info.txt"] = { mime_type: "text/plain", content: params[:email_bodies].join("\n\n") }
-
-    mail(to: params[:user], subject: "Pinball Map - Weekly admin digest for all regions - #{Date.today.strftime('%m/%d/%Y')}")
-  end
-
-  def notify_admins
+  def send_weekly_admin_digest
     @region_name = params[:region_name]
     @machines_count = params[:machines_count]
     @locations_count = params[:locations_count]
@@ -34,6 +29,7 @@ class AdminMailer < ApplicationMailer
     @machine_comments_count = params[:machine_comments_count]
     @machines_added_count = params[:machines_added_count]
     @machines_removed_count = params[:machines_removed_count]
+    @pictures_added_count = params[:pictures_added_count]
 
     mail(to: params[:email_to], subject: params[:email_subject])
   end
@@ -64,14 +60,14 @@ class AdminMailer < ApplicationMailer
     mail(to: params[:email_to], subject: params[:email_subject])
   end
 
-  def send_daily_digest_regionless_machine_condition_email
+  def send_daily_digest_global_machine_condition_email
     @submissions = params[:submissions]
-    mail(to: params[:user], subject: "Pinball Map - Daily admin REGIONLESS machine comment digest - #{(Date.today - 1.day).strftime('%m/%d/%Y')}")
+    mail(to: params[:user], subject: "Pinball Map - Daily admin global machine comment digest - #{(Date.today - 1.day).strftime('%m/%d/%Y')}")
   end
 
-  def send_daily_digest_regionless_machine_removal_email
+  def send_daily_digest_global_machine_removal_email
     @submissions = params[:submissions]
-    mail(to: params[:user], subject: "Pinball Map - Daily admin REGIONLESS machine removal digest - #{(Date.today - 1.day).strftime('%m/%d/%Y')}")
+    mail(to: params[:user], subject: "Pinball Map - Daily admin global machine removal digest - #{(Date.today - 1.day).strftime('%m/%d/%Y')}")
   end
 
   def send_daily_digest_picture_added_email
@@ -80,9 +76,9 @@ class AdminMailer < ApplicationMailer
     mail(to: params[:email_to], subject: params[:email_subject])
   end
 
-  def send_daily_digest_regionless_picture_added_email
+  def send_daily_digest_global_picture_added_email
     @submissions = params[:submissions]
-    mail(to: params[:user], subject: params[:email_subject])
+    mail(to: params[:user], subject: "Pinball Map - Daily global pictures added digest - #{(Date.today - 1.day).strftime('%m/%d/%Y')}")
   end
 
   def send_new_location_notification

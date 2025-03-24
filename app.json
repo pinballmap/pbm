@@ -1,24 +1,36 @@
 {
   "cron": [
     {
-      "command": "rake notify_admins",
+      "command": "rake send_weekly_admin_digest",
       "schedule": "0 19 * * 5"
+    },
+    {
+      "command": "rake send_weekly_admin_digest_global",
+      "schedule": "0 20 * * 5"
     },
     {
       "command": "rake send_daily_digest_picture_added_email",
       "schedule": "0 10 * * *"
     },
     {
-      "command": "rake send_daily_digest_regionless_picture_added_email",
-      "schedule": "0 11 * * *"
+      "command": "rake send_daily_digest_global_picture_added_email",
+      "schedule": "30 10 * * *"
     },
     {
       "command": "rake send_daily_digest_machine_removal_email",
       "schedule": "0 9 * * *"
     },
     {
+      "command": "rake send_daily_digest_global_machine_removal_email",
+      "schedule": "30 9 * * *"
+    },
+    {
       "command": "rake send_daily_digest_machine_condition_email",
       "schedule": "0 8 * * *"
+    },
+    {
+      "command": "rake send_daily_digest_global_machine_condition_email",
+      "schedule": "30 8 * * *"
     },
     {
       "command": "rake send_daily_digest_operator_email",

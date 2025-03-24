@@ -118,11 +118,11 @@ class Region < ApplicationRecord
     [ lat, lon ].join(", ")
   end
 
-  def self.generate_daily_digest_regionless_comments_email_body
+  def self.generate_daily_digest_global_comments_email_body
     start_of_day = (Time.now - 1.day).beginning_of_day
     end_of_day = (Time.now - 1.day).end_of_day
 
-    { submissions: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id is null", start_of_day, end_of_day, UserSubmission::NEW_CONDITION_TYPE).collect(&:submission) }
+    { submissions: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_day, end_of_day, UserSubmission::NEW_CONDITION_TYPE).collect(&:submission) }
   end
 
   def generate_daily_digest_comments_email_body
@@ -139,18 +139,18 @@ class Region < ApplicationRecord
     { submissions: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_day, end_of_day, UserSubmission::NEW_PICTURE_TYPE, self).collect(&:submission) }
   end
 
-  def self.generate_daily_digest_regionless_picture_added_email_body
+  def self.generate_daily_digest_global_picture_added_email_body
     start_of_day = (Time.now - 1.day).beginning_of_day
     end_of_day = (Time.now - 1.day).end_of_day
 
-    { submissions: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id is null", start_of_day, end_of_day, UserSubmission::NEW_PICTURE_TYPE).collect(&:submission) }
+    { submissions: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_day, end_of_day, UserSubmission::NEW_PICTURE_TYPE).collect(&:submission) }
   end
 
-  def self.generate_daily_digest_regionless_removal_email_body
+  def self.generate_daily_digest_global_removal_email_body
     start_of_day = (Time.now - 1.day).beginning_of_day
     end_of_day = (Time.now - 1.day).end_of_day
 
-    { submissions: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id is null", start_of_day, end_of_day, UserSubmission::REMOVE_MACHINE_TYPE).collect(&:submission) }
+    { submissions: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_day, end_of_day, UserSubmission::REMOVE_MACHINE_TYPE).collect(&:submission) }
   end
 
   def generate_daily_digest_removal_email_body
@@ -160,26 +160,31 @@ class Region < ApplicationRecord
     { submissions: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_day, end_of_day, UserSubmission::REMOVE_MACHINE_TYPE, self).collect(&:submission) }
   end
 
-  def self.generate_weekly_regionless_email_body
+  def self.generate_weekly_global_email_body
     start_of_week = (Time.now - 1.week).beginning_of_day
     end_of_week = Time.now.end_of_day
 
-    regionless_locations = Location.where("region_id is null")
-    regionless_user_submissions = UserSubmission.where("region_id is null")
-    regionless_machines_added_by_users_this_week = 0
-    regionless_locations.each do |l|
-      regionless_machines_added_by_users_this_week += l.location_machine_xrefs.select { |lmx| !lmx.created_at.nil? && lmx.created_at.between?(start_of_week, end_of_week) }.count
-    end
+    { machines_count: LocationMachineXref.all.count,
+      locations_count: Location.all.count,
 
-    { regionless_locations_count: regionless_locations.count, regionless_machines_count: LocationMachineXref.count_by_sql("select count(*) from location_machine_xrefs lmx inner join locations l on (lmx.location_id = l.id) where l.region_id is null"),
-    machineless_locations: regionless_locations.select { |location| location.machine_count.zero? }.each.map { |ml| ml.name + " (#{ml.city}, #{ml.state})" },
-    suggested_locations: SuggestedLocation.where("region_id is null").each.map(&:name),
-    suggested_locations_count: UserSubmission.where("region_id is null").select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::SUGGEST_LOCATION_TYPE }.count,
-    locations_added_count: regionless_locations.select { |l| !l.created_at.nil? && l.created_at.between?(start_of_week, end_of_week) }.count,
-    locations_deleted_count: regionless_user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::DELETE_LOCATION_TYPE }.count,
-    machine_comments_count: regionless_user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::NEW_CONDITION_TYPE }.count,
-    machines_added_count: regionless_machines_added_by_users_this_week,
-    machines_removed_count: regionless_user_submissions.select { |us| !us.created_at.nil? && us.created_at.between?(start_of_week, end_of_week) && us.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.count }
+      contact_messages_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::CONTACT_US_TYPE).count,
+
+      machineless_locations: Location.where(machine_count: 0).each.map { |ml| ml.name + " (#{ml.city}, #{ml.state})" },
+
+      suggested_locations_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::SUGGEST_LOCATION_TYPE).count,
+
+      locations_added_count: Location.where("created_at is not null and created_at > ? and created_at < ?", start_of_week, end_of_week).count,
+
+      locations_deleted_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::DELETE_LOCATION_TYPE).count,
+
+      machine_comments_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::NEW_CONDITION_TYPE).count,
+
+      machines_added_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::NEW_LMX_TYPE).count,
+
+      machines_removed_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::REMOVE_MACHINE_TYPE).count,
+
+      pictures_added_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::NEW_PICTURE_TYPE).count
+    }
   end
 
   def generate_weekly_admin_email_body
@@ -208,7 +213,9 @@ class Region < ApplicationRecord
 
       machines_added_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_week, end_of_week, UserSubmission::NEW_LMX_TYPE, self).count,
 
-      machines_removed_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_week, end_of_week, UserSubmission::REMOVE_MACHINE_TYPE, self).count
+      machines_removed_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_week, end_of_week, UserSubmission::REMOVE_MACHINE_TYPE, self).count,
+
+      pictures_added_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_week, end_of_week, UserSubmission::NEW_PICTURE_TYPE, self).count
     }
   end
 

@@ -34,7 +34,7 @@ describe Region do
   end
 
   describe '#delete_empty_regionless_locations' do
-    it 'should remove all empty regionless locations' do
+    it 'should remove all empty global locations' do
       FactoryBot.create(:location, region: nil)
       not_empty = FactoryBot.create(:location, region: nil, name: 'not empty')
       FactoryBot.create(:location_machine_xref, location: not_empty, machine: FactoryBot.create(:machine))
@@ -115,42 +115,45 @@ describe Region do
     end
   end
 
-  describe '#generate_daily_digest_regionless_comments_email_body' do
+  describe '#generate_daily_digest_global_comments_email_body' do
     it 'should return nil if there are no comments that day' do
       FactoryBot.create(:user_submission, region_id: nil, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region_id: nil, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
-      expect(Region.generate_daily_digest_regionless_comments_email_body[:submissions]).to be_empty
+      expect(Region.generate_daily_digest_global_comments_email_body[:submissions]).to be_empty
     end
 
     it 'should generate a string containing all machine comments from the day' do
       FactoryBot.create(:user_submission, region_id: nil, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
       FactoryBot.create(:user_submission, region_id: nil, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bong', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
 
       FactoryBot.create(:user_submission, region_id: nil, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region_id: nil, submission: 'qux', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
-      expect(Region.generate_daily_digest_regionless_comments_email_body[:submissions]).to eq(%w[foo bar])
+      expect(Region.generate_daily_digest_global_comments_email_body[:submissions]).to eq(%w[foo bar bong])
     end
   end
 
-  describe '#generate_daily_digest_regionless_removal_email_body' do
+  describe '#generate_daily_digest_global_removal_email_body' do
     it 'should return nil if there are no removals that day' do
-      FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region: nil, submission: 'foo', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(Region.generate_daily_digest_regionless_removal_email_body[:submissions]).to be_empty
+      expect(Region.generate_daily_digest_global_removal_email_body[:submissions]).to be_empty
     end
 
     it 'should generate a string containing all machine removals from the day' do
       FactoryBot.create(:user_submission, region: nil, submission: 'foo', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 1.day)
       FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bong', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 1.day)
 
       FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: nil, submission: 'qux', submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(Region.generate_daily_digest_regionless_removal_email_body[:submissions]).to eq(%w[foo bar])
+      expect(Region.generate_daily_digest_global_removal_email_body[:submissions]).to eq(%w[foo bar bong])
     end
   end
 
@@ -192,62 +195,66 @@ describe Region do
     end
   end
 
-  describe '#generate_daily_digest_regionless_picture_added_email_body' do
+  describe '#generate_daily_digest_global_picture_added_email_body' do
     it 'should return nil if there are no pictures added that day' do
       FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_PICTURE_TYPE)
 
-      expect(Region.generate_daily_digest_regionless_picture_added_email_body[:submissions]).to be_empty
+      expect(Region.generate_daily_digest_global_picture_added_email_body[:submissions]).to be_empty
     end
 
     it 'should generate a string containing all pictures added from the day' do
       FactoryBot.create(:user_submission, region: nil, submission: 'foo', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
       FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bong', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
 
       FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region: nil, submission: 'qux', submission_type: UserSubmission::NEW_PICTURE_TYPE)
 
-      expect(Region.generate_daily_digest_regionless_picture_added_email_body[:submissions]).to eq(%w[foo bar])
+      expect(Region.generate_daily_digest_global_picture_added_email_body[:submissions]).to eq(%w[foo bar bong])
     end
   end
 
-  describe '#generate_weekly_regionless_email_body' do
-    it 'should generate a string containing metrics about regionless locations' do
+  describe '#generate_weekly_global_email_body' do
+    it 'should generate a string containing metrics about global locations' do
       FactoryBot.create(:location, region: @region, name: 'Another Region Location')
 
       FactoryBot.create(:location, region: nil, name: 'Empty Location', city: 'Troy', state: 'OR')
       FactoryBot.create(:location, region: nil, name: 'Another Empty Location', city: 'Rochester', state: 'OR', created_at: Date.today - 2.week)
 
       FactoryBot.create(:user_submission, region: nil, submission_type: 'suggest_location')
-      FactoryBot.create(:user_submission, region: nil, submission_type: 'suggest_location')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'suggest_location')
 
       FactoryBot.create(:user_submission, region: nil, submission_type: 'new_condition')
-      FactoryBot.create(:user_submission, region: nil, submission_type: 'new_condition')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'new_condition')
 
       location_added_today = FactoryBot.create(:location, region: nil, name: 'Location Added Today')
       FactoryBot.create(:location_machine_xref, location: location_added_today, machine: FactoryBot.create(:machine))
 
+      FactoryBot.create(:user_submission, region: nil, submission_type: 'new_lmx')
+      FactoryBot.create(:user_submission, region: nil, submission_type: 'new_lmx')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'new_lmx')
+      FactoryBot.create(:user_submission, region: @region, submission_type: 'new_lmx',  created_at: Date.today - 2.week)
+
       FactoryBot.create(:user_submission, region: nil, submission_type: 'remove_machine')
-      FactoryBot.create(:user_submission, region: nil, submission_type: 'remove_machine')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'remove_machine')
 
       FactoryBot.create(:user_submission, region: nil, submission_type: 'delete_location')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'delete_location')
       FactoryBot.create(:user_submission, region: nil, submission_type: 'delete_location')
-      FactoryBot.create(:user_submission, region: nil, submission_type: 'delete_location')
 
-      FactoryBot.create(:location_machine_xref, location: location_added_today, machine: FactoryBot.create(:machine), created_at: Date.today - 2.week)
-      FactoryBot.create(:location_machine_xref, location: location_added_today, machine: FactoryBot.create(:machine), created_at: Date.today - 2.week)
+      FactoryBot.create(:user_submission, region: nil, submission: 'foo', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
 
-      FactoryBot.create(:suggested_location, region: nil, name: 'SL 1', machines: 'Batman')
-      FactoryBot.create(:suggested_location, region: nil, name: 'SL 2', machines: 'Batman')
-
-      expect(Region.generate_weekly_regionless_email_body[:suggested_locations]).to eq([ 'SL 1', 'SL 2' ])
-      expect(Region.generate_weekly_regionless_email_body[:machineless_locations]).to eq([ 'Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)' ])
-      expect(Region.generate_weekly_regionless_email_body[:suggested_locations_count]).to eq(2)
-      expect(Region.generate_weekly_regionless_email_body[:locations_added_count]).to eq(2)
-      expect(Region.generate_weekly_regionless_email_body[:locations_deleted_count]).to eq(3)
-      expect(Region.generate_weekly_regionless_email_body[:machine_comments_count]).to eq(2)
-      expect(Region.generate_weekly_regionless_email_body[:machines_added_count]).to eq(1)
-      expect(Region.generate_weekly_regionless_email_body[:machines_removed_count]).to eq(2)
+      expect(Region.generate_weekly_global_email_body[:machineless_locations]).to eq([ 'Another Region Location (Portland, OR)', 'Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)' ])
+      expect(Region.generate_weekly_global_email_body[:suggested_locations_count]).to eq(2)
+      expect(Region.generate_weekly_global_email_body[:locations_added_count]).to eq(3)
+      expect(Region.generate_weekly_global_email_body[:locations_deleted_count]).to eq(3)
+      expect(Region.generate_weekly_global_email_body[:machine_comments_count]).to eq(2)
+      expect(Region.generate_weekly_global_email_body[:machines_added_count]).to eq(4)
+      expect(Region.generate_weekly_global_email_body[:machines_removed_count]).to eq(2)
+      expect(Region.generate_weekly_global_email_body[:pictures_added_count]).to eq(2)
     end
   end
 
@@ -299,6 +306,9 @@ describe Region do
       FactoryBot.create(:suggested_location, region: @region, name: 'SL 1', machines: 'Batman')
       FactoryBot.create(:suggested_location, region: @region, name: 'SL 2', machines: 'Batman')
 
+      FactoryBot.create(:user_submission, region: @region, submission: 'foo', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
+
       expect(@region.generate_weekly_admin_email_body[:suggested_locations]).to eq([ 'SL 1', 'SL 2' ])
       expect(@region.generate_weekly_admin_email_body[:machineless_locations]).to eq([ 'Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)', 'Test Location Name (Portland, OR)' ])
       expect(@region.generate_weekly_admin_email_body[:suggested_locations_count]).to eq(2)
@@ -309,6 +319,7 @@ describe Region do
       expect(@region.generate_weekly_admin_email_body[:machines_removed_count]).to eq(2)
       expect(@region.generate_weekly_admin_email_body[:contact_messages_count]).to eq(5)
       expect(@region.generate_weekly_admin_email_body[:events_count]).to eq(4)
+      expect(@region.generate_weekly_admin_email_body[:pictures_added_count]).to eq(2)
       expect(@region.generate_weekly_admin_email_body[:full_name]).to eq('Portland')
     end
   end
