@@ -322,7 +322,7 @@ module Api
         location = nil
 
         if params[:no_details] == "1"
-          location = Location.includes(:location_machine_xrefs, :machines, :last_updated_by_user).find(params[:id])
+          location = Location.includes(:location_machine_xrefs, :last_updated_by_user).find(params[:id])
           return_response(
             location,
             nil,
@@ -342,7 +342,7 @@ module Api
             %i[phone website updated_at region_id description operator_id date_last_updated last_updated_by_user_id ic_active zone_id created_at is_stern_army country]
           )
         else
-          location = Location.includes(location_machine_xrefs: [ :user, :machine, { machine_conditions: :user }, { machine_score_xrefs: :user } ]).find(params[:id])
+          location = Location.includes(location_machine_xrefs: [ :user, { machine_conditions: :user }, { machine_score_xrefs: :user } ]).find(params[:id])
           return_response(
             location,
             nil,
