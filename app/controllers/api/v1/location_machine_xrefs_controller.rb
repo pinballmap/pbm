@@ -24,8 +24,8 @@ module Api
       param :id, Integer, desc: "LMX id", required: true
       formats [ "json" ]
       def show
-        lmx = LocationMachineXref.find(params[:id])
-        return_response(lmx, "location_machine", [], %i[last_updated_by_username machine_conditions])
+        lmx = LocationMachineXref.includes({ machine_conditions: :user }, :machine_score_xrefs).find(params[:id])
+        return_response(lmx, "location_machine", [], %i[last_updated_by_username machine_conditions machine_score_xrefs])
       end
 
       api :POST, "/api/v1/location_machine_xrefs.json", "Find or create a machine at a location"
