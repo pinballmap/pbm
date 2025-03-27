@@ -395,7 +395,7 @@ describe LocationMachineXrefsController do
 
   describe 'backglass images', type: :feature, js: true do
     before(:each) do
-      machine_backglass = FactoryBot.create(:machine, name: 'Twilight Zone', id: 1, opdb_img: '/app/assets/images/favicon/favicon.ico')
+      machine_backglass = FactoryBot.create(:machine, name: 'Twilight Zone', id: 1, opdb_img: '/public/favicon.ico')
       machine_nobackglass = FactoryBot.create(:machine, name: 'Hammer Time', id: 2)
 
       @machine_backglass_lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: machine_backglass, id: 11)

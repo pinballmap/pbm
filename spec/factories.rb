@@ -86,7 +86,7 @@ FactoryBot.define do
   factory :location_picture_xref do
     association :location
     association :user
-    photo { File.open(File.join(Rails.root, '/app/assets/images/favicon/favicon.ico')) }
+    photo { File.open(File.join(Rails.root, '/public/favicon.ico')) }
   end
 
   factory :region_link_xref do

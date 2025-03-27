@@ -374,10 +374,6 @@ GEM
       actionview (> 3.1)
       activesupport (> 3.1)
       railties (> 3.1)
-    rails_real_favicon (0.1.1)
-      json (>= 1.7, < 3)
-      rails
-      rubyzip (~> 2)
     rails_semantic_logger (4.17.0)
       rack
       railties (>= 5.1)
@@ -600,7 +596,6 @@ DEPENDENCIES
   rails-controller-testing
   rails_admin
   rails_autolink
-  rails_real_favicon
   rails_semantic_logger
   rake
   rspec-rails
