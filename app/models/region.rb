@@ -183,7 +183,9 @@ class Region < ApplicationRecord
 
       machines_removed_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::REMOVE_MACHINE_TYPE).count,
 
-      pictures_added_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::NEW_PICTURE_TYPE).count
+      pictures_added_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::NEW_PICTURE_TYPE).count,
+
+      scores_added_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::NEW_SCORE_TYPE).count
     }
   end
 
@@ -215,7 +217,9 @@ class Region < ApplicationRecord
 
       machines_removed_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_week, end_of_week, UserSubmission::REMOVE_MACHINE_TYPE, self).count,
 
-      pictures_added_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_week, end_of_week, UserSubmission::NEW_PICTURE_TYPE, self).count
+      pictures_added_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_week, end_of_week, UserSubmission::NEW_PICTURE_TYPE, self).count,
+
+      scores_added_count: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_week, end_of_week, UserSubmission::NEW_SCORE_TYPE, self).count
     }
   end
 

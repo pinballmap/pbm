@@ -240,6 +240,9 @@ describe Region do
       FactoryBot.create(:user_submission, region: nil, submission_type: 'remove_machine')
       FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'remove_machine')
 
+      FactoryBot.create(:user_submission, region: nil, submission_type: 'new_msx')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'new_msx')
+
       FactoryBot.create(:user_submission, region: nil, submission_type: 'delete_location')
       FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'delete_location')
       FactoryBot.create(:user_submission, region: nil, submission_type: 'delete_location')
@@ -255,6 +258,7 @@ describe Region do
       expect(Region.generate_weekly_global_email_body[:machines_added_count]).to eq(4)
       expect(Region.generate_weekly_global_email_body[:machines_removed_count]).to eq(2)
       expect(Region.generate_weekly_global_email_body[:pictures_added_count]).to eq(2)
+      expect(Region.generate_weekly_global_email_body[:scores_added_count]).to eq(2)
     end
   end
 
@@ -284,6 +288,10 @@ describe Region do
       FactoryBot.create(:user_submission, region: @region, submission_type: 'delete_location')
       FactoryBot.create(:user_submission, region: @region, submission_type: 'delete_location')
       FactoryBot.create(:user_submission, region: @another_region, submission_type: 'delete_location')
+
+      FactoryBot.create(:user_submission, region: nil, submission_type: 'new_msx')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'new_msx')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'new_msx')
 
       FactoryBot.create(:user_submission, region: @region, submission_type: 'new_lmx')
       FactoryBot.create(:user_submission, region: @region, submission_type: 'new_lmx')
@@ -320,6 +328,7 @@ describe Region do
       expect(@region.generate_weekly_admin_email_body[:contact_messages_count]).to eq(5)
       expect(@region.generate_weekly_admin_email_body[:events_count]).to eq(5)
       expect(@region.generate_weekly_admin_email_body[:pictures_added_count]).to eq(2)
+      expect(@region.generate_weekly_admin_email_body[:scores_added_count]).to eq(2)
       expect(@region.generate_weekly_admin_email_body[:full_name]).to eq('Portland')
     end
   end
