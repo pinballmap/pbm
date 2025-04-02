@@ -77,16 +77,25 @@ class LocationsController < InheritedResources::Base
       }
     end.to_json
 
-    if @locations.size == 0
+    @pagy_now = false
+
+    if @locations_size == 0
       @locations = []
-    elsif @locations.size == 1
-      @locations = apply_scopes(Location).includes(:location_type)
+    elsif @locations_size == 1
+      @pagy, @locations = pagy(apply_scopes(Location).includes(:location_type))
     else
-      @locations = apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type).limit(100)
+      if @region.present?
+        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 2, request_path: '/region_location_load')
+        puts "@region.present"
+      else
+        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 2, request_path: '/map_location_load')
+        puts "@region not present"
+      end
     end
+    @pagy_now = true
 
     respond_with(@locations) do |format|
-      format.html { render partial: "locations/locations", layout: false }
+      format.html { render partial: "locations/locations", object: @locations }
     end
   end
 
