@@ -78,6 +78,7 @@ class MapsController < InheritedResources::Base
   end
 
   def nearby_locations
+    @pagy_now = false
     @locations_size = 0
     @machines_sum = 0
 
@@ -85,41 +86,80 @@ class MapsController < InheritedResources::Base
 
     construct_geojson
 
-    if @locations_size == 0
+    nearby_locations_load
+  end
+
+  def nearby_locations_load
+    # THIS PAGY DOES NOT WORK. Need to pass @nearby_lat, @nearby_lon through ajax.
+    # Basically all variables like @locations_size and @pagy_now are undefined.
+    # They aren't getting retained or passed in...
+    puts "@pagy_now #{params[:pagy_now]}"
+    if params[:pagy_now] == true
+      geocode_ip
+    end
+    boundsData = nil
+    puts "@nearby_lat #{@nearby_lat}"
+
+    if ( @locations_size == 0 && @pagy_now == false )
       @locations = []
-    elsif @locations_size == 1
-      @locations = apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance).includes(:location_type)
+    elsif ( @locations_size == 1 && @pagy_now == false )
+      @pagy, @locations = pagy(apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance).includes(:location_type))
     else
-      @locations = apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count")).includes(:location_type).limit(100)
+      @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count")).includes(:location_type), limit: 2, request_path: '/nearby_locations_load')
     end
 
-    render partial: "locations/locations", layout: false
+    if @pagy_now == false
+      render partial: "locations/locations", layout: false
+    else
+      render partial: "locations/render_locations", object: @locations
+    end
+
+    @pagy_now = true
+    puts "@pagy_nowww #{@pagy_now}"
   end
 
   def region_init_load
-    region_id = params[:region_id]
+    @pagy_now = false
+    @region_id = params[:region_id]
     @locations = []
     @locations_size = 0
     @machines_sum = 0
 
-    @locations = apply_scopes(Location).where(region_id: region_id).select([ "id", "lat", "lon", "machine_count" ])
+    @locations = apply_scopes(Location).where(region_id: @region_id).select([ "id", "lat", "lon", "machine_count" ])
 
     construct_geojson
 
-    if @locations.size == 0
+    region_location_load
+  end
+
+  def region_location_load
+    boundsData = nil
+    @region_id = params[:region_id]
+    @region = Region.find_by_id(params[:region_id])
+
+    if ( @locations_size == 0 && @pagy_now == false )
       @locations = []
-    elsif @locations.size == 1
-      @locations = apply_scopes(Location).where([ "region_id = ?", region_id ]).includes(:location_type)
+    elsif ( @locations_size == 1 && @pagy_now == false )
+      @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).includes(:location_type))
     else
-      @locations = apply_scopes(Location).where([ "region_id = ?", region_id ]).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type).limit(100)
+      @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).where(city_condition).where(zone_condition).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 2, request_path: '/region_location_load')
+
+      # BY_AT_LEAST_N_... ETC WORKS BUT THEN SEEMS TO BREAK THE CITY ON ITS OWN QUERY
+
+      # @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).where(city_condition).where(zone_condition).where(machine_count: params[:by_at_least_n_machines_city]..).where(machine_count: params[:by_at_least_n_machines_type]..).where(machine_count: params[:by_at_least_n_machines_zone]..).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 2, request_path: '/region_location_load')
     end
 
-    @region = Region.find_by_id(region_id)
+    if @pagy_now == false
+      render partial: "locations/locations", layout: false
+    else
+      render partial: "locations/render_locations", object: @locations
+    end
 
-    render partial: "locations/locations", layout: false
+    @pagy_now = true
   end
 
   def get_bounds
+    @pagy_now = false
     @locations = []
     @locations_size = 0
     @machines_sum = 0
@@ -130,17 +170,27 @@ class MapsController < InheritedResources::Base
 
     construct_geojson
 
-    if @locations.size == 0
+    get_bounds_load
+  end
+
+  def get_bounds_load
+    @bounds = [ params[:boundsData][:sw][:lat], params[:boundsData][:sw][:lng], params[:boundsData][:ne][:lat], params[:boundsData][:ne][:lng] ]
+
+    if( @locations_size == 0 && @pagy_now == false )
       @locations = []
-    elsif @locations.size == 1
-      @locations = apply_scopes(Location).within_bounding_box(@bounds).includes(:location_type)
+    elsif ( @locations_size == 1 && @pagy_now == false)
+      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).includes(:location_type))
     else
-      @locations = apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type).limit(100)
+      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 2, request_path: '/get_bounds_load')
     end
 
-    respond_with(@locations) do |format|
-      format.html { render partial: "locations/locations", layout: false }
+    if @pagy_now == false
+      render partial: "locations/locations", layout: false
+    else
+      render partial: "locations/render_locations", object: @locations
     end
+
+    @pagy_now = true
   end
 
   def construct_geojson
@@ -168,6 +218,7 @@ class MapsController < InheritedResources::Base
     @locations = []
     @locations_size = 0
     @machines_sum = 0
+    @pagy_now = false
 
     params.delete(:by_machine_name) unless params[:by_machine_id].blank? && params[:by_machine_single_id].blank?
 
@@ -192,16 +243,27 @@ class MapsController < InheritedResources::Base
     else
       construct_geojson
 
-      if @locations.size == 0
-        @locations = []
-      elsif @locations.size == 1
-        @locations = apply_scopes(Location).includes(:location_type)
-      else
-        @locations = apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type).limit(100)
-      end
-
-      render partial: "locations/locations", layout: false
+      map_location_load
     end
+  end
+
+  def map_location_load
+    boundsData = nil
+    if ( @locations_size == 0 && @pagy_now == false )
+      @locations = []
+    elsif ( @locations_size == 1 && @pagy_now == false )
+      @pagy, @locations = pagy(apply_scopes(Location).includes(:location_type))
+    else
+      @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 2, request_path: '/map_location_load')
+    end
+
+    if @pagy_now == false
+      render partial: "locations/locations", layout: false, object: @locations
+    else
+      render partial: "locations/render_locations", object: @locations
+    end
+
+    @pagy_now = true
   end
 
   def operator_location_data
@@ -297,5 +359,15 @@ class MapsController < InheritedResources::Base
     }
 
     render "#{@region.name}/region" if lookup_context.find_all("#{@region.name}/region").any?
+  end
+
+  private
+
+  def city_condition
+    ['city = ?', params[:by_city_id]] unless params[:by_city_id].blank?
+  end
+
+  def zone_condition
+    ['zone_id = ?', params[:by_zone_id]] unless params[:by_zone_id].blank?
   end
 end
