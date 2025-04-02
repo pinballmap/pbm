@@ -1,6 +1,6 @@
 class MapsController < ApplicationController
   respond_to :html, only: %i[get_bounds]
-  has_scope :by_location_name, :by_location_id, :by_machine_name, :by_machine_id, :by_machine_single_id, :by_at_least_n_machines, :by_type_id, :by_operator_id, :user_faved, :by_city_name, :by_state_name, :by_city_no_state, :by_machine_type, :by_machine_display, :manufacturer
+  has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_single_id, :by_at_least_n_machines, :by_type_id, :by_operator_id, :user_faved, :by_city_name, :by_state_name, :by_city_no_state, :by_machine_type, :by_machine_display, :manufacturer
 
   rate_limit to: 200, within: 20.minutes, only: :region
   rate_limit to: 150, within: 10.minutes
@@ -85,6 +85,7 @@ class MapsController < ApplicationController
   end
 
   def nearby_locations
+    @results_init = true
     @locations_size = 0
     @machines_sum = 0
     @locations_geojson = []
@@ -94,41 +95,69 @@ class MapsController < ApplicationController
       construct_geojson
     end
 
-    if @locations_size == 0
+    nearby_locations_load
+  end
+
+  def nearby_locations_load
+    @results_init = params[:results_init] if @results_init.blank?
+    boundsData = nil
+
+    if ( @locations_size == 0 && @results_init == true )
       @locations = []
-    elsif @locations_size == 1
+    elsif ( @locations_size == 1 && @results_init == true )
       @locations = apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance).includes(:location_type)
     else
-      @locations = apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count")).includes(:location_type).limit(100)
+      @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count")).includes(:location_type), limit: 50, request_path: '/nearby_locations_load')
     end
 
-    render partial: "locations/locations", layout: false
+    if @results_init == true
+      render partial: "locations/locations", layout: false
+    else
+      render partial: "locations/render_locations", object: @locations
+    end
+
+    @results_init = false
   end
 
   def region_init_load
-    region_id = params[:region_id]
+    @results_init = true
+    @region_id = params[:region_id]
     @locations = []
     @locations_size = 0
     @machines_sum = 0
 
-    @locations = apply_scopes(Location).where(region_id: region_id).select([ "id", "lat", "lon", "machine_count" ])
+    @locations = apply_scopes(Location).where(region_id: @region_id).select([ "id", "lat", "lon", "machine_count" ])
 
     construct_geojson
 
-    if @locations.size == 0
+    region_location_load
+  end
+
+  def region_location_load
+    @results_init = params[:results_init] if @results_init.blank?
+    boundsData = nil
+    @region_id = params[:region_id]
+    @region = Region.find_by_id(params[:region_id])
+
+    if ( @locations_size == 0 && @results_init == true )
       @locations = []
-    elsif @locations.size == 1
-      @locations = apply_scopes(Location).where([ "region_id = ?", region_id ]).includes(:location_type)
+    elsif ( @locations_size == 1 && @results_init == true )
+      @locations = apply_scopes(Location).where([ "region_id = ?", @region_id ]).includes(:location_type)
     else
-      @locations = apply_scopes(Location).where([ "region_id = ?", region_id ]).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type).limit(100)
+      @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).where(city_condition).where(zone_condition).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 50, request_path: '/region_location_load')
     end
 
-    @region = Region.find_by_id(region_id)
+    if @results_init == true
+      render partial: "locations/locations", layout: false
+    else
+      render partial: "locations/render_locations", object: @locations
+    end
 
-    render partial: "locations/locations", layout: false
+    @results_init = false
   end
 
   def get_bounds
+    @results_init = true
     @locations = []
     @locations_size = 0
     @machines_sum = 0
@@ -139,17 +168,28 @@ class MapsController < ApplicationController
 
     construct_geojson
 
-    if @locations.size == 0
+    get_bounds_load
+  end
+
+  def get_bounds_load
+    @results_init = params[:results_init] if @results_init.blank?
+    @bounds = [ params[:boundsData][:sw][:lat], params[:boundsData][:sw][:lng], params[:boundsData][:ne][:lat], params[:boundsData][:ne][:lng] ]
+
+    if( @locations_size == 0 && @results_init == true )
       @locations = []
-    elsif @locations.size == 1
+    elsif ( @locations_size == 1 && @results_init == true)
       @locations = apply_scopes(Location).within_bounding_box(@bounds).includes(:location_type)
     else
-      @locations = apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type).limit(100)
+      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 50, request_path: '/get_bounds_load')
     end
 
-    respond_with(@locations) do |format|
-      format.html { render partial: "locations/locations", layout: false }
+    if @results_init == true
+      render partial: "locations/locations", layout: false
+    else
+      render partial: "locations/render_locations", object: @locations
     end
+
+    @results_init = false
   end
 
   def construct_geojson
@@ -177,6 +217,7 @@ class MapsController < ApplicationController
     @locations = []
     @locations_size = 0
     @machines_sum = 0
+    @results_init = true
 
     params.delete(:by_machine_name) unless params[:by_machine_id].blank? && params[:by_machine_single_id].blank?
 
@@ -201,16 +242,28 @@ class MapsController < ApplicationController
     else
       construct_geojson
 
-      if @locations.size == 0
-        @locations = []
-      elsif @locations.size == 1
-        @locations = apply_scopes(Location).includes(:location_type)
-      else
-        @locations = apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type).limit(100)
-      end
-
-      render partial: "locations/locations", layout: false
+      map_location_load
     end
+  end
+
+  def map_location_load
+    @results_init = params[:results_init] if @results_init.blank?
+    boundsData = nil
+    if ( @locations_size == 0 && @results_init == true )
+      @locations = []
+    elsif ( @locations_size == 1 && @results_init == true )
+      @locations = apply_scopes(Location).includes(:location_type)
+    else
+      @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 50, request_path: '/map_location_load')
+    end
+
+    if @results_init == true
+      render partial: "locations/locations", layout: false, object: @locations
+    else
+      render partial: "locations/render_locations", object: @locations
+    end
+
+    @results_init = false
   end
 
   def operator_location_data
@@ -307,5 +360,15 @@ class MapsController < ApplicationController
     }
 
     render "#{@region.name}/region" if lookup_context.find_all("#{@region.name}/region").any?
+  end
+
+  private
+
+  def city_condition
+    ['city = ?', params[:by_city_id]] unless params[:by_city_id].blank?
+  end
+
+  def zone_condition
+    ['zone_id = ?', params[:by_zone_id]] unless params[:by_zone_id].blank?
   end
 end

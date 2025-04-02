@@ -1,0 +1,63 @@
+#search_results
+  - @locations.each do |l|
+    %div.search_result[l]
+      %div#nearby_activity_container
+      - if (@locations.size == 1)
+        %div.location_detail
+          = render :partial => 'locations/render_location_detail', :locals => {l: l}
+      - else
+        %div
+          %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id});"}
+            %div.name.bold.font22
+              = l.name
+            - if (l.location_type)
+              %div.location_type
+                - if (l.location_type.icon)
+                  %div.location_type_container
+                    =image_tag("icons/#{l.location_type.icon}.svg", :alt => "#{l.location_type.icon}")
+                %span
+                  #{l.location_type.name}
+            - if !@nearby_lat.blank?
+              %div.distance
+                distance: #{l.distance_from([@nearby_lat, @nearby_lon]).round(2)} miles
+            - if (l.state.blank?)
+              %div.address
+                %span.address_name[l, :location_summary] #{[l.street, l.city].join(', ')}
+            - else
+              %div.address
+                %span.address_name[l, :location_summary] #{[l.street, l.city, l.state].join(', ')}
+            %div.machine_names
+              - l.machines.limit(5).each do |machine|
+                %div
+                  #{machine.name}
+                  %span.man_year (#{[machine.manufacturer, machine.year].reject(&:blank?).join(', ')})
+            - if (l.machine_count > 5)
+              %div.darkgrey.italic.pb_15
+                plus
+                = pluralize(l.machine_count - 5, 'more machine')
+  - if (@locations.size > 1)
+    #next_link{:style => 'margin: 20px 10px'}
+      != pagy_nav(@pagy) if @pagy.pages > 1
+:javascript
+  $("#next_link > nav > a").on("click", function(e) {
+    $('#intro_container').css('display','none');
+    e.preventDefault();
+
+    results_init = false;
+
+    var region_id = "#{@region&.id.to_i}";
+
+    let url = new URL(e.target.href);
+
+    document.getElementById("search_results").scrollIntoView({ "behavior": "smooth" })
+
+    $.ajax({
+      url: `${url}`,
+      type: 'POST',
+      data: { region_id, boundsData: boundsData, results_init },
+      success: function(data) {
+        $("#search_results").html(data);
+      }
+    });
+    return false;
+  });

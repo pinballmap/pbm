@@ -332,7 +332,7 @@ describe MapsController do
       expect(find('#search_results')).to_not have_content('Rip City Retail SW')
     end
 
-    it 'machine search blanks out machine_id when you search, honors machine_name scope' do
+    it 'machine search blanks out machine_id when you search' do
       rip_location = FactoryBot.create(:location, region: nil, name: 'Rip City Retail SW')
       clark_location = FactoryBot.create(:location, region: nil, name: "Clark's Corner")
       renee_location = FactoryBot.create(:location, region: nil, name: "Renee's Rental")
@@ -367,15 +367,23 @@ describe MapsController do
       expect(find('#search_results')).to have_content('Clark')
       expect(find('#search_results')).to_not have_content('Renee')
 
-      fill_in('by_machine_name', with: 'Sass')
+      expect(page.body).to_not have_css('#next_link')
+    end
+
+    it 'shows pagination if greater than 50 locations in results' do
+      51.times do |index|
+        FactoryBot.create(:location, id: 5678 + index, name: 'Sass Barn' + index.to_s)
+      end
+
+      visit '/map'
+
+      sleep 1
 
       click_on 'location_search_button'
 
       sleep 1
 
-      expect(find('#search_results')).to have_content('Rip City')
-      expect(find('#search_results')).to_not have_content('Clark')
-      expect(find('#search_results')).to_not have_content('Renee')
+      expect(page.body).to have_css('#next_link', visible: true)
     end
 
     it 'nearby activity button should return the nearby activity' do
