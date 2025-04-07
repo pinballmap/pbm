@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   end
 
   def asset_not_found
-    render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+    render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
   end
 
   acts_as_token_authentication_handler_for User, fallback: :none
@@ -172,20 +172,6 @@ class ApplicationController < ActionController::Base
   end
 
   helper_method :mobile_device?
-
-  def not_found(exception)
-    if Rails.env.production? && CrawlerDetect.is_crawler?(request.user_agent)
-      render_404
-    else
-      raise exception
-    end
-  end
-
-  def render_404
-    render file:   Rails.root.join('public', '404.html'),
-           layout: nil,
-           status: :not_found
-  end
 
   protected
 
