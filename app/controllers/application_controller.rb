@@ -5,9 +5,15 @@ class ApplicationController < ActionController::Base
   include Pagy::Backend
 
   def append_info_to_payload(payload)
-    super
-    payload[:user_id] = current_user&.id
-    payload[:bot_or_not] = browser.bot? ? "IsBot" : "NotBot"
+    if Rails.env.production?
+      super
+      payload[:user_id] = current_user&.id
+      payload[:bot_or_not] = CrawlerDetect.is_crawler?(request.user_agent) ? "IsBot" : "NotBot"
+    end
+  end
+
+  def asset_not_found
+    render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
   end
 
   acts_as_token_authentication_handler_for User, fallback: :none
@@ -166,6 +172,20 @@ class ApplicationController < ActionController::Base
   end
 
   helper_method :mobile_device?
+
+  def not_found(exception)
+    if Rails.env.production? && CrawlerDetect.is_crawler?(request.user_agent)
+      render_404
+    else
+      raise exception
+    end
+  end
+
+  def render_404
+    render file:   Rails.root.join('public', '404.html'),
+           layout: nil,
+           status: :not_found
+  end
 
   protected
 

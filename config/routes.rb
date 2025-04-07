@@ -241,5 +241,7 @@ Rails.application.routes.draw do
   get '/bakersfield' => redirect('/map')
   get '/springfield' => redirect('/map')
 
+  match '*unmatched', to: 'application#asset_not_found', via: :all, constraints: lambda { |req|  req.path.include?('/assets') }
+
   root to: 'pages#home'
 end
