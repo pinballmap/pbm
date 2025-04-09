@@ -31,14 +31,16 @@ class UserSubmission < ApplicationRecord
   end
 
   def update_contributor_rank
-    case user.user_submissions_count
-    when 51...250
-      user.contributor_rank = "Super Mapper"
-    when 251...500
-      user.contributor_rank = "Legendary Mapper"
-    when 500...Float::INFINITY
-      user.contributor_rank = "Grand Champ Mapper"
+    if user
+      case user.user_submissions_count
+      when 51...250
+        user.contributor_rank = "Super Mapper"
+      when 251...500
+        user.contributor_rank = "Legendary Mapper"
+      when 500...Float::INFINITY
+        user.contributor_rank = "Grand Champ Mapper"
+      end
+      user.save
     end
-    user.save
   end
 end
