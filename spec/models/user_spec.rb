@@ -186,6 +186,15 @@ describe User do
 
       expect(@user.user_submissions_count).to eq(7)
     end
+
+    it 'should assign a contributor_rank after 50 user submissions' do
+      51.times do
+        FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_LMX_TYPE)
+      end
+
+      expect(@user.user_submissions_count).to eq(51)
+      expect(@user.contributor_rank).to eq("Super Mapper")
+    end
   end
 
   describe '#as_json' do

@@ -4,7 +4,7 @@ class UserSubmission < ApplicationRecord
   belongs_to :location, optional: true
   belongs_to :machine, optional: true
 
-  after_commit :update_contributor_rank
+  after_create :update_contributor_rank
 
   geocoded_by :lat_and_lon, latitude: :lat, longitude: :lon
 
@@ -31,14 +31,14 @@ class UserSubmission < ApplicationRecord
   end
 
   def update_contributor_rank
-    if user
-      if user.contributor_rank.blank? && user.user_submissions_count.between?(51, 250)
-        user.contributor_rank = "Super Mapper"
-      elsif user.contributor_rank == "Super Mapper" && user.user_submissions_count&.between?(251, 500)
-        user.contributor_rank = "Legendary Mapper"
-      elsif user.contributor_rank == "Legendary Mapper" && user.user_submissions_count > 500
-        user.contributor_rank = "Grand Champ Mapper"
-      end
+    case user.user_submissions_count
+    when 51...250
+      user.contributor_rank = "Super Mapper"
+    when 251...500
+      user.contributor_rank = "Legendary Mapper"
+    when 500...Float::INFINITY
+      user.contributor_rank = "Grand Champ Mapper"
     end
+    user.save
   end
 end
