@@ -7,6 +7,9 @@ module Api
       respond_to :json
       has_scope :region, :limit
 
+      rate_limit to: 100, within: 20.minutes, only: :destroy
+      rate_limit to: 50, within: 20.minutes, only: :update
+
       DEFAULT_TOP_N_MACHINES = 25
       DEFAULT_MOST_RECENT_MACHINES = 3
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION = 50

@@ -5,6 +5,7 @@ module Api
 
       before_action :allow_cors
       respond_to :json
+      rate_limit to: 10, within: 20.minutes, only: [:auth_details, :forgot_password, :resend_confirmation, :signup]
 
       api :GET, "/api/v1/users/:id/list_fave_locations.json", "Fetch list of favorite locations"
       description "Fetch list of favorite locations"
@@ -83,6 +84,11 @@ module Api
       param :login, String, desc: "User's username or email address", required: true
       param :password, String, desc: "User's password", required: true
       def auth_details
+        if is_bot?
+          render status: :forbidden, message: "User is not authorized for this action."
+          return
+        end
+
         if params[:login].blank? || params[:password].blank?
           return_response("login and password are required fields", "errors")
           return
@@ -117,6 +123,11 @@ module Api
       description "Reset a forgotten password"
       param :identification, String, desc: "A username or email address", required: true
       def forgot_password
+        if is_bot?
+          render status: :forbidden, message: "User is not authorized for this action."
+          return
+        end
+
         if params[:identification].blank?
           return_response("Please send an email or username to use this feature", "errors")
           return
@@ -137,6 +148,11 @@ module Api
       description "Resend an account confirmation"
       param :identification, String, desc: "A username or email address", required: true
       def resend_confirmation
+        if is_bot?
+          render status: :forbidden, message: "User is not authorized for this action."
+          return
+        end
+
         if params[:identification].blank?
           return_response("Please send an email or username to use this feature", "errors")
           return
@@ -160,6 +176,11 @@ module Api
       param :password, String, desc: "New password", required: true
       param :confirm_password, String, desc: "New password confirmation", required: true
       def signup
+        if is_bot?
+          render status: :forbidden, message: "User is not authorized for this action."
+          return
+        end
+
         if params[:password].blank? || params[:confirm_password].blank?
           return_response("password can not be blank", "errors")
           return

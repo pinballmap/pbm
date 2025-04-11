@@ -4,6 +4,7 @@ module Api
       skip_before_action :verify_authenticity_token
       before_action :allow_cors
       respond_to :json
+      rate_limit to: 50, within: 20.minutes, only: :update
 
       api :PUT, "/api/v1/machine_conditions/:id.json", "Update attributes on a machine condition"
       param :id, Integer, desc: "ID of machine condition", required: true

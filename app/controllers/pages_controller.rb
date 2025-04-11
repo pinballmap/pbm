@@ -1,9 +1,10 @@
 class PagesController < ApplicationController
   respond_to :xml, :json, :html, :js, :rss
+  rate_limit to: 5, within: 20.minutes, only: :contact_sent
 
   def contact_sent
     user = current_user.nil? ? nil : current_user
-    return if params["contact_msg"].blank? || (!user && params["contact_email"].blank?) || params["contact_msg"].match?(/vape/) || params["contact_msg"].match?(/seo/) || params["contact_msg"].match?(/Ezoic/)
+    return if is_bot? || params["contact_msg"].blank? || (!user && params["contact_email"].blank?)
 
     if user
       @contact_thanks = "Thanks for contacting us! If you are expecting a reply, check your spam folder or whitelist admin@pinballmap.com".freeze

@@ -1,6 +1,7 @@
 class MachineConditionsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   before_action :authenticate_user!, except: %i[index show]
+  rate_limit to: 50, within: 20.minutes, only: :update
 
   def destroy
     user = current_user.nil? ? nil : current_user

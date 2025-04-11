@@ -141,6 +141,7 @@ class User < ApplicationRecord
     user_submissions_count
   end
 
+  # legacy for old versions of app
   def contributor_rank_int
     case user_submissions_count
     when 0...50
@@ -154,6 +155,7 @@ class User < ApplicationRecord
     end
   end
 
+  # legacy for old versions of app
   def admin_rank_int
     if region_id == 1 || username == "pbm"
       1

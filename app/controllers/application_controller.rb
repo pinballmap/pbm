@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
     if Rails.env.production?
       super
       payload[:user_id] = current_user&.id
-      payload[:bot_or_not] = CrawlerDetect.is_crawler?(request.user_agent) ? "IsBot" : "NotBot"
+      payload[:bot_or_not] = is_bot? ? "IsBot" : "NotBot"
     end
   end
 
@@ -172,6 +172,12 @@ class ApplicationController < ActionController::Base
   end
 
   helper_method :mobile_device?
+
+  def is_bot?
+    CrawlerDetect.is_crawler?(request.user_agent)
+  end
+
+  helper_method :is_bot?
 
   protected
 

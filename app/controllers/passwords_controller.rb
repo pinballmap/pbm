@@ -1,8 +1,9 @@
 class PasswordsController < Devise::PasswordsController
   respond_to :json
+  rate_limit to: 5, within: 20.minutes, only: :create
 
   def create
-    if params[:security_question] =~ /pinball/i
+    if params[:security_question] =~ /pinball/i && !is_bot?
       super
     else
       self.resource = resource_class.new
