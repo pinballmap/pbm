@@ -116,7 +116,7 @@ Rails.application.configure do
     ignore_crawlers: %w{Googlebot bingbot AhrefsBot},
     ignore_exceptions: ['ActionController::ParameterMissing', 'ActionView::Template::Error', 'ActionDispatch::Http::MimeNegotiation::InvalidType'] + ExceptionNotifier.ignored_exceptions,
     :email => {
-      :email_prefix => "[PBM Exception] #{request.headers['CF-CONNECTING-IP']} ",
+      :email_prefix => "[PBM Exception] ",
       :sender_address => %{"PBM Exceptions" <exceptions@pinballmap.com>},
       :exception_recipients => %w{admin@pinballmap.com}
     },
