@@ -131,11 +131,6 @@ GEM
     childprocess (5.1.0)
       logger (~> 1.5)
     climate_control (1.2.0)
-    cloudflare-rails (6.2.0)
-      actionpack (>= 7.1.0, < 8.1.0)
-      activesupport (>= 7.1.0, < 8.1.0)
-      railties (>= 7.1.0, < 8.1.0)
-      zeitwerk (>= 2.5.0)
     coderay (1.1.3)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.0)
@@ -568,7 +563,6 @@ DEPENDENCIES
   cancancan
   capybara
   capybara-screenshot
-  cloudflare-rails
   country_select
   crawler_detect
   dalli

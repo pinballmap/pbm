@@ -9,7 +9,6 @@ gem "apipie-rails"
 gem "aws-sdk-s3"
 gem "bootsnap", require: false
 gem "cancancan"
-gem "cloudflare-rails"
 gem "country_select"
 gem "crawler_detect"
 gem "dalli"

@@ -44,7 +44,7 @@ class LocationMachineXrefsController < InheritedResources::Base
       lmx.location.save
     end
 
-    lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: user_id) unless lmx&.nil?
+    lmx.destroy(remote_ip: request.headers['CF-CONNECTING-IP'], request_host: request.host, user_agent: request.user_agent, user_id: user_id) unless lmx&.nil?
 
     render nothing: true
   end
@@ -58,7 +58,7 @@ class LocationMachineXrefsController < InheritedResources::Base
     if condition.match?(/<a href/)
       lmx
     else
-      lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: current_user&.id)
+      lmx.update_condition(condition, remote_ip: request.headers['CF-CONNECTING-IP'], request_host: request.host, user_agent: request.user_agent, user_id: current_user&.id)
       lmx.location.date_last_updated = Date.today
       lmx.location.last_updated_by_user_id = current_user&.id
       lmx.location.save(validate: false)

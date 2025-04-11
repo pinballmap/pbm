@@ -70,7 +70,7 @@ Rails.application.configure do
   )
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id, lambda { |request| request.ip }, lambda { |request| request.headers['AppVersion'] }, lambda { |request| request.user_agent } ]
+  config.log_tags = [ :request_id, lambda { |request| request.headers['CF-CONNECTING-IP'] }, lambda { |request| request.headers['AppVersion'] }, lambda { |request| request.user_agent } ]
 
   # Log to STDOUT by default
   # config.logger = ActiveSupport::Logger.new(STDOUT)
@@ -116,7 +116,7 @@ Rails.application.configure do
     ignore_crawlers: %w{Googlebot bingbot AhrefsBot},
     ignore_exceptions: ['ActionController::ParameterMissing', 'ActionView::Template::Error', 'ActionDispatch::Http::MimeNegotiation::InvalidType'] + ExceptionNotifier.ignored_exceptions,
     :email => {
-      :email_prefix => "[PBM Exception] ",
+      :email_prefix => "[PBM Exception] #{request.headers['CF-CONNECTING-IP']} ",
       :sender_address => %{"PBM Exceptions" <exceptions@pinballmap.com>},
       :exception_recipients => %w{admin@pinballmap.com}
     },
