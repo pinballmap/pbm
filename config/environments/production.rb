@@ -70,7 +70,7 @@ Rails.application.configure do
   )
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id, lambda { |request| request.headers['CF-CONNECTING-IP'] }, lambda { |request| request.headers['AppVersion'] }, lambda { |request| request.user_agent } ]
+  config.log_tags = [ :request_id, lambda { |request| request.headers["CF-CONNECTING-IP"] }, lambda { |request| request.headers['AppVersion'] }, lambda { |request| request.user_agent } ]
 
   # Log to STDOUT by default
   # config.logger = ActiveSupport::Logger.new(STDOUT)
