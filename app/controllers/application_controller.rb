@@ -14,8 +14,8 @@ class ApplicationController < ActionController::Base
 
   def no_route
     respond_to do |format|
-      format.html { render file: Rails.public_path.join('404.html'), status: :not_found, layout: false }
-      format.json { render json: { status: 0, message: 'route not found' }, status: :not_found }
+      format.html { render file: Rails.public_path.join("404.html"), status: :not_found, layout: false }
+      format.json { render json: { status: 0, message: "route not found" }, status: :not_found }
     end
   end
 

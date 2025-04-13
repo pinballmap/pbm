@@ -117,7 +117,7 @@ class LocationsController < InheritedResources::Base
     l = Location.find_by_id(params[:id]) or not_found
 
     if @record_not_found == true
-      render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+      render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
     else
       render partial: "locations/render_location_detail", locals: { l: l }
     end
@@ -128,7 +128,7 @@ class LocationsController < InheritedResources::Base
     l = Location.find_by_id(params[:id]) or not_found
 
     if @record_not_found == true
-      render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+      render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
     else
       render partial: "locations/render_former_machines", locals: { l: l }
     end
@@ -139,7 +139,7 @@ class LocationsController < InheritedResources::Base
     l = Location.find_by_id(params[:id]) or not_found
 
     if @record_not_found == true
-      render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+      render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
     else
       render partial: "locations/render_recent_activity", locals: { l: l }
     end

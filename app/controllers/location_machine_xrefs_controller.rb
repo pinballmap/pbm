@@ -79,7 +79,7 @@ class LocationMachineXrefsController < InheritedResources::Base
     lmx = LocationMachineXref.find_by_id(params[:id]) or not_found
 
     if @record_not_found == true
-      render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+      render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
     else
       render partial: "location_machine_xrefs/render_machine_tools", locals: { lmx: lmx, logged_in: logged_in }
     end
@@ -90,7 +90,7 @@ class LocationMachineXrefsController < InheritedResources::Base
     lmx = LocationMachineXref.find_by_id(params[:id]) or not_found
 
     if @record_not_found == true
-      render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+      render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
     else
       render partial: "locations/render_machine_conditions", locals: { conditions: lmx.sorted_machine_conditions.includes([ :user ]), lmx: lmx }
     end
