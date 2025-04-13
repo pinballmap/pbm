@@ -12,8 +12,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def asset_not_found
-    render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
+  def no_route
+    respond_to do |format|
+      format.html { render file: Rails.public_path.join('404.html'), status: :not_found, layout: false }
+      format.json { render json: { status: 0, message: 'route not found' }, status: :not_found }
+    end
   end
 
   acts_as_token_authentication_handler_for User, fallback: :none
