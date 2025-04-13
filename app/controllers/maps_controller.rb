@@ -28,9 +28,13 @@ class MapsController < InheritedResources::Base
     if @map_no_params
       @nearby_lat = 39.5718
       @nearby_lon = -99.1066
-      @map_init_zoom = 4
+      if is_bot?
+        @map_init_zoom = 18
+      else
+        @map_init_zoom = 4
+      end
 
-      if ENV["GEO_BUCKET"]
+      if ENV["GEO_BUCKET"] && !is_bot?
         geocode_ip
         if !@nearby_lat.nil?
           @map_init_zoom = 6
@@ -56,7 +60,7 @@ class MapsController < InheritedResources::Base
   def map_nearby
     @locations = []
     @nearby_lat = nil
-    if ENV["GEO_BUCKET"]
+    if ENV["GEO_BUCKET"] && !is_bot?
       geocode_ip
     end
 
