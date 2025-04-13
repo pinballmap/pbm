@@ -45,6 +45,7 @@ class LocationsController < InheritedResources::Base
 
   def index
     @locations = []
+    @locations_geojson = []
     @region = Region.find_by_name(params[:region])
 
     params.delete(:by_location_id) if !params[:by_location_name].blank? && !params[:by_location_id].blank?
@@ -112,15 +113,40 @@ class LocationsController < InheritedResources::Base
   end
 
   def render_location_detail
-    render partial: "locations/render_location_detail", locals: { l: Location.find(params[:id]) }
+    @record_not_found = false
+    l = Location.find_by_id(params[:id]) or not_found
+
+    if @record_not_found == true
+      render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+    else
+      render partial: "locations/render_location_detail", locals: { l: l }
+    end
   end
 
   def render_former_machines
-    render partial: "locations/render_former_machines", locals: { l: Location.find(params[:id]) }
+    @record_not_found = false
+    l = Location.find_by_id(params[:id]) or not_found
+
+    if @record_not_found == true
+      render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+    else
+      render partial: "locations/render_former_machines", locals: { l: l }
+    end
   end
 
   def render_recent_activity
-    render partial: "locations/render_recent_activity", locals: { l: Location.find(params[:id]) }
+    @record_not_found = false
+    l = Location.find_by_id(params[:id]) or not_found
+
+    if @record_not_found == true
+      render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+    else
+      render partial: "locations/render_recent_activity", locals: { l: l }
+    end
+  end
+
+  def not_found
+    @record_not_found = true
   end
 
   def update_metadata

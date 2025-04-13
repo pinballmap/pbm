@@ -297,7 +297,6 @@ module Api
           else
             results = Geocoder.search(params[:address], lookup: :here)
             results = Geocoder.search(params[:address]) if results.blank?
-            results = Geocoder.search(params[:address], lookup: :nominatim) if results.blank?
             lat, lon = results.first.coordinates
           end
         end

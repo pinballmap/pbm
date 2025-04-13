@@ -80,10 +80,12 @@ class MapsController < InheritedResources::Base
   def nearby_locations
     @locations_size = 0
     @machines_sum = 0
+    @locations_geojson = []
 
-    find_nearby
-
-    construct_geojson
+    if @nearby_lat.present?
+      find_nearby
+      construct_geojson
+    end
 
     if @locations_size == 0
       @locations = []
@@ -225,8 +227,9 @@ class MapsController < InheritedResources::Base
   def geocode
     results = Geocoder.search(params[:address], lookup: :here)
     results = Geocoder.search(params[:address]) if results.blank?
-    results = Geocoder.search(params[:address], lookup: :nominatim) if results.blank?
-    @nearby_lat, @nearby_lon = results.first.coordinates
+    if results.present?
+      @nearby_lat, @nearby_lon = results.first.coordinates
+    end
   end
 
   def region

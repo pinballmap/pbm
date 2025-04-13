@@ -69,15 +69,31 @@ class LocationMachineXrefsController < InheritedResources::Base
     render nothing: true
   end
 
-  def render_machine_tools
-    logged_in = current_user ? "logged_in" : "logged_out"
+  def not_found
+    @record_not_found = true
+  end
 
-    render partial: "location_machine_xrefs/render_machine_tools", locals: { lmx: LocationMachineXref.find(params[:id]), logged_in: logged_in }
+  def render_machine_tools
+    @record_not_found = false
+    logged_in = current_user ? "logged_in" : "logged_out"
+    lmx = LocationMachineXref.find_by_id(params[:id]) or not_found
+
+    if @record_not_found == true
+      render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+    else
+      render partial: "location_machine_xrefs/render_machine_tools", locals: { lmx: lmx, logged_in: logged_in }
+    end
   end
 
   def render_machine_conditions
-    lmx = LocationMachineXref.find(params[:id])
-    render partial: "locations/render_machine_conditions", locals: { conditions: lmx.sorted_machine_conditions.includes([ :user ]), lmx: lmx }
+    @record_not_found = false
+    lmx = LocationMachineXref.find_by_id(params[:id]) or not_found
+
+    if @record_not_found == true
+      render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+    else
+      render partial: "locations/render_machine_conditions", locals: { conditions: lmx.sorted_machine_conditions.includes([ :user ]), lmx: lmx }
+    end
   end
 
   def index
