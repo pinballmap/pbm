@@ -6,7 +6,7 @@ class LocationsController < InheritedResources::Base
   rate_limit to: 50, within: 20.minutes, only: :index
 
   def is_bot?
-    CrawlerDetect.is_crawler?(request.user_agent)
+    browser.bot?
   end
 
   def create

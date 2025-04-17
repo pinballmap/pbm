@@ -108,6 +108,7 @@ GEM
       msgpack (~> 1.2)
     brakeman (7.0.2)
       racc
+    browser (6.2.0)
     builder (3.3.0)
     bullet (7.2.0)
       activesupport (>= 3.0.0)
@@ -139,8 +140,6 @@ GEM
     country_select (10.0.1)
       countries (> 5.0, < 8.0)
     crass (1.0.6)
-    crawler_detect (1.2.6)
-      qonfig (>= 0.24)
     csv (3.3.2)
     dalli (3.2.8)
     database_cleaner (2.0.2)
@@ -327,8 +326,6 @@ GEM
     public_suffix (6.0.1)
     puma (6.6.0)
       nio4r (~> 2.0)
-    qonfig (0.30.0)
-      base64 (>= 0.2)
     raabro (1.4.0)
     racc (1.8.1)
     rack (3.1.12)
@@ -558,13 +555,13 @@ DEPENDENCIES
   aws-sdk-s3
   bootsnap
   brakeman
+  browser
   bullet
   bundler-audit
   cancancan
   capybara
   capybara-screenshot
   country_select
-  crawler_detect
   dalli
   database_cleaner
   debug
