@@ -1,7 +1,7 @@
 class SuggestedLocationsController < InheritedResources::Base
   respond_to :xml, :json, :html, :js, :rss
   before_action :authenticate_user!
-  rate_limit to: 30, within: 20.minutes, only: :create
+  rate_limit to: 20, within: 20.minutes, only: :create
 
   def create
     @suggested_location = SuggestedLocation.new(suggested_location_params)

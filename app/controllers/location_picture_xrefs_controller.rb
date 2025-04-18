@@ -2,7 +2,7 @@ class LocationPictureXrefsController < InheritedResources::Base
   respond_to :html, :xml, :json, :rss, only: %i[index show]
   has_scope :region
   before_action :authenticate_user!, except: %i[index show]
-  rate_limit to: 30, within: 10.minutes, only: :create
+  rate_limit to: 20, within: 10.minutes, only: :create
 
   def form
     render partial: "location_picture_xrefs/form", locals: { l: Location.find(params[:id]) }
