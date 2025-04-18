@@ -1,5 +1,3 @@
-Rack::Attack.cache.store = :solid_cache_store
-
 unless Rails.env.test?
 
   Rack::Attack.blocklist('block admin identified IPs') do |req|
@@ -12,5 +10,19 @@ unless Rails.env.test?
     end
 
     should_ban
+  end
+
+  Rack::Attack.blocklist('fail2ban pentesters') do |req|
+    Rack::Attack::Fail2Ban.filter(
+      "pentesters-#{req.ip}",
+      maxretry: 1,
+      findtime: 10.minutes,
+      bantime: 30.minutes
+    ) do
+      CGI.unescape(req.query_string) =~ %r{/etc/passwd} ||
+      req.path.include?('/etc/passwd') ||
+      req.path.include?('wp-admin') ||
+      req.path.include?('wp-login')
+    end
   end
 end
