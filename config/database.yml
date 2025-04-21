@@ -7,6 +7,7 @@ sqlite: &sqlite
   adapter: sqlite3
   pool: <%= ENV.fetch("RAILS_MAX_THREADS", 3) %>
   timeout: 5000
+  busy_timeout: 5000
 
 development:
   primary:
