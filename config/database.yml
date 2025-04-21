@@ -7,7 +7,6 @@ sqlite: &sqlite
   adapter: sqlite3
   pool: 5
   timeout: 5000
-  retries: 55
 
 development:
   primary:
