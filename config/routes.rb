@@ -241,7 +241,5 @@ Rails.application.routes.draw do
   get '/bakersfield' => redirect('/map')
   get '/springfield' => redirect('/map')
 
-  match '*unmatched', to: 'application#no_route', via: :all, constraints: lambda { |req| req.path.exclude? 'rails/active_storage' }
-
   root to: 'pages#home'
 end
