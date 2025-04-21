@@ -77,7 +77,7 @@ Rails.application.configure do
   # .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
   # .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
-  # Use a different cache store in production.
+  # Use a different cache store on staging.
   config.cache_store = :solid_cache_store
   # config.cache_store = :memory_store, { size: 64.megabytes }
 

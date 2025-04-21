@@ -3,17 +3,39 @@ default: &default
   encoding: utf8
   template: template0
 
+sqlite: &sqlite
+  adapter: sqlite3
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 3) %>
+  timeout: 5000
+
 development:
-  <<: *default
-  database: <%= ENV.fetch("DATABASE", 'pbm_dev') %>
-  host: localhost
+  primary:
+    <<: *default
+    database: <%= ENV.fetch("DATABASE", 'pbm_dev') %>
+    host: localhost
+  cache:
+    <<: *sqlite
+    database: storage/cache.sqlite3
+    migrations_paths: db/cache_migrate
 
 test:
   <<: *default
   database: <%= ENV.fetch("DATABASE", 'pbm_test') %>
 
 staging:
-  url: <%= ENV["DATABASE_URL"] %>
+  primary:
+    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
+  cache:
+    <<: *sqlite
+    database: storage/cache.sqlite3
+    migrations_paths: db/cache_migrate
 
 production:
-  url: <%= ENV["DATABASE_URL"] %>
+  primary:
+    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
+  cache:
+    <<: *sqlite
+    database: storage/cache.sqlite3
+    migrations_paths: db/cache_migrate

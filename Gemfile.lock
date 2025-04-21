@@ -510,6 +510,8 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
+    sqlite3 (2.6.0)
+      mini_portile2 (~> 2.8.0)
     stringio (3.1.5)
     strip_attributes (1.13.0)
       activemodel (>= 3.0, < 8.0)
@@ -615,6 +617,7 @@ DEPENDENCIES
   solid_queue (~> 1.1)
   spork
   sprockets-rails
+  sqlite3
   strip_attributes
   timecop
   tzinfo-data
