@@ -4,6 +4,7 @@ ruby "3.3.6"
 gem "pg"
 gem "rails", "~> 7.2.x"
 
+gem "activerecord-enhancedsqlite3-adapter"
 gem "amazing_print"
 gem "apipie-rails"
 gem "aws-sdk-s3"

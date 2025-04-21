@@ -81,6 +81,8 @@ Rails.application.configure do
   config.cache_store = :solid_cache_store
   # config.cache_store = :memory_store, { size: 64.megabytes }
 
+  config.enhanced_sqlite3.isolate_connection_pools = true
+
   # Use a real queuing backend for Active Job (and separate queues per environment).
   config.active_job.queue_adapter = :async
   # config.active_job.queue_adapter = :solid_queue
