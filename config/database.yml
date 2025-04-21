@@ -5,8 +5,9 @@ default: &default
 
 sqlite: &sqlite
   adapter: sqlite3
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 3) %>
+  pool: 5
   timeout: 5000
+  retries: 55
 
 development:
   primary:
