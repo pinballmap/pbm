@@ -16,4 +16,14 @@ staging:
   url: <%= ENV["DATABASE_URL"] %>
 
 production:
-  url: <%= ENV["DATABASE_URL"] %>
+  primary:
+    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
+  cache:
+    <<: *default
+    url: <%= ENV["DOKKU_POSTGRES_AQUA_URL"] %>
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *default
+    url: <%= ENV["DOKKU_POSTGRES_BLACK_URL"] %>
+    migrations_paths: db/queue_migrate

@@ -15,4 +15,5 @@ test:
   <<: *default
 
 production:
+  database: queue
   <<: *default
