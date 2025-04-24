@@ -236,6 +236,7 @@ Rails.application.routes.draw do
   get '/chico' => redirect('/map')
   get '/michigan-west' => redirect('/michigan-sw')
   get '/michigan-mid' => redirect('/michigan-north')
+  get '/albuquerque' => redirect('/new-mexico')
   get '/roanoke' => redirect('/map')
   get '/redding' => redirect('/map')
   get '/bakersfield' => redirect('/map')
