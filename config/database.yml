@@ -25,5 +25,5 @@ production:
     migrations_paths: db/cache_migrate
   queue:
     <<: *default
-    url: <%= ENV["DOKKU_POSTGRES_QUEUE_URL"] %>
+    url: <%= ENV["DOKKU_POSTGRES_AQUA_URL"] %>
     migrations_paths: db/queue_migrate
