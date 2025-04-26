@@ -78,7 +78,6 @@ GEM
       tzinfo (~> 2.0, >= 2.0.5)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
-    amazing_print (1.6.0)
     apipie-rails (1.4.2)
       actionpack (>= 5.0)
       activesupport (>= 5.0)
@@ -551,7 +550,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  amazing_print
   apipie-rails
   aws-sdk-s3
   bootsnap
