@@ -5,7 +5,7 @@ module Api
 
       before_action :allow_cors
       respond_to :json
-      rate_limit to: 6, within: 10.minutes, only: [ :auth_details, :forgot_password, :resend_confirmation, :signup ]
+      rate_limit to: 10, within: 10.minutes, only: [ :auth_details, :forgot_password, :resend_confirmation, :signup ]
 
       api :GET, "/api/v1/users/:id/list_fave_locations.json", "Fetch list of favorite locations"
       description "Fetch list of favorite locations"
