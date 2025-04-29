@@ -4,8 +4,6 @@ class LocationPictureXref < ApplicationRecord
 
   has_one_attached :photo
 
-  do_not_validate_attachment_file_type :photo
-
   def rails_admin_default_object_label_method; end
 
   def create_user_submission
