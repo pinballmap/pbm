@@ -6,7 +6,6 @@ gem "rails", "~> 8.0.x"
 
 gem "apipie-rails"
 gem "aws-sdk-s3"
-gem "bootsnap", require: false
 gem "browser"
 gem "cancancan"
 gem "country_select"
