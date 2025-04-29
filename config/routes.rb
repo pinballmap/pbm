@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       resources :operators, only: [:index, :show]
       resources :statuses, only: [:index, :show]
 
-      resources :user_submissions, only: [:list_within_range, :location, :total_user_submission_count] do
+      resources :user_submissions do
         collection do
           get :list_within_range
           get :location
@@ -25,7 +25,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :users, only: [:auth_details, :total_user_count] do
+      resources :users do
         member do
           post :add_fave_location
           get  :list_fave_locations
@@ -161,7 +161,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :operators, only: [:autocomplete] do
+  resources :operators, only: [:show] do
     collection do
       get :autocomplete
     end
@@ -193,7 +193,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users, only: [:profile, :toggle_fave_location, :update_user_flag, :render_user_flag] do
+  resources :users do
     member do
       get :profile, constraints: { id: /[^\/]+/ }
       post :toggle_fave_location

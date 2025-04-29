@@ -2,9 +2,8 @@ source "https://rubygems.org"
 ruby "3.3.6"
 
 gem "pg"
-gem "rails", "~> 7.2.x"
+gem "rails", "~> 8.0.x"
 
-gem "amazing_print"
 gem "apipie-rails"
 gem "aws-sdk-s3"
 gem "bootsnap", require: false
@@ -33,12 +32,11 @@ gem "rack"
 gem "rack-attack"
 gem "rails_admin"
 gem "rails_autolink"
-gem "rails_semantic_logger"
 gem "rake"
 gem "sanitize"
 gem "sassc-rails"
 gem "scout_apm"
-gem "simple_token_authentication"
+gem "simple_token_authentication", git: "https://github.com/gonzalo-bulnes/simple_token_authentication.git", ref: "f1cba4e"
 gem "solid_cache", "~> 1.0"
 gem "solid_queue", "~> 1.1"
 gem "sprockets-rails"
@@ -46,6 +44,10 @@ gem "strip_attributes"
 gem "tzinfo-data"
 gem "uglifier"
 gem "webrick"
+
+group :production, :development do
+  gem "rails_semantic_logger"
+end
 
 group :test do
   gem "capybara"
