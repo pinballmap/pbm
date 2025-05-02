@@ -4,8 +4,23 @@
 {{ $listen_port := index $port_map_list 1 }}
 {{ $upstream_port := index $port_map_list 2 }}
 
+map $http_user_agent $limit_key {
+~* (AI2Bot|Ai2Bot\-Dolma|aiHitBot|Amazonbot|anthropic\-ai|Applebot|Applebot\-Extended|Brightbot\ 1\.0|Bytespider|CCBot|ChatGPT\-User|Claude\-Web|ClaudeBot|cohere\-ai|cohere\-training\-data\-crawler|Cotoyogi|Crawlspace|Diffbot|DuckAssistBot|FacebookBot|Factset_spyderbot|FirecrawlAgent|FriendlyCrawler|Google\-Extended|GoogleOther|GoogleOther\-Image|GoogleOther\-Video|GPTBot|iaskspider/2\.0|ICC\-Crawler|ImagesiftBot|img2dataset|imgproxy|ISSCyberRiskCrawler|Kangaroo\ Bot|meta\-externalagent|Meta\-ExternalAgent|meta\-externalfetcher|Meta\-ExternalFetcher|NovaAct|OAI\-SearchBot|omgili|omgilibot|Operator|PanguBot|Perplexity\-User|PerplexityBot|PetalBot|Scrapy|SemrushBot\-OCOB|SemrushBot\-SWA|Sidetrade\ indexer\ bot|TikTokSpider|Timpibot|VelenPublicWebCrawler|Webzio\-Extended|YouBot) aihit;
+default "";
+}
+
+limit_req_zone $limit_key zone=aihit:10m rate=5r/m;
+limit_req_status 429;
+
+map $status $retry_after {
+  default '';
+  429 '120';
+}
+
 {{ if eq $scheme "http" }}
 server {
+  limit_req zone=aihit burst=5 nodelay;
+  add_header Retry-After $retry_after always;
   listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }};
   listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{end}}{{ $listen_port }};
   {{ if $.NOSSL_SERVER_NAME }}server_name {{ $.NOSSL_SERVER_NAME }}; {{ end }}
@@ -82,6 +97,8 @@ server {
 }
 {{ else if eq $scheme "https"}}
 server {
+  limit_req zone=aihit burst=5 nodelay;
+  add_header Retry-After $retry_after always;
   listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ end }};
   listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{end}}{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ end }};
   {{ if $.SSL_SERVER_NAME }}server_name {{ $.SSL_SERVER_NAME }}; {{ end }}
