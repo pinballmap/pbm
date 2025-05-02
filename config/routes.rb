@@ -241,6 +241,7 @@ Rails.application.routes.draw do
   get '/redding/*' => redirect('/map')
   get '/bakersfield/*' => redirect('/map')
   get '/springfield/*' => redirect('/map')
+  get '/poohbear' => redirect('/')
 
   root to: 'pages#home'
 end
