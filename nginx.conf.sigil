@@ -10,7 +10,7 @@ map $http_user_agent $limit_key {
 default "";
 }
 
-limit_req_zone $limit_key zone=ai_agent_zone:10m rate=5r/m;
+limit_req_zone $limit_key zone=ai_agent:10m rate=5r/m;
 
 map $status $retry_after {
     default '';
@@ -18,7 +18,7 @@ map $status $retry_after {
 }
 
 server {
-  limit_req zone=ai_agent_zone burst=5 nodelay;
+  limit_req zone=ai_agent burst=5 nodelay;
   limit_req_status 429;
   add_header Retry-After $retry_after always;
   listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }};
@@ -97,11 +97,11 @@ server {
 }
 {{ else if eq $scheme "https"}}
 map $http_user_agent $limit_key2 {
-"~* (AI2Bot|Ai2Bot\-Dolma|aiHitBot|Amazonbot|anthropic\-ai|Applebot|Applebot\-Extended|Brightbot\ 1\.0|Bytespider|CCBot|ChatGPT\-User|Claude\-Web|ClaudeBot|cohere\-ai|cohere\-training\-data\-crawler|Cotoyogi|Crawlspace|Diffbot|DuckAssistBot|FacebookBot|Factset_spyderbot|FirecrawlAgent|FriendlyCrawler|Google\-Extended|GoogleOther|GoogleOther\-Image|GoogleOther\-Video|GPTBot|iaskspider/2\.0|ICC\-Crawler|ImagesiftBot|img2dataset|imgproxy|ISSCyberRiskCrawler|Kangaroo\ Bot|meta\-externalagent|Meta\-ExternalAgent|meta\-externalfetcher|Meta\-ExternalFetcher|NovaAct|OAI\-SearchBot|omgili|omgilibot|Operator|PanguBot|Perplexity\-User|PerplexityBot|PetalBot|Scrapy|SemrushBot\-OCOB|SemrushBot\-SWA|Sidetrade\ indexer\ bot|TikTokSpider|Timpibot|VelenPublicWebCrawler|Webzio\-Extended|YouBot)" "ai_agent";
+"~* (AI2Bot|Ai2Bot\-Dolma|aiHitBot|Amazonbot|anthropic\-ai|Applebot|Applebot\-Extended|Brightbot\ 1\.0|Bytespider|CCBot|ChatGPT\-User|Claude\-Web|ClaudeBot|cohere\-ai|cohere\-training\-data\-crawler|Cotoyogi|Crawlspace|Diffbot|DuckAssistBot|FacebookBot|Factset_spyderbot|FirecrawlAgent|FriendlyCrawler|Google\-Extended|GoogleOther|GoogleOther\-Image|GoogleOther\-Video|GPTBot|iaskspider/2\.0|ICC\-Crawler|ImagesiftBot|img2dataset|imgproxy|ISSCyberRiskCrawler|Kangaroo\ Bot|meta\-externalagent|Meta\-ExternalAgent|meta\-externalfetcher|Meta\-ExternalFetcher|NovaAct|OAI\-SearchBot|omgili|omgilibot|Operator|PanguBot|Perplexity\-User|PerplexityBot|PetalBot|Scrapy|SemrushBot\-OCOB|SemrushBot\-SWA|Sidetrade\ indexer\ bot|TikTokSpider|Timpibot|VelenPublicWebCrawler|Webzio\-Extended|YouBot)" "ai_agent2";
 default "";
 }
 
-limit_req_zone $limit_key2 zone=ai_agent_zone2:10m rate=5r/m;
+limit_req_zone $limit_key2 zone=ai_agent2:10m rate=5r/m;
 
 map $status $retry_after2 {
     default '';
@@ -109,7 +109,7 @@ map $status $retry_after2 {
 }
 
 server {
-  limit_req zone=ai_agent_zone2 burst=5 nodelay;
+  limit_req zone=ai_agent2 burst=5 nodelay;
   limit_req_status 429;
   add_header Retry-After $retry_after2 always;
   listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ end }};
