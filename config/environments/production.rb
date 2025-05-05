@@ -40,9 +40,10 @@ Rails.application.configure do
 
   # Change to "debug" to log everything (including potentially personally-identifiable information!)
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
+  config.colorize_logging = false
 
   config.rails_semantic_logger.add_file_appender = false
-  config.rails_semantic_logger.format = :color
+  config.rails_semantic_logger.format = :default
   config.rails_semantic_logger.quiet_assets = true
   config.semantic_logger.add_appender(
     io: STDOUT,

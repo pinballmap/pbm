@@ -88,7 +88,6 @@ GEM
       uri (>= 0.13.1)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
-    amazing_print (1.7.2)
     apipie-rails (1.4.2)
       actionpack (>= 5.0)
       activesupport (>= 5.0)
@@ -559,7 +558,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  amazing_print
   apipie-rails
   aws-sdk-s3
   brakeman
