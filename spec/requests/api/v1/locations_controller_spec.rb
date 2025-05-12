@@ -140,6 +140,28 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to_not include('Bawb')
     end
 
+    it 'respects by_machine_type and by_machine_display filters' do
+      region_la = FactoryBot.create(:region, name: 'la', id: 222)
+
+      location = FactoryBot.create(:location, name: 'Cleo', region: region_la)
+
+      FactoryBot.create(:location_machine_xref, location: location, machine: FactoryBot.create(:machine, id: 777, name: 'Cleo Machine', machine_type: 'em', machine_display: 'reels'))
+
+      location2 = FactoryBot.create(:location, name: 'Bawb', region: region_la)
+
+      FactoryBot.create(:location_machine_xref, location: location2, machine: FactoryBot.create(:machine, id: 778, name: 'Bawb Machine', machine_type: 'ss', machine_display: 'dmd'))
+
+      get "/api/v1/region/#{region_la.name}/locations.json?by_machine_type=em"
+
+      expect(response.body).to include('Cleo')
+      expect(response.body).to_not include('Bawb')
+
+      get "/api/v1/region/#{region_la.name}/locations.json?by_machine_display=dmd"
+
+      expect(response.body).to_not include('Cleo')
+      expect(response.body).to include('Bawb')
+    end
+
     it 'respects with_lmx filter' do
       FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'chicago'), name: 'Bawb')
 
@@ -496,6 +518,36 @@ describe Api::V1::LocationsController, type: :request do
 
       expect(locations[0]['name']).to eq('Closest Stern Location')
     end
+
+    it 'respects by_machine_type and by_machine_display filters' do
+      closest1 = FactoryBot.create(:location, region: @region, name: 'Closest1 Location', street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
+
+      FactoryBot.create(:location_machine_xref, location: closest1, machine: FactoryBot.create(:machine, name: 'Cleo', manufacturer: 'Stern', machine_type: 'ss', machine_display: 'dmd'))
+
+      closest2 = FactoryBot.create(:location, region: @region, name: 'Closest2 Location', street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
+
+      FactoryBot.create(:location_machine_xref, location: closest2, machine: FactoryBot.create(:machine, name: 'Bawb', manufacturer: 'Stern', machine_type: 'em', machine_display: 'reels'))
+
+      get "/api/v1/locations/closest_by_address.json", params: { address: '97202', by_machine_type: 'ss', send_all_within_distance: 1 }
+
+      sleep 1
+
+      parsed_body = JSON.parse(response.body)
+      locations = parsed_body['locations']
+      expect(locations.size).to eq(1)
+
+      expect(locations[0]['name']).to eq('Closest1 Location')
+
+      get "/api/v1/locations/closest_by_address.json", params: { address: '97202', by_machine_display: 'reels', send_all_within_distance: 1 }
+
+      sleep 1
+
+      parsed_body = JSON.parse(response.body)
+      locations = parsed_body['locations']
+      expect(locations.size).to eq(1)
+
+      expect(locations[0]['name']).to eq('Closest2 Location')
+    end
   end
 
   describe '#closest_by_lat_lon' do
@@ -595,7 +647,7 @@ describe Api::V1::LocationsController, type: :request do
 
     it 'respects filters' do
       location_type = FactoryBot.create(:location_type)
-      machine = FactoryBot.create(:machine)
+      machine = FactoryBot.create(:machine, machine_type: 'ss', machine_display: 'dmd')
       operator = FactoryBot.create(:operator)
 
       close_location_one = FactoryBot.create(:location, region: @region, lat: 45.49, lon: -122.63)
@@ -653,6 +705,18 @@ describe Api::V1::LocationsController, type: :request do
       locations = JSON.parse(response.body)['locations']
       expect(locations.size).to eq(1)
       expect(locations[0]['id']).to eq(close_location_three.id)
+
+      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: close_location_one.lat, lon: close_location_one.lon, by_machine_type: 'ss', send_all_within_distance: 1 }
+
+      locations = JSON.parse(response.body)['locations']
+      expect(locations.size).to eq(1)
+      expect(locations[0]['id']).to eq(close_location_two.id)
+
+      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: close_location_one.lat, lon: close_location_one.lon, by_machine_display: 'dmd', send_all_within_distance: 1 }
+
+      locations = JSON.parse(response.body)['locations']
+      expect(locations.size).to eq(1)
+      expect(locations[0]['id']).to eq(close_location_two.id)
     end
 
     it 'lets you filter by a specific machine and N machines at the same time' do

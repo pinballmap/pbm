@@ -94,6 +94,14 @@ class Location < ApplicationRecord
     machines = Machine.where("manufacturer = ?", manufacturer)
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
   }
+  scope :by_machine_type, lambda { |machine_type|
+    machines = Machine.where("machine_type = ?", machine_type)
+    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
+  }
+  scope :by_machine_display, lambda { |machine_display|
+    machines = Machine.where("machine_display = ?", machine_display)
+    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
+  }
 
   before_destroy do |record|
     Event.where(location_id: record.id).destroy_all
