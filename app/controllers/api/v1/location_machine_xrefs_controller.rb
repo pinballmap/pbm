@@ -57,7 +57,7 @@ module Api
         if condition
           lmx.update_condition(
             condition,
-            remote_ip: request.headers["CF-CONNECTING-IP"],
+            remote_ip: request.headers["CF-Connecting-IP"],
             request_host: request.host,
             user_agent: request.user_agent,
             user_id: user&.id
@@ -79,7 +79,7 @@ module Api
 
         lmx.update_condition(
           params[:condition],
-          remote_ip: request.headers["CF-CONNECTING-IP"],
+          remote_ip: request.headers["CF-Connecting-IP"],
           request_host: request.host,
           user_agent: request.user_agent,
           user_id: user&.id
@@ -100,7 +100,7 @@ module Api
         return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
 
         lmx.destroy(
-          remote_ip: request.headers["CF-CONNECTING-IP"],
+          remote_ip: request.headers["CF-Connecting-IP"],
           request_host: request.host,
           user_agent: request.user_agent,
           user_id: user&.id

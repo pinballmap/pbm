@@ -26,7 +26,7 @@ describe PagesController, type: :controller do
   describe 'contact_sent' do
     before(:each) do
       @user = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
-      request.headers["CF-CONNECTING-IP"] = "0.0.0.0"
+      request.headers["CF-Connecting-IP"] = "0.0.0.0"
     end
     it 'should send an email if the body is not blank' do
       logout
@@ -92,7 +92,7 @@ describe PagesController, type: :controller do
   [ 'portland', nil ].each do |region|
     describe 'submitted_new_location' do
       before(:each) do
-        request.headers["CF-CONNECTING-IP"] = "0.0.0.0"
+        request.headers["CF-Connecting-IP"] = "0.0.0.0"
       end
       it 'should send an email' do
         FactoryBot.create(:location_type, name: 'type')
