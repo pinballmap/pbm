@@ -1,1 +1,2 @@
-class RegionsController < ApplicationController; end
+class RegionsController < ApplicationController
+end
