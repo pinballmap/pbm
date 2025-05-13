@@ -1,10 +1,9 @@
 module Api
   module V1
-    class UsersController < InheritedResources::Base
+    class UsersController < ApplicationController
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
-      respond_to :json
       rate_limit to: 10, within: 10.minutes, only: [ :auth_details, :forgot_password, :resend_confirmation, :signup ]
 
       api :GET, "/api/v1/users/:id/list_fave_locations.json", "Fetch list of favorite locations"

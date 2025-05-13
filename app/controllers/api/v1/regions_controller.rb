@@ -1,10 +1,9 @@
 module Api
   module V1
-    class RegionsController < InheritedResources::Base
+    class RegionsController < ApplicationController
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
-      respond_to :json
 
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_REGION = 250
 

@@ -1,7 +1,6 @@
-class MachineScoreXrefsController < InheritedResources::Base
-  respond_to :xml, :json, :html, :js, :rss
+class MachineScoreXrefsController < ApplicationController
   has_scope :region
-  before_action :authenticate_user!, except: %i[index show]
+  before_action :authenticate_user!, except: %i[index]
   rate_limit to: 20, within: 10.minutes, only: :create
 
   def create
@@ -25,8 +24,6 @@ class MachineScoreXrefsController < InheritedResources::Base
 
   def index
     @msxs = apply_scopes(MachineScoreXref).order("machine_score_xrefs.id desc").limit(50).includes(%i[location_machine_xref location machine user])
-
-    respond_with(@msxs)
   end
 
   private

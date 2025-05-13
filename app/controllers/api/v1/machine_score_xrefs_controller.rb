@@ -1,10 +1,9 @@
 module Api
   module V1
-    class MachineScoreXrefsController < InheritedResources::Base
+    class MachineScoreXrefsController < ApplicationController
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
-      respond_to :json
       has_scope :region, :limit, :zone_id
       rate_limit to: 30, within: 10.minutes, only: :create
 

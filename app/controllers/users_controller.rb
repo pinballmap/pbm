@@ -1,15 +1,4 @@
-class UsersController < InheritedResources::Base
-  respond_to :json
-
-  def create
-    @user = User.new(user_params)
-    if @user.save
-      redirect_to @user, notice: "User was successfully created."
-    else
-      render action: "new"
-    end
-  end
-
+class UsersController < ApplicationController
   def fave_locations
     @user = User.find(params[:id])
   end
@@ -39,11 +28,5 @@ class UsersController < InheritedResources::Base
 
   def render_user_flag
     render partial: "users/render_user_flag", locals: { user: User.find(params[:id]) }
-  end
-
-  private
-
-  def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :remember_me, :region_id, :is_machine_admin, :is_primary_email_contact, :username, :is_disabled, :is_super_admin, :flag, :num_machines_added, :num_machines_removed, :num_locations_suggested, :num_lmx_comments_left, :num_msx_scores_added)
   end
 end

@@ -1,7 +1,6 @@
-class LocationMachineXrefsController < InheritedResources::Base
-  respond_to :xml, :json, :html, :js, :rss
+class LocationMachineXrefsController < ApplicationController
   has_scope :region
-  before_action :authenticate_user!, except: %i[index show render_machine_conditions render_machine_tools]
+  before_action :authenticate_user!, except: %i[index render_machine_conditions render_machine_tools]
   rate_limit to: 50, within: 20.minutes, only: :destroy
   rate_limit to: 40, within: 20.minutes, only: :update_machine_condition
 
@@ -99,8 +98,6 @@ class LocationMachineXrefsController < InheritedResources::Base
   def index
     @lmxs = apply_scopes(LocationMachineXref).order("location_machine_xrefs.id desc").limit(50).includes({ location: :region }, :machine, :user)
     @lmxs = @lmxs.where("machine_id = ?", params[:machine_id]) if params[:machine_id].present? && params[:machine_id].match?(/[0-9]+/)
-
-    respond_with(@lmxs)
   end
 
   def ic_toggle

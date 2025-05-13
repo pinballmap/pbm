@@ -1,7 +1,6 @@
-class LocationPictureXrefsController < InheritedResources::Base
-  respond_to :html, :xml, :json, :rss, only: %i[index show]
+class LocationPictureXrefsController < ApplicationController
   has_scope :region
-  before_action :authenticate_user!, except: %i[index show]
+  before_action :authenticate_user!
   rate_limit to: 20, within: 10.minutes, only: :create
 
   def form

@@ -1,16 +1,4 @@
-class MachinesController < InheritedResources::Base
-  respond_to :xml, :json, only: %i[index show]
-  has_scope :by_name
-
-  def create
-    @machine = Machine.new(machine_params)
-    if @machine.save
-      redirect_to @machine, notice: "Machine was successfully created."
-    else
-      render action: "new"
-    end
-  end
-
+class MachinesController < ApplicationController
   def autocomplete
     if params[:region_level_search].nil?
       results = Machine.where("clean_items(name) ilike '%' || clean_items(?) || '%'", params[:term])
@@ -37,15 +25,5 @@ class MachinesController < InheritedResources::Base
     end
 
     render json: results
-  end
-
-  def index
-    respond_with(@machines = apply_scopes(Machine).all)
-  end
-
-  private
-
-  def machine_params
-    params.require(:machine).permit(:name, :ipdb_link, :year, :manufacturer, :machine_group_id, :ic_eligible)
   end
 end

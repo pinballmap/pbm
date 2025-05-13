@@ -1,10 +1,9 @@
 module Api
   module V1
-    class LocationMachineXrefsController < InheritedResources::Base
+    class LocationMachineXrefsController < ApplicationController
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
-      respond_to :json
       has_scope :region, :limit
 
       rate_limit to: 100, within: 20.minutes, only: :destroy

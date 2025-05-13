@@ -1,10 +1,8 @@
 module Api
   module V1
-    class MachinesController < InheritedResources::Base
-      skip_before_action :verify_authenticity_token
+    class MachinesController < ApplicationController
 
       before_action :allow_cors
-      respond_to :json
 
       api :GET, "/api/v1/machines.json", "Fetch all machines"
       description "These are the canonical machine descriptions, not the location-centric ones"

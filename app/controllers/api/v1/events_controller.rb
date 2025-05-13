@@ -1,10 +1,9 @@
 module Api
   module V1
-    class EventsController < InheritedResources::Base
+    class EventsController < ApplicationController
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
-      respond_to :json
       has_scope :region
       rate_limit to: 30, within: 10.minutes, only: :index
 

@@ -1,10 +1,9 @@
 module Api
   module V1
-    class OperatorsController < InheritedResources::Base
+    class OperatorsController < ApplicationController
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
-      respond_to :json
       has_scope :region
 
       api :GET, "/api/v1/operators.json", "Fetch all operators for all regions"

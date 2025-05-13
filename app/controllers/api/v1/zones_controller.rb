@@ -1,10 +1,9 @@
 module Api
   module V1
-    class ZonesController < InheritedResources::Base
+    class ZonesController < ApplicationController
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
-      respond_to :json
       has_scope :region
 
       api :GET, "/api/v1/region/:region/zones.json", "Fetch zones for a single region"

@@ -1,21 +1,12 @@
-class LocationsController < InheritedResources::Base
-  respond_to :xml, :json, :html, :js, :rss
+class LocationsController < ApplicationController
+  respond_to :html, only: %i[index]
   has_scope :by_location_name, :by_location_id, :by_ipdb_id, :by_opdb_id, :by_machine_id, :by_machine_single_id, :by_machine_name, :by_city_id, :by_state_id, :by_machine_group_id, :by_zone_id, :by_operator_id, :by_type_id, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :by_city_name, :by_state_name, :by_city_no_state, :by_center_point_and_ne_boundary, :region, :by_is_stern_army, :by_ic_active, :user_faved, :manufacturer, :by_machine_type, :by_machine_display
-  before_action :authenticate_user!, except: %i[index show autocomplete autocomplete_city render_machines render_machines_count render_scores render_last_updated render_location_detail render_former_machines render_recent_activity]
+  before_action :authenticate_user!, except: %i[index autocomplete autocomplete_city render_machines render_machines_count render_scores render_last_updated render_location_detail render_former_machines render_recent_activity]
   rate_limit to: 40, within: 10.minutes, only: :index, if: lambda { |req| req.is_bot? }
   rate_limit to: 100, within: 20.minutes, only: :index
 
   def is_bot?
     browser.bot?
-  end
-
-  def create
-    @location = Location.new(location_params)
-    if @location.save
-      redirect_to @location, notice: "Location was successfully created."
-    else
-      render action: "new"
-    end
   end
 
   def autocomplete
@@ -178,11 +169,5 @@ class LocationsController < InheritedResources::Base
     l = Location.find(params[:id])
     l.confirm(current_user || nil)
     l
-  end
-
-  private
-
-  def location_params
-    params.require(:location).permit(:name, :street, :city, :state, :zip, :phone, :lat, :lon, :website, :zone_id, :region_id, :location_type_id, :description, :operator_id, :date_last_updated, :last_updated_by_user_id, :machine_ids, :is_stern_army, :ic_active)
   end
 end
