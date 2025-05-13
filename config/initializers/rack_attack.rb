@@ -13,7 +13,7 @@ unless Rails.env.test?
 
   Rack::Attack.blocklist('fail2ban pentesters') do |req|
     Rack::Attack::Fail2Ban.filter(
-      "pentesters-#{req.get_header("CF-CONNECTING-IP")}",
+      "pentesters-#{req.ip}",
       maxretry: 1,
       findtime: 10.minutes,
       bantime: 3.hours
