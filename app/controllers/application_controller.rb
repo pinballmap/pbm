@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   FILTERING_REQUIRED_MSG = "Filtering is required for this action. Please provide a filter when using this endpoint.".freeze
   AUTH_REQUIRED_MSG = "Authentication is required for this action. If you are using the app, you may need to confirm your account (see the email from us) or log out and back in.".freeze
+  rate_limit to: 140, within: 20.minutes, if: lambda { |req| req.bot? }
 
   include Pagy::Backend
 
@@ -10,6 +11,14 @@ class ApplicationController < ActionController::Base
       payload[:user_id] = current_user&.id
       payload[:bot_or_not] = browser.bot? ? "IsBot" : "NotBot"
     end
+  end
+
+  def no_route
+    render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
+  end
+
+  def bot?
+    browser.bot?
   end
 
   acts_as_token_authentication_handler_for User, fallback: :none

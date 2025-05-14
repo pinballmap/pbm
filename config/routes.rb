@@ -244,5 +244,7 @@ Rails.application.routes.draw do
   get '/charlottesville' => redirect('/map')
   get '/poohbear' => redirect('/')
 
+  match '*unmatched', to: 'application#no_route', via: :all, constraints: lambda { |req| req.path.include? 'favicon' }
+
   root to: 'pages#home'
 end
