@@ -1,7 +1,7 @@
 class RegistrationsController < Devise::RegistrationsController
   respond_to :json
   prepend_before_action :create, only: [ :create ]
-  rate_limit to: 5, within: 20.minutes, only: :create
+  rate_limit to: 10, within: 20.minutes, only: :create
 
   def create
     @user = User.new(user_params)
