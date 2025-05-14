@@ -20,11 +20,6 @@ server {
   {{ if $.LINGERING_TIMEOUT }}lingering_timeout {{ $.LINGERING_TIMEOUT }};{{end}}
   {{ if $.SEND_TIMEOUT }}send_timeout {{ $.SEND_TIMEOUT }};{{end}}
 
-  if ($http_user_agent = "") { return 403; }
-  if ($http_user_agent ~* (bingbot|externalagent|scrapy)){
-      return 403;
-  }
-
 {{ if (and (eq $listen_port "80") ($.SSL_INUSE)) }}
   include {{ $.DOKKU_ROOT }}/{{ $.APP }}/nginx.conf.d/*.conf;
   location / {
@@ -88,6 +83,13 @@ server {
 }
 {{ else if eq $scheme "https"}}
 
+map $http_user_agent $limit_key {
+  default "";
+  "~* (AI2Bot|Ai2Bot\-Dolma|aiHitBot|Amazonbot|anthropic\-ai|Applebot|Applebot\-Extended|Brightbot\ 1\.0|Bytespider|CCBot|ChatGPT\-User|Claude\-Web|ClaudeBot|cohere\-ai|cohere\-training\-data\-crawler|Cotoyogi|Crawlspace|Diffbot|DuckAssistBot|FacebookBot|Factset_spyderbot|FirecrawlAgent|FriendlyCrawler|Google\-Extended|GoogleOther|GoogleOther\-Image|GoogleOther\-Video|GPTBot|iaskspider/2\.0|ICC\-Crawler|ImagesiftBot|img2dataset|imgproxy|ISSCyberRiskCrawler|Kangaroo\ Bot|meta\-externalagent|Meta\-ExternalAgent|meta\-externalfetcher|Meta\-ExternalFetcher|NovaAct|OAI\-SearchBot|omgili|omgilibot|Operator|PanguBot|Perplexity\-User|PerplexityBot|PetalBot|Scrapy|SemrushBot\-OCOB|SemrushBot\-SWA|Sidetrade\ indexer\ bot|TikTokSpider|Timpibot|VelenPublicWebCrawler|Webzio\-Extended|YouBot|Barkrowler)" $http_user_agent;
+}
+
+limit_req_zone $limit_key zone=bots:10m rate=4r/m;
+
 server {
   listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ end }};
   listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{end}}{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ end }};
@@ -109,11 +111,13 @@ server {
   {{ if $.SEND_TIMEOUT }}send_timeout {{ $.SEND_TIMEOUT }};{{end}}
 
   if ($http_user_agent = "") { return 403; }
-  if ($http_user_agent ~* (bingbot|externalagent|scrapy)){
+  if ($http_user_agent ~* (bingbot|scrapy)){
       return 403;
   }
 
   location    / {
+    limit_req zone=bots;
+    limit_req_status 429;
 
     gzip on;
     gzip_min_length  1100;
