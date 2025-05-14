@@ -4,6 +4,7 @@ class LocationsController < ApplicationController
   before_action :authenticate_user!, except: %i[index autocomplete autocomplete_city render_machines render_machines_count render_scores render_last_updated render_location_detail render_former_machines render_recent_activity]
   rate_limit to: 40, within: 10.minutes, only: :index, if: lambda { |req| req.is_bot? }
   rate_limit to: 100, within: 20.minutes, only: :index
+  rate_limit to: 10, within: 5.seconds, only: :render_location_detail
 
   def is_bot?
     browser.bot?
