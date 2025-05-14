@@ -5,16 +5,13 @@
 {{ $upstream_port := index $port_map_list 2 }}
 
 {{ if eq $scheme "http" }}
-map $http_user_agent $limit_key {
-"~* (AI2Bot|Ai2Bot\-Dolma|aiHitBot|Amazonbot|anthropic\-ai|Applebot|Applebot\-Extended|Brightbot\ 1\.0|Bytespider|CCBot|ChatGPT\-User|Claude\-Web|ClaudeBot|cohere\-ai|cohere\-training\-data\-crawler|Cotoyogi|Crawlspace|Diffbot|DuckAssistBot|FacebookBot|Factset_spyderbot|FirecrawlAgent|FriendlyCrawler|Google\-Extended|GoogleOther|GoogleOther\-Image|GoogleOther\-Video|GPTBot|iaskspider/2\.0|ICC\-Crawler|ImagesiftBot|img2dataset|imgproxy|ISSCyberRiskCrawler|Kangaroo\ Bot|meta\-externalagent|Meta\-ExternalAgent|meta\-externalfetcher|Meta\-ExternalFetcher|NovaAct|OAI\-SearchBot|omgili|omgilibot|Operator|PanguBot|Perplexity\-User|PerplexityBot|PetalBot|Scrapy|SemrushBot\-OCOB|SemrushBot\-SWA|Sidetrade\ indexer\ bot|TikTokSpider|Timpibot|VelenPublicWebCrawler|Webzio\-Extended|YouBot|bingbot)" $binary_remote_addr;
-default "";
+
+if ($http_user_agent = "") { return 403; }
+if ($http_user_agent ~* (bingbot|externalagent|scrapy)){
+    return 403;
 }
 
-limit_req_zone $limit_key zone=ai_agent:10m rate=5r/m;
-
 server {
-  limit_req zone=ai_agent;
-  limit_req_status 429;
   listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }};
   listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{end}}{{ $listen_port }};
   {{ if $.NOSSL_SERVER_NAME }}server_name {{ $.NOSSL_SERVER_NAME }}; {{ end }}
@@ -90,16 +87,13 @@ server {
 {{ end }}
 }
 {{ else if eq $scheme "https"}}
-map $http_user_agent $limit_key2 {
-"~* (AI2Bot|Ai2Bot\-Dolma|aiHitBot|Amazonbot|anthropic\-ai|Applebot|Applebot\-Extended|Brightbot\ 1\.0|Bytespider|CCBot|ChatGPT\-User|Claude\-Web|ClaudeBot|cohere\-ai|cohere\-training\-data\-crawler|Cotoyogi|Crawlspace|Diffbot|DuckAssistBot|FacebookBot|Factset_spyderbot|FirecrawlAgent|FriendlyCrawler|Google\-Extended|GoogleOther|GoogleOther\-Image|GoogleOther\-Video|GPTBot|iaskspider/2\.0|ICC\-Crawler|ImagesiftBot|img2dataset|imgproxy|ISSCyberRiskCrawler|Kangaroo\ Bot|meta\-externalagent|Meta\-ExternalAgent|meta\-externalfetcher|Meta\-ExternalFetcher|NovaAct|OAI\-SearchBot|omgili|omgilibot|Operator|PanguBot|Perplexity\-User|PerplexityBot|PetalBot|Scrapy|SemrushBot\-OCOB|SemrushBot\-SWA|Sidetrade\ indexer\ bot|TikTokSpider|Timpibot|VelenPublicWebCrawler|Webzio\-Extended|YouBot|bingbot)" $binary_remote_addr;
-default "";
+
+if ($http_user_agent = "") { return 403; }
+if ($http_user_agent ~* (bingbot|externalagent|scrapy)){
+    return 403;
 }
 
-limit_req_zone $limit_key2 zone=ai_agent2:10m rate=5r/m;
-
 server {
-  limit_req zone=ai_agent2;
-  limit_req_status 429;
   listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ end }};
   listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{end}}{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ end }};
   {{ if $.SSL_SERVER_NAME }}server_name {{ $.SSL_SERVER_NAME }}; {{ end }}
