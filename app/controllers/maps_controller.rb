@@ -50,7 +50,7 @@ class MapsController < ApplicationController
     @nearby_lat, @nearby_lon = ""
 
     if Rails.env.production? || Rails.env.staging?
-      @nearby_lat, @nearby_lon = Geocoder.search("#{request.headers["CF-Connecting-IP"]}").first.coordinates
+      @nearby_lat, @nearby_lon = Geocoder.search("#{request.remote_ip}").first.coordinates
     elsif Rails.env.development?
       @nearby_lat, @nearby_lon = Geocoder.search("174.203.131.43").first.coordinates # random IP instead of localhost
     elsif Rails.env.test?

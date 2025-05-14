@@ -3,7 +3,7 @@ unless Rails.env.test?
     should_ban = nil
 
     BannedIp.all.each do |banned_ip|
-      if (banned_ip.ip_address == req.get_header("CF-Connecting-IP"))
+      if (banned_ip.ip_address == req.ip)
         should_ban = 1
       end
     end
