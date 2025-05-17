@@ -150,7 +150,7 @@ class Location < ApplicationRecord
   end
 
   def full_street_address
-    [ street, city, state, zip ].join(", ")
+    [ street, city, state, zip ].compact.join(", ")
   end
 
   # returns "city, state" if state is available otherwise just city

@@ -36,7 +36,7 @@ class SuggestedLocation < ApplicationRecord
   end
 
   def full_street_address
-    [ street, city, state, zip ].join(", ")
+    [ street, city, state, zip ].compact.join(", ")
   end
 
   def convert_to_location(user_email)
