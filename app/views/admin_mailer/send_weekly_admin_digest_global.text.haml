@@ -6,14 +6,14 @@ List of Empty Locations:
 - @machineless_locations.each do |ml|
   = ml
 
-#{@suggested_locations_count} location(s) submitted
-#{@locations_added_count} location(s) added by you
-#{@locations_deleted_count} location(s) deleted
-#{@machine_comments_count} machine comment(s)
-#{@machines_added_count} machine(s) added
-#{@machines_removed_count} machine(s) removed
-#{@contact_messages_count} "contact us" message(s) sent
-#{@pictures_added_count} pictures(s) added
-#{@scores_added_count} score(s) added
+#{@suggested_locations_count} #{pluralize(@suggested_locations_count, "location")} submitted
+#{@locations_added_count} #{pluralize(@locations_added_count, "location")} added
+#{@locations_deleted_count} #{pluralize(@locations_deleted_count, "location")} deleted
+#{@machine_comments_count} machine #{pluralize(@machine_comments_count, "comment")}
+#{@machines_added_count} #{pluralize(@machines_added_count, "machine")} added
+#{@machines_removed_count} #{pluralize(@machines_removed_count, "machine")} removed
+#{@contact_messages_count} "contact us" #{pluralize(@contact_messages_count, "message")} sent
+#{@pictures_added_count} #{pluralize(@pictures_added_count, "picture")} added
+#{@scores_added_count} #{pluralize(@scores_added_count, "score")} added
 
 Pinball Map is listing #{@machines_count} machines and #{@locations_count} locations

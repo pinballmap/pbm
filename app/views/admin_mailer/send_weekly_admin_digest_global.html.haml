@@ -14,22 +14,22 @@
         = ml
         %br
     %p
-      #{@suggested_locations_count} location(s) submitted
+      #{@suggested_locations_count} #{pluralize(@suggested_locations_count, "location")} submitted
       %br
-      #{@locations_added_count} location(s) added
+      #{@locations_added_count} #{pluralize(@locations_added_count, "location")} added
       %br
-      #{@locations_deleted_count} location(s) deleted
+      #{@locations_deleted_count} #{pluralize(@locations_deleted_count, "location")} deleted
       %br
-      #{@machine_comments_count} machine comment(s)
+      #{@machine_comments_count} machine #{pluralize(@machine_comments_count, "comment")}
       %br
-      #{@machines_added_count} machine(s) added
+      #{@machines_added_count} #{pluralize(@machines_added_count, "machine")} added
       %br
-      #{@machines_removed_count} machine(s) removed
+      #{@machines_removed_count} #{pluralize(@machines_removed_count, "machine")} removed
       %br
-      #{@contact_messages_count} "contact us" message(s) sent
+      #{@contact_messages_count} "contact us" #{pluralize(@contact_messages_count, "message")} sent
       %br
-      #{@pictures_added_count} pictures(s) added
+      #{@pictures_added_count} #{pluralize(@pictures_added_count, "picture")} added
       %br
-      #{@scores_added_count} score(s) added
+      #{@scores_added_count} #{pluralize(@scores_added_count, "score")} added
     %p
       Pinball Map is listing #{@machines_count} machines and #{@locations_count} locations
