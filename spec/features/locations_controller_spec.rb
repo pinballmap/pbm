@@ -536,6 +536,58 @@ describe LocationsController do
       expect(find('#search_results')).to_not have_content('Plover')
     end
 
+    it 'by_ic_active' do
+      FactoryBot.create(:location, city: 'McGannyville', state: 'TX', name: 'Jolene', ic_active: true)
+      FactoryBot.create(:location, city: 'Weakerton', state: 'OR', name: 'Plover', ic_active: false)
+
+      visit '/map/?by_ic_active=true'
+
+      expect(find('#search_results')).to have_content('McGannyville')
+      expect(find('#search_results')).to_not have_content('Weakerton')
+    end
+
+    it 'by_machine_type' do
+      machine1 = FactoryBot.create(:machine, name: 'Cool', machine_type: 'em')
+      machine2 = FactoryBot.create(:machine, name: 'Uncool', machine_type: 'ss')
+      location1 = FactoryBot.create(:location, region: nil, name: 'Satch Hut')
+      location2 = FactoryBot.create(:location, region: nil, name: 'Polly Barn')
+      FactoryBot.create(:location_machine_xref, location: location1, machine: machine1)
+      FactoryBot.create(:location_machine_xref, location: location2, machine: machine2)
+
+      visit '/map/?by_machine_type=em'
+
+      expect(find('#search_results')).to have_content('Satch Hut')
+      expect(find('#search_results')).to_not have_content('Polly Barn')
+    end
+
+    it 'by_machine_display' do
+      machine1 = FactoryBot.create(:machine, name: 'Cool', machine_display: 'reels')
+      machine2 = FactoryBot.create(:machine, name: 'Uncool', machine_display: 'alphanumeric')
+      location1 = FactoryBot.create(:location, region: nil, name: 'Satch Hut')
+      location2 = FactoryBot.create(:location, region: nil, name: 'Polly Barn')
+      FactoryBot.create(:location_machine_xref, location: location1, machine: machine1)
+      FactoryBot.create(:location_machine_xref, location: location2, machine: machine2)
+
+      visit '/map/?by_machine_display=reels'
+
+      expect(find('#search_results')).to have_content('Satch Hut')
+      expect(find('#search_results')).to_not have_content('Polly Barn')
+    end
+
+    it 'by manufacturer' do
+      machine1 = FactoryBot.create(:machine, name: 'Cool', manufacturer: 'Stern')
+      machine2 = FactoryBot.create(:machine, name: 'Uncool', manufacturer: 'Gottlieb')
+      location1 = FactoryBot.create(:location, region: nil, name: 'Satch Hut')
+      location2 = FactoryBot.create(:location, region: nil, name: 'Polly Barn')
+      FactoryBot.create(:location_machine_xref, location: location1, machine: machine1)
+      FactoryBot.create(:location_machine_xref, location: location2, machine: machine2)
+
+      visit '/map/?manufacturer=Stern'
+
+      expect(find('#search_results')).to have_content('Satch Hut')
+      expect(find('#search_results')).to_not have_content('Polly Barn')
+    end
+
     it 'respects a region param and loads all region locations on initial load' do
       regionless_location = FactoryBot.create(:location, region: nil, name: 'Regionless place')
       FactoryBot.create(:location_machine_xref, location: regionless_location, machine: @machine)
