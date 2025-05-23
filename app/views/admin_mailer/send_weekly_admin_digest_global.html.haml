@@ -14,22 +14,22 @@
         = ml
         %br
     %p
-      #{@suggested_locations_count} #{pluralize(@suggested_locations_count, "location")} submitted
+      #{pluralize(@suggested_locations_count, "location")} submitted
       %br
-      #{@locations_added_count} #{pluralize(@locations_added_count, "location")} added
+      #{pluralize(@locations_added_count, "location")} added
       %br
-      #{@locations_deleted_count} #{pluralize(@locations_deleted_count, "location")} deleted
+      #{pluralize(@locations_deleted_count, "location")} deleted
       %br
-      #{@machine_comments_count} machine #{pluralize(@machine_comments_count, "comment")}
+      #{pluralize(@machine_comments_count, "machine comment")}
       %br
-      #{@machines_added_count} #{pluralize(@machines_added_count, "machine")} added
+      #{pluralize(@machines_added_count, "machine")} added
       %br
-      #{@machines_removed_count} #{pluralize(@machines_removed_count, "machine")} removed
+      #{pluralize(@machines_removed_count, "machine")} removed
       %br
-      #{@contact_messages_count} "contact us" #{pluralize(@contact_messages_count, "message")} sent
+      #{pluralize(@contact_messages_count, "contact message")}
       %br
-      #{@pictures_added_count} #{pluralize(@pictures_added_count, "picture")} added
+      #{pluralize(@pictures_added_count, "picture")} added
       %br
-      #{@scores_added_count} #{pluralize(@scores_added_count, "score")} added
+      #{pluralize(@scores_added_count, "score")} added
     %p
       Pinball Map is listing #{@machines_count} machines and #{@locations_count} locations
