@@ -89,6 +89,8 @@ map $http_user_agent $limit_key {
   "~*externalfetcher" "externalfetcher";
   "~*semrushbot" "semrushbot";
   "~*barkrowler" "barkrowler";
+  "~*MJ12bot" "MJ12bot";
+  "~*BLEXBot" "BLEXBot";
 }
 
 limit_req_zone $limit_key zone=bots:10m rate=4r/m;
