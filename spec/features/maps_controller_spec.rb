@@ -62,15 +62,15 @@ describe MapsController do
       rip_city_location = FactoryBot.create(:location, region: nil, name: 'Rip City', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
       no_way_location = FactoryBot.create(:location, region: nil, name: 'No Way', zip: '97203', lat: 45.593049200000, lon: -122.732620200000)
       FactoryBot.create(:location, region: nil, name: 'Far Off', city: 'Seattle', state: 'WA', zip: '98121', lat: 47.61307324803172, lon: -122.34479886878611)
-      FactoryBot.create(:location_machine_xref, location: rip_city_location, machine: FactoryBot.create(:machine, name: 'Sass'))
-      FactoryBot.create(:location_machine_xref, location: no_way_location, machine: FactoryBot.create(:machine, name: 'Bawb'))
+      FactoryBot.create(:location_machine_xref, location: rip_city_location, machine: FactoryBot.create(:machine, name: 'Sass Pro'))
+      FactoryBot.create(:location_machine_xref, location: no_way_location, machine: FactoryBot.create(:machine, name: 'Bawb Premium'))
 
       visit '/map'
 
-      fill_in('by_machine_name', with: 'Sass')
+      fill_in('by_machine_name', with: 'Sass Pro')
       page.execute_script %{ $('#by_machine_name').trigger('focus') }
       page.execute_script %{ $('#by_machine_name').trigger('keydown') }
-      find(:xpath, '//div[contains(text(), "Sass")]').click
+      find(:xpath, '//div[contains(text(), "Sass Pro")]').click
 
       fill_in('address', with: '97203')
 
@@ -78,14 +78,14 @@ describe MapsController do
 
       sleep 1
 
-      expect(page.body).to have_content('Rip City')
-      expect(page.body).to_not have_content('No Way')
+      expect(find('#search_results')).to have_content('Rip City')
+      expect(find('#search_results')).to_not have_content('No Way')
       expect(page.body).to have_css('#intro_container', visible: false)
 
-      fill_in('by_machine_name', with: 'Bawb')
+      fill_in('by_machine_name', with: 'Bawb Premium')
       page.execute_script %{ $('#by_machine_name').trigger('focus') }
       page.execute_script %{ $('#by_machine_name').trigger('keydown') }
-      find(:xpath, '//div[contains(text(), "Bawb")]').click
+      find(:xpath, '//div[contains(text(), "Bawb Premium")]').click
 
       fill_in('address', with: '97203')
 
@@ -93,8 +93,8 @@ describe MapsController do
 
       sleep 1
 
-      expect(page.body).to have_content('No Way')
-      expect(page.body).to_not have_content('Rip City')
+      expect(find('#search_results')).to_not have_content('Rip City')
+      expect(find('#search_results')).to have_content('No Way')
 
       fill_in('by_machine_name', with: '')
 
@@ -104,8 +104,8 @@ describe MapsController do
 
       sleep 1
 
-      expect(page.body).to have_content('Rip City')
-      expect(page.body).to have_content('No Way')
+      expect(find('#search_results')).to have_content('Rip City')
+      expect(find('#search_results')).to have_content('No Way')
 
       fill_in('address', with: 'Seattle')
       page.execute_script %{ $('#address').trigger('focus') }
@@ -116,7 +116,7 @@ describe MapsController do
 
       sleep 0.5
 
-      expect(page.body).to have_content('Far Off')
+      expect(find('#search_results')).to have_content('Far Off')
 
       fill_in('address', with: '97203')
 
@@ -124,8 +124,8 @@ describe MapsController do
 
       sleep 1
 
-      expect(page.body).to have_content('Rip City')
-      expect(page.body).to have_content('No Way')
+      expect(find('#search_results')).to have_content('Rip City')
+      expect(find('#search_results')).to have_content('No Way')
     end
 
     it 'lets you filter by location type and number of machines with address and machine name' do
@@ -235,11 +235,13 @@ describe MapsController do
       expect(page).to have_content('Sass')
     end
 
-    it 'shows single version checkbox if machine is in a group' do
+    it 'shows single version checkbox if machine is in a group and respects single version filter' do
       @machine_group = FactoryBot.create(:machine_group)
       rip_city_location = FactoryBot.create(:location, region: nil, name: 'Rip City', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
+      rose_city_location = FactoryBot.create(:location, region: nil, name: 'Rose City', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
       FactoryBot.create(:location_machine_xref, location: rip_city_location, machine: FactoryBot.create(:machine, name: 'Sass', machine_group: nil))
-      FactoryBot.create(:location_machine_xref, location: rip_city_location, machine: FactoryBot.create(:machine, name: 'Dude', machine_group: @machine_group))
+      FactoryBot.create(:location_machine_xref, location: rip_city_location, machine: FactoryBot.create(:machine, name: 'Dude Pro', machine_group: @machine_group))
+      FactoryBot.create(:location_machine_xref, location: rose_city_location, machine: FactoryBot.create(:machine, name: 'Dude Plus', machine_group: @machine_group))
 
       visit '/map'
 
@@ -254,13 +256,29 @@ describe MapsController do
 
       visit '/map'
 
-      fill_in('by_machine_name', with: 'Dude')
+      fill_in('by_machine_name', with: 'Dude Pro')
       page.execute_script %{ $('#by_machine_name').trigger('focus') }
       page.execute_script %{ $('#by_machine_name').trigger('keydown') }
-      find(:xpath, '//div[contains(text(), "Dude")]').click
+      find(:xpath, '//div[contains(text(), "Dude Pro")]').click
 
       expect(page.body).to have_content('Exact machine version?')
       expect(page.body).to have_css('#singleVersion', visible: true)
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(find('#search_results')).to have_content('Rip')
+      expect(find('#search_results')).to have_content('Rose')
+
+      check 'singleVersion'
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(find('#search_results')).to have_content('Rip')
+      expect(find('#search_results')).to_not have_content('Rose')
     end
 
     it 'respects user_faved filter' do
