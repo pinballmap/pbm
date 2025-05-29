@@ -76,12 +76,10 @@
     e.preventDefault();
 
     results_init = false;
-
     var region_id = "#{@region&.id.to_i}";
-
     let url = new URL(e.target.href);
 
-    document.getElementById("search_results_count").scrollIntoView({ "behavior": "smooth" })
+    topFunction();
 
     $.ajax({
       url: `${url}`,
