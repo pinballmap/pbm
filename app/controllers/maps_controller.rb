@@ -105,7 +105,7 @@ class MapsController < ApplicationController
     if ( @locations_size == 0 && @results_init == true )
       @locations = []
     elsif ( @locations_size == 1 && @results_init == true )
-      @locations = apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance).includes(:location_type)
+      @pagy, @locations = pagy(apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance).includes(:location_type))
     else
       @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count")).includes(:location_type), limit: 50, request_path: '/nearby_locations_load')
     end
@@ -115,8 +115,6 @@ class MapsController < ApplicationController
     else
       render partial: "locations/render_locations", object: @locations
     end
-
-    @results_init = false
   end
 
   def region_init_load
@@ -142,7 +140,7 @@ class MapsController < ApplicationController
     if ( @locations_size == 0 && @results_init == true )
       @locations = []
     elsif ( @locations_size == 1 && @results_init == true )
-      @locations = apply_scopes(Location).where([ "region_id = ?", @region_id ]).includes(:location_type)
+      @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).includes(:location_type))
     else
       @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).where(city_condition).where(zone_condition).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 50, request_path: '/region_location_load')
     end
@@ -152,8 +150,6 @@ class MapsController < ApplicationController
     else
       render partial: "locations/render_locations", object: @locations
     end
-
-    @results_init = false
   end
 
   def get_bounds
@@ -175,10 +171,10 @@ class MapsController < ApplicationController
     @results_init = params[:results_init] if @results_init.blank?
     @bounds = [ params[:boundsData][:sw][:lat], params[:boundsData][:sw][:lng], params[:boundsData][:ne][:lat], params[:boundsData][:ne][:lng] ]
 
-    if( @locations_size == 0 && @results_init == true )
+    if ( @locations_size == 0 && @results_init == true )
       @locations = []
-    elsif ( @locations_size == 1 && @results_init == true)
-      @locations = apply_scopes(Location).within_bounding_box(@bounds).includes(:location_type)
+    elsif ( @locations_size == 1 && @results_init == true )
+      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).includes(:location_type))
     else
       @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 50, request_path: '/get_bounds_load')
     end
@@ -188,8 +184,6 @@ class MapsController < ApplicationController
     else
       render partial: "locations/render_locations", object: @locations
     end
-
-    @results_init = false
   end
 
   def construct_geojson
@@ -252,7 +246,7 @@ class MapsController < ApplicationController
     if ( @locations_size == 0 && @results_init == true )
       @locations = []
     elsif ( @locations_size == 1 && @results_init == true )
-      @locations = apply_scopes(Location).includes(:location_type)
+      @pagy, @locations = pagy(apply_scopes(Location).includes(:location_type))
     else
       @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 50, request_path: '/map_location_load')
     end
@@ -262,26 +256,36 @@ class MapsController < ApplicationController
     else
       render partial: "locations/render_locations", object: @locations
     end
-
-    @results_init = false
   end
 
   def operator_location_data
+    @results_init = true
     @locations_size = 0
     @machines_sum = 0
     @locations = Location.where(operator_id: params[:by_operator_id]).select([ "id", "lat", "lon", "machine_count" ])
 
     construct_geojson
 
-    if @locations.size == 0
+    operator_location_load
+  end
+
+  def operator_location_load
+    @results_init = params[:results_init] if @results_init.blank?
+    boundsData = nil
+
+    if ( @locations_size == 0 && @results_init == true )
       @locations = []
-    elsif @locations.size == 1
-      @locations = Location.where(operator_id: params[:by_operator_id]).includes(:location_type)
+    elsif ( @locations_size == 1 && @results_init == true )
+      @pagy, @locations = pagy(Location.where(operator_id: params[:by_operator_id]).includes(:location_type))
     else
-      @locations = Location.where(operator_id: params[:by_operator_id]).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type).limit(100)
+      @pagy, @locations = pagy(Location.where(operator_id: params[:by_operator_id]).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type).limit(100))
     end
 
-    render partial: "locations/locations", layout: false
+    if @results_init == true
+      render partial: "locations/locations", layout: false, object: @locations
+    else
+      render partial: "locations/render_locations", object: @locations
+    end
   end
 
   def geocode

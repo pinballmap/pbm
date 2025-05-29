@@ -367,12 +367,12 @@ describe MapsController do
       expect(find('#search_results')).to have_content('Clark')
       expect(find('#search_results')).to_not have_content('Renee')
 
-      expect(page.body).to_not have_css('#next_link')
+      expect(page.body).to have_css('#next_link', visible: false)
     end
 
     it 'shows pagination if greater than 50 locations in results' do
       51.times do |index|
-        FactoryBot.create(:location, id: 5678 + index, name: 'Sass Barn' + index.to_s)
+        FactoryBot.create(:location, id: 5678 + index, name: 'Sass Barn ' + index.to_s)
       end
 
       visit '/map'
@@ -384,6 +384,12 @@ describe MapsController do
       sleep 1
 
       expect(page.body).to have_css('#next_link', visible: true)
+
+      click_link('2')
+
+      sleep 1
+
+      expect(find('#search_results')).to have_content('Sass Barn 9') # because 9 comes after 50
     end
 
     it 'nearby activity button should return the nearby activity' do

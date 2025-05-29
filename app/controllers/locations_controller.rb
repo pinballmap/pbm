@@ -74,7 +74,7 @@ class LocationsController < ApplicationController
     if @locations_size == 0
       @locations = []
     elsif @locations_size == 1
-      @locations = apply_scopes(Location).includes(:location_type)
+      @pagy, @locations = pagy(apply_scopes(Location).includes(:location_type))
     else
       if @region.present?
         @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 50, request_path: '/region_location_load')
@@ -82,7 +82,6 @@ class LocationsController < ApplicationController
         @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 50, request_path: '/map_location_load')
       end
     end
-    @results_init = false
 
     respond_with(@locations) do |format|
       format.html { render partial: "locations/locations", object: @locations }

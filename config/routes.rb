@@ -216,6 +216,7 @@ Rails.application.routes.draw do
   post 'map_location_load' => 'maps#map_location_load'
   post 'get_bounds_load' => 'maps#get_bounds_load'
   post 'nearby_locations_load' => 'maps#nearby_locations_load'
+  post 'operator_location_load' => 'maps#operator_location_load'
   post 'map_bounds', to: 'maps#get_bounds'
   post 'map_nearby', to: 'maps#map_nearby'
   post 'region_init_load', to: 'maps#region_init_load'

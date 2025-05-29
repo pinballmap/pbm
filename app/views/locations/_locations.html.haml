@@ -6,7 +6,7 @@
     var locations_geojson = JSON.parse('#{@locations_geojson}');
     showLocations();
 
-    var results_init = true;
+    results_init = true;
 
     var hrefOrig = '#{request.scheme}://#{request.host_with_port}/#{@region ? h(@region.name.downcase) : @operators_map ? @operators_map : "map"}?';
     var def_value = window.location.href;
@@ -68,4 +68,28 @@
       %span Go back to search results
 
   %div#location_detail.location_detail{:style => 'display:none;'}
-  = render :partial => 'locations/render_locations'
+  #search_results
+    = render :partial => 'locations/render_locations'
+:javascript
+  $("#next_link > nav > a").on("click", function(e) {
+    $('#intro_container').css('display','none');
+    e.preventDefault();
+
+    results_init = false;
+
+    var region_id = "#{@region&.id.to_i}";
+
+    let url = new URL(e.target.href);
+
+    document.getElementById("search_results_count").scrollIntoView({ "behavior": "smooth" })
+
+    $.ajax({
+      url: `${url}`,
+      type: 'POST',
+      data: { region_id, boundsData: boundsData, results_init },
+      success: function(data) {
+        $("#search_results").html(data);
+      }
+    });
+    return false;
+  });
