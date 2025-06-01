@@ -508,7 +508,7 @@ RailsAdmin.config do |config|
       field :created_at, :datetime
       field :confirmed_at, :datetime
       field :is_disabled, :boolean
-      field :last_sign_in_at, :datetime
+      field :notes, :string
     end
     show do
       field :email, :string
@@ -517,7 +517,7 @@ RailsAdmin.config do |config|
       field :created_at, :datetime
       field :confirmed_at, :datetime
       field :is_disabled, :boolean
-      field :last_sign_in_at, :datetime
+      field :notes, :string
     end
     edit do
       field :username, :string do
@@ -547,6 +547,11 @@ RailsAdmin.config do |config|
           else
             true
           end
+        end
+      end
+      field :notes, :string do
+        visible do
+          bindings[:view]._current_user.is_super_admin
         end
       end
       field :region_id do

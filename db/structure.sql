@@ -1371,7 +1371,8 @@ CREATE TABLE public.users (
     num_lmx_comments_left integer DEFAULT 0 NOT NULL,
     num_msx_scores_added integer DEFAULT 0 NOT NULL,
     contributor_rank character varying,
-    admin_title character varying
+    admin_title character varying,
+    notes character varying
 );
 
 
@@ -2678,6 +2679,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250601172559'),
 ('20250320222320'),
 ('20250319234408'),
 ('20250211002039'),
