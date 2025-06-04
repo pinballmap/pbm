@@ -2,6 +2,7 @@ module Api
   module V1
     class LocationsController < ApplicationController
       include ActionView::Helpers::NumberHelper
+      include Pagy::Backend
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
@@ -204,8 +205,26 @@ module Api
       param :by_machine_type, String, desc: "Locations with machines of this type (em, ss, me)", required: false
       param :by_machine_display, String, desc: "Locations with machines with this display (alphanumeric, lcd, dmd, reels, lights)", required: false
       param :no_details, Integer, desc: "Omit data that app does not need from pull", required: false
+      param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
+      param :order_by, String, desc: "Order results descending by a field in the locations scope. Allowed fields are updated_at, name, machine_count. Otherwise, sorts by location ID"
       formats %w[json geojson]
       def within_bounding_box
+        if params[:limit].blank?
+          limit = nil
+        elsif params[:limit].to_i > 50
+          limit = 50
+        else
+          limit = params[:limit].to_i
+        end
+
+        if params[:order_by].present? and ["updated_at", "machine_count"].include? params[:order_by].downcase
+          order_by = "locations.#{params[:order_by]} desc"
+        elsif params[:order_by].present? and ["name"].include? params[:order_by].downcase
+          order_by = "locations.#{params[:order_by]} asc"
+        else
+          order_by = "locations.id desc"
+        end
+
         if params[:no_details] == "1"
           except = %i[country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at]
           includes = %i[machine_names_first machine_ids num_machines]
@@ -222,11 +241,12 @@ module Api
           user = User.find(params[:user_faved])
           fave_locations = UserFaveLocation.select(:location_id).where(user_id: user)
 
-          locations_within = apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds).uniq
+          @pagy, locations_within = pagy(apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds).order(order_by).distinct, limit: limit)
         elsif params[:no_details] == "2"
-          locations_within = apply_scopes(Location).within_bounding_box(bounds).uniq
+          @pagy, locations_within = pagy(apply_scopes(Location).within_bounding_box(bounds).order(order_by).distinct, limit: limit)
         else
-          locations_within = apply_scopes(Location).includes(:machines).within_bounding_box(bounds).uniq
+          @pagy, locations_within = pagy(apply_scopes(Location).includes(:machines).within_bounding_box(bounds).order(order_by).distinct, limit: limit)
+          @pagy_metadata = pagy_metadata(@pagy)
         end
 
         if params[:format] == "geojson"
@@ -262,7 +282,11 @@ module Api
 
         if !locations_within.empty?
           respond_to do |format|
-            format.json { return_response(locations_within, "locations", [], includes, 200, except) }
+            if params[:limit].blank?
+              format.json { return_response(locations_within, "locations", [], includes, 200, except, []) }
+            else
+              format.json { return_response(locations_within, "locations", [], includes, 200, except, "pagy") }
+            end
             format.geojson { render json: container_geojson.to_json }
           end
         else

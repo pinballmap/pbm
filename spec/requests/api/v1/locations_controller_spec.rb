@@ -851,6 +851,82 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to_not include('111-222-3333')
       expect(response.body).to_not include('https://website.gov')
     end
+
+    it 'limits results when limit param is present and includes pagy metadata' do
+      FactoryBot.create(:location, name: 'Close_1', id: 8000, lat: 45.526112069408704, lon: -122.60884314086321)
+      FactoryBot.create(:location, name: 'Close_2', id: 7000, lat: 45.53007190362438, lon: -122.60795065851514)
+      FactoryBot.create(:location, name: 'Close_3', id: 6000, lat: 45.53007190362438, lon: -122.60795065851514)
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, limit: 2 }
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body.size).to eq(2)
+
+      locations = parsed_body['locations']
+      expect(response.body).to include('Close_1')
+      expect(response.body).to include('Close_2')
+      expect(response.body).to_not include('Close_3')
+      expect(response.body).to include('pagy')
+    end
+
+    it 'orders results when order_by param is present' do
+      location_01 = FactoryBot.create(:location, name: 'A_Location', id: 6000, lat: 45.526112069408704, lon: -122.60884314086321)
+      location_02 = FactoryBot.create(:location, name: 'B_Location', id: 7000, lat: 45.53007190362438, lon: -122.60795065851514)
+      location_03 = FactoryBot.create(:location, name: 'C_Location', id: 8000, lat: 45.53007190362438, lon: -122.60795065851514)
+
+      machine = FactoryBot.create(:machine)
+      machine_two = FactoryBot.create(:machine)
+      machine_three = FactoryBot.create(:machine)
+
+      FactoryBot.create(:location_machine_xref, location: location_01, machine_id: machine.id)
+
+      FactoryBot.create(:location_machine_xref, location: location_03, machine_id: machine.id)
+      FactoryBot.create(:location_machine_xref, location: location_03, machine_id: machine_two.id)
+      FactoryBot.create(:location_machine_xref, location: location_03, machine_id: machine_three.id)
+
+      FactoryBot.create(:location_machine_xref, location: location_02, machine_id: machine.id)
+      FactoryBot.create(:location_machine_xref, location: location_02, machine_id: machine_two.id)
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427 }
+
+      parsed_body = JSON.parse(response.body)
+      locations = parsed_body['locations']
+      expect(locations.size).to eq(3)
+
+      expect(locations[0]['name']).to eq('C_Location')
+      expect(locations[1]['name']).to eq('B_Location')
+      expect(locations[2]['name']).to eq('A_Location')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, order_by: 'name' }
+
+      parsed_body = JSON.parse(response.body)
+      locations = parsed_body['locations']
+      expect(locations.size).to eq(3)
+
+      expect(locations[0]['name']).to eq('A_Location')
+      expect(locations[1]['name']).to eq('B_Location')
+      expect(locations[2]['name']).to eq('C_Location')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, order_by: 'machine_count' }
+
+      parsed_body = JSON.parse(response.body)
+      locations = parsed_body['locations']
+      expect(locations.size).to eq(3)
+
+      expect(locations[0]['name']).to eq('C_Location')
+      expect(locations[1]['name']).to eq('B_Location')
+      expect(locations[2]['name']).to eq('A_Location')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, order_by: 'updated_at' }
+
+      parsed_body = JSON.parse(response.body)
+      locations = parsed_body['locations']
+      expect(locations.size).to eq(3)
+
+      expect(locations[0]['name']).to eq('B_Location')
+      expect(locations[1]['name']).to eq('C_Location')
+      expect(locations[2]['name']).to eq('A_Location')
+    end
   end
 
   describe '#machine_details' do

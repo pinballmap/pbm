@@ -96,7 +96,7 @@ Pagy::DEFAULT[:page_param]  = :page                 # default
 # See https://ddnexus.github.io/pagy/docs/extras/metadata
 # you must require the JS Tools internal extra (BEFORE the metadata extra) ONLY if you need also the :sequels
 # require 'pagy/extras/js_tools'
-# require 'pagy/extras/metadata'
+require 'pagy/extras/metadata'
 # For performance reasons, you should explicitly set ONLY the metadata you use in the frontend
 # Pagy::DEFAULT[:metadata] = %i[scaffold_url page prev next last]   # example
 
