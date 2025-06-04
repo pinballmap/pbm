@@ -217,9 +217,9 @@ module Api
           limit = params[:limit].to_i
         end
 
-        if params[:order_by].present? and ["updated_at", "machine_count"].include? params[:order_by].downcase
+        if params[:order_by].present? and [ "updated_at", "machine_count" ].include? params[:order_by].downcase
           order_by = "locations.#{params[:order_by]} desc"
-        elsif params[:order_by].present? and ["name"].include? params[:order_by].downcase
+        elsif params[:order_by].present? and [ "name" ].include? params[:order_by].downcase
           order_by = "locations.#{params[:order_by]} asc"
         else
           order_by = "locations.id desc"
