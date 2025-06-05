@@ -283,9 +283,9 @@ module Api
         if !locations_within.empty?
           respond_to do |format|
             if params[:limit].blank?
-              format.json { return_response(locations_within, "locations", [], includes, 200, except, []) }
+              format.json { return_response(locations_within, "locations", [], includes, 200, except, nil) }
             else
-              format.json { return_response(locations_within, "locations", [], includes, 200, except, "pagy") }
+              format.json { return_response(locations_within, "locations", [], includes, 200, except, true) }
             end
             format.geojson { render json: container_geojson.to_json }
           end

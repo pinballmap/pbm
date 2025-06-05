@@ -117,10 +117,10 @@ class ApplicationController < ActionController::Base
     UserSubmission.create(region_id: region&.id, submission_type: UserSubmission::CONTACT_US_TYPE, submission: body, user_id: user&.id)
   end
 
-  def return_response(data, root, includes = [], methods = [], http_status = 200, except = [], pagy = [])
+  def return_response(data, root, includes = [], methods = [], http_status = 200, except = [], pagy = nil)
     json_data = data.as_json(include: includes, methods: methods, root: false, except: except)
 
-    if pagy.present?
+    if pagy
       render json: { root => json_data, pagy: pagy_metadata(@pagy) }, status: http_status
     else
       render json: root.nil? ? json_data : { root => json_data }, status: http_status
