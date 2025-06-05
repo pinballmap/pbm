@@ -390,6 +390,12 @@ describe MapsController do
       sleep 1
 
       expect(find('#search_results')).to have_content('Sass Barn 9') # because 9 comes after 50
+
+      click_link('1')
+
+      sleep 1
+
+      expect(find('#search_results')).to have_content('Sass Barn 1')
     end
 
     it 'nearby activity button should return the nearby activity' do
