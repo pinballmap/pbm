@@ -70,24 +70,3 @@
   %div#location_detail.location_detail{:style => 'display:none;'}
   #search_results
     = render :partial => 'locations/render_locations'
-:javascript
-  $("#next_link > nav > a").on("click", function(e) {
-    $('#intro_container').css('display','none');
-    e.preventDefault();
-
-    results_init = false;
-    var region_id = "#{@region&.id.to_i}";
-    let url = new URL(e.target.href);
-
-    topFunction();
-
-    $.ajax({
-      url: `${url}`,
-      type: 'POST',
-      data: { region_id, boundsData: boundsData, results_init },
-      success: function(data) {
-        $("#search_results").html(data);
-      }
-    });
-    return false;
-  });

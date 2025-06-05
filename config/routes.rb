@@ -211,7 +211,6 @@ Rails.application.routes.draw do
   get 'operator_location_data' => 'maps#operator_location_data'
   get 'saved' => 'maps#map', user_faved: true
   get 'map_location_data' => 'maps#map_location_data'
-  get 'region_location_load' => 'maps#region_location_load'
   post 'region_location_load' => 'maps#region_location_load'
   post 'map_location_load' => 'maps#map_location_load'
   post 'get_bounds_load' => 'maps#get_bounds_load'
