@@ -5,7 +5,7 @@ class PagesController < ApplicationController
 
   def contact_sent
     user = current_user.nil? ? nil : current_user
-    return if is_bot? || params["contact_msg"].blank? || (!user && params["contact_email"].blank?)
+    return if is_bot? || params["contact_msg"].blank? || (!user && params["contact_email"].blank?) || params["contact_msg"].match?(/vape/) || params["contact_msg"].match?(/seo/)
 
     if user
       @contact_thanks = "Thanks for contacting us! If you are expecting a reply, check your spam folder or whitelist admin@pinballmap.com".freeze

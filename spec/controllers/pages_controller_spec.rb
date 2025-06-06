@@ -61,6 +61,10 @@ describe PagesController, type: :controller do
       expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: nil, contact_msg: 'hello', security_question: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: '', message: 'hello', user_name: 'ssw', user_email: 'yeah@ok.com', to_users: [ 'foo@bar.com' ], cc_users: [ 'super_admin@bar.com' ], subject: 'Pinball Map - Message (Portland) from ssw', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
     end
 
+    it 'should not send an email if the body contains a spam keyword' do
+      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'vape', security_question: 'pinball' } }.to_not have_enqueued_job
+    end
+
     it 'should flash an error message if security test fails' do
       logout
 
