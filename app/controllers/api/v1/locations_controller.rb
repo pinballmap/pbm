@@ -209,9 +209,8 @@ module Api
       param :order_by, String, desc: "Order results descending by a field in the locations scope. Allowed fields are updated_at, name, machine_count. Otherwise, sorts by location ID"
       formats %w[json geojson]
       def within_bounding_box
-        if params[:limit].blank?
-          limit = nil
-        elsif params[:limit].to_i > 50
+        limit = nil
+        if params[:limit].to_i > 50
           limit = 50
         else
           limit = params[:limit].to_i
@@ -241,12 +240,20 @@ module Api
           user = User.find(params[:user_faved])
           fave_locations = UserFaveLocation.select(:location_id).where(user_id: user)
 
-          @pagy, locations_within = pagy(apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds).order(order_by).distinct, limit: limit)
+          if params[:limit].blank?
+            locations_within = apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds).order(order_by).uniq
+          else
+            @pagy, locations_within = pagy(apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds).order(order_by).distinct, limit: limit)
+          end
         elsif params[:no_details] == "2"
-          @pagy, locations_within = pagy(apply_scopes(Location).within_bounding_box(bounds).order(order_by).distinct, limit: limit)
+          locations_within = apply_scopes(Location).within_bounding_box(bounds).order(order_by).uniq
         else
-          @pagy, locations_within = pagy(apply_scopes(Location).includes(:machines).within_bounding_box(bounds).order(order_by).distinct, limit: limit)
-          @pagy_metadata = pagy_metadata(@pagy)
+          if params[:limit].blank?
+            locations_within = apply_scopes(Location).includes(:machines).within_bounding_box(bounds).order(order_by).uniq
+          else
+            @pagy, locations_within = pagy(apply_scopes(Location).includes(:machines).within_bounding_box(bounds).order(order_by).distinct, limit: limit)
+            @pagy_metadata = pagy_metadata(@pagy)
+          end
         end
 
         if params[:format] == "geojson"
