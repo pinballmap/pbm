@@ -207,6 +207,8 @@ GEM
       factory_bot (~> 6.5)
       railties (>= 5.0.0)
     ffi (1.17.2)
+    ffi (1.17.2-arm64-darwin)
+    ffi (1.17.2-x86_64-linux-gnu)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
@@ -301,6 +303,10 @@ GEM
     nio4r (2.7.4)
     nokogiri (1.18.8)
       mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
+    nokogiri (1.18.8-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.18.8-x86_64-linux-gnu)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     ostruct (0.6.1)
@@ -550,7 +556,9 @@ GEM
     zeitwerk (2.7.2)
 
 PLATFORMS
+  arm64-darwin
   ruby
+  x86_64-linux
 
 DEPENDENCIES
   apipie-rails
@@ -624,4 +632,4 @@ RUBY VERSION
    ruby 3.4.3p32
 
 BUNDLED WITH
-   2.5.23
+   2.6.9
