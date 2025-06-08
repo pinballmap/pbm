@@ -599,7 +599,7 @@ DEPENDENCIES
   puma
   rack
   rack-attack
-  rails (~> 8.0.x)
+  rails (~> 8.0.0)
   rails-controller-testing
   rails_admin
   rails_autolink

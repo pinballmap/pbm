@@ -2,7 +2,7 @@ source "https://rubygems.org"
 ruby "3.4.3"
 
 gem "pg"
-gem "rails", "~> 8.0.x"
+gem "rails", "~> 8.0.0"
 
 gem "apipie-rails"
 gem "aws-sdk-s3"
