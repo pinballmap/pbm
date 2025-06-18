@@ -51,6 +51,10 @@
     {
       "command": "rake delete_expired_events",
       "schedule": "30 20 * * 0"
+    },
+    {
+      "command": "dokku ps:restart pbm",
+      "schedule": "0 12 * * *"
     }
   ]
 }
