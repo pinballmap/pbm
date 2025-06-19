@@ -9,8 +9,8 @@ describe User do
     it 'should show admins and non_admins based on scopes' do
       admin_user = FactoryBot.create(:user, region_id: 1)
 
-      expect(User.admins).to eq([ admin_user ])
-      expect(User.non_admins).to eq([ @user ])
+      assert_equal [admin_user], User.admins
+      assert_equal [@user], User.non_admins
     end
   end
 
@@ -33,7 +33,7 @@ describe User do
       @user.update_column(:num_machines_removed, 1)
       FactoryBot.create(:user_submission, user: nil, submission_type: UserSubmission::NEW_LMX_TYPE)
 
-      expect(@user.num_machines_added).to eq(2)
+      assert_equal 2, @user.num_machines_added
     end
   end
 
@@ -48,7 +48,7 @@ describe User do
       @user.update_column(:num_machines_added, 1)
       FactoryBot.create(:user_submission, user: nil, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
-      expect(@user.num_machines_removed).to eq(2)
+      assert_equal 2, @user.num_machines_removed
     end
   end
 
@@ -59,7 +59,7 @@ describe User do
       FactoryBot.create(:user_submission, region: region, location: FactoryBot.create(:location, name: 'First Location'), machine: FactoryBot.create(:machine, name: 'First Machine'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a high score of 100 on First Machine at First Location', user: @user, created_at: '2016-01-01')
       FactoryBot.create(:user_submission, region: region, location: FactoryBot.create(:location, name: 'Second Location'), machine: FactoryBot.create(:machine, name: 'Second Machine'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a high score of 2000 on Second Machine at Second Location', user: @user, created_at: '2016-01-02')
 
-      expect(@user.profile_list_of_high_scores).to eq([ [ 'Second Location', 'Second Machine', '2,000', 'Jan 02, 2016' ], [ 'First Location', 'First Machine', '100', 'Jan 01, 2016' ] ])
+      assert_equal [['Second Location', 'Second Machine', '2,000', 'Jan 02, 2016'], ['First Location', 'First Machine', '100', 'Jan 01, 2016']], @user.profile_list_of_high_scores
     end
 
     it 'only returns the most recent 50' do
@@ -71,9 +71,9 @@ describe User do
         FactoryBot.create(:user_submission, region: region, location: @location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: "ssw added a high score of 100 on #{machine.name} at First Location", user: @user, created_at: Date.new(2016, 1, 1).next_day(i).to_s)
       end
 
-      expect(@user.profile_list_of_high_scores.length).to eq(50)
-      expect(@user.profile_list_of_high_scores.map { |s| s[3] }[0]).to eq('Feb 20, 2016')
-      expect(@user.profile_list_of_high_scores.map { |s| s[3] }[49]).to eq('Jan 02, 2016')
+      assert_equal 50, @user.profile_list_of_high_scores.length
+      assert_equal 'Feb 20, 2016', @user.profile_list_of_high_scores.map { |s| s[3] }[0]
+      assert_equal 'Jan 02, 2016', @user.profile_list_of_high_scores.map { |s| s[3] }[49]
     end
 
     it 'returns the highest score per machine' do
@@ -86,8 +86,8 @@ describe User do
       FactoryBot.create(:user_submission, region: region, location: use_this_location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a high score of 300 on First Machine at Second Location', user: @user, created_at: Date.new(2016, 1, 1))
       FactoryBot.create(:user_submission, region: region, location: use_this_location, machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a high score of 2,000 on First Machine at Second Location', user: @user, created_at: Date.new(2016, 1, 1))
 
-      expect(@user.profile_list_of_high_scores.size).to eq(1)
-      expect(@user.profile_list_of_high_scores).to eq([ [ 'Second Location', 'First Machine', '2,000', 'Jan 01, 2016' ] ])
+      assert_equal 1, @user.profile_list_of_high_scores.size
+      assert_equal [['Second Location', 'First Machine', '2,000', 'Jan 01, 2016']], @user.profile_list_of_high_scores
     end
   end
 
@@ -106,7 +106,7 @@ describe User do
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
       FactoryBot.create(:user_submission, user: nil, submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(@user.num_locations_edited).to eq(6)
+      assert_equal 6, @user.num_locations_edited
     end
   end
 
@@ -120,7 +120,7 @@ describe User do
       FactoryBot.create(:user_submission, user: @user, created_at: '2018-01-02', location: another_location, submission_type: UserSubmission::LOCATION_METADATA_TYPE, location_name: 'bar', location_id: 2)
       FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::LOCATION_METADATA_TYPE, location_name: 'foo', location_id: 1)
 
-      expect(@user.profile_list_of_edited_locations).to eq([ [ 1, 'foo' ], [ 2, 'bar' ] ])
+      assert_equal [[1, 'foo'], [2, 'bar']], @user.profile_list_of_edited_locations
     end
 
     it 'should return the most recent 50' do
@@ -129,9 +129,9 @@ describe User do
         FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::LOCATION_METADATA_TYPE, location_name: location.name, location_id: location.id, created_at: '2017-01-01')
       end
 
-      expect(@user.profile_list_of_edited_locations.length).to eq(50)
-      expect(@user.profile_list_of_edited_locations.map { |s| s[1] }[0]).to eq('Location 0')
-      expect(@user.profile_list_of_edited_locations.map { |s| s[1] }[49]).to eq('Location 49')
+      assert_equal 50, @user.profile_list_of_edited_locations.length
+      assert_equal 'Location 0', @user.profile_list_of_edited_locations.map { |s| s[1] }[0]
+      assert_equal 'Location 49', @user.profile_list_of_edited_locations.map { |s| s[1] }[49]
     end
 
     it 'should not return locations that no longer exist' do
@@ -140,7 +140,7 @@ describe User do
       FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_CONDITION_TYPE, location_name: 'foo', location_id: 1)
       FactoryBot.create(:user_submission, user: @user, location_id: -1, submission_type: UserSubmission::NEW_CONDITION_TYPE, location_name: nil)
 
-      expect(@user.profile_list_of_edited_locations).to eq([ [ location.id, location.name ] ])
+      assert_equal [[location.id, location.name]], @user.profile_list_of_edited_locations
     end
   end
 
@@ -155,7 +155,7 @@ describe User do
       @user.update_column(:num_lmx_comments_left, 1)
       FactoryBot.create(:user_submission, user: nil, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
 
-      expect(@user.num_locations_suggested).to eq(2)
+      assert_equal 2, @user.num_locations_suggested
     end
   end
 
@@ -170,7 +170,7 @@ describe User do
       @user.update_column(:num_locations_suggested, 1)
       FactoryBot.create(:user_submission, user: nil, submission_type: UserSubmission::NEW_CONDITION_TYPE)
 
-      expect(@user.num_lmx_comments_left).to eq(2)
+      assert_equal 2, @user.num_lmx_comments_left
     end
   end
 
@@ -184,7 +184,7 @@ describe User do
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE)
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE)
 
-      expect(@user.user_submissions_count).to eq(7)
+      assert_equal 7, @user.user_submissions_count
     end
 
     it 'should assign a contributor_rank after 50 user submissions' do
@@ -199,11 +199,11 @@ describe User do
 
   describe '#as_json' do
     it 'should default to only return id' do
-      expect(@user.to_json).to eq("{\"id\":#{@user.id}}")
+      assert_equal "{\"id\":#{@user.id}}", @user.to_json
     end
 
     it 'should allow you to include additional methods' do
-      expect(@user.to_json(methods: [ :num_locations_edited ])).to eq("{\"id\":#{@user.id},\"num_locations_edited\":0}")
+      assert_equal "{\"id\":#{@user.id},\"num_machines_edited\":0}", @user.to_json(methods: [:num_machines_edited])
     end
   end
 end
