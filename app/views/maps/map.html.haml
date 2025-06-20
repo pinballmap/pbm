@@ -100,11 +100,6 @@
   inputField2.addEventListener("input", inputDisplayToggle);
   inputField3.addEventListener("input", inputDisplayToggle);
 
-  function clear(event) {
-    let inputField = document.getElementById(this.getAttribute("input_id"));
-    inputField.value = "";
-    event.target.style.display = "none";
-  }
   function clearMachine(event) {
     document.getElementById('by_machine_id').value = "";
     document.getElementById('by_machine_name').value = "";
@@ -115,17 +110,22 @@
     event.target.style.display = "none";
     stored_machine_id = "";
   }
-  function clearLocation(event) {
+  function clearAddress(event) {
     document.getElementById('address').value = "";
     document.getElementById('by_city_name').value = "";
     document.getElementById('by_state_name').value = "";
     document.getElementById('#by_city_no_state').value = "";
     event.target.style.display = "none";
   }
+  function clearLocation(event) {
+    document.getElementById('by_location_id').value = "";
+    document.getElementById('by_location_name').value = "";
+    event.target.style.display = "none";
+  }
 
   clearButton.addEventListener("click", clearMachine);
-  clearButton2.addEventListener("click", clearLocation);
-  clearButton3.addEventListener("click", clear);
+  clearButton2.addEventListener("click", clearAddress);
+  clearButton3.addEventListener("click", clearLocation);
   var savedLocations = "";
 
   $(function () {

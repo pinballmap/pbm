@@ -128,6 +128,40 @@ describe MapsController do
       expect(find('#search_results')).to have_content('No Way')
     end
 
+    it 'lets you clear search input values with the clearButton x and starts a fresh search' do
+      # this test needs work. It was not failing when the function was broken.
+      rip_city_location = FactoryBot.create(:location, region: nil, name: 'Rip City', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
+      no_way_location = FactoryBot.create(:location, region: nil, name: 'No Way', zip: '97203', lat: 45.593049200000, lon: -122.732620200000)
+      FactoryBot.create(:location, region: nil, name: 'Far Off', city: 'Seattle', state: 'WA', zip: '98121', lat: 47.61307324803172, lon: -122.34479886878611)
+      FactoryBot.create(:location_machine_xref, location: rip_city_location, machine: FactoryBot.create(:machine, name: 'Sass Pro'))
+      FactoryBot.create(:location_machine_xref, location: no_way_location, machine: FactoryBot.create(:machine, name: 'Bawb Premium'))
+
+      visit '/map'
+
+      fill_in('by_location_name', with: 'Rip City')
+      page.execute_script %{ $('#by_machine_name').trigger('focus') }
+      page.execute_script %{ $('#by_machine_name').trigger('keydown') }
+      find(:xpath, '//div[contains(text(), "Rip City")]').click
+
+      click_on 'location_search_button'
+
+      sleep 0.5
+
+      expect(find('#search_results')).to have_content('Rip City')
+      expect(find('#search_results')).to_not have_content('No Way')
+      expect(find('#search_results')).to_not have_content('Far Off')
+
+      page.find('#clearButton3').click
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(find('#search_results')).to have_content('Rip City')
+      expect(find('#search_results')).to have_content('No Way')
+      expect(find('#search_results')).to have_content('Far Off')
+    end
+
     it 'lets you filter by location type and number of machines with address and machine name' do
       bar_type = FactoryBot.create(:location_type, id: 4, name: 'bar')
       cleo = FactoryBot.create(:location, id: 38, zip: '97203', lat: 45.590502800000, lon: -122.754940100000, name: 'Cleo', location_type: bar_type)
