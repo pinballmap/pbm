@@ -1,7 +1,7 @@
 class LocationPictureXrefsController < ApplicationController
   has_scope :region
   before_action :authenticate_user!
-  rate_limit to: 20, within: 10.minutes, only: :create
+  rate_limit to: 20, within: 5.minutes, only: :create
 
   def form
     render partial: "location_picture_xrefs/form", locals: { l: Location.find(params[:id]) }

@@ -5,7 +5,7 @@ module Api
 
       before_action :allow_cors
       has_scope :region
-      rate_limit to: 30, within: 10.minutes, only: :index
+      rate_limit to: 30, within: 2.minutes, only: :index
 
       api :GET, "/api/v1/region/:region/events.json", "Get all events for a single region"
       param :region, String, desc: "Name of the Region you want to see events for", required: true

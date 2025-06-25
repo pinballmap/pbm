@@ -1,7 +1,7 @@
 class MachineScoreXrefsController < ApplicationController
   has_scope :region
   before_action :authenticate_user!, except: %i[index]
-  rate_limit to: 20, within: 10.minutes, only: :create
+  rate_limit to: 40, within: 5.minutes, only: :create
 
   def create
     score = params[:score]

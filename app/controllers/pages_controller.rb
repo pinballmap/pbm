@@ -1,7 +1,7 @@
 class PagesController < ApplicationController
   respond_to :html, only: %i[set_activities]
-  rate_limit to: 5, within: 20.minutes, only: :contact_sent
-  rate_limit to: 100, within: 10.minutes, only: :recent_activity
+  rate_limit to: 5, within: 10.minutes, only: :contact_sent
+  rate_limit to: 100, within: 5.minutes, only: :recent_activity
 
   def contact_sent
     user = current_user.nil? ? nil : current_user

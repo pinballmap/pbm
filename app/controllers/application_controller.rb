@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   FILTERING_REQUIRED_MSG = "Filtering is required for this action. Please provide a filter when using this endpoint.".freeze
   AUTH_REQUIRED_MSG = "Authentication is required for this action. If you are using the app, you may need to confirm your account (see the email from us) or log out and back in.".freeze
-  rate_limit to: 140, within: 20.minutes, if: lambda { |req| req.bot? }
+  rate_limit to: 100, within: 2.minutes, if: lambda { |req| req.bot? }
 
   include Pagy::Backend
 

@@ -4,7 +4,7 @@ module Api
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
-      rate_limit to: 20, within: 10.minutes, only: :create
+      rate_limit to: 20, within: 5.minutes, only: :create
 
       api :GET, "/api/v1/location_picture_xrefs/:id.json", "Get info about a single lpx"
       param :id, Integer, desc: "LPX id", required: true

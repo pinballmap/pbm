@@ -1,6 +1,6 @@
 class MachineConditionsController < ApplicationController
   before_action :authenticate_user!
-  rate_limit to: 30, within: 10.minutes, only: :update
+  rate_limit to: 50, within: 10.minutes, only: :update
 
   def destroy
     user = current_user.nil? ? nil : current_user

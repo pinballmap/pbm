@@ -2,8 +2,8 @@ class MapsController < ApplicationController
   respond_to :html, only: %i[get_bounds]
   has_scope :by_location_name, :by_location_id, :by_machine_id, :by_machine_single_id, :by_at_least_n_machines, :by_type_id, :by_operator_id, :user_faved, :by_city_name, :by_state_name, :by_city_no_state, :by_machine_type, :by_machine_display, :manufacturer
 
-  rate_limit to: 200, within: 20.minutes, only: :region
-  rate_limit to: 150, within: 10.minutes
+  rate_limit to: 100, within: 10.minutes, only: :region
+  rate_limit to: 100, within: 5.minutes
 
   def map
     user = current_user.nil? ? nil : current_user
