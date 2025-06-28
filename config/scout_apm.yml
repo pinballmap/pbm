@@ -32,6 +32,8 @@ common: &defaults
   # - Default: none
   # - Valid Options: true, false
   monitor: true
+  logs_monitor: true
+  logs_ingest_key: ENV['SCOUT_KEY_LOGGING']
 
 production:
   <<: *defaults
@@ -39,12 +41,14 @@ production:
 development:
   <<: *defaults
   monitor: false
+  logs_monitor: false
 
 test:
   <<: *defaults
   monitor: false
+  logs_monitor: false
 
 staging:
   <<: *defaults
   monitor: false
-
+  logs_monitor: false
