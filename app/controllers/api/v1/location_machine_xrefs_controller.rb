@@ -8,6 +8,7 @@ module Api
 
       rate_limit to: 100, within: 10.minutes, only: :destroy
       rate_limit to: 50, within: 10.minutes, only: :update
+      rate_limit to: 120, within: 2.minutes, only: :index
 
       DEFAULT_TOP_N_MACHINES = 25
       DEFAULT_MOST_RECENT_MACHINES = 3
