@@ -93,7 +93,7 @@ map $http_user_agent $limit_key {
   "~*BLEXBot" "BLEXBot";
 }
 
-limit_req_zone $limit_key zone=bots:10m rate=4r/m;
+limit_req_zone $limit_key zone=bots_nginx:10m rate=4r/m;
 
 server {
   listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ end }};
@@ -121,7 +121,7 @@ server {
   }
 
   location    / {
-    limit_req zone=bots;
+    limit_req zone=bots_nginx;
     limit_req_status 429;
 
     gzip on;
