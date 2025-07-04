@@ -43,7 +43,7 @@ Rails.application.configure do
   config.colorize_logging = false
 
   config.rails_semantic_logger.add_file_appender = false
-  config.rails_semantic_logger.format = :default
+  config.rails_semantic_logger.format = :json
   config.rails_semantic_logger.quiet_assets = true
   config.semantic_logger.add_appender(
     io: STDOUT,
