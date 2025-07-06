@@ -76,6 +76,10 @@ class User < ApplicationRecord
     super && !is_disabled?
   end
 
+  def inactive_message
+    is_disabled? ? :account_inactive : super
+  end
+
   def name
     username
   end
