@@ -11,9 +11,9 @@
         %div.close_button{:onclick => "hideSearchModal();"}
           X
       = form_tag map_location_data_path, :method => 'get', :id => 'address_search_form', :class => 'location_search' do
-        = hidden_field_tag :by_machine_id
-        = hidden_field_tag :by_machine_group_id
-        = hidden_field_tag :by_machine_single_id
+        = hidden_field_tag :by_machine_id, params[:by_machine_id]
+        = hidden_field_tag :by_machine_group_id, params[:by_machine_group_id]
+        = hidden_field_tag :by_machine_single_id, params[:by_machine_single_id]
         = hidden_field_tag :by_location_id
         = hidden_field_tag :by_city_name
         = hidden_field_tag :by_state_name
@@ -129,6 +129,24 @@
   var savedLocations = "";
 
   $(function () {
+    // Initialize form state from URL parameters
+    if ($('#by_machine_id').val()) {
+      stored_machine_id = $('#by_machine_id').val();
+    } else if ($('#by_machine_single_id').val()) {
+      stored_machine_id = $('#by_machine_single_id').val();
+      $('#singleVersion').prop('checked', true);
+    }
+    
+    // Show exact version toggle if machine group is present
+    if ($('#by_machine_group_id').val()) {
+      $('#single_hide').show();
+    }
+    
+    // Show clear button if machine name is present
+    if ($('#by_machine_name').val()) {
+      $('#clearButton').show();
+    }
+
     $('#by_location_name').bind('input', function(event, ui) {
       event.preventDefault();
       $('#address').val('');
