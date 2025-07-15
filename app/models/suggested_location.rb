@@ -91,7 +91,7 @@ class SuggestedLocation < ApplicationRecord
         machine_ids = machines.gsub(/[\[\]" ]/, "").split(",").map(&:to_i)
         machine_ids&.each do |machine_id|
           machine = Machine.find_by(id: machine_id)
-          LocationMachineXref.create(location_id: location.id, machine_id: machine.id) unless machine.nil?
+          LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user_id) unless machine.nil?
         end
       end
 

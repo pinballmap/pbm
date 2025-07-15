@@ -6,9 +6,10 @@ describe SuggestedLocationsController, type: :controller do
     @lt = FactoryBot.create(:location_type, name: 'lt')
     @o = FactoryBot.create(:operator, name: 'o', region: @r)
     @z = FactoryBot.create(:zone, name: 'z', region: @r)
-
-    @sl = FactoryBot.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', country: 'US', phone: '503-391-9288', lat: 11.11, lon: 22.22, website: 'http://www.cool.com', region: @r, location_type: @lt, operator: @o, zone: @z, machines: [ 21, 22, 23, 24 ])
     @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', id: 1112)
+
+    @sl = FactoryBot.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', country: 'US', phone: '503-391-9288', lat: 11.11, lon: 22.22, website: 'http://www.cool.com', region: @r, location_type: @lt, operator: @o, zone: @z, machines: [ 21, 22, 23, 24 ], user_id: @user.id)
+
     login(@user)
   end
 
@@ -49,6 +50,11 @@ describe SuggestedLocationsController, type: :controller do
       expect(lmx_four.machine).to eq(m_four)
 
       expect(response).to redirect_to('/admin')
+
+      submission = UserSubmission.last
+
+      expect(submission.submission).to eq("The Bally Game Show (Bally, 1990) was added to #{@sl.name} in #{@sl.city} by #{@user.username}")
+      expect(submission.submission_type).to eq(UserSubmission::NEW_LMX_TYPE)
     end
 
     it 'should throw an error when failing a field validation' do
