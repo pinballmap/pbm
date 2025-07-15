@@ -140,6 +140,45 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to_not include('Bawb')
     end
 
+    it 'respects by_machine_id_ic filter' do
+      ic_eligible_machine = FactoryBot.create(:machine, id: 777, machine_group_id: 10, ic_eligible: true, name: 'Cleo Machine (Pro)')
+      ic_eligible_machine_variant = FactoryBot.create(:machine, id: 778, machine_group_id: 10, ic_eligible: true, name: 'Cleo Machine (Premium)')
+      location = FactoryBot.create(:location, region: @region, name: 'Round Tasty Pizza')
+      location2 = FactoryBot.create(:location, region: @region, name: 'Slice Time')
+      location3 = FactoryBot.create(:location, region: @another_region, name: 'Hut of Pies')
+
+      FactoryBot.create(:location_machine_xref, ic_enabled: true, location: location, machine: ic_eligible_machine)
+      FactoryBot.create(:location_machine_xref, ic_enabled: false, location: location2, machine: ic_eligible_machine)
+      FactoryBot.create(:location_machine_xref, ic_enabled: true, location: location3, machine: ic_eligible_machine_variant)
+
+      get "/api/v1/locations.json", params: { by_machine_id_ic: 777, no_details: 1 }
+
+      expect(response.body).to include('Round Tasty Pizza')
+      expect(response.body).to_not include('Slice Time')
+      expect(response.body).to include('Hut of Pies')
+
+      get "/api/v1/region/#{@region.name}/locations.json", params: { by_machine_id_ic: 777, no_details: 1 }
+
+      expect(response.body).to include('Round Tasty Pizza')
+      expect(response.body).to_not include('Slice Time')
+      expect(response.body).to_not include('Hut of Pies')
+    end
+
+    it 'respects by_machine_single_id_ic filter' do
+      ic_eligible_machine = FactoryBot.create(:machine, id: 777, machine_group_id: 10, ic_eligible: true, name: 'Cleo Machine (Pro)')
+      ic_eligible_machine_variant = FactoryBot.create(:machine, id: 778, machine_group_id: 10, ic_eligible: true, name: 'Cleo Machine (Premium)')
+      location = FactoryBot.create(:location, name: 'Round Tasty Pizza')
+      location2 = FactoryBot.create(:location, name: 'Hut of Pies')
+
+      FactoryBot.create(:location_machine_xref, ic_enabled: true, location: location, machine: ic_eligible_machine)
+      FactoryBot.create(:location_machine_xref, ic_enabled: true, location: location2, machine: ic_eligible_machine_variant)
+
+      get "/api/v1/locations.json", params: { by_machine_single_id_ic: 777, no_details: 1 }
+
+      expect(response.body).to include('Round Tasty Pizza')
+      expect(response.body).to_not include('Hut of Pies')
+    end
+
     it 'respects by_machine_type and by_machine_display filters' do
       region_la = FactoryBot.create(:region, name: 'la', id: 222)
 

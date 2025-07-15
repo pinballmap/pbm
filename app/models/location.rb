@@ -58,6 +58,14 @@ class Location < ApplicationRecord
     machine = Machine.where("id in (?)", id.split("_").map(&:to_i))
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machine.map(&:id))
   }
+  scope :by_machine_id_ic, lambda { |id|
+    machines = Machine.where("id in (?)", id.split("_")).map(&:all_machines_in_machine_group).flatten
+    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.ic_enabled = true and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
+  }
+  scope :by_machine_single_id_ic, lambda { |id|
+    machine = Machine.where("id in (?)", id.split("_").map(&:to_i))
+    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.ic_enabled = true and location_machine_xrefs.machine_id in (?)", machine.map(&:id))
+  }
   scope :by_machine_name, lambda { |name|
     machine = Machine.find_by_name(name)
     return Location.default_scoped.none if machine.nil?
