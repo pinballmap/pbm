@@ -47,7 +47,7 @@ class LocationsController < ApplicationController
 
     params.delete(:by_location_id) if !params[:by_location_name].blank? && !params[:by_location_id].blank?
 
-    @locations = apply_scopes(Location).select([ "id", "lat", "lon", "machine_count" ])
+    @locations = apply_scopes(Location).select([ "id", "lat", "lon", "machine_count" ]).uniq
 
     @locations_size = @locations.size
     @machines_sum = @locations.sum(&:machine_count)
@@ -73,12 +73,12 @@ class LocationsController < ApplicationController
     if @locations_size == 0
       @locations = []
     elsif @locations_size == 1
-      @pagy, @locations = pagy(apply_scopes(Location).includes(:location_type))
+      @pagy, @locations = pagy(apply_scopes(Location).distinct.includes(:location_type))
     else
       if @region.present?
-        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 50, request_path: "/region_location_load")
+        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "region_id" ]).distinct.order("locations.name").includes(:location_type), limit: 50, request_path: "/region_location_load")
       else
-        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 50, request_path: "/map_location_load")
+        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).distinct.order("locations.name").includes(:location_type), limit: 50, request_path: "/map_location_load")
       end
     end
 

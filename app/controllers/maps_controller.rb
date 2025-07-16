@@ -222,7 +222,7 @@ class MapsController < ApplicationController
       @nearby_lon = -122.7549
     end
     if params[:address].blank? || !params[:by_city_name].blank? || !params[:by_city_no_state].blank?
-      @locations = apply_scopes(Location).select([ "id", "lat", "lon", "machine_count" ])
+      @locations = apply_scopes(Location).select([ "id", "lat", "lon", "machine_count" ]).uniq
       if @locations.blank? && !params[:by_city_name].blank?
         params.delete(:by_city_name)
         params.delete(:by_state_name)
@@ -246,9 +246,9 @@ class MapsController < ApplicationController
     if @locations_size == 0 && @results_init == true
       @locations = []
     elsif @locations_size == 1 && @results_init == true
-      @pagy, @locations = pagy(apply_scopes(Location).includes(:location_type))
+      @pagy, @locations = pagy(apply_scopes(Location).distinct.includes(:location_type))
     else
-      @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 50, request_path: "/map_location_load")
+      @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).distinct.order("locations.name").includes(:location_type), limit: 50, request_path: "/map_location_load")
     end
 
     if @results_init == true
