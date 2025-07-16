@@ -85,7 +85,7 @@ class SuggestedLocation < ApplicationRecord
 
           machine = Machine.find_by(name: name, year: year, manufacturer: manufacturer)
 
-          LocationMachineXref.create(location_id: location.id, machine_id: machine.id) unless machine.nil?
+          LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user_id) unless machine.nil?
         end
       else
         machine_ids = machines.gsub(/[\[\]" ]/, "").split(",").map(&:to_i)
