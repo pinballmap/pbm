@@ -130,55 +130,6 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to_not include('Bawb')
     end
 
-    it 'respects ic_active filter' do
-      FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'la'), name: 'Cleo', ic_active: 't')
-      FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'chicago'), name: 'Bawb')
-
-      get '/api/v1/locations.json?by_ic_active=true'
-
-      expect(response.body).to include('Cleo')
-      expect(response.body).to_not include('Bawb')
-    end
-
-    it 'respects by_machine_id_ic filter' do
-      ic_eligible_machine = FactoryBot.create(:machine, id: 777, machine_group_id: 10, ic_eligible: true, name: 'Cleo Machine (Pro)')
-      ic_eligible_machine_variant = FactoryBot.create(:machine, id: 778, machine_group_id: 10, ic_eligible: true, name: 'Cleo Machine (Premium)')
-      location = FactoryBot.create(:location, region: @region, name: 'Round Tasty Pizza')
-      location2 = FactoryBot.create(:location, region: @region, name: 'Slice Time')
-      location3 = FactoryBot.create(:location, region: @another_region, name: 'Hut of Pies')
-
-      FactoryBot.create(:location_machine_xref, ic_enabled: true, location: location, machine: ic_eligible_machine)
-      FactoryBot.create(:location_machine_xref, ic_enabled: false, location: location2, machine: ic_eligible_machine)
-      FactoryBot.create(:location_machine_xref, ic_enabled: true, location: location3, machine: ic_eligible_machine_variant)
-
-      get "/api/v1/locations.json", params: { by_machine_id_ic: 777, no_details: 1 }
-
-      expect(response.body).to include('Round Tasty Pizza')
-      expect(response.body).to_not include('Slice Time')
-      expect(response.body).to include('Hut of Pies')
-
-      get "/api/v1/region/#{@region.name}/locations.json", params: { by_machine_id_ic: 777, no_details: 1 }
-
-      expect(response.body).to include('Round Tasty Pizza')
-      expect(response.body).to_not include('Slice Time')
-      expect(response.body).to_not include('Hut of Pies')
-    end
-
-    it 'respects by_machine_single_id_ic filter' do
-      ic_eligible_machine = FactoryBot.create(:machine, id: 777, machine_group_id: 10, ic_eligible: true, name: 'Cleo Machine (Pro)')
-      ic_eligible_machine_variant = FactoryBot.create(:machine, id: 778, machine_group_id: 10, ic_eligible: true, name: 'Cleo Machine (Premium)')
-      location = FactoryBot.create(:location, name: 'Round Tasty Pizza')
-      location2 = FactoryBot.create(:location, name: 'Hut of Pies')
-
-      FactoryBot.create(:location_machine_xref, ic_enabled: true, location: location, machine: ic_eligible_machine)
-      FactoryBot.create(:location_machine_xref, ic_enabled: true, location: location2, machine: ic_eligible_machine_variant)
-
-      get "/api/v1/locations.json", params: { by_machine_single_id_ic: 777, no_details: 1 }
-
-      expect(response.body).to include('Round Tasty Pizza')
-      expect(response.body).to_not include('Hut of Pies')
-    end
-
     it 'respects by_machine_type and by_machine_display filters' do
       region_la = FactoryBot.create(:region, name: 'la', id: 222)
 
@@ -558,14 +509,14 @@ describe Api::V1::LocationsController, type: :request do
       expect(locations[0]['name']).to eq('Closest Stern Location')
     end
 
-    it 'respects by_machine_type and by_machine_display filters' do
+    it 'respects by_machine_type and by_machine_display filters and by_machine_year' do
       closest1 = FactoryBot.create(:location, region: @region, name: 'Closest1 Location', street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
 
-      FactoryBot.create(:location_machine_xref, location: closest1, machine: FactoryBot.create(:machine, name: 'Cleo', manufacturer: 'Stern', machine_type: 'ss', machine_display: 'dmd'))
+      FactoryBot.create(:location_machine_xref, location: closest1, machine: FactoryBot.create(:machine, name: 'Cleo', manufacturer: 'Stern', machine_type: 'ss', machine_display: 'dmd', year: 2002))
 
       closest2 = FactoryBot.create(:location, region: @region, name: 'Closest2 Location', street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
 
-      FactoryBot.create(:location_machine_xref, location: closest2, machine: FactoryBot.create(:machine, name: 'Bawb', manufacturer: 'Stern', machine_type: 'em', machine_display: 'reels'))
+      FactoryBot.create(:location_machine_xref, location: closest2, machine: FactoryBot.create(:machine, name: 'Bawb', manufacturer: 'Stern', machine_type: 'em', machine_display: 'reels', year: 1970))
 
       get "/api/v1/locations/closest_by_address.json", params: { address: '97202', by_machine_type: 'ss', send_all_within_distance: 1 }
 
@@ -586,6 +537,69 @@ describe Api::V1::LocationsController, type: :request do
       expect(locations.size).to eq(1)
 
       expect(locations[0]['name']).to eq('Closest2 Location')
+
+      get "/api/v1/locations/closest_by_address.json", params: { address: '97202', by_machine_year: '1970', send_all_within_distance: 1 }
+
+      sleep 1
+
+      parsed_body = JSON.parse(response.body)
+      locations = parsed_body['locations']
+      expect(locations.size).to eq(1)
+
+      expect(locations[0]['name']).to eq('Closest2 Location')
+    end
+
+    it 'respects ic_active filter' do
+      FactoryBot.create(:location, region: @region, name: 'Cleo', street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63, ic_active: 't')
+
+      FactoryBot.create(:location, region: @region, name: 'Bawbn', street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
+
+      get "/api/v1/locations/closest_by_address.json", params: { address: '97202', by_ic_active: 'true', send_all_within_distance: 1 }
+
+      expect(response.body).to include('Cleo')
+      expect(response.body).to_not include('Bawb')
+    end
+
+    it 'respects by_machine_id_ic filter' do
+      ic_eligible_machine = FactoryBot.create(:machine, id: 777, machine_group_id: 10, ic_eligible: true, name: 'Cleo Machine (Pro)')
+      ic_eligible_machine_variant = FactoryBot.create(:machine, id: 778, machine_group_id: 10, ic_eligible: true, name: 'Cleo Machine (Premium)')
+
+      location = FactoryBot.create(:location, region: @region, street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63, name: 'Round Tasty Pizza')
+      location2 = FactoryBot.create(:location, street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63, region: @region, name: 'Slice Time')
+      location3 = FactoryBot.create(:location, street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63, region: @another_region, name: 'Hut of Pies')
+
+      FactoryBot.create(:location_machine_xref, ic_enabled: true, location: location, machine: ic_eligible_machine)
+      FactoryBot.create(:location_machine_xref, ic_enabled: false, location: location2, machine: ic_eligible_machine)
+      FactoryBot.create(:location_machine_xref, ic_enabled: true, location: location3, machine: ic_eligible_machine_variant)
+
+      get "/api/v1/locations/closest_by_address.json", params: { address: '97202', by_machine_id_ic: 777, send_all_within_distance: 1 }
+
+      expect(response.body).to include('Round Tasty Pizza')
+      expect(response.body).to_not include('Slice Time')
+      expect(response.body).to include('Hut of Pies')
+
+      # Guess what, this test should be in another section, but that is ok.
+      get "/api/v1/region/#{@region.name}/locations.json", params: { by_machine_id_ic: 777, no_details: 1 }
+
+      expect(response.body).to include('Round Tasty Pizza')
+      expect(response.body).to_not include('Slice Time')
+      expect(response.body).to_not include('Hut of Pies')
+    end
+
+    it 'respects by_machine_single_id_ic filter' do
+      ic_eligible_machine = FactoryBot.create(:machine, id: 777, machine_group_id: 10, ic_eligible: true, name: 'Cleo Machine (Pro)')
+      ic_eligible_machine_variant = FactoryBot.create(:machine, id: 778, machine_group_id: 10, ic_eligible: true, name: 'Cleo Machine (Premium)')
+
+      location = FactoryBot.create(:location, street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63, name: 'Round Tasty Pizza')
+      location2 = FactoryBot.create(:location, street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63, name: 'Hut of Pies')
+
+      FactoryBot.create(:location_machine_xref, ic_enabled: true, location: location, machine: ic_eligible_machine)
+      FactoryBot.create(:location_machine_xref, ic_enabled: true, location: location2, machine: ic_eligible_machine_variant)
+
+      get "/api/v1/locations/closest_by_address.json", params: { address: '97202', by_machine_single_id_ic: 777, send_all_within_distance: 1 }
+
+      expect(response.body).to include('Round Tasty Pizza')
+      expect(response.body).to_not include('Hut of Pies')
     end
   end
 
