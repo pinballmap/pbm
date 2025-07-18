@@ -45,12 +45,16 @@
   =link_to 'Store', '#store', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
   .news
-    =link_to image_tag('beanie-three-500.jpg', :alt => 'Pinball Map Store', :style => 'height: 260px;border-radius: 10px;'), store_path, :target => "_blank"
+    =link_to image_tag('danny-pouch.jpg', :alt => 'Pinball Map Store', :style => 'height: 280px;border-radius: 10px;'), store_path, :target => "_blank"
   .news
+    %p.bold Coin Pouches!
     %p
-      We have beanies! They're waffle-knit with the classic Pinball Map ball logo embroidered in pink. No text.
+      We have
+      %span.bold beanies!
+      They're waffle-knit with the classic Pinball Map ball logo embroidered in pink. No text.
     %p
-      We also have stickers!
+      We also have
+      %span.bold stickers!
     %p== Purchase them through the #{link_to 'Pinball Map store', store_path, :class => "bold"}.
 %div.flex_center#support
   =link_to 'Support Us', '#support', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
@@ -169,7 +173,7 @@
   .news
     %p.mobile_center
       =link_to 'Zoomy Map', 'https://blog.pinballmap.com/2025/03/11/zoomy-map/', :target => '_blank', :class => 'bold'
-      %span.block.italic.m_5 March 11, 2024
+      %span.block.italic.m_5 March 11, 2025
     %p.mobile_center
       =link_to 'Protomaps Tile Hosting', 'https://blog.pinballmap.com/2024/11/05/protomaps-tile-hosting/', :target => '_blank', :class => 'bold'
       %span.block.italic.m_5 November 5, 2024
