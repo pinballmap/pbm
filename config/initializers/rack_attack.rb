@@ -19,6 +19,7 @@ unless Rails.env.test?
       bantime: 3.hours
     ) do
       CGI.unescape(req.query_string) =~ %r{/etc/passwd} ||
+      CGI.unescape(req.query_string) =~ %r{page=\D} ||
       req.path.include?('/etc/passwd') ||
       req.path.include?('wp-admin') ||
       req.path.include?('wp-login') ||
