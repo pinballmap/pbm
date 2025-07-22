@@ -59,30 +59,30 @@ module Api
       param :by_machine_id, Integer, desc: "Machine ID to find in locations. Returns locations with all variant models of the machine", required: false
       param :by_machine_single_id, Integer, desc: "Machine ID to find in locations, returns only exact version", required: false
       param :by_machine_group_id, String, desc: "Machine Group to search for", required: false
-      param :by_machine_id_ic, Integer, desc: "Machine ID to find in locations, when Stern Insider Connected is enabled for that machine at that location. Returns locations with all variant models of the machine", required: false
-      param :by_machine_single_id_ic, Integer, desc: "Machine ID to find in locations, when Stern Insider Connected is enabled for that machine at that location. Returns locations with exact model of the machine", required: false
-      param :manufacturer, String, desc: "Locations with machines from this manufacturer", required: false
-      param :by_machine_year, Integer, desc: "Locations with at least one machine manufacturered in this year", required: false
+      param :by_machine_id_ic, Integer, desc: "Machine ID to find in locations, when Stern Insider Connected is enabled for that machine at that location. Returns locations with all variant models of the machine. ", required: false
+      param :by_machine_single_id_ic, Integer, desc: "Machine ID to find in locations, when Stern Insider Connected is enabled for that machine at that location. Returns locations with exact model of the machine.", required: false
+      param :manufacturer, String, desc: "Locations with machines from this manufacturer. Additional filtering required for this endpoint.", required: false
+      param :by_machine_year, Integer, desc: "Locations with at least one machine manufacturered in this year. Additional filtering required for this endpoint.", required: false
       param :by_ipdb_id, Integer, desc: "IPDB ID to find in locations", required: false
       param :by_opdb_id, Integer, desc: "OPDB ID to find in locations", required: false
       param :by_machine_name, String, desc: "Find machine name in locations", required: false
       param :by_city_id, String, desc: "City to search for", required: false
-      param :by_state_id, String, desc: "State to search for", required: false
+      param :by_state_id, String, desc: "State to search for. Additional filtering required for this endpoint.", required: false
       param :by_zone_id, Integer, desc: "Zone ID to search by", required: false
       param :by_operator_id, Integer, desc: "Operator ID to search by", required: false
       param :by_type_id, Integer, desc: "Location type ID to search by", required: false
-      param :by_at_least_n_machines, Integer, desc: "Only locations with N or more machines", required: false
-      param :by_at_least_n_machines_type, Integer, desc: "Only locations with N or more machines", required: false
+      param :by_at_least_n_machines, Integer, desc: "Only locations with N or more machines. Additional filtering required for this endpoint.", required: false
+      param :by_at_least_n_machines_type, Integer, desc: "Only locations with N or more machines. Additional filtering required for this endpoint.", required: false
       param :by_is_stern_army, Integer, desc: "Send only locations labeled as Stern Army", required: false
-      param :by_ic_active, Boolean, desc: "Send only locations that have at least one machine that is tagged as Stern Insider Connected", required: false
-      param :by_machine_type, String, desc: "Locations with machines of this type (em, ss, me)", required: false
-      param :by_machine_display, String, desc: "Locations with machines with this display (alphanumeric, lcd, dmd, reels, lights)", required: false
-      param :no_details, Integer, desc: "Omit lmx/condition data from pull", required: false
-      param :with_lmx, Integer, desc: "Include location machine details such as comments", required: false
+      param :by_ic_active, :boolean, desc: "Send only locations that have at least one machine that is tagged as Stern Insider Connected. Additional filtering required for this endpoint.", required: false
+      param :by_machine_type, String, desc: "Locations with machines of this type (em, ss, me). Additional filtering required for this endpoint.", required: false
+      param :by_machine_display, String, desc: "Locations with machines with this display (alphanumeric, lcd, dmd, reels, lights). Additional filtering required for this endpoint.", required: false
+      param :no_details, Integer, desc: "Omit lmx/condition data from pull. Additional filtering required for this endpoint.", required: false
+      param :with_lmx, Integer, desc: "Include location machine details such as comments. Additional filtering required for this endpoint.", required: false
       param :regionless_only, Integer, desc: "Show only regionless locations", required: false
       formats [ "json" ]
       def index
-        return return_response(FILTERING_REQUIRED_MSG, "errors") unless %i[region by_location_name by_location_id by_machine_id by_machine_single_id by_ipdb_id by_opdb_id by_machine_name by_city_id by_machine_group_id by_zone_id by_operator_id by_type_id by_is_stern_army regionless_only].any? { params[_1].present? }
+        return return_response(FILTERING_REQUIRED_MSG, "errors") unless %i[region by_location_name by_location_id by_machine_id by_machine_single_id by_machine_group_id by_machine_id_ic by_machine_single_id_ic by_ipdb_id by_opdb_id by_machine_name by_city_id by_zone_id by_operator_id by_type_id by_is_stern_army regionless_only].any? { params[_1].present? }
 
         except = params[:no_details] ? %i[phone website description created_at updated_at date_last_updated last_updated_by_user_id region_id] : nil
 
@@ -213,7 +213,7 @@ module Api
       param :by_machine_single_id_ic, Integer, desc: "Machine ID to find in locations, when Stern Insider Connected is enabled for that machine at that location. Returns locations with exact model of the machine", required: false
       param :by_machine_year, Integer, desc: "Locations with at least one machine manufacturered in this year", required: false
       param :by_operator_id, Integer, desc: "Operator ID to search by", required: false
-      param :by_ic_active, Boolean, desc: "Send only locations that have at least one machine that is tagged as Stern Insider Connected", required: false
+      param :by_ic_active, :boolean, desc: "Send only locations that have at least one machine that is tagged as Stern Insider Connected", required: false
       param :user_faved, Integer, desc: "User ID of Faved Locations", required: false
       param :by_at_least_n_machines, Integer, desc: "Only locations with N or more machines", required: false
       param :by_at_least_n_machines_type, Integer, desc: "Only locations with N or more machines", required: false
@@ -315,7 +315,7 @@ module Api
       param :max_distance, String, desc: 'Closest location within "max_distance" miles, max 500', required: false
       param :send_all_within_distance, String, desc: "Send all locations within max_distance param, or #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles.", required: false
       param :no_details, Integer, desc: "Omit data that app does not need from pull", required: false
-      param :by_ic_active, Boolean, desc: "Send only locations that have at least one machine that is tagged as Stern Insider Connected", required: false
+      param :by_ic_active, :boolean, desc: "Send only locations that have at least one machine that is tagged as Stern Insider Connected", required: false
       param :manufacturer, String, desc: "Locations with machines from this manufacturer", required: false
       param :by_machine_type, String, desc: "Locations with machines of this type (em, ss, me)", required: false
       param :by_machine_display, String, desc: "Locations with machines with this display (alphanumeric, lcd, dmd, reels, lights)", required: false
