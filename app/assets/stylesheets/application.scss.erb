@@ -1655,34 +1655,38 @@ span.machine_year_man {
 
 /* ic_toggle */
 
+.ic_button_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.stern_logo {
+  height: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
+}
+
 .ic_button {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 220px;
+  width: 160px;
   text-align: center;
   box-shadow: 2px 5px 10px var(--shadow);
   -moz-box-shadow: 2px 5px 10px var(--shadow);
   -webkit-box-shadow: 2px 5px 10px var(--shadow);
   padding: 5px 10px;
   @include radius(10px);
-  margin: 20px auto 0;
   border: none;
-  height: 26px;
-  font-family: $Nunito_600SemiBold;
-}
-
-.ic_button:hover:after {
-  content: "Toggle Insider Connected Status";
-  position: absolute;
-  line-height: 14px;
-  font-size: 16px;
-  margin-left: 480px;
-  width: 260px;
-  margin-top: 0px;
-  background: var(--darkblue);
-  color: var(--vlightpurple);
-  padding: 5px;
+  height: 50px;
+  margin-right: 10px;
   font-family: $Nunito_600SemiBold;
 }
 
@@ -1717,24 +1721,26 @@ span.machine_year_man {
 }
 
 .ic_yes:before {
-  content: "Has";
+  content: "\00a0";
   background: url(<%= asset_path 'icons/ic_yes.svg' %>);
   background-repeat: no-repeat;
-  background-position: 0 1px;
+  background-position: -4px 0;
   padding-left: 18px;
-  background-size: 15px;
+  background-size: 24px;
+  height: 24px;
   position: relative;
   white-space: nowrap;
   margin-right: 3px;
 }
 
 .ic_no:before {
-  content: "Not";
+  content: "\00a0";
   background: url(<%= asset_path 'icons/ic_no.svg' %>);
   background-repeat: no-repeat;
-  background-position: -1px -1px;
+  background-position: -1px 0;
   padding-left: 20px;
-  background-size: 18px;
+  background-size: 24px;
+  height: 24px;
   position: relative;
   white-space: nowrap;
   margin-right: 3px;
@@ -1746,10 +1752,35 @@ span.machine_year_man {
   background-repeat: no-repeat;
   background-position: -1px 0;
   padding-left: 20px;
-  background-size: 18px;
+  background-size: 24px;
+  height: 24px;
   position: relative;
   white-space: nowrap;
   margin-right: 3px;
+}
+
+.ic_logo_yes:after {
+  content: "Insider Connected enabled";
+  position: relative;
+  margin-top: 5;
+  height: 30px;
+  text-align: center;
+}
+
+.ic_logo_no:after {
+  content: "Insider Connected disabled";
+  position: relative;
+  margin-top: 5;
+  height: 30px;
+  text-align: center;
+}
+
+.ic_logo_unknown:after {
+  content: "Is Insider Connected enabled?";
+  position: relative;
+  margin-top: 5;
+  height: 30px;
+  text-align: center;
 }
 
 /* END ic_toggle */

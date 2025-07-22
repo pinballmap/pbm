@@ -1,23 +1,25 @@
 - if lmx.machine.ic_eligible  
-  - if lmx.ic_enabled?
-    - has_text = "Has"
-  - else
-    - has_text = "No"
-  - if !user_signed_in?
-    = button_to new_user_session_path, :class => ["bold pointer ic_button", (lmx.ic_enabled == nil ? "ic_button_unknown_#{lmx.id} ic_unknown" : lmx.ic_enabled ? "ic_yes ic_button_#{lmx.id}" : "ic_no ic_button_#{lmx.id}")] do
-      Insider Connected
-  - else
-    = button_to ic_toggle_location_machine_xref_path(lmx), method: :patch, remote: :true, :class => ["bold pointer ic_button", (lmx.ic_enabled == nil ? "ic_button_unknown_#{lmx.id} ic_unknown" : lmx.ic_enabled ? "ic_yes ic_button_#{lmx.id}" : "ic_no ic_button_#{lmx.id}")] do
-      Insider Connected
+  %div{:class => 'ic_button_container'}
+    - if !user_signed_in?
+      = button_to new_user_session_path, :class => ["bold pointer ic_button", (lmx.ic_enabled == nil ? "ic_button_unknown_#{lmx.id} ic_unknown" : lmx.ic_enabled ? "ic_yes ic_button_#{lmx.id}" : "ic_no ic_button_#{lmx.id}")] do
+        Insider Connected
+    - else
+      = button_to ic_toggle_location_machine_xref_path(lmx), method: :patch, remote: :true, :class => ["bold pointer ic_button", (lmx.ic_enabled == nil ? "ic_button_unknown_#{lmx.id} ic_unknown" : lmx.ic_enabled ? "ic_yes ic_button_#{lmx.id}" : "ic_no ic_button_#{lmx.id}")] do
+        =image_tag( 'Insider_Connected_Light_Horizontal.png', :alt => 'Stern Insider Connected Logo', :style => 'height: 40px' )
+      %div{:class => ["stern_logo", (lmx.ic_enabled == nil ? "ic_logo_unknown_#{lmx.id} ic_logo_unknown" : lmx.ic_enabled ? "ic_logo_yes ic_logo_#{lmx.id}" : "ic_logo_no ic_logo_#{lmx.id}")]}
+        =link_to image_tag( 'Stern-Logo-sm.png', :alt => 'Stern Pinball Logo', :style => 'height: 40px'), "https://insider.sternpinball.com/", :target => '_blank'
 
-    :javascript
-      $(".ic_button_unknown_#{lmx.id}").click(function(event){
-        if (event.target.classList.contains('ic_unknown')) {
-          $(this).removeClass("ic_unknown").addClass("ic_yes");
-        } else {
-          $(this).toggleClass("ic_no ic_yes");
-        }
-      })
-      $(".ic_button_#{lmx.id}").click(function(){
-        $(".ic_button_#{lmx.id}").toggleClass('ic_yes ic_no');
-      });
+      :javascript
+        $(".ic_button_unknown_#{lmx.id}").click(function() {
+          if ($(this).hasClass('ic_unknown')) {
+            $(this).removeClass("ic_unknown").addClass("ic_yes");
+            $(".ic_logo_unknown_#{lmx.id}").removeClass('ic_logo_unknown').addClass('ic_logo_yes');
+          } else {
+            $(this).toggleClass("ic_no ic_yes");
+            $(".ic_logo_unknown_#{lmx.id}").toggleClass('ic_logo_no ic_logo_yes');
+          }
+        });
+        $(".ic_button_#{lmx.id}").click(function(){
+          $(".ic_button_#{lmx.id}").toggleClass('ic_yes ic_no');
+          $(".ic_logo_#{lmx.id}").toggleClass('ic_logo_yes ic_logo_no');
+        });
