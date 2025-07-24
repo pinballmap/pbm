@@ -33,8 +33,10 @@ class Machine < ApplicationRecord
   end
 
   def self.tag_with_opdb_type_json(opdb_json)
-    JSON.parse(opdb_json).each do |r|
-      m = Machine.find_by_opdb_id(r["opdb_id"])
+    json = JSON.parse(opdb_json)
+    combined_machines = json["machines"] + json["aliases"]
+    combined_machines.each do |r|
+      m = Machine.find_by_opdb_id(r["opdbId"])
       next unless m
 
       m.machine_type = r["type"]
@@ -58,8 +60,10 @@ class Machine < ApplicationRecord
   end
 
   def self.tag_with_opdb_image_json(opdb_json)
-    JSON.parse(opdb_json).each do |r|
-      m = Machine.find_by_opdb_id(r["opdb_id"])
+    json = JSON.parse(opdb_json)
+    combined_machines = json["machines"] + json["aliases"]
+    combined_machines.each do |r|
+      m = Machine.find_by_opdb_id(r["opdbId"])
       next unless m
 
       primary = r["images"].find { |g| g["primary"] }
