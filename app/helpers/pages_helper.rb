@@ -86,7 +86,7 @@ module PagesHelper
     elsif path == about_path(region.name)
       "Contact the administrator of the #{region.full_name} Pinball Map. Suggest a new region. Check out the most popular pinball machines on the map!"
     elsif path == events_path(region.name)
-      "Upcoming pinball events in #{region.full_name}. Tournaments, leagues, charities, launch parties, and more!"
+      "Upcoming pinball events in #{region.full_name}."
     elsif path == high_rollers_path(region.name)
       "High scores for the #{region.full_name} Pinball Map! If you get a high score on a pinball machine, add it to the map!"
     elsif path == region_activity_path(region.name)

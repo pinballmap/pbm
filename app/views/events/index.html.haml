@@ -1,35 +1,9 @@
 #page_body
   .column_container
-    - if content_for?(:events_extra)
-      = yield :events_extra
-    - else
-      .column.bg_vlightpurple.w_400
-        %p.red.bold.p1 Upcoming Events
-        %p
-          Here's a list of the upcoming pinball events in the #{@region.full_name} area.
-        %p
-          If you have a pinball event that you'd like included on this page, use the contact form on the
-          = link_to 'about page', about_path, :class => 'font18 bold'
-          to give us the info.
-
-    .column.w_450
-      - if (@sorted_events.size > 0)
-        - @sorted_events.keys.sort.each do |key|
-          %p.red.font18.bold.links_category.center #{key}
-          %ul.event_info
-            - @sorted_events[key].sort{|a,b| a.start_date.to_s <=> b.start_date.to_s}.each do |e|
-              %li
-                - if e.start_date
-                  %span.event_date #{e.start_date.strftime("%b %d, %Y").to_s}
-                  - if e.end_date
-                    %span.event_date - #{e.end_date.strftime("%b %d, %Y").to_s}:
-                = link_to e.name, e.external_link, :class => 'event_link', :target => '_blank'
-                - if (e.location)
-                  %span @
-                  = link_to e.location.name, region_homepage_path(e.location.region.name) + "/?by_location_id=#{e.location_id}", :class => 'event_link'
-                - elsif (e.external_location_name && !e.external_location_name.blank?)
-                  %span @ #{e.external_location_name}
-                %br/
-                %span.event_description #{e.long_desc}
-      - else
-        %p Events coming soon...
+    .column.bg_vlightpurple.w_400
+      %p.red.bold.p1 Upcoming Events
+      %p== In the early days Pinball Map managed our own events database. But with the rise of the #{link_to "International Flipper Pinball Association", "https://www.ifpapinball.com/calendar/", :target => '_blank'}, we then largely relied on importing IFPA calendar data. For the sake of simplicity, it's now better to simply link to the IFPA calendar.
+      %p.font18.bold.pink
+        Visit the
+        =link_to "IFPA Calendar", "https://www.ifpapinball.com/calendar/", :target => '_blank'
+        to find pinball events near you!

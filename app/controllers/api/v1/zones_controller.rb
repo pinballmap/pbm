@@ -7,7 +7,7 @@ module Api
       has_scope :region
 
       api :GET, "/api/v1/region/:region/zones.json", "Fetch zones for a single region"
-      param :region, String, desc: "Name of the Region you want to see events for", required: true
+      param :region, String, desc: "Name of the Region you want to see zones for", required: true
       def index
         zones = apply_scopes(Zone)
         return_response(zones, "zones")

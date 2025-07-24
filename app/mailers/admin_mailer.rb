@@ -20,7 +20,6 @@ class AdminMailer < ApplicationMailer
     @region_name = params[:region_name]
     @machines_count = params[:machines_count]
     @locations_count = params[:locations_count]
-    @events_count = params[:events_count]
     @contact_messages_count = params[:contact_messages_count]
     @machineless_locations = params[:machineless_locations]
     @suggested_locations = params[:suggested_locations]

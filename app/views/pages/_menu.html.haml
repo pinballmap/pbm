@@ -29,7 +29,6 @@
     %li=link_to 'Activity Feed', region_activity_path
     %li=link_to 'Location RSS', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
     %li=link_to 'Score RSS', "/#{params[:region]}/machine_score_xrefs.rss", {:class => 'feed_icon'}
-    %li=link_to 'Event RSS', "/#{params[:region]}/events.rss", {:class => 'feed_icon'}
     %hr/
   - if (mobile_device? and !(@region))
     %li=link_to 'Add Location', map_location_suggest_path

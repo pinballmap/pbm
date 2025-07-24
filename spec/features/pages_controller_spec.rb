@@ -6,62 +6,6 @@ describe PagesController do
     @location = FactoryBot.create(:location, id: 41, region: @region, state: 'OR', name: "Clark's Depot")
   end
 
-  describe 'Events', type: :feature, js: true do
-    it 'handles basic event displaying' do
-      FactoryBot.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today)
-      FactoryBot.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today + 1)
-      FactoryBot.create(:event, region: @region, location: @location, name: 'event 3', start_date: Date.today - 1)
-      FactoryBot.create(:event, region: @region, location: @location, name: 'event 4')
-      FactoryBot.create(:event, region: @region, location: @location, external_location_name: 'External location', name: 'event 5')
-      FactoryBot.create(:event, region: @region, external_location_name: 'External location', name: 'event 6')
-
-      visit '/portland/events'
-
-      expect(page).to have_content("event 3 @ Clark's Depot\n#{Date.today.strftime('%b %d, %Y')}")
-      expect(page).to have_content("event 1 @ Clark's Depot\n#{(Date.today + 1).strftime('%b %d, %Y')}")
-      expect(page).to have_content("event 2 @ Clark's Depot")
-    end
-
-    it 'is case insensitive for region name' do
-      chicago_region = FactoryBot.create(:region, name: 'chicago', full_name: 'Chicago')
-      FactoryBot.create(:event, region: chicago_region, name: 'event 1', start_date: Date.today)
-
-      visit '/CHICAGO/events'
-
-      expect(page).to have_content('event 1')
-    end
-
-    it 'does not display events that are a week older than their end date' do
-      FactoryBot.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today, end_date: Date.today)
-      FactoryBot.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today - 8, end_date: Date.today - 8)
-
-      visit '/portland/events'
-
-      expect(page).to have_content('event 1')
-      expect(page).to_not have_content('event 2')
-    end
-
-    it 'does not display events that are a week older than start date if there is no end date' do
-      FactoryBot.create(:event, region: @region, location: @location, name: 'event 1', start_date: Date.today)
-      FactoryBot.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today - 8)
-
-      visit '/portland/events'
-
-      expect(page).to have_content('event 1')
-      expect(page).to_not have_content('event 2')
-    end
-
-    it 'displays events that have no start/end date (typically league stuff)' do
-      FactoryBot.create(:event, region: @region, location: @location, name: 'event 1', start_date: nil, end_date: nil)
-      FactoryBot.create(:event, region: @region, location: @location, name: 'event 2', start_date: Date.today)
-
-      visit '/portland/events'
-
-      expect(page).to have_content('event 1')
-      expect(page).to have_content('event 2')
-    end
-  end
-
   describe 'High roller list', type: :feature, js: true do
     it 'should have intro text that displays correct number of locations and machines for a region' do
       chicago_region = FactoryBot.create(:region, name: 'chicago')
