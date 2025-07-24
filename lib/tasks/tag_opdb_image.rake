@@ -1,6 +1,6 @@
 desc "Tags machines with opdb data"
 task tag_opdb_image: :environment do
-  response = Net::HTTP.get_response(URI("https://mp-data.sfo3.cdn.digitaloceanspaces.com/latest-opdb.json"))
+  response = Net::HTTP.get_response(URI("https://opdb.org/api/export?api_token=#{ENV['OPDB_KEY']}"))
   Machine.tag_with_opdb_image_json(response.body)
 rescue StandardError => e
   error_subject = "Tag OPDB image rake task error"
