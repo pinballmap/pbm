@@ -7,7 +7,7 @@
     %span.last_updated_username
       = link_to l.last_updated_by_user.username, "#{request.scheme}://#{request.host_with_port}/users/#{l.last_updated_by_user.username}/profile"
       - if !l.last_updated_by_user.flag.blank?
-        =image_tag("https://flagcdn.com/24x18/#{l.last_updated_by_user.flag}.png", :class => "user_flag_updated")
+        =image_tag("https://flagcdn.com/24x18/#{l.last_updated_by_user.flag}.png", :class => "user_flag_updated", :alt => "#{l.last_updated_by_user.flag} flag")
       - user = l.last_updated_by_user
       - if !user.admin_title.blank? || !user.contributor_rank.blank?
         - rank = user.admin_title.present? ? user.admin_title.gsub(' ', '') : user.contributor_rank.gsub(' ', '')
