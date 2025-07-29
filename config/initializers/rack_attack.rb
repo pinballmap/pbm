@@ -24,7 +24,8 @@ unless Rails.env.test?
       req.path.include?('wp-admin') ||
       req.path.include?('wp-login') ||
       req.path.include?('wp-includes') ||
-      req.path.include?('poohbear')
+      req.path.include?('poohbear') ||
+      req.path.include?('sleep(')
     end
   end
 end
