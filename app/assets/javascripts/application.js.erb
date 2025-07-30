@@ -74,7 +74,6 @@ function homeMapBounds() {
   showLocations();
   map_init = 0;
   setTimeout(getMapBounds, 800);
-  // getMapBounds();
 }
 
 function findClosestLocations() {
@@ -139,7 +138,12 @@ function showLocations() {
     var map_style = map_style_obj;
   }
 
-  if (mapAdjusted === 0 || mapLoaded == 0) {
+  if (mapLoaded === 1 && map_init === 0 && mapAdjusted === 0 && locations_geojson.length > 0) {
+      map.getSource("point").setData({
+        'type': 'FeatureCollection',
+        'features': locations_geojson
+      });
+  } else if (mapAdjusted === 0 && mapLoaded === 0) {
     if (map_init == 1) {
       map = new maplibregl.Map({
         container: 'map_canvas',
