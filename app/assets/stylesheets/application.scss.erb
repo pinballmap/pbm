@@ -614,6 +614,8 @@ form.edit_user .form-actions {
 
 .rank_icon {
   margin-bottom: -3px;
+  margin-left: 6px;
+  margin-right: 2px;
   height: 15px;
   width: 15px;
 }
@@ -628,7 +630,8 @@ form.edit_user .form-actions {
 .rank_icon_RegionalAdministrator:hover:after,
 .rank_icon_GrandChampMapper:hover:after,
 .rank_icon_LegendaryMapper:hover:after,
-.rank_icon_SuperMapper:hover:after {
+.rank_icon_SuperMapper:hover:after,
+.user_flag_container:hover:after {
   position: absolute;
   line-height: 14px;
   font-size: 16px;
@@ -664,14 +667,6 @@ form.edit_user .form-actions {
 .rank_icon_SuperMapper:hover:after {
   content: "Super Mapper";
   width: 130px;
-}
-
-.rank_icon_past_comment:hover::after {
-  margin-top: 5px;
-}
-
-.rank_icon_past_comment {
-  margin-left: 6px;
 }
 
 div.stats {
@@ -3124,14 +3119,15 @@ li span.state_name {
   float: left;
 }
 
-.user_flag {
-  margin-left: 6px;
+.user_flag_container:hover:after {
+  content: "User-selected flag emoji";
+  width: 200px;
 }
 
-.user_flag_updated {
+.user_flag {
   margin-left: 4px;
-  margin-right: 2px;
   margin-bottom: -4px;
+  margin-right: 2px
 }
 
 .user_flag_profile {

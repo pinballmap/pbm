@@ -23,12 +23,13 @@
       %div.machine_condition_author
         - if mcx.user
           = link_to mcx.user.username, "#{request.scheme}://#{request.host_with_port}/users/#{mcx.user.username}/profile", :class => 'bold'
-          - if !mcx.user.flag.blank?
-            =image_tag("https://flagcdn.com/24x18/#{mcx.user.flag}.png", :class => "user_flag", :alt => "#{mcx.user.flag} flag")
           - if !mcx.user.admin_title.blank? || !mcx.user.contributor_rank.blank?
             - rank = mcx.user.admin_title.present? ? mcx.user.admin_title.gsub(' ', '') : mcx.user.contributor_rank.gsub(' ', '')
-            %span{:class => "rank_icon_#{rank} rank_icon_past_comment"}
+            %span{:class => "rank_icon_#{rank}"}
               =image_tag("rank/#{rank}.png", :class => "rank_icon")
+          - if !mcx.user.flag.blank?
+            %span{:class => "user_flag_container"}
+              =image_tag("https://flagcdn.com/24x18/#{mcx.user.flag}.png", :class => "user_flag", :alt => "#{mcx.user.flag} flag")
 
         - else
           DELETED USER
