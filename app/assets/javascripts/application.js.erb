@@ -20,6 +20,7 @@ var map_init = 0;
 var map_init_zoom;
 var stored_machine_id = "";
 var boundsData;
+var selectedLocationID;
 
 function toggleData(name, id) {
   var main = id ? '_' + id : '';
@@ -388,59 +389,64 @@ function initSearch(userFaved, locationIDs, operatorIDs, locationTypeIDs, zoneID
 }
 
 function showLocationDetail(locationID) {
-  $('.location_detail').hide();
-  $('#intro_container').css('display','none');
-  $('#next_link').hide();
+  if (selectedLocationID === locationID) {
+  } else {
+    $('.location_detail').hide();
+    $('#intro_container').css('display','none');
+    $('#next_link').hide();
+    selectedLocationID = locationID;
 
-  if ($('#location_detail').is(":hidden")) {
-    $('#show_location_detail_location_' + locationID).hide();
-    $('.sub_nav_location').hide();
-    $('.back_to_results').show();
+    if ($('#location_detail').is(":hidden")) {
+      $('#show_location_detail_location_' + locationID).hide();
+      $('.sub_nav_location').hide();
+      $('.back_to_results').show();
 
-    map.setLayoutProperty('points', 'icon-image',
-      ["step", ["zoom"],
-      ['match', ['id'], locationID, 'marker-z-sel',
-        ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
-        ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
-          'marker-z-10']]
-      ],
-      9,
-      ['match', ['id'], locationID,
-        ["case", [">=", ["get", "machine_count"], 10], 'marker-10-sel',
-          'marker-z-sel'],
-        ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
-        ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
-          'marker-10']]
-      ],
-      11,
-      ['match', ['id'], locationID,
-        ["case", [">=", ["get", "machine_count"], 10], 'marker-10-sel',
-          ["case", [">=", ["get", "machine_count"], 2], 'marker-2-1-sel',
-          'marker-z-sel']],
-        ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
-        ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
-          'marker-10']]
-      ],
-      13,
-      ['match', ['id'], locationID,
-        ["case", ["<=", ["get", "machine_count"], 9], 'marker-2-1-sel',
-          'marker-10-sel'],
-        ["case", ["<=", ["get", "machine_count"], 1], 'marker-1',
-        ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
-          'marker-10']]
-      ]]
-    )
+      map.setLayoutProperty('points', 'icon-image',
+        ["step", ["zoom"],
+        ['match', ['id'], locationID, 'marker-z-sel',
+          ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
+          ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
+            'marker-z-10']]
+        ],
+        9,
+        ['match', ['id'], locationID,
+          ["case", [">=", ["get", "machine_count"], 10], 'marker-10-sel',
+            'marker-z-sel'],
+          ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
+          ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
+            'marker-10']]
+        ],
+        11,
+        ['match', ['id'], locationID,
+          ["case", [">=", ["get", "machine_count"], 10], 'marker-10-sel',
+            ["case", [">=", ["get", "machine_count"], 2], 'marker-2-1-sel',
+            'marker-z-sel']],
+          ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
+          ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
+            'marker-10']]
+        ],
+        13,
+        ['match', ['id'], locationID,
+          ["case", ["<=", ["get", "machine_count"], 9], 'marker-2-1-sel',
+            'marker-10-sel'],
+          ["case", ["<=", ["get", "machine_count"], 1], 'marker-1',
+          ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
+            'marker-10']]
+        ]]
+      )
 
-    $('#location_detail').toggle();
+      $('#location_detail').toggle();
 
-    $('#location_detail').html(loadingHTML());
-    $.get('/locations/' + locationID + '/render_location_detail', function (data) {
-      $('#location_detail').html(data);
-    });
+      $('#location_detail').html(loadingHTML());
+      $.get('/locations/' + locationID + '/render_location_detail', function (data) {
+        $('#location_detail').html(data);
+      });
+    }
   }
 }
 
 function backToResults() {
+  selectedLocationID = "";
   $('.back_to_results').hide();
   $('.sub_nav_location').show();
   $('#next_link').show();
