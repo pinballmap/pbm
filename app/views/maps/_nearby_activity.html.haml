@@ -42,21 +42,6 @@
           - if (!recent_activity.user_name.blank?)
             by
             %span.bold #{recent_activity.user_name}
-        - elsif (recent_activity.submission_type == 'new_msx')
-          - if (recent_activity.high_score.blank?)
-            #{recent_activity.submission}
-          - else
-            High score:
-            %span.bold #{number_with_precision(recent_activity.high_score, precision: 0, delimiter: ',')}
-            %br/
-            %span.bold.red.mt_8.inline_block #{recent_activity.machine_name}
-            %div.mt_5
-              %span.bold
-                =link_to "#{recent_activity.location_name}", "/map?by_location_id=#{recent_activity.location_id}"
-              in #{recent_activity.city_name}
-              - if (!recent_activity.user_name.blank?)
-                by
-                %span.bold #{recent_activity.user_name}
         - elsif (recent_activity.submission_type == 'confirm_location')
           Line-up confirmed at
           %span.bold

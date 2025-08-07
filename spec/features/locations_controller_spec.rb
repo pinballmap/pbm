@@ -656,7 +656,7 @@ describe LocationsController do
 
       expect(find('.recent_location_activity_location')).to have_content('added')
       expect(find('.recent_location_activity_location')).to have_content('removed')
-      expect(find('.recent_location_activity_location')).to have_content('score')
+      expect(find('.recent_location_activity_location')).to_not have_content('score')
       expect(find('.recent_location_activity_location')).to have_content('confirmed')
       expect(find('.recent_location_activity_location')).to have_content('be best')
       expect(find('.recent_location_activity_location')).to_not have_content('Jolene Zone')
