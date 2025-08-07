@@ -81,8 +81,9 @@ describe MachineScoreXrefsController do
       chicago = FactoryBot.create(:region, name: 'Chicago')
       chicago_location = FactoryBot.create(:location, name: 'Chicago Location', region: chicago)
 
-      FactoryBot.create(:machine_score_xref, location_machine_xref: FactoryBot.create(:location_machine_xref, location: @location, machine: region_machine))
-      FactoryBot.create(:machine_score_xref, location_machine_xref: FactoryBot.create(:location_machine_xref, location: chicago_location, machine: out_of_region_machine))
+      FactoryBot.create(:user_submission, created_at: '2025-01-01', region: @region, location: @location, location_name: @location.name, user_name: 'ssw', city_name: 'Portland', machine_name: region_machine.name, submission_type: UserSubmission::NEW_SCORE_TYPE)
+
+      FactoryBot.create(:user_submission, created_at: '2025-01-01', region: chicago, location: chicago_location, location_name: chicago_location.name, user_name: 'ssw', city_name: 'Chicago', machine_name: out_of_region_machine.name, submission_type: UserSubmission::NEW_SCORE_TYPE)
 
       visit "/#{@region.name}/machine_score_xrefs.rss"
 
@@ -94,9 +95,12 @@ describe MachineScoreXrefsController do
       old_machine = FactoryBot.create(:machine, name: 'Spider-Man')
       recent_machine = FactoryBot.create(:machine, name: 'Twilight Zone')
 
-      FactoryBot.create(:location_machine_xref, id: 1, location: @location, machine: old_machine)
-      (1..50).each { |i| FactoryBot.create(:location_machine_xref, id: i + 1, location: @location, machine: recent_machine) }
-      (1..50).each { |i| FactoryBot.create(:machine_score_xref, location_machine_xref: LocationMachineXref.find(i + 1)) }
+      50.times do
+        FactoryBot.create(:user_submission, created_at: '2025-01-01', region: @region, location: @location, location_name: @location.name, user_name: 'ssw', city_name: 'Portland', machine_name: old_machine.name, submission_type: UserSubmission::NEW_SCORE_TYPE)
+      end
+      50.times do
+        FactoryBot.create(:user_submission, created_at: '2025-06-01', region: @region, location: @location, location_name: @location.name, user_name: 'ssw', city_name: 'Portland', machine_name: recent_machine.name, submission_type: UserSubmission::NEW_SCORE_TYPE)
+      end
 
       visit "/#{@region.name}/machine_score_xrefs.rss"
 
