@@ -34,6 +34,7 @@ class Location < ApplicationRecord
   scope :by_zone_id, ->(id) { where("zone_id in (?)", id.split("_").map(&:to_i)) }
   scope :by_city_id, ->(city) { where(city: city) }
   scope :by_state_id, ->(state) { where(state: state) }
+  scope :by_country, ->(country) { where(country: country) }
   scope :by_city_name, ->(city) { where(city: city) }
   scope :by_city_no_state, ->(city) { where(city: city).where(state: nil) }
   scope :by_state_name, ->(state) { where(state: state) }

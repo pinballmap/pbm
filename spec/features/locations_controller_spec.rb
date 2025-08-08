@@ -536,6 +536,16 @@ describe LocationsController do
       expect(find('#search_results')).to_not have_content('Plover')
     end
 
+    it 'by_country only includes locations from that country' do
+      FactoryBot.create(:location, city: 'Americaville', state: 'CA', country: 'US', name: 'Cleo')
+      FactoryBot.create(:location, city: 'Canadatown', state: 'MB', country: 'CA', name: 'Jolene')
+
+      visit '/map/?by_country=US'
+
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to_not have_content('Jolene')
+    end
+
     it 'by_ic_active' do
       FactoryBot.create(:location, city: 'McGannyville', state: 'TX', name: 'Jolene', ic_active: true)
       FactoryBot.create(:location, city: 'Weakerton', state: 'OR', name: 'Plover', ic_active: false)
