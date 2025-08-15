@@ -279,7 +279,7 @@ class Location < ApplicationRecord
     self.date_last_updated = Date.today
     self.last_updated_by_user = user
 
-    if !recent_confirm.present? || !recent_add_remove.present? || recent_confirm < recent_add_remove || recent_confirm < 7.days.ago.beginning_of_day
+    if recent_confirm.blank? || recent_add_remove.blank? || recent_confirm < recent_add_remove || recent_confirm < 7.days.ago.beginning_of_day
 
       submission = "#{user ? user.username : 'Someone'} confirmed the lineup at #{name} in #{city}"
 
