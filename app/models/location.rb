@@ -264,13 +264,21 @@ class Location < ApplicationRecord
   end
 
   def confirm(user)
+    recent_confirm = UserSubmission.where(submission_type: "confirm_location", location: self).order(created_at: :desc).pluck(:created_at).first
+
+    recent_add_remove = UserSubmission.where(submission_type: %w[new_lmx remove_machine], location: self).order(created_at: :desc).pluck(:created_at).first
+
     self.date_last_updated = Date.today
     self.last_updated_by_user = user
-    submission = "#{user ? user.username : 'Someone'} confirmed the lineup at #{name} in #{city}"
 
-    UserSubmission.create(user_name: user&.username, location_name: name, city_name: city, lat: lat, lon: lon, region_id: region&.id, location: self, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE, submission: submission, user: user)
-    Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
+    if !recent_confirm.present? || !recent_add_remove.present? || recent_confirm < recent_add_remove || recent_confirm < 7.days.ago.beginning_of_day
 
-    save(validate: false)
+      submission = "#{user ? user.username : 'Someone'} confirmed the lineup at #{name} in #{city}"
+
+      UserSubmission.create(user_name: user&.username, location_name: name, city_name: city, lat: lat, lon: lon, region_id: region&.id, location: self, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE, submission: submission, user: user)
+      Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
+
+      save(validate: false)
+    end
   end
 end

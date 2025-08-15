@@ -65,6 +65,22 @@ describe LocationsController do
         expect(location.reload.date_last_updated).to eq(Date.today)
         expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')} by ssw")
         expect(URI.parse(page.find_link('ssw')['href']).to_s).to match(%r{/users/#{@user.username}/profile})
+        expect(UserSubmission.count).to eq(1)
+
+        sleep 1
+        page.accept_alert 'Thanks for confirming this line-up!' do
+          find("#confirm_location_button_#{location.id}.confirm_button").click
+        end
+
+        expect(UserSubmission.count).to eq(1)
+
+        FactoryBot.create(:user_submission, created_at: Time.now, location: location, machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_LMX_TYPE)
+
+        page.accept_alert 'Thanks for confirming this line-up!' do
+          find("#confirm_location_button_#{location.id}.confirm_button").click
+        end
+
+        expect(UserSubmission.count).to eq(3)
       end
     end
 
