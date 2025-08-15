@@ -43,6 +43,7 @@
       %div[l, :desc_show]= l.description
   %div.last_updated[l, :last_updated]
     = render :partial => 'locations/render_last_updated', :locals => {:l => l}
+
 %div[l, :metadata_edit]{:style => 'display:none'}
   %div.red.mb_8 
     Want to update the location name?
@@ -79,7 +80,7 @@
       }
 
       $('#metadata_location_#{l.id}').load('/locations/#{l.id}/render_update_metadata');
-      updateLocationUpdatedText(#{l.id})
+      updateLocationUpdatedText(#{l.id});
     });
 
     return false;

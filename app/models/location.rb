@@ -154,6 +154,14 @@ class Location < ApplicationRecord
     machines.sort_by(&:massaged_name).map(&:id)
   end
 
+  def us_count
+    UserSubmission.where(location_id: self).count
+  end
+
+  def users_count
+    UserSubmission.where(location_id: self).count('DISTINCT user_id')
+  end
+
   def recent_activity
     UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition confirm_location], location_id: self, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).order("created_at DESC").limit(50)
   end
