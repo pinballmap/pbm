@@ -155,11 +155,13 @@ class Location < ApplicationRecord
   end
 
   def us_count
-    UserSubmission.where(location_id: self).count
+    us_count = UserSubmission.where(location_id: self).count
+    us_count = (us_count == 0) ? 1 : us_count
   end
 
   def users_count
-    UserSubmission.where(location_id: self).count('DISTINCT user_id')
+    users_count = UserSubmission.where(location_id: self).count('DISTINCT user_id')
+    users_count = (users_count == 0) ? 1 : users_count
   end
 
   def recent_activity
