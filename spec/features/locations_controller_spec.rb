@@ -94,6 +94,19 @@ describe LocationsController do
 
       expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')}")
     end
+
+    it 'displays number of edits and distinct users who edited' do
+      location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
+      FactoryBot.create(:user_submission, created_at: Time.now, location: location, machine_name: 'Pizza Attack', user_id: 54, submission_type: UserSubmission::NEW_LMX_TYPE)
+      FactoryBot.create(:user_submission, created_at: Time.now, location: location, machine_name: 'Pizza Attack', user_id: 55, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+
+      location.date_last_updated = Date.today
+      location.save(validate: false)
+
+      visit '/portland/?by_location_id=' + location.id.to_s
+
+      expect(find("#last_updated_location_#{location.id}")).to have_content("Location updated 2 times by 2 users")
+    end
   end
 
   describe 'stale location notice', type: :feature, js: true do
