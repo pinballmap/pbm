@@ -2384,7 +2384,7 @@ div.location_type {
   float: right;
   @include radius(5px);
   padding: 6px 5px;
-  margin: 0 5px 5px;
+  margin: 0 5px 5px 8px;
   background: var(--purple);
   width: 80px;
 }
@@ -2422,10 +2422,15 @@ div.location_type_container {
 
 div.last_updated {
   padding: 0 0 8px 0;
-  font-style: normal;
   font-size: 13px;
-  font-family: $italic;
+  line-height: 18px;
+  font-family: $Nunito_400Regular;
   color: var(--ahref);
+  margin-left: 23px;
+}
+
+.last_updated_date {
+  font-family: $italic;
 }
 
 span.last_updated_username a {

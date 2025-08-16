@@ -1,23 +1,24 @@
 - if l.date_last_updated
-  %span{:class => 'last_updated'}
-  = image_tag('icons/clock-time-four-outline.svg', :class => 'meta_icon')
-  Location updated
-  = pluralize(number_with_precision(l.us_count, precision: 0, delimiter: ','), ' time')
-  by
-  = pluralize(number_with_precision(l.users_count, precision: 0, delimiter: ','), ' user') + "."
-  Last updated: #{l.date_last_updated.strftime("%b %d, %Y")}
-  - if l.last_updated_by_user
+  = image_tag('icons/clock-time-four-outline.svg', :class => 'meta_icon float_l')
+  %div.last_updated
+    Location updated
+    = pluralize(number_with_precision(l.us_count, precision: 0, delimiter: ','), ' time')
     by
-    %span.last_updated_username
-      = link_to l.last_updated_by_user.username, "#{request.scheme}://#{request.host_with_port}/users/#{l.last_updated_by_user.username}/profile"
-      - user = l.last_updated_by_user
-      - if !user.admin_title.blank? || !user.contributor_rank.blank?
-        - rank = user.admin_title.present? ? user.admin_title.gsub(' ', '') : user.contributor_rank.gsub(' ', '')
-        %span{:class => "rank_icon_#{rank}"}
-          =image_tag("rank/#{rank}.png", :class => "rank_icon")
-      - if !l.last_updated_by_user.flag.blank?
-        %span{:class => "user_flag_container"}
-          =image_tag("https://flagcdn.com/24x18/#{l.last_updated_by_user.flag}.png", :class => "user_flag", :alt => "#{l.last_updated_by_user.flag} flag")
+    = pluralize(number_with_precision(l.users_count, precision: 0, delimiter: ','), ' user') + "."
+    Last updated:
+    %span.last_updated_date #{l.date_last_updated.strftime("%b %d, %Y")}
+    - if l.last_updated_by_user
+      by
+      %span.last_updated_username
+        = link_to l.last_updated_by_user.username, "#{request.scheme}://#{request.host_with_port}/users/#{l.last_updated_by_user.username}/profile"
+        - user = l.last_updated_by_user
+        - if !user.admin_title.blank? || !user.contributor_rank.blank?
+          - rank = user.admin_title.present? ? user.admin_title.gsub(' ', '') : user.contributor_rank.gsub(' ', '')
+          %span{:class => "rank_icon_#{rank}"}
+            =image_tag("rank/#{rank}.png", :class => "rank_icon")
+        - if !l.last_updated_by_user.flag.blank?
+          %span{:class => "user_flag_container"}
+            =image_tag("https://flagcdn.com/24x18/#{l.last_updated_by_user.flag}.png", :class => "user_flag", :alt => "#{l.last_updated_by_user.flag} flag")
 
   - if l.date_last_updated < 2.years.ago
     - dateDiff = distance_of_time_in_words(Time.now, l.date_last_updated)
