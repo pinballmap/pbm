@@ -28,6 +28,8 @@ class MachineCondition < ApplicationRecord
     UserSubmission.create(user_name: user&.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, comment: comment, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_CONDITION_TYPE, submission: submission, user: user)
     Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
     User.increment_counter(:num_lmx_comments_left, user&.id)
+    location.users_count = UserSubmission.where(location_id: location.id).count("DISTINCT user_id")
+    location.save(validate: false)
   end
 
   def username

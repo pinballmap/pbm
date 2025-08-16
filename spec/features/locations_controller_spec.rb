@@ -98,14 +98,16 @@ describe LocationsController do
     it 'displays number of edits and distinct users who edited' do
       location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
       FactoryBot.create(:user_submission, created_at: Time.now, location: location, machine_name: 'Pizza Attack', user_id: 54, submission_type: UserSubmission::NEW_LMX_TYPE)
+      location.update_column(:users_count, 1)
       FactoryBot.create(:user_submission, created_at: Time.now, location: location, machine_name: 'Pizza Attack', user_id: 55, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      location.update_column(:users_count, 2)
 
       location.date_last_updated = Date.today
       location.save(validate: false)
 
       visit '/portland/?by_location_id=' + location.id.to_s
 
-      expect(find("#last_updated_location_#{location.id}")).to have_content("Location updated 2 times by 2 users")
+      expect(find("#last_updated_location_#{location.id}")).to have_content("Location updated 3 times by 2 users")
     end
   end
 

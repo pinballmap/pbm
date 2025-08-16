@@ -12,5 +12,7 @@ class LocationPictureXref < ApplicationRecord
 
     UserSubmission.create(user_name: user.username, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, submission_type: UserSubmission::NEW_PICTURE_TYPE, submission: submission, user: user)
     Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
+    location.users_count = UserSubmission.where(location_id: location.id).count("DISTINCT user_id")
+    location.save(validate: false)
   end
 end

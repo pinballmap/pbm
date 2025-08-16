@@ -452,7 +452,9 @@ CREATE TABLE public.locations (
     is_stern_army boolean,
     country text,
     ic_active boolean,
-    machine_count integer DEFAULT 0 NOT NULL
+    machine_count integer DEFAULT 0 NOT NULL,
+    users_count integer DEFAULT 1 NOT NULL,
+    user_submissions_count integer DEFAULT 1 NOT NULL
 );
 
 
@@ -2679,6 +2681,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250816041323'),
 ('20250601172559'),
 ('20250320222320'),
 ('20250319234408'),

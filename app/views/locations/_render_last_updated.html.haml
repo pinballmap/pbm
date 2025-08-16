@@ -2,7 +2,7 @@
   = image_tag('icons/clock-time-four-outline.svg', :class => 'meta_icon float_l')
   %div.last_updated
     Location updated
-    = pluralize(number_with_precision(l.us_count, precision: 0, delimiter: ','), ' time')
+    = pluralize(number_with_precision(l.user_submissions_count, precision: 0, delimiter: ','), ' time')
     by
     = pluralize(number_with_precision(l.users_count, precision: 0, delimiter: ','), ' user') + "."
     Last updated:

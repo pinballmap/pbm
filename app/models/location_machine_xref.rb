@@ -76,6 +76,8 @@ class LocationMachineXref < ApplicationRecord
     location.save(validate: false)
     location
     User.increment_counter(:num_machines_removed, user&.id)
+    location.users_count = UserSubmission.where(location_id: location.id).count("DISTINCT user_id")
+    location.save(validate: false)
 
     super()
   end
@@ -85,12 +87,16 @@ class LocationMachineXref < ApplicationRecord
     UserSubmission.create(user_name: user&.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_LMX_TYPE, submission: submission, user: user)
     Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
     User.increment_counter(:num_machines_added, user&.id)
+    location.users_count = UserSubmission.where(location_id: location.id).count("DISTINCT user_id")
+    location.save(validate: false)
   end
 
   def create_ic_user_submission(user)
     submission = "Insider Connected toggled on #{machine.name_and_year} at #{location.name} in #{location.city} by #{user.username}"
     UserSubmission.create(user_name: user.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::IC_TOGGLE_TYPE, submission: submission, user: user)
     Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
+    location.users_count = UserSubmission.where(location_id: location.id).count("DISTINCT user_id")
+    location.save(validate: false)
   end
 
   def create_ic_user_submission!(user)

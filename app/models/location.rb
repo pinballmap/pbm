@@ -154,16 +154,6 @@ class Location < ApplicationRecord
     machines.sort_by(&:massaged_name).map(&:id)
   end
 
-  def us_count
-    us_count = UserSubmission.where(location_id: self).count
-    us_count = (us_count == 0) ? 1 : us_count
-  end
-
-  def users_count
-    users_count = UserSubmission.where(location_id: self).count("DISTINCT user_id")
-    users_count = (users_count == 0) ? 1 : users_count
-  end
-
   def recent_activity
     UserSubmission.where(submission_type: %w[new_lmx remove_machine new_condition confirm_location], location_id: self, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).order("created_at DESC").limit(50)
   end
@@ -258,6 +248,8 @@ class Location < ApplicationRecord
       save
 
       UserSubmission.create(region_id: region&.id, location: self, submission_type: UserSubmission::LOCATION_METADATA_TYPE, submission: @updates.join("\n") + " to #{name}", user_id: user&.id)
+      self.users_count = UserSubmission.where(location_id: self.id).count("DISTINCT user_id")
+      save(validate: false)
 
       [ self, "location" ]
     else
@@ -287,6 +279,7 @@ class Location < ApplicationRecord
 
       UserSubmission.create(user_name: user&.username, location_name: name, city_name: city, lat: lat, lon: lon, region_id: region&.id, location: self, submission_type: UserSubmission::CONFIRM_LOCATION_TYPE, submission: submission, user: user)
       Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
+      self.users_count = UserSubmission.where(location_id: self.id).count("DISTINCT user_id")
 
       save(validate: false)
     end
