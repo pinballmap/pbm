@@ -4,7 +4,7 @@
     Location updated
     = pluralize(number_with_precision(l.user_submissions_count, precision: 0, delimiter: ','), ' time')
     by
-    = pluralize(number_with_precision(l.users_count, precision: 0, delimiter: ','), ' user') + "."
+    = pluralize(number_with_precision(l.users_count_nonzero, precision: 0, delimiter: ','), ' user') + "."
     Last updated:
     %span.last_updated_date #{l.date_last_updated.strftime("%b %d, %Y")}
     - if l.last_updated_by_user
