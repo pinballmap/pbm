@@ -85,7 +85,7 @@ module Api
       def index
         return return_response(FILTERING_REQUIRED_MSG, "errors") unless %i[region by_location_name by_location_id by_machine_id by_machine_single_id by_machine_group_id by_machine_id_ic by_machine_single_id_ic by_ipdb_id by_opdb_id by_machine_name by_city_id by_zone_id by_operator_id by_type_id by_is_stern_army regionless_only].any? { params[_1].present? }
 
-        except = params[:no_details] ? %i[phone website description created_at updated_at date_last_updated last_updated_by_user_id region_id] : nil
+        except = params[:no_details] ? %i[phone website description created_at updated_at date_last_updated last_updated_by_user_id region_id users_count user_submissions_count] : nil
 
         locations = nil
         if params[:no_details] || params[:by_is_stern_army]
@@ -186,7 +186,7 @@ module Api
           max_distance = params[:max_distance].to_i
         end
 
-        except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone] : nil
+        except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone users_count user_submissions_count] : nil
 
         closest_locations = apply_scopes(Location).includes(:machines).near([ params[:lat], params[:lon] ], max_distance).uniq
 
@@ -234,10 +234,10 @@ module Api
         end
 
         if params[:no_details] == "1"
-          except = %i[country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at]
+          except = %i[country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at users_count user_submissions_count]
           includes = %i[machine_names_first machine_ids num_machines]
         elsif params[:no_details] == "2"
-          except = %i[name street city state zip country updated_at location_type_id operator_id country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at]
+          except = %i[name street city state zip country updated_at location_type_id operator_id country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at users_count user_submissions_count]
           includes = []
         else
           except = []
@@ -338,7 +338,7 @@ module Api
           max_distance = params[:max_distance].to_i
         end
 
-        except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone] : nil
+        except = params[:no_details] ? %i[country last_updated_by_user_id description region_id zone_id website phone users_count user_submissions_count] : nil
 
         lat, lon = ""
         unless params[:address].blank?
@@ -391,7 +391,7 @@ module Api
             [],
             %i[machine_names_first_no_year num_machines],
             200,
-            %i[phone website updated_at region_id description operator_id date_last_updated last_updated_by_user_id ic_active zone_id created_at is_stern_army country]
+            %i[phone website updated_at region_id description operator_id date_last_updated last_updated_by_user_id ic_active zone_id created_at is_stern_army country users_count user_submissions_count]
           )
         else
           location = Location.includes(location_machine_xrefs: [ :user, { machine_conditions: :user }, { machine_score_xrefs: :user } ]).find(params[:id])
