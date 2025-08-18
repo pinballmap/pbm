@@ -63,6 +63,7 @@ limit 25")
             :city, :state, Arel.star.count.as("location_count")
           ]
         ).order(:location_count).reverse_order.group(:city, :state).limit(10)
+
     xid = Arel::Table.new("location_machine_xrefs")
     lid = Arel::Table.new("locations")
     @top_cities_by_machine = Location.select(
@@ -72,6 +73,16 @@ limit 25")
     ).joins(
       Location.arel_table.join(LocationMachineXref.arel_table).on(xid[:location_id].eq(lid[:id])).join_sources
     ).order(:machines_count).reverse_order.group(:city, :state).limit(10)
+
+    sid = Arel::Table.new("user_submissions")
+    uid = Arel::Table.new("users")
+    @top_users = UserSubmission.select(
+        [
+          sid[:user_id], uid[:username], Arel.star.count.as("submission_count")
+        ]
+      ).joins(
+        UserSubmission.arel_table.join(User.arel_table).on(uid[:id].eq(sid[:user_id])).join_sources
+      ).order(:submission_count).reverse_order.group(uid[:username], sid[:user_id]).limit(25)
   end
 
   def links
