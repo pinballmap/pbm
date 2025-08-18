@@ -22,18 +22,18 @@
       - @top_25.each do |row|
         %div{:style => 'display: flex; flex-direction: row; justify-content: space-between; padding: 0 10px;'}
           %p #{row['machine_name']} (#{row['manufacturer']}, #{row['year']})
-          %p.bold #{row['machine_count']}
+          %p.bold #{number_with_delimiter(row['machine_count'],:delimiter => ",")}
       %p.font20.center.bold.pbt_5.bg_lightpurple
         Top 10 cities by number of locations
       - @top_cities.each do |row|
         %div{:style => 'display: flex; flex-direction: row; justify-content: space-between; padding: 0 15px;'}
           %p #{row.city}
-          %p.bold #{row.location_count}
+          %p.bold #{number_with_delimiter(row.location_count,:delimiter => ",")}
       %p.font20.center.bold.pbt_5.bg_lightpurple
         Top 10 cities by number of machines
       - @top_cities_by_machine.each do |row|
         %div{:style => 'display: flex; flex-direction: row; justify-content: space-between; padding: 0 10px;'}
           %p #{row.city}
-          %p.bold #{row.machines_count}
+          %p.bold #{number_with_delimiter(row.machines_count,:delimiter => ",")}
 
 
