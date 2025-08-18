@@ -56,7 +56,7 @@ limit 25")
     @machines_count_total = LocationMachineXref.all.count
     @users_count_total = User.all.count
     @user_submissions_total = UserSubmission.all.count
-    @user_submissions_week = UserSubmission.where('created_at >= ?', 1.week.ago).count
+    @user_submissions_week = UserSubmission.where("created_at >= ?", 1.week.ago).count
 
     @top_cities = Location.select(
           [

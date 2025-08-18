@@ -41,6 +41,7 @@
     %li=link_to 'Activity Feed', activity_path
     %li=link_to 'Location RSS', "/location_machine_xrefs.rss", {:class => 'feed_icon'}
   %li=link_to 'Blog', 'http://blog.pinballmap.com'
+  %li=link_to 'Stats', stats_path
   %li=link_to 'Store', store_path
   %li=link_to 'FAQ', faq_path
   - if !(@region)
