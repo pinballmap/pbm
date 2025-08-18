@@ -69,6 +69,8 @@ module PagesHelper
       "Promote "
     elsif path == activity_path
       "Recent Activity - "
+    elsif path == stats_path
+      "Stats - "
     else
       ""
     end
@@ -125,6 +127,8 @@ module PagesHelper
       "Print out this cool promotional Pinball Map flier! Spread the word!"
     elsif path == activity_path
       "Recent Activity for Pinball Map! It's a list of map edits!"
+    elsif path == stats_path
+      "Pinball Map statistics! What's happening on the map."
     else
       "The Pinball Map website and free mobile app will help you find places to play pinball! Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."
     end

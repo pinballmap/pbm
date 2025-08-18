@@ -101,6 +101,7 @@ Rails.application.routes.draw do
   get '/robots.txt' => 'pages#robots'
   get '/activity' => 'pages#recent_activity'
   post '/activity' => 'pages#recent_activity'
+  get '/stats' => 'pages#stats'
 
   scope ':region', constraints: lambda { |request| Region.where('lower(name) = ?', request.params[:region].downcase).any? } do
     get 'app' => redirect('/app')
@@ -109,6 +110,7 @@ Rails.application.routes.draw do
     get 'faq' => redirect('/faq')
     get 'store' => redirect('/store')
     get 'donate' => redirect('/donate')
+    get 'stats' => redirect('/stats')
 
     resources :events, only: [:index, :show]
     resources :regions, only: [:index, :show]

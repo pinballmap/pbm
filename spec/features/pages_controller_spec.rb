@@ -133,6 +133,9 @@ describe PagesController do
       visit '/faq'
       expect(page).to have_title('FAQ')
 
+      visit '/stats'
+      expect(page).to have_title('Stats')
+
       visit '/users/111/profile'
       expect(page).to have_title('User Profile')
 

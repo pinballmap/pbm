@@ -37,6 +37,43 @@ class PagesController < ApplicationController
     render "#{@region.name}/about" if lookup_context.find_all("#{@region.name}/about").any?
   end
 
+  def stats
+    @top_25 = ActiveRecord::Base.connection.exec_query("
+select
+  left(m.opdb_id,5) as opdb_id,
+  split_part(min(m.name), ' (', 1) as machine_name,
+  (array_agg(m.manufacturer ORDER BY m.year ASC))[1] as manufacturer,
+  min(m.year) as year,
+  count(*) as machine_count
+from
+  location_machine_xrefs lmx inner join machines m on m.id=lmx.machine_id
+  where m.opdb_id is not null
+group by 1
+order by 5 desc
+limit 25")
+
+    @locations_count_total = Location.all.count
+    @machines_count_total = LocationMachineXref.all.count
+    @users_count_total = User.all.count
+    @user_submissions_total = UserSubmission.all.count
+    @user_submissions_week = UserSubmission.where('created_at >= ?', 1.week.ago).count
+
+    @top_cities = Location.select(
+          [
+            :city, :state, Arel.star.count.as("location_count")
+          ]
+        ).order(:location_count).reverse_order.group(:city, :state).limit(10)
+    xid = Arel::Table.new("location_machine_xrefs")
+    lid = Arel::Table.new("locations")
+    @top_cities_by_machine = Location.select(
+      [
+        :city, :state, Arel.star.count.as("machines_count")
+      ]
+    ).joins(
+      Location.arel_table.join(LocationMachineXref.arel_table).on(xid[:location_id].eq(lid[:id])).join_sources
+    ).order(:machines_count).reverse_order.group(:city, :state).limit(10)
+  end
+
   def links
     redirect_to about_path
   end

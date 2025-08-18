@@ -71,6 +71,10 @@ describe PagesHelper, type: :helper do
       it 'displays the correct activity title ' do
         expect(helper.title_for_path(activity_path)).to eq('Recent Activity - Pinball Map')
       end
+
+      it 'displays the correct stats title ' do
+        expect(helper.title_for_path(stats_path)).to eq('Stats - Pinball Map')
+      end
     end
 
     describe 'with region' do
