@@ -54,21 +54,13 @@ module Api
         return_response({ total_user_submission_count: UserSubmission.count }, nil)
       end
 
-      api :GET, "/api/v1/user_submissions/top_users.json", "Fetch top 10 users by submission count"
-      description "Fetch top 10 users by submission count"
+      api :GET, "/api/v1/user_submissions/top_users.json", "Fetch top 25 users by submission count"
+      description "Fetch top 25 users by submission count"
       formats [ "json" ]
       def top_users
-        sid = Arel::Table.new("user_submissions")
-        uid = Arel::Table.new("users")
-        top_users = UserSubmission.select(
-          [
-            sid[:user_id], uid[:username], Arel.star.count.as("submission_count")
-          ]
-        ).joins(
-          UserSubmission.arel_table.join(User.arel_table).on(uid[:id].eq(sid[:user_id])).join_sources
-        ).order(:submission_count).reverse_order.group(uid[:username], sid[:user_id]).limit(10)
+        top_users = User.where("user_submissions_count > 0").select(["id", "username", "user_submissions_count"]).order(user_submissions_count: :desc).limit(25)
 
-        return_response(top_users, nil)
+        return_response(top_users, nil, [], %i[id username user_submissions_count])
       end
 
       MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS = 30

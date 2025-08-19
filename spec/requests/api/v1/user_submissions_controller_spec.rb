@@ -196,10 +196,10 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
       expect(response).to be_successful
       sass = JSON.parse(response.body)[0]
-      expect(sass['submission_count']).to eq(2)
+      expect(sass['user_submissions_count']).to eq(2)
       expect(sass['username']).to eq('sass')
       cleo = JSON.parse(response.body)[1]
-      expect(cleo['submission_count']).to eq(1)
+      expect(cleo['user_submissions_count']).to eq(1)
       expect(cleo['username']).to eq('cleo')
     end
   end

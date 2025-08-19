@@ -40,6 +40,6 @@
       - @top_users.each do |row|
         %div{:style => 'display: flex; flex-direction: row; justify-content: space-between; padding: 0 10px; align-items: flex-end;'}
           %p #{row.username}
-          %p.bold.stat_values #{number_with_delimiter(row.submission_count,:delimiter => ",")}
+          %p.bold.stat_values #{number_with_delimiter(row.user_submissions_count,:delimiter => ",")}
 
 
