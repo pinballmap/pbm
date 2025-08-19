@@ -21,7 +21,7 @@
         Top 25 machines
       - @top_25.each do |row|
         %div{:style => 'display: flex; flex-direction: row; justify-content: space-between; padding: 0 10px;'}
-          %p #{row['machine_name']} (#{row['manufacturer']}, #{row['year']})
+          %p== #{link_to "#{row['machine_name']} (#{row['manufacturer']}, #{row['year']})", "/map?by_machine_id=#{row['id']}"}
           %p.bold.stat_values #{number_with_delimiter(row['machine_count'],:delimiter => ",")}
       %p.font20.center.bold.pbt_5.bg_lightpurple
         Top 10 cities by number of locations

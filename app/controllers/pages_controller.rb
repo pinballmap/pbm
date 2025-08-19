@@ -44,12 +44,13 @@ select
   split_part(min(m.name), ' (', 1) as machine_name,
   (array_agg(m.manufacturer ORDER BY m.year ASC))[1] as manufacturer,
   min(m.year) as year,
+  min(m.id) as id,
   count(*) as machine_count
 from
   location_machine_xrefs lmx inner join machines m on m.id=lmx.machine_id
   where m.opdb_id is not null
 group by 1
-order by 5 desc
+order by 6 desc
 limit 25")
 
     @locations_count_total = Location.all.count
