@@ -75,7 +75,7 @@ limit 25")
       Location.arel_table.join(LocationMachineXref.arel_table).on(xid[:location_id].eq(lid[:id])).join_sources
     ).order(:machines_count).reverse_order.group(:city, :state).limit(10)
 
-    @top_users = User.where("user_submissions_count > 0").select(["username", "user_submissions_count"]).order(user_submissions_count: :desc).limit(25)
+    @top_users = User.where("user_submissions_count > 0").select([ "username", "user_submissions_count" ]).order(user_submissions_count: :desc).limit(25)
   end
 
   def links

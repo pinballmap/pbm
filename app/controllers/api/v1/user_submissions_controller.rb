@@ -58,7 +58,7 @@ module Api
       description "Fetch top 25 users by submission count"
       formats [ "json" ]
       def top_users
-        top_users = User.where("user_submissions_count > 0").select(["id", "username", "user_submissions_count"]).order(user_submissions_count: :desc).limit(25)
+        top_users = User.where("user_submissions_count > 0").select([ "id", "username", "user_submissions_count" ]).order(user_submissions_count: :desc).limit(25)
 
         return_response(top_users, nil, [], %i[id username user_submissions_count])
       end
