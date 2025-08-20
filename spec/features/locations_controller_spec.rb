@@ -392,6 +392,8 @@ describe LocationsController do
     it 'by_operator_id' do
       visit '/portland/?by_operator_id=' + @location.operator_id.to_s
 
+      sleep 1
+
       expect(find('#search_results')).to have_content('Cleo')
       expect(find('#search_results')).to_not have_content('Sass')
     end
