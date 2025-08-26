@@ -188,6 +188,24 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
       expect(json.count).to eq(1)
     end
+
+    it 'limits results when limit param is present and includes pagy metadata' do
+      location = FactoryBot.create(:location, name: 'bawb', id: 111)
+
+      FactoryBot.create(:user_submission, created_at: '2025-06-01', location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Machine was added to Location by ssw')
+      FactoryBot.create(:user_submission, created_at: '2025-06-03', location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: 'Machine was removed from Location by ssw')
+
+      get '/api/v1/user_submissions/location.json', params: { id: 111, limit: 1 }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(1)
+
+      expect(response.body).to include('Machine was removed from')
+      expect(response.body).to_not include('Machine was added to')
+      expect(response.body).to include('pagy')
+    end
   end
 
   describe '#total_user_submission_count' do

@@ -23,15 +23,32 @@ module Api
       api :GET, "/api/v1/user_submissions/location.json", "Fetch user submissions for a location"
       param :id, Integer, desc: "ID of location", required: true
       param :submission_type, String, desc: "Type of submission to filter to. Multiple filters can be formatted as ;submission_type[]=remove_machine;submission_type[]=new_lmx etc.", required: false
+      param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       formats [ "json" ]
       def location
         location = Location.find(params[:id])
 
         submission_type = params[:submission_type].blank? ? %w[new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
 
-        user_submissions = UserSubmission.where(location_id: location, submission_type: submission_type, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).limit(200).order("created_at DESC")
+        if params[:limit].blank?
+          user_submissions = UserSubmission.where(location_id: location, submission_type: submission_type, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).limit(200).order("created_at DESC")
+        else
+          @pagy, user_submissions = pagy(UserSubmission.where(location_id: location, submission_type: submission_type, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).order("created_at desc").distinct, limit_extra: true)
 
-        return_response(user_submissions, "user_submissions")
+          @pagy_metadata = pagy_metadata(@pagy)
+        end
+
+        if !user_submissions.empty?
+          respond_to do |format|
+            if params[:limit].blank?
+              format.json { return_response(user_submissions, "user_submissions", [], [], 200, [], nil) }
+            else
+              format.json { return_response(user_submissions, "user_submissions", [], [], 200, [], true) }
+            end
+          end
+        else
+          return_response("No user submissions found within radius.", "errors")
+        end
       rescue ActiveRecord::RecordNotFound
         return_response("Failed to find location", "errors")
       end
