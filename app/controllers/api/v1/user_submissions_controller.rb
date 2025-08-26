@@ -72,6 +72,7 @@ module Api
       param :min_date_of_submission, String, desc: "Earliest date to consider updates from, format YYYY-MM-DD", required: false
       param :submission_type, String, desc: "Type of submission to filter to. Multiple filters can be formatted as ;submission_type[]=remove_machine;submission_type[]=new_lmx etc.", required: false
       param :region_id, String, desc: "Limit results to a region", required: false
+      param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       def list_within_range
         if params[:max_distance].blank?
           max_distance = MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS
@@ -89,9 +90,25 @@ module Api
 
         user_submissions = user_submissions.where(created_at: min_date_of_submission..Date.today.end_of_day) if min_date_of_submission
 
-        user_submissions = user_submissions.near([ params[:lat], params[:lon] ], max_distance, order: "created_at desc").limit(200)
+        if params[:limit].blank?
+          user_submissions = user_submissions.near([ params[:lat], params[:lon] ], max_distance, order: "created_at desc").limit(200)
+        else
+          @pagy, user_submissions = pagy(user_submissions.near([ params[:lat], params[:lon] ]).order("created_at desc").distinct, limit_extra: true)
 
-        return_response(user_submissions, "user_submissions")
+          @pagy_metadata = pagy_metadata(@pagy)
+        end
+
+        if !user_submissions.empty?
+          respond_to do |format|
+            if params[:limit].blank?
+              format.json { return_response(user_submissions, "user_submissions", [], [], 200, [], nil) }
+            else
+              format.json { return_response(user_submissions, "user_submissions", [], [], 200, [], true) }
+            end
+          end
+        else
+          return_response("No user submissions found within radius.", "errors")
+        end
       end
     end
   end
