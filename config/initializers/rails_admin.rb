@@ -259,7 +259,7 @@ RailsAdmin.config do |config|
       field :description, :text
       field :photo do
         pretty_value do
-          bindings[:view].tag(:img, src: bindings[:object].photo.url(:large))
+          bindings[:view].image_tag bindings[:object].photo.variant(resize_to_limit: [800,800])
         end
       end
     end
@@ -271,7 +271,7 @@ RailsAdmin.config do |config|
       field :description, :text
       field :photo do
         pretty_value do
-          bindings[:view].tag(:img, src: bindings[:object].photo.url(:large))
+          bindings[:view].image_tag bindings[:object].photo.variant(resize_to_limit: [800,800])
         end
       end
     end
