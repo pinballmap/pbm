@@ -146,6 +146,7 @@ GEM
     capybara-screenshot (1.0.26)
       capybara (>= 1.0, < 4)
       launchy
+    chartkick (5.2.0)
     childprocess (5.1.0)
       logger (~> 1.5)
     coderay (1.1.3)
@@ -228,6 +229,8 @@ GEM
       ffi (~> 1.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    groupdate (6.7.0)
+      activesupport (>= 7.1)
     haml (6.3.0)
       temple (>= 0.8.2)
       thor
@@ -572,6 +575,7 @@ DEPENDENCIES
   cancancan
   capybara
   capybara-screenshot
+  chartkick
   country_select
   dalli
   database_cleaner
@@ -584,6 +588,7 @@ DEPENDENCIES
   exception_notification
   factory_bot_rails
   geocoder
+  groupdate
   haml-rails
   has_scope
   image_processing

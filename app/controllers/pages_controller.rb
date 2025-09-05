@@ -1,3 +1,4 @@
+require 'set'
 class PagesController < ApplicationController
   respond_to :html, only: %i[set_activities]
   rate_limit to: 5, within: 10.minutes, only: :contact_sent
@@ -57,6 +58,8 @@ limit 25")
     @machines_count_total = LocationMachineXref.all.count
     @users_count_total = User.all.count
     @user_submissions_total = UserSubmission.all.count
+    @user_submissions_all = UserSubmission.where(created_at: "2019-01-01T00:00:00.00-07:00"..Date.today.end_of_day).select("created_at")
+
     @user_submissions_week = UserSubmission.where("created_at >= ?", 1.week.ago).count
 
     @top_cities = Location.select(
@@ -76,6 +79,16 @@ limit 25")
     ).order(:machines_count).reverse_order.group(:city, :state).limit(10)
 
     @top_users = User.where("user_submissions_count > 0").select([ "username", "user_submissions_count" ]).order(user_submissions_count: :desc).limit(25)
+
+    this_year = Time.now.year
+    last_year = (Time.now - 1.year).year
+
+    @machines_this_year = Machine.where(year: this_year)
+    @machines_last_year = Machine.where(year: last_year)
+
+    @machine_adds_this_year = UserSubmission.joins(:machine).where(machine_id: @machines_this_year, submission_type: %w[new_lmx], created_at: Time.now.beginning_of_year..Time.now.end_of_year)
+
+    @machine_adds_last_year = UserSubmission.joins(:machine).where(machine_id: @machines_last_year, submission_type: %w[new_lmx], created_at: (Time.now - 1.year).beginning_of_year..Time.now.end_of_year)
   end
 
   def links

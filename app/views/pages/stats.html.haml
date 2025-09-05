@@ -17,6 +17,17 @@
         #{number_with_delimiter(@user_submissions_total,:delimiter => ",")} maps edits (since 2015-ish).
       %p
         #{number_with_delimiter(@user_submissions_week,:delimiter => ",")} map edits in the last week.
+    .column{:style => "width: 100%;"}
+      %div
+        %p.bold.center Pinball machines made this year, added to locations
+        =line_chart @machine_adds_this_year.group('machine.name').group_by_month(:created_at).count, height: "600px"
+      %div.mt_20
+        %p.bold.center Pinball machines made last year, added to locations
+        =line_chart @machine_adds_last_year.group('machine.name').group_by_month(:created_at).count, height: "600px"
+      %div.mt_20.mb_20
+        %p.bold.center Annual map edits from 2019 to today
+        =line_chart @user_submissions_all.group_by_year(:created_at).count, xmin: "2019-01-01", thousands: ","
+    .column.w560.bg_vlightpurple
       %p.font20.center.bold.pbt_5.bg_lightpurple
         Top 25 machines
       - @top_25.each do |row|
