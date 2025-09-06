@@ -1,4 +1,3 @@
-require 'set'
 class PagesController < ApplicationController
   respond_to :html, only: %i[set_activities]
   rate_limit to: 5, within: 10.minutes, only: :contact_sent
@@ -80,15 +79,15 @@ limit 25")
 
     @top_users = User.where("user_submissions_count > 0").select([ "username", "user_submissions_count" ]).order(user_submissions_count: :desc).limit(25)
 
-    this_year = Time.now.year
-    last_year = (Time.now - 1.year).year
+    @this_year = Time.now.year
+    @last_year = (Time.now - 2.year).year
 
-    @machines_this_year = Machine.where(year: this_year)
-    @machines_last_year = Machine.where(year: last_year)
+    @machines_this_year = Machine.where(year: @this_year)
+    @machines_last_year = Machine.where(year: @last_year)
 
-    @machine_adds_this_year = UserSubmission.joins(:machine).where(machine_id: @machines_this_year, submission_type: %w[new_lmx], created_at: Time.now.beginning_of_year..Time.now.end_of_year)
+    @machine_adds_this_year = UserSubmission.joins(:machine).where(machine_id: @machines_this_year, submission_type: %w[new_lmx], created_at: Time.now.beginning_of_year..Time.now.end_of_year).select([ "created_at" ])
 
-    @machine_adds_last_year = UserSubmission.joins(:machine).where(machine_id: @machines_last_year, submission_type: %w[new_lmx], created_at: (Time.now - 1.year).beginning_of_year..Time.now.end_of_year)
+    @machine_adds_last_year = UserSubmission.joins(:machine).where(machine_id: @machines_last_year, submission_type: %w[new_lmx], created_at: (Time.now - 1.year).beginning_of_year..Time.now.end_of_year).select([ "created_at" ])
   end
 
   def links
