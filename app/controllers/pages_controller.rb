@@ -80,7 +80,7 @@ limit 25")
     @top_users = User.where("user_submissions_count > 0").select([ "username", "user_submissions_count" ]).order(user_submissions_count: :desc).limit(25)
 
     @this_year = Time.now.year
-    @last_year = (Time.now - 2.year).year
+    @last_year = (Time.now - 1.year).year
 
     @machines_this_year = Machine.where(year: @this_year)
     @machines_last_year = Machine.where(year: @last_year)
