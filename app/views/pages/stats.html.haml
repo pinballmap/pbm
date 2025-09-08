@@ -20,10 +20,10 @@
     .column{:style => "width: 100%;"}
       %div
         %p.bold.center Pinball machines made in #{@this_year}, added to locations
-        = pie_chart @machine_adds_this_year.group('machine.name').count, height: "600px"
+        = bar_chart @machine_adds_this_year.group('machine.name').count, height: "700px"
       %div.mt_20
         %p.bold.center Pinball machines made in #{@last_year}, added to locations up to now
-        = pie_chart @machine_adds_last_year.group('machine.name').count, height: "600px"
+        = bar_chart @machine_adds_last_year.group('machine.name').count, height: "700px"
       %div.mt_20.mb_20
         %p.bold.center Annual map edits from 2019 to today
         =area_chart @user_submissions_all.group_by_year(:created_at).count, xmin: "2019-01-01", thousands: ",", height: "400px"
