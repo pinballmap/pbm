@@ -18,8 +18,8 @@ describe Location do
       FactoryBot.create(:user_fave_location, user: user, location: location)
       FactoryBot.create(:user_fave_location, location: other_location)
 
-      expect(location.user_fave?(user.id)).to be_truthy
-      expect(other_location.user_fave?(user.id)).to_not be_truthy
+      assert_predicate location.user_fave?(user.id), :truthy?
+      refute_predicate other_location.user_fave?(user.id), :truthy?
     end
   end
 
@@ -34,7 +34,7 @@ describe Location do
 
       FactoryBot.create(:user_fave_location, location: location)
 
-      expect(Location.user_faved(user.id)).to eq([ location, other_location ])
+      assert_equal [location, other_location], Location.user_faved(user.id)
     end
   end
 
@@ -53,7 +53,7 @@ describe Location do
 
       @l.phone = 'ABC'
 
-      expect { @l.save! }.to raise_error
+      assert_raises { @l.save! }
     end
   end
 
@@ -64,7 +64,7 @@ describe Location do
       @l.lon = 1
 
       ENV['SKIP_GEOCODE'] = '0'
-      expect(@l.skip_geocoding?).to be_truthy
+      assert_predicate @l.skip_geocoding?, :truthy?
       ENV['SKIP_GEOCODE'] = '1'
     end
   end
@@ -77,12 +77,12 @@ describe Location do
 
       @l.destroy
 
-      expect(Event.all).to eq([])
-      expect(LocationPictureXref.all).to eq([])
-      expect(LocationMachineXref.all).to eq([])
-      expect(MachineScoreXref.all).to eq([])
-      expect(Location.all).to eq([])
-      expect(UserFaveLocation.all).to eq([])
+      assert_equal [], Event.all
+      assert_equal [], LocationPictureXref.all
+      assert_equal [], LocationMachineXref.all
+      assert_equal [], MachineScoreXref.all
+      assert_equal [], Location.all
+      assert_equal [], UserFaveLocation.all
     end
   end
 
@@ -95,7 +95,7 @@ describe Location do
     end
     it 'should not update location with websites that do not start with http:// or https://' do
       @l.update(website: 'lol.com')
-      expect { @l.save! }.to raise_error
+      assert_raises { @l.save! }
 
       @l.update(website: 'http://lol.com')
       expect { @l.save! }.to_not raise_error
@@ -107,26 +107,26 @@ describe Location do
 
   describe '#location_machine_xrefs' do
     it 'should return all machines for this location' do
-      expect(@l.location_machine_xrefs.order(:id)).to eq([ @lmx1, @lmx2 ])
+      assert_equal [@lmx1, @lmx2], @l.location_machine_xrefs.order(:id)
     end
   end
 
   describe '#machine_names' do
     it 'should return all machine names for this location' do
-      expect(@l.machine_names).to eq(%w[Cleo Sassy])
+      assert_equal %w[Cleo Sassy], @l.machine_names
     end
   end
 
   describe '#machine_ids' do
     it 'should return all machine ids for this location' do
-      expect(@l.machine_ids).to eq([ 201, 200 ])
+      assert_equal [201, 200], @l.machine_ids
     end
   end
 
   describe '#massaged_name' do
     it 'ignores "the" in names' do
       the_location = FactoryBot.create(:location, name: 'The Hilt')
-      expect(the_location.massaged_name).to eq('Hilt')
+      assert_equal 'Hilt', the_location.massaged_name
     end
   end
 
@@ -136,8 +136,8 @@ describe Location do
 
       @l.confirm(user)
 
-      expect(@l.last_updated_by_user_id).to eq(user.id)
-      expect(@l.date_last_updated).to eq(Date.today)
+      assert_equal user.id, @l.last_updated_by_user_id
+      assert_equal Date.today, @l.date_last_updated
     end
 
     it 'auto-creates user submissions' do
@@ -148,11 +148,11 @@ describe Location do
 
       submission = UserSubmission.last
 
-      expect(submission.user).to eq(user)
-      expect(submission.region).to eq(location.region)
-      expect(submission.location).to eq(location)
-      expect(submission.submission).to eq('ssw confirmed the lineup at foo in Portland')
-      expect(submission.submission_type).to eq(UserSubmission::CONFIRM_LOCATION_TYPE)
+      assert_equal user, submission.user
+      assert_equal location.region, submission.region
+      assert_equal location, submission.location
+      assert_equal 'ssw confirmed the lineup at foo in Portland', submission.submission
+      assert_equal UserSubmission::CONFIRM_LOCATION_TYPE, submission.submission_type
     end
 
     it 'works with regionless locations' do
@@ -163,14 +163,14 @@ describe Location do
 
       submission = UserSubmission.last
 
-      expect(submission.region).to eq(nil)
-      expect(submission.submission_type).to eq(UserSubmission::CONFIRM_LOCATION_TYPE)
+      assert_equal nil, submission.region
+      assert_equal UserSubmission::CONFIRM_LOCATION_TYPE, submission.submission_type
     end
   end
 
   describe '#num_machines' do
     it 'should send back a number indicating the number of machines at the location' do
-      expect(@l.num_machines).to eq(2)
+      assert_equal 2, @l.num_machines
     end
   end
 
@@ -179,8 +179,8 @@ describe Location do
       clark_location = FactoryBot.create(:location, name: "Clark's Castle")
       clark_other_location = FactoryBot.create(:location, name: 'Clark’s Castle')
 
-      expect(Location.by_location_name("Clark's")).to eq([ clark_location, clark_other_location ])
-      expect(Location.by_location_name('Clark’s')).to eq([ clark_location, clark_other_location ])
+      assert_equal [clark_location, clark_other_location], Location.by_location_name("Clark's")
+      assert_equal [clark_location, clark_other_location], Location.by_location_name('Clark’s')
     end
   end
 
@@ -192,10 +192,10 @@ describe Location do
 
       user_submission = UserSubmission.third
 
-      expect(user_submission.user_id).to eq(u.id)
-      expect(user_submission.submission).to eq('Changed location description to foo to REGIONLESS')
-      expect(user_submission.location).to eq(regionless_location)
-      expect(user_submission.region).to eq(nil)
+      assert_equal u.id, user_submission.user_id
+      assert_equal 'Changed location description to foo to REGIONLESS', user_submission.submission
+      assert_equal regionless_location, user_submission.location
+      assert_equal nil, user_submission.region
     end
 
     it 'creates a user submission for updated metadata' do
@@ -204,9 +204,9 @@ describe Location do
 
       user_submission = UserSubmission.third
 
-      expect(user_submission.user_id).to eq(u.id)
-      expect(user_submission.submission).to eq('Changed location description to foo to quarterworld')
-      expect(user_submission.location).to eq(@l)
+      assert_equal u.id, user_submission.user_id
+      assert_equal 'Changed location description to foo to quarterworld', user_submission.submission
+      assert_equal @l, user_submission.location
     end
 
     it 'creates a user submission for updated metadata -- no user sent' do
@@ -214,8 +214,8 @@ describe Location do
 
       user_submission = UserSubmission.third
 
-      expect(user_submission.user_id).to eq(nil)
-      expect(user_submission.submission).to eq('Changed location description to foo to quarterworld')
+      assert_equal nil, user_submission.user_id
+      assert_equal 'Changed location description to foo to quarterworld', user_submission.submission
     end
 
     it 'creates a user submission for updated metadata -- all fields' do
@@ -227,8 +227,8 @@ describe Location do
 
       user_submission = UserSubmission.third
 
-      expect(user_submission.user_id).to eq(u.id)
-      expect(user_submission.submission).to eq(<<-HERE.strip)
+      assert_equal u.id, user_submission.user_id
+      assert_equal <<-HERE.strip, user_submission.submission
 Changed location description to foo
 Changed phone # to (503) 796-9364
 Changed website to http://www.goo.com
@@ -241,7 +241,7 @@ Changed location type to bar to quarterworld
       u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
       @l.update_metadata(u, description: '1' * 600)
 
-      expect(@l.description.size).to eq(549)
+      assert_equal 549, @l.description.size
     end
   end
 end
