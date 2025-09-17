@@ -327,6 +327,24 @@ describe LocationsController do
       end
     end
 
+    it 'handles missing zip or state fields' do
+      FactoryBot.create(:location, id: 63, name: 'Cleo', street: '123 Meow St', zip: '90210')
+      FactoryBot.create(:location, id: 64, name: 'Cleo', street: '123 Meow St', state: 'OR')
+      FactoryBot.create(:location, id: 65, name: 'Cleo', street: '123 Meow St')
+
+      visit '/map?by_location_id=63'
+
+      expect(page).to have_content('Cleo')
+
+      visit '/map?by_location_id=64'
+
+      expect(page).to have_content('Cleo')
+
+      visit '/map?by_location_id=65'
+
+      expect(page).to have_content('Cleo')
+    end
+
     it 'favors by_location_name when search by both by_location_id and by_location_name' do
       FactoryBot.create(:location, region: @region, name: 'Cleo')
       FactoryBot.create(:location, region: @region, name: 'Zelda')

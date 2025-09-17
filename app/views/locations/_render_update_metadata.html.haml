@@ -5,7 +5,9 @@
         =image_tag("icons/#{l.location_type.icon}.svg", :alt => "#{l.location_type.icon}")
         %span
           #{l.location_type.name}
-  - if (l.state.blank?)
+  - if (l.state.blank? && l.zip.blank?)
+    %div.address_full= [l.street, l.city].join(', ')
+  - elsif (l.state.blank?)
     %div.address_full= [l.street, l.city + " " + l.zip].join(', ')
   - elsif (l.zip.blank?)
     %div.address_full= [l.street, l.city, l.state].join(', ')
