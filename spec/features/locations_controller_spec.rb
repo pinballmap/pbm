@@ -607,6 +607,16 @@ describe LocationsController do
       expect(find('#search_results')).to_not have_content('Weakerton')
     end
 
+    it 'by_is_stern_army' do
+      FactoryBot.create(:location, city: 'McGannyville', state: 'TX', name: 'Jolene', is_stern_army: true)
+      FactoryBot.create(:location, city: 'Weakerton', state: 'OR', name: 'Plover', is_stern_army: false)
+
+      visit '/map/?by_is_stern_army=true'
+
+      expect(find('#search_results')).to have_content('McGannyville')
+      expect(find('#search_results')).to_not have_content('Weakerton')
+    end
+
     it 'by_machine_type' do
       machine1 = FactoryBot.create(:machine, name: 'Cool', machine_type: 'em')
       machine2 = FactoryBot.create(:machine, name: 'Uncool', machine_type: 'ss')
