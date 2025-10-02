@@ -41,6 +41,10 @@
       "schedule": "30 13 * * *"
     },
     {
+      "command": "rake tag_opdb_image",
+      "schedule": "45 13 * * *"
+    },
+    {
       "command": "rake delete_opted_in_empty_locations",
       "schedule": "30 22 * * 0"
     }
