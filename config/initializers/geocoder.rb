@@ -1,4 +1,12 @@
+if ENV['GEO_BUCKET']
+  transfer_manager = Aws::S3::TransferManager.new
+  transfer_manager.download_file('tmp/GeoLite2-City.mmdb', bucket: ENV['GEO_BUCKET'], key: 'maxmind/GeoLite2-City.mmdb')
+elsif !File.exist?('tmp/GeoLite2-City.mmdb')
+  exit("could not find the 'tmp/GeoLite2-City.mmdb' file")
+end
+
 Geocoder.configure(
+
   # street address geocoding service (default :nominatim)
   lookup: :google,
   api_key: ENV.fetch('GOOGLE_MAPS_API_KEY', ''),
@@ -9,12 +17,7 @@ Geocoder.configure(
 
   ip_lookup: :geoip2,
     geoip2: {
-    file:
-            if ENV['GEO_BUCKET']
-              Aws::S3::Resource.new.bucket(ENV['GEO_BUCKET']).object('maxmind/GeoLite2-City.mmdb').download_file('tmp/GeoLite2-City.mmdb') ? "tmp/GeoLite2-City.mmdb" : ''
-            else
-              'tmp/GeoLite2-City.mmdb'
-            end
+    file: 'tmp/GeoLite2-City.mmdb'
   },
   # geocoding service request timeout, in seconds (default 3):
   timeout: 20,
