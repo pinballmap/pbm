@@ -40,9 +40,7 @@ plugin :solid_queue if ENV["SOLID_QUEUE_IN_PUMA"]
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
 
-if Rails.env.production? || Rails.env.staging?
-  before_worker_boot do
-    # Re-open appenders after forking the process
-    SemanticLogger.reopen
-  end
+before_worker_boot do
+  # Re-open appenders after forking the process
+  SemanticLogger.reopen
 end
