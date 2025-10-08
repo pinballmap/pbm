@@ -11,7 +11,13 @@ Geocoder.configure(
     geoip2: {
     file:
             if ENV['GEO_BUCKET']
-              Aws::S3::Resource.new.bucket(ENV['GEO_BUCKET']).object('maxmind/GeoLite2-City.mmdb').download_file('tmp/GeoLite2-City.mmdb') ? "tmp/GeoLite2-City.mmdb" : ''
+              transfer_manager = Aws::S3::TransferManager.new
+
+              transfer_manager.download_file(
+                'tmp/GeoLite2-City.mmdb',
+                bucket: ENV['GEO_BUCKET'],
+                key: 'maxmind/GeoLite2-City.mmdb',
+              )
             else
               'tmp/GeoLite2-City.mmdb'
             end
