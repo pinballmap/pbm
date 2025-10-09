@@ -21,33 +21,35 @@ Available here: [http://pinballmap.com/api/v1/docs](http://pinballmap.com/api/v1
 
 ## Development Environment Setup
 
-1. Fork it on Github. Then:
+### 1. Fork it on Github. Then:
 * `git clone https://github.com/{you}/pbm.git`
 * `git remote add upstream git://github.com/pinballmap/pbm.git`
 
-2. Install the [correct ruby version](https://github.com/pinballmap/pbm/blob/master/.ruby-version)
+### 2. Install ruby
 
-3. Install dependencies
+* The [correct ruby version can be found here](https://github.com/pinballmap/pbm/blob/master/.ruby-version)
+
+### 3. Install dependencies
 * `gem install bundler`
 * `bundle install`
 
-**Mac**
+#### Mac
 
 * `selenium install`
 * `brew update`
 
-4. Install postgresql
+### 4. Install postgresql
 
-**Linux**
+#### Linux
 
-Install postgresql package
+* Install postgresql package
 
-**Mac**
+#### Mac
 
 * Download [Postgres App](http://postgresapp.com/)
 * `brew install postgresql`
 
-5. Setup postgres
+### 5. Setup postgres
 
 * `initdb /usr/local/var/postgres -E utf8`
 * `createuser --interactive`
@@ -56,25 +58,25 @@ Install postgresql package
 * `bin/rake db:create ; RAILS_ENV=test bin/rake db:create`
 * `bin/rake db:migrate ; RAILS_ENV=test bin/rake db:migrate`
 
-6. Download maxmind database
+### 6. Download maxmind database
 * Go to https://www.maxmind.com and create an account 
 * Under "GeoIP / GeoLite" in the navigation menu, click "Download files"
 * Find "GeoLite City" and "Download GZIP"
 * Unzip it. There will be a file called GeoLite2-City.mmdb
 * Place that file in the project folder, at 'tmp/GeoLite2-City.mmdb'
 
-7. Run the development server
+### 7. Run the development server
 * `bin/rails s`
 
-8. Run the tests
+### 8. Run the tests
 * `bundle exec rspec`
 
-9. Run the debug server
+### 9. Run the debug server
 * Start server: `bin/debug`
 * Install VSCode command line tools via command palette. From the VSCode top Menu: `View | Command Palette` then search for: `Shell Command: Install 'code' command in path`
 * Attach via VSCode debugger and set breakpoints
 
-10. Get a database dump.
+### 10. Get a database dump
 
 If the site loads properly it will be an empty version of pinballmap.com. A database dump can be obtained from [this repo](https://github.com/pinballmap/pbm-db-dump).
 
