@@ -1,7 +1,7 @@
 if ENV['GEO_BUCKET']
   transfer_manager = Aws::S3::TransferManager.new
   transfer_manager.download_file('tmp/GeoLite2-City.mmdb', bucket: ENV['GEO_BUCKET'], key: 'maxmind/GeoLite2-City.mmdb')
-elsif !File.exist?('tmp/GeoLite2-City.mmdb')
+elsif !File.exist?('tmp/GeoLite2-City.mmdb') && !Rails.env.test?
   exit("could not find the 'tmp/GeoLite2-City.mmdb' file")
 end
 
