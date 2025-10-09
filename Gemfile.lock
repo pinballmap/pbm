@@ -1,12 +1,4 @@
 GIT
-  remote: https://github.com/GabrielNagy/scout_apm_ruby.git
-  revision: de4bc9375b99bd9bcdb17835df950e8be9073565
-  ref: de4bc9375b99bd9bcdb17835df950e8be9073565
-  specs:
-    scout_apm (5.6.4)
-      parser
-
-GIT
   remote: https://github.com/gonzalo-bulnes/simple_token_authentication.git
   revision: f1cba4e3e614932ffcb6dfd2d8bf03acd64cb1ec
   ref: f1cba4e
@@ -490,6 +482,8 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    scout_apm (5.7.1)
+      parser
     securerandom (0.4.1)
     selenium-webdriver (4.35.0)
       base64 (~> 0.2)
@@ -624,7 +618,7 @@ DEPENDENCIES
   rubocop-rspec
   sanitize
   sassc-rails
-  scout_apm!
+  scout_apm (~> 5.7, >= 5.7.1)
   selenium-webdriver
   simple_token_authentication!
   simplecov
