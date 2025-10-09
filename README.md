@@ -21,6 +21,8 @@ Available here: [http://pinballmap.com/api/v1/docs](http://pinballmap.com/api/v1
 
 ## Development Environment Setup
 
+**Note:** If you run into issues, you can quickly reach us [in the discord](https://discord.gg/zK6xjyYHJf)
+
 ### 1. Fork it on Github. Then:
 * `git clone https://github.com/{you}/pbm.git`
 * `git remote add upstream git://github.com/pinballmap/pbm.git`
@@ -35,7 +37,6 @@ Available here: [http://pinballmap.com/api/v1/docs](http://pinballmap.com/api/v1
 
 #### Mac
 
-* `selenium install`
 * `brew update`
 
 ### 4. Install postgresql
