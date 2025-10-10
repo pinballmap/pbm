@@ -22,9 +22,9 @@
       %br
       #{pluralize(@machine_comments_count, "machine comment")}
       %br
-      #{pluralize(@machines_added_count, "machine")} added
+      #{pluralize(number_with_precision(@machines_added_count, precision: 0, delimiter: ","), "machine")} added
       %br
-      #{pluralize(@machines_removed_count, "machine")} removed
+      #{pluralize(number_with_precision(@machines_removed_count, precision: 0, delimiter: ","), "machine")} removed
       %br
       #{pluralize(@contact_messages_count, "contact message")}
       %br
@@ -32,4 +32,4 @@
       %br
       #{pluralize(@scores_added_count, "score")} added
     %p
-      Pinball Map is listing #{@machines_count} machines and #{@locations_count} locations
+      Pinball Map is listing #{number_with_delimiter(@machines_count, :delimiter => ",")} machines and #{number_with_delimiter(@locations_count, :delimiter => ",")} locations
