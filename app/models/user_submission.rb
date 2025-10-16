@@ -37,7 +37,7 @@ class UserSubmission < ApplicationRecord
         user.contributor_rank = "Super Mapper"
       when 251...500
         user.contributor_rank = "Legendary Mapper"
-      when 500...Float::INFINITY
+      when 501...Float::INFINITY
         user.contributor_rank = "Grand Champ Mapper"
       end
       user.save
