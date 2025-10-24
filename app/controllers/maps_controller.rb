@@ -77,7 +77,7 @@ class MapsController < ApplicationController
 
   def find_nearby
     while @locations.blank? && @near_distance < 600
-      @locations = apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.machine_count")
+      @locations = apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.name, locations.id, locations.lat, locations.lon, locations.machine_count")
       if @locations.empty?
         @near_distance += 100
       end
@@ -124,7 +124,7 @@ class MapsController < ApplicationController
     @locations_size = 0
     @machines_sum = 0
 
-    @locations = apply_scopes(Location).where(region_id: @region_id).select([ "id", "lat", "lon", "machine_count" ])
+    @locations = apply_scopes(Location).where(region_id: @region_id).select([ "name", "id", "lat", "lon", "machine_count" ])
 
     construct_geojson
 
@@ -160,7 +160,7 @@ class MapsController < ApplicationController
 
     @bounds = [ params[:boundsData][:sw][:lat], params[:boundsData][:sw][:lng], params[:boundsData][:ne][:lat], params[:boundsData][:ne][:lng] ]
 
-    @locations = apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "machine_count" ])
+    @locations = apply_scopes(Location).within_bounding_box(@bounds).select([ "name", "id", "lat", "lon", "machine_count" ])
 
     construct_geojson
 
@@ -197,6 +197,7 @@ class MapsController < ApplicationController
         properties: {
           machine_count: location.machine_count,
           id: location.id,
+          name: location.name.gsub(/'|"/, "’"),
           order: index
         },
         geometry: {
@@ -222,7 +223,7 @@ class MapsController < ApplicationController
       @nearby_lon = -122.7549
     end
     if params[:address].blank? || !params[:by_city_name].blank? || !params[:by_city_no_state].blank?
-      @locations = apply_scopes(Location).select([ "id", "lat", "lon", "machine_count" ]).uniq
+      @locations = apply_scopes(Location).select([ "name", "id", "lat", "lon", "machine_count" ]).uniq
       if @locations.blank? && !params[:by_city_name].blank?
         params.delete(:by_city_name)
         params.delete(:by_state_name)
@@ -262,7 +263,7 @@ class MapsController < ApplicationController
     @results_init = true
     @locations_size = 0
     @machines_sum = 0
-    @locations = Location.where(operator_id: params[:by_operator_id]).select([ "id", "lat", "lon", "machine_count" ])
+    @locations = Location.where(operator_id: params[:by_operator_id]).select([ "name", "id", "lat", "lon", "machine_count" ])
 
     construct_geojson
 

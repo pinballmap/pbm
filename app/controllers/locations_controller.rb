@@ -47,7 +47,7 @@ class LocationsController < ApplicationController
 
     params.delete(:by_location_id) if !params[:by_location_name].blank? && !params[:by_location_id].blank?
 
-    @locations = apply_scopes(Location).select([ "id", "lat", "lon", "machine_count" ]).uniq
+    @locations = apply_scopes(Location).select([ "id", "name", "lat", "lon", "machine_count" ]).uniq
 
     @locations_size = @locations.size
     @machines_sum = @locations.sum(&:machine_count)
@@ -59,6 +59,7 @@ class LocationsController < ApplicationController
         properties: {
           machine_count: location.machine_count,
           id: location.id,
+          name: location.name.gsub(/'|"/, "’"),
           order: index
         },
         geometry: {

@@ -320,12 +320,7 @@ function showLocations() {
     map.getCanvas().style.cursor = 'pointer';
 
     var coordinates = e.features[0].geometry.coordinates.slice();
-    var popup_count = e.features[0].properties.machine_count
-    if ( popup_count == 1 ) {
-      var description = popup_count + " machine";
-    } else {
-      var description = popup_count + " machines";
-    }
+    var description = e.features[0].properties.name;
 
     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;

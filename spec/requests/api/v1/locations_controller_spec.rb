@@ -896,7 +896,7 @@ describe Api::V1::LocationsController, type: :request do
       expect(parsed_body.size).to eq(1)
 
       locations = parsed_body['locations']
-      expect(response.body).to_not include('Close_1')
+      expect(response.body).to include('Close_1')
       expect(response.body).to include('5555')
       expect(response.body).to include('45.5261120')
       expect(response.body).to include('-122.608843')
