@@ -308,6 +308,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.10-x86_64-linux-gnu)
       racc (~> 1.4)
+    openssl (3.3.2)
     orm_adapter (0.5.0)
     ostruct (0.6.3)
     pagy (9.4.0)
@@ -594,6 +595,7 @@ DEPENDENCIES
   launchy
   listen
   maxminddb
+  openssl
   ostruct
   pagy
   paper_trail
