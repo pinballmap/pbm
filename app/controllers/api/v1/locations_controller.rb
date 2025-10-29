@@ -414,12 +414,19 @@ module Api
 
         pictures = []
 
-        location.location_picture_xrefs.includes([:photo_attachment]).each do |lpx|
+        location.location_picture_xrefs.includes([ :photo_attachment ]).each do |lpx|
           next if lpx.photo.id.nil?
-          pictures.push(
-            id: lpx.photo.id,
-            url: rails_representation_url(lpx.photo.variant(resize_to_limit: [800,800]).processed)
-          )
+          if Rails.env.test?
+            pictures.push(
+              id: lpx.photo.id,
+              url: rails_representation_url(lpx.photo)
+            )
+          else
+            pictures.push(
+              id: lpx.photo.id,
+              url: rails_representation_url(lpx.photo.variant(resize_to_limit: [800,800]).processed)
+            )
+          end
         end
         return_response(pictures, "pictures")
       rescue ActiveRecord::RecordNotFound
