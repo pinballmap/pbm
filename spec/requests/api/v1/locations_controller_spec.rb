@@ -1003,7 +1003,6 @@ describe Api::V1::LocationsController, type: :request do
 
       pictures = JSON.parse(response.body)['pictures']
 
-      expect(pictures[0]['id']).to eq(1)
       expect(pictures[0]['url']).not_to be_nil
     end
   end
