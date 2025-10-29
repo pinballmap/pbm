@@ -32,7 +32,7 @@
       %br
       #{pluralize(@machines_removed_count, "machine")} removed
     %p
-      #{@region_name} is listing #{@machines_count} machines and #{@locations_count} locations
+      #{@region_name} is listing #{number_with_delimiter(@machines_count, :delimiter => ",")} machines and #{number_with_delimiter(@locations_count, :delimiter => ",")} locations
       %br
       #{pluralize(@contact_messages_count, "contact message")}
       %br

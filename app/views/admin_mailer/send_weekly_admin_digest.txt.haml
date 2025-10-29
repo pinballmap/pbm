@@ -15,7 +15,7 @@ List of Suggested Locations:
 #{pluralize(@machines_added_count, "machine")} added
 #{pluralize(@machines_removed_count, "machine")} removed
 
-#{@region_name} is listing #{@machines_count} machines and #{@locations_count} locations
+#{@region_name} is listing #{number_with_delimiter(@machines_count, :delimiter => ",")} machines and #{number_with_delimiter(@locations_count, :delimiter => ",")} locations
 #{pluralize(@contact_messages_count, "contact message")}
 #{pluralize(@pictures_added_count, "picture")} added
 #{pluralize(@scores_added_count, "score")} added
