@@ -424,7 +424,7 @@ module Api
           else
             pictures.push(
               id: lpx.photo.id,
-              url: rails_representation_url(lpx.photo.variant(resize_to_limit: [800,800]).processed)
+              url: rails_representation_url(lpx.photo.variant(resize_to_limit: [ 800, 800 ]).processed)
             )
           end
         end
