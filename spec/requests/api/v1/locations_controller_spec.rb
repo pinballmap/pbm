@@ -982,6 +982,32 @@ describe Api::V1::LocationsController, type: :request do
     end
   end
 
+  describe '#picture_details' do
+    before(:each) do
+      Aws.config[:s3] = { stub_responses: true }
+    end
+    it 'throws an error if the location does not exist' do
+      get '/api/v1/locations/666/picture_details.json'
+
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find location')
+    end
+
+    it 'displays details of pictures at location' do
+      post '/api/v1/location_picture_xrefs.json', params: { location_id: @location.id.to_s, photo: fixture_file_upload('PPM-Splash-200.png', 'image/png'), user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', format: :js }
+
+      expect(response).to be_successful
+      expect(response.body).to include('location_picture')
+
+      get '/api/v1/locations/' + @location.id.to_s + '/picture_details.json'
+      expect(response).to be_successful
+
+      pictures = JSON.parse(response.body)['pictures']
+
+      expect(pictures[0]['id']).to eq(1)
+      expect(pictures[0]['url']).not_to be_nil
+    end
+  end
+
   describe '#machine_details' do
     it 'throws an error if the location does not exist' do
       get '/api/v1/locations/666/machine_details.json'

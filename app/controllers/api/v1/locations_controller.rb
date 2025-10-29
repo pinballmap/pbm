@@ -406,6 +406,26 @@ module Api
         return_response("Failed to find location", "errors")
       end
 
+      api :GET, "/api/v1/locations/:id/picture_details.json", "Get info about all pictures at a location"
+      param :id, Integer, desc: "Location id", required: true
+      formats [ "json" ]
+      def picture_details
+        location = Location.find(params[:id])
+
+        pictures = []
+
+        location.location_picture_xrefs.includes([:photo_attachment]).each do |lpx|
+          next if lpx.photo.id.nil?
+          pictures.push(
+            id: lpx.photo.id,
+            url: rails_representation_url(lpx.photo.variant(resize_to_limit: [800,800]).processed)
+          )
+        end
+        return_response(pictures, "pictures")
+      rescue ActiveRecord::RecordNotFound
+        return_response("Failed to find location", "errors")
+      end
+
       api :GET, "/api/v1/locations/:id/machine_details.json", "Display the details of the machines at this location"
       param :id, Integer, desc: "ID of location", required: true
       param :machines_only, Integer, desc: "Simple list of only machine names", required: false

@@ -62,6 +62,7 @@ Rails.application.routes.draw do
       resources :locations, only: [:index, :show, :update] do
         member do
           get :machine_details
+          get :picture_details
           put :confirm
         end
         collection do
