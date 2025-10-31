@@ -834,6 +834,12 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to include('Close_2')
       expect(response.body.scan('Close_2').size).to eq(1)
 
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, by_machine_id: "#{machine_two.id}_#{machine_three.id}" }
+
+      expect(response.body).to_not include('Close_1')
+      expect(response.body).to include('Close_2')
+      expect(response.body).to include('Close_3')
+
       get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, by_machine_group_id: 1001 }
 
       expect(response.body).to_not include('Close_1')

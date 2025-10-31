@@ -52,7 +52,7 @@ class Location < ApplicationRecord
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
   }
   scope :by_machine_group_id, lambda { |id|
-    machines = Machine.where("machine_group_id in (?)", id)
+    machines = Machine.where("machine_group_id in (?)", id.split("_").map(&:to_i))
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
   }
   scope :by_machine_single_id, lambda { |id|
@@ -104,15 +104,15 @@ class Location < ApplicationRecord
     where(id: fave_ids)
   }
   scope :manufacturer, lambda { |manufacturer|
-    machines = Machine.where("manufacturer = ?", manufacturer)
+    machines = Machine.where("manufacturer in (?)", manufacturer.split("_").map(&:to_s))
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
   }
   scope :by_machine_type, lambda { |machine_type|
-    machines = Machine.where("machine_type = ?", machine_type)
+    machines = Machine.where("machine_type in (?)", machine_type.split("_").map(&:to_s))
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
   }
   scope :by_machine_display, lambda { |machine_display|
-    machines = Machine.where("machine_display = ?", machine_display)
+    machines = Machine.where("machine_display in (?)", machine_display.split("_").map(&:to_s))
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
   }
 

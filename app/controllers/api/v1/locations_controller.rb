@@ -206,21 +206,23 @@ module Api
       param :nelat, String, "NE_Latitude", required: true
       param :nelon, String, "NE_Longitude", required: true
       param :by_type_id, Integer, desc: "Location type ID to search by", required: false
-      param :manufacturer, String, desc: "Locations with machines from this manufacturer", required: false
-      param :by_machine_id, Integer, desc: "Machine ID to find in locations, returns all versions in group", required: false
-      param :by_machine_single_id, Integer, desc: "Machine ID to find in locations, returns only exact version", required: false
-      param :by_machine_group_id, String, desc: "Machine Group to search for", required: false
-      param :by_machine_id_ic, Integer, desc: "Machine ID to find in locations, when Stern Insider Connected is enabled for that machine at that location. Returns locations with all variant models of the machine", required: false
-      param :by_machine_single_id_ic, Integer, desc: "Machine ID to find in locations, when Stern Insider Connected is enabled for that machine at that location. Returns locations with exact model of the machine", required: false
-      param :by_machine_year, Integer, desc: "Locations with at least one machine manufacturered in this year", required: false
+      param :manufacturer, String, desc: "Locations with machines from this manufacturer. Multiple names can be chained together with underscores.", required: false
+      param :by_machine_id, Integer, desc: "Machine ID to find in locations, returns all versions in group. Multiple IDs can be chained together with underscores.", required: false
+      param :by_machine_single_id, Integer, desc: "Machine ID to find in locations, returns only exact version. Multiple IDs can be chained together with underscores.", required: false
+      param :by_machine_group_id, String, desc: "Machine Group ID to find in locations. Multiple IDs can be chained together with underscores.", required: false
+      param :by_machine_id_ic, Integer, desc: "Machine ID to find in locations, when Stern Insider Connected is enabled for that machine at that location. Returns locations with any variant models of the machine. Multiple IDs can be chained together with underscores.", required: false
+      param :by_machine_single_id_ic, Integer, desc: "Machine ID to find in locations, when Stern Insider Connected is enabled for that machine at that location. Returns locations with exact model of the machine. Multiple IDs can be chained together with underscores.", required: false
+      param :by_machine_year, Integer, desc: "Locations with at least one machine manufacturered in this year. Multiple years can be chained together with underscores.", required: false
       param :by_operator_id, Integer, desc: "Operator ID to search by", required: false
       param :by_ic_active, :boolean, desc: "Send only locations that have at least one machine that is tagged as Stern Insider Connected", required: false
       param :user_faved, Integer, desc: "User ID of Faved Locations", required: false
+      param :by_ipdb_id, Integer, desc: "IPDB ID to find in locations. Multiple IDs can be chained together with underscores.", required: false
+      param :by_opdb_id, Integer, desc: "OPDB ID to find in locations. Multiple IDs can be chained together with underscores.", required: false
       param :by_at_least_n_machines, Integer, desc: "Only locations with N or more machines", required: false
       param :by_at_least_n_machines_type, Integer, desc: "Only locations with N or more machines", required: false
-      param :by_machine_type, String, desc: "Locations with machines of this type (em, ss, me)", required: false
-      param :by_machine_display, String, desc: "Locations with machines with this display (alphanumeric, lcd, dmd, reels, lights)", required: false
-      param :no_details, Integer, desc: "Omit data that app does not need from pull", required: false
+      param :by_machine_type, String, desc: "Locations with machines of this type (em, ss, me). Multiple types can be chained together with underscores.", required: false
+      param :by_machine_display, String, desc: "Locations with machines with this display (alphanumeric, lcd, dmd, reels, lights). Multiple display types can be chained together with underscores.", required: false
+      param :no_details, Integer, desc: "Omit data that app does not need from pull (options include '1' or '2')", required: false
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       param :order_by, String, desc: "Order results descending by a field in the locations scope. Allowed fields are updated_at, name, machine_count. Otherwise, sorts by location ID"
       formats %w[json geojson]
