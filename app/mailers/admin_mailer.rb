@@ -100,6 +100,6 @@ class AdminMailer < ApplicationMailer
     @user_agent = params[:user_agent]
     @user_info = params[:user_info]
 
-    mail(to: params[:to_users], cc: params[:cc_users], subject: params[:subject])
+    mail(to: params[:to_users], reply_to: params[:user_email], cc: params[:cc_users], subject: params[:subject])
   end
 end
