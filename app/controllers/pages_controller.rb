@@ -1,5 +1,6 @@
 class PagesController < ApplicationController
   respond_to :html, only: %i[set_activities]
+  before_action :authenticate_user!, only: %i[submitted_new_location]
   rate_limit to: 5, within: 10.minutes, only: :contact_sent
   rate_limit to: 100, within: 5.minutes, only: :recent_activity
 
@@ -101,7 +102,7 @@ limit 25")
   def submitted_new_location
     @submit_thanks = "Thanks for your submission! Please allow us 0-7 days to review and add it. No need to re-submit it or remind us (unless it's opening day!). Note that you usually won't get a message from us confirming that it's been added.".freeze
 
-    user = current_user.nil? ? nil : current_user
+    user = current_user
     send_new_location_notification(params, @region, user)
   end
 

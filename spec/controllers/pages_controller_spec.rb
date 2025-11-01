@@ -99,8 +99,16 @@ describe PagesController, type: :controller do
         FactoryBot.create(:operator, name: 'operator')
         FactoryBot.create(:zone, name: 'zone')
         FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
-        login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com'))
 
+        logout
+
+        if region == 'portland'
+          expect { post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines_ids: [ 20 ], submitter_name: 'subname', submitter_email: 'subemail' } }.to_not have_enqueued_job
+        else
+          expect { post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines_ids: [ 20 ], submitter_name: 'subname', submitter_email: 'subemail' } }.to_not have_enqueued_job
+        end
+
+        login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com'))
 
         if region == 'portland'
           expect { post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines_ids: [ 20 ], submitter_name: 'subname', submitter_email: 'subemail' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: [ 'foo@bar.com' ], cc_users: [ 'super_admin@bar.com' ], subject: 'Pinball Map - New location (Portland) - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', operator: 'operator', zone: 'zone', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995), ', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing', user_info: ' by ssw (yeah@ok.com)', user_email: 'yeah@ok.com' }, args: [] })

@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
   end
 
   def send_new_location_notification(params, region, user = nil)
-    user_info = user ? " by #{user.username} (#{user.email})" : ""
+    user_info = " by #{user.username} (#{user.email})"
 
     location_type = params["location_type"]&.is_a?(Integer) || params["location_type"]&.match?(/^[0-9]+$/) ? LocationType.find(params["location_type"]) : LocationType.find_by_name(params["location_type"])
     operator = params["location_operator"]&.is_a?(Integer) || params["location_operator"]&.match?(/^[0-9]+$/) ? Operator.find(params["location_operator"]) : Operator.find_by_name(params["location_operator"])
@@ -101,10 +101,10 @@ class ApplicationController < ActionController::Base
 
     AdminMailer.with(to_users: region ? region.users.map(&:email) : User.all.select(&:is_super_admin).map(&:email), cc_users: region ?  User.all.select(&:is_super_admin).map(&:email) : "", subject: add_host_info_to_subject("Pinball Map - New location#{region ? ' (' + region.full_name + ')' : ''} - #{params['location_name']}"), location_name: params["location_name"], location_street: params["location_street"], location_city: params["location_city"], location_state: params["location_state"], location_zip: params["location_zip"], location_country: params["location_country"], location_phone: params["location_phone"], location_website: params["location_website"], location_type: location_type ? location_type.name : "", operator: operator ? operator.name : "", zone: zone ? zone.name : "", location_comments: params["location_comments"], location_machines: machine_name_list, remote_ip: request.remote_ip, headers: request.headers["AppVersion"], user_agent: request.user_agent, user_info: user_info, user_email: user.email).send_new_location_notification.deliver_later
 
-    UserSubmission.create(region_id: region&.id, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE, submission: body, user_id: user&.id)
-    User.increment_counter(:num_locations_suggested, user&.id)
+    UserSubmission.create(region_id: region&.id, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE, submission: body, user_id: user.id)
+    User.increment_counter(:num_locations_suggested, user.id)
 
-    SuggestedLocation.create(region_id: region&.id, name: params["location_name"], street: street || params["location_street"], city: city || params["location_city"], state: state || params["location_state"], zip: zip || params["location_zip"], country: params["location_country"], phone: params["location_phone"], website: params["location_website"], location_type: location_type, operator: operator, zone: zone, comments: params["location_comments"], machines: machine_id_list, lat: lat, lon: lon, user_inputted_address: user_inputted_address, user_id: user&.id)
+    SuggestedLocation.create(region_id: region&.id, name: params["location_name"], street: street || params["location_street"], city: city || params["location_city"], state: state || params["location_state"], zip: zip || params["location_zip"], country: params["location_country"], phone: params["location_phone"], website: params["location_website"], location_type: location_type, operator: operator, zone: zone, comments: params["location_comments"], machines: machine_id_list, lat: lat, lon: lon, user_inputted_address: user_inputted_address, user_id: user.id)
   end
 
   def send_admin_notification(params, region, user = nil)
