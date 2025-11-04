@@ -27,7 +27,19 @@
   --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>) repeat;
   --filter: none;
 }
+.matchplay_dark {
+  display: none;
+}
+.matchplay_light {
+  display: block;
+}
 @media (prefers-color-scheme: dark) {
+  .matchplay_dark {
+    display: block;
+  }
+  .matchplay_light {
+    display: none;
+  }
   :root {
     --red: #f6d3fc;
     --lightpink: #47475f;
@@ -1636,25 +1648,28 @@ span.machine_year_man {
 .external_link_container {
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.external_link_inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
 }
 
 .external_machine_link {
-  margin: 10px 10px 0 10px;
-  display: flex;
-  align-items: center;
-}
-
-.external_machine_link_icon {
-  width: 12px;
-  height: 12px;
-  margin-left: 6px;
-  filter: var(--filter);
+  margin: 0px 10px;
 }
 
 .kineticist_icon {
-  width: 18px;
-  height: 18px;
+  height: 22px;
   margin-left: 6px;
+}
+
+.matchplay_icon {
+  height: 16px;
 }
 
 .backglass_container {
@@ -1677,7 +1692,7 @@ span.machine_year_man {
   justify-content: space-evenly;
   align-items: center;
   height: 50px;
-  margin-top: 10px;
+  margin-top: 20px;
   margin-bottom: 10px;
 }
 
