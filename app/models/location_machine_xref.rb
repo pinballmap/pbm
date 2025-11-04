@@ -2,7 +2,7 @@ class LocationMachineXref < ApplicationRecord
   belongs_to :location, optional: true, counter_cache: :machine_count
   belongs_to :machine, optional: true
   belongs_to :user, optional: true
-  has_many :machine_score_xrefs
+  has_many :machine_score_xrefs, -> { order "created_at desc" }
   has_many :machine_conditions, -> { order "created_at desc" }
 
   after_create :update_location, :create_user_submission
@@ -49,6 +49,10 @@ class LocationMachineXref < ApplicationRecord
 
   def sorted_machine_conditions
     machine_conditions.limited.includes([ :user ])
+  end
+
+  def sorted_machine_scores
+    machine_score_xrefs.limited.includes([ :user ])
   end
 
   def update_location

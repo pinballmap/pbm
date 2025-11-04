@@ -5,4 +5,4 @@
     - if lmx.sorted_machine_conditions.empty?
       %div.grey.center No machine comments yet
     - else
-      = render :partial => 'locations/render_machine_conditions', :locals => {:conditions => lmx.sorted_machine_conditions, :lmx => lmx}
+      = render :partial => 'location_machine_xrefs/render_machine_conditions', :locals => {:conditions => lmx.sorted_machine_conditions, :lmx => lmx}

@@ -2,7 +2,7 @@
   High Scores
 %div[lmx, :score_container]
   %div[lmx, :show_scores]
-    - if lmx.machine_score_xrefs.empty?
+    - if lmx.sorted_machine_scores.empty?
       %div.grey.center No scores yet
     - else
-      = render :partial => 'locations/render_scores', :locals => {:lmx => lmx}
+      = render :partial => 'location_machine_xrefs/render_machine_scores', :locals => {:scores => lmx.sorted_machine_scores, :lmx => lmx}

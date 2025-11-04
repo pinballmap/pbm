@@ -152,7 +152,6 @@ Rails.application.routes.draw do
       get :render_last_updated
       get :render_location_detail
       get :render_machines
-      get :render_scores
       get :render_former_machines
       get :render_recent_activity
     end
@@ -179,6 +178,7 @@ Rails.application.routes.draw do
     member do
       get :render_machine_tools
       get :render_machine_conditions
+      get :render_machine_scores
       patch :ic_toggle
     end
   end

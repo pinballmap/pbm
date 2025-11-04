@@ -1,6 +1,6 @@
 class LocationMachineXrefsController < ApplicationController
   has_scope :region
-  before_action :authenticate_user!, except: %i[index render_machine_conditions render_machine_tools]
+  before_action :authenticate_user!, except: %i[index render_machine_conditions render_machine_scores render_machine_tools]
   rate_limit to: 100, within: 10.minutes, only: :destroy
   rate_limit to: 100, within: 10.minutes, only: :update_machine_condition
 
@@ -91,7 +91,18 @@ class LocationMachineXrefsController < ApplicationController
     if @record_not_found == true
       render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
     else
-      render partial: "locations/render_machine_conditions", locals: { conditions: lmx.sorted_machine_conditions.includes([ :user ]), lmx: lmx }
+      render partial: "location_machine_xrefs/render_machine_conditions", locals: { conditions: lmx.sorted_machine_conditions.includes([ :user ]), lmx: lmx }
+    end
+  end
+
+  def render_machine_scores
+    @record_not_found = false
+    lmx = LocationMachineXref.find_by_id(params[:id]) or not_found
+
+    if @record_not_found == true
+      render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
+    else
+      render partial: "location_machine_xrefs/render_machine_scores", locals: { scores: lmx.sorted_machine_scores.includes([ :user ]), lmx: lmx }
     end
   end
 

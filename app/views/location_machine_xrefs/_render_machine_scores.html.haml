@@ -1,4 +1,4 @@
-- lmx.machine_score_xrefs.each do |msx|
+- scores.each do |msx|
   %div.high_score_new_line="#{number_with_delimiter(msx.score, :delimiter => ",")}"
   %div.high_score_meta
     - if msx.user

@@ -374,22 +374,22 @@ describe LocationMachineXrefsController do
       @machine_nolinks_lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: machine_nolinks, id: 12)
     end
 
-    it 'should show a pintips link if machine has opdb_id and kineticist link if machine has kineticist_url' do
+    it 'should show a matchplay link if machine has opdb_id and kineticist link if machine has kineticist_url' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       page.find("div#machine_tools_lmx_banner_#{@machine_links_lmx.id}").click
 
-      expect(page).to have_content('PinTips')
-      expect(page).to have_content('Kineticist')
+      expect(page).to have_css('.matchplay_icon')
+      expect(page).to have_css('.kineticist_icon')
     end
 
-    it 'should not show a pintips link if machine does not have opdb_id nor kineticist link if machine does not have kineticist_url' do
+    it 'should not show a matchplay link if machine does not have opdb_id nor kineticist link if machine does not have kineticist_url' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       page.find("div#machine_tools_lmx_banner_#{@machine_nolinks_lmx.id}").click
 
-      expect(page).to_not have_content('PinTips')
-      expect(page).to_not have_content('Kineticist')
+      expect(page).to_not have_css('.matchplay_icon')
+      expect(page).to_not have_css('.kineticist_icon')
     end
   end
 

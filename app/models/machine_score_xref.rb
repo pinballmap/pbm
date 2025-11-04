@@ -1,4 +1,6 @@
 class MachineScoreXref < ApplicationRecord
+  MAX_HISTORY_SIZE_TO_DISPLAY = 8
+
   include ActionView::Helpers::NumberHelper
   belongs_to :user, optional: true
   belongs_to :location_machine_xref, optional: true, counter_cache: true, touch: true
@@ -20,6 +22,8 @@ class MachineScoreXref < ApplicationRecord
       and locations.region_id = ?
     ", r.id)
   }
+
+  scope :limited, -> { order("created_at DESC").limit(MachineScoreXref::MAX_HISTORY_SIZE_TO_DISPLAY) }
 
   def username
     user ? user.username : ""
