@@ -15,7 +15,7 @@ describe MachineScoreXrefsController do
 
       sleep 1
 
-      expect(page).to_not have_selector("div#add_scores_lmx_banner_#{lmx.id}")
+      expect(page).to_not have_selector("div#high_score_lmx_#{lmx.id}")
     end
   end
 
@@ -31,9 +31,9 @@ describe MachineScoreXrefsController do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
-      page.find("div#add_scores_lmx_banner_#{lmx.id}").click
+      page.find("div#high_score_lmx_#{lmx.id}").click
       fill_in('score', with: 1234)
-      click_on('Add Score')
+      click_on('Save')
 
       sleep(1)
 
@@ -47,9 +47,9 @@ describe MachineScoreXrefsController do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
-      page.find("div#add_scores_lmx_banner_#{lmx.id}").click
+      page.find("div#high_score_lmx_#{lmx.id}").click
       fill_in('score', with: '1,234')
-      click_on('Add Score')
+      click_on('Save')
 
       sleep(1)
 
@@ -63,9 +63,9 @@ describe MachineScoreXrefsController do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
-      page.find("div#add_scores_lmx_banner_#{lmx.id}").click
+      page.find("div#high_score_lmx_#{lmx.id}").click
       fill_in('score', with: 'fword')
-      click_on('Add Score')
+      click_on('Save')
 
       sleep(1)
 
@@ -121,19 +121,77 @@ describe MachineScoreXrefsController do
 
       expect(page).to_not have_css('div.high_score_new_line')
 
-      page.find("div#add_scores_lmx_banner_#{lmx.id}").click
+      page.find("div#high_score_lmx_#{lmx.id}").click
       fill_in('score', with: 1234)
-      click_on('Add Score')
-
-      sleep(1)
-
-      expect(page).to have_css("div#show_scores_lmx_#{lmx.id}")
-
-      page.find("div#show_scores_lmx_#{lmx.id}").click
+      click_on('Save')
 
       sleep(1)
 
       expect(URI.parse(page.find_link('cap')['href']).to_s).to match(%r{/users/#{@user.username}/profile})
+    end
+  end
+
+  describe 'edit or delete scores', type: :feature, js: true do
+    before(:each) do
+      @lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine))
+      @user = FactoryBot.create(:user, id: 11, username: 'ssw', email: 'foo@bar.com')
+
+      login(@user)
+    end
+
+    it 'allows you to delete a high score if you were the one that entered it' do
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user: @user)
+
+      visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
+
+      expect(page).to have_selector("input[type=submit][value='delete']")
+
+      page.accept_confirm do
+        click_button 'delete'
+      end
+
+      sleep 1
+
+      @lmx.reload
+      expect(@lmx.machine_score_xrefs.size).to eq(0)
+    end
+
+    it 'will not allow you to delete a high score if you were not the one that entered it' do
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user: nil)
+
+      visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
+
+      expect(page).to_not have_selector("input[type=submit][value='delete']")
+    end
+
+    it 'allows you to update a high score if you were the one that entered it' do
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user: @user)
+
+      visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
+
+      find('a#edit_high_score_' + @lmx.machine_score_xrefs.first.id.to_s + '.button').click
+      fill_in 'score', with: 200
+
+      page.accept_confirm do
+        click_button 'Update Score'
+      end
+
+      sleep 1
+
+      @lmx.reload
+      expect(@lmx.machine_score_xrefs.first.score).to eq(200)
+    end
+
+    it 'will not allow you to update a high score if you were not the one that entered it' do
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user: nil)
+
+      visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
+
+      expect(page).to_not have_selector('a#edit_high_score_' + @lmx.machine_score_xrefs.first.id.to_s + '.button')
     end
   end
 end

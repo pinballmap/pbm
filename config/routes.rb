@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :location_types, only: [:index, :show]
       resources :machine_conditions, only: [:destroy, :update]
-      resources :machine_score_xrefs, only: [:create, :show]
+      resources :machine_score_xrefs, only: [:destroy, :update, :create, :show]
       resources :machines, only: [:index, :show]
       resources :machine_groups, only: [:index, :show]
       resources :operators, only: [:index, :show]

@@ -1,32 +1,41 @@
 %div.high_score
-  - icon_path = image_tag('icons/numeric.svg', :alt => 'Add Score Icon', :class => 'banner_icon')
   - if !user_signed_in?
     =link_to new_user_session_path, :class => "no_underline" do
-      %div.sub_nav_item.add_scores_lmx_toggle
-        =icon_path
-        %span Add high score
+      %div.add_high_score_lmx
+        =image_tag("icons/numeric.svg", :alt => "Add a Score", :class => "machine_comment_icon")
+        %div.add_condition Add high score
   - else
-    = banner('add_scores_lmx', 'Add high score', icon_path, lmx)
-    %div[lmx, :add_scores]{:style => 'display:none;', :class => 'add_scores_form mt_20'}
-      = form_tag machine_score_xrefs_path, :id => "add_high_score_#{lmx.id}", :method => 'post' do
+    %div[lmx, :high_score]
+      =image_tag("icons/numeric.svg", :alt => "Add a Score", :class => "machine_comment_icon")
+      %div.add_condition Add high score
+    %div[lmx, :add_high_score_edit]{:style => 'display:none;', :class => 'add_high_score_form mt_20'}
+      = form_tag machine_score_xrefs_path, :id => "add_high_score_lmx_#{lmx.id}", :method => 'post' do
         = hidden_field_tag :location_machine_xref_id, lmx.id
         = label_tag :score, 'Score: '
         = text_field_tag :score, nil, :placeholder => "enter your score", :class => 'score', :id => "score_#{lmx.id}"
         %br/
-        = submit_tag 'Add Score', :id => "add_score_#{lmx.id}", :class => 'add_score'
+        = submit_tag 'Save', :id => "save_high_score_#{lmx.id}", :class => "save_button"
+      = submit_tag 'Cancel', :id => "cancel_high_score_#{lmx.id}", :class => "cancel_button"
 
-      :javascript
-        document.getElementById('score_#{lmx.id}').addEventListener('input', event =>
-          event.target.value = (parseInt(event.target.value.replace(/[^\d]+/gi, '')) || 0).toLocaleString('en-US')
-        );
-        $('#add_high_score_#{lmx.id}').submit(function () {
-          $('#show_scores_lmx_#{lmx.id}').html(loadingHTML());
+    :javascript
+      document.getElementById('score_#{lmx.id}').addEventListener('input', event =>
+        event.target.value = (parseInt(event.target.value.replace(/[^\d]+/gi, '')) || 0).toLocaleString('en-US')
+      );
 
-          var form = $(this);
-          $.post(form.attr('action'), form.serialize(), function (data) {
-            $('#show_scores_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_machine_scores');
-          });
-          $('#add_high_score_#{lmx.id} #score_#{lmx.id}').val('');
+      $('#add_high_score_lmx_#{lmx.id}').submit(function () {
 
-          return false;
+        var form = $(this);
+        $.post(form.attr('action'), form.serialize(), function (data) {
+          $('#show_high_scores_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_machine_scores');
         });
+        $('#add_high_score_lmx_#{lmx.id} #score_#{lmx.id}').val('');
+        $('#add_high_score_edit_lmx_#{lmx.id}').slideToggle('slow');
+        $('#high_score_lmx_#{lmx.id}').toggle();
+
+        return false;
+      });
+
+      $('#cancel_high_score_#{lmx.id}, #high_score_lmx_#{lmx.id}').click(function () {
+        $('#add_high_score_edit_lmx_#{lmx.id}').toggle();
+        $('#high_score_lmx_#{lmx.id}').toggle();
+      });

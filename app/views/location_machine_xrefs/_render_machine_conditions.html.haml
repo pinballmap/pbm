@@ -1,12 +1,3 @@
-:javascript
-  $('#machineconditions_container_lmx#{lmx.id}').ready(function(){
-    if ('#{conditions.empty?}' == 'false'){
-      $('#machineconditions_container_lmx_#{lmx.id}').css('display', 'block');
-    }else{
-      $('#machineconditions_container_lmx_#{lmx.id}').css('display', 'none');
-    }
-  });
-
 %div.center.red.font16.pb_10.italic Machine comments may not reflect current conditions!
 
 - conditions.each do |mcx|

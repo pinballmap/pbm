@@ -1,15 +1,69 @@
 - scores.each do |msx|
-  %div.high_score_new_line="#{number_with_delimiter(msx.score, :delimiter => ",")}"
-  %div.high_score_meta
-    - if msx.user
-      = link_to msx.user.username, "#{request.scheme}://#{request.host_with_port}/users/#{msx.user.username}/profile", :class => 'bold'
-      - if !msx.user.admin_title.blank? || !msx.user.contributor_rank.blank?
-        - rank = msx.user.admin_title.present? ? msx.user.admin_title.gsub(' ', '') : msx.user.contributor_rank.gsub(' ', '')
-        %span{:class => "rank_icon_#{rank}"}
-          =image_tag("rank/#{rank}.png", :class => "rank_icon")
-      - if !msx.user.flag.blank?
-        %span{:class => "user_flag_container"}
-          =image_tag("https://flagcdn.com/24x18/#{msx.user.flag}.png", :class => "user_flag", :alt => "#{msx.user.flag} flag")
-    - else
-      DELETED USER
-    %span.high_score_date=msx.created_at ? msx.created_at.strftime("%b %d, %Y") : ''
+  %div{:id => "container_past_high_score_#{msx.id}"}
+    %div.high_score_new_line{:id => "editing_past_high_score_#{msx.id}", :style=>"display:none;"}
+      = form_tag machine_score_xref_path(id: msx.id), :id => "update_#{msx.id}", :method => 'put' do
+        = text_field_tag 'score', "#{msx.score}", :class => 'edit_mode'
+        %br/
+        = submit_tag 'Update Score', :class => 'update_high_score_submit'
+        %a.button{:id => "cancel_update_high_score_#{msx.id}"} Cancel Update
+    %div.high_score_new_line{:id => "showing_past_high_score_#{msx.id}"}
+      %span.high_score="#{number_with_delimiter(msx.score, :delimiter => ",")}"
+      .clear
+      %div.high_score_author
+        - if msx.user
+          = link_to msx.user.username, "#{request.scheme}://#{request.host_with_port}/users/#{msx.user.username}/profile", :class => 'bold'
+          - if !msx.user.admin_title.blank? || !msx.user.contributor_rank.blank?
+            - rank = msx.user.admin_title.present? ? msx.user.admin_title.gsub(' ', '') : msx.user.contributor_rank.gsub(' ', '')
+            %span{:class => "rank_icon_#{rank}"}
+              =image_tag("rank/#{rank}.png", :class => "rank_icon")
+          - if !msx.user.flag.blank?
+            %span{:class => "user_flag_container"}
+              =image_tag("https://flagcdn.com/24x18/#{msx.user.flag}.png", :class => "user_flag", :alt => "#{msx.user.flag} flag")
+        - else
+          DELETED USER
+        - if !msx.updated_at.nil?
+          %span.high_score_date= msx.updated_at.strftime("%b %d, %Y")
+          - if msx.updated_at != msx.created_at
+            %span.score_edited_asterisk *
+            %span.score_edited_tooltip
+              Score has been edited
+        - if current_user && (msx.user_id == current_user.id)
+          %a.ml_8.update_high_score_button.button{:id => "edit_high_score_#{msx.id}"} edit
+          = form_tag machine_score_xref_path(id: msx.id), :id => "remove_high_score_#{msx.id}", :method => 'delete' do
+            = submit_tag 'delete', :class => 'delete_high_score_button'
+
+        :javascript
+          $('#cancel_update_high_score_#{msx.id}').click(function () {
+            $('#editing_past_high_score_#{msx.id}').css('display', 'none')
+            $('#showing_past_high_score_#{msx.id}').css('display', 'block')
+
+            return false;
+            });
+          $('#edit_high_score_#{msx.id}').click(function () {
+            $('#editing_past_high_score_#{msx.id}').css('display', 'block')
+            $('#showing_past_high_score_#{msx.id}').css('display', 'none')
+
+            return false;
+            });
+          $('#update_#{msx.id}').submit(function () {
+              var form = $(this);
+              if (confirm("Update this score?")) {
+                $.post(form.attr('action'), form.serialize(), function (data) {
+                  $('#editing_past_high_score_#{msx.id}').css('display', 'none');
+                  $('#showing_past_high_score_#{msx.id}').css('display', 'block');
+                  $('#score_container_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_machine_scores');
+                });
+              }
+
+              return false;
+            });
+          $('#remove_high_score_#{msx.id}').submit(function () {
+              var form = $(this);
+              if (confirm("Remove this score?")) {
+                $('#showing_past_high_score_#{msx.id}').fadeOut('slow', function() {
+                  $.post(form.attr('action'), form.serialize(), function (data) {});
+                });
+              }
+
+              return false;
+            });

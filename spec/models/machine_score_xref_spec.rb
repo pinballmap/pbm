@@ -16,6 +16,40 @@ describe MachineScoreXref do
       end
     end
 
+    describe '#update' do
+      it 'correctly updates high score metadata: updates lmx if you update the most recent of many high scores' do
+        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 100)
+        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 200)
+        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 300)
+
+        hc = @lmx.machine_score_xrefs.first
+
+        expect(hc.created_at).to eq(hc.updated_at)
+        expect(hc.score).to eq(300)
+
+        hc.update({ score: 400 })
+        @lmx.reload
+
+        expect(hc.created_at).to_not eq(hc.updated_at)
+        expect(hc.score).to eq(400)
+      end
+    end
+
+    describe '#destroy' do
+      it 'correctly updates lmx condition metadata: updates lmx if you delete the most recent of many conditions' do
+        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 100)
+        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 200)
+        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 300)
+
+        expect(@lmx.machine_score_xrefs.first.score).to eq(300)
+
+        @lmx.machine_score_xrefs.first.destroy
+        @lmx.reload
+
+        expect(@lmx.machine_score_xrefs.size).to eq(2)
+      end
+    end
+
     describe '#create_user_submission' do
       it 'creates a user submission' do
         user = FactoryBot.create(:user, username: 'cibw', email: 'yeah@ok.com')

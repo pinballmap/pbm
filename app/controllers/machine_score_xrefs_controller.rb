@@ -12,7 +12,7 @@ class MachineScoreXrefsController < ApplicationController
 
     return if score.nil? || score.empty? || score.to_i.zero?
 
-    msx = MachineScoreXref.create(location_machine_xref_id: params[:location_machine_xref_id])
+    msx = MachineScoreXref.new(location_machine_xref_id: params[:location_machine_xref_id])
 
     msx.score = score
     msx.user = current_user
@@ -30,9 +30,27 @@ class MachineScoreXrefsController < ApplicationController
     end
   end
 
+  def destroy
+    user = current_user.nil? ? nil : current_user
+    msx = MachineScoreXref.find(params[:id])
+
+    msx.destroy if user && (user.id == msx.user_id)
+
+    render nothing: true
+  end
+
+  def update
+    user = current_user.nil? ? nil : current_user
+    msx = MachineScoreXref.find(params[:id])
+
+    msx.update(machine_score_xref_params) if user && (user.id == msx.user_id)
+
+    render nothing: true
+  end
+
   private
 
   def machine_score_xref_params
-    params.require(:machine_score_xref).permit(:score, :location_machine_xref_id)
+    params.permit(:score, :location_machine_xref_id)
   end
 end
