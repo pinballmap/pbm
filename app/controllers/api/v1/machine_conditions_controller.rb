@@ -6,7 +6,7 @@ module Api
       rate_limit to: 50, within: 10.minutes, only: :update
 
       api :PUT, "/api/v1/machine_conditions/:id.json", "Update attributes on a machine condition"
-      param :id, Integer, desc: "ID of machine condition", required: true
+      param :id, Integer, desc: "ID of the machine condition you want to update", required: true
       param :comment, String, desc: "Updated condition", required: true
       formats [ "json" ]
       def update
@@ -26,8 +26,7 @@ module Api
       end
 
       api :DESTROY, "/api/v1/machine_conditions/:id.json", "Destroy a single machine condition"
-      description "Destroys a single machine condition"
-      param :id, String, desc: "ID of the MachineCondition you want to destroy", required: true
+      param :id, String, desc: "ID of the machine condition you want to destroy", required: true
       def destroy
         machine_condition = MachineCondition.find(params[:id])
 

@@ -25,6 +25,14 @@ class MachineScoreXref < ApplicationRecord
 
   scope :limited, -> { order("created_at DESC").limit(MachineScoreXref::MAX_HISTORY_SIZE_TO_DISPLAY) }
 
+  def update(options = {})
+    if options[:score] && !options[:score].blank? && (score != options[:score])
+      self.score = options[:score]
+
+      save
+    end
+  end
+
   def username
     user ? user.username : ""
   end

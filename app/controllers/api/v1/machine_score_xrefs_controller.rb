@@ -17,6 +17,18 @@ module Api
         return_response(scores, "machine_score_xrefs", [], [ :username ])
       end
 
+      api :GET, "/api/v1/machine_score_xrefs/:id.json", "View all high scores for a location's machine"
+      param :id, Integer, desc: "The location machine ID, NOT the machine score ID", required: true
+      formats [ "json" ]
+      def show
+        lmx = LocationMachineXref.find(params[:id])
+
+        msxes = MachineScoreXref.where(location_machine_xref_id: lmx.id).order("score desc")
+        return_response(msxes, "machine_scores", [], [ :username ])
+      rescue ActiveRecord::RecordNotFound
+        return_response("Failed to find machine", "errors")
+      end
+
       api :POST, "/api/v1/machine_score_xrefs.json", "Enter a new high score for a machine"
       param :location_machine_xref_id, Integer, desc: "Location machine identifier for high score", required: true
       param :score, String, desc: "A pinball machine high score", required: false
@@ -28,21 +40,16 @@ module Api
 
         score = params[:score]
 
-        if score.blank?
+        if score.blank? || score.to_i.zero?
           return_response("Score can not be blank and must be a numeric value", "errors")
           return
         end
 
         score.gsub!(/[^0-9]/, "")
 
-        if score.blank? || score.to_i.zero?
-          return_response("Score can not be blank and must be a numeric value", "errors")
-          return
-        end
-
         lmx = LocationMachineXref.find(params[:location_machine_xref_id])
 
-        msx = MachineScoreXref.create(location_machine_xref_id: lmx.id)
+        msx = MachineScoreXref.new(location_machine_xref_id: lmx.id)
 
         msx.score = score
         msx.user = user
@@ -59,16 +66,42 @@ module Api
         return_response("Number is too large. Please enter a valid score.", "errors")
       end
 
-      api :GET, "/api/v1/machine_score_xrefs/:id.json", "View all high scores for a location's machine"
-      param :id, Integer, desc: "The location machine ID, NOT the machine score ID", required: true
+      api :PUT, "/api/v1/machine_score_xrefs/:id.json", "Update a high score"
+      param :id, Integer, desc: "ID of the high score you want to update", required: true
+      param :score, String, desc: "Updated score", required: true
       formats [ "json" ]
-      def show
-        lmx = LocationMachineXref.find(params[:id])
+      def update
+        high_score = MachineScoreXref.find(params[:id])
 
-        msxes = MachineScoreXref.where(location_machine_xref_id: lmx.id).order("score desc")
-        return_response(msxes, "machine_scores", [], [ :username ])
+        user = current_user.nil? ? nil : current_user
+        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
+
+        if high_score.user == user
+          high_score.update({ score: params[:score] })
+          return_response("Successfully updated high score", "high_score")
+        else
+          return_response("You can only update high scores that you own", "errors")
+        end
       rescue ActiveRecord::RecordNotFound
-        return_response("Failed to find machine", "errors")
+        return_response("Failed to find high score", "errors")
+      end
+
+      api :DESTROY, "/api/v1/machine_score_xrefs/:id.json", "Destroy a single high score"
+      param :id, String, desc: "ID of the high score you want to destroy", required: true
+      def destroy
+        high_score = MachineScoreXref.find(params[:id])
+
+        user = current_user.nil? ? nil : current_user
+        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
+
+        if high_score.user == user
+          high_score.destroy
+          return_response("Successfully removed high score", "high_score")
+        else
+          return_response("You can only delete high scores that you own", "errors")
+        end
+      rescue ActiveRecord::RecordNotFound
+        return_response("Failed to find high score", "errors")
       end
     end
   end
