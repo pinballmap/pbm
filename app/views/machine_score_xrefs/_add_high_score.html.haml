@@ -1,7 +1,7 @@
 %div.high_score
   - if !user_signed_in?
     =link_to new_user_session_path, :class => "no_underline" do
-      %div.add_high_score_lmx
+      %div.high_score_lmx
         =image_tag("icons/numeric.svg", :alt => "Add a Score", :class => "machine_comment_icon")
         %div.add_condition Add high score
   - else

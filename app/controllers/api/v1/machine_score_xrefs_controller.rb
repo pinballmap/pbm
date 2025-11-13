@@ -40,12 +40,17 @@ module Api
 
         score = params[:score]
 
-        if score.blank? || score.to_i.zero?
+        if score.blank?
           return_response("Score can not be blank and must be a numeric value", "errors")
           return
         end
 
         score.gsub!(/[^0-9]/, "")
+
+        if score.blank? || score.to_i.zero?
+          return_response("Score can not be blank and must be a numeric value", "errors")
+          return
+        end
 
         lmx = LocationMachineXref.find(params[:location_machine_xref_id])
 

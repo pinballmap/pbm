@@ -6,11 +6,11 @@ class MachineScoreXrefsController < ApplicationController
   def create
     score = params[:score]
 
-    return if score.nil? || score.empty?
+    return if score.blank?
 
     score.gsub!(/[^0-9]/, "")
 
-    return if score.nil? || score.empty? || score.to_i.zero?
+    return if score.blank? || score.to_i.zero?
 
     msx = MachineScoreXref.new(location_machine_xref_id: params[:location_machine_xref_id])
 
@@ -42,6 +42,14 @@ class MachineScoreXrefsController < ApplicationController
   def update
     user = current_user.nil? ? nil : current_user
     msx = MachineScoreXref.find(params[:id])
+
+    score = params[:score]
+
+    return if score.blank?
+
+    score.gsub!(/[^0-9]/, "")
+
+    return if score.blank? || score.to_i.zero?
 
     msx.update(machine_score_xref_params) if user && (user.id == msx.user_id)
 

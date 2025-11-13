@@ -193,5 +193,48 @@ describe MachineScoreXrefsController do
 
       expect(page).to_not have_selector('a#edit_high_score_' + @lmx.machine_score_xrefs.first.id.to_s + '.button')
     end
+
+    it 'will only allow you to update a high score with numerals' do
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user: @user)
+
+      visit '/map/?by_location_id=' + @lmx.location.id.to_s
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
+
+      find('a#edit_high_score_' + @lmx.machine_score_xrefs.first.id.to_s + '.button').click
+      fill_in 'score', with: 'words'
+
+      page.accept_confirm do
+        click_button 'Update Score'
+      end
+
+      sleep 1
+
+      @lmx.reload
+      expect(@lmx.machine_score_xrefs.first.score).to eq(100)
+
+      find('a#edit_high_score_' + @lmx.machine_score_xrefs.first.id.to_s + '.button').click
+      fill_in 'score', with: 0
+
+      page.accept_confirm do
+        click_button 'Update Score'
+      end
+
+      sleep 1
+
+      @lmx.reload
+      expect(@lmx.machine_score_xrefs.first.score).to eq(100)
+
+      find('a#edit_high_score_' + @lmx.machine_score_xrefs.first.id.to_s + '.button').click
+      fill_in 'score', with: ''
+
+      page.accept_confirm do
+        click_button 'Update Score'
+      end
+
+      sleep 1
+
+      @lmx.reload
+      expect(@lmx.machine_score_xrefs.first.score).to eq(100)
+    end
   end
 end
