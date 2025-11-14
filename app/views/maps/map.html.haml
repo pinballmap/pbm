@@ -248,19 +248,22 @@
     });
   });
 
-  // show a list of recent user actions
   $('#nearby_activity_button').bind('click', function(event, ui) {
-    savedLocations = $('#nearby_activity_container').html;
-    $('#intro_container').css('display','none');
-    $('#nearby_activity_container').html(loadingHTML());
-    let bounds = map.getBounds();
-    let boundsData = {
-      ne: bounds.getNorthEast(),
-      sw: bounds.getSouthWest()
-    };
-    $.get('/user_submissions/list_within_range', { boundsData: boundsData }, function(data, textStatus, jqxhr) {
-      $('#nearby_activity_container').html(data);
-    });
+    if ($('#nearby_activity_container').html().trim() !== '') {
+      $('#nearby_activity_container').html('');
+    } else {
+      savedLocations = $('#nearby_activity_container').html;
+      $('#intro_container').css('display','none');
+      $('#nearby_activity_container').html(loadingHTML());
+      let bounds = map.getBounds();
+      let boundsData = {
+        ne: bounds.getNorthEast(),
+        sw: bounds.getSouthWest()
+      };
+      $.get('/user_submissions/list_within_range', { boundsData: boundsData }, function(data, textStatus, jqxhr) {
+        $('#nearby_activity_container').html(data);
+      });
+    }
     return false;
   });
 
