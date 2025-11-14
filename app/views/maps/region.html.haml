@@ -47,10 +47,12 @@
     savedLocations = $('#nearby_activity_container').html;
     $('#intro_container').css('display','none');
     $('#nearby_activity_container').html(loadingHTML());
-    let coords = map.getCenter();
-    let lat = coords.lat;
-    let lng = coords.lng;
-    $.get(`/user_submissions/list_within_range?lat=${lat};lon=${lng}`, function(data, textStatus, jqxhr) {
+    let bounds = map.getBounds();
+    let boundsData = {
+      ne: bounds.getNorthEast(),
+      sw: bounds.getSouthWest()
+    };
+    $.get('/user_submissions/list_within_range', { boundsData: boundsData }, function(data, textStatus, jqxhr) {
       $('#nearby_activity_container').html(data);
     });
     return false;
@@ -59,4 +61,17 @@
   // Attach event listener to refresh button
   document.getElementById("refresh_button").addEventListener("click", function() {
     getMapBounds();
+
+    // If nearby activity is visible, refresh it with new bounds
+    if ($('#nearby_activity_container').html().trim() !== '') {
+      let bounds = map.getBounds();
+      let boundsData = {
+        ne: bounds.getNorthEast(),
+        sw: bounds.getSouthWest()
+      };
+      $('#nearby_activity_container').html(loadingHTML());
+      $.get('/user_submissions/list_within_range', { boundsData: boundsData }, function(data, textStatus, jqxhr) {
+        $('#nearby_activity_container').html(data);
+      });
+    }
   });
