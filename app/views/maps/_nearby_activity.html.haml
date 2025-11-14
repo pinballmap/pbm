@@ -1,7 +1,7 @@
 %div#nearby_activity.mt_20.mb_20
   %div.bold.flex_center{:style => 'margin: 12px 0;'}
     %span.sorted_submissions
-      #{sorted_submissions.size} recent map edit(s) within 100 miles of map center
+      #{sorted_submissions.size} recent map edit(s) within current map view
     %span.close_activity.pointer{:onclick => "closeActivity();"}
       X
   - sorted_submissions.each do |recent_activity|

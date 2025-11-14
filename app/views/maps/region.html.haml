@@ -31,6 +31,7 @@
           %p.bg_vlightpurple.radius5
             %span.red.font18.bold Message of the Day:
             = @region.html_motd
+    %div#nearby_activity_container
     #locations
       = yield :presearch_sidebar
   - if !mobile_device?
@@ -42,21 +43,38 @@
     regionMapLocations(#{@region.id});
 
 :javascript
-  // show a list of recent user actions
-  $('#nearby_activity_button').bind('click', function(event, ui) {
-    savedLocations = $('#nearby_activity_container').html;
-    $('#intro_container').css('display','none');
+  function getMapBoundsData() {
+    let bounds = map.getBounds();
+    return {
+      ne: bounds.getNorthEast(),
+      sw: bounds.getSouthWest()
+    };
+  }
+
+  function loadNearbyActivity() {
     $('#nearby_activity_container').html(loadingHTML());
-    let coords = map.getCenter();
-    let lat = coords.lat;
-    let lng = coords.lng;
-    $.get(`/user_submissions/list_within_range?lat=${lat};lon=${lng}`, function(data, textStatus, jqxhr) {
+    $.get('/user_submissions/list_within_range', { boundsData: getMapBoundsData() }, function(data, textStatus, jqxhr) {
       $('#nearby_activity_container').html(data);
     });
+  }
+
+  $('#nearby_activity_button').bind('click', function(event, ui) {
+    if ($('#nearby_activity_container').html().trim() !== '') {
+      $('#nearby_activity_container').html('');
+    } else {
+      savedLocations = $('#nearby_activity_container').html;
+      $('#intro_container').css('display','none');
+      loadNearbyActivity();
+    }
     return false;
   });
 
-  // Attach event listener to refresh button
   document.getElementById("refresh_button").addEventListener("click", function() {
+    var nearbyActivityVisible = $('#nearby_activity_container').html().trim() !== '';
+
     getMapBounds();
+
+    if (nearbyActivityVisible) {
+      loadNearbyActivity();
+    }
   });

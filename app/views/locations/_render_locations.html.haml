@@ -1,6 +1,5 @@
 - @locations.each do |l|
   %div.search_result[l]
-    %div#nearby_activity_container
     - if (@locations.size == 1 && @results_init == true)
       %div.location_detail
         = render :partial => 'locations/render_location_detail', :locals => {l: l}
