@@ -70,6 +70,7 @@
     - if (current_page?(map_path) && @map_no_params)
       #intro_container
         = render :partial => 'pages/intro'
+    %div#nearby_activity_container
     #locations
 
 - if (current_page?(map_path) && @map_no_params)
@@ -276,11 +277,11 @@
       by_machine_single_id = undefined;
     }
 
-    getMapBounds(by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id);
-    clearAddress();
+    var nearbyActivityVisible = $('#nearby_activity_container').html().trim() !== '';
 
-    // If nearby activity is visible, refresh it with new bounds
-    if ($('#nearby_activity_container').html().trim() !== '') {
+    getMapBounds(by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id);
+
+    if (nearbyActivityVisible) {
       let bounds = map.getBounds();
       let boundsData = {
         ne: bounds.getNorthEast(),

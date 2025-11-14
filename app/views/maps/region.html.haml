@@ -31,6 +31,7 @@
           %p.bg_vlightpurple.radius5
             %span.red.font18.bold Message of the Day:
             = @region.html_motd
+    %div#nearby_activity_container
     #locations
       = yield :presearch_sidebar
   - if !mobile_device?
@@ -58,12 +59,12 @@
     return false;
   });
 
-  // Attach event listener to refresh button
   document.getElementById("refresh_button").addEventListener("click", function() {
+    var nearbyActivityVisible = $('#nearby_activity_container').html().trim() !== '';
+
     getMapBounds();
 
-    // If nearby activity is visible, refresh it with new bounds
-    if ($('#nearby_activity_container').html().trim() !== '') {
+    if (nearbyActivityVisible) {
       let bounds = map.getBounds();
       let boundsData = {
         ne: bounds.getNorthEast(),
