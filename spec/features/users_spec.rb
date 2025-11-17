@@ -105,12 +105,14 @@ describe UsersController do
     end
 
     it 'adds commas to high scores' do
-      FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, id: 500, name: 'Location One'), machine: FactoryBot.create(:machine, name: 'Machine One'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a high score of 1000000 on Machine One at Location One', created_at: '2016-01-02')
+      FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, id: 500, name: 'Location One'), machine: FactoryBot.create(:machine, name: 'Machine One'), submission_type: UserSubmission::NEW_SCORE_TYPE, high_score: 1000000, submission: 'ssw added a high score of 1000000 on Machine One at Location One', created_at: '2016-01-02')
+      FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, id: 501, name: 'Location One'), machine: FactoryBot.create(:machine, name: 'Machine One'), submission_type: UserSubmission::NEW_SCORE_TYPE, high_score: 2000000, submission: 'ssw added a high score of 2000000 on Machine One at Location One', created_at: '2016-01-02', deleted_at: '2016-01-02')
 
       login
       visit "/users/#{@user.id}/profile"
 
       expect(page).to have_content("High Scores (Last 50):\nMachine One\n1,000,000\nat Location One on Jan 02, 2016")
+      expect(page).to_not have_content("High Scores (Last 50):\nMachine One\n2,000,000\nat Location One on Jan 02, 2016")
     end
 
     it 'Only lets you edit your own account' do

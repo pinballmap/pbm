@@ -706,6 +706,7 @@ RailsAdmin.config do |config|
       end
       field :user_email, :string
       field :created_at, :date
+      field :deleted_at, :datetime
     end
     show do
       field :id, :integer
@@ -715,11 +716,27 @@ RailsAdmin.config do |config|
       field :location, :belongs_to_association
       field :user, :belongs_to_association
       field :user_email, :string
+      field :location_name, :string
+      field :machine_name, :string
+      field :high_score, :integer
       field :created_at do
         date_format :long
       end
+      field :deleted_at, :datetime
     end
-    edit do; end
+    edit do
+      field :submission_type, :string
+      field :submission, :string
+      field :region, :belongs_to_association
+      field :user, :belongs_to_association
+      field :location, :belongs_to_association
+      field :comment, :string
+      field :user_name, :string
+      field :location_name, :string
+      field :machine_name, :string
+      field :high_score, :integer
+      field :deleted_at, :datetime
+    end
     create do; end
     export do; end
     update do; end

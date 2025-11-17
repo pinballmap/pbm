@@ -24,17 +24,22 @@ class MachineScoreXrefsController < ApplicationController
 
   def index
     if @region
-      @msxs = UserSubmission.where(submission_type: "new_msx", region_id: @region.id, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).limit(50).order("created_at DESC")
+      @msxs = UserSubmission.where(submission_type: "new_msx", region_id: @region.id, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day, deleted_at: nil).limit(50).order("created_at DESC")
     else
-      @msxs = UserSubmission.where(submission_type: "new_msx", created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).limit(50).order("created_at DESC")
+      @msxs = UserSubmission.where(submission_type: "new_msx", created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day, deleted_at: nil).limit(50).order("created_at DESC")
     end
   end
 
   def destroy
     user = current_user.nil? ? nil : current_user
     msx = MachineScoreXref.find(params[:id])
+    us = UserSubmission.find_by(machine_score_xref_id: msx.id)
 
-    msx.destroy if user && (user.id == msx.user_id)
+    if user && (user.id == us.user_id)
+      us.deleted_at = Time.now
+      us.save
+      msx.destroy
+    end
 
     render nothing: true
   end
@@ -42,6 +47,7 @@ class MachineScoreXrefsController < ApplicationController
   def update
     user = current_user.nil? ? nil : current_user
     msx = MachineScoreXref.find(params[:id])
+    us = UserSubmission.find_by(machine_score_xref_id: msx.id)
 
     score = params[:score]
 
@@ -51,6 +57,7 @@ class MachineScoreXrefsController < ApplicationController
 
     return if score.blank? || score.to_i.zero?
 
+    us.update(high_score: score) if user && (user.id == us.user_id)
     msx.update(machine_score_xref_params) if user && (user.id == msx.user_id)
 
     render nothing: true

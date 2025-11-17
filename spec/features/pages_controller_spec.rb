@@ -255,6 +255,8 @@ describe PagesController do
       FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
       FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_LMX_TYPE)
+
+      FactoryBot.create(:user_submission, created_at: '2025-01-04', region: @region, region_id: @region.id, location_name: 'Doughnut Haven', user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_LMX_TYPE, deleted_at: '2025-01-04')
     end
     it 'shows region activity' do
       visit '/portland/activity'
@@ -265,6 +267,7 @@ describe PagesController do
       expect(page).to_not have_content("added to Ripley's Hut")
       expect(page).to_not have_content("removed from Ripley's Hut")
       expect(page).to have_link("Clark's Depot")
+      expect(page).to_not have_content("removed from Doughtnut Haven")
     end
     it 'filters region activity' do
       visit '/portland/activity'
@@ -277,6 +280,7 @@ describe PagesController do
       expect(page).to_not have_content("added to Ripley's Hut")
       expect(page).to_not have_content("removed from Ripley's Hut")
       expect(page).to_not have_content("removed from Clark's Depot")
+      expect(page).to_not have_content("removed from Doughtnut Haven")
     end
     it 'shows global activity' do
       visit '/activity'
@@ -286,6 +290,7 @@ describe PagesController do
       expect(page).to have_content("removed from Clark's Depot")
       expect(page).to have_content("added to Ripley's Hut")
       expect(page).to have_content("removed from Ripley's Hut")
+      expect(page).to_not have_content("removed from Doughtnut Haven")
     end
     it 'filters activity' do
       visit '/activity'
@@ -297,6 +302,7 @@ describe PagesController do
       expect(page).to have_content("added to Ripley's Hut")
       expect(page).to_not have_content("removed from Ripley's Hut")
       expect(page).to_not have_content("removed from Clark's Depot")
+      expect(page).to_not have_content("removed from Doughtnut Haven")
     end
   end
 

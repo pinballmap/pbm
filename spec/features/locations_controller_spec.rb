@@ -719,6 +719,7 @@ describe LocationsController do
       FactoryBot.create(:user_submission, created_at: '2022-01-05', location: @location, user_name: 'ssw', submission_type: UserSubmission::CONFIRM_LOCATION_TYPE)
       FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user_name: 'ssw', high_score: '2222', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_SCORE_TYPE)
       FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location2, machine_name: 'Jolene Zone', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user_name: 'ssw', comment: 'hello there', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE, deleted_at: '2022-01-06')
 
       visit '/map/?by_location_id=' + @location.id.to_s
 
@@ -728,6 +729,7 @@ describe LocationsController do
       expect(find('.recent_location_activity_location')).to have_content('added')
       expect(find('.recent_location_activity_location')).to have_content('removed')
       expect(find('.recent_location_activity_location')).to_not have_content('score')
+      expect(find('.recent_location_activity_location')).to_not have_content('hello there')
       expect(find('.recent_location_activity_location')).to have_content('confirmed')
       expect(find('.recent_location_activity_location')).to have_content('be best')
       expect(find('.recent_location_activity_location')).to_not have_content('Jolene Zone')
