@@ -18,7 +18,6 @@ describe MachineScoreXrefsController, type: :controller do
 
       @msx.reload
       expect(@msx.score).to eq(400)
-      UserSubmission.all.reload
 
       submission = UserSubmission.last
 

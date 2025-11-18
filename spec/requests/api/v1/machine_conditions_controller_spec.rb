@@ -14,13 +14,14 @@ describe Api::V1::MachineConditionsController, type: :request do
     end
 
     it 'deletes when you own the machine condition' do
-      owned_condition = FactoryBot.create(:machine_condition, user: @user)
+      owned_condition = FactoryBot.create(:machine_condition, user: @user, id: 56)
 
       delete '/api/v1/machine_conditions/' + owned_condition.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['machine_condition']).to eq('Successfully removed machine condition')
       expect(MachineCondition.all.size).to eq(0)
+      expect(UserSubmission.where(machine_condition_id: 56).first.deleted_at).to_not eq(nil)
     end
 
     it 'does not delete when you do not own the machine condition' do
@@ -48,13 +49,14 @@ describe Api::V1::MachineConditionsController, type: :request do
     end
 
     it 'updates when you own the machine condition' do
-      owned_condition = FactoryBot.create(:machine_condition, user: @user, comment: 'foo')
+      owned_condition = FactoryBot.create(:machine_condition, user: @user, comment: 'foo', id: 57)
 
       put '/api/v1/machine_conditions/' + owned_condition.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', comment: 'bar' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['machine_condition']).to eq('Successfully updated machine condition')
       expect(MachineCondition.first.comment).to eq('bar')
+      expect(UserSubmission.where(machine_condition_id: 57).first.comment).to eq('bar')
     end
 
     it 'does not update when you do not own the machine condition' do

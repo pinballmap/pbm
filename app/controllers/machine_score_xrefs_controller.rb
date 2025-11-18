@@ -35,7 +35,7 @@ class MachineScoreXrefsController < ApplicationController
     msx = MachineScoreXref.find(params[:id])
     us = UserSubmission.find_by(machine_score_xref_id: msx.id)
 
-    if user && (user.id == us.user_id)
+    if user && (user.id == msx.user_id)
       us.deleted_at = Time.now
       us.save
       msx.destroy

@@ -719,6 +719,7 @@ RailsAdmin.config do |config|
       field :location_name, :string
       field :machine_name, :string
       field :high_score, :integer
+      field :comment, :string
       field :created_at do
         date_format :long
       end
