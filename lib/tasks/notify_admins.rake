@@ -61,25 +61,3 @@ rescue StandardError => e
   error = e.to_s
   ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_later
 end
-
-desc "Sends admins a daily digest of pictures added"
-task send_daily_digest_picture_added_email: :environment do
-  Region.select(&:send_digest_removal_emails).each do |r|
-    email_subject = "Pinball Map - Daily admin pictures added digest (#{r.full_name}) - #{(Date.today - 1.day).strftime('%m/%d/%Y')}"
-    email_body = r.generate_daily_digest_picture_added_email_body
-    submissions = email_body[:submissions]
-
-    next if submissions.empty?
-
-    email_to = r.users.map(&:email)
-
-    next if email_to.blank? || email_to.nil?
-
-    AdminMailer.with(email_to: email_to, email_subject: email_subject, submissions: submissions, region_name: r.full_name).send_daily_digest_picture_added_email.deliver_later
-    sleep(8)
-  end
-rescue StandardError => e
-  error_subject = "Daily picture added rake task error"
-  error = e.to_s
-  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_later
-end

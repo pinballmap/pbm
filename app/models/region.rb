@@ -132,18 +132,18 @@ class Region < ApplicationRecord
     { submissions: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_day, end_of_day, UserSubmission::NEW_CONDITION_TYPE, self).collect(&:submission) }
   end
 
-  def generate_daily_digest_picture_added_email_body
-    start_of_day = (Time.now - 1.day).beginning_of_day
-    end_of_day = (Time.now - 1.day).end_of_day
-
-    { submissions: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_day, end_of_day, UserSubmission::NEW_PICTURE_TYPE, self).collect(&:submission) }
-  end
-
   def self.generate_daily_digest_global_picture_added_email_body
     start_of_day = (Time.now - 1.day).beginning_of_day
     end_of_day = (Time.now - 1.day).end_of_day
 
     { submissions: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_day, end_of_day, UserSubmission::NEW_PICTURE_TYPE).collect(&:submission) }
+  end
+
+  def self.generate_daily_digest_global_score_added_email_body
+    start_of_day = (Time.now - 1.day).beginning_of_day
+    end_of_day = (Time.now - 1.day).end_of_day
+
+    { submissions: UserSubmission.where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_day, end_of_day, UserSubmission::NEW_SCORE_TYPE).collect(&:submission) }
   end
 
   def self.generate_daily_digest_global_removal_email_body

@@ -58,3 +58,19 @@ rescue StandardError => e
   error = e.to_s
   ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_later
 end
+
+desc "Sends super admins a daily digest of global scores added"
+task send_daily_digest_global_score_added_email: :environment do
+  global_score_added_daily_email_body = Region.generate_daily_digest_global_score_added_email_body
+  submissions = global_score_added_daily_email_body[:submissions]
+
+  unless submissions.empty?
+    User.where(is_super_admin: "Y").each do |user|
+      AdminMailer.with(user: user.email, submissions: submissions).send_daily_digest_global_score_added_email.deliver_later
+    end
+  end
+rescue StandardError => e
+  error_subject = "Daily global score added rake task error"
+  error = e.to_s
+  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_later
+end

@@ -176,25 +176,6 @@ describe Region do
     end
   end
 
-  describe '#generate_daily_digest_picture_added_email_body' do
-    it 'should return nil if there are no pictures added that day' do
-      FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_PICTURE_TYPE)
-
-      expect(@region.generate_daily_digest_picture_added_email_body[:submissions]).to be_empty
-    end
-
-    it 'should generate a string containing all pictures added from the day' do
-      FactoryBot.create(:user_submission, region: @region, submission: 'foo', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
-      FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
-
-      FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region: @region, submission: 'qux', submission_type: UserSubmission::NEW_PICTURE_TYPE)
-
-      expect(@region.generate_daily_digest_picture_added_email_body[:submissions]).to eq(%w[foo bar])
-    end
-  end
-
   describe '#generate_daily_digest_global_picture_added_email_body' do
     it 'should return nil if there are no pictures added that day' do
       FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
@@ -213,6 +194,27 @@ describe Region do
       FactoryBot.create(:user_submission, region: nil, submission: 'qux', submission_type: UserSubmission::NEW_PICTURE_TYPE)
 
       expect(Region.generate_daily_digest_global_picture_added_email_body[:submissions]).to eq(%w[foo bar bong])
+    end
+  end
+
+  describe '#generate_daily_digest_global_score_added_email_body' do
+    it 'should return nil if there are no scores added that day' do
+      FactoryBot.create(:user_submission, region: nil, submission: '111', submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: '222', submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region: nil, submission: '333', submission_type: UserSubmission::NEW_SCORE_TYPE)
+
+      expect(Region.generate_daily_digest_global_score_added_email_body[:submissions]).to be_empty
+    end
+
+    it 'should generate a string containing all scores added from the day' do
+      FactoryBot.create(:user_submission, region: nil, submission: '444', submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region: nil, submission: '555', submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission: '666', submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 1.day)
+
+      FactoryBot.create(:user_submission, region: nil, submission: '777', submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region: nil, submission: '888', submission_type: UserSubmission::NEW_SCORE_TYPE)
+
+      expect(Region.generate_daily_digest_global_score_added_email_body[:submissions]).to eq(%w[444 555 666])
     end
   end
 
