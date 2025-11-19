@@ -230,6 +230,7 @@ describe Region do
 
       FactoryBot.create(:user_submission, region: nil, submission_type: 'new_condition')
       FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'new_condition')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'new_condition', deleted_at: Date.today)
 
       location_added_today = FactoryBot.create(:location, region: nil, name: 'Location Added Today')
       FactoryBot.create(:location_machine_xref, location: location_added_today, machine: FactoryBot.create(:machine))
@@ -244,6 +245,7 @@ describe Region do
 
       FactoryBot.create(:user_submission, region: nil, submission_type: 'new_msx')
       FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'new_msx')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'new_msx', deleted_at: Date.today)
 
       FactoryBot.create(:user_submission, region: nil, submission_type: 'delete_location')
       FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'delete_location')
@@ -261,6 +263,8 @@ describe Region do
       expect(Region.generate_weekly_global_email_body[:machines_removed_count]).to eq(2)
       expect(Region.generate_weekly_global_email_body[:pictures_added_count]).to eq(2)
       expect(Region.generate_weekly_global_email_body[:scores_added_count]).to eq(2)
+      expect(Region.generate_weekly_global_email_body[:scores_deleted_count]).to eq(1)
+      expect(Region.generate_weekly_global_email_body[:machine_comments_deleted_count]).to eq(1)
     end
   end
 
