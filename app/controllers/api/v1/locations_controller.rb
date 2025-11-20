@@ -454,7 +454,6 @@ module Api
               manufacturer: m.manufacturer,
               ipdb_link: m.ipdb_link,
               ipdb_id: m.ipdb_id,
-              kineticist_url: m.kineticist_url,
               opdb_id: m.opdb_id
             )
           end

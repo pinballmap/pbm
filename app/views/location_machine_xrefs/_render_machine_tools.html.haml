@@ -1,11 +1,10 @@
 - cache [logged_in, lmx] do
   = render :partial => 'location_machine_xrefs/backglass', :locals => {:lmx => lmx}
-  - if (lmx.machine.opdb_id.present? || lmx.machine.kineticist_url.present?)
+  - if (lmx.machine.opdb_id.present?)
     %div.external_link_container
-      %p{:style => "margin-bottom: 0; padding-bottom: 2"} Find machine tips, rules, & videos on
-      %div.external_link_inner
-        = render :partial => 'location_machine_xrefs/matchplay', :locals => {:lmx => lmx}
-        = render :partial => 'location_machine_xrefs/kineticist', :locals => {:lmx => lmx}
+      %p{:style => "margin-bottom: 0; padding-bottom: 2"}
+        Find machine tips, rules, & videos on
+      = render :partial => 'location_machine_xrefs/matchplay', :locals => {:lmx => lmx}
   = render :partial => 'location_machine_xrefs/ic_button', :locals => {:lmx => lmx}
   %div.machine_comments_container
     = render :partial => 'machine_conditions/show_machine_conditions', :locals => {:lmx => lmx}, cached: true

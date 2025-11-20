@@ -367,29 +367,27 @@ describe LocationMachineXrefsController do
 
   describe 'external links', type: :feature, js: true do
     before(:each) do
-      machine_links = FactoryBot.create(:machine, name: 'Twilight Zone', id: 1, opdb_id: 666, kineticist_url: 'website.url')
+      machine_links = FactoryBot.create(:machine, name: 'Twilight Zone', id: 1, opdb_id: 666)
       machine_nolinks = FactoryBot.create(:machine, name: 'Hammer Time', id: 2)
 
       @machine_links_lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: machine_links, id: 11)
       @machine_nolinks_lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: machine_nolinks, id: 12)
     end
 
-    it 'should show a matchplay link if machine has opdb_id and kineticist link if machine has kineticist_url' do
+    it 'should show a matchplay link if machine has opdb_id ' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       page.find("div#machine_tools_lmx_banner_#{@machine_links_lmx.id}").click
 
       expect(page).to have_css('.matchplay_icon')
-      expect(page).to have_css('.kineticist_icon')
     end
 
-    it 'should not show a matchplay link if machine does not have opdb_id nor kineticist link if machine does not have kineticist_url' do
+    it 'should not show a matchplay link if machine does not have opdb_id' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       page.find("div#machine_tools_lmx_banner_#{@machine_nolinks_lmx.id}").click
 
       expect(page).to_not have_css('.matchplay_icon')
-      expect(page).to_not have_css('.kineticist_icon')
     end
   end
 
