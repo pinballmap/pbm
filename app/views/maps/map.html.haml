@@ -115,7 +115,7 @@
     document.getElementById('address').value = "";
     document.getElementById('by_city_name').value = "";
     document.getElementById('by_state_name').value = "";
-    document.getElementById('#by_city_no_state').value = "";
+    document.getElementById('by_city_no_state').value = "";
     event.target.style.display = "none";
   }
   function clearLocation(event) {
@@ -137,12 +137,12 @@
       stored_machine_id = $('#by_machine_single_id').val();
       $('#singleVersion').prop('checked', true);
     }
-    
+
     // Show exact version toggle if machine group is present
     if ($('#by_machine_group_id').val()) {
       $('#single_hide').show();
     }
-    
+
     // Show clear button if machine name is present
     if ($('#by_machine_name').val()) {
       $('#clearButton').show();
@@ -274,7 +274,7 @@
     return false;
   });
 
-  document.getElementById("refresh_button").addEventListener("click", function() {
+  document.getElementById("refresh_button").addEventListener("click", function(event) {
     by_at_least_n_machines = $('#by_at_least_n_machines').val();
     by_type_id = $('#by_type_id').val();
     $('#intro_container').css('display','none');
@@ -289,6 +289,7 @@
     var nearbyActivityVisible = $('#nearby_activity_container').html().trim() !== '';
 
     getMapBounds(by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id);
+    clearAddress(event);
 
     if (nearbyActivityVisible) {
       loadNearbyActivity();
