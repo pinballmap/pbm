@@ -714,12 +714,14 @@ RailsAdmin.config do |config|
       field :submission, :string
       field :region, :belongs_to_association
       field :location, :belongs_to_association
+      field :city_name, :string
+      field :machine_name, :string
       field :user, :belongs_to_association
       field :user_email, :string
-      field :location_name, :string
-      field :machine_name, :string
       field :high_score, :integer
+      field :machine_score_xref_id, :integer
       field :comment, :string
+      field :machine_condition_id, :integer
       field :created_at do
         date_format :long
       end
@@ -731,10 +733,9 @@ RailsAdmin.config do |config|
       field :region, :belongs_to_association
       field :user, :belongs_to_association
       field :location, :belongs_to_association
+      field :machine_name, :string
       field :comment, :string
       field :user_name, :string
-      field :location_name, :string
-      field :machine_name, :string
       field :high_score, :integer
       field :deleted_at, :datetime
     end

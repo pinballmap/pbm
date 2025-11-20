@@ -28,6 +28,7 @@ describe MachineConditionsController, type: :controller do
       expect(submission.machine).to eq(@lmx.machine)
       expect(submission.user).to eq(@user)
       expect(submission.submission_type).to eq(UserSubmission::NEW_CONDITION_TYPE)
+      expect(submission.submission).to eq('ssw commented on Test Machine Name at Test Location Name in Portland. They said: Civil War was a bad movie')
       expect(submission.comment).to eq('Civil War was a bad movie')
     end
 

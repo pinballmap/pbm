@@ -21,7 +21,8 @@ class MachineConditionsController < ApplicationController
     mcx = MachineCondition.find(params[:id])
     us = UserSubmission.find_by(machine_condition_id: mcx.id)
 
-    us.update(comment: params[:comment]) if user && (user.id == us.user_id)
+    us.update(comment: params[:comment], submission: "#{us.user_name} commented on #{us.machine_name} at #{us.location_name} in #{us.city_name}. They said: #{params[:comment]}") if user && (user.id == us.user_id)
+
     mcx.update(condition_params) if user && (user.id == mcx.user_id)
 
     render nothing: true

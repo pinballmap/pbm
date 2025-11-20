@@ -1,6 +1,7 @@
 module Api
   module V1
     class MachineScoreXrefsController < ApplicationController
+      include ActionView::Helpers::NumberHelper
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
@@ -84,7 +85,7 @@ module Api
 
         if high_score.user == user
           high_score.update({ score: params[:score] })
-          us.update({ high_score: params[:score] })
+          us.update({ high_score: params[:score], submission: "#{us.user_name} added a high score of #{number_with_precision(params[:score], precision: 0, delimiter: ',')} on #{us.machine_name} at #{us.location_name} in #{us.city_name}." })
           return_response("Successfully updated high score", "high_score")
         else
           return_response("You can only update high scores that you own", "errors")

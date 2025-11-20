@@ -1,4 +1,5 @@
 class MachineScoreXrefsController < ApplicationController
+  include ActionView::Helpers::NumberHelper
   has_scope :region
   before_action :authenticate_user!, except: %i[index]
   rate_limit to: 40, within: 5.minutes, only: :create
@@ -57,7 +58,8 @@ class MachineScoreXrefsController < ApplicationController
 
     return if score.blank? || score.to_i.zero?
 
-    us.update(high_score: score) if user && (user.id == us.user_id)
+    us.update(high_score: score, submission: "#{us.user_name} added a high score of #{number_with_precision(score, precision: 0, delimiter: ',')} on #{us.machine_name} at #{us.location_name} in #{us.city_name}.") if user && (user.id == us.user_id)
+
     msx.update(machine_score_xref_params) if user && (user.id == msx.user_id)
 
     render nothing: true
