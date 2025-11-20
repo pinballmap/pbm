@@ -150,13 +150,15 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     end
 
     it 'deletes when you own the high score' do
-      owned_high_score = FactoryBot.create(:machine_score_xref, user: @user)
+      owned_high_score = FactoryBot.create(:machine_score_xref, user: @user, id: 56)
+      FactoryBot.create(:user_submission, created_at: '2025-01-01', submission_type: UserSubmission::NEW_SCORE_TYPE, machine_score_xref_id: 56)
 
       delete '/api/v1/machine_score_xrefs/' + owned_high_score.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['high_score']).to eq('Successfully removed high score')
       expect(MachineScoreXref.all.size).to eq(2)
+      expect(UserSubmission.last.deleted_at).to_not eq(nil)
     end
 
     it 'does not delete when you do not own the high score' do
@@ -180,13 +182,15 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     end
 
     it 'updates when you own the high score' do
-      owned_high_score = FactoryBot.create(:machine_score_xref, user: @user, score: 100)
+      owned_high_score = FactoryBot.create(:machine_score_xref, user: @user, score: 100, id: 57)
+      FactoryBot.create(:user_submission, created_at: '2025-01-01', submission_type: UserSubmission::NEW_SCORE_TYPE, high_score: 100, machine_score_xref_id: 57)
 
       put '/api/v1/machine_score_xrefs/' + owned_high_score.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', score: 200 }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['high_score']).to eq('Successfully updated high score')
       expect(MachineScoreXref.last.score).to eq(200)
+      expect(UserSubmission.last.high_score).to eq(200)
     end
 
     it 'does not update when you do not own the high score' do

@@ -4,9 +4,9 @@
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
   %body
     %p 
-      Here are pictures added to your region on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
+      Here are scores added on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
     %h3
-      #{@region_name} Daily Pictures Added
+      Daily Scores Added
     - @submissions.each do |subs|
       %p 
         = subs

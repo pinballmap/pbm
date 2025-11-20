@@ -9,7 +9,7 @@
       "schedule": "0 20 * * 5"
     },
     {
-      "command": "rake send_daily_digest_picture_added_email",
+      "command": "rake send_daily_digest_global_score_added_email",
       "schedule": "0 10 * * *"
     },
     {

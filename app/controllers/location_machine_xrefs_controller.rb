@@ -108,10 +108,10 @@ class LocationMachineXrefsController < ApplicationController
 
   def index
     if @region
-      @lmxs = UserSubmission.where(submission_type: "new_lmx", region_id: @region.id, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).limit(50).order("created_at DESC")
+      @lmxs = UserSubmission.where(submission_type: "new_lmx", region_id: @region.id, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day, deleted_at: nil).limit(50).order("created_at DESC")
       @lmxs = @lmxs.where("machine_id = ?", params[:machine_id]) if params[:machine_id].present? && params[:machine_id].match?(/[0-9]+/)
     else
-      @lmxs = UserSubmission.where(submission_type: "new_lmx", created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).limit(50).order("created_at DESC")
+      @lmxs = UserSubmission.where(submission_type: "new_lmx", created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day, deleted_at: nil).limit(50).order("created_at DESC")
       @lmxs = @lmxs.where("machine_id = ?", params[:machine_id]) if params[:machine_id].present? && params[:machine_id].match?(/[0-9]+/)
     end
   end

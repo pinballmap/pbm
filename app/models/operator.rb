@@ -22,10 +22,10 @@ class Operator < ApplicationRecord
     start_of_day = (Time.now - 1.day).beginning_of_day
     end_of_day = (Time.now - 1.day).end_of_day
 
-    { machine_comments: UserSubmission.joins(:location).where("user_submissions.created_at is not null and user_submissions.created_at > ? and user_submissions.created_at < ? and submission_type = ?", start_of_day, end_of_day, UserSubmission::NEW_CONDITION_TYPE).where(location: { operator_id: self }).collect(&:submission),
+    { machine_comments: UserSubmission.joins(:location).where("user_submissions.created_at is not null and user_submissions.created_at > ? and user_submissions.created_at < ? and submission_type = ?", start_of_day, end_of_day, UserSubmission::NEW_CONDITION_TYPE).where(deleted_at: nil).where(location: { operator_id: self }).collect(&:submission),
 
-    machines_added: UserSubmission.joins(:location).where("user_submissions.created_at is not null and user_submissions.created_at > ? and user_submissions.created_at < ? and submission_type = ?", start_of_day, end_of_day, UserSubmission::NEW_LMX_TYPE).where(location: { operator_id: self }).collect(&:submission),
+    machines_added: UserSubmission.joins(:location).where("user_submissions.created_at is not null and user_submissions.created_at > ? and user_submissions.created_at < ? and submission_type = ?", start_of_day, end_of_day, UserSubmission::NEW_LMX_TYPE).where(deleted_at: nil).where(location: { operator_id: self }).collect(&:submission),
 
-    machines_removed: UserSubmission.joins(:location).where("user_submissions.created_at is not null and user_submissions.created_at > ? and user_submissions.created_at < ? and submission_type = ?", start_of_day, end_of_day, UserSubmission::REMOVE_MACHINE_TYPE).where(location: { operator_id: self }).collect(&:submission) }
+    machines_removed: UserSubmission.joins(:location).where("user_submissions.created_at is not null and user_submissions.created_at > ? and user_submissions.created_at < ? and submission_type = ?", start_of_day, end_of_day, UserSubmission::REMOVE_MACHINE_TYPE).where(deleted_at: nil).where(location: { operator_id: self }).collect(&:submission) }
   end
 end

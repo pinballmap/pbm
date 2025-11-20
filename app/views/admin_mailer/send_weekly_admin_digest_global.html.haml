@@ -31,5 +31,9 @@
       #{pluralize(@pictures_added_count, "picture")} added
       %br
       #{pluralize(@scores_added_count, "score")} added
+      %br
+      #{pluralize(@scores_deleted_count, "score")} deleted
+      %br
+      #{pluralize(@machine_comments_deleted_count, "machine comment")} deleted
     %p
       Pinball Map is listing #{number_with_delimiter(@machines_count, :delimiter => ",")} machines and #{number_with_delimiter(@locations_count, :delimiter => ",")} locations

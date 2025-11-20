@@ -21,6 +21,15 @@ describe MachineConditionsController, type: :controller do
       mc.reload
 
       expect(mc.comment).to eq('Civil War was a bad movie')
+
+      submission = UserSubmission.last
+
+      expect(submission.location).to eq(@lmx.location)
+      expect(submission.machine).to eq(@lmx.machine)
+      expect(submission.user).to eq(@user)
+      expect(submission.submission_type).to eq(UserSubmission::NEW_CONDITION_TYPE)
+      expect(submission.submission).to eq('ssw commented on Test Machine Name at Test Location Name in Portland. They said: Civil War was a bad movie')
+      expect(submission.comment).to eq('Civil War was a bad movie')
     end
 
     it 'should not update MachineConditions that you do not own' do
@@ -45,6 +54,7 @@ describe MachineConditionsController, type: :controller do
       post 'destroy', params: { id: mc.id }
 
       expect(MachineCondition.count).to eq(0)
+      expect(UserSubmission.last.deleted_at).to_not eq(nil)
     end
 
     it 'should not destroy MachineConditions that you do not own' do

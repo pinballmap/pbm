@@ -1,6 +1,7 @@
 module Api
   module V1
     class MachineScoreXrefsController < ApplicationController
+      include ActionView::Helpers::NumberHelper
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
@@ -77,12 +78,14 @@ module Api
       formats [ "json" ]
       def update
         high_score = MachineScoreXref.find(params[:id])
+        us = UserSubmission.find_by(machine_score_xref_id: high_score[:id])
 
         user = current_user.nil? ? nil : current_user
         return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
 
         if high_score.user == user
           high_score.update({ score: params[:score] })
+          us.update({ high_score: params[:score], submission: "#{us.user_name} added a high score of #{number_with_precision(params[:score], precision: 0, delimiter: ',')} on #{us.machine_name} at #{us.location_name} in #{us.city_name}." })
           return_response("Successfully updated high score", "high_score")
         else
           return_response("You can only update high scores that you own", "errors")
@@ -95,12 +98,15 @@ module Api
       param :id, String, desc: "ID of the high score you want to destroy", required: true
       def destroy
         high_score = MachineScoreXref.find(params[:id])
+        us = UserSubmission.find_by(machine_score_xref_id: high_score[:id])
 
         user = current_user.nil? ? nil : current_user
         return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
 
         if high_score.user == user
           high_score.destroy
+          us.deleted_at = Time.now
+          us.save
           return_response("Successfully removed high score", "high_score")
         else
           return_response("You can only delete high scores that you own", "errors")

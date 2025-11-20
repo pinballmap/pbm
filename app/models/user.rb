@@ -91,7 +91,7 @@ class User < ApplicationRecord
   end
 
   def profile_list_of_high_scores
-    msx_submissions = UserSubmission.where(user: self, submission_type: UserSubmission::NEW_SCORE_TYPE).order(created_at: "DESC").limit(50)
+    msx_submissions = UserSubmission.where(user: self, submission_type: UserSubmission::NEW_SCORE_TYPE, deleted_at: nil).order(created_at: "DESC").limit(50)
 
     high_score_hash = {}
     msx_submissions.each do |msx_sub|
@@ -123,7 +123,7 @@ class User < ApplicationRecord
   end
 
   def edited_location_submissions
-    UserSubmission.where(
+    UserSubmission.where(deleted_at: nil).where(
       "location_id is not null and user_id = ? and submission_type in (?,?,?,?,?,?,?,?)",
       id,
       UserSubmission::NEW_CONDITION_TYPE,

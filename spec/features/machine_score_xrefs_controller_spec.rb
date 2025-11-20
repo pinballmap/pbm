@@ -101,11 +101,13 @@ describe MachineScoreXrefsController do
       50.times do
         FactoryBot.create(:user_submission, created_at: '2025-06-01', region: @region, location: @location, location_name: @location.name, user_name: 'ssw', city_name: 'Portland', machine_name: recent_machine.name, submission_type: UserSubmission::NEW_SCORE_TYPE)
       end
+      FactoryBot.create(:user_submission, created_at: '2025-07-01', region: @region, location: @location, location_name: @location.name, user_name: 'ssw', city_name: 'Portland', machine_name: 'Argh', submission_type: UserSubmission::NEW_SCORE_TYPE, deleted_at: '2025-06-15')
 
       visit "/#{@region.name}/machine_score_xrefs.rss"
 
       expect(page.body).to have_content('Twilight Zone')
       expect(page.body).to_not have_content('Spider-Man')
+      expect(page.body).to_not have_content('Argh')
     end
   end
 
@@ -140,7 +142,8 @@ describe MachineScoreXrefsController do
     end
 
     it 'allows you to delete a high score if you were the one that entered it' do
-      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user: @user)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user: @user, id: 55)
+      FactoryBot.create(:user_submission, created_at: '2025-01-01', region: @region, location: @location, location_name: @location.name, user_id: @user.id, city_name: 'Portland', machine_name: 'Machine', submission_type: UserSubmission::NEW_SCORE_TYPE, machine_score_xref_id: 55)
 
       visit '/map/?by_location_id=' + @lmx.location.id.to_s
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
@@ -167,7 +170,8 @@ describe MachineScoreXrefsController do
     end
 
     it 'allows you to update a high score if you were the one that entered it' do
-      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user: @user)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user: @user, id: 55)
+      FactoryBot.create(:user_submission, created_at: '2025-01-01', region: @region, location: @location, location_name: @location.name, user_id: @user.id, city_name: 'Portland', machine_name: 'Machine', submission_type: UserSubmission::NEW_SCORE_TYPE, machine_score_xref_id: 55)
 
       visit '/map/?by_location_id=' + @lmx.location.id.to_s
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click

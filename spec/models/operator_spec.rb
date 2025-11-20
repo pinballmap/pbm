@@ -47,6 +47,8 @@ describe Operator do
 
       FactoryBot.create(:user_submission, created_at: (Time.now - 1.day), location: @l, submission: 'foo', submission_type: UserSubmission::NEW_LMX_TYPE)
 
+      FactoryBot.create(:user_submission, created_at: (Time.now - 1.day), location: @l, submission: 'crap', submission_type: UserSubmission::NEW_CONDITION_TYPE, deleted_at: (Time.now - 1.day))
+
       FactoryBot.create(:user_submission, created_at: (Time.now - 1.day), location: @l, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
       FactoryBot.create(:user_submission, created_at: (Time.now - 1.day), location: @l, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)

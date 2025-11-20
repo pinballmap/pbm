@@ -1311,7 +1311,10 @@ CREATE TABLE public.user_submissions (
     high_score bigint,
     city_name character varying,
     lat double precision,
-    lon double precision
+    lon double precision,
+    machine_score_xref_id integer,
+    deleted_at timestamp(6) without time zone,
+    machine_condition_id integer
 );
 
 
@@ -2681,6 +2684,9 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251117222054'),
+('20251116035657'),
+('20251114194515'),
 ('20250816041323'),
 ('20250601172559'),
 ('20250320222320'),
