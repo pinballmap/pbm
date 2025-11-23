@@ -1,0 +1,53 @@
+%div.recent_activity_container
+  %div.recent_activity_icon
+    =image_tag("icons/#{activity.submission_type}.svg", :alt => "#{activity.submission_type}", :class => '')
+  %div.recent_activity_date.font14.bold #{activity.created_at.strftime("%b %d, %Y")}
+  %div.recent_activity_submission.font14
+    - if (activity.submission_type == 'new_lmx')
+      %span.bold.red #{activity.machine_name}
+      added
+      - if show_location_link
+        to
+        %span.bold
+          =link_to "#{activity.location_name}", "/map?by_location_id=#{activity.location_id}"
+        in #{activity.city_name}
+      - if (!activity.user_name.blank?)
+        by
+        %span.bold #{activity.user_name}
+    - elsif (activity.submission_type == 'new_condition')
+      - if (activity.comment.blank?)
+        #{activity.submission}
+      - else
+        %span.inline_block.mb_8 "#{activity.comment}"
+        %br/
+        %span.bold.red #{activity.machine_name}
+        - if show_location_link
+          %div.mt_5
+            %span.bold
+              =link_to "#{activity.location_name}", "/map?by_location_id=#{activity.location_id}"
+            in #{activity.city_name}
+        - if (!activity.user_name.blank?)
+          by
+          %span.bold #{activity.user_name}
+    - elsif (activity.submission_type == 'remove_machine')
+      %span.bold.red #{activity.machine_name}
+      removed
+      - if show_location_link
+        from
+        %span.bold
+          =link_to "#{activity.location_name}", "/map?by_location_id=#{activity.location_id}"
+        in #{activity.city_name}
+      - if (!activity.user_name.blank?)
+        by
+        %span.bold #{activity.user_name}
+    - elsif (activity.submission_type == 'confirm_location')
+      Line-up confirmed
+      - if show_location_link
+        at
+        %span.bold
+          =link_to "#{activity.location_name}", "/map?by_location_id=#{activity.location_id}"
+        in #{activity.city_name}
+      - if (!activity.user_name.blank?)
+        by
+        %span.bold #{activity.user_name}
+  .activity_hr

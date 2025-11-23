@@ -29,7 +29,7 @@
 				Location Permalink
 	%div.m_10[l, :metadata]
 		= render :partial => 'locations/render_update_metadata', :locals => {:l => l}
-	- if ENV['AWS_BUCKET_NAME'] && !is_bot?
+	- if ENV['AWS_BUCKET_NAME'].present? && !is_bot?
 		%div.location_thumbs[l, :thumbs]
 			= render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
 	%div.quick_buttons

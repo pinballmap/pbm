@@ -248,6 +248,24 @@
     });
   });
 
+  $(document).on('activity-loaded', function() {
+    topFunction();
+  });
+
+  $("#nearby_activity_container").on("click", "#next_link > nav > a", function(e) {
+    e.preventDefault();
+    let url = new URL(e.target.href);
+    let page = url.searchParams.get("page") || "";
+
+    $('#nearby_activity_container').html(loadingHTML());
+    $.get('/user_submissions/list_within_range', {
+      boundsData: getMapBoundsData(),
+      page: page
+    }, function(data) {
+      $('#nearby_activity_container').html(data);
+    });
+  });
+
   function getMapBoundsData() {
     let bounds = map.getBounds();
     return {

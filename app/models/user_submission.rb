@@ -12,6 +12,21 @@ class UserSubmission < ApplicationRecord
 
   scope :region, ->(name) { where(region_id: Region.find_by_name(name.downcase).id) }
 
+  # Activity feed scopes
+  ACTIVITY_SUBMISSION_TYPES = %w[new_lmx remove_machine new_condition confirm_location].freeze
+  ACTIVITY_START_DATE = "2019-05-03T07:00:00.00-07:00".freeze
+
+  scope :activity_feed, lambda {
+    where(
+      submission_type: ACTIVITY_SUBMISSION_TYPES,
+      created_at: ACTIVITY_START_DATE..Date.today.end_of_day,
+      deleted_at: nil
+    ).order("created_at DESC")
+  }
+
+  scope :at_location, ->(location) { where(location_id: location) }
+  scope :with_coordinates, -> { where.not(lat: nil) }
+
   NEW_LMX_TYPE = "new_lmx".freeze
   CONTACT_US_TYPE = "contact_us".freeze
   NEW_CONDITION_TYPE = "new_condition".freeze
