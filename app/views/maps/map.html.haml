@@ -252,19 +252,70 @@
     topFunction();
   });
 
+  $(document).on('activity-loaded', function() {
+    restoreActivityFilters();
+  });
+
+  $(document).on('submit', '#nearby_activity_filter', function(e) {
+    e.preventDefault();
+    saveActivityFilters();
+    loadNearbyActivityWithFilters();
+  });
+
+  $(document).on('change', '#nearby_activity_filter input[type="checkbox"]', function() {
+    saveActivityFilters();
+  });
+
   $("#nearby_activity_container").on("click", "#next_link > nav > a", function(e) {
     e.preventDefault();
     let url = new URL(e.target.href);
     let page = url.searchParams.get("page") || "";
+    loadNearbyActivityWithFilters(page);
+  });
+
+  function saveActivityFilters() {
+    let filters = [];
+    $("#nearby_activity_container input:checkbox[name='submission_type[]']:checked").each(function () {
+      filters.push(this.value);
+    });
+    localStorage.setItem('nearbyActivityFilters', JSON.stringify(filters));
+  }
+
+  function restoreActivityFilters() {
+    let savedFilters = localStorage.getItem('nearbyActivityFilters');
+    if (savedFilters) {
+      let filters = JSON.parse(savedFilters);
+      $("#nearby_activity_container input:checkbox[name='submission_type[]']").each(function() {
+        this.checked = filters.includes(this.value);
+      });
+    }
+  }
+
+  function loadNearbyActivityWithFilters(page = "") {
+    let submissionTypes = [];
+    $("#nearby_activity_container input:checkbox[name='submission_type[]']:checked").each(function () {
+      submissionTypes.push(this.value);
+    });
+
+    let requestData = {
+      boundsData: getMapBoundsData(),
+      submission_type: submissionTypes
+    };
+
+    if (page) {
+      requestData.page = page;
+    }
 
     $('#nearby_activity_container').html(loadingHTML());
-    $.get('/user_submissions/list_within_range', {
-      boundsData: getMapBoundsData(),
-      page: page
-    }, function(data) {
-      $('#nearby_activity_container').html(data);
+    $.ajax({
+      url: '/user_submissions/list_within_range',
+      type: 'POST',
+      data: requestData,
+      success: function(data) {
+        $('#nearby_activity_container').html(data);
+      }
     });
-  });
+  }
 
   function getMapBoundsData() {
     let bounds = map.getBounds();
@@ -275,10 +326,7 @@
   }
 
   function loadNearbyActivity() {
-    $('#nearby_activity_container').html(loadingHTML());
-    $.get('/user_submissions/list_within_range', { boundsData: getMapBoundsData() }, function(data, textStatus, jqxhr) {
-      $('#nearby_activity_container').html(data);
-    });
+    loadNearbyActivityWithFilters();
   }
 
   $('#nearby_activity_button').bind('click', function(event, ui) {

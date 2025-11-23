@@ -2747,6 +2747,73 @@ input.score {
   text-align: left;
 }
 
+.activity_filter_dropdown {
+  margin: 12px 0;
+  padding: 0 32px;
+
+  summary {
+    cursor: pointer;
+    font-size: 14px;
+    padding: 8px;
+    user-select: none;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.activity_filter_option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin: 4px 0;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  .filter_icon {
+    width: 20px;
+    height: 20px;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+  }
+
+  span {
+    font-size: 14px;
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  input[type="checkbox"]:checked ~ .filter_icon,
+  input[type="checkbox"]:checked + .filter_icon {
+    opacity: 1;
+  }
+
+  input[type="checkbox"]:checked ~ span {
+    font-weight: 600;
+  }
+
+  &:has(input[type="checkbox"]:checked) {
+    background-color: var(--lightpurple);
+
+    .filter_icon {
+      opacity: 1;
+    }
+
+    span {
+      font-weight: 600;
+    }
+  }
+}
+
 #activity_filter {
   display: flex;
   flex-wrap: wrap;

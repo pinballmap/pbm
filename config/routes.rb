@@ -206,6 +206,7 @@ Rails.application.routes.draw do
   end
 
   get 'user_submissions/list_within_range' => 'user_submissions#list_within_range'
+  post 'user_submissions/list_within_range' => 'user_submissions#list_within_range'
 
   get 'inspire_profile' => 'pages#inspire_profile'
   get 'pages/home'

@@ -4,8 +4,15 @@ class UserSubmissionsController < ApplicationController
   def list_within_range
     bounds = [ params[:boundsData][:sw][:lat], params[:boundsData][:sw][:lng],
                params[:boundsData][:ne][:lat], params[:boundsData][:ne][:lng] ]
+
+    submission_type = if params[:submission_type].present?
+                        params[:submission_type]
+    else
+                        %w[new_lmx remove_machine new_condition confirm_location]
+    end
+
     user_submissions = UserSubmission.where.not(lat: nil)
-                                     .where(submission_type: %w[new_lmx remove_machine new_condition confirm_location], created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day, deleted_at: nil)
+                                     .where(submission_type: submission_type, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day, deleted_at: nil)
                                      .within_bounding_box(bounds)
                                      .order("created_at DESC")
                                      .limit(2000)
