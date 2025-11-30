@@ -27,7 +27,7 @@ class LocationMachineXrefsController < ApplicationController
     location.last_updated_by_user_id = user.id
     location.save(validate: false)
 
-    lmx = LocationMachineXref.unscoped.where([ "location_id = ? and machine_id = ?", location.id, machine.id ]).where.not(deleted_at: nil).where(deleted_at: 7.days.ago..Time.current).last
+    lmx = LocationMachineXref.unscoped.where([ "location_id = ? and machine_id = ?", location.id, machine.id ]).where.not(deleted_at: nil).where(deleted_at: 7.days.ago..Time.current).order(updated_at: :desc).first
 
     if lmx
       lmx.deleted_at = nil

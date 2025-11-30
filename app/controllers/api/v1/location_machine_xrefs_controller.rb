@@ -50,7 +50,7 @@ module Api
 
         return return_response("Failed to find machine", "errors") if machine_id.zero? || location_id.zero? || !Machine.exists?(machine_id) || !Location.exists?(location_id)
 
-        lmx = LocationMachineXref.unscoped.where([ "location_id = ? and machine_id = ?", location_id, machine_id ]).where.not(deleted_at: nil).where(deleted_at: 7.days.ago..Time.current).last
+        lmx = LocationMachineXref.unscoped.where([ "location_id = ? and machine_id = ?", location_id, machine_id ]).where.not(deleted_at: nil).where(deleted_at: 7.days.ago..Time.current).order(updated_at: :desc).first
 
         if lmx
           lmx.deleted_at = nil
