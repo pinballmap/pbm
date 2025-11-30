@@ -5,7 +5,7 @@ class MachineScoreXref < ApplicationRecord
 
   include ActionView::Helpers::NumberHelper
   belongs_to :user, optional: true
-  belongs_to :location_machine_xref, optional: true, counter_cache: true, touch: true
+  belongs_to :location_machine_xref, optional: true, touch: true
   has_one :location, through: :location_machine_xref
   has_one :machine, through: :location_machine_xref
   strip_attributes
