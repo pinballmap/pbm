@@ -57,6 +57,82 @@ describe LocationMachineXrefsController do
       end
     end
 
+    it 'Should re-add a soft-deleted lmx that was removed within 7 days ago and include scores and conditions' do
+      region = region ? @region : nil
+      location = FactoryBot.create(:location, id: 11, region: region)
+      lmx = FactoryBot.create(:location_machine_xref, location: location, machine: @machine_to_add, id: 6660)
+      lmx.update_condition('great', { user_id: @user.id })
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, score: 3000, user: @user)
+
+      visit "/#{region ? region.name : 'map'}/?by_location_id=#{location.id}"
+
+      sleep 1
+
+      page.accept_confirm do
+        click_button 'Remove'
+      end
+
+      sleep 1
+
+      expect(location.reload.machine_count).to eq(0)
+
+      find("#add_machine_location_banner_#{location.id}").click
+      fill_in('add_machine_by_name_11', with: @machine_to_add.name)
+      click_on 'add'
+
+      sleep 1
+
+      page.find("div.machine_tools_lmx_toggle").click
+
+      sleep 1
+
+      expect(location.reload.machine_count).to eq(1)
+      expect(location.machines.first).to eq(@machine_to_add)
+      expect(location.location_machine_xrefs.first.id).to eq(6660)
+      expect(page.body).to have_content('great')
+      expect(page.body).to have_content('3,000')
+    end
+
+    it 'Should not re-add a soft-deleted lmx that was removed more than 7 days' do
+      region = region ? @region : nil
+      location = FactoryBot.create(:location, id: 11, region: region)
+      lmx = FactoryBot.create(:location_machine_xref, location: location, machine: @machine_to_add, id: 6660)
+      lmx.update_condition('great', { user_id: @user.id })
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, score: 3000, user: @user)
+
+      visit "/#{region ? region.name : 'map'}/?by_location_id=#{location.id}"
+
+      sleep 1
+
+      page.accept_confirm do
+        click_button 'Remove'
+      end
+
+      sleep 1
+
+      expect(location.reload.machine_count).to eq(0)
+
+      lmx.deleted_at = Time.current - 20.days
+      lmx.save
+
+      puts "lmx deleted_at #{lmx.deleted_at}"
+      find("#add_machine_location_banner_#{location.id}").click
+      fill_in('add_machine_by_name_11', with: @machine_to_add.name)
+      click_on 'add'
+
+      sleep 1
+
+      page.find("div.machine_tools_lmx_toggle").click
+
+      sleep 1
+
+      expect(location.reload.machine_count).to eq(1)
+      expect(location.machines.first).to eq(@machine_to_add)
+      expect(location.location_machine_xrefs.first.id).to_not eq(6660)
+      expect(page.body).to_not have_content('great')
+      expect(page.body).to_not have_content('3,000')
+    end
+
     it 'Should add by name of existing machine' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 

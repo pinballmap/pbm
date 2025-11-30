@@ -332,7 +332,8 @@ CREATE TABLE public.location_machine_xrefs (
     machine_id integer,
     user_id integer,
     machine_score_xrefs_count integer,
-    ic_enabled boolean
+    ic_enabled boolean,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2684,6 +2685,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251122235355'),
 ('20251117222054'),
 ('20251116035657'),
 ('20251114194515'),

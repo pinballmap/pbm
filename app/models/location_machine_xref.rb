@@ -5,6 +5,8 @@ class LocationMachineXref < ApplicationRecord
   has_many :machine_score_xrefs, -> { order "created_at desc" }
   has_many :machine_conditions, -> { order "created_at desc" }
 
+  default_scope { where(deleted_at: nil) }
+
   after_create :update_location, :create_user_submission
 
   scope :region, lambda { |name|
@@ -67,7 +69,7 @@ class LocationMachineXref < ApplicationRecord
     location.save(validate: false)
   end
 
-  def destroy(options = {})
+  def destroy(options = {}, force: false)
     user = nil
     user = User.find(options[:user_id]) if options[:user_id]
     submission = "#{machine.name_and_year} was removed from #{location.name} in #{location.city}#{user.nil? ? '' : ' by ' + user.name}"
@@ -75,6 +77,11 @@ class LocationMachineXref < ApplicationRecord
     UserSubmission.create(user_name: user&.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: submission, user: user)
     Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
 
+    if location.location_machine_xrefs.where(ic_enabled: true).empty?
+      location.ic_active = false
+    end
+
+    Location.decrement_counter(:machine_count, location.id) unless force
     location.date_last_updated = Date.today
     location.last_updated_by_user_id = user.nil? ? nil : user.id
     location.save(validate: false)
@@ -83,7 +90,7 @@ class LocationMachineXref < ApplicationRecord
     location.users_count = UserSubmission.where(location_id: location.id).count("DISTINCT user_id")
     location.save(validate: false)
 
-    super()
+    super() if force
   end
 
   def create_user_submission

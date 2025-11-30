@@ -404,6 +404,7 @@ describe Api::V1::LocationsController, type: :request do
       FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Cleo'))
       FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Bawb'))
       FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Sassy'))
+      FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Deleted Pro'), deleted_at: Time.current)
 
       get '/api/v1/locations/closest_by_address.json', params: { address: '97202' }
 
@@ -1023,10 +1024,13 @@ describe Api::V1::LocationsController, type: :request do
     it 'displays details of machines at location' do
       FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 123, name: 'Cleo', year: 1980, manufacturer: 'Stern', ipdb_link: 'http://www.foo.com', ipdb_id: nil))
       FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 456, name: 'Sass', year: 1960, manufacturer: 'Bally', ipdb_link: 'http://www.bar.com', ipdb_id: 123))
+      FactoryBot.create(:location_machine_xref, deleted_at: Time.current, location: @location, machine: FactoryBot.create(:machine, id: 234, name: 'Deleted Pro', year: 1960, manufacturer: 'Bally', ipdb_link: 'http://www.bar.com', ipdb_id: 234))
       get '/api/v1/locations/' + @location.id.to_s + '/machine_details.json'
       expect(response).to be_successful
 
       machines = JSON.parse(response.body)['machines']
+
+      expect(machines.size).to eq(2)
 
       expect(machines[0]['id']).to eq(123)
       expect(machines[0]['name']).to eq('Cleo')
@@ -1105,6 +1109,7 @@ describe Api::V1::LocationsController, type: :request do
       lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 7777, name: 'Cleo'))
       FactoryBot.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'foo bar')
       FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, score: 567_890)
+      FactoryBot.create(:location_machine_xref, deleted_at: Time.current, location: @location, machine: FactoryBot.create(:machine, id: 8888, name: 'Deleted Pro'))
     end
 
     it 'returns all locations within region scope along with lmx data' do
@@ -1137,6 +1142,7 @@ describe Api::V1::LocationsController, type: :request do
 
       expect(response.body).to include('Satchmo')
       expect(response.body).to include('Cleo')
+      expect(response.body).to_not include('Deleted Pro')
       expect(response.body).to_not include('7777')
       expect(response.body).to_not include('foo bar')
       expect(response.body).to_not include('567890')

@@ -27,8 +27,17 @@ class LocationMachineXrefsController < ApplicationController
     location.last_updated_by_user_id = user.id
     location.save(validate: false)
 
-    LocationMachineXref.where([ "location_id = ? and machine_id = ?", location.id, machine.id ]).first ||
-      LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user.id)
+    lmx = LocationMachineXref.unscoped.where([ "location_id = ? and machine_id = ?", location.id, machine.id ]).where.not(deleted_at: nil).where(deleted_at: 7.days.ago..Time.current).last
+
+    if lmx
+      lmx.deleted_at = nil
+      lmx.save
+      Location.increment_counter(:machine_count, location.id)
+      lmx.create_user_submission
+    else
+      LocationMachineXref.where([ "location_id = ? and machine_id = ?", location.id, machine.id ]).where(deleted_at: nil).first ||
+        LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user.id)
+    end
   end
 
   def destroy
@@ -36,14 +45,10 @@ class LocationMachineXrefsController < ApplicationController
 
     user_id = current_user&.id
 
-    lmx.ic_enabled = false
+    lmx.deleted_at = Time.now
     lmx.save
-    if lmx.location.location_machine_xrefs.where(ic_enabled: true).empty?
-      lmx.location.ic_active = false
-      lmx.location.save
-    end
 
-    lmx.destroy(remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: user_id) unless lmx&.nil?
+    lmx.destroy({ user_id: user_id }) unless lmx&.nil?
 
     render nothing: true
   end
@@ -57,7 +62,7 @@ class LocationMachineXrefsController < ApplicationController
     if condition.match?(/<a href/)
       lmx
     else
-      lmx.update_condition(condition, remote_ip: request.remote_ip, request_host: request.host, user_agent: request.user_agent, user_id: current_user&.id)
+      lmx.update_condition(condition, user_id: current_user&.id)
       lmx.location.date_last_updated = Date.today
       lmx.location.last_updated_by_user_id = current_user&.id
       lmx.location.save(validate: false)

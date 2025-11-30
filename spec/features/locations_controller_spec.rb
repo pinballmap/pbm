@@ -184,6 +184,7 @@ describe LocationsController do
         sleep 1
 
         expect(LocationMachineXref.all).to eq([])
+        expect(LocationMachineXref.unscoped.all.size).to eq(1)
         expect(location.reload.date_last_updated).to eq(Date.today)
         expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')}")
 
@@ -314,6 +315,7 @@ describe LocationsController do
       5.times do |index|
         FactoryBot.create(:location_machine_xref, machine: FactoryBot.create(:machine, id: 1311 + index, name: 'machine ' + index.to_s), location: cleo)
       end
+      FactoryBot.create(:location_machine_xref, deleted_at: Time.current, machine: FactoryBot.create(:machine, id: 11400, name: 'machine bro'), location: cleo)
 
       visit '/portland'
 

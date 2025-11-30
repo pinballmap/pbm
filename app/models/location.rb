@@ -119,7 +119,10 @@ class Location < ApplicationRecord
     Event.where(location_id: record.id).destroy_all
     LocationPictureXref.where(location_id: record.id).destroy_all
     MachineScoreXref.where("location_machine_xref_id in (select id from location_machine_xrefs where location_id = #{record.id})").destroy_all
-    LocationMachineXref.where(location_id: record.id).destroy_all
+    lmxs_to_delete = LocationMachineXref.unscoped.where(location_id: record.id)
+    lmxs_to_delete.each do |lmx|
+      lmx.destroy(force: true)
+    end
     UserFaveLocation.where(location_id: record.id).destroy_all
 
     UserSubmission.create(region_id: region&.id, location: self, submission_type: UserSubmission::DELETE_LOCATION_TYPE, submission: "Deleted #{name} (#{id})")

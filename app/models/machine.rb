@@ -16,7 +16,10 @@ class Machine < ApplicationRecord
 
   before_destroy do |record|
     MachineScoreXref.where("location_machine_xref_id in (select id from location_machine_xrefs where machine_id = #{record.id})").destroy_all
-    LocationMachineXref.where(machine_id: record.id).destroy_all
+    lmxs_to_delete = LocationMachineXref.unscoped.where(machine_id: record.id)
+    lmxs_to_delete.each do |lmx|
+      lmx.destroy(force: true)
+    end
     Status.where(status_type: "machines").update({ updated_at: Time.current })
   end
 

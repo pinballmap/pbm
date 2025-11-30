@@ -29,6 +29,8 @@ module Api
       def show
         lmx = LocationMachineXref.includes({ machine_conditions: :user }, :machine_score_xrefs).find(params[:id])
         return_response(lmx, "location_machine", [], %i[last_updated_by_username machine_conditions machine_score_xrefs])
+      rescue ActiveRecord::RecordNotFound
+        return_response("Failed to find machine", "errors")
       end
 
       api :POST, "/api/v1/location_machine_xrefs.json", "Find or create a machine at a location"
@@ -48,19 +50,24 @@ module Api
 
         return return_response("Failed to find machine", "errors") if machine_id.zero? || location_id.zero? || !Machine.exists?(machine_id) || !Location.exists?(location_id)
 
-        lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine_id)
+        lmx = LocationMachineXref.unscoped.where([ "location_id = ? and machine_id = ?", location_id, machine_id ]).where.not(deleted_at: nil).where(deleted_at: 7.days.ago..Time.current).last
 
-        if lmx.nil?
-          status_code = 201
-          lmx = LocationMachineXref.create(location_id: location_id, machine_id: machine_id, user_id: user&.id)
+        if lmx
+          lmx.deleted_at = nil
+          lmx.save
+          Location.increment_counter(:machine_count, location_id)
+          lmx.create_user_submission
+        else
+          lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine_id)
+          if lmx.nil?
+            status_code = 201
+            lmx = LocationMachineXref.create(location_id: location_id, machine_id: machine_id, user_id: user&.id)
+          end
         end
 
         if condition
           lmx.update_condition(
             condition,
-            remote_ip: request.remote_ip,
-            request_host: request.host,
-            user_agent: request.user_agent,
             user_id: user&.id
           )
         end
@@ -80,9 +87,6 @@ module Api
 
         lmx.update_condition(
           params[:condition],
-          remote_ip: request.remote_ip,
-          request_host: request.host,
-          user_agent: request.user_agent,
           user_id: user&.id
         )
 
@@ -100,12 +104,10 @@ module Api
 
         return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
 
-        lmx.destroy(
-          remote_ip: request.remote_ip,
-          request_host: request.host,
-          user_agent: request.user_agent,
-          user_id: user&.id
-        )
+        lmx.deleted_at = Time.now
+        lmx.save
+
+        lmx.destroy({ user_id: user&.id })
 
         return_response("Successfully deleted lmx #" + lmx.id.to_s, "msg")
       rescue ActiveRecord::RecordNotFound

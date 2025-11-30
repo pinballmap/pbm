@@ -12,28 +12,18 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
   end
 
   describe '#delete' do
-    it 'deletes an lmx' do
+    it 'soft-deletes an lmx' do
       delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(response.status).to eq(200)
 
       expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
-      expect(LocationMachineXref.all.size).to eq(0)
+      expect(LocationMachineXref.where(deleted_at: nil).all.size).to eq(0)
+      expect(LocationMachineXref.unscoped.where.not(deleted_at: nil).all.size).to eq(1)
     end
 
     it 'creates a user submission for the deletion' do
       delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(response).to be_successful
-
-      expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
-
-      submission = Region.find(@lmx.location.region_id).user_submissions.second
-      expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
-      expect(submission.submission).to eq('Cleo was removed from Ground Kontrol in Portland by ssw')
-    end
-
-    it 'creates a user submission for the deletion - authed' do
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
@@ -62,9 +52,12 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
   end
 
   describe '#index' do
-    it 'sends all lmxes in region' do
+    it 'sends all lmxes in region and excludes soft-deleted lmxes' do
       chicago = FactoryBot.create(:region, id: 11, name: 'chicago')
       FactoryBot.create(:location_machine_xref, machine: @machine, location: FactoryBot.create(:location, id: 11, name: 'Chicago Location', region: chicago))
+      machine2 = FactoryBot.create(:machine, id: 3, name: 'Sass')
+
+      FactoryBot.create(:location_machine_xref, machine: machine2, deleted_at: Time.current, location: FactoryBot.create(:location, id: 12, name: 'Chicago Location 2', region: chicago))
 
       get '/api/v1/region/portland/location_machine_xrefs.json'
       expect(response).to be_successful
@@ -138,13 +131,73 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(LocationMachineXref.all.size).to eq(1)
     end
 
-    it 'creates new lmx when appropriate - authed' do
-      new_machine = FactoryBot.create(:machine, id: 22, name: 'sass')
+    it 'does not let you add two of the same machine' do
+    end
 
-      post '/api/v1/location_machine_xrefs.json', params: { machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+    it 're-adds a soft-deleted lmx if removed within 7 days and includes scores and conditions' do
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'plays soft')
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 998899)
+
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      expect(response).to be_successful
+      expect(response.status).to eq(200)
+
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json'
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
+
+      expect(LocationMachineXref.all.size).to eq(0)
+
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(response.status).to eq(200)
+
+      expect(LocationMachineXref.all.size).to eq(1)
+
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json'
+      expect(response).to be_successful
+
+      lmx = JSON.parse(response.body)['location_machine']
+      machine_conditions = lmx['machine_conditions']
+
+      expect(machine_conditions.size).to eq(1)
+      expect(machine_conditions[0]['comment']).to eq('plays soft')
+      expect(lmx['machine_score_xrefs'].size).to eq(1)
+      expect(lmx['machine_score_xrefs'][0]['score']).to eq(998899)
+    end
+
+    it 'does not re-add soft-deleted lmx if removed more than 7 days ago' do
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'plays soft')
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 998899)
+
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      expect(response).to be_successful
+      expect(response.status).to eq(200)
+
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json'
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
+
+      @lmx.deleted_at = Time.current - 20.days
+      @lmx.save
+
+      expect(LocationMachineXref.all.size).to eq(0)
+
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
       expect(response).to be_successful
       expect(response.status).to eq(201)
-      expect(LocationMachineXref.all.size).to eq(2)
+
+      expect(LocationMachineXref.all.size).to eq(1)
+
+      get '/api/v1/location_machine_xrefs/' + LocationMachineXref.all.last.id.to_s + '.json'
+      expect(response).to be_successful
+
+      lmx = JSON.parse(response.body)['location_machine']
+
+      expect(lmx['machine_conditions']).to be_empty
+      expect(lmx['machine_score_xrefs']).to be_empty
     end
 
     it 'does not create a machine condition if you pass a blank condition' do
@@ -189,15 +242,6 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'updates condition' do
-      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
-
-      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, params: { condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
-      expect(response).to be_successful
-      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('foo')
-      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][1]['comment']).to eq('bar')
-    end
-
-    it 'updates condition - authed' do
       FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
 
       put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, params: { condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }

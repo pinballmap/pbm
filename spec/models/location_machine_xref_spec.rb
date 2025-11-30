@@ -54,13 +54,34 @@ describe LocationMachineXref do
   end
 
   describe '#destroy' do
+    it 'should not destroy the lmx without force: true' do
+      location = FactoryBot.create(:location, name: 'Regionless Location', region: nil)
+      user = User.find(1)
+      lmx = FactoryBot.create(:location_machine_xref, location: location, machine: @m, user_id: user.id)
+
+      lmx.destroy({ user_id: user.id })
+
+      expect(LocationMachineXref.all.size).to eq(2)
+    end
+
+    it 'should destroy the lmx when force: true is included' do
+      location = FactoryBot.create(:location, name: 'Regionless Location', region: nil)
+      user = User.find(1)
+      lmx = FactoryBot.create(:location_machine_xref, location: location, machine: @m, user_id: user.id)
+
+      lmx.destroy({ user_id: user.id }, force: true)
+
+      expect(LocationMachineXref.all.size).to eq(1)
+    end
+
     it 'works with regionless locations' do
       regionless_location = FactoryBot.create(:location, name: 'Regionless Location', region: nil)
-      regionless_lmx = FactoryBot.create(:location_machine_xref, location: regionless_location, machine: @m)
-
       user = User.find(1)
-      regionless_lmx.destroy(user_id: user.id)
+      regionless_lmx = FactoryBot.create(:location_machine_xref, location: regionless_location, machine: @m, user_id: user.id)
 
+      regionless_lmx.destroy({ user_id: user.id }, force: true)
+
+      expect(LocationMachineXref.all).to_not include(regionless_lmx)
       expect(LocationMachineXref.all).to_not include(regionless_lmx)
       submission = UserSubmission.last
 
@@ -69,26 +90,6 @@ describe LocationMachineXref do
       expect(submission.location).to eq(regionless_lmx.location)
       expect(submission.machine).to eq(regionless_lmx.machine)
       expect(submission.submission).to eq("#{@m.name} was removed from #{regionless_location.name} in #{regionless_location.city} by #{user.name}")
-      expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
-    end
-
-    it 'should remove the lmx' do
-      @lmx.destroy(remote_ip: '0.0.0.0', user_agent: 'cleOS')
-
-      expect(LocationMachineXref.all).to eq([])
-    end
-
-    it 'auto-creates a user submission' do
-      user = User.find(1)
-      @lmx.destroy(user_id: user.id)
-
-      submission = UserSubmission.last
-
-      expect(submission.region).to eq(@l.region)
-      expect(submission.user).to eq(user)
-      expect(submission.location).to eq(@lmx.location)
-      expect(submission.machine).to eq(@lmx.machine)
-      expect(submission.submission).to eq("#{@m.name} was removed from #{@l.name} in #{@l.city} by #{user.name}")
       expect(submission.submission_type).to eq(UserSubmission::REMOVE_MACHINE_TYPE)
     end
   end
