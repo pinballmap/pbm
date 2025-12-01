@@ -1,17 +1,17 @@
-%div#nearby_activity.mt_20.mb_20
-  %div.bold.flex_center{:style => 'margin: 12px 0;'}
+%div#nearby_activity.mt_20.mb_20.pt_10
+  %div.bold.flex_center{:style => 'margin: 12px;'}
     %span.sorted_submissions
       - if pagy.count == 0
-        No recent map edits within current map view
+        No recent edits within map view
       - else
-        Showing #{pagy.from}-#{pagy.to} of #{pagy.count}#{pagy.count >= 2000 ? '+' : ''} recent map edit(s) within current map view
+        Showing #{pagy.from}-#{pagy.to} of #{pagy.count}#{pagy.count >= 2000 ? '+' : ''} recent edits within map view
     %span.close_activity.pointer{:onclick => "closeActivity();"}
       X
   - sorted_submissions.each do |recent_activity|
     = render 'shared/activity_item', activity: recent_activity, show_location_link: true
 
   - if pagy.pages > 1
-    #next_link{:style => 'margin: 20px 10px'}
+    #next_link{:style => 'margin: 20px 10px; padding-bottom: 20px;'}
       != pagy_nav(pagy)
 
 :javascript

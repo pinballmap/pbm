@@ -115,7 +115,6 @@ describe LocationMachineXrefsController do
       lmx.deleted_at = Time.current - 20.days
       lmx.save
 
-      puts "lmx deleted_at #{lmx.deleted_at}"
       find("#add_machine_location_banner_#{location.id}").click
       fill_in('add_machine_by_name_11', with: @machine_to_add.name)
       click_on 'add'

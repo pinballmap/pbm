@@ -328,7 +328,7 @@
     hideSearchModal();
     mapAdjusted = 0;
     $('#nearby_activity_button').css('display','block');
-    $('#intro_container').css('display','none');
+    $('#intro_container,#nearby_activity').css('display','none');
     e.preventDefault();
     search_string = $("#address_search_form :input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
 
