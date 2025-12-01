@@ -6,4 +6,20 @@
       $('#recent_location_activity_location_#{location.id}').html(loadingHTML());
       $('#recent_location_activity_location_#{location.id}').load('/locations/#{location.id}/render_recent_activity');
     });
+
+    // Handle pagination clicks with event delegation
+    $('#recent_location_activity_location_#{location.id}').on('click', '#location_activity_pagination a', function(e) {
+      e.preventDefault();
+      let href = $(this).attr('href');
+      let queryString = href.split('?')[1];
+      let url = '/locations/#{location.id}/render_recent_activity?' + queryString;
+      $('#recent_location_activity_location_#{location.id}').html(loadingHTML());
+      $('#recent_location_activity_location_#{location.id}').load(url, function() {
+        // Scroll to the top of the activity content with offset for fixed headers (220px)
+        let element = $('#recent_location_activity_location_#{location.id}')[0];
+        let elementPosition = element.getBoundingClientRect().top;
+        let offsetPosition = elementPosition + window.pageYOffset - 220;
+        window.scrollTo({ top: offsetPosition, behavior: 'instant' });
+      });
+    });
   });
