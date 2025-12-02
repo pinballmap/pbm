@@ -1355,7 +1355,7 @@ input.single_hide {
 }
 
 #refresh_button,
-#nearby_activity_button,
+#map_activity_button,
 #closest_button,
 .search_modal button {
   width: 110px;
@@ -1364,6 +1364,7 @@ input.single_hide {
   padding: 5px;
   @include radius(10px);
   font-size: 14px;
+  font-family: $Nunito_600SemiBold;
   box-shadow: 1px 1px 10px rgba(90, 100, 117, 0.5);
 }
 
@@ -1380,7 +1381,7 @@ input.single_hide {
   background-color: #d5e5ff;
 }
 
-#nearby_activity_button {
+#map_activity_button {
   background: var(--red);
   color: var(--white);
   top: 125px;
@@ -1401,7 +1402,7 @@ input.single_hide {
 }
 
 #refresh_button:hover,
-#nearby_activity_button:hover,
+#map_activity_button:hover,
 #closest_button:hover{
   cursor: pointer;
 }
@@ -1412,6 +1413,10 @@ input.single_hide {
 
 #closest_button:hover {
   background-color: #aaccff;
+}
+
+#map_activity_button:hover {
+  background-color: #dfa9e8;
 }
 
 #key_container {
@@ -2000,7 +2005,7 @@ div.machine_condition_meta {
 .add_machine_location,
 .recent_location_activity_location,
 .former_machines_location,
-#nearby_activity {
+#map_activity {
   background-color: var(--bg_vlightpurple);
   color: var(--black);
 }

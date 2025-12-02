@@ -447,11 +447,11 @@ describe MapsController do
 
       sleep 1
 
-      expect(page).to have_content('Nearby activity')
+      expect(page).to have_content('Activity feed')
 
       # Placeholder: map.getCenter() doesn't work in tests because the map doesn't load
 
-      # find('#nearby_activity_button').click
+      # find('#map_activity_button').click
 
       # sleep 0.5
 

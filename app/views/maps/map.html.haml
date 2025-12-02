@@ -52,8 +52,8 @@
 
   - unless mobile_device?
     #closest_button.fixed.hide_button.toggle_btn_reg{:onclick => "findClosestLocations()"} Nearby locations
-  #nearby_activity_button.fixed.hide_button.toggle_btn_reg
-    Nearby activity
+  #map_activity_button.fixed.hide_button.toggle_btn_reg
+    Activity feed
   #refresh_button.fixed.toggle_btn_reg Refresh map area
   - unless mobile_device?
     #key_container.fixed.hide_button.toggle_btn_reg.flex_center
@@ -70,7 +70,7 @@
     - if (current_page?(map_path) && @map_no_params)
       #intro_container
         = render :partial => 'pages/intro'
-    %div#nearby_activity_container
+    %div#map_activity_container
     #locations
 
 - if (current_page?(map_path) && @map_no_params)
@@ -252,17 +252,17 @@
     topFunction();
   });
 
-  $("#nearby_activity_container").on("click", "#next_link > nav > a", function(e) {
+  $("#map_activity_container").on("click", "#next_link > nav > a", function(e) {
     e.preventDefault();
     let url = new URL(e.target.href);
     let page = url.searchParams.get("page") || "";
 
-    $('#nearby_activity_container').html(loadingHTML());
+    $('#map_activity_container').html(loadingHTML());
     $.get('/user_submissions/list_within_range', {
       boundsData: getMapBoundsData(),
       page: page
     }, function(data) {
-      $('#nearby_activity_container').html(data);
+      $('#map_activity_container').html(data);
     });
   });
 
@@ -274,20 +274,20 @@
     };
   }
 
-  function loadNearbyActivity() {
-    $('#nearby_activity_container').html(loadingHTML());
+  function loadMapActivity() {
+    $('#map_activity_container').html(loadingHTML());
     $.get('/user_submissions/list_within_range', { boundsData: getMapBoundsData() }, function(data, textStatus, jqxhr) {
-      $('#nearby_activity_container').html(data);
+      $('#map_activity_container').html(data);
     });
   }
 
-  $('#nearby_activity_button').bind('click', function(event, ui) {
-    if ($('#nearby_activity_container').html().trim() !== '') {
-      $('#nearby_activity_container').html('');
+  $('#map_activity_button').bind('click', function(event, ui) {
+    if ($('#map_activity_container').html().trim() !== '') {
+      $('#map_activity_container').html('');
     } else {
-      savedLocations = $('#nearby_activity_container').html;
+      savedLocations = $('#map_activity_container').html;
       $('#intro_container').css('display','none');
-      loadNearbyActivity();
+      loadMapActivity();
     }
     return false;
   });
@@ -304,13 +304,13 @@
       by_machine_single_id = undefined;
     }
 
-    var nearbyActivityVisible = $('#nearby_activity_container').html().trim() !== '';
+    var mapActivityVisible = $('#map_activity_container').html().trim() !== '';
 
     getMapBounds(by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id);
     clearAddress(event);
 
-    if (nearbyActivityVisible) {
-      loadNearbyActivity();
+    if (mapActivityVisible) {
+      loadMapActivity();
     }
   });
 
@@ -327,8 +327,8 @@
 
     hideSearchModal();
     mapAdjusted = 0;
-    $('#nearby_activity_button').css('display','block');
-    $('#intro_container,#nearby_activity').css('display','none');
+    $('#map_activity_button').css('display','block');
+    $('#intro_container,#map_activity').css('display','none');
     e.preventDefault();
     search_string = $("#address_search_form :input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
 

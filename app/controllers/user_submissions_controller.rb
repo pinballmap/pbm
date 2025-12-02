@@ -9,6 +9,6 @@ class UserSubmissionsController < ApplicationController
                                      .within_bounding_box(bounds)
                                      .limit(2000)
     @pagy, sorted_submissions = pagy(user_submissions, items: 10, limit_extra: false)
-    render partial: "maps/nearby_activity", locals: { sorted_submissions: sorted_submissions, pagy: @pagy }
+    render partial: "maps/activity", locals: { sorted_submissions: sorted_submissions, pagy: @pagy }
   end
 end

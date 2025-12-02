@@ -9,8 +9,8 @@
   - if mobile_device?
     #map
       #map_canvas
-  #nearby_activity_button.fixed.hide_button.toggle_btn_reg
-    Nearby activity
+  #map_activity_button.fixed.hide_button.toggle_btn_reg
+    Activity feed
   #refresh_button.fixed.toggle_btn_reg
     Refresh map area
   - unless mobile_device?
@@ -31,7 +31,7 @@
           %p.bg_vlightpurple.radius5
             %span.red.font18.bold Message of the Day:
             = @region.html_motd
-    %div#nearby_activity_container
+    %div#map_activity_container
     #locations
       = yield :presearch_sidebar
   - if !mobile_device?
@@ -51,30 +51,30 @@
     };
   }
 
-  function loadNearbyActivity() {
-    $('#nearby_activity_container').html(loadingHTML());
+  function loadMapActivity() {
+    $('#map_activity_container').html(loadingHTML());
     $.get('/user_submissions/list_within_range', { boundsData: getMapBoundsData() }, function(data, textStatus, jqxhr) {
-      $('#nearby_activity_container').html(data);
+      $('#map_activity_container').html(data);
     });
   }
 
-  $('#nearby_activity_button').bind('click', function(event, ui) {
-    if ($('#nearby_activity_container').html().trim() !== '') {
-      $('#nearby_activity_container').html('');
+  $('#map_activity_button').bind('click', function(event, ui) {
+    if ($('#map_activity_container').html().trim() !== '') {
+      $('#map_activity_container').html('');
     } else {
-      savedLocations = $('#nearby_activity_container').html;
+      savedLocations = $('#map_activity_container').html;
       $('#intro_container').css('display','none');
-      loadNearbyActivity();
+      loadMapActivity();
     }
     return false;
   });
 
   document.getElementById("refresh_button").addEventListener("click", function() {
-    var nearbyActivityVisible = $('#nearby_activity_container').html().trim() !== '';
+    var mapActivityVisible = $('#map_activity_container').html().trim() !== '';
 
     getMapBounds();
 
-    if (nearbyActivityVisible) {
-      loadNearbyActivity();
+    if (mapActivityVisible) {
+      loadMapActivity();
     }
   });

@@ -1,10 +1,10 @@
-%div#nearby_activity.mt_20.mb_20.pt_10
+%div#map_activity.mt_20.mb_20.pt_10
   %div.bold.flex_center{:style => 'margin: 12px;'}
     %span.sorted_submissions
       - if pagy.count == 0
-        No recent edits within map view
+        No recent edits within the map view
       - else
-        Showing #{pagy.from}-#{pagy.to} of #{pagy.count}#{pagy.count >= 2000 ? '+' : ''} recent edits within map view
+        Showing #{pagy.from}-#{pagy.to} of #{pagy.count}#{pagy.count >= 2000 ? '+' : ''} recent edits within the map view
     %span.close_activity.pointer{:onclick => "closeActivity();"}
       X
   - sorted_submissions.each do |recent_activity|

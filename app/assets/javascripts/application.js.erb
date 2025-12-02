@@ -263,7 +263,7 @@ function showLocations() {
     document.getElementById("map_canvas").innerHTML = "<p id='not_found' class='font28 red bold'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
     mapLoaded = 0;
     hideRefresh();
-    document.getElementById('nearby_activity_button').style.display = "none";
+    document.getElementById('map_activity_button').style.display = "none";
   } else if (locations_geojson.length > 1) {
     locations_geojson.forEach(function(feature) {
       bounds.extend(feature.geometry.coordinates);
@@ -467,7 +467,7 @@ function backToResults() {
 }
 
 function closeActivity() {
-  document.getElementById('nearby_activity_container').innerHTML = "";
+  document.getElementById('map_activity_container').innerHTML = "";
 }
 
 function showSearchModal() {
