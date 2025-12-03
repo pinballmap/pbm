@@ -730,9 +730,6 @@ RailsAdmin.config do |config|
     edit do
       field :submission_type, :string
       field :submission, :string
-      field :region, :belongs_to_association
-      field :user, :belongs_to_association
-      field :location, :belongs_to_association
       field :machine_name, :string
       field :comment, :string
       field :user_name, :string
