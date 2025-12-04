@@ -47,6 +47,10 @@
     {
       "command": "rake delete_opted_in_empty_locations",
       "schedule": "30 22 * * 0"
+    },
+    {
+      "command": "rake data_cleanup",
+      "schedule": "0 20 * * *"
     }
   ]
 }
