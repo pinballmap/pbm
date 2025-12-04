@@ -748,15 +748,14 @@ RailsAdmin.config do |config|
           bindings[:view]._current_user.is_super_admin
         end
       end
+      field :admin_notes, :string
       field :street, :string
       field :city, :string
       field :state, :string
       field :zip, :string
       field :country, :string
       field :phone, :string
-      field :website, :string
       field :operator, :belongs_to_association
-      field :zone, :belongs_to_association
       field :created_at, :datetime
     end
     edit do
@@ -810,6 +809,7 @@ RailsAdmin.config do |config|
         end
       end
       field :name, :string
+      field :admin_notes, :string
       field :location_type, :belongs_to_association
       field :operator, :belongs_to_association
       field :zone, :belongs_to_association

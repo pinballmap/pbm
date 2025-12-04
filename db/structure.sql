@@ -1235,7 +1235,8 @@ CREATE TABLE public.suggested_locations (
     updated_at timestamp without time zone,
     zone_id integer,
     country text,
-    user_id integer
+    user_id integer,
+    admin_notes character varying
 );
 
 
@@ -2683,6 +2684,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251204043658'),
 ('20251204040243'),
 ('20251130022051'),
 ('20251122235355'),

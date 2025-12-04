@@ -39,6 +39,16 @@ describe SuggestedLocation do
       location_with_whitespace = FactoryBot.create(:suggested_location, name: ' foo ', machines: 'Batman')
       expect(location_with_whitespace.name).to eq('foo')
     end
+
+    it 'should generate admin notes if certain conditions are met' do
+      location_without_type = FactoryBot.create(:suggested_location, name: 'Bar Bar The Bar', machines: 'Batman', location_type_id: nil)
+      expect(location_without_type.admin_notes).to eq('No location type, please add')
+
+      FactoryBot.create(:location, name: 'Nacho', city: 'Garbon', zip: '90210')
+      possible_duplicate_location = FactoryBot.create(:suggested_location, name: 'Nacho', city: 'Garbon', zip: '90210', machines: "Batman", location_type_id: nil)
+
+      expect(possible_duplicate_location.admin_notes).to eq('Possible duplicate, please check; No location type, please add')
+    end
   end
 
   describe '#address_incomplete?' do

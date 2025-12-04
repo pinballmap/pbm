@@ -18,12 +18,28 @@ class SuggestedLocation < ApplicationRecord
   before_validation :geocode, unless: :skip_geocoding?
   strip_attributes
 
-  after_create :massage_fields
+  after_create :massage_fields, :generate_notes
 
   def massage_fields
     self.country = "US" if country.blank?
     self.website = "http://#{website}" if website && !website.blank? && website !~ /\A#{URI::DEFAULT_PARSER.make_regexp(%w[http https])}\z/
 
+    save
+  end
+
+  def generate_notes
+    duplicate_found = Location.where([ "name = ? and city = ? and zip = ?", name, city, zip ]).first
+    if duplicate_found
+      self.admin_notes = "Possible duplicate, please check;"
+    end
+
+    if location_type_id.blank?
+      if admin_notes.blank?
+        self.admin_notes = "No location type, please add"
+      else
+        self.admin_notes += " No location type, please add"
+      end
+    end
     save
   end
 
