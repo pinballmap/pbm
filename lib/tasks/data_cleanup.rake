@@ -2,13 +2,13 @@ desc "Various regular data cleanup methods"
 task data_cleanup: :environment do
   def apostrophe_fix
     Location.where("name ILIKE ?", "%’%").each do |l|
-      l.name = l.name.gsub('’', "'")
+      l.name = l.name.gsub("’", "'")
       l.save
     end
   end
 
   def us_phone
-    Location.where("LENGTH(phone) = ?", 10).where("phone !~ ?", '[^0-9]+').where(country: "US").each do |l|
+    Location.where("LENGTH(phone) = ?", 10).where("phone !~ ?", "[^0-9]+").where(country: "US").each do |l|
       l.phone = l.phone.to_i.to_formatted_s(:phone)
       l.save
     end
