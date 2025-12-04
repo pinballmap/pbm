@@ -75,7 +75,6 @@ FactoryBot.define do
   end
 
   factory :user do
-    initials { 'cap' }
     sequence(:username) { |n| "cap#{n}" }
     sequence(:email) { |n| "captainamerica#{n}@foo.bar" }
     password { 'password' }

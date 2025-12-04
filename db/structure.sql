@@ -1357,7 +1357,6 @@ CREATE TABLE public.users (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     region_id integer,
-    initials character varying(255),
     reset_password_sent_at timestamp without time zone,
     is_machine_admin boolean,
     is_primary_email_contact boolean,
@@ -2684,6 +2683,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251204040243'),
 ('20251130022051'),
 ('20251122235355'),
 ('20251117222054'),

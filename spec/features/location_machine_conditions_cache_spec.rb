@@ -22,7 +22,7 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
         # login and add a machine condition and expect the server to save it
         login(@user)
 
-        visit "/#{@region.name}/?by_location_id=#{@location.id}&initials=#{@user.username}"
+        visit "/#{@region.name}/?by_location_id=#{@location.id}&username=#{@user.username}"
         sleep 0.5
 
         # enter a new condition
@@ -47,7 +47,7 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
         # login as a second user and add a machine condition and expect the server to save it
         login(@user2)
 
-        visit "/#{@region.name}/?by_location_id=#{@location.id}&initials=#{@user2.username}"
+        visit "/#{@region.name}/?by_location_id=#{@location.id}&username=#{@user2.username}"
         sleep 0.5
 
         page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
@@ -74,7 +74,7 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
       Capybara.using_session(:logged_in) do
         # Visit the page again as the first logged in user and expect the new content
         expect(page).not_to have_content('This is a new condition2')
-        visit "/#{@region.name}/?by_location_id=#{@location.id}&initials=#{@user.username}"
+        visit "/#{@region.name}/?by_location_id=#{@location.id}&username=#{@user.username}"
         sleep 0.5
 
         page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click

@@ -32,7 +32,6 @@ UPDATE users
         last_sign_in_at = null,
         current_sign_in_ip = '',
         last_sign_in_ip = '',
-        initials = '',
         reset_password_sent_at = null,
         is_machine_admin = false,
         is_primary_email_contact = false,
