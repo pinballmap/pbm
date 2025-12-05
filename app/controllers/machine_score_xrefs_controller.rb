@@ -58,7 +58,9 @@ class MachineScoreXrefsController < ApplicationController
 
     return if score.blank? || score.to_i.zero?
 
-    us.update(high_score: score, submission: "#{us.user_name} added a high score of #{number_with_precision(score, precision: 0, delimiter: ',')} on #{us.machine_name} at #{us.location_name} in #{us.city_name}.") if user && (user.id == us.user_id)
+    us.high_score = score
+    us.submission = "#{us.user_name} added a high score of #{number_with_precision(score, precision: 0, delimiter: ',')} on #{us.machine_name} at #{us.location_name} in #{us.city_name}." if user && (user.id == us.user_id) && us.user_name.present? && us.machine_name.present? && us.location_name.present? && us.city_name.present?
+    us.save
 
     msx.update(machine_score_xref_params) if user && (user.id == msx.user_id)
 

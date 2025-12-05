@@ -18,7 +18,12 @@ module Api
 
         if machine_condition.user == user
           machine_condition.update({ comment: params[:comment] })
-          us.update({ comment: params[:comment], submission: "#{us.user_name} commented on #{us.machine_name} at #{us.location_name} in #{us.city_name}. They said: #{params[:comment]}" })
+
+          us.comment = params[:comment]
+
+          us.submission = "#{us.user_name} commented on #{us.machine_name} at #{us.location_name} in #{us.city_name}. They said: #{params[:comment]}" if us.user_name.present? && us.machine_name.present? && us.location_name.present? && us.city_name.present?
+          us.save
+
           return_response("Successfully updated machine condition", "machine_condition")
         else
           return_response("You can only update machine conditions that you own", "errors")
