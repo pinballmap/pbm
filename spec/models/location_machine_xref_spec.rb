@@ -74,6 +74,26 @@ describe LocationMachineXref do
       expect(LocationMachineXref.all.size).to eq(1)
     end
 
+    it 'should not create a user submission if force: true and deleted_at present' do
+      location = FactoryBot.create(:location, name: 'Regionless Location', region: nil)
+      user = User.find(1)
+      lmx = FactoryBot.create(:location_machine_xref, location: location, machine: @m, user_id: user.id)
+
+      lmx.deleted_at = Time.now
+
+      lmx.destroy({ user_id: user.id })
+
+      expect(lmx.deleted_at).not_to be_nil
+
+      last_submission = UserSubmission.last
+
+      lmx.destroy({ user_id: user.id }, force: true)
+
+      new_last_submission = UserSubmission.last
+
+      expect(new_last_submission.id).to eq(last_submission.id)
+    end
+
     it 'works with regionless locations' do
       regionless_location = FactoryBot.create(:location, name: 'Regionless Location', region: nil)
       user = User.find(1)
