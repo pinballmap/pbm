@@ -14,8 +14,45 @@ task data_cleanup: :environment do
     end
   end
 
-  apostrophe_fix
-  us_phone
+  def user_submission_location_name
+    UserSubmission.where.not(location_id: nil).where.not(location_name: nil).where(submission_type: %w[new_lmx new_condition remove_machine new_msx confirm_location ic_toggle new_picture]).each do |us|
+      matched_location = Location.where("id = ?", us.location_id).first
+
+      next if matched_location.nil? or (us.location_name == matched_location.name)
+
+      if (us.submission_type = "new_lmx")
+        us.location_name = matched_location.name
+        us.submission = "#{us.machine_name} was added to #{us.location_name} in #{us.city_name} by #{us.user_name}" if field_presence?(us) && us.machine_name.present?
+      elsif (us.submission_type = "new_condition")
+        us.location_name = matched_location.name
+        us.submission = "#{us.user_name} commented on #{us.machine_name} at #{us.location_name} in #{us.city_name}. They said: #{us.comment}" if field_presence? && us.machine_name.present? && us.comment.present?
+      elsif (us.submission_type = "remove_machine")
+        us.location_name = matched_location.name
+        us.submission = "#{us.machine_name} was removed from #{us.location_name} in #{us.city_name} by #{us.user_name}" if field_presence?(us) && us.machine_name.present?
+      elsif (us.submission_type = "new_msx")
+        us.location_name = matched_location.name
+        us.submission = "#{us.user_name} added a high score of #{number_with_precision(us.high_score, precision: 0, delimiter: ',')} on #{us.machine_name} at #{us.location_name} in #{us.city_name}." if field_presence?(us) && us.machine_name.present? && us.high_score.present?
+      elsif (us.submission_type = "confirm_location")
+        us.location_name = matched_location.name
+        us.submission = "#{us.user_name} confirmed the lineup at #{us.location_name} in #{us.city_name}" if field_presence?(us)
+      elsif (us.submission_type = "ic_toggle")
+        us.location_name = matched_location.name
+        us.submission = "Insider Connected toggled on #{us.machine_name} at #{us.location_name} in #{us.city_name} by #{us.user_name}" if field_presence?(us) && us.machine_name.present?
+      elsif (us.submission_type = "new_picture")
+        us.location_name = matched_location.name
+        us.submission = "#{us.user_name} added a picture of #{us.location_name} in #{us.city_name}" if field_presence?(us)
+      end
+      us.save
+    end
+  end
+
+  def field_presence?(us)
+    us.user_name.present? && us.location_name.present? && us.city_name.present?
+  end
+
+  # apostrophe_fix
+  # us_phone
+  user_submission_location_name
 rescue StandardError => e
   error_subject = "Data cleanup rake task error"
   error = e.to_s
