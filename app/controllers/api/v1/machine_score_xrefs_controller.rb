@@ -88,7 +88,7 @@ module Api
 
           us.high_score = params[:score]
 
-          us.submission = "#{us.user_name} added a high score of #{number_with_precision(params[:score], precision: 0, delimiter: ',')} on #{us.machine_name} at #{us.location_name} in #{us.city_name}." if us.user_name.present? && us.machine_name.present? && us.location_name.present? && us.city_name.present?
+          us.submission = "#{us.user_name} added a high score of #{number_with_precision(params[:score], precision: 0, delimiter: ',')} on #{us.machine_name} at #{us.location_name} in #{us.city_name}" if us.user_name.present? && us.machine_name.present? && us.location_name.present? && us.city_name.present?
           us.save
 
           return_response("Successfully updated high score", "high_score")
