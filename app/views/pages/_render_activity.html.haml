@@ -60,7 +60,7 @@
     .activity_hr
 
   #next_link{:style => 'margin: 20px 10px'}
-    != pagy_nav(@pagy)
+    != @pagy.series_nav()
 :javascript
   $("#next_link > nav > a").on("click", function(e) {
     e.preventDefault()

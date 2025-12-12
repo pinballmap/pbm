@@ -9,4 +9,4 @@
 
 - if pagy.pages > 1
   #location_activity_pagination{:style => 'margin: 20px 10px; padding-bottom: 20px;'}
-    != pagy_nav(pagy)
+    != @pagy.series_nav()

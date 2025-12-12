@@ -2,7 +2,7 @@ module Api
   module V1
     class LocationsController < ApplicationController
       include ActionView::Helpers::NumberHelper
-      include Pagy::Backend
+      include Pagy::Method
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
@@ -254,7 +254,7 @@ module Api
           if params[:limit].blank?
             locations_within = apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds).order(order_by).uniq
           else
-            @pagy, locations_within = pagy(apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds).order(order_by).distinct, limit_extra: true)
+            @pagy, locations_within = pagy(apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds).order(order_by).distinct)
           end
         elsif params[:no_details] == "2"
           locations_within = apply_scopes(Location).within_bounding_box(bounds).order(order_by).uniq
@@ -262,8 +262,8 @@ module Api
           if params[:limit].blank?
             locations_within = apply_scopes(Location).includes(:machines).within_bounding_box(bounds).order(order_by).uniq
           else
-            @pagy, locations_within = pagy(apply_scopes(Location).includes(:machines).within_bounding_box(bounds).order(order_by).distinct, limit_extra: true)
-            @pagy_metadata = pagy_metadata(@pagy)
+            @pagy, locations_within = pagy(apply_scopes(Location).includes(:machines).within_bounding_box(bounds).order(order_by).distinct)
+            @pagy_hash = @pagy.data_hash(data_keys: %i[count first_url previous_url next_url page pages page_url previous next from to in last last_url limit options])
           end
         end
 

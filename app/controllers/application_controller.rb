@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   AUTH_REQUIRED_MSG = "Authentication is required for this action. If you are using the app, you may need to confirm your account (see the email from us) or log out and back in.".freeze
   rate_limit to: 100, within: 2.minutes, if: lambda { |req| req.bot? }
 
-  include Pagy::Backend
+  include Pagy::Method
 
   def append_info_to_payload(payload)
     if Rails.env.production?
@@ -121,7 +121,7 @@ class ApplicationController < ActionController::Base
     json_data = data.as_json(include: includes, methods: methods, root: false, except: except)
 
     if pagy
-      render json: { root => json_data, pagy: pagy_metadata(@pagy) }, status: http_status
+      render json: { root => json_data, pagy: @pagy_hash }, status: http_status
     else
       render json: root.nil? ? json_data : { root => json_data }, status: http_status
     end

@@ -736,6 +736,27 @@ describe LocationsController do
       expect(find('.recent_location_activity_location')).to have_content('be best')
       expect(find('.recent_location_activity_location')).to_not have_content('Jolene Zone')
     end
+
+    it 'has pagination if greater than 50 items' do
+      51.times do |index|
+        FactoryBot.create(:user_submission, id: 5678 + index, created_at: "2020-01-#{index + 1}", location: @location, user_name: 'ssw', comment: 'Comment Number ' + index.to_s, machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      end
+
+      visit '/map/?by_location_id=' + @location.id.to_s
+
+      find("#recent_location_activity_location_banner_#{@location.id}").click
+      sleep(0.5)
+
+      expect(find('.recent_location_activity_location')).to have_content('Comment Number')
+
+      expect(page.body).to have_css('#next_link', visible: true)
+
+      click_link('2')
+
+      sleep 1
+
+      expect(find('.recent_location_activity_location')).to have_content('Comment Number 0')
+    end
   end
 
   describe 'update_metadata', type: :feature, js: true do

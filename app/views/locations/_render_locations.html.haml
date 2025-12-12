@@ -35,7 +35,7 @@
               = pluralize(l.machine_count - 5, 'more machine')
 - unless @locations.size == 0
   #next_link{:style => 'margin: 20px 10px'}
-    != pagy_nav(@pagy) if @pagy.pages > 1
+    != @pagy.series_nav() if @pagy.pages > 1
 :javascript
   $("#next_link > nav > a").on("click", function(e) {
     $('#intro_container').css('display','none');

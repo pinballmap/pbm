@@ -33,9 +33,8 @@ module Api
         if params[:limit].blank?
           user_submissions = UserSubmission.where(location_id: location, submission_type: submission_type, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day, deleted_at: nil).limit(200).order("created_at DESC")
         else
-          @pagy, user_submissions = pagy(UserSubmission.where(location_id: location, submission_type: submission_type, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day, deleted_at: nil).order("created_at desc").distinct, limit_extra: true)
-
-          @pagy_metadata = pagy_metadata(@pagy)
+          @pagy, user_submissions = pagy(UserSubmission.where(location_id: location, submission_type: submission_type, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day, deleted_at: nil).order("created_at desc").distinct)
+          @pagy_hash = @pagy.data_hash(data_keys: %i[count first_url previous_url next_url page pages page_url previous next from to in last last_url limit options])
         end
 
         if !user_submissions.empty?
@@ -110,9 +109,8 @@ module Api
         if params[:limit].blank?
           user_submissions = user_submissions.near([ params[:lat], params[:lon] ], max_distance, order: "created_at desc").limit(200)
         else
-          @pagy, user_submissions = pagy(user_submissions.near([ params[:lat], params[:lon] ]).order("created_at desc").distinct, limit_extra: true)
-
-          @pagy_metadata = pagy_metadata(@pagy)
+          @pagy, user_submissions = pagy(user_submissions.near([ params[:lat], params[:lon] ]).order("created_at desc").distinct)
+          @pagy_hash = @pagy.data_hash(data_keys: %i[count first_url previous_url next_url page pages page_url previous next from to in last last_url limit options])
         end
 
         if !user_submissions.empty?

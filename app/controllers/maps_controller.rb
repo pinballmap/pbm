@@ -99,7 +99,7 @@ class MapsController < ApplicationController
   end
 
   def nearby_locations_load
-    @results_init = params[:results_init] if @results_init.blank?
+    @results_init = params[:results_init] if params[:results_init].present?
     boundsData = nil
 
     if @locations_size == 0 && @results_init == true
@@ -132,7 +132,7 @@ class MapsController < ApplicationController
   end
 
   def region_location_load
-    @results_init = params[:results_init] if @results_init.blank?
+    @results_init = params[:results_init] if params[:results_init].present?
     boundsData = nil
     @region_id = params[:region_id]
     @region = Region.find_by_id(params[:region_id])
@@ -168,7 +168,7 @@ class MapsController < ApplicationController
   end
 
   def get_bounds_load
-    @results_init = params[:results_init] if @results_init.blank?
+    @results_init = params[:results_init] if params[:results_init].present?
     @bounds = [ params[:boundsData][:sw][:lat], params[:boundsData][:sw][:lng], params[:boundsData][:ne][:lat], params[:boundsData][:ne][:lng] ]
 
     if @locations_size == 0 && @results_init == true
@@ -242,7 +242,7 @@ class MapsController < ApplicationController
   end
 
   def map_location_load
-    @results_init = params[:results_init] if @results_init.blank?
+    @results_init = params[:results_init] if params[:results_init].present?
     boundsData = nil
     if @locations_size == 0 && @results_init == true
       @locations = []
@@ -271,7 +271,7 @@ class MapsController < ApplicationController
   end
 
   def operator_location_load
-    @results_init = params[:results_init] if @results_init.blank?
+    @results_init = params[:results_init] if params[:results_init].present?
     boundsData = nil
 
     if @locations_size == 0 && @results_init == true

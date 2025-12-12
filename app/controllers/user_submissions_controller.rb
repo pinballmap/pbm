@@ -8,7 +8,7 @@ class UserSubmissionsController < ApplicationController
                                      .with_coordinates
                                      .within_bounding_box(bounds)
                                      .limit(2000)
-    @pagy, sorted_submissions = pagy(user_submissions, items: 10, limit_extra: false)
+    @pagy, sorted_submissions = pagy(user_submissions, items: 10)
     render partial: "maps/activity", locals: { sorted_submissions: sorted_submissions, pagy: @pagy }
   end
 end

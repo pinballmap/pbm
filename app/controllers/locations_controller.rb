@@ -142,7 +142,7 @@ class LocationsController < ApplicationController
       render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
     else
       user_submissions = UserSubmission.activity_feed.at_location(l)
-      @pagy, recent_activity = pagy(user_submissions, items: 10, limit_extra: false)
+      @pagy, recent_activity = pagy(user_submissions, items: 10)
       render partial: "locations/render_recent_activity", locals: { l: l, recent_activity: recent_activity, pagy: @pagy }
     end
   end
