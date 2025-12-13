@@ -98,7 +98,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { :protocol => 'https', :host => 'pinballmap.com' }
   config.middleware.use ExceptionNotification::Rack,
     ignore_crawlers: %w{Googlebot bingbot AhrefsBot},
-    ignore_exceptions: ['ActionController::ParameterMissing', 'ActionView::Template::Error', 'ActionDispatch::Http::MimeNegotiation::InvalidType'] + ExceptionNotifier.ignored_exceptions,
+    ignore_exceptions: ['ActionController::ParameterMissing', 'ActionView::Template::Error', 'ActionDispatch::Http::MimeNegotiation::InvalidType', 'ActionController::TooManyRequests'] + ExceptionNotifier.ignored_exceptions,
     :email => {
       :email_prefix => "[PBM Exception] ",
       :sender_address => %{"PBM Exceptions" <exceptions@pinballmap.com>},
