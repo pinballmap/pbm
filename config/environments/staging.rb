@@ -84,12 +84,12 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   config.action_mailer.smtp_settings = {
-    address:          'mail.smtp2go.com',
+    address:          ENV["AWS_SMTP_ENDPOINT"],
     port:             587,
-    authentication:   'plain',
-    user_name:        'pinballmapsmtp2go',
-    password:         ENV['SMTP2GO_API_KEY'],
-    domain:           'pinballmap.com',
+    authentication:   :login,
+    user_name:        ENV["AWS_SMTP_USERNAME"],
+    password:         ENV["AWS_SMTP_PASSWORD"],
+    domain:           'pbmstaging.com',
     enable_starttls:  true,
     open_timeout:     5,
     read_timeout:     10
