@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "Pinball Map <admin@pinballmap.com>"
+  default from: ENV.fetch("EMAIL_ACTIONMAILER", "Pinball Map <admin@pinballmap.com>")
   layout "mailer"
 end

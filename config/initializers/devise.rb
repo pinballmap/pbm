@@ -26,7 +26,7 @@ Devise.setup do |config|
   # with default "from" parameter.
 
   Devise.reset_password_within = 6.hours
-  config.mailer_sender = '"Pinball Map" <admin@pinballmap.com>'
+  config.mailer_sender = ENV.fetch('EMAIL_ACTIONMAILER', '"Pinball Map" <admin@pinballmap.com>')
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'

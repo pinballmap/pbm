@@ -102,7 +102,7 @@ Rails.application.configure do
     :email => {
       :email_prefix => "[PBM Exception] ",
       :sender_address => %{"PBM Exceptions" <exceptions@pinballmap.com>},
-      :exception_recipients => %w{admin@pinballmap.com}
+      :exception_recipients => %w{admin@pbmstaging.com}
     },
     error_grouping: true
 
