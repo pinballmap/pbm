@@ -1,0 +1,64 @@
+da:
+  devise:
+    confirmations:
+      confirmed: "Din e-mailadresse er blevet bekræftet."
+      send_instructions: "Tjek venligst din e-mail og bekræft din konto. Hvis du ikke har modtaget den, så tjek din spam-mappe! Sørg for at admin@pinballmap.com er en tilladt afsender."
+      send_paranoid_instructions: "Hvis din e-mailadresse findes i vores database vil du indenfor nogle minutter modtage en e-mail med instruktioner om hvordan du kan bekræfte din e-mailadresse."
+    failure:
+      already_authenticated: "Du er allerede logget ind."
+      inactive: "Din konto er ikke aktiveret endnu."
+      account_inactive: "Din konto er deaktiveret. Kontakt os hvis du mener det er en fejl."
+      invalid: "Forkert %{authentication_keys} eller kodeord."
+      locked: "Din konto er låst."
+      last_attempt: "Du har ét forsøg tilbage før din konto bliver låst."
+      not_found_in_database: "Forkert %{authentication_keys} eller kodeord."
+      timeout: "Din session er udløbet. Log ind igen for at fortsætte."
+      unauthenticated: "Du skal logge ind før du kan fortsætte."
+      unconfirmed: "Du skal bekræfte din e-mailadresse, før du kan fortsætte."
+    mailer:
+      confirmation_instructions:
+        subject: "Pinball Map - Bekræft din konto"
+      reset_password_instructions:
+        subject: "Pinball Map - Instruktioner til nulstilling af kodeord"
+      unlock_instructions:
+        subject: "Pinball Map - Instruktioner til oplåsning af konto"
+      email_changed:
+        subject: "Pinball Map - E-mail ændret"
+      password_change:
+        subject: "Pinball Map - Kodeord ændret"
+    omniauth_callbacks:
+      failure: "Kunne ikke autentificere dig fra  %{kind} fordi \"%{reason}\"."
+      success: "Du er autentificeret fra %{kind} konto."
+    passwords:
+      no_token: "Denne side kan ikke tilgås med mindre du kommer fra linket i en nulstilling af kodeord e-mail. Hvis det er tilfældet så kontrollér at hele adressen er med."
+      send_instructions: "Tjek din e-mail, der er sendt et link som kan bruges til at sætte et nyt kodeord. Hvis du ikke har modtaget den, så tjek din spam-mappe! Sørg for at admin@pinballmap.com er en tilladt afsender."
+      send_paranoid_instructions: "Hvis din e-mailadresse findes i vores database vil du indenfor nogle minutter modtage en e-mail med et link til gendannelse af kodeord."
+      updated: "Dit kodeord er ændret. Du er nu logget ind."
+      updated_not_active: "Dit kodeord er ændret."
+    registrations:
+      destroyed: "Din konto er blevet nedlagt. Du er altid velkommen til at vende tilbage."
+      signed_up: "Velkommen! Du er nu oprettet."
+      signed_up_but_inactive: "Du er nu oprettet, men vi kunne ikke logge dig ind fordi din konto endnu ikke er aktiveret."
+      signed_up_but_locked: "Du er nu oprettet, men vi kunne ikke logge dig ind fordi din konto er låst."
+      signed_up_but_unconfirmed: "En bekræftelsesmail sendes. Hvis du ikke har modtaget den, så tjek din spam-mappe! Sørg for at admin@pinballmap.com er en tilladt afsender."
+      update_needs_confirmation: "Din konto er blevet opdateret, men din nye e-mailadresse er ikke valideret endnu. Tjen din e-mail og klik på linket for at validere adressen."
+      updated: "Din konto er blevet opdatreret."
+      updated_but_not_signed_in: "Din konto er blevet opdateret, men fordi dit kodeord er ændret skal du logge ind igen."
+    sessions:
+      signed_in: "Logget ind."
+      signed_out: "Logget ud."
+      already_signed_out: Logget ud."
+    unlocks:
+      send_instructions: "Der er sendt en e-mail med instruktioner. Hvis du ikke har modtaget den, så tjek din spam-mappe! Sørg for at admin@pinballmap.com er en tilladt afsender."
+      send_paranoid_instructions: "Hvis din konto eksisterer vil du modtage en e-mail med information omkring oplåsning af den."
+      unlocked: "Din konto er blevet låst op. Log ind for at fortsætte."
+  errors:
+    messages:
+      already_confirmed: "er allerede bekræftet, prøv at logge ind"
+      confirmation_period_expired: "skal bekræftes inden for %{period}, anmod om en ny"
+      expired: "er udløbet, anmod om en ny"
+      not_found: "ikke fundet"
+      not_locked: "var ikke låst"
+      not_saved:
+        one: "1 fejl forhindrede dette %{resource} i at blive gemt:"
+        other: "%{count} fejl forhindrede dette %{resource} i at blive gemt:"
