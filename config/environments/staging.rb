@@ -84,11 +84,11 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   config.action_mailer.smtp_settings = {
-    address:          ENV["AWS_SMTP_ENDPOINT"],
+    address:          ENV["SMTP_ENDPOINT"],
     port:             587,
     authentication:   :login,
-    user_name:        ENV["AWS_SMTP_USERNAME"],
-    password:         ENV["AWS_SMTP_PASSWORD"],
+    user_name:        ENV["SMTP_USERNAME"],
+    password:         ENV["SMTP_PASSWORD"],
     domain:           'pbmstaging.com',
     enable_starttls:  true,
     open_timeout:     5,
