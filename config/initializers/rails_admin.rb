@@ -765,6 +765,7 @@ RailsAdmin.config do |config|
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:object].region_id, :object_type => 'suggested_location'}
         end
       end
+      field :admin_notes, :string
       field :location_type_id do
         render do
           bindings[:view].render :partial => 'location_type_select', :locals => {:object_type => 'suggested_location', :location_type_id => bindings[:object].location_type_id}
