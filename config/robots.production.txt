@@ -59,6 +59,5 @@ User-agent: bingbot
 Disallow: /
 
 User-Agent: *
-Disallow: */autocomplete
 Disallow: /poohbear
-Crawl-delay: 10
+Crawl-delay: 5
