@@ -50,8 +50,8 @@ task data_cleanup: :environment do
     us.user_name.present? && us.location_name.present? && us.city_name.present?
   end
 
-  # apostrophe_fix
-  # us_phone
+  apostrophe_fix
+  us_phone
   user_submission_location_name
 rescue StandardError => e
   error_subject = "Data cleanup rake task error"
