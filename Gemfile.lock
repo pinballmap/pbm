@@ -491,7 +491,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    scout_apm (5.8.0)
+    scout_apm (6.0.2)
       parser
     securerandom (0.4.1)
     selenium-webdriver (4.39.0)
@@ -629,7 +629,7 @@ DEPENDENCIES
   rubocop-rspec
   sanitize
   sassc-rails
-  scout_apm (~> 5.7, >= 5.7.1)
+  scout_apm
   selenium-webdriver
   simple_token_authentication!
   simplecov
