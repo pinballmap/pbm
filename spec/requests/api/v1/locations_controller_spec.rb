@@ -1225,6 +1225,18 @@ describe Api::V1::LocationsController, type: :request do
     end
   end
 
+  describe '#top_locations' do
+    it 'returns 25 biggest locations' do
+      FactoryBot.create(:location, id: 789, name: 'Big Time Pinball', machine_count: 345)
+
+      get '/api/v1/locations/top_locations.json'
+
+      expect(response.body).to include('789')
+      expect(response.body).to include('Big Time Pinball')
+      expect(response.body).to include('345')
+    end
+  end
+
   describe '#autocomplete_city' do
     it 'should do a fuzzy search on city name and return a list of in-scope city names + state' do
       FactoryBot.create(:location, city: 'Portland', state: 'ME')

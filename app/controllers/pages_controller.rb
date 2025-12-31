@@ -62,6 +62,8 @@ limit 25")
 
     @user_submissions_week = UserSubmission.where("created_at >= ?", 1.week.ago).count
 
+    @top_locations = Location.order(machine_count: :desc).limit(25)
+
     @top_cities = Location.select(
           [
             :city, :state, Arel.star.count.as("location_count")

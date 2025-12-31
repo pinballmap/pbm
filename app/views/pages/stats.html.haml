@@ -35,6 +35,12 @@
           %p== #{link_to "#{row['machine_name']} (#{row['manufacturer']}, #{row['year']})", "/map?by_machine_id=#{row['id']}"}
           %p.bold.stat_values #{number_with_delimiter(row['machine_count'],:delimiter => ",")}
       %p.font20.center.bold.pbt_5.bg_lightpurple
+        25 biggest locations
+      - @top_locations.each do |row|
+        %div{:style => 'display: flex; flex-direction: row; justify-content: space-between; padding: 0 10px;'}
+          %p== #{link_to "#{row['name']}", "/map?by_location_id=#{row['id']}"}
+          %p.bold.stat_values #{number_with_delimiter(row['machine_count'],:delimiter => ",")}
+      %p.font20.center.bold.pbt_5.bg_lightpurple
         Top 10 cities by number of locations
       - @top_cities.each do |row|
         %div{:style => 'display: flex; flex-direction: row; justify-content: space-between; padding: 0 15px;'}

@@ -574,6 +574,15 @@ module Api
 
         return_response(countries, nil)
       end
+
+      api :GET, "/api/v1/locations/top_locations.json", "Fetch biggest locations by number of number"
+      description "Fetch biggest locations by number of number"
+      formats [ "json" ]
+      def top_locations
+        top_locations = Location.select(:id, :name, :machine_count).order(machine_count: :desc).limit(25)
+
+        return_response(top_locations, nil)
+      end
     end
   end
 end
