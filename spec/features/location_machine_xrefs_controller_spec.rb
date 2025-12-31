@@ -93,6 +93,32 @@ describe LocationMachineXrefsController do
       expect(page.body).to have_content('3,000')
     end
 
+    it 'Should include latest user id for re-added soft-deleted lmx' do
+      location = FactoryBot.create(:location, id: 11)
+      lmx = FactoryBot.create(:location_machine_xref, location: location, machine: @machine_to_add, id: 6660, user_id: 444)
+
+      visit "/map/?by_location_id=#{location.id}"
+
+      sleep 1
+
+      page.accept_confirm do
+        click_button 'Remove'
+      end
+
+      sleep 1
+
+      find("#add_machine_location_banner_#{location.id}").click
+      fill_in('add_machine_by_name_11', with: @machine_to_add.name)
+      click_on 'add'
+
+      sleep 1
+
+      user_submission = UserSubmission.last
+
+      expect(user_submission.user_id).to eq(@user.id)
+      expect(user_submission.user_id).to_not eq(444)
+    end
+
     it 'Should not re-add a soft-deleted lmx that was removed more than 7 days' do
       region = region ? @region : nil
       location = FactoryBot.create(:location, id: 11, region: region)
