@@ -50,9 +50,16 @@ task data_cleanup: :environment do
     us.user_name.present? && us.location_name.present? && us.city_name.present?
   end
 
+  def delete_stale_locations
+    Location.where(date_last_updated: (..7.years.ago)).each do |l|
+      l.destroy
+    end
+  end
+
   apostrophe_fix
   us_phone
   user_submission_location_name
+  delete_stale_locations
 rescue StandardError => e
   error_subject = "Data cleanup rake task error"
   error = e.to_s
