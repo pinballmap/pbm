@@ -2504,10 +2504,40 @@ span.last_updated_username a {
 
 .stale {
   padding: 10px;
-  font-family: $Nunito_500Medium;
-  font-size: 14px;
+  font-family: $Nunito_600SemiBold;
+  font-size: 15px;
   color: #e4606a;
   line-height: 21px;
+  transform: scale(1);
+  animation: pulse 2s 2;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+  background: transparent;
+  display: inline-block;
+  border-radius: 15px;
+}
+
+.stale_bold {
+  font-family: $Nunito_900Black;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(228, 96, 106, 0.7);
+        background: rgba(127, 182, 227, 0.7);
+    }
+
+    70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px 10px rgba(228, 96, 106, 0);
+        background: rgba(127, 182, 227, 0);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(228, 96, 106, 0);
+        background: rgba(127, 182, 227, 0);
+    }
 }
 
 input.score {

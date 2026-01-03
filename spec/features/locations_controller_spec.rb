@@ -123,7 +123,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + location.id.to_s
 
-      expect(find("#stale_#{location.id}")).to have_content('This location has not been updated in')
+      expect(find("#stale_#{location.id}")).to have_content('No updates in about 3 years. Please help update the listing!')
     end
 
     it 'hides stale data notice if location has been updated in past two years' do
