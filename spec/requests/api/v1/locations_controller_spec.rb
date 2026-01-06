@@ -1237,6 +1237,14 @@ describe Api::V1::LocationsController, type: :request do
     end
   end
 
+  describe '#geocode_lat_lon' do
+    it 'errors if geocode_key not present or correct' do
+      get '/api/v1/locations/geocode_lat_lon.json?address=Calabasas;geocode_key=wrongkey'
+
+      expect(response.body).to include('errors')
+    end
+  end
+
   describe '#autocomplete_city' do
     it 'should do a fuzzy search on city name and return a list of in-scope city names + state' do
       FactoryBot.create(:location, city: 'Portland', state: 'ME')

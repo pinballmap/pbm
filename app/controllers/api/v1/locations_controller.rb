@@ -351,7 +351,9 @@ module Api
           else
             results = Geocoder.search(params[:address], lookup: :here)
             results = Geocoder.search(params[:address]) if results.blank?
-            lat, lon = results.first.coordinates
+            if results.present?
+              lat, lon = results.first.coordinates
+            end
           end
         end
 
@@ -582,6 +584,25 @@ module Api
         top_locations = Location.select(:id, :name, :machine_count).order(machine_count: :desc).limit(25)
 
         return_response(top_locations, nil)
+      end
+
+      api :GET, "/api/v1/locations/geocode_lat_lon", "Geocode address to lat/lon"
+      description "Geocode address to lat/lon"
+      param :address, String, desc: "Address", required: true
+      param :geocode_key, String, desc: "Private key", required: true
+      formats [ "json" ]
+      def geocode_lat_lon
+        lat_lon = ""
+        return return_response("missing or wrong key", "errors") if params[:geocode_key].blank? || (params[:geocode_key] != ENV["GEOCODE_KEY"])
+
+        if params[:address].present? && params[:geocode_key] == ENV["GEOCODE_KEY"]
+          results = Geocoder.search(params[:address], lookup: :here)
+          results = Geocoder.search(params[:address]) if results.blank?
+          if results.present?
+            lat_lon = results.first.coordinates
+          end
+        end
+        return_response(lat_lon, "geocode_lat_lon")
       end
     end
   end

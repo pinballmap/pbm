@@ -35,7 +35,7 @@ Rails.application.routes.draw do
           post :update_user_flag
         end
         collection do
-          get :total_user_count
+          get  :total_user_count
           get  :auth_details
           post :signup
           post :forgot_password
@@ -66,6 +66,7 @@ Rails.application.routes.draw do
           put :confirm
         end
         collection do
+          get :geocode_lat_lon
           get :closest_by_lat_lon
           get :closest_by_address
           get :within_bounding_box
