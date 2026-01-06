@@ -70,6 +70,7 @@ class LocationsController < ApplicationController
     end.to_json
 
     @results_init = true
+    @results_init = params[:results_init] if params[:results_init].present?
 
     if @locations_size == 0
       @locations = []
@@ -84,7 +85,11 @@ class LocationsController < ApplicationController
     end
 
     respond_with(@locations) do |format|
-      format.html { render partial: "locations/locations", object: @locations }
+      if @results_init == true
+        format.html { render partial: "locations/locations", object: @locations }
+      else
+        format.html { render partial: "locations/render_locations", object: @locations }
+      end
     end
   end
 

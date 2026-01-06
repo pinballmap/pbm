@@ -224,6 +224,7 @@ Rails.application.routes.draw do
   post 'operator_location_load' => 'maps#operator_location_load'
   post 'map_bounds', to: 'maps#get_bounds'
   post 'map_nearby', to: 'maps#map_nearby'
+  post 'locations', to: 'locations#index'
   post 'region_init_load', to: 'maps#region_init_load'
   get 'suggest' => 'pages#suggest_new_location', as: 'map_location_suggest'
   post 'submitted_new_location' => 'pages#submitted_new_location', as: 'map_submitted_new_location'

@@ -402,6 +402,25 @@ describe LocationsController do
       FactoryBot.create(:location, region: @region, name: 'Sass', city: 'Beaverton')
     end
 
+    it 'shows pagination if greater than 50 locations in results' do
+      51.times do |index|
+        FactoryBot.create(:location, id: 56789 + index, name: 'Sass Barn ' + index.to_s)
+        FactoryBot.create(:location_machine_xref, location_id: 56789 + index, machine: @machine)
+      end
+
+      visit '/map/?by_machine_id=' + @machine.id.to_s
+
+      sleep 1
+
+      expect(page.body).to have_css('#next_link', visible: true)
+
+      click_link('2')
+
+      sleep 1
+
+      expect(find('#search_results')).to have_content('Sass Barn 9') # because 9 comes after 50
+    end
+
     it 'by_city_id' do
       visit '/portland/?by_city_id=' + @location.city
 

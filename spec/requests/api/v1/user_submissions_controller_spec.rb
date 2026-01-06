@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Api::V1::UserSubmissionsController, type: :request do
   before(:each) do
     @region = FactoryBot.create(:region, name: 'portland', id: 1411)
-    @other_region = FactoryBot.create(:region, name: 'clackamas', id: 422)
+    @other_region = FactoryBot.create(:region, name: 'clackamas', id: 4224)
   end
 
   describe '#list_within_range' do
