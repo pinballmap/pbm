@@ -19,8 +19,9 @@
         #{number_with_delimiter(@user_submissions_week,:delimiter => ",")} map edits in the last week.
     .column{:style => "width: 100%;"}
       %div
-        %p.bold.center Pinball machines made in #{@this_year}, added to locations
-        = bar_chart @machine_adds_this_year.group('machine.name').count, height: "700px"
+        - unless @machine_adds_this_year.blank?
+          %p.bold.center Pinball machines made in #{@this_year}, added to locations
+          = bar_chart @machine_adds_this_year.group('machine.name').count, height: "700px"
       %div.mt_20
         %p.bold.center Pinball machines made in #{@last_year}, added to locations up to now
         = bar_chart @machine_adds_last_year.group('machine.name').count, height: "700px"
