@@ -41,11 +41,11 @@ class LocationsController < ApplicationController
   end
 
   def sanitize_integers
-    params_list = [:by_location_id, :by_operator_id, :by_type_id, :by_zone_id, :by_machine_id, :by_machine_single_id, :by_machine_group_id, :by_machine_id_ic, :by_machine_single_id_ic, :by_machine_year, :by_ipdb_id, :by_opdb_id, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_type, :by_at_least_n_machines_zone]
+    params_list = [ :by_location_id, :by_operator_id, :by_type_id, :by_zone_id, :by_machine_id, :by_machine_single_id, :by_machine_group_id, :by_machine_id_ic, :by_machine_single_id_ic, :by_machine_year, :by_ipdb_id, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_type, :by_at_least_n_machines_zone ]
 
     params_list.each do |p|
       next if params[p].blank?
-      params[p] = params[p].gsub(/[^0-9_]/,"")
+      params[p] = params[p].gsub(/[^0-9_]/, "")
     end
   end
 
