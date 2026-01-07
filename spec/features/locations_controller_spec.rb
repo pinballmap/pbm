@@ -486,6 +486,13 @@ describe LocationsController do
       expect(find('#search_results')).to_not have_content('Sass')
     end
 
+    it 'sanitizes integer params' do
+      visit '/portland/?by_location_id=' + 'ffff' + @location.id.to_s
+
+      expect(find('#search_results')).to have_content('Cleo')
+      expect(find('#search_results')).to_not have_content('Sass')
+    end
+
     it 'by_zone_id' do
       visit '/portland/?by_zone_id=' + @zone.id.to_s
 
