@@ -7,6 +7,7 @@
         #location_maker
           = form_tag @region ? submitted_new_location_path : map_submitted_new_location_path, :method => 'post' do
             %form#submit_location
+              = hidden_field_tag :place_id
               %ul
                 %li{:class => "first"}
                   %label{:for => "location_name"} Location Name:
@@ -70,6 +71,9 @@
         document.getElementById('location_street').value = place.formatted_address.split(',')[0];
         if (place.website) {
           document.getElementById('location_website').value = place.website;
+        }
+        if (place.website) {
+          document.getElementById('place_id').value = place.place_id;
         }
 
         for (const component of place.address_components) {

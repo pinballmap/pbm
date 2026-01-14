@@ -454,7 +454,8 @@ CREATE TABLE public.locations (
     ic_active boolean,
     machine_count integer DEFAULT 0 NOT NULL,
     users_count integer DEFAULT 1 NOT NULL,
-    user_submissions_count integer DEFAULT 1 NOT NULL
+    user_submissions_count integer DEFAULT 1 NOT NULL,
+    place_id character varying
 );
 
 
@@ -1236,7 +1237,8 @@ CREATE TABLE public.suggested_locations (
     zone_id integer,
     country text,
     user_id integer,
-    admin_notes character varying
+    admin_notes character varying,
+    place_id character varying
 );
 
 
@@ -2684,6 +2686,8 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260113230621'),
+('20260111215205'),
 ('20251204043658'),
 ('20251204040243'),
 ('20251130022051'),

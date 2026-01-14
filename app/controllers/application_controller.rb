@@ -104,7 +104,7 @@ class ApplicationController < ActionController::Base
     UserSubmission.create(region_id: region&.id, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE, submission: body, user_id: user.id)
     User.increment_counter(:num_locations_suggested, user.id)
 
-    SuggestedLocation.create(region_id: region&.id, name: params["location_name"], street: street || params["location_street"], city: city || params["location_city"], state: state || params["location_state"], zip: zip || params["location_zip"], country: params["location_country"], phone: params["location_phone"], website: params["location_website"], location_type: location_type, operator: operator, zone: zone, comments: params["location_comments"], machines: machine_id_list, lat: lat, lon: lon, user_inputted_address: user_inputted_address, user_id: user.id)
+    SuggestedLocation.create(region_id: region&.id, name: params["location_name"], street: street || params["location_street"], city: city || params["location_city"], state: state || params["location_state"], zip: zip || params["location_zip"], country: params["location_country"], phone: params["location_phone"], website: params["location_website"], location_type: location_type, operator: operator, zone: zone, comments: params["location_comments"], machines: machine_id_list, lat: lat, lon: lon, user_inputted_address: user_inputted_address, user_id: user.id, place_id: params["place_id"])
   end
 
   def send_admin_notification(params, region, user = nil)

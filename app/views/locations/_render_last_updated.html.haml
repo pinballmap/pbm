@@ -1,5 +1,5 @@
 - if l.date_last_updated
-  = image_tag('icons/clock-time-four-outline.svg', :class => 'meta_icon float_l')
+  = image_tag('icons/lightning-bolt.svg', :class => 'meta_icon float_l')
   %div.last_updated
     Location updated
     = pluralize(number_with_precision(l.user_submissions_count, precision: 0, delimiter: ','), ' time')

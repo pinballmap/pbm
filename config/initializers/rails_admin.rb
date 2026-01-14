@@ -108,6 +108,7 @@ RailsAdmin.config do |config|
       field :location_type, :belongs_to_association
       field :website, :string
       field :description, :string
+      field :place_id, :string
       field :is_stern_army, :boolean do
         visible do
           bindings[:view]._current_user.is_super_admin
@@ -137,6 +138,7 @@ RailsAdmin.config do |config|
       field :description do
         html_attributes rows: 5, cols: 50
       end
+      field :place_id, :string
       field :is_stern_army, :boolean do
         visible do
           bindings[:view]._current_user.is_super_admin
@@ -180,6 +182,7 @@ RailsAdmin.config do |config|
       field :description do
         html_attributes rows: 5, cols: 50
       end
+      field :place_id, :string
       field :region_id do
         render do
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, :object_type => 'location'}
@@ -228,6 +231,7 @@ RailsAdmin.config do |config|
       field :description do
         html_attributes rows: 5, cols: 50
       end
+      field :place_id, :string
       field :region_id do
         render do
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.region_id, :object_type => 'location'}
@@ -754,6 +758,7 @@ RailsAdmin.config do |config|
       field :state, :string
       field :zip, :string
       field :country, :string
+      field :place_id, :string
       field :phone, :string
       field :operator, :belongs_to_association
       field :created_at, :datetime
@@ -829,6 +834,7 @@ RailsAdmin.config do |config|
       end
       field :user_inputted_address, :string
       field :machines, :string
+      field :place_id, :string
       field :created_at, :datetime
       field :updated_at, :datetime
     end
