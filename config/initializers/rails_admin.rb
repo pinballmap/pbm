@@ -806,6 +806,7 @@ RailsAdmin.config do |config|
       field :comments do
         html_attributes rows: 5, cols: 50
       end
+      field :place_id, :string
     end
     show do
       field :full_street_address, :string do
