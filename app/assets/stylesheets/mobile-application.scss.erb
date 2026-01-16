@@ -316,10 +316,6 @@ div.pick_a_map {
 }
 
 @media only screen and (max-width: 320px) {
-  .external_machine_link a {
-    font-size: 14px !important;
-  }
-
   .region_name {
     font-size: 18px;
   }
@@ -520,7 +516,7 @@ div.state_name_container {
 }
 
 .location_search div.limit {
-  text-align: center;
+  text-align: left;
   display: block;
 }
 
@@ -686,10 +682,6 @@ div.location_type {
 .address_name {
   font-size: 16px;
   line-height: 24px;
-}
-
-.external_machine_link a:after {
-  margin: 0 5px 0 4px;
 }
 
 .confirm_location_button:hover:after {
@@ -883,6 +875,23 @@ span.machine_condition_text {
 .add_machine_location span.info,
 .add_picture_location span.info {
   padding-top: 0;
+}
+
+.limit span.info {
+  margin-top: 15px;
+}
+
+.type_count {
+  margin-top: 12px;
+}
+
+.filter .select2-container .select2-selection--multiple {
+  height: 32px !important;
+}
+
+.filter .select2-container--default .select2-selection--multiple .select2-selection__choice {
+  margin-top: 0;
+  margin-bottom: -2px;
 }
 
 .search,

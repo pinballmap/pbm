@@ -1066,8 +1066,10 @@ form#address_search_form input.lookup_search_input {
   padding-left: 0;
 }
 
-.map_input .limit #by_type_id {
-  width: 143px;
+.type_count {
+  position: absolute;
+  margin-left: -18px;
+  margin-top: 6px;
 }
 
 .activity_hr {
@@ -1663,10 +1665,6 @@ span.machine_year_man {
   justify-content: center;
   align-items: center;
   flex-direction: row;
-}
-
-.external_machine_link {
-  margin: 0px 10px;
 }
 
 .matchplay_icon {
@@ -3261,8 +3259,45 @@ li span.state_name {
   border: 1px solid var(--border) !important;
 }
 
+.select2-container .select2-selection--multiple ul.select2-selection__rendered {
+  line-height: 18px !important;
+}
+
 .select2-container--default .select2-results__option--selected {
   background: var(--bg_vlightpurple) !important;
+}
+
+.filter .select2,
+.map_input .limit span.selection,
+.filter .select2-container .select2-selection--multiple {
+  max-width: 192px !important;
+  width: 192px !important;
+  height: 28px !important;
+  min-height: 28px;
+}
+
+.filter .select2-container .select2-selection--multiple {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 20px;
+ }
+
+.filter .select2-container--default .select2-selection--multiple {
+  padding-bottom: 0;
+}
+
+.filter .select2-container--default .select2-selection--multiple .select2-selection__choice {
+  margin-top: 0;
+  margin-bottom: 1px;
+}
+
+.filter .select2-container .select2-selection--multiple ul.select2-selection__rendered {
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+  border-right: 0;
 }
 
 /** High Scores **/

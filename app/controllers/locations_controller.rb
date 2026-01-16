@@ -1,6 +1,6 @@
 class LocationsController < ApplicationController
   respond_to :html, only: %i[index]
-  has_scope :by_location_name, :by_location_id, :by_ipdb_id, :by_opdb_id, :by_machine_id, :by_machine_single_id, :by_machine_name, :by_city_id, :by_state_id, :by_country, :by_machine_group_id, :by_zone_id, :by_operator_id, :by_type_id, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :by_city_name, :by_state_name, :by_city_no_state, :by_center_point_and_ne_boundary, :region, :by_is_stern_army, :by_ic_active, :user_faved, :manufacturer, :by_machine_type, :by_machine_display, :by_machine_id_ic, :by_machine_single_id_ic, :by_machine_year
+  has_scope :by_location_name, :by_location_id, :by_ipdb_id, :by_opdb_id, :by_machine_id, :by_machine_single_id, :by_machine_name, :by_city_id, :by_state_id, :by_country, :by_machine_group_id, :by_zone_id, :by_operator_id, :by_type_id, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :by_city_name, :by_state_name, :by_city_no_state, :by_center_point_and_ne_boundary, :region, :by_is_stern_army, :by_ic_active, :user_faved, :manufacturer, :by_machine_type, :by_machine_display, :by_machine_id_ic, :by_machine_single_id_ic, :by_machine_year, type: :array
   before_action :authenticate_user!, except: %i[index autocomplete autocomplete_city render_machines render_machines_count render_last_updated render_location_detail render_former_machines render_recent_activity sanitize_integers]
   rate_limit to: 100, within: 5.minutes, only: :index
   rate_limit to: 12, within: 3.seconds, only: :render_location_detail
@@ -56,7 +56,7 @@ class LocationsController < ApplicationController
 
     params.delete(:by_location_id) if !params[:by_location_name].blank? && !params[:by_location_id].blank?
 
-    sanitize_integers
+    # sanitize_integers
 
     @locations = apply_scopes(Location).select([ "id", "name", "lat", "lon", "machine_count" ]).uniq
 

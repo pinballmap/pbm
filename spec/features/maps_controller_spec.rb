@@ -163,10 +163,12 @@ describe MapsController do
     end
 
     it 'lets you filter by location type and number of machines with address and machine name' do
-      bar_type = FactoryBot.create(:location_type, id: 4, name: 'bar')
-      cleo = FactoryBot.create(:location, id: 38, zip: '97203', lat: 45.590502800000, lon: -122.754940100000, name: 'Cleo', location_type: bar_type)
+      church_type = FactoryBot.create(:location_type, id: 4, name: 'church')
+      lounge_type = FactoryBot.create(:location_type, id: 5, name: 'lounge')
+      cleo = FactoryBot.create(:location, id: 38, zip: '97203', lat: 45.590502800000, lon: -122.754940100000, name: 'Cleo', location_type: church_type)
       bawb = FactoryBot.create(:location, id: 39, zip: '97203', lat: 45.593049200000, lon: -122.732620200000, name: 'Bawb')
-      sass = FactoryBot.create(:location, id: 40, zip: '97203', lat: 45.593049200000, lon: -122.732620200000, name: 'Sass', location_type: bar_type)
+      sass = FactoryBot.create(:location, id: 40, zip: '97203', lat: 45.593049200000, lon: -122.732620200000, name: 'Sass', location_type: lounge_type)
+      jolene = FactoryBot.create(:location, id: 41, zip: '97203', lat: 45.593049200000, lon: -122.732620200000, name: 'Jolene', location_type: lounge_type)
       FactoryBot.create(:location_machine_xref, location: sass, machine: FactoryBot.create(:machine, name: 'Solomon', machine_group: nil))
 
       5.times do |index|
@@ -177,14 +179,19 @@ describe MapsController do
         FactoryBot.create(:location_machine_xref, machine: FactoryBot.create(:machine, id: 2222 + index, name: 'machine ' + index.to_s), location: sass)
       end
 
+      5.times do |index|
+        FactoryBot.create(:location_machine_xref, machine: FactoryBot.create(:machine, id: 3333 + index, name: 'machine ' + index.to_s), location: jolene)
+      end
+
       visit '/map'
 
       sleep 1
 
       fill_in('address', with: '97203')
 
-      page.find('#form .limit select#by_type_id').click
-      select('bar', from: 'by_type_id')
+      page.find('#form .limit .select2 .selection').click
+      select('church', from: 'by_type_id')
+      page.find('#address_search_form').click
 
       click_on 'location_search_button'
 
@@ -192,7 +199,26 @@ describe MapsController do
 
       expect(page).to have_content('Cleo')
       expect(page).to_not have_content('Bawb')
+      expect(page).to_not have_content('Sass')
+
+      visit '/map'
+
+      sleep 1
+
+      fill_in('address', with: '97203')
+
+      page.find('#form .limit .select2 .selection').click
+      select('lounge', from: 'by_type_id')
+      page.find('#address_search_form').click
+
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(page).to_not have_content('Cleo')
+      expect(page).to_not have_content('Bawb')
       expect(page).to have_content('Sass')
+      expect(page).to have_content('Jolene')
 
       visit '/map'
 
@@ -220,8 +246,9 @@ describe MapsController do
       page.execute_script %{ $('#by_machine_name').trigger('keydown') }
       find(:xpath, '//div[contains(text(), "Solomon")]').click
 
-      page.find('#form .limit select#by_type_id').click
-      select('bar', from: 'by_type_id')
+      page.find('#form .limit .select2 .selection').click
+      select('church', from: 'by_type_id')
+      page.find('#address_search_form').click
 
       page.find('#form .limit select#by_at_least_n_machines').click
       select('10+', from: 'by_at_least_n_machines')
@@ -238,8 +265,9 @@ describe MapsController do
 
       sleep 1
 
-      page.find('#form .limit select#by_type_id').click
-      select('bar', from: 'by_type_id')
+      page.find('#form .limit .select2 .selection').click
+      select('church', from: 'by_type_id')
+      page.find('#address_search_form').click
 
       page.find('#form .limit select#by_at_least_n_machines').click
       select('10+', from: 'by_at_least_n_machines')

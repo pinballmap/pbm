@@ -36,9 +36,11 @@
             %span.info Limit to
             = select_tag "by_at_least_n_machines", "<option></option><option value=\"2\">2+</option><option value=\"5\">5+</option><option value=\"10\">10+</option><option value=\"20\">20+</option>".html_safe
             %span.info machines.
-          %div.limit.filter
-            %span.info Filter by location type
-            = select_tag "by_type_id", options_for_select([['All', '']]) + options_from_collection_for_select(LocationType.all, 'id', 'name', params["by_type_id"])
+            - if mobile_device?
+              %br/
+            %span.info Location type
+            = select_tag "by_type_id[]", options_from_collection_for_select(LocationType.all.sort_by(&:name), 'id', 'name', params["by_type_id"]), multiple: "multiple", :class => 'by_type_id', :id => 'by_type_id'
+            %span.type_count
         .hr or
         .map_input
           %span.input_title Venue
@@ -137,6 +139,33 @@
       stored_machine_id = $('#by_machine_single_id').val();
       $('#singleVersion').prop('checked', true);
     }
+
+    $('.by_type_id').select2({
+      placeholder: 'location type',
+      closeOnSelect: false
+    });
+
+    $(document).ready(function() {
+      var uldiv = $('.type_count')
+      var count = $('.by_type_id').select2('data').length
+      if(count==0) {
+        uldiv.html("<span style='color: gray; font-size: 24px;line-height: 0px;margin-left: -4px;'>&#8964;</span>")
+      }
+      else {
+        uldiv.html("<span style='color: #0098dc;'>"+count+"</span>")
+      }
+    });
+
+    $('.by_type_id').on('change', function (evt) {
+      var uldiv = $('.type_count')
+      var count = $(this).select2('data').length
+      if(count==0) {
+        uldiv.html("<span style='color: gray; font-size: 24px;line-height: 0px;margin-left: -4px;'>&#8964;</span>")
+      }
+      else {
+        uldiv.html("<span style='color: #0098dc;'>"+count+"</span>")
+      }
+    });
 
     // Show exact version toggle if machine group is present
     if ($('#by_machine_group_id').val()) {
