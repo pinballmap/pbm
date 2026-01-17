@@ -27,6 +27,7 @@ module Api
       param :location_operator, String, desc: "Machine operator of new location", required: false
       param :location_zone, String, desc: "Machine operator of new location", required: false
       param :location_comments, String, desc: "Comments", required: false
+      param :place_id, String, desc: "Google Maps Place ID", required: false
       param :location_machines, String, desc: "List of machines at new location", required: false
       param :location_machines_ids, String, desc: "List of machine ids at new location", required: false
       formats [ "json" ]
