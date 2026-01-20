@@ -1379,7 +1379,8 @@ CREATE TABLE public.users (
     num_msx_scores_added integer DEFAULT 0 NOT NULL,
     contributor_rank character varying,
     admin_title character varying,
-    notes character varying
+    notes character varying,
+    operator_id integer
 );
 
 
@@ -2686,6 +2687,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260120030220'),
 ('20260113230621'),
 ('20260111215205'),
 ('20251204043658'),

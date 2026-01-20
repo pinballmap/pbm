@@ -34,39 +34,41 @@
           %a.ml_8.update_condition_button.button{:id => "edit_condition_#{mcx.id}"} edit
           = form_tag machine_condition_path(id: mcx.id), :id => "remove_condition_#{mcx.id}", :method => 'delete' do
             = submit_tag 'delete', :class => 'delete_condition_button'
+      - if mcx.user && lmx.location.operator_id = mcx.user.operator_id
+        = image_tag('icons/wrench-outline.svg', :class => 'meta_icon', :style => 'filter: brightness(0) saturate(100%) invert(76%) sepia(53%) saturate(1212%) hue-rotate(0deg) brightness(105%) contrast(106%);')
+        %span.italic.font14 Operator: #{lmx.location.operator.name}
+      :javascript
+        $('#cancel_update_condition_#{mcx.id}').click(function () {
+          $('#editing_past_machine_condition_#{mcx.id}').css('display', 'none')
+          $('#showing_past_machine_condition_#{mcx.id}').css('display', 'block')
 
-        :javascript
-          $('#cancel_update_condition_#{mcx.id}').click(function () {
-            $('#editing_past_machine_condition_#{mcx.id}').css('display', 'none')
-            $('#showing_past_machine_condition_#{mcx.id}').css('display', 'block')
+          return false;
+          });
+        $('#edit_condition_#{mcx.id}').click(function () {
+          $('#editing_past_machine_condition_#{mcx.id}').css('display', 'block')
+          $('#showing_past_machine_condition_#{mcx.id}').css('display', 'none')
+
+          return false;
+          });
+        $('#update_condition_#{mcx.id}').submit(function () {
+            var form = $(this);
+            if (confirm("Update this comment?")) {
+              $.post(form.attr('action'), form.serialize(), function (data) {
+                $('#editing_past_machine_condition_#{mcx.id}').css('display', 'none');
+                $('#showing_past_machine_condition_#{mcx.id}').css('display', 'block');
+                $('#show_conditions_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_machine_conditions');
+              });
+            }
 
             return false;
-            });
-          $('#edit_condition_#{mcx.id}').click(function () {
-            $('#editing_past_machine_condition_#{mcx.id}').css('display', 'block')
-            $('#showing_past_machine_condition_#{mcx.id}').css('display', 'none')
+          });
+        $('#remove_condition_#{mcx.id}').submit(function () {
+            var form = $(this);
+            if (confirm("Remove this comment?")) {
+              $('#showing_past_machine_condition_#{mcx.id}').fadeOut('slow', function() {
+                $.post(form.attr('action'), form.serialize(), function (data) {});
+              });
+            }
 
             return false;
-            });
-          $('#update_condition_#{mcx.id}').submit(function () {
-              var form = $(this);
-              if (confirm("Update this comment?")) {
-                $.post(form.attr('action'), form.serialize(), function (data) {
-                  $('#editing_past_machine_condition_#{mcx.id}').css('display', 'none');
-                  $('#showing_past_machine_condition_#{mcx.id}').css('display', 'block');
-                  $('#show_conditions_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_machine_conditions');
-                });
-              }
-
-              return false;
-            });
-          $('#remove_condition_#{mcx.id}').submit(function () {
-              var form = $(this);
-              if (confirm("Remove this comment?")) {
-                $('#showing_past_machine_condition_#{mcx.id}').fadeOut('slow', function() {
-                  $.post(form.attr('action'), form.serialize(), function (data) {});
-                });
-              }
-
-              return false;
-            });
+          });

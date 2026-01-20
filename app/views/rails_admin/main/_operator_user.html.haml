@@ -1,0 +1,5 @@
+- if current_user.is_super_admin
+  %select{:name => "user[operator_id]"}
+    <option value=""></option>
+    - Operator.all.sort_by(&:name).each do |o|
+      <option value="#{o.id}" #{o.id == operator_id ? 'selected=select' : ''} >#{o.name}</option>

@@ -393,6 +393,21 @@ describe LocationMachineXrefsController do
       expect(URI.parse(page.find_link('cibw')['href']).to_s).to match(%r{/users/cibw/profile})
     end
 
+    it 'displays if the person commenting is the operator at that location' do
+      operator = FactoryBot.create(:operator, region: nil, id: 455, name: 'Gold Star Pinball')
+      location = FactoryBot.create(:location, id: 456, name: 'Pinball Supreme', operator: operator)
+      user = FactoryBot.create(:user, id: 457, username: 'bill', email: 'foop@bar.com', operator: operator)
+      lmx = FactoryBot.create(:location_machine_xref, location: location, machine: FactoryBot.create(:machine))
+      FactoryBot.create(:machine_condition, location_machine_xref: lmx, user: user, comment: 'Fixed the left flipper')
+
+      visit "/map/?by_location_id=#{location.id}"
+
+      page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
+
+      expect(find("#show_conditions_lmx_#{lmx.id}")).to have_content("Fixed the left flipper")
+      expect(find("#show_conditions_lmx_#{lmx.id}")).to have_content("Operator: Gold Star Pinball")
+    end
+
     it 'does not error out if user later deleted their account' do
       FactoryBot.create(:machine_condition, location_machine_xref: @lmx, user_id: 666)
 

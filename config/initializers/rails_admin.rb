@@ -510,6 +510,7 @@ RailsAdmin.config do |config|
       field :email, :string
       field :username, :string
       field :region, :belongs_to_association
+      field :operator, :belongs_to_association
       field :created_at, :datetime
       field :confirmed_at, :datetime
       field :is_disabled, :boolean
@@ -519,6 +520,7 @@ RailsAdmin.config do |config|
       field :email, :string
       field :username, :string
       field :region, :belongs_to_association
+      field :operator, :belongs_to_association
       field :created_at, :datetime
       field :confirmed_at, :datetime
       field :is_disabled, :boolean
@@ -565,6 +567,14 @@ RailsAdmin.config do |config|
         end
         render do
           bindings[:view].render :partial => 'region_user', :locals => {:region_id => bindings[:object].region_id}
+        end
+      end
+      field :operator_id do
+        visible do
+          bindings[:view]._current_user.is_super_admin
+        end
+        render do
+          bindings[:view].render :partial => 'operator_user', :locals => {:operator_id => bindings[:object].operator_id}
         end
       end
     end

@@ -3,6 +3,7 @@ class User < ApplicationRecord
   acts_as_token_authenticatable
 
   belongs_to :region, optional: true
+  belongs_to :operator, optional: true
   has_many :location_machine_xrefs
   has_many :machine_score_xrefs
   has_many :location_picture_xrefs
