@@ -1,6 +1,6 @@
 #page_body
   .column_container
-    .column.w_320.bg_vlightpurple.profile{:style => 'padding-bottom: 25px;'}
+    .column.w_320.bg_vlightpurple.profile
       %div.font22.bold.flex_center.bg_lightpurple{:style => 'padding: 25px 5px;margin: 0 -10px;'}
         =link_to @user.username, profile_user_path(@user.id)
         %span.render_user_flag{:style => 'height: 21px;'}
@@ -11,6 +11,10 @@
           #{rank}
           %span
             =image_tag("rank/#{rank.gsub(' ', '')}.png", :class => "rank_icon_profile rank_icon_#{rank.gsub(' ', '')}")
+      - if @user.operator_id.present?
+        %div.center.font16.semiBold
+          Operator: #{@user.operator.name}
+          = image_tag('icons/wrench-outline.svg', :class => 'meta_icon user_operator')
       %div.center.font16.semiBold Member since: #{@user.created_at.strftime('%b %d, %Y')}
       - if current_user && (@user.id == current_user.id)
         %div.font14{:style => 'padding: 0 10px;'}

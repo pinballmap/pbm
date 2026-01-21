@@ -26,6 +26,7 @@
   --mask: rgba(245, 251, 255, 0.7);
   --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>) repeat;
   --filter: none;
+  --key: brightness(0) saturate(100%) invert(38%) sepia(72%) saturate(7124%) hue-rotate(24deg) brightness(97%) contrast(101%);;
 }
 .matchplay_dark {
   display: none;
@@ -68,6 +69,7 @@
     --mask: rgba(90, 100, 117, 0.4);
     --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Simple.png' %>) repeat;
     --filter: invert(100%);
+    --key: brightness(0) saturate(100%) invert(76%) sepia(53%) saturate(1212%) hue-rotate(0deg) brightness(105%) contrast(106%);
   }
 }
 
@@ -645,7 +647,7 @@ form.edit_user .form-actions {
 
 /** Stats **/
 
-.rank_icon {
+.rank_icon, .user_operator {
   margin-bottom: -3px;
   margin-left: 6px;
   margin-right: 2px;
@@ -664,7 +666,8 @@ form.edit_user .form-actions {
 .rank_icon_GrandChampMapper:hover:after,
 .rank_icon_LegendaryMapper:hover:after,
 .rank_icon_SuperMapper:hover:after,
-.user_flag_container:hover:after {
+.user_flag_container:hover:after,
+.user_operator_container:hover:after{
   position: absolute;
   line-height: 14px;
   font-size: 16px;
@@ -675,6 +678,7 @@ form.edit_user .form-actions {
   padding: 5px;
   font-family: $Nunito_600SemiBold;
   text-align: center;
+  z-index: 500;
 }
 
 .rank_icon_GlobalAdministrator:hover:after {
@@ -1544,6 +1548,10 @@ form select#by_operator_id {
   margin-right: 5px;
   margin-bottom: -2px;
   filter: var(--filter);
+}
+
+.user_operator {
+  filter: var(--key);
 }
 
 .operator_comments {
@@ -3215,6 +3223,11 @@ li span.state_name {
 
 .user_flag_container:hover:after {
   content: "User-selected flag emoji";
+  width: 200px;
+}
+
+.user_operator_container:hover:after {
+  content: "This location's operator";
   width: 200px;
 }
 
