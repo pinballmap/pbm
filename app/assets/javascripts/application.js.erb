@@ -33,7 +33,9 @@ function toggleData(name, id) {
 
 function toggle_machine_data(name, id) {
   if (name == 'add_machine_location') {
-    $('#add_machine_location_' + id).toggle();
+    $('#add_machine_location_' + id).toggle('fast', () => {
+      $('input#add_machine_by_name_' + id).focus();
+    });
   } else {
     $('#add_machine_location_' + id).hide();
   }
