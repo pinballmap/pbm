@@ -14,13 +14,16 @@
       %div.machine_condition_author
         - if mcx.user
           = link_to mcx.user.username, "#{request.scheme}://#{request.host_with_port}/users/#{mcx.user.username}/profile", :class => 'bold'
-          - if !mcx.user.admin_title.blank? || !mcx.user.contributor_rank.blank?
-            - rank = mcx.user.admin_title.present? ? mcx.user.admin_title.gsub(' ', '') : mcx.user.contributor_rank.gsub(' ', '')
+          - if mcx.user.admin_title.present?
+            %span{:class => "user_admin_container"}
+              = image_tag('icons/shield-account.svg', :class => 'user_icon user_admin')
+          - if mcx.user.contributor_rank.present?
+            - rank = mcx.user.contributor_rank.gsub(' ', '')
             %span{:class => "rank_icon_#{rank}"}
-              =image_tag("rank/#{rank}.png", :class => "rank_icon")
+              =image_tag("rank/#{rank}.png", :class => "user_icon rank_icon")
           - if !mcx.user.flag.blank?
             %span{:class => "user_flag_container"}
-              =image_tag("https://flagcdn.com/24x18/#{mcx.user.flag}.png", :class => "user_flag", :alt => "#{mcx.user.flag} flag")
+              =image_tag("https://flagcdn.com/24x18/#{mcx.user.flag}.png", :class => "user_icon user_flag", :alt => "#{mcx.user.flag} flag")
 
         - else
           DELETED USER
@@ -35,7 +38,7 @@
           = form_tag machine_condition_path(id: mcx.id), :id => "remove_condition_#{mcx.id}", :method => 'delete' do
             = submit_tag 'delete', :class => 'delete_condition_button'
       - if mcx.user && lmx.location.operator_id && lmx.location.operator_id == mcx.user.operator_id
-        = image_tag('icons/wrench-outline.svg', :class => 'meta_icon user_operator')
+        = image_tag('icons/wrench.svg', :class => 'meta_icon user_operator')
         %span.italic.font14 Operator: #{lmx.location.operator.name}
       :javascript
         $('#cancel_update_condition_#{mcx.id}').click(function () {

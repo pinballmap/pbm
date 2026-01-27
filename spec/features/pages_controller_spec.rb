@@ -3,7 +3,8 @@ require 'spec_helper'
 describe PagesController do
   before(:each) do
     @region = FactoryBot.create(:region, name: 'portland', full_name: 'Portland')
-    @location = FactoryBot.create(:location, id: 41, region: @region, state: 'OR', name: "Clark's Depot")
+    @operator = FactoryBot.create(:operator, name: "Be Best Pinball", id: 47)
+    @location = FactoryBot.create(:location, id: 41, region: @region, state: 'OR', name: "Clark's Depot", operator: @operator, city: "Vernon")
   end
 
   describe 'High roller list', type: :feature, js: true do
@@ -245,12 +246,15 @@ describe PagesController do
 
   describe 'activity page and filtering', type: :feature, js: true do
     before(:each) do
-      @other_region_location = FactoryBot.create(:location, city: 'Hillsboro', zip: '97005', name: "Ripley's Hut", region: @other_region)
+      user = FactoryBot.create(:user, username: 'pbm', admin_title: "Administrator", contributor_rank: "Super Mapper", operator: @operator)
+      @other_region_location = FactoryBot.create(:location, city: 'Hillsboro', zip: '97005', name: "Ripley's Hut", region: @other_region, operator: @operator)
       @other_region = FactoryBot.create(:region, name: 'seattle', full_name: 'Seattle')
 
       FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE)
 
       FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+
+      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @other_region, region_id: @other_region.id, location: @location, location_name: @location.name, user: user, user_name: 'pbm', machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
       FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
 
@@ -268,6 +272,9 @@ describe PagesController do
       expect(page).to_not have_content("removed from Ripley's Hut")
       expect(page).to have_link("Clark's Depot")
       expect(page).to_not have_content("removed from Doughtnut Haven")
+      expect(page).to_not have_selector('.user_admin_container')
+      expect(page).to_not have_selector('.user_operator_container')
+      expect(page).to_not have_selector('.rank_icon_SuperMapper')
     end
     it 'filters region activity' do
       visit '/portland/activity'
@@ -291,6 +298,9 @@ describe PagesController do
       expect(page).to have_content("added to Ripley's Hut")
       expect(page).to have_content("removed from Ripley's Hut")
       expect(page).to_not have_content("removed from Doughtnut Haven")
+      expect(page).to have_selector('.user_admin_container', visible: :visible)
+      expect(page).to have_selector('.user_operator_container', visible: :visible)
+      expect(page).to have_selector('.rank_icon_SuperMapper', visible: :visible)
     end
     it 'filters activity' do
       visit '/activity'

@@ -45,13 +45,14 @@ describe LocationsController do
 
   describe 'confirm location', type: :feature, js: true do
     before(:each) do
-      @user = FactoryBot.create(:user, username: 'ssw')
+      @operator = FactoryBot.create(:operator, name: "Be Best Pinball", id: 47)
+      @user = FactoryBot.create(:user, username: 'ssw', admin_title: "Administrator", contributor_rank: "Super Mapper", operator: @operator, flag: "us-ca")
       login(@user)
     end
 
     [ Region.find_by_name('portland'), nil ].each do |region|
       it 'lets you click a button to update the date_last_updated' do
-        location = FactoryBot.create(:location, region: region, name: 'Cleo')
+        location = FactoryBot.create(:location, region: region, name: 'Cleo', operator: @operator)
 
         visit "/#{region ? region.name : 'map'}/?by_location_id=" + location.id.to_s
 
@@ -65,6 +66,10 @@ describe LocationsController do
         expect(location.reload.date_last_updated).to eq(Date.today)
         expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')} by ssw")
         expect(URI.parse(page.find_link('ssw')['href']).to_s).to match(%r{/users/#{@user.username}/profile})
+        expect(page).to have_selector('.user_admin_container', visible: :visible)
+        expect(page).to have_selector('.user_operator_container', visible: :visible)
+        expect(page).to have_selector('.rank_icon_SuperMapper', visible: :visible)
+        expect(page).to have_selector('.user_flag_container', visible: :visible)
         expect(UserSubmission.count).to eq(1)
 
         sleep 1
@@ -93,6 +98,10 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + location.id.to_s
 
       expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')}")
+      expect(page).to_not have_selector('.user_admin_container')
+      expect(page).to_not have_selector('.user_operator_container')
+      expect(page).to_not have_selector('.rank_icon_SuperMapper')
+      expect(page).to_not have_selector('.user_flag_container')
     end
 
     it 'displays number of edits and distinct users who edited' do
@@ -737,13 +746,15 @@ describe LocationsController do
 
   describe 'recent_activity', type: :feature, js: true do
     before(:each) do
-      @location = FactoryBot.create(:location, name: 'Cleo', city: 'Townville')
-      @location2 = FactoryBot.create(:location, name: 'Sassimo')
+      @operator = FactoryBot.create(:operator, name: "Be Best Pinball", id: 47)
+      @location = FactoryBot.create(:location, name: 'Cleo', city: 'Townville', operator: @operator)
+      @user = FactoryBot.create(:user, id: 789, username: 'pbm', admin_title: "Administrator", contributor_rank: "Super Mapper", operator: @operator, flag: "us-ca")
+      @location2 = FactoryBot.create(:location, name: 'Sassimo', operator: @operator)
     end
     it 'returns a list of recent activity at the location' do
       FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE)
       FactoryBot.create(:user_submission, created_at: '2022-01-03', location: @location, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-      FactoryBot.create(:user_submission, created_at: '2022-01-04', location: @location, user_name: 'ssw', comment: 'be best', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryBot.create(:user_submission, created_at: '2022-01-04', location: @location, user: @user, user_name: 'pbm', comment: 'be best', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE)
       FactoryBot.create(:user_submission, created_at: '2022-01-05', location: @location, user_name: 'ssw', submission_type: UserSubmission::CONFIRM_LOCATION_TYPE)
       FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user_name: 'ssw', high_score: '2222', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_SCORE_TYPE)
       FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location2, machine_name: 'Jolene Zone', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
@@ -761,6 +772,10 @@ describe LocationsController do
       expect(find('.recent_location_activity_location')).to have_content('confirmed')
       expect(find('.recent_location_activity_location')).to have_content('be best')
       expect(find('.recent_location_activity_location')).to_not have_content('Jolene Zone')
+      expect(page).to have_selector('.recent_location_activity_location .user_admin_container', visible: :visible)
+      expect(page).to have_selector('.recent_location_activity_location .user_operator_container', visible: :visible)
+      expect(page).to have_selector('.recent_location_activity_location .rank_icon_SuperMapper', visible: :visible)
+      expect(page).to_not have_selector('.recent_location_activity_location .user_flag_container')
     end
 
     it 'has pagination if greater than 50 items' do

@@ -26,7 +26,8 @@
   --mask: rgba(245, 251, 255, 0.7);
   --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>) repeat;
   --filter: none;
-  --key: brightness(0) saturate(100%) invert(38%) sepia(72%) saturate(7124%) hue-rotate(24deg) brightness(97%) contrast(101%);;
+  --key: brightness(0) saturate(100%) invert(38%) sepia(72%) saturate(7124%) hue-rotate(24deg) brightness(97%) contrast(101%);
+  --shield: brightness(0) saturate(100%) invert(16%) sepia(92%) saturate(1799%) hue-rotate(337deg) brightness(82%) contrast(95%);
 }
 .matchplay_dark {
   display: none;
@@ -70,6 +71,7 @@
     --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Simple.png' %>) repeat;
     --filter: invert(100%);
     --key: brightness(0) saturate(100%) invert(76%) sepia(53%) saturate(1212%) hue-rotate(0deg) brightness(105%) contrast(106%);
+    --shield: brightness(0) saturate(100%) invert(65%) sepia(21%) saturate(1046%) hue-rotate(309deg) brightness(99%) contrast(100%);
   }
 }
 
@@ -647,10 +649,9 @@ form.edit_user .form-actions {
 
 /** Stats **/
 
-.rank_icon, .user_operator {
+.rank_icon, .user_operator, .user_icon {
   margin-bottom: -3px;
   margin-left: 6px;
-  margin-right: 2px;
   height: 15px;
   width: 15px;
 }
@@ -661,13 +662,19 @@ form.edit_user .form-actions {
   width: 20px;
 }
 
-.rank_icon_GlobalAdministrator:hover:after,
-.rank_icon_RegionalAdministrator:hover:after,
+
+.operator_comments {
+  font-size: 12px;
+  font-family: $italic;
+  margin: -4px 0 10px 22px;
+}
+
 .rank_icon_GrandChampMapper:hover:after,
 .rank_icon_LegendaryMapper:hover:after,
 .rank_icon_SuperMapper:hover:after,
 .user_flag_container:hover:after,
-.user_operator_container:hover:after{
+.user_operator_container:hover:after,
+.user_admin_container:hover:after {
   position: absolute;
   line-height: 14px;
   font-size: 16px;
@@ -681,14 +688,9 @@ form.edit_user .form-actions {
   z-index: 500;
 }
 
-.rank_icon_GlobalAdministrator:hover:after {
-  content: "Global Administrator";
-  width: 180px;
-}
-
-.rank_icon_RegionalAdministrator:hover:after {
-  content: "Regional Administrator";
-  width: 190px;
+.user_admin_container:hover:after {
+  content: "Administrator";
+  width: 160px;
 }
 
 .rank_icon_GrandChampMapper:hover:after {
@@ -1545,6 +1547,7 @@ form select#by_operator_id {
 
 .meta_icon {
   height: 15px;
+  width: auto;
   margin-right: 5px;
   margin-bottom: -2px;
   filter: var(--filter);
@@ -1554,10 +1557,14 @@ form select#by_operator_id {
   filter: var(--key);
 }
 
-.operator_comments {
-  font-size: 12px;
-  font-family: $italic;
-  margin: -4px 0 10px 22px;
+.user_admin {
+  filter: var(--shield);
+}
+
+.profile_icon {
+  height: 21px;
+  width: auto;
+  margin-left: 10px;
 }
 
 .location_tools {
@@ -2473,6 +2480,7 @@ div.location_type_container {
 
 .location_type span {
   color: var(--grey);
+  font-family: $Nunito_800ExtraBold;
 }
 
 .location_type img {
@@ -3236,8 +3244,7 @@ li span.state_name {
 }
 
 .user_flag {
-  margin-left: 4px;
-  margin-bottom: -4px;
+  width: auto;
   margin-right: 2px
 }
 

@@ -5,16 +5,20 @@
         =link_to @user.username, profile_user_path(@user.id)
         %span.render_user_flag{:style => 'height: 21px;'}
           = render :partial => 'users/render_user_flag', :locals => {:user => @user}
-      - if !@user.admin_title.blank? || !@user.contributor_rank.blank?
-        - rank = @user.admin? ? @user.admin_title : @user.contributor_rank
-        %div.red.bold.center.font18
+      - if @user.contributor_rank.present?
+        - rank = @user.contributor_rank
+        %div.red.bold.font18.flex_center
           #{rank}
-          %span
+          %span.ml_8
             =image_tag("rank/#{rank.gsub(' ', '')}.png", :class => "rank_icon_profile rank_icon_#{rank.gsub(' ', '')}")
+      - if @user.admin_title.present?
+        %div.center.font16.semiBold.flex_center
+          #{@user.admin_title}
+          = image_tag('icons/shield-account.svg', :class => 'user_admin profile_icon')
       - if @user.operator_id.present?
-        %div.center.font16.semiBold
+        %div.center.font16.semiBold.flex_center
           Operator: #{@user.operator.name}
-          = image_tag('icons/wrench-outline.svg', :class => 'meta_icon user_operator')
+          = image_tag('icons/wrench.svg', :class => 'user_operator profile_icon')
       %div.center.font16.semiBold Member since: #{@user.created_at.strftime('%b %d, %Y')}
       - if current_user && (@user.id == current_user.id)
         %div.font14{:style => 'padding: 0 10px;'}

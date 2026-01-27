@@ -3,7 +3,7 @@ require 'spec_helper'
 describe LocationMachineXrefsController do
   before(:each) do
     @region = FactoryBot.create(:region, name: 'portland', full_name: 'Portland')
-    @location = FactoryBot.create(:location, id: 1, region: @region)
+    @location = FactoryBot.create(:location, id: 1, region: @region,)
   end
 
   describe 'add machines - not authed', type: :feature, js: true do
@@ -267,7 +267,7 @@ describe LocationMachineXrefsController do
   describe 'machine descriptions', type: :feature, js: true do
     before(:each) do
       @lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine))
-      @user = FactoryBot.create(:user, id: 11, username: 'ssw', email: 'foo@bar.com')
+      @user = FactoryBot.create(:user, id: 11, username: 'ssw', email: 'foo@bar.com', admin_title: "Administrator", contributor_rank: "Super Mapper", flag: "us-ca")
 
       login(@user)
     end
@@ -367,19 +367,29 @@ describe LocationMachineXrefsController do
     end
 
     it 'should let me add a new machine description' do
-      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+      operator = FactoryBot.create(:operator, name: "Be Best Pinball", id: 47)
+      location = FactoryBot.create(:location, id: 2, region: @region, operator: operator)
+      lmx = FactoryBot.create(:location_machine_xref, location: location, machine: FactoryBot.create(:machine))
+      user = FactoryBot.create(:user, id: 12, username: 'pbm', email: 'foot@bar.com', admin_title: "Administrator", contributor_rank: "Super Mapper", operator: operator, flag: "us-ca")
+      login(user)
 
-      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
-      page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
-      fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
-      page.find("input#save_machine_condition_#{@lmx.id}.save_button").click
+      visit "/#{@region.name}/?by_location_id=#{location.id}"
+
+      page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
+      page.find("div#machine_condition_lmx_#{lmx.id}.machine_condition_lmx .add_condition").click
+      fill_in("new_machine_condition_#{lmx.id}", with: 'This is a new condition')
+      page.find("input#save_machine_condition_#{lmx.id}.save_button").click
 
       sleep 1
 
-      expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("This is a new condition\nssw\n#{@lmx.created_at.strftime('%b %d, %Y')}")
-      expect(@lmx.reload.location.date_last_updated).to eq(Date.today)
-      expect(find("#last_updated_location_#{@location.id}")).to have_content("#{@location.date_last_updated.strftime('%b %d, %Y')} by ssw")
-      expect(URI.parse(page.find_link('ssw', match: :first)['href']).to_s).to match(%r{/users/ssw/profile})
+      expect(find("#show_conditions_lmx_#{lmx.id}")).to have_content("This is a new condition\npbm\n#{lmx.created_at.strftime('%b %d, %Y')}")
+      expect(lmx.reload.location.date_last_updated).to eq(Date.today)
+      expect(find("#last_updated_location_#{location.id}")).to have_content("#{location.date_last_updated.strftime('%b %d, %Y')} by pbm")
+      expect(URI.parse(page.find_link('pbm', match: :first)['href']).to_s).to match(%r{/users/pbm/profile})
+      expect(page).to have_selector('.machine_comments_container .user_admin_container', visible: :visible)
+      expect(page).to have_selector('.machine_comments_container .rank_icon_SuperMapper', visible: :visible)
+      expect(page).to have_selector('.machine_comments_container .user_flag_container', visible: :visible)
+      expect(page).to have_selector('.meta_icon.user_operator', visible: :visible)
     end
 
     it 'displays who updated a machine if that data is available' do
@@ -464,7 +474,6 @@ describe LocationMachineXrefsController do
       expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content('This is a new condition')
       expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content('ssw')
 
-      page.find("div#machineconditions_container_lmx_#{@lmx.id}.machineconditions_container_lmx").click
       expect(find("#showing_past_machine_condition_#{@lmx.id}")).to have_content('test')
       expect(find("#showing_past_machine_condition_#{@lmx.id}")).to have_content('ssw')
     end
@@ -1073,10 +1082,10 @@ describe LocationMachineXrefsController do
       page.find('input#location_search_button').click
 
       page.find("#location_detail_location_#{@location.id} .meta_image").click
-      fill_in("new_desc_#{@location.id}", with: 'New Condition')
+      fill_in("new_desc_#{@location.id}", with: 'New Description')
       click_on 'Save'
 
-      expect(page).to have_content('New Condition')
+      expect(page).to have_content('New Description')
     end
 
     it 'honors default search types for region' do

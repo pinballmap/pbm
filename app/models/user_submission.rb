@@ -43,6 +43,14 @@ class UserSubmission < ApplicationRecord
     user ? user.email : ""
   end
 
+  def user_operator_id
+    user ? user.operator_id : ""
+  end
+
+  def location_operator_id
+    location ? location.operator_id : ""
+  end
+
   def lat_and_lon
     [ lat, lon ].join(", ")
   end

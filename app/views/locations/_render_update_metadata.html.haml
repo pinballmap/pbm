@@ -33,7 +33,7 @@
       %span.grey.italic (Google Maps)
   - if (l.operator_id)
     %div.operator
-      = image_tag('icons/wrench-outline.svg', :class => 'meta_icon')
+      = image_tag('icons/wrench.svg', :class => 'meta_icon')
       %span.darkgrey Operated by:
       - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
         %span &nbsp;#{l.operator.name}

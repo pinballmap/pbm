@@ -12,13 +12,19 @@
       %div.high_score_author
         - if msx.user
           = link_to msx.user.username, "#{request.scheme}://#{request.host_with_port}/users/#{msx.user.username}/profile", :class => 'bold'
-          - if !msx.user.admin_title.blank? || !msx.user.contributor_rank.blank?
-            - rank = msx.user.admin_title.present? ? msx.user.admin_title.gsub(' ', '') : msx.user.contributor_rank.gsub(' ', '')
+          - if msx.user.admin_title.present?
+            %span{:class => "user_admin_container"}
+              = image_tag('icons/shield-account.svg', :class => 'user_icon user_admin')
+          - if lmx.location.operator_id && lmx.location.operator_id == msx.user.operator_id
+            %span{:class => "user_operator_container"}
+              = image_tag('icons/wrench.svg', :class => 'user_icon user_operator')
+          - if msx.user.contributor_rank.present?
+            - rank = msx.user.contributor_rank.gsub(' ', '')
             %span{:class => "rank_icon_#{rank}"}
-              =image_tag("rank/#{rank}.png", :class => "rank_icon")
+              =image_tag("rank/#{rank}.png", :class => "user_icon rank_icon")
           - if !msx.user.flag.blank?
             %span{:class => "user_flag_container"}
-              =image_tag("https://flagcdn.com/24x18/#{msx.user.flag}.png", :class => "user_flag", :alt => "#{msx.user.flag} flag")
+              =image_tag("https://flagcdn.com/24x18/#{msx.user.flag}.png", :class => "user_icon user_flag", :alt => "#{msx.user.flag} flag")
         - else
           DELETED USER
         - if !msx.updated_at.nil?

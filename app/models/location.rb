@@ -267,6 +267,10 @@ class Location < ApplicationRecord
     last_updated_by_user ? last_updated_by_user.username : ""
   end
 
+  def last_updated_by_operator_id
+    last_updated_by_user ? last_updated_by_user.operator_id : ""
+  end
+
   def confirm(user)
     recent_confirm = UserSubmission.where(submission_type: "confirm_location", location: self).order(created_at: :desc).pluck(:created_at).first
 

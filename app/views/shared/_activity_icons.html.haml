@@ -1,0 +1,11 @@
+- if activity.user_id && activity.location.present? && activity.user.present?
+  - if activity.user.admin_title
+    %span{:class => "user_admin_container"}
+      = image_tag('icons/shield-account.svg', :class => 'user_icon user_admin')
+  - if activity.user.operator_id && activity.location.operator_id == activity.user.operator_id
+    %span{:class => "user_operator_container"}
+      = image_tag('icons/wrench.svg', :class => 'user_icon user_operator')
+  - if activity.user.contributor_rank
+    - rank = activity.user.contributor_rank.gsub(' ', '')
+    %span{:class => "rank_icon_#{rank}"}
+      =image_tag("rank/#{rank}.png", :class => "user_icon rank_icon")

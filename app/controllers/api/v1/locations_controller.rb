@@ -403,8 +403,8 @@ module Api
           return_response(
             location,
             nil,
-            [ location_machine_xrefs: { include: { machine_conditions: { methods: %i[username operator_id] }, machine_score_xrefs: { methods: :username } }, methods: :last_updated_by_username } ],
-            %i[last_updated_by_username num_machines]
+            [ location_machine_xrefs: { include: { machine_conditions: { methods: %i[username operator_id] }, machine_score_xrefs: { methods: %i[username operator_id] } }, methods: :last_updated_by_username } ],
+            %i[last_updated_by_username last_updated_by_operator_id num_machines]
           )
         end
       rescue ActiveRecord::RecordNotFound

@@ -111,6 +111,25 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response.body).to_not include('added a high score')
       expect(response.body).to include('pagy')
     end
+
+    it 'includes location_operator_id user_operator_id fields' do
+      location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606', operator_id: 543)
+      user = FactoryBot.create(:user, id: 121, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123', operator_id: 542)
+
+      FactoryBot.create(:user_submission, user: user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2020-01-01', submission: 'ssw added a high score of 504,570 on Tag-Team Pinball (Gottlieb, 1985) at Bottles in Portland')
+
+      get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606' }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(1)
+
+      expect(response.body).to include('location_operator_id')
+      expect(response.body).to include('543')
+      expect(response.body).to include('user_operator_id')
+      expect(response.body).to include('542')
+    end
   end
 
   describe '#index' do
@@ -205,6 +224,25 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response.body).to include('Machine was removed from')
       expect(response.body).to_not include('Machine was added to')
       expect(response.body).to include('pagy')
+    end
+
+    it 'includes location_operator_id user_operator_id fields' do
+      location = FactoryBot.create(:location, name: 'bawb', id: 111, operator_id: 543)
+      user = FactoryBot.create(:user, id: 121, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123', operator_id: 542)
+
+      FactoryBot.create(:user_submission, user: user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2020-01-01', submission: 'ssw added a high score of 504,570 on Tag-Team Pinball (Gottlieb, 1985) at Bottles in Portland')
+
+      get '/api/v1/user_submissions/location.json', params: { id: 111 }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(1)
+
+      expect(response.body).to include('location_operator_id')
+      expect(response.body).to include('543')
+      expect(response.body).to include('user_operator_id')
+      expect(response.body).to include('542')
     end
   end
 

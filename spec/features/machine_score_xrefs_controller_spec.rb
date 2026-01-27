@@ -3,7 +3,8 @@ require 'spec_helper'
 describe MachineScoreXrefsController do
   before(:each) do
     @region = FactoryBot.create(:region, name: 'portland', full_name: 'Portland')
-    @location = FactoryBot.create(:location, region: @region)
+    @operator = FactoryBot.create(:operator, name: "Be Best Pinball", id: 47)
+    @location = FactoryBot.create(:location, region: @region, operator: @operator)
   end
 
   describe 'add machine scores - no auth', type: :feature, js: true do
@@ -21,7 +22,7 @@ describe MachineScoreXrefsController do
 
   describe 'add machine scores', type: :feature, js: true do
     before(:each) do
-      @user = FactoryBot.create(:user, username: 'cap')
+      @user = FactoryBot.create(:user, username: 'cap',  admin_title: "Administrator", contributor_rank: "Super Mapper", operator: @operator, flag: "us-ca")
       login(@user)
     end
 
@@ -39,6 +40,10 @@ describe MachineScoreXrefsController do
 
       expect(lmx.machine_score_xrefs.first.score).to eq(1234)
       expect(lmx.machine_score_xrefs.first.username).to eq('cap')
+      expect(page).to have_selector('.machine_scores_container .user_admin_container', visible: :visible)
+      expect(page).to have_selector('.machine_scores_container .user_operator_container', visible: :visible)
+      expect(page).to have_selector('.machine_scores_container .rank_icon_SuperMapper', visible: :visible)
+      expect(page).to have_selector('.machine_scores_container .user_flag_container', visible: :visible)
     end
 
     it 'removes non-digit characters from high scores' do
