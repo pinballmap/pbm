@@ -68,7 +68,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
       expect(scores[0]['username']).to eq('ssw')
 
       expect(scores[1]['score']).to eq(100)
-      expect(scores[1]['username']).to eq('')
+      expect(scores[1]['username']).to be_nil
     end
 
     it 'errors for unknown lmx' do

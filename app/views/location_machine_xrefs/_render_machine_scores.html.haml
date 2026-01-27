@@ -15,14 +15,14 @@
           - if msx.user.admin_title.present?
             %span{:class => "user_admin_container"}
               = image_tag('icons/shield-account.svg', :class => 'user_icon user_admin')
-          - if lmx.location.operator_id && lmx.location.operator_id == msx.user.operator_id
+          - if lmx.location.operator_id.present? && lmx.location.operator_id == msx.user.operator_id
             %span{:class => "user_operator_container"}
               = image_tag('icons/wrench.svg', :class => 'user_icon user_operator')
           - if msx.user.contributor_rank.present?
             - rank = msx.user.contributor_rank.gsub(' ', '')
             %span{:class => "rank_icon_#{rank}"}
               =image_tag("rank/#{rank}.png", :class => "user_icon rank_icon")
-          - if !msx.user.flag.blank?
+          - if msx.user.flag.present?
             %span{:class => "user_flag_container"}
               =image_tag("https://flagcdn.com/24x18/#{msx.user.flag}.png", :class => "user_icon user_flag", :alt => "#{msx.user.flag} flag")
         - else

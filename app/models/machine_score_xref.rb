@@ -36,11 +36,11 @@ class MachineScoreXref < ApplicationRecord
   end
 
   def username
-    user ? user.username : ""
+    user&.username
   end
 
   def operator_id
-    user ? user.operator_id : ""
+    user&.operator_id
   end
 
   def create_user_submission

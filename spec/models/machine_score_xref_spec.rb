@@ -9,7 +9,7 @@ describe MachineScoreXref do
     describe '#username' do
       it 'should display blank when there is no user associated with the score' do
         userless_score = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, user: nil)
-        expect(userless_score.username).to eq('')
+        expect(userless_score.username).to be_nil
 
         user_score = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, user: FactoryBot.create(:user, username: 'cibw'))
         expect(user_score.username).to eq('cibw')

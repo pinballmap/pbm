@@ -33,11 +33,11 @@ class MachineCondition < ApplicationRecord
   end
 
   def username
-    user ? user.username : ""
+    user&.username
   end
 
   def operator_id
-    user ? user.operator_id : ""
+    user&.operator_id
   end
 
   def as_json(options = {})

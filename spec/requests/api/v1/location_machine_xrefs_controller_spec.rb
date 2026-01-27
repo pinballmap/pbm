@@ -249,7 +249,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('foo')
       expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['username']).to eq('ssw')
       expect(JSON.parse(response.body)['location_machine']['machine_conditions'][1]['comment']).to eq('bar')
-      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][1]['username']).to eq('')
+      expect(JSON.parse(response.body)['location_machine']['machine_conditions'][1]['username']).to be_nil
 
       @lmx.reload
       expect(@lmx.location.last_updated_by_user.id).to eq(111)

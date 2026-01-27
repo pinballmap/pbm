@@ -40,11 +40,15 @@ class UserSubmission < ApplicationRecord
   NEW_PICTURE_TYPE = "new_picture".freeze
 
   def user_email
-    user ? user.email : ""
+    user&.email
   end
 
   def user_operator_id
-    user ? user.operator_id : ""
+    user&.operator_id
+  end
+
+  def location_operator_id
+    location&.operator_id
   end
 
   def location_operator_id
