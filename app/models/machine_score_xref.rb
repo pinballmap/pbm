@@ -43,6 +43,14 @@ class MachineScoreXref < ApplicationRecord
     user&.operator_id
   end
 
+  def admin_title
+    user&.admin_title
+  end
+
+  def contributor_rank
+    user&.contributor_rank
+  end
+
   def create_user_submission
     user_info = user ? user.username : "UNKNOWN USER"
     submission = "#{user_info} added a high score of #{number_with_precision(score, precision: 0, delimiter: ',')} on #{machine.name_and_year} at #{location.name} in #{location.city}"

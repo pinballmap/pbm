@@ -47,12 +47,16 @@ class UserSubmission < ApplicationRecord
     user&.operator_id
   end
 
-  def location_operator_id
-    location&.operator_id
+  def admin_title
+    user&.admin_title
+  end
+
+  def contributor_rank
+    user&.contributor_rank
   end
 
   def location_operator_id
-    location ? location.operator_id : ""
+    location&.operator_id
   end
 
   def lat_and_lon

@@ -40,6 +40,14 @@ class MachineCondition < ApplicationRecord
     user&.operator_id
   end
 
+  def admin_title
+    user&.admin_title
+  end
+
+  def contributor_rank
+    user&.contributor_rank
+  end
+
   def as_json(options = {})
     options[:methods] = [ :username ]
     super

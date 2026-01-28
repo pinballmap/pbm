@@ -112,9 +112,9 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response.body).to include('pagy')
     end
 
-    it 'includes location_operator_id user_operator_id fields' do
+    it 'includes location_operator_id, user_operator_id, admin_title, contributor_rank fields' do
       location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606', operator_id: 543)
-      user = FactoryBot.create(:user, id: 121, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123', operator_id: 542)
+      user = FactoryBot.create(:user, id: 121, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123', operator_id: 542, admin_title: 'Administrator', contributor_rank: 'Grand Champ Mapper')
 
       FactoryBot.create(:user_submission, user: user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2020-01-01', submission: 'ssw added a high score of 504,570 on Tag-Team Pinball (Gottlieb, 1985) at Bottles in Portland')
 
@@ -129,6 +129,10 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response.body).to include('543')
       expect(response.body).to include('user_operator_id')
       expect(response.body).to include('542')
+      expect(response.body).to include('admin_title')
+      expect(response.body).to include('Administrator')
+      expect(response.body).to include('contributor_rank')
+      expect(response.body).to include('Grand Champ Mapper')
     end
   end
 
@@ -226,9 +230,9 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response.body).to include('pagy')
     end
 
-    it 'includes location_operator_id user_operator_id fields' do
+    it 'includes location_operator_id, user_operator_id, admin_title, contributor_rank fields' do
       location = FactoryBot.create(:location, name: 'bawb', id: 111, operator_id: 543)
-      user = FactoryBot.create(:user, id: 121, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123', operator_id: 542)
+      user = FactoryBot.create(:user, id: 121, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123', operator_id: 542, admin_title: 'Administrator', contributor_rank: 'Grand Champ Mapper')
 
       FactoryBot.create(:user_submission, user: user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2020-01-01', submission: 'ssw added a high score of 504,570 on Tag-Team Pinball (Gottlieb, 1985) at Bottles in Portland')
 
@@ -243,6 +247,10 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response.body).to include('543')
       expect(response.body).to include('user_operator_id')
       expect(response.body).to include('542')
+      expect(response.body).to include('admin_title')
+      expect(response.body).to include('Administrator')
+      expect(response.body).to include('contributor_rank')
+      expect(response.body).to include('Grand Champ Mapper')
     end
   end
 

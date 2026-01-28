@@ -40,9 +40,9 @@ module Api
         if !user_submissions.empty?
           respond_to do |format|
             if params[:limit].blank?
-              format.json { return_response(user_submissions, "user_submissions", [], %i[location_operator_id user_operator_id], 200, [], nil) }
+              format.json { return_response(user_submissions, "user_submissions", [], %i[location_operator_id user_operator_id admin_title contributor_rank], 200, [], nil) }
             else
-              format.json { return_response(user_submissions, "user_submissions", [], %i[location_operator_id user_operator_id], 200, [], true) }
+              format.json { return_response(user_submissions, "user_submissions", [], %i[location_operator_id user_operator_id admin_title contributor_rank], 200, [], true) }
             end
           end
         else
@@ -116,9 +116,9 @@ module Api
         if !user_submissions.empty?
           respond_to do |format|
             if params[:limit].blank?
-              format.json { return_response(user_submissions, "user_submissions", [], %i[location_operator_id user_operator_id], 200, [], nil) }
+              format.json { return_response(user_submissions, "user_submissions", [], %i[location_operator_id user_operator_id admin_title contributor_rank], 200, [], nil) }
             else
-              format.json { return_response(user_submissions, "user_submissions", [], %i[location_operator_id user_operator_id], 200, [], true) }
+              format.json { return_response(user_submissions, "user_submissions", [], %i[location_operator_id user_operator_id admin_title contributor_rank], 200, [], true) }
             end
           end
         else
