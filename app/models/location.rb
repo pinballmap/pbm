@@ -264,11 +264,19 @@ class Location < ApplicationRecord
   end
 
   def last_updated_by_username
-    last_updated_by_user ? last_updated_by_user.username : ""
+    last_updated_by_user&.username
   end
 
   def last_updated_by_operator_id
-    last_updated_by_user ? last_updated_by_user.operator_id : ""
+    last_updated_by_user&.operator_id
+  end
+
+  def last_updated_by_admin_title
+    last_updated_by_user&.admin_title
+  end
+
+  def last_updated_by_contributor_rank
+    last_updated_by_user&.contributor_rank
   end
 
   def confirm(user)

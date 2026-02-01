@@ -146,6 +146,10 @@ class User < ApplicationRecord
     user_submissions_count
   end
 
+  def operator_name
+    Operator.where(id: operator_id).pluck(:name).first
+  end
+
   # legacy for old versions of app
   def contributor_rank_int
     case user_submissions_count

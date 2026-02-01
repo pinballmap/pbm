@@ -6,7 +6,7 @@ describe Api::V1::LocationsController, type: :request do
     @another_region = FactoryBot.create(:region, name: 'seattle', full_name: 'Seattle', lat: 20, lon: 20)
     @out_of_bounds_region = FactoryBot.create(:region, name: 'vancouver', full_name: 'Vancouver', lat: 100, lon: 100)
     @location = FactoryBot.create(:location, region: @region, name: 'Satchmo', state: 'OR', zip: '97203', lat: 42.18, lon: -71.18)
-    @user = FactoryBot.create(:user, id: 111, username: 'cibw', email: 'foo@bar.com', region: @region, authentication_token: '1G8_s7P-V-4MGojaKD7a', operator_id: 2000)
+    @user = FactoryBot.create(:user, id: 111, username: 'cibw', email: 'foo@bar.com', region: @region, authentication_token: '1G8_s7P-V-4MGojaKD7a', operator_id: 2000, admin_title: 'Administrator', contributor_rank: 'Magician')
     @another_region_admin_user = FactoryBot.create(:user, id: 222, username: 'latguy', email: 'lat@guy.com', region: @another_region)
     FactoryBot.create(:user, email: 'super_admin@bar.com', region: nil, is_super_admin: 1)
   end
@@ -1120,6 +1120,8 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to include('foo bar')
       expect(response.body).to include('567')
       expect(response.body).to include('2000')
+      expect(response.body).to include('Magician')
+      expect(response.body).to include('Administrator')
     end
 
     it 'show location info plus comments and scores' do

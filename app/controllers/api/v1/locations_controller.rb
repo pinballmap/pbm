@@ -404,7 +404,7 @@ module Api
             location,
             nil,
             [ location_machine_xrefs: { include: { machine_conditions: { methods: %i[username operator_id admin_title contributor_rank] }, machine_score_xrefs: { methods: %i[username operator_id admin_title contributor_rank] } }, methods: :last_updated_by_username } ],
-            %i[last_updated_by_username last_updated_by_operator_id num_machines]
+            %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank num_machines]
           )
         end
       rescue ActiveRecord::RecordNotFound
