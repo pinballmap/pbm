@@ -3,7 +3,9 @@
     .column.bg_vlightpurple.w_640.suggest
       %p.red.bold.p1 Suggest a New Location
       - if user_signed_in?
-        %p Submit a NEW location to the map (please check first that we don't already list it). We review all location submissions.
+        %p.center Please check first that we don't already list the location.
+        %p.center Do not submit your home (even if it's a short-term rental).
+        %p.center We review all location submissions (0 - 7 days).
         #location_maker
           = form_tag @region ? submitted_new_location_path : map_submitted_new_location_path, :method => 'post' do
             %form#submit_location
