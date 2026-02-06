@@ -250,6 +250,8 @@ describe PagesController do
       @other_region_location = FactoryBot.create(:location, city: 'Hillsboro', zip: '97005', name: "Ripley's Hut", region: @other_region, operator: @operator)
       @other_region = FactoryBot.create(:region, name: 'seattle', full_name: 'Seattle')
 
+      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, city_name: @location.city, user_name: 'ssw', submission_type: UserSubmission::ADD_LOCATION_TYPE)
+
       FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE)
 
       FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
@@ -266,6 +268,7 @@ describe PagesController do
       visit '/portland/activity'
 
       expect(page).to have_content("Here's a feed of edits to the Portland Pinball Map")
+      expect(page).to have_content("New location added: Clark's Depot in Vernon by ssw")
       expect(page).to have_content("added to Clark's Depot")
       expect(page).to have_content("removed from Clark's Depot")
       expect(page).to_not have_content("added to Ripley's Hut")

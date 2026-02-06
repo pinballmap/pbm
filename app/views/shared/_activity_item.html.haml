@@ -54,4 +54,14 @@
         by
         %span.bold #{activity.user_name}
         = render partial: 'shared/activity_icons', :locals => {:activity => activity}
+    - elsif (activity.submission_type == 'add_location')
+      New location added#{show_location_link ? ':' : ''}
+      - if show_location_link
+        %span.bold
+          =link_to "#{activity.location_name}", "/map?by_location_id=#{activity.location_id}"
+        in #{activity.city_name}
+      - if (!activity.user_name.blank?)
+        by
+        %span.bold #{activity.user_name}
+        = render partial: 'shared/activity_icons', :locals => {:activity => activity}
 .activity_hr

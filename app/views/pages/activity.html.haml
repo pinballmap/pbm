@@ -33,6 +33,11 @@
           %input{:type => "checkbox", :id => "filterConfirmLocation", :name => "filterActivity", :class => "m_0", :value => 'confirm_location'}
           %div
             %span Location confirmed
+        %div
+          =image_tag("icons/add_location.svg", :alt => "add_location", :class => 'recent_activity_icon')
+          %input{:type => "checkbox", :id => "filterAddLocation", :name => "filterActivity", :class => "m_0", :value => 'add_location'}
+          %div
+            %span Location added
         = submit_tag 'Apply Filters', :class => "save_button"
 
     #activity.column.w_640.center

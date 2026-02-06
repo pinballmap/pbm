@@ -11,7 +11,7 @@ module Api
       param :region, String, desc: "Name of the Region you want to see user submissions for", required: true
       param :submission_type, String, desc: "Type of submission to filter to. Multiple filters can be formatted as ;submission_type[]=remove_machine;submission_type[]=new_lmx etc.", required: false
       def index
-        submission_type = params[:submission_type].blank? ? %w[new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
+        submission_type = params[:submission_type].blank? ? %w[add_location new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
 
         region_id = Region.where(name: params[:region]).pluck(:id).first
 
@@ -28,7 +28,7 @@ module Api
       def location
         location = Location.find(params[:id])
 
-        submission_type = params[:submission_type].blank? ? %w[new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
+        submission_type = params[:submission_type].blank? ? %w[add_location new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
 
         if params[:limit].blank?
           user_submissions = UserSubmission.where(location_id: location, submission_type: submission_type, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day, deleted_at: nil).limit(200).order("created_at DESC").includes([ :user, :location ])
@@ -96,7 +96,7 @@ module Api
           max_distance = [ 250, params[:max_distance].to_i ].min
         end
 
-        submission_type = params[:submission_type].blank? ? %w[new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
+        submission_type = params[:submission_type].blank? ? %w[add_location new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
 
         user_submissions = UserSubmission.where.not(lat: nil).where(submission_type: submission_type, deleted_at: nil)
 

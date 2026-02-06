@@ -55,6 +55,11 @@ describe SuggestedLocationsController, type: :controller do
 
       expect(submission.submission).to eq("The Bally Game Show (Bally, 1990) was added to #{@sl.name} in #{@sl.city} by #{@user.username}")
       expect(submission.submission_type).to eq(UserSubmission::NEW_LMX_TYPE)
+
+      submission = UserSubmission.first
+
+      expect(submission.submission).to eq("New location added: #{@sl.name} in #{@sl.city} by #{@user.username}")
+      expect(submission.submission_type).to eq(UserSubmission::ADD_LOCATION_TYPE)
     end
 
     it 'should throw an error when failing a field validation' do

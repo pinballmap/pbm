@@ -116,7 +116,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + location.id.to_s
 
-      expect(find("#last_updated_location_#{location.id}")).to have_content("Location updated 3 times by 2 users")
+      expect(find("#last_updated_location_#{location.id}")).to have_content("Location updated 2 times by 2 users")
     end
   end
 
@@ -752,6 +752,7 @@ describe LocationsController do
       @location2 = FactoryBot.create(:location, name: 'Sassimo', operator: @operator)
     end
     it 'returns a list of recent activity at the location' do
+      FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location, user_name: 'ssw', submission_type: UserSubmission::ADD_LOCATION_TYPE)
       FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE)
       FactoryBot.create(:user_submission, created_at: '2022-01-03', location: @location, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
       FactoryBot.create(:user_submission, created_at: '2022-01-04', location: @location, user: @user, user_name: 'pbm', comment: 'be best', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE)
@@ -765,6 +766,7 @@ describe LocationsController do
       find("#recent_location_activity_location_banner_#{@location.id}").click
       sleep(0.5)
 
+      expect(find('.recent_location_activity_location')).to have_content('New location added')
       expect(find('.recent_location_activity_location')).to have_content('added')
       expect(find('.recent_location_activity_location')).to have_content('removed')
       expect(find('.recent_location_activity_location')).to_not have_content('score')

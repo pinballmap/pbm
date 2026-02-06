@@ -62,6 +62,15 @@
             by
             %span.bold #{recent_activity.user_name}
             = render partial: 'shared/activity_icons', :locals => {:activity => recent_activity}
+        - elsif (recent_activity.submission_type == 'add_location')
+          New location added:
+          %span.bold
+            =link_to "#{recent_activity.location_name}", "/#{@region_name}?by_location_id=#{recent_activity.location_id}"
+          in #{recent_activity.city_name}
+          - if (!recent_activity.user_name.blank?)
+            by
+            %span.bold #{recent_activity.user_name}
+            = render partial: 'shared/activity_icons', :locals => {:activity => recent_activity}
     .activity_hr
 
   #next_link{:style => 'margin: 20px 10px'}

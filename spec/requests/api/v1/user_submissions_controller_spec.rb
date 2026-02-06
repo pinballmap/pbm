@@ -12,6 +12,7 @@ describe Api::V1::UserSubmissionsController, type: :request do
       another_location = FactoryBot.create(:location, lat: '45.6008355', lon: '-122.760606')
       distant_location = FactoryBot.create(:location, lat: '12.6008356', lon: '-12.760606')
 
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::ADD_LOCATION_TYPE)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_LMX_TYPE)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: another_location, lat: another_location.lat, lon: another_location.lon, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
@@ -30,7 +31,7 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response).to be_successful
       json = JSON.parse(response.body)['user_submissions']
 
-      expect(json.count).to eq(6)
+      expect(json.count).to eq(7)
     end
 
     it 'sets a max_distance limit of 250 miles' do
@@ -174,6 +175,7 @@ describe Api::V1::UserSubmissionsController, type: :request do
       location = FactoryBot.create(:location, name: 'bawb', id: 111)
       another_location = FactoryBot.create(:location, name: 'sass', id: 222)
 
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::ADD_LOCATION_TYPE, submission: 'New location added by ssw')
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw')
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: 'Loofah was removed from bawb by ssw')
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: another_location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to sass by ssw')
@@ -184,7 +186,8 @@ describe Api::V1::UserSubmissionsController, type: :request do
       json = JSON.parse(response.body)['user_submissions']
 
       expect(response.body).to include('bawb')
-      expect(json.count).to eq(2)
+      expect(response.body).to include('New location added by ssw')
+      expect(json.count).to eq(3)
       expect(response.body).to_not include('sass')
     end
 

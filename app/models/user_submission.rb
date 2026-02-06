@@ -13,7 +13,7 @@ class UserSubmission < ApplicationRecord
   scope :region, ->(name) { where(region_id: Region.find_by_name(name.downcase).id) }
 
   # Activity feed scopes
-  ACTIVITY_SUBMISSION_TYPES = %w[new_lmx remove_machine new_condition confirm_location].freeze
+  ACTIVITY_SUBMISSION_TYPES = %w[add_location new_lmx remove_machine new_condition confirm_location].freeze
   ACTIVITY_START_DATE = "2019-05-03T07:00:00.00-07:00".freeze
 
   scope :activity_feed, lambda {
@@ -32,6 +32,7 @@ class UserSubmission < ApplicationRecord
   NEW_CONDITION_TYPE = "new_condition".freeze
   REMOVE_MACHINE_TYPE = "remove_machine".freeze
   SUGGEST_LOCATION_TYPE = "suggest_location".freeze
+  ADD_LOCATION_TYPE = "add_location".freeze
   LOCATION_METADATA_TYPE = "location_metadata".freeze
   NEW_SCORE_TYPE = "new_msx".freeze
   CONFIRM_LOCATION_TYPE = "confirm_location".freeze
