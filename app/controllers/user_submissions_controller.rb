@@ -7,9 +7,8 @@ class UserSubmissionsController < ApplicationController
     user_submissions = UserSubmission.activity_feed
                                      .with_coordinates
                                      .within_bounding_box(bounds)
-                                     .limit(2000)
                                      .includes([ :user, :location ])
-    @pagy, sorted_submissions = pagy(user_submissions, items: 10)
+    @pagy, sorted_submissions = pagy(user_submissions)
     render partial: "maps/activity", locals: { sorted_submissions: sorted_submissions, pagy: @pagy }
   end
 end

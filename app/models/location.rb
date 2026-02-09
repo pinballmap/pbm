@@ -161,7 +161,7 @@ class Location < ApplicationRecord
   end
 
   def former_machines
-    UserSubmission.where.not(machine_name: nil).where(submission_type: "remove_machine", location_id: self, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day, deleted_at: nil).where(location_id: self).order("created_at DESC").limit(30)
+    UserSubmission.where.not(machine_name: nil).where(submission_type: "remove_machine", location_id: self, deleted_at: nil).where(location_id: self).order("created_at DESC").limit(30)
   end
 
   def full_street_address

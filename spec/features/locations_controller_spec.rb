@@ -752,14 +752,14 @@ describe LocationsController do
       @location2 = FactoryBot.create(:location, name: 'Sassimo', operator: @operator)
     end
     it 'returns a list of recent activity at the location' do
-      FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location, user_name: 'ssw', submission_type: UserSubmission::ADD_LOCATION_TYPE)
-      FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE)
-      FactoryBot.create(:user_submission, created_at: '2022-01-03', location: @location, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-      FactoryBot.create(:user_submission, created_at: '2022-01-04', location: @location, user: @user, user_name: 'pbm', comment: 'be best', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE)
-      FactoryBot.create(:user_submission, created_at: '2022-01-05', location: @location, user_name: 'ssw', submission_type: UserSubmission::CONFIRM_LOCATION_TYPE)
-      FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user_name: 'ssw', high_score: '2222', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_SCORE_TYPE)
-      FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location2, machine_name: 'Jolene Zone', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-      FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user_name: 'ssw', comment: 'hello there', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE, deleted_at: '2022-01-06')
+      FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location, user_name: 'ssw', submission_type: UserSubmission::ADD_LOCATION_TYPE, submission: 'New location added')
+      FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE , submission: 'machine added by ssw')
+      FactoryBot.create(:user_submission, created_at: '2022-01-03', location: @location, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: 'machine removed by ssw')
+      FactoryBot.create(:user_submission, created_at: '2022-01-04', location: @location, user: @user, user_name: 'pbm', comment: 'be best', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE, submission: 'plays great')
+      FactoryBot.create(:user_submission, created_at: '2022-01-05', location: @location, user_name: 'ssw', submission_type: UserSubmission::CONFIRM_LOCATION_TYPE, submission: 'location confirmed')
+      FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user_name: 'ssw', high_score: '2222', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'score added by ssw')
+      FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location2, machine_name: 'Jolene Zone', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: 'machine removed by pbm')
+      FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user_name: 'ssw', comment: 'hello there', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE, deleted_at: '2022-01-06', submission: 'bad shape')
 
       visit '/map/?by_location_id=' + @location.id.to_s
 
@@ -782,7 +782,7 @@ describe LocationsController do
 
     it 'has pagination if greater than 50 items' do
       51.times do |index|
-        FactoryBot.create(:user_submission, id: 5678 + index, created_at: "2020-01-#{index + 1}", location: @location, user_name: 'ssw', comment: 'Comment Number ' + index.to_s, machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE)
+        FactoryBot.create(:user_submission, id: 5678 + index, created_at: "2020-01-#{index + 1}", location: @location, user_name: 'ssw', comment: 'Comment Number ' + index.to_s, machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE, submission: 'plays bountiful')
       end
 
       visit '/map/?by_location_id=' + @location.id.to_s

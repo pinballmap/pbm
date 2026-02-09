@@ -250,19 +250,21 @@ describe PagesController do
       @other_region_location = FactoryBot.create(:location, city: 'Hillsboro', zip: '97005', name: "Ripley's Hut", region: @other_region, operator: @operator)
       @other_region = FactoryBot.create(:region, name: 'seattle', full_name: 'Seattle')
 
-      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, city_name: @location.city, user_name: 'ssw', submission_type: UserSubmission::ADD_LOCATION_TYPE)
+      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, city_name: @location.city, user_name: 'ssw', submission_type: UserSubmission::ADD_LOCATION_TYPE, submission: "New location added: Clark's Depot in Vernon by ssw")
 
-      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE)
+      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE, submission: "Sassy Madness added to Clark's Depot by ssw")
 
-      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: "Sassy Madness removed from Clark's Depot by ssw")
 
-      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @other_region, region_id: @other_region.id, location: @location, location_name: @location.name, user: user, user_name: 'pbm', machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @other_region, region_id: @other_region.id, location: @location, location_name: @location.name, user: user, user_name: 'pbm', machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: "Sassy Madness removed from Clark's Depot by pbm")
 
-      FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: "Pizza Attack removed from Ripley's Hut by ssw")
 
-      FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_LMX_TYPE)
+      FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_LMX_TYPE, submission: "Pizza Attack added to Ripley's Hut by ssw")
 
-      FactoryBot.create(:user_submission, created_at: '2025-01-04', region: @region, region_id: @region.id, location_name: 'Doughnut Haven', user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_LMX_TYPE, deleted_at: '2025-01-04')
+      FactoryBot.create(:user_submission, created_at: '2025-01-04', region: @region, region_id: @region.id, location_name: 'Doughnut Haven', user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_LMX_TYPE, deleted_at: '2025-01-04', submission: "Pizza Attack added to Doughnut Haven by ssw")
+
+      FactoryBot.create(:user_submission, created_at: '2025-01-04', region: @region, region_id: @region.id, location_name: 'Crappys Bar', user_name: 'ssw', machine_name: 'Bongo Premium', submission_type: UserSubmission::NEW_LMX_TYPE, deleted_at: '2025-01-04')
     end
     it 'shows region activity' do
       visit '/portland/activity'
@@ -273,6 +275,7 @@ describe PagesController do
       expect(page).to have_content("removed from Clark's Depot")
       expect(page).to_not have_content("added to Ripley's Hut")
       expect(page).to_not have_content("removed from Ripley's Hut")
+      expect(page).to_not have_content("Crappys Bar")
       expect(page).to have_link("Clark's Depot")
       expect(page).to_not have_content("removed from Doughtnut Haven")
       expect(page).to_not have_selector('.user_admin_container')
@@ -324,17 +327,17 @@ describe PagesController do
       @other_region_location = FactoryBot.create(:location, city: 'Hillsboro', zip: '97005', name: "Ripley's Hut", region: @other_region)
       @other_region = FactoryBot.create(:region, name: 'seattle', full_name: 'Seattle')
       20.times do
-        FactoryBot.create(:user_submission, created_at: '2025-01-01', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE)
+        FactoryBot.create(:user_submission, created_at: '2025-01-01', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE, submission: "Sassy Madness added to Clark's Depot by ssw")
 
-        FactoryBot.create(:user_submission, created_at: '2025-01-01', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_LMX_TYPE)
+        FactoryBot.create(:user_submission, created_at: '2025-01-01', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_LMX_TYPE, submission: "Sassy Madness added to Ripley's Hut by ssw")
 
-        FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+        FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: "Sassy Madness removed from Clark's Depot by ssw")
 
-        FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+        FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: "Pizza Attack removed from Ripley's Hut by ssw")
 
-        FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE, comment: 'hello there')
+        FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE, comment: 'hello there', submission: 'hello there')
 
-        FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_CONDITION_TYPE, comment: 'bye')
+        FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_CONDITION_TYPE, comment: 'bye', submission: 'bye')
       end
     end
     it 'shows region pagination and respects regional results' do
@@ -362,9 +365,9 @@ describe PagesController do
     end
     it 'respects filter on next page' do
       20.times do
-        FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE)
+        FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE, submission: "Sassy Madness added to Ripley's Hut by ssw")
 
-        FactoryBot.create(:user_submission, created_at: '2024-12-31', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Congo', submission_type: UserSubmission::NEW_LMX_TYPE)
+        FactoryBot.create(:user_submission, created_at: '2024-12-31', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Congo', submission_type: UserSubmission::NEW_LMX_TYPE, submission: "Congo added to Ripley's Hut by ssw")
       end
       visit '/activity'
 

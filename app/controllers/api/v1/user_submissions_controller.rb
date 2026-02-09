@@ -15,7 +15,7 @@ module Api
 
         region_id = Region.where(name: params[:region]).pluck(:id).first
 
-        user_submissions = UserSubmission.where(submission_type: submission_type, region_id: region_id, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day).limit(200).order("created_at DESC")
+        user_submissions = UserSubmission.where(submission_type: submission_type, region_id: region_id).where.not(submission: nil).limit(200).order("created_at DESC")
 
         return_response(user_submissions, "user_submissions")
       end
@@ -31,9 +31,9 @@ module Api
         submission_type = params[:submission_type].blank? ? %w[add_location new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
 
         if params[:limit].blank?
-          user_submissions = UserSubmission.where(location_id: location, submission_type: submission_type, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day, deleted_at: nil).limit(200).order("created_at DESC").includes([ :user, :location ])
+          user_submissions = UserSubmission.where(location_id: location, submission_type: submission_type, deleted_at: nil).where.not(submission: nil).limit(200).order("created_at DESC").includes([ :user, :location ])
         else
-          @pagy, user_submissions = pagy(UserSubmission.where(location_id: location, submission_type: submission_type, created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day, deleted_at: nil).order("created_at desc").includes([ :user, :location ]).distinct)
+          @pagy, user_submissions = pagy(UserSubmission.where(location_id: location, submission_type: submission_type, deleted_at: nil).where.not(submission: nil).order("created_at desc").includes([ :user, :location ]).distinct)
           @pagy_hash = @pagy.data_hash(data_keys: %i[count first_url previous_url next_url page pages page_url previous next from to in last last_url limit options])
         end
 
@@ -98,13 +98,11 @@ module Api
 
         submission_type = params[:submission_type].blank? ? %w[add_location new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
 
-        user_submissions = UserSubmission.where.not(lat: nil).where(submission_type: submission_type, deleted_at: nil)
+        user_submissions = UserSubmission.where.not(lat: nil, submission: nil).where(submission_type: submission_type, deleted_at: nil)
 
         user_submissions = user_submissions.where(region_id: params[:region_id]) unless params[:region_id].blank?
 
-        min_date_of_submission = params[:min_date_of_submission] ? params[:min_date_of_submission].to_date.beginning_of_day : "2019-05-03T07:00:00.00-07:00"
-
-        user_submissions = user_submissions.where(created_at: min_date_of_submission..Date.today.end_of_day) if min_date_of_submission
+        user_submissions = user_submissions.where(created_at: params[:min_date_of_submission].to_date.beginning_of_day..Date.today.end_of_day) if params[:min_date_of_submission]
 
         if params[:limit].blank?
           user_submissions = user_submissions.near([ params[:lat], params[:lon] ], max_distance, order: "created_at desc").includes([ :user, :location ]).limit(200)

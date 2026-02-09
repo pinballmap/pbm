@@ -191,10 +191,10 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response.body).to_not include('sass')
     end
 
-    it 'only shows submissions after May 2, 2019' do
+    it 'only shows submissions with a submission field' do
       location = FactoryBot.create(:location, name: 'bawb', id: 111)
       FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles')
-      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2019-06-01', submission: 'sw added a high score of 4567 on Loofah at Bottles')
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2019-06-01')
       get '/api/v1/user_submissions/location.json', params: { id: 111 }
       expect(response).to be_successful
       json = JSON.parse(response.body)['user_submissions']
@@ -204,8 +204,8 @@ describe Api::V1::UserSubmissionsController, type: :request do
     it 'respects type filter' do
       location = FactoryBot.create(:location, name: 'bawb', id: 111)
 
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE)
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Machine added')
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: 'Machine removed')
 
       get '/api/v1/user_submissions/location.json', params: { id: 111, submission_type: 'remove_machine' }
 
