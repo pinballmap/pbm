@@ -39,7 +39,7 @@ class PagesController < ApplicationController
   end
 
   def stats
-    @top_25 = Rails.cache.fetch("top_25_#{Time.now}", expires_in: 6.hours) do
+    @top_25 = Rails.cache.fetch("top_25_cache", expires_in: 6.hours) do
       ActiveRecord::Base.connection.exec_query("
 select
   left(m.opdb_id,5) as opdb_id,
@@ -60,19 +60,22 @@ limit 25")
     @machines_count_total = LocationMachineXref.all.count
     @users_count_total = User.all.count
     @user_submissions_total = UserSubmission.all.count
-    @user_submissions_all = UserSubmission.where(created_at: "2019-01-01T00:00:00.00-07:00"..Date.today.end_of_day).select("created_at")
+
+    @user_submissions_all = Rails.cache.fetch("user_submissions_all_cache", expires_in: 6.hours) do
+      UserSubmission.where(created_at: "2018-01-01T00:00:00.00-07:00"..Date.today.end_of_day).select("created_at")
+    end
 
     @user_submissions_week =
-    Rails.cache.fetch("user_submissions_week_#{Time.now}", expires_in: 6.hours) do
+    Rails.cache.fetch("user_submissions_week_cache", expires_in: 6.hours) do
       UserSubmission.where("created_at >= ?", 1.week.ago).count
     end
 
-    @top_locations = Rails.cache.fetch("top_locations_#{Time.now}", expires_in: 6.hours) do
+    @top_locations = Rails.cache.fetch("top_locations_cache", expires_in: 6.hours) do
       Location.order(machine_count: :desc).limit(25)
     end
 
     @top_users =
-    Rails.cache.fetch("top_users_#{Time.now}", expires_in: 6.hours) do
+    Rails.cache.fetch("top_users_cache", expires_in: 6.hours) do
       User.where("user_submissions_count > 0").select([ "id", "username", "user_submissions_count" ]).order(user_submissions_count: :desc).limit(25)
     end
 
@@ -83,16 +86,16 @@ limit 25")
     @machines_last_year = Machine.where(year: @last_year)
 
     @machine_adds_this_year =
-    Rails.cache.fetch("machine_adds_this_year_#{Time.now}", expires_in: 6.hours) do
+    Rails.cache.fetch("machine_adds_this_year_cache", expires_in: 6.hours) do
       UserSubmission.joins(:machine).where(machine_id: @machines_this_year, submission_type: %w[new_lmx], created_at: Time.now.beginning_of_year..Time.now.end_of_year).select([ "created_at" ])
     end
 
     @machine_adds_last_year =
-    Rails.cache.fetch("machine_adds_last_year_#{Time.now}", expires_in: 6.hours) do
+    Rails.cache.fetch("machine_adds_last_year_cache", expires_in: 6.hours) do
       UserSubmission.joins(:machine).where(machine_id: @machines_last_year, submission_type: %w[new_lmx], created_at: (Time.now - 1.year).beginning_of_year..Time.now.end_of_year).select([ "created_at" ])
     end
 
-    @top_cities = Rails.cache.fetch("top_cities_#{Time.now}", expires_in: 6.hours) do
+    @top_cities = Rails.cache.fetch("top_cities_cache", expires_in: 6.hours) do
       Location.select(
         [
           :city, :state, Arel.star.count.as("location_count")
@@ -100,7 +103,7 @@ limit 25")
       ).order(:location_count).reverse_order.group(:city, :state).limit(10)
     end
 
-    @top_cities_by_machine = Rails.cache.fetch("top_cities_by_machine_#{Time.now}", expires_in: 6.hours) do
+    @top_cities_by_machine = Rails.cache.fetch("top_cities_by_machine_cache", expires_in: 6.hours) do
       xid = Arel::Table.new("location_machine_xrefs")
       lid = Arel::Table.new("locations")
       Location.select(

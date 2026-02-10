@@ -2,7 +2,7 @@
   .column_container.stats_container
     .column.w_560.bg_vlightpurple
       %p.red.bold.p1 Pinball Map Stats
-      %p Started mapping in 2008.
+      %p Started mapping in 2008. Added "user accounts" in 2016, and since 2018/19 improved the stats we tracked.
       %p
         Currently listing
         %span{:class => 'red font18 bold'}
@@ -26,8 +26,8 @@
         %p.bold.center Pinball machines made in #{@last_year}, added to locations up to now
         = bar_chart @machine_adds_last_year.group('machine.name').count, height: "700px"
       %div.mt_20.mb_20
-        %p.bold.center Annual map edits from 2019 to today
-        =area_chart @user_submissions_all.group_by_year(:created_at).count, xmin: "2019-01-01", thousands: ",", height: "400px"
+        %p.bold.center Annual map edits from 2018 to today
+        =area_chart @user_submissions_all.group_by_year(:created_at).count, xmin: "2018-01-01", thousands: ",", height: "400px"
     .column.w_560.bg_vlightpurple
       %p.font20.center.bold.pbt_5.bg_lightpurple
         Top 25 machines
