@@ -39,7 +39,8 @@ class PagesController < ApplicationController
   end
 
   def stats
-    @top_25 = ActiveRecord::Base.connection.exec_query("
+    @top_25 = Rails.cache.fetch("top_25_#{Time.now}", expires_in: 6.hours) do
+      ActiveRecord::Base.connection.exec_query("
 select
   left(m.opdb_id,5) as opdb_id,
   split_part(min(m.name), ' (', 1) as machine_name,
@@ -53,6 +54,7 @@ from
 group by 1
 order by 6 desc
 limit 25")
+    end
 
     @locations_count_total = Location.all.count
     @machines_count_total = LocationMachineXref.all.count
@@ -60,27 +62,19 @@ limit 25")
     @user_submissions_total = UserSubmission.all.count
     @user_submissions_all = UserSubmission.where(created_at: "2019-01-01T00:00:00.00-07:00"..Date.today.end_of_day).select("created_at")
 
-    @user_submissions_week = UserSubmission.where("created_at >= ?", 1.week.ago).count
+    @user_submissions_week =
+    Rails.cache.fetch("user_submissions_week_#{Time.now}", expires_in: 6.hours) do
+      UserSubmission.where("created_at >= ?", 1.week.ago).count
+    end
 
-    @top_locations = Location.order(machine_count: :desc).limit(25)
+    @top_locations = Rails.cache.fetch("top_locations_#{Time.now}", expires_in: 6.hours) do
+      Location.order(machine_count: :desc).limit(25)
+    end
 
-    @top_cities = Location.select(
-          [
-            :city, :state, Arel.star.count.as("location_count")
-          ]
-        ).order(:location_count).reverse_order.group(:city, :state).limit(10)
-
-    xid = Arel::Table.new("location_machine_xrefs")
-    lid = Arel::Table.new("locations")
-    @top_cities_by_machine = Location.select(
-      [
-        :city, :state, Arel.star.count.as("machines_count")
-      ]
-    ).joins(
-      Location.arel_table.join(LocationMachineXref.arel_table).on(xid[:location_id].eq(lid[:id])).join_sources
-    ).order(:machines_count).reverse_order.group(:city, :state).limit(10)
-
-    @top_users = User.where("user_submissions_count > 0").select([ "username", "user_submissions_count" ]).order(user_submissions_count: :desc).limit(25)
+    @top_users =
+    Rails.cache.fetch("top_users_#{Time.now}", expires_in: 6.hours) do
+      User.where("user_submissions_count > 0").select([ "id", "username", "user_submissions_count" ]).order(user_submissions_count: :desc).limit(25)
+    end
 
     @this_year = Time.now.year
     @last_year = (Time.now - 1.year).year
@@ -88,9 +82,35 @@ limit 25")
     @machines_this_year = Machine.where(year: @this_year)
     @machines_last_year = Machine.where(year: @last_year)
 
-    @machine_adds_this_year = UserSubmission.joins(:machine).where(machine_id: @machines_this_year, submission_type: %w[new_lmx], created_at: Time.now.beginning_of_year..Time.now.end_of_year).select([ "created_at" ])
+    @machine_adds_this_year =
+    Rails.cache.fetch("machine_adds_this_year_#{Time.now}", expires_in: 6.hours) do
+      UserSubmission.joins(:machine).where(machine_id: @machines_this_year, submission_type: %w[new_lmx], created_at: Time.now.beginning_of_year..Time.now.end_of_year).select([ "created_at" ])
+    end
 
-    @machine_adds_last_year = UserSubmission.joins(:machine).where(machine_id: @machines_last_year, submission_type: %w[new_lmx], created_at: (Time.now - 1.year).beginning_of_year..Time.now.end_of_year).select([ "created_at" ])
+    @machine_adds_last_year =
+    Rails.cache.fetch("machine_adds_last_year_#{Time.now}", expires_in: 6.hours) do
+      UserSubmission.joins(:machine).where(machine_id: @machines_last_year, submission_type: %w[new_lmx], created_at: (Time.now - 1.year).beginning_of_year..Time.now.end_of_year).select([ "created_at" ])
+    end
+
+    @top_cities = Rails.cache.fetch("top_cities_#{Time.now}", expires_in: 6.hours) do
+      Location.select(
+        [
+          :city, :state, Arel.star.count.as("location_count")
+        ]
+      ).order(:location_count).reverse_order.group(:city, :state).limit(10)
+    end
+
+    @top_cities_by_machine = Rails.cache.fetch("top_cities_by_machine_#{Time.now}", expires_in: 6.hours) do
+      xid = Arel::Table.new("location_machine_xrefs")
+      lid = Arel::Table.new("locations")
+      Location.select(
+        [
+          :city, :state, Arel.star.count.as("machines_count")
+        ]
+      ).joins(
+        Location.arel_table.join(LocationMachineXref.arel_table).on(xid[:location_id].eq(lid[:id])).join_sources
+      ).order(:machines_count).reverse_order.group(:city, :state).limit(10)
+    end
   end
 
   def links
