@@ -753,7 +753,7 @@ describe LocationsController do
     end
     it 'returns a list of recent activity at the location' do
       FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location, user_name: 'ssw', submission_type: UserSubmission::ADD_LOCATION_TYPE, submission: 'New location added')
-      FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE , submission: 'machine added by ssw')
+      FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'machine added by ssw')
       FactoryBot.create(:user_submission, created_at: '2022-01-03', location: @location, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: 'machine removed by ssw')
       FactoryBot.create(:user_submission, created_at: '2022-01-04', location: @location, user: @user, user_name: 'pbm', comment: 'be best', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE, submission: 'plays great')
       FactoryBot.create(:user_submission, created_at: '2022-01-05', location: @location, user_name: 'ssw', submission_type: UserSubmission::CONFIRM_LOCATION_TYPE, submission: 'location confirmed')

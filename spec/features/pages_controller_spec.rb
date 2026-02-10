@@ -277,7 +277,7 @@ describe PagesController do
       expect(page).to_not have_content("removed from Ripley's Hut")
       expect(page).to_not have_content("Crappys Bar")
       expect(page).to have_link("Clark's Depot")
-      expect(page).to_not have_content("removed from Doughtnut Haven")
+      expect(page).to_not have_content("added to Doughtnut Haven")
       expect(page).to_not have_selector('.user_admin_container')
       expect(page).to_not have_selector('.user_operator_container')
       expect(page).to_not have_selector('.rank_icon_SuperMapper')
@@ -293,7 +293,7 @@ describe PagesController do
       expect(page).to_not have_content("added to Ripley's Hut")
       expect(page).to_not have_content("removed from Ripley's Hut")
       expect(page).to_not have_content("removed from Clark's Depot")
-      expect(page).to_not have_content("removed from Doughtnut Haven")
+      expect(page).to_not have_content("added to Doughtnut Haven")
     end
     it 'shows global activity' do
       visit '/activity'
@@ -303,7 +303,7 @@ describe PagesController do
       expect(page).to have_content("removed from Clark's Depot")
       expect(page).to have_content("added to Ripley's Hut")
       expect(page).to have_content("removed from Ripley's Hut")
-      expect(page).to_not have_content("removed from Doughtnut Haven")
+      expect(page).to_not have_content("added to Doughtnut Haven")
       expect(page).to have_selector('.user_admin_container', visible: :visible)
       expect(page).to have_selector('.user_operator_container', visible: :visible)
       expect(page).to have_selector('.rank_icon_SuperMapper', visible: :visible)
@@ -318,7 +318,16 @@ describe PagesController do
       expect(page).to have_content("added to Ripley's Hut")
       expect(page).to_not have_content("removed from Ripley's Hut")
       expect(page).to_not have_content("removed from Clark's Depot")
-      expect(page).to_not have_content("removed from Doughtnut Haven")
+      expect(page).to_not have_content("added to Doughtnut Haven")
+
+      find('#filterNewLmx').click
+      find('.save_button').click
+
+      expect(page).to have_content("added to Clark's Depot")
+      expect(page).to have_content("added to Ripley's Hut")
+      expect(page).to have_content("removed from Ripley's Hut")
+      expect(page).to have_content("removed from Clark's Depot")
+      expect(page).to_not have_content("added to Doughtnut Haven")
     end
   end
 

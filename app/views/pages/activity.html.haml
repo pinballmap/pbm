@@ -54,13 +54,13 @@
     refreshActivityList(url, pagenum, true)
   });
 
-  $('#activity_filter').on('submit', function(e){
-    e.preventDefault()
-    let url = new URL(window.location.href)
-    refreshActivityList(url)
+  $('.save_button').on('click', function(e) {
+    e.preventDefault();
+    let url = new URL(window.location.href);
+    refreshActivityList(url);
   });
 
-  function refreshActivityList(url, pagenum = "", supressHistory = false) {
+  function refreshActivityList(url, pagenum = "", suppressHistory = false) {
     activityFilters = []
     $("input:checkbox[name=filterActivity]:checked").each(function () {
       activityFilters.push(this.value);
@@ -77,7 +77,7 @@
       success: function(data) {
         $("#activity").html(data);
 
-        if (!supressHistory) {
+        if (!suppressHistory) {
           window.history.pushState({"page": pagenum}, "", `${url.pathname}${pagenum}`)
         }
       }
