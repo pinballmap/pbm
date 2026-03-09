@@ -553,7 +553,8 @@ CREATE TABLE public.machine_score_xrefs (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     user_id integer,
-    rank character varying(255)
+    rank character varying(255),
+    machine_id integer
 );
 
 
@@ -2688,6 +2689,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260210182823'),
 ('20260206003638'),
 ('20260205215300'),
 ('20260120030220'),
