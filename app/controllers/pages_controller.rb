@@ -87,12 +87,12 @@ limit 25")
 
     @machine_adds_this_year =
     Rails.cache.fetch("machine_adds_this_year_cache", expires_in: 6.hours) do
-      UserSubmission.joins(:machine).where(machine_id: @machines_this_year, submission_type: %w[new_lmx], created_at: Time.now.beginning_of_year..Time.now.end_of_year).where.not(deleted_at: nil).select([ "created_at" ])
+      UserSubmission.joins(:machine).where(machine_id: @machines_this_year, submission_type: %w[new_lmx], created_at: Time.now.beginning_of_year..Time.now.end_of_year).where(deleted_at: nil).select([ "created_at" ])
     end
 
     @machine_adds_last_year =
     Rails.cache.fetch("machine_adds_last_year_cache", expires_in: 6.hours) do
-      UserSubmission.joins(:machine).where(machine_id: @machines_last_year, submission_type: %w[new_lmx], created_at: (Time.now - 1.year).beginning_of_year..Time.now.end_of_year).where.not(deleted_at: nil).select([ "created_at" ])
+      UserSubmission.joins(:machine).where(machine_id: @machines_last_year, submission_type: %w[new_lmx], created_at: (Time.now - 1.year).beginning_of_year..Time.now.end_of_year).where(deleted_at: nil).select([ "created_at" ])
     end
 
     @top_cities = Rails.cache.fetch("top_cities_cache", expires_in: 6.hours) do
