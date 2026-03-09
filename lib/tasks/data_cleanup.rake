@@ -56,10 +56,17 @@ task data_cleanup: :environment do
     end
   end
 
+  def delete_orphan_scores
+    MachineScoreXref.where(user_id: nil).each do |msx|
+      msx.destroy
+    end
+  end
+
   apostrophe_fix
   us_phone
   user_submission_location_name
   delete_stale_locations
+  delete_orphan_scores
 rescue StandardError => e
   error_subject = "Data cleanup rake task error"
   error = e.to_s
