@@ -14,7 +14,7 @@
       - if (!activity.user_name.blank?)
         by
         %span.bold #{activity.user_name}
-        = render partial: 'shared/activity_icons', :locals => {:activity => activity}
+      = render partial: 'shared/activity_icons', :locals => {:activity => activity}
     - elsif (activity.submission_type == 'new_condition')
       - if (activity.comment.blank?)
         #{activity.submission}
@@ -30,7 +30,7 @@
         - if (!activity.user_name.blank?)
           by
           %span.bold #{activity.user_name}
-          = render partial: 'shared/activity_icons', :locals => {:activity => activity}
+      = render partial: 'shared/activity_icons', :locals => {:activity => activity}
     - elsif (activity.submission_type == 'remove_machine')
       %span.bold.red #{activity.machine_name}
       removed
@@ -42,7 +42,7 @@
       - if (!activity.user_name.blank?)
         by
         %span.bold #{activity.user_name}
-        = render partial: 'shared/activity_icons', :locals => {:activity => activity}
+      = render partial: 'shared/activity_icons', :locals => {:activity => activity}
     - elsif (activity.submission_type == 'confirm_location')
       Line-up confirmed
       - if show_location_link
@@ -53,7 +53,24 @@
       - if (!activity.user_name.blank?)
         by
         %span.bold #{activity.user_name}
-        = render partial: 'shared/activity_icons', :locals => {:activity => activity}
+      = render partial: 'shared/activity_icons', :locals => {:activity => activity}
+    - elsif (activity.submission_type == 'new_msx')
+      - if (activity.high_score.blank?)
+        #{activity.submission}
+      - else
+        High score:
+        %span.bold #{number_with_precision(activity.high_score, precision: 0, delimiter: ',')}
+        %br/
+        %span.bold.red #{activity.machine_name}
+        - if show_location_link
+          at
+          %span.bold
+            =link_to "#{activity.location_name}", "/map?by_location_id=#{activity.location_id}"
+          in #{activity.city_name}
+        - if (!activity.user_name.blank?)
+          by
+          %span.bold #{activity.user_name}
+      = render partial: 'shared/activity_icons', :locals => {:activity => activity}
     - elsif (activity.submission_type == 'add_location')
       New location added#{show_location_link ? ':' : ''}
       - if show_location_link
@@ -63,5 +80,5 @@
       - if (!activity.user_name.blank?)
         by
         %span.bold #{activity.user_name}
-        = render partial: 'shared/activity_icons', :locals => {:activity => activity}
+      = render partial: 'shared/activity_icons', :locals => {:activity => activity}
 .activity_hr

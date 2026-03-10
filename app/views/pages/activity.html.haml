@@ -4,6 +4,8 @@
       %p.red.bold.p1 Recent Activity
       %p.center
         Here's a feed of edits to #{@region_fullname} Pinball Map going back to 2018/19-ish.
+      %p.center
+        The scores here will only show your own scores.
     .clear
 
     .column.w_640
@@ -27,7 +29,7 @@
           =image_tag("icons/new_msx.svg", :alt => "new_msx", :class => 'recent_activity_icon')
           %input{:type => "checkbox", :id => "filterNewMsx", :name => "filterActivity", :class => "m_0", :value => 'new_msx'}
           %div
-            %span Score added
+            %span Your scores
         %div
           =image_tag("icons/confirm_location.svg", :alt => "confirm_location", :class => 'recent_activity_icon')
           %input{:type => "checkbox", :id => "filterConfirmLocation", :name => "filterActivity", :class => "m_0", :value => 'confirm_location'}

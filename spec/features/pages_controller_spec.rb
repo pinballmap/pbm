@@ -246,9 +246,14 @@ describe PagesController do
 
   describe 'activity page and filtering', type: :feature, js: true do
     before(:each) do
-      user = FactoryBot.create(:user, username: 'pbm', admin_title: "Administrator", contributor_rank: "Super Mapper", operator: @operator)
+      @user2 = FactoryBot.create(:user, username: 'pbm', id: 11, admin_title: "Administrator", contributor_rank: "Super Mapper", operator: @operator)
+      @user3 = FactoryBot.create(:user, username: 'ssw', id: 12, admin_title: "Administrator", contributor_rank: "Super Mapper", operator: @operator)
       @other_region_location = FactoryBot.create(:location, city: 'Hillsboro', zip: '97005', name: "Ripley's Hut", region: @other_region, operator: @operator)
       @other_region = FactoryBot.create(:region, name: 'seattle', full_name: 'Seattle')
+
+      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, city_name: @location.city, user: @user2, user_name: 'pbm', high_score: '5555', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_SCORE_TYPE, submission: "pbm added a high score of 5,555 on Sassy Madness at Clark's Depot in Vernon")
+
+      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, city_name: @location.city, user: @user3, user_name: 'ssw', high_score: '9000', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_SCORE_TYPE, submission: "ssw added a high score 9,000 on Sassy Madness at Clark's Depot in Vernon")
 
       FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, city_name: @location.city, user_name: 'ssw', submission_type: UserSubmission::ADD_LOCATION_TYPE, submission: "New location added: Clark's Depot in Vernon by ssw")
 
@@ -256,7 +261,7 @@ describe PagesController do
 
       FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @region, region_id: @region.id, location: @location, location_name: @location.name, user_name: 'ssw', machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: "Sassy Madness removed from Clark's Depot by ssw")
 
-      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @other_region, region_id: @other_region.id, location: @location, location_name: @location.name, user: user, user_name: 'pbm', machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: "Sassy Madness removed from Clark's Depot by pbm")
+      FactoryBot.create(:user_submission, created_at: '2025-01-02', region: @other_region, region_id: @other_region.id, location: @location, location_name: @location.name, user: @user2, user_name: 'pbm', machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: "Sassy Madness removed from Clark's Depot by pbm")
 
       FactoryBot.create(:user_submission, created_at: '2025-01-03', region: @other_region, region_id: @other_region.id, location: @other_region_location, location_name: @other_region_location.name, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: "Pizza Attack removed from Ripley's Hut by ssw")
 
@@ -277,10 +282,23 @@ describe PagesController do
       expect(page).to_not have_content("removed from Ripley's Hut")
       expect(page).to_not have_content("Crappys Bar")
       expect(page).to have_link("Clark's Depot")
-      expect(page).to_not have_content("added to Doughtnut Haven")
+      expect(page).to_not have_content("added to Doughnut Haven")
       expect(page).to_not have_selector('.user_admin_container')
       expect(page).to_not have_selector('.user_operator_container')
       expect(page).to_not have_selector('.rank_icon_SuperMapper')
+    end
+    it 'excludes high scores if logged out' do
+      visit '/portland/activity'
+
+      expect(page).to_not have_content("9,000")
+      expect(page).to_not have_content("5,555")
+    end
+    it 'includes only high scores from logged in user' do
+      login(@user2)
+      visit '/portland/activity'
+
+      expect(page).to have_content("5,555")
+      expect(page).to_not have_content("9,000")
     end
     it 'filters region activity' do
       visit '/portland/activity'
@@ -293,7 +311,7 @@ describe PagesController do
       expect(page).to_not have_content("added to Ripley's Hut")
       expect(page).to_not have_content("removed from Ripley's Hut")
       expect(page).to_not have_content("removed from Clark's Depot")
-      expect(page).to_not have_content("added to Doughtnut Haven")
+      expect(page).to_not have_content("added to Doughnut Haven")
     end
     it 'shows global activity' do
       visit '/activity'
@@ -303,10 +321,23 @@ describe PagesController do
       expect(page).to have_content("removed from Clark's Depot")
       expect(page).to have_content("added to Ripley's Hut")
       expect(page).to have_content("removed from Ripley's Hut")
-      expect(page).to_not have_content("added to Doughtnut Haven")
+      expect(page).to_not have_content("added to Doughnut Haven")
       expect(page).to have_selector('.user_admin_container', visible: :visible)
       expect(page).to have_selector('.user_operator_container', visible: :visible)
       expect(page).to have_selector('.rank_icon_SuperMapper', visible: :visible)
+    end
+    it 'excludes high scores if logged out' do
+      visit '/activity'
+
+      expect(page).to_not have_content("9,000")
+      expect(page).to_not have_content("5,555")
+    end
+    it 'includes only high scores from logged in user' do
+      login(@user2)
+      visit '/activity'
+
+      expect(page).to have_content("5,555")
+      expect(page).to_not have_content("9,000")
     end
     it 'filters activity' do
       visit '/activity'
@@ -318,7 +349,7 @@ describe PagesController do
       expect(page).to have_content("added to Ripley's Hut")
       expect(page).to_not have_content("removed from Ripley's Hut")
       expect(page).to_not have_content("removed from Clark's Depot")
-      expect(page).to_not have_content("added to Doughtnut Haven")
+      expect(page).to_not have_content("added to Doughnut Haven")
 
       find('#filterNewLmx').click
       find('.save_button').click
@@ -327,7 +358,7 @@ describe PagesController do
       expect(page).to have_content("added to Ripley's Hut")
       expect(page).to have_content("removed from Ripley's Hut")
       expect(page).to have_content("removed from Clark's Depot")
-      expect(page).to_not have_content("added to Doughtnut Haven")
+      expect(page).to_not have_content("added to Doughnut Haven")
     end
   end
 

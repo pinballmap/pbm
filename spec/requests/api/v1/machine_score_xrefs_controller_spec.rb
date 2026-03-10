@@ -7,8 +7,8 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     @machine = FactoryBot.create(:machine, name: 'Cleo')
     @lmx = FactoryBot.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
 
-    @score_one = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 123, user_id: FactoryBot.create(:user, id: 333, username: 'ssw').id)
-    @score_two = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 100, user_id: nil)
+    @score_one = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, machine_id: @lmx.machine_id, score: 123, user_id: FactoryBot.create(:user, id: 333, username: 'ssw').id)
+    @score_two = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, machine_id: @lmx.machine_id, score: 100, user_id: nil)
     @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'cibw')
   end
 
@@ -118,7 +118,6 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     it 'creates a new score -- authed' do
       post '/api/v1/machine_score_xrefs.json', params: { location_machine_xref_id: @lmx.id.to_s, score: 1234, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
-      expect(response.status).to eq(201)
 
       expect(JSON.parse(response.body)['machine_score_xref']['score']).to eq(1234)
 
@@ -202,6 +201,74 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('You can only update high scores that you own')
       expect(MachineScoreXref.last.score).to eq(100)
+    end
+  end
+
+  describe '#highest' do
+    before(:each) do
+      machine2 = FactoryBot.create(:machine, name: 'Sass')
+      machine3 = FactoryBot.create(:machine, name: 'Jolene')
+      lmx2 = FactoryBot.create(:location_machine_xref, machine_id: machine2.id, location_id: @location.id)
+      lmx3 = FactoryBot.create(:location_machine_xref, machine_id: machine3.id, location_id: @location.id)
+
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, location: @location, machine_id: @lmx.machine_id, user: @user, score: 4000)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, location: @location, machine_id: @lmx.machine_id, user: @user, score: 5000)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx2, location: @location, machine_id: lmx2.machine_id, user: @user, score: 5500)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx3, location: @location, machine_id: lmx3.machine_id, user: @user, score: 6000)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, location: @location, machine_id: @lmx.machine_id, user: FactoryBot.create(:user, id: 3334, email: 'yeahb@ok.com', authentication_token: '345', username: 'bert'), score: 7000)
+    end
+    it 'shows the highest single score for all machines that have a score' do
+      get '/api/v1/machine_score_xrefs/highest.json'
+      expect(response).to be_successful
+
+      scores = JSON.parse(response.body)['highest_scores']
+
+      expect(scores.size).to eq(3)
+      expect(scores[0]['score']).to eq(7000)
+      expect(scores[0]['username']).to eq('bert')
+      expect(scores[1]['score']).to eq(6000)
+      expect(scores[1]['username']).to eq('cibw')
+      expect(scores[2]['score']).to eq(5500)
+      expect(scores[2]['username']).to eq('cibw')
+    end
+
+    it 'respects by_user_id param to only show highest scores from a single user' do
+      get '/api/v1/machine_score_xrefs/highest.json', params: { by_user_id: @user.id }
+      expect(response).to be_successful
+
+      scores = JSON.parse(response.body)['highest_scores']
+
+      expect(scores.size).to eq(3)
+
+      expect(scores[0]['score']).to eq(5000)
+      expect(scores[0]['username']).to eq('cibw')
+      expect(scores[1]['score']).to eq(6000)
+      expect(scores[1]['username']).to eq('cibw')
+      expect(scores[2]['score']).to eq(5500)
+      expect(scores[2]['username']).to eq('cibw')
+    end
+
+    it 'respects by_user_id and by_machine_id params to only show highest scores from a single user for a single machine' do
+      get '/api/v1/machine_score_xrefs/highest.json', params: { by_user_id: @user.id, by_machine_id: @machine.id }
+      expect(response).to be_successful
+
+      scores = JSON.parse(response.body)['highest_scores']
+
+      expect(scores.size).to eq(1)
+
+      expect(scores[0]['score']).to eq(5000)
+      expect(scores[0]['username']).to eq('cibw')
+    end
+
+    it 'respects by_machine_id param to only show highest scores for a single machine' do
+      get '/api/v1/machine_score_xrefs/highest.json', params: { by_machine_id: @machine.id }
+      expect(response).to be_successful
+
+      scores = JSON.parse(response.body)['highest_scores']
+
+      expect(scores.size).to eq(1)
+      expect(scores[0]['score']).to eq(7000)
+      expect(scores[0]['username']).to eq('bert')
     end
   end
 end

@@ -4,7 +4,22 @@ describe MachineScoreXrefsController, type: :controller do
   before(:each) do
     @lmx = FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location), machine: FactoryBot.create(:machine))
     @user = FactoryBot.create(:user, username: 'cibw', email: 'yeah@ok.com')
-    @msx = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 300, user: @user)
+    @msx = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, machine_id: @lmx.machine_id, score: 300, user: @user)
+  end
+
+  describe 'create' do
+    it 'should create a high score with populated fields' do
+      login(@user)
+
+      post 'create', params: { score: 400, location_machine_xref_id: @lmx.id }
+
+      expect(MachineScoreXref.count).to eq(2)
+
+      msx = MachineScoreXref.last
+      expect(msx.machine_id).to eq(@lmx.machine_id)
+      expect(msx.user_id).to eq(@user.id)
+      expect(msx.score).to eq(400)
+    end
   end
 
   describe 'update' do

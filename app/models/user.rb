@@ -111,6 +111,16 @@ class User < ApplicationRecord
     high_score_hash.values
   end
 
+  def profile_list_of_highest_scores
+    MachineScoreXref
+      .where(user: self)
+      .where.not(machine_id: nil)
+      .joins(:machine)
+      .includes(:machine)
+      .select("DISTINCT ON (machines.name, machine_id) machine_score_xrefs.*")
+      .order("machines.name, machine_id, score DESC")
+  end
+
   def profile_list_of_edited_locations
     user_submissions = UserSubmission.where(user: self).order(created_at: "DESC").includes([ :location ]).limit(50)
 

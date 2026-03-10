@@ -1,5 +1,5 @@
 class MachineCondition < ApplicationRecord
-  MAX_HISTORY_SIZE_TO_DISPLAY = 5
+  MAX_HISTORY_SIZE_TO_DISPLAY = 8
 
   has_paper_trail
 
@@ -49,7 +49,7 @@ class MachineCondition < ApplicationRecord
   end
 
   def as_json(options = {})
-    options[:methods] = [ :username ]
+    options[:methods] = %i[ username operator_id admin_title contributor_rank ]
     super
   end
 end

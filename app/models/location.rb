@@ -118,7 +118,6 @@ class Location < ApplicationRecord
   before_destroy do |record|
     Event.where(location_id: record.id).destroy_all
     LocationPictureXref.where(location_id: record.id).destroy_all
-    MachineScoreXref.where("location_machine_xref_id in (select id from location_machine_xrefs where location_id = #{record.id})").destroy_all
     lmxs_to_delete = LocationMachineXref.unscoped.where(location_id: record.id)
     lmxs_to_delete.each do |lmx|
       lmx.destroy(force: true)
@@ -154,10 +153,6 @@ class Location < ApplicationRecord
 
   def machine_ids
     machines.sort_by(&:massaged_name).map(&:id)
-  end
-
-  def recent_activity
-    UserSubmission.activity_feed.at_location(self).limit(50)
   end
 
   def former_machines

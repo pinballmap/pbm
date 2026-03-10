@@ -757,7 +757,7 @@ describe LocationsController do
       FactoryBot.create(:user_submission, created_at: '2022-01-03', location: @location, user_name: 'ssw', machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: 'machine removed by ssw')
       FactoryBot.create(:user_submission, created_at: '2022-01-04', location: @location, user: @user, user_name: 'pbm', comment: 'be best', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE, submission: 'plays great')
       FactoryBot.create(:user_submission, created_at: '2022-01-05', location: @location, user_name: 'ssw', submission_type: UserSubmission::CONFIRM_LOCATION_TYPE, submission: 'location confirmed')
-      FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user_name: 'ssw', high_score: '2222', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'score added by ssw')
+      FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user_id: 14, user_name: 'ssw', high_score: '2222', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'score added by ssw')
       FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location2, machine_name: 'Jolene Zone', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: 'machine removed by pbm')
       FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user_name: 'ssw', comment: 'hello there', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_CONDITION_TYPE, deleted_at: '2022-01-06', submission: 'bad shape')
 
@@ -778,6 +778,18 @@ describe LocationsController do
       expect(page).to have_selector('.recent_location_activity_location .user_operator_container', visible: :visible)
       expect(page).to have_selector('.recent_location_activity_location .rank_icon_SuperMapper', visible: :visible)
       expect(page).to_not have_selector('.recent_location_activity_location .user_flag_container')
+    end
+
+    it 'shows only your own scores' do
+      FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user_name: 'ssw', high_score: '3333', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'score added by ssw')
+
+      visit '/map/?by_location_id=' + @location.id.to_s
+
+      find("#recent_location_activity_location_banner_#{@location.id}").click
+      sleep(0.5)
+
+      expect(find('.recent_location_activity_location')).to_not have_content('2,222')
+      expect(find('.recent_location_activity_location')).to have_content('3,333')
     end
 
     it 'has pagination if greater than 50 items' do

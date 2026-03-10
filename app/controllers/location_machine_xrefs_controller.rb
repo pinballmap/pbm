@@ -108,7 +108,7 @@ class LocationMachineXrefsController < ApplicationController
     if @record_not_found == true
       render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
     else
-      render partial: "location_machine_xrefs/render_machine_scores", locals: { scores: lmx.sorted_machine_scores.includes([ :user ]), lmx: lmx }
+      render partial: "location_machine_xrefs/render_machine_scores", locals: { scores: lmx.sorted_machine_scores(current_user).includes([ :user ]), highest: lmx.highest_machine_score(current_user), lmx: lmx }
     end
   end
 
@@ -122,7 +122,7 @@ class LocationMachineXrefsController < ApplicationController
     elsif params[:machine_id].present? && !Machine.where(id: params[:machine_id]).present?
       render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
     else
-      @machine_name = ''
+      @machine_name = ""
     end
   end
 

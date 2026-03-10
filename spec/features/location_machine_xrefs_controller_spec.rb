@@ -61,8 +61,10 @@ describe LocationMachineXrefsController do
       region = region ? @region : nil
       location = FactoryBot.create(:location, id: 11, region: region)
       lmx = FactoryBot.create(:location_machine_xref, location: location, machine: @machine_to_add, id: 6660)
+      lmx_diff_location = FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location, id: 9898), machine: @machine_to_add)
       lmx.update_condition('great', { user_id: @user.id })
-      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, score: 3000, user: @user)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, score: 3000, user: @user, machine_id: @machine_to_add.id)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx_diff_location, score: 9999, user: @user, machine_id: @machine_to_add.id)
 
       visit "/#{region ? region.name : 'map'}/?by_location_id=#{location.id}"
 
@@ -91,6 +93,8 @@ describe LocationMachineXrefsController do
       expect(location.location_machine_xrefs.first.id).to eq(6660)
       expect(page.body).to have_content('great')
       expect(page.body).to have_content('3,000')
+      expect(page.body).to have_content('Your highest score')
+      expect(page.body).to have_content('9,999')
     end
 
     it 'Should include latest user id for re-added soft-deleted lmx' do
@@ -124,7 +128,7 @@ describe LocationMachineXrefsController do
       location = FactoryBot.create(:location, id: 11, region: region)
       lmx = FactoryBot.create(:location_machine_xref, location: location, machine: @machine_to_add, id: 6660)
       lmx.update_condition('great', { user_id: @user.id })
-      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, score: 3000, user: @user)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, score: 3000, user: @user, machine_id: @machine_to_add.id)
 
       visit "/#{region ? region.name : 'map'}/?by_location_id=#{location.id}"
 
@@ -428,10 +432,10 @@ describe LocationMachineXrefsController do
       expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("Test Comment\nDELETED USER\n#{@lmx.created_at.strftime('%b %d, %Y')}")
     end
 
-    it 'only displays the 5 most recent descriptions' do
+    it 'only displays the 8 most recent descriptions' do
       login
 
-      7.times do |i|
+      10.times do |i|
         FactoryBot.create(:machine_condition, location_machine_xref: @lmx.reload, comment: "Condition #{i + 1} words.", created_at: "199#{i + 1}-01-01")
       end
 
@@ -439,6 +443,9 @@ describe LocationMachineXrefsController do
 
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
 
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 10 words.')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 9 words.')
+      expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 8 words.')
       expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 7 words.')
       expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 6 words.')
       expect(find("div#show_conditions_lmx_#{@lmx.id}.show_conditions_lmx")).to have_content('Condition 5 words.')

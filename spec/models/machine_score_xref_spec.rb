@@ -18,9 +18,9 @@ describe MachineScoreXref do
 
     describe '#update' do
       it 'correctly updates high score metadata: updates lmx if you update the most recent of many high scores' do
-        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 100)
-        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 200)
-        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 300)
+        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, machine_id: @lmx.machine_id, score: 100)
+        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, machine_id: @lmx.machine_id, score: 200)
+        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, machine_id: @lmx.machine_id, score: 300)
 
         hc = @lmx.machine_score_xrefs.first
 
@@ -37,9 +37,9 @@ describe MachineScoreXref do
 
     describe '#destroy' do
       it 'correctly updates lmx condition metadata: updates lmx if you delete the most recent of many conditions' do
-        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 100)
-        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 200)
-        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 300)
+        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, machine_id: @lmx.machine_id, score: 100)
+        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, machine_id: @lmx.machine_id, score: 200)
+        FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, machine_id: @lmx.machine_id, score: 300)
 
         expect(@lmx.machine_score_xrefs.first.score).to eq(300)
 
@@ -53,7 +53,7 @@ describe MachineScoreXref do
     describe '#create_user_submission' do
       it 'creates a user submission' do
         user = FactoryBot.create(:user, username: 'cibw', email: 'yeah@ok.com')
-        msx = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, user: user, score: 100)
+        msx = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, machine_id: @lmx.machine_id, user: user, score: 100)
 
         msx.create_user_submission
 

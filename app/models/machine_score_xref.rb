@@ -6,8 +6,8 @@ class MachineScoreXref < ApplicationRecord
   include ActionView::Helpers::NumberHelper
   belongs_to :user, optional: true
   belongs_to :location_machine_xref, optional: true, touch: true
+  belongs_to :machine, optional: true
   has_one :location, through: :location_machine_xref
-  has_one :machine, through: :location_machine_xref
   strip_attributes
 
   scope :zone_id, lambda { |id|
@@ -25,7 +25,7 @@ class MachineScoreXref < ApplicationRecord
     ", r.id)
   }
 
-  scope :limited, -> { order("created_at DESC").limit(MachineScoreXref::MAX_HISTORY_SIZE_TO_DISPLAY) }
+  scope :limited, -> { limit(MachineScoreXref::MAX_HISTORY_SIZE_TO_DISPLAY) }
 
   def update(options = {})
     if options[:score] && !options[:score].blank? && (score != options[:score])

@@ -76,21 +76,18 @@
               - location_id, location_name = location_array
               %span.location_edited.mb_5
                 = link_to(location_name, map_path + "/?by_location_id=#{location_id}")
-      - if !@user.profile_list_of_high_scores.empty?
+
+      - if !@user.profile_list_of_highest_scores.empty?
         %div.darkgrey.stats.font18
           %div.ml_5.bold
-            High Scores (Last 50):
+            Your High Scores:
           %span.stats_list
-            - @user.profile_list_of_high_scores.each do |score_array|
-              - location_name, machine_name, score, date_created = score_array
-              %span.score_machine.mt_10
-                #{machine_name}
-              %span.pt_5.block.bold
-                #{number_with_precision(score, precision: 0, delimiter: ',')}
-              %span.score_meta.inline at
-              %span.score_meta_gen.inline.bold #{location_name}
-              %span.score_meta.inline on
-              %span.score_meta_gen.inline #{date_created}
+            - @user.profile_list_of_highest_scores.each do |sa|
+              %span.pt_5.bold.mt_10
+                #{sa.machine.name}
+              %span
+                #{number_with_precision(sa.score, precision: 0, delimiter: ',')}
+
       - if !@user.list_fave_locations.empty?
         %div.darkgrey.stats.font18
           %div.ml_5.bold

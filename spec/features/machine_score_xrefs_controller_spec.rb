@@ -44,6 +44,28 @@ describe MachineScoreXrefsController do
       expect(page).to have_selector('.machine_scores_container .user_operator_container', visible: :visible)
       expect(page).to have_selector('.machine_scores_container .rank_icon_SuperMapper', visible: :visible)
       expect(page).to have_selector('.machine_scores_container .user_flag_container', visible: :visible)
+      expect(page).to have_css("div.highest_score", text: "Your highest score on")
+      expect(page).to have_css("div.highest_score", text: "1,234")
+
+      page.find("div#high_score_lmx_#{lmx.id}").click
+      fill_in('score', with: 2234)
+      click_on('Save')
+
+      sleep(1)
+
+      expect(page).to have_css("div.highest_score", text: "2,234")
+    end
+
+    it 'does not show scores from other users' do
+      lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine))
+
+      FactoryBot.create(:machine_score_xref, location: @location, location_machine_xref: lmx, machine_id: lmx.machine_id, score: 8888, user: FactoryBot.create(:user))
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+
+      page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
+
+      expect(page).to_not have_css(".high_score", text: "8,888")
     end
 
     it 'removes non-digit characters from high scores' do

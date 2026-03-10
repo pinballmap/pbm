@@ -74,13 +74,14 @@ describe Location do
       FactoryBot.create(:event, location: @l)
       FactoryBot.create(:location_picture_xref, location: @l, photo: nil)
       FactoryBot.create(:user_fave_location, location: @l)
+      FactoryBot.create(:machine_score_xref, location: @l, score: 200, location_machine_xref: @lmx1, machine: @m1)
 
       @l.destroy
 
       expect(Event.all).to eq([])
       expect(LocationPictureXref.all).to eq([])
       expect(LocationMachineXref.all).to eq([])
-      expect(MachineScoreXref.all).to eq([])
+      expect(MachineScoreXref.all).to_not eq([])
       expect(Location.all).to eq([])
       expect(UserFaveLocation.all).to eq([])
     end

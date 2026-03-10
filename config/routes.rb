@@ -9,12 +9,16 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :location_types, only: [:index, :show]
       resources :machine_conditions, only: [:destroy, :update]
-      resources :machine_score_xrefs, only: [:destroy, :update, :create, :show]
       resources :machines, only: [:index, :show]
       resources :machine_groups, only: [:index, :show]
       resources :operators, only: [:index, :show]
       resources :statuses, only: [:index, :show]
 
+      resources :machine_score_xrefs, only: [:destroy, :update, :create, :show] do
+        collection do
+          get :highest
+        end
+      end
       resources :user_submissions do
         collection do
           get :list_within_range
@@ -24,7 +28,6 @@ Rails.application.routes.draw do
           get :delete_location
         end
       end
-
       resources :users do
         member do
           post :add_fave_location

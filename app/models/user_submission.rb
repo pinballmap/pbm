@@ -15,11 +15,11 @@ class UserSubmission < ApplicationRecord
   # Activity feed scopes
   ACTIVITY_SUBMISSION_TYPES = %w[add_location new_lmx remove_machine new_condition confirm_location].freeze
 
-  scope :activity_feed, lambda {
+  scope :activity_feed, ->(user) {
     where(
       submission_type: ACTIVITY_SUBMISSION_TYPES,
       deleted_at: nil
-    ).where.not(submission: nil).order("created_at DESC")
+    ).or(where(submission_type: "new_msx", user_id: user&.id)).where.not(submission: nil).order("created_at DESC")
   }
 
   scope :at_location, ->(location) { where(location_id: location) }

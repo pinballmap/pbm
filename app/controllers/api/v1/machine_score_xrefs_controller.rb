@@ -15,17 +15,43 @@ module Api
       formats [ "json" ]
       def index
         scores = apply_scopes(MachineScoreXref).includes(:user).order("id desc")
-        return_response(scores, "machine_score_xrefs", [], [ :username ])
+        return_response(scores, "machine_score_xrefs", [], %i[ username machine ])
       end
 
       api :GET, "/api/v1/machine_score_xrefs/:id.json", "View all high scores for a location's machine"
-      param :id, Integer, desc: "The location machine ID, NOT the machine score ID", required: true
+      param :id, Integer, desc: "The location machine ID (LMX ID), NOT the machine ID", required: true
+      param :user_id, Integer, desc: "Limits to scores from a single user for this machine", required: false
       formats [ "json" ]
       def show
         lmx = LocationMachineXref.find(params[:id])
 
         msxes = MachineScoreXref.where(location_machine_xref_id: lmx.id).order("score desc")
+
+        msxes = msxes.where(user_id: params[:user_id]) if params[:user_id].present?
+
         return_response(msxes, "machine_scores", [], [ :username ])
+      rescue ActiveRecord::RecordNotFound
+        return_response("Failed to find machine", "errors")
+      end
+
+      api :GET, "/api/v1/machine_score_xrefs/highest.json", "View highest high score for a machine"
+      param :by_machine_id, Integer, desc: "Limit to the highest score for this machine ID", required: false
+      param :by_user_id, Integer, desc: "Limit to highest score for a single user", required: false
+      formats [ "json" ]
+      def highest
+        all_msxs = MachineScoreXref.all.where.not(machine_id: nil)
+
+        all_msxs = all_msxs.where(user: params[:by_user_id]).includes(:user) if params[:by_user_id].present?
+
+        all_msxs = all_msxs.where(machine_id: params[:by_machine_id]) if params[:by_machine_id].present?
+
+        all_msxs = all_msxs
+          .joins(:machine)
+          .includes(:machine)
+          .select("DISTINCT ON (machines.name, machine_id) machine_score_xrefs.*")
+          .order("machines.name, machine_id, score DESC")
+
+        return_response(all_msxs, "highest_scores", [ machine: { except: %i[is_active created_at updated_at ipdb_link ipdb_id opdb_img opdb_img_height opdb_img_width machine_type machine_display ic_eligible kineticist_url] } ], %i[ username ])
       rescue ActiveRecord::RecordNotFound
         return_response("Failed to find machine", "errors")
       end
@@ -57,8 +83,11 @@ module Api
 
         msx = MachineScoreXref.new(location_machine_xref_id: lmx.id)
 
+        machine_id = LocationMachineXref.where(id: params[:location_machine_xref_id]).pluck(:machine_id).first
+
         msx.score = score
         msx.user = user
+        msx.machine_id = machine_id
 
         if msx.save
           msx.create_user_submission

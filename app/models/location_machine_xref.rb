@@ -53,8 +53,12 @@ class LocationMachineXref < ApplicationRecord
     machine_conditions.limited.includes([ :user ])
   end
 
-  def sorted_machine_scores
-    machine_score_xrefs.limited.includes([ :user ])
+  def sorted_machine_scores(current_user)
+    machine_score_xrefs.where(user_id: current_user&.id).limited.includes([ :user ]).reorder(score: :desc)
+  end
+
+  def highest_machine_score(current_user)
+    MachineScoreXref.where(user_id: current_user&.id, machine_id: self.machine_id).maximum(:score)
   end
 
   def update_location

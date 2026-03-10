@@ -15,8 +15,11 @@ class MachineScoreXrefsController < ApplicationController
 
     msx = MachineScoreXref.new(location_machine_xref_id: params[:location_machine_xref_id])
 
+    machine_id = LocationMachineXref.where(id: params[:location_machine_xref_id]).pluck(:machine_id).first
+
     msx.score = score
     msx.user = current_user
+    msx.machine_id = machine_id
     msx.save
     msx.create_user_submission
 

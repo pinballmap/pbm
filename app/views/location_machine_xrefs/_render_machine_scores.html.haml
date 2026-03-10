@@ -1,3 +1,13 @@
+%div.highest_score.center
+  %p.bold.font18
+    Your highest score on
+    %span.black
+      #{lmx.machine.name}
+      #{lmx.machine.year_and_manufacturer}
+  %p.bold.font22="#{number_with_delimiter(highest, :delimiter => ",")}"
+  .hr
+  %p.bold.font18
+    Your high scores on this copy
 - scores.each do |msx|
   %div{:id => "container_past_high_score_#{msx.id}"}
     %div.high_score_new_line{:id => "editing_past_high_score_#{msx.id}", :style=>"display:none;"}

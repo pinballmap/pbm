@@ -72,12 +72,16 @@ describe UsersController do
       @user.update_column(:num_msx_scores_added, 1)
 
       machine = FactoryBot.create(:machine, name: 'Machine Two')
+      lmx = FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location), machine: machine)
       FactoryBot.create(:user_submission, user: @user, location: Location.find(400), submission_type: UserSubmission::LOCATION_METADATA_TYPE)
 
       FactoryBot.create(:user_submission, user: @user, location: Location.find(500), machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a high score of 2 on Machine Two at Location One', created_at: '2016-01-01')
       @user.update_column(:num_msx_scores_added, 2)
       FactoryBot.create(:user_submission, user: @user, location: Location.find(400), machine: machine, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a high score of 3 on Machine Two at Location Two', created_at: '2016-01-01')
       @user.update_column(:num_msx_scores_added, 3)
+
+      FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 3)
+      FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 2)
 
       login
       visit "/users/#{@user.id}/profile"
@@ -90,7 +94,8 @@ describe UsersController do
       expect(page).to have_content("1\nMACHINE COMMENTS")
       expect(page).to have_content("3\nLOCATIONS SUBMITTED")
       expect(page).to have_content("5\nLOCATIONS EDITED")
-      expect(page).to have_content("High Scores (Last 50):\nMachine One\n1\nat Location One on Jan 02, 2016\nMachine Two\n3\nat Location Two on Jan 01, 2016")
+      expect(page).to have_content("Your High Scores:\nMachine Two\n3")
+      expect(page).to_not have_content("Machine Two\n2")
 
       expect(page).to_not have_content('Saved Locations:')
     end
@@ -116,14 +121,16 @@ describe UsersController do
     end
 
     it 'adds commas to high scores' do
-      FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, id: 500, name: 'Location One'), machine: FactoryBot.create(:machine, name: 'Machine One'), submission_type: UserSubmission::NEW_SCORE_TYPE, high_score: 1000000, submission: 'ssw added a high score of 1000000 on Machine One at Location One', created_at: '2016-01-02')
-      FactoryBot.create(:user_submission, user: @user, location: FactoryBot.create(:location, id: 501, name: 'Location One'), machine: FactoryBot.create(:machine, name: 'Machine One'), submission_type: UserSubmission::NEW_SCORE_TYPE, high_score: 2000000, submission: 'ssw added a high score of 2000000 on Machine One at Location One', created_at: '2016-01-02', deleted_at: '2016-01-02')
+      machine = FactoryBot.create(:machine, name: 'Machine One')
+      lmx = FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location), machine: machine)
+      FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 2000000)
+      FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 1000000)
 
       login
       visit "/users/#{@user.id}/profile"
 
-      expect(page).to have_content("High Scores (Last 50):\nMachine One\n1,000,000\nat Location One on Jan 02, 2016")
-      expect(page).to_not have_content("High Scores (Last 50):\nMachine One\n2,000,000\nat Location One on Jan 02, 2016")
+      expect(page).to have_content("Your High Scores:\nMachine One\n2,000,000")
+      expect(page).to_not have_content("Your High Scores:\nMachine One\n1,000,000")
     end
 
     it 'Only lets you edit your own account' do

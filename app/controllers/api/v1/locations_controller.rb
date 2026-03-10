@@ -400,6 +400,7 @@ module Api
           )
         else
           location = Location.includes(location_machine_xrefs: [ :user, { machine_conditions: :user }, { machine_score_xrefs: :user } ]).find(params[:id])
+
           return_response(
             location,
             nil,

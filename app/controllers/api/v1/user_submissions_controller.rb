@@ -23,6 +23,8 @@ module Api
       api :GET, "/api/v1/user_submissions/location.json", "Fetch user submissions for a location"
       param :id, Integer, desc: "ID of location", required: true
       param :submission_type, String, desc: "Type of submission to filter to. Multiple filters can be formatted as ;submission_type[]=remove_machine;submission_type[]=new_lmx etc.", required: false
+      param :user_id, Integer, desc: "Limits results to submissions from a single user", required: false
+      param :restrict_to, String, desc: "Restrict this specific submission type to a single user. Requires user_id param to be included; if user_id param is not included, then the submission type specified here is excluded completely. This is used in the app to show submission types from everyone except the high scores only from the current user, or no scores if not signed in", required: false
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       formats [ "json" ]
       def location
@@ -30,10 +32,26 @@ module Api
 
         submission_type = params[:submission_type].blank? ? %w[add_location new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
 
+        if params[:restrict_to]
+          submission_type_restrict = submission_type.delete(params[:restrict_to])
+
+          if params[:submission_type]
+            submission_type = submission_type.excluding(params[:restrict_to])
+          end
+        end
+
+        user_submissions = UserSubmission.where.not(submission: nil, user: nil).where(location_id: location, submission_type: submission_type, deleted_at: nil)
+
+        if params[:user_id].present? && params[:restrict_to].blank?
+          user_submissions = user_submissions.where(user_id: params[:user_id])
+        elsif params[:user_id].present? && params[:restrict_to].present?
+          user_submissions = user_submissions.or(UserSubmission.where(location_id: location, submission_type: submission_type_restrict, user_id: params[:user_id]))
+        end
+
         if params[:limit].blank?
-          user_submissions = UserSubmission.where(location_id: location, submission_type: submission_type, deleted_at: nil).where.not(submission: nil).limit(200).order("created_at DESC").includes([ :user, :location ])
+          user_submissions = user_submissions.limit(200).order("created_at DESC").includes([ :user, :location ])
         else
-          @pagy, user_submissions = pagy(UserSubmission.where(location_id: location, submission_type: submission_type, deleted_at: nil).where.not(submission: nil).order("created_at desc").includes([ :user, :location ]).distinct)
+          @pagy, user_submissions = pagy(user_submissions.order("created_at desc").includes([ :user, :location ]).distinct)
           @pagy_hash = @pagy.data_hash(data_keys: %i[count first_url previous_url next_url page pages page_url previous next from to in last last_url limit options])
         end
 
@@ -88,6 +106,8 @@ module Api
       param :min_date_of_submission, String, desc: "Earliest date to consider updates from, format YYYY-MM-DD", required: false
       param :submission_type, String, desc: "Type of submission to filter to. Multiple filters can be formatted as ;submission_type[]=remove_machine;submission_type[]=new_lmx etc.", required: false
       param :region_id, String, desc: "Limit results to a region", required: false
+      param :user_id, Integer, desc: "Limits results to submissions from a single user", required: false
+      param :restrict_to, String, desc: "Restrict this specific submission type to a single user. Requires user_id param to be included; if user_id param is not included, then the submission type specified here is excluded completely. This is used in the app to show submission types from everyone except the high scores only from the current user, or no scores if not signed in", required: false
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       def list_within_range
         if params[:max_distance].blank?
@@ -98,7 +118,21 @@ module Api
 
         submission_type = params[:submission_type].blank? ? %w[add_location new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
 
-        user_submissions = UserSubmission.where.not(lat: nil, submission: nil).where(submission_type: submission_type, deleted_at: nil)
+        if params[:restrict_to]
+          submission_type_restrict = submission_type.delete(params[:restrict_to])
+
+          if params[:submission_type]
+            submission_type = submission_type.excluding(params[:restrict_to])
+          end
+        end
+
+        user_submissions = UserSubmission.where.not(lat: nil, submission: nil, user: nil).where(submission_type: submission_type, deleted_at: nil)
+
+        if params[:user_id].present? && params[:restrict_to].blank?
+          user_submissions = user_submissions.where(user_id: params[:user_id])
+        elsif params[:user_id].present? && params[:restrict_to].present?
+          user_submissions = user_submissions.or(UserSubmission.where(submission_type: submission_type_restrict, user_id: params[:user_id]))
+        end
 
         user_submissions = user_submissions.where(region_id: params[:region_id]) unless params[:region_id].blank?
 

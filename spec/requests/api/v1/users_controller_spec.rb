@@ -335,9 +335,6 @@ describe Api::V1::UsersController, type: :request do
     before(:each) do
       FactoryBot.create(:operator, id: 889, name: 'Craig T Pinball LLC')
       @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw', created_at: '2016-01-01', admin_title: 'Administrator', contributor_rank: 'Magician', operator_id: 889)
-    end
-
-    it 'returns all profile stats for a given user' do
       location = FactoryBot.create(:location, id: 100, region_id: 1000, name: 'location')
       another_location = FactoryBot.create(:location, id: 101, region_id: 1001, name: 'another location')
 
@@ -369,6 +366,18 @@ describe Api::V1::UsersController, type: :request do
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-02', submission: 'ssw added a high score of 14 on Machine at Location in Portland', location_name: 'location', location_id: 100)
       @user.update_column(:num_msx_scores_added, 3)
 
+      machine = FactoryBot.create(:machine, name: 'Sass')
+      lmx = FactoryBot.create(:location_machine_xref, machine_id: machine.id, location_id: location.id)
+      machine2 = FactoryBot.create(:machine, name: 'Yoyo')
+      lmx2 = FactoryBot.create(:location_machine_xref, machine_id: machine2.id, location_id: location.id)
+
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, location: location, machine_id: lmx.machine_id, user: @user, score: 4000)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, location: location, machine_id: lmx.machine_id, user: @user, score: 5000)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx2, location: location, machine_id: lmx2.machine_id, user: @user, score: 5500)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, location: location, machine_id: lmx.machine_id, user: FactoryBot.create(:user, id: 3334, email: 'yeahb@ok.com', authentication_token: '345', username: 'bert'), score: 7000)
+    end
+
+    it 'returns all profile stats for a given user' do
       get '/api/v1/users/111/profile_info.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
@@ -392,6 +401,10 @@ describe Api::V1::UsersController, type: :request do
         [ 'Location in Portland', 'Machine', '14', 'Jan 02, 2016' ],
         [ 'Bottles in Portland', 'Cheetah', '1,234', 'Jan 01, 2016' ]
       ])
+      expect(json['profile_list_of_highest_scores']).to_not include(hash_including("score" => 4000))
+      expect(json['profile_list_of_highest_scores']).to include(hash_including("score" => 5000))
+      expect(json['profile_list_of_highest_scores']).to include(hash_including("score" => 5500))
+      expect(json['profile_list_of_highest_scores']).to_not include(hash_including("score" => 7000))
     end
 
     it 'tells you if this user does not exist' do
@@ -399,6 +412,16 @@ describe Api::V1::UsersController, type: :request do
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find user')
+    end
+
+    it 'excludes profile_list_of_high_scores when using the new_score_list_only flag' do
+      get '/api/v1/users/111/profile_info.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', new_score_list_only: 1 }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['profile_info']
+
+      expect(json).to include('profile_list_of_highest_scores')
+      expect(json).to_not include('profile_list_of_high_scores')
     end
   end
   describe '#total_user_count' do

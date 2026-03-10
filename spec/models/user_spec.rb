@@ -53,7 +53,7 @@ describe User do
   end
 
   describe '#profile_list_of_high_scores' do
-    it "should return a list of the user's high scores for their profile page" do
+    it "should return a list of the user's high scores (outdated app usage)" do
       region = FactoryBot.create(:region)
 
       FactoryBot.create(:user_submission, region: region, location: FactoryBot.create(:location, name: 'First Location'), machine: FactoryBot.create(:machine, name: 'First Machine'), submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'ssw added a high score of 100 on First Machine at First Location', user: @user, created_at: '2016-01-01')
@@ -62,7 +62,7 @@ describe User do
       expect(@user.profile_list_of_high_scores).to eq([ [ 'Second Location', 'Second Machine', '2,000', 'Jan 02, 2016' ], [ 'First Location', 'First Machine', '100', 'Jan 01, 2016' ] ])
     end
 
-    it 'only returns the most recent 50' do
+    it 'only returns the most recent 50 (outdated app usage)' do
       region = FactoryBot.create(:region)
       @location = FactoryBot.create(:location, name: 'First Location')
 
@@ -76,7 +76,7 @@ describe User do
       expect(@user.profile_list_of_high_scores.map { |s| s[3] }[49]).to eq('Jan 02, 2016')
     end
 
-    it 'returns the highest score per machine' do
+    it 'returns the highest score per machine (outdated app usage)' do
       region = FactoryBot.create(:region)
       location = FactoryBot.create(:location, name: 'First Location')
       use_this_location = FactoryBot.create(:location, name: 'Second Location')
@@ -88,6 +88,26 @@ describe User do
 
       expect(@user.profile_list_of_high_scores.size).to eq(1)
       expect(@user.profile_list_of_high_scores).to eq([ [ 'Second Location', 'First Machine', '2,000', 'Jan 01, 2016' ] ])
+    end
+  end
+
+  describe 'profile_list_of_highest_scores' do
+    it "should return a list of the user's highest score per machine for profile page" do
+      machine = FactoryBot.create(:machine, name: 'Attack from Neptune')
+      machine2 = FactoryBot.create(:machine, name: 'Duck Tales')
+      lmx = FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location), machine: machine)
+      FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 100)
+      FactoryBot.create(:machine_score_xref, user: @user,  location_machine_xref: lmx, machine: machine, score: 200)
+      FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 300)
+
+      expect(@user.profile_list_of_highest_scores.to_a.size).to eq(1)
+      expect(@user.profile_list_of_highest_scores.first.score).to eq(300)
+
+      FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine2, score: 400)
+
+      expect(@user.profile_list_of_highest_scores.to_a.size).to eq(2)
+      expect(@user.profile_list_of_highest_scores.first.score).to eq(300)
+      expect(@user.profile_list_of_highest_scores.second.score).to eq(400)
     end
   end
 
