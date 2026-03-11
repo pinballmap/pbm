@@ -1,5 +1,4 @@
 - @recent_activity.each do |activity|
-  - next if (activity.submission_type == 'new_msx' || activity.submission_type == 'new_condition') && activity.user_name.blank?
   %div.activity_container
     %div.activity_icon
       =image_tag("icons/#{activity.submission_type}.svg", :alt => "#{activity.submission_type}", :class => '')
