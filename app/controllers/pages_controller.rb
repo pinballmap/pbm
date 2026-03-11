@@ -203,7 +203,7 @@ limit 25")
     when "GET"
       render "pages/activity"
     when "POST"
-      render partial: "shared/activity_item", :locals => {show_location_link: true, page_activity: true}
+      render partial: "shared/activity_item", locals: { show_location_link: true, page_activity: true }
     else
       p "unknown request_method: #{request.request_method}"
     end
