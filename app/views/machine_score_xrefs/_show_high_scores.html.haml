@@ -2,9 +2,14 @@
   Your High Scores
 %div[lmx, :score_container]
   %div[lmx, :show_high_scores]
-    - if lmx.sorted_machine_scores(current_user).empty?
-      %div.black.font16.center Track your high scores (across any copy of this machine)!
-    - elsif !user_signed_in?
-      %div.black.font16.center Sign up to track your high scores.
+    - if !user_signed_in?
+      %div.highest_score.center
+        %p.bold.font18
+          Your highest score on
+          %span.black
+            #{lmx.machine.name}
+            #{lmx.machine.year_and_manufacturer}
+        %p.font18.italic{:style => "padding-top: 0"}
+          none yet (sign up to track scores)
     - else
       = render :partial => 'location_machine_xrefs/render_machine_scores', :locals => {:scores => lmx.sorted_machine_scores(current_user), :highest => lmx.highest_machine_score(current_user), :lmx => lmx}

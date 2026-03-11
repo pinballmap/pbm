@@ -159,7 +159,29 @@ describe LocationMachineXrefsController do
       expect(location.machines.first).to eq(@machine_to_add)
       expect(location.location_machine_xrefs.first.id).to_not eq(6660)
       expect(page.body).to_not have_content('great')
-      expect(page.body).to_not have_content('3,000')
+      expect(page.body).to have_content('3,000')
+    end
+
+    it 'Should show your highest score even if you did not leave it on that particular copy' do
+      region = region ? @region : nil
+      location = FactoryBot.create(:location, id: 11, region: region)
+
+      lmx = FactoryBot.create(:location_machine_xref, location: location, machine: @machine_to_add, id: 6660)
+
+      lmx_diff_location = FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location, id: 9898), machine: @machine_to_add)
+
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx_diff_location, score: 9999, user: @user, machine_id: @machine_to_add.id)
+
+      visit "/#{region ? region.name : 'map'}/?by_location_id=#{location.id}"
+
+      sleep 1
+
+      page.find("div.machine_tools_lmx_toggle").click
+
+      sleep 1
+
+      expect(page.body).to have_content('Your highest score')
+      expect(page.body).to have_content('9,999')
     end
 
     it 'Should add by name of existing machine' do

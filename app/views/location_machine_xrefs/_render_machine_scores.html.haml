@@ -4,10 +4,15 @@
     %span.black
       #{lmx.machine.name}
       #{lmx.machine.year_and_manufacturer}
-  %p.bold.font22="#{number_with_delimiter(highest, :delimiter => ",")}"
-  .hr
-  %p.bold.font18
-    Your high scores on this copy
+  - if highest
+    %p.bold.font22{:style => "padding-top: 0"}="#{number_with_delimiter(highest, :delimiter => ",")}"
+  - else
+    %p.font18.italic{:style => "padding-top: 0"}
+      none yet (track your scores!)
+  - if scores.present?
+    .hr
+    %p.font18.italic{:style => "padding-top: 0"}
+      Your high scores on this copy
 - scores.each do |msx|
   %div{:id => "container_past_high_score_#{msx.id}"}
     %div.high_score_new_line{:id => "editing_past_high_score_#{msx.id}", :style=>"display:none;"}
