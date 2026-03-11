@@ -2,10 +2,9 @@
   - if pagy.count == 0
     No recent location activity
   - else
-    Showing #{pagy.from}-#{pagy.to} of #{pagy.count} recent location edits
+    Showing #{pagy.from}-#{pagy.to} of #{pagy.count} location edits
 
-- recent_activity.each do |activity|
-  = render 'shared/activity_item', activity: activity, show_location_link: false
+= render 'shared/activity_item', show_location_link: false, page_activity: false
 
 - if pagy.pages > 1
   #location_activity_pagination{:style => 'margin: 20px 10px; padding-bottom: 20px;'}

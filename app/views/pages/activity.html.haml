@@ -11,39 +11,39 @@
     .column.w_640
       = form_tag activity_path, :method => 'get', id: 'activity_filter' do
         %div
-          =image_tag("icons/new_lmx.svg", :alt => "new_lmx", :class => 'recent_activity_icon')
+          =image_tag("icons/new_lmx.svg", :alt => "new_lmx", :class => 'activity_icon')
           %input{:type => "checkbox", :id => "filterNewLmx", :name => "filterActivity", :class => "m_0", :value => 'new_lmx'}
           %div
             %span Machine added
         %div
-          =image_tag("icons/remove_machine.svg", :alt => "remove_machine", :class => 'recent_activity_icon')
+          =image_tag("icons/remove_machine.svg", :alt => "remove_machine", :class => 'activity_icon')
           %input{:type => "checkbox", :id => "filterRemoveMachine", :name => "filterActivity", :class => "m_0", :value => 'remove_machine'}
           %div
             %span Machine removed
         %div
-          =image_tag("icons/new_condition.svg", :alt => "new_condition", :class => 'recent_activity_icon')
+          =image_tag("icons/new_condition.svg", :alt => "new_condition", :class => 'activity_icon')
           %input{:type => "checkbox", :id => "filterNewCondition", :name => "filterActivity", :class => "m_0", :value => 'new_condition'}
           %div
             %span New condition
         %div
-          =image_tag("icons/new_msx.svg", :alt => "new_msx", :class => 'recent_activity_icon')
+          =image_tag("icons/new_msx.svg", :alt => "new_msx", :class => 'activity_icon')
           %input{:type => "checkbox", :id => "filterNewMsx", :name => "filterActivity", :class => "m_0", :value => 'new_msx'}
           %div
             %span Your scores
         %div
-          =image_tag("icons/confirm_location.svg", :alt => "confirm_location", :class => 'recent_activity_icon')
+          =image_tag("icons/confirm_location.svg", :alt => "confirm_location", :class => 'activity_icon')
           %input{:type => "checkbox", :id => "filterConfirmLocation", :name => "filterActivity", :class => "m_0", :value => 'confirm_location'}
           %div
             %span Location confirmed
         %div
-          =image_tag("icons/add_location.svg", :alt => "add_location", :class => 'recent_activity_icon')
+          =image_tag("icons/add_location.svg", :alt => "add_location", :class => 'activity_icon')
           %input{:type => "checkbox", :id => "filterAddLocation", :name => "filterActivity", :class => "m_0", :value => 'add_location'}
           %div
             %span Location added
         = submit_tag 'Apply Filters', :class => "save_button"
 
     #activity.column.w_640.center
-      = render partial: 'render_activity'
+      = render partial: 'shared/activity_item', :locals => {show_location_link: true, page_activity: true}
 
 :javascript
   window.addEventListener("popstate", function(e) {

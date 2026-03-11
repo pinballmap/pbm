@@ -1,84 +1,65 @@
-%div.recent_activity_container
-  %div.recent_activity_icon
-    =image_tag("icons/#{activity.submission_type}.svg", :alt => "#{activity.submission_type}", :class => '')
-  %div.recent_activity_date.font14.bold #{activity.created_at.strftime("%b %d, %Y")}
-  %div.recent_activity_submission.font14
-    - if (activity.submission_type == 'new_lmx')
-      %span.bold.red #{activity.machine_name}
-      added
-      - if show_location_link
-        to
-        %span.bold
-          =link_to "#{activity.location_name}", "/map?by_location_id=#{activity.location_id}"
-        in #{activity.city_name}
-      - if (!activity.user_name.blank?)
-        by
-        %span.bold #{activity.user_name}
-      = render partial: 'shared/activity_icons', :locals => {:activity => activity}
-    - elsif (activity.submission_type == 'new_condition')
-      - if (activity.comment.blank?)
-        #{activity.submission}
-      - else
-        %span.inline_block.mb_8 "#{activity.comment}"
-        %br/
-        %span.bold.red #{activity.machine_name}
-        - if show_location_link
+- @recent_activity.each do |activity|
+  - next if (activity.submission_type == 'new_msx' || activity.submission_type == 'new_condition') && activity.user_name.blank?
+  %div.activity_container
+    %div.activity_icon
+      =image_tag("icons/#{activity.submission_type}.svg", :alt => "#{activity.submission_type}", :class => '')
+    %div.activity_date.font14.bold #{activity.created_at.strftime("%b %d, %Y")}
+    %div.activity_submission.font14
+      - if (activity.submission_type == 'new_condition')
+        - if (activity.machine_name.blank?)
+          #{activity.submission}
+        - else
+          %span.inline_block.mb_8 "#{activity.comment}"
+          %br/
+          %span.bold.red #{activity.machine_name}
           %div.mt_5
-            %span.bold
-              =link_to "#{activity.location_name}", "/map?by_location_id=#{activity.location_id}"
-            in #{activity.city_name}
-        - if (!activity.user_name.blank?)
-          by
-          %span.bold #{activity.user_name}
-      = render partial: 'shared/activity_icons', :locals => {:activity => activity}
-    - elsif (activity.submission_type == 'remove_machine')
-      %span.bold.red #{activity.machine_name}
-      removed
-      - if show_location_link
-        from
-        %span.bold
-          =link_to "#{activity.location_name}", "/map?by_location_id=#{activity.location_id}"
-        in #{activity.city_name}
-      - if (!activity.user_name.blank?)
-        by
-        %span.bold #{activity.user_name}
-      = render partial: 'shared/activity_icons', :locals => {:activity => activity}
-    - elsif (activity.submission_type == 'confirm_location')
-      Line-up confirmed
-      - if show_location_link
-        at
-        %span.bold
-          =link_to "#{activity.location_name}", "/map?by_location_id=#{activity.location_id}"
-        in #{activity.city_name}
-      - if (!activity.user_name.blank?)
-        by
-        %span.bold #{activity.user_name}
-      = render partial: 'shared/activity_icons', :locals => {:activity => activity}
-    - elsif (activity.submission_type == 'new_msx')
-      - if (activity.high_score.blank?)
-        #{activity.submission}
-      - else
-        High score:
-        %span.bold #{number_with_precision(activity.high_score, precision: 0, delimiter: ',')}
-        %br/
+      - if (activity.submission_type == 'new_msx' && (activity.high_score.present? || activity.submission.present?))
+        - if (activity.high_score.blank?)
+          #{activity.submission}
+        - else
+          %span.bold #{number_with_precision(activity.high_score, precision: 0, delimiter: ',')}
+          %br/
+          %span.bold.red.mt_8.inline_block #{activity.machine_name}
+          %div.mt_5
+      - if (activity.submission_type == 'new_lmx' || activity.submission_type == 'remove_machine')
         %span.bold.red #{activity.machine_name}
-        - if show_location_link
-          at
-          %span.bold
-            =link_to "#{activity.location_name}", "/map?by_location_id=#{activity.location_id}"
-          in #{activity.city_name}
-        - if (!activity.user_name.blank?)
-          by
-          %span.bold #{activity.user_name}
-      = render partial: 'shared/activity_icons', :locals => {:activity => activity}
-    - elsif (activity.submission_type == 'add_location')
-      New location added#{show_location_link ? ':' : ''}
+        - if (activity.submission_type == 'new_lmx')
+          added#{show_location_link ? " to" : ""}
+        - if (activity.submission_type == 'remove_machine')
+          removed#{show_location_link ? " from" : ""}
+      - if (activity.submission_type == 'confirm_location')
+        Line-up confirmed#{show_location_link ? " at" : ""}
+      - if (activity.submission_type == 'add_location')
+        New location added#{show_location_link ? ":" : ""}
       - if show_location_link
         %span.bold
-          =link_to "#{activity.location_name}", "/map?by_location_id=#{activity.location_id}"
-        in #{activity.city_name}
+          - if (activity.location.blank?)
+            #{activity.location_name}
+          - else
+            =link_to "#{activity.location_name}", "/#{@region_name}?by_location_id=#{activity.location_id}"
+        - if (activity.city_name.present?)
+          in #{activity.city_name}
       - if (!activity.user_name.blank?)
         by
         %span.bold #{activity.user_name}
-      = render partial: 'shared/activity_icons', :locals => {:activity => activity}
-.activity_hr
+        = render partial: 'shared/activity_icons', :locals => {:activity => activity}
+  .activity_hr
+
+- if page_activity
+  #next_link{:style => 'margin: 20px 10px'}
+    != @pagy.series_nav()
+
+  :javascript
+    $("#next_link > nav > a").on("click", function(e) {
+      e.preventDefault()
+
+      let url = new URL(e.target.href)
+      let pagenum = ""
+      if (url.searchParams.has("page")) {
+        pagenum = `?page=${url.searchParams.get("page")}`
+      }
+
+      document.getElementById("activity_filter").scrollIntoView({ "behavior": "smooth" })
+
+      refreshActivityList(url, pagenum)
+    });

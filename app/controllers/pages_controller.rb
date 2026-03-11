@@ -180,13 +180,13 @@ limit 25")
     submission_type_msx = params[:submission_type].blank? ? %w[new_msx] : params[:submission_type].delete("new_msx")
 
     if @region && params[:submission_type]
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, region_id: @region.id, deleted_at: nil).or(UserSubmission.where(submission_type: submission_type_msx, user: user)).where.not(submission: nil, user: nil).order("created_at DESC").includes([ :user, :location ]), params: { submission_type: submission_type })
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, region_id: @region.id, deleted_at: nil).or(UserSubmission.where(submission_type: submission_type_msx, user: user)).where.not(submission: nil, location_name: nil).order("created_at DESC").includes([ :user, :location ]), params: { submission_type: submission_type })
     elsif @region
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, region_id: @region.id, deleted_at: nil).or(UserSubmission.where(submission_type: submission_type_msx, user: user)).where.not(submission: nil, user: nil).order("created_at DESC").includes([ :user, :location ]))
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, region_id: @region.id, deleted_at: nil).or(UserSubmission.where(submission_type: submission_type_msx, user: user)).where.not(submission: nil, location_name: nil).order("created_at DESC").includes([ :user, :location ]))
     elsif params[:submission_type]
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, deleted_at: nil).or(UserSubmission.where(submission_type: submission_type_msx, user: user)).where.not(submission: nil, user: nil).order("created_at DESC").includes([ :user, :location ]), params: { submission_type: submission_type })
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, deleted_at: nil).or(UserSubmission.where(submission_type: submission_type_msx, user: user)).where.not(submission: nil, location_name: nil).order("created_at DESC").includes([ :user, :location ]), params: { submission_type: submission_type })
     else
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, deleted_at: nil).or(UserSubmission.where(submission_type: submission_type_msx, user: user)).where.not(submission: nil, user: nil).order("created_at DESC").includes([ :user, :location ]))
+      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, deleted_at: nil).or(UserSubmission.where(submission_type: submission_type_msx, user: user)).where.not(submission: nil, location_name: nil).order("created_at DESC").includes([ :user, :location ]))
     end
 
     @region_fullname = @region.present? ? "the #{@region.full_name}" : ""
@@ -203,7 +203,7 @@ limit 25")
     when "GET"
       render "pages/activity"
     when "POST"
-      render partial: "pages/render_activity", object: @recent_activity
+      render partial: "shared/activity_item", :locals => {show_location_link: true, page_activity: true}
     else
       p "unknown request_method: #{request.request_method}"
     end

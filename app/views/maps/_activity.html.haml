@@ -7,8 +7,8 @@
         Showing #{pagy.from}-#{pagy.to} of #{pagy.count} recent edits within the map view
     %span.close_activity.pointer{:onclick => "closeActivity();"}
       X
-  - sorted_submissions.each do |recent_activity|
-    = render 'shared/activity_item', activity: recent_activity, show_location_link: true
+
+  = render 'shared/activity_item', show_location_link: false, page_activity: false
 
   - if pagy.pages > 1
     #next_link{:style => 'margin: 20px 10px; padding-bottom: 20px;'}
