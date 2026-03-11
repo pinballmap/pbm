@@ -40,7 +40,7 @@ module Api
           end
         end
 
-        user_submissions = UserSubmission.where.not(submission: nil, user: nil).where(location_id: location, submission_type: submission_type, deleted_at: nil)
+        user_submissions = UserSubmission.where.not(submission: nil, location_name: nil).where(location_id: location, submission_type: submission_type, deleted_at: nil)
 
         if params[:user_id].present? && params[:restrict_to].blank?
           user_submissions = user_submissions.where(user_id: params[:user_id])
@@ -126,7 +126,7 @@ module Api
           end
         end
 
-        user_submissions = UserSubmission.where.not(lat: nil, submission: nil, user: nil).where(submission_type: submission_type, deleted_at: nil)
+        user_submissions = UserSubmission.where.not(lat: nil, submission: nil, location_name: nil).where(submission_type: submission_type, deleted_at: nil)
 
         if params[:user_id].present? && params[:restrict_to].blank?
           user_submissions = user_submissions.where(user_id: params[:user_id])
