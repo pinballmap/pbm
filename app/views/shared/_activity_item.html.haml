@@ -35,7 +35,7 @@
           - if (activity.location.blank?)
             #{activity.location_name}
           - else
-            =link_to "#{activity.location_name}", "/#{@region.present? ? @region.name : 'map'}?by_location_id=#{activity.location_id}"
+            =link_to "#{activity.location_name}", "/#{@region.present? && page_activity ? @region.name : 'map'}?by_location_id=#{activity.location_id}"
         - if (activity.city_name.present?)
           in #{activity.city_name}
       - if (!activity.user_name.blank?)
