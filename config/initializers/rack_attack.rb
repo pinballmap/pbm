@@ -1,16 +1,4 @@
 unless Rails.env.test?
-  Rack::Attack.blocklist('block admin identified IPs') do |req|
-    should_ban = nil
-
-    BannedIp.all.each do |banned_ip|
-      if (banned_ip.ip_address == req.ip)
-        should_ban = 1
-      end
-    end
-
-    should_ban
-  end
-
   Rack::Attack.blocklist('fail2ban pentesters') do |req|
     Rack::Attack::Fail2Ban.filter(
       "pentesters-#{req.ip}",
