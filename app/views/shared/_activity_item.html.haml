@@ -38,9 +38,12 @@
             =link_to "#{activity.location_name}", "/#{@region.present? && page_activity ? @region.name : 'map'}?by_location_id=#{activity.location_id}"
         - if (activity.city_name.present?)
           in #{activity.city_name}
-      - if (!activity.user_name.blank?)
+      - if (activity.user_name.present?)
         by
-        %span.bold #{activity.user_name}
+        - if (activity.user.blank?)
+          %span.bold #{activity.user_name}
+        - else
+          = link_to "#{activity.user_name}", "#{request.scheme}://#{request.host_with_port}/users/#{activity.user_name}/profile"
         = render partial: 'shared/activity_icons', :locals => {:activity => activity}
   .activity_hr
 
