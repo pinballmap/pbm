@@ -190,7 +190,6 @@ limit 25")
     end
 
     @region_fullname = @region.present? ? "the #{@region.full_name}" : ""
-    @region_name = @region.present? ? @region.name : "map"
 
     respond_to do |format|
       format.html
