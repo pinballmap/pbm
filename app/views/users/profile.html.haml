@@ -80,13 +80,13 @@
       - if !@user.profile_list_of_highest_scores.empty?
         %div.darkgrey.stats.font18
           %div.ml_5.bold
-            Your High Scores:
+            Your Highest Scores:
           %span.stats_list
-            - @user.profile_list_of_highest_scores.each do |sa|
+            - @user.profile_list_of_highest_scores.each do |highest_score|
               %span.pt_5.bold.mt_10
-                #{sa.machine.name}
+                #{highest_score.machine.name}
               %span
-                #{number_with_precision(sa.score, precision: 0, delimiter: ',')}
+                #{number_with_precision(highest_score.score, precision: 0, delimiter: ',')}
 
       - if !@user.list_fave_locations.empty?
         %div.darkgrey.stats.font18
