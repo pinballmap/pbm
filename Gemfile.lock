@@ -11,7 +11,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    action_text-trix (2.1.16)
+    action_text-trix (2.1.17)
       railties
     actioncable (8.1.2)
       actionpack (= 8.1.2)
@@ -308,7 +308,7 @@ GEM
       prism (~> 1.5)
     mutex_m (0.3.0)
     nested_form (0.3.2)
-    net-imap (0.6.2)
+    net-imap (0.6.3)
       date
       net-protocol
     net-pop (0.1.2)
@@ -549,7 +549,7 @@ GEM
     thor (1.5.0)
     tilt (2.7.0)
     timecop (0.9.10)
-    timeout (0.6.0)
+    timeout (0.6.1)
     tsort (0.2.0)
     turbo-rails (2.0.23)
       actionpack (>= 7.1.0)
@@ -626,7 +626,7 @@ DEPENDENCIES
   puma
   rack
   rack-attack
-  rails (~> 8.1.0)
+  rails (~> 8.1.2)
   rails-controller-testing
   rails_admin
   rails_autolink
