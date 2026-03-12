@@ -121,6 +121,28 @@ class User < ApplicationRecord
       .order("machines.name, machine_id, score DESC")
   end
 
+  def profile_list_of_machine_scores(machine_id)
+    MachineScoreXref
+      .where(user: self)
+      .where(machine_id: machine_id)
+      .order("score DESC")
+      .pluck(:score)
+  end
+
+  def profile_average_machine_score(machine_id)
+    MachineScoreXref
+      .where(user: self)
+      .where(machine_id: machine_id)
+      .average(:score)
+  end
+
+  def profile_machine_score_count(machine_id)
+    MachineScoreXref
+      .where(user: self)
+      .where(machine_id: machine_id)
+      .count
+  end
+
   def profile_list_of_edited_locations
     user_submissions = UserSubmission.where(user: self).order(created_at: "DESC").includes([ :location ]).limit(50)
 

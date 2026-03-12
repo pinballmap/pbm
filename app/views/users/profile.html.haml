@@ -80,13 +80,29 @@
       - if !@user.profile_list_of_highest_scores.empty?
         %div.darkgrey.stats.font18
           %div.ml_5.bold
-            Your Highest Scores:
+            Your High Scores:
           %span.stats_list
             - @user.profile_list_of_highest_scores.each do |highest_score|
-              %span.pt_5.bold.mt_10
+              - count = @user.profile_machine_score_count(highest_score.machine_id)
+              %div.pt_5.bold.font22.mt_10
                 #{highest_score.machine.name}
-              %span
-                #{number_with_precision(highest_score.score, precision: 0, delimiter: ',')}
+              %div.ml_8.mb_20
+                %span.font18
+                  - if (count > 1)
+                    %span.bold.inline Highest:
+                  #{number_with_precision(highest_score.score, precision: 0, delimiter: ',')}
+                - if (count > 1)
+                  %span.pt_10.bold
+                    All scores:
+                  - @user.profile_list_of_machine_scores(highest_score.machine_id).each do |score|
+                    %span{:style => "padding-left: 5px"}
+                      #{number_with_precision(score, precision: 0, delimiter: ',')}
+                  %span.pt_10
+                    %span.bold.inline Average:
+                    #{number_with_precision(@user.profile_average_machine_score(highest_score.machine_id), precision: 0, delimiter: ',')}
+                  %span.pt_10
+                    %span.bold.inline Count:
+                    #{number_with_precision(count, precision: 0, delimiter: ',')}
 
       - if !@user.list_fave_locations.empty?
         %div.darkgrey.stats.font18

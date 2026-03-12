@@ -124,13 +124,28 @@ describe UsersController do
       machine = FactoryBot.create(:machine, name: 'Machine One')
       lmx = FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location), machine: machine)
       FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 2000000)
-      FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 1000000)
 
       login
       visit "/users/#{@user.id}/profile"
 
       expect(page).to have_content("Your High Scores:\nMachine One\n2,000,000")
-      expect(page).to_not have_content("Your High Scores:\nMachine One\n1,000,000")
+    end
+
+    it 'shows all scores, average, and count when more than one on a machine' do
+      machine = FactoryBot.create(:machine, name: 'Machine One')
+
+      lmx = FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location), machine: machine)
+
+      FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 2000000)
+      FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 1000000)
+
+      login
+      visit "/users/#{@user.id}/profile"
+
+      expect(page).to have_content("Your High Scores:\nMachine One\nHighest: 2,000,000")
+      expect(page).to have_content("All scores:\n2,000,000\n1,000,000")
+      expect(page).to have_content("Count: 2")
+      expect(page).to have_content("Average: 1,500,000")
     end
 
     it 'Only lets you edit your own account' do
