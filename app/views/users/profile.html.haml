@@ -84,7 +84,7 @@
           %span.stats_list
             - @user.profile_list_of_highest_scores.each do |highest_score|
               - count = @user.profile_machine_score_count(highest_score.machine_id)
-              %div.pt_5.bold.font22.mt_10
+              %div.bold.font22.mt_10.mb_8.underline
                 #{highest_score.machine.name}
               %div.ml_8.mb_20
                 %span.font18

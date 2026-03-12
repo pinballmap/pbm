@@ -111,6 +111,39 @@ describe User do
     end
   end
 
+  describe 'profile_list_of_machine_scores(machine_id)' do
+    it "should return a list of the user's scores per machine for profile page" do
+      machine = FactoryBot.create(:machine, name: 'Attack from Neptune')
+      lmx = FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location), machine: machine)
+      FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 100)
+      FactoryBot.create(:machine_score_xref, user: @user,  location_machine_xref: lmx, machine: machine, score: 200)
+
+      expect(@user.profile_list_of_machine_scores(machine.id)).to eq([200, 100])
+    end
+  end
+
+  describe 'profile_average_machine_score(machine_id)' do
+    it "should return the average score for a user for a machine for profile page" do
+      machine = FactoryBot.create(:machine, name: 'Attack from Neptune')
+      lmx = FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location), machine: machine)
+      FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 100)
+      FactoryBot.create(:machine_score_xref, user: @user,  location_machine_xref: lmx, machine: machine, score: 200)
+
+      expect(@user.profile_average_machine_score(machine.id)).to eq(150)
+    end
+  end
+
+  describe 'profile_machine_score_count(machine_id)' do
+    it "should return a count of scores for a user for a machine for profile page" do
+      machine = FactoryBot.create(:machine, name: 'Attack from Neptune')
+      lmx = FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location), machine: machine)
+      FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 100)
+      FactoryBot.create(:machine_score_xref, user: @user,  location_machine_xref: lmx, machine: machine, score: 200)
+
+      expect(@user.profile_machine_score_count(machine.id)).to eq(2)
+    end
+  end
+
   describe '#num_locations_edited' do
     it 'should return the number of locations the user has edited' do
       dupe_location = FactoryBot.create(:location, id: 100)
