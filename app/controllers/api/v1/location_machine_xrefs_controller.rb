@@ -74,6 +74,7 @@ module Api
 
         if lmx
           lmx.deleted_at = nil
+          lmx.user_id = user.id
           lmx.save
           Location.increment_counter(:machine_count, location_id)
           lmx.create_user_submission
