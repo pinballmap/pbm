@@ -116,7 +116,6 @@ class User < ApplicationRecord
       .where(user: self)
       .where.not(machine_id: nil)
       .joins(:machine)
-      .includes(:machine)
       .select("DISTINCT ON (machines.name, machine_id) machine_score_xrefs.*")
       .order("machines.name, machine_id, score DESC")
   end
@@ -133,7 +132,7 @@ class User < ApplicationRecord
     MachineScoreXref
       .where(user: self)
       .where(machine_id: machine_id)
-      .average(:score)
+      .average(:score).round
   end
 
   def profile_machine_score_count(machine_id)
@@ -141,6 +140,30 @@ class User < ApplicationRecord
       .where(user: self)
       .where(machine_id: machine_id)
       .count
+  end
+
+  def profile_machine_scores_stats
+    list_hash = {}
+    hash = {}
+
+    profile_list_of_highest_scores.each do |hs|
+      count = profile_machine_score_count(hs.machine_id)
+      average = profile_average_machine_score(hs.machine_id)
+      list_hash = profile_list_of_machine_scores(hs.machine_id).each do |lh|
+        lh
+      end
+      machine_name = Machine.where(id: hs.machine_id).pluck(:name).first
+
+      hash[hs.machine_id] = {
+        machine_id: hs.machine_id,
+        machine_name: machine_name,
+        average:    average,
+        count:      count,
+        list:  list_hash
+      }
+    end
+
+    hash.values
   end
 
   def profile_list_of_edited_locations

@@ -401,10 +401,11 @@ describe Api::V1::UsersController, type: :request do
         [ 'Location in Portland', 'Machine', '14', 'Jan 02, 2016' ],
         [ 'Bottles in Portland', 'Cheetah', '1,234', 'Jan 01, 2016' ]
       ])
-      expect(json['profile_list_of_highest_scores']).to_not include(hash_including("score" => 4000))
-      expect(json['profile_list_of_highest_scores']).to include(hash_including("score" => 5000))
-      expect(json['profile_list_of_highest_scores']).to include(hash_including("score" => 5500))
-      expect(json['profile_list_of_highest_scores']).to_not include(hash_including("score" => 7000))
+      expect(json['profile_machine_scores_stats']).to include(hash_including("list" => [5000, 4000]))
+      expect(json['profile_machine_scores_stats']).to include(hash_including("average" => 5500))
+      expect(json['profile_machine_scores_stats']).to include(hash_including("count" => 2))
+      expect(json['profile_machine_scores_stats']).to include(hash_including("list" =>  [5500]))
+      expect(json['profile_machine_scores_stats']).to_not include(hash_including("list" => [7000]))
     end
 
     it 'tells you if this user does not exist' do
@@ -420,7 +421,7 @@ describe Api::V1::UsersController, type: :request do
       expect(response).to be_successful
       json = JSON.parse(response.body)['profile_info']
 
-      expect(json).to include('profile_list_of_highest_scores')
+      expect(json).to include('profile_machine_scores_stats')
       expect(json).to_not include('profile_list_of_high_scores')
     end
   end

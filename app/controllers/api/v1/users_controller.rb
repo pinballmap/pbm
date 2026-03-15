@@ -197,13 +197,13 @@ module Api
       formats [ "json" ]
       def profile_info
         user = User.find(params[:id])
-        includes = %i[admin_rank_int admin_title contributor_rank_int contributor_rank flag num_total_submissions num_machines_added num_machines_removed num_locations_edited num_locations_suggested num_lmx_comments_left num_msx_scores_added profile_list_of_edited_locations profile_list_of_high_scores profile_list_of_highest_scores operator_name created_at]
+        includes = %i[admin_rank_int admin_title contributor_rank_int contributor_rank flag num_total_submissions num_machines_added num_machines_removed num_locations_edited num_locations_suggested num_lmx_comments_left num_msx_scores_added profile_list_of_edited_locations profile_list_of_high_scores operator_name created_at profile_machine_scores_stats]
         includes.delete(:profile_list_of_high_scores) if params[:new_score_list_only]
 
         return_response(
           user,
           "profile_info",
-          [ profile_list_of_highest_scores: { include: { machine: { except: %i[is_active created_at updated_at ipdb_link ipdb_id opdb_img opdb_img_height opdb_img_width machine_type machine_display ic_eligible kineticist_url] } } } ],
+          [],
           includes
         )
       rescue ActiveRecord::RecordNotFound
