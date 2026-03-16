@@ -26,9 +26,9 @@
     }
 - if @locations_size == 1
   :javascript
-    var locationName = "#{@locations.first&.name}";
+    var locationName = "#{j @locations.first&.name}";
 
-    var regionName = "#{@region&.full_name}"
+    var regionName = "#{j @region&.full_name}"
 
     newTitle = locationName + " - " + regionName + " Pinball Map";
 
