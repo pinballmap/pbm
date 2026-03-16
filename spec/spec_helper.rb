@@ -41,8 +41,6 @@ RSpec.configure do |config|
       options.add_argument('--window-size=2000,1000')
     end
 
-    options.add_argument('--disable-gpu')
-
     Capybara::Selenium::Driver.new(
       app,
       browser: :chrome,
