@@ -167,6 +167,24 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(lmx['machine_score_xrefs'][0]['score']).to eq(998899)
     end
 
+    it 'should include latest user id for re-added soft-deleted lmx' do
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'plays soft')
+      FactoryBot.create(:user, id: 211, email: 'yeah@ok.com', authentication_token: '123', username: 'doff')
+
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      expect(response).to be_successful
+      expect(response.status).to eq(200)
+
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, user_email: 'yeah@ok.com', user_token: '123' }
+
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json'
+
+      lmx = JSON.parse(response.body)['location_machine']
+
+      expect(lmx['user_id']).to_not eq(111)
+      expect(lmx['user_id']).to eq(211)
+    end
+
     it 'does not re-add soft-deleted lmx if removed more than 7 days ago' do
       FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'plays soft')
       FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 998899)
