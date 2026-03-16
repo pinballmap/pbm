@@ -118,7 +118,7 @@ describe User do
       FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 100)
       FactoryBot.create(:machine_score_xref, user: @user,  location_machine_xref: lmx, machine: machine, score: 200)
 
-      expect(@user.profile_list_of_machine_scores(machine.id)).to eq([200, 100])
+      expect(@user.profile_list_of_machine_scores(machine.id)).to eq([ 200, 100 ])
     end
   end
 

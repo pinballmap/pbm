@@ -401,11 +401,11 @@ describe Api::V1::UsersController, type: :request do
         [ 'Location in Portland', 'Machine', '14', 'Jan 02, 2016' ],
         [ 'Bottles in Portland', 'Cheetah', '1,234', 'Jan 01, 2016' ]
       ])
-      expect(json['profile_machine_scores_stats']).to include(hash_including("list" => [5000, 4000]))
+      expect(json['profile_machine_scores_stats']).to include(hash_including("list" => [ 5000, 4000 ]))
       expect(json['profile_machine_scores_stats']).to include(hash_including("average" => 5500))
       expect(json['profile_machine_scores_stats']).to include(hash_including("count" => 2))
-      expect(json['profile_machine_scores_stats']).to include(hash_including("list" =>  [5500]))
-      expect(json['profile_machine_scores_stats']).to_not include(hash_including("list" => [7000]))
+      expect(json['profile_machine_scores_stats']).to include(hash_including("list" =>  [ 5500 ]))
+      expect(json['profile_machine_scores_stats']).to_not include(hash_including("list" => [ 7000 ]))
     end
 
     it 'tells you if this user does not exist' do
