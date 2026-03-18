@@ -28,7 +28,7 @@ module Api
 
         region_id = Region.find_by_name(params[:region].downcase).id if params[:region].present?
 
-        user_submissions = UserSubmission.where.not(submission: nil, location_name: nil).where(submission_type: submission_type, deleted_at: nil)
+        user_submissions = UserSubmission.where.not(submission: nil).where.not(location_name: nil).where(submission_type: submission_type, deleted_at: nil)
 
         if params[:user_id].present? && params[:restrict_to].blank?
           user_submissions = user_submissions.where(user_id: params[:user_id])
@@ -66,6 +66,7 @@ module Api
       param :user_id, Integer, desc: "Limits results to submissions from a single user", required: false
       param :restrict_to, String, desc: "Restrict this specific submission type to a single user. Requires user_id param to be included; if user_id param is not included, then the submission type specified here is excluded completely. This is used in the app to show submission types from everyone except the high scores only from the current user, or no scores if not signed in", required: false
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
+      param :machine_id, Integer, desc: "Limit results by machine. Multiple machines can be chained as ;machine_id[]=111;machine_id[]=222 etc", required: false
       formats [ "json" ]
       def location
         location = Location.find(params[:id])
@@ -80,13 +81,15 @@ module Api
           end
         end
 
-        user_submissions = UserSubmission.where.not(submission: nil, location_name: nil).where(location_id: location, submission_type: submission_type, deleted_at: nil)
+        user_submissions = UserSubmission.where.not(submission: nil).where.not(location_name: nil).where(location_id: location, submission_type: submission_type, deleted_at: nil)
 
         if params[:user_id].present? && params[:restrict_to].blank?
           user_submissions = user_submissions.where(user_id: params[:user_id])
         elsif params[:user_id].present? && params[:restrict_to].present?
           user_submissions = user_submissions.or(UserSubmission.where(location_id: location, submission_type: submission_type_restrict, user_id: params[:user_id]))
         end
+
+        user_submissions = user_submissions.where(machine_id: params[:machine_id]) unless params[:machine_id].blank?
 
         if params[:limit].blank?
           user_submissions = user_submissions.limit(200).order("created_at DESC").includes([ :user, :location ])
@@ -149,6 +152,7 @@ module Api
       param :user_id, Integer, desc: "Limits results to submissions from a single user", required: false
       param :restrict_to, String, desc: "Restrict this specific submission type to a single user. Requires user_id param to be included; if user_id param is not included, then the submission type specified here is excluded completely. This is used in the app to show submission types from everyone except the high scores only from the current user, or no scores if not signed in", required: false
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
+      param :machine_id, Integer, desc: "Limit results by machine. Multiple machines can be chained as ;machine_id[]=111;machine_id[]=222 etc", required: false
       def list_within_range
         if params[:max_distance].blank?
           max_distance = MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS
@@ -166,7 +170,7 @@ module Api
           end
         end
 
-        user_submissions = UserSubmission.where.not(lat: nil, submission: nil, location_name: nil).where(submission_type: submission_type, deleted_at: nil)
+        user_submissions = UserSubmission.where.not(submission: nil).where.not(location_name: nil).where(submission_type: submission_type, deleted_at: nil)
 
         if params[:user_id].present? && params[:restrict_to].blank?
           user_submissions = user_submissions.where(user_id: params[:user_id])
@@ -175,6 +179,8 @@ module Api
         end
 
         user_submissions = user_submissions.where(region_id: params[:region_id]) unless params[:region_id].blank?
+
+        user_submissions = user_submissions.where(machine_id: params[:machine_id]) unless params[:machine_id].blank?
 
         user_submissions = user_submissions.where(created_at: params[:min_date_of_submission].to_date.beginning_of_day..Date.today.end_of_day) if params[:min_date_of_submission]
 
