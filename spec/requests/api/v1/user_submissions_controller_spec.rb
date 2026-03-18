@@ -187,9 +187,9 @@ describe Api::V1::UserSubmissionsController, type: :request do
   describe '#index' do
     it 'returns all submissions within scope' do
       FactoryBot.create(:user_submission, region: @region, submission_type: 'new_lmx', submission: 'added in region')
-      FactoryBot.create(:user_submission, region: @region, submission_type: 'remove_machine', submission: 'removed in region')
+      FactoryBot.create(:user_submission, region: @region, submission_type: 'remove_machine', submission: 'removed in region', machine_id: 42)
       FactoryBot.create(:user_submission, region: @other_region, submission_type: 'remove_machine', submission: 'removed elsewhere')
-      FactoryBot.create(:user_submission, region: @other_region, submission_type: 'add_lmx', submission: 'added elsewhere')
+      FactoryBot.create(:user_submission, region: @other_region, submission_type: 'new_lmx', submission: 'added elsewhere', machine_id: 42)
 
       get "/api/v1/region/#{@region.name}/user_submissions.json"
 
@@ -214,6 +214,144 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
       expect(response.body).to_not include('added elsewhere')
       expect(response.body).to_not include('removed elsewhere')
+
+      get "/api/v1/user_submissions.json"
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(4)
+      expect(response.body).to include('added in region')
+      expect(response.body).to include('removed in region')
+
+      expect(response.body).to include('added elsewhere')
+      expect(response.body).to include('removed elsewhere')
+
+      get "/api/v1/user_submissions.json?submission_type=remove_machine"
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(2)
+
+      get "/api/v1/user_submissions.json?machine_id=42"
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(2)
+    end
+
+    it 'excludes a submission_type when restrict_to param (alone) is included' do
+      location = FactoryBot.create(:location, name: 'bawb', id: 111)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw')
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles')
+
+      get '/api/v1/user_submissions.json', params: { restrict_to: 'new_msx' }
+
+      json = JSON.parse(response.body)['user_submissions']
+      expect(response.body).to include('bawb')
+      expect(json.count).to eq(1)
+      expect(response.body).to_not include('high score')
+    end
+
+    it 'restricts submission type to a specific user when restrict_to and user_id are both used' do
+      location = FactoryBot.create(:location, name: 'bawb', id: 111)
+      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
+
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw')
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles')
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles')
+
+      get '/api/v1/user_submissions.json', params: { restrict_to: 'new_msx', user_id: 122 }
+
+      json = JSON.parse(response.body)['user_submissions']
+      expect(response.body).to include('bawb')
+      expect(json.count).to eq(2)
+      expect(response.body).to_not include('1,234')
+      expect(response.body).to_not include('54,321')
+    end
+
+    it 'restricts submission types to a specific user when user_id (alone) is used' do
+      location = FactoryBot.create(:location, name: 'bawb', id: 111)
+      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
+
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw')
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles')
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles')
+
+      get '/api/v1/user_submissions.json', params: { user_id: 122 }
+
+      json = JSON.parse(response.body)['user_submissions']
+      expect(response.body).to_not include('bawb')
+      expect(json.count).to eq(1)
+      expect(response.body).to_not include('1,234')
+      expect(response.body).to_not include('54,321')
+    end
+
+    it 'only shows submissions with a submission field' do
+      location = FactoryBot.create(:location, name: 'bawb', id: 111)
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles')
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2019-06-01')
+      get '/api/v1/user_submissions.json'
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+      expect(json.count).to eq(1)
+    end
+
+    it 'respects type filter' do
+      location = FactoryBot.create(:location, name: 'bawb', id: 111)
+
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Machine added')
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: 'Machine removed')
+
+      get '/api/v1/user_submissions.json', params: { submission_type: 'remove_machine' }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(1)
+    end
+
+    it 'limits results when limit param is present and includes pagy metadata' do
+      location = FactoryBot.create(:location, name: 'bawb', id: 111)
+
+      FactoryBot.create(:user_submission, created_at: '2025-06-01', location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Machine was added to Location by ssw')
+      FactoryBot.create(:user_submission, created_at: '2025-06-03', location: location, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: 'Machine was removed from Location by ssw')
+
+      get '/api/v1/user_submissions.json', params: { limit: 1 }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(1)
+
+      expect(response.body).to include('Machine was removed from')
+      expect(response.body).to_not include('Machine was added to')
+      expect(response.body).to include('pagy')
+    end
+
+    it 'includes location_operator_id, user_operator_id, admin_title, contributor_rank fields' do
+      location = FactoryBot.create(:location, name: 'bawb', id: 111, operator_id: 543)
+      user = FactoryBot.create(:user, id: 121, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123', operator_id: 542, admin_title: 'Administrator', contributor_rank: 'Grand Champ Mapper')
+
+      FactoryBot.create(:user_submission, user: user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2020-01-01', submission: 'ssw added a high score of 504,570 on Tag-Team Pinball (Gottlieb, 1985) at Bottles in Portland')
+
+      get '/api/v1/user_submissions.json'
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(1)
+
+      expect(response.body).to include('location_operator_id')
+      expect(response.body).to include('543')
+      expect(response.body).to include('user_operator_id')
+      expect(response.body).to include('542')
+      expect(response.body).to include('admin_title')
+      expect(response.body).to include('Administrator')
+      expect(response.body).to include('contributor_rank')
+      expect(response.body).to include('Grand Champ Mapper')
     end
   end
 
