@@ -90,7 +90,7 @@ module Api
 
         locations = nil
         if params[:no_details]
-          locations = apply_scopes(Location).includes( :last_updated_by_user).order("locations.name").uniq
+          locations = apply_scopes(Location).includes(:last_updated_by_user).order("locations.name").uniq
         elsif params[:with_lmx] && !params[:regionless_only]
           locations = apply_scopes(Location).includes({ location_machine_xrefs: %i[user machine_conditions] }, :machines, :last_updated_by_user).order("locations.name").uniq
         else
