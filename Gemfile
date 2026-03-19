@@ -45,10 +45,6 @@ gem "tzinfo-data"
 gem "uglifier"
 gem "webrick"
 
-group :production, :development, :staging do
-  gem "rails_semantic_logger"
-end
-
 group :test do
   gem "capybara"
   gem "capybara-screenshot"
