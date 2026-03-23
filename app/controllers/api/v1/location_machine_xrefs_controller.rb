@@ -20,7 +20,7 @@ module Api
       def index
         lmxes = apply_scopes(LocationMachineXref).order("location_machine_xrefs.id desc")
 
-        return_response(lmxes, "location_machine_xrefs", [], [], 200, [:deleted_at, :user_id])
+        return_response(lmxes, "location_machine_xrefs", [], [], 200, [ :deleted_at, :user_id ])
       end
 
       api :GET, "/api/v1/location_machine_xrefs/:id.json", "Get info about a single lmx"

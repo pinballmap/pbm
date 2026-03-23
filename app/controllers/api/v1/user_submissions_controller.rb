@@ -12,6 +12,7 @@ module Api
       param :region, String, desc: "Name of the Region you want to see user submissions for", required: true
       param :submission_type, String, desc: "Type of submission to filter to. Multiple filters can be formatted as ;submission_type[]=remove_machine;submission_type[]=new_lmx etc", required: false
       param :user_id, Integer, desc: "Limits results to submissions from a single user", required: false
+      param :user_name, String, desc: "Limits results to submissions from a single user", required: false
       param :restrict_to, String, desc: "Restrict this specific submission type to a single user. Requires user_id param to be included; if user_id param is not included, then the submission type specified here is excluded completely. This is used in the app to show submission types from everyone except the high scores only from the current user, or no scores if not signed in", required: false
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       param :machine_id, Integer, desc: "Limit results by machine. Multiple machines can be chained as ;machine_id[]=111;machine_id[]=222 etc", required: false
@@ -30,10 +31,10 @@ module Api
 
         user_submissions = UserSubmission.where.not(submission: nil).where.not(location_name: nil).where(submission_type: submission_type, deleted_at: nil)
 
-        if params[:user_id].present? && params[:restrict_to].blank?
-          user_submissions = user_submissions.where(user_id: params[:user_id])
-        elsif params[:user_id].present? && params[:restrict_to].present?
-          user_submissions = user_submissions.or(UserSubmission.where(submission_type: submission_type_restrict, user_id: params[:user_id]))
+        if (params[:user_id].present? || params[:user_name].present?) && params[:restrict_to].blank?
+          user_submissions = params[:user_id].present? ? user_submissions.where(user_id: params[:user_id]) : user_submissions.where(user_name: params[:user_name])
+        elsif (params[:user_id].present? || params[:user_name].present?) && params[:restrict_to].present?
+          user_submissions = params[:user_id].present? ? user_submissions.or(UserSubmission.where(submission_type: submission_type_restrict, user_id: params[:user_id])) : user_submissions.or(UserSubmission.where(submission_type: submission_type_restrict, user_name: params[:user_name]))
         end
 
         user_submissions = user_submissions.where(region_id: region_id) unless params[:region].blank?
@@ -64,6 +65,7 @@ module Api
       param :id, Integer, desc: "ID of location", required: true
       param :submission_type, String, desc: "Type of submission to filter to. Multiple filters can be formatted as ;submission_type[]=remove_machine;submission_type[]=new_lmx etc.", required: false
       param :user_id, Integer, desc: "Limits results to submissions from a single user", required: false
+      param :user_name, String, desc: "Limits results to submissions from a single user", required: false
       param :restrict_to, String, desc: "Restrict this specific submission type to a single user. Requires user_id param to be included; if user_id param is not included, then the submission type specified here is excluded completely. This is used in the app to show submission types from everyone except the high scores only from the current user, or no scores if not signed in", required: false
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       param :machine_id, Integer, desc: "Limit results by machine. Multiple machines can be chained as ;machine_id[]=111;machine_id[]=222 etc", required: false
@@ -83,10 +85,10 @@ module Api
 
         user_submissions = UserSubmission.where.not(submission: nil).where.not(location_name: nil).where(location_id: location, submission_type: submission_type, deleted_at: nil)
 
-        if params[:user_id].present? && params[:restrict_to].blank?
-          user_submissions = user_submissions.where(user_id: params[:user_id])
-        elsif params[:user_id].present? && params[:restrict_to].present?
-          user_submissions = user_submissions.or(UserSubmission.where(location_id: location, submission_type: submission_type_restrict, user_id: params[:user_id]))
+        if (params[:user_id].present? || params[:user_name].present?) && params[:restrict_to].blank?
+          user_submissions = params[:user_id].present? ? user_submissions.where(user_id: params[:user_id]) : user_submissions.where(user_name: params[:user_name])
+        elsif (params[:user_id].present? || params[:user_name].present?) && params[:restrict_to].present?
+          user_submissions = params[:user_id].present? ? user_submissions.or(UserSubmission.where(location_id: location, submission_type: submission_type_restrict, user_id: params[:user_id])) : user_submissions.or(UserSubmission.where(location_id: location, submission_type: submission_type_restrict, user_name: params[:user_name]))
         end
 
         user_submissions = user_submissions.where(machine_id: params[:machine_id]) unless params[:machine_id].blank?
@@ -150,6 +152,7 @@ module Api
       param :submission_type, String, desc: "Type of submission to filter to. Multiple filters can be formatted as ;submission_type[]=remove_machine;submission_type[]=new_lmx etc.", required: false
       param :region_id, String, desc: "Limit results to a region", required: false
       param :user_id, Integer, desc: "Limits results to submissions from a single user", required: false
+      param :user_name, String, desc: "Limits results to submissions from a single user", required: false
       param :restrict_to, String, desc: "Restrict this specific submission type to a single user. Requires user_id param to be included; if user_id param is not included, then the submission type specified here is excluded completely. This is used in the app to show submission types from everyone except the high scores only from the current user, or no scores if not signed in", required: false
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       param :machine_id, Integer, desc: "Limit results by machine. Multiple machines can be chained as ;machine_id[]=111;machine_id[]=222 etc", required: false
@@ -172,10 +175,10 @@ module Api
 
         user_submissions = UserSubmission.where.not(submission: nil).where.not(location_name: nil).where(submission_type: submission_type, deleted_at: nil)
 
-        if params[:user_id].present? && params[:restrict_to].blank?
-          user_submissions = user_submissions.where(user_id: params[:user_id])
-        elsif params[:user_id].present? && params[:restrict_to].present?
-          user_submissions = user_submissions.or(UserSubmission.where(submission_type: submission_type_restrict, user_id: params[:user_id]))
+        if (params[:user_id].present? || params[:user_name].present?) && params[:restrict_to].blank?
+          user_submissions = params[:user_id].present? ? user_submissions.where(user_id: params[:user_id]) : user_submissions.where(user_name: params[:user_name])
+        elsif (params[:user_id].present? || params[:user_name].present?) && params[:restrict_to].present?
+          user_submissions = params[:user_id].present? ? user_submissions.or(UserSubmission.where(submission_type: submission_type_restrict, user_id: params[:user_id])) : user_submissions.or(UserSubmission.where(submission_type: submission_type_restrict, user_name: params[:user_name]))
         end
 
         user_submissions = user_submissions.where(region_id: params[:region_id]) unless params[:region_id].blank?

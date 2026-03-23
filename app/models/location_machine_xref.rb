@@ -45,7 +45,7 @@ class LocationMachineXref < ApplicationRecord
   def as_json(options = {})
     h = super(options)
 
-    h['machine_conditions'] = h.delete('sorted_machine_conditions') if sorted_machine_conditions
+    h["machine_conditions"] = h.delete("sorted_machine_conditions") if sorted_machine_conditions
 
     h
   end

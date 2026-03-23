@@ -185,16 +185,28 @@ describe Api::V1::UserSubmissionsController, type: :request do
       user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
 
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
+
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
+
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, user_name: user.name, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
 
       get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606', restrict_to: 'new_msx', user_id: 122 }
 
       json = JSON.parse(response.body)['user_submissions']
       expect(response.body).to include('was added to')
+      expect(response.body).to include('User xxw added')
       expect(json.count).to eq(2)
-      expect(response.body).to_not include('1,234')
-      expect(response.body).to_not include('54,321')
+      expect(response.body).to_not include('1234')
+      expect(response.body).to include('54321')
+
+      get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606', restrict_to: 'new_msx', user_name: 'xxw' }
+
+      json = JSON.parse(response.body)['user_submissions']
+      expect(response.body).to include('was added to')
+      expect(response.body).to include('User xxw added')
+      expect(json.count).to eq(2)
+      expect(response.body).to_not include('1234')
+      expect(response.body).to include('54321')
     end
 
     it 'restricts submission types to a specific user when user_id (alone) is used' do
@@ -203,15 +215,25 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, user_name: user.name, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
 
       get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606', user_id: 122 }
 
       json = JSON.parse(response.body)['user_submissions']
       expect(response.body).to_not include('was added to')
+      expect(response.body).to include('User xxw added')
       expect(json.count).to eq(1)
-      expect(response.body).to_not include('1,234')
-      expect(response.body).to_not include('54,321')
+      expect(response.body).to_not include('1234')
+      expect(response.body).to include('54321')
+
+      get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606', user_name: 'xxw' }
+
+      json = JSON.parse(response.body)['user_submissions']
+      expect(response.body).to_not include('was added to')
+      expect(response.body).to include('User xxw added')
+      expect(json.count).to eq(1)
+      expect(response.body).to_not include('1234')
+      expect(response.body).to include('54321')
     end
   end
 
@@ -299,17 +321,27 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, user_name: user.name, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
 
       get '/api/v1/user_submissions.json', params: { restrict_to: 'new_msx', user_id: 122 }
 
       json = JSON.parse(response.body)['user_submissions']
 
       expect(response.body).to include('was added to')
-
+      expect(response.body).to include('User xxw added')
       expect(json.count).to eq(2)
-      expect(response.body).to_not include('1,234')
-      expect(response.body).to_not include('54,321')
+      expect(response.body).to_not include('1234')
+      expect(response.body).to include('54321')
+
+      get '/api/v1/user_submissions.json', params: { restrict_to: 'new_msx', user_name: 'xxw' }
+
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(response.body).to include('was added to')
+      expect(response.body).to include('User xxw added')
+      expect(json.count).to eq(2)
+      expect(response.body).to_not include('1234')
+      expect(response.body).to include('54321')
     end
 
     it 'restricts submission types to a specific user when user_id (alone) is used' do
@@ -318,16 +350,27 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, user_name: user.name, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
 
       get '/api/v1/user_submissions.json', params: { user_id: 122 }
 
       json = JSON.parse(response.body)['user_submissions']
 
       expect(response.body).to_not include('was added to')
+      expect(response.body).to include('User xxw added')
       expect(json.count).to eq(1)
-      expect(response.body).to_not include('1,234')
-      expect(response.body).to_not include('54,321')
+      expect(response.body).to_not include('1234')
+      expect(response.body).to include('54321')
+
+      get '/api/v1/user_submissions.json', params: { user_name: 'xxw' }
+
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(response.body).to_not include('was added to')
+      expect(response.body).to include('User xxw added')
+      expect(json.count).to eq(1)
+      expect(response.body).to_not include('1234')
+      expect(response.body).to include('54321')
     end
 
     it 'only shows submissions with a submission field and a location_name field' do
@@ -457,15 +500,27 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, user_name: user.name, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
 
       get '/api/v1/user_submissions/location.json', params: { id: 111, restrict_to: 'new_msx', user_id: 122 }
 
       json = JSON.parse(response.body)['user_submissions']
+
       expect(response.body).to include('was added to')
+      expect(response.body).to include('User xxw added')
       expect(json.count).to eq(2)
-      expect(response.body).to_not include('1,234')
-      expect(response.body).to_not include('54,321')
+      expect(response.body).to_not include('1234')
+      expect(response.body).to include('54321')
+
+      get '/api/v1/user_submissions/location.json', params: { id: 111, restrict_to: 'new_msx', user_name: 'xxw' }
+
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(response.body).to include('was added to')
+      expect(response.body).to include('User xxw added')
+      expect(json.count).to eq(2)
+      expect(response.body).to_not include('1234')
+      expect(response.body).to include('54321')
     end
 
     it 'restricts submission types to a specific user when user_id (alone) is used' do
@@ -474,15 +529,27 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, user_name: user.name, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
 
       get '/api/v1/user_submissions/location.json', params: { id: 111, user_id: 122 }
 
       json = JSON.parse(response.body)['user_submissions']
+
       expect(response.body).to_not include('was added to')
+      expect(response.body).to include('User xxw added')
       expect(json.count).to eq(1)
-      expect(response.body).to_not include('1,234')
-      expect(response.body).to_not include('54,321')
+      expect(response.body).to_not include('1234')
+      expect(response.body).to include('54321')
+
+      get '/api/v1/user_submissions/location.json', params: { id: 111, user_name: 'xxw' }
+
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(response.body).to_not include('was added to')
+      expect(response.body).to include('User xxw added')
+      expect(json.count).to eq(1)
+      expect(response.body).to_not include('1234')
+      expect(response.body).to include('54321')
     end
 
     it 'only shows submissions with a submission field and a location_name field' do
