@@ -40,14 +40,24 @@ Rails.application.configure do
 
   # Change to "debug" to log everything (including potentially personally-identifiable information!)
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
+  config.colorize_logging = false
+
+  config.rails_semantic_logger.add_file_appender = false
+  config.rails_semantic_logger.format = :json
+  config.rails_semantic_logger.quiet_assets = true
+  config.semantic_logger.add_appender(
+    io: STDOUT,
+    level: config.log_level,
+    formatter: config.rails_semantic_logger.format
+  )
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id, lambda { |request| request.ip }, lambda { |request| request.headers['AppVersion'] }, lambda { |request| request.user_agent } ]
 
   # Log to STDOUT by default
-  config.logger = ActiveSupport::Logger.new(STDOUT)
-  .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
-  .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
+  # config.logger = ActiveSupport::Logger.new(STDOUT)
+  # .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
+  # .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
   # Prevent health checks from clogging up the logs.
   config.silence_healthcheck_path = "/up"

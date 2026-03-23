@@ -402,6 +402,10 @@ GEM
       actionview (> 3.1)
       activesupport (> 3.1)
       railties (> 3.1)
+    rails_semantic_logger (4.19.0)
+      rack
+      railties (>= 5.1)
+      semantic_logger (~> 4.16)
     railties (8.1.2)
       actionpack (= 8.1.2)
       activesupport (= 8.1.2)
@@ -507,6 +511,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
+    semantic_logger (4.17.0)
+      concurrent-ruby (~> 1.0)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -624,6 +630,7 @@ DEPENDENCIES
   rails-controller-testing
   rails_admin
   rails_autolink
+  rails_semantic_logger
   rake
   rspec-rails
   rspec-retry

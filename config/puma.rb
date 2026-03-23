@@ -39,3 +39,10 @@ plugin :solid_queue if ENV["SOLID_QUEUE_IN_PUMA"]
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
+
+if ENV["RAILS_ENV"] == "production" || ENV["RAILS_ENV"] == "staging"
+  before_worker_boot do
+    # Re-open appenders after forking the process
+    SemanticLogger.reopen
+  end
+end
