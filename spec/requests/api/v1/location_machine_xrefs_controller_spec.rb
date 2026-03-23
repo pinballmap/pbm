@@ -70,11 +70,11 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(lmxes[0]['machine_id']).to eq(@machine.id)
     end
 
-    it "only sends the #{MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY} most recent machine_conditions" do
+    it "excludes machine_conditions and location details from index" do
       chicago = FactoryBot.create(:region, name: 'chicago')
       lmx = FactoryBot.create(:location_machine_xref, machine: @machine, location: FactoryBot.create(:location, id: 12, name: 'Chicago Location', region: chicago))
 
-      (MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY + 10).times do
+      2.times do
         FactoryBot.create(:machine_condition, location_machine_xref: lmx.reload, comment: 'Foo')
       end
 
@@ -83,7 +83,11 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       lmxes = JSON.parse(response.body)['location_machine_xrefs']
 
-      expect(lmxes[0]['machine_conditions'].size).to eq(MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY)
+      expect(lmxes[0]).to include('machine_id')
+      expect(lmxes[0]).to include('location_id')
+      expect(lmxes[0]).to_not include(hash_including('machine_conditions'))
+      expect(lmxes[0]).to_not include(hash_including('location'))
+      expect(lmxes[0]).to_not include(hash_including('machine'))
     end
 
     it 'respects limit scope' do

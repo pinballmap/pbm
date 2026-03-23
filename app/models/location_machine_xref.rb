@@ -44,7 +44,8 @@ class LocationMachineXref < ApplicationRecord
 
   def as_json(options = {})
     h = super(options)
-    h[:machine_conditions] = machine_conditions.first(MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY)
+
+    h['machine_conditions'] = h.delete('sorted_machine_conditions') if sorted_machine_conditions
 
     h
   end

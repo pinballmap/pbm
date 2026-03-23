@@ -14,13 +14,13 @@ module Api
       DEFAULT_MOST_RECENT_MACHINES = 3
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION = 50
 
-      api :GET, "/api/v1/region/:region/location_machine_xrefs.json", "Get all machines at locations in a single region"
+      api :GET, "/api/v1/region/:region/location_machine_xrefs.json", "Get all machines at locations in a single region. This is a legacy endpoint, and it was very bloated and has since been reduced. It is better to use the locations.json endpoint if you want more location and machine info"
       param :region, String, desc: "Name of the Region you want to see machines for", required: true
       formats [ "json" ]
       def index
-        lmxes = apply_scopes(LocationMachineXref).order("location_machine_xrefs.id desc").includes(:location, :machine, machine_conditions: :user).order("machine_conditions.created_at desc")
+        lmxes = apply_scopes(LocationMachineXref).order("location_machine_xrefs.id desc")
 
-        return_response(lmxes, "location_machine_xrefs", %i[location machine machine_conditions])
+        return_response(lmxes, "location_machine_xrefs", [], [], 200, [:deleted_at, :user_id])
       end
 
       api :GET, "/api/v1/location_machine_xrefs/:id.json", "Get info about a single lmx"
@@ -29,17 +29,17 @@ module Api
       formats [ "json" ]
       def show
         if params[:user_id] == "0"
-          lmx = LocationMachineXref.includes({ machine_conditions: :user }, :machine).order("machine_conditions.created_at DESC").find(params[:id])
+          lmx = LocationMachineXref.includes(:machine).find(params[:id])
 
-          methods = []
+          methods = [ sorted_machine_conditions: { methods: %i[username operator_id admin_title contributor_rank] } ]
         elsif params[:user_id].present?
-          lmx = LocationMachineXref.includes({ machine_conditions: :user }, { machine_score_xrefs: :user }, :machine).where("machine_score_xrefs.user_id = ?", params[:user_id]).references(:machine_score_xrefs).order("machine_conditions.created_at DESC, machine_score_xrefs.score DESC").find(params[:id])
+          lmx = LocationMachineXref.includes({ machine_score_xrefs: :user }, :machine).where("machine_score_xrefs.user_id = ?", params[:user_id]).references(:machine_score_xrefs).order("machine_score_xrefs.score DESC").find(params[:id])
 
-          methods = [ machine_score_xrefs: { methods: %i[username operator_id admin_title contributor_rank] } ]
+          methods = [ sorted_machine_conditions: { methods: %i[username operator_id admin_title contributor_rank] }, machine_score_xrefs: { methods: %i[username operator_id admin_title contributor_rank] } ]
         else
-          lmx = LocationMachineXref.includes({ machine_conditions: :user }, { machine_score_xrefs: :user }, :machine).order("machine_conditions.created_at DESC, machine_score_xrefs.score DESC").find(params[:id])
+          lmx = LocationMachineXref.includes({ machine_score_xrefs: :user }, :machine).order("machine_score_xrefs.score DESC").find(params[:id])
 
-          methods = [ machine_score_xrefs: { methods: %i[username operator_id admin_title contributor_rank] } ]
+          methods = [ sorted_machine_conditions: { methods: %i[username operator_id admin_title contributor_rank] }, machine_score_xrefs: { methods: %i[username operator_id admin_title contributor_rank] } ]
         end
 
         return_response(
@@ -111,7 +111,7 @@ module Api
           user_id: user&.id
         )
 
-        return_response(lmx, "location_machine", [], %i[last_updated_by_username machine_conditions])
+        return_response(lmx, "location_machine", [], %i[last_updated_by_username sorted_machine_conditions])
       rescue ActiveRecord::RecordNotFound
         return_response("Failed to find machine", "errors")
       end
