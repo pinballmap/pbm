@@ -67,49 +67,55 @@
   function initialize() {
     var input = document.getElementById('location_name');
     var autocomplete = new google.maps.places.Autocomplete(input);
+    const countryList = ["AT", "BE", "DE", "GB", "FI", "FR", "HK", "HR", "HU", "NL", "NO", "PL", "PT", "NZ", "RO", "SI", "SE"];
     google.maps.event.addListener(autocomplete, 'place_changed', function () {
-        var place = autocomplete.getPlace();
-        document.getElementById('location_name').value = place.name;
-        document.getElementById('location_street').value = place.formatted_address.split(',')[0];
-        if (place.website) {
-          document.getElementById('location_website').value = place.website;
-        }
-        if (place.place_id) {
-          document.getElementById('place_id').value = place.place_id;
-        }
+      document.getElementById('location_phone').value = "";
+      document.getElementById('location_name').value = "";
+      document.getElementById('location_street').value = "";
+      document.getElementById('location_website').value = "";
+      document.getElementById('place_id').value = "";
+      document.getElementById('location_city').value = "";
+      document.getElementById('location_zip').value = "";
+      document.getElementById('location_state').value = "";
+      document.getElementById('location_country').value = "";
 
-        for (const component of place.address_components) {
-          const componentType = component.types[0];
+      var place = autocomplete.getPlace();
+      document.getElementById('location_name').value = place.name;
+      document.getElementById('location_street').value = place.formatted_address.split(',')[0];
+      if (place.website) {
+        document.getElementById('location_website').value = place.website;
+      }
+      if (place.place_id) {
+        document.getElementById('place_id').value = place.place_id;
+      }
 
-          switch (componentType) {
-            case "street_number": {
-              street_number = component.long_name;
-              break;
-            }
-            case "locality": {
-              document.getElementById('location_city').value = component.long_name;
-              break;
-            }
-            case "administrative_area_level_1": {
-              document.getElementById('location_state').value = component.short_name;
-              break;
-            }
-            case "country": {
-              if (component.short_name == 'US' && place.formatted_phone_number) {
-                document.getElementById('location_phone').value = place.formatted_phone_number; 
-              } else if (component.short_name != 'US' && place.international_phone_number) {
-                document.getElementById('location_phone').value = place.international_phone_number; 
-              }
-              document.getElementById('location_country').value = component.short_name;
-              break;
-            }
-            case "postal_code": {
-              document.getElementById('location_zip').value = component.long_name;
-              break;
-            }
+      const addressComponents = place.address_components;
 
-          }
-        }
+      const componentsMapLong = {};
+      const componentsMapShort = {};
+      addressComponents.forEach(component => {
+        component.types.forEach(type => {
+          componentsMapLong[type] = component.long_name;
+          componentsMapShort[type] = component.short_name;
+        });
+      });
+
+      document.getElementById('location_city').value = componentsMapLong["postal_town"] || componentsMapLong["locality"];
+      document.getElementById('location_zip').value = componentsMapLong["postal_code"];
+
+      if (countryList.includes(componentsMapShort["country"])) {
+        document.getElementById('location_state').value = "";
+      } else {
+        document.getElementById('location_state').value = componentsMapShort["administrative_area_level_1"];
+      }
+
+      document.getElementById('location_country').value = componentsMapShort["country"];
+
+      if (componentsMapShort["country"] == 'US' && place.formatted_phone_number) {
+        document.getElementById('location_phone').value = place.formatted_phone_number;
+      } else if (componentsMapShort["country"] != 'US' && place.international_phone_number) {
+        document.getElementById('location_phone').value = place.international_phone_number;
+      }
     });
   }
   google.maps.event.addDomListener(window, 'load', initialize);
