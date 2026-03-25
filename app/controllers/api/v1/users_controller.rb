@@ -194,7 +194,7 @@ module Api
 
       api :GET, "/api/v1/users/:id/profile_info.json", "Fetch profile info for a user"
       param :id, Integer, desc: "ID of user", required: true
-      param :new_score_list_only, Integer, desc: "When present, the old high score list is gone (recent 50); only showing highest high score per machine", required: false
+      param :new_score_list_only, Integer, desc: "When present, the old high score list is gone (recent 50); only showing the new list of highest high score per machine, all scores per machine, and average and count", required: false
       formats [ "json" ]
       def profile_info
         user = User.find(params[:id])
