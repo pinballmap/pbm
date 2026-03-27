@@ -215,6 +215,23 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to_not include('Cleo')
     end
 
+    it 'respects multiple by_type_id params' do
+      FactoryBot.create(:location_type, id: 11, name: 'church')
+      FactoryBot.create(:location_type, id: 22, name: 'lounge')
+      FactoryBot.create(:location_type, id: 333, name: 'barn')
+
+      FactoryBot.create(:location, name: 'Cleo', location_type_id: 11)
+      FactoryBot.create(:location, name: 'Sass', location_type_id: 22)
+      FactoryBot.create(:location, name: 'Bawb', location_type_id: 333)
+
+      ids = [ 11, 22 ]
+      get '/api/v1/locations.json', params: { 'by_type_id[]' => ids }
+
+      expect(response.body).to include('Cleo')
+      expect(response.body).to include('Sass')
+      expect(response.body).to_not include('Bawb')
+    end
+
     it 'respects is_stern_army filter' do
       FactoryBot.create(:location, region: @region, name: 'Stern Army Place', is_stern_army: 't')
       get "/api/v1/region/#{@region.name}/locations.json", params: { by_is_stern_army: 1 }
@@ -714,7 +731,7 @@ describe Api::V1::LocationsController, type: :request do
       FactoryBot.create(:location_machine_xref, location: close_location_three)
       FactoryBot.create(:location_machine_xref, location: close_location_three)
 
-      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: close_location_one.lat, lon: close_location_one.lon, by_type_id: location_type.id }
+      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: close_location_one.lat, lon: close_location_one.lon, "by_type_id[]" => location_type.id }
 
       location = JSON.parse(response.body)['location']
       expect(location['id']).to eq(close_location_two.id)

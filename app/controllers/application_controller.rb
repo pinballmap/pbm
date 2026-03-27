@@ -36,6 +36,12 @@ class ApplicationController < ActionController::Base
     redirect_to "/users/login", alert: exception.message
   end
 
+  def normalize_array_params
+    if params[:by_type_id].is_a?(String) && params[:by_type_id].present?
+      params[:by_type_id] = [ params[:by_type_id] ]
+    end
+  end
+
   def flash_to_headers
     return unless request.xhr?
 

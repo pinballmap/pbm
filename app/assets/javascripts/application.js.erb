@@ -379,12 +379,45 @@ function initSearch(userFaved, locationIDs, operatorIDs, locationTypeIDs, zoneID
       return;
     }
 
-    var url = '/locations?user_faved=' + userFaved + '&by_location_id=' + locationIDs + '&by_operator_id=' + operatorIDs + '&by_type_id=' + locationTypeIDs + '&by_zone_id=' + zoneIDs + '&by_machine_id=' + machineIDs + '&by_machine_single_id=' + machineID + '&by_machine_group_id=' + machineGroupId + '&by_machine_id_ic' + byMachineIDsIC + '&by_machine_single_id_ic' + byMachineIDIC + '&by_machine_year' + byMachineYear + '&by_ipdb_id=' + ipdbIDs + '&by_opdb_id=' + opdbIDs + '&by_city_id=' + cityID + '&lat=' + lat + '&lon=' + lon + '&by_at_least_n_machines=' + byAtLeastNMachines + '&by_at_least_n_machines_city=' + byAtLeastNMachinesCity + '&by_at_least_n_machines_type=' + byAtLeastNMachinesType + '&by_at_least_n_machines_zone=' + byAtLeastNMachinesZone + '&by_city_name=' + byCityName + '&by_state_name=' + byStateName + '&by_city_no_state=' + byCityNoState + '&by_country=' + byCountry + '&by_ic_active=' + byICActive + '&by_is_stern_army=' + byIsSternArmy + '&by_machine_type=' + byMachineType + '&by_machine_display=' + byMachineDisplay + '&manufacturer=' + byManufacturer + '&region=' + region ;
+    const params = new URLSearchParams();
+    params.set('user_faved', userFaved || '');
+    params.set('by_location_id', locationIDs || '');
+    params.set('by_operator_id', operatorIDs || '');
+    if (Array.isArray(locationTypeIDs) && locationTypeIDs.length > 0) {
+      locationTypeIDs.forEach(id => params.append('by_type_id[]', id));
+    } else {
+      params.set('by_type_id', locationTypeIDs || '');
+    }
+    params.set('by_zone_id', zoneIDs || '');
+    params.set('by_machine_id', machineIDs || '');
+    params.set('by_machine_single_id', machineID || '');
+    params.set('by_machine_group_id', machineGroupId || '');
+    params.set('by_machine_id_ic', byMachineIDsIC || '');
+    params.set('by_machine_single_id_ic', byMachineIDIC || '');
+    params.set('by_machine_year', byMachineYear || '');
+    params.set('by_ipdb_id', ipdbIDs || '');
+    params.set('by_opdb_id', opdbIDs || '');
+    params.set('by_city_id', cityID || '');
+    params.set('lat', lat || '');
+    params.set('lon', lon || '');
+    params.set('by_at_least_n_machines', byAtLeastNMachines || '');
+    params.set('by_at_least_n_machines_city', byAtLeastNMachinesCity || '');
+    params.set('by_at_least_n_machines_type', byAtLeastNMachinesType || '');
+    params.set('by_at_least_n_machines_zone', byAtLeastNMachinesZone || '');
+    params.set('by_city_name', byCityName || '');
+    params.set('by_state_name', byStateName || '');
+    params.set('by_city_no_state', byCityNoState || '');
+    params.set('by_country', byCountry || '');
+    params.set('by_ic_active', byICActive || '');
+    params.set('by_is_stern_army', byIsSternArmy || '');
+    params.set('by_machine_type', byMachineType || '');
+    params.set('by_machine_display', byMachineDisplay || '');
+    params.set('manufacturer', byManufacturer || '');
+    params.set('region', region || '');
 
+    var url = '/locations?' + params.toString();
     $('#locations').html(loadingHTML());
-    $.get(url, function (data) {
-      $('#locations').html(data);
-    });
+    $.get(url, function(data) { $('#locations').html(data); });
   }
 }
 
