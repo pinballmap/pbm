@@ -68,6 +68,84 @@ class LocationsController < ApplicationController
 
     @locations = apply_scopes(Location).select([ "id", "name", "lat", "lon", "machine_count" ]).uniq
 
+    if @locations.blank? && (params[:by_city_name].present? || params[:by_city_no_state].present?)
+      @address = params[:by_city_no_state].present? ? params[:by_city_no_state] : "#{params[:by_city_name]}, #{params[:by_state_name]}"
+      geocode unless Rails.env.test?
+      nearby_locations
+    else
+      construct_geojson
+      map_location_load
+    end
+
+    respond_with(@locations) do |format|
+      if @results_init == true
+        format.html { render partial: "locations/locations", object: @locations }
+      else
+        format.html { render partial: "locations/render_locations", object: @locations }
+      end
+    end
+  end
+
+  def nearby_locations
+    params.delete(:by_city_name)
+    params.delete(:by_state_name)
+    params.delete(:by_city_no_state)
+    params.delete(:region)
+
+    if @nearby_lat.present?
+      find_nearby
+      construct_geojson
+    end
+
+    nearby_locations_load
+  end
+
+  def find_nearby
+    @near_distance = 15
+
+    while @locations.blank? && @near_distance < 600
+      @locations = apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.name, locations.id, locations.lat, locations.lon, locations.machine_count")
+      if @locations.empty?
+        @near_distance += 100
+      end
+    end
+  end
+
+  def nearby_locations_load
+    @results_init = true
+    @results_init = params[:results_init] if params[:results_init].present?
+
+    if @locations_size == 0
+      @locations = []
+    elsif @locations_size == 1
+      @pagy, @locations = pagy(apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance).includes(:location_type))
+    else
+      if @region.present?
+        pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count")).includes(:location_type), limit: 50, request_path: "/region_location_load")
+      else
+        pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count")).includes(:location_type), limit: 50, request_path: "/map_location_load")
+      end
+    end
+  end
+
+  def map_location_load
+    @results_init = true
+    @results_init = params[:results_init] if params[:results_init].present?
+
+    if @locations_size == 0
+      @locations = []
+    elsif @locations_size == 1
+      @pagy, @locations = pagy(apply_scopes(Location).distinct.includes(:location_type))
+    else
+      if @region.present?
+        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "region_id" ]).distinct.order("locations.name").includes(:location_type), limit: 50, request_path: "/region_location_load")
+      else
+        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).distinct.order("locations.name").includes(:location_type), limit: 50, request_path: "/map_location_load")
+      end
+    end
+  end
+
+  def construct_geojson
     @locations_size = @locations.size
     @machines_sum = @locations.sum(&:machine_count)
 
@@ -87,28 +165,13 @@ class LocationsController < ApplicationController
         }
       }
     end.to_json
+  end
 
-    @results_init = true
-    @results_init = params[:results_init] if params[:results_init].present?
-
-    if @locations_size == 0
-      @locations = []
-    elsif @locations_size == 1
-      @pagy, @locations = pagy(apply_scopes(Location).distinct.includes(:location_type))
-    else
-      if @region.present?
-        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "region_id" ]).distinct.order("locations.name").includes(:location_type), limit: 50, request_path: "/region_location_load")
-      else
-        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).distinct.order("locations.name").includes(:location_type), limit: 50, request_path: "/map_location_load")
-      end
-    end
-
-    respond_with(@locations) do |format|
-      if @results_init == true
-        format.html { render partial: "locations/locations", object: @locations }
-      else
-        format.html { render partial: "locations/render_locations", object: @locations }
-      end
+  def geocode
+    results = Geocoder.search(@address, lookup: :here)
+    results = Geocoder.search(@address) if results.blank?
+    if results.present?
+      @nearby_lat, @nearby_lon = results.first.coordinates
     end
   end
 
