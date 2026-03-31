@@ -71,6 +71,7 @@
 
   document.getElementById("refresh_button").addEventListener("click", function() {
     var mapActivityVisible = $('#map_activity_container').html().trim() !== '';
+    $('#intro_container').css('display','none');
 
     getMapBounds();
 
