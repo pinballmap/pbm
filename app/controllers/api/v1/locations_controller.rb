@@ -76,6 +76,7 @@ module Api
       param :by_zone_id, Integer, desc: "Zone ID to search by", required: false
       param :by_operator_id, Integer, desc: "Operator ID to search by", required: false
       param :by_type_id, Integer, desc: "Location type ID to search by", required: false
+      param :place_id, String, desc: "Google Maps Place ID for helping app to identify whether location exists", required: false
       param :by_at_least_n_machines, Integer, desc: "Only locations with N or more machines. Additional filtering required for this endpoint.", required: false
       param :by_at_least_n_machines_type, Integer, desc: "Only locations with N or more machines. Additional filtering required for this endpoint.", required: false
       param :by_is_stern_army, Integer, desc: "Send only locations labeled as Stern Army", required: false
@@ -87,20 +88,27 @@ module Api
       param :regionless_only, Integer, desc: "Show only regionless locations", required: false
       formats [ "json" ]
       def index
-        return return_response(FILTERING_REQUIRED_MSG, "errors") unless %i[region by_location_name by_location_id by_machine_id by_machine_single_id by_machine_group_id by_machine_id_ic by_machine_single_id_ic by_ipdb_id by_opdb_id by_machine_name by_city_id by_zone_id by_operator_id by_type_id by_is_stern_army regionless_only].any? { params[_1].present? }
+        return return_response(FILTERING_REQUIRED_MSG, "errors") unless %i[region by_location_name by_location_id by_machine_id by_machine_single_id by_machine_group_id by_machine_id_ic by_machine_single_id_ic by_ipdb_id by_opdb_id by_machine_name by_city_id by_zone_id by_operator_id by_type_id by_is_stern_army regionless_only place_id].any? { params[_1].present? }
 
         except = params[:no_details] ? %i[phone website description created_at updated_at date_last_updated last_updated_by_user_id region_id users_count user_submissions_count] : nil
 
         locations = nil
+
         if params[:no_details]
           locations = apply_scopes(Location).includes(:last_updated_by_user).order("locations.name").uniq
         elsif params[:with_lmx] && !params[:regionless_only]
           locations = apply_scopes(Location).includes({ location_machine_xrefs: %i[user machine_conditions] }, :machines, :last_updated_by_user).order("locations.name").uniq
-        else
+        elsif params[:place_id].blank?
           locations = apply_scopes(Location).includes(:machines, :last_updated_by_user).order("locations.name").uniq
         end
 
-        if params[:by_is_stern_army]
+        if params[:place_id]
+          location_place_id = Location.exists?(place_id: params[:place_id])
+          return_response(
+            location_place_id,
+            "locations",
+          )
+        elsif params[:by_is_stern_army]
           return_response(
             locations,
             "locations",

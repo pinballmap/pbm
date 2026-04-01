@@ -7,62 +7,77 @@
         %p.center Do not submit your home (even if it's a short-term rental).
         %p.center We review all location submissions (0 - 7 days).
         #location_maker
-          = form_tag @region ? submitted_new_location_path : map_submitted_new_location_path, :method => 'post' do
-            %form#submit_location
-              = hidden_field_tag :place_id
-              %ul
+          = form_tag @region ? submitted_new_location_path : map_submitted_new_location_path, :method => 'post', :id => "submit_location" do
+            = hidden_field_tag :place_id
+            %ul
+              %li{:class => "first"}
+                %label{:for => "location_name"} Location Name:
+                %input{type: "text", id: "location_name", name: "location_name", params: "location_name", class: "text", required: true}
+              %li
+                %label{:for => "location_street"} Street:
+                %input{:type => "text", id: "location_street", :name => "location_street", :params => "location_street", :class => "text"}
+              %li{:class => "first"}
+                %label{:for => "location_city"} City:
+                %input{:type => "text", id:"location_city", :name => "location_city", :params => "location_city", :class => "text"}
+              %li
+                %label{:for => "location_state"} State:
+                - if @states.size > 0
+                  = select_tag :location_state, options_for_select(@states)
+                - else
+                  %input{:type => "text", id:"location_state", :name => "location_state", :params => "location_state", :class => "text"}
+              %li{:class => "first"}
+                %label{:for => "location_zip"} Zip:
+                %input{:type => "text",  id:"location_zip", :name => "location_zip", :params => "location_zip", :class => "text"}
+              %li
+                %label{:for => "location_country"} Country:
+                = country_select('suggested_location', 'location_country', {include_blank: true}, {id:"location_country", name: 'location_country'})
+              %li{:class => "first"}
+                %label{:for => "location_phone"} Phone:
+                %input{:type => "text", id:"location_phone", :name => "location_phone", :params => "location_phone", :class => "text"}
+              %li
+                %label{:for => "location_website"} Website:
+                %input{:type => "text", id:"location_website", :name => "location_website", :params => "location_website", :class => "text"}
+              %li{:class => "first"}
+                %label{:for => "location_type"} Location Type:
+                = select_tag :location_type, options_for_select(@location_types)
+              - if @operators.size > 1
                 %li{:class => "first"}
-                  %label{:for => "location_name"} Location Name:
-                  %input{type: "text", id: "location_name", name: "location_name", params: "location_name", class: "text", required: true}
+                  %label{:for => "location_operator"} Operator:
+                  = select_tag :location_operator, options_for_select(@operators)
+              - if @zones.size > 1
                 %li
-                  %label{:for => "location_street"} Street:
-                  %input{:type => "text", id: "location_street", :name => "location_street", :params => "location_street", :class => "text"}
-                %li{:class => "first"}
-                  %label{:for => "location_city"} City:
-                  %input{:type => "text", id:"location_city", :name => "location_city", :params => "location_city", :class => "text"}
-                %li
-                  %label{:for => "location_state"} State:
-                  - if @states.size > 0
-                    = select_tag :location_state, options_for_select(@states)
-                  - else
-                    %input{:type => "text", id:"location_state", :name => "location_state", :params => "location_state", :class => "text"}
-                %li{:class => "first"}
-                  %label{:for => "location_zip"} Zip:
-                  %input{:type => "text",  id:"location_zip", :name => "location_zip", :params => "location_zip", :class => "text"}
-                %li
-                  %label{:for => "location_country"} Country:
-                  = country_select('suggested_location', 'location_country', {include_blank: true}, {id:"location_country", name: 'location_country'})
-                %li{:class => "first"}
-                  %label{:for => "location_phone"} Phone:
-                  %input{:type => "text", id:"location_phone", :name => "location_phone", :params => "location_phone", :class => "text"}
-                %li
-                  %label{:for => "location_website"} Website:
-                  %input{:type => "text", id:"location_website", :name => "location_website", :params => "location_website", :class => "text"}
-                %li{:class => "first"}
-                  %label{:for => "location_type"} Location Type:
-                  = select_tag :location_type, options_for_select(@location_types)
-                - if @operators.size > 1
-                  %li{:class => "first"}
-                    %label{:for => "location_operator"} Operator:
-                    = select_tag :location_operator, options_for_select(@operators)
-                - if @zones.size > 1
-                  %li
-                    %label{:for => "location_zone"} Zone:
-                    = select_tag :location_zone, options_for_select(@zones)
-                .clear
-                %li.textbox
-                  %label{:for => "location_comments"} Comments:
-                  %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text", :placeholder => 'Opening date; hours; type of payment system(s) they use (door fee, cash, cards); accessibility issues'}
-                %li.machines_textinput
-                  %label{:for => "location_type"} Machines:
-                  = select_tag "location_machines", options_from_collection_for_select(Machine.all.sort_by(&:massaged_name), 'id', 'name_and_year', params["location_machines_ids"]), multiple: "multiple", :class => 'location_machines', :id => 'location_machines', name: "location_machines_ids[]", required: true
-                %li.brightpurple
-                  Unsure what "model" the machine is (e.g., Pro, Premium, LE, etc.)? The safest assumption is Pro (the baseline model).
-                %li.submit.mt_5{:style => "clear:both;"}
-                  %input{:type => "submit", :value => "Submit New Location", :class => "submit_button"}
+                  %label{:for => "location_zone"} Zone:
+                  = select_tag :location_zone, options_for_select(@zones)
+              .clear
+              %li.textbox
+                %label{:for => "location_comments"} Comments:
+                %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text", :placeholder => 'Opening date; hours; type of payment system(s) they use (door fee, cash, cards); accessibility issues'}
+              %li.machines_textinput
+                %label{:for => "location_type"} Machines:
+                = select_tag "location_machines", options_from_collection_for_select(Machine.all.sort_by(&:massaged_name), 'id', 'name_and_year', params["location_machines_ids"]), multiple: "multiple", :class => 'location_machines', :id => 'location_machines', name: "location_machines_ids[]", required: true
+              %li.brightpurple
+                Unsure what "model" the machine is (e.g., Pro, Premium, LE, etc.)? The safest assumption is Pro (the baseline model).
+              %li.submit.mt_5{:style => "clear:both;"}
+                %input{:type => "submit", :value => "Submit New Location", :class => "submit_button"}
       - else
         %p.center== To suggest a new location you first need to #{link_to 'login', new_user_session_path, :class => "red bold"}. Thank you!
 :javascript
+
+  document.getElementById('submit_location').addEventListener('submit', function(event) {
+    var placeId = document.getElementById('place_id').value;
+    if (!placeId) return;
+
+    event.preventDefault();
+    var form = this;
+
+    fetch('/check_place_id?place_id=' + encodeURIComponent(placeId))
+      .then(function(response) { return response.json(); })
+      .then(function(data) {
+        if (!data.duplicate || confirm('This location seems to already be on the map. Did you search first? Are you sure you want to submit it?')) {
+          form.submit();
+        }
+      });
+  });
 
   function initialize() {
     var input = document.getElementById('location_name');

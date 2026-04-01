@@ -72,6 +72,14 @@ describe PagesController, type: :controller do
     end
   end
 
+  describe 'check_place_id' do
+    it 'should not submit suggested location if place_id exists' do
+      FactoryBot.create(:location, place_id: 'tgtgtgtgtgtgtg')
+
+      expect { post 'submitted_new_location', params: { location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines_ids: [ 20 ], place_id: 'tgtgtgtgtgtgtg', submitter_name: 'subname', submitter_email: 'subemail' } }.to_not have_enqueued_job
+    end
+  end
+
   describe 'suggest_new_location' do
     it 'works with a region' do
       post 'suggest_new_location', params: { region: 'portland' }

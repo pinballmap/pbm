@@ -124,6 +124,10 @@ limit 25")
     @high_rollers = @region.n_high_rollers(10)
   end
 
+  def check_place_id
+    render json: { duplicate: Location.exists?(place_id: params[:place_id]) }
+  end
+
   def submitted_new_location
     @submit_thanks = "Thanks for your submission! Please allow us 0-7 days to review and add it. No need to re-submit it or remind us (unless it's opening day!). Note that you usually won't get a message from us confirming that it's been added.".freeze
 

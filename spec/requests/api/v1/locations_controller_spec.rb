@@ -292,6 +292,18 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body.scan('num_machines').size).to_not eq(0)
       expect(response.body.scan('last_updated_by_username').size).to_not eq(0)
     end
+
+    it 'only returns true or false when place_id param is present' do
+      FactoryBot.create(:location, name: 'Jeff Time', place_id: 'tgtgtgtgtgtgtg')
+
+      get "/api/v1/locations.json", params: { place_id: 'ghghghg' }
+
+      expect(response.body).to include('false')
+
+      get "/api/v1/locations.json", params: { place_id: 'tgtgtgtgtgtgtg' }
+
+      expect(response.body).to include('true')
+    end
   end
 
   describe '#update' do

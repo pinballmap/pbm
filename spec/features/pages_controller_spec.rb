@@ -108,6 +108,33 @@ describe PagesController do
       visit "/#{@region.name}/suggest"
       expect(page).to have_content('To suggest a new location you first need to login. Thank you!')
     end
+
+    it 'prompts user to confirm when place_id already exists' do
+      FactoryBot.create(:location, name: 'Jeff Time', place_id: 'tgtgtgtgtgtgtg')
+      FactoryBot.create(:machine, name: 'Pirates of the Caribbean', manufacturer: 'Gem', year: 1991)
+      login
+
+      visit "/suggest"
+
+      execute_script('document.getElementById("place_id").value = "tgtgtgtgtgtgtg";')
+      fill_in "location_name", with: "Jeff Time"
+      fill_in "location_street", with: "123 Eye Way"
+
+      first('.select2-container', minimum: 1).click
+      find('.select2-results__option--highlighted', text: 'Pirates of the Caribbean').click
+
+      click_button "Submit New Location"
+
+      alert = nil
+      until alert
+        alert = page.driver.browser.switch_to.alert rescue nil
+        sleep(0.1)
+      end
+
+      text = alert.text
+
+      expect(text).to eq("This location seems to already be on the map. Did you search first? Are you sure you want to submit it?")
+    end
   end
 
   describe 'Homepage', type: :feature, js: true do

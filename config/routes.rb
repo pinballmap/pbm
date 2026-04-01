@@ -230,6 +230,7 @@ Rails.application.routes.draw do
   post 'locations', to: 'locations#index'
   post 'region_init_load', to: 'maps#region_init_load'
   get 'suggest' => 'pages#suggest_new_location', as: 'map_location_suggest'
+  get 'check_place_id' => 'pages#check_place_id', as: 'map_check_place_id'
   post 'submitted_new_location' => 'pages#submitted_new_location', as: 'map_submitted_new_location'
   get 'flier' => 'pages#flier', as: 'map_flier'
 
