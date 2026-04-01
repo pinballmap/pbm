@@ -2886,13 +2886,13 @@ img.small_banner_icon {
   margin-bottom: 5px;
 }
 
-#location_maker {
-  padding-left: 15px;
+#location_maker ul {
+  padding-left: 0;
 }
 
-#location_maker ul {
-  width: 600px;
-  padding-left: 0;
+#location_maker ul li {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .first {
@@ -3178,6 +3178,18 @@ li span.state_name {
 }
 
 /** Contact/Submission Forms **/
+
+gmp-place-autocomplete {
+  background: var(--lightpurple);
+  padding: 0 5px;
+  border: 2px solid var(--border);
+  color: var(--black);
+  @include radius(10px);
+}
+
+.suggest {
+  padding: 15px;
+}
 
 #location_maker input.text,
 #contact_maker input.text,

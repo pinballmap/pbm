@@ -10,9 +10,12 @@
           = form_tag @region ? submitted_new_location_path : map_submitted_new_location_path, :method => 'post', :id => "submit_location" do
             = hidden_field_tag :place_id
             %ul
+              %li.mb_20
+                %label.center Search via Google Maps to fill fields:
+                #place_autocomplete_container
               %li{:class => "first"}
                 %label{:for => "location_name"} Location Name:
-                %input{type: "text", id: "location_name", name: "location_name", params: "location_name", class: "text", required: true}
+                %input{type: "text", id: "location_name", name: "location_name", class: "text", required: true}
               %li
                 %label{:for => "location_street"} Street:
                 %input{:type => "text", id: "location_street", :name => "location_street", :params => "location_street", :class => "text"}
@@ -79,13 +82,14 @@
       });
   });
 
-  function initialize() {
-    var input = document.getElementById('location_name');
-    var autocomplete = new google.maps.places.Autocomplete(input);
+  async function initMap() {
+    const placeAutocomplete = new google.maps.places.PlaceAutocompleteElement();
+    document.getElementById('place_autocomplete_container').appendChild(placeAutocomplete);
+
     const countryList = ["AT", "BE", "DE", "GB", "FI", "FR", "HK", "HR", "HU", "NL", "NO", "PL", "PT", "NZ", "RO", "SI", "SE"];
-    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+
+    placeAutocomplete.addEventListener('gmp-select', async ({ placePrediction }) => {
       document.getElementById('location_phone').value = "";
-      document.getElementById('location_name').value = "";
       document.getElementById('location_street').value = "";
       document.getElementById('location_website').value = "";
       document.getElementById('place_id').value = "";
@@ -94,24 +98,27 @@
       document.getElementById('location_state').value = "";
       document.getElementById('location_country').value = "";
 
-      var place = autocomplete.getPlace();
-      document.getElementById('location_name').value = place.name;
-      document.getElementById('location_street').value = place.formatted_address.split(',')[0];
-      if (place.website) {
-        document.getElementById('location_website').value = place.website;
+      const place = placePrediction.toPlace();
+      await place.fetchFields({
+        fields: ['displayName', 'formattedAddress', 'addressComponents', 'websiteURI', 'nationalPhoneNumber', 'internationalPhoneNumber', 'id']
+      });
+
+      document.getElementById('location_name').value = place.displayName;
+      document.getElementById('location_street').value = place.formattedAddress.split(',')[0];
+      if (place.websiteURI) {
+        document.getElementById('location_website').value = place.websiteURI;
       }
-      if (place.place_id) {
-        document.getElementById('place_id').value = place.place_id;
+      if (place.id) {
+        document.getElementById('place_id').value = place.id;
       }
 
-      const addressComponents = place.address_components;
-
+      const addressComponents = place.addressComponents;
       const componentsMapLong = {};
       const componentsMapShort = {};
       addressComponents.forEach(component => {
         component.types.forEach(type => {
-          componentsMapLong[type] = component.long_name;
-          componentsMapShort[type] = component.short_name;
+          componentsMapLong[type] = component.longText;
+          componentsMapShort[type] = component.shortText;
         });
       });
 
@@ -126,14 +133,15 @@
 
       document.getElementById('location_country').value = componentsMapShort["country"];
 
-      if (componentsMapShort["country"] == 'US' && place.formatted_phone_number) {
-        document.getElementById('location_phone').value = place.formatted_phone_number;
-      } else if (componentsMapShort["country"] != 'US' && place.international_phone_number) {
-        document.getElementById('location_phone').value = place.international_phone_number;
+      if (componentsMapShort["country"] == 'US' && place.nationalPhoneNumber) {
+        document.getElementById('location_phone').value = place.nationalPhoneNumber;
+      } else if (componentsMapShort["country"] != 'US' && place.internationalPhoneNumber) {
+        document.getElementById('location_phone').value = place.internationalPhoneNumber;
       }
+
     });
   }
-  google.maps.event.addDomListener(window, 'load', initialize);
+
   $(document).ready(function() {
     $('.location_machines').select2({
       placeholder: 'Select the machines at this location',
