@@ -2895,12 +2895,6 @@ img.small_banner_icon {
   padding-right: 10px;
 }
 
-.first {
-  float: left;
-  margin-right: 15px;
-  clear: both;
-}
-
 .app_store .pic img {
   width: 220px;
 }
@@ -3179,34 +3173,52 @@ li span.state_name {
 
 /** Contact/Submission Forms **/
 
-gmp-place-autocomplete {
-  background: var(--lightpurple);
-  padding: 0 5px;
-  border: 2px solid var(--border);
-  color: var(--black);
-  @include radius(10px);
+#place_autocomplete_container {
+  margin: 0 auto;
+  width: 80%;
 }
 
 .suggest {
   padding: 15px;
 }
 
+gmp-place-autocomplete svg {
+  margin-left: 0px !important;
+}
+
+#location_maker {
+  text-align: center;
+}
+
+#search_again {
+  display: block;
+}
+
+gmp-place-autocomplete {
+  background: var(--lightpurple);
+  padding: 0 5px;
+  border: 2px solid var(--border);
+  color: var(--black);
+  @include radius(10px);
+  text-align: left !important;
+}
+
 #location_maker input.text,
 #contact_maker input.text,
-#location_maker li select {
-  height: 28px;
+#location_maker li select,
+gmp-place-autocomplete {
+  height: 32px;
   margin: 0;
   font-size: 14px;
 }
 
 #location_maker input.text,
 #location_maker li select {
-  width: 280px;
+  width: 80%;
 }
 
 #location_maker li.machines_textinput select {
-  width: 575px;
-  height: 28px;
+  height: 32px;
 }
 
 #contact_maker textarea {
@@ -3219,9 +3231,8 @@ gmp-place-autocomplete {
 #location_maker li textarea {
   height: 50px;
   min-height: 50px;
-  width: 575px;
-  max-width: 575px;
-  min-width: 575px;
+  max-width: 80%;
+  min-width: 80%;
   max-height: 300px;
   margin: 0;
   font-size: 14px;
@@ -3281,6 +3292,7 @@ gmp-place-autocomplete {
   border: 2px solid var(--border) !important;
   background-color: var(--white) !important;
   border-radius: 10px !important;
+  min-height: 60px;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
