@@ -190,7 +190,7 @@ module Api
         if params[:limit].blank?
           user_submissions = user_submissions.near([ params[:lat], params[:lon] ], max_distance, order: "created_at desc").includes([ :user, :location ]).limit(200)
         else
-          @pagy, user_submissions = pagy(user_submissions.near([ params[:lat], params[:lon] ]).order("created_at desc").includes([ :user, :location ]).distinct)
+          @pagy, user_submissions = pagy(user_submissions.near([ params[:lat], params[:lon] ], max_distance, order: "created_at desc").includes([ :user, :location ]).includes([ :user, :location ]).distinct)
           @pagy_hash = @pagy.data_hash(data_keys: %i[count first_url previous_url next_url page pages page_url previous next from to in last last_url limit options])
         end
 
