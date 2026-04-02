@@ -18,7 +18,7 @@
                   %a{href: "#", id: "search_again"} Search again
               %li
                 %label{:for => "location_street"} Street:
-                %input{:type => "text", id: "location_street", :name => "location_street", :params => "location_street", :class => "text"}
+                %input{:type => "text", id: "location_street", :name => "location_street", :params => "location_street", :class => "text", required: true}
               %li
                 %label{:for => "location_city"} City:
                 %input{:type => "text", id:"location_city", :name => "location_city", :params => "location_city", :class => "text"}
@@ -80,6 +80,17 @@
     document.getElementById('submit_location').addEventListener('submit', function(event) {
       if (!document.getElementById('location_name').value) {
         document.getElementById('location_name').value = typedAutocompleteValue;
+      }
+
+      const nameInput = document.getElementById('location_name');
+      if (!nameInput.value) {
+        event.preventDefault();
+        document.getElementById('place_autocomplete_container').style.display = 'none';
+        document.querySelector('.location_name_result').style.display = '';
+        nameInput.setCustomValidity('Please fill in this field.');
+        nameInput.reportValidity();
+        nameInput.addEventListener('input', function() { this.setCustomValidity(''); }, { once: true });
+        return;
       }
 
       var placeId = document.getElementById('place_id').value;

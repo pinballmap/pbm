@@ -317,8 +317,8 @@ describe Region do
       FactoryBot.create(:user_submission, region: @region, submission_type: 'contact_us')
       FactoryBot.create(:user_submission, region: @another_region, submission_type: 'contact_us')
 
-      FactoryBot.create(:suggested_location, region: @region, name: 'SL 1', machines: 'Batman')
-      FactoryBot.create(:suggested_location, region: @region, name: 'SL 2', machines: 'Batman')
+      FactoryBot.create(:suggested_location, region: @region, name: 'SL 1', machines: 'Batman', street: '123 Eye Way')
+      FactoryBot.create(:suggested_location, region: @region, name: 'SL 2', machines: 'Batman', street: '123 Eye Way')
 
       FactoryBot.create(:user_submission, region: @region, submission: 'foo', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
       FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)

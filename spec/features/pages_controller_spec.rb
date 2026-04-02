@@ -117,7 +117,7 @@ describe PagesController do
       visit "/suggest"
 
       execute_script('document.getElementById("place_id").value = "tgtgtgtgtgtgtg";')
-      fill_in "location_name", with: "Jeff Time"
+      find('gmp-place-autocomplete').send_keys('Jeff Time')
       fill_in "location_street", with: "123 Eye Way"
 
       first('.select2-container', minimum: 1).click

@@ -2,8 +2,8 @@ require "uri"
 
 class SuggestedLocation < ApplicationRecord
   has_paper_trail
-  validates_presence_of :name, :machines, on: :create
-  validates_presence_of :street, :city, :zip, on: :update
+  validates_presence_of :name, :street, :machines, on: :create
+  validates_presence_of :name, :street, :city, :zip, on: :update
 
   validates :website, format: { with: %r{\Ahttp(s?)://}, message: "must begin with http:// or https://" }, if: :website?, on: :update
   validates :name, :street, :city, format: { with: /\A\S.*/, message: "Can't start with a blank", multiline: true }, on: :update

@@ -10,42 +10,42 @@ describe SuggestedLocation do
     it 'should put http:// in front of websites without one' do
       expect(@suggested_location.website).to be(nil)
 
-      location_with_complete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', website: 'http://foo.com')
+      location_with_complete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', street: '123 Eye Way', website: 'http://foo.com')
       expect(location_with_complete_website.website).to eq('http://foo.com')
 
-      location_with_incomplete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', website: 'bar.com')
+      location_with_incomplete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', street: '123 Eye Way', website: 'bar.com')
       expect(location_with_incomplete_website.website).to eq('http://bar.com')
 
-      location_with_incomplete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', website: '')
-      expect(location_with_incomplete_website.website).to eq('')
+      location_with_incomplete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', street: '123 Eye Way', website: '')
+      expect(location_with_incomplete_website.website).to be(nil)
 
       expect(@suggested_location.country).to eq('US')
 
-      filled_in_country = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', country: 'FR')
+      filled_in_country = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', street: '123 Eye Way', country: 'FR')
       expect(filled_in_country.country).to eq('FR')
     end
 
     it 'should tag the location with US as the country if no country is sent' do
       expect(@suggested_location.website).to be(nil)
 
-      location_with_complete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', website: 'http://foo.com')
+      location_with_complete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', street: '123 Eye Way', website: 'http://foo.com')
       expect(location_with_complete_website.website).to eq('http://foo.com')
 
-      location_with_incomplete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', website: 'bar.com')
+      location_with_incomplete_website = FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', street: '123 Eye Way', website: 'bar.com')
       expect(location_with_incomplete_website.website).to eq('http://bar.com')
     end
 
     it 'should strip starting and ending whitespace' do
-      location_with_whitespace = FactoryBot.create(:suggested_location, name: ' foo ', machines: 'Batman')
+      location_with_whitespace = FactoryBot.create(:suggested_location, name: ' foo ', machines: 'Batman', street: '123 Eye Way')
       expect(location_with_whitespace.name).to eq('foo')
     end
 
     it 'should generate admin notes if certain conditions are met' do
-      location_without_type = FactoryBot.create(:suggested_location, name: 'Bar Bar The Bar', machines: 'Batman', location_type_id: nil)
+      location_without_type = FactoryBot.create(:suggested_location, name: 'Bar Bar The Bar', machines: 'Batman', street: '123 Eye Way', location_type_id: nil)
       expect(location_without_type.admin_notes).to eq('No location type, please add')
 
-      FactoryBot.create(:location, name: 'Nacho', city: 'Garbon', zip: '90210')
-      possible_duplicate_location = FactoryBot.create(:suggested_location, name: 'Nacho', city: 'Garbon', zip: '90210', machines: "Batman", location_type_id: nil)
+      FactoryBot.create(:location, name: 'Nacho', street: '123 Eye Way', city: 'Garbon', zip: '90210')
+      possible_duplicate_location = FactoryBot.create(:suggested_location, name: 'Nacho', street: '123 Eye Way', city: 'Garbon', zip: '90210', machines: "Batman", location_type_id: nil)
 
       expect(possible_duplicate_location.admin_notes).to eq('Possible duplicate, please check; No location type, please add')
     end
