@@ -13,9 +13,8 @@
               %li
                 %label{:for => "location_name"} Location Name:
                 #place_autocomplete_container
-                .location_name_result{style: "display:none;"}
-                  %input{type: "text", id: "location_name", name: "location_name", class: "text"}
-                  %a{href: "#", id: "search_again"} Search again
+                %input{type: "text", id: "location_name", name: "location_name", class: "text"}
+                %span#location_name_error.error{style: "display:none;"} Please fill in this field.
               %li
                 %label{:for => "location_street"} Street:
                 %input{:type => "text", id: "location_street", :name => "location_street", :params => "location_street", :class => "text", required: true}
@@ -66,46 +65,45 @@
         %p.center== To suggest a new location you first need to #{link_to 'login', new_user_session_path, :class => "red bold"}. Thank you!
 :javascript
 
+  document.getElementById('submit_location').addEventListener('submit', function(event) {
+    const nameInput = document.getElementById('location_name');
+
+    if (!nameInput.value) {
+      event.preventDefault();
+      document.getElementById('location_name_error').style.display = '';
+      document.querySelector('gmp-place-autocomplete')?.focus();
+      return;
+    }
+
+    document.getElementById('location_name_error').style.display = 'none';
+
+    var placeId = document.getElementById('place_id').value;
+    if (!placeId) return;
+
+    event.preventDefault();
+    var form = this;
+
+    fetch('/check_place_id?place_id=' + encodeURIComponent(placeId))
+      .then(function(response) { return response.json(); })
+      .then(function(data) {
+        if (!data.duplicate || confirm('This location seems to already be on the map. Did you search first? Are you sure you want to submit it?')) {
+          form.submit();
+        }
+      });
+  });
+
   async function initMap() {
+    const container = document.getElementById('place_autocomplete_container');
+    if (!container) return;
     const placeAutocomplete = new google.maps.places.PlaceAutocompleteElement();
-    document.getElementById('place_autocomplete_container').appendChild(placeAutocomplete);
+    container.appendChild(placeAutocomplete);
+    document.getElementById('location_name').style.display = 'none';
 
     const countryList = ["AT", "BE", "DE", "GB", "FI", "FR", "HK", "HR", "HU", "NL", "NO", "PL", "PT", "NZ", "RO", "SI", "SE"];
 
-    let typedAutocompleteValue = '';
     placeAutocomplete.addEventListener('input', (e) => {
-      typedAutocompleteValue = e.composedPath()[0].value;
-    });
-
-    document.getElementById('submit_location').addEventListener('submit', function(event) {
-      if (!document.getElementById('location_name').value) {
-        document.getElementById('location_name').value = typedAutocompleteValue;
-      }
-
-      const nameInput = document.getElementById('location_name');
-      if (!nameInput.value) {
-        event.preventDefault();
-        document.getElementById('place_autocomplete_container').style.display = 'none';
-        document.querySelector('.location_name_result').style.display = '';
-        nameInput.setCustomValidity('Please fill in this field.');
-        nameInput.reportValidity();
-        nameInput.addEventListener('input', function() { this.setCustomValidity(''); }, { once: true });
-        return;
-      }
-
-      var placeId = document.getElementById('place_id').value;
-      if (!placeId) return;
-
-      event.preventDefault();
-      var form = this;
-
-      fetch('/check_place_id?place_id=' + encodeURIComponent(placeId))
-        .then(function(response) { return response.json(); })
-        .then(function(data) {
-          if (!data.duplicate || confirm('This location seems to already be on the map. Did you search first? Are you sure you want to submit it?')) {
-            form.submit();
-          }
-        });
+      document.getElementById('location_name').value = e.composedPath()[0].value;
+      document.getElementById('location_name_error').style.display = 'none';
     });
 
     placeAutocomplete.addEventListener('gmp-select', async ({ placePrediction }) => {
@@ -124,6 +122,7 @@
       });
 
       document.getElementById('location_name').value = place.displayName;
+      placeAutocomplete.value = place.displayName;
       document.getElementById('location_street').value = place.formattedAddress.split(',')[0];
       if (place.websiteURI) {
         document.getElementById('location_website').value = place.websiteURI;
@@ -158,33 +157,6 @@
       } else if (componentsMapShort["country"] != 'US' && place.internationalPhoneNumber) {
         document.getElementById('location_phone').value = place.internationalPhoneNumber;
       }
-
-      document.getElementById('place_autocomplete_container').style.display = 'none';
-      document.querySelector('.location_name_result').style.display = '';
-    });
-
-    document.getElementById('location_name').addEventListener('input', function() {
-      if (!this.value) {
-        placeAutocomplete.value = '';
-        document.getElementById('place_autocomplete_container').style.display = '';
-        document.querySelector('.location_name_result').style.display = 'none';
-        placeAutocomplete.focus();
-      }
-    });
-
-    document.getElementById('search_again').addEventListener('click', function(event) {
-      event.preventDefault();
-      document.getElementById('place_autocomplete_container').style.display = '';
-      document.querySelector('.location_name_result').style.display = 'none';
-      document.getElementById('location_name').value = "";
-      document.getElementById('location_street').value = "";
-      document.getElementById('location_city').value = "";
-      document.getElementById('location_zip').value = "";
-      document.getElementById('location_state').value = "";
-      document.getElementById('location_country').value = "";
-      document.getElementById('location_phone').value = "";
-      document.getElementById('location_website').value = "";
-      document.getElementById('place_id').value = "";
     });
   }
 
