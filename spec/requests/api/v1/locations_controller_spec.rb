@@ -1179,6 +1179,17 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to_not include('foo bar')
       expect(response.body).to_not include('567890')
     end
+
+    it 'respects metadata_only and omits all lmx' do
+      get "/api/v1/locations/#{@location.id}.json", params: { metadata_only: 1 }
+
+      expect(response.body).to include('Satchmo')
+      expect(response.body).to_not include('Cleo')
+      expect(response.body).to_not include('Deleted Pro')
+      expect(response.body).to_not include('7777')
+      expect(response.body).to_not include('foo bar')
+      expect(response.body).to_not include('567890')
+    end
   end
 
   describe '#top_cities' do

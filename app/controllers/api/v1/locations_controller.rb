@@ -385,40 +385,41 @@ module Api
       api :GET, "/api/v1/locations/:id.json", "Display the details of this location"
       param :id, Integer, desc: "ID of location", required: true
       param :no_details, Integer, desc: "Omit lmx/condition data from pull", required: false
+      param :metadata_only, Integer, desc: "Omit entire lmx list from pull", required: false
       formats [ "json" ]
       def show
         location = nil
 
         if params[:no_details] == "1"
           location = Location.includes(:location_machine_xrefs, :last_updated_by_user).find(params[:id])
-          return_response(
-            location,
-            nil,
-            :location_machine_xrefs,
-            %i[last_updated_by_username num_machines],
-            200,
-            %i[zone_id created_at region_id is_stern_army country]
-          )
+          includes = [ :location_machine_xrefs ]
+          methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank num_machines]
+          except = %i[zone_id created_at region_id is_stern_army country]
+        elsif params[:metadata_only] == "1"
+          location = Location.includes(:last_updated_by_user).find(params[:id])
+          includes = []
+          methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank num_machines]
+          except = %i[zone_id created_at region_id is_stern_army country]
         elsif params[:no_details] == "2"
           location = Location.find(params[:id])
-          return_response(
-            location,
-            nil,
-            [],
-            %i[machine_names_first_no_year num_machines],
-            200,
-            %i[phone website updated_at region_id description operator_id date_last_updated last_updated_by_user_id ic_active zone_id created_at is_stern_army country users_count user_submissions_count]
-          )
+          includes = []
+          methods = %i[machine_names_first_no_year num_machines]
+          except = %i[phone website updated_at region_id description operator_id date_last_updated last_updated_by_user_id ic_active zone_id created_at is_stern_army country users_count user_submissions_count]
         else
           location = Location.includes(location_machine_xrefs: [ :user, { machine_conditions: :user }, { machine_score_xrefs: :user } ]).find(params[:id])
-
-          return_response(
-            location,
-            nil,
-            [ location_machine_xrefs: { include: { machine_conditions: { methods: %i[username operator_id admin_title contributor_rank] }, machine_score_xrefs: { methods: %i[username operator_id admin_title contributor_rank] } }, methods: :last_updated_by_username } ],
-            %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank num_machines]
-          )
+          includes = [ location_machine_xrefs: { include: { machine_conditions: { methods: %i[username operator_id admin_title contributor_rank] }, machine_score_xrefs: { methods: %i[username operator_id admin_title contributor_rank] } }, methods: :last_updated_by_username } ]
+          methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank num_machines]
+          except = []
         end
+
+        return_response(
+          location,
+          nil,
+          includes,
+          methods,
+          200,
+          except
+        )
       rescue ActiveRecord::RecordNotFound
         return_response("Failed to find location", "errors")
       end
