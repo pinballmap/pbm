@@ -33,7 +33,8 @@ module Api
 
           methods = [ sorted_machine_conditions: { methods: %i[username operator_id admin_title contributor_rank] } ]
         elsif params[:user_id].present?
-          lmx = LocationMachineXref.includes({ machine_score_xrefs: :user }, :machine).where("machine_score_xrefs.user_id = ?", params[:user_id]).references(:machine_score_xrefs).order("machine_score_xrefs.score DESC").find(params[:id])
+          lmx = LocationMachineXref.includes({ machine_score_xrefs: :user }, :machine).order("machine_score_xrefs.score DESC").find(params[:id])
+          lmx.machine_score_xrefs.load.target.select! { |msx| msx.user_id == params[:user_id].to_i }
 
           methods = [ sorted_machine_conditions: { methods: %i[username operator_id admin_title contributor_rank] }, machine_score_xrefs: { methods: %i[username operator_id admin_title contributor_rank] } ]
         else

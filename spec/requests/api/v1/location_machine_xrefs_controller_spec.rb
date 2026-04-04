@@ -101,6 +101,58 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
   end
 
+  describe '#show' do
+    before(:each) do
+      FactoryBot.create(:user, id: 212, email: 'beah@ok.com', authentication_token: '123', username: 'doff')
+      FactoryBot.create(:user, id: 213, email: 'ceah@ok.com', authentication_token: '234', username: 'crest')
+
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 998899, user_id: 212)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 112211, user_id: 213)
+    end
+    it 'returns info about a single machine, including scores and comments' do
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'plays soft')
+
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json'
+      expect(response).to be_successful
+
+      lmx = JSON.parse(response.body)['location_machine']
+
+      expect(lmx['machine_conditions'].size).to eq(1)
+      expect(lmx['machine_score_xrefs'].size).to eq(2)
+      expect(lmx['machine_score_xrefs'][0]['score']).to eq(998899)
+    end
+
+    it 'limits scores to a single user when user_id is present' do
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_id: 212 }
+      expect(response).to be_successful
+
+      lmx = JSON.parse(response.body)['location_machine']
+
+      expect(lmx['machine_score_xrefs'].size).to eq(1)
+      expect(lmx['machine_score_xrefs'][0]['score']).to eq(998899)
+    end
+
+    it 'does not error when user_id is present but user has no scores' do
+      FactoryBot.create(:user, id: 214, email: 'feah@ok.com', authentication_token: '1234', username: 'meff')
+
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_id: 214 }
+      expect(response).to be_successful
+
+      lmx = JSON.parse(response.body)['location_machine']
+
+      expect(lmx['machine_score_xrefs'].size).to eq(0)
+    end
+
+    it 'omits scores when user_id=0' do
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_id: 0 }
+      expect(response).to be_successful
+
+      lmx = JSON.parse(response.body)['location_machine']
+
+      expect(lmx).not_to have_key('machine_score_xrefs')
+    end
+  end
+
   describe '#create' do
     it 'updates condition on existing lmx' do
       post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
