@@ -149,7 +149,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       lmx = JSON.parse(response.body)['location_machine']
 
-      expect(lmx).not_to have_key('machine_score_xrefs')
+      expect(lmx['machine_score_xrefs'].size).to eq(0)
     end
   end
 

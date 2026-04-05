@@ -32,6 +32,10 @@ module Api
           lmx = LocationMachineXref.includes(:machine).find(params[:id])
 
           methods = [ sorted_machine_conditions: { methods: %i[username operator_id admin_title contributor_rank] } ]
+
+          lmx_json = lmx.as_json(include: methods, methods: [ :machine ], root: false).merge("machine_score_xrefs" => [])
+          render json: { "location_machine" => lmx_json }
+          return
         elsif params[:user_id].present?
           lmx = LocationMachineXref.includes({ machine_score_xrefs: :user }, :machine).order("machine_score_xrefs.score DESC").find(params[:id])
           lmx.machine_score_xrefs.load.target.select! { |msx| msx.user_id == params[:user_id].to_i }
