@@ -36,13 +36,13 @@
   display: block;
 }
 @media (prefers-color-scheme: dark) {
-  .matchplay_dark {
-    display: block;
-  }
-  .matchplay_light {
-    display: none;
-  }
-  :root {
+  html:not([data-theme="light"]) {
+    .matchplay_dark {
+      display: block;
+    }
+    .matchplay_light {
+      display: none;
+    }
     --red: #f6d3fc;
     --lightpink: #47475f;
     --brightpurple: #f6ddfa;
@@ -73,6 +73,82 @@
     --key: brightness(0) saturate(100%) invert(76%) sepia(53%) saturate(1212%) hue-rotate(0deg) brightness(105%) contrast(106%);
     --shield: brightness(0) saturate(100%) invert(65%) sepia(21%) saturate(1046%) hue-rotate(309deg) brightness(99%) contrast(100%);
   }
+}
+
+html[data-theme="dark"] {
+  .matchplay_dark {
+    display: block;
+  }
+  .matchplay_light {
+    display: none;
+  }
+  --red: #f6d3fc;
+  --lightpink: #47475f;
+  --brightpurple: #f6ddfa;
+  --darkblue: #1d151e;
+  --purple: #e0e0ff;
+  --grey: #88788a;
+  --bg_vlightpurple: #5f5063;
+  --vlightpurple: #fafaff;
+  --lightpurple: #413244;
+  --medgrey: #E0D6E0;
+  --darkgrey: #CAC3CA;
+  --black: #f9f2fa;
+  --white: #1d1c1d;
+  --ahref: #f9f2fa;
+  --dark: #f5f5ff;
+  --shadow: rgba(7 9 12 / 0.7);
+  --lookup: #ffffff;
+  --buttons: #ac9fc7;
+  --container: #292629;
+  --border: #88788a;
+  --machinename: #f9f2fa;
+  --machinename_bg: #5f5063;
+  --details: #413244;
+  --explore: #dfdaf0;
+  --mask: rgba(90, 100, 117, 0.4);
+  --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Simple.png' %>) repeat;
+  --filter: invert(100%);
+  --key: brightness(0) saturate(100%) invert(76%) sepia(53%) saturate(1212%) hue-rotate(0deg) brightness(105%) contrast(106%);
+  --shield: brightness(0) saturate(100%) invert(65%) sepia(21%) saturate(1046%) hue-rotate(309deg) brightness(99%) contrast(100%);
+}
+
+html[data-theme="light"] {
+  .matchplay_dark {
+    display: none;
+  }
+  .matchplay_light {
+    display: block;
+  }
+  --red: #fe46b0;
+  --lightpink: #fff1f1;
+  --brightpurple: #66017b;
+  --darkblue: #250529;
+  --purple: #e0e0ff;
+  --grey: #7f7fa0;
+  --bg_vlightpurple: #fafaff;
+  --vlightpurple: #fafaff;
+  --lightpurple: #f5f5ff;
+  --medgrey: #aeb1d2;
+  --darkgrey: #47475f;
+  --black: #000e18;
+  --white: #ffffff;
+  --ahref: #383838;
+  --dark: #0b252b;
+  --shadow: #90969C;
+  --lookup: #ffffff;
+  --buttons: #ffffff;
+  --container: #f5f5ff;
+  --border: #aeb1d2;
+  --machinename: #66017b;
+  --machinename_bg: #ffffff;
+  --details: #fafaff;
+  --explore: #fffbfd;
+  --mask: rgba(245, 251, 255, 0.7);
+  --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>) repeat;
+  --filter: none;
+  --key: brightness(0) saturate(100%) invert(38%) sepia(72%) saturate(7124%) hue-rotate(24deg) brightness(97%) contrast(101%);
+  --shield: brightness(0) saturate(100%) invert(16%) sepia(92%) saturate(1799%) hue-rotate(337deg) brightness(82%) contrast(95%);
 }
 
 /* nunito-regular - latin */
@@ -834,6 +910,27 @@ p.alert {
   color: #f8f18e;
 }
 
+#theme_toggle_btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--vlightpurple);
+  padding: 0;
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  &:hover {
+    color: #f8f18e;
+  }
+}
+
+.theme_icon {
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 #page_home {
   width: 800px;
   margin: 20px auto;
@@ -878,7 +975,7 @@ p.alert {
   margin: 0;
 }
 
-#header ul li a {
+#header ul li a, #header ul li button {
   text-align: left !important;
   padding: 4px 15px;
   float: none;

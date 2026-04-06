@@ -126,76 +126,57 @@ function getMapBounds(by_at_least_n_machines, by_type_id, by_machine_id, by_mach
   });
 }
 
-function showLocations() {
-  let protocol = new pmtiles.Protocol();
-  maplibregl.addProtocol("pmtiles", protocol.tile);
+function getEffectiveTheme() {
+  var saved = localStorage.getItem('theme');
+  if (saved === 'dark' || saved === 'light') return saved;
+  return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+}
 
-  if (typeof refresh_bounds == 'undefined') {
-    var bounds = new maplibregl.LngLatBounds();
-    bounds_padding = 50;
-  } else {
-    var bounds = refresh_bounds;
-    bounds_padding = 0;
+function toggleTheme() {
+  var next = getEffectiveTheme() === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('theme', next);
+  document.documentElement.setAttribute('data-theme', next);
+  updateThemeToggleButton();
+  if (mapLoaded === 1) {
+    var new_style = next === 'dark' ? map_style_obj_dark : map_style_obj;
+    map.once('style.load', addMapLayersAndImages);
+    map.setStyle(new_style);
   }
+}
 
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
-    var map_style = map_style_obj_dark;
-  } else {
-    var map_style = map_style_obj;
-  }
+function updateThemeToggleButton() {
+  var isDark = getEffectiveTheme() === 'dark';
+  var moon = document.getElementById('theme_icon_moon');
+  var sun = document.getElementById('theme_icon_sun');
+  if (moon) moon.style.display = isDark ? 'none' : 'block';
+  if (sun) sun.style.display = isDark ? 'block' : 'none';
+}
 
-  if (mapLoaded === 1 && map_init === 0 && mapAdjusted === 0 && locations_geojson.length > 0) {
-      map.getSource("point").setData({
-        'type': 'FeatureCollection',
-        'features': locations_geojson
-      });
-  } else if (mapAdjusted === 0 && mapLoaded === 0) {
-    if (map_init == 1) {
-      map = new maplibregl.Map({
-        container: 'map_canvas',
-        style: map_style,
-        center: [center_lon, center_lat],
-        zoom: map_init_zoom
-      });
-    } else {
-      map = new maplibregl.Map({
-        container: 'map_canvas',
-        style: map_style,
-      });
-    }
-    map.dragRotate.disable();
-    map.keyboard.disable();
-    map.touchZoomRotate.disableRotation();
-    map.addControl(new maplibregl.ScaleControl({unit: 'imperial'}), 'bottom-right');
-    map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
-    map.addControl(new maplibregl.FullscreenControl(), 'top-right');
-    mapLoaded = 1;
-  }
+async function addMapLayersAndImages() {
+  const promises = [
+    map.loadImage("<%= asset_path('marker-1.png') %>"),
+    map.loadImage("<%= asset_path('marker-2.png') %>"),
+    map.loadImage("<%= asset_path('marker-2-1-sel.png') %>"),
+    map.loadImage("<%= asset_path('marker-10.png') %>"),
+    map.loadImage("<%= asset_path('marker-10-sel.png') %>"),
+    map.loadImage("<%= asset_path('marker-z-1.png') %>"),
+    map.loadImage("<%= asset_path('marker-z-2.png') %>"),
+    map.loadImage("<%= asset_path('marker-z-10.png') %>"),
+    map.loadImage("<%= asset_path('marker-z-sel.png') %>")
+  ]
+  const [marker_1, marker_2, marker_2_1_sel, marker_10, marker_10_sel, marker_z_1, marker_z_2, marker_z_10, marker_z_sel] = await Promise.all(promises)
 
-  map.on('load', async () => {
-    const promises = [
-      map.loadImage("<%= asset_path('marker-1.png') %>"),
-      map.loadImage("<%= asset_path('marker-2.png') %>"),
-      map.loadImage("<%= asset_path('marker-2-1-sel.png') %>"),
-      map.loadImage("<%= asset_path('marker-10.png') %>"),
-      map.loadImage("<%= asset_path('marker-10-sel.png') %>"),
-      map.loadImage("<%= asset_path('marker-z-1.png') %>"),
-      map.loadImage("<%= asset_path('marker-z-2.png') %>"),
-      map.loadImage("<%= asset_path('marker-z-10.png') %>"),
-      map.loadImage("<%= asset_path('marker-z-sel.png') %>")
-    ]
-    const [marker_1, marker_2, marker_2_1_sel, marker_10, marker_10_sel, marker_z_1, marker_z_2, marker_z_10, marker_z_sel] = await Promise.all(promises)
+  if (!map.hasImage('marker-1')) map.addImage('marker-1', marker_1.data);
+  if (!map.hasImage('marker-2')) map.addImage('marker-2', marker_2.data);
+  if (!map.hasImage('marker-2-1-sel')) map.addImage('marker-2-1-sel', marker_2_1_sel.data);
+  if (!map.hasImage('marker-10')) map.addImage('marker-10', marker_10.data);
+  if (!map.hasImage('marker-10-sel')) map.addImage('marker-10-sel', marker_10_sel.data);
+  if (!map.hasImage('marker-z-1')) map.addImage('marker-z-1', marker_z_1.data);
+  if (!map.hasImage('marker-z-2')) map.addImage('marker-z-2', marker_z_2.data);
+  if (!map.hasImage('marker-z-10')) map.addImage('marker-z-10', marker_z_10.data);
+  if (!map.hasImage('marker-z-sel')) map.addImage('marker-z-sel', marker_z_sel.data);
 
-    map.addImage('marker-1', marker_1.data);
-    map.addImage('marker-2', marker_2.data);
-    map.addImage('marker-2-1-sel', marker_2_1_sel.data);
-    map.addImage('marker-10', marker_10.data);
-    map.addImage('marker-10-sel', marker_10_sel.data);
-    map.addImage('marker-z-1', marker_z_1.data);
-    map.addImage('marker-z-2', marker_z_2.data);
-    map.addImage('marker-z-10', marker_z_10.data);
-    map.addImage('marker-z-sel', marker_z_sel.data);
-
+  if (!map.getSource('point')) {
     map.addSource('point', {
       'type': 'geojson',
       'data': {
@@ -203,7 +184,14 @@ function showLocations() {
         'features': locations_geojson
       }
     });
+  } else {
+    map.getSource('point').setData({
+      'type': 'FeatureCollection',
+      'features': locations_geojson
+    });
+  }
 
+  if (!map.getLayer('points')) {
     map.addLayer({
       'id': 'points',
       'type': 'symbol',
@@ -246,7 +234,51 @@ function showLocations() {
         "text-color": ["case", [">", ["get", "machine_count"], 1], "#FFFFFF", "#000000"]
       }
     });
-  });
+  }
+}
+
+function showLocations() {
+  let protocol = new pmtiles.Protocol();
+  maplibregl.addProtocol("pmtiles", protocol.tile);
+
+  if (typeof refresh_bounds == 'undefined') {
+    var bounds = new maplibregl.LngLatBounds();
+    bounds_padding = 50;
+  } else {
+    var bounds = refresh_bounds;
+    bounds_padding = 0;
+  }
+
+  var map_style = getEffectiveTheme() === 'dark' ? map_style_obj_dark : map_style_obj;
+
+  if (mapLoaded === 1 && map_init === 0 && mapAdjusted === 0 && locations_geojson.length > 0) {
+      map.getSource("point").setData({
+        'type': 'FeatureCollection',
+        'features': locations_geojson
+      });
+  } else if (mapAdjusted === 0 && mapLoaded === 0) {
+    if (map_init == 1) {
+      map = new maplibregl.Map({
+        container: 'map_canvas',
+        style: map_style,
+        center: [center_lon, center_lat],
+        zoom: map_init_zoom
+      });
+    } else {
+      map = new maplibregl.Map({
+        container: 'map_canvas',
+        style: map_style,
+      });
+    }
+    map.dragRotate.disable();
+    map.keyboard.disable();
+    map.touchZoomRotate.disableRotation();
+    map.addControl(new maplibregl.ScaleControl({unit: 'imperial'}), 'bottom-right');
+    map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
+    map.addControl(new maplibregl.FullscreenControl(), 'top-right');
+    mapLoaded = 1;
+    map.once('load', addMapLayersAndImages);
+  }
 
   if (locations_geojson.length === 1) {
     var location_coords = []
@@ -544,3 +576,7 @@ var show_ajax_message = function (msg, type) {
 function show_new_machine_message() {
   alert('Please choose a machine from the list. If the machine is not in the list, it is likely a game (e.g., a non-pinball game) that we do not include on Pinball Map. If you think the list is missing a pinball machine, please contact us.');
 };
+
+document.addEventListener('DOMContentLoaded', function() {
+  updateThemeToggleButton();
+});
