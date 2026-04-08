@@ -29,20 +29,18 @@ class MapsController < ApplicationController
 
     @map_no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_city_id].blank? && params[:by_state_name].blank? && params[:by_city_no_state].blank? && params[:by_country].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank? && params[:by_is_stern_army].blank? && params[:by_machine_type].blank? && params[:by_machine_display].blank? && params[:manufacturer].blank? && params[:by_operator_id].blank? && params[:by_operator_name].blank?
 
-    if @map_no_params
-      @nearby_lat = 39.5718
-      @nearby_lon = -99.1066
-      if is_bot?
-        @map_init_zoom = 18
-      else
-        @map_init_zoom = 4
-      end
+    @nearby_lat = 39.5718
+    @nearby_lon = -99.1066
+    if is_bot?
+      @map_init_zoom = 18
+    else
+      @map_init_zoom = 4
+    end
 
-      if ENV["GEO_BUCKET"] && !is_bot?
-        geocode_ip
-        if !@nearby_lat.nil?
-          @map_init_zoom = 6
-        end
+    if ENV["GEO_BUCKET"] && !is_bot?
+      geocode_ip
+      if !@nearby_lat.nil?
+        @map_init_zoom = 6
       end
     end
   end
@@ -58,21 +56,6 @@ class MapsController < ApplicationController
       # hardcode a PDX lat/lon during tests
       @nearby_lat = 45.5905
       @nearby_lon = -122.7549
-    end
-  end
-
-  def map_nearby
-    @locations = []
-    @nearby_lat = nil
-    if ENV["GEO_BUCKET"] && !is_bot?
-      geocode_ip
-    end
-
-    if !@nearby_lat.nil?
-      @near_distance = 50
-      nearby_locations
-    elsif @nearby_lat.nil? || @locations.size == 0
-      flash.now[:alert] = "Can't find your location or you're in a desert."
     end
   end
 

@@ -84,6 +84,8 @@
     homeMapBounds(center_lat, center_lon, map_init, map_init_zoom);
 
 :javascript
+  center_lat = #{@nearby_lat};
+  center_lon = #{@nearby_lon};
   const inputField = document.getElementById("by_machine_name");
   const inputField2 = document.getElementById("address");
   const inputField3 = document.getElementById("by_location_name");
