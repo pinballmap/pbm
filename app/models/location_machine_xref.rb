@@ -47,6 +47,8 @@ class LocationMachineXref < ApplicationRecord
 
     h["machine_conditions"] = h.delete("sorted_machine_conditions") if sorted_machine_conditions
 
+    h[:machine_conditions] = machine_conditions.includes([ :user ]).first(MachineCondition::MAX_HISTORY_SIZE_TO_DISPLAY) if machine_conditions
+
     h
   end
 
