@@ -4,9 +4,7 @@
     $("#min_lookup_wrapper,#map_activity_button, #closest_button, #key_container").removeClass("hide_button");
 
     var locations_geojson = JSON.parse('#{@locations_geojson}');
-    notFound_lat = #{@nearby_lat || 0};
-    notFound_lon = #{@nearby_lon || 0};
-    showLocations(notFound_lat, notFound_lon);
+    showLocations();
 
     results_init = true;
 
