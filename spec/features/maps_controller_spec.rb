@@ -364,6 +364,8 @@ describe MapsController do
 
       visit '/map'
 
+      sleep 1
+
       fill_in('address', with: '97203')
 
       click_on 'location_search_button'
