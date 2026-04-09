@@ -60,10 +60,10 @@ class MapsController < ApplicationController
   end
 
   def find_nearby
-    while @locations.blank? && @near_distance < 600
+    while @locations.blank? && @near_distance < 410
       @locations = apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.name, locations.id, locations.lat, locations.lon, locations.machine_count")
       if @locations.empty?
-        @near_distance += 100
+        @near_distance *= 3
       end
     end
   end
