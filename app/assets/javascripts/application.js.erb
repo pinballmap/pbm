@@ -277,25 +277,27 @@ function showLocations() {
     locations_geojson.forEach(function(feature) {
       location_coords = feature.geometry.coordinates;
     });
-    map.setZoom(18);
-    map.setCenter(location_coords);
+    if (typeof refresh_bounds === 'undefined') {
+      map.setZoom(18);
+      map.setCenter(location_coords);
+    }
     hideRefresh();
     refreshButton();
   } else if (locations_geojson.length == 0 && typeof refresh_bounds !== 'undefined') {
     map.fitBounds(bounds, { padding: bounds_padding, animate: false });
     hideRefresh();
     refreshButton();
-  } else if (locations_geojson.length == 0 && notFound_lon !== 0 && map_init == 0) {
+  } else if (locations_geojson.length == 0 && notFound_lon > 0 && notFound_lon?.length !== 0 && typeof notFound_lon !== 'undefined' && map_init == 0) {
     map.jumpTo({
       center: [notFound_lon, notFound_lat],
       zoom: 10
     });
     document.getElementById("results_container").innerHTML = "<p id='not_found' class='red bold'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
-  } else if (locations_geojson.length == 0 && map_init == 0) {
-    document.getElementById("map_canvas").innerHTML = "<p id='not_found' class='font28 red bold'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
-    mapLoaded = 0;
     hideRefresh();
-    document.getElementById('map_activity_button').style.display = "none";
+  } else if (locations_geojson.length == 0 && map_init == 0) {
+    document.getElementById("results_container").innerHTML = "<p id='not_found' class='red bold'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
+    map.setCenter([center_lon, center_lat]);
+    hideRefresh();
   } else if (locations_geojson.length > 1) {
     locations_geojson.forEach(function(feature) {
       bounds.extend(feature.geometry.coordinates);
