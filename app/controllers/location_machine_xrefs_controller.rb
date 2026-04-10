@@ -114,8 +114,12 @@ class LocationMachineXrefsController < ApplicationController
 
   def index
     @lmxs = UserSubmission.where(submission_type: "new_lmx", created_at: "2019-05-03T07:00:00.00-07:00"..Date.today.end_of_day, deleted_at: nil).limit(50).order("created_at DESC")
+
     @lmxs = @lmxs.where(region_id: @region.id) if @region
+
     @lmxs = @lmxs.where("machine_id = ?", params[:machine_id]) if params[:machine_id].present? && params[:machine_id].match?(/[0-9]+/)
+
+    @lmxs = @lmxs.where("location_id = ?", params[:location_id]) if params[:location_id].present? && params[:location_id].match?(/[0-9]+/)
 
     if params[:machine_id].present? && Machine.where(id: params[:machine_id]).present?
       @machine_name = " - #{Machine.where(id: params[:machine_id]).first&.name}"
@@ -123,6 +127,14 @@ class LocationMachineXrefsController < ApplicationController
       render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
     else
       @machine_name = ""
+    end
+
+    if params[:location_id].present? && @lmxs.where(location_id: params[:location_id]).present?
+      @location_name = " - #{@lmxs.where(location_id: params[:location_id]).first&.location_name}"
+    elsif params[:location_id].present? && !@lmxs.where(location_id: params[:location_id]).present?
+      render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
+    else
+      @location_name = ""
     end
   end
 

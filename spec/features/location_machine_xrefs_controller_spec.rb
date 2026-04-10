@@ -3,7 +3,7 @@ require 'spec_helper'
 describe LocationMachineXrefsController do
   before(:each) do
     @region = FactoryBot.create(:region, name: 'portland', full_name: 'Portland')
-    @location = FactoryBot.create(:location, id: 1, region: @region,)
+    @location = FactoryBot.create(:location, id: 1, region: @region)
   end
 
   describe 'add machines - not authed', type: :feature, js: true do
@@ -269,6 +269,29 @@ describe LocationMachineXrefsController do
       FactoryBot.create(:location_machine_xref, location: @location, machine: machine_2)
 
       visit "/#{@region.name}/location_machine_xrefs/machine_id/1.rss"
+
+      expect(page.body).to have_content('Twilight Zone')
+      expect(page.body).to_not have_content('Hammer Time')
+    end
+
+    it 'should support an lmx machine_id or location_id when using params path and only show those filtered results in the feed' do
+      machine_1 = FactoryBot.create(:machine, name: 'Twilight Zone', id: 1)
+      machine_2 = FactoryBot.create(:machine, name: 'Hammer Time', id: 2)
+
+      FactoryBot.create(:user_submission, location_name: @location.name, machine_id: machine_1.id, machine_name: machine_1.name, location_id: @location.id, submission_type: 'new_lmx', created_at: Time.now)
+      FactoryBot.create(:user_submission, location_name: @location.name, machine_id: machine_2.id, machine_name: machine_2.name, location_id: @location.id, submission_type: 'new_lmx', created_at: Time.now)
+
+      visit "/location_machine_xrefs.rss?machine_id=1"
+
+      expect(page.body).to have_content('Twilight Zone')
+      expect(page.body).to_not have_content('Hammer Time')
+
+      visit "/location_machine_xrefs.rss?location_id=1"
+
+      expect(page.body).to have_content('Twilight Zone')
+      expect(page.body).to have_content('Hammer Time')
+
+      visit "/location_machine_xrefs.rss?location_id=1&machine_id=1"
 
       expect(page.body).to have_content('Twilight Zone')
       expect(page.body).to_not have_content('Hammer Time')
