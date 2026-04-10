@@ -117,11 +117,21 @@ class LocationMachineXrefsController < ApplicationController
 
     @lmxs = @lmxs.where(region_id: @region.id) if @region
 
-    machine_ids = Array(params[:machine_id]).select { |id| id.match?(/\A[0-9]+\z/) } if params[:machine_id].present?
-    location_ids = Array(params[:location_id]).select { |id| id.match?(/\A[0-9]+\z/) } if params[:location_id].present?
+    if params[:lat].present? || params[:lon].present?
+      if params[:lat].blank? || params[:lon].blank?
+        render file: Rails.public_path.join("404.html"), status: :not_found, layout: false and return
+      end
 
+      max_distance = params[:max_distance].present? ? params[:max_distance].to_i : 30
+      @lmxs = @lmxs.near([ params[:lat], params[:lon] ], max_distance)
+      @location_name = ""
+    else
+      location_ids = Array(params[:location_id]).select { |id| id.match?(/\A[0-9]+\z/) } if params[:location_id].present?
+      @lmxs = @lmxs.where(location_id: location_ids) if location_ids&.any?
+    end
+
+    machine_ids = Array(params[:machine_id]).select { |id| id.match?(/\A[0-9]+\z/) } if params[:machine_id].present?
     @lmxs = @lmxs.where(machine_id: machine_ids) if machine_ids&.any?
-    @lmxs = @lmxs.where(location_id: location_ids) if location_ids&.any?
 
     if params[:machine_id].present?
       machines = Machine.where(id: machine_ids)
@@ -136,7 +146,7 @@ class LocationMachineXrefsController < ApplicationController
       @machine_name = ""
     end
 
-    if params[:location_id].present?
+    if !params[:lat].present? && params[:location_id].present?
       if @lmxs.present?
         location_names = @lmxs.map(&:location_name).uniq
         location_overflow = location_names.size - 3
@@ -144,7 +154,7 @@ class LocationMachineXrefsController < ApplicationController
       else
         render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
       end
-    else
+    elsif !params[:lat].present?
       @location_name = ""
     end
   end

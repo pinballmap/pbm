@@ -309,6 +309,21 @@ describe LocationMachineXrefsController do
       expect(page.body).to have_content('Twilight Zone')
       expect(page.body).to have_content('Hammer Time')
     end
+
+    it 'should support an lat lon params' do
+      location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606', name: 'location', id: 567)
+      distant_location = FactoryBot.create(:location, lat: '12.6008356', lon: '-12.760606', name: 'distant location', id: 568)
+      machine_1 = FactoryBot.create(:machine, name: 'Twilight Zone', id: 1)
+      machine_2 = FactoryBot.create(:machine, name: 'Hammer Time', id: 2)
+
+      FactoryBot.create(:user_submission, location_name: location.name, machine_id: machine_1.id, machine_name: machine_1.name, location_id: location.id, submission_type: 'new_lmx', created_at: Time.now, lat: location.lat, lon: location.lon)
+      FactoryBot.create(:user_submission, location_name: distant_location.name, machine_id: machine_2.id, machine_name: machine_2.name, location_id: distant_location.id, submission_type: 'new_lmx', created_at: Time.now, lat: distant_location.lat, lon: distant_location.lon)
+
+      visit "/location_machine_xrefs.rss?lat=45.6008356&lon=-122.760606"
+
+      expect(page.body).to have_content('Twilight Zone')
+      expect(page.body).to_not have_content('Hammer Time')
+    end
   end
 
   describe 'machine descriptions - no auth', type: :feature, js: true do
