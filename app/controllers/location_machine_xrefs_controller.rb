@@ -117,22 +117,33 @@ class LocationMachineXrefsController < ApplicationController
 
     @lmxs = @lmxs.where(region_id: @region.id) if @region
 
-    @lmxs = @lmxs.where("machine_id = ?", params[:machine_id]) if params[:machine_id].present? && params[:machine_id].match?(/[0-9]+/)
+    machine_ids = Array(params[:machine_id]).select { |id| id.match?(/\A[0-9]+\z/) } if params[:machine_id].present?
+    location_ids = Array(params[:location_id]).select { |id| id.match?(/\A[0-9]+\z/) } if params[:location_id].present?
 
-    @lmxs = @lmxs.where("location_id = ?", params[:location_id]) if params[:location_id].present? && params[:location_id].match?(/[0-9]+/)
+    @lmxs = @lmxs.where(machine_id: machine_ids) if machine_ids&.any?
+    @lmxs = @lmxs.where(location_id: location_ids) if location_ids&.any?
 
-    if params[:machine_id].present? && Machine.where(id: params[:machine_id]).present?
-      @machine_name = " - #{Machine.where(id: params[:machine_id]).first&.name}"
-    elsif params[:machine_id].present? && !Machine.where(id: params[:machine_id]).present?
-      render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
+    if params[:machine_id].present?
+      machines = Machine.where(id: machine_ids)
+      if machines.present?
+        names = machines.map(&:name)
+        overflow = names.size - 3
+        @machine_name = " - #{names.first(3).join(', ')}#{overflow > 0 ? " and #{overflow} more #{'machine'.pluralize(overflow)}" : ''}"
+      else
+        render file: Rails.public_path.join("404.html"), status: :not_found, layout: false and return
+      end
     else
       @machine_name = ""
     end
 
-    if params[:location_id].present? && @lmxs.where(location_id: params[:location_id]).present?
-      @location_name = " - #{@lmxs.where(location_id: params[:location_id]).first&.location_name}"
-    elsif params[:location_id].present? && !@lmxs.where(location_id: params[:location_id]).present?
-      render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
+    if params[:location_id].present?
+      if @lmxs.present?
+        location_names = @lmxs.map(&:location_name).uniq
+        location_overflow = location_names.size - 3
+        @location_name = " - #{location_names.first(3).join(', ')}#{location_overflow > 0 ? " and #{location_overflow} more #{'location'.pluralize(location_overflow)}" : ''}"
+      else
+        render file: Rails.public_path.join("404.html"), status: :not_found, layout: false
+      end
     else
       @location_name = ""
     end

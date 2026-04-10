@@ -296,6 +296,19 @@ describe LocationMachineXrefsController do
       expect(page.body).to have_content('Twilight Zone')
       expect(page.body).to_not have_content('Hammer Time')
     end
+
+    it 'should support an lmx machine_id or location_id arrays' do
+      machine_1 = FactoryBot.create(:machine, name: 'Twilight Zone', id: 1)
+      machine_2 = FactoryBot.create(:machine, name: 'Hammer Time', id: 2)
+
+      FactoryBot.create(:user_submission, location_name: @location.name, machine_id: machine_1.id, machine_name: machine_1.name, location_id: @location.id, submission_type: 'new_lmx', created_at: Time.now)
+      FactoryBot.create(:user_submission, location_name: @location.name, machine_id: machine_2.id, machine_name: machine_2.name, location_id: @location.id, submission_type: 'new_lmx', created_at: Time.now)
+
+      visit "/location_machine_xrefs.rss?machine_id[]=1&machine_id[]=2"
+
+      expect(page.body).to have_content('Twilight Zone')
+      expect(page.body).to have_content('Hammer Time')
+    end
   end
 
   describe 'machine descriptions - no auth', type: :feature, js: true do
