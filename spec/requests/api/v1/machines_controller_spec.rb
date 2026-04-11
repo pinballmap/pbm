@@ -28,6 +28,13 @@ describe Api::V1::MachinesController, type: :request do
       expect(response.body).to_not include('Bawb')
     end
 
+    it 'respects id param' do
+      get '/api/v1/machines.json?id=66'
+
+      expect(response.body).to include('Cleo')
+      expect(response.body).to_not include('Bawb')
+    end
+
     it 'respects no_details param' do
       get '/api/v1/machines.json?no_details=1'
 

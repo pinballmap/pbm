@@ -8,6 +8,7 @@ module Api
       param :no_details, Integer, desc: "Omit unnecessary metadata for initial app loading", required: false
       param :region_id, Integer, desc: "show only machines from this region", required: false
       param :machine_group_id, Integer, desc: "show only machines from machine group id", required: false
+      param :id, Integer, desc: "show only this machine", required: false
       param :manufacturer, String, desc: "show only machines from this manufacturer", required: false
       formats [ "json" ]
       def index
@@ -17,6 +18,8 @@ module Api
         machines = machines.select { |m| m.manufacturer == params[:manufacturer] } if params[:manufacturer]
 
         machines = Machine.where(machine_group_id: params[:machine_group_id]) if params[:machine_group_id]
+
+        machines = Machine.where(id: params[:id]) if params[:id]
 
         return_response(machines, "machines", nil, nil, 200, except)
       end
