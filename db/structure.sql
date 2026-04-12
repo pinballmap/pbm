@@ -2178,6 +2178,13 @@ CREATE INDEX index_histories_on_item_and_table_and_month_and_year ON public.rail
 
 
 --
+-- Name: index_location_machine_xrefs_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_location_machine_xrefs_on_deleted_at ON public.location_machine_xrefs USING btree (deleted_at);
+
+
+--
 -- Name: index_location_machine_xrefs_on_location_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2213,6 +2220,20 @@ CREATE INDEX index_location_picture_xrefs_on_user_id ON public.location_picture_
 
 
 --
+-- Name: index_locations_on_country; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_country ON public.locations USING btree (country);
+
+
+--
+-- Name: index_locations_on_ic_active; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_ic_active ON public.locations USING btree (ic_active);
+
+
+--
 -- Name: index_locations_on_is_stern_army; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2234,6 +2255,13 @@ CREATE INDEX index_locations_on_location_type_id ON public.locations USING btree
 
 
 --
+-- Name: index_locations_on_machine_count; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_machine_count ON public.locations USING btree (machine_count);
+
+
+--
 -- Name: index_locations_on_operator_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2241,10 +2269,24 @@ CREATE INDEX index_locations_on_operator_id ON public.locations USING btree (ope
 
 
 --
+-- Name: index_locations_on_place_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_place_id ON public.locations USING btree (place_id);
+
+
+--
 -- Name: index_locations_on_region_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_locations_on_region_id ON public.locations USING btree (region_id);
+
+
+--
+-- Name: index_locations_on_state; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_state ON public.locations USING btree (state);
 
 
 --
@@ -2283,10 +2325,52 @@ CREATE INDEX index_machine_score_xrefs_on_user_id ON public.machine_score_xrefs 
 
 
 --
+-- Name: index_machine_score_xrefs_on_user_id_and_machine_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_machine_score_xrefs_on_user_id_and_machine_id ON public.machine_score_xrefs USING btree (user_id, machine_id);
+
+
+--
+-- Name: index_machines_on_machine_display; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_machines_on_machine_display ON public.machines USING btree (machine_display);
+
+
+--
 -- Name: index_machines_on_machine_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_machines_on_machine_group_id ON public.machines USING btree (machine_group_id);
+
+
+--
+-- Name: index_machines_on_machine_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_machines_on_machine_type ON public.machines USING btree (machine_type);
+
+
+--
+-- Name: index_machines_on_manufacturer; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_machines_on_manufacturer ON public.machines USING btree (manufacturer);
+
+
+--
+-- Name: index_machines_on_opdb_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_machines_on_opdb_id ON public.machines USING btree (opdb_id);
+
+
+--
+-- Name: index_machines_on_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_machines_on_year ON public.machines USING btree (year);
 
 
 --
@@ -2511,6 +2595,27 @@ CREATE UNIQUE INDEX index_solid_queue_semaphores_on_key ON public.solid_queue_se
 --
 
 CREATE INDEX index_solid_queue_semaphores_on_key_and_value ON public.solid_queue_semaphores USING btree (key, value);
+
+
+--
+-- Name: index_suggested_locations_on_region_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_suggested_locations_on_region_id ON public.suggested_locations USING btree (region_id);
+
+
+--
+-- Name: index_user_fave_locations_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_fave_locations_on_location_id ON public.user_fave_locations USING btree (location_id);
+
+
+--
+-- Name: index_user_fave_locations_on_user_id_and_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_fave_locations_on_user_id_and_location_id ON public.user_fave_locations USING btree (user_id, location_id);
 
 
 --
@@ -2752,6 +2857,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260411000001'),
 ('20260411000000'),
 ('20260210182823'),
 ('20260206003638'),
