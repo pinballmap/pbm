@@ -178,20 +178,29 @@ limit 25")
   def profile; end
 
   def set_activities
-    user = current_user.nil? ? nil : current_user
-    submission_type = params[:submission_type].blank? ? %w[add_location new_lmx remove_machine new_condition confirm_location] : params[:submission_type].excluding("new_msx")
+    user = current_user
+    requested_types = params[:submission_type].blank? ? %w[add_location new_lmx remove_machine new_condition confirm_location new_msx] : Array(params[:submission_type])
 
-    submission_type_msx = params[:submission_type].blank? ? %w[new_msx] : params[:submission_type].delete("new_msx")
+    general_types = requested_types.excluding("new_msx")
+    include_msx = requested_types.include?("new_msx") && user.present?
 
-    if @region && params[:submission_type]
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, region_id: @region.id, deleted_at: nil).or(UserSubmission.where(submission_type: submission_type_msx, user: user)).where.not(submission: nil).where.not(location_name: nil).order("created_at DESC").includes([ :user, :location ]), params: { submission_type: submission_type })
-    elsif @region
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, region_id: @region.id, deleted_at: nil).or(UserSubmission.where(submission_type: submission_type_msx, user: user)).where.not(submission: nil).where.not(location_name: nil).order("created_at DESC").includes([ :user, :location ]))
-    elsif params[:submission_type]
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, deleted_at: nil).or(UserSubmission.where(submission_type: submission_type_msx, user: user)).where.not(submission: nil).where.not(location_name: nil).order("created_at DESC").includes([ :user, :location ]), params: { submission_type: submission_type })
+    scope = if general_types.any? && include_msx
+      UserSubmission.where(submission_type: general_types, deleted_at: nil)
+                    .or(UserSubmission.where(submission_type: "new_msx", user: user, deleted_at: nil))
+    elsif include_msx
+      UserSubmission.where(submission_type: "new_msx", user: user, deleted_at: nil)
+    elsif general_types.any?
+      UserSubmission.where(submission_type: general_types, deleted_at: nil)
     else
-      @pagy, @recent_activity = pagy(UserSubmission.where(submission_type: submission_type, deleted_at: nil).or(UserSubmission.where(submission_type: submission_type_msx, user: user)).where.not(submission: nil).where.not(location_name: nil).order("created_at DESC").includes([ :user, :location ]))
+      UserSubmission.none
     end
+
+    scope = scope.where(region_id: @region.id) if @region
+    scope = scope.where.not(submission: nil).where.not(location_name: nil)
+                 .order("created_at DESC").includes([ :user, :location ])
+
+    pagy_opts = params[:submission_type].present? ? { params: { submission_type: params[:submission_type] } } : {}
+    @pagy, @recent_activity = pagy(scope, **pagy_opts)
 
     @region_fullname = @region.present? ? "the #{@region.full_name}" : ""
 
