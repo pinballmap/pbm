@@ -2514,10 +2514,73 @@ CREATE INDEX index_solid_queue_semaphores_on_key_and_value ON public.solid_queue
 
 
 --
+-- Name: index_user_submissions_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_submissions_on_created_at ON public.user_submissions USING btree (created_at);
+
+
+--
+-- Name: index_user_submissions_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_submissions_on_deleted_at ON public.user_submissions USING btree (deleted_at);
+
+
+--
+-- Name: index_user_submissions_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_submissions_on_location_id ON public.user_submissions USING btree (location_id);
+
+
+--
+-- Name: index_user_submissions_on_location_id_and_submission_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_submissions_on_location_id_and_submission_type ON public.user_submissions USING btree (location_id, submission_type);
+
+
+--
+-- Name: index_user_submissions_on_machine_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_submissions_on_machine_id ON public.user_submissions USING btree (machine_id);
+
+
+--
 -- Name: index_user_submissions_on_region_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_user_submissions_on_region_id ON public.user_submissions USING btree (region_id);
+
+
+--
+-- Name: index_user_submissions_on_submission_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_submissions_on_submission_type ON public.user_submissions USING btree (submission_type);
+
+
+--
+-- Name: index_user_submissions_on_submission_type_and_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_submissions_on_submission_type_and_user_id ON public.user_submissions USING btree (submission_type, user_id);
+
+
+--
+-- Name: index_user_submissions_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_submissions_on_user_id ON public.user_submissions USING btree (user_id);
+
+
+--
+-- Name: index_user_submissions_on_user_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_submissions_on_user_name ON public.user_submissions USING btree (user_name);
 
 
 --
@@ -2689,6 +2752,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260411000000'),
 ('20260210182823'),
 ('20260206003638'),
 ('20260205215300'),

@@ -17,28 +17,13 @@ module Api
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       param :machine_id, Integer, desc: "Limit results by machine. Multiple machines can be chained as ;machine_id[]=111;machine_id[]=222 etc", required: false
       def index
-        submission_type = params[:submission_type].blank? ? %w[add_location new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
-
-        if params[:restrict_to]
-          submission_type_restrict = submission_type.delete(params[:restrict_to])
-
-          if params[:submission_type]
-            submission_type = submission_type.excluding(params[:restrict_to])
-          end
-        end
+        submission_type, submission_type_restrict = build_submission_types
 
         region_id = Region.find_by_name(params[:region].downcase).id if params[:region].present?
 
-        user_submissions = UserSubmission.where.not(submission: nil).where.not(location_name: nil).where(submission_type: submission_type, deleted_at: nil)
-
-        if (params[:user_id].present? || params[:user_name].present?) && params[:restrict_to].blank?
-          user_submissions = params[:user_id].present? ? user_submissions.where(user_id: params[:user_id]) : user_submissions.where(user_name: params[:user_name])
-        elsif (params[:user_id].present? || params[:user_name].present?) && params[:restrict_to].present?
-          user_submissions = params[:user_id].present? ? user_submissions.or(UserSubmission.where(submission_type: submission_type_restrict, user_id: params[:user_id])) : user_submissions.or(UserSubmission.where(submission_type: submission_type_restrict, user_name: params[:user_name]))
-        end
+        user_submissions = apply_type_and_user_filter(base_user_submissions_scope, submission_type, submission_type_restrict)
 
         user_submissions = user_submissions.where(region_id: region_id) unless params[:region].blank?
-
         user_submissions = user_submissions.where(machine_id: params[:machine_id]) unless params[:machine_id].blank?
 
         if params[:limit].blank?
@@ -73,23 +58,9 @@ module Api
       def location
         location = Location.find(params[:id])
 
-        submission_type = params[:submission_type].blank? ? %w[add_location new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
+        submission_type, submission_type_restrict = build_submission_types
 
-        if params[:restrict_to]
-          submission_type_restrict = submission_type.delete(params[:restrict_to])
-
-          if params[:submission_type]
-            submission_type = submission_type.excluding(params[:restrict_to])
-          end
-        end
-
-        user_submissions = UserSubmission.where.not(submission: nil).where.not(location_name: nil).where(location_id: location, submission_type: submission_type, deleted_at: nil)
-
-        if (params[:user_id].present? || params[:user_name].present?) && params[:restrict_to].blank?
-          user_submissions = params[:user_id].present? ? user_submissions.where(user_id: params[:user_id]) : user_submissions.where(user_name: params[:user_name])
-        elsif (params[:user_id].present? || params[:user_name].present?) && params[:restrict_to].present?
-          user_submissions = params[:user_id].present? ? user_submissions.or(UserSubmission.where(location_id: location, submission_type: submission_type_restrict, user_id: params[:user_id])) : user_submissions.or(UserSubmission.where(location_id: location, submission_type: submission_type_restrict, user_name: params[:user_name]))
-        end
+        user_submissions = apply_type_and_user_filter(base_user_submissions_scope.where(location_id: location), submission_type, submission_type_restrict)
 
         user_submissions = user_submissions.where(machine_id: params[:machine_id]) unless params[:machine_id].blank?
 
@@ -157,40 +128,20 @@ module Api
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       param :machine_id, Integer, desc: "Limit results by machine. Multiple machines can be chained as ;machine_id[]=111;machine_id[]=222 etc", required: false
       def list_within_range
-        if params[:max_distance].blank?
-          max_distance = MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS
-        else
-          max_distance = [ 250, params[:max_distance].to_i ].min
-        end
+        max_distance = params[:max_distance].blank? ? MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS : [ 250, params[:max_distance].to_i ].min
 
-        submission_type = params[:submission_type].blank? ? %w[add_location new_lmx remove_machine new_condition new_msx confirm_location] : params[:submission_type]
+        submission_type, submission_type_restrict = build_submission_types
 
-        if params[:restrict_to]
-          submission_type_restrict = submission_type.delete(params[:restrict_to])
-
-          if params[:submission_type]
-            submission_type = submission_type.excluding(params[:restrict_to])
-          end
-        end
-
-        user_submissions = UserSubmission.where.not(submission: nil).where.not(location_name: nil).where(submission_type: submission_type, deleted_at: nil)
-
-        if (params[:user_id].present? || params[:user_name].present?) && params[:restrict_to].blank?
-          user_submissions = params[:user_id].present? ? user_submissions.where(user_id: params[:user_id]) : user_submissions.where(user_name: params[:user_name])
-        elsif (params[:user_id].present? || params[:user_name].present?) && params[:restrict_to].present?
-          user_submissions = params[:user_id].present? ? user_submissions.or(UserSubmission.where(submission_type: submission_type_restrict, user_id: params[:user_id])) : user_submissions.or(UserSubmission.where(submission_type: submission_type_restrict, user_name: params[:user_name]))
-        end
+        user_submissions = apply_type_and_user_filter(base_user_submissions_scope, submission_type, submission_type_restrict)
 
         user_submissions = user_submissions.where(region_id: params[:region_id]) unless params[:region_id].blank?
-
         user_submissions = user_submissions.where(machine_id: params[:machine_id]) unless params[:machine_id].blank?
-
         user_submissions = user_submissions.where(created_at: params[:min_date_of_submission].to_date.beginning_of_day..Date.today.end_of_day) if params[:min_date_of_submission]
 
         if params[:limit].blank?
           user_submissions = user_submissions.near([ params[:lat], params[:lon] ], max_distance, order: "created_at desc").includes([ :user, :location ]).limit(200)
         else
-          @pagy, user_submissions = pagy(user_submissions.near([ params[:lat], params[:lon] ], max_distance, order: "created_at desc").includes([ :user, :location ]).includes([ :user, :location ]).distinct)
+          @pagy, user_submissions = pagy(user_submissions.near([ params[:lat], params[:lon] ], max_distance, order: "created_at desc").includes([ :user, :location ]).distinct)
           @pagy_hash = @pagy.data_hash(data_keys: %i[count first_url previous_url next_url page pages page_url previous next from to in last last_url limit options])
         end
 
@@ -204,6 +155,42 @@ module Api
           end
         else
           return_response("No user submissions found within radius.", "errors")
+        end
+      end
+
+      private
+
+      def base_user_submissions_scope
+        UserSubmission.where.not(submission: nil).where.not(location_name: nil).where(deleted_at: nil)
+      end
+
+      def build_submission_types
+        if params[:submission_type].blank?
+          types = %w[add_location new_lmx remove_machine new_condition new_msx confirm_location]
+          if params[:restrict_to].present?
+            restrict = params[:restrict_to]
+            types = types.excluding(restrict)
+          end
+        else
+          types = Array(params[:submission_type])
+          restrict = nil
+        end
+
+        [ types, restrict ]
+      end
+
+      def apply_type_and_user_filter(scope, submission_type, submission_type_restrict)
+        has_user = params[:user_id].present? || params[:user_name].present?
+        user_field = params[:user_id].present? ? { user_id: params[:user_id] } : { user_name: params[:user_name] }
+
+        if params[:restrict_to].present? && has_user
+          type_condition = UserSubmission.where(submission_type: submission_type)
+                                         .or(UserSubmission.where(submission_type: submission_type_restrict, **user_field))
+          scope.merge(type_condition)
+        elsif has_user
+          scope.where(submission_type: submission_type, **user_field)
+        else
+          scope.where(submission_type: submission_type)
         end
       end
     end
