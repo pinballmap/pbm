@@ -1320,7 +1320,8 @@ span.or {
 }
 
 .location_search .search,
-#form .search_other_button input {
+#form .search_other_button input,
+#sort_toggle_btn {
   border: none;
   height: 28px;
   margin: -2px -2px 0 0;
@@ -1341,6 +1342,14 @@ span.or {
 .search_other_button {
   float: right;
   margin: 2px 2px 0 0;
+}
+
+#sort_toggle_btn {
+  float: none;
+}
+
+#sort_controls {
+  text-align: right;
 }
 
 #form .search_field_container input.lookup_search_input {
@@ -2342,7 +2351,8 @@ input.search:active,
 #add:active,
 #location_picture_xref_submit:active,
 .new_location_picture_xref input.submit_picture:active,
-#login .button:active {
+#login .button:active,
+#sort_toggle_btn:hover {
   box-shadow: none;
   -webkit-box-shadow: none;
   transform: translate(1px, 1px);
@@ -2370,7 +2380,8 @@ input.submit_button:hover,
 .save_button:hover,
 .cancel_button:hover,
 .add_high_score:hover,
-.new_location_picture_xref input.submit_picture:hover {
+.new_location_picture_xref input.submit_picture:hover,
+#sort_toggle_btn:hover {
   box-shadow: 1px 1px 3px var(--shadow);
   -webkit-box-shadow: 1px 1px 3px var(--shadow);
   background: #4c3924;

@@ -23,6 +23,8 @@ var map_init = 0;
 var map_init_zoom;
 var stored_machine_id = "";
 var boundsData;
+var currentSort = 'name';
+var lastSearchFn = null;
 var selectedLocationID;
 var notFound_lon;
 var notFound_lat;
@@ -62,18 +64,20 @@ function regionMapLocations(region_id) {
   mapAdjusted === 0;
   var region_id = region_id;
 
-  $('#locations').html(loadingHTML());
-
-  $.ajax({
-    url: "/region_init_load",
-    type: "POST",
-    data: { region_id },
-    success: function(data) {
-      $('#locations').html(data);
-      refresh_bounds = undefined;
-      mapAdjusted = 0;
-    }
-  });
+  lastSearchFn = function() {
+    $('#locations').html(loadingHTML());
+    $.ajax({
+      url: "/region_init_load",
+      type: "POST",
+      data: { region_id, sort: currentSort },
+      success: function(data) {
+        $('#locations').html(data);
+        refresh_bounds = undefined;
+        mapAdjusted = 0;
+      }
+    });
+  };
+  lastSearchFn();
 }
 
 function findClosestLocations() {
@@ -96,26 +100,30 @@ function homeMapBounds() {
 function getMapBounds(by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id) {
   mapAdjusted = 1;
   refresh_bounds = map.getBounds();
-  boundsData = {
+  var capturedBoundsData = {
     ne: refresh_bounds.getNorthEast(),
     sw: refresh_bounds.getSouthWest(),
   };
-  $('#locations').html(loadingHTML());
+  boundsData = capturedBoundsData;
 
-  $.ajax({
-    url: "/get_bounds",
-    type: "POST",
-    data: { boundsData: boundsData, by_at_least_n_machines: by_at_least_n_machines, by_type_id: by_type_id, by_machine_id: by_machine_id, by_machine_single_id: by_machine_single_id },
-    success: function(data) {
-      $('#locations').html(data);
-      refresh_bounds = undefined;
-      mapAdjusted = 0;
-      map.getSource("point").setData({
-        'type': 'FeatureCollection',
-        'features': locations_geojson
-      });
-    }
-  });
+  lastSearchFn = function() {
+    $('#locations').html(loadingHTML());
+    $.ajax({
+      url: "/get_bounds",
+      type: "POST",
+      data: { boundsData: capturedBoundsData, by_at_least_n_machines: by_at_least_n_machines, by_type_id: by_type_id, by_machine_id: by_machine_id, by_machine_single_id: by_machine_single_id, sort: currentSort },
+      success: function(data) {
+        $('#locations').html(data);
+        refresh_bounds = undefined;
+        mapAdjusted = 0;
+        map.getSource("point").setData({
+          'type': 'FeatureCollection',
+          'features': locations_geojson
+        });
+      }
+    });
+  };
+  lastSearchFn();
 }
 
 function getEffectiveTheme() {
@@ -447,9 +455,13 @@ function initSearch(userFaved, locationIDs, operatorIDs, locationTypeIDs, zoneID
     params.set('manufacturer', byManufacturer || '');
     params.set('region', region || '');
 
-    var url = '/locations?' + params.toString();
-    $('#locations').html(loadingHTML());
-    $.get(url, function(data) { $('#locations').html(data); });
+    lastSearchFn = function() {
+      params.set('sort', currentSort);
+      var url = '/locations?' + params.toString();
+      $('#locations').html(loadingHTML());
+      $.get(url, function(data) { $('#locations').html(data); });
+    };
+    lastSearchFn();
   }
 }
 
@@ -531,6 +543,14 @@ function backToResults() {
       ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
       'marker-10']],
   ]);
+}
+
+function toggleSort() {
+  currentSort = currentSort === 'machine_count' ? 'name' : 'machine_count';
+  if (lastSearchFn) {
+    $('#intro_container').css('display', 'none');
+    lastSearchFn();
+  }
 }
 
 function closeActivity() {

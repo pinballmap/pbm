@@ -117,6 +117,7 @@ class MapsController < ApplicationController
 
   def region_location_load
     @results_init = params[:results_init] if params[:results_init].present?
+    @sort = params[:sort]
     boundsData = nil
     @region_id = params[:region_id]
     @region = Region.find_by_id(params[:region_id])
@@ -126,7 +127,7 @@ class MapsController < ApplicationController
     elsif @locations_size == 1 && @results_init == true
       @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).includes(:location_type))
     else
-      @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).where(city_condition).where(zone_condition).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 50, request_path: "/region_location_load")
+      @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).where(city_condition).where(zone_condition).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order(sort_order).includes(:location_type), limit: 50, request_path: "/region_location_load")
     end
 
     if @results_init == true
@@ -153,6 +154,7 @@ class MapsController < ApplicationController
 
   def get_bounds_load
     @results_init = params[:results_init] if params[:results_init].present?
+    @sort = params[:sort]
     @bounds = [ params[:boundsData][:sw][:lat], params[:boundsData][:sw][:lng], params[:boundsData][:ne][:lat], params[:boundsData][:ne][:lng] ]
 
     if @locations_size == 0 && @results_init == true
@@ -160,7 +162,7 @@ class MapsController < ApplicationController
     elsif @locations_size == 1 && @results_init == true
       @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).includes(:location_type))
     else
-      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type), limit: 50, request_path: "/get_bounds_load")
+      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order(sort_order).includes(:location_type), limit: 50, request_path: "/get_bounds_load")
     end
 
     if @results_init == true
@@ -227,13 +229,14 @@ class MapsController < ApplicationController
 
   def map_location_load
     @results_init = params[:results_init] if params[:results_init].present?
+    @sort = params[:sort]
     boundsData = nil
     if @locations_size == 0 && @results_init == true
       @locations = []
     elsif @locations_size == 1 && @results_init == true
       @pagy, @locations = pagy(apply_scopes(Location).distinct.includes(:location_type))
     else
-      @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).distinct.order("locations.name").includes(:location_type), limit: 50, request_path: "/map_location_load")
+      @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).distinct.order(sort_order).includes(:location_type), limit: 50, request_path: "/map_location_load")
     end
 
     if @results_init == true
@@ -256,6 +259,7 @@ class MapsController < ApplicationController
 
   def operator_location_load
     @results_init = params[:results_init] if params[:results_init].present?
+    @sort = params[:sort]
     boundsData = nil
 
     if @locations_size == 0 && @results_init == true
@@ -263,7 +267,7 @@ class MapsController < ApplicationController
     elsif @locations_size == 1 && @results_init == true
       @pagy, @locations = pagy(Location.where(operator_id: params[:by_operator_id]).includes(:location_type))
     else
-      @pagy, @locations = pagy(Location.where(operator_id: params[:by_operator_id]).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order("locations.name").includes(:location_type).limit(100))
+      @pagy, @locations = pagy(Location.where(operator_id: params[:by_operator_id]).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order(sort_order).includes(:location_type).limit(100))
     end
 
     if @results_init == true
@@ -348,6 +352,10 @@ class MapsController < ApplicationController
   end
 
   private
+
+  def sort_order
+    params[:sort] == 'machine_count' ? 'locations.machine_count DESC, locations.name' : 'locations.name'
+  end
 
   def city_condition
     [ "city = ?", params[:by_city_id] ] unless params[:by_city_id].blank?

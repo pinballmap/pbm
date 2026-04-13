@@ -365,12 +365,16 @@
     search_string = $("#address_search_form :input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
 
     var form = $(this);
+    var formAction = form.attr('action');
+    var formData = form.serialize();
 
-    $('#locations').html(loadingHTML());
-
-    $.get(form.attr('action'), form.serialize(), function(data, textStatus, jqxhr) {
-      $('#locations').html(data);
-    });
+    lastSearchFn = function() {
+      $('#locations').html(loadingHTML());
+      $.get(formAction, formData + '&sort=' + currentSort, function(data, textStatus, jqxhr) {
+        $('#locations').html(data);
+      });
+    };
+    lastSearchFn();
 
     return false;
   });

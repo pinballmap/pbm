@@ -1,3 +1,9 @@
+- if @locations.size > 1
+  #sort_controls
+    - if @sort == 'machine_count'
+      %button#sort_toggle_btn{onclick: "toggleSort();"} Sort by: A-Z
+    - else
+      %button#sort_toggle_btn{onclick: "toggleSort();"} Sort by: # of machines
 - @locations.each do |l|
   %div.search_result[l]
     - if (@locations.size == 1 && @results_init == true)

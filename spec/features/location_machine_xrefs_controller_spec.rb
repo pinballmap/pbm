@@ -1024,6 +1024,16 @@ describe LocationMachineXrefsController do
       expect(page).to have_content('Add a machine')
     end
 
+    it 'hides sort location button on a single location search' do
+      @user = FactoryBot.create(:user)
+      login(@user)
+
+      visit "/#{@region.name}"
+      page.find('input#location_search_button').click
+
+      expect(page).to_not have_content('Sort by: # of machines')
+    end
+
     it 'searches by city' do
       FactoryBot.create(:location, id: 34, region: @region, name: 'Cleo', city: 'Portland')
       FactoryBot.create(:location, id: 35, region: @region, name: 'Bawb', city: 'Beaverton')
@@ -1190,6 +1200,27 @@ describe LocationMachineXrefsController do
       expect(actual_order[1]).to match(/Cleo/)
       expect(actual_order[2]).to match(/Test Machine Name/)
       expect(actual_order[3]).to match(/Zelda/)
+    end
+
+    it 'honors re-sort results by machine count' do
+      FactoryBot.create(:location, id: 48, region: @region, name: 'Zelda', machine_count: 10)
+      FactoryBot.create(:location, id: 49, region: @region, name: 'Cleo', machine_count: 5)
+      FactoryBot.create(:location, id: 50, region: @region, name: 'Bawb', machine_count: 8)
+
+      visit "/#{@region.name}"
+      page.find('input#location_search_button').click
+
+      sleep(1)
+
+      page.find('#sort_toggle_btn').click
+
+      sleep(1)
+
+      actual_order = page.all('div.search_result').map(&:text)
+      expect(actual_order[0]).to match(/Zelda/)
+      expect(actual_order[1]).to match(/Bawb/)
+      expect(actual_order[2]).to match(/Cleo/)
+      expect(actual_order[3]).to match(/Test Machine Name/)
     end
 
     it 'sorts searches by location name -- fuzzy search' do
