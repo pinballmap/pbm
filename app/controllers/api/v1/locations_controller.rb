@@ -248,7 +248,7 @@ module Api
         end
 
         if params[:no_details] == "1"
-          except = %i[country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at users_count user_submissions_count]
+          except = %i[country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at users_count user_submissions_count place_id]
           includes = %i[machine_names_first machine_ids num_machines]
         elsif params[:no_details] == "2"
           except = %i[street city state zip country updated_at location_type_id operator_id country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at users_count user_submissions_count place_id]
@@ -290,16 +290,7 @@ module Api
               },
               properties: {
                 name: location.name,
-                street: location.street,
-                city: location.city,
-                state: location.state,
-                zip: location.zip,
-                updated_at: location.updated_at,
-                location_type_id: location.location_type_id,
-                operator_id: location.operator_id,
-                machine_ids: location.machine_ids,
-                machine_names_first: location.machine_names_first,
-                num_machines: location.num_machines
+                machine_count: location.machine_count
               }
             }
           end
@@ -404,7 +395,7 @@ module Api
           location = Location.find(params[:id])
           includes = []
           methods = %i[machine_names_first_no_year num_machines]
-          except = %i[phone website updated_at region_id description operator_id date_last_updated last_updated_by_user_id ic_active zone_id created_at is_stern_army country users_count user_submissions_count]
+          except = %i[phone website updated_at region_id description operator_id date_last_updated last_updated_by_user_id ic_active zone_id created_at is_stern_army country users_count user_submissions_count place_id]
         else
           location = Location.includes(location_machine_xrefs: [ :user, { machine_conditions: :user }, { machine_score_xrefs: :user } ]).find(params[:id])
           includes = [ location_machine_xrefs: { include: { machine_conditions: { methods: %i[username operator_id admin_title contributor_rank] }, machine_score_xrefs: { methods: %i[username operator_id admin_title contributor_rank] } }, methods: :last_updated_by_username } ]

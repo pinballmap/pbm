@@ -354,7 +354,7 @@ class MapsController < ApplicationController
   private
 
   def sort_order
-    params[:sort] == 'machine_count' ? 'locations.machine_count DESC, locations.name' : 'locations.name'
+    params[:sort] == "machine_count" ? "locations.machine_count DESC, locations.name" : "locations.name"
   end
 
   def city_condition
