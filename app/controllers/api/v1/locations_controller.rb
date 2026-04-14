@@ -285,7 +285,7 @@ module Api
           end
         end
 
-        if params[:format] == "geojson"
+        if params[:format] == "geojson" && params[:no_details] == "2"
           locations_geojson = locations_within.map do |location|
             {
               type: "Feature",
