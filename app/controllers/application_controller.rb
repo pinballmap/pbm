@@ -37,8 +37,13 @@ class ApplicationController < ActionController::Base
   end
 
   def normalize_array_params
-    if params[:by_type_id].is_a?(String) && params[:by_type_id].present?
-      params[:by_type_id] = [ params[:by_type_id] ]
+    array_param_keys = %i[by_type_id by_location_id by_operator_id by_zone_id
+                          by_machine_id by_machine_single_id by_machine_group_id
+                          by_machine_id_ic by_machine_single_id_ic by_machine_year
+                          by_ipdb_id by_opdb_id manufacturer by_machine_type by_machine_display
+                          by_country by_state_name by_state_id]
+    array_param_keys.each do |key|
+      params[key] = [ params[key] ] if params[key].is_a?(String) && params[key].present?
     end
   end
 

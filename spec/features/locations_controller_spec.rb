@@ -488,7 +488,7 @@ describe LocationsController do
     it 'by_location_id -- multiple ids' do
       other_location = FactoryBot.create(:location, region: @region, name: 'Zelda')
 
-      visit '/portland/?by_location_id=' + @location.id.to_s + '_' + other_location.id.to_s
+      visit '/portland/?by_location_id[]=' + @location.id.to_s + '&by_location_id[]=' + other_location.id.to_s
 
       expect(find('#search_results')).to have_content('Cleo')
       expect(find('#search_results')).to have_content('Zelda')
@@ -512,7 +512,7 @@ describe LocationsController do
     it 'by_zone_id -- multiple ids' do
       other_zone = FactoryBot.create(:zone, name: 'NE')
       FactoryBot.create(:location, region: @region, name: 'Zelda', zone: other_zone)
-      visit '/portland/?by_zone_id=' + @zone.id.to_s + '_' + other_zone.id.to_s
+      visit '/portland/?by_zone_id[]=' + @zone.id.to_s + '&by_zone_id[]=' + other_zone.id.to_s
 
       expect(find('#search_results')).to have_content('Cleo')
       expect(find('#search_results')).to have_content('Zelda')
@@ -563,7 +563,7 @@ describe LocationsController do
       other_location = FactoryBot.create(:location, region: @region, name: 'Zelda')
       FactoryBot.create(:location_machine_xref, location: other_location, machine: other_machine)
 
-      visit '/portland/?by_machine_id=' + @machine.id.to_s + '_' + other_machine.id.to_s
+      visit '/portland/?by_machine_id[]=' + @machine.id.to_s + '&by_machine_id[]=' + other_machine.id.to_s
 
       expect(find('#search_results')).to have_content('Cleo')
       expect(find('#search_results')).to have_content('Zelda')

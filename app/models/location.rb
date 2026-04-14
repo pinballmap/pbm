@@ -30,46 +30,46 @@ class Location < ApplicationRecord
   scope :by_type_id, ->(id) {
     where(location_type_id: Array(id).map(&:to_i))
   }
-  scope :by_location_id, ->(id) { where("id in (?)", id.split("_").map(&:to_i)) }
-  scope :by_operator_id, ->(id) { where("operator_id in (?)", id.split("_").map(&:to_i)) }
-  scope :by_zone_id, ->(id) { where("zone_id in (?)", id.split("_").map(&:to_i)) }
+  scope :by_location_id, ->(id) { where(id: Array(id).map(&:to_i)) }
+  scope :by_operator_id, ->(id) { where(operator_id: Array(id).map(&:to_i)) }
+  scope :by_zone_id, ->(id) { where(zone_id: Array(id).map(&:to_i)) }
   scope :by_city_id, ->(city) { where(city: city) }
-  scope :by_state_id, ->(state) { where(state: state) }
-  scope :by_country, ->(country) { where(country: country) }
+  scope :by_state_id, ->(state) { where(state: Array(state)) }
+  scope :by_country, ->(country) { where(country: Array(country)) }
   scope :by_city_name, ->(city) { where(city: city) }
   scope :by_city_no_state, ->(city) { where(city: city).where(state: nil) }
-  scope :by_state_name, ->(state) { where(state: state) }
+  scope :by_state_name, ->(state) { where(state: Array(state)) }
   scope :by_location_name, ->(name) { where("lower(regexp_replace(name, '’', '''', 'gi')) ilike ?", "%" + name.downcase.tr("’", "'") + "%") }
   scope :by_ipdb_id, lambda { |id|
-    machines = Machine.where("ipdb_id in (?)", id.split("_").map(&:to_i)).map(&:all_machines_in_machine_group).flatten
+    machines = Machine.where("ipdb_id in (?)", Array(id).map(&:to_i)).map(&:all_machines_in_machine_group).flatten
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
   }
   scope :by_opdb_id, lambda { |id|
-    machines = Machine.where("opdb_id in (?)", id.split("_")).map(&:all_machines_in_machine_group).flatten
+    machines = Machine.where("opdb_id in (?)", Array(id)).map(&:all_machines_in_machine_group).flatten
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
   }
   scope :by_machine_id, lambda { |id|
-    machines = Machine.where("id in (?)", id.split("_").map(&:to_i)).map(&:all_machines_in_machine_group).flatten
+    machines = Machine.where("id in (?)", Array(id).map(&:to_i)).map(&:all_machines_in_machine_group).flatten
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
   }
   scope :by_machine_group_id, lambda { |id|
-    machines = Machine.where("machine_group_id in (?)", id.split("_").map(&:to_i))
+    machines = Machine.where("machine_group_id in (?)", Array(id).map(&:to_i))
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
   }
   scope :by_machine_single_id, lambda { |id|
-    machine = Machine.where("id in (?)", id.split("_").map(&:to_i))
+    machine = Machine.where("id in (?)", Array(id).map(&:to_i))
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machine.map(&:id))
   }
   scope :by_machine_id_ic, lambda { |id|
-    machines = Machine.where("id in (?)", id.split("_")).map(&:all_machines_in_machine_group).flatten
+    machines = Machine.where("id in (?)", Array(id).map(&:to_i)).map(&:all_machines_in_machine_group).flatten
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.ic_enabled = true and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
   }
   scope :by_machine_single_id_ic, lambda { |id|
-    machine = Machine.where("id in (?)", id.split("_").map(&:to_i))
+    machine = Machine.where("id in (?)", Array(id).map(&:to_i))
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.ic_enabled = true and location_machine_xrefs.machine_id in (?)", machine.map(&:id))
   }
   scope :by_machine_year, lambda { |id|
-    machines = Machine.where("year in (?)", id.split("_").map(&:to_i))
+    machines = Machine.where("year in (?)", Array(id).map(&:to_i))
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
   }
   scope :by_machine_name, lambda { |name|
@@ -105,15 +105,15 @@ class Location < ApplicationRecord
     where(id: fave_ids)
   }
   scope :manufacturer, lambda { |manufacturer|
-    machines = Machine.where("manufacturer in (?)", manufacturer.split("_").map(&:to_s))
+    machines = Machine.where("manufacturer in (?)", Array(manufacturer))
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
   }
   scope :by_machine_type, lambda { |machine_type|
-    machines = Machine.where("machine_type in (?)", machine_type.split("_").map(&:to_s))
+    machines = Machine.where("machine_type in (?)", Array(machine_type))
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
   }
   scope :by_machine_display, lambda { |machine_display|
-    machines = Machine.where("machine_display in (?)", machine_display.split("_").map(&:to_s))
+    machines = Machine.where("machine_display in (?)", Array(machine_display))
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
   }
 
