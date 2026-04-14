@@ -897,7 +897,7 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to include('Close_1')
       expect(response.body).to_not include('Close_2')
 
-      get '/api/v1/locations/within_bounding_box.geojson', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427 }
+      get '/api/v1/locations/within_bounding_box.geojson', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, no_details: 2 }
 
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(2)
@@ -1031,6 +1031,27 @@ describe Api::V1::LocationsController, type: :request do
       expect(locations[1]['name']).to eq('B_Location')
       expect(locations[0]).to have_key('distance')
       expect(locations[0]['distance']).to_not be(nil)
+    end
+
+    it 'excludes all location info when machines_only is passed and output is just one list of machine_ids' do
+      location_01 = FactoryBot.create(:location, name: 'A_Location', id: 6000, lat: 45.526112069408704, lon: -122.60884314086321)
+      location_02 = FactoryBot.create(:location, name: 'B_Location', id: 7000, lat: 45.53007190362438, lon: -122.60795065851514)
+
+      machine = FactoryBot.create(:machine, id: 789)
+      machine_two = FactoryBot.create(:machine, id: 790)
+
+      FactoryBot.create(:location_machine_xref, location: location_01, machine_id: machine.id)
+
+      FactoryBot.create(:location_machine_xref, location: location_02, machine_id: machine.id)
+      FactoryBot.create(:location_machine_xref, location: location_02, machine_id: machine_two.id)
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, machines_only: 1 }
+
+      parsed_body = JSON.parse(response.body)
+      machine_ids = parsed_body['machine_ids']
+      expect(machine_ids.size).to eq(2)
+
+      expect(machine_ids).to_not eq('[789, 790]')
     end
   end
 

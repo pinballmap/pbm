@@ -237,6 +237,7 @@ module Api
       param :no_details, Integer, desc: "Omit data that app does not need from pull (options include '1' or '2')", required: false
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       param :order_by, String, desc: "Order results descending by a field in the locations scope. Allowed fields are updated_at, name, machine_count, distance. Otherwise, sorts by location ID. Using distance requires user_lat and user_lon params"
+      param :machines_only, Integer, desc: "When set to '1', returns only a flat list of unique machine_ids found across all matching locations. No location data is included.", required: false
       formats %w[json geojson]
       def within_bounding_box
         if params[:order_by].present? and [ "updated_at", "machine_count" ].include? params[:order_by].downcase
@@ -259,6 +260,13 @@ module Api
         end
 
         bounds = [ params[:swlat], params[:swlon], params[:nelat], params[:nelon] ]
+
+        if params[:machines_only] == "1"
+          location_ids = apply_scopes(Location).within_bounding_box(bounds).pluck(:id)
+          machine_ids = LocationMachineXref.where(location_id: location_ids).distinct.pluck(:machine_id)
+          render json: { machine_ids: machine_ids }
+          return
+        end
 
         if params[:user_faved]
           user = User.find(params[:user_faved])
