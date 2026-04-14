@@ -1029,6 +1029,7 @@ describe Api::V1::LocationsController, type: :request do
 
       expect(locations[0]['name']).to eq('A_Location')
       expect(locations[1]['name']).to eq('B_Location')
+      expect(locations[0]).to have_key('distance')
       expect(locations[0]['distance']).to_not be(nil)
     end
   end
