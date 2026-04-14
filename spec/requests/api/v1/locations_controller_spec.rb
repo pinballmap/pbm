@@ -1017,11 +1017,11 @@ describe Api::V1::LocationsController, type: :request do
       expect(locations[2]['name']).to eq('A_Location')
     end
 
-    it 'includes a distance field when order_by=near and user_lat and user_lon and limit and no_details=1 are present' do
+    it 'includes a distance field when order_by=distance and user_lat and user_lon and limit and no_details=1 are present' do
       location_01 = FactoryBot.create(:location, name: 'A_Location', id: 6000, lat: 45.526112069408704, lon: -122.60884314086321)
       location_02 = FactoryBot.create(:location, name: 'B_Location', id: 7000, lat: 45.53007190362438, lon: -122.60795065851514)
 
-      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, order_by: 'near', limit: 2, user_lat: 45.526112069408704, user_lon: -122.60884314086321, no_details: 1 }
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, order_by: 'distance', limit: 2, user_lat: 45.526112069408704, user_lon: -122.60884314086321, no_details: 1 }
 
       parsed_body = JSON.parse(response.body)
       locations = parsed_body['locations']

@@ -236,7 +236,7 @@ module Api
       param :by_machine_display, String, desc: "Locations with machines with this display (alphanumeric, lcd, dmd, reels, lights). Multiple display types can be chained together with underscores.", required: false
       param :no_details, Integer, desc: "Omit data that app does not need from pull (options include '1' or '2')", required: false
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
-      param :order_by, String, desc: "Order results descending by a field in the locations scope. Allowed fields are updated_at, name, machine_count, near. Otherwise, sorts by location ID. Using near requires user_lat and user_lon params"
+      param :order_by, String, desc: "Order results descending by a field in the locations scope. Allowed fields are updated_at, name, machine_count, distance. Otherwise, sorts by location ID. Using distance requires user_lat and user_lon params"
       formats %w[json geojson]
       def within_bounding_box
         if params[:order_by].present? and [ "updated_at", "machine_count" ].include? params[:order_by].downcase
@@ -274,7 +274,7 @@ module Api
         else
           if params[:limit].blank?
             locations_within = apply_scopes(Location).includes(:machines).within_bounding_box(bounds).order(order_by).uniq
-          elsif params[:user_lat] && params[:user_lon] && params[:order_by] == "near"
+          elsif params[:user_lat] && params[:user_lon] && params[:order_by] == "distance"
             @pagy, locations_within = pagy(apply_scopes(Location).includes(:machines).within_bounding_box(bounds)
               .select("locations.*, #{Geocoder::Sql.full_distance(params[:user_lat], params[:user_lon], :lat, :lon)} AS distance")
               .order("distance ASC"))
