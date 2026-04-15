@@ -579,6 +579,41 @@ describe Api::V1::LocationsController, type: :request do
       expect(locations[0]['name']).to eq('Closest2 Location')
     end
 
+    it 'respects by_machine_year_gte and by_machine_year_lte filters' do
+      old_location = FactoryBot.create(:location, region: @region, name: 'Old Location', street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
+      FactoryBot.create(:location_machine_xref, location: old_location, machine: FactoryBot.create(:machine, name: 'OldGame', year: 1975))
+
+      new_location = FactoryBot.create(:location, region: @region, name: 'New Location', street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
+      FactoryBot.create(:location_machine_xref, location: new_location, machine: FactoryBot.create(:machine, name: 'NewGame', year: 2010))
+
+      get "/api/v1/locations/closest_by_address.json", params: { address: '97202', by_machine_year_gte: '2000', send_all_within_distance: 1 }
+
+      sleep 1
+
+      parsed_body = JSON.parse(response.body)
+      locations = parsed_body['locations']
+      expect(locations.size).to eq(1)
+      expect(locations[0]['name']).to eq('New Location')
+
+      get "/api/v1/locations/closest_by_address.json", params: { address: '97202', by_machine_year_lte: '1999', send_all_within_distance: 1 }
+
+      sleep 1
+
+      parsed_body = JSON.parse(response.body)
+      locations = parsed_body['locations']
+      expect(locations.size).to eq(1)
+      expect(locations[0]['name']).to eq('Old Location')
+
+      get "/api/v1/locations/closest_by_address.json", params: { address: '97202', by_machine_year_gte: '1970', by_machine_year_lte: '1999', send_all_within_distance: 1 }
+
+      sleep 1
+
+      parsed_body = JSON.parse(response.body)
+      locations = parsed_body['locations']
+      expect(locations.size).to eq(1)
+      expect(locations[0]['name']).to eq('Old Location')
+    end
+
     it 'respects ic_active filter' do
       FactoryBot.create(:location, region: @region, name: 'Cleo', street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63, ic_active: 't')
 
