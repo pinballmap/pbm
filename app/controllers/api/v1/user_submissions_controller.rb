@@ -101,14 +101,29 @@ module Api
       description "Fetch total count of user submissions"
       formats [ "json" ]
       def total_user_submission_count
-        return_response({ total_user_submission_count: UserSubmission.count }, nil)
+        total_user_submission_count = Rails.cache.fetch("total_user_submission_count_cache", expires_in: 6.hours) do
+          UserSubmission.where(deleted_at: nil).count
+        end
+        return_response(total_user_submission_count, "total_user_submission_count")
+      end
+
+      api :GET, "/api/v1/user_submissions/total_user_submission_count_week.json", "Fetch total count of user submissions for the past week"
+      description "Fetch total count of user submissions"
+      formats [ "json" ]
+      def total_user_submission_count_week
+        total_user_submission_count_week = Rails.cache.fetch("total_user_submission_count_week_cache", expires_in: 6.hours) do
+          UserSubmission.where("created_at >= ?", 1.week.ago).where(deleted_at: nil).count
+        end
+        return_response(total_user_submission_count_week, "total_user_submission_count_week")
       end
 
       api :GET, "/api/v1/user_submissions/top_users.json", "Fetch top 25 users by submission count"
       description "Fetch top 25 users by submission count"
       formats [ "json" ]
       def top_users
-        top_users = User.where("user_submissions_count > 0").select([ "id", "username", "user_submissions_count" ]).order(user_submissions_count: :desc).limit(25)
+        top_users = Rails.cache.fetch("top_users_cache", expires_in: 6.hours) do
+          User.where("user_submissions_count > 0").select([ "id", "username", "user_submissions_count" ]).order(user_submissions_count: :desc).limit(25)
+        end
 
         return_response(top_users, nil, [], %i[id username user_submissions_count])
       end

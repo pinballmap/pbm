@@ -146,7 +146,7 @@ module Api
       def top_n_machines
         top_n = params[:n].to_i.zero? ? DEFAULT_TOP_N_MACHINES : params[:n].to_i
 
-        records_array = ActiveRecord::Base.connection.exec_query(<<HERE).to_a
+        records_request = ActiveRecord::Base.connection.exec_query(<<HERE).to_a
 select
   left(m.opdb_id,5) as opdb_id,
   split_part(min(m.name), ' (', 1) as machine_name,
@@ -160,6 +160,14 @@ group by 1
 order by 5 desc
 limit #{top_n}
 HERE
+
+        if top_n == DEFAULT_TOP_N_MACHINES
+          records_array = Rails.cache.fetch("top_25_cache", expires_in: 6.hours) do
+            records_request
+          end
+        else
+          records_array = records_request
+        end
 
         return_response(records_array, "machines")
       end

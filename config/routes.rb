@@ -24,6 +24,7 @@ Rails.application.routes.draw do
           get :list_within_range
           get :location
           get :total_user_submission_count
+          get :total_user_submission_count_week
           get :top_users
           get :delete_location
         end

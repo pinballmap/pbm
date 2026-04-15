@@ -62,12 +62,12 @@ limit 25")
     @user_submissions_total = UserSubmission.all.count
 
     @user_submissions_all = Rails.cache.fetch("user_submissions_all_cache", expires_in: 6.hours) do
-      UserSubmission.where(created_at: "2018-01-01T00:00:00.00-07:00"..Date.today.end_of_day).select("created_at")
+      UserSubmission.where(created_at: "2018-01-01T00:00:00.00-07:00"..Date.today.end_of_day, deleted_at: nil).select("created_at")
     end
 
     @user_submissions_week =
     Rails.cache.fetch("user_submissions_week_cache", expires_in: 6.hours) do
-      UserSubmission.where("created_at >= ?", 1.week.ago).count
+      UserSubmission.where("created_at >= ?", 1.week.ago).where(deleted_at: nil).count
     end
 
     @top_locations = Rails.cache.fetch("top_locations_cache", expires_in: 6.hours) do
