@@ -613,7 +613,7 @@ module Api
       formats [ "json" ]
       def top_locations
         top_locations = Rails.cache.fetch("top_locations_cache", expires_in: 6.hours) do
-          Location.select(:id, :name, :machine_count).order(machine_count: :desc).limit(25)
+          Location.select(:id, :name, :city, :state, :machine_count).order(machine_count: :desc).limit(25)
         end
 
         return_response(top_locations, nil)
