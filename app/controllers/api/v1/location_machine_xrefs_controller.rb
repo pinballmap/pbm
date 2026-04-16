@@ -162,7 +162,7 @@ limit #{top_n}
 HERE
 
         if top_n == DEFAULT_TOP_N_MACHINES
-          records_array = Rails.cache.fetch("top_25_cache", expires_in: 6.hours) do
+          records_array = Rails.cache.fetch("top_25_cache", expires_in: 1.hour) do
             records_request
           end
         else

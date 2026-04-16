@@ -546,7 +546,7 @@ module Api
       description "Fetch top 10 cities by number of locations"
       formats [ "json" ]
       def top_cities
-        top_cities = Rails.cache.fetch("top_cities_cache", expires_in: 6.hours) do
+        top_cities = Rails.cache.fetch("top_cities_cache", expires_in: 1.hour) do
           Location.select(
             [
               :city, :state, Arel.star.count.as("location_count")
@@ -563,7 +563,7 @@ module Api
       def top_cities_by_machine
         xid = Arel::Table.new("location_machine_xrefs")
         lid = Arel::Table.new("locations")
-        top_cities_by_machine = Rails.cache.fetch("top_cities_by_machine_cache", expires_in: 6.hours) do
+        top_cities_by_machine = Rails.cache.fetch("top_cities_by_machine_cache", expires_in: 1.hour) do
           Location.select(
             [
               :city, :state, Arel.star.count.as("machines_count")
@@ -612,7 +612,7 @@ module Api
       description "Fetch biggest locations by number of number"
       formats [ "json" ]
       def top_locations
-        top_locations = Rails.cache.fetch("top_locations_cache", expires_in: 6.hours) do
+        top_locations = Rails.cache.fetch("top_locations_cache", expires_in: 1.hour) do
           Location.select(:id, :name, :city, :state, :machine_count).order(machine_count: :desc).limit(25)
         end
 
