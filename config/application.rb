@@ -1,5 +1,6 @@
 require_relative "boot"
 require_relative '../lib/middleware/semicolon_handling'
+require_relative '../lib/middleware/strip_www_authenticate'
 
 require "rails/all"
 
@@ -33,5 +34,6 @@ module Pbm
     config.assets.precompile = ["manifest.js"]
 
     config.middleware.insert_after Rack::Runtime, Middleware::SemicolonHandling
+    config.middleware.insert_before Warden::Manager, Middleware::StripWwwAuthenticate
   end
 end

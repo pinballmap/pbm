@@ -64,8 +64,8 @@ describe Api::V1::UsersController, type: :request do
 
       get '/api/v1/users/auth_details.json', params: { login: 'disabled', password: 'okokokok' }
 
-      expect(response).to be_successful
-      expect(JSON.parse(response.body)['errors']).to eq('Your account is disabled. Please contact us if you think this is a mistake.')
+      expect(response).to have_http_status(:unauthorized)
+      expect(JSON.parse(response.body)['error']).to eq('account_disabled')
     end
 
     it 'tells you if you enter the wrong password' do

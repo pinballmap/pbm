@@ -64,9 +64,7 @@ module Api
       param :condition, String, desc: "Notes on machine's condition", required: false
       formats [ "json" ]
       def create
-        user = current_user.nil? ? nil : current_user
-
-        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
+        return unless (user = require_api_user)
 
         location_id = params[:location_id].to_i
         machine_id = params[:machine_id].to_i
@@ -107,9 +105,7 @@ module Api
       formats [ "json" ]
       def update
         lmx = LocationMachineXref.find(params[:id])
-        user = current_user.nil? ? nil : current_user
-
-        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
+        return unless (user = require_api_user)
 
         lmx.update_condition(
           params[:condition],
@@ -126,9 +122,7 @@ module Api
       formats [ "json" ]
       def destroy
         lmx = LocationMachineXref.find(params[:id])
-        user = current_user.nil? ? nil : current_user
-
-        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
+        return unless (user = require_api_user)
 
         lmx.deleted_at = Time.now
         lmx.save
@@ -208,7 +202,7 @@ HERE
       param :ic_enabled, [ true, false ], desc: "Sets the Insider Connected status for this machine", required: false
       formats [ "json" ]
       def ic_toggle
-        return return_response(AUTH_REQUIRED_MSG, "errors") unless current_user
+        return unless (user = require_api_user)
 
         lmx = LocationMachineXref.find(params[:location_machine_xref_id])
         if lmx.machine.ic_eligible
@@ -222,7 +216,7 @@ HERE
               lmx.save!
             end
 
-            lmx.create_ic_user_submission!(current_user)
+            lmx.create_ic_user_submission!(user)
 
             # update the location's insider connected status if needed
             if lmx.ic_enabled && lmx.location.ic_active != true

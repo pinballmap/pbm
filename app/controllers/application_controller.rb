@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   FILTERING_REQUIRED_MSG = "Filtering is required for this action. Please provide a filter when using this endpoint.".freeze
   AUTH_REQUIRED_MSG = "Authentication is required for this action. If you are using the app, you may need to confirm your account (see the email from us) or log out and back in.".freeze
+  ACCOUNT_DISABLED_MSG = "account_disabled".freeze
   rate_limit to: 100, within: 2.minutes, if: lambda { |req| req.bot? }
 
   include Pagy::Method
@@ -148,6 +149,20 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def require_api_user
+    if current_user.nil?
+      email = params[:user_email].presence
+      if email && User.exists?(email: email, is_disabled: true)
+        render json: { error: ACCOUNT_DISABLED_MSG }, status: :unauthorized
+        return nil
+      end
+      return_response(AUTH_REQUIRED_MSG, "errors")
+      return nil
+    end
+
+    current_user
+  end
 
   def after_sign_out_path_for(*)
     request.referrer.match?(/admin/) ? root_path : request.referrer

@@ -13,8 +13,7 @@ module Api
         machine_condition = MachineCondition.find(params[:id])
         us = UserSubmission.find_by(machine_condition_id: machine_condition[:id])
 
-        user = current_user.nil? ? nil : current_user
-        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
+        return unless (user = require_api_user)
 
         if machine_condition.user == user
           machine_condition.update({ comment: params[:comment] })
@@ -38,8 +37,7 @@ module Api
         machine_condition = MachineCondition.find(params[:id])
         us = UserSubmission.find_by(machine_condition_id: machine_condition[:id])
 
-        user = current_user.nil? ? nil : current_user
-        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
+        return unless (user = require_api_user)
 
         if machine_condition.user == user
           machine_condition.destroy

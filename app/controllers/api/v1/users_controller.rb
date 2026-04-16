@@ -107,7 +107,7 @@ module Api
         end
 
         if user.is_disabled
-          return_response("Your account is disabled. Please contact us if you think this is a mistake.", "errors")
+          render json: { error: ACCOUNT_DISABLED_MSG }, status: :unauthorized
           return
         end
 

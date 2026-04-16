@@ -61,9 +61,7 @@ module Api
       param :score, String, desc: "A pinball machine high score", required: false
       formats [ "json" ]
       def create
-        user = current_user.nil? ? nil : current_user
-
-        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
+        return unless (user = require_api_user)
 
         score = params[:score]
 
@@ -109,8 +107,7 @@ module Api
         high_score = MachineScoreXref.find(params[:id])
         us = UserSubmission.find_by(machine_score_xref_id: high_score[:id])
 
-        user = current_user.nil? ? nil : current_user
-        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
+        return unless (user = require_api_user)
 
         if high_score.user == user
           high_score.update({ score: params[:score] })
@@ -134,8 +131,7 @@ module Api
         high_score = MachineScoreXref.find(params[:id])
         us = UserSubmission.find_by(machine_score_xref_id: high_score[:id])
 
-        user = current_user.nil? ? nil : current_user
-        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
+        return unless (user = require_api_user)
 
         if high_score.user == user
           high_score.destroy

@@ -35,9 +35,7 @@ module Api
       param :location_machines_ids, String, desc: "List of machine ids at new location", required: false
       formats [ "json" ]
       def suggest
-        user = current_user.nil? ? nil : current_user
-
-        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
+        return unless (user = require_api_user)
 
         if params[:location_machines].blank? || params[:location_name].blank?
           return_response("Location name, and a list of machines are required", "errors")
@@ -150,9 +148,7 @@ module Api
       formats [ "json" ]
       def update
         location = Location.find(params[:id])
-        user = current_user.nil? ? nil : current_user
-
-        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
+        return unless (user = require_api_user)
 
         values, message_type = location.update_metadata(
           user,
@@ -496,9 +492,7 @@ module Api
       api :PUT, "/api/v1/locations/:id/confirm.json", "Confirm location information"
       formats [ "json" ]
       def confirm
-        user = current_user.nil? ? nil : current_user
-
-        return return_response(AUTH_REQUIRED_MSG, "errors") if user.nil?
+        return unless (user = require_api_user)
 
         location = Location.find(params[:id])
         location.confirm(user)
