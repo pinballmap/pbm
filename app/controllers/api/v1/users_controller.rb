@@ -4,8 +4,8 @@ module Api
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
-      rate_limit to: 30, within: 10.minutes, only: [ :auth_details, :forgot_password, :resend_confirmation, :signup ]
-      rate_limit to: 30, within: 5.minutes, only: :profile_info
+      rate_limit to: 40, within: 5.minutes, only: [ :auth_details, :forgot_password, :resend_confirmation, :signup ]
+      rate_limit to: 40, within: 2.minutes, only: :profile_info
 
       api :GET, "/api/v1/users/:id/list_fave_locations.json", "Fetch list of favorite locations"
       description "Fetch list of favorite locations"
