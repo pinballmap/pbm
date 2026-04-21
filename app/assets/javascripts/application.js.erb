@@ -541,6 +541,7 @@ function showLocationDetail(locationID) {
       $('#show_location_detail_location_' + locationID).hide();
       $('.sub_nav_location').hide();
       $('.back_to_results').show();
+      $('#sort_controls').hide();
 
       map.setLayoutProperty('points', 'icon-image',
         ["step", ["zoom"],
@@ -591,6 +592,7 @@ function backToResults() {
   $('.back_to_results').hide();
   $('.sub_nav_location').show();
   $('#next_link').show();
+  $('#sort_controls').show();
   $('#location_detail').hide();
   map.setLayoutProperty('points', 'icon-image', [
     "step", ["zoom"],
