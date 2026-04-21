@@ -204,10 +204,21 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       expect(LocationMachineXref.all.size).to eq(0)
 
+      # fudging a different last updated date just to ensure it updates after machine added
+      @location.date_last_updated = Date.today - 2.days
+      @location.save
+
       post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(response.status).to eq(200)
+
+      get '/api/v1/locations/' + @location.id.to_s + '.json'
+      expect(response).to be_successful
+
+      location = JSON.parse(response.body)
+
+      expect(location['date_last_updated']).to eq(Time.now.strftime('%Y-%m-%d'))
 
       expect(LocationMachineXref.all.size).to eq(1)
 
@@ -239,6 +250,27 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       expect(lmx['user_id']).to_not eq(111)
       expect(lmx['user_id']).to eq(211)
+    end
+
+    it 'should correctly toggle location ic_active when machine removed and when re-added' do
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'plays soft')
+      FactoryBot.create(:user, id: 211, email: 'yeah@ok.com', authentication_token: '123', username: 'doff')
+      @lmx.ic_enabled = true
+      @lmx.save
+
+      @location.ic_active = true
+      @location.save
+
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      expect(response).to be_successful
+      expect(response.status).to eq(200)
+      @location.reload
+      expect(@location.ic_active).to eq(false)
+
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, user_email: 'yeah@ok.com', user_token: '123' }
+
+      @location.reload
+      expect(@location.ic_active).to eq(true)
     end
 
     it 'does not re-add soft-deleted lmx if removed more than 7 days ago' do
