@@ -60,7 +60,7 @@ describe LocationMachineXrefsController do
     it 'Should re-add a soft-deleted lmx that was removed within 7 days ago and include scores and conditions' do
       region = region ? @region : nil
       location = FactoryBot.create(:location, id: 11, region: region)
-      lmx = FactoryBot.create(:location_machine_xref, location: location, machine: @machine_to_add, id: 6660)
+      lmx = FactoryBot.create(:location_machine_xref, location: location, machine: @machine_to_add, id: 6660, ic_enabled: true)
       lmx_diff_location = FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location, id: 9898), machine: @machine_to_add)
       lmx.update_condition('great', { user_id: @user.id })
       FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, score: 3000, user: @user, machine_id: @machine_to_add.id)
@@ -91,6 +91,7 @@ describe LocationMachineXrefsController do
       expect(location.reload.machine_count).to eq(1)
       expect(location.machines.first).to eq(@machine_to_add)
       expect(location.location_machine_xrefs.first.id).to eq(6660)
+      expect(location.ic_active).to eq(true)
       expect(page.body).to have_content('great')
       expect(page.body).to have_content('3,000')
       expect(page.body).to have_content('Your highest score')
@@ -665,6 +666,7 @@ describe LocationMachineXrefsController do
       expect(user_submission.user_id).to eq(@user.id)
       expect(user_submission.machine_id).to eq(10)
       expect(user_submission.submission_type).to eq(UserSubmission::IC_TOGGLE_TYPE)
+      expect(@location.reload.ic_active).to eq(true)
     end
 
     it 'allows user to toggle off flag' do
@@ -679,6 +681,7 @@ describe LocationMachineXrefsController do
       sleep 1
 
       expect(page).to have_css('.ic_no')
+      expect(@location.reload.ic_active).to eq(false)
     end
   end
 

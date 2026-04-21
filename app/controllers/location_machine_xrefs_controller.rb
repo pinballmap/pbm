@@ -35,6 +35,10 @@ class LocationMachineXrefsController < ApplicationController
       lmx.save
       Location.increment_counter(:machine_count, location.id)
       lmx.create_user_submission
+      if location.location_machine_xrefs.where(ic_enabled: true).present? && location.ic_active == false
+        location.ic_active = true
+        location.save(validate: false)
+      end
     else
       LocationMachineXref.where([ "location_id = ? and machine_id = ?", location.id, machine.id ]).where(deleted_at: nil).first ||
         LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user.id)
@@ -167,7 +171,7 @@ class LocationMachineXrefsController < ApplicationController
     if (lmx.ic_enabled == true) && (lmx.location.ic_active != true)
       lmx.location.ic_active = true
       lmx.location.save
-    elsif lmx.location.location_machine_xrefs.where(ic_enabled: true).empty?
+    elsif lmx.location.location_machine_xrefs.where(ic_enabled: true).blank?
       lmx.location.ic_active = false
       lmx.location.save
     end

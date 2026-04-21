@@ -84,7 +84,7 @@ class LocationMachineXref < ApplicationRecord
     UserSubmission.create(user_name: user&.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: submission, user: user) unless force && self.deleted_at.present?
     Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}" unless force && self.deleted_at.present?
 
-    if location.location_machine_xrefs.where(ic_enabled: true).empty?
+    if location.location_machine_xrefs.where(ic_enabled: true).blank?
       location.ic_active = false
     end
 
