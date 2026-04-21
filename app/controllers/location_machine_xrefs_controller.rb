@@ -23,10 +23,6 @@ class LocationMachineXrefsController < ApplicationController
       return
     end
 
-    location.date_last_updated = Date.today
-    location.last_updated_by_user_id = user.id
-    location.save(validate: false)
-
     lmx = LocationMachineXref.unscoped.where([ "location_id = ? and machine_id = ?", location.id, machine.id ]).where.not(deleted_at: nil).where(deleted_at: 7.days.ago..Time.current).order(updated_at: :desc).first
 
     if lmx
@@ -37,8 +33,10 @@ class LocationMachineXrefsController < ApplicationController
       lmx.create_user_submission
       if location.location_machine_xrefs.where(ic_enabled: true).present? && location.ic_active == false
         location.ic_active = true
-        location.save(validate: false)
       end
+      location.date_last_updated = Date.today
+      location.last_updated_by_user_id = user.id
+      location.save(validate: false)
     else
       LocationMachineXref.where([ "location_id = ? and machine_id = ?", location.id, machine.id ]).where(deleted_at: nil).first ||
         LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user.id)

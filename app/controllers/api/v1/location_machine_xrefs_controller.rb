@@ -83,8 +83,10 @@ module Api
           lmx.create_user_submission
           if lmx.location.location_machine_xrefs.where(ic_enabled: true).present? && lmx.location.ic_active == false
             lmx.location.ic_active = true
-            lmx.location.save(validate: false)
           end
+          lmx.location.date_last_updated = Date.today
+          lmx.location.last_updated_by_user_id = user&.id
+          lmx.location.save(validate: false)
         else
           lmx = LocationMachineXref.find_by_location_id_and_machine_id(location_id, machine_id)
           if lmx.nil?
@@ -92,10 +94,6 @@ module Api
             lmx = LocationMachineXref.create(location_id: location_id, machine_id: machine_id, user_id: user&.id)
           end
         end
-
-        lmx.location.date_last_updated = Date.today
-        lmx.location.last_updated_by_user_id = user&.id
-        lmx.location.save(validate: false)
 
         if condition
           lmx.update_condition(
