@@ -20,35 +20,35 @@ task data_cleanup: :environment do
 
       next if matched_location.nil? or (us.location_name == matched_location.name and us.city_name == matched_location.city)
 
-      if (us.submission_type = "new_lmx")
+      if (us.submission_type == "new_lmx")
         us.location_name = matched_location.name
         us.city_name = matched_location.city
         us.submission = "#{us.machine_name} was added to #{us.location_name} in #{us.city_name} by #{us.user_name}" if field_presence?(us) && us.machine_name.present?
-      elsif (us.submission_type = "new_condition")
+      elsif (us.submission_type == "new_condition")
         us.location_name = matched_location.name
         us.city_name = matched_location.city
-        us.submission = "#{us.user_name} commented on #{us.machine_name} at #{us.location_name} in #{us.city_name}. They said: #{us.comment}" if field_presence? && us.machine_name.present? && us.comment.present?
-      elsif (us.submission_type = "remove_machine")
+        us.submission = "#{us.user_name} commented on #{us.machine_name} at #{us.location_name} in #{us.city_name}. They said: #{us.comment}" if field_presence?(us) && us.machine_name.present? && us.comment.present?
+      elsif (us.submission_type == "remove_machine")
         us.location_name = matched_location.name
         us.city_name = matched_location.city
         us.submission = "#{us.machine_name} was removed from #{us.location_name} in #{us.city_name} by #{us.user_name}" if field_presence?(us) && us.machine_name.present?
-      elsif (us.submission_type = "new_msx")
+      elsif (us.submission_type == "new_msx")
         us.location_name = matched_location.name
         us.city_name = matched_location.city
         us.submission = "#{us.user_name} added a high score of #{number_with_precision(us.high_score, precision: 0, delimiter: ',')} on #{us.machine_name} at #{us.location_name} in #{us.city_name}." if field_presence?(us) && us.machine_name.present? && us.high_score.present?
-      elsif (us.submission_type = "confirm_location")
+      elsif (us.submission_type == "confirm_location")
         us.location_name = matched_location.name
         us.city_name = matched_location.city
         us.submission = "#{us.user_name} confirmed the lineup at #{us.location_name} in #{us.city_name}" if field_presence?(us)
-      elsif (us.submission_type = "ic_toggle")
+      elsif (us.submission_type == "ic_toggle")
         us.location_name = matched_location.name
         us.city_name = matched_location.city
         us.submission = "Insider Connected toggled on #{us.machine_name} at #{us.location_name} in #{us.city_name} by #{us.user_name}" if field_presence?(us) && us.machine_name.present?
-      elsif (us.submission_type = "new_picture")
+      elsif (us.submission_type == "new_picture")
         us.location_name = matched_location.name
         us.city_name = matched_location.city
         us.submission = "#{us.user_name} added a picture of #{us.location_name} in #{us.city_name}" if field_presence?(us)
-      elsif (us.submission_type = "add_location")
+      elsif (us.submission_type == "add_location")
         us.location_name = matched_location.name
         us.city_name = matched_location.city
         us.submission = "New location added: #{us.location_name} in #{us.city_name} by #{us.user_name}" if field_presence?(us)
