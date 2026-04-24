@@ -1205,6 +1205,18 @@ describe Api::V1::LocationsController, type: :request do
     end
   end
 
+  describe '#by_city_no_state' do
+    it 'returns all locations within a city and state' do
+      FactoryBot.create(:location, city: 'Paris', state: 'OR')
+      FactoryBot.create(:location, city: 'Paris', state: '')
+
+      get '/api/v1/locations.json/?by_city_no_state=Paris'
+
+      expect(response.body).to include('Paris')
+      expect(response.body).to_not include('OR')
+    end
+  end
+
   describe '#show' do
     before(:each) do
       lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 7777, name: 'Cleo'))

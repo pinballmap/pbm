@@ -8,7 +8,7 @@ module Api
       before_action :allow_cors
       before_action :normalize_array_params
 
-      has_scope :by_location_name, :by_machine_name, :by_city_id, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region, :by_is_stern_army, :regionless_only, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte
+      has_scope :by_location_name, :by_machine_name, :by_city_id, :by_city_no_state, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region, :by_is_stern_army, :regionless_only, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte
       has_scope :by_type_id, :by_location_id, :by_machine_id, :by_zone_id, :by_operator_id, :by_machine_single_id, :by_machine_group_id, :by_ipdb_id, :by_opdb_id, :manufacturer, :by_machine_type, :by_machine_display, :by_machine_id_ic, :by_machine_single_id_ic, :by_machine_year, :by_country, :by_state_name, :by_state_id, type: :array
       rate_limit to: 30, within: 10.minutes, only: [ :suggest, :update ]
 
@@ -71,6 +71,7 @@ module Api
       param :by_opdb_id, Integer, desc: "OPDB ID to find in locations", required: false
       param :by_machine_name, String, desc: "Find machine name in locations", required: false
       param :by_city_id, String, desc: "City to search for", required: false
+      param :by_city_no_state, String, desc: "City to search for when that city is in a country that does not have state/provinces in the data", required: false
       param :by_state_id, String, desc: "State to search for. Matches location state field (often an abbreviation). Additional filtering required for this endpoint.", required: false
       param :by_country, String, desc: "Country to search for. Matches location country code, in all caps, such as 'US'. Additional filtering required for this endpoint.", required: false
       param :by_zone_id, Integer, desc: "Zone ID to search by", required: false
@@ -88,7 +89,7 @@ module Api
       param :regionless_only, Integer, desc: "Show only regionless locations", required: false
       formats [ "json" ]
       def index
-        return return_response(FILTERING_REQUIRED_MSG, "errors") unless %i[region by_location_name by_location_id by_machine_id by_machine_single_id by_machine_group_id by_machine_id_ic by_machine_single_id_ic by_ipdb_id by_opdb_id by_machine_name by_city_id by_zone_id by_operator_id by_type_id by_is_stern_army regionless_only place_id].any? { params[_1].present? }
+        return return_response(FILTERING_REQUIRED_MSG, "errors") unless %i[region by_location_name by_location_id by_machine_id by_machine_single_id by_machine_group_id by_machine_id_ic by_machine_single_id_ic by_ipdb_id by_opdb_id by_machine_name by_city_id by_city_no_state by_zone_id by_operator_id by_type_id by_is_stern_army regionless_only place_id].any? { params[_1].present? }
 
         except = params[:no_details] ? %i[phone website description created_at updated_at date_last_updated last_updated_by_user_id region_id users_count user_submissions_count] : nil
 
@@ -507,7 +508,17 @@ module Api
       formats [ "json" ]
       def autocomplete_city
         if params.fetch(:name, "").length > 2
-          locations = Location.where("clean_items(city) ilike '%' || clean_items(?) || '%'", params[:name]).sort_by(&:city).map { |l| { label: "#{l.city}#{l.state.blank? ? '' : ', '}#{l.state}", value: "#{l.city}#{l.state.blank? ? '' : ', '}#{l.state}" } }
+          locations = Location.where("clean_items(city) ilike '%' || clean_items(?) || '%'", params[:name]).sort_by(&:city).map do |l|
+            suffix = if l.state.present?
+              ", #{l.state}"
+            elsif l.country.present?
+              country_name = Country[l.country.downcase]
+              country_name ? ", #{country_name}" : ""
+            else
+              ""
+            end
+            { label: "#{l.city}#{suffix}", value: "#{l.city}#{l.state.present? ? ", #{l.state}" : ""}" }
+          end
         else
           locations = []
         end
