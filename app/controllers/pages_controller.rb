@@ -1,4 +1,18 @@
 class PagesController < ApplicationController
+  SUBMISSION_TYPE_LABELS = {
+    "add_location"      => "Add Location",
+    "new_lmx"           => "Add Machine",
+    "remove_machine"    => "Remove Machine",
+    "new_condition"     => "Machine Comment",
+    "confirm_location"  => "Confirm Location",
+    "new_msx"           => "High Score",
+    "ic_toggle"         => "IC Toggle",
+    "suggest_location"  => "Suggest Location",
+    "delete_location"   => "Delete Location",
+    "new_picture"       => "New Picture",
+    "contact_us"        => "Contact Us",
+    "location_metadata" => "Location Metadata"
+  }.freeze
   respond_to :html, only: %i[set_activities]
   before_action :authenticate_user!, only: %i[submitted_new_location]
   rate_limit to: 5, within: 10.minutes, only: :contact_sent
@@ -102,6 +116,10 @@ limit 25")
         ]
       ).order(:location_count).reverse_order.group(:city, :state).limit(10)
     end
+
+    @user_submissions_type_count = Rails.cache.fetch("user_submissions_type_count_cache", expires_in: 1.hour) do
+      UserSubmission.where(deleted_at: nil).group(:submission_type).count
+    end.transform_keys { |k| SUBMISSION_TYPE_LABELS.fetch(k, k) }
 
     @top_cities_by_machine = Rails.cache.fetch("top_cities_by_machine_cache", expires_in: 1.hour) do
       xid = Arel::Table.new("location_machine_xrefs")
