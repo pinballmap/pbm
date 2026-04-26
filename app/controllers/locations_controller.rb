@@ -120,12 +120,12 @@ class LocationsController < ApplicationController
     if @locations_size == 0
       @locations = []
     elsif @locations_size == 1
-      @pagy, @locations = pagy(apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance).includes(:location_type))
+      @pagy, @locations = pagy(apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance).includes(:location_type, :machines))
     else
       if @region.present?
-        @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count")).includes(:location_type), limit: 50, request_path: "/region_location_load")
+        @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count")).includes(:location_type, :machines), limit: 50, request_path: "/region_location_load")
       else
-        @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count")).includes(:location_type), limit: 50, request_path: "/map_location_load")
+        @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count")).includes(:location_type, :machines), limit: 50, request_path: "/map_location_load")
       end
     end
   end
@@ -137,12 +137,12 @@ class LocationsController < ApplicationController
     if @locations_size == 0
       @locations = []
     elsif @locations_size == 1
-      @pagy, @locations = pagy(apply_scopes(Location).distinct.includes(:location_type))
+      @pagy, @locations = pagy(apply_scopes(Location).distinct.includes(:location_type, :machines))
     else
       if @region.present?
-        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "region_id" ]).distinct.order("locations.name").includes(:location_type), limit: 50, request_path: "/region_location_load")
+        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "region_id" ]).distinct.order("locations.name").includes(:location_type, :machines), limit: 50, request_path: "/region_location_load")
       else
-        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).distinct.order("locations.name").includes(:location_type), limit: 50, request_path: "/map_location_load")
+        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).distinct.order("locations.name").includes(:location_type, :machines), limit: 50, request_path: "/map_location_load")
       end
     end
   end

@@ -409,7 +409,7 @@ module Api
           methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank num_machines]
           except = %i[zone_id created_at region_id is_stern_army country]
         elsif params[:no_details] == "2"
-          location = Location.find(params[:id])
+          location = Location.includes(:machines).find(params[:id])
           includes = []
           methods = %i[machine_names_first_no_year num_machines]
           except = %i[phone website updated_at region_id description operator_id date_last_updated last_updated_by_user_id ic_active zone_id created_at is_stern_army country users_count user_submissions_count place_id]

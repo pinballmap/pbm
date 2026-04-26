@@ -12,7 +12,7 @@ class MapsController < ApplicationController
 
     params[:user_faved] = user.id if user && !params[:user_faved].blank?
 
-    if !params[:by_location_id].blank? && (loc = Location.where(id: params[:by_location_id]).first)
+    if !params[:by_location_id].blank? && (loc = Location.includes(:machines).where(id: params[:by_location_id]).first)
       @title_params[:title] = "#{loc.name} - Pinball Map"
       machine_length = " - " + loc.machine_count.to_s + " " + "machine".pluralize(loc.machine_count) unless loc.machine_count.zero?
       machine_list = " - " + loc.machine_names_first_no_year.join(", ") unless loc.machine_names_first_no_year.empty?
@@ -90,9 +90,9 @@ class MapsController < ApplicationController
     if @locations_size == 0 && @results_init == true
       @locations = []
     elsif @locations_size == 1 && @results_init == true
-      @pagy, @locations = pagy(apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance).includes(:location_type))
+      @pagy, @locations = pagy(apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance).includes(:location_type, :machines))
     else
-      @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count")).includes(:location_type), limit: 50, request_path: "/nearby_locations_load")
+      @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count")).includes(:location_type, :machines), limit: 50, request_path: "/nearby_locations_load")
     end
 
     if @results_init == true
@@ -126,9 +126,9 @@ class MapsController < ApplicationController
     if @locations_size == 0 && @results_init == true
       @locations = []
     elsif @locations_size == 1 && @results_init == true
-      @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).includes(:location_type))
+      @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).includes(:location_type, :machines))
     else
-      @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).where(city_condition).where(zone_condition).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order(sort_order).includes(:location_type), limit: 50, request_path: "/region_location_load")
+      @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).where(city_condition).where(zone_condition).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order(sort_order).includes(:location_type, :machines), limit: 50, request_path: "/region_location_load")
     end
 
     if @results_init == true
@@ -161,9 +161,9 @@ class MapsController < ApplicationController
     if @locations_size == 0 && @results_init == true
       @locations = []
     elsif @locations_size == 1 && @results_init == true
-      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).includes(:location_type))
+      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).includes(:location_type, :machines))
     else
-      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order(sort_order).includes(:location_type), limit: 50, request_path: "/get_bounds_load")
+      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order(sort_order).includes(:location_type, :machines), limit: 50, request_path: "/get_bounds_load")
     end
 
     if @results_init == true
@@ -235,9 +235,9 @@ class MapsController < ApplicationController
     if @locations_size == 0 && @results_init == true
       @locations = []
     elsif @locations_size == 1 && @results_init == true
-      @pagy, @locations = pagy(apply_scopes(Location).distinct.includes(:location_type))
+      @pagy, @locations = pagy(apply_scopes(Location).distinct.includes(:location_type, :machines))
     else
-      @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).distinct.order(sort_order).includes(:location_type), limit: 50, request_path: "/map_location_load")
+      @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).distinct.order(sort_order).includes(:location_type, :machines), limit: 50, request_path: "/map_location_load")
     end
 
     if @results_init == true
@@ -266,9 +266,9 @@ class MapsController < ApplicationController
     if @locations_size == 0 && @results_init == true
       @locations = []
     elsif @locations_size == 1 && @results_init == true
-      @pagy, @locations = pagy(Location.where(operator_id: params[:by_operator_id]).includes(:location_type))
+      @pagy, @locations = pagy(Location.where(operator_id: params[:by_operator_id]).includes(:location_type, :machines))
     else
-      @pagy, @locations = pagy(Location.where(operator_id: params[:by_operator_id]).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order(sort_order).includes(:location_type).limit(100))
+      @pagy, @locations = pagy(Location.where(operator_id: params[:by_operator_id]).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order(sort_order).includes(:location_type, :machines).limit(100))
     end
 
     if @results_init == true
@@ -291,7 +291,7 @@ class MapsController < ApplicationController
     @location_count = @locations.count
     @lmx_count = @region.machines_count
 
-    if !params[:by_location_id].blank? && (loc = Location.where(id: params[:by_location_id]).first)
+    if !params[:by_location_id].blank? && (loc = Location.includes(:machines).where(id: params[:by_location_id]).first)
       @title_params[:title] = "#{loc.name} - #{@region.full_name} Pinball Map"
       machine_length = " - " + loc.machine_count.to_s + " " + "machine".pluralize(loc.machine_count) unless loc.machine_count.zero?
       machine_list = " - " + loc.machine_names_first_no_year.join(", ") unless loc.machine_names_first_no_year.empty?
