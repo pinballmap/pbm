@@ -112,7 +112,7 @@ module Api
             "locations",
           )
         elsif params[:by_is_stern_army]
-          json_data = Rails.cache.fetch("stern_army_locations", expires_in: 1.day) do
+          json_data = Rails.cache.fetch("stern_army_locations", expires_in: 1.hour) do
             locations.as_json(methods: %i[machine_names num_machines], root: false, except: except)
           end
           render json: { "locations" => json_data }, status: 200

@@ -125,10 +125,6 @@ class Location < ApplicationRecord
     joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
   }
 
-  after_update_commit do
-    Rails.cache.delete("stern_army_locations") if saved_change_to_is_stern_army?
-  end
-
   before_destroy do |record|
     Event.where(location_id: record.id).destroy_all
     LocationPictureXref.where(location_id: record.id).destroy_all
