@@ -90,13 +90,15 @@ module Api
       formats [ "json" ]
       def index
         return return_response(FILTERING_REQUIRED_MSG, "errors") unless %i[region by_location_name by_location_id by_machine_id by_machine_single_id by_machine_group_id by_machine_id_ic by_machine_single_id_ic by_ipdb_id by_opdb_id by_machine_name by_city_id by_city_no_state by_zone_id by_operator_id by_type_id by_is_stern_army regionless_only place_id].any? { params[_1].present? }
+        return return_response("no_details param is required with by_is_stern_army", "errors") if params[:by_is_stern_army].present? && params[:no_details].blank?
 
         except = params[:no_details] ? %i[phone website description created_at updated_at date_last_updated last_updated_by_user_id region_id users_count user_submissions_count] : nil
 
         locations = nil
 
         if params[:no_details]
-          locations = apply_scopes(Location).includes(:last_updated_by_user).order("locations.name").uniq
+          no_details_includes = params[:by_is_stern_army] ? [ :machines ] : [ :last_updated_by_user ]
+          locations = apply_scopes(Location).includes(no_details_includes).order("locations.name").uniq
         elsif params[:with_lmx] && !params[:regionless_only]
           locations = apply_scopes(Location).includes({ location_machine_xrefs: %i[user machine_conditions] }, :machines, :last_updated_by_user).order("locations.name").uniq
         elsif params[:place_id].blank?
@@ -110,14 +112,10 @@ module Api
             "locations",
           )
         elsif params[:by_is_stern_army]
-          return_response(
-            locations,
-            "locations",
-            [],
-            %i[machine_names last_updated_by_username num_machines],
-            200,
-            except
-          )
+          json_data = Rails.cache.fetch("stern_army_locations", expires_in: 1.day) do
+            locations.as_json(methods: %i[machine_names num_machines], root: false, except: except)
+          end
+          render json: { "locations" => json_data }, status: 200
         elsif params[:with_lmx] && !params[:regionless_only]
           return_response(
             locations,

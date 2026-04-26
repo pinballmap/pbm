@@ -124,7 +124,7 @@ describe Api::V1::LocationsController, type: :request do
       FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'la'), name: 'Cleo', is_stern_army: 't')
       FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'chicago'), name: 'Bawb')
 
-      get '/api/v1/locations.json?by_is_stern_army=1'
+      get '/api/v1/locations.json?by_is_stern_army=1&no_details=1'
 
       expect(response.body).to include('Cleo')
       expect(response.body).to_not include('Bawb')
@@ -234,7 +234,7 @@ describe Api::V1::LocationsController, type: :request do
 
     it 'respects is_stern_army filter' do
       FactoryBot.create(:location, region: @region, name: 'Stern Army Place', is_stern_army: 't')
-      get "/api/v1/region/#{@region.name}/locations.json", params: { by_is_stern_army: 1 }
+      get "/api/v1/region/#{@region.name}/locations.json", params: { by_is_stern_army: 1, no_details: 1 }
 
       expect(response.body).to include('Stern Army Place')
       expect(response.body).to_not include('Satchmo')
