@@ -13,7 +13,8 @@ unless Rails.env.test?
       req.path.include?('wp-login') ||
       req.path.include?('wp-includes') ||
       req.path.include?('poohbear') ||
-      req.path.include?('sleep(')
+      req.path.include?('sleep(') ||
+      req.path.include?('.php')
     end
   end
 end

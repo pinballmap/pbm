@@ -85,6 +85,7 @@ server {
 
 map $http_user_agent $limit_key {
   default "";
+  "~*externalhit" "externalhit";
   "~*externalagent" "externalagent";
   "~*externalfetcher" "externalfetcher";
   "~*semrushbot" "semrushbot";
@@ -94,7 +95,7 @@ map $http_user_agent $limit_key {
   "~*meta-webindexer" "meta-webindexer";
 }
 
-limit_req_zone $limit_key zone=bots_nginx:10m rate=4r/m;
+limit_req_zone $limit_key zone=bots_nginx:10m rate=10r/m;
 
 server {
   listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ end }};
