@@ -20,6 +20,8 @@ class UsersController < ApplicationController
     search_param = params[:id]
 
     @user = search_param.to_i.to_s == search_param ? User.find(search_param) : User.find_by_username(search_param)
+    @machine_scores_stats = @user.profile_machine_scores_stats
+    @edited_locations = @user.profile_list_of_edited_locations
   end
 
   def update_user_flag

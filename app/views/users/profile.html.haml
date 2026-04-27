@@ -67,42 +67,40 @@
           %span.stats
             #{number_with_delimiter(@user.num_locations_edited,:delimiter => ",")}
         %span.stats_text Locations Edited
-      - if !@user.profile_list_of_edited_locations.empty?
+      - if @edited_locations.any?
         %div.darkgrey.stats.font18
           %div.ml_5.bold
             List of Locations Edited (with your last 50 updates):
           %span.stats_list
-            - @user.profile_list_of_edited_locations.each do |location_array|
-              - location_id, location_name = location_array
+            - @edited_locations.each do |location_id, location_name|
               %span.location_edited.mb_5
                 = link_to(location_name, map_path + "/?by_location_id=#{location_id}")
 
-      - if !@user.profile_list_of_highest_scores.empty?
+      - if @machine_scores_stats.any?
         %div.darkgrey.stats.font18
           %div.ml_5.bold
             Your High Scores:
           %span.stats_list
-            - @user.profile_list_of_highest_scores.each do |highest_score|
-              - count = @user.profile_machine_score_count(highest_score.machine_id)
+            - @machine_scores_stats.each do |ms|
               %div.bold.font22.mt_10.mb_8.underline
-                #{highest_score.machine.name}
+                #{ms[:machine_name]}
               %div.ml_8.mb_20
                 %span.font18
-                  - if (count > 1)
+                  - if ms[:count] > 1
                     %span.bold.inline Highest:
-                  #{number_with_precision(highest_score.score, precision: 0, delimiter: ',')}
-                - if (count > 1)
+                  #{number_with_precision(ms[:list].first, precision: 0, delimiter: ',')}
+                - if ms[:count] > 1
                   %span.pt_10.bold
                     All scores:
-                  - @user.profile_list_of_machine_scores(highest_score.machine_id).each do |score|
+                  - ms[:list].each do |score|
                     %span{:style => "padding-left: 5px"}
                       #{number_with_precision(score, precision: 0, delimiter: ',')}
                   %span.pt_10
                     %span.bold.inline Average:
-                    #{number_with_precision(@user.profile_average_machine_score(highest_score.machine_id), precision: 0, delimiter: ',')}
+                    #{number_with_precision(ms[:average], precision: 0, delimiter: ',')}
                   %span.pt_10
                     %span.bold.inline Count:
-                    #{number_with_precision(count, precision: 0, delimiter: ',')}
+                    #{number_with_precision(ms[:count], precision: 0, delimiter: ',')}
 
       - if !@user.list_fave_locations.empty?
         %div.darkgrey.stats.font18

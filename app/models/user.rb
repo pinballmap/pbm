@@ -92,21 +92,22 @@ class User < ApplicationRecord
   end
 
   def profile_list_of_high_scores
-    msx_submissions = UserSubmission.where(user: self, submission_type: UserSubmission::NEW_SCORE_TYPE, deleted_at: nil).order(created_at: "DESC").limit(50)
-
     high_score_hash = {}
-    msx_submissions.each do |msx_sub|
-      score = "UNKNOWN"
-      if msx_sub.submission =~ /added a high score of (.*) on (.*) at (.*)$/i
-        score = $1
-        machine_name = $2
-        location_name = $3
+
+    UserSubmission
+      .where(user: self, submission_type: UserSubmission::NEW_SCORE_TYPE, deleted_at: nil)
+      .order(created_at: "DESC")
+      .limit(50)
+      .pluck(:submission, :created_at)
+      .each do |submission_text, created_at|
+        next unless submission_text =~ /added a high score of (.*) on (.*) at (.*)$/i
+
+        score, machine_name, location_name = $1, $2, $3
+
+        next if high_score_hash[machine_name] && high_score_hash[machine_name][2].delete(",").to_i >= score.delete(",").to_i
+
+        high_score_hash[machine_name] = [ location_name, machine_name, number_with_precision(score, precision: 0, delimiter: ","), created_at.strftime("%b %d, %Y") ]
       end
-
-      next unless score && machine_name && location_name
-
-      high_score_hash[machine_name] = [ location_name, machine_name, number_with_precision(score, precision: 0, delimiter: ","), msx_sub.created_at.strftime("%b %d, %Y") ] if !high_score_hash[machine_name] || high_score_hash[machine_name][2].delete(",").to_i < score.delete(",").to_i
-    end
 
     high_score_hash.values
   end
@@ -143,39 +144,34 @@ class User < ApplicationRecord
   end
 
   def profile_machine_scores_stats
-    list_hash = {}
-    hash = {}
+    all_scores = MachineScoreXref
+      .where(user: self)
+      .where.not(machine_id: nil)
+      .joins(:machine)
+      .select("machine_score_xrefs.machine_id, machines.name AS machine_name, machine_score_xrefs.score")
+      .order("machines.name, machine_score_xrefs.score DESC")
 
-    profile_list_of_highest_scores.each do |hs|
-      count = profile_machine_score_count(hs.machine_id)
-      average = profile_average_machine_score(hs.machine_id)
-      list_hash = profile_list_of_machine_scores(hs.machine_id).each do |lh|
-        lh
-      end
-      machine_name = Machine.where(id: hs.machine_id).pluck(:name).first
-
-      hash[hs.machine_id] = {
-        machine_id: hs.machine_id,
-        machine_name: machine_name,
-        average:    average,
-        count:      count,
-        list:  list_hash
+    all_scores.group_by(&:machine_id).map do |machine_id, records|
+      scores = records.map(&:score)
+      {
+        machine_id: machine_id,
+        machine_name: records.first.machine_name,
+        average: (scores.sum.to_f / scores.size).round,
+        count: scores.size,
+        list: scores
       }
     end
-
-    hash.values
   end
 
   def profile_list_of_edited_locations
-    user_submissions = UserSubmission.where(user: self).order(created_at: "DESC").includes([ :location ]).limit(50)
-
-    user_submission_locations_hash = {}
-    user_submissions.each do |user_sub|
-      next if user_sub.location.nil? || user_sub.location_name.nil?
-
-      user_submission_locations_hash[user_sub.location_id] = [ user_sub.location_id, user_sub.location_name ]
-    end
-    user_submission_locations_hash.values
+    UserSubmission
+      .where(user: self)
+      .where.not(location_id: nil)
+      .where.not(location_name: nil)
+      .order(created_at: "DESC")
+      .limit(50)
+      .pluck(:location_id, :location_name)
+      .uniq(&:first)
   end
 
   def edited_location_submissions
