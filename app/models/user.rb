@@ -147,6 +147,7 @@ class User < ApplicationRecord
     all_scores = MachineScoreXref
       .where(user: self)
       .where.not(machine_id: nil)
+      .where.not(score: nil)
       .joins(:machine)
       .select("machine_score_xrefs.machine_id, machines.name AS machine_name, machine_score_xrefs.score")
       .order("machines.name, machine_score_xrefs.score DESC")
