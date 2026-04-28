@@ -288,6 +288,10 @@ class Location < ApplicationRecord
     operator&.email.blank? ? false : true
   end
 
+  def operator_website
+    operator&.website
+  end
+
   def operator_email_opt_in
     return unless operator
     operator.email if operator.email_opt_in? && operator.email.present?
