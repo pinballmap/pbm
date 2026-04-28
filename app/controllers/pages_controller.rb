@@ -189,7 +189,9 @@ limit 25")
 
   def store; end
 
-  def faq; end
+  def faq
+    @operators_count = Operator.all.count
+  end
 
   def donate; end
 

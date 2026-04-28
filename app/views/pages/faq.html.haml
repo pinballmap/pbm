@@ -4,6 +4,18 @@
       %p.red.bold.p1 Pinball Map FAQ
       %p== This page contains helpful app and website support information. If you have a question, comment, or suggestion, #{link_to 'contact us', about_path('portland')}. 
       %p== #{link_to 'Click here to read our privacy policy', privacy_path}.
+      %p Jump to FAQ sections:
+      %ul
+        %li
+          =link_to 'Updating the Map', '#updating'
+        %li
+          =link_to 'Data Usage', '#data-usage'
+        %li
+          =link_to 'Data Management', '#data-management'
+        %li
+          =link_to 'Operators', '#operators'
+        %li
+          =link_to 'Users', '#users'
       %p.font20.center.bold.pbt_5.bg_lightpurple#updating
         =link_to 'Updating the Map', '#updating', :class => "no_underline brightpurple"
       %p.question#9
@@ -87,15 +99,32 @@
           FAQ item.
       %p.font20.center.bold.pbt_5.bg_lightpurple#operators
         =link_to 'Operators', '#operators', :class => "no_underline brightpurple"
-      %p.question#11 
-        =link_to 'How do I get listed as an operator?', '#11', :class => "no_underline"
       %p.answer
-        = link_to 'Contact us', about_path('portland')
-        and we'll add you. In your message, tell us the name of your business and whether you want to be notified via email when users leave comments on your machines. If you have a website, give us that link and your business name will appear as a hyperlink.
+        #{@operators_count} operators are listed on Pinball Map. They use it to easily track and update all of their locations. And also get notified via email when users leave comments on their machines.
       %p.answer
         Check this
         = link_to 'blog post', 'https://blog.pinballmap.com/2015/10/22/operators-we-want-you/', :target => '_blank'
         about the benefits of being listed in our system, and the tools available!
+      %p.question#11 
+        =link_to 'How do I get listed as an operator?', '#11', :class => "no_underline"
+      %p.answer
+        = link_to 'Contact us', about_path('portland')
+        and we'll add you. In your message, tell us:
+        %ul
+          %li The name of your business.
+          %li
+            Whether you want to be
+            %span.bold notified via email
+            when users leave comments on your machines (once a day email digest).
+          %li If you have a website, give us the link and your business name will appear as a hyperlink.
+          %li
+            If you want users to be able to
+            %span.bold directly text/call
+            you (if so, include your number).
+          %li
+            If you want users to be able to
+            %span.bold directly email
+            you.
       %hr
       %p.question#17
         =link_to 'How do I tag myself as the operator at a location?', '#17', :class => "no_underline"
