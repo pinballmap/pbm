@@ -382,6 +382,8 @@ RailsAdmin.config do |config|
       field :email, :string
       field :website, :string
       field :phone, :string
+      field :email_opt_in, :boolean
+      field :phone_opt_in, :boolean
     end
     show do
       field :name, :string
@@ -389,6 +391,8 @@ RailsAdmin.config do |config|
       field :email, :string
       field :website, :string
       field :phone, :string
+      field :email_opt_in, :boolean
+      field :phone_opt_in, :boolean
       field :updated_at, :datetime
     end
     edit do
@@ -399,6 +403,16 @@ RailsAdmin.config do |config|
       field :region_id do
         render do
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, :object_type => 'operator'}
+        end
+      end
+      field :email_opt_in, :boolean do
+        visible do
+          bindings[:view]._current_user.is_super_admin
+        end
+      end
+      field :phone_opt_in, :boolean do
+        visible do
+          bindings[:view]._current_user.is_super_admin
         end
       end
     end

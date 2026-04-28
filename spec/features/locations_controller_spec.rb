@@ -120,6 +120,38 @@ describe LocationsController do
     end
   end
 
+  describe 'operator direct contact icons', type: :feature, js: true do
+    it 'shows operator email contact icon if they have opted in and have an email' do
+      operator = FactoryBot.create(:operator, name: "Pop Shoveit", email: "pop@shove.it", email_opt_in: true)
+
+      location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo', operator: operator)
+
+      visit '/portland/?by_location_id=' + location.id.to_s
+
+      expect(page).to have_css("img.copy_icon[src*='email-outline']")
+    end
+
+    it 'shows operator phone contact icon if they have opted in and have a phone number' do
+      operator = FactoryBot.create(:operator, name: "Pop Shoveit", email: "pop@shove.it", email_opt_in: true, phone: "888-999-1111", phone_opt_in: true)
+
+      location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo', operator: operator)
+
+      visit '/portland/?by_location_id=' + location.id.to_s
+
+      expect(page).to have_css("img.copy_icon[src*='phone']")
+    end
+
+    it 'does not show operator email contact icon if they have not opted in' do
+      operator = FactoryBot.create(:operator, name: "Pop Shoveit", email: "pop@shove.it", email_opt_in: false, phone: "888-999-1111", phone_opt_in: true)
+
+      location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo', operator: operator)
+
+      visit '/portland/?by_location_id=' + location.id.to_s
+
+      expect(page).to_not have_css("img.copy_icon[src*='email-outline']")
+    end
+  end
+
   describe 'stale location notice', type: :feature, js: true do
     before(:each) do
     end

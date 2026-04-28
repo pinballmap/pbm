@@ -11,16 +11,23 @@
     = form_tag update_machine_condition_location_machine_xrefs_path(:action => 'update_machine_condition', :id => lmx.id), :id => "update_machine_condition_#{lmx.id}", :class => "update_machine_condition_lmx", :method => 'patch' do
       = hidden_field_tag :id, lmx.id
       = text_area_tag "new_machine_condition_#{lmx.id}", '', :cols => 20, :rows => 3, :class => 'edit_mode', :placeholder => '(note: if this machine is gone, please just remove it. no need to leave a comment saying it is gone)'
+      - if lmx.location.operator_email_opt_in || lmx.location.operator_phone_opt_in
+        %div.center.bold{:style => "margin: 12px;"}
+          Contact operator directly:
+          - if lmx.location.operator_email_opt_in
+            = image_tag('icons/email-outline.svg', class: 'copy_icon', data: { copy: lmx.location.operator_email_opt_in })
+          - if lmx.location.operator_phone_opt_in
+            = image_tag('icons/phone.svg', class: 'copy_icon', data: { copy: lmx.location.operator_phone_opt_in })
       %div.brightpurple{:style => "margin: 5px;line-height: 16px;"}
         %span.bold Everyone:
-        Sometimes it's better to tell technicians about small and very temporary issues on-site (note or call) rather than leaving them "on the record" here.
+        It is sometimes better to tell technicians about small and very temporary issues on-site (note or call) rather than leaving them "on the record" here.
         %br/
         %br/
         That said, please be descriptive about machine issues and also considerate of the time and effort needed to maintain machines.
         %br/
         %br/
         %span.bold Operators:
-        if you've fixed an issue, please leave a comment saying so.
+        if you've fixed an issue, please leave a comment saying so, so that everyone knows how great you are.
       %br/
       = submit_tag 'Save', :id => "save_machine_condition_#{lmx.id}", :class => "save_button"
     = submit_tag 'Cancel', :id => "cancel_machine_condition_#{lmx.id}", :class => "cancel_button"

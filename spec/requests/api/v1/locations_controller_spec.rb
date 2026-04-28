@@ -1223,6 +1223,7 @@ describe Api::V1::LocationsController, type: :request do
       FactoryBot.create(:machine_condition, location_machine_xref_id: lmx.id, comment: 'foo bar', user: @user)
       FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, score: 567_890)
       FactoryBot.create(:location_machine_xref, deleted_at: Time.current, location: @location, machine: FactoryBot.create(:machine, id: 8888, name: 'Deleted Pro'))
+      @location.update(operator: FactoryBot.create(:operator, name: 'Pop Shoveit', email: 'pop@shove.it', email_opt_in: true, phone: '888-999-1111', phone_opt_in: true))
     end
 
     it 'returns all locations within region scope along with lmx data' do
@@ -1253,6 +1254,8 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to include('7777')
       expect(response.body).to_not include('foo bar')
       expect(response.body).to_not include('567890')
+      expect(response.body).to include('operator_email_opt_in')
+      expect(response.body).to include('operator_phone_opt_in')
 
       get "/api/v1/locations/#{@location.id}.json", params: { no_details: 2 }
 
@@ -1262,6 +1265,8 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to_not include('7777')
       expect(response.body).to_not include('foo bar')
       expect(response.body).to_not include('567890')
+      expect(response.body).to_not include('operator_email_opt_in')
+      expect(response.body).to_not include('operator_phone_opt_in')
     end
 
     it 'respects metadata_only and omits all lmx' do

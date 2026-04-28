@@ -401,7 +401,7 @@ module Api
         if params[:no_details] == "1"
           location = Location.includes(:location_machine_xrefs, :last_updated_by_user).find(params[:id])
           includes = [ :location_machine_xrefs ]
-          methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank num_machines]
+          methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank operator_has_email operator_email_opt_in operator_phone_opt_in num_machines]
           except = %i[zone_id created_at region_id is_stern_army country]
         elsif params[:metadata_only] == "1"
           location = Location.includes(:last_updated_by_user).find(params[:id])

@@ -14,9 +14,17 @@ module Api
       formats [ "json" ]
       def index
         operators = apply_scopes(Operator).order("name")
-        except = params[:no_details] ? %i[email phone created_at updated_at region_id] : %i[email phone created_at updated_at]
+        if params[:no_details] == "1"
+          except = %i[email phone created_at email_opt_in phone_opt_in updated_at region_id]
+          includes = [:operator_has_email]
+        elsif params[:no_details] == "2"
+          except = %i[email phone website email_opt_in phone_opt_in created_at updated_at region_id]
+          includes = []
+        else
+          except = %i[email phone email_opt_in phone_opt_in created_at updated_at]
+        end
 
-        return_response(operators, "operators", [], %i[operator_has_email], 200, except)
+        return_response(operators, "operators", [], includes, 200, except)
       end
 
       api :GET, "/api/v1/operators/:id.json", "Fetch information for a single operator"

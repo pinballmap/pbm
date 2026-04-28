@@ -666,3 +666,10 @@ function show_new_machine_message() {
 document.addEventListener('DOMContentLoaded', function() {
   updateThemeToggleButton();
 });
+
+$(document).on('click', '.copy_icon', function () {
+  var val = $(this).data('copy');
+  navigator.clipboard.writeText(val).then(function () {
+    show_ajax_message('Copied to clipboard!', 'notice');
+  });
+});

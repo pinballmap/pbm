@@ -46,7 +46,7 @@ describe Api::V1::OperatorsController, type: :request do
 
   describe '#show' do
     it 'sends back appropriate operator metadata' do
-      operator = FactoryBot.create(:operator, region: @region, name: 'Sass', email: 'foo@bar.com', phone: '111-222-3333')
+      operator = FactoryBot.create(:operator, region: @region, name: 'Sass', email: 'foo@bar.com', email_opt_in: true, phone_opt_in: false, phone: '111-222-3333')
 
       get "/api/v1/operators/#{operator.id}.json"
       expect(response).to be_successful

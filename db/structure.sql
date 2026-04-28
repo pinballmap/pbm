@@ -634,7 +634,9 @@ CREATE TABLE public.operators (
     website character varying(255),
     phone character varying(255),
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    email_opt_in boolean DEFAULT false NOT NULL,
+    phone_opt_in boolean DEFAULT false NOT NULL
 );
 
 
@@ -2857,6 +2859,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260428182123'),
 ('20260411000001'),
 ('20260411000000'),
 ('20260210182823'),

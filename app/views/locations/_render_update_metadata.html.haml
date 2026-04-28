@@ -35,11 +35,15 @@
     %div.operator
       = image_tag('icons/wrench.svg', :class => 'meta_icon')
       %span.darkgrey Operated by:
-      - if ((l.operator.website && l.operator.website.empty?) || (!l.operator.website))
-        %span &nbsp;#{l.operator.name}
-      - else
-        %span
-          =link_to "#{l.operator.name}", "#{l.operator.website}", :target => "_blank"
+      %span
+        - if l.operator.website.blank?
+          &nbsp;#{l.operator.name}
+        - else
+          = link_to l.operator.name, l.operator.website, target: '_blank'
+        - if l.operator_email_opt_in
+          = image_tag('icons/email-outline.svg', class: 'copy_icon', data: { copy: l.operator_email_opt_in })
+        - if l.operator_phone_opt_in
+          = image_tag('icons/phone.svg', class: 'copy_icon', data: { copy: l.operator_phone_opt_in })
     - if (l.operator.operator_has_email)
       %div.operator_comments.darkgrey (This operator receives machine comments)
     - else

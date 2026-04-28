@@ -284,6 +284,20 @@ class Location < ApplicationRecord
     last_updated_by_user&.contributor_rank
   end
 
+  def operator_has_email
+    operator&.email.blank? ? false : true
+  end
+
+  def operator_email_opt_in
+    return unless operator
+    operator.email if operator.email_opt_in? && operator.email.present?
+  end
+
+  def operator_phone_opt_in
+    return unless operator
+    operator.phone if operator.phone_opt_in? && operator.phone.present?
+  end
+
   def confirm(user)
     recent_confirm = UserSubmission.where(submission_type: "confirm_location", location: self).order(created_at: :desc).pluck(:created_at).first
 
