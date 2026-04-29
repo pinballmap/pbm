@@ -16,7 +16,7 @@ module Api
         operators = apply_scopes(Operator).order("name")
         if params[:no_details] == "1"
           except = %i[email phone created_at email_opt_in phone_opt_in updated_at region_id]
-          includes = [:operator_has_email]
+          includes = [ :operator_has_email ]
         elsif params[:no_details] == "2"
           except = %i[email phone website email_opt_in phone_opt_in created_at updated_at region_id]
           includes = []
