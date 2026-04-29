@@ -405,16 +405,8 @@ RailsAdmin.config do |config|
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, :object_type => 'operator'}
         end
       end
-      field :email_opt_in, :boolean do
-        visible do
-          bindings[:view]._current_user.is_super_admin
-        end
-      end
-      field :phone_opt_in, :boolean do
-        visible do
-          bindings[:view]._current_user.is_super_admin
-        end
-      end
+      field :email_opt_in, :boolean
+      field :phone_opt_in, :boolean
     end
     create do
       field :name, :string
