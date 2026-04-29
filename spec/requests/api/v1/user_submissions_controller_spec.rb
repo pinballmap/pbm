@@ -65,6 +65,25 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(json.count).to eq(2)
     end
 
+    it 'respects user_faved filter' do
+      user = FactoryBot.create(:user)
+      faved_location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606')
+      unfaved_location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606')
+
+      FactoryBot.create(:user_fave_location, user: user, location: faved_location)
+
+      FactoryBot.create(:user_submission, location: faved_location, lat: faved_location.lat, lon: faved_location.lon, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'faved', location_name: faved_location.name)
+      FactoryBot.create(:user_submission, location: unfaved_location, lat: unfaved_location.lat, lon: unfaved_location.lon, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'not faved', location_name: unfaved_location.name)
+
+      get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606', user_faved: user.id }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(1)
+      expect(json.first['submission']).to eq('faved')
+    end
+
     it 'respects date range filtering' do
       location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606')
 
@@ -319,6 +338,25 @@ describe Api::V1::UserSubmissionsController, type: :request do
       json = JSON.parse(response.body)['user_submissions']
 
       expect(json.count).to eq(2)
+    end
+
+    it 'respects user_faved filter' do
+      user = FactoryBot.create(:user)
+      faved_location = FactoryBot.create(:location)
+      unfaved_location = FactoryBot.create(:location)
+
+      FactoryBot.create(:user_fave_location, user: user, location: faved_location)
+
+      FactoryBot.create(:user_submission, region: @region, submission_type: 'new_lmx', location: faved_location, submission: 'faved', location_name: faved_location.name)
+      FactoryBot.create(:user_submission, region: @region, submission_type: 'new_lmx', location: unfaved_location, submission: 'not faved', location_name: unfaved_location.name)
+
+      get "/api/v1/user_submissions.json", params: { user_faved: user.id }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(1)
+      expect(json.first['submission']).to eq('faved')
     end
 
     it 'excludes a submission_type when restrict_to param (alone) is included' do

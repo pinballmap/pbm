@@ -16,12 +16,14 @@ module Api
       param :restrict_to, String, desc: "Restrict this specific submission type to a single user. Requires user_id param to be included; if user_id param is not included, then the submission type specified here is excluded completely. This is used in the app to show submission types from everyone except the high scores only from the current user, or no scores if not signed in", required: false
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       param :machine_id, Integer, desc: "Limit results by machine. Multiple machines can be chained as ;machine_id[]=111;machine_id[]=222 etc", required: false
+      param :user_faved, Integer, desc: "Limit results to locations favorited by this user ID", required: false
       def index
         submission_type, submission_type_restrict = build_submission_types
 
         region_id = Region.find_by_name(params[:region].downcase).id if params[:region].present?
 
         user_submissions = apply_type_and_user_filter(base_user_submissions_scope, submission_type, submission_type_restrict)
+        user_submissions = apply_faved_filter(user_submissions)
 
         user_submissions = user_submissions.where(region_id: region_id) unless params[:region].blank?
         user_submissions = user_submissions.where(machine_id: params[:machine_id]) unless params[:machine_id].blank?
@@ -142,12 +144,14 @@ module Api
       param :restrict_to, String, desc: "Restrict this specific submission type to a single user. Requires user_id param to be included; if user_id param is not included, then the submission type specified here is excluded completely. This is used in the app to show submission types from everyone except the high scores only from the current user, or no scores if not signed in", required: false
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       param :machine_id, Integer, desc: "Limit results by machine. Multiple machines can be chained as ;machine_id[]=111;machine_id[]=222 etc", required: false
+      param :user_faved, Integer, desc: "Limit results to locations favorited by this user ID", required: false
       def list_within_range
         max_distance = params[:max_distance].blank? ? MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS : [ 250, params[:max_distance].to_i ].min
 
         submission_type, submission_type_restrict = build_submission_types
 
         user_submissions = apply_type_and_user_filter(base_user_submissions_scope, submission_type, submission_type_restrict)
+        user_submissions = apply_faved_filter(user_submissions)
 
         user_submissions = user_submissions.where(region_id: params[:region_id]) unless params[:region_id].blank?
         user_submissions = user_submissions.where(machine_id: params[:machine_id]) unless params[:machine_id].blank?
@@ -192,6 +196,12 @@ module Api
         end
 
         [ types, restrict ]
+      end
+
+      def apply_faved_filter(scope)
+        return scope if params[:user_faved].blank?
+        faved_location_ids = UserFaveLocation.where(user_id: params[:user_faved]).select(:location_id)
+        scope.where(location_id: faved_location_ids)
       end
 
       def apply_type_and_user_filter(scope, submission_type, submission_type_restrict)
