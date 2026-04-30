@@ -319,13 +319,13 @@ class Flag
 
   def self.grouped_list
     misc      = FLAG_LIST.select { |k, _| MISC_CODES.include?(k) }
-    states    = FLAG_LIST.select { |k, _| k.start_with?('us-') }
-    countries = FLAG_LIST.reject { |k, _| MISC_CODES.include?(k) || k.start_with?('us-') }
+    states    = FLAG_LIST.select { |k, _| k.start_with?("us-") }
+    countries = FLAG_LIST.reject { |k, _| MISC_CODES.include?(k) || k.start_with?("us-") }
 
     [
-      ['Misc',      misc.map      { |k, v| [v, k] }],
-      ['Countries', countries.map { |k, v| [v, k] }],
-      ['US States', states.map    { |k, v| [v, k] }]
+      [ "Misc",      misc.map      { |k, v| [ v, k ] } ],
+      [ "Countries", countries.map { |k, v| [ v, k ] } ],
+      [ "US States", states.map    { |k, v| [ v, k ] } ]
     ]
   end
 
