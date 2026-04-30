@@ -1,5 +1,8 @@
-class Country
-  COUNTRY_ISO = {
+class Flag
+  FLAG_LIST = {
+    "pride" => "Pride",
+    "transgender" => "Transgender",
+    "pirate" => "Pirate",
     "ad" => "Andorra",
     "ae" => "United Arab Emirates",
     "af" => "Afghanistan",
@@ -308,15 +311,29 @@ class Country
     "zw" => "Zimbabwe"
   }.freeze
 
+  MISC_CODES = %w[pride transgender pirate eu un].freeze
+
   def self.list
-    COUNTRY_ISO
+    FLAG_LIST
+  end
+
+  def self.grouped_list
+    misc      = FLAG_LIST.select { |k, _| MISC_CODES.include?(k) }
+    states    = FLAG_LIST.select { |k, _| k.start_with?('us-') }
+    countries = FLAG_LIST.reject { |k, _| MISC_CODES.include?(k) || k.start_with?('us-') }
+
+    [
+      ['Misc',      misc.map      { |k, v| [v, k] }],
+      ['Countries', countries.map { |k, v| [v, k] }],
+      ['US States', states.map    { |k, v| [v, k] }]
+    ]
   end
 
   def self.[](key)
-    COUNTRY_ISO[key]
+    FLAG_LIST[key]
   end
 
-  def self.valid_countries
-    @valid_countries ||= COUNTRY_ISO.map { |k, _| k.to_s }
+  def self.valid_flags
+    @valid_flags ||= FLAG_LIST.map { |k, _| k.to_s }
   end
 end

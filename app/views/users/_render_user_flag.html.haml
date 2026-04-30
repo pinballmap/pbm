@@ -1,3 +1,3 @@
 - if !user.flag.blank?
   %span{:class => "user_flag_container"}
-    =image_tag("https://flagcdn.com/28x21/#{user.flag}.png", :class => "user_flag_profile", :alt => "#{user.flag} flag")
+    =image_tag("/flags/#{user.flag}.png", :class => "user_flag_profile", :alt => "#{user.flag} flag")

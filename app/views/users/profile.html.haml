@@ -25,8 +25,8 @@
           =link_to "Update Email / Update Password / Delete Account", edit_user_registration_path
         %div{:style => 'padding: 0 10px;'}
           = form_tag update_user_flag_user_path(:action => 'update_user_flag', id: @user.id), :id => "update_user_flag_#{@user.id}", :remote => true, :method => 'post' do
-            %label{:for => "user_flag", :class => 'mb_8 font14 darkgrey block'} Select a country or U.S. state flag to go with your username:
-            =select_tag :user_flag, options_for_select(Country.list.map { |k,v| [v,k] }), { include_blank: true, :class => 'user_flag_select', :id => 'user_flag'}
+            %label{:for => "user_flag", :class => 'mb_8 font14 darkgrey block'} Select a flag to go with your username:
+            =select_tag :user_flag, grouped_options_for_select(Flag.grouped_list), { include_blank: true, :class => 'user_flag_select', :id => 'user_flag'}
             = submit_tag 'Save', :class => "save_button", :id => "save_user_flag_#{@user.id}"
       - elsif !current_user
         %div.font14{:style => 'padding: 0 15px;'}
@@ -122,7 +122,7 @@
   function formatOptions (state) {
     if (!state.id) { return state.text; }
     var $state = $(
-    '<span><img style="display: inline-block;" src="https://flagcdn.com/16x12/' + state.element.value.toLowerCase() + '.png" /> ' + state.text + '</span>'
+    '<span><img style="display: inline-block; vertical-align: middle;" src="/flags/' + state.element.value.toLowerCase() + '.png" /> <span style="vertical-align: middle;">' + state.text + '</span></span>'
     );
     return $state;
   }

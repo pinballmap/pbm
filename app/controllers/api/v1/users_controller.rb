@@ -211,7 +211,7 @@ module Api
         return_response("Failed to find user", "errors")
       end
 
-      api :POST, "/api/v1/users/:id/update_user_flag", "Set a country or U.S. flag icon for your user"
+      api :POST, "/api/v1/users/:id/update_user_flag", "Set a flag icon for your user"
       param :id, Integer, desc: "ID of user", required: true
       param :user_flag, String, desc: "ISO code for flag", required: false
       formats [ "json" ]

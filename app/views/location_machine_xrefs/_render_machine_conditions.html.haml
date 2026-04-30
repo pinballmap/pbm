@@ -23,7 +23,7 @@
               =image_tag("rank/#{rank}.png", :class => "user_icon rank_icon")
           - if mcx.user.flag.present?
             %span{:class => "user_flag_container"}
-              =image_tag("https://flagcdn.com/24x18/#{mcx.user.flag}.png", :class => "user_icon user_flag", :alt => "#{mcx.user.flag} flag")
+              =image_tag("/flags/#{mcx.user.flag}.png", :class => "user_icon user_flag", :alt => "#{mcx.user.flag} flag")
 
         - else
           DELETED USER

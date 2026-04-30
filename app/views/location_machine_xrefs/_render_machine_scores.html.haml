@@ -39,7 +39,7 @@
               =image_tag("rank/#{rank}.png", :class => "user_icon rank_icon")
           - if msx.user.flag.present?
             %span{:class => "user_flag_container"}
-              =image_tag("https://flagcdn.com/24x18/#{msx.user.flag}.png", :class => "user_icon user_flag", :alt => "#{msx.user.flag} flag")
+              =image_tag("/flags/#{msx.user.flag}.png", :class => "user_icon user_flag", :alt => "#{msx.user.flag} flag")
         - else
           DELETED USER
         - if !msx.updated_at.nil?
