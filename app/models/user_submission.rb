@@ -54,6 +54,10 @@ class UserSubmission < ApplicationRecord
     user&.contributor_rank
   end
 
+  def flag
+    user&.flag
+  end
+
   def location_operator_id
     location&.operator_id
   end

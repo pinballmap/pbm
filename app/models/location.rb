@@ -284,6 +284,10 @@ class Location < ApplicationRecord
     last_updated_by_user&.contributor_rank
   end
 
+  def last_updated_by_flag
+    last_updated_by_user&.flag
+  end
+
   def operator_has_email
     operator&.email.blank? ? false : true
   end

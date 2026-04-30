@@ -48,8 +48,12 @@ class MachineCondition < ApplicationRecord
     user&.contributor_rank
   end
 
+  def flag
+    user&.flag
+  end
+
   def as_json(options = {})
-    options[:methods] = %i[ username operator_id admin_title contributor_rank ]
+    options[:methods] = %i[ username operator_id admin_title contributor_rank flag ]
     super
   end
 end
