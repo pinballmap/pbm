@@ -510,7 +510,7 @@ module Api
             suffix = if l.state.present?
               ", #{l.state}"
             elsif l.country.present?
-              country_name = Country[l.country.downcase]
+              country_name = Flag[l.country.downcase]
               country_name ? ", #{country_name}" : ""
             else
               ""
