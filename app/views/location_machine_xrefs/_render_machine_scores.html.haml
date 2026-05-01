@@ -25,33 +25,15 @@
       %span.high_score="#{number_with_delimiter(msx.score, :delimiter => ",")}"
       .clear
       %div.high_score_author
-        - if msx.user
-          = link_to msx.user.username, "#{request.scheme}://#{request.host_with_port}/users/#{msx.user.username}/profile", :class => 'bold'
-          - if msx.user.admin_title.present?
-            %span{:class => "user_admin_container"}
-              = image_tag('icons/shield-account.svg', :class => 'user_icon user_admin')
-          - if lmx.location.operator_id.present? && lmx.location.operator_id == msx.user.operator_id
-            %span{:class => "user_operator_container"}
-              = image_tag('icons/wrench.svg', :class => 'user_icon user_operator')
-          - if msx.user.contributor_rank.present?
-            - rank = msx.user.contributor_rank.gsub(' ', '')
-            %span{:class => "rank_icon_#{rank}"}
-              =image_tag("rank/#{rank}.png", :class => "user_icon rank_icon")
-          - if msx.user.flag.present?
-            %span{:class => "user_flag_container"}
-              =image_tag("/flags/#{msx.user.flag}.png", :class => "user_icon user_flag", :alt => "#{msx.user.flag} flag")
-        - else
-          DELETED USER
         - if !msx.updated_at.nil?
           %span.high_score_date= msx.updated_at.strftime("%b %d, %Y")
           - if msx.updated_at != msx.created_at
             %span.score_edited_asterisk *
             %span.score_edited_tooltip
               Score has been edited
-        - if current_user && (msx.user_id == current_user.id)
-          %a.ml_8.update_high_score_button.button{:id => "edit_high_score_#{msx.id}"} edit
-          = form_tag machine_score_xref_path(id: msx.id), :id => "remove_high_score_#{msx.id}", :method => 'delete' do
-            = submit_tag 'delete', :class => 'delete_high_score_button'
+        %a.ml_8.update_high_score_button.button{:id => "edit_high_score_#{msx.id}"} edit
+        = form_tag machine_score_xref_path(id: msx.id), :id => "remove_high_score_#{msx.id}", :method => 'delete' do
+          = submit_tag 'delete', :class => 'delete_high_score_button'
 
         :javascript
           $('#cancel_update_high_score_#{msx.id}').click(function () {
