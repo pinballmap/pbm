@@ -809,7 +809,7 @@ describe LocationsController do
       expect(page).to have_selector('.recent_location_activity_location .user_admin_container', visible: :visible)
       expect(page).to have_selector('.recent_location_activity_location .user_operator_container', visible: :visible)
       expect(page).to have_selector('.recent_location_activity_location .rank_icon_SuperMapper', visible: :visible)
-      expect(page).to_not have_selector('.recent_location_activity_location .user_flag_container')
+      expect(page).to have_selector('.recent_location_activity_location .user_flag_container')
     end
 
     it 'shows only your own scores' do

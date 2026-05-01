@@ -1,10 +1,10 @@
 #page_body
   .column_container
     .column.w_320.bg_vlightpurple.profile
-      %div.font22.bold.flex_center.bg_lightpurple{:style => 'padding: 25px 5px;margin: 0 -10px;'}
+      %div.font22.bold.bg_lightpurple{:style => 'padding: 25px 5px;margin: 0 -10px;text-align: center;'}
         =link_to @user.username, profile_user_path(@user.id)
-        %span.render_user_flag{:style => 'height: 21px;'}
-          = render :partial => 'users/render_user_flag', :locals => {:user => @user}
+      %div.render_user_flag
+        = render :partial => 'users/render_user_flag', :locals => {:user => @user}
       - if @user.contributor_rank.present?
         - rank = @user.contributor_rank
         %div.red.bold.font18.flex_center
@@ -122,14 +122,14 @@
   function formatOptions (state) {
     if (!state.id) { return state.text; }
     var $state = $(
-    '<span><img style="display: inline-block; vertical-align: middle;" src="/flags/' + state.element.value.toLowerCase() + '.png" /> <span style="vertical-align: middle;">' + state.text + '</span></span>'
+    '<span><img style="display: inline-block; vertical-align: middle; width: 36px; height: 24px; object-fit: cover; object-position: left center;" src="/flags/' + state.element.value.toLowerCase() + '.png" /> <span style="vertical-align: middle;">' + state.text + '</span></span>'
     );
     return $state;
   }
   $('#update_user_flag_#{@user.id}').submit(function () {
     var form = $(this);
     $.post(form.attr('action'), form.serialize(), function (data) {
-      $('span.render_user_flag').load('/users/#{@user.id}/render_user_flag');
+      $('div.render_user_flag').load('/users/#{@user.id}/render_user_flag');
     });
 
     return false;

@@ -213,7 +213,7 @@ module Api
 
       api :POST, "/api/v1/users/:id/update_user_flag", "Set a flag icon for your user"
       param :id, Integer, desc: "ID of user", required: true
-      param :user_flag, String, desc: "ISO code for flag", required: false
+      param :flag, String, desc: "ISO code for flag", required: false
       formats [ "json" ]
       def update_user_flag
         user = User.find(params[:id])
@@ -223,7 +223,7 @@ module Api
           return
         end
 
-        user.flag = params[:user_flag]
+        user.flag = params[:flag]
         if user.save
           return_response(user, "user", [], %i[flag])
         else

@@ -9,3 +9,6 @@
     - rank = activity.user.contributor_rank.gsub(' ', '')
     %span{:class => "rank_icon_#{rank}"}
       =image_tag("rank/#{rank}.png", :class => "user_icon rank_icon")
+  - if activity.user.flag
+    %span{:class => "user_flag_container"}
+      =image_tag("/flags/#{activity.user.flag}.png", :class => "user_icon user_flag")

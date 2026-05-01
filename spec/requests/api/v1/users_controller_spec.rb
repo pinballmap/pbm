@@ -441,7 +441,7 @@ describe Api::V1::UsersController, type: :request do
       FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
     end
     it 'updates your user flag field' do
-      post '/api/v1/users/111/update_user_flag.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', user_flag: 'us-ca' }
+      post '/api/v1/users/111/update_user_flag.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', flag: 'us-ca' }
 
       expect(response).to be_successful
       expect(response.body).to_not include('error')
@@ -449,7 +449,7 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'does not let you do this for other users' do
-      post '/api/v1/users/777/update_user_flag.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', user_flag: 'us-ca' }
+      post '/api/v1/users/777/update_user_flag.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', flag: 'us-ca' }
 
       expect(response).to be_successful
       expect(response.body).to_not include('us-ca')
@@ -457,7 +457,7 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'does not let you save a value not in the list' do
-      post '/api/v1/users/111/update_user_flag.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', user_flag: 'yyy' }
+      post '/api/v1/users/111/update_user_flag.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', flag: 'yyy' }
 
       expect(response).to be_successful
       expect(response.body).to_not include('yyy')
