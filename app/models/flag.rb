@@ -1,5 +1,7 @@
 class Flag
   FLAG_LIST = {
+    "sassy" => "Sassy",
+    "peace" => "Peace",
     "pride" => "Pride",
     "transgender" => "Transgender",
     "pirate" => "Pirate",
@@ -311,7 +313,7 @@ class Flag
     "zw" => "Zimbabwe"
   }.freeze
 
-  MISC_CODES = %w[pride transgender pirate eu un].freeze
+  MISC_CODES = %w[sassy peace pirate pride transgender eu un].freeze
 
   def self.list
     FLAG_LIST
