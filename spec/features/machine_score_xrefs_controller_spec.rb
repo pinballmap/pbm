@@ -40,10 +40,10 @@ describe MachineScoreXrefsController do
 
       expect(lmx.machine_score_xrefs.first.score).to eq(1234)
       expect(lmx.machine_score_xrefs.first.username).to eq('cap')
-      expect(page).to have_selector('.machine_scores_container .user_admin_container', visible: :visible)
-      expect(page).to have_selector('.machine_scores_container .user_operator_container', visible: :visible)
-      expect(page).to have_selector('.machine_scores_container .rank_icon_SuperMapper', visible: :visible)
-      expect(page).to have_selector('.machine_scores_container .user_flag_container', visible: :visible)
+      expect(page).to_not have_selector('.machine_scores_container .user_admin_container', visible: :visible)
+      expect(page).to_not have_selector('.machine_scores_container .user_operator_container', visible: :visible)
+      expect(page).to_not have_selector('.machine_scores_container .rank_icon_SuperMapper', visible: :visible)
+      expect(page).to_not have_selector('.machine_scores_container .user_flag_container', visible: :visible)
       expect(page).to have_css("div.highest_score", text: "Your highest score on")
       expect(page).to have_css("div.highest_score", text: "1,234")
 
@@ -156,7 +156,7 @@ describe MachineScoreXrefsController do
 
       sleep(1)
 
-      expect(URI.parse(page.find_link('cap')['href']).to_s).to match(%r{/users/#{@user.username}/profile})
+      expect(page).to have_css('div.high_score_new_line')
     end
   end
 
