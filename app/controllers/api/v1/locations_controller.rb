@@ -434,23 +434,25 @@ module Api
 
       api :GET, "/api/v1/locations/:id/picture_details.json", "Get info about all pictures at a location"
       param :id, Integer, desc: "Location id", required: true
+      param :thumbnail, Integer, desc: "Return 200x200 thumbnail variants instead of full-size", required: false
       formats [ "json" ]
       def picture_details
         location = Location.find(params[:id])
 
         pictures = []
+        resize = params[:thumbnail] ? [ 240, 240 ] : [ 1200, 1200 ]
 
-        location.location_picture_xrefs.includes([ :photo_attachment ]).each do |lpx|
+        location.location_picture_xrefs.includes([ :photo_attachment ]).order(id: :desc).each do |lpx|
           next if lpx.photo.id.nil?
           if Rails.env.test?
             pictures.push(
-              id: lpx.photo.id,
+              id: lpx.id,
               url: rails_representation_url(lpx.photo)
             )
           else
             pictures.push(
-              id: lpx.photo.id,
-              url: rails_representation_url(lpx.photo.variant(resize_to_limit: [ 800, 800 ]).processed)
+              id: lpx.id,
+              url: rails_representation_url(lpx.photo.variant(resize_to_limit: resize).processed)
             )
           end
         end

@@ -11,7 +11,17 @@ module Api
       formats [ "json" ]
       def show
         lpx = LocationPictureXref.find(params[:id])
-        return_response(lpx, "location_picture", [], [])
+        return return_response("No photo attached", "errors") unless lpx.photo.attached?
+
+        url = if Rails.env.test?
+          rails_representation_url(lpx.photo)
+        else
+          rails_representation_url(lpx.photo.variant(resize_to_limit: [ 1200, 1200 ]).processed)
+        end
+
+        return_response({ id: lpx.id, location_id: lpx.location_id, url: url }, "location_picture")
+      rescue ActiveRecord::RecordNotFound
+        return_response("Failed to find lpx", "errors")
       end
 
       api :POST, "/api/v1/location_picture_xrefs.json", "Add a picture for a location"
