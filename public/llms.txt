@@ -1,0 +1,285 @@
+# Pinball Map API
+
+Pinball Map (pinballmap.com) is a crowdsourced directory of pinball machines at locations worldwide. This document is for AI coding assistants helping developers build apps against this API.
+
+Full interactive documentation: https://pinballmap.com/api/v1/docs
+
+## Base URL and Format
+
+All API endpoints are under: `https://pinballmap.com/api/v1/`
+
+Append `.json` to any endpoint (e.g. `GET /api/v1/locations.json`). All responses are JSON.
+
+## Authentication
+
+Read-only (GET) endpoints are public — no auth required.
+
+Write operations (POST, PUT, DELETE) require a user account. Pass credentials as query params on every write request:
+
+```
+user_email=user@example.com&user_token=abc123
+```
+
+Obtain a token by calling `GET /api/v1/users/auth_details.json?login=user@example.com&password=secret`. The response includes `authentication_token`. Store it; do not re-fetch the token on every request.
+
+## Critical: Request Volume Anti-Patterns
+
+**If your app is making hundreds of requests, it is almost certainly designed incorrectly.**
+
+The API provides bulk endpoints that return many records in a single response. There is no legitimate use case that requires looping over individual location, machine, or LMX records one at a time.
+
+Examples of broken patterns and their correct replacements:
+
+| Wrong (N+1) | Correct (one request) |
+|---|---|
+| Loop calling `GET /locations/:id` for each location | `GET /locations.json?region=portland` — returns all locations in a region |
+| Loop calling `GET /locations/:id` with machine filter | `GET /locations.json?by_machine_id=41` — returns all locations with that machine |
+| Loop calling `GET /location_machine_xrefs/:id` for each LMX | `GET /region/:region/location_machine_xrefs.json` — returns all LMXs for a region |
+| Loop calling `GET /machine_score_xrefs/:id` for each score | `GET /machine_score_xrefs/highest.json` — returns highest score per machine |
+
+A well-designed client typically makes fewer than 10 API calls for a full app startup sequence.
+
+## Rate Limiting
+
+Two layers of rate limiting are in place: Rack::Attack (IP-based) and per-endpoint controller limits. Exceeding a limit returns HTTP 429. These limits exist to prevent abuse, not to restrict normal usage — a well-designed app will never come close to them.
+
+| Endpoint | Limit |
+|---|---|
+| `POST /location_machine_xrefs` (add machine) | no controller limit |
+| `PUT /location_machine_xrefs/:id` (update condition) | 50 per 10 minutes |
+| `DELETE /location_machine_xrefs/:id` (remove machine) | 100 per 10 minutes |
+| `GET /region/:region/location_machine_xrefs` (bulk fetch) | 120 per minute |
+| `PUT /locations/:id` (update location) | 30 per 10 minutes |
+| `POST /locations/suggest` | 30 per 10 minutes |
+| `PUT /machine_conditions/:id` | 50 per 5 minutes |
+| `POST /machine_score_xrefs` (submit score) | 80 per 2 minutes |
+| `POST /location_picture_xrefs` (upload photo) | 20 per 2 minutes |
+| `GET /users/auth_details`, `POST /users/signup`, `POST /users/forgot_password`, `POST /users/resend_confirmation` | 40 per 5 minutes |
+| `GET /users/:id/profile_info` | 40 per 2 minutes |
+
+## Reducing Response Size: no_details
+
+Several endpoints accept a `no_details` param that strips fields you likely don't need. **Start with `no_details=1` and only fetch the full payload if you actually need the omitted fields.**
+
+### no_details on location endpoints
+
+| | Full (default) | no_details=1 | no_details=2 |
+|---|---|---|---|
+| Location fields omitted | none | `phone`, `website`, `description`, `created_at`, `updated_at`, `date_last_updated`, `last_updated_by_user_id`, `region_id`, `users_count`, `user_submissions_count` | all of level 1, plus `street`, `city`, `state`, `zip`, `updated_at`, `location_type_id`, `operator_id` — essentially just ID, name, lat, lon |
+| Machine data | full LMX list with machine conditions and scores | machine names + count, no conditions | none (within_bounding_box) or machine names without year (show) |
+
+The `GET /locations/:id.json` show endpoint also accepts `metadata_only=1`, which returns the location record with no LMX list at all — useful when you only need to refresh location metadata.
+
+### no_details on other endpoints
+
+**`GET /machines.json`** — any truthy value omits `is_active`, `created_at`, `updated_at`, `ipdb_link`, `ipdb_id`, `machine_display`, `kineticist_url`. Recommended for app startup: you rarely need those fields when building a machine list.
+
+**`GET /operators.json`** — `no_details=1` omits contact fields and timestamps, adds an `operator_has_email` boolean. `no_details=2` also omits `website`.
+
+### Which endpoints support no_details
+
+- `GET /api/v1/locations.json` — any value
+- `GET /api/v1/locations/:id.json` — values `1` and `2` (also `metadata_only=1`)
+- `GET /api/v1/locations/within_bounding_box.json` — values `1` and `2`
+- `GET /api/v1/locations/closest_by_lat_lon.json` — any value
+- `GET /api/v1/locations/closest_by_address.json` — any value
+- `GET /api/v1/machines.json` — any value
+- `GET /api/v1/operators.json` — values `1` and `2`
+
+## Endpoints
+
+### Locations
+
+```
+GET /api/v1/locations.json
+GET /api/v1/region/:region/locations.json
+```
+
+The primary bulk endpoint. Accepts many filter params (all optional, combinable):
+
+- `by_location_name` — search by venue name
+- `by_location_id` — single location by ID (use the show endpoint instead if you only need one)
+- `by_machine_id` — locations with any variant of this machine
+- `by_machine_single_id` — locations with exactly this machine version
+- `by_machine_group_id` — locations with any machine in this group
+- `by_machine_id_ic` / `by_machine_single_id_ic` — same as above but only Insider Connected
+- `by_city_id` / `by_city_no_state` — filter by city
+- `by_state_name` / `by_state_id` — filter by state
+- `by_country` — filter by country
+- `by_type_id` — filter by location type (bar, arcade, etc.)
+- `by_zone_id` — filter by zone
+- `by_operator_id` — filter by operator
+- `by_at_least_n_machines` — minimum machine count
+- `manufacturer` — filter by machine manufacturer
+- `by_machine_year`, `by_machine_year_gte`, `by_machine_year_lte` — filter by machine manufacture year
+- `by_is_stern_army` — Stern Army locations only (**requires** `no_details` to be set)
+- `by_ic_active` — Insider Connected active
+- `regionless_only` — locations not assigned to any region
+
+```
+GET /api/v1/locations/:id.json             # single location
+GET /api/v1/locations/:id/machine_details.json   # machines at this location
+GET /api/v1/locations/:id/picture_details.json   # photos at this location
+PUT /api/v1/locations/:id.json             # update metadata (auth required)
+PUT /api/v1/locations/:id/confirm.json     # confirm info is current (auth required)
+```
+
+Geographic search:
+```
+GET /api/v1/locations/closest_by_lat_lon.json?lat=45.52&lon=-122.68&max_distance=10
+GET /api/v1/locations/closest_by_address.json?address=1234+Main+St+Portland+OR
+GET /api/v1/locations/within_bounding_box.json?swlat=45.4&swlon=-122.8&nelat=45.6&nelon=-122.5
+```
+
+Stats / utility:
+```
+GET /api/v1/locations/top_cities.json
+GET /api/v1/locations/top_cities_by_machine.json
+GET /api/v1/locations/top_locations.json
+GET /api/v1/locations/type_count.json
+GET /api/v1/locations/countries.json
+GET /api/v1/locations/autocomplete.json?name=ground+kontrol
+GET /api/v1/locations/autocomplete_city.json?name=portland
+GET /api/v1/locations/geocode_lat_lon.json?address=1234+Main+St+Portland+OR  # see note below
+POST /api/v1/locations/suggest.json        # submit a new location (auth required)
+```
+
+**Note on `geocode_lat_lon`:** This endpoint calls a third-party geocoding service that incurs a cost per request. Use it sparingly — only when a user explicitly provides an address that needs to be converted to coordinates. Do not call it in bulk, in loops, or speculatively.
+
+### Machines
+
+```
+GET /api/v1/machines.json      # all machines in the database
+GET /api/v1/machines/:id.json  # single machine
+```
+
+### Machine Groups
+
+Machine groups link variants/versions of the same title together.
+
+```
+GET /api/v1/machine_groups.json      # all groups
+GET /api/v1/machine_groups/:id.json  # single group
+```
+
+### Location Machine Xrefs (LMX)
+
+An LMX represents a specific machine installed at a specific location.
+
+```
+GET /api/v1/region/:region/location_machine_xrefs.json   # all LMXs for a region
+GET /api/v1/location_machine_xrefs/:id.json              # single LMX
+POST /api/v1/location_machine_xrefs.json                 # add machine to location (auth required)
+PUT /api/v1/location_machine_xrefs/:id.json              # update condition (auth required)
+DELETE /api/v1/location_machine_xrefs/:id.json           # remove machine (auth required)
+PUT /api/v1/location_machine_xrefs/:id/ic_toggle.json    # toggle Insider Connected (auth required)
+GET /api/v1/location_machine_xrefs/top_n_machines.json   # most-installed machines globally
+GET /api/v1/location_machine_xrefs/most_recent_by_lat_lon.json?lat=45.52&lon=-122.68
+```
+
+### Machine Conditions
+
+Condition notes are attached to LMXs, not directly to machines.
+
+```
+PUT /api/v1/machine_conditions/:id.json     # update condition note (auth required)
+DELETE /api/v1/machine_conditions/:id.json  # remove condition note (auth required)
+```
+
+### Machine Score Xrefs (High Scores)
+
+```
+GET /api/v1/machine_score_xrefs/highest.json              # highest score per machine globally
+GET /api/v1/region/:region/machine_score_xrefs.json       # all scores for a region
+GET /api/v1/machine_score_xrefs/:id.json                  # single score record
+POST /api/v1/machine_score_xrefs.json                     # submit a score (auth required)
+PUT /api/v1/machine_score_xrefs/:id.json                  # update a score (auth required)
+DELETE /api/v1/machine_score_xrefs/:id.json               # delete a score (auth required)
+```
+
+### Regions
+
+A region is a geographic grouping of locations (e.g. "portland", "chicago"). The `:region` path param is the lowercase region name.
+
+```
+GET /api/v1/regions.json
+GET /api/v1/regions/:id.json
+GET /api/v1/regions/closest_by_lat_lon.json?lat=45.52&lon=-122.68
+GET /api/v1/regions/does_region_exist.json?name=portland
+GET /api/v1/regions/location_and_machine_counts.json
+POST /api/v1/regions/suggest.json     # suggest a new region
+POST /api/v1/regions/contact.json     # contact a region admin
+```
+
+### Users
+
+```
+GET /api/v1/users/auth_details.json?login=user@example.com&password=secret
+POST /api/v1/users/signup.json
+POST /api/v1/users/forgot_password.json
+POST /api/v1/users/resend_confirmation.json
+GET /api/v1/users/total_user_count.json
+GET /api/v1/users/:id/profile_info.json
+GET /api/v1/users/:id/list_fave_locations.json    (auth required)
+POST /api/v1/users/:id/add_fave_location.json     (auth required)
+POST /api/v1/users/:id/remove_fave_location.json  (auth required)
+GET /api/v1/users/:id/render_user_flag.json
+POST /api/v1/users/:id/update_user_flag.json      (auth required)
+```
+
+### User Submissions (Activity Feed)
+
+```
+GET /api/v1/user_submissions.json                        # global feed
+GET /api/v1/region/:region/user_submissions.json         # region feed
+GET /api/v1/user_submissions/location.json?id=:location_id
+GET /api/v1/user_submissions/list_within_range.json?lat=45.52&lon=-122.68&max_distance=10
+GET /api/v1/user_submissions/delete_location.json        # recently removed locations
+GET /api/v1/user_submissions/top_users.json
+GET /api/v1/user_submissions/total_user_submission_count.json
+GET /api/v1/user_submissions/total_user_submission_count_week.json
+```
+
+The index, `location`, and `list_within_range` endpoints accept these optional filter params:
+
+- `submission_type` — filter by activity type. Multiple values: `submission_type[]=remove_machine&submission_type[]=new_lmx`
+- `machine_id` — filter by machine. Multiple values: `machine_id[]=111&machine_id[]=222`
+- `user_id` — limit to a single user (by ID)
+- `user_name` — limit to a single user (by name)
+- `user_faved` — limit to locations favorited by this user ID
+- `limit` — cap result count and include pagination metadata in the response
+- `restrict_to` — restrict a specific submission type to the `user_id` user; if `user_id` is absent, that type is excluded entirely. Used by the app to show scores only from the current user.
+
+`list_within_range` also accepts:
+- `min_date_of_submission` — earliest date to include, format `YYYY-MM-DD`
+- `region_id` — limit to a region (by ID, not name)
+
+### Location Pictures
+
+```
+GET /api/v1/location_picture_xrefs/:id.json
+POST /api/v1/location_picture_xrefs.json   (auth required)
+DELETE /api/v1/location_picture_xrefs/:id.json  (auth required)
+```
+
+### Reference / Lookup Tables
+
+These return small, stable datasets. Fetch once at startup and cache locally.
+
+```
+GET /api/v1/location_types.json
+GET /api/v1/location_types/:id.json
+GET /api/v1/statuses.json
+GET /api/v1/operators.json
+GET /api/v1/region/:region/operators.json
+GET /api/v1/region/:region/zones.json
+GET /api/v1/region/:region/region_link_xrefs.json
+```
+
+## Do Not Do These Things
+
+- Do not loop over `/api/v1/locations/:id` to build a list of locations. Use the index endpoint with filters.
+- Do not poll the API repeatedly to detect changes. There is no webhook system; build your own sync schedule with reasonable intervals.
+- Do not fetch `auth_details` (login) on every API call. Fetch the token once, store it, reuse it.
+- Do not use undocumented endpoints or URL patterns not listed here — they are web-only routes and will not behave like an API.
+- Do not make requests against `/:region/locations` (the web route) — use `/api/v1/region/:region/locations.json`.
