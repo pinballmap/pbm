@@ -62,6 +62,24 @@ describe SuggestedLocationsController, type: :controller do
       expect(submission.submission_type).to eq(UserSubmission::ADD_LOCATION_TYPE)
     end
 
+    it 'should still creat user submissions if user is nil' do
+      sl = FactoryBot.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', country: 'US', phone: '503-391-9288', lat: 11.11, lon: 22.22, website: 'http://www.cool.com', region: @r, location_type: @lt, operator: @o, zone: @z, machines: [ 21, 22, 23, 24 ], user_id: nil)
+
+      m_one = FactoryBot.create(:machine, name: 'The Dark Knight', manufacturer: 'Stern', year: '2008', id: 21)
+
+      post :convert_to_location, format: :json, params: { id: sl.id }
+
+      submission = UserSubmission.last
+
+      expect(submission.submission).to eq("The Dark Knight (Stern, 2008) was added to #{@sl.name} in #{@sl.city}")
+      expect(submission.submission_type).to eq(UserSubmission::NEW_LMX_TYPE)
+
+      submission = UserSubmission.first
+
+      expect(submission.submission).to eq("New location added: #{@sl.name} in #{@sl.city}")
+      expect(submission.submission_type).to eq(UserSubmission::ADD_LOCATION_TYPE)
+    end
+
     it 'should throw an error when failing a field validation' do
       post :convert_to_location, format: :json, params: { id: FactoryBot.create(:suggested_location, name: 'foo', machines: 'Batman', street: '123 Eye Way').id }
 

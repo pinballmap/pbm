@@ -79,7 +79,7 @@ class LocationMachineXref < ApplicationRecord
     user = User.find(options[:user_id]) if options[:user_id]
     submission = "#{machine.name_and_year} was removed from #{location.name} in #{location.city}#{user.nil? ? '' : ' by ' + user.username}"
 
-    UserSubmission.create(user_name: user&.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: submission, user: user) unless force && self.deleted_at.present?
+    UserSubmission.create(user_name: user&.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, submission: submission, user_id: user&.id) unless force && self.deleted_at.present?
     Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}" unless force && self.deleted_at.present?
 
     if location.location_machine_xrefs.where(ic_enabled: true).blank?
@@ -100,7 +100,7 @@ class LocationMachineXref < ApplicationRecord
 
   def create_user_submission
     submission = "#{machine.name_and_year} was added to #{location.name} in #{location.city}#{user.nil? ? '' : ' by ' + user.username}"
-    UserSubmission.create(user_name: user&.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_LMX_TYPE, submission: submission, user: user)
+    UserSubmission.create(user_name: user&.username, machine_name: machine.name_and_year, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, region_id: location.region_id, location: location, machine: machine, submission_type: UserSubmission::NEW_LMX_TYPE, submission: submission, user_id: user&.id)
     Rails.logger.info "USER SUBMISSION USER ID #{user&.id} #{submission}"
     User.increment_counter(:num_machines_added, user&.id)
     location.users_count = UserSubmission.where(location_id: location.id).count("DISTINCT user_id")

@@ -76,9 +76,9 @@ class SuggestedLocation < ApplicationRecord
       user = User.find_by_id(user_id)
       submission = "New location added: #{location.name} in #{location.city}#{user.nil? ? '' : ' by ' + user.username}"
 
-      UserSubmission.create(user_name: user&.username, region_id: location.region_id, submission_type: UserSubmission::ADD_LOCATION_TYPE, submission: submission, user_id: user.id, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, location: location)
+      UserSubmission.create(user_name: user&.username, region_id: location.region_id, submission_type: UserSubmission::ADD_LOCATION_TYPE, submission: submission, user_id: user&.id, location_name: location.name, city_name: location.city, lat: location.lat, lon: location.lon, location: location)
 
-      User.increment_counter(:num_locations_added, user.id)
+      User.increment_counter(:num_locations_added, user&.id)
 
       location.users_count = UserSubmission.where(location_id: location.id).count("DISTINCT user_id")
       location.save(validate: false)
