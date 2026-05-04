@@ -149,6 +149,10 @@ class Location < ApplicationRecord
     machine_count
   end
 
+  def lpx_count
+    location_picture_xrefs.size
+  end
+
   def machine_names
     machines.sort_by(&:massaged_name).map(&:name_and_year)
   end
