@@ -166,6 +166,18 @@ describe PagesController, type: :controller do
         expect(sl.place_id).to eq('tgtgtgtgtgtgtg')
         expect(sl.user_inputted_address).to eq('street, city, state, zip')
       end
+
+      it 'should blank state for countries in COUNTRIES_WITHOUT_STATE' do
+        FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
+        login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com'))
+
+        ApplicationController::COUNTRIES_WITHOUT_STATE.each do |country_code|
+          post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'some-state', location_zip: 'zip', location_country: country_code, location_machines_ids: [ 20 ], place_id: 'tgtgtgtgtgtgtg' }
+
+          sl = SuggestedLocation.last
+          expect(sl.state).to be_blank, "expected state to be blank for country #{country_code}, got '#{sl.state}'"
+        end
+      end
     end
   end
 end

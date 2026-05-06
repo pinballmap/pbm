@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   FILTERING_REQUIRED_MSG = "Filtering is required for this action. Please provide a filter when using this endpoint.".freeze
   AUTH_REQUIRED_MSG = "Authentication is required for this action. If you are using the app, you may need to confirm your account (see the email from us) or log out and back in.".freeze
   ACCOUNT_DISABLED_MSG = "account_disabled".freeze
+  COUNTRIES_WITHOUT_STATE = %w[AT BE DE EE GB FI FR HK HR HU NL NO PL PT NZ RO SI SE].freeze
   rate_limit to: 100, within: 2.minutes, if: lambda { |req| req.bot? }
 
   include Pagy::Method
@@ -81,9 +82,9 @@ class ApplicationController < ActionController::Base
     if geocoded_results.present?
       lat, lon = geocoded_results.coordinates
       street = street_address
-      city = geocoded_results.city
-      state = geocoded_results.state_code
       zip = geocoded_results.postal_code
+      city = geocoded_results.city if params["place_id"].blank?
+      state = geocoded_results.state_code
     end
 
     region = region unless params[:region_id].blank? || region.blank?
@@ -116,7 +117,9 @@ class ApplicationController < ActionController::Base
     UserSubmission.create(region_id: region&.id, submission_type: UserSubmission::SUGGEST_LOCATION_TYPE, submission: body, user_id: user.id)
     User.increment_counter(:num_locations_suggested, user.id)
 
-    SuggestedLocation.create(region_id: region&.id, name: params["location_name"], street: street || params["location_street"], city: city || params["location_city"], state: state || params["location_state"], zip: zip || params["location_zip"], country: params["location_country"], phone: params["location_phone"], website: params["location_website"], location_type: location_type, operator: operator, zone: zone, comments: params["location_comments"], machines: machine_id_list, place_id: params["place_id"], lat: lat, lon: lon, user_inputted_address: user_inputted_address, user_id: user.id)
+    submitted_state = COUNTRIES_WITHOUT_STATE.include?(params["location_country"]) ? nil : (state || params["location_state"])
+
+    SuggestedLocation.create(region_id: region&.id, name: params["location_name"], street: street || params["location_street"], city: city || params["location_city"], state: submitted_state, zip: zip || params["location_zip"], country: params["location_country"], phone: params["location_phone"], website: params["location_website"], location_type: location_type, operator: operator, zone: zone, comments: params["location_comments"], machines: machine_id_list, place_id: params["place_id"], lat: lat, lon: lon, user_inputted_address: user_inputted_address, user_id: user.id)
   end
 
   def send_admin_notification(params, region, user = nil)
