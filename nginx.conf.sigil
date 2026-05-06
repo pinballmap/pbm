@@ -118,7 +118,7 @@ server {
   {{ if $.SEND_TIMEOUT }}send_timeout {{ $.SEND_TIMEOUT }};{{end}}
 
   if ($http_user_agent = "") { return 403; }
-  if ($http_user_agent ~* (bingbot|scrapy|SleepBot)){
+  if ($http_user_agent ~* (bingbot|scrapy|SleepBot|OperatorCentral)){
       return 403;
   }
 
