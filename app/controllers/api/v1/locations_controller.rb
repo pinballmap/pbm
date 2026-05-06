@@ -442,7 +442,7 @@ module Api
         pictures = []
         resize = params[:thumbnail] ? [ 240, 240 ] : [ 1200, 1200 ]
 
-        location.location_picture_xrefs.includes([ :photo_attachment ]).order(id: :desc).each do |lpx|
+        location.location_picture_xrefs.includes(photo_attachment: :blob).order(id: :desc).each do |lpx|
           next if lpx.photo.id.nil?
           if Rails.env.test?
             pictures.push(

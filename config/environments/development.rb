@@ -102,5 +102,9 @@ Rails.application.configure do
     Bullet.console = true
     Bullet.rails_logger = true
     Bullet.add_footer = true
+
+    # Bullet can't track blob access through Active Storage's Attached::One proxy,
+    # so it incorrectly flags this eager load as unused. The load is needed to avoid N+1.
+    Bullet.add_safelist type: :unused_eager_loading, class_name: "ActiveStorage::Attachment", association: :blob
   end
 end

@@ -1,4 +1,4 @@
-- location_picture_xrefs.includes([:photo_attachment]).each do |lpx|
+- location_picture_xrefs.includes(photo_attachment: :blob).order(id: :desc).each do |lpx|
   - if lpx.photo.attached?
     = link_to image_tag(lpx.photo.variant(resize_to_limit: [240,240])), lpx.photo.variant(resize_to_limit: [1200,1200]), :class => "location_thumb location_picture_xref_#{lpx.id}", :"data-lightbox" => "location_thumb"
     = render :partial => 'location_picture_xrefs/remove_picture', :locals => {:lpx => lpx}

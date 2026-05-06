@@ -29,6 +29,6 @@ class LocationPictureXrefsController < ApplicationController
   private
 
   def location_picture_xref_params
-    params.require(:location_picture_xref).permit(:location_id, :description, :user_id, :photo_file_name, :photo_content_type, :photo_file_size, :photo)
+    params.require(:location_picture_xref).permit(:location_id, :description, :user_id, :photo)
   end
 end

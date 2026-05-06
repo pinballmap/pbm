@@ -10,7 +10,7 @@ module Api
       param :id, Integer, desc: "LPX id", required: true
       formats [ "json" ]
       def show
-        lpx = LocationPictureXref.find(params[:id])
+        lpx = LocationPictureXref.includes(photo_attachment: :blob).find(params[:id])
         return return_response("No photo attached", "errors") unless lpx.photo.attached?
 
         url = if Rails.env.test?
