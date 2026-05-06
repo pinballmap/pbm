@@ -37,11 +37,15 @@ module Api
         photo = params[:photo]
         return return_response("Missing photo to add", "errors") if photo.nil?
 
-        lpx = LocationPictureXref.create({ photo: photo, location_id: location_id, user_id: user.id })
+        lpx = LocationPictureXref.new(photo: photo, location_id: location_id, user_id: user.id)
         lpx.user = user
-        lpx.create_user_submission
 
-        return_response(lpx, "location_picture", [], [], 201)
+        if lpx.save
+          lpx.create_user_submission
+          return_response(lpx, "location_picture", [], [], 201)
+        else
+          return_response(lpx.errors.full_messages.join(", "), "errors", [], [], 422)
+        end
       end
 
       api :DESTROY, "/api/v1/location_picture_xrefs/:id.json", "Remove a picture from a location"
