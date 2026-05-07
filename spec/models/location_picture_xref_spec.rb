@@ -35,6 +35,44 @@ describe LocationPictureXref, type: :model do
     end
   end
 
+  describe '#create_remove_user_submission' do
+    it 'creates a remove_picture user submission with correct attributes' do
+      lpx = LocationPictureXref.new(location: location, user: user)
+      lpx.save!(validate: false)
+
+      lpx.create_remove_user_submission(user)
+
+      submission = UserSubmission.last
+      expect(submission.submission_type).to eq(UserSubmission::REMOVE_PICTURE_TYPE)
+      expect(submission.user_id).to eq(user.id)
+      expect(submission.location_id).to eq(location.id)
+      expect(submission.user_name).to eq(user.username)
+      expect(submission.location_name).to eq(location.name)
+      expect(submission.city_name).to eq(location.city)
+      expect(submission.lat).to eq(location.lat)
+      expect(submission.lon).to eq(location.lon)
+      expect(submission.region_id).to eq(location.region_id)
+      expect(submission.submission).to include("removed a picture of #{location.name}")
+    end
+
+    it 'uses UNKNOWN USER when removing_user is nil' do
+      lpx = LocationPictureXref.new(location: location, user: user)
+      lpx.save!(validate: false)
+
+      lpx.create_remove_user_submission(nil)
+
+      expect(UserSubmission.last.submission).to include("UNKNOWN USER removed a picture")
+    end
+
+    it 'does not appear in the activity feed' do
+      lpx = LocationPictureXref.new(location: location, user: user)
+      lpx.save!(validate: false)
+      lpx.create_remove_user_submission(user)
+
+      expect(UserSubmission::ACTIVITY_SUBMISSION_TYPES).not_to include(UserSubmission::REMOVE_PICTURE_TYPE)
+    end
+  end
+
   describe 'variant generation' do
     it 'enqueues GeneratePhotoVariantsJob after create' do
       attach_png(lpx)

@@ -37,6 +37,7 @@ class UserSubmission < ApplicationRecord
   DELETE_LOCATION_TYPE = "delete_location".freeze
   IC_TOGGLE_TYPE = "ic_toggle".freeze
   NEW_PICTURE_TYPE = "new_picture".freeze
+  REMOVE_PICTURE_TYPE = "remove_picture".freeze
 
   def user_email
     user&.email

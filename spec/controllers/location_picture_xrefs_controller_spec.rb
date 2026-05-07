@@ -21,6 +21,24 @@ describe LocationPictureXrefsController, type: :controller do
     end
   end
 
+  describe '#destroy' do
+    it 'creates a remove_picture user submission' do
+      login(@user)
+      lpx = LocationPictureXref.new(location: @location, user: @user)
+      lpx.save!(validate: false)
+
+      delete :destroy, params: { id: lpx.id }
+
+      submission = UserSubmission.last
+      expect(submission.submission_type).to eq(UserSubmission::REMOVE_PICTURE_TYPE)
+      expect(submission.user_id).to eq(@user.id)
+      expect(submission.location_id).to eq(@location.id)
+      expect(submission.user_name).to eq(@user.username)
+      expect(submission.location_name).to eq(@location.name)
+      expect(submission.city_name).to eq(@location.city)
+    end
+  end
+
   describe 'add picture - not authed', type: :feature, js: true do
     it 'Should not allow you to add pictures if you are not logged in' do
       @location.reload

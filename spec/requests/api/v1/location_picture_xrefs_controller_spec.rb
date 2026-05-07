@@ -6,6 +6,21 @@ describe Api::V1::LocationPictureXrefsController, type: :request do
     FactoryBot.create(:user, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
     Aws.config[:s3] = { stub_responses: true }
   end
+  describe '#destroy' do
+    it 'creates a remove_picture user submission' do
+      lpx = LocationPictureXref.new(location: @location)
+      lpx.save!(validate: false)
+
+      delete "/api/v1/location_picture_xrefs/#{lpx.id}.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      submission = UserSubmission.last
+      expect(submission.submission_type).to eq(UserSubmission::REMOVE_PICTURE_TYPE)
+      expect(submission.location_id).to eq(@location.id)
+      expect(submission.location_name).to eq(@location.name)
+    end
+  end
+
   describe '#create' do
     it 'creates a user submission for the new picture' do
       post '/api/v1/location_picture_xrefs.json', params: { location_id: @location.id.to_s, photo: fixture_file_upload('PPM-Splash-200.png', 'image/png'), user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', format: :js }

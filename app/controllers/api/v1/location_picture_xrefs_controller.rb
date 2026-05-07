@@ -54,7 +54,9 @@ module Api
       def destroy
         return unless (user = require_api_user)
 
-        lpx = LocationPictureXref.destroy(params[:id])
+        lpx = LocationPictureXref.find(params[:id])
+        lpx.create_remove_user_submission(user)
+        lpx.destroy
         return_response("Successfully deleted lpx #{lpx.id}", "msg")
       rescue ActiveRecord::RecordNotFound
         return_response("Failed to find picture", "errors")

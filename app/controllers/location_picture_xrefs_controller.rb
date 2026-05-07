@@ -21,6 +21,7 @@ class LocationPictureXrefsController < ApplicationController
   def destroy
     lpx = LocationPictureXref.find_by_id(params[:id])
 
+    lpx.create_remove_user_submission(current_user)
     lpx.destroy
 
     render nothing: true

@@ -11,6 +11,24 @@ class LocationPictureXref < ApplicationRecord
 
   def rails_admin_default_object_label_method; end
 
+  def create_remove_user_submission(removing_user)
+    user_info = removing_user ? removing_user.username : "UNKNOWN USER"
+    submission = "#{user_info} removed a picture of #{location.name} in #{location.city}"
+
+    UserSubmission.create(
+      user_name:       user_info,
+      location_name:   location.name,
+      city_name:       location.city,
+      lat:             location.lat,
+      lon:             location.lon,
+      region_id:       location.region_id,
+      location:        location,
+      submission_type: UserSubmission::REMOVE_PICTURE_TYPE,
+      submission:      submission,
+      user:            removing_user
+    )
+  end
+
   def create_user_submission
     user_info = user ? user.username : "UNKNOWN USER"
     submission = "#{user_info} added a picture of #{location.name} in #{location.city}"
