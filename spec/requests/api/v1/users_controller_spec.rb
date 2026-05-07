@@ -426,6 +426,132 @@ describe Api::V1::UsersController, type: :request do
       expect(json).to_not include('profile_list_of_high_scores')
     end
   end
+  describe '#update_email' do
+    before(:each) do
+      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+    end
+
+    it 'updates the email address' do
+      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', email: 'new@email.com' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['msg']).to eq('Email updated.')
+      expect(@user.reload.email).to eq('new@email.com')
+    end
+
+    it 'does not let you update another user email' do
+      FactoryBot.create(:user, id: 222, username: 'other', email: 'other@email.com')
+
+      post '/api/v1/users/222/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', email: 'hacked@email.com' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Unauthorized user update.')
+      expect(User.find(222).email).to eq('other@email.com')
+    end
+
+    it 'does not allow a blank email' do
+      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', email: '' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Email can not be blank')
+    end
+
+    it 'does not allow a duplicate email' do
+      FactoryBot.create(:user, id: 222, username: 'other', email: 'taken@email.com')
+
+      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', email: 'taken@email.com' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to include('Email')
+      expect(@user.reload.email).to eq('foo@bar.com')
+    end
+
+    it 'tells you if this user does not exist' do
+      post '/api/v1/users/999/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', email: 'new@email.com' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Unknown user')
+    end
+  end
+
+  describe '#update_password' do
+    before(:each) do
+      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw', password: 'oldpassword', password_confirmation: 'oldpassword')
+    end
+
+    it 'updates the password' do
+      post '/api/v1/users/111/update_password.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'oldpassword', password: 'newpassword', password_confirmation: 'newpassword' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['msg']).to eq('Password updated.')
+      expect(@user.reload.valid_password?('newpassword')).to be true
+    end
+
+    it 'does not let you update another user password' do
+      FactoryBot.create(:user, id: 222, username: 'other', email: 'other@email.com', password: 'otherpassword', password_confirmation: 'otherpassword')
+
+      post '/api/v1/users/222/update_password.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'oldpassword', password: 'newpassword', password_confirmation: 'newpassword' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Unauthorized user update.')
+      expect(User.find(222).valid_password?('otherpassword')).to be true
+    end
+
+    it 'requires the correct current password' do
+      post '/api/v1/users/111/update_password.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'wrongpassword', password: 'newpassword', password_confirmation: 'newpassword' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to include('Current password')
+      expect(@user.reload.valid_password?('oldpassword')).to be true
+    end
+
+    it 'requires password and confirmation to match' do
+      post '/api/v1/users/111/update_password.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'oldpassword', password: 'newpassword', password_confirmation: 'different' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to include("Password confirmation doesn't match")
+      expect(@user.reload.valid_password?('oldpassword')).to be true
+    end
+
+    it 'tells you if this user does not exist' do
+      post '/api/v1/users/999/update_password.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'oldpassword', password: 'newpassword', password_confirmation: 'newpassword' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Unknown user')
+    end
+  end
+
+  describe '#destroy' do
+    before(:each) do
+      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+    end
+
+    it 'deletes the user' do
+      delete '/api/v1/users/111.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['msg']).to eq('User deleted.')
+      expect(User.exists?(111)).to be false
+    end
+
+    it 'does not let you delete another user' do
+      FactoryBot.create(:user, id: 222, username: 'other')
+
+      delete '/api/v1/users/222.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Unauthorized user update.')
+      expect(User.exists?(222)).to be true
+    end
+
+    it 'tells you if this user does not exist' do
+      delete '/api/v1/users/999.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Unknown user')
+    end
+  end
+
   describe '#total_user_count' do
     it 'returns a count of all users' do
       FactoryBot.create(:user, id: 1)

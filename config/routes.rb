@@ -36,6 +36,8 @@ Rails.application.routes.draw do
           get  :profile_info
           post :remove_fave_location
           get  :render_user_flag
+          post :update_email
+          post :update_password
           post :update_user_flag
         end
         collection do

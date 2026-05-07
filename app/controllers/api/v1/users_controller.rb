@@ -5,7 +5,7 @@ module Api
 
       before_action :allow_cors
       rate_limit to: 40, within: 5.minutes, only: [ :auth_details, :forgot_password, :resend_confirmation, :signup ]
-      rate_limit to: 40, within: 2.minutes, only: :profile_info
+      rate_limit to: 40, within: 2.minutes, only: :profile_info unless Rails.env.test?
 
       api :GET, "/api/v1/users/:id/list_fave_locations.json", "Fetch list of favorite locations"
       description "Fetch list of favorite locations"
@@ -209,6 +209,79 @@ module Api
         )
       rescue ActiveRecord::RecordNotFound
         return_response("Failed to find user", "errors")
+      end
+
+      api :DELETE, "/api/v1/users/:id", "Delete a user account"
+      description "Permanently delete your user account"
+      param :id, Integer, desc: "ID of user", required: true
+      formats [ "json" ]
+      def destroy
+        user = User.find(params[:id])
+
+        if user.authentication_token != params[:user_token]
+          return_response("Unauthorized user update.", "errors")
+          return
+        end
+
+        user.destroy
+        return_response("User deleted.", "msg")
+      rescue ActiveRecord::RecordNotFound
+        return_response("Unknown user", "errors")
+      end
+
+      api :POST, "/api/v1/users/:id/update_email", "Update email address"
+      description "Update email address for a user"
+      param :id, Integer, desc: "ID of user", required: true
+      param :email, String, desc: "New email address", required: true
+      formats [ "json" ]
+      def update_email
+        user = User.find(params[:id])
+
+        if user.authentication_token != params[:user_token]
+          return_response("Unauthorized user update.", "errors")
+          return
+        end
+
+        if params[:email].blank?
+          return_response("Email can not be blank", "errors")
+          return
+        end
+
+        if user.update(email: params[:email])
+          return_response("Email updated.", "msg")
+        else
+          return_response(user.errors.full_messages.join(", "), "errors")
+        end
+      rescue ActiveRecord::RecordNotFound
+        return_response("Unknown user", "errors")
+      end
+
+      api :POST, "/api/v1/users/:id/update_password", "Update password"
+      description "Update password for a user"
+      param :id, Integer, desc: "ID of user", required: true
+      param :current_password, String, desc: "Current password", required: true
+      param :password, String, desc: "New password", required: true
+      param :password_confirmation, String, desc: "New password confirmation", required: true
+      formats [ "json" ]
+      def update_password
+        user = User.find(params[:id])
+
+        if user.authentication_token != params[:user_token]
+          return_response("Unauthorized user update.", "errors")
+          return
+        end
+
+        if user.update_with_password(
+          current_password: params[:current_password],
+          password: params[:password],
+          password_confirmation: params[:password_confirmation]
+        )
+          return_response("Password updated.", "msg")
+        else
+          return_response(user.errors.full_messages.join(", "), "errors")
+        end
+      rescue ActiveRecord::RecordNotFound
+        return_response("Unknown user", "errors")
       end
 
       api :POST, "/api/v1/users/:id/update_user_flag", "Set a flag icon for your user"
