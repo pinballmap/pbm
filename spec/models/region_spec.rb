@@ -96,125 +96,80 @@ describe Region do
     end
   end
 
-  describe '#generate_daily_digest_comments_email_body' do
-    it 'should return nil if there are no comments that day' do
-      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+  describe '#generate_daily_digest_email_body' do
+    it 'returns empty collections when there is no activity that day' do
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
 
-      expect(@region.generate_daily_digest_comments_email_body[:submissions]).to be_empty
+      result = @region.generate_daily_digest_email_body
+      expect(result[:machine_comments]).to be_empty
+      expect(result[:machine_removals]).to be_empty
+      expect(result[:pictures_added]).to be_empty
+      expect(result[:high_scores]).to be_empty
     end
 
-    it 'should generate a string containing all machine comments from the day' do
-      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
-      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
+    it 'returns all four activity types from yesterday, scoped to region, sorted appropriately' do
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day, location_name: 'Bar Place', machine_name: 'Black Knight', comment: 'tilty', user_name: 'alice')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day, location_name: 'Foo Place', machine_name: 'Attack from Mars', comment: 'plays great', user_name: 'bob')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 1.day, location_name: 'Arcade One', machine_name: 'Centaur', user_name: 'carol')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day, location_name: 'Pinhead Pub', user_name: 'dave')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 1.day, location_name: 'Arcade One', machine_name: 'Centaur', high_score: 1_500_000, user_name: 'alice')
 
-      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'qux', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region_id: @other_region.id, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
 
-      expect(@region.generate_daily_digest_comments_email_body[:submissions]).to eq(%w[foo bar])
-    end
-  end
-
-  describe '#generate_daily_digest_global_comments_email_body' do
-    it 'should return nil if there are no comments that day' do
-      FactoryBot.create(:user_submission, region_id: nil, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region_id: nil, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-
-      expect(Region.generate_daily_digest_global_comments_email_body[:submissions]).to be_empty
-    end
-
-    it 'should generate a string containing all machine comments from the day' do
-      FactoryBot.create(:user_submission, region_id: nil, submission: 'foo', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
-      FactoryBot.create(:user_submission, region_id: nil, submission: 'bar', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
-      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bong', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
-
-      FactoryBot.create(:user_submission, region_id: nil, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region_id: nil, submission: 'qux', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-
-      expect(Region.generate_daily_digest_global_comments_email_body[:submissions]).to eq(%w[foo bar bong])
-    end
-  end
-
-  describe '#generate_daily_digest_global_removal_email_body' do
-    it 'should return nil if there are no removals that day' do
-      FactoryBot.create(:user_submission, region: nil, submission: 'foo', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
-
-      expect(Region.generate_daily_digest_global_removal_email_body[:submissions]).to be_empty
-    end
-
-    it 'should generate a string containing all machine removals from the day' do
-      FactoryBot.create(:user_submission, region: nil, submission: 'foo', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 1.day)
-      FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 1.day)
-      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bong', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 1.day)
-
-      FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region: nil, submission: 'qux', submission_type: UserSubmission::NEW_CONDITION_TYPE)
-
-      expect(Region.generate_daily_digest_global_removal_email_body[:submissions]).to eq(%w[foo bar bong])
+      result = @region.generate_daily_digest_email_body
+      expect(result[:machine_comments]).to eq([
+        { location_name: 'Bar Place', location_id: nil, machine_name: 'Black Knight', comment: 'tilty', user_name: 'alice' },
+        { location_name: 'Foo Place', location_id: nil, machine_name: 'Attack from Mars', comment: 'plays great', user_name: 'bob' }
+      ])
+      expect(result[:machine_removals]).to eq([
+        { location_name: 'Arcade One', location_id: nil, machine_name: 'Centaur', user_name: 'carol' }
+      ])
+      expect(result[:pictures_added]).to eq([
+        { location_name: 'Pinhead Pub', location_id: nil, user_name: 'dave' }
+      ])
+      expect(result[:high_scores]).to eq([
+        { location_name: 'Arcade One', location_id: nil, machine_name: 'Centaur', high_score: 1_500_000, user_name: 'alice' }
+      ])
     end
   end
 
-  describe '#generate_daily_digest_removal_email_body' do
-    it 'should return nil if there are no removals that day' do
-      FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::NEW_CONDITION_TYPE)
+  describe '.generate_daily_digest_global_email_body' do
+    it 'returns empty collections when there is no activity that day' do
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
 
-      expect(@region.generate_daily_digest_removal_email_body[:submissions]).to be_empty
+      result = Region.generate_daily_digest_global_email_body
+      expect(result[:machine_comments]).to be_empty
+      expect(result[:machine_removals]).to be_empty
+      expect(result[:pictures_added]).to be_empty
+      expect(result[:high_scores]).to be_empty
     end
 
-    it 'should generate a string containing all machine removals from the day' do
-      FactoryBot.create(:user_submission, region: @region, submission: 'foo', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 1.day)
-      FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 1.day)
+    it 'returns all four activity types from yesterday across all regions, sorted appropriately' do
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day, location_name: 'Alpha Bar', machine_name: 'Black Knight', comment: 'loud', user_name: 'alice')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day, location_name: 'Beta Bar', machine_name: 'Attack from Mars', comment: 'great', user_name: 'bob')
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 1.day, location_name: 'Gamma Bar', machine_name: 'Twilight Zone', user_name: 'carol')
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day, location_name: 'Delta Lounge', user_name: 'dave')
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 1.day, location_name: 'Epsilon Arcade', machine_name: 'Centaur', high_score: 2_000_000, user_name: 'eve')
 
-      FactoryBot.create(:user_submission, region: @region, submission: 'baz', submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region: @region, submission: 'qux', submission_type: UserSubmission::NEW_CONDITION_TYPE)
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
 
-      expect(@region.generate_daily_digest_removal_email_body[:submissions]).to eq(%w[foo bar])
-    end
-  end
-
-  describe '#generate_daily_digest_global_picture_added_email_body' do
-    it 'should return nil if there are no pictures added that day' do
-      FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_PICTURE_TYPE)
-
-      expect(Region.generate_daily_digest_global_picture_added_email_body[:submissions]).to be_empty
-    end
-
-    it 'should generate a string containing all pictures added from the day' do
-      FactoryBot.create(:user_submission, region: nil, submission: 'foo', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
-      FactoryBot.create(:user_submission, region: nil, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
-      FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bong', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
-
-      FactoryBot.create(:user_submission, region: nil, submission: 'baz', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region: nil, submission: 'qux', submission_type: UserSubmission::NEW_PICTURE_TYPE)
-
-      expect(Region.generate_daily_digest_global_picture_added_email_body[:submissions]).to eq(%w[foo bar bong])
-    end
-  end
-
-  describe '#generate_daily_digest_global_score_added_email_body' do
-    it 'should return nil if there are no scores added that day' do
-      FactoryBot.create(:user_submission, region: nil, submission: '111', submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region_id: @region.id, submission: '222', submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region: nil, submission: '333', submission_type: UserSubmission::NEW_SCORE_TYPE)
-
-      expect(Region.generate_daily_digest_global_score_added_email_body[:submissions]).to be_empty
-    end
-
-    it 'should generate a string containing all scores added from the day' do
-      FactoryBot.create(:user_submission, region: nil, submission: '444', submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 1.day)
-      FactoryBot.create(:user_submission, region: nil, submission: '555', submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 1.day)
-      FactoryBot.create(:user_submission, region_id: @region.id, submission: '666', submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 1.day)
-
-      FactoryBot.create(:user_submission, region: nil, submission: '777', submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 2.day)
-      FactoryBot.create(:user_submission, region: nil, submission: '888', submission_type: UserSubmission::NEW_SCORE_TYPE)
-
-      expect(Region.generate_daily_digest_global_score_added_email_body[:submissions]).to eq(%w[444 555 666])
+      result = Region.generate_daily_digest_global_email_body
+      expect(result[:machine_comments]).to eq([
+        { location_name: 'Alpha Bar', location_id: nil, machine_name: 'Black Knight', comment: 'loud', user_name: 'alice' },
+        { location_name: 'Beta Bar', location_id: nil, machine_name: 'Attack from Mars', comment: 'great', user_name: 'bob' }
+      ])
+      expect(result[:machine_removals]).to eq([
+        { location_name: 'Gamma Bar', location_id: nil, machine_name: 'Twilight Zone', user_name: 'carol' }
+      ])
+      expect(result[:pictures_added]).to eq([
+        { location_name: 'Delta Lounge', location_id: nil, user_name: 'dave' }
+      ])
+      expect(result[:high_scores]).to eq([
+        { location_name: 'Epsilon Arcade', location_id: nil, machine_name: 'Centaur', high_score: 2_000_000, user_name: 'eve' }
+      ])
     end
   end
 

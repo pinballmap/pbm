@@ -23,10 +23,16 @@ class Operator < ApplicationRecord
     start_of_day = (Time.now - 1.day).beginning_of_day
     end_of_day = (Time.now - 1.day).end_of_day
 
-    { machine_comments: UserSubmission.joins(:location).where("user_submissions.created_at is not null and user_submissions.created_at > ? and user_submissions.created_at < ? and submission_type = ?", start_of_day, end_of_day, UserSubmission::NEW_CONDITION_TYPE).where(deleted_at: nil).where(location: { operator_id: self }).collect(&:submission),
+    submissions = UserSubmission.joins(:location)
+      .where(created_at: start_of_day..end_of_day, deleted_at: nil)
+      .where(location: { operator_id: self })
 
-    machines_added: UserSubmission.joins(:location).where("user_submissions.created_at is not null and user_submissions.created_at > ? and user_submissions.created_at < ? and submission_type = ?", start_of_day, end_of_day, UserSubmission::NEW_LMX_TYPE).where(deleted_at: nil).where(location: { operator_id: self }).collect(&:submission),
+    to_item = ->(us) { { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, comment: us.comment, user_name: us.user_name } }
 
-    machines_removed: UserSubmission.joins(:location).where("user_submissions.created_at is not null and user_submissions.created_at > ? and user_submissions.created_at < ? and submission_type = ?", start_of_day, end_of_day, UserSubmission::REMOVE_MACHINE_TYPE).where(deleted_at: nil).where(location: { operator_id: self }).collect(&:submission) }
+    {
+      machine_comments: submissions.where(submission_type: UserSubmission::NEW_CONDITION_TYPE).order(:location_name).map(&to_item),
+      machines_added:   submissions.where(submission_type: UserSubmission::NEW_LMX_TYPE).order(:location_name).map(&to_item),
+      machines_removed: submissions.where(submission_type: UserSubmission::REMOVE_MACHINE_TYPE).order(:location_name).map(&to_item)
+    }
   end
 end

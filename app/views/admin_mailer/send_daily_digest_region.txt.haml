@@ -1,8 +1,7 @@
-Here are the edits made to your pinball machines yesterday on Pinball Map. We hope this helps you identify and fix problems.
-
-You opted in to receive these emails, but if you don't want them anymore, reply to this message and tell us. Also, see our FAQ: https://pinballmap.com/faq#operators
+Here is the daily activity digest for #{@region_name} on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
 
 Machine Comments
+
 - @machine_comments.each do |item|
   = item[:location_name]
   = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
@@ -10,16 +9,26 @@ Machine Comments
   = item[:comment]
   = item[:user_name]
 
-Machines Added
-- @machines_added.each do |item|
+Machine Removals
+
+- @machine_removals.each do |item|
   = item[:location_name]
   = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
   = item[:machine_name]
   = item[:user_name]
 
-Machines Removed
-- @machines_removed.each do |item|
+Pictures Added
+
+- @pictures_added.each do |item|
+  = item[:location_name]
+  = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
+  = item[:user_name]
+
+High Scores
+
+- @high_scores.each do |item|
   = item[:location_name]
   = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
   = item[:machine_name]
+  = number_with_delimiter(item[:high_score])
   = item[:user_name]
