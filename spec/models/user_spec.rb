@@ -179,7 +179,7 @@ describe User do
     it 'should return the most recent 50' do
       51.times do |i|
         location = FactoryBot.create(:location, name: "Location #{i}", id: i.to_i)
-        FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::LOCATION_METADATA_TYPE, location_name: location.name, location_id: location.id, created_at: '2017-01-01')
+        FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::LOCATION_METADATA_TYPE, location_name: location.name, location_id: location.id, created_at: i.minutes.ago)
       end
 
       expect(@user.profile_list_of_edited_locations.length).to eq(50)
