@@ -673,3 +673,19 @@ $(document).on('click', '.copy_icon', function () {
     show_ajax_message('Copied to clipboard!', 'notice');
   });
 });
+
+$(document).on('click', '.lb-delete-btn', function () {
+  var lpxId = $(this).data('lpx-id');
+  if (confirm('Remove this photo?')) {
+    $.ajax({
+      url: '/location_picture_xrefs/' + lpxId,
+      method: 'DELETE',
+      headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+      success: function () {
+        lightbox.end();
+        $('.location_picture_xref_' + lpxId).fadeOut('slow');
+      }
+    });
+  }
+  return false;
+});
