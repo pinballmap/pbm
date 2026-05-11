@@ -18,7 +18,7 @@ describe LocationMachineXrefsController do
 
   describe 'add machines', type: :feature, js: true do
     before(:each) do
-      @user = FactoryBot.create(:user, email: 'ssw@bar.com', region: @region)
+      @user = FactoryBot.create(:user, email: 'ssw@bar.com', region: @region, username: 'ssw')
       @machine_to_add = FactoryBot.create(:machine, name: 'Medieval Madness')
       FactoryBot.create(:machine, name: 'Star Wars')
 
@@ -45,7 +45,7 @@ describe LocationMachineXrefsController do
         expect(location.reload.date_last_updated).to eq(Date.today)
 
         expect(find("#show_machines_location_#{location.id}")).to have_content(@machine_to_add.name)
-        expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')}")
+        expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated by ssw on #{Time.now.strftime('%b %d, %Y')}")
 
         expect(LocationMachineXref.where(location_id: location.id, machine_id: @machine_to_add.id).first.user_id).to eq(@user.id)
 
@@ -462,7 +462,7 @@ describe LocationMachineXrefsController do
 
       expect(find("#show_conditions_lmx_#{lmx.id}")).to have_content("This is a new condition\npbm\n#{lmx.created_at.strftime('%b %d, %Y')}")
       expect(lmx.reload.location.date_last_updated).to eq(Date.today)
-      expect(find("#last_updated_location_#{location.id}")).to have_content("#{location.date_last_updated.strftime('%b %d, %Y')} by pbm")
+      expect(find("#last_updated_location_#{location.id}")).to have_content("by pbm on #{location.date_last_updated.strftime('%b %d, %Y')}")
       expect(URI.parse(page.find_link('pbm', match: :first)['href']).to_s).to match(%r{/users/pbm/profile})
       expect(page).to have_selector('.machine_comments_container .user_admin_container', visible: :visible)
       expect(page).to have_selector('.machine_comments_container .rank_icon_SuperMapper', visible: :visible)

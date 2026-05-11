@@ -5,11 +5,10 @@
     = pluralize(number_with_precision(l.user_submissions_count, precision: 0, delimiter: ','), ' time')
     by
     = pluralize(number_with_precision(l.users_count, precision: 0, delimiter: ','), ' user') + "."
-    Last updated:
-    %span.last_updated_date #{l.date_last_updated.strftime("%b %d, %Y")}
+    Last updated
     - if l.last_updated_by_user
       by
-      %span.last_updated_username
+      %span.last_updated_username{:style => "padding-right: 3px;"}
         = link_to l.last_updated_by_user.username, "#{request.scheme}://#{request.host_with_port}/users/#{l.last_updated_by_user.username}/profile"
         - user = l.last_updated_by_user
         - if user.admin_title.present?
@@ -25,6 +24,8 @@
         - if l.last_updated_by_user.flag.present?
           %span{:class => "user_flag_container"}
             =image_tag("/flags/#{l.last_updated_by_user.flag}.png", :class => "user_icon user_flag", :alt => "#{l.last_updated_by_user.flag} flag")
+    on
+    %span.last_updated_date #{l.date_last_updated.strftime("%b %d, %Y")}
   - if l.date_last_updated < 2.years.ago
     - dateDiff = distance_of_time_in_words(Time.now, l.date_last_updated)
     %div{:class => "stale", :id => "stale_#{l.id}"}

@@ -302,7 +302,7 @@ describe PagesController do
       visit '/portland/activity'
 
       expect(page).to have_content("Here's a feed of edits to the Portland Pinball Map")
-      expect(page).to have_content("New location added: Clark's Depot in Vernon by ssw")
+      expect(page).to have_content("New location added: Clark's Depot in Vernon")
       expect(page).to have_content("added to Clark's Depot")
       expect(page).to have_content("removed from Clark's Depot")
       expect(page).to_not have_content("added to Ripley's Hut")

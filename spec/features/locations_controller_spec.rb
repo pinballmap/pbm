@@ -64,7 +64,7 @@ describe LocationsController do
         sleep 1
 
         expect(location.reload.date_last_updated).to eq(Date.today)
-        expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')} by ssw")
+        expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated by ssw on #{Time.now.strftime('%b %d, %Y')}")
         expect(URI.parse(page.find_link('ssw')['href']).to_s).to match(%r{/users/#{@user.username}/profile})
         expect(page).to have_selector('.user_admin_container', visible: :visible)
         expect(page).to have_selector('.user_operator_container', visible: :visible)
@@ -97,7 +97,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + location.id.to_s
 
-      expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')}")
+      expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated on #{Time.now.strftime('%b %d, %Y')}")
       expect(page).to_not have_selector('.user_admin_container')
       expect(page).to_not have_selector('.user_operator_container')
       expect(page).to_not have_selector('.rank_icon_SuperMapper')
@@ -227,7 +227,7 @@ describe LocationsController do
         expect(LocationMachineXref.all).to eq([])
         expect(LocationMachineXref.unscoped.all.size).to eq(1)
         expect(location.reload.date_last_updated).to eq(Date.today)
-        expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')}")
+        expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated by ssw on #{Time.now.strftime('%b %d, %Y')}")
 
         expect(UserSubmission.count).to eq(2)
         submission = UserSubmission.second
@@ -851,7 +851,7 @@ describe LocationsController do
 
   describe 'update_metadata', type: :feature, js: true do
     before(:each) do
-      @user = FactoryBot.create(:user)
+      @user = FactoryBot.create(:user, username: 'ssw')
       login(@user)
 
       @location = FactoryBot.create(:location, region: @region, name: 'Cleo')
@@ -964,7 +964,7 @@ describe LocationsController do
       expect(@location.last_updated_by_user).to eq(@user)
 
       expect(page).to_not have_css('div#flash_error')
-      expect(page).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')}")
+      expect(page).to have_content("Last updated by ssw on #{Time.now.strftime('%b %d, %Y')}")
     end
 
     it 'allows users to update a location metadata - TWICE' do
@@ -1026,7 +1026,7 @@ describe LocationsController do
       expect(Location.find(@location.id).date_last_updated.strftime('%b %d, %Y')).to eq(Time.now.strftime('%b %d, %Y'))
       expect(Location.find(@location.id).last_updated_by_user).to eq(@user)
 
-      expect(page).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')}")
+      expect(page).to have_content("Last updated by ssw on #{Time.now.strftime('%b %d, %Y')}")
     end
 
     it 'allows users to update a location description - TWICE' do

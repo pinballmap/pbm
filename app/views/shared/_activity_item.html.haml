@@ -39,12 +39,12 @@
         - if (activity.city_name.present?)
           in #{activity.city_name}
       - if (activity.user_name.present?)
-        by
-        - if (activity.user.blank?)
-          %span.bold #{activity.user_name}
-        - else
-          = link_to "#{activity.user_name}", "#{request.scheme}://#{request.host_with_port}/users/#{activity.user_name}/profile"
-        = render partial: 'shared/activity_icons', :locals => {:activity => activity}
+        %div
+          - if (activity.user.blank?)
+            %span.bold #{activity.user_name}
+          - else
+            = link_to "#{activity.user_name}", "#{request.scheme}://#{request.host_with_port}/users/#{activity.user_name}/profile"
+          = render partial: 'shared/activity_icons', :locals => {:activity => activity}
   .activity_hr
 
 - if page_activity
