@@ -478,16 +478,6 @@ describe MapsController do
       sleep 1
 
       expect(page).to have_content('Activity feed')
-
-      # Placeholder: map.getCenter() doesn't work in tests because the map doesn't load
-
-      # find('#map_activity_button').click
-
-      # sleep 0.5
-
-      # expect(page).to have_content('1 recent map edits in the nearby area')
-      # expect(page).to have_content("added to Clark's Depot")
-      # expect(page).to_not have_content("removed from Ripley's Hut")
     end
   end
 end

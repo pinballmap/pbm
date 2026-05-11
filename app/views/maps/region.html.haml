@@ -51,9 +51,22 @@
     };
   }
 
+  let mapActivityFilters = [];
+
+  $("#map_activity_container").on("click", ".apply_map_activity_filters", function() {
+    mapActivityFilters = [];
+    $('#map_activity_container .map_activity_filter:checked').each(function() {
+      mapActivityFilters.push(this.value);
+    });
+    loadMapActivity();
+  });
+
   function loadMapActivity() {
     $('#map_activity_container').html(loadingHTML());
-    $.get('/user_submissions/list_within_range', { boundsData: getMapBoundsData() }, function(data, textStatus, jqxhr) {
+    $.get('/user_submissions/list_within_range', {
+      boundsData: getMapBoundsData(),
+      submission_type: mapActivityFilters
+    }, function(data, textStatus, jqxhr) {
       $('#map_activity_container').html(data);
     });
   }

@@ -280,8 +280,21 @@
     });
   });
 
+  let mapActivityFilters = [];
+
   $(document).on('activity-loaded', function() {
     topFunction();
+    mapActivityFilters.forEach(function(filter) {
+      $('#map_activity_container .map_activity_filter[value="' + filter + '"]').prop('checked', true);
+    });
+  });
+
+  $("#map_activity_container").on("click", ".apply_map_activity_filters", function() {
+    mapActivityFilters = [];
+    $('#map_activity_container .map_activity_filter:checked').each(function() {
+      mapActivityFilters.push(this.value);
+    });
+    loadMapActivity();
   });
 
   $("#map_activity_container").on("click", "#next_link > nav > a", function(e) {
@@ -292,7 +305,8 @@
     $('#map_activity_container').html(loadingHTML());
     $.get('/user_submissions/list_within_range', {
       boundsData: getMapBoundsData(),
-      page: page
+      page: page,
+      submission_type: mapActivityFilters
     }, function(data) {
       $('#map_activity_container').html(data);
     });
@@ -308,7 +322,10 @@
 
   function loadMapActivity() {
     $('#map_activity_container').html(loadingHTML());
-    $.get('/user_submissions/list_within_range', { boundsData: getMapBoundsData() }, function(data, textStatus, jqxhr) {
+    $.get('/user_submissions/list_within_range', {
+      boundsData: getMapBoundsData(),
+      submission_type: mapActivityFilters
+    }, function(data, textStatus, jqxhr) {
       $('#map_activity_container').html(data);
     });
   }

@@ -801,7 +801,7 @@ describe LocationsController do
       expect(find('.recent_location_activity_location')).to have_content('New location added')
       expect(find('.recent_location_activity_location')).to have_content('added')
       expect(find('.recent_location_activity_location')).to have_content('removed')
-      expect(find('.recent_location_activity_location')).to_not have_content('score')
+      expect(find('.recent_location_activity_location')).to_not have_content('2,222')
       expect(find('.recent_location_activity_location')).to_not have_content('hello there')
       expect(find('.recent_location_activity_location')).to have_content('confirmed')
       expect(find('.recent_location_activity_location')).to have_content('be best')
@@ -813,14 +813,17 @@ describe LocationsController do
     end
 
     it 'shows only your own scores' do
-      FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user_name: 'ssw', high_score: '3333', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'score added by ssw')
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@example.com')
+      FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user: other_user, user_name: 'other', high_score: '4444', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'score added by other')
+      FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user: @user, user_name: 'pbm', high_score: '3333', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'score added by pbm')
 
+      login(@user)
       visit '/map/?by_location_id=' + @location.id.to_s
 
       find("#recent_location_activity_location_banner_#{@location.id}").click
       sleep(0.5)
 
-      expect(find('.recent_location_activity_location')).to_not have_content('2,222')
+      expect(find('.recent_location_activity_location')).to_not have_content('4,444')
       expect(find('.recent_location_activity_location')).to have_content('3,333')
     end
 

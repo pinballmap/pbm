@@ -24,4 +24,90 @@ describe LocationsController, type: :controller do
       expect(response.body).to eq('{"error":"Website must begin with http:// or https://"}')
     end
   end
+
+  describe '#render_recent_activity' do
+    before(:each) do
+      @lmx_submission = FactoryBot.create(:user_submission, location: @location, submission_type: 'new_lmx', submission: 'Machine added at location', location_name: @location.name)
+      @remove_submission = FactoryBot.create(:user_submission, location: @location, submission_type: 'remove_machine', submission: 'Machine removed from location', location_name: @location.name)
+      @score_submission = FactoryBot.create(:user_submission, location: @location, submission_type: 'new_msx', user: @user, submission: 'Score added at location', location_name: @location.name)
+    end
+
+    it 'returns all activity types when no filter is specified' do
+      get 'render_recent_activity', params: { id: @location.id }
+
+      expect(response).to be_successful
+      submissions = assigns(:recent_activity)
+      expect(submissions).to include(@lmx_submission)
+      expect(submissions).to include(@remove_submission)
+      expect(submissions).to include(@score_submission)
+    end
+
+    it 'filters to a single specified submission type' do
+      get 'render_recent_activity', params: { id: @location.id, submission_type: ['new_lmx'] }
+
+      expect(response).to be_successful
+      submissions = assigns(:recent_activity)
+      expect(submissions).to include(@lmx_submission)
+      expect(submissions).to_not include(@remove_submission)
+      expect(submissions).to_not include(@score_submission)
+    end
+
+    it 'filters to multiple specified submission types' do
+      get 'render_recent_activity', params: { id: @location.id, submission_type: ['new_lmx', 'remove_machine'] }
+
+      expect(response).to be_successful
+      submissions = assigns(:recent_activity)
+      expect(submissions).to include(@lmx_submission)
+      expect(submissions).to include(@remove_submission)
+      expect(submissions).to_not include(@score_submission)
+    end
+
+    it 'returns only the current user\'s scores when new_msx is the only filter' do
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@example.com')
+      other_score = FactoryBot.create(:user_submission, location: @location, submission_type: 'new_msx', user: other_user, submission: 'Other user score', location_name: @location.name)
+
+      get 'render_recent_activity', params: { id: @location.id, submission_type: ['new_msx'] }
+
+      expect(response).to be_successful
+      submissions = assigns(:recent_activity)
+      expect(submissions).to include(@score_submission)
+      expect(submissions).to_not include(other_score)
+    end
+
+    it 'does not return new_msx submissions when logged out and new_msx is the only filter' do
+      login(nil)
+
+      get 'render_recent_activity', params: { id: @location.id, submission_type: ['new_msx'] }
+
+      expect(response).to be_successful
+      expect(assigns(:recent_activity)).to be_empty
+    end
+
+    it 'does not return new_msx submissions when logged out and no filter is specified' do
+      login(nil)
+
+      get 'render_recent_activity', params: { id: @location.id }
+
+      expect(response).to be_successful
+      submissions = assigns(:recent_activity)
+      expect(submissions).to include(@lmx_submission)
+      expect(submissions).to_not include(@score_submission)
+    end
+
+    it 'returns all activity types when an empty filter array is given' do
+      get 'render_recent_activity', params: { id: @location.id, submission_type: [] }
+
+      expect(response).to be_successful
+      submissions = assigns(:recent_activity)
+      expect(submissions).to include(@lmx_submission)
+      expect(submissions).to include(@remove_submission)
+      expect(submissions).to include(@score_submission)
+    end
+
+    it 'returns 404 for an unknown location' do
+      get 'render_recent_activity', params: { id: 99999 }
+
+      expect(response.status).to eq(404)
+    end
+  end
 end

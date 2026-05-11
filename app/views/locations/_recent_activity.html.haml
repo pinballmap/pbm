@@ -1,21 +1,50 @@
 %div[location, :recent_location_activity]{:style => 'display:none'}
 
 :javascript
+  window.locationActivityFilters = window.locationActivityFilters || {};
+  window.locationActivityFilters[#{location.id}] = window.locationActivityFilters[#{location.id}] || [];
+
   $(function() {
-    $('#recent_location_activity_location_banner_#{location.id}').click(function () {
-      $('#recent_location_activity_location_#{location.id}').html(loadingHTML());
-      $('#recent_location_activity_location_#{location.id}').load('/locations/#{location.id}/render_recent_activity');
+    function buildLocationActivityUrl(locationId, baseUrl) {
+      let filters = window.locationActivityFilters[locationId] || [];
+      if (filters.length === 0) return baseUrl;
+      let params = filters.map(function(f) { return 'submission_type[]=' + encodeURIComponent(f); }).join('&');
+      return baseUrl + (baseUrl.includes('?') ? '&' : '?') + params;
+    }
+
+    function loadLocationActivity(locationId, baseUrl, afterLoad) {
+      let url = buildLocationActivityUrl(locationId, baseUrl);
+      let container = $('#recent_location_activity_location_' + locationId);
+      container.html(loadingHTML());
+      container.load(url, function() {
+        let activeFilters = window.locationActivityFilters[locationId] || [];
+        activeFilters.forEach(function(filter) {
+          container.find('.loc_activity_filter[value="' + filter + '"]').prop('checked', true);
+        });
+        if (afterLoad) afterLoad();
+      });
+    }
+
+    $('#recent_location_activity_location_banner_#{location.id}').click(function() {
+      if ($('#recent_location_activity_location_#{location.id}').is(':visible')) {
+        loadLocationActivity(#{location.id}, '/locations/#{location.id}/render_recent_activity');
+      }
     });
 
-    // Handle pagination clicks with event delegation
+    $('#recent_location_activity_location_#{location.id}').on('click', '.apply_location_activity_filters', function() {
+      let filters = [];
+      $('#recent_location_activity_location_#{location.id} .loc_activity_filter:checked').each(function() {
+        filters.push(this.value);
+      });
+      window.locationActivityFilters[#{location.id}] = filters;
+      loadLocationActivity(#{location.id}, '/locations/#{location.id}/render_recent_activity');
+    });
+
     $('#recent_location_activity_location_#{location.id}').on('click', '#location_activity_pagination a', function(e) {
       e.preventDefault();
-      let href = $(this).attr('href');
-      let queryString = href.split('?')[1];
-      let url = '/locations/#{location.id}/render_recent_activity?' + queryString;
-      $('#recent_location_activity_location_#{location.id}').html(loadingHTML());
-      $('#recent_location_activity_location_#{location.id}').load(url, function() {
-        // Scroll to the top of the activity content with offset for fixed headers (220px)
+      let page = new URL($(this).attr('href'), window.location.origin).searchParams.get('page') || '';
+      let baseUrl = '/locations/#{location.id}/render_recent_activity' + (page ? '?page=' + page : '');
+      loadLocationActivity(#{location.id}, baseUrl, function() {
         let element = $('#recent_location_activity_location_#{location.id}')[0];
         let elementPosition = element.getBoundingClientRect().top;
         let offsetPosition = elementPosition + window.pageYOffset - 220;

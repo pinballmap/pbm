@@ -2377,7 +2377,7 @@ input.search:active,
   margin-left: 5px;
 }
 
-.profile .save_button {
+.profile .save_button, .recent_location_activity_location .save_button, #map_activity .save_button {
   float: none;
 }
 
@@ -2523,6 +2523,7 @@ input.lookup_search_input:focus {
   color: var(--darkgrey);
   font-family: $Nunito_600SemiBold;
   font-size: 15px;
+  line-height: 18px;
 }
 
 .quick_button_content_header {
@@ -2928,22 +2929,23 @@ input.score {
   text-align: left;
 }
 
-#activity_filter {
+#activity_filter, .activity_filter {
   display: flex;
   flex-wrap: wrap;
   font-size: 15px;
+  line-height: 18px;
   width: 100%;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
 }
 
-#activity_filter > div {
+#activity_filter > div, .activity_filter > div {
   margin: 10px;
   width: 60px;
 }
 
-#activity_filter input {
+#activity_filter input, .activity_filter input {
   height: 30px;
   background: #47475f;
   color: #fafaff;
