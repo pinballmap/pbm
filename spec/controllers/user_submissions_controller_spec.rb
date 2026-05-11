@@ -35,7 +35,7 @@ describe UserSubmissionsController, type: :controller do
     end
 
     it 'filters to a single specified submission type' do
-      get 'list_within_range', params: bounds_params.merge(submission_type: ['new_lmx'])
+      get 'list_within_range', params: bounds_params.merge(submission_type: [ 'new_lmx' ])
 
       expect(response).to be_successful
       submissions = assigns(:recent_activity)
@@ -45,7 +45,7 @@ describe UserSubmissionsController, type: :controller do
     end
 
     it 'filters to multiple specified submission types' do
-      get 'list_within_range', params: bounds_params.merge(submission_type: ['new_lmx', 'remove_machine'])
+      get 'list_within_range', params: bounds_params.merge(submission_type: [ 'new_lmx', 'remove_machine' ])
 
       expect(response).to be_successful
       submissions = assigns(:recent_activity)
@@ -58,7 +58,7 @@ describe UserSubmissionsController, type: :controller do
       other_user = FactoryBot.create(:user, username: 'other', email: 'other@example.com')
       other_score = FactoryBot.create(:user_submission, location: @location, lat: @location.lat, lon: @location.lon, submission_type: 'new_msx', user: other_user, submission: 'Other user score', location_name: @location.name)
 
-      get 'list_within_range', params: bounds_params.merge(submission_type: ['new_msx'])
+      get 'list_within_range', params: bounds_params.merge(submission_type: [ 'new_msx' ])
 
       expect(response).to be_successful
       submissions = assigns(:recent_activity)
@@ -69,7 +69,7 @@ describe UserSubmissionsController, type: :controller do
     it 'does not return new_msx submissions when logged out and new_msx is the only filter' do
       login(nil)
 
-      get 'list_within_range', params: bounds_params.merge(submission_type: ['new_msx'])
+      get 'list_within_range', params: bounds_params.merge(submission_type: [ 'new_msx' ])
 
       expect(response).to be_successful
       expect(assigns(:recent_activity)).to be_empty
