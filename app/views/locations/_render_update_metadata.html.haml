@@ -1,5 +1,5 @@
 %div.metadata[l, :metadata_show]
-  - if (l.location_type && l.location_type.icon)
+  - if (l.location_type && l.location_type.icon.present?)
     %div.location_type
       %div.location_type_container
         =image_tag("icons/#{l.location_type.icon}.svg", :alt => "#{l.location_type.icon}")
