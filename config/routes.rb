@@ -39,10 +39,13 @@ Rails.application.routes.draw do
           post :update_email
           post :update_password
           post :update_user_flag
+          post :add_life_list_machine
+          post :remove_life_list_machine
         end
         collection do
           get  :total_user_count
           get  :auth_details
+          get  :life_list_info
           post :signup
           post :forgot_password
           post :resend_confirmation
@@ -187,11 +190,13 @@ Rails.application.routes.draw do
       get :render_machine_tools
       get :render_machine_conditions
       get :render_machine_scores
+      get :render_life_list
       patch :ic_toggle
     end
   end
 
   resources :machine_score_xrefs
+  resources :user_machine_xrefs, only: [ :create, :destroy ]
   resources :location_picture_xrefs do
     member do
       get :form

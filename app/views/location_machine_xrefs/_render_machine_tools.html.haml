@@ -6,6 +6,9 @@
         Find machine tips, rules, & videos on
       = render :partial => 'location_machine_xrefs/matchplay', :locals => {:lmx => lmx}
   = render :partial => 'location_machine_xrefs/ic_button', :locals => {:lmx => lmx}
+%div.life_list_container{id: "life_list_lmx_#{lmx.id}"}
+  = render :partial => 'location_machine_xrefs/render_life_list', :locals => {:lmx => lmx}
+- cache [logged_in, lmx] do
   %div.machine_comments_container
     = render :partial => 'machine_conditions/show_machine_conditions', :locals => {:lmx => lmx}, cached: true
     = render :partial => 'location_machine_xrefs/update_machine_condition', :locals => {:lmx => lmx}

@@ -70,6 +70,11 @@ FactoryBot.define do
     association :user
   end
 
+  factory :user_machine_xref do
+    association :user
+    association :machine
+  end
+
   factory :event do
     name { 'Test Event' }
   end

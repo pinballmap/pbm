@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :location_picture_xrefs
   has_many :user_submissions
   has_many :user_fave_locations
+  has_many :user_machine_xrefs
+  has_many :life_list_machines, through: :user_machine_xrefs, source: :machine
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
@@ -141,6 +143,42 @@ class User < ApplicationRecord
       .where(user: self)
       .where(machine_id: machine_id)
       .count
+  end
+
+  def num_life_list_machines
+    user_machine_xrefs.count
+  end
+
+  def profile_life_list_stats
+    life_list = UserMachineXref
+      .where(user: self)
+      .joins(:machine)
+      .select("user_machine_xrefs.id AS umx_id, user_machine_xrefs.machine_id, machines.name AS machine_name, machines.year AS machine_year, machines.manufacturer AS machine_manufacturer")
+      .order("machines.name")
+
+    scores_by_machine = MachineScoreXref
+      .where(user: self)
+      .where.not(score: nil)
+      .order("score DESC")
+      .group_by(&:machine_id)
+
+    life_list.map do |entry|
+      scores = scores_by_machine[entry.machine_id]&.map(&:score) || []
+      result = {
+        umx_id: entry.umx_id,
+        machine_id: entry.machine_id,
+        machine_name: entry.machine_name,
+        machine_year_man: (entry.machine_year.blank? && entry.machine_manufacturer.blank? ? "" : "(#{[entry.machine_manufacturer, entry.machine_year].reject(&:blank?).join(', ')})")
+      }
+      if scores.any?
+        result.merge!(
+          average: (scores.sum.to_f / scores.size).round,
+          count: scores.size,
+          list: scores
+        )
+      end
+      result
+    end
   end
 
   def profile_machine_scores_stats

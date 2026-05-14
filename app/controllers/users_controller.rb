@@ -22,8 +22,9 @@ class UsersController < ApplicationController
     @user = search_param.to_i.to_s == search_param ? User.find_by(id: search_param) : User.find_by_username(search_param)
     raise ActiveRecord::RecordNotFound unless @user
 
-    @machine_scores_stats = @user.profile_machine_scores_stats
+    @life_list_stats = @user.profile_life_list_stats
     @edited_locations = @user.profile_list_of_edited_locations
+    @all_machines = Machine.order(:name).select(:id, :name, :year, :manufacturer).map { |m| [ m.name_and_year, m.id ] } if current_user&.id == @user.id
   end
 
   def update_user_flag

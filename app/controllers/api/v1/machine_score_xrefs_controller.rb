@@ -89,6 +89,7 @@ module Api
 
         if msx.save
           msx.create_user_submission
+          UserMachineXref.find_or_create_by(user: user, machine_id: machine_id)
           return_response(msx, "machine_score_xref", [], [ :username ], 201)
         else
           return_response(msx.errors.full_messages, "errors")

@@ -20,7 +20,6 @@
   --container: #f5f5ff;
   --border: #aeb1d2;
   --machinename: #66017b;
-  --machinename_bg: #ffffff;
   --details: #fafaff;
   --explore: #fffbfd;
   --mask: rgba(245, 251, 255, 0.7);
@@ -64,7 +63,6 @@
     --container: #292629;
     --border: #88788a;
     --machinename: #f9f2fa;
-    --machinename_bg: #5f5063;
     --details: #413244;
     --explore: #dfdaf0;
     --mask: rgba(90, 100, 117, 0.4);
@@ -103,7 +101,6 @@ html[data-theme="dark"] {
   --container: #292629;
   --border: #88788a;
   --machinename: #f9f2fa;
-  --machinename_bg: #5f5063;
   --details: #413244;
   --explore: #dfdaf0;
   --mask: rgba(90, 100, 117, 0.4);
@@ -141,7 +138,6 @@ html[data-theme="light"] {
   --container: #f5f5ff;
   --border: #aeb1d2;
   --machinename: #66017b;
-  --machinename_bg: #ffffff;
   --details: #fafaff;
   --explore: #fffbfd;
   --mask: rgba(245, 251, 255, 0.7);
@@ -452,6 +448,11 @@ ul li li {
   margin-top: 30px;
 }
 
+.mtb_15 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
 .mb_0 {
   margin-bottom: 0;
 }
@@ -462,6 +463,10 @@ ul li li {
 
 .mb_8 {
   margin-bottom: 8px;
+}
+
+.mb_15 {
+  margin-bottom: 15px;
 }
 
 .mb_20 {
@@ -732,6 +737,7 @@ form.edit_user .form-actions {
 .rank_icon, .user_operator, .user_icon {
   margin-bottom: -4px;
   margin-left: 2px;
+  margin-right: 2px;
   height: 16px;
   width: 16px;
 }
@@ -1736,11 +1742,12 @@ li.address_full {
   justify-content: space-between;
   font-size: 24px;
   line-height: 34px;
-  background: var(--machinename_bg);
+  background: var(--lightpurple);
   border-radius: 15px;
 }
 
 .machine_name_container .remove_machine_container,
+.machine_name_container form,
 .machine_name_container button {
   height: 33px;
   width: 30px;
@@ -1786,7 +1793,8 @@ span.machine_year_man {
   width: 400px;
 }
 
-.external_link_container {
+.external_link_container,
+.life_list_container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1823,8 +1831,8 @@ span.machine_year_man {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  height: 50px;
-  margin-top: 20px;
+  height: 65px;
+  margin-top: 30px;
   margin-bottom: 10px;
 }
 
@@ -1949,7 +1957,8 @@ span.machine_year_man {
 /* END ic_toggle */
 
 .machine_condition_lmx,
-.high_score_lmx {
+.high_score_lmx,
+.life_list_lmx {
   width: 220px;
   background: var(--buttons);
   @include radius(10px);
@@ -1965,10 +1974,23 @@ span.machine_year_man {
   font-family: $Nunito_600SemiBold;
 }
 
+.add_life_list {
+  height: 26px;
+  line-height: 26px;
+}
+
+#locations p.in_life_list {
+  margin: 20px auto 0 auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
 .machine_condition_lmx,
-.high_score_lmx {
+.high_score_lmx,
+.life_list_lmx {
   display: flex;
   justify-content: center;
+  border: none;
 }
 
 .machine_condition_new_line span {
@@ -2026,7 +2048,8 @@ img.machine_comment_icon {
 }
 
 .machine_condition_lmx:hover,
-.high_score_lmx:hover {
+.high_score_lmx:hover,
+.life_list_lmx:hover {
   cursor: pointer;
 }
 
@@ -2389,7 +2412,8 @@ input.submit_button:hover,
 #edit_user input,
 input.score,
 #add_machine_by_name,
-.lookup_search_input {
+.lookup_search_input,
+#life_list_filter {
   background: var(--white);
   padding: 0 5px;
   height: 28px;
@@ -2531,12 +2555,14 @@ input.lookup_search_input:focus {
   -webkit-box-shadow: 2px 2px 10px var(--shadow);
 }
 
-.high_score_lmx label {
+.high_score_lmx label,
+.life_list_lmx label {
   font-size: 14px;
 }
 
 .machine_condition_lmx:hover,
 .high_score_lmx:hover,
+.life_list_lmx:hover,
 .add_picture_location_toggle:hover,
 .add_machine_location_toggle:hover,
 .recent_location_activity_location_toggle:hover,
@@ -3374,6 +3400,7 @@ gmp-place-autocomplete {
 .user_flag {
   width: auto;
   margin-right: 2px;
+  margin-left: 2px;
   border-radius: 3px;
 }
 
@@ -3421,6 +3448,16 @@ gmp-place-autocomplete {
   background: var(--bg_vlightpurple) !important;
 }
 
+.select2-search--inline .select2-search__field {
+  background: transparent !important;
+  color: var(--black) !important;
+  font-size: 14px !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__placeholder {
+  color: var(--medgrey) !important;
+}
+
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
   border: 1px solid var(--border) !important;
   padding-left: 20px !important;
@@ -3444,7 +3481,14 @@ gmp-place-autocomplete {
   min-height: 28px;
 }
 
-.filter .select2-container .select2-selection--multiple {
+.stats .select2-container .select2-selection--multiple {
+  height: 38px !important;
+  min-height: 38px !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.filter .select2-container .select2-selection--multiple, {
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 20px;
@@ -3489,6 +3533,7 @@ gmp-place-autocomplete {
 }
 
 div.score_list span,
+div.stats_list div.scores_container span,
 span.stats_list span {
   line-height: 24px;
   font-size: 16px;
@@ -3496,8 +3541,7 @@ span.stats_list span {
   display: block;
 }
 
-div.score_list span.score_meta,
-span.stats_list span.score_meta {
+div.score_list span.score_meta {
   padding-bottom: 10px;
   font-size: 14px;
   font-family: $italic;
@@ -3506,15 +3550,13 @@ span.stats_list span.score_meta {
   display: inline;
 }
 
-div.score_list span.score_meta_gen,
-span.stats_list span.score_meta_gen {
+div.score_list span.score_meta_gen {
   display: inline;
   color: var(--darkgrey);
   font-size: 14px;
 }
 
-div.score_list span.score_machine,
-span.stats_list span.score_machine {
+div.score_list span.score_machine {
   text-decoration: underline;
   background: var(--bg_vlightpurple);
 }

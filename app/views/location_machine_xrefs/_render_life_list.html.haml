@@ -1,0 +1,37 @@
+- if !user_signed_in?
+  %p.in_life_list== Have you played <strong>#{lmx.machine.name}</strong>? If you were logged in you could track every machine you've played.
+  = link_to new_user_session_path, class: 'no_underline' do
+    %div.life_list_lmx
+      =image_tag("icons/clipboard-list-outline.svg", :alt => "Add to Life List", :class => "machine_comment_icon")
+      %div.add_life_list Add machine to your list
+- elsif (umx = UserMachineXref.find_by(user: current_user, machine_id: lmx.machine_id))
+  - has_scores = MachineScoreXref.where(user: current_user, machine_id: lmx.machine_id).exists?
+  %p.in_life_list== You've played <strong>#{lmx.machine.name}</strong>. #{link_to 'See your list', profile_user_path(current_user.id)}.
+  - unless has_scores
+    = form_tag user_machine_xref_path(umx.id), method: :delete, id: "remove_life_list_form_#{lmx.id}", data: { machine_name: lmx.machine.name } do
+      = submit_tag 'Remove from list?', class: 'delete_high_score_button', style: 'color: var(--red);'
+- else
+  %p.in_life_list== Have you played <strong>#{lmx.machine.name}</strong>? You can track every machine you've played #{link_to 'in your profile', profile_user_path(current_user.id)}.
+  = form_tag user_machine_xrefs_path, method: :post, id: "life_list_form_#{lmx.id}" do
+    = hidden_field_tag :machine_id, lmx.machine_id
+    = button_tag type: 'submit', class: 'life_list_lmx' do
+      = image_tag("icons/clipboard-list-outline.svg", alt: "Add to Life List", class: "machine_comment_icon")
+      %div.add_life_list Add machine to your list
+:javascript
+  $('#life_list_form_#{lmx.id}').submit(function() {
+    var form = $(this);
+    $.post(form.attr('action'), form.serialize(), function() {
+      $('#life_list_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_life_list');
+    });
+    return false;
+  });
+  $(document).off('submit', '#remove_life_list_form_#{lmx.id}')
+    .on('submit', '#remove_life_list_form_#{lmx.id}', function() {
+      var form = $(this);
+      if (!confirm('Remove "' + form.data('machine-name') + '" from your list?')) { return false; }
+      $.post(form.attr('action'), form.serialize(), function() {
+        $('#life_list_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_life_list');
+        $('#show_high_scores_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_machine_scores');
+      });
+      return false;
+    });

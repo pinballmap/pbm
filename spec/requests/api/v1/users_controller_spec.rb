@@ -590,4 +590,204 @@ describe Api::V1::UsersController, type: :request do
       expect(response.body).to include('error')
     end
   end
+
+  describe '#life_list_info' do
+    before(:each) do
+      @user = FactoryBot.create(:user, id: 111)
+      @machine = FactoryBot.create(:machine, id: 77)
+    end
+
+    it 'returns in_list and has_scores when both params are present' do
+      FactoryBot.create(:user_machine_xref, user: @user, machine: @machine)
+
+      get '/api/v1/users/life_list_info.json', params: { by_user_id: 111, by_machine_id: 77 }
+
+      expect(response).to be_successful
+      body = JSON.parse(response.body)
+      expect(body['life_list_info']['in_list']).to be true
+      expect(body['life_list_info']['has_scores']).to be false
+    end
+
+    it 'returns has_scores true when the user has a score for the machine' do
+      FactoryBot.create(:user_machine_xref, user: @user, machine: @machine)
+      location = FactoryBot.create(:location)
+      lmx = FactoryBot.create(:location_machine_xref, location: location, machine: @machine)
+      FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine_id: @machine.id)
+
+      get '/api/v1/users/life_list_info.json', params: { by_user_id: 111, by_machine_id: 77 }
+
+      expect(response).to be_successful
+      body = JSON.parse(response.body)
+      expect(body['life_list_info']['in_list']).to be true
+      expect(body['life_list_info']['has_scores']).to be true
+    end
+
+    it 'returns in_list false when the machine is not in the life list' do
+      get '/api/v1/users/life_list_info.json', params: { by_user_id: 111, by_machine_id: 77 }
+
+      expect(response).to be_successful
+      body = JSON.parse(response.body)
+      expect(body['life_list_info']['in_list']).to be false
+      expect(body['life_list_info']['has_scores']).to be false
+    end
+
+    it 'returns count and machine info for a single machine when only by_machine_id is present' do
+      FactoryBot.create(:user_machine_xref, user: @user, machine: @machine)
+
+      get '/api/v1/users/life_list_info.json', params: { by_machine_id: 77 }
+
+      expect(response).to be_successful
+      body = JSON.parse(response.body)
+      expect(body['life_list_info']['count']).to eq(1)
+      expect(body['life_list_info']['machine']['id']).to eq(77)
+    end
+
+    it 'returns all machines on at least one life list sorted by count when no params are provided' do
+      machine2 = FactoryBot.create(:machine)
+      user2 = FactoryBot.create(:user)
+
+      FactoryBot.create(:user_machine_xref, user: @user, machine: @machine)
+      FactoryBot.create(:user_machine_xref, user: user2, machine: @machine)
+      FactoryBot.create(:user_machine_xref, user: @user, machine: machine2)
+
+      get '/api/v1/users/life_list_info.json'
+
+      expect(response).to be_successful
+      body = JSON.parse(response.body)
+      results = body['life_list_info']
+      expect(results.length).to eq(2)
+      expect(results[0]['count']).to eq(2)
+      expect(results[0]['machine']['id']).to eq(@machine.id)
+      expect(results[1]['count']).to eq(1)
+      expect(results[1]['machine']['id']).to eq(machine2.id)
+    end
+  end
+
+  describe '#add_life_list_machine' do
+    before(:each) do
+      FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      FactoryBot.create(:machine, id: 77)
+    end
+
+    it 'adds a machine to the life list' do
+      expect(UserMachineXref.count).to eq(0)
+
+      post '/api/v1/users/111/add_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['success']).to eq('Successfully added to life list')
+      expect(UserMachineXref.count).to eq(1)
+      expect(UserMachineXref.first.user_id).to eq(111)
+      expect(UserMachineXref.first.machine_id).to eq(77)
+    end
+
+    it 'handles a duplicate add gracefully' do
+      post '/api/v1/users/111/add_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/111/add_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(UserMachineXref.count).to eq(1)
+    end
+
+    it 'does not let you do this for other users' do
+      FactoryBot.create(:user, id: 112)
+
+      post '/api/v1/users/112/add_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Unauthorized user update.')
+      expect(UserMachineXref.count).to eq(0)
+    end
+
+    it 'returns an error for an unknown machine' do
+      post '/api/v1/users/111/add_life_list_machine.json', params: { machine_id: 999, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Unknown asset')
+    end
+  end
+
+  describe '#remove_life_list_machine' do
+    before(:each) do
+      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      @machine = FactoryBot.create(:machine, id: 77)
+      FactoryBot.create(:user_machine_xref, user: @user, machine: @machine)
+    end
+
+    it 'removes a machine from the life list' do
+      expect(UserMachineXref.count).to eq(1)
+
+      post '/api/v1/users/111/remove_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['success']).to eq('Successfully removed from life list')
+      expect(UserMachineXref.count).to eq(0)
+    end
+
+    it 'does not remove the machine from the life list when scores exist' do
+      lmx = FactoryBot.create(:location_machine_xref, machine: @machine)
+      FactoryBot.create(:machine_score_xref, user: @user, machine: @machine, location_machine_xref: lmx)
+
+      post '/api/v1/users/111/remove_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Cannot remove a machine that has scores from your list')
+      expect(UserMachineXref.count).to eq(1)
+      expect(MachineScoreXref.count).to eq(1)
+    end
+
+    it 'does not let you do this for other users' do
+      FactoryBot.create(:user, id: 112)
+
+      post '/api/v1/users/112/remove_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Unauthorized user update.')
+      expect(UserMachineXref.count).to eq(1)
+    end
+
+    it 'returns an error when machine is not in life list' do
+      other_machine = FactoryBot.create(:machine)
+
+      post '/api/v1/users/111/remove_life_list_machine.json', params: { machine_id: other_machine.id, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Machine not in life list')
+    end
+  end
+
+  describe '#profile_info with life_list param' do
+    before(:each) do
+      @user = FactoryBot.create(:user, id: 111, username: 'ssw')
+      @machine = FactoryBot.create(:machine, name: 'Foo Machine')
+      FactoryBot.create(:user_machine_xref, user: @user, machine: @machine)
+    end
+
+    it 'returns profile_life_list_stats when life_list param is present' do
+      get '/api/v1/users/111/profile_info.json', params: { life_list: 1 }
+
+      expect(response).to be_successful
+      body = JSON.parse(response.body)
+      expect(body['profile_info']['profile_life_list_stats']).to be_present
+      expect(body['profile_info']['profile_life_list_stats'].first['machine_name']).to eq('Foo Machine')
+      expect(body['profile_info'].key?('profile_machine_scores_stats')).to be false
+    end
+
+    it 'returns profile_machine_scores_stats when life_list param is absent' do
+      get '/api/v1/users/111/profile_info.json'
+
+      expect(response).to be_successful
+      body = JSON.parse(response.body)
+      expect(body['profile_info'].key?('profile_machine_scores_stats')).to be true
+      expect(body['profile_info'].key?('profile_life_list_stats')).to be false
+    end
+
+    it 'includes num_life_list_machines in profile_info' do
+      get '/api/v1/users/111/profile_info.json'
+
+      expect(response).to be_successful
+      body = JSON.parse(response.body)
+      expect(body['profile_info']['num_life_list_machines']).to eq(1)
+    end
+  end
 end

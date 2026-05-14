@@ -27,6 +27,7 @@
         var form = $(this);
         $.post(form.attr('action'), form.serialize(), function (data) {
           $('#show_high_scores_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_machine_scores');
+          $('#life_list_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_life_list');
         });
         $('#add_high_score_lmx_#{lmx.id} #score_#{lmx.id}').val('');
         $('#add_high_score_edit_lmx_#{lmx.id}').slideToggle('slow');

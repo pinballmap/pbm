@@ -60,6 +60,11 @@
       %div.darkgrey.stats.font18
         %div.stat_num_o.bold
           %span.stats
+            #{number_with_delimiter(@user.num_life_list_machines,:delimiter => ",")}
+        %span.stats_text Machines in Life List
+      %div.darkgrey.stats.font18
+        %div.stat_num_o.bold
+          %span.stats
             #{number_with_delimiter(@user.num_locations_suggested,:delimiter => ",")}
         %span.stats_text Locations Submitted
       %div.darkgrey.stats.font18
@@ -75,33 +80,6 @@
             - @edited_locations.each do |location_id, location_name|
               %span.location_edited.mb_5
                 = link_to(location_name, map_path + "/?by_location_id=#{location_id}")
-
-      - if @machine_scores_stats.any?
-        %div.darkgrey.stats.font18
-          %div.ml_5.bold
-            Your High Scores:
-          %span.stats_list
-            - @machine_scores_stats.each do |ms|
-              %div.bold.font22.mt_10.mb_8.underline
-                #{ms[:machine_name]}
-              %div.ml_8.mb_20
-                %span.font18
-                  - if ms[:count] > 1
-                    %span.bold.inline Highest:
-                  #{number_with_precision(ms[:list].first, precision: 0, delimiter: ',')}
-                - if ms[:count] > 1
-                  %span.pt_10.bold
-                    All scores:
-                  - ms[:list].each do |score|
-                    %span{:style => "padding-left: 5px"}
-                      #{number_with_precision(score, precision: 0, delimiter: ',')}
-                  %span.pt_10
-                    %span.bold.inline Average:
-                    #{number_with_precision(ms[:average], precision: 0, delimiter: ',')}
-                  %span.pt_10
-                    %span.bold.inline Count:
-                    #{number_with_precision(ms[:count], precision: 0, delimiter: ',')}
-
       - if !@user.list_fave_locations.empty?
         %div.darkgrey.stats.font18
           %div.ml_5.bold
@@ -110,6 +88,50 @@
             - @user.list_fave_locations.each do |fave_location|
               %span.location_edited.mb_5
                 = link_to(fave_location.location.name, map_path + "/?by_location_id=#{fave_location.location.id}")
+      %div.darkgrey.stats.font18
+        %div.ml_5.bold.mb_15
+          Your Machine List and High Scores:
+        - if current_user && current_user.id == @user.id
+          %div.ml_8.mb_20.font16 You can manage a "life list" of all the pinball machines you've ever played. Any time you add a score, that machine will be added to your list. And you can manually add machines below or when viewing a machine at a location.
+          %div.machine_comments_container{style: 'width: 80%; margin: 10px auto 20px;'}
+            %div.bold.font16.mb_8 Add machines to your list
+            = form_tag user_machine_xrefs_path, method: :post, id: 'add_life_list_profile' do
+              = select_tag 'machine_id[]', options_for_select(@all_machines), id: 'life_list_machine_select', style: 'width: 100%;', multiple: true
+              %br/
+              = submit_tag 'Add machine', class: 'submit_button mt_8', id: 'add_life_list_btn'
+        - if @life_list_stats.any?
+          %input#life_list_filter{type: 'text', placeholder: 'Filter machines...', style: 'width: 80%; margin: 0 auto 15px; display: block; padding: 6px 10px; font-size: 15px;'}
+          %div.stats_list
+            - @life_list_stats.each do |entry|
+              %div.life_list_entry{id: "life_list_entry_#{entry[:umx_id]}"}
+                %div.machine_name_container.mtb_15
+                  %div.machine_name
+                    #{entry[:machine_name]}
+                    = " "
+                    %span.machine_year_man #{entry[:machine_year_man]}
+                  - if current_user && current_user.id == @user.id && entry[:count].nil?
+                    = form_tag user_machine_xref_path(entry[:umx_id]), method: :delete, class: 'remove_life_list_form', data: { machine_name: entry[:machine_name] } do
+                      %button.remove_machine_button{type: 'submit'}
+                        = image_tag('icons/trash-can-outline.svg', alt: 'Remove Machine')
+                - if entry[:list].present?
+                  %div.scores_container.mlr_10.mb_20
+                    %span.font18
+                      %span.bold.inline Highest score:
+                      #{number_with_precision(entry[:list].first, precision: 0, delimiter: ',')}
+                    - if entry[:count] > 1
+                      %span.pt_10.bold
+                        All scores:
+                      - entry[:list].each do |score|
+                        %span{:style => "padding-left: 5px"}
+                          #{number_with_precision(score, precision: 0, delimiter: ',')}
+                      %span.pt_10
+                        %span.bold.inline Average:
+                        #{number_with_precision(entry[:average], precision: 0, delimiter: ',')}
+                      %span.pt_10
+                        %span.bold.inline Count:
+                        #{number_with_precision(entry[:count], precision: 0, delimiter: ',')}
+        - else
+          %div.ml_8.font16 No machines or scores to list yet
 
 :javascript
   $(document).ready(function() {
@@ -117,6 +139,40 @@
       placeholder: 'Select a flag',
       allowClear: true,
       templateResult: formatOptions
+    });
+
+    $('#life_list_machine_select').select2({
+      placeholder: 'Search for a machine...',
+      closeOnSelect: true
+    });
+
+    $('#add_life_list_profile').submit(function() {
+      var form = $(this);
+      var selected = $('#life_list_machine_select').val();
+      if (!selected || selected.length === 0) { return false; }
+      $.post(form.attr('action'), form.serialize(), function() {
+        $('#life_list_machine_select').val(null).trigger('change');
+        location.reload();
+      });
+      return false;
+    });
+
+    $('#life_list_filter').on('input', function() {
+      var query = $(this).val().toLowerCase();
+      $('.life_list_entry').each(function() {
+        var name = $(this).find('.machine_name').text().toLowerCase();
+        $(this).toggle(name.includes(query));
+      });
+    });
+
+    $('.remove_life_list_form').submit(function() {
+      var form = $(this);
+      if (confirm('Remove "' + form.data('machine-name') + '" from your Life List?')) {
+        $.post(form.attr('action'), form.serialize(), function() {
+          form.closest('.life_list_entry').fadeOut('slow');
+        });
+      }
+      return false;
     });
   });
   function formatOptions (state) {

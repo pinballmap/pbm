@@ -195,11 +195,18 @@ module Api
       api :GET, "/api/v1/users/:id/profile_info.json", "Fetch profile info for a user"
       param :id, Integer, desc: "ID of user", required: true
       param :new_score_list_only, Integer, desc: "When present, the old high score list is gone (recent 50); only showing the new list of highest high score per machine, all scores per machine, and average and count", required: false
+      param :life_list, Integer, desc: "When present, returns the life list (all machines the user has played) with associated score data instead of profile_machine_scores_stats", required: false
       formats [ "json" ]
       def profile_info
         user = User.find(params[:id])
-        includes = %i[admin_rank_int admin_title contributor_rank_int contributor_rank flag num_total_submissions num_machines_added num_machines_removed num_locations_edited num_locations_suggested num_lmx_comments_left num_msx_scores_added profile_list_of_edited_locations profile_list_of_high_scores operator_name created_at profile_machine_scores_stats]
+        includes = %i[admin_rank_int admin_title contributor_rank_int contributor_rank flag num_total_submissions num_machines_added num_machines_removed num_locations_edited num_locations_suggested num_lmx_comments_left num_msx_scores_added num_life_list_machines profile_list_of_edited_locations profile_list_of_high_scores operator_name created_at profile_machine_scores_stats]
         includes.delete(:profile_list_of_high_scores) if params[:new_score_list_only]
+
+        if params[:life_list]
+          includes.delete(:profile_machine_scores_stats)
+          includes.delete(:profile_list_of_high_scores)
+          includes << :profile_life_list_stats
+        end
 
         return_response(
           user,
@@ -209,6 +216,84 @@ module Api
         )
       rescue ActiveRecord::RecordNotFound
         return_response("Failed to find user", "errors")
+      end
+
+      api :GET, "/api/v1/users/life_list_info.json", "Query life list membership"
+      param :by_machine_id, Integer, desc: "Machine ID to query", required: false
+      param :by_user_id, Integer, desc: "User ID to query", required: false
+      description "When no params are provided, returns all machines on at least one life list, sorted by count descending."
+      formats [ "json" ]
+      def life_list_info
+        machine_except = %i[is_active created_at updated_at ipdb_link ipdb_id opdb_img opdb_img_height opdb_img_width machine_type machine_display ic_eligible kineticist_url]
+
+        if params[:by_machine_id].present? && params[:by_user_id].present?
+          in_list = UserMachineXref.exists?(user_id: params[:by_user_id], machine_id: params[:by_machine_id])
+          has_scores = MachineScoreXref.where(user_id: params[:by_user_id], machine_id: params[:by_machine_id]).exists?
+          return_response({ in_list: in_list, has_scores: has_scores }, "life_list_info")
+        elsif params[:by_machine_id].present?
+          machine = Machine.find(params[:by_machine_id])
+          count = UserMachineXref.where(machine_id: params[:by_machine_id]).count
+          render json: { life_list_info: { count: count, machine: machine.as_json(except: machine_except) } }
+        elsif params[:by_user_id].present?
+          umxes = UserMachineXref.where(user_id: params[:by_user_id]).includes(:machine)
+          return_response(umxes, "user_machine_xrefs", [ machine: { except: machine_except } ])
+        else
+          machine_counts = UserMachineXref.group(:machine_id).order("count_all DESC").count
+          machines_by_id = Machine.where(id: machine_counts.keys).index_by(&:id)
+          results = machine_counts.map { |machine_id, count| { count: count, machine: machines_by_id[machine_id]&.as_json(except: machine_except) } }
+          render json: { life_list_info: results }
+        end
+      rescue ActiveRecord::RecordNotFound
+        return_response("Failed to find machine", "errors")
+      end
+
+      api :POST, "/api/v1/users/:id/add_life_list_machine.json", "Add a machine to your life list"
+      param :id, Integer, desc: "ID of user", required: true
+      param :machine_id, Integer, desc: "ID of machine to add", required: true
+      formats [ "json" ]
+      def add_life_list_machine
+        user = User.find(params[:id])
+        machine = Machine.find(params[:machine_id])
+
+        if user.authentication_token != params[:user_token]
+          return_response("Unauthorized user update.", "errors")
+          return
+        end
+
+        UserMachineXref.find_or_create_by(user: user, machine: machine)
+        return_response("Successfully added to life list", "success")
+      rescue ActiveRecord::RecordNotFound
+        return_response("Unknown asset", "errors")
+      end
+
+      api :POST, "/api/v1/users/:id/remove_life_list_machine.json", "Remove a machine from your life list"
+      param :id, Integer, desc: "ID of user", required: true
+      param :machine_id, Integer, desc: "ID of machine to remove", required: true
+      formats [ "json" ]
+      def remove_life_list_machine
+        user = User.find(params[:id])
+
+        if user.authentication_token != params[:user_token]
+          return_response("Unauthorized user update.", "errors")
+          return
+        end
+
+        umx = UserMachineXref.find_by(user: user, machine_id: params[:machine_id])
+
+        unless umx
+          return_response("Machine not in life list", "errors")
+          return
+        end
+
+        if MachineScoreXref.where(user: user, machine_id: params[:machine_id]).exists?
+          return_response("Cannot remove a machine that has scores from your list", "errors")
+          return
+        end
+
+        umx.destroy
+        return_response("Successfully removed from life list", "success")
+      rescue ActiveRecord::RecordNotFound
+        return_response("Unknown asset", "errors")
       end
 
       api :DELETE, "/api/v1/users/:id", "Delete a user account"

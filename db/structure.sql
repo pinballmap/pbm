@@ -1293,6 +1293,38 @@ ALTER SEQUENCE public.user_fave_locations_id_seq OWNED BY public.user_fave_locat
 
 
 --
+-- Name: user_machine_xrefs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_machine_xrefs (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    machine_id integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: user_machine_xrefs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.user_machine_xrefs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_machine_xrefs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.user_machine_xrefs_id_seq OWNED BY public.user_machine_xrefs.id;
+
+
+--
 -- Name: user_submissions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1744,6 +1776,13 @@ ALTER TABLE ONLY public.user_fave_locations ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
+-- Name: user_machine_xrefs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_machine_xrefs ALTER COLUMN id SET DEFAULT nextval('public.user_machine_xrefs_id_seq'::regclass);
+
+
+--
 -- Name: user_submissions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2056,6 +2095,14 @@ ALTER TABLE ONLY public.suggested_locations
 
 ALTER TABLE ONLY public.user_fave_locations
     ADD CONSTRAINT user_fave_locations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_machine_xrefs user_machine_xrefs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_machine_xrefs
+    ADD CONSTRAINT user_machine_xrefs_pkey PRIMARY KEY (id);
 
 
 --
@@ -2617,6 +2664,20 @@ CREATE INDEX index_user_fave_locations_on_user_id_and_location_id ON public.user
 
 
 --
+-- Name: index_user_machine_xrefs_on_machine_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_machine_xrefs_on_machine_id ON public.user_machine_xrefs USING btree (machine_id);
+
+
+--
+-- Name: index_user_machine_xrefs_on_user_id_and_machine_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_user_machine_xrefs_on_user_id_and_machine_id ON public.user_machine_xrefs USING btree (user_id, machine_id);
+
+
+--
 -- Name: index_user_submissions_on_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2855,6 +2916,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260511000000'),
 ('20260506000000'),
 ('20260428182123'),
 ('20260411000001'),

@@ -22,6 +22,7 @@ class MachineScoreXrefsController < ApplicationController
     msx.machine_id = machine_id
     msx.save
     msx.create_user_submission
+    UserMachineXref.find_or_create_by(user: current_user, machine_id: machine_id)
 
     render nothing: true
   end

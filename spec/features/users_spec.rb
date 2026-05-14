@@ -81,6 +81,7 @@ describe UsersController do
       @user.update_column(:num_msx_scores_added, 3)
 
       FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 3)
+      FactoryBot.create(:user_machine_xref, user: @user, machine: machine)
 
       login
       visit "/users/#{@user.id}/profile"
@@ -93,7 +94,7 @@ describe UsersController do
       expect(page).to have_content("1\nMACHINE COMMENTS")
       expect(page).to have_content("3\nLOCATIONS SUBMITTED")
       expect(page).to have_content("5\nLOCATIONS EDITED")
-      expect(page).to have_content("Your High Scores:\nMachine Two\n3")
+      expect(page).to have_content("Machine Two\nHighest score: 3")
 
       expect(page).to_not have_content('Saved Locations:')
     end
@@ -122,11 +123,12 @@ describe UsersController do
       machine = FactoryBot.create(:machine, name: 'Machine One')
       lmx = FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location), machine: machine)
       FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 2000000)
+      FactoryBot.create(:user_machine_xref, user: @user, machine: machine)
 
       login
       visit "/users/#{@user.id}/profile"
 
-      expect(page).to have_content("Your High Scores:\nMachine One\n2,000,000")
+      expect(page).to have_content("Machine One\nHighest score: 2,000,000")
     end
 
     it 'shows all scores, average, and count when more than one on a machine' do
@@ -135,11 +137,12 @@ describe UsersController do
       lmx = FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location), machine: machine)
 
       FactoryBot.create(:machine_score_xref, user: @user, location_machine_xref: lmx, machine: machine, score: 2000000)
+      FactoryBot.create(:user_machine_xref, user: @user, machine: machine)
 
       login
       visit "/users/#{@user.id}/profile"
 
-      expect(page).to have_content("Your High Scores:\nMachine One\n2,000,000")
+      expect(page).to have_content("Machine One\nHighest score: 2,000,000")
       expect(page).to_not have_content("All scores:")
       expect(page).to_not have_content("Count:")
       expect(page).to_not have_content("Average:")
@@ -148,7 +151,7 @@ describe UsersController do
 
       visit "/users/#{@user.id}/profile"
 
-      expect(page).to have_content("Your High Scores:\nMachine One\nHighest: 2,000,000")
+      expect(page).to have_content("Machine One\nHighest score: 2,000,000")
       expect(page).to have_content("All scores:\n2,000,000\n1,000,000")
       expect(page).to have_content("Count: 2")
       expect(page).to have_content("Average: 1,500,000")
