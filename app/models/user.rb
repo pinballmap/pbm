@@ -10,7 +10,6 @@ class User < ApplicationRecord
   has_many :user_submissions
   has_many :user_fave_locations
   has_many :user_machine_xrefs
-  has_many :life_list_machines, through: :user_machine_xrefs, source: :machine
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
@@ -168,7 +167,7 @@ class User < ApplicationRecord
         umx_id: entry.umx_id,
         machine_id: entry.machine_id,
         machine_name: entry.machine_name,
-        machine_year_man: (entry.machine_year.blank? && entry.machine_manufacturer.blank? ? "" : "(#{[entry.machine_manufacturer, entry.machine_year].reject(&:blank?).join(', ')})")
+        machine_year_man: (entry.machine_year.blank? && entry.machine_manufacturer.blank? ? "" : "(#{[ entry.machine_manufacturer, entry.machine_year ].reject(&:blank?).join(', ')})")
       }
       if scores.any?
         result.merge!(
