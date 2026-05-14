@@ -35,7 +35,7 @@ task data_cleanup: :environment do
       elsif us.submission_type == "new_msx"
         us.location_name = matched_location.name
         us.city_name = matched_location.city
-        us.submission = "#{us.user_name} added a high score of #{number_with_precision(us.high_score, precision: 0, delimiter: ',')} on #{us.machine_name} at #{us.location_name} in #{us.city_name}." if field_presence?(us) && us.machine_name.present? && us.high_score.present?
+        us.submission = "#{us.user_name} added a high score of #{ActiveSupport::NumberHelper.number_to_delimited(us.high_score.to_i)} on #{us.machine_name} at #{us.location_name} in #{us.city_name}." if field_presence?(us) && us.machine_name.present? && us.high_score.present?
       elsif us.submission_type == "confirm_location"
         us.location_name = matched_location.name
         us.city_name = matched_location.city
