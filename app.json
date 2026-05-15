@@ -34,7 +34,7 @@
     },
     {
       "command": "rake data_cleanup",
-      "schedule": "0 20 * * *"
+      "schedule": "30 20 * * *"
     }
   ]
 }
