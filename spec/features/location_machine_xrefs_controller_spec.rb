@@ -337,7 +337,6 @@ describe LocationMachineXrefsController do
 
       sleep 1
 
-      expect(page).to_not have_selector('span.condition_button.condition_button_new')
       expect(page).to_not have_css('comment_image')
     end
   end

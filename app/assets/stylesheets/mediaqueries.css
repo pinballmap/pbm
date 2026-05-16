@@ -30,12 +30,6 @@ only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (or
     width: 350px;
   }
 
-  .machine_condition_display_lmx .edit_mode {
-    width: 340px;
-    max-width: 340px;
-    min-width: 340px;
-  }
-
   .lookup_search_select,
   .lookup_search_input {
     width: 350px;
@@ -147,43 +141,6 @@ only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (or
 
   .header_buttons_child.header_menu_02.header_menu_region {
     width: 0;
-  }
-}
-
-@media (max-width: 960px) {
-  #header .login_home {
-    width: 40px;
-  }
-
-  .login_home a.loggedin {
-    font-size: 15px;
-  }
-
-  .login_home a {
-    font-size: 14px;
-    line-height: 20px;
-    padding: 0;
-    text-align: center;
-  }
-
-  .login_home {
-    margin-top: -2px !important;
-    width: 60px;
-    padding: 0;
-    line-height: 19px;
-    text-align: center;
-    border: none;
-  }
-
-  .blog_header_region {
-    display: none;
-  }
-
-  .login_region a,
-  .login_home a {
-    font-size: 14px;
-    padding: 0;
-    text-align: center;
   }
 }
 
