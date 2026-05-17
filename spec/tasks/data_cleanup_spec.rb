@@ -24,6 +24,14 @@ describe 'data_cleanup rake task' do
     end
   end
 
+  describe 'website_mobile_fix' do
+    it 'replaces mobile facebook links with desktop facebook' do
+      location = FactoryBot.create(:location, website: "https://m.facebook.com/coolpage")
+      run_task
+      expect(location.reload.website).to eq("https://facebook.com/coolpage")
+    end
+  end
+
   describe 'us_phone' do
     it 'formats a 10-digit US phone number' do
       location = FactoryBot.create(:location, phone: '5035551234', country: 'US')

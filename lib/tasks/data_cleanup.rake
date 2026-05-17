@@ -7,6 +7,13 @@ task data_cleanup: :environment do
     end
   end
 
+  def website_mobile_fix
+    Location.where("website ILIKE ?", "%m.facebook%").each do |l|
+      l.website = l.website.gsub("m.facebook", "facebook")
+      l.save
+    end
+  end
+
   def us_phone
     Location.where("LENGTH(phone) = ?", 10).where("phone !~ ?", "[^0-9]+").where(country: "US").each do |l|
       l.phone = l.phone.to_i.to_formatted_s(:phone)
@@ -102,6 +109,7 @@ task data_cleanup: :environment do
   end
 
   apostrophe_fix
+  website_mobile_fix
   us_phone
   user_submission_location_name
   user_submission_user_name
