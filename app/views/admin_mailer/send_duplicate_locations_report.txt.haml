@@ -1,0 +1,17 @@
+Potentially duplicate locations found on #{Date.today.strftime('%m/%d/%Y')}.
+
+Same Name + City
+
+- if @name_city_dupes.any?
+  - @name_city_dupes.each do |(name, city), count|
+    = "#{name} / #{city} (#{count})"
+- else
+  None found.
+
+Same Lat + Zip
+
+- if @lat_zip_dupes.any?
+  - @lat_zip_dupes.each do |(lat, zip), count|
+    = "#{lat} / #{zip} (#{count})"
+- else
+  None found.

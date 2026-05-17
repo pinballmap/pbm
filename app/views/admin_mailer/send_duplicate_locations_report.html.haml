@@ -1,0 +1,37 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  %body
+    %p
+      Potentially duplicate locations found on #{Date.today.strftime('%m/%d/%Y')}.
+    %h3
+      Same Name + City
+    - if @name_city_dupes.any?
+      %table
+        %tr
+          %th Name
+          %th City
+          %th Count
+        - @name_city_dupes.each do |(name, city), count|
+          %tr
+            %td= name
+            %td= city
+            %td= count
+    - else
+      %p None found.
+    %h3
+      Same Lat + Zip
+    - if @lat_zip_dupes.any?
+      %table
+        %tr
+          %th Lat
+          %th Zip
+          %th Count
+        - @lat_zip_dupes.each do |(lat, zip), count|
+          %tr
+            %td= lat
+            %td= zip
+            %td= count
+    - else
+      %p None found.

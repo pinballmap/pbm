@@ -25,3 +25,19 @@ rescue StandardError => e
   error = e.to_s
   ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_later
 end
+
+desc "Sends super admins a report of potentially duplicate locations"
+task send_duplicate_locations_report: :environment do
+  name_city_dupes = Location.group(:name, :city).having("count(*) > 1").count
+  lat_zip_dupes = Location.group(:lat, :zip).having("count(*) > 1").count
+
+  unless name_city_dupes.empty? && lat_zip_dupes.empty?
+    User.where(is_super_admin: "Y").each do |user|
+      AdminMailer.with(user: user.email, name_city_dupes: name_city_dupes, lat_zip_dupes: lat_zip_dupes).send_duplicate_locations_report.deliver_later
+    end
+  end
+rescue StandardError => e
+  error_subject = "Duplicate locations report rake task error"
+  error = e.to_s
+  ErrorMailer.with(error: error, error_subject: error_subject).rake_task_error.deliver_later
+end

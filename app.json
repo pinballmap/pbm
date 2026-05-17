@@ -35,6 +35,10 @@
     {
       "command": "rake data_cleanup",
       "schedule": "30 20 * * *"
+    },
+    {
+      "command": "rake send_duplicate_locations_report",
+      "schedule": "30 8 * * *"
     }
   ]
 }

@@ -70,6 +70,12 @@ class AdminMailer < ApplicationMailer
     mail(to: params[:user], subject: "Pinball Map - Daily global activity digest - #{(Date.today - 1.day).strftime('%m/%d/%Y')}")
   end
 
+  def send_duplicate_locations_report
+    @name_city_dupes = params[:name_city_dupes]
+    @lat_zip_dupes = params[:lat_zip_dupes]
+    mail(to: params[:user], subject: "Pinball Map - Duplicate locations report - #{Date.today.strftime('%m/%d/%Y')}")
+  end
+
   def send_new_location_notification
     @location_name = params[:location_name]
     @location_street = params[:location_street]
