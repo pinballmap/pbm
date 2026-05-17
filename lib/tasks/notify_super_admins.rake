@@ -28,8 +28,8 @@ end
 
 desc "Sends super admins a report of potentially duplicate locations"
 task send_duplicate_locations_report: :environment do
-  name_city_dupes = Location.group(:name, :city).having("count(*) > 1").count
-  lat_zip_dupes = Location.group(:lat, :zip).having("count(*) > 1").count
+  name_city_dupes = Location.group(:name, :city).having("count(*) > 1").count.map { |(name, city), count| { "name" => name, "city" => city, "count" => count } }
+  lat_zip_dupes = Location.group(:lat, :zip).having("count(*) > 1").count.map { |(lat, zip), count| { "lat" => lat.to_s, "zip" => zip, "count" => count } }
 
   unless name_city_dupes.empty? && lat_zip_dupes.empty?
     User.where(is_super_admin: "Y").each do |user|

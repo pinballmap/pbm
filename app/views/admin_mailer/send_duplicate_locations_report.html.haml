@@ -13,11 +13,11 @@
           %th Name
           %th City
           %th Count
-        - @name_city_dupes.each do |(name, city), count|
+        - @name_city_dupes.each do |row|
           %tr
-            %td= name
-            %td= city
-            %td= count
+            %td= row["name"]
+            %td= row["city"]
+            %td= row["count"]
     - else
       %p None found.
     %h3
@@ -28,10 +28,10 @@
           %th Lat
           %th Zip
           %th Count
-        - @lat_zip_dupes.each do |(lat, zip), count|
+        - @lat_zip_dupes.each do |row|
           %tr
-            %td= lat
-            %td= zip
-            %td= count
+            %td= row["lat"]
+            %td= row["zip"]
+            %td= row["count"]
     - else
       %p None found.
