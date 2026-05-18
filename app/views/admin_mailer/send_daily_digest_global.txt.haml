@@ -32,3 +32,11 @@ High Scores
   = item[:machine_name]
   = number_with_delimiter(item[:high_score])
   = item[:user_name]
+
+Location Metadata Updates
+
+- @location_metadata.each do |item|
+  = item[:location_name]
+  = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
+  = "Description: #{item[:description]}"
+  = item[:user_name]

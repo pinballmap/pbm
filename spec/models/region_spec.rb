@@ -145,6 +145,7 @@ describe Region do
       expect(result[:machine_removals]).to be_empty
       expect(result[:pictures_added]).to be_empty
       expect(result[:high_scores]).to be_empty
+      expect(result[:location_metadata]).to be_empty
     end
 
     it 'returns all four activity types from yesterday across all regions, sorted appropriately' do
@@ -153,6 +154,8 @@ describe Region do
       FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 1.day, location_name: 'Gamma Bar', machine_name: 'Twilight Zone', user_name: 'carol')
       FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day, location_name: 'Delta Lounge', user_name: 'dave')
       FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 1.day, location_name: 'Epsilon Arcade', machine_name: 'Centaur', high_score: 2_000_000, user_name: 'eve')
+      zeta_location = FactoryBot.create(:location, name: 'Zeta Bar', description: 'address is wrong')
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::LOCATION_METADATA_TYPE, created_at: Time.now - 1.day, location_name: 'Zeta Bar', location: zeta_location, user_name: 'frank')
 
       FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
 
@@ -169,6 +172,9 @@ describe Region do
       ])
       expect(result[:high_scores]).to eq([
         { location_name: 'Epsilon Arcade', location_id: nil, machine_name: 'Centaur', high_score: 2_000_000, user_name: 'eve' }
+      ])
+      expect(result[:location_metadata]).to eq([
+        { location_name: 'Zeta Bar', location_id: zeta_location.id, description: 'address is wrong', user_name: 'frank' }
       ])
     end
   end

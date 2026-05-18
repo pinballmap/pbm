@@ -38,7 +38,7 @@ RSpec.describe AdminMailer, type: :mailer do
     it 'should send a daily global digest email' do
       comment_item = { location_name: 'Foo Bar', location_id: 1, machine_name: 'Attack from Mars', comment: 'plays great', user_name: 'alice' }
 
-      email = AdminMailer.with(user: 'foo@bar.com', machine_comments: [ comment_item ], machine_removals: [], pictures_added: [], high_scores: []).send_daily_digest_global
+      email = AdminMailer.with(user: 'foo@bar.com', machine_comments: [ comment_item ], machine_removals: [], pictures_added: [], high_scores: [], location_metadata: []).send_daily_digest_global
 
       assert_emails 1 do
         email.deliver_later
