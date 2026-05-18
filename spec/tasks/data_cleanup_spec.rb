@@ -328,4 +328,123 @@ describe 'data_cleanup rake task' do
       expect(MachineScoreXref.find_by(id: score.id)).not_to be_nil
     end
   end
+
+  describe 'trim_location_fields' do
+    it 'trims trailing spaces from name' do
+      location = FactoryBot.create(:location)
+      location.update_columns(name: 'Cool Bar ')
+      run_task
+      expect(location.reload.name).to eq('Cool Bar')
+    end
+
+    it 'trims trailing spaces from street' do
+      location = FactoryBot.create(:location)
+      location.update_columns(street: '123 Main St ')
+      run_task
+      expect(location.reload.street).to eq('123 Main St')
+    end
+
+    it 'trims trailing spaces from city' do
+      location = FactoryBot.create(:location)
+      location.update_columns(city: 'Portland ')
+      run_task
+      expect(location.reload.city).to eq('Portland')
+    end
+
+    it 'trims trailing spaces from zip' do
+      location = FactoryBot.create(:location)
+      location.update_columns(zip: '97214 ')
+      run_task
+      expect(location.reload.zip).to eq('97214')
+    end
+
+    it 'trims trailing spaces from state' do
+      location = FactoryBot.create(:location)
+      location.update_columns(state: 'OR ')
+      run_task
+      expect(location.reload.state).to eq('OR')
+    end
+
+    it 'trims trailing spaces from website' do
+      location = FactoryBot.create(:location, website: 'http://example.com')
+      location.update_columns(website: 'http://example.com ')
+      run_task
+      expect(location.reload.website).to eq('http://example.com')
+    end
+
+    it 'trims trailing spaces from phone' do
+      location = FactoryBot.create(:location, phone: '503-555-1234')
+      location.update_columns(phone: '503-555-1234 ')
+      run_task
+      expect(location.reload.phone).to eq('503-555-1234')
+    end
+
+    it 'does not modify fields without trailing spaces' do
+      location = FactoryBot.create(:location, name: 'Clean Name')
+      run_task
+      expect(location.reload.name).to eq('Clean Name')
+    end
+  end
+
+  describe 'normalize_street_addresses' do
+    it 'abbreviates Boulevard at end of street' do
+      location = FactoryBot.create(:location, street: '123 Sunset Boulevard')
+      run_task
+      expect(location.reload.street).to eq('123 Sunset Blvd')
+    end
+
+    it 'abbreviates Drive at end of street' do
+      location = FactoryBot.create(:location, street: '456 Multnomah Drive')
+      run_task
+      expect(location.reload.street).to eq('456 Multnomah Dr')
+    end
+
+    it 'abbreviates Street at end of street' do
+      location = FactoryBot.create(:location, street: '789 Burnside Street')
+      run_task
+      expect(location.reload.street).to eq('789 Burnside St')
+    end
+
+    it 'abbreviates Avenue at end of street' do
+      location = FactoryBot.create(:location, street: '321 Alberta Avenue')
+      run_task
+      expect(location.reload.street).to eq('321 Alberta Ave')
+    end
+
+    it 'abbreviates Southwest anywhere in street' do
+      location = FactoryBot.create(:location, street: '100 Southwest Barbur Blvd')
+      run_task
+      expect(location.reload.street).to eq('100 SW Barbur Blvd')
+    end
+
+    it 'abbreviates Southeast anywhere in street' do
+      location = FactoryBot.create(:location, street: '200 Southeast Morrison St')
+      run_task
+      expect(location.reload.street).to eq('200 SE Morrison St')
+    end
+
+    it 'abbreviates Northwest anywhere in street' do
+      location = FactoryBot.create(:location, street: '300 Northwest 23rd Ave')
+      run_task
+      expect(location.reload.street).to eq('300 NW 23rd Ave')
+    end
+
+    it 'abbreviates Northeast anywhere in street' do
+      location = FactoryBot.create(:location, street: '400 Northeast Alberta St')
+      run_task
+      expect(location.reload.street).to eq('400 NE Alberta St')
+    end
+
+    it 'does not modify a street that is already abbreviated' do
+      location = FactoryBot.create(:location, street: '123 Sunset Blvd')
+      run_task
+      expect(location.reload.street).to eq('123 Sunset Blvd')
+    end
+
+    it 'does not abbreviate Boulevard when it is not at the end of the street' do
+      location = FactoryBot.create(:location, street: '123 Boulevard Heights Dr')
+      run_task
+      expect(location.reload.street).to eq('123 Boulevard Heights Dr')
+    end
+  end
 end

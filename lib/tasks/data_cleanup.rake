@@ -108,6 +108,28 @@ task data_cleanup: :environment do
     end
   end
 
+  def normalize_street_addresses
+    suffix_abbreviations = {
+      "Boulevard" => "Blvd",
+      "Drive"     => "Dr",
+      "Street"    => "St",
+      "Avenue"    => "Ave",
+    }
+    suffix_abbreviations.each do |full, abbr|
+      Location.where("street ILIKE ?", "%#{full}").update_all([ "street = replace(street, ?, ?)", full, abbr ])
+    end
+
+    directional_abbreviations = {
+      "Southwest" => "SW",
+      "Southeast" => "SE",
+      "Northwest" => "NW",
+      "Northeast" => "NE",
+    }
+    directional_abbreviations.each do |full, abbr|
+      Location.where("street ILIKE ?", "%#{full}%").update_all([ "street = replace(street, ?, ?)", full, abbr ])
+    end
+  end
+
   def trim_location_fields
     %w[name street city zip state website phone].each do |field|
       Location.where("#{field} ~ '\\s+$'").update_all("#{field} = trim(#{field})")
@@ -121,6 +143,7 @@ task data_cleanup: :environment do
   user_submission_user_name
   delete_stale_locations
   delete_orphan_scores
+  normalize_street_addresses
   trim_location_fields
 rescue StandardError => e
   error_subject = "Data cleanup rake task error"
