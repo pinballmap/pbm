@@ -136,12 +136,36 @@ class Region < ApplicationRecord
     end_of_day = (Time.now - 1.day).end_of_day
     base = UserSubmission.where(deleted_at: nil).where(created_at: start_of_day..end_of_day)
 
+    remove_and_readd = UserSubmission.find_by_sql([ <<~SQL, start_of_day ]).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, user_name: us.user_name, removed_at: us.removed_at, readded_at: us.readded_at } }
+      SELECT
+        first.user_name,
+        first.machine_name,
+        first.location_name,
+        first.location_id,
+        first.created_at  AS removed_at,
+        second.created_at AS readded_at
+      FROM user_submissions AS first
+      INNER JOIN user_submissions AS second
+        ON  second.user_id         = first.user_id
+        AND second.location_id     = first.location_id
+        AND second.machine_name    = first.machine_name
+        AND second.submission_type = 'new_lmx'
+        AND second.created_at > first.created_at
+        AND second.created_at <= first.created_at + INTERVAL '5 minutes'
+      WHERE first.submission_type = 'remove_machine'
+        AND first.created_at >= ?
+        AND first.deleted_at IS NULL
+        AND second.deleted_at IS NULL
+      ORDER BY first.created_at DESC
+    SQL
+
     {
       machine_comments:  base.where(submission_type: UserSubmission::NEW_CONDITION_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, comment: us.comment, user_name: us.user_name } },
       machine_removals:  base.where(submission_type: UserSubmission::REMOVE_MACHINE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, user_name: us.user_name } },
       pictures_added:    base.where(submission_type: UserSubmission::NEW_PICTURE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, user_name: us.user_name } },
       high_scores:       base.where(submission_type: UserSubmission::NEW_SCORE_TYPE).order(:user_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, high_score: us.high_score, user_name: us.user_name } },
-      location_metadata: base.where(submission_type: UserSubmission::LOCATION_METADATA_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, description: us.location&.description, user_name: us.user_name } }
+      location_metadata: base.where(submission_type: UserSubmission::LOCATION_METADATA_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, description: us.location&.description, user_name: us.user_name } },
+      remove_and_readd:  remove_and_readd
     }
   end
 

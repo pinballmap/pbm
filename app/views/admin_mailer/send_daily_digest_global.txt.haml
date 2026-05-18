@@ -40,3 +40,12 @@ Location Metadata Updates
   = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
   = "Description: #{item[:description]}"
   = item[:user_name]
+
+Suspected Comment Removal (Remove + Re-add Within 5 Minutes)
+
+- @remove_and_readd.each do |item|
+  = item[:location_name]
+  = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
+  = item[:machine_name]
+  = item[:user_name]
+  = "Removed: #{item[:removed_at].strftime('%H:%M:%S')} / Re-added: #{item[:readded_at].strftime('%H:%M:%S')}"

@@ -17,7 +17,7 @@ task send_daily_digest_global: :environment do
 
   unless email_body[:machine_comments].empty? && email_body[:machine_removals].empty? && email_body[:pictures_added].empty? && email_body[:high_scores].empty? && email_body[:location_metadata].empty?
     User.where(is_super_admin: "Y").each do |user|
-      AdminMailer.with(user: user.email, machine_comments: email_body[:machine_comments], machine_removals: email_body[:machine_removals], pictures_added: email_body[:pictures_added], high_scores: email_body[:high_scores], location_metadata: email_body[:location_metadata]).send_daily_digest_global.deliver_later
+      AdminMailer.with(user: user.email, machine_comments: email_body[:machine_comments], machine_removals: email_body[:machine_removals], pictures_added: email_body[:pictures_added], high_scores: email_body[:high_scores], location_metadata: email_body[:location_metadata], remove_and_readd: email_body[:remove_and_readd]).send_daily_digest_global.deliver_later
     end
   end
 rescue StandardError => e

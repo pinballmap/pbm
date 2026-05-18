@@ -68,6 +68,7 @@ class AdminMailer < ApplicationMailer
     @pictures_added    = params[:pictures_added]
     @high_scores       = params[:high_scores]
     @location_metadata = params[:location_metadata]
+    @remove_and_readd  = params[:remove_and_readd]
     mail(to: params[:user], subject: "Pinball Map - Daily global activity digest - #{(Date.today - 1.day).strftime('%m/%d/%Y')}")
   end
 

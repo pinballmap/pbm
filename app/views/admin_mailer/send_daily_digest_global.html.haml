@@ -52,3 +52,14 @@
         Description: #{item[:description]}
         %br/
         = item[:user_name]
+    %h3
+      Suspected Comment Removal (Remove + Re-add Within 5 Minutes)
+    - @remove_and_readd.each do |item|
+      %p
+        %a{href: "https://pinballmap.com/map?by_location_id=#{item[:location_id]}"}= item[:location_name]
+        %br/
+        = item[:machine_name]
+        %br/
+        = item[:user_name]
+        %br/
+        Removed: #{item[:removed_at].strftime('%H:%M:%S')} / Re-added: #{item[:readded_at].strftime('%H:%M:%S')}
