@@ -258,7 +258,7 @@ class Location < ApplicationRecord
       self.last_updated_by_user_id = user&.id
       save
 
-      UserSubmission.create(region_id: region&.id, location: self, submission_type: UserSubmission::LOCATION_METADATA_TYPE, submission: @updates.join("\n") + " to #{name}", user_id: user&.id)
+      UserSubmission.create(region_id: region&.id, location: self, location_name: name, submission_type: UserSubmission::LOCATION_METADATA_TYPE, submission: @updates.join("\n") + " to #{name}", user_id: user&.id)
       self.users_count = UserSubmission.where(location_id: self.id).count("DISTINCT user_id")
       save(validate: false)
 
