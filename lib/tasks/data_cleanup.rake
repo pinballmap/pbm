@@ -108,6 +108,12 @@ task data_cleanup: :environment do
     end
   end
 
+  def trim_location_fields
+    %w[name street city zip state website phone].each do |field|
+      Location.where("#{field} ~ '\\s+$'").update_all("#{field} = trim(#{field})")
+    end
+  end
+
   apostrophe_fix
   website_mobile_fix
   us_phone
@@ -115,6 +121,7 @@ task data_cleanup: :environment do
   user_submission_user_name
   delete_stale_locations
   delete_orphan_scores
+  trim_location_fields
 rescue StandardError => e
   error_subject = "Data cleanup rake task error"
   error = e.to_s
