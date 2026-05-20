@@ -33,6 +33,28 @@ describe Operator do
     end
   end
 
+  describe '#digest_recipients' do
+    it 'returns only the operator email when no linked users exist' do
+      expect(@o.digest_recipients).to eq([ 'foo@bar.com' ])
+    end
+
+    it 'includes emails from linked users' do
+      FactoryBot.create(:user, email: 'tech1@bar.com', operator: @o)
+      expect(@o.digest_recipients).to contain_exactly('foo@bar.com', 'tech1@bar.com')
+    end
+
+    it 'deduplicates when a linked user shares the operator email' do
+      FactoryBot.create(:user, email: 'foo@bar.com', operator: @o)
+      expect(@o.digest_recipients).to eq([ 'foo@bar.com' ])
+    end
+
+    it 'includes multiple linked user emails' do
+      FactoryBot.create(:user, email: 'tech1@bar.com', operator: @o)
+      FactoryBot.create(:user, email: 'tech2@bar.com', operator: @o)
+      expect(@o.digest_recipients).to contain_exactly('foo@bar.com', 'tech1@bar.com', 'tech2@bar.com')
+    end
+  end
+
   describe 'generate_operator_daily_digest' do
     it 'Skips operators with no email address set' do
       expect { @no_email_operator.generate_operator_daily_digest }.to_not have_enqueued_job

@@ -8,10 +8,10 @@ task send_daily_digest_operator_email: :environment do
 
     next if machine_comments.empty? && machines_added.empty? && machines_removed.empty?
 
-    email_to = o.email.to_s
-
-    OperatorMailer.with(email_to: email_to, machine_comments: machine_comments, machines_added: machines_added, machines_removed: machines_removed).send_daily_digest_operator_email.deliver_later
-    sleep(8)
+    o.digest_recipients.each do |email_to|
+      OperatorMailer.with(email_to: email_to, machine_comments: machine_comments, machines_added: machines_added, machines_removed: machines_removed).send_daily_digest_operator_email.deliver_later
+      sleep(8)
+    end
   end
 rescue StandardError => e
   error_subject = "Notify operators rake task error"

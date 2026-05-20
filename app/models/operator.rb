@@ -11,6 +11,10 @@ class Operator < ApplicationRecord
     email.blank? ? false : true
   end
 
+  def digest_recipients
+    (users.pluck(:email) << email).uniq
+  end
+
   before_save do
     Status.where(status_type: "operators").update({ updated_at: Time.current })
   end
