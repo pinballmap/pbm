@@ -32,7 +32,7 @@
       %hr
       %p.question#7
         =link_to 'How do I add a new location?', '#7', :class => "no_underline"
-      %p.answer== Fill out #{link_to 'this form', map_location_suggest_path}. Our administrators moderate submissions, so please allow 0 - 7 days or so for it to be approved. The more accurate and thorough your submission, the quicker it will get added!
+      %p.answer== Fill out #{link_to 'this form', map_location_suggest_path}. Our administrators moderate submissions, so please allow 0 - 7 days or so for it to be approved. The more accurate and thorough your submission, the quicker it will get added.
       %hr
       %p.question#3
         =link_to 'This location closed/no longer has machines. What do I do - do I need to tell you?', '#3', :class => "no_underline"
@@ -68,7 +68,7 @@
         =link_to 'Can you include bat games, or other non-pinball but pinball-adjacent games?', '#16', :class => "no_underline"
       %p.answer== We fully understand that pitch and bat games resemble pinball machines and the collectors that collect them also usually collect pinball machines. The short answer is, no, no bat games. In general we use #{link_to 'OPDB.org', 'https://opdb.org', :target => "_blank"} as a guide for what machines to include. The overall goal of this site is to map pinball, and though we understand that you may passionately think bat games should also be included because etc etc, please note that in our polling of the general public basically no one else wants bat games on the map. At any rate, thank you for that question and your feedback, and if you want more details about this decision, please #{link_to 'read this blog post', 'https://blog.pinballmap.com/2021/05/31/more-spring-cleaning/', :target => "_blank" }. Please do not send us a message about this without reading that blog post. 
       
-      %p.answer Do not add machines to locations as proxies for other games (or coin machines) that are not listed in the machine database. We want good clean data and we only want to map pinball! For example, do not add the 1952 Williams pinball machine, Slugfest, to the map as a proxy for the 1991 Williams pitch and bat game, SlugFest. 
+      %p.answer Do not add machines to locations as proxies for other games (or coin machines) that are not listed in the machine database. We want good clean data and we only want to map pinball. For example, do not add the 1952 Williams pinball machine, Slugfest, to the map as a proxy for the 1991 Williams pitch and bat game, SlugFest.
 
       %p.answer We do include some pre-pinball flipperless games. Are we missing some?
       %hr
@@ -104,7 +104,7 @@
       %p.answer
         Check this
         = link_to 'blog post', 'https://blog.pinballmap.com/2015/10/22/operators-we-want-you/', :target => '_blank'
-        about the benefits of being listed in our system, and the tools available!
+        about the benefits of being listed in our system, and the tools available.
       %p.question#11 
         =link_to 'How do I get listed as an operator?', '#11', :class => "no_underline"
       %p.answer
@@ -166,6 +166,12 @@
         It may seem "bad" for there to be a public record of problems with your machines, but we hope the above helps convince you that it's actually good. Users love seeing a record of you fixing machines.
       %p.font20.center.bold.pbt_5.bg_lightpurple#users
         =link_to 'Users', '#users', :class => "no_underline brightpurple"
+      %p.question#26
+        =link_to 'I do not have an account, and when I press some buttons I get sent to a login screen. Why do I need to login?', '#26', :class => "no_underline"
+      %p.answer
+        Some actions on the map require authentication. If you want to edit the map, such as adding/removing machines, editing location details, commenting on machines, etc. we require that you be signed in. This is needed, in part, so that we can ban users who make malicious edits (which is very rare).
+      %p.answer== We also added some fun user perks, like score tracking, counts of all the different types of edits you do, and a feature for tracking every machine you've played. These things can be found in #{link_to 'your profile', inspire_profile_path}.
+      %hr
       %p.question#6 
         =link_to 'I see you have a ranking system for contributors. How do I earn a contributor badge and title?', '#6', :class => "no_underline"
       %p.answer
