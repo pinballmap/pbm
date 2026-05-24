@@ -113,7 +113,7 @@ task data_cleanup: :environment do
       "Boulevard" => "Blvd",
       "Drive"     => "Dr",
       "Street"    => "St",
-      "Avenue"    => "Ave",
+      "Avenue"    => "Ave"
     }
     suffix_abbreviations.each do |full, abbr|
       Location.where("street ILIKE ?", "%#{full}").update_all([ "street = replace(street, ?, ?)", full, abbr ])
@@ -123,7 +123,7 @@ task data_cleanup: :environment do
       "Southwest" => "SW",
       "Southeast" => "SE",
       "Northwest" => "NW",
-      "Northeast" => "NE",
+      "Northeast" => "NE"
     }
     directional_abbreviations.each do |full, abbr|
       Location.where("street ILIKE ?", "%#{full}%").update_all([ "street = replace(street, ?, ?)", full, abbr ])
