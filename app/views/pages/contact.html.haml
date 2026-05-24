@@ -1,0 +1,29 @@
+#page_body
+  .column_container
+    .column.bg_vlightpurple.w_450
+      %p.red.font18.bold.center
+        Contact Pinball Map
+      %p
+        If a location no longer has machines, NO NEED to tell us! Please just remove the machines from the location, and we will auto-delete it within a week.
+      %p
+        If a location has moved or changed names, tell us which location you're referring to!
+      #contact_maker.pb_10
+        = form_tag global_contact_sent_path, :method => 'post' do
+          %ul.pl_0
+            - if !user_signed_in?
+              %li
+                %label{:for => "contact_name"} Your Name:
+                %input{:type => "text", :name => "contact_name", :params => "contact_name", :class => "text w_400"}
+              %li
+                %label{:for => "contact_email"} Your Email:
+                %input{:type => "text", :name => "contact_email", :params => "contact_email", :class => "text w_400", required: true}
+            %li.msg.h_auto
+              %label{:for => "contact_msg"} Message:
+              %textarea{:type => "text", :name => "contact_msg", :params => "contact_msg", :class => "text w_400", required: true}
+            - if !user_signed_in?
+              %li
+                %span.red Security Question (required)
+                %label{:for => "security_question"} What are we mapping on this site?
+                %input{:type => "text", :name => "security_question", :params => "security_question", :class => "text w_400", required: true}
+            %li.submit{:style => "clear:both;"}
+              %input{:type => "submit", :value => "Submit Comment", :class => "submit_button"}

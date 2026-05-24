@@ -151,7 +151,7 @@ limit 25")
   end
 
   def submitted_new_location
-    @submit_thanks = "Thanks for your submission! Please allow us 0-7 days to review and add it. No need to re-submit it or remind us (unless it's opening day!). Note that you usually won't get a message from us confirming that it's been added.".freeze
+    @submit_thanks = "Review can take 0-7 days. Do not re-submit or remind us (unless it's opening day).".freeze
 
     user = current_user
     send_new_location_notification(params, @region, user)
@@ -246,7 +246,7 @@ limit 25")
   end
 
   def contact
-    redirect_to about_path
+    redirect_to about_path if @region
   end
 
   def flier; end

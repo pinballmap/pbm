@@ -58,7 +58,7 @@
 %div[l, :metadata_edit]{:style => 'display:none'}
   %div.red.mb_8 
     Want to update the location name?
-    = link_to 'Contact us!', about_path('portland')
+    = link_to 'Contact us!', global_contact_path
   = form_tag update_metadata_locations_path(:action => 'update_metadata', id: l.id), :id => "update_metadata_#{l.id}", :method => 'patch' do
     = hidden_field_tag :id, l.id
     = label_tag "Phone #: "

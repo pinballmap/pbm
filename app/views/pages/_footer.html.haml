@@ -2,7 +2,7 @@
   - if (@region)
     =link_to 'Contact', about_path, :class => 'footer_contact'
   - else
-    =link_to 'Contact', about_path('portland'), :class => 'footer_contact'
+    =link_to 'Contact', global_contact_path, :class => 'footer_contact'
   =link_to 'Donate', donate_path, :class => 'footer_donate'
   =link_to 'Github', 'https://github.com/pinballmap/pbm/', :target => '_blank', :class => 'footer_github'
   =link_to 'API', apipie_apipie_path, :target => '_blank', :class => 'footer_api'

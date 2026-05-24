@@ -17,9 +17,14 @@ describe PagesController, type: :controller do
   end
 
   describe '#contact' do
-    it 'should redirect you to the about page' do
+    it 'redirects to the about page when a region is present' do
       get 'contact', params: { region: 'portland' }
       expect(response).to redirect_to about_path
+    end
+
+    it 'renders the global contact page when no region is present' do
+      get 'contact'
+      expect(response).to be_successful
     end
   end
 
@@ -69,6 +74,40 @@ describe PagesController, type: :controller do
       logout
 
       expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_question: 'dunno' } }.to_not have_enqueued_job
+    end
+  end
+
+  describe 'global contact_sent (no region)' do
+    before(:each) do
+      @user = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+    end
+
+    it 'should send an email to super admins only (no regional cc) when logged out' do
+      logout
+
+      expect { post 'contact_sent', params: { contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_question: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: 'bar', message: 'baz', user_name: nil, user_email: nil, to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com' ], subject: 'Pinball Map - Message from foo', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
+    end
+
+    it 'should send an email to super admins only (no regional cc) when logged in' do
+      login(@user)
+
+      expect { post 'contact_sent', params: { contact_msg: 'baz' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: nil, email: nil, message: 'baz', user_name: 'ssw', user_email: 'yeah@ok.com', to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com' ], subject: 'Pinball Map - Message from ssw', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
+    end
+
+    it 'should not send an email if the body is blank' do
+      expect { post 'contact_sent', params: { contact_name: 'foo', contact_email: 'bar', contact_msg: nil, security_question: 'pinball' } }.to_not have_enqueued_job
+    end
+
+    it 'should not send an email if the email is blank when logged out' do
+      logout
+
+      expect { post 'contact_sent', params: { contact_name: 'foo', contact_email: nil, contact_msg: 'hello', security_question: 'pinball' } }.to_not have_enqueued_job
+    end
+
+    it 'should flash an error message if security test fails' do
+      logout
+
+      expect { post 'contact_sent', params: { contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_question: 'dunno' } }.to_not have_enqueued_job
     end
   end
 

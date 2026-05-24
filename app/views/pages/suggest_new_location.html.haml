@@ -3,9 +3,10 @@
     .column.bg_vlightpurple.w_640.suggest
       %p.red.bold.p1 Suggest a New Location
       - if user_signed_in?
-        %p.center Please check first that we don't already list the location.
+        %p.center Only submit NEW locations (check first).
         %p.center Do not submit your home (even if it's a short-term rental).
-        %p.center We review all location submissions (0 - 7 days).
+        %p.center Do not submit same location multiple times. Review takes 0 - 7 days.
+        %p.center New business that isn't open yet? We don't add until it's open - TELL US THE OPENING DATE.
         #location_maker
           = form_tag @region ? submitted_new_location_path : map_submitted_new_location_path, :method => 'post', :id => "submit_location" do
             = hidden_field_tag :place_id
@@ -53,7 +54,7 @@
               .clear
               %li.textbox
                 %label{:for => "location_comments"} Comments:
-                %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text", :placeholder => 'Opening date; hours; type of payment system(s) they use (door fee, cash, cards); accessibility issues'}
+                %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text", :placeholder => 'OPENING DATE; hours; type of payment system(s) they use (door fee, cash, cards); accessibility issues'}
               %li.machines_textinput
                 %label{:for => "location_type"} Machines:
                 = select_tag "location_machines", options_from_collection_for_select(Machine.all.sort_by(&:massaged_name), 'id', 'name_and_year', params["location_machines_ids"]), multiple: "multiple", :class => 'location_machines', :id => 'location_machines', name: "location_machines_ids[]", required: true

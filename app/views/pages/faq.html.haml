@@ -2,7 +2,7 @@
   .column_container
     .column.w_560.bg_vlightpurple
       %p.red.bold.p1 Pinball Map FAQ
-      %p== This page contains helpful app and website support information. If you have a question, comment, or suggestion, #{link_to 'contact us', about_path('portland')}. 
+      %p== This page contains helpful app and website support information. If you have a question, comment, or suggestion, #{link_to 'contact us', global_contact_path}.
       %p== #{link_to 'Click here to read our privacy policy', privacy_path}.
       %p Jump to FAQ sections:
       %ul
@@ -46,13 +46,13 @@
       %hr
       %p.question#15
         =link_to 'Location name has changed. Can I change it?', '#15', :class => "no_underline"
-      %p.answer== Only administrators can edit location names. #{link_to 'Contact us', about_path('portland')}, and make sure to tell us the name of the location.
+      %p.answer== Only administrators can edit location names. #{link_to 'Contact us', global_contact_path}, and make sure to tell us the name of the location.
       %hr
       %p.question#5 
         =link_to 'This location has moved. Should I add a location description that no administrator will ever see? Or should I remove the machines from it and re-submit?', '#5', :class => "no_underline"
       %p.answer
         Neither. Administrators can change the address. Please 
-        = link_to 'let us know', about_path('portland')
+        = link_to 'let us know', global_contact_path
         if a location has moved, and make sure to tell us the name of the location that has moved. It's preferable for us to simply change the address because that retains the location history.
       %p.font20.center.bold.pbt_5.bg_lightpurple#data-usage
         =link_to 'Data Usage', '#data-usage', :class => "no_underline brightpurple"
@@ -81,7 +81,7 @@
         =link_to 'When I search for a city, the city is listed twice (and maybe the second instance of it is misspelled). Or, I see the same location listed twice. Or, the place is in the wrong spot on the map. Etc.', '#10', :class => "no_underline"
       %p.answer
         These are data entry mistakes. Please 
-        = link_to 'contact us', about_path('portland')
+        = link_to 'contact us', global_contact_path
         so we can fix them.
       %hr
       %p.question#18
@@ -108,7 +108,7 @@
       %p.question#11 
         =link_to 'How do I get listed as an operator?', '#11', :class => "no_underline"
       %p.answer
-        = link_to 'Contact us', about_path('portland')
+        = link_to 'Contact us', global_contact_path
         and we'll add you. In your message, tell us:
         %ul
           %li The name of your operating business.
@@ -179,7 +179,7 @@
       %hr
       %p.question#19
         =link_to 'Can I change my username?', '#19', :class => "no_underline"
-      %p.answer== Only administrators can change your username. #{link_to 'Contact us', about_path('portland')} and we'll be happy to change it.
+      %p.answer== Only administrators can change your username. #{link_to 'Contact us', global_contact_path} and we'll be happy to change it.
       %hr
       %p.question#23
         =link_to 'I forgot my password???', '#23', :class => "no_underline"
