@@ -158,6 +158,9 @@ describe PagesController do
       visit '/store'
       expect(page).to have_title('Store')
 
+      visit '/addscore'
+      expect(page).to have_title('Add High Score')
+
       visit '/faq'
       expect(page).to have_title('FAQ')
 

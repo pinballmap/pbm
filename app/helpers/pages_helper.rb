@@ -51,6 +51,8 @@ module PagesHelper
       "Store - "
     elsif path == donate_path
       "Donate - "
+    elsif path == add_score_path
+      "Add High Score - "
     elsif path.match?(/inspire_profile/)
       "Sign up! - "
     elsif path.match?(/profile/)
@@ -109,6 +111,8 @@ module PagesHelper
       "Pinball Map Store!"
     elsif path == donate_path
       "Donate to Pinball Map. Donations help us manage the costs of running the site. Thank you!"
+    elsif path == add_score_path
+      "Track your high scores for every pinball machine you've ever played! "
     elsif path.match?(/profile/)
       "The user profile tracks your Pinball Map contributions. It's a concise overview of your edits, high scores, and favorite locations."
     elsif path.match?(/login/)
