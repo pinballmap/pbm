@@ -19,7 +19,6 @@ describe MachineScoreXrefsController, type: :controller do
       expect(response).to be_successful
       expect(assigns(:all_machines)).not_to be_nil
     end
-
   end
 
   describe 'create' do
