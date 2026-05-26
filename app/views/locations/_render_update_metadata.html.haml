@@ -31,6 +31,9 @@
       = image_tag('icons/clock-time-four-outline.svg', :class => 'meta_icon')
       = link_to "Hours", "https://www.google.com/maps/place/?q=place_id:" + l.place_id, :class => 'hours', :target => 'blank'
       %span.grey.italic (Google Maps)
+  %div.phone
+    = image_tag('icons/phone.svg', :class => 'meta_icon')
+    All ages: Sometimes
   - if (l.operator_id)
     %div.operator
       = image_tag('icons/wrench.svg', :class => 'meta_icon')
@@ -44,10 +47,6 @@
           = image_tag('icons/email-outline.svg', class: 'copy_icon', data: { copy: l.operator_email_opt_in })
         - if l.operator_phone_opt_in
           = image_tag('icons/phone.svg', class: 'copy_icon', data: { copy: l.operator_phone_opt_in })
-    - if (l.operator.operator_has_email)
-      %div.operator_comments.darkgrey (This operator receives machine comments)
-    - else
-      %div.operator_comments.darkgrey (This operator does not receive machine comments)
   - if !l.description.blank?
     %div.description
       = image_tag('icons/notebook-outline.svg', :class => 'meta_icon float_l')

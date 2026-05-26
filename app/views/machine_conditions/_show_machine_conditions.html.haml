@@ -6,3 +6,8 @@
       %div.black.font16.center No machine comments yet
     - else
       = render :partial => 'location_machine_xrefs/render_machine_conditions', :locals => {:conditions => lmx.sorted_machine_conditions, :lmx => lmx}
+- if lmx.location.operator
+  - if (lmx.location.operator.operator_has_email)
+    %div.operator_comments.darkgrey This operator receives machine comments
+  - else
+    %div.operator_comments.darkgrey This operator does not receive machine comments

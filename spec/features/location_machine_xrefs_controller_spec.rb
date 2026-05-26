@@ -1115,14 +1115,16 @@ describe LocationMachineXrefsController do
 
     it 'searches by operator - displays website when available' do
       l = FactoryBot.create(:location, id: 43, region: @region, name: 'Cleo', operator: FactoryBot.create(:operator, name: 'Quarter Bean', region: @region, website: 'website.com'))
+      FactoryBot.create(:location_machine_xref, location: l)
 
       visit "/#{@region.name}?by_location_id=#{l.reload.id}"
+      page.find("div.machine_tools_lmx_toggle").click
 
       sleep(1)
 
       expect(page).to have_content('Cleo')
       expect(page).to have_link('Quarter Bean')
-      expect(page).to have_content('(This operator does not receive machine comments)')
+      expect(page).to have_content('This operator does not receive machine comments')
 
       l = FactoryBot.create(:location, id: 44, region: @region, name: 'Sass', operator: FactoryBot.create(:operator, name: 'Sass Bean', region: @region, website: nil))
 
@@ -1148,10 +1150,14 @@ describe LocationMachineXrefsController do
 
     it 'displays message about operator receiving machine comments' do
       l = FactoryBot.create(:location, id: 45, region: @region, name: 'Cleo', operator: FactoryBot.create(:operator, name: 'Quarter Bean', email: 'foo@bar.com', region: @region))
+      FactoryBot.create(:location_machine_xref, location: l)
 
       visit "/#{@region.name}?by_location_id=#{l.reload.id}"
+      page.find("div.machine_tools_lmx_toggle").click
 
-      expect(page).to have_content('(This operator receives machine comments)')
+      sleep 1
+
+      expect(page).to have_content('This operator receives machine comments')
     end
 
     it 'displays location type for a location, if it is available' do
