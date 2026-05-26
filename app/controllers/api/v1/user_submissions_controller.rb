@@ -17,6 +17,7 @@ module Api
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       param :machine_id, Integer, desc: "Limit results by machine. Multiple machines can be chained as ;machine_id[]=111;machine_id[]=222 etc", required: false
       param :user_faved, Integer, desc: "Limit results to locations favorited by this user ID", required: false
+      param :include_locationless, Integer, desc: "When present, includes new_msx submissions that have no associated location (for app versions that support non-pressable activity items)", required: false
       def index
         submission_type, submission_type_restrict = build_submission_types
 
@@ -145,6 +146,7 @@ module Api
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       param :machine_id, Integer, desc: "Limit results by machine. Multiple machines can be chained as ;machine_id[]=111;machine_id[]=222 etc", required: false
       param :user_faved, Integer, desc: "Limit results to locations favorited by this user ID", required: false
+      param :include_locationless, Integer, desc: "When present, includes new_msx submissions that have no associated location (for app versions that support non-pressable activity items)", required: false
       def list_within_range
         max_distance = params[:max_distance].blank? ? MAX_MILES_TO_SEARCH_FOR_USER_SUBMISSIONS : [ 250, params[:max_distance].to_i ].min
 
@@ -180,7 +182,12 @@ module Api
       private
 
       def base_user_submissions_scope
-        UserSubmission.where.not(submission: nil).where.not(location_name: nil).where(deleted_at: nil)
+        scope = UserSubmission.where.not(submission: nil).where(deleted_at: nil)
+        if params[:include_locationless].present?
+          scope.where.not(location_name: nil).or(scope.where(submission_type: UserSubmission::NEW_SCORE_TYPE))
+        else
+          scope.where.not(location_name: nil)
+        end
       end
 
       def build_submission_types

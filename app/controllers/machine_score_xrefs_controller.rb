@@ -1,30 +1,52 @@
 class MachineScoreXrefsController < ApplicationController
   include ActionView::Helpers::NumberHelper
   has_scope :region
-  before_action :authenticate_user!, except: %i[index]
+  before_action :authenticate_user!, except: %i[index new]
   rate_limit to: 40, within: 5.minutes, only: :create
+
+  def new
+    @all_machines = Machine.order(:name).select(:id, :name, :year, :manufacturer).map { |m| [ m.name_and_year, m.id ] }
+  end
 
   def create
     score = params[:score]
 
-    return if score.blank?
+    if params[:location_machine_xref_id].present?
+      return if score.blank?
 
-    score.gsub!(/[^0-9]/, "")
+      score.gsub!(/[^0-9]/, "")
 
-    return if score.blank? || score.to_i.zero?
+      return if score.blank? || score.to_i.zero?
 
-    msx = MachineScoreXref.new(location_machine_xref_id: params[:location_machine_xref_id])
+      machine_id = LocationMachineXref.where(id: params[:location_machine_xref_id]).pluck(:machine_id).first
+      msx = MachineScoreXref.new(location_machine_xref_id: params[:location_machine_xref_id], score: score, user: current_user, machine_id: machine_id)
+      msx.save
+      msx.create_user_submission
+      UserMachineXref.find_or_create_by(user: current_user, machine_id: machine_id)
+      render nothing: true
+    else
+      if score.blank?
+        redirect_to add_score_path, alert: "Score can't be blank."
+        return
+      end
 
-    machine_id = LocationMachineXref.where(id: params[:location_machine_xref_id]).pluck(:machine_id).first
+      score.gsub!(/[^0-9]/, "")
 
-    msx.score = score
-    msx.user = current_user
-    msx.machine_id = machine_id
-    msx.save
-    msx.create_user_submission
-    UserMachineXref.find_or_create_by(user: current_user, machine_id: machine_id)
+      if score.blank? || score.to_i.zero?
+        redirect_to add_score_path, alert: "Score must be a numeric value."
+        return
+      end
 
-    render nothing: true
+      machine_id = params[:machine_id].to_i
+      msx = MachineScoreXref.new(score: score, user: current_user, machine_id: machine_id)
+      if msx.save
+        msx.create_user_submission
+        UserMachineXref.find_or_create_by(user: current_user, machine_id: machine_id)
+        redirect_to add_score_path, notice: "Score added!"
+      else
+        redirect_to add_score_path, alert: "Failed to save score."
+      end
+    end
   end
 
   def index

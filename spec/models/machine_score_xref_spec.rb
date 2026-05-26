@@ -65,6 +65,24 @@ describe MachineScoreXref do
         expect(submission.submission_type).to eq(UserSubmission::NEW_SCORE_TYPE)
         expect(submission.submission).to eq('cibw added a high score of 100 on Test Machine Name at Test Location Name in Portland')
       end
+
+      it 'creates a locationless user submission when no lmx is present' do
+        user = FactoryBot.create(:user, username: 'cibw', email: 'yeah@ok.com')
+        machine = FactoryBot.create(:machine)
+        msx = FactoryBot.create(:machine_score_xref, location_machine_xref: nil, machine_id: machine.id, user: user, score: 500)
+
+        msx.create_user_submission
+
+        submission = UserSubmission.last
+
+        expect(submission.location).to be_nil
+        expect(submission.location_name).to be_nil
+        expect(submission.machine).to eq(machine)
+        expect(submission.user).to eq(user)
+        expect(submission.submission_type).to eq(UserSubmission::NEW_SCORE_TYPE)
+        expect(submission.submission).to include('cibw added a high score of 500')
+        expect(submission.submission).not_to include(' at ')
+      end
     end
   end
 end

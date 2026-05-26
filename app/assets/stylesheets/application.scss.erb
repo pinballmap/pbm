@@ -1699,6 +1699,10 @@ span.machine_year_man {
   height: auto;
 }
 
+#score_backglass_img {
+  margin-top: 10px;
+}
+
 /* ic_toggle */
 
 .ic_button_container {
@@ -2238,6 +2242,7 @@ input.submit_button:hover,
 #location_maker textarea,
 #contact_maker input.text,
 #contact_maker textarea,
+#score_maker input.text,
 .edit_mode,
 #new_user input[type="email"],
 #new_user input[type="password"],
@@ -2784,23 +2789,27 @@ img.small_banner_icon {
 }
 
 #location_maker ul,
-#contact_maker ul {
+#contact_maker ul,
+#score_maker ul {
   list-style-type: none;
 }
 
 #location_maker label,
-#contact_maker label {
+#contact_maker label,
+#score_maker label {
   display: block;
   color: var(--black);
   font-family: $Nunito_600SemiBold;
   margin-bottom: 5px;
 }
 
-#location_maker ul {
+#location_maker ul,
+#score_maker ul {
   padding-left: 0;
 }
 
-#location_maker ul li {
+#location_maker ul li,
+#score_maker ul li {
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -3037,7 +3046,8 @@ gmp-place-autocomplete svg {
   margin-left: 0px !important;
 }
 
-#location_maker {
+#location_maker,
+#score_maker {
   text-align: center;
 }
 
@@ -3053,14 +3063,22 @@ gmp-place-autocomplete {
 #location_maker input.text,
 #contact_maker input.text,
 #location_maker li select,
+#score_maker li select,
 gmp-place-autocomplete {
   height: 32px;
   margin: 0;
   font-size: 14px;
 }
 
+#score_maker input.text {
+  font-size: 16px;
+  height: 35px;
+}
+
 #location_maker input.text,
-#location_maker li select {
+#location_maker li select,
+#score_maker input.text,
+#score_maker li select {
   width: 80%;
 }
 
@@ -3210,7 +3228,25 @@ gmp-place-autocomplete {
   overflow-x: hidden;
 }
 
-.filter .select2-container .select2-selection--multiple, {
+#score_maker .select2-container--default .select2-selection--single {
+  height: 35px !important;
+  min-height: 35px !important;
+}
+
+#score_maker .select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 32px !important;
+  min-height: 32px !important;
+}
+
+#score_maker .select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: 32px !important;
+}
+
+#score_maker .select2-container {
+  width: 80% !important;
+}
+
+.filter .select2-container .select2-selection--multiple {
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 20px;

@@ -57,7 +57,8 @@ module Api
       end
 
       api :POST, "/api/v1/machine_score_xrefs.json", "Enter a new high score for a machine"
-      param :location_machine_xref_id, Integer, desc: "Location machine identifier for high score", required: true
+      param :location_machine_xref_id, Integer, desc: "Location machine identifier for high score. Required unless machine_id is provided.", required: false
+      param :machine_id, Integer, desc: "Machine ID to record a locationless high score. Used when no location_machine_xref_id is available.", required: false
       param :score, String, desc: "A pinball machine high score", required: false
       formats [ "json" ]
       def create
@@ -77,15 +78,18 @@ module Api
           return
         end
 
-        lmx = LocationMachineXref.find(params[:location_machine_xref_id])
-
-        msx = MachineScoreXref.new(location_machine_xref_id: lmx.id)
-
-        machine_id = LocationMachineXref.where(id: params[:location_machine_xref_id]).pluck(:machine_id).first
-
-        msx.score = score
-        msx.user = user
-        msx.machine_id = machine_id
+        if params[:location_machine_xref_id].present?
+          lmx = LocationMachineXref.find(params[:location_machine_xref_id])
+          machine_id = lmx.machine_id
+          msx = MachineScoreXref.new(location_machine_xref_id: lmx.id, score: score, user: user, machine_id: machine_id)
+        elsif params[:machine_id].present?
+          machine_id = params[:machine_id].to_i
+          raise ActiveRecord::RecordNotFound unless Machine.exists?(machine_id)
+          msx = MachineScoreXref.new(score: score, user: user, machine_id: machine_id)
+        else
+          return_response("location_machine_xref_id or machine_id is required", "errors")
+          return
+        end
 
         if msx.save
           msx.create_user_submission

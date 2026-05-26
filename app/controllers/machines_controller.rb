@@ -1,4 +1,9 @@
 class MachinesController < ApplicationController
+  def opdb_img
+    machine = Machine.select(:opdb_img).find(params[:id])
+    render json: { opdb_img: machine.opdb_img.presence }
+  end
+
   def autocomplete
     if params[:region_level_search].nil?
       results = Machine.where("clean_items(name) ilike '%' || clean_items(?) || '%'", params[:term])

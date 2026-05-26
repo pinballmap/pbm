@@ -138,6 +138,40 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
       expect(submission.submission_type).to eq(UserSubmission::NEW_SCORE_TYPE)
       expect(submission.submission).to eq('cibw added a high score of 1,234 on Cleo at Ground Kontrol in Portland')
     end
+
+    it 'creates a locationless score when machine_id is provided instead of location_machine_xref_id' do
+      post '/api/v1/machine_score_xrefs.json', params: { machine_id: @machine.id.to_s, score: 9999, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      expect(response).to be_successful
+
+      expect(JSON.parse(response.body)['machine_score_xref']['score']).to eq(9999)
+
+      new_score = MachineScoreXref.last
+      expect(new_score.score).to eq(9999)
+      expect(new_score.location_machine_xref_id).to be_nil
+      expect(new_score.machine_id).to eq(@machine.id)
+      expect(new_score.user_id).to eq(@user.id)
+
+      submission = UserSubmission.last
+      expect(submission.location).to be_nil
+      expect(submission.location_name).to be_nil
+      expect(submission.machine).to eq(@machine)
+      expect(submission.submission_type).to eq(UserSubmission::NEW_SCORE_TYPE)
+      expect(submission.submission).to include('cibw added a high score of 9,999 on Cleo')
+    end
+
+    it 'errors when machine_id does not exist' do
+      post '/api/v1/machine_score_xrefs.json', params: { machine_id: -1, score: 9999, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      expect(response).to be_successful
+
+      expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
+    end
+
+    it 'errors when neither location_machine_xref_id nor machine_id is provided' do
+      post '/api/v1/machine_score_xrefs.json', params: { score: 9999, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      expect(response).to be_successful
+
+      expect(JSON.parse(response.body)['errors']).to eq('location_machine_xref_id or machine_id is required')
+    end
   end
 
   describe '#destroy' do

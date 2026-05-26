@@ -30,7 +30,7 @@
         Line-up confirmed#{show_location_link ? " at" : ""}
       - if (activity.submission_type == 'add_location')
         New location added#{show_location_link ? ":" : ""}
-      - if show_location_link
+      - if show_location_link && activity.location_name.present?
         %span.bold
           - if (activity.location.blank?)
             #{activity.location_name}

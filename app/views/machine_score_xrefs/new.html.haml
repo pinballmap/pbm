@@ -1,0 +1,52 @@
+#page_body
+  .column_container
+    .column.bg_vlightpurple.w_640.suggest
+      %p.red.bold.p1 Add High Score
+      - if user_signed_in?
+        %p Select a machine and enter your score. The machine will be added to your life list.
+        %p Scores entered here will not be associated with a location. If you want to add a score to a location-specific machine, lookup that location on the map.
+        #score_maker
+          = form_tag machine_score_xrefs_path, method: :post, id: 'add_score_form' do
+            %ul
+              %li
+                %label{for: 'machine_id'} Machine:
+                = select_tag 'machine_id', options_for_select(@all_machines), id: 'score_machine_select', style: 'width: 100%;', include_blank: true
+              %li
+                %label{for: 'score'} Score:
+                = text_field_tag :score, nil, placeholder: 'Enter your score...', id: 'addscore_score', class: 'text'
+              %li#backglass_preview{style: 'display: none;'}
+                %img#score_backglass_img{alt: 'backglass image', class: 'backglass_img'}
+              %li.submit.mt_5
+                = submit_tag 'Save Score', class: 'submit_button'
+      - else
+        %p.center== To add a high score you first need to #{link_to 'login', new_user_session_path, class: 'red bold'}. Thank you!
+
+:javascript
+  $(document).ready(function() {
+    $('#score_machine_select').select2({
+      placeholder: 'Search for a machine...',
+    });
+
+    $('#score_machine_select').on('change', function() {
+      var machineId = $(this).val();
+      if (!machineId) {
+        $('#backglass_preview').hide();
+        $('#score_backglass_img').attr('src', '');
+        return;
+      }
+      $.getJSON('/machines/' + machineId + '/opdb_img', function(data) {
+        if (data.opdb_img) {
+          $('#score_backglass_img').attr('src', data.opdb_img);
+          $('#backglass_preview').show();
+        } else {
+          $('#backglass_preview').hide();
+          $('#score_backglass_img').attr('src', '');
+        }
+      });
+    });
+
+    document.getElementById('addscore_score').addEventListener('input', function(event) {
+      var digits = event.target.value.replace(/[^\d]+/gi, '');
+      event.target.value = digits === '' ? '' : (parseInt(digits) || 0).toLocaleString('en-US');
+    });
+  });

@@ -119,6 +119,77 @@ describe PagesController, type: :controller do
     end
   end
 
+  describe '#recent_activity' do
+    before(:each) do
+      @user = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      @machine = FactoryBot.create(:machine, name: 'Cleo')
+    end
+
+    it 'includes locationless scores for the current user' do
+      login(@user)
+      FactoryBot.create(:user_submission,
+        submission_type: 'new_msx',
+        user: @user,
+        machine: @machine,
+        submission: 'ssw added a high score of 5,000 on Cleo',
+        location_name: nil,
+        region: nil
+      )
+
+      get 'recent_activity'
+
+      expect(assigns(:recent_activity).map(&:submission_type)).to include('new_msx')
+    end
+
+    it 'does not include locationless scores from other users' do
+      login(@user)
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.com')
+      FactoryBot.create(:user_submission,
+        submission_type: 'new_msx',
+        user: other_user,
+        machine: @machine,
+        submission: 'other added a high score of 5,000 on Cleo',
+        location_name: nil,
+        region: nil
+      )
+
+      get 'recent_activity'
+
+      expect(assigns(:recent_activity)).to be_empty
+    end
+
+    it 'includes location-based scores from any user' do
+      login(@user)
+      FactoryBot.create(:user_submission,
+        submission_type: 'new_msx',
+        user: @user,
+        location: @location,
+        machine: @machine,
+        location_name: @location.name,
+        submission: 'ssw added a high score of 5,000 on Cleo at Test Location Name in Portland'
+      )
+
+      get 'recent_activity'
+
+      expect(assigns(:recent_activity).map(&:submission_type)).to include('new_msx')
+    end
+
+    it 'does not include locationless scores when logged out' do
+      FactoryBot.create(:user_submission,
+        submission_type: 'new_msx',
+        user: @user,
+        machine: @machine,
+        submission: 'ssw added a high score of 5,000 on Cleo',
+        location_name: nil,
+        region: nil
+      )
+
+      get 'recent_activity'
+
+      expect(assigns(:recent_activity)).to be_empty
+    end
+  end
+
   describe 'suggest_new_location' do
     it 'works with a region' do
       post 'suggest_new_location', params: { region: 'portland' }

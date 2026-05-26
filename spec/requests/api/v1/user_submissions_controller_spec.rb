@@ -503,6 +503,38 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response.body).to include('flag')
       expect(response.body).to include('us')
     end
+
+    it 'excludes locationless new_msx entries by default (old clients)' do
+      location = FactoryBot.create(:location, name: 'bawb')
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'user scored on machine', location_name: nil)
+      FactoryBot.create(:user_submission, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'user scored at a place', location_name: location.name)
+
+      get '/api/v1/user_submissions.json'
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(1)
+      expect(response.body).to include('at a place')
+      expect(response.body).to_not include('scored on machine')
+    end
+
+    it 'includes locationless new_msx entries when include_locationless param is present' do
+      location = FactoryBot.create(:location, name: 'bawb')
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'user scored on machine', location_name: nil)
+      FactoryBot.create(:user_submission, location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'machine added', location_name: location.name)
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'other type no location', location_name: nil)
+
+      get '/api/v1/user_submissions.json', params: { include_locationless: 1 }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(2)
+      expect(response.body).to include('scored on machine')
+      expect(response.body).to include('machine added')
+      expect(response.body).to_not include('other type no location')
+    end
   end
 
   describe '#location' do

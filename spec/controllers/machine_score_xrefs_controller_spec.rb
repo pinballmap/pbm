@@ -7,6 +7,21 @@ describe MachineScoreXrefsController, type: :controller do
     @msx = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, machine_id: @lmx.machine_id, score: 300, user: @user)
   end
 
+  describe 'new' do
+    it 'renders for logged-out users' do
+      get 'new'
+      expect(response).to be_successful
+    end
+
+    it 'assigns all_machines for logged-in users' do
+      login(@user)
+      get 'new'
+      expect(response).to be_successful
+      expect(assigns(:all_machines)).not_to be_nil
+    end
+
+  end
+
   describe 'create' do
     it 'should create a high score with populated fields' do
       login(@user)
@@ -19,6 +34,58 @@ describe MachineScoreXrefsController, type: :controller do
       expect(msx.machine_id).to eq(@lmx.machine_id)
       expect(msx.user_id).to eq(@user.id)
       expect(msx.score).to eq(400)
+    end
+
+    describe 'locationless score' do
+      before(:each) do
+        login(@user)
+        @machine = FactoryBot.create(:machine, name: 'Fireball')
+      end
+
+      it 'creates the score with no lmx and redirects with notice' do
+        post 'create', params: { machine_id: @machine.id, score: 5000 }
+
+        expect(response).to redirect_to(add_score_path)
+        expect(flash[:notice]).to eq('Score added!')
+
+        msx = MachineScoreXref.last
+        expect(msx.score).to eq(5000)
+        expect(msx.machine_id).to eq(@machine.id)
+        expect(msx.location_machine_xref_id).to be_nil
+        expect(msx.user).to eq(@user)
+      end
+
+      it 'creates a user submission with no location' do
+        post 'create', params: { machine_id: @machine.id, score: 5000 }
+
+        submission = UserSubmission.last
+        expect(submission.location_name).to be_nil
+        expect(submission.location).to be_nil
+        expect(submission.submission_type).to eq(UserSubmission::NEW_SCORE_TYPE)
+        expect(submission.submission).to include('cibw added a high score of 5,000 on Fireball')
+      end
+
+      it 'adds the machine to the life list' do
+        post 'create', params: { machine_id: @machine.id, score: 5000 }
+
+        expect(UserMachineXref.where(user: @user, machine_id: @machine.id)).to exist
+      end
+
+      it 'redirects with alert for a blank score' do
+        post 'create', params: { machine_id: @machine.id, score: '' }
+
+        expect(response).to redirect_to(add_score_path)
+        expect(flash[:alert]).to be_present
+        expect(MachineScoreXref.count).to eq(1)
+      end
+
+      it 'redirects with alert for a non-numeric score' do
+        post 'create', params: { machine_id: @machine.id, score: 'fword' }
+
+        expect(response).to redirect_to(add_score_path)
+        expect(flash[:alert]).to be_present
+        expect(MachineScoreXref.count).to eq(1)
+      end
     end
   end
 

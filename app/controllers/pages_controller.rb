@@ -220,8 +220,10 @@ limit 25")
     end
 
     scope = scope.where(region_id: @region.id) if @region
-    scope = scope.where.not(submission: nil).where.not(location_name: nil)
-                 .order("created_at DESC").includes([ :user, :location ])
+    base = scope.where.not(submission: nil)
+    scope = base.where.not(location_name: nil)
+                .or(base.where(submission_type: "new_msx", user: user))
+                .order("created_at DESC").includes([ :user, :location ])
 
     pagy_opts = params[:submission_type].present? ? { params: { submission_type: params[:submission_type] } } : {}
     @pagy, @recent_activity = pagy(scope, **pagy_opts)

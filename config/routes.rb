@@ -114,6 +114,7 @@ Rails.application.routes.draw do
   get '/activity' => 'pages#recent_activity'
   post '/activity' => 'pages#recent_activity'
   get '/stats' => 'pages#stats'
+  get '/addscore' => 'machine_score_xrefs#new', as: 'add_score'
 
   scope ':region', constraints: lambda { |request| Region.where('lower(name) = ?', request.params[:region].downcase).any? } do
     get 'app' => redirect('/app')
@@ -169,6 +170,9 @@ Rails.application.routes.draw do
   end
 
   resources :machines, only: [:index, :show] do
+    member do
+      get :opdb_img
+    end
     collection do
       get :autocomplete
     end
