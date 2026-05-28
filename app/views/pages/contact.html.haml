@@ -4,9 +4,19 @@
       %p.red.font18.bold.center
         Contact Pinball Map
       %p
-        If a location no longer has machines, NO NEED to tell us! Please just remove the machines from the location, and we will auto-delete it within a week.
+        This is a general contact form -
+        %span.bold include details
+        such as the
+        %span.red.bold location name.
       %p
-        If a location has moved or changed names, tell us which location you're referring to!
+        %span.bold No need
+        to tell us that a
+        %span.red.bold location closed
+        or
+        %span.red.bold all the machines are gone.
+        Just
+        %span.bold remove the machines
+        and we'll auto-delete it within a week.
       #contact_maker.pb_10
         = form_tag global_contact_sent_path, :method => 'post' do
           %ul.pl_0

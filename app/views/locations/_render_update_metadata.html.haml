@@ -52,9 +52,14 @@
     = render :partial => 'locations/render_last_updated', :locals => {:l => l}
 
 %div[l, :metadata_edit]{:style => 'display:none'}
-  %div.red.mb_8 
-    Want to update the location name?
-    = link_to 'Contact us!', global_contact_path
+  %div.mb_8{:style => 'line-height: 20px;'}
+    Is this location
+    %span.red.bold closed or are all the machines gone?
+    Simply remove the machines.
+  %div.mb_20{:style => 'line-height: 20px;'}
+    Does the location have a new name or address?
+    = link_to 'Contact us', global_contact_path, :class => 'bold brightpurple'
+    with the details.
   = form_tag update_metadata_locations_path(:action => 'update_metadata', id: l.id), :id => "update_metadata_#{l.id}", :method => 'patch' do
     = hidden_field_tag :id, l.id
     = label_tag "Phone #: "
