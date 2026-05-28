@@ -378,7 +378,7 @@ module Api
         end
 
         closest_location = apply_scopes(Location).includes(:machines).near([ lat, lon ], max_distance).first
-        location_details = [ location_machine_xrefs: { include: { machine: { methods: :machine_group_id, except: params[:no_details] ? %i[is_active created_at updated_at ipdb_link] : nil } }, except: params[:no_details] ? %i[created_at updated_at user_id] : nil } ]
+        location_details = [ location_machine_xrefs: { include: { machine: { methods: :machine_group_id, except: params[:no_details] ? %i[is_active created_at updated_at] : nil } }, except: params[:no_details] ? %i[created_at updated_at user_id] : nil } ]
 
         if params[:send_all_within_distance]
           closest_locations = apply_scopes(Location).includes(:machines).near([ lat, lon ], max_distance)
@@ -478,7 +478,6 @@ module Api
               name: m.name,
               year: m.year,
               manufacturer: m.manufacturer,
-              ipdb_link: m.ipdb_link,
               ipdb_id: m.ipdb_id,
               opdb_id: m.opdb_id
             )

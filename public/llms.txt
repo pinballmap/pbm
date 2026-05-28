@@ -72,7 +72,7 @@ The `GET /locations/:id.json` show endpoint also accepts `metadata_only=1`, whic
 
 ### no_details on other endpoints
 
-**`GET /machines.json`** — any truthy value omits `is_active`, `created_at`, `updated_at`, `ipdb_link`, `ipdb_id`, `machine_display`, `kineticist_url`. Recommended for app startup: you rarely need those fields when building a machine list.
+**`GET /machines.json`** — any truthy value omits `is_active`, `created_at`, `updated_at`, `ipdb_id`, `machine_display`. Recommended for app startup: you rarely need those fields when building a machine list.
 
 **`GET /operators.json`** — `no_details=1` omits contact fields and timestamps, adds an `operator_has_email` boolean. `no_details=2` also omits `website`.
 

@@ -31,9 +31,6 @@
       = image_tag('icons/clock-time-four-outline.svg', :class => 'meta_icon')
       = link_to "Hours", "https://www.google.com/maps/place/?q=place_id:" + l.place_id, :class => 'hours', :target => 'blank'
       %span.grey.italic (Google Maps)
-  %div.phone
-    = image_tag('icons/phone.svg', :class => 'meta_icon')
-    All ages: Sometimes
   - if (l.operator_id)
     %div.operator
       = image_tag('icons/wrench.svg', :class => 'meta_icon')

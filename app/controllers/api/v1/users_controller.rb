@@ -18,7 +18,7 @@ module Api
         return_response(
           locations,
           "user_fave_locations",
-          [ location: { include: { location_type: {}, machines: { except: %i[is_active created_at updated_at ipdb_link machine_group_id ipdb_id kineticist_url opdb_id opdb_img opdb_img_height opdb_img_width display machine_type machine_display ic_eligible] } },
+          [ location: { include: { location_type: {}, machines: { except: %i[is_active created_at updated_at machine_group_id ipdb_id opdb_id opdb_img opdb_img_height opdb_img_width display machine_type machine_display ic_eligible] } },
           except: %i[phone website created_at updated_at zone_id region_id description operator_id is_stern_army country is_active] } ]
         )
       rescue ActiveRecord::RecordNotFound
@@ -224,7 +224,7 @@ module Api
       description "When no params are provided, returns all machines on at least one life list, sorted by count descending."
       formats [ "json" ]
       def life_list_info
-        machine_except = %i[is_active created_at updated_at ipdb_link ipdb_id opdb_img opdb_img_height opdb_img_width machine_type machine_display ic_eligible kineticist_url]
+        machine_except = %i[is_active created_at updated_at ipdb_id opdb_img opdb_img_height opdb_img_width machine_type machine_display ic_eligible]
 
         if params[:by_machine_id].present? && params[:by_user_id].present?
           in_list = UserMachineXref.exists?(user_id: params[:by_user_id], machine_id: params[:by_machine_id])

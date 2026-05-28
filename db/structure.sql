@@ -549,7 +549,6 @@ CREATE TABLE public.machine_score_xrefs (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     user_id integer,
-    rank character varying(255),
     machine_id integer
 );
 
@@ -583,7 +582,6 @@ CREATE TABLE public.machines (
     is_active boolean,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    ipdb_link character varying(255),
     year integer,
     manufacturer character varying(255),
     machine_group_id integer,
@@ -594,8 +592,7 @@ CREATE TABLE public.machines (
     opdb_img_width integer,
     machine_type character varying,
     machine_display character varying,
-    ic_eligible boolean,
-    kineticist_url character varying
+    ic_eligible boolean
 );
 
 
@@ -2916,6 +2913,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260528000000'),
 ('20260511000000'),
 ('20260506000000'),
 ('20260428182123'),

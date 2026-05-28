@@ -51,7 +51,7 @@ module Api
           .select("DISTINCT ON (machines.name, machine_id) machine_score_xrefs.*")
           .order("machines.name, machine_id, score DESC")
 
-        return_response(all_msxs, "highest_scores", [ machine: { except: %i[is_active created_at updated_at ipdb_link ipdb_id opdb_img opdb_img_height opdb_img_width machine_type machine_display ic_eligible kineticist_url] } ], %i[ username ])
+        return_response(all_msxs, "highest_scores", [ machine: { except: %i[is_active created_at updated_at ipdb_id opdb_img opdb_img_height opdb_img_width machine_type machine_display ic_eligible] } ], %i[ username ])
       rescue ActiveRecord::RecordNotFound
         return_response("Failed to find machine", "errors")
       end
