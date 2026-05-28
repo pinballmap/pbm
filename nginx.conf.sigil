@@ -1,3 +1,17 @@
+map $http_user_agent $limit_key {
+  default "";
+  "~*externalhit" "externalhit";
+  "~*externalagent" "externalagent";
+  "~*externalfetcher" "externalfetcher";
+  "~*semrushbot" "semrushbot";
+  "~*barkrowler" "barkrowler";
+  "~*MJ12bot" "MJ12bot";
+  "~*BLEXBot" "BLEXBot";
+  "~*meta-webindexer" "meta-webindexer";
+}
+
+limit_req_zone $limit_key zone=bots_nginx:10m rate=10r/m;
+
 {{ range $port_map := .PROXY_PORT_MAP | split " " }}
 {{ $port_map_list := $port_map | split ":" }}
 {{ $scheme := index $port_map_list 0 }}
@@ -40,6 +54,11 @@ server {
   ssl_prefer_server_ciphers off;
   {{ end }}
 
+  if ($http_user_agent = "") { return 403; }
+  if ($http_user_agent ~* (bingbot|scrapy|SleepBot)){
+      return 403;
+  }
+
 {{ if $is_redirect }}
   include {{ $.DOKKU_ROOT }}/{{ $.APP }}/nginx.conf.d/*.conf;
   location / {
@@ -48,6 +67,9 @@ server {
 {{ else }}
   location    / {
 {{ if $.DOKKU_APP_WEB_LISTENERS }}
+
+    limit_req zone=bots_nginx;
+    limit_req_status 429;
 
     gzip on;
     gzip_min_length  1100;
@@ -116,21 +138,6 @@ server {
 {{ else if or (eq $scheme "grpc") (eq $scheme "grpcs") }}
 {{ if $.DOKKU_APP_WEB_LISTENERS }}
 {{ $is_ssl := eq $scheme "grpcs" }}
-
-map $http_user_agent $limit_key {
-  default "";
-  "~*externalhit" "externalhit";
-  "~*externalagent" "externalagent";
-  "~*externalfetcher" "externalfetcher";
-  "~*semrushbot" "semrushbot";
-  "~*barkrowler" "barkrowler";
-  "~*MJ12bot" "MJ12bot";
-  "~*BLEXBot" "BLEXBot";
-  "~*meta-webindexer" "meta-webindexer";
-}
-
-limit_req_zone $limit_key zone=bots_nginx:10m rate=10r/m;
-
 server {
   {{ if eq $.HTTP2_DIRECTIVE_SUPPORTED "true" }}
   listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }}{{ if $is_ssl }} ssl{{ end }};
