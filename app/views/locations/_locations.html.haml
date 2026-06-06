@@ -6,7 +6,8 @@
     var locations_geojson = JSON.parse('#{@locations_geojson}');
     notFound_lat = "#{@nearby_lat || 0}";
     notFound_lon = "#{@nearby_lon || 0}";
-    showLocations(notFound_lat, notFound_lon);
+    showLocations(notFound_lat, notFound_lon#{', true' if @city_search_mode});
+    #{"(function() { var nMachines = $('#by_at_least_n_machines').val() || undefined; var typeIds = $('#by_type_id').val() || undefined; var machineIds = machineSelectIds(); var byMachineId, byMachineSingleId; if (machineIds.length === 1 && machineGroups[machineIds[0]] && !$('#singleVersion').is(':checked')) { byMachineId = machineIds; } else if (machineIds.length) { byMachineSingleId = machineIds; } getMapBounds(nMachines, typeIds, byMachineId, byMachineSingleId); })();" if @city_search_mode}
 
     results_init = true;
 
@@ -32,7 +33,7 @@
 
     var regionName = "#{j @region&.full_name}"
 
-    newTitle = locationName + " - " + regionName + " Pinball Map";
+    newTitle = locationName + " - " + (regionName ? regionName + " " : "") + "Pinball Map";
 
     document.title = newTitle;
     $('meta[property="og:title"]').attr("content", newTitle);

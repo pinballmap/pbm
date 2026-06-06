@@ -226,6 +226,7 @@ Rails.application.routes.draw do
 
   get 'inspire_profile' => 'pages#inspire_profile'
   get 'pages/home'
+  get '/search/autocomplete', to: 'search#autocomplete'
   get 'map' => 'maps#map'
   get 'operators' => 'maps#operators'
   get 'operator_location_data' => 'maps#operator_location_data'

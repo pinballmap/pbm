@@ -269,13 +269,22 @@ span.login_list {
   min-width: 300px;
   height: 400px !important;
   left: 0;
-  margin: 0 10px 5px;
+  margin: 20px 10px 5px;
   top: 0;
   z-index: 100;
   border: none;
 }
 
-#closest_button {
+#map_buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px 20px;
+}
+
+#closest_button,
+#map_activity_button {
   position: relative;
   top: 0;
 }
@@ -284,6 +293,57 @@ span.login_list {
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+
+#region_page_body #form_container,
+#operators_page_body #form_container {
+  display: none;
+  background: var(--search_mask);
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  top: 0;
+}
+
+#region_page_body #form,
+#operators_page_body #form {
+  width: 95%;
+  border: 5px solid var(--border);
+  min-width: 300px;
+  height: auto;
+  position: fixed;
+  top: 50%;
+  transform: translate(0%, -50%);
+  margin: 10px !important;
+  padding: 5px 10px;
+}
+
+#region_page_body #form .search {
+  float: none;
+  display: block;
+  width: auto;
+  font-size: 18px;
+  height: 30px;
+  margin: 10px auto;
+}
+
+.search_modal button:active {
+  background: #f5f5ff;
+}
+
+.close_button {
+  position: absolute;
+  top: -20px;
+  right: -5px;
+  background: #fe46b0;
+  font-size: 32px;
+  color: #fafaff;
+  padding: 2px 0px 0 10px;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
 }
 
 div.state_name_container {
@@ -343,73 +403,9 @@ div.state_name_container {
   min-width: 0;
 }
 
-#form_container {
-  display: none;
-  background: var(--search_mask);
-  height: 100%;
-  width: 100%;
-  position: fixed;
-  z-index: 200;
-  left: 0;
-  top: 0;
-}
-
-#form {
-  width: 95%;
-  border: 5px solid var(--border);
-  min-width: 300px;
-  height: auto;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(0%, -50%);
-  margin: 10px !important;
-  padding: 5px 10px;
-}
-
-.search_modal button:active {
-  background: #f5f5ff;
-}
-
-.close_button {
-  position: absolute;
-  top: -20px;
-  right: -5px;
-  background: #fe46b0;
-  font-size: 32px;
-  color: #fafaff;
-  padding: 2px 0px 0 10px;
-  border-radius: 50%;
-  height: 40px;
-  width: 40px;
-}
-
-#form .search {
-  float: none;
-  display: block;
-  width: 100%;
-  font-size: 18px;
-  height: 30px;
-  margin: 10px 0;
-}
-
 #form select {
   margin-right: 5px;
   height: 32px;
-}
-
-.map_input .limit.filter {
-  padding-left: 0;
-}
-
-#form .limit select#by_type_id {
-  width: 100px;
-  margin-right: 0;
-}
-
-#form .limit select#by_at_least_n_machines {
-  width: 52px;
-  margin-right: 0;
 }
 
 #form input.lookup_search_input,
@@ -426,7 +422,8 @@ div.state_name_container {
 }
 
 #form #address_search_form input.lookup_search_input {
-  width: 100%;
+  width: 95%;
+  margin: 5px auto;
 }
 
 .location_search {
@@ -488,6 +485,13 @@ span.or {
   margin: 0;
 }
 
+#form {
+  position: relative;
+  width: 100%;
+  top: 0;
+  z-index: 110;
+}
+
 #form .search_field_container input.lookup_search_input {
   border: 2px solid var(--border);
   background: var(--white);
@@ -521,6 +525,30 @@ span.or {
   color: #47475f;
 }
 
+.map_input_filter {
+  width: 100%;
+  margin: 5px auto;
+  text-align: center;
+}
+
+.map_input_search #location_search_button.search,
+.map_input_search #location_search_button.search:hover {
+  margin-top: -1px;
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.map_input_search span.input_title {
+  padding: 0;
+}
+
+.filter_button_wrapper {
+  padding: 0;
+  justify-content: center;
+}
+
 span.single_hide {
   width: auto;
   margin: 5px 0;
@@ -536,7 +564,7 @@ input.single_hide {
 
 #refresh_button {
   z-index: 100;
-  top: 440px;
+  top: 550px;
   left: 50% !important;
   margin-left: -55px;
   position: absolute;
@@ -544,14 +572,6 @@ input.single_hide {
 
 #region_page_body #refresh_button {
   top: 485px;
-}
-
-#map_activity_button {
-  font-size: 14px;
-  z-index: 100;
-  top: 105px;
-  left: 20px !important;
-  position: absolute;
 }
 
 #region_page_body #map_activity_button {
@@ -771,19 +791,11 @@ span.machine_condition_text {
   padding-top: 0;
 }
 
-.limit span.info {
-  margin-top: 15px;
-}
-
-.type_count {
-  margin-top: 12px;
-}
-
-.filter .select2-container .select2-selection--multiple {
+.map_input_limit .select2-container .select2-selection--multiple {
   height: 32px !important;
 }
 
-.filter .select2-container--default .select2-selection--multiple .select2-selection__choice {
+.map_input_limit .select2-container--default .select2-selection--multiple .select2-selection__choice {
   margin-top: 0;
   margin-bottom: -2px;
 }

@@ -61,7 +61,7 @@ function toggle_machine_data(name, id) {
 }
 
 function regionMapLocations(region_id) {
-  mapAdjusted === 0;
+  mapAdjusted = 0;
   var region_id = region_id;
 
   lastSearchFn = function() {
@@ -90,7 +90,7 @@ function findClosestLocations() {
 }
 
 function homeMapBounds() {
-  mapAdjusted === 0;
+  mapAdjusted = 0;
   locations_geojson = [];
   showLocations();
   map_init = 0;
@@ -237,7 +237,7 @@ async function addMapLayersAndImages() {
   }
 }
 
-function showLocations() {
+function showLocations(notFound_lat, notFound_lon, skipMarkers) {
   let protocol = new pmtiles.Protocol();
   maplibregl.addProtocol("pmtiles", protocol.tile);
 
@@ -251,7 +251,7 @@ function showLocations() {
 
   var map_style = getEffectiveTheme() === 'dark' ? map_style_obj_dark : map_style_obj;
 
-  if (mapLoaded === 1 && map_init === 0 && mapAdjusted === 0 && locations_geojson.length > 0) {
+  if (!skipMarkers && mapLoaded === 1 && map_init === 0 && mapAdjusted === 0 && locations_geojson.length > 0) {
       map.getSource("point").setData({
         'type': 'FeatureCollection',
         'features': locations_geojson
@@ -293,6 +293,8 @@ function showLocations() {
     refreshButton();
   } else if (locations_geojson.length == 0 && typeof refresh_bounds !== 'undefined') {
     map.fitBounds(bounds, { padding: bounds_padding, animate: false });
+    map.getSource("point").setData({ type: 'FeatureCollection', features: [] });
+    document.getElementById("results_container").innerHTML = "<p id='not_found' class='red bold'>" + "No results in the current map view." + "<br />" + "Zoom out - move the map - change your filters - try again." + "</p>";
     hideRefresh();
     refreshButton();
   } else if (locations_geojson.length == 0 && notFound_lon > 0 && notFound_lon?.length !== 0 && typeof notFound_lon !== 'undefined' && map_init == 0) {
@@ -300,10 +302,10 @@ function showLocations() {
       center: [notFound_lon, notFound_lat],
       zoom: 10
     });
-    document.getElementById("results_container").innerHTML = "<p id='not_found' class='red bold'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
+    document.getElementById("results_container").innerHTML = "<p id='not_found' class='red bold'>" + "No results in the current map view." + "<br />" + "Zoom out - move the map - change your filters - try again." + "</p>";
     hideRefresh();
   } else if (locations_geojson.length == 0 && map_init == 0) {
-    document.getElementById("results_container").innerHTML = "<p id='not_found' class='red bold'>" + "NOT FOUND. PLEASE SEARCH AGAIN." + "<br />" + "Use the dropdown or the autocompleting textbox if you want results." + "</p>";
+    document.getElementById("results_container").innerHTML = "<p id='not_found' class='red bold'>" + "No results in the current map view." + "<br />" + "Zoom out - move the map - change your filters - try again." + "</p>";
     map.setCenter([center_lon, center_lat]);
     hideRefresh();
   } else if (locations_geojson.length > 1) {
@@ -631,6 +633,24 @@ function hideSearchModal() {
   if ($('.search_modal').css('display') == 'block') {
     $('#form_container').hide(400);
   }
+}
+
+function showFilterModal() {
+  $('#filter_modal_overlay').show();
+  $('#filter_modal').show();
+}
+
+function hideFilterModal() {
+  $('#filter_modal_overlay').hide();
+  $('#filter_modal').hide();
+}
+
+function clearAllFilters() {
+  $('#by_machine_select').val(null).trigger('change');
+  $('#single_hide').hide();
+  $('#singleVersion').prop('checked', false);
+  $('#by_at_least_n_machines').val('');
+  $('#by_type_id').val(null).trigger('change');
 }
 
 function setRegion(regionName) {

@@ -258,62 +258,107 @@ describe LocationsController do
     before(:each) do
     end
 
-    [ true, false ].each do |region|
-      it 'sets title and description appropriately if one location is returned' do
-        region = region ? @region : nil
-        FactoryBot.create(:location, region: region, name: 'Cleo')
+    it 'sets title and description appropriately if one location is returned - region' do
+      FactoryBot.create(:location, region: @region, name: 'Cleo')
 
-        location = FactoryBot.create(:location, region: region, name: 'Zelda', street: '1234 Foo St.', city: 'Portland', zip: '97203', id: 212)
-        machine = FactoryBot.create(:machine, name: 'Bawb')
-        FactoryBot.create(:location_machine_xref, location: location, machine: machine)
+      location = FactoryBot.create(:location, region: @region, name: 'Zelda', street: '1234 Foo St.', city: 'Portland', zip: '97203', id: 212)
+      machine = FactoryBot.create(:machine, name: 'Bawb')
+      FactoryBot.create(:location_machine_xref, location: location, machine: machine)
 
-        old_style_title = "#{region ? region.name + ' ' : ''}Pinball Map"
-        single_location_title = "Zelda - #{region ? region.name + ' ' : ''}Pinball Map"
-        old_style_description = "Find local places to play pinball! The #{region ? region.name + ' ' : ''}Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area."
+      old_style_title = 'portland Pinball Map'
+      single_location_title = 'Zelda - portland Pinball Map'
+      old_style_description = 'Find local places to play pinball! The portland Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
 
-        visit "/#{region ? region.name : 'map'}"
+      visit '/portland'
 
-        sleep 1
+      sleep 1
 
-        desc_tag = "meta[name=\"description\"][content=\"#{old_style_description}\"]"
-        og_desc_tag = "meta[property=\"og:description\"][content=\"#{old_style_description}\"]"
-        og_title_tag = "meta[property=\"og:title\"][content=\"#{old_style_title}\"]"
+      desc_tag = "meta[name=\"description\"][content=\"#{old_style_description}\"]"
+      og_desc_tag = "meta[property=\"og:description\"][content=\"#{old_style_description}\"]"
+      og_title_tag = "meta[property=\"og:title\"][content=\"#{old_style_title}\"]"
 
-        expect(page.title).to eq("#{region ? region.name + ' ' : ''}Pinball Map")
-        expect(page.body).to have_css(desc_tag, visible: :hidden)
-        expect(page.body).to have_css(og_title_tag, visible: :hidden)
-        expect(page.body).to have_css(og_desc_tag, visible: :hidden)
+      expect(page.title).to eq(old_style_title)
+      expect(page.body).to have_css(desc_tag, visible: :hidden)
+      expect(page.body).to have_css(og_title_tag, visible: :hidden)
+      expect(page.body).to have_css(og_desc_tag, visible: :hidden)
 
-        fill_in('by_location_name', with: 'Zelda')
-        click_on 'location_search_button'
+      fill_in('by_location_name', with: 'Zelda')
+      click_on 'location_search_button'
 
-        sleep 1
+      sleep 1
 
-        desc_tag = "meta[name=\"description\"][content=\"#{old_style_description}\"]"
-        og_desc_tag = "meta[property=\"og:description\"][content=\"#{old_style_description}\"]"
-        og_title_tag = "meta[property=\"og:title\"][content=\"#{single_location_title}\"]"
-        expect(page).to have_title(single_location_title)
-        expect(page.body).to have_css(desc_tag, visible: :hidden)
-        expect(page.body).to have_css(og_desc_tag, visible: :hidden)
-        expect(page.body).to have_css(og_title_tag, visible: :hidden) if region
+      og_title_tag = "meta[property=\"og:title\"][content=\"#{single_location_title}\"]"
+      expect(page).to have_title(single_location_title)
+      expect(page.body).to have_css(desc_tag, visible: :hidden)
+      expect(page.body).to have_css(og_desc_tag, visible: :hidden)
+      expect(page.body).to have_css(og_title_tag, visible: :hidden)
 
-        visit "/#{region ? region.name + '?by_location_id=212' : 'map?by_location_id=212'}"
+      visit '/portland?by_location_id=212'
 
-        sleep 1
+      sleep 1
 
-        expect(page.title).to eq(single_location_title)
-        page.find 'meta[name="description"]', visible: false
-        expect(page).to have_title(old_style_title) if region
+      expect(page.title).to eq(single_location_title)
+      page.find 'meta[name="description"]', visible: false
+      expect(page).to have_title(old_style_title)
 
-        fill_in('by_location_name', with: '')
-        click_on 'location_search_button'
+      click_on 'location_search_button'
 
-        sleep 1
+      sleep 1
 
-        expect(page.title).to eq("#{region ? region.name + ' ' : ''}Pinball Map")
-        page.find 'meta[name="description"]', visible: false
-        expect(page).to have_title(old_style_title)
-      end
+      expect(page.title).to eq(old_style_title)
+      page.find 'meta[name="description"]', visible: false
+      expect(page).to have_title(old_style_title)
+    end
+
+    it 'sets title and description appropriately if one location is returned - regionless' do
+      FactoryBot.create(:location, region: nil, name: 'Cleo')
+
+      location = FactoryBot.create(:location, region: nil, name: 'Zelda', street: '1234 Foo St.', city: 'Portland', zip: '97203', id: 212)
+      machine = FactoryBot.create(:machine, name: 'Bawb')
+      FactoryBot.create(:location_machine_xref, location: location, machine: machine)
+
+      old_style_title = 'Pinball Map'
+      single_location_title = 'Zelda - Pinball Map'
+      old_style_description = 'Find local places to play pinball! The Pinball Map is a high-quality user-updated pinball locator for all the public pinball machines in your area.'
+
+      visit '/map'
+
+      sleep 1
+
+      desc_tag = "meta[name=\"description\"][content=\"#{old_style_description}\"]"
+      og_desc_tag = "meta[property=\"og:description\"][content=\"#{old_style_description}\"]"
+      og_title_tag = "meta[property=\"og:title\"][content=\"#{old_style_title}\"]"
+
+      expect(page.title).to eq(old_style_title)
+      expect(page.body).to have_css(desc_tag, visible: :hidden)
+      expect(page.body).to have_css(og_title_tag, visible: :hidden)
+      expect(page.body).to have_css(og_desc_tag, visible: :hidden)
+
+      fill_in('address', with: 'Zelda')
+      click_on 'location_search_button'
+
+      sleep 1
+
+      og_title_tag = "meta[property=\"og:title\"][content=\"#{single_location_title}\"]"
+      expect(page).to have_title(single_location_title)
+      expect(page.body).to have_css(desc_tag, visible: :hidden)
+      expect(page.body).to have_css(og_desc_tag, visible: :hidden)
+
+      visit '/map?by_location_id=212'
+
+      sleep 1
+
+      expect(page.title).to eq(single_location_title)
+      page.find 'meta[name="description"]', visible: false
+
+      fill_in('address', with: '')
+      click_on 'location_search_button'
+
+      sleep 1
+
+      expect(page.title).to eq(old_style_title)
+      page.find 'meta[name="description"]', visible: false
+      expect(page).to have_title(old_style_title)
     end
 
     it 'displays the number of locations returned in a search' do
@@ -427,7 +472,7 @@ describe LocationsController do
     it 'displays a location not found message instead of the ocean' do
       visit '/portland/?by_location_id=-1'
 
-      expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
+      expect(page).to have_content("No results in the current map view.\nZoom out - move the map - change your filters - try again.")
     end
   end
 

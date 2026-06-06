@@ -25,6 +25,9 @@ class MapsController < ApplicationController
     @machine_sample = Machine.select("name, random() as r").order("r").limit(1).first
     @machine_placeholder = @machine_sample.nil? ? "e.g. Lord of the Rings" : "e.g. " + @machine_sample.name
 
+    selected_machine_ids = (Array(params[:by_machine_id]) + Array(params[:by_machine_single_id])).map(&:to_i).uniq
+    @selected_machines = Machine.where(id: selected_machine_ids)
+
     @big_cities_sample = Location.select(%i[city state], "random() as r").having("count(city)>9").where.not(state: [ nil, "" ]).group("city", "state").order("r").limit(1).first
     @big_cities_placeholder = @big_cities_sample.nil? ? "e.g. Portland, OR" : "e.g. " + @big_cities_sample.city + ", " + @big_cities_sample.state
 
@@ -204,12 +207,7 @@ class MapsController < ApplicationController
     params.delete(:by_machine_name) unless params[:by_machine_id].blank? && params[:by_machine_single_id].blank?
 
     @nearby_lat, @nearby_lon = ""
-    if Rails.env.test?
-      # hardcode a PDX lat/lon during tests
-      @nearby_lat = 45.5905
-      @nearby_lon = -122.7549
-    end
-    if params[:address].blank? || !params[:by_city_name].blank? || !params[:by_city_no_state].blank?
+    if params[:address].blank? || !params[:by_city_name].blank? || !params[:by_city_no_state].blank? || !params[:by_location_id].blank?
       @locations = apply_scopes(Location).select([ "name", "id", "lat", "lon", "machine_count" ]).uniq
       if @locations.blank? && !params[:by_city_name].blank?
         params.delete(:by_city_name)
@@ -217,13 +215,25 @@ class MapsController < ApplicationController
         params.delete(:by_city_no_state)
       end
     end
+    if @locations.blank? && params[:address].present? &&
+        params[:by_location_id].blank? &&
+        params[:by_city_name].blank? &&
+        params[:by_city_no_state].blank?
+      fuzzy = Location.by_location_name(params[:address]).select([ "name", "id", "lat", "lon", "machine_count" ])
+      if fuzzy.any?
+        @locations = fuzzy
+        @fuzzy_location_ids = fuzzy.map(&:id)
+      end
+    end
+
     if @locations.blank?
-      geocode unless params[:address].blank? || Rails.env.test?
+      geocode unless params[:address].blank?
       @near_distance = 15
       nearby_locations
     else
       construct_geojson
 
+      @city_search_mode = params[:by_city_name].present? || params[:by_city_no_state].present?
       map_location_load
     end
   end
@@ -232,12 +242,13 @@ class MapsController < ApplicationController
     @results_init = params[:results_init] if params[:results_init].present?
     @sort = params[:sort]
     boundsData = nil
+    base_scope = @fuzzy_location_ids ? Location.where(id: @fuzzy_location_ids) : apply_scopes(Location)
     if @locations_size == 0 && @results_init == true
       @locations = []
     elsif @locations_size == 1 && @results_init == true
-      @pagy, @locations = pagy(apply_scopes(Location).distinct.includes(:location_type, :machines))
+      @pagy, @locations = pagy(base_scope.distinct.includes(:location_type, :machines))
     else
-      @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).distinct.order(sort_order).includes(:location_type, :machines), limit: 50, request_path: "/map_location_load")
+      @pagy, @locations = pagy(base_scope.select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).distinct.order(sort_order).includes(:location_type, :machines), limit: 50, request_path: "/map_location_load")
     end
 
     if @results_init == true
@@ -279,10 +290,15 @@ class MapsController < ApplicationController
   end
 
   def geocode
-    results = Geocoder.search(params[:address], lookup: :here)
-    results = Geocoder.search(params[:address]) if results.blank?
+    if Rails.env.test?
+      results = Geocoder.search(params[:address], lookup: :test)
+    else
+      results = Geocoder.search(params[:address], lookup: :here)
+      results = Geocoder.search(params[:address]) if results.blank?
+    end
     if results.present?
-      @nearby_lat, @nearby_lon = results.first.coordinates
+      @nearby_lat = results.first.latitude
+      @nearby_lon = results.first.longitude
     end
   end
 

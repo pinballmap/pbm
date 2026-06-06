@@ -36,9 +36,9 @@ RSpec.configure do |config|
 
   Capybara.register_driver :selenium_chrome do |app|
     options = Selenium::WebDriver::Chrome::Options.new
+    options.add_argument('--window-size=3840,2160')
     unless ENV.fetch('NO_HEADLESS_CHROME', false)
       options.add_argument('--headless')
-      options.add_argument('--window-size=2000,1000')
     end
 
     Capybara::Selenium::Driver.new(
@@ -119,6 +119,7 @@ RSpec.configure do |config|
       }
       ]
     )
+    Geocoder::Lookup::Test.set_default_stub([])
   end
 
   config.before(js: true) do

@@ -27,35 +27,35 @@ describe MapsController do
     end
 
     it 'only lets you search by one thing at a time, OR address + machine' do
+      FactoryBot.create(:machine, name: 'Sass Pro')
+
       visit '/map'
 
-      fill_in('by_location_name', with: 'foo')
-
-      fill_in('by_machine_name', with: 'bar')
+      # typing in the search field clears hidden location/city fields
+      page.execute_script("$('#by_location_id').val('99'); $('#by_city_name').val('Portland'); $('#by_state_name').val('OR');")
+      fill_in('address', with: 'foo')
       expect(find('#by_location_id', visible: :hidden).value).to eq('')
-      expect(find('#by_location_name').value).to eq('')
-      expect(find('#address').value).to eq('')
       expect(find('#by_city_name', visible: :hidden).value).to eq('')
       expect(find('#by_state_name', visible: :hidden).value).to eq('')
-      expect(find('#by_city_no_state', visible: :hidden).value).to eq('')
 
-      fill_in('address', with: 'baz')
+      # typing an address does NOT clear machine selection (near + machine is a valid combo)
+      page.find('#open_filter_modal_button').click
+      page.find('#by_machine_select + .select2-container .select2-selection').click
+      page.find('#by_machine_select + .select2-container .select2-search__field').set('Sass Pro')
+      sleep 0.5
+      page.find('.select2-results__option', text: /Sass Pro/).click
+      page.find('.filter_modal_close').click
+      fill_in('address', with: 'foo')
+      expect(page.execute_script("return $('#by_machine_select').val()")).to_not eq([])
+
+      # selecting a machine via select2 clears by_location_id
+      page.execute_script("$('#by_location_id').val('99'); $('#by_machine_select').val(null).trigger('change');")
+      page.find('#open_filter_modal_button').click
+      page.find('#by_machine_select + .select2-container .select2-selection').click
+      page.find('#by_machine_select + .select2-container .select2-search__field').set('Sass Pro')
+      sleep 0.5
+      page.find('.select2-results__option', text: /Sass Pro/).click
       expect(find('#by_location_id', visible: :hidden).value).to eq('')
-      expect(find('#by_location_name').value).to eq('')
-      expect(find('#by_machine_id', visible: :hidden).value).to eq('')
-      expect(find('#by_machine_name').value).to eq('bar')
-
-      fill_in('by_machine_name', with: 'bang')
-      expect(find('#by_location_id', visible: :hidden).value).to eq('')
-      expect(find('#by_location_name').value).to eq('')
-      expect(find('#address').value).to eq('baz')
-
-      fill_in('by_location_name', with: 'foo')
-      expect(find('#by_machine_name').value).to eq('')
-      expect(find('#address').value).to eq('')
-      expect(find('#by_city_name', visible: :hidden).value).to eq('')
-      expect(find('#by_state_name', visible: :hidden).value).to eq('')
-      expect(find('#by_city_no_state', visible: :hidden).value).to eq('')
     end
 
     it 'lets you search by address and machine and respects if you change or clear out the machine search value' do
@@ -67,41 +67,42 @@ describe MapsController do
 
       visit '/map'
 
-      fill_in('by_machine_name', with: 'Sass Pro')
-      page.execute_script %{ $('#by_machine_name').trigger('focus') }
-      page.execute_script %{ $('#by_machine_name').trigger('keydown') }
-      find(:xpath, '//div[contains(text(), "Sass Pro")]').click
-
       fill_in('address', with: '97203')
+      page.find('#open_filter_modal_button').click
+      page.find('#by_machine_select + .select2-container .select2-selection').click
+      page.find('#by_machine_select + .select2-container .select2-search__field').set('Sass Pro')
+      sleep 0.5
+      page.find('.select2-results__option', text: /Sass Pro/).click
+      page.find('.filter_modal_close').click
 
       click_on 'location_search_button'
-
       sleep 1
 
       expect(find('#search_results')).to have_content('Rip City')
       expect(find('#search_results')).to_not have_content('No Way')
       expect(page.body).to have_css('#intro_container', visible: false)
 
-      fill_in('by_machine_name', with: 'Bawb Premium')
-      page.execute_script %{ $('#by_machine_name').trigger('focus') }
-      page.execute_script %{ $('#by_machine_name').trigger('keydown') }
-      find(:xpath, '//div[contains(text(), "Bawb Premium")]').click
-
       fill_in('address', with: '97203')
+      page.find('#open_filter_modal_button').click
+      page.find('.select2-selection__choice__remove').click
+      page.find('#by_machine_select + .select2-container .select2-selection').click
+      page.find('#by_machine_select + .select2-container .select2-search__field').set('Bawb Premium')
+      sleep 0.5
+      page.find('.select2-results__option', text: /Bawb Premium/).click
+      page.find('.filter_modal_close').click
 
       click_on 'location_search_button'
-
       sleep 1
 
       expect(find('#search_results')).to_not have_content('Rip City')
       expect(find('#search_results')).to have_content('No Way')
 
-      fill_in('by_machine_name', with: '')
+      page.find('#open_filter_modal_button').click
+      page.find('.clear_filters_button').click
+      page.find('.filter_modal_close').click
 
       fill_in('address', with: '97203')
-
       click_on 'location_search_button'
-
       sleep 1
 
       expect(find('#search_results')).to have_content('Rip City')
@@ -113,15 +114,12 @@ describe MapsController do
       find(:xpath, '//div[contains(text(), "Seattle, WA")]').click
 
       click_on 'location_search_button'
-
       sleep 0.5
 
       expect(find('#search_results')).to have_content('Far Off')
 
       fill_in('address', with: '97203')
-
       click_on 'location_search_button'
-
       sleep 1
 
       expect(find('#search_results')).to have_content('Rip City')
@@ -129,7 +127,6 @@ describe MapsController do
     end
 
     it 'lets you clear search input values with the clearButton x and starts a fresh search' do
-      # this test needs work. It was not failing when the function was broken.
       rip_city_location = FactoryBot.create(:location, region: nil, name: 'Rip City', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
       no_way_location = FactoryBot.create(:location, region: nil, name: 'No Way', zip: '97203', lat: 45.593049200000, lon: -122.732620200000)
       FactoryBot.create(:location, region: nil, name: 'Far Off', city: 'Seattle', state: 'WA', zip: '98121', lat: 47.61307324803172, lon: -122.34479886878611)
@@ -138,20 +135,20 @@ describe MapsController do
 
       visit '/map'
 
-      fill_in('by_location_name', with: 'Rip City')
-      page.execute_script %{ $('#by_machine_name').trigger('focus') }
-      page.execute_script %{ $('#by_machine_name').trigger('keydown') }
-      find(:xpath, '//div[contains(text(), "Rip City")]').click
+      sleep 1
+
+      # simulate selecting Rip City from autocomplete
+      page.execute_script("$('#by_location_id').val('#{rip_city_location.id}'); $('#address').val('Rip City'); document.getElementById('clearButton2').style.display = 'block';")
 
       click_on 'location_search_button'
 
-      sleep 0.5
+      sleep 1
 
       expect(find('#search_results')).to have_content('Rip City')
       expect(find('#search_results')).to_not have_content('No Way')
       expect(find('#search_results')).to_not have_content('Far Off')
 
-      page.find('#clearButton3').click
+      page.find('#clearButton2', visible: false).click
 
       click_on 'location_search_button'
 
@@ -189,9 +186,10 @@ describe MapsController do
 
       fill_in('address', with: '97203')
 
-      page.find('#form .limit .select2 .selection').click
+      page.find('#open_filter_modal_button').click
+      page.find('.map_input_limit .select2 .selection').click
       select('church', from: 'by_type_id[]')
-      page.find('#address_search_form').click
+      page.find('.filter_modal_close').click
 
       click_on 'location_search_button'
 
@@ -207,9 +205,10 @@ describe MapsController do
 
       fill_in('address', with: '97203')
 
-      page.find('#form .limit .select2 .selection').click
+      page.find('#open_filter_modal_button').click
+      page.find('.map_input_limit .select2 .selection').click
       select('lounge', from: 'by_type_id[]')
-      page.find('#address_search_form').click
+      page.find('.filter_modal_close').click
 
       click_on 'location_search_button'
 
@@ -226,8 +225,10 @@ describe MapsController do
 
       fill_in('address', with: '97203')
 
-      page.find('#form .limit select#by_at_least_n_machines').click
+      page.find('#open_filter_modal_button').click
+      page.find('.map_input_limit select#by_at_least_n_machines').click
       select('10+', from: 'by_at_least_n_machines')
+      page.find('.filter_modal_close').click
 
       click_on 'location_search_button'
 
@@ -241,17 +242,16 @@ describe MapsController do
 
       sleep 1
 
-      fill_in('by_machine_name', with: 'Solomon')
-      page.execute_script %{ $('#by_machine_name').trigger('focus') }
-      page.execute_script %{ $('#by_machine_name').trigger('keydown') }
-      find(:xpath, '//div[contains(text(), "Solomon")]').click
-
-      page.find('#form .limit .select2 .selection').click
+      page.find('#open_filter_modal_button').click
+      page.find('#by_machine_select + .select2-container .select2-selection').click
+      page.find('#by_machine_select + .select2-container .select2-search__field').set('Solomon')
+      sleep 0.5
+      page.find('.select2-results__option', text: /Solomon/).click
+      page.find('.map_input_limit .select2 .selection').click
       select('lounge', from: 'by_type_id[]')
-      page.find('#address_search_form').click
-
-      page.find('#form .limit select#by_at_least_n_machines').click
+      page.find('.map_input_limit select#by_at_least_n_machines').click
       select('10+', from: 'by_at_least_n_machines')
+      page.find('.filter_modal_close').click
 
       click_on 'location_search_button'
 
@@ -265,12 +265,12 @@ describe MapsController do
 
       sleep 1
 
-      page.find('#form .limit .select2 .selection').click
+      page.find('#open_filter_modal_button').click
+      page.find('.map_input_limit .select2 .selection').click
       select('lounge', from: 'by_type_id[]')
-      page.find('#address_search_form').click
-
-      page.find('#form .limit select#by_at_least_n_machines').click
+      page.find('.map_input_limit select#by_at_least_n_machines').click
       select('10+', from: 'by_at_least_n_machines')
+      page.find('.filter_modal_close').click
 
       click_on 'location_search_button'
 
@@ -297,6 +297,52 @@ describe MapsController do
       expect(page).to have_content('Sass')
     end
 
+    it 'shows and hides the clear filters button based on filter state' do
+      church_type = FactoryBot.create(:location_type, name: 'church')
+      FactoryBot.create(:machine, name: 'Sass Pro')
+
+      visit '/map'
+      sleep 1
+
+      expect(page).to have_css('#clear_filters_button', visible: :hidden)
+
+      # visible after selecting a machine
+      page.find('#open_filter_modal_button').click
+      page.find('#by_machine_select + .select2-container .select2-selection').click
+      page.find('#by_machine_select + .select2-container .select2-search__field').set('Sass Pro')
+      sleep 0.5
+      page.find('.select2-results__option', text: /Sass Pro/).click
+      page.find('.filter_modal_close').click
+
+      expect(page).to have_css('#clear_filters_button', visible: true)
+
+      # clicking X clears filters and hides the button
+      page.find('#clear_filters_button').click
+      sleep 1
+
+      expect(page).to have_css('#clear_filters_button', visible: :hidden)
+
+      # visible after selecting a location type
+      page.find('#open_filter_modal_button').click
+      page.find('.map_input_limit .select2 .selection').click
+      select('church', from: 'by_type_id[]')
+      page.find('.filter_modal_close').click
+
+      expect(page).to have_css('#clear_filters_button', visible: true)
+
+      # modal Clear button also hides the X button
+      page.find('#open_filter_modal_button').click
+      page.find('.clear_filters_button').click
+
+      expect(page).to have_css('#clear_filters_button', visible: :hidden)
+
+      # visible when page loads with filter params in the URL
+      visit '/map?by_at_least_n_machines=5'
+      sleep 1
+
+      expect(page).to have_css('#clear_filters_button', visible: true)
+    end
+
     it 'shows single version checkbox if machine is in a group and respects single version filter' do
       @machine_group = FactoryBot.create(:machine_group)
       rip_city_location = FactoryBot.create(:location, region: nil, name: 'Rip City', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
@@ -307,10 +353,11 @@ describe MapsController do
 
       visit '/map'
 
-      fill_in('by_machine_name', with: 'Sass')
-      page.execute_script %{ $('#by_machine_name').trigger('focus') }
-      page.execute_script %{ $('#by_machine_name').trigger('keydown') }
-      find(:xpath, '//div[contains(text(), "Sass")]').click
+      page.find('#open_filter_modal_button').click
+      page.find('#by_machine_select + .select2-container .select2-selection').click
+      page.find('#by_machine_select + .select2-container .select2-search__field').set('Sass')
+      sleep 0.5
+      page.find('.select2-results__option', text: /\ASass\z/).click
 
       sleep 1
 
@@ -318,13 +365,16 @@ describe MapsController do
 
       visit '/map'
 
-      fill_in('by_machine_name', with: 'Dude Pro')
-      page.execute_script %{ $('#by_machine_name').trigger('focus') }
-      page.execute_script %{ $('#by_machine_name').trigger('keydown') }
-      find(:xpath, '//div[contains(text(), "Dude Pro")]').click
+      page.find('#open_filter_modal_button').click
+      page.find('#by_machine_select + .select2-container .select2-selection').click
+      page.find('#by_machine_select + .select2-container .select2-search__field').set('Dude Pro')
+      sleep 0.5
+      page.find('.select2-results__option', text: /Dude Pro/).click
 
       expect(page.body).to have_content('Exact machine version?')
       expect(page.body).to have_css('#singleVersion', visible: true)
+
+      page.find('.filter_modal_close').click
 
       click_on 'location_search_button'
 
@@ -333,7 +383,9 @@ describe MapsController do
       expect(find('#search_results')).to have_content('Rip')
       expect(find('#search_results')).to have_content('Rose')
 
+      page.find('#open_filter_modal_button').click
       check 'singleVersion'
+      page.find('.filter_modal_close').click
 
       click_on 'location_search_button'
 
@@ -372,7 +424,7 @@ describe MapsController do
 
       sleep 1
 
-      expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
+      expect(page).to have_content("No results in the current map view.\nZoom out - move the map - change your filters - try again.")
     end
 
     it 'location autocomplete select ensures you only search by a single location' do
@@ -383,12 +435,10 @@ describe MapsController do
 
       sleep 1
 
-      fill_in('by_location_name', with: 'Rip')
-      page.execute_script %{ $('#by_location_name').trigger('focus') }
-      page.execute_script %{ $('#by_location_name').trigger('keydown') }
+      fill_in('address', with: 'Rip')
+      page.execute_script %{ $('#address').trigger('focus') }
+      page.execute_script %{ $('#address').trigger('keydown') }
       find(:xpath, '//div[text()="Rip City Retail (Portland, OR)"]').click
-
-      click_on 'location_search_button'
 
       sleep 1
 
@@ -396,32 +446,35 @@ describe MapsController do
       expect(find('#search_results')).to_not have_content('Rip City Retail SW')
     end
 
-    it 'machine search blanks out machine_id when you search' do
-      rip_location = FactoryBot.create(:location, region: nil, name: 'Rip City Retail SW')
-      clark_location = FactoryBot.create(:location, region: nil, name: "Clark's Corner")
-      renee_location = FactoryBot.create(:location, region: nil, name: "Renee's Rental")
+    it 'machine search blanks out machine selection when you search by location name' do
+      rip_location = FactoryBot.create(:location, region: nil, name: 'Rip City Retail SW', lat: '45.5905', lon: '-122.7549')
+      clark_location = FactoryBot.create(:location, region: nil, name: "Clark's Corner", lat: '45.5905', lon: '-122.7549')
+      rebo_location = FactoryBot.create(:location, region: nil, name: "Rebo's Rental", lat: '45.5905', lon: '-122.7549')
       FactoryBot.create(:location_machine_xref, location: rip_location, machine: FactoryBot.create(:machine, name: 'Sass'))
       FactoryBot.create(:location_machine_xref, location: clark_location, machine: FactoryBot.create(:machine, name: 'Sass 2'))
-      FactoryBot.create(:location_machine_xref, location: renee_location, machine: FactoryBot.create(:machine, name: 'Bawb'))
+      FactoryBot.create(:location_machine_xref, location: rebo_location, machine: FactoryBot.create(:machine, name: 'Bawb'))
 
       visit '/map'
 
       sleep 1
 
-      fill_in('by_machine_name', with: 'Bawb')
-      page.execute_script %{ $('#by_machine_name').trigger('focus') }
-      page.execute_script %{ $('#by_machine_name').trigger('keydown') }
-      find(:xpath, '//div[text()="Bawb"]').click
+      page.find('#open_filter_modal_button').click
+      page.find('#by_machine_select + .select2-container .select2-selection').click
+      page.find('#by_machine_select + .select2-container .select2-search__field').set('Bawb')
+      sleep 0.5
+      page.find('.select2-results__option', text: /\ABawb\z/).click
+      page.find('.filter_modal_close').click
 
       click_on 'location_search_button'
 
       sleep 1
 
-      expect(find('#search_results')).to have_content('Renee')
+      expect(find('#search_results')).to have_content('Rebo')
       expect(find('#search_results')).to_not have_content('Clark')
       expect(find('#search_results')).to_not have_content('Rip City')
 
-      fill_in('by_location_name', with: "Clark's Corner")
+      # simulate selecting Clark's Corner from autocomplete
+      page.execute_script("$('#by_location_id').val('#{clark_location.id}'); $('#by_machine_select').val(null).trigger('change');")
 
       click_on 'location_search_button'
 
@@ -429,21 +482,17 @@ describe MapsController do
 
       expect(find('#search_results')).to_not have_content('Rip City')
       expect(find('#search_results')).to have_content('Clark')
-      expect(find('#search_results')).to_not have_content('Renee')
+      expect(find('#search_results')).to_not have_content('Rebo')
 
       expect(page.body).to have_css('#next_link', visible: false)
     end
 
     it 'shows pagination if greater than 50 locations in results' do
       51.times do |index|
-        FactoryBot.create(:location, id: 5678 + index, name: 'Sass Barn ' + index.to_s)
+        FactoryBot.create(:location, id: 5678 + index, lat: '45.5905', lon: '-122.7549', name: 'Sass Barn ' + index.to_s)
       end
 
       visit '/map'
-
-      sleep 1
-
-      click_on 'location_search_button'
 
       sleep 1
 
@@ -460,6 +509,29 @@ describe MapsController do
       sleep 1
 
       expect(find('#search_results')).to have_content('Sass Barn 1')
+    end
+
+    it 'fuzzy matches a location name when no autocomplete suggestion is selected, and falls through to geocode when no match' do
+      FactoryBot.create(:location, region: nil, name: 'Revenge Of The Yeti', city: 'Portland', state: 'OR', lat: '45.5905', lon: '-122.7549')
+      FactoryBot.create(:location, region: nil, name: 'Unrelated Spot', city: 'Portland', state: 'OR', lat: '45.5905', lon: '-122.7549')
+
+      visit '/map'
+      sleep 1
+
+      fill_in('address', with: 'Revenge Of')
+      click_on 'location_search_button'
+      sleep 1
+
+      expect(find('#search_results')).to have_content('Revenge Of The Yeti')
+      expect(find('#search_results')).to_not have_content('Unrelated Spot')
+
+      # A string that matches no location name falls through to geocode;
+      # in test env geocode is skipped and nearby_locations returns nothing.
+      fill_in('address', with: 'zzz_no_match_xyz')
+      click_on 'location_search_button'
+      sleep 1
+
+      expect(page).to have_content('No results in the current map view.')
     end
 
     it 'nearby activity button should return the nearby activity' do

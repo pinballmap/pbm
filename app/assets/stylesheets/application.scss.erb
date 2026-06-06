@@ -1077,32 +1077,11 @@ form#address_search_form input.lookup_search_input {
   vertical-align: bottom;
 }
 
-.map_input {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 5px;
-}
-
-.map_input span {
-  width: 90px;
-  display: inline-block;
-  padding-left: 15px;
-}
-
-.map_input .limit {
-  padding-left: 10px;
-}
-
-.map_input .limit span {
-  width: auto;
-  padding-left: 0;
-}
-
-.type_count {
-  position: absolute;
-  margin-left: -18px;
-  margin-top: 6px;
+.search_type_city {
+  float: right;
+  color: var(--light-text, #888);
+  font-size: 0.85em;
+  margin-left: 8px;
 }
 
 .activity_hr {
@@ -1122,8 +1101,109 @@ form#address_search_form input.lookup_search_input {
   margin: 10px 20px 15px;
 }
 
+.filter_button_wrapper {
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter_button {
+  background: var(--lightpink);
+  border: 1px solid var(--red);
+  color: var(--red);
+  padding: 5px 14px;
+  @include radius(10px);
+  font-size: 14px;
+  font-family: $Nunito_600SemiBold;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+}
+
+#filter_modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 30;
+}
+
+#filter_modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 480px;
+  background: var(--white);
+  @include radius(8px);
+  box-shadow: 0 5px 20px var(--shadow);
+  z-index: 201;
+}
+
+.filter_modal_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--purple);
+}
+
+.filter_modal_header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.filter_modal_close {
+  cursor: pointer;
+  color: var(--red);
+  font-size: 18px;
+  padding: 0 4px;
+}
+
+.filter_modal_body {
+  padding: 16px;
+}
+
+.filter_modal_footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--purple);
+}
+
+.clear_filters_button,
+.apply_filters_button {
+  padding: 6px 16px;
+  @include radius(10px);
+  font-size: 14px;
+  font-family: $Nunito_600SemiBold;
+  cursor: pointer;
+  border: none;
+}
+
+.clear_filters_button {
+  background: var(--lightpurple);
+}
+
+.apply_filters_button {
+  background: var(--lightpink);
+  color: var(--red);
+  border: 1px solid var(--red);
+}
+
 #lookup.map_lookup {
-  padding: 165px 10px 10px 10px;
+  padding: 65px 10px 10px 10px;
 }
 
 #lookup.operators_lookup {
@@ -1245,7 +1325,7 @@ span.or {
   @include radius(0 10px 10px 0);
 }
 
-.location_search .search,
+#region_page_body .location_search .search,
 #form .search_other_button input,
 #sort_toggle_btn {
   border: none;
@@ -1287,12 +1367,6 @@ span.or {
   font-family: $Nunito_400Regular;
 }
 
-.location_search .info {
-  font-family: $Nunito_400Regular;
-  margin: 0 5px;
-  font-size: 12px;
-}
-
 .location_search div.limit {
   display: inline;
 }
@@ -1328,7 +1402,7 @@ span.or {
   width: 42%;
   z-index: 20;
   @include radius(0 0 5px 5px);
-  padding: 4px;
+  padding: 8px;
   background-color: var(--lightpurple);
   box-shadow: 0 5px 10px var(--shadow);
 }
@@ -1369,19 +1443,46 @@ span.single_hide {
   width: 84px;
 }
 
-#clearButton,
-#clearButton2,
-#clearButton3 {
+#clearButton {
   display: none;
   cursor: pointer;
   text-decoration: none;
-  margin-left: -20px;
-  margin-right: 9px;
+  margin-left: -45px;
   color: var(--red);
+}
+
+#clearButton2 {
+  display: none;
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--red);
+}
+
+.map_input_search .search_input_wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.map_input_search .search_input_wrapper input.lookup_search_input {
+  width: 100%;
+  padding-right: 20px;
 }
 
 input.single_hide {
   margin-left: 8px;
+}
+
+#map_buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 }
 
 #refresh_button,
@@ -1398,17 +1499,17 @@ input.single_hide {
   box-shadow: 1px 1px 10px rgba(90, 100, 117, 0.5);
 }
 
+#closest_button {
+  top: 65px;
+  color: #440152;
+  background-color: #d5e5ff;
+}
+
 .search_modal button {
   background-color: #47475f;
   border: 0;
   color: #fafaff;
   margin: 10px auto 10px;
-}
-
-#closest_button {
-  top: 65px;
-  color: #440152;
-  background-color: #d5e5ff;
 }
 
 #map_activity_button {
@@ -2239,6 +2340,43 @@ input.submit_button:hover,
   background: #5a5a5a !important;
 }
 
+.map_input_search {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.map_input_machine,
+.map_input_limit {
+  display: block;
+  margin: 5px auto 15px;
+  text-align: center;
+}
+
+.map_input_search span.input_title {
+  display: inline-block;
+  padding: 0 15px;
+}
+
+.filter_modal_body .input_title {
+  margin-bottom: 5px;
+}
+
+.map_input_search #location_search_button.search,
+.map_input_search #location_search_button.search:hover {
+  background: none !important;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--dark);
+  svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+}
+
 #location_maker input.text,
 #location_maker textarea,
 #contact_maker input.text,
@@ -2275,7 +2413,6 @@ input.search,
 
 #form input.lookup_search_input,
 .lookup_search_input {
-  width: 60%;
   height: 28px;
   font-size: 16px;
   margin: 0 0 0 4px;
@@ -3213,13 +3350,17 @@ gmp-place-autocomplete {
   background: var(--bg_vlightpurple) !important;
 }
 
-.filter .select2,
-.map_input .limit span.selection,
-.filter .select2-container .select2-selection--multiple {
-  max-width: 192px !important;
-  width: 192px !important;
-  height: 28px !important;
-  min-height: 28px;
+.map_input_machine .select2-container .select2-selection--multiple,
+.map_input_machine .select2.select2-container.select2-container--default,
+.map_input_limit .select2,
+.map_input_limit span.selection,
+.map_input_limit .select2-container .select2-selection--multiple {
+  width: 100% !important;
+  min-height: 38px !important;
+}
+
+.map_input_machine .selection {
+  padding-left: 0;
 }
 
 .stats .select2-container .select2-selection--multiple {
@@ -3247,22 +3388,22 @@ gmp-place-autocomplete {
   width: 80% !important;
 }
 
-.filter .select2-container .select2-selection--multiple {
+.map_input_limit .select2-container .select2-selection--multiple {
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 20px;
  }
 
-.filter .select2-container--default .select2-selection--multiple {
+.map_input_limit .select2-container--default .select2-selection--multiple {
   padding-bottom: 0;
 }
 
-.filter .select2-container--default .select2-selection--multiple .select2-selection__choice {
+.map_input_limit .select2-container--default .select2-selection--multiple .select2-selection__choice {
   margin-top: 0;
   margin-bottom: 1px;
 }
 
-.filter .select2-container .select2-selection--multiple ul.select2-selection__rendered {
+.map_input_limit .select2-container .select2-selection--multiple ul.select2-selection__rendered {
   font-size: 14px;
   line-height: 16px;
 }

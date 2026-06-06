@@ -1,61 +1,60 @@
 #map_page_body
-  - if mobile_device?
-    %div.search_mobile
-      %div.search_modal{:onclick => "showSearchModal();"}
-        %button Search
-      - unless current_page?(operators_path)
-        #closest_button.hide_button.toggle_btn_reg{:onclick => "findClosestLocations()"} Nearby
   #form_container
     #form
-      - if mobile_device?
-        %div.close_button{:onclick => "hideSearchModal();"}
-          X
       = form_tag map_location_data_path, :method => 'get', :id => 'address_search_form', :class => 'location_search' do
-        = hidden_field_tag :by_machine_id, params[:by_machine_id]
-        = hidden_field_tag :by_machine_group_id, params[:by_machine_group_id]
-        = hidden_field_tag :by_machine_single_id, params[:by_machine_single_id]
         = hidden_field_tag :by_location_id
         = hidden_field_tag :by_city_name
         = hidden_field_tag :by_state_name
         = hidden_field_tag :by_city_no_state
-        .map_input
-          %span.input_title Machine
-          = text_field_tag "by_machine_name", params["by_machine_name"], class: 'lookup_search_input', placeholder: @machine_placeholder, clear_id: 'clearButton'
-          #clearButton{input_id: "by_machine_name"}
-            X
-          #single_hide
-            %input{:type => "checkbox", :id => "singleVersion", :name => "singleVersion", :class => "m_0 single_hide"}
-            %span.single_hide Exact machine version?
-        .map_input
-          %span.input_title Near
-          = text_field_tag "address", params[:address], class: 'lookup_search_input', placeholder: @big_cities_placeholder, clear_id: 'clearButton2'
-          #clearButton2{input_id: "address"}
-            X
-        .map_input
-          %div.limit.filter
-            %span.info Limit to
-            = select_tag "by_at_least_n_machines", "<option></option><option value=\"2\">2+</option><option value=\"5\">5+</option><option value=\"10\">10+</option><option value=\"20\">20+</option>".html_safe
-            %span.info machines.
-            - if mobile_device?
-              %br/
-            %span.info Location type
-            = select_tag "by_type_id[]", options_from_collection_for_select(LocationType.all.sort_by(&:name), 'id', 'name', params["by_type_id"]), multiple: "multiple", :class => 'by_type_id', :id => 'by_type_id'
-            %span.type_count
-        .hr or
-        .map_input
-          %span.input_title Venue
-          = text_field_tag "by_location_name", params["by_location_name"], class: 'lookup_search_input', placeholder: @location_placeholder, clear_id: 'clearButton3'
-          #clearButton3{input_id: "by_location_name"}
-            X
-          = image_submit_tag('search_icon.png', class: 'map search', id: "location_search_button")
+        .map_input_search
+          %span.input_title Search
+          .search_input_wrapper
+            = text_field_tag "address", params[:address], class: 'lookup_search_input', placeholder: 'City, venue, or address...', clear_id: 'clearButton2'
+            #clearButton2{input_id: "address"}
+              X
+          %button.map.search{type: "submit", id: "location_search_button", "aria-label": "Search"}
+            %svg{xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: "currentColor"}
+              %path{d: "M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"}
+          .map_input_filter.filter_button_wrapper
+            %button#open_filter_modal_button.filter_button{:type => "button", :onclick => "showFilterModal();"}
+              %svg{xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 20 20", fill: "currentColor", "aria-hidden": "true"}
+                %path{d: "M5 1.6c0-.553-.448-.6-1-.6-.553 0-1 .047-1 .6V10h2V1.6zM3 18.4c0 .551.447.6 1 .6.552 0 1-.049 1-.6V15H3v3.4zM6.399 11h-4.8C1.046 11 1 11.448 1 12v1c0 .553.046 1 .599 1H6.4c.55 0 .6-.447.6-1v-1c0-.552-.05-1-.601-1zm12 1h-4.801c-.552 0-.598.448-.598 1v1c0 .553.046 1 .599 1H18.4c.55 0 .6-.447.6-1v-1c0-.552-.05-1-.601-1zM13 7c0-.552-.05-1-.601-1h-4.8C7.046 6 7 6.448 7 7v1c0 .553.046 1 .599 1H12.4c.55 0 .6-.447.6-1V7zm-2-5.4c0-.553-.448-.6-1-.6-.553 0-1 .047-1 .6V5h2V1.6zM9 18.4c0 .551.447.6 1 .6.552 0 1-.049 1-.6V10H9v8.4zm8-16.8c0-.553-.448-.6-1-.6-.553 0-1 .047-1 .6V11h2V1.6zm-2 16.8c0 .551.447.6 1 .6.552 0 1-.049 1-.6V16h-2v2.4z"}
+              Filter
+            %button#clear_filters_button.filter_button{:type => "button", :style => "display: none;", :onclick => "clearFiltersAndApply();", "aria-label": "Clear filters"}
+              ✕
 
+        #filter_modal_overlay{:style => "display: none;", :onclick => "hideFilterModal();"}
+        #filter_modal{:style => "display: none;"}
+          .filter_modal_header
+            %h3 Filters
+            %div.filter_modal_close{:onclick => "hideFilterModal();"}
+              X
+          .filter_modal_body
+            .map_input_machine
+              .input_title Locations with this machine
+              %select.by_machine_select{ multiple: "multiple", id: "by_machine_select" }
+                - @selected_machines.each do |m|
+                  %option{ value: m.id, selected: "selected" }= m.name_and_year
+              #single_hide
+                %input{:type => "checkbox", :id => "singleVersion", :name => "singleVersion", :class => "m_0 single_hide"}
+                %span.single_hide Exact machine version?
+            .map_input_limit
+              .input_title Limit by number of machines
+              = select_tag "by_at_least_n_machines", options_for_select([['', ''], ['2+', '2'], ['5+', '5'], ['10+', '10'], ['20+', '20']], params[:by_at_least_n_machines])
+            .map_input_limit
+              .input_title Location type
+              = select_tag "by_type_id[]", options_from_collection_for_select(LocationType.all.sort_by(&:name), 'id', 'name', params["by_type_id"]), multiple: "multiple", :class => 'by_type_id', :id => 'by_type_id'
+          .filter_modal_footer
+            %button.clear_filters_button{:type => "button", :onclick => "clearAllFilters(); updateClearFiltersButton();"} Clear
+            %button.apply_filters_button{:type => "submit"} Apply
   #map
     #map_canvas
 
-  - unless mobile_device?
-    #closest_button.fixed.hide_button.toggle_btn_reg{:onclick => "findClosestLocations()"} Nearby locations
-  #map_activity_button.fixed.hide_button.toggle_btn_reg
-    Activity feed
+  #map_buttons
+    #closest_button.fixed.hide_button.toggle_btn_reg{:onclick => "findClosestLocations()"}
+      Nearby locations
+    #map_activity_button.fixed.hide_button.toggle_btn_reg
+      Activity feed
   #refresh_button.fixed.toggle_btn_reg Refresh map area
   - unless mobile_device?
     #key_container.fixed.hide_button.toggle_btn_reg.flex_center
@@ -86,12 +85,8 @@
 :javascript
   center_lat = #{@nearby_lat};
   center_lon = #{@nearby_lon};
-  const inputField = document.getElementById("by_machine_name");
   const inputField2 = document.getElementById("address");
-  const inputField3 = document.getElementById("by_location_name");
-  const clearButton = document.getElementById("clearButton");
   const clearButton2 = document.getElementById("clearButton2");
-  const clearButton3 = document.getElementById("clearButton3");
 
   function inputDisplayToggle(event) {
     let clearButton = document.getElementById(this.getAttribute("clear_id"));
@@ -101,182 +96,149 @@
       clearButton.style.display = "none";
     }
   }
-  inputField.addEventListener("input", inputDisplayToggle);
   inputField2.addEventListener("input", inputDisplayToggle);
-  inputField3.addEventListener("input", inputDisplayToggle);
 
-  function clearMachine(event) {
-    document.getElementById('by_machine_id').value = "";
-    document.getElementById('by_machine_name').value = "";
-    document.getElementById('by_machine_single_id').value = "";
-    document.getElementById('by_machine_group_id').value = "";
-    document.getElementById('single_hide').style.display = "none";
-    document.getElementById('singleVersion').checked = false;
-    event.target.style.display = "none";
-    stored_machine_id = "";
-  }
-  function clearAddress(event) {
+  function clearSearch(event) {
     document.getElementById('address').value = "";
     document.getElementById('by_city_name').value = "";
     document.getElementById('by_state_name').value = "";
     document.getElementById('by_city_no_state').value = "";
-    event.target.style.display = "none";
-  }
-  function clearLocation(event) {
     document.getElementById('by_location_id').value = "";
-    document.getElementById('by_location_name').value = "";
     event.target.style.display = "none";
   }
 
-  clearButton.addEventListener("click", clearMachine);
-  clearButton2.addEventListener("click", clearAddress);
-  clearButton3.addEventListener("click", clearLocation);
+  clearButton2.addEventListener("click", clearSearch);
   var savedLocations = "";
 
-  $(function () {
-    // Initialize form state from URL parameters
-    if ($('#by_machine_id').val()) {
-      stored_machine_id = $('#by_machine_id').val();
-    } else if ($('#by_machine_single_id').val()) {
-      stored_machine_id = $('#by_machine_single_id').val();
-      $('#singleVersion').prop('checked', true);
+  // Tracks machine_group_id for each selected machine, so we know when a
+  // single selection belongs to a group (and the exact-version toggle applies).
+  var machineGroups = #{raw @selected_machines.to_h { |m| [m.id.to_s, m.machine_group_id] }.to_json};
+
+  function machineSelectIds() {
+    return $('#by_machine_select').val() || [];
+  }
+
+  function updateMachineSingleHide() {
+    var ids = machineSelectIds();
+    if (ids.length === 1 && machineGroups[ids[0]]) {
+      $('#single_hide').css('display', 'flex');
+    } else {
+      $('#single_hide').hide();
+      $('#singleVersion').prop('checked', false);
     }
+  }
+
+  function filtersApplied() {
+    var machineIds = machineSelectIds();
+    var nMachines = $('#by_at_least_n_machines').val();
+    var typeIds = $('#by_type_id').val();
+    return (machineIds && machineIds.length > 0) ||
+           (nMachines !== null && nMachines !== '') ||
+           (typeIds && typeIds.length > 0);
+  }
+
+  function updateClearFiltersButton() {
+    if (filtersApplied()) {
+      $('#clear_filters_button').css('display', 'flex');
+    } else {
+      $('#clear_filters_button').css('display', 'none');
+    }
+  }
+
+  function clearFiltersAndApply() {
+    clearAllFilters();
+    updateClearFiltersButton();
+    $('#address_search_form').submit();
+  }
+
+  $(function () {
+    $('#by_machine_select').select2({
+      placeholder: '#{j @machine_placeholder}',
+      width: '100%',
+      closeOnSelect: true,
+      ajax: {
+        url: '/machines/autocomplete',
+        dataType: 'json',
+        delay: 250,
+        data: function (params) { return { term: params.term }; },
+        processResults: function (data) {
+          return {
+            results: data.map(function (m) {
+              return { id: m.id, text: m.value, group_id: m.group_id };
+            })
+          };
+        }
+      }
+    });
+
+    $('#by_machine_select').on('select2:select', function (e) {
+      var d = e.params.data;
+      machineGroups[String(d.id)] = (d.group_id != null && d.group_id !== '') ? d.group_id : null;
+      $('#by_location_id').val('');
+      updateMachineSingleHide();
+      updateClearFiltersButton();
+    });
+    $('#by_machine_select').on('select2:unselect', function() {
+      updateMachineSingleHide();
+      updateClearFiltersButton();
+    });
 
     $('.by_type_id').select2({
       placeholder: '',
-      closeOnSelect: false
+      closeOnSelect: false,
+      width: '100%'
     });
 
-    $(document).ready(function() {
-      var uldiv = $('.type_count')
-      var count = $('.by_type_id').select2('data').length
-      if(count==0) {
-        uldiv.html("<span style='color: gray; font-size: 24px;line-height: 0px;margin-left: -4px;'>&#8964;</span>")
-      }
-      else {
-        uldiv.html("<span style='color: #fe46b0;'>"+count+"</span>")
-      }
-    });
+    $('#by_type_id').on('select2:select select2:unselect change', updateClearFiltersButton);
+    $('#by_at_least_n_machines').on('change', updateClearFiltersButton);
 
-    $('.by_type_id').on('change', function (evt) {
-      var uldiv = $('.type_count')
-      var count = $(this).select2('data').length
-      if(count==0) {
-        uldiv.html("<span style='color: gray; font-size: 24px;line-height: 0px;margin-left: -4px;'>&#8964;</span>")
-      }
-      else {
-        uldiv.html("<span style='color: #fe46b0;'>"+count+"</span>")
-      }
-    });
-
-    // Show exact version toggle if machine group is present
-    if ($('#by_machine_group_id').val()) {
-      $('#single_hide').show();
-    }
-
-    // Show clear button if machine name is present
-    if ($('#by_machine_name').val()) {
-      $('#clearButton').show();
-    }
-
-    $('#by_location_name').bind('input', function(event, ui) {
-      event.preventDefault();
-      $('#address').val('');
-      $('#by_city_name').val('');
-      $('#by_state_name').val('');
-      $('#by_city_no_state').val('');
-      $('#by_machine_id').val('');
-      $('#by_machine_name').val('');
-      $('#by_machine_single_id').val('');
-      $('#by_machine_group_id').val('');
-      $('#by_at_least_n_machines').val('');
-      $('#by_type_id').val('');
-      $('#single_hide').hide();
-      stored_machine_id = "";
-      $('#singleVersion').prop('checked', false);
-    });
-
-    $('#by_machine_name').bind('input', function(event, ui) {
-      event.preventDefault();
-      $('#by_location_id').val('');
-      $('#by_location_name').val('');
-      if ($('#by_machine_name').val().length === 0) {
-        $('#by_machine_id').val('');
-        $('#by_machine_name').val('');
-        $('#by_machine_single_id').val('');
-        $('#by_machine_group_id').val('');
-        $('#single_hide').hide();
-        stored_machine_id = "";
-        $('#singleVersion').prop('checked', false);
-      }
-    });
+    // Show exact-version toggle for a single grouped machine selection.
+    // A deep link that used by_machine_single_id for a single grouped machine
+    // means the user had "exact version" checked — restore that.
+    updateMachineSingleHide();
+    #{Array(params[:by_machine_single_id]).map(&:to_i).uniq.length == 1 && @selected_machines.size == 1 && @selected_machines.first&.machine_group_id ? "$('#singleVersion').prop('checked', true);" : ""}
+    updateClearFiltersButton();
 
     $('#address').bind('input', function(event, ui) {
       event.preventDefault();
       $('#by_location_id').val('');
-      $('#by_location_name').val('');
       $('#by_city_name').val('');
       $('#by_state_name').val('');
       $('#by_city_no_state').val('');
     });
 
-    $('#by_location_name').autocomplete({
-      source: '/locations/autocomplete',
+    $('#address').autocomplete({
+      source: function(request, response) {
+        $.getJSON('/search/autocomplete', { term: request.term }, response);
+      },
       minLength: 3,
-      delay: 500
-      });
-    $('#by_location_name').bind('autocompleteselect', function(event, ui) {
+      delay: 300
+    }).autocomplete('instance')._renderItem = function(ul, item) {
+      var $inner = $('<div>').text(item.label);
+      if (item.type === 'city') {
+        $inner.append($('<span class="search_type_city">').text('(City)'));
+      }
+      return $('<li>').append($inner).appendTo(ul);
+    };
+    $('#address').bind('autocompleteselect', function(event, ui) {
       event.preventDefault();
-      $('#by_machine_id').val('');
-      $('#by_machine_name').val('');
-      $('#by_machine_single_id').val('');
-      $('#by_machine_group_id').val('');
-      $('#by_type_id').val(null).trigger('change');
-      $('#by_location_id').val(ui.item.id);
-      $('#by_location_name').val(ui.item.value);
-      $('#single_hide').hide();
-      $('#singleVersion').prop('checked', false);
-    });
-
-    $('#by_machine_name').autocomplete({
-      source: '/machines/autocomplete',
-      minLength: 2,
-      delay: 500
-    });
-    $('#by_machine_name').bind('autocompleteselect', function(event, ui) {
-      event.preventDefault();
-      $('#by_location_id').val('');
-      $('#by_location_name').val('');
-      $('#by_machine_id').val(ui.item.id);
-      $('#by_machine_single_id').val(ui.item.id);
-      $('#by_machine_name').val(ui.item.value);
-      $('#by_machine_group_id').val(ui.item.group_id);
-      stored_machine_id = ui.item.id;
-      if ($('#by_machine_group_id').val().length != 0) {
-        document.getElementById('single_hide').style.display = "flex";
+      if (ui.item.type === 'city') {
+        $('#address').val(ui.item.label);
+        if (ui.item.state) {
+          $('#by_city_name').val(ui.item.city);
+          $('#by_state_name').val(ui.item.state);
+        } else {
+          $('#by_city_no_state').val(ui.item.city);
+        }
       } else {
+        $('#address').val(ui.item.name);
+        $('#by_location_id').val(ui.item.id);
+        $('#by_machine_select').val(null).trigger('change');
+        $('#by_type_id').val(null).trigger('change');
         $('#single_hide').hide();
         $('#singleVersion').prop('checked', false);
       }
-    });
-
-    $('#address').autocomplete({
-      source: '/locations/autocomplete_city',
-      minLength: 3,
-      delay: 500
-      });
-    $('#address').bind('autocompleteselect', function(event, ui) {
-      event.preventDefault();
-      $('#by_location_id').val('');
-      $('#by_location_name').val('');
-      $('#address').val(ui.item.value);
-      [city, state] = ui.item.value.split(", ");
-      if (typeof state == 'undefined') {
-        $('#by_city_no_state').val(city);
-      } else {
-        $('#by_city_name').val(city);
-        $('#by_state_name').val(state);
-      }
+      $('#address_search_form').submit();
     });
   });
 
@@ -345,18 +307,23 @@
     by_at_least_n_machines = $('#by_at_least_n_machines').val();
     by_type_id = $('#by_type_id').val();
     $('#intro_container').css('display','none');
-    if ($("#singleVersion").is(':checked')) {
-      by_machine_single_id = $('#by_machine_single_id').val();
+
+    var machineIds = machineSelectIds();
+    if (machineIds.length === 1 && machineGroups[machineIds[0]] && !$("#singleVersion").is(':checked')) {
+      by_machine_id = machineIds;
+      by_machine_single_id = undefined;
+    } else if (machineIds.length) {
+      by_machine_single_id = machineIds;
       by_machine_id = undefined;
     } else {
-      by_machine_id = $('#by_machine_id').val();
+      by_machine_id = undefined;
       by_machine_single_id = undefined;
     }
 
     var mapActivityVisible = $('#map_activity_container').html().trim() !== '';
 
     getMapBounds(by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id);
-    clearAddress(event);
+    clearSearch(event);
 
     if (mapActivityVisible) {
       loadMapActivity();
@@ -364,33 +331,68 @@
   });
 
   $('#address_search_form').on('submit', function(e) {
-    if ($("#singleVersion").is(':checked')) {
-      $('#by_machine_group_id').val('');
-      $('#by_machine_id').val('');
-      $('#by_machine_single_id').val(stored_machine_id);
+    e.preventDefault();
+
+    var machineIds = machineSelectIds();
+    var machineParams = '';
+    if (machineIds.length === 1 && machineGroups[machineIds[0]] && !$("#singleVersion").is(':checked')) {
+      machineParams = '&by_machine_id[]=' + encodeURIComponent(machineIds[0]);
     } else {
-      $('#by_machine_group_id').val('');
-      $('#by_machine_single_id').val('');
-      $('#by_machine_id').val(stored_machine_id);
+      machineIds.forEach(function(id) {
+        machineParams += '&by_machine_single_id[]=' + encodeURIComponent(id);
+      });
     }
 
-    hideSearchModal();
+    hideFilterModal();
     mapAdjusted = 0;
     $('#map_activity_button').css('display','block');
     $('#intro_container,#map_activity').css('display','none');
-    e.preventDefault();
-    search_string = $("#address_search_form :input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
 
     var form = $(this);
     var formAction = form.attr('action');
     var formData = form.serialize();
 
-    lastSearchFn = function() {
-      $('#locations').html(loadingHTML());
-      $.get(formAction, formData + '&sort=' + currentSort, function(data, textStatus, jqxhr) {
-        $('#locations').html(data);
-      });
-    };
+    // Drive the shareable pushState URL (read by _locations.html.haml).
+    // The machine multiselect has no name, so its params are appended manually.
+    var formQuery = $("#address_search_form :input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
+    search_string = formQuery + machineParams;
+
+    var hasGeoParam = $('#address').val() || $('#by_location_name').val() ||
+                      $('#by_location_id').val() || $('#by_city_name').val() ||
+                      $('#by_city_no_state').val();
+
+    if (!hasGeoParam && mapLoaded === 1) {
+      var capturedBoundsData = getMapBoundsData();
+      var by_machine_id_val = (machineIds.length === 1 && machineGroups[machineIds[0]] && !$("#singleVersion").is(':checked')) ? machineIds : undefined;
+      var by_machine_single_id_val = (!by_machine_id_val && machineIds.length) ? machineIds : undefined;
+      lastSearchFn = function() {
+        refresh_bounds = map.getBounds();
+        $('#locations').html(loadingHTML());
+        $.ajax({
+          url: '/get_bounds',
+          type: 'POST',
+          data: {
+            boundsData: capturedBoundsData,
+            by_at_least_n_machines: $('#by_at_least_n_machines').val(),
+            by_type_id: $('#by_type_id').val(),
+            by_machine_id: by_machine_id_val,
+            by_machine_single_id: by_machine_single_id_val,
+            sort: currentSort
+          },
+          success: function(data) {
+            $('#locations').html(data);
+            refresh_bounds = undefined;
+          }
+        });
+      };
+    } else {
+      lastSearchFn = function() {
+        $('#locations').html(loadingHTML());
+        $.get(formAction, formData + machineParams + '&sort=' + currentSort, function(data, textStatus, jqxhr) {
+          $('#locations').html(data);
+        });
+      };
+    }
     lastSearchFn();
 
     return false;
