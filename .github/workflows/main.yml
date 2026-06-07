@@ -25,10 +25,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       # Add or replace dependency steps here
-      - name: Install ImageMagick
+      - name: Install libvips
         run : |
           sudo apt update
-          sudo apt install imagemagick
+          sudo apt install -y libvips-dev
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
         with:
