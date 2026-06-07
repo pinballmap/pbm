@@ -1138,6 +1138,7 @@ form#address_search_form input.lookup_search_input {
 }
 
 #filter_modal {
+  border: 5px solid var(--border);
   position: fixed;
   top: 50%;
   left: 50%;
@@ -1155,7 +1156,7 @@ form#address_search_form input.lookup_search_input {
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  border-bottom: 1px solid var(--purple);
+  border-bottom: 1px solid var(--border);
 }
 
 .filter_modal_header h3 {
@@ -1179,7 +1180,7 @@ form#address_search_form input.lookup_search_input {
   justify-content: flex-end;
   gap: 10px;
   padding: 12px 16px;
-  border-top: 1px solid var(--purple);
+  border-top: 1px solid var(--border);
 }
 
 .clear_filters_button,
@@ -1194,6 +1195,7 @@ form#address_search_form input.lookup_search_input {
 
 .clear_filters_button {
   background: var(--lightpurple);
+  color: var(--darkgrey);
 }
 
 .apply_filters_button {
@@ -1435,12 +1437,13 @@ span.or {
 .hide_button,
 #single_hide {
   display: none;
+  justify-content: center;
+  margin-top: 5px;
 }
 
 span.single_hide {
   font-size: 12px;
   padding-left: 5px;
-  width: 84px;
 }
 
 #clearButton {
@@ -2349,8 +2352,12 @@ input.submit_button:hover,
 .map_input_machine,
 .map_input_limit {
   display: block;
-  margin: 5px auto 15px;
+  margin: 0px auto 15px;
   text-align: center;
+}
+
+.map_input_limit {
+  margin: 15px auto 15px;
 }
 
 .map_input_search span.input_title {
@@ -2359,6 +2366,7 @@ input.submit_button:hover,
 }
 
 .filter_modal_body .input_title {
+  font-family: $Nunito_700Bold;
   margin-bottom: 5px;
 }
 
