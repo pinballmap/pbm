@@ -188,6 +188,88 @@ describe PagesController, type: :controller do
 
       expect(assigns(:recent_activity)).to be_empty
     end
+
+    it 'your_activity filter returns only current user submissions across all types' do
+      login(@user)
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.com')
+      FactoryBot.create(:user_submission,
+        submission_type: 'new_lmx',
+        user: @user,
+        location: @location,
+        location_name: @location.name,
+        submission: 'ssw added a machine'
+      )
+      FactoryBot.create(:user_submission,
+        submission_type: 'new_lmx',
+        user: other_user,
+        location: @location,
+        location_name: @location.name,
+        submission: 'other added a machine'
+      )
+
+      get 'recent_activity', params: { submission_type: [ 'your_activity' ] }
+
+      submissions = assigns(:recent_activity)
+      expect(submissions.map(&:user_id).uniq).to eq([ @user.id ])
+    end
+
+    it 'your_activity combined with a type filter returns only that type for current user' do
+      login(@user)
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.com')
+      FactoryBot.create(:user_submission,
+        submission_type: 'new_lmx',
+        user: @user,
+        location: @location,
+        location_name: @location.name,
+        submission: 'ssw added a machine'
+      )
+      FactoryBot.create(:user_submission,
+        submission_type: 'new_condition',
+        user: @user,
+        location: @location,
+        location_name: @location.name,
+        submission: 'ssw left a condition'
+      )
+      FactoryBot.create(:user_submission,
+        submission_type: 'new_lmx',
+        user: other_user,
+        location: @location,
+        location_name: @location.name,
+        submission: 'other added a machine'
+      )
+
+      get 'recent_activity', params: { submission_type: [ 'your_activity', 'new_lmx' ] }
+
+      submissions = assigns(:recent_activity)
+      expect(submissions.map(&:submission_type).uniq).to eq([ 'new_lmx' ])
+      expect(submissions.map(&:user_id).uniq).to eq([ @user.id ])
+    end
+
+    context 'view rendering' do
+      render_views
+
+      it 'pre-checks the your_activity checkbox when submission_type param is present in URL' do
+        login(@user)
+        get 'recent_activity', params: { submission_type: [ 'your_activity' ] }
+        doc = Nokogiri::HTML(response.body)
+        expect(doc.at('#filterYourActivity')['checked']).to eq('checked')
+      end
+    end
+
+    it 'your_activity filter returns empty when logged out' do
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.com')
+      FactoryBot.create(:user_submission,
+        submission_type: 'new_lmx',
+        user: other_user,
+        location: @location,
+        location_name: @location.name,
+        submission: 'other added a machine'
+      )
+
+      get 'recent_activity', params: { submission_type: [ 'your_activity' ] }
+
+      expect(assigns(:recent_activity)).to be_empty
+    end
   end
 
   describe 'suggest_new_location' do

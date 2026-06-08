@@ -10,42 +10,50 @@
 
     .column.w_640
       = form_tag activity_path, :method => 'get', id: 'activity_filter' do
-        %div
+        %label.activity_filter_btn
           =image_tag("icons/new_lmx.svg", :alt => "new_lmx", :class => 'activity_icon')
-          %input{:type => "checkbox", :id => "filterNewLmx", :name => "filterActivity", :class => "m_0", :value => 'new_lmx'}
-          %div
-            %span Machine added
-        %div
+          %input{:type => "checkbox", :id => "filterNewLmx", :name => "filterActivity", :value => 'new_lmx', :checked => Array(params[:submission_type]).include?('new_lmx')}
+          %span Machine added
+        %label.activity_filter_btn
           =image_tag("icons/remove_machine.svg", :alt => "remove_machine", :class => 'activity_icon')
-          %input{:type => "checkbox", :id => "filterRemoveMachine", :name => "filterActivity", :class => "m_0", :value => 'remove_machine'}
-          %div
-            %span Machine removed
-        %div
+          %input{:type => "checkbox", :id => "filterRemoveMachine", :name => "filterActivity", :value => 'remove_machine', :checked => Array(params[:submission_type]).include?('remove_machine')}
+          %span Machine removed
+        %label.activity_filter_btn
           =image_tag("icons/new_condition.svg", :alt => "new_condition", :class => 'activity_icon')
-          %input{:type => "checkbox", :id => "filterNewCondition", :name => "filterActivity", :class => "m_0", :value => 'new_condition'}
-          %div
-            %span New condition
-        %div
+          %input{:type => "checkbox", :id => "filterNewCondition", :name => "filterActivity", :value => 'new_condition', :checked => Array(params[:submission_type]).include?('new_condition')}
+          %span New condition
+        %label.activity_filter_btn
           =image_tag("icons/new_msx.svg", :alt => "new_msx", :class => 'activity_icon')
-          %input{:type => "checkbox", :id => "filterNewMsx", :name => "filterActivity", :class => "m_0", :value => 'new_msx'}
-          %div
-            %span Your scores
-        %div
+          %input{:type => "checkbox", :id => "filterNewMsx", :name => "filterActivity", :value => 'new_msx', :checked => Array(params[:submission_type]).include?('new_msx')}
+          %span Your scores
+        %label.activity_filter_btn
           =image_tag("icons/confirm_location.svg", :alt => "confirm_location", :class => 'activity_icon')
-          %input{:type => "checkbox", :id => "filterConfirmLocation", :name => "filterActivity", :class => "m_0", :value => 'confirm_location'}
-          %div
-            %span Location confirmed
-        %div
+          %input{:type => "checkbox", :id => "filterConfirmLocation", :name => "filterActivity", :value => 'confirm_location', :checked => Array(params[:submission_type]).include?('confirm_location')}
+          %span Location confirmed
+        %label.activity_filter_btn
           =image_tag("icons/add_location.svg", :alt => "add_location", :class => 'activity_icon')
-          %input{:type => "checkbox", :id => "filterAddLocation", :name => "filterActivity", :class => "m_0", :value => 'add_location'}
-          %div
-            %span Location added
+          %input{:type => "checkbox", :id => "filterAddLocation", :name => "filterActivity", :value => 'add_location', :checked => Array(params[:submission_type]).include?('add_location')}
+          %span Location added
+        - if user_signed_in?
+          %label.activity_filter_btn
+            =image_tag("icons/face-grin-beam-regular-full.svg", :alt => "your_activity", :class => 'activity_icon')
+            %input{:type => "checkbox", :id => "filterYourActivity", :name => "filterActivity", :value => 'your_activity', :checked => Array(params[:submission_type]).include?('your_activity')}
+            %span Your Activity
         = submit_tag 'Apply Filters', :class => "save_button"
 
     #activity.column.w_640.center
       = render partial: 'shared/activity_item', :locals => {show_location_link: true, page_activity: true}
 
 :javascript
+  function syncFilterBtnState(checkbox) {
+    $(checkbox).closest('.activity_filter_btn').toggleClass('is-selected', checkbox.checked);
+  }
+  $('.activity_filter_btn input[type=checkbox]').each(function() {
+    syncFilterBtnState(this);
+  }).on('change', function() {
+    syncFilterBtnState(this);
+  });
+
   window.addEventListener("popstate", function(e) {
     let url = new URL(e.target.location.href)
     let pagenum = ""

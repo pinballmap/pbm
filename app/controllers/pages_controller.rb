@@ -203,7 +203,10 @@ limit 25")
 
   def set_activities
     user = current_user
-    requested_types = params[:submission_type].blank? ? %w[add_location new_lmx remove_machine new_condition confirm_location new_msx] : Array(params[:submission_type])
+    raw_types = params[:submission_type].blank? ? %w[add_location new_lmx remove_machine new_condition confirm_location new_msx] : Array(params[:submission_type]).dup
+
+    filter_own = raw_types.delete("your_activity").present? && user.present?
+    requested_types = raw_types.presence || (filter_own ? %w[add_location new_lmx remove_machine new_condition confirm_location new_msx] : [])
 
     general_types = requested_types.excluding("new_msx")
     include_msx = requested_types.include?("new_msx") && user.present?
@@ -220,6 +223,7 @@ limit 25")
     end
 
     scope = scope.where(region_id: @region.id) if @region
+    scope = scope.where(user: user) if filter_own
     base = scope.where.not(submission: nil)
     scope = base.where.not(location_name: nil)
                 .or(base.where(submission_type: "new_msx", user: user))

@@ -76,6 +76,9 @@
         %div.darkgrey.stats.font18
           %div.ml_5.bold
             List of Locations Edited (with your last 50 updates):
+          - if current_user && current_user.id == @user.id
+            %div.ml_8.mb_20.font16{:style => 'margin-top: 15px;'}
+              You can see all of your edits in the filtered #{link_to 'Activity Feed', activity_path(submission_type: ['your_activity']), class: 'red bold'}
           %span.stats_list
             - @edited_locations.each do |location_id, location_name|
               %span.location_edited.mb_5

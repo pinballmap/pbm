@@ -2320,8 +2320,7 @@ input.search:active,
 }
 
 .save_button {
-  float: left;
-  margin-left: 5px;
+  margin-top: 15px;
 }
 
 .profile .save_button, .recent_location_activity_location .save_button, #map_activity .save_button {
@@ -2883,15 +2882,37 @@ input.score {
   align-items: center;
 }
 
-#activity_filter > div, .activity_filter > div {
-  margin: 10px;
-  width: 60px;
-}
+.activity_filter_btn {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 8px 5px;
+  padding: 10px 12px;
+  min-width: 72px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--lightpurple);
+  border-radius: 10px;
+  font-size: 13px;
+  text-align: center;
+  user-select: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
 
-#activity_filter input, .activity_filter input {
-  height: 30px;
-  background: #47475f;
-  color: #fafaff;
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  .activity_icon {
+    margin-right: 0;
+  }
+
+  &.is-selected {
+    background: var(--lightpink);
+    border-color: var(--red);
+    color: var(--red);
+  }
 }
 
 img.banner_icon {
