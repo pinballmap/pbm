@@ -200,6 +200,18 @@ describe Api::V1::UsersController, type: :request do
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('This email address already exists')
     end
+
+    it 'rejects likely TLD typos and suggests the correct TLD' do
+      post '/api/v1/users/signup.json', params: { username: 'foo', email: 'yeah@ok.comt', password: 'okokokok', confirm_password: 'okokokok' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('.comt doesn\'t look like a valid domain ending — did you mean .com?')
+
+      post '/api/v1/users/signup.json', params: { username: 'foo', email: 'yeah@ok.ney', password: 'okokokok', confirm_password: 'okokokok' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('.ney doesn\'t look like a valid domain ending — did you mean .net?')
+    end
   end
 
   describe '#add_fave_location' do

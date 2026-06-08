@@ -1,6 +1,13 @@
 module Api
   module V1
     class UsersController < ApplicationController
+      TLD_TYPOS = {
+        "ocm" => "com", "cmo" => "com", "omc" => "com", "moc" => "com", "mco" => "com",
+        "vom" => "com", "xom" => "com", "cpm" => "com", "con" => "com", "cob" => "com",
+        "comt" => "com", "comm" => "com", "comn" => "com", "coms" => "com", "corm" => "com",
+        "ney" => "net", "ner" => "net", "ned" => "net", "met" => "net", "nte" => "net",
+        "orh" => "org", "orv" => "org", "ogr" => "org", "rog" => "org", "oeg" => "org"
+      }.freeze
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
@@ -179,6 +186,12 @@ module Api
         user = User.find_by_username(params[:username])
         if user
           return_response("This username already exists", "errors")
+          return
+        end
+
+        tld = params[:email].split(".").last&.downcase&.gsub(/[^a-z]/, "")
+        if (suggestion = TLD_TYPOS[tld])
+          return_response(".#{tld} doesn't look like a valid domain ending — did you mean .#{suggestion}?", "errors")
           return
         end
 

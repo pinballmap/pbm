@@ -26,6 +26,7 @@
 					<p><%= f.label :email %></p>
 					<p><%= f.email_field :email, autocomplete: "email", required: true %></p>
 					<span class="font14 pt_5 grey block">(Disposable emails are not allowed and you will get banned)</span>
+					<span id="email_tld_warning" class="font14 pt_5 red bold block" style="display:none;"></span>
 				</div>
 
 				<div class="field form-inputs">
@@ -60,3 +61,29 @@
 		</div>
 	</div>
 </div>
+
+<script>
+  (function() {
+    var TLD_TYPOS = {
+      ocm:"com", cmo:"com", omc:"com", moc:"com", mco:"com",
+      vom:"com", xom:"com", cpm:"com", con:"com", cob:"com",
+      comt:"com", comm:"com", comn:"com", coms:"com", corm:"com",
+      ney:"net", ner:"net", ned:"net", met:"net", nte:"net",
+      orh:"org", orv:"org", ogr:"org", rog:"org", oeg:"org"
+    };
+    document.addEventListener("DOMContentLoaded", function() {
+      var field = document.getElementById("user_email");
+      var warning = document.getElementById("email_tld_warning");
+      field.addEventListener("blur", function() {
+        var tld = (this.value.split(".").pop() || "").toLowerCase().replace(/[^a-z]/g, "");
+        var suggestion = TLD_TYPOS[tld];
+        if (suggestion) {
+          warning.textContent = "\"." + tld + "\" doesn’t look like a valid domain ending — did you mean \"." + suggestion + "\"?";
+          warning.style.display = "";
+        } else {
+          warning.style.display = "none";
+        }
+      });
+    });
+  })();
+</script>
