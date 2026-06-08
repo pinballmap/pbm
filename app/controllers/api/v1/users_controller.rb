@@ -191,7 +191,7 @@ module Api
 
         tld = params[:email].split(".").last&.downcase&.gsub(/[^a-z]/, "")
         if (suggestion = TLD_TYPOS[tld])
-          return_response(".#{tld} doesn't look like a valid domain ending — did you mean .#{suggestion}?", "errors")
+          return_response(".#{tld} looks like an email typo. Did you mean .#{suggestion}?", "errors")
           return
         end
 

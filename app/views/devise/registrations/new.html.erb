@@ -5,10 +5,10 @@
 				Why join?
 			</h2>
 			<p>
-				Because updating pinball maps is fun! Also, it's useful to others and it's maintained entirely by people like you! Signing up is simple, and will allow you to add and remove machines from places, add comments about machines, etc. Plus you can track your contributions.
+				Because updating pinball maps is fun. Also, it's useful to others and it's maintained entirely by people like you. Signing up is simple, and will allow you to add and remove machines from places, add comments about machines, etc. Plus you can track your contributions.
 			</p>
 			<p>
-				We won't share your email address with anyone! View <%= link_to 'Privacy Policy', privacy_path %>.
+				We won't share your email address with anyone. View the <%= link_to 'Privacy Policy', privacy_path %>.
 			</p>
 		</div>
 		<div id="login" class="column w_320">
@@ -71,18 +71,24 @@
       ney:"net", ner:"net", ned:"net", met:"net", nte:"net",
       orh:"org", orv:"org", ogr:"org", rog:"org", oeg:"org"
     };
-    document.addEventListener("DOMContentLoaded", function() {
+    function checkTld() {
       var field = document.getElementById("user_email");
       var warning = document.getElementById("email_tld_warning");
-      field.addEventListener("blur", function() {
-        var tld = (this.value.split(".").pop() || "").toLowerCase().replace(/[^a-z]/g, "");
-        var suggestion = TLD_TYPOS[tld];
-        if (suggestion) {
-          warning.textContent = "\"." + tld + "\" doesn’t look like a valid domain ending — did you mean \"." + suggestion + "\"?";
-          warning.style.display = "";
-        } else {
-          warning.style.display = "none";
-        }
+      var tld = (field.value.split(".").pop() || "").toLowerCase().replace(/[^a-z]/g, "");
+      var suggestion = TLD_TYPOS[tld];
+      if (suggestion) {
+        warning.textContent = "\"." + tld + "\" looks like an email typo. Did you mean \"." + suggestion + "\"?";
+        warning.style.display = "";
+        return false;
+      } else {
+        warning.style.display = "none";
+        return true;
+      }
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("user_email").addEventListener("blur", checkTld);
+      document.querySelector("form").addEventListener("submit", function(e) {
+        if (!checkTld()) e.preventDefault();
       });
     });
   })();

@@ -205,12 +205,12 @@ describe Api::V1::UsersController, type: :request do
       post '/api/v1/users/signup.json', params: { username: 'foo', email: 'yeah@ok.comt', password: 'okokokok', confirm_password: 'okokokok' }
 
       expect(response).to be_successful
-      expect(JSON.parse(response.body)['errors']).to eq('.comt doesn\'t look like a valid domain ending — did you mean .com?')
+      expect(JSON.parse(response.body)['errors']).to eq('.comt looks like an email typo. Did you mean .com?')
 
       post '/api/v1/users/signup.json', params: { username: 'foo', email: 'yeah@ok.ney', password: 'okokokok', confirm_password: 'okokokok' }
 
       expect(response).to be_successful
-      expect(JSON.parse(response.body)['errors']).to eq('.ney doesn\'t look like a valid domain ending — did you mean .net?')
+      expect(JSON.parse(response.body)['errors']).to eq('.ney looks like an email typo. Did you mean .net?')
     end
   end
 
