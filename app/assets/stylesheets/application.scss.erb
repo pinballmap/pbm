@@ -3254,7 +3254,6 @@ gmp-place-autocomplete {
 
 #location_maker li.machines_textinput textarea {
   font-family: $Nunito_400Regular;
-  height: 28px;
   min-height: 28px;
   width: 575px;
   max-width: 575px;
@@ -3355,7 +3354,12 @@ gmp-place-autocomplete {
 }
 
 .select2-container--default .select2-results__option--selected {
-  background: var(--bg_vlightpurple) !important;
+  background: var(--lightpink) !important;
+  color: var(--black) !important;
+}
+
+.select2-container--default .select2-results__option--selected:hover {
+  color: var(--black) !important;
 }
 
 .map_input_machine .select2-container .select2-selection--multiple,
@@ -3372,7 +3376,6 @@ gmp-place-autocomplete {
 }
 
 .stats .select2-container .select2-selection--multiple {
-  height: 38px !important;
   min-height: 38px !important;
   overflow-y: auto;
   overflow-x: hidden;
