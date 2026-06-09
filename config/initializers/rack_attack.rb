@@ -1,4 +1,10 @@
 unless Rails.env.test?
+  Rack::Attack.throttle('api/v1/no-app-version', limit: 180, period: 1.minute) do |req|
+    if req.path.start_with?('/api/v1/') && req.env['HTTP_APPVERSION'].blank?
+      req.ip
+    end
+  end
+
   Rack::Attack.blocklist('fail2ban pentesters') do |req|
     Rack::Attack::Fail2Ban.filter(
       "pentesters-#{req.ip}",
