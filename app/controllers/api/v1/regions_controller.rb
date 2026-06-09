@@ -57,10 +57,12 @@ module Api
       api :GET, "/api/v1/regions.json", "Fetch all regions"
       description "Fetch data about all regions"
       def index
-        regions = Region.all
-        except = %i[n_search_no default_search_type should_email_machine_removal should_auto_delete_empty_locations send_digest_comment_emails send_digest_removal_emails primary_email_contact all_admin_email_addresses created_at updated_at]
-
-        return_response(regions, "regions", [], [], 200, except)
+        json = Rails.cache.fetch(Region::MOBILE_CACHE_KEY, expires_in: 1.week) do
+          regions = Region.all
+          except = %i[n_search_no default_search_type should_email_machine_removal should_auto_delete_empty_locations send_digest_comment_emails send_digest_removal_emails primary_email_contact all_admin_email_addresses created_at updated_at]
+          { regions: regions.as_json(except: except) }.to_json
+        end
+        render json: json
       end
 
       api :GET, "/api/v1/regions/:id.json", "Fetch information for a single region"

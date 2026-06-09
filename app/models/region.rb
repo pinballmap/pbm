@@ -56,6 +56,8 @@ class Region < ApplicationRecord
     @high_rollers
   end
 
+  MOBILE_CACHE_KEY = "api/v1/regions/index"
+
   before_save do
     Status.where(status_type: "regions").update({ updated_at: Time.current })
   end
@@ -63,6 +65,8 @@ class Region < ApplicationRecord
   before_destroy do
     Status.where(status_type: "regions").update({ updated_at: Time.current })
   end
+
+  after_commit -> { Rails.cache.delete(MOBILE_CACHE_KEY) }
 
   def all_admin_email_addresses
     if users.empty?

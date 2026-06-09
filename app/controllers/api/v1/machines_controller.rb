@@ -12,6 +12,15 @@ module Api
       param :manufacturer, String, desc: "show only machines from this manufacturer", required: false
       formats [ "json" ]
       def index
+        if params[:no_details] && !params[:region_id] && !params[:manufacturer] && !params[:machine_group_id] && !params[:id]
+          json = Rails.cache.fetch(Machine::MOBILE_CACHE_KEY, expires_in: 1.week) do
+            except = %i[is_active created_at updated_at ipdb_id machine_display]
+            { machines: Machine.all.as_json(except: except) }.to_json
+          end
+          render json: json
+          return
+        end
+
         except = params[:no_details] ? %i[is_active created_at updated_at ipdb_id machine_display] : nil
         machines = params[:region_id] ? Region.find(params[:region_id]).machines : Machine.all
 

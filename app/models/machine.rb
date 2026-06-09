@@ -15,6 +15,8 @@ class Machine < ApplicationRecord
     (year.blank? && manufacturer.blank? ? "" : " (#{[ manufacturer, year ].reject(&:blank?).join(', ')})")
   end
 
+  MOBILE_CACHE_KEY = "api/v1/machines/no_details"
+
   before_destroy do |record|
     MachineScoreXref.where("location_machine_xref_id in (select id from location_machine_xrefs where machine_id = #{record.id})").destroy_all
     lmxs_to_delete = LocationMachineXref.unscoped.where(machine_id: record.id)
@@ -27,6 +29,8 @@ class Machine < ApplicationRecord
   before_save do
     Status.where(status_type: "machines").update({ updated_at: Time.current })
   end
+
+  after_commit -> { Rails.cache.delete(MOBILE_CACHE_KEY) }
 
   def massaged_name
     name.sub(/^the /i, "")

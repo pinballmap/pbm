@@ -13,6 +13,16 @@ module Api
       description "Fetch data about all operators for region"
       formats [ "json" ]
       def index
+        if params[:no_details] == "1" && !params[:region]
+          json = Rails.cache.fetch(Operator::MOBILE_CACHE_KEY, expires_in: 1.week) do
+            operators = Operator.order("name")
+            except = %i[email phone created_at email_opt_in phone_opt_in updated_at region_id]
+            { operators: operators.as_json(methods: :operator_has_email, except: except) }.to_json
+          end
+          render json: json
+          return
+        end
+
         operators = apply_scopes(Operator).order("name")
         if params[:no_details] == "1"
           except = %i[email phone created_at email_opt_in phone_opt_in updated_at region_id]

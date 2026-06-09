@@ -15,6 +15,8 @@ class Operator < ApplicationRecord
     (users.pluck(:email) << email).uniq
   end
 
+  MOBILE_CACHE_KEY = "api/v1/operators/no_details"
+
   before_save do
     Status.where(status_type: "operators").update({ updated_at: Time.current })
   end
@@ -22,6 +24,8 @@ class Operator < ApplicationRecord
   before_destroy do
     Status.where(status_type: "operators").update({ updated_at: Time.current })
   end
+
+  after_commit -> { Rails.cache.delete(MOBILE_CACHE_KEY) }
 
   def generate_operator_daily_digest
     start_of_day = (Time.now - 1.day).beginning_of_day
