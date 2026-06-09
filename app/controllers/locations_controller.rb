@@ -4,7 +4,7 @@ class LocationsController < ApplicationController
   has_scope :by_type_id, :by_location_id, :by_operator_id, :by_zone_id, :by_machine_id, :by_machine_single_id, :by_machine_group_id, :by_machine_id_ic, :by_machine_single_id_ic, :by_machine_year, :by_ipdb_id, :by_opdb_id, :manufacturer, :by_machine_type, :by_machine_display, :by_country, :by_state_name, :by_state_id, type: :array
   before_action :authenticate_user!, except: %i[index autocomplete autocomplete_city render_machines render_machines_count render_last_updated render_location_detail render_former_machines render_recent_activity sanitize_integers]
   before_action :normalize_array_params
-  rate_limit to: 100, within: 5.minutes, only: :index
+  rate_limit to: 100, within: 1.minute, only: :index
   rate_limit to: 12, within: 3.seconds, only: :render_location_detail
 
   def is_bot?
