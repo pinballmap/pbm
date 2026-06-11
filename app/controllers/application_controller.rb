@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
     browser.bot?
   end
 
-  acts_as_token_authentication_handler_for User, fallback: :none
+  before_action :authenticate_from_token
 
   protect_from_forgery prepend: true
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -152,6 +152,19 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def authenticate_from_token
+    email = params[:user_email].presence || request.headers["X-User-Email"].presence
+    token = params[:user_token].presence || request.headers["X-User-Token"].presence
+    return unless email && token
+    user = User.find_by(email: email)
+    return unless user && token_matches?(user, token)
+    sign_in(user, store: false)
+  end
+
+  def token_matches?(user, token)
+    ActiveSupport::SecurityUtils.secure_compare(user.authentication_token.to_s, token.to_s)
+  end
 
   def require_api_user
     if current_user.nil?

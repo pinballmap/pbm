@@ -48,7 +48,7 @@ module Api
         user = User.find(params[:id])
         location = Location.find(params[:location_id])
 
-        if user.authentication_token != params[:user_token]
+        unless token_matches?(user, params[:user_token].to_s)
           return_response("Unauthorized user update.", "errors")
           return
         end
@@ -74,7 +74,7 @@ module Api
         user = User.find(params[:id])
         location = Location.find(params[:location_id])
 
-        if user.authentication_token != params[:user_token]
+        unless token_matches?(user, params[:user_token].to_s)
           return_response("Unauthorized user update.", "errors")
           return
         end
@@ -268,7 +268,7 @@ module Api
         user = User.find(params[:id])
         machine = Machine.find(params[:machine_id])
 
-        if user.authentication_token != params[:user_token]
+        unless token_matches?(user, params[:user_token].to_s)
           return_response("Unauthorized user update.", "errors")
           return
         end
@@ -286,7 +286,7 @@ module Api
       def remove_life_list_machine
         user = User.find(params[:id])
 
-        if user.authentication_token != params[:user_token]
+        unless token_matches?(user, params[:user_token].to_s)
           return_response("Unauthorized user update.", "errors")
           return
         end
@@ -316,7 +316,7 @@ module Api
       def destroy
         user = User.find(params[:id])
 
-        if user.authentication_token != params[:user_token]
+        unless token_matches?(user, params[:user_token].to_s)
           return_response("Unauthorized user update.", "errors")
           return
         end
@@ -335,7 +335,7 @@ module Api
       def update_email
         user = User.find(params[:id])
 
-        if user.authentication_token != params[:user_token]
+        unless token_matches?(user, params[:user_token].to_s)
           return_response("Unauthorized user update.", "errors")
           return
         end
@@ -364,7 +364,7 @@ module Api
       def update_password
         user = User.find(params[:id])
 
-        if user.authentication_token != params[:user_token]
+        unless token_matches?(user, params[:user_token].to_s)
           return_response("Unauthorized user update.", "errors")
           return
         end
@@ -389,7 +389,7 @@ module Api
       def update_user_flag
         user = User.find(params[:id])
 
-        if user.authentication_token != params[:user_token]
+        unless token_matches?(user, params[:user_token].to_s)
           return_response("Unauthorized user update.", "errors")
           return
         end

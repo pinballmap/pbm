@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   include ActionView::Helpers::NumberHelper
-  acts_as_token_authenticatable
+  has_secure_token :authentication_token
 
   belongs_to :region, optional: true
   belongs_to :operator, optional: true
@@ -21,7 +21,7 @@ class User < ApplicationRecord
 
   validate :validate_username
 
-  devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :trackable, :validatable, authentication_keys: [ :login ], confirmation_keys: [ :login ]
+  devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :validatable, authentication_keys: [ :login ], confirmation_keys: [ :login ]
 
   scope :admins, -> { where("region_id is not null") }
   scope :non_admins, -> { where("region_id is null") }

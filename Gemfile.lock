@@ -1,13 +1,3 @@
-GIT
-  remote: https://github.com/gonzalo-bulnes/simple_token_authentication.git
-  revision: f1cba4e3e614932ffcb6dfd2d8bf03acd64cb1ec
-  ref: f1cba4e
-  specs:
-    simple_token_authentication (1.18.1)
-      actionmailer (>= 3.2.6, < 9)
-      actionpack (>= 3.2.6, < 9)
-      devise (>= 3.2, < 6)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -639,7 +629,6 @@ DEPENDENCIES
   sassc-rails
   scout_apm
   selenium-webdriver
-  simple_token_authentication!
   simplecov
   simplecov-cobertura
   solid_cache (~> 1.0)
