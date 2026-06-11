@@ -89,6 +89,11 @@
                 .machine_type_toggle
                   %button#all_ic_toggle.machine_type_btn.active{:type => "button", :onclick => "setIcActive(false)"} All
                   %button#ic_toggle.machine_type_btn{:type => "button", :onclick => "setIcActive(true)"} Has IC
+              .map_input_limit
+                .input_title Operator
+                %select.by_operator_id{ multiple: "multiple", id: "by_operator_id", name: "by_operator_id[]" }
+                  - Array(params[:by_operator_id]).each do |id|
+                    %option{ value: id, selected: "selected" }= Operator.find_by(id: id)&.name
           .filter_modal_footer
             %button.clear_filters_button{:type => "button", :onclick => "clearAllFilters(); updateClearFiltersButton();"} Clear
             %button.apply_filters_button{:type => "submit"} Apply
@@ -215,6 +220,7 @@
     var mfr = $('#by_manufacturer').val();
     var yearGte = $('#by_machine_year_gte').val();
     var yearLte = $('#by_machine_year_lte').val();
+    var operatorIds = $('#by_operator_id').val();
     return (machineIds && machineIds.length > 0) ||
            (nMachines !== null && nMachines !== '') ||
            (typeIds && typeIds.length > 0) ||
@@ -222,7 +228,8 @@
            emModeActive ||
            icActiveMode ||
            (yearGte && yearGte !== '') ||
-           (yearLte && yearLte !== '');
+           (yearLte && yearLte !== '') ||
+           (operatorIds && operatorIds.length > 0);
   }
 
   function updateClearFiltersButton() {
@@ -326,8 +333,32 @@
       }
     });
 
+    var operatorData = null;
+    $('#by_operator_id').select2({
+      placeholder: '',
+      closeOnSelect: false,
+      width: '100%',
+      ajax: {
+        transport: function(params, success, failure) {
+          if (operatorData !== null) {
+            success(operatorData);
+            return { abort: function() {} };
+          }
+          return $.getJSON('/operators_autocomplete')
+            .done(function(data) { operatorData = data; success(data); })
+            .fail(failure);
+        },
+        processResults: function(data, params) {
+          var term = ((params && params.term) || '').toLowerCase();
+          var filtered = term ? data.filter(function(o) { return o.text.toLowerCase().indexOf(term) !== -1; }) : data;
+          return { results: filtered };
+        }
+      }
+    });
+
     $('#by_type_id').on('select2:select select2:unselect change', updateClearFiltersButton);
     $('#by_manufacturer').on('select2:select select2:unselect change', updateClearFiltersButton);
+    $('#by_operator_id').on('select2:select select2:unselect change', updateClearFiltersButton);
     $('#by_machine_year_gte, #by_machine_year_lte').on('change', updateClearFiltersButton);
 
     // Restore toggle/button state from deep-link URL params.
@@ -447,6 +478,7 @@
     var by_at_least_n_machines = $('#by_at_least_n_machines').val();
     var by_type_id = $('#by_type_id').val();
     var manufacturer = $('#by_manufacturer').val();
+    var by_operator_id = $('#by_operator_id').val();
     var by_machine_year_gte = $('#by_machine_year_gte').val() || undefined;
     var by_machine_year_lte = $('#by_machine_year_lte').val() || undefined;
     var by_machine_type = emModeActive ? ['em', 'me'] : undefined;
@@ -469,7 +501,7 @@
 
     var mapActivityVisible = $('#map_activity_container').html().trim() !== '';
 
-    getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active: icActiveMode ? '1' : undefined, by_machine_year_gte, by_machine_year_lte });
+    getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_operator_id, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active: icActiveMode ? '1' : undefined, by_machine_year_gte, by_machine_year_lte });
     clearSearch(event);
 
     if (mapActivityVisible) {
@@ -548,6 +580,7 @@
             by_at_least_n_machines: $('#by_at_least_n_machines').val(),
             by_type_id: $('#by_type_id').val(),
             manufacturer: $('#by_manufacturer').val(),
+            by_operator_id: $('#by_operator_id').val(),
             by_machine_type: emModeActive ? ['em', 'me'] : undefined,
             by_machine_id: by_machine_id_val,
             by_machine_single_id: by_machine_single_id_val,

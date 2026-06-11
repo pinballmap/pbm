@@ -486,6 +486,29 @@ describe MapsController do
       expect(page).to_not have_content('Non IC Venue')
     end
 
+    it 'filters by operator' do
+      operator = FactoryBot.create(:operator, name: 'Fun Operators')
+      op_location = FactoryBot.create(:location, region: nil, name: 'Operator Venue', zip: '97203', operator: operator, lat: 45.590502800000, lon: -122.754940100000)
+      other_location = FactoryBot.create(:location, region: nil, name: 'Other Venue', zip: '97203', lat: 45.593049200000, lon: -122.732620200000)
+      FactoryBot.create(:location_machine_xref, location: op_location, machine: FactoryBot.create(:machine, name: 'Op Machine', machine_group: nil))
+      FactoryBot.create(:location_machine_xref, location: other_location, machine: FactoryBot.create(:machine, name: 'Other Machine', machine_group: nil))
+
+      visit '/map'
+      sleep 1
+
+      page.find('#open_filter_modal_button').click
+      page.find('#by_operator_id + .select2 .selection').click
+      page.find('#by_operator_id + .select2-container .select2-search__field').set('Fun')
+      sleep 0.5
+      page.find('.select2-results__option', text: /Fun Operators/).click
+      page.find('.apply_filters_button').click
+
+      sleep 1
+
+      expect(page).to have_content('Operator Venue')
+      expect(page).to_not have_content('Other Venue')
+    end
+
     it 'filters by machine year range' do
       early_location = FactoryBot.create(:location, region: nil, name: 'Early Bird', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
       late_location = FactoryBot.create(:location, region: nil, name: 'Late Bloomer', zip: '97203', lat: 45.593049200000, lon: -122.732620200000)

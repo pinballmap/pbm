@@ -370,6 +370,13 @@ class MapsController < ApplicationController
     render "#{@region.name}/region" if lookup_context.find_all("#{@region.name}/region").any?
   end
 
+  def operators_autocomplete
+    list = Rails.cache.fetch("operators_autocomplete_list", expires_in: 1.hour) do
+      Operator.order(:name).pluck(:id, :name)
+    end
+    render json: list.map { |id, name| { id: id.to_s, text: name } }
+  end
+
   private
 
   def sort_order

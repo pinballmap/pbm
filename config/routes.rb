@@ -230,6 +230,7 @@ Rails.application.routes.draw do
   get '/search/autocomplete', to: 'search#autocomplete'
   get 'map' => 'maps#map'
   get 'operators' => 'maps#operators'
+  get 'operators_autocomplete' => 'maps#operators_autocomplete'
   get 'operator_location_data' => 'maps#operator_location_data'
   get 'saved' => 'maps#map', user_faved: true
   get 'map_location_data' => 'maps#map_location_data'
