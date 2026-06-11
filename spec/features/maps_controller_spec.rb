@@ -187,7 +187,7 @@ describe MapsController do
       fill_in('address', with: '97203')
 
       page.find('#open_filter_modal_button').click
-      page.find('.map_input_limit .select2 .selection').click
+      page.find('#by_type_id + .select2 .selection').click
       select('church', from: 'by_type_id[]')
       page.find('.filter_modal_close').click
 
@@ -206,7 +206,7 @@ describe MapsController do
       fill_in('address', with: '97203')
 
       page.find('#open_filter_modal_button').click
-      page.find('.map_input_limit .select2 .selection').click
+      page.find('#by_type_id + .select2 .selection').click
       select('lounge', from: 'by_type_id[]')
       page.find('.filter_modal_close').click
 
@@ -226,8 +226,7 @@ describe MapsController do
       fill_in('address', with: '97203')
 
       page.find('#open_filter_modal_button').click
-      page.find('.map_input_limit select#by_at_least_n_machines').click
-      select('10+', from: 'by_at_least_n_machines')
+      page.find('#n_machines_10').click
       page.find('.filter_modal_close').click
 
       click_on 'location_search_button'
@@ -247,10 +246,9 @@ describe MapsController do
       page.find('#by_machine_select + .select2-container .select2-search__field').set('Solomon')
       sleep 0.5
       page.find('.select2-results__option', text: /Solomon/).click
-      page.find('.map_input_limit .select2 .selection').click
+      page.find('#by_type_id + .select2 .selection').click
       select('lounge', from: 'by_type_id[]')
-      page.find('.map_input_limit select#by_at_least_n_machines').click
-      select('10+', from: 'by_at_least_n_machines')
+      page.find('#n_machines_10').click
       page.find('.filter_modal_close').click
 
       click_on 'location_search_button'
@@ -266,10 +264,9 @@ describe MapsController do
       sleep 1
 
       page.find('#open_filter_modal_button').click
-      page.find('.map_input_limit .select2 .selection').click
+      page.find('#by_type_id + .select2 .selection').click
       select('lounge', from: 'by_type_id[]')
-      page.find('.map_input_limit select#by_at_least_n_machines').click
-      select('10+', from: 'by_at_least_n_machines')
+      page.find('#n_machines_10').click
       page.find('.filter_modal_close').click
 
       click_on 'location_search_button'
@@ -324,7 +321,7 @@ describe MapsController do
 
       # visible after selecting a location type
       page.find('#open_filter_modal_button').click
-      page.find('.map_input_limit .select2 .selection').click
+      page.find('#by_type_id + .select2 .selection').click
       select('church', from: 'by_type_id[]')
       page.find('.filter_modal_close').click
 
@@ -341,9 +338,31 @@ describe MapsController do
       sleep 1
 
       expect(page).to have_css('#clear_filters_button', visible: true)
+
+      # visible when EM machine type filter is active
+      visit '/map'
+      sleep 1
+
+      page.find('#open_filter_modal_button').click
+      page.find('#em_toggle').click
+      page.find('.filter_modal_close').click
+
+      expect(page).to have_css('#clear_filters_button', visible: true)
+
+      # modal Clear resets EM filter
+      page.find('#open_filter_modal_button').click
+      page.find('.clear_filters_button').click
+
+      expect(page).to have_css('#clear_filters_button', visible: :hidden)
+
+      # visible when IC active filter is set (modal is still open after Clear)
+      page.find('#ic_toggle').click
+      page.find('.filter_modal_close').click
+
+      expect(page).to have_css('#clear_filters_button', visible: true)
     end
 
-    it 'shows single version checkbox if machine is in a group and respects single version filter' do
+    it 'shows single version toggle if machine is in a group and respects single version filter' do
       @machine_group = FactoryBot.create(:machine_group)
       rip_city_location = FactoryBot.create(:location, region: nil, name: 'Rip City', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
       rose_city_location = FactoryBot.create(:location, region: nil, name: 'Rose City', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
@@ -371,8 +390,7 @@ describe MapsController do
       sleep 0.5
       page.find('.select2-results__option', text: /Dude Pro/).click
 
-      expect(page.body).to have_content('Exact machine version?')
-      expect(page.body).to have_css('#singleVersion', visible: true)
+      expect(page).to have_css('#single_hide', visible: true)
 
       page.find('.filter_modal_close').click
 
@@ -384,7 +402,7 @@ describe MapsController do
       expect(find('#search_results')).to have_content('Rose')
 
       page.find('#open_filter_modal_button').click
-      check 'singleVersion'
+      page.find('#selected_version_toggle').click
       page.find('.filter_modal_close').click
 
       click_on 'location_search_button'
@@ -393,6 +411,110 @@ describe MapsController do
 
       expect(find('#search_results')).to have_content('Rip')
       expect(find('#search_results')).to_not have_content('Rose')
+    end
+
+    it 'shows IC version toggle for ic_eligible machine and respects IC filter' do
+      ic_machine = FactoryBot.create(:machine, name: 'IC Wizard', ic_eligible: true, machine_group: nil)
+      ic_location = FactoryBot.create(:location, region: nil, name: 'IC Rip City', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
+      no_ic_location = FactoryBot.create(:location, region: nil, name: 'No IC City', zip: '97203', lat: 45.593049200000, lon: -122.732620200000)
+      FactoryBot.create(:location_machine_xref, location: ic_location, machine: ic_machine, ic_enabled: true)
+      FactoryBot.create(:location_machine_xref, location: no_ic_location, machine: ic_machine, ic_enabled: false)
+
+      visit '/map'
+
+      page.find('#open_filter_modal_button').click
+      page.find('#by_machine_select + .select2-container .select2-selection').click
+      page.find('#by_machine_select + .select2-container .select2-search__field').set('IC Wizard')
+      sleep 0.5
+      page.find('.select2-results__option', text: /IC Wizard/).click
+
+      expect(page).to have_css('#ic_eligible_hide', visible: true)
+
+      page.find('.filter_modal_close').click
+      click_on 'location_search_button'
+      sleep 1
+
+      expect(find('#search_results')).to have_content('IC Rip City')
+      expect(find('#search_results')).to have_content('No IC City')
+
+      page.find('#open_filter_modal_button').click
+      page.find('#has_ic_version_toggle').click
+      page.find('.filter_modal_close').click
+
+      click_on 'location_search_button'
+      sleep 1
+
+      expect(find('#search_results')).to have_content('IC Rip City')
+      expect(find('#search_results')).to_not have_content('No IC City')
+    end
+
+    it 'filters by EM machine type' do
+      em_location = FactoryBot.create(:location, region: nil, name: 'EM Hall', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
+      ss_location = FactoryBot.create(:location, region: nil, name: 'SS Hall', zip: '97203', lat: 45.593049200000, lon: -122.732620200000)
+      FactoryBot.create(:location_machine_xref, location: em_location, machine: FactoryBot.create(:machine, name: 'Electro Wizard', machine_type: 'em', machine_group: nil))
+      FactoryBot.create(:location_machine_xref, location: ss_location, machine: FactoryBot.create(:machine, name: 'Solid State Game', machine_type: 'ss', machine_group: nil))
+
+      visit '/map'
+      sleep 1
+
+      page.find('#open_filter_modal_button').click
+      page.find('#em_toggle').click
+      page.find('.apply_filters_button').click
+
+      sleep 1
+
+      expect(page).to have_content('EM Hall')
+      expect(page).to_not have_content('SS Hall')
+    end
+
+    it 'filters by IC active location' do
+      ic_location = FactoryBot.create(:location, region: nil, name: 'IC Venue', zip: '97203', ic_active: true, lat: 45.590502800000, lon: -122.754940100000)
+      no_ic_location = FactoryBot.create(:location, region: nil, name: 'Non IC Venue', zip: '97203', ic_active: false, lat: 45.593049200000, lon: -122.732620200000)
+      FactoryBot.create(:location_machine_xref, location: ic_location, machine: FactoryBot.create(:machine, name: 'IC Active Machine', machine_group: nil))
+      FactoryBot.create(:location_machine_xref, location: no_ic_location, machine: FactoryBot.create(:machine, name: 'Regular Machine', machine_group: nil))
+
+      visit '/map'
+      sleep 1
+
+      page.find('#open_filter_modal_button').click
+      page.find('#ic_toggle').click
+      page.find('.apply_filters_button').click
+
+      sleep 1
+
+      expect(page).to have_content('IC Venue')
+      expect(page).to_not have_content('Non IC Venue')
+    end
+
+    it 'filters by machine year range' do
+      early_location = FactoryBot.create(:location, region: nil, name: 'Early Bird', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
+      late_location = FactoryBot.create(:location, region: nil, name: 'Late Bloomer', zip: '97203', lat: 45.593049200000, lon: -122.732620200000)
+      FactoryBot.create(:location_machine_xref, location: early_location, machine: FactoryBot.create(:machine, name: 'Vintage Game', year: 1975, machine_group: nil))
+      FactoryBot.create(:location_machine_xref, location: late_location, machine: FactoryBot.create(:machine, name: 'Modern Game', year: 2020, machine_group: nil))
+
+      visit '/map'
+      sleep 1
+
+      page.find('#open_filter_modal_button').click
+      select '2020', from: 'by_machine_year_gte'
+      page.find('.apply_filters_button').click
+
+      sleep 1
+
+      expect(page).to have_content('Late Bloomer')
+      expect(page).to_not have_content('Early Bird')
+
+      visit '/map'
+      sleep 1
+
+      page.find('#open_filter_modal_button').click
+      select '1975', from: 'by_machine_year_lte'
+      page.find('.apply_filters_button').click
+
+      sleep 1
+
+      expect(page).to have_content('Early Bird')
+      expect(page).to_not have_content('Late Bloomer')
     end
 
     it 'respects user_faved filter' do

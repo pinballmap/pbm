@@ -41,51 +41,59 @@ class Location < ApplicationRecord
   scope :by_state_name, ->(state) { where(state: Array(state)) }
   scope :by_location_name, ->(name) { where("lower(regexp_replace(name, '’', '''', 'gi')) ilike ?", "%" + name.downcase.tr("’", "'") + "%") }
   scope :by_ipdb_id, lambda { |id|
-    machines = Machine.where("ipdb_id in (?)", Array(id).map(&:to_i)).map(&:all_machines_in_machine_group).flatten
-    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
+    machine_ids = Machine.where(ipdb_id: Array(id).map(&:to_i)).select(:id)
+    where(id: LocationMachineXref.where(machine_id: machine_ids).select(:location_id))
   }
   scope :by_opdb_id, lambda { |id|
-    machines = Machine.where("opdb_id in (?)", Array(id)).map(&:all_machines_in_machine_group).flatten
-    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
+    machine_ids = Machine.where(opdb_id: Array(id)).select(:id)
+    where(id: LocationMachineXref.where(machine_id: machine_ids).select(:location_id))
   }
   scope :by_machine_id, lambda { |id|
-    machines = Machine.where("id in (?)", Array(id).map(&:to_i)).map(&:all_machines_in_machine_group).flatten
-    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
+    input_ids = Array(id).map(&:to_i)
+    group_ids = Machine.where(id: input_ids).where.not(machine_group_id: nil).pluck(:machine_group_id).uniq
+    machine_ids = group_ids.any? \
+      ? Machine.where(machine_group_id: group_ids).or(Machine.where(id: input_ids, machine_group_id: nil)).pluck(:id)
+      : input_ids
+    joins(:location_machine_xrefs).where("location_machine_xrefs.machine_id in (?)", machine_ids)
   }
   scope :by_machine_group_id, lambda { |id|
-    machines = Machine.where("machine_group_id in (?)", Array(id).map(&:to_i))
-    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
+    machine_ids = Machine.where(machine_group_id: Array(id).map(&:to_i)).select(:id)
+    where(id: LocationMachineXref.where(machine_id: machine_ids).select(:location_id))
   }
   scope :by_machine_single_id, lambda { |id|
-    machine = Machine.where("id in (?)", Array(id).map(&:to_i))
-    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machine.map(&:id))
+    where(id: LocationMachineXref.where(machine_id: Array(id).map(&:to_i)).select(:location_id))
   }
   scope :by_machine_id_ic, lambda { |id|
-    machines = Machine.where("id in (?)", Array(id).map(&:to_i)).map(&:all_machines_in_machine_group).flatten
-    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.ic_enabled = true and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
+    input_ids = Array(id).map(&:to_i)
+    group_ids = Machine.where(id: input_ids).where.not(machine_group_id: nil).pluck(:machine_group_id).uniq
+    machine_ids = group_ids.any? \
+      ? Machine.where(machine_group_id: group_ids).or(Machine.where(id: input_ids, machine_group_id: nil)).pluck(:id)
+      : input_ids
+    joins(:location_machine_xrefs).where("location_machine_xrefs.machine_id in (?) and location_machine_xrefs.ic_enabled = true", machine_ids)
   }
   scope :by_machine_single_id_ic, lambda { |id|
-    machine = Machine.where("id in (?)", Array(id).map(&:to_i))
-    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.ic_enabled = true and location_machine_xrefs.machine_id in (?)", machine.map(&:id))
+    where(id: LocationMachineXref.where(machine_id: Array(id).map(&:to_i), ic_enabled: true).select(:location_id))
   }
   scope :by_machine_year, lambda { |id|
-    machines = Machine.where("year in (?)", Array(id).map(&:to_i))
-    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
+    machine_ids = Machine.where(year: Array(id).map(&:to_i)).select(:id)
+    where(id: LocationMachineXref.where(machine_id: machine_ids).select(:location_id))
   }
   scope :by_machine_year_gte, lambda { |year|
-    machines = Machine.where("year >= ?", year.to_i)
-    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
+    machine_ids = Machine.where("year >= ?", year.to_i).select(:id)
+    where(id: LocationMachineXref.where(machine_id: machine_ids).select(:location_id))
   }
   scope :by_machine_year_lte, lambda { |year|
-    machines = Machine.where("year <= ?", year.to_i)
-    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
+    machine_ids = Machine.where("year <= ?", year.to_i).select(:id)
+    where(id: LocationMachineXref.where(machine_id: machine_ids).select(:location_id))
   }
   scope :by_machine_name, lambda { |name|
     machine = Machine.find_by_name(name)
     return Location.default_scoped.none if machine.nil?
 
-    machines = machine.machine_group_id ? Machine.where("machine_group_id = ?", machine.machine_group_id).map(&:all_machines_in_machine_group).flatten : [ machine ]
-    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id))
+    machine_ids = machine.machine_group_id \
+      ? Machine.where(machine_group_id: machine.machine_group_id).pluck(:id) \
+      : [ machine.id ]
+    joins(:location_machine_xrefs).where("location_machine_xrefs.machine_id in (?)", machine_ids)
   }
 
   scope :by_at_least_n_machines, ->(machine_count) { where("machine_count >= ?", machine_count) }
@@ -109,20 +117,16 @@ class Location < ApplicationRecord
   scope :regionless_only, ->(_non_blank_param) { where(region_id: nil) }
   scope :zoneless, -> { where(zone_id: nil) }
   scope :user_faved, lambda { |user_id|
-    fave_ids = UserFaveLocation.where(user_id: user_id).map(&:location_id)
-    where(id: fave_ids)
+    where(id: UserFaveLocation.where(user_id: user_id).select(:location_id))
   }
   scope :manufacturer, lambda { |manufacturer|
-    machines = Machine.where("manufacturer in (?)", Array(manufacturer))
-    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
+    where(id: joins(:machines).where(machines: { manufacturer: Array(manufacturer) }).select("locations.id"))
   }
   scope :by_machine_type, lambda { |machine_type|
-    machines = Machine.where("machine_type in (?)", Array(machine_type))
-    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
+    where(id: joins(:machines).where(machines: { machine_type: Array(machine_type) }).select("locations.id"))
   }
   scope :by_machine_display, lambda { |machine_display|
-    machines = Machine.where("machine_display in (?)", Array(machine_display))
-    joins(:location_machine_xrefs).where("locations.id = location_machine_xrefs.location_id and location_machine_xrefs.machine_id in (?)", machines.map(&:id)).distinct
+    where(id: joins(:machines).where(machines: { machine_display: Array(machine_display) }).select("locations.id"))
   }
 
   before_destroy do |record|

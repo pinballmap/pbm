@@ -817,13 +817,13 @@ p.alert {
 /** Header **/
 
 #header {
-  z-index: 60;
   top: 0;
   margin: 0 auto 0;
   width: 100%;
   min-width: 768px;
   height: 52px;
   background: var(--darkblue);
+  z-index: 110;
 }
 
 #header a {
@@ -1140,11 +1140,14 @@ form#address_search_form input.lookup_search_input {
 #filter_modal {
   border: 5px solid var(--border);
   position: fixed;
-  top: 50%;
+  top: 52px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   width: 90%;
-  max-width: 480px;
+  max-width: 500px;
+  max-height: calc(100vh - 72px);
+  display: flex;
+  flex-direction: column;
   background: var(--white);
   @include radius(8px);
   box-shadow: 0 5px 20px var(--shadow);
@@ -1173,6 +1176,13 @@ form#address_search_form input.lookup_search_input {
 
 .filter_modal_body {
   padding: 16px;
+  overflow-y: auto;
+}
+
+.filter_modal_section {
+  padding: 10px;
+  @include radius(8px);
+  background: var(--lightpurple);
 }
 
 .filter_modal_footer {
@@ -1402,7 +1412,7 @@ span.or {
   top: 52px;
   margin-left: 0;
   width: 42%;
-  z-index: 20;
+  z-index: 100;
   @include radius(0 0 5px 5px);
   padding: 8px;
   background-color: var(--lightpurple);
@@ -1437,21 +1447,18 @@ span.or {
 .hide_button,
 #single_hide {
   display: none;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   margin-top: 5px;
+
+  .machine_type_toggle {
+    width: 100%;
+  }
 }
 
 span.single_hide {
   font-size: 12px;
   padding-left: 5px;
-}
-
-#clearButton {
-  display: none;
-  cursor: pointer;
-  text-decoration: none;
-  margin-left: -45px;
-  color: var(--red);
 }
 
 #clearButton2 {
@@ -1479,6 +1486,50 @@ span.single_hide {
 
 input.single_hide {
   margin-left: 8px;
+}
+
+#ic_eligible_hide {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5px;
+
+  .machine_type_toggle {
+    width: 100%;
+  }
+}
+
+span.ic_eligible_hide {
+  font-size: 12px;
+  padding-left: 5px;
+}
+
+input.ic_eligible_hide {
+  margin-left: 8px;
+}
+
+.machine_type_toggle {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.machine_type_btn {
+  flex: 1;
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  @include radius(10px);
+  background: var(--lightpurple);
+  color: var(--darkgrey);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: $Nunito_600SemiBold;
+
+  &.active {
+    background: var(--lightpink);
+    color: var(--red);
+    border-color: var(--red);
+  }
 }
 
 #map_buttons {
@@ -2356,7 +2407,7 @@ input.submit_button:hover,
 }
 
 .map_input_limit {
-  margin: 15px auto 15px;
+  margin: 15px auto 20px;
 }
 
 .map_input_search span.input_title {
@@ -2365,8 +2416,33 @@ input.submit_button:hover,
 }
 
 .filter_modal_body .input_title {
-  font-family: $Nunito_700Bold;
-  margin-bottom: 5px;
+  font-family: $Nunito_600SemiBold;
+  margin-bottom: 8px;
+}
+
+.year_range_selects {
+  display: flex;
+  gap: 10px;
+
+  select {
+    flex: 1;
+  }
+}
+
+.machine_version_prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 6px;
+  color: var(--red);
+  font-size: 13px;
+  font-family: $Nunito_600SemiBold;
+}
+
+.down_arrow_icon {
+  width: 18px;
+  height: 18px;
+  margin-bottom: 2px;
 }
 
 .map_input_search #location_search_button.search,

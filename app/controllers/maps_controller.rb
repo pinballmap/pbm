@@ -1,8 +1,8 @@
 class MapsController < ApplicationController
   respond_to :html, only: %i[get_bounds]
   before_action :normalize_array_params
-  has_scope :by_location_name, :by_at_least_n_machines, :user_faved, :by_city_name, :by_city_no_state
-  has_scope :by_type_id, :by_location_id, :by_machine_id, :by_operator_id, :by_machine_single_id, :by_machine_type, :by_machine_display, :manufacturer, :by_country, :by_state_name, type: :array
+  has_scope :by_location_name, :by_at_least_n_machines, :user_faved, :by_city_name, :by_city_no_state, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte
+  has_scope :by_type_id, :by_location_id, :by_machine_id, :by_operator_id, :by_machine_single_id, :by_machine_type, :by_machine_display, :manufacturer, :by_country, :by_state_name, :by_machine_id_ic, :by_machine_single_id_ic, type: :array
 
   rate_limit to: 100, within: 3.minutes, only: :region
   rate_limit to: 100, within: 1.minute
@@ -25,13 +25,15 @@ class MapsController < ApplicationController
     @machine_sample = Machine.select("name, random() as r").order("r").limit(1).first
     @machine_placeholder = @machine_sample.nil? ? "e.g. Lord of the Rings" : "e.g. " + @machine_sample.name
 
-    selected_machine_ids = (Array(params[:by_machine_id]) + Array(params[:by_machine_single_id])).map(&:to_i).uniq
+    @machine_years = Rails.cache.fetch("machine_years", expires_in: 1.day) { Machine.distinct.pluck(:year).compact.sort }
+
+    selected_machine_ids = (Array(params[:by_machine_id]) + Array(params[:by_machine_single_id]) + Array(params[:by_machine_id_ic]) + Array(params[:by_machine_single_id_ic])).map(&:to_i).uniq
     @selected_machines = Machine.where(id: selected_machine_ids)
 
     @big_cities_sample = Location.select(%i[city state], "random() as r").having("count(city)>9").where.not(state: [ nil, "" ]).group("city", "state").order("r").limit(1).first
     @big_cities_placeholder = @big_cities_sample.nil? ? "e.g. Portland, OR" : "e.g. " + @big_cities_sample.city + ", " + @big_cities_sample.state
 
-    @map_no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_city_id].blank? && params[:by_state_name].blank? && params[:by_city_no_state].blank? && params[:by_country].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank? && params[:by_is_stern_army].blank? && params[:by_machine_type].blank? && params[:by_machine_display].blank? && params[:manufacturer].blank? && params[:by_operator_id].blank? && params[:by_operator_name].blank?
+    @map_no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_city_id].blank? && params[:by_state_name].blank? && params[:by_city_no_state].blank? && params[:by_country].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank? && params[:by_is_stern_army].blank? && params[:by_machine_type].blank? && params[:by_machine_display].blank? && params[:manufacturer].blank? && params[:by_operator_id].blank? && params[:by_operator_name].blank? && params[:by_machine_id_ic].blank? && params[:by_machine_single_id_ic].blank? && params[:by_machine_year_gte].blank? && params[:by_machine_year_lte].blank?
 
     @nearby_lat = 39.5718
     @nearby_lon = -99.1066
@@ -327,7 +329,7 @@ class MapsController < ApplicationController
 
       operators[l.operator_id] = l if l.operator_id
 
-      @region_no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_city_id].blank? && params[:by_state_name].blank? && params[:by_city_no_state].blank? && params[:by_country].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_city].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_at_least_n_machines_zone].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank? && params[:by_is_stern_army].blank? && params[:by_machine_type].blank? && params[:by_machine_display].blank? && params[:manufacturer].blank? && params[:by_operator_id].blank? && params[:by_operator_name].blank?
+      @region_no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_city_id].blank? && params[:by_state_name].blank? && params[:by_city_no_state].blank? && params[:by_country].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_city].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_at_least_n_machines_zone].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank? && params[:by_is_stern_army].blank? && params[:by_machine_type].blank? && params[:by_machine_display].blank? && params[:manufacturer].blank? && params[:by_operator_id].blank? && params[:by_operator_name].blank? && params[:by_machine_year_gte].blank? && params[:by_machine_year_lte].blank?
     end
 
     @search_options = {

@@ -175,6 +175,7 @@ Rails.application.routes.draw do
     end
     collection do
       get :autocomplete
+      get :manufacturers
     end
   end
 

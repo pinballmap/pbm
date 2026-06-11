@@ -97,7 +97,7 @@ function homeMapBounds() {
   setTimeout(getMapBounds, 800);
 }
 
-function getMapBounds(by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id) {
+function getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active, by_machine_year_gte, by_machine_year_lte } = {}) {
   mapAdjusted = 1;
   refresh_bounds = map.getBounds();
   var capturedBoundsData = {
@@ -111,7 +111,7 @@ function getMapBounds(by_at_least_n_machines, by_type_id, by_machine_id, by_mach
     $.ajax({
       url: "/get_bounds",
       type: "POST",
-      data: { boundsData: capturedBoundsData, by_at_least_n_machines: by_at_least_n_machines, by_type_id: by_type_id, by_machine_id: by_machine_id, by_machine_single_id: by_machine_single_id, sort: currentSort },
+      data: { boundsData: capturedBoundsData, by_at_least_n_machines: by_at_least_n_machines, by_type_id: by_type_id, by_machine_id: by_machine_id, by_machine_single_id: by_machine_single_id, manufacturer: manufacturer, by_machine_type: by_machine_type, by_machine_id_ic: by_machine_id_ic, by_machine_single_id_ic: by_machine_single_id_ic, by_ic_active: by_ic_active, by_machine_year_gte: by_machine_year_gte, by_machine_year_lte: by_machine_year_lte, sort: currentSort },
       success: function(data) {
         $('#locations').html(data);
         refresh_bounds = undefined;
@@ -414,10 +414,10 @@ function switchSection(newSection) {
   $("#" + newSection + "_section_link").toggleClass("active_section_link");
 }
 
-function initSearch(userFaved, locationIDs, operatorIDs, locationTypeIDs, zoneIDs, machineIDs, machineID, machineGroupId, byMachineIDsIC, byMachineIDIC, byMachineYear, ipdbIDs, opdbIDs, cityID, lat, lon, byAtLeastNMachines, byAtLeastNMachinesCity, byAtLeastNMachinesType, byAtLeastNMachinesZone, byCityName, byStateName, byCityNoState, byCountry, byICActive, byIsSternArmy, byMachineType, byMachineDisplay, byManufacturer, region) {
-  if (userFaved || locationIDs || operatorIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || machineGroupId || byMachineIDsIC || byMachineIDIC || byMachineYear || ipdbIDs || opdbIDs || cityID || byAtLeastNMachines || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || byCityName || byStateName || byCityNoState || byCountry || byICActive || byIsSternArmy || byMachineType || byMachineDisplay || byManufacturer || region) {
+function initSearch(userFaved, locationIDs, operatorIDs, locationTypeIDs, zoneIDs, machineIDs, machineID, machineGroupId, byMachineIDsIC, byMachineIDIC, byMachineYear, ipdbIDs, opdbIDs, cityID, lat, lon, byAtLeastNMachines, byAtLeastNMachinesCity, byAtLeastNMachinesType, byAtLeastNMachinesZone, byCityName, byStateName, byCityNoState, byCountry, byICActive, byIsSternArmy, byMachineType, byMachineDisplay, byManufacturer, region, byMachineYearGte, byMachineYearLte) {
+  if (userFaved || locationIDs || operatorIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || machineGroupId || byMachineIDsIC || byMachineIDIC || byMachineYear || ipdbIDs || opdbIDs || cityID || byAtLeastNMachines || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || byCityName || byStateName || byCityNoState || byCountry || byICActive || byIsSternArmy || byMachineType || byMachineDisplay || byManufacturer || region || byMachineYearGte || byMachineYearLte) {
 
-    if (region && !(userFaved || locationIDs || operatorIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || machineGroupId || byMachineIDsIC || byMachineIDIC || byMachineYear || ipdbIDs || opdbIDs || cityID || machineGroupId || byAtLeastNMachines || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || byCityName || byStateName || byICActive || byIsSternArmy || byMachineType || byMachineDisplay || byManufacturer)) {
+    if (region && !(userFaved || locationIDs || operatorIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || machineGroupId || byMachineIDsIC || byMachineIDIC || byMachineYear || ipdbIDs || opdbIDs || cityID || machineGroupId || byAtLeastNMachines || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || byCityName || byStateName || byICActive || byIsSternArmy || byMachineType || byMachineDisplay || byManufacturer || byMachineYearGte || byMachineYearLte)) {
       return;
     }
 
@@ -520,6 +520,8 @@ function initSearch(userFaved, locationIDs, operatorIDs, locationTypeIDs, zoneID
       params.set('manufacturer', byManufacturer || '');
     }
     params.set('region', region || '');
+    params.set('by_machine_year_gte', byMachineYearGte || '');
+    params.set('by_machine_year_lte', byMachineYearLte || '');
 
     lastSearchFn = function() {
       params.set('sort', currentSort);
@@ -648,9 +650,24 @@ function hideFilterModal() {
 function clearAllFilters() {
   $('#by_machine_select').val(null).trigger('change');
   $('#single_hide').hide();
-  $('#singleVersion').prop('checked', false);
-  $('#by_at_least_n_machines').val('');
+  if (typeof setSingleVersion === 'function') setSingleVersion(false);
+  $('#ic_eligible_hide').hide();
+  if (typeof setIcVersion === 'function') setIcVersion(false);
+  if (typeof setNMachines === 'function') setNMachines('');
   $('#by_type_id').val(null).trigger('change');
+  $('#by_manufacturer').val(null).trigger('change');
+  $('#by_machine_year_gte').val('');
+  $('#by_machine_year_lte').val('');
+  if (typeof emModeActive !== 'undefined') {
+    emModeActive = false;
+    $('#em_toggle').removeClass('active');
+    $('#all_toggle').addClass('active');
+  }
+  if (typeof icActiveMode !== 'undefined') {
+    icActiveMode = false;
+    $('#ic_toggle').removeClass('active');
+    $('#all_ic_toggle').addClass('active');
+  }
 }
 
 function setRegion(regionName) {

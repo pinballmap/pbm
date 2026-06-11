@@ -759,6 +759,52 @@ describe LocationsController do
       expect(find('#search_results')).to_not have_content('Polly Barn')
     end
 
+    it 'by_machine_year_gte' do
+      machine1 = FactoryBot.create(:machine, name: 'Cool', year: 2010)
+      machine2 = FactoryBot.create(:machine, name: 'Uncool', year: 1990)
+      location1 = FactoryBot.create(:location, region: nil, name: 'Satch Hut')
+      location2 = FactoryBot.create(:location, region: nil, name: 'Polly Barn')
+      FactoryBot.create(:location_machine_xref, location: location1, machine: machine1)
+      FactoryBot.create(:location_machine_xref, location: location2, machine: machine2)
+
+      visit '/map/?by_machine_year_gte=2000'
+
+      expect(find('#search_results')).to have_content('Satch Hut')
+      expect(find('#search_results')).to_not have_content('Polly Barn')
+    end
+
+    it 'by_machine_year_lte' do
+      machine1 = FactoryBot.create(:machine, name: 'Cool', year: 1990)
+      machine2 = FactoryBot.create(:machine, name: 'Uncool', year: 2010)
+      location1 = FactoryBot.create(:location, region: nil, name: 'Satch Hut')
+      location2 = FactoryBot.create(:location, region: nil, name: 'Polly Barn')
+      FactoryBot.create(:location_machine_xref, location: location1, machine: machine1)
+      FactoryBot.create(:location_machine_xref, location: location2, machine: machine2)
+
+      visit '/map/?by_machine_year_lte=2000'
+
+      expect(find('#search_results')).to have_content('Satch Hut')
+      expect(find('#search_results')).to_not have_content('Polly Barn')
+    end
+
+    it 'combined by_machine_year_gte and by_machine_year_lte' do
+      machine1 = FactoryBot.create(:machine, name: 'In range', year: 1995)
+      machine2 = FactoryBot.create(:machine, name: 'Too old', year: 1979)
+      machine3 = FactoryBot.create(:machine, name: 'Too new', year: 2010)
+      location1 = FactoryBot.create(:location, region: nil, name: 'Satch Hut')
+      location2 = FactoryBot.create(:location, region: nil, name: 'Polly Barn')
+      location3 = FactoryBot.create(:location, region: nil, name: 'Gretchen Hall')
+      FactoryBot.create(:location_machine_xref, location: location1, machine: machine1)
+      FactoryBot.create(:location_machine_xref, location: location2, machine: machine2)
+      FactoryBot.create(:location_machine_xref, location: location3, machine: machine3)
+
+      visit '/map/?by_machine_year_gte=1980&by_machine_year_lte=1999'
+
+      expect(find('#search_results')).to have_content('Satch Hut')
+      expect(find('#search_results')).to_not have_content('Polly Barn')
+      expect(find('#search_results')).to_not have_content('Gretchen Hall')
+    end
+
     it 'by manufacturer' do
       machine1 = FactoryBot.create(:machine, name: 'Cool', manufacturer: 'Stern')
       machine2 = FactoryBot.create(:machine, name: 'Uncool', manufacturer: 'Gottlieb')

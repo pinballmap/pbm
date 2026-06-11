@@ -30,20 +30,65 @@
             %div.filter_modal_close{:onclick => "hideFilterModal();"}
               X
           .filter_modal_body
-            .map_input_machine
-              .input_title Locations with this machine
-              %select.by_machine_select{ multiple: "multiple", id: "by_machine_select" }
-                - @selected_machines.each do |m|
-                  %option{ value: m.id, selected: "selected" }= m.name_and_year
-              #single_hide
-                %input{:type => "checkbox", :id => "singleVersion", :name => "singleVersion", :class => "m_0 single_hide"}
-                %span.single_hide Exact machine version?
-            .map_input_limit
-              .input_title Limit by number of machines
-              = select_tag "by_at_least_n_machines", options_for_select([['', ''], ['2+', '2'], ['5+', '5'], ['10+', '10'], ['20+', '20']], params[:by_at_least_n_machines])
-            .map_input_limit
-              .input_title Location type
-              = select_tag "by_type_id[]", options_from_collection_for_select(LocationType.all.sort_by(&:name), 'id', 'name', params["by_type_id"]), multiple: "multiple", :class => 'by_type_id', :id => 'by_type_id'
+            .filter_modal_section
+              %div.font18.bold.center.brightpurple.mb_15
+                Machine Filters
+              .map_input_machine
+                .input_title Machine
+                %select.by_machine_select{ multiple: "multiple", id: "by_machine_select" }
+                  - @selected_machines.each do |m|
+                    %option{ value: m.id, selected: "selected" }= m.name_and_year
+                #single_hide
+                  .machine_version_prompt
+                    %svg.down_arrow_icon{xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: "currentColor"}
+                      %path{d: "M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"}
+                    %span ...This machine version, or all?
+                  .machine_type_toggle
+                    %button#all_version_toggle.machine_type_btn.active{:type => "button", :onclick => "setSingleVersion(false)"} All Versions
+                    %button#selected_version_toggle.machine_type_btn{:type => "button", :onclick => "setSingleVersion(true)"} Selected Version
+                #ic_eligible_hide{:style => "display: none;"}
+                  .machine_version_prompt
+                    %svg.down_arrow_icon{xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: "currentColor"}
+                      %path{d: "M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"}
+                    %span ...Has Stern Insider Connected?
+                  .machine_type_toggle
+                    %button#no_ic_version_toggle.machine_type_btn.active{:type => "button", :onclick => "setIcVersion(false)"} Doesn't matter
+                    %button#has_ic_version_toggle.machine_type_btn{:type => "button", :onclick => "setIcVersion(true)"} Has IC
+              .map_input_limit
+                .input_title Manufacturer
+                %select.by_manufacturer{ multiple: "multiple", id: "by_manufacturer", name: "manufacturer[]" }
+                  - Array(params[:manufacturer]).each do |m|
+                    %option{ value: m, selected: "selected" }= m
+              .map_input_limit
+                .input_title Machine type
+                .machine_type_toggle
+                  %button#all_toggle.machine_type_btn.active{:type => "button", :onclick => "setMachineType('all')"} All
+                  %button#em_toggle.machine_type_btn{:type => "button", :onclick => "setMachineType('em')"} EM
+              .map_input_limit
+                .input_title Machine year
+                .year_range_selects
+                  = select_tag "by_machine_year_gte", options_for_select([['From', '']] + @machine_years.map { |y| [y.to_s, y] }, params[:by_machine_year_gte])
+                  = select_tag "by_machine_year_lte", options_for_select([['To', '']] + @machine_years.map { |y| [y.to_s, y] }, params[:by_machine_year_lte])
+            .filter_modal_section.mt_20
+              %div.font18.bold.center.brightpurple
+                Location Filters
+              .map_input_limit
+                .input_title Limit by number of machines
+                = hidden_field_tag "by_at_least_n_machines", params[:by_at_least_n_machines].presence || ''
+                .machine_type_toggle
+                  %button#n_machines_all.machine_type_btn.n_machines_btn.active{:type => "button", :onclick => "setNMachines('')"} All
+                  %button#n_machines_2.machine_type_btn.n_machines_btn{:type => "button", :onclick => "setNMachines('2')"} 2+
+                  %button#n_machines_5.machine_type_btn.n_machines_btn{:type => "button", :onclick => "setNMachines('5')"} 5+
+                  %button#n_machines_10.machine_type_btn.n_machines_btn{:type => "button", :onclick => "setNMachines('10')"} 10+
+                  %button#n_machines_20.machine_type_btn.n_machines_btn{:type => "button", :onclick => "setNMachines('20')"} 20+
+              .map_input_limit
+                .input_title Location type
+                = select_tag "by_type_id[]", options_from_collection_for_select(LocationType.all.sort_by(&:name), 'id', 'name', params["by_type_id"]), multiple: "multiple", :class => 'by_type_id', :id => 'by_type_id'
+              .map_input_limit
+                .input_title Location has at least 1 Stern Insider Connected machine?
+                .machine_type_toggle
+                  %button#all_ic_toggle.machine_type_btn.active{:type => "button", :onclick => "setIcActive(false)"} All
+                  %button#ic_toggle.machine_type_btn{:type => "button", :onclick => "setIcActive(true)"} Has IC
           .filter_modal_footer
             %button.clear_filters_button{:type => "button", :onclick => "clearAllFilters(); updateClearFiltersButton();"} Clear
             %button.apply_filters_button{:type => "submit"} Apply
@@ -85,7 +130,7 @@
 :javascript
   center_lat = #{@nearby_lat};
   center_lon = #{@nearby_lon};
-  const inputField2 = document.getElementById("address");
+  const inputField = document.getElementById("address");
   const clearButton2 = document.getElementById("clearButton2");
 
   function inputDisplayToggle(event) {
@@ -96,7 +141,7 @@
       clearButton.style.display = "none";
     }
   }
-  inputField2.addEventListener("input", inputDisplayToggle);
+  inputField.addEventListener("input", inputDisplayToggle);
 
   function clearSearch(event) {
     document.getElementById('address').value = "";
@@ -113,6 +158,30 @@
   // Tracks machine_group_id for each selected machine, so we know when a
   // single selection belongs to a group (and the exact-version toggle applies).
   var machineGroups = #{raw @selected_machines.to_h { |m| [m.id.to_s, m.machine_group_id] }.to_json};
+  var machineIcEligible = #{raw @selected_machines.to_h { |m| [m.id.to_s, m.ic_eligible] }.to_json};
+  var emModeActive = false;
+  var icActiveMode = false;
+  var singleVersionActive = false;
+  var icVersionActive = false;
+
+  function setSingleVersion(active) {
+    singleVersionActive = active;
+    $('#selected_version_toggle').toggleClass('active', active);
+    $('#all_version_toggle').toggleClass('active', !active);
+  }
+
+  function setIcVersion(active) {
+    icVersionActive = active;
+    $('#has_ic_version_toggle').toggleClass('active', active);
+    $('#no_ic_version_toggle').toggleClass('active', !active);
+  }
+
+  function setNMachines(val) {
+    $('#by_at_least_n_machines').val(val);
+    $('.n_machines_btn').removeClass('active');
+    $('#' + (val === '' ? 'n_machines_all' : 'n_machines_' + val)).addClass('active');
+    updateClearFiltersButton();
+  }
 
   function machineSelectIds() {
     return $('#by_machine_select').val() || [];
@@ -124,7 +193,13 @@
       $('#single_hide').css('display', 'flex');
     } else {
       $('#single_hide').hide();
-      $('#singleVersion').prop('checked', false);
+      setSingleVersion(false);
+    }
+    if (ids.length === 1 && machineIcEligible[ids[0]]) {
+      $('#ic_eligible_hide').css('display', 'flex');
+    } else {
+      $('#ic_eligible_hide').hide();
+      setIcVersion(false);
     }
   }
 
@@ -132,9 +207,17 @@
     var machineIds = machineSelectIds();
     var nMachines = $('#by_at_least_n_machines').val();
     var typeIds = $('#by_type_id').val();
+    var mfr = $('#by_manufacturer').val();
+    var yearGte = $('#by_machine_year_gte').val();
+    var yearLte = $('#by_machine_year_lte').val();
     return (machineIds && machineIds.length > 0) ||
            (nMachines !== null && nMachines !== '') ||
-           (typeIds && typeIds.length > 0);
+           (typeIds && typeIds.length > 0) ||
+           (mfr && mfr.length > 0) ||
+           emModeActive ||
+           icActiveMode ||
+           (yearGte && yearGte !== '') ||
+           (yearLte && yearLte !== '');
   }
 
   function updateClearFiltersButton() {
@@ -151,20 +234,45 @@
     $('#address_search_form').submit();
   }
 
+  function setMachineType(type) {
+    emModeActive = (type === 'em');
+    $('#em_toggle').toggleClass('active', emModeActive);
+    $('#all_toggle').toggleClass('active', !emModeActive);
+    updateClearFiltersButton();
+  }
+
+  function setIcActive(active) {
+    icActiveMode = active;
+    $('#ic_toggle').toggleClass('active', icActiveMode);
+    $('#all_ic_toggle').toggleClass('active', !icActiveMode);
+    updateClearFiltersButton();
+  }
+
   $(function () {
     $('#by_machine_select').select2({
       placeholder: '#{j @machine_placeholder}',
       width: '100%',
       closeOnSelect: true,
+      minimumInputLength: 0,
       ajax: {
         url: '/machines/autocomplete',
         dataType: 'json',
         delay: 250,
-        data: function (params) { return { term: params.term }; },
+        data: function (params) {
+          var d = { term: params.term };
+          if (emModeActive) d.machine_type = ['em', 'me'];
+          var mfr = $('#by_manufacturer').val();
+          if (mfr && mfr.length > 0) d.manufacturer = mfr;
+          var yearGte = $('#by_machine_year_gte').val();
+          if (yearGte) d.by_machine_year_gte = yearGte;
+          var yearLte = $('#by_machine_year_lte').val();
+          if (yearLte) d.by_machine_year_lte = yearLte;
+          return d;
+        },
         processResults: function (data) {
           return {
             results: data.map(function (m) {
-              return { id: m.id, text: m.value, group_id: m.group_id };
+              return { id: m.id, text: m.value, group_id: m.group_id, ic_eligible: m.ic_eligible };
             })
           };
         }
@@ -174,6 +282,7 @@
     $('#by_machine_select').on('select2:select', function (e) {
       var d = e.params.data;
       machineGroups[String(d.id)] = (d.group_id != null && d.group_id !== '') ? d.group_id : null;
+      machineIcEligible[String(d.id)] = d.ic_eligible || false;
       $('#by_location_id').val('');
       updateMachineSingleHide();
       updateClearFiltersButton();
@@ -189,14 +298,40 @@
       width: '100%'
     });
 
-    $('#by_type_id').on('select2:select select2:unselect change', updateClearFiltersButton);
-    $('#by_at_least_n_machines').on('change', updateClearFiltersButton);
+    var manufacturerData = null;
+    $('#by_manufacturer').select2({
+      placeholder: '',
+      closeOnSelect: false,
+      width: '100%',
+      ajax: {
+        transport: function(params, success, failure) {
+          if (manufacturerData !== null) {
+            success(manufacturerData);
+            return { abort: function() {} };
+          }
+          return $.getJSON('/machines/manufacturers')
+            .done(function(data) { manufacturerData = data; success(data); })
+            .fail(failure);
+        },
+        processResults: function(data, params) {
+          var term = ((params && params.term) || '').toLowerCase();
+          var filtered = term ? data.filter(function(m) { return m.text.toLowerCase().indexOf(term) !== -1; }) : data;
+          return { results: filtered };
+        }
+      }
+    });
 
-    // Show exact-version toggle for a single grouped machine selection.
-    // A deep link that used by_machine_single_id for a single grouped machine
-    // means the user had "exact version" checked — restore that.
+    $('#by_type_id').on('select2:select select2:unselect change', updateClearFiltersButton);
+    $('#by_manufacturer').on('select2:select select2:unselect change', updateClearFiltersButton);
+    $('#by_machine_year_gte, #by_machine_year_lte').on('change', updateClearFiltersButton);
+
+    // Restore toggle/button state from deep-link URL params.
     updateMachineSingleHide();
-    #{Array(params[:by_machine_single_id]).map(&:to_i).uniq.length == 1 && @selected_machines.size == 1 && @selected_machines.first&.machine_group_id ? "$('#singleVersion').prop('checked', true);" : ""}
+    #{Array(params[:by_machine_single_id]).map(&:to_i).uniq.length == 1 && @selected_machines.size == 1 && @selected_machines.first&.machine_group_id ? "setSingleVersion(true);" : ""}
+    #{(params[:by_machine_id_ic].present? || params[:by_machine_single_id_ic].present?) && @selected_machines.size == 1 && @selected_machines.first&.ic_eligible ? "setIcVersion(true);" : ""}
+    #{Array(params[:by_machine_type]).include?('em') ? "emModeActive = true; $('#em_toggle').addClass('active'); $('#all_toggle').removeClass('active');" : ""}
+    #{params[:by_ic_active].present? ? "icActiveMode = true; $('#ic_toggle').addClass('active'); $('#all_ic_toggle').removeClass('active');" : ""}
+    #{params[:by_at_least_n_machines].present? ? "setNMachines('#{params[:by_at_least_n_machines]}');" : ""}
     updateClearFiltersButton();
 
     $('#address').bind('input', function(event, ui) {
@@ -236,7 +371,7 @@
         $('#by_machine_select').val(null).trigger('change');
         $('#by_type_id').val(null).trigger('change');
         $('#single_hide').hide();
-        $('#singleVersion').prop('checked', false);
+        setSingleVersion(false);
       }
       $('#address_search_form').submit();
     });
@@ -304,25 +439,32 @@
   });
 
   document.getElementById("refresh_button").addEventListener("click", function(event) {
-    by_at_least_n_machines = $('#by_at_least_n_machines').val();
-    by_type_id = $('#by_type_id').val();
+    var by_at_least_n_machines = $('#by_at_least_n_machines').val();
+    var by_type_id = $('#by_type_id').val();
+    var manufacturer = $('#by_manufacturer').val();
+    var by_machine_year_gte = $('#by_machine_year_gte').val() || undefined;
+    var by_machine_year_lte = $('#by_machine_year_lte').val() || undefined;
+    var by_machine_type = emModeActive ? ['em', 'me'] : undefined;
     $('#intro_container').css('display','none');
 
     var machineIds = machineSelectIds();
-    if (machineIds.length === 1 && machineGroups[machineIds[0]] && !$("#singleVersion").is(':checked')) {
+    var by_machine_id, by_machine_single_id, by_machine_id_ic, by_machine_single_id_ic;
+
+    if (icVersionActive && machineIds.length) {
+      if (machineIds.length === 1 && machineGroups[machineIds[0]] && !singleVersionActive) {
+        by_machine_id_ic = machineIds;
+      } else {
+        by_machine_single_id_ic = machineIds;
+      }
+    } else if (machineIds.length === 1 && machineGroups[machineIds[0]] && !singleVersionActive) {
       by_machine_id = machineIds;
-      by_machine_single_id = undefined;
     } else if (machineIds.length) {
       by_machine_single_id = machineIds;
-      by_machine_id = undefined;
-    } else {
-      by_machine_id = undefined;
-      by_machine_single_id = undefined;
     }
 
     var mapActivityVisible = $('#map_activity_container').html().trim() !== '';
 
-    getMapBounds(by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id);
+    getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active: icActiveMode ? '1' : undefined, by_machine_year_gte, by_machine_year_lte });
     clearSearch(event);
 
     if (mapActivityVisible) {
@@ -335,12 +477,28 @@
 
     var machineIds = machineSelectIds();
     var machineParams = '';
-    if (machineIds.length === 1 && machineGroups[machineIds[0]] && !$("#singleVersion").is(':checked')) {
+
+    if (icVersionActive && machineIds.length) {
+      if (machineIds.length === 1 && machineGroups[machineIds[0]] && !singleVersionActive) {
+        machineParams = '&by_machine_id_ic[]=' + encodeURIComponent(machineIds[0]);
+      } else {
+        machineIds.forEach(function(id) {
+          machineParams += '&by_machine_single_id_ic[]=' + encodeURIComponent(id);
+        });
+      }
+    } else if (machineIds.length === 1 && machineGroups[machineIds[0]] && !singleVersionActive) {
       machineParams = '&by_machine_id[]=' + encodeURIComponent(machineIds[0]);
     } else {
       machineIds.forEach(function(id) {
         machineParams += '&by_machine_single_id[]=' + encodeURIComponent(id);
       });
+    }
+
+    if (emModeActive) {
+      machineParams += '&by_machine_type[]=em&by_machine_type[]=me';
+    }
+    if (icActiveMode) {
+      machineParams += '&by_ic_active=1';
     }
 
     hideFilterModal();
@@ -353,7 +511,7 @@
     var formData = form.serialize();
 
     // Drive the shareable pushState URL (read by _locations.html.haml).
-    // The machine multiselect has no name, so its params are appended manually.
+    // Machine multiselect, EM toggle, and IC checkbox have no form names — appended manually.
     var formQuery = $("#address_search_form :input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
     search_string = formQuery + machineParams;
 
@@ -363,8 +521,17 @@
 
     if (!hasGeoParam && mapLoaded === 1) {
       var capturedBoundsData = getMapBoundsData();
-      var by_machine_id_val = (machineIds.length === 1 && machineGroups[machineIds[0]] && !$("#singleVersion").is(':checked')) ? machineIds : undefined;
-      var by_machine_single_id_val = (!by_machine_id_val && machineIds.length) ? machineIds : undefined;
+      var by_machine_id_val, by_machine_single_id_val, by_machine_id_ic_val, by_machine_single_id_ic_val;
+      if (icVersionActive && machineIds.length) {
+        if (machineIds.length === 1 && machineGroups[machineIds[0]] && !singleVersionActive) {
+          by_machine_id_ic_val = machineIds;
+        } else {
+          by_machine_single_id_ic_val = machineIds;
+        }
+      } else {
+        by_machine_id_val = (machineIds.length === 1 && machineGroups[machineIds[0]] && !singleVersionActive) ? machineIds : undefined;
+        by_machine_single_id_val = (!by_machine_id_val && machineIds.length) ? machineIds : undefined;
+      }
       lastSearchFn = function() {
         refresh_bounds = map.getBounds();
         $('#locations').html(loadingHTML());
@@ -375,8 +542,15 @@
             boundsData: capturedBoundsData,
             by_at_least_n_machines: $('#by_at_least_n_machines').val(),
             by_type_id: $('#by_type_id').val(),
+            manufacturer: $('#by_manufacturer').val(),
+            by_machine_type: emModeActive ? ['em', 'me'] : undefined,
             by_machine_id: by_machine_id_val,
             by_machine_single_id: by_machine_single_id_val,
+            by_machine_id_ic: by_machine_id_ic_val,
+            by_machine_single_id_ic: by_machine_single_id_ic_val,
+            by_ic_active: icActiveMode ? '1' : undefined,
+            by_machine_year_gte: $('#by_machine_year_gte').val() || undefined,
+            by_machine_year_lte: $('#by_machine_year_lte').val() || undefined,
             sort: currentSort
           },
           success: function(data) {

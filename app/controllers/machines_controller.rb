@@ -6,9 +6,13 @@ class MachinesController < ApplicationController
 
   def autocomplete
     if params[:region_level_search].nil?
-      results = Machine.where("clean_items(name) ilike '%' || clean_items(?) || '%'", params[:term])
-                       .sort_by(&:name)
-                       .map { |m| { label: m.name_and_year, value: m.name_and_year, id: m.id, group_id: m.machine_group_id } }
+      results = Machine.where("clean_items(name) ilike '%' || clean_items(?) || '%'", params[:term].to_s)
+      results = results.where(machine_type: Array(params[:machine_type])) if params[:machine_type].present?
+      results = results.where(manufacturer: Array(params[:manufacturer])) if params[:manufacturer].present?
+      results = results.where("year >= ?", params[:by_machine_year_gte].to_i) if params[:by_machine_year_gte].present?
+      results = results.where("year <= ?", params[:by_machine_year_lte].to_i) if params[:by_machine_year_lte].present?
+      results = results.sort_by(&:name)
+                       .map { |m| { label: m.name_and_year, value: m.name_and_year, id: m.id, group_id: m.machine_group_id, ic_eligible: m.ic_eligible } }
     else
       sql = <<-SQL
       select distinct m.name, m."year", m.id, m.machine_group_id, m.manufacturer from locations l
@@ -30,5 +34,12 @@ class MachinesController < ApplicationController
     end
 
     render json: results
+  end
+
+  def manufacturers
+    list = Rails.cache.fetch("manufacturers_list", expires_in: 1.hour) do
+      Machine.distinct.pluck(:manufacturer).compact.sort
+    end
+    render json: list.map { |m| { id: m, text: m } }
   end
 end
