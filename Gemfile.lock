@@ -57,7 +57,7 @@ GEM
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
-    active_storage_validations (3.0.4)
+    active_storage_validations (3.0.5)
       activejob (>= 6.1.4)
       activemodel (>= 6.1.4)
       activestorage (>= 6.1.4)
@@ -159,7 +159,7 @@ GEM
       countries (> 6.0, < 9.0)
     crass (1.0.6)
     csv (3.3.5)
-    dalli (5.0.2)
+    dalli (5.0.5)
       logger
     database_cleaner (2.1.0)
       database_cleaner-active_record (>= 2, < 3)
@@ -291,7 +291,7 @@ GEM
       net-imap
       net-pop
       net-smtp
-    marcel (1.1.0)
+    marcel (1.2.1)
     matrix (0.4.3)
     maxminddb (0.1.22)
     memory_profiler (1.1.0)
@@ -303,7 +303,7 @@ GEM
       prism (~> 1.5)
     mutex_m (0.3.0)
     nested_form (0.3.2)
-    net-imap (0.6.4)
+    net-imap (0.6.4.1)
       date
       net-protocol
     net-pop (0.1.2)
@@ -320,7 +320,7 @@ GEM
     openssl (4.0.1)
     orm_adapter (0.5.0)
     ostruct (0.6.3)
-    pagy (43.5.3)
+    pagy (43.5.6)
       json
       uri
       yaml
