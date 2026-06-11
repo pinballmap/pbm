@@ -2,7 +2,7 @@ class MachineScoreXrefsController < ApplicationController
   include ActionView::Helpers::NumberHelper
   has_scope :region
   before_action :authenticate_user!, except: %i[index new]
-  rate_limit to: 40, within: 5.minutes, only: :create
+  rate_limit to: 80, within: 2.minutes, only: :create, name: "msx_create"
 
   def new
     @all_machines = Machine.order(:name).select(:id, :name, :year, :manufacturer).map { |m| [ m.name_and_year, m.id ] }

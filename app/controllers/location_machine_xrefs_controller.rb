@@ -1,8 +1,8 @@
 class LocationMachineXrefsController < ApplicationController
   has_scope :region
   before_action :authenticate_user!, except: %i[index render_machine_conditions render_machine_scores render_machine_tools render_life_list]
-  rate_limit to: 100, within: 10.minutes, only: :destroy
-  rate_limit to: 100, within: 10.minutes, only: :update_machine_condition
+  rate_limit to: 100, within: 5.minutes, only: :destroy, name: "lmx_destroy"
+  rate_limit to: 50, within: 10.minutes, only: :update_machine_condition, name: "lmx_update_machine_condition"
 
   def create
     machine = nil

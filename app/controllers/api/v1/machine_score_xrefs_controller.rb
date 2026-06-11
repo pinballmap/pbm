@@ -6,7 +6,7 @@ module Api
 
       before_action :allow_cors
       has_scope :region, :limit, :zone_id
-      rate_limit to: 80, within: 2.minutes, only: :create
+      rate_limit to: 80, within: 2.minutes, only: :create, name: "api_msx_create"
 
       api :GET, "/api/v1/region/:region/machine_score_xrefs.json", "Fetch all high scores for a region"
       param :region, String, desc: "Name of the Region you want to see scores for", required: true

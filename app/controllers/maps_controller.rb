@@ -4,8 +4,8 @@ class MapsController < ApplicationController
   has_scope :by_location_name, :by_at_least_n_machines, :user_faved, :by_city_name, :by_city_no_state, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte
   has_scope :by_type_id, :by_location_id, :by_machine_id, :by_operator_id, :by_machine_single_id, :by_machine_type, :by_machine_display, :manufacturer, :by_country, :by_state_name, :by_machine_id_ic, :by_machine_single_id_ic, type: :array
 
-  rate_limit to: 100, within: 3.minutes, only: :region
-  rate_limit to: 100, within: 1.minute
+  rate_limit to: 100, within: 2.minutes, only: :region, name: "maps_region"
+  rate_limit to: 100, within: 1.minute, name: "maps_general"
 
   def map
     user = current_user.nil? ? nil : current_user

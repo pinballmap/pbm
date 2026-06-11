@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   AUTH_REQUIRED_MSG = "Authentication is required for this action. If you are using the app, you may need to confirm your account (see the email from us) or log out and back in.".freeze
   ACCOUNT_DISABLED_MSG = "account_disabled".freeze
   COUNTRIES_WITHOUT_STATE = %w[AT BE DE EE GB FI FR HK HR HU NL NO PL PT NZ RO SI SE].freeze
-  rate_limit to: 100, within: 2.minutes, if: lambda { |req| req.bot? }
+  rate_limit to: 180, within: 2.minutes, if: lambda { |req| req.bot? }, name: "bot"
 
   include Pagy::Method
 

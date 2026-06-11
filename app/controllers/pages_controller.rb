@@ -16,8 +16,8 @@ class PagesController < ApplicationController
   }.freeze
   respond_to :html, only: %i[set_activities]
   before_action :authenticate_user!, only: %i[submitted_new_location]
-  rate_limit to: 5, within: 10.minutes, only: :contact_sent
-  rate_limit to: 100, within: 5.minutes, only: :recent_activity
+  rate_limit to: 5, within: 10.minutes, only: :contact_sent, name: "pages_contact_sent"
+  rate_limit to: 100, within: 3.minutes, only: :recent_activity, name: "pages_recent_activity"
 
   def contact_sent
     user = current_user.nil? ? nil : current_user
