@@ -8,6 +8,7 @@ map $http_user_agent $limit_key {
   "~*MJ12bot" "MJ12bot";
   "~*BLEXBot" "BLEXBot";
   "~*meta-webindexer" "meta-webindexer";
+  "~*bingbot" "bingbot";
 }
 
 limit_req_zone $limit_key zone=bots_nginx:10m rate=10r/m;
@@ -55,7 +56,7 @@ server {
   {{ end }}
 
   if ($http_user_agent = "") { return 403; }
-  if ($http_user_agent ~* (bingbot|scrapy|SleepBot)){
+  if ($http_user_agent ~* (scrapy|SleepBot)){
       return 403;
   }
 
