@@ -331,7 +331,7 @@
     #{(params[:by_machine_id_ic].present? || params[:by_machine_single_id_ic].present?) && @selected_machines.size == 1 && @selected_machines.first&.ic_eligible ? "setIcVersion(true);" : ""}
     #{Array(params[:by_machine_type]).include?('em') ? "emModeActive = true; $('#em_toggle').addClass('active'); $('#all_toggle').removeClass('active');" : ""}
     #{params[:by_ic_active].present? ? "icActiveMode = true; $('#ic_toggle').addClass('active'); $('#all_ic_toggle').removeClass('active');" : ""}
-    #{params[:by_at_least_n_machines].present? ? "setNMachines('#{params[:by_at_least_n_machines]}');" : ""}
+    #{params[:by_at_least_n_machines].present? ? "setNMachines('#{params[:by_at_least_n_machines].to_i}');" : ""}
     updateClearFiltersButton();
 
     $('#address').bind('input', function(event, ui) {
