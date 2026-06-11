@@ -1145,7 +1145,7 @@ form#address_search_form input.lookup_search_input {
   transform: translateX(-50%);
   width: 90%;
   max-width: 500px;
-  max-height: calc(100vh - 95px);
+  max-height: var(--modal-max-height, calc(100vh - 72px));
   display: flex;
   flex-direction: column;
   background: var(--white);
@@ -3426,6 +3426,11 @@ gmp-place-autocomplete {
   color: var(--black) !important;
 }
 
+/* iOS zooms any input with font-size < 16px on focus */
+.select2-search--dropdown .select2-search__field {
+  font-size: 16px !important;
+}
+
 .select2-search.select2-search--dropdown {
   background: var(--bg_vlightpurple) !important;
 }
@@ -3433,7 +3438,7 @@ gmp-place-autocomplete {
 .select2-search--inline .select2-search__field {
   background: transparent !important;
   color: var(--black) !important;
-  font-size: 14px !important;
+  font-size: 16px !important;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__placeholder {

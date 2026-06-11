@@ -164,6 +164,11 @@
   var singleVersionActive = false;
   var icVersionActive = false;
 
+  (function() {
+    var vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    document.documentElement.style.setProperty('--modal-max-height', (vh - 95) + 'px');
+  })();
+
   function setSingleVersion(active) {
     singleVersionActive = active;
     $('#selected_version_toggle').toggleClass('active', active);
