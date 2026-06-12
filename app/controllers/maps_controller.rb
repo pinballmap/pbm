@@ -19,19 +19,10 @@ class MapsController < ApplicationController
       @title_params[:title_meta] = "#{loc.name} on Pinball Map! " + loc.full_street_address + machine_length.to_s + machine_list.to_s
     end
 
-    @big_locations_sample = Location.select("name, random() as r").joins(:location_machine_xrefs).group("id").having("count(location_machine_xrefs)>9").order("r").first
-    @location_placeholder = @big_locations_sample.nil? ? "e.g. Ground Kontrol" : "e.g. " + @big_locations_sample.name
-
-    @machine_sample = Machine.select("name, random() as r").order("r").limit(1).first
-    @machine_placeholder = @machine_sample.nil? ? "e.g. Lord of the Rings" : "e.g. " + @machine_sample.name
-
     @machine_years = Rails.cache.fetch("machine_years", expires_in: 1.day) { Machine.distinct.pluck(:year).compact.sort }
 
     selected_machine_ids = (Array(params[:by_machine_id]) + Array(params[:by_machine_single_id]) + Array(params[:by_machine_id_ic]) + Array(params[:by_machine_single_id_ic])).map(&:to_i).uniq
     @selected_machines = Machine.where(id: selected_machine_ids)
-
-    @big_cities_sample = Location.select(%i[city state], "random() as r").having("count(city)>9").where.not(state: [ nil, "" ]).group("city", "state").order("r").limit(1).first
-    @big_cities_placeholder = @big_cities_sample.nil? ? "e.g. Portland, OR" : "e.g. " + @big_cities_sample.city + ", " + @big_cities_sample.state
 
     @map_no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_city_id].blank? && params[:by_state_name].blank? && params[:by_city_no_state].blank? && params[:by_country].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank? && params[:by_is_stern_army].blank? && params[:by_machine_type].blank? && params[:by_machine_display].blank? && params[:manufacturer].blank? && params[:by_operator_id].blank? && params[:by_operator_name].blank? && params[:by_machine_id_ic].blank? && params[:by_machine_single_id_ic].blank? && params[:by_machine_year_gte].blank? && params[:by_machine_year_lte].blank?
 

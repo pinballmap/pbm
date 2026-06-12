@@ -1104,8 +1104,9 @@ describe LocationMachineXrefsController do
 
       visit '/operators'
 
-      select('Quarter Bean', from: 'by_operator_id')
-      page.find('input#location_search_button').click
+      find('.select2-selection--single').click
+      find('.select2-results__option', text: 'Quarter Bean').click
+      find('#location_search_button').click
 
       within('div.search_result') do
         expect(page).to have_content('Cleo')
