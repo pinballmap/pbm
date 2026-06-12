@@ -1343,21 +1343,9 @@ form#address_search_form input.lookup_search_input {
   height: 40px;
 }
 
-span.or {
-  font-size: 16px;
-  position: absolute;
-  background: var(--border);
-  height: 28px;
-  line-height: 26px;
-  width: 22px;
-  text-align: center;
-  color: var(--vlightpurple);
-  font-family: $italic;
-}
-
 .search_field_container {
   width: 55%;
-  height: 28px;
+  height: 32px;
   border: 2px solid var(--border);
   float: right;
   background: var(--white);
@@ -1369,7 +1357,7 @@ span.or {
 #form .search_other_button input,
 #sort_toggle_btn {
   border: none;
-  height: 28px;
+  height: 32px;
   margin: -2px -2px 0 0;
   @include radius(10px);
   padding: 5px 25px;
@@ -2158,7 +2146,7 @@ div.machine_condition_meta {
   min-width: 100%;
   height: 80px;
   max-height: 120px;
-  min-height: 28px;
+  min-height: 32px;
   font-family: $Nunito_400Regular;
   padding: 5px;
   margin-bottom: 5px;
@@ -2307,7 +2295,7 @@ br.clear {
 form select {
   border: 2px solid var(--border);
   background-color: var(--bg_vlightpurple);
-  height: 28px;
+  height: 32px;
   @include radius(10px);
   font-size: 15px;
   padding-right: 3px;
@@ -2369,10 +2357,10 @@ form select:hover {
   padding: 4px 8px;
   cursor: pointer;
   margin-right: 4px;
-  font-size: 14px;
+  font-size: 16px;
   font-family: $Nunito_600SemiBold;
   text-transform: uppercase;
-  height: 28px;
+  height: 32px;
   background: #47475f;
   color: #fafaff;
 }
@@ -2400,6 +2388,18 @@ input.search:active,
 
 .save_button {
   margin-top: 15px;
+}
+
+.button_row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+
+  .save_button,
+  .cancel_button {
+    margin-top: 0;
+  }
 }
 
 .profile .save_button, .recent_location_activity_location .save_button, #map_activity .save_button {
@@ -2504,7 +2504,7 @@ input.score,
 #life_list_filter {
   background: var(--white);
   padding: 0 5px;
-  height: 28px;
+  height: 32px;
   border: 2px solid var(--border);
   color: var(--black);
   @include radius(10px);
@@ -2524,7 +2524,7 @@ input.search,
 
 #form input.lookup_search_input,
 .lookup_search_input {
-  height: 35px;
+  height: 32px;
   font-size: 16px;
   margin: 0 0 0 4px;
   background: var(--white);
@@ -2582,14 +2582,13 @@ input.lookup_search_input:focus {
   width: 300px;
   height: 70px;
   max-height: 100px;
-  min-height: 28px;
+  min-height: 32px;
   margin-bottom: 10px;
   font-family: $Nunito_400Regular;
   float: right;
 }
 
 .add_high_score_form {
-  padding: 0 0 5px 10px;
   width: 100%;
 }
 
@@ -3343,7 +3342,7 @@ gmp-place-autocomplete {
 
 #score_maker input.text {
   font-size: 16px;
-  height: 35px;
+  height: 32px;
 }
 
 #location_maker input.text,
@@ -3371,7 +3370,7 @@ gmp-place-autocomplete {
   min-width: 80%;
   max-height: 300px;
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
   resize: both;
   overflow: auto;
   padding: 3px 5px;
@@ -3379,12 +3378,12 @@ gmp-place-autocomplete {
 
 #location_maker li.machines_textinput textarea {
   font-family: $Nunito_400Regular;
-  min-height: 28px;
+  min-height: 32px;
   width: 575px;
   max-width: 575px;
   min-width: 575px;
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
   padding-top: 2px;
   resize: none;
   overflow: auto;
@@ -3498,7 +3497,7 @@ gmp-place-autocomplete {
 .map_input_limit span.selection,
 .map_input_limit .select2-container .select2-selection--multiple {
   width: 100% !important;
-  min-height: 35px !important;
+  min-height: 32px !important;
 }
 
 .map_input_machine .selection {
@@ -3506,19 +3505,15 @@ gmp-place-autocomplete {
 }
 
 .stats .select2-container .select2-selection--multiple {
-  min-height: 38px !important;
+  min-height: 32px !important;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-#score_maker .select2-container--default .select2-selection--single,
-.operators_select_col .select2-container--default .select2-selection--single {
-  height: 35px !important;
-  min-height: 35px !important;
-}
-
 #score_maker .select2-container--default .select2-selection--single .select2-selection__arrow,
-.operators_select_col .select2-container--default .select2-selection--single .select2-selection__arrow {
+.operators_select_col .select2-container--default .select2-selection--single .select2-selection__arrow,
+#score_maker .select2-container--default .select2-selection--single,
+.operators_select_col .select2-container--default .select2-selection--single{
   height: 32px !important;
   min-height: 32px !important;
 }
@@ -3555,7 +3550,6 @@ gmp-place-autocomplete {
 /** High Scores **/
 
 .high_score {
-  margin-bottom: 10px;
   font-size: 16px;
   color: var(--black);
   font-family: $Nunito_600SemiBold;
@@ -3564,7 +3558,6 @@ gmp-place-autocomplete {
 .high_score_date {
   font-family: $italic;
   color: var(--darkgrey);
-  margin-left: 8px;
 }
 
 .column .sub_nav_item {
