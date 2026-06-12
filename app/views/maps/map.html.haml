@@ -270,7 +270,8 @@
       ajax: {
         url: '/machines/autocomplete',
         dataType: 'json',
-        delay: 250,
+        delay: 350,
+        cache: true,
         data: function (params) {
           var d = { term: params.term };
           if (emModeActive) d.machine_type = ['em', 'me'];
