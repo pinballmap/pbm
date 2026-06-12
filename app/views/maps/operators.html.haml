@@ -7,6 +7,7 @@
         .operators_search_wrapper
           .operators_select_col
             %select#by_operator_id.by_operator_id{ name: "by_operator_id" }
+              %option{ value: "" }
               - if params[:by_operator_id].present?
                 %option{ value: params[:by_operator_id], selected: "selected" }= Operator.find_by(id: params[:by_operator_id])&.name
           %button.operators_search_btn{type: "submit", id: "location_search_button", "aria-label": "Search"}
@@ -57,8 +58,15 @@
         processResults: function(data, params) {
           var term = ((params && params.term) || '').toLowerCase();
           var filtered = term ? data.filter(function(o) { return o.text.toLowerCase().indexOf(term) !== -1; }) : data;
-          return { results: filtered };
+          return { results: term ? filtered : [{ id: '__clear__', text: 'N/A' }].concat(filtered) };
         }
+      }
+    });
+
+    $('#by_operator_id').on('select2:select', function(e) {
+      if (e.params.data.id === '__clear__') {
+        $(this).find('option[value="__clear__"]').remove();
+        $(this).val('').trigger('change');
       }
     });
   });

@@ -498,7 +498,7 @@ describe MapsController do
 
       page.find('#open_filter_modal_button').click
       page.find('#by_operator_id + .select2 .selection').click
-      page.find('#by_operator_id + .select2-container .select2-search__field').set('Fun')
+      page.find('.select2-search--dropdown .select2-search__field').set('Fun')
       sleep 0.5
       page.find('.select2-results__option', text: /Fun Operators/).click
       page.find('.apply_filters_button').click
