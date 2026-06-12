@@ -2315,6 +2315,10 @@ form select {
   color: var(--darkgrey);
 }
 
+.year_range_selects select {
+  text-align: center;
+}
+
 #form select:hover,
 form select:hover {
   cursor: pointer;
@@ -3478,6 +3482,7 @@ gmp-place-autocomplete {
   background: transparent !important;
   color: var(--black) !important;
   font-size: 16px !important;
+  font-family: $Nunito_400Regular !important;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__placeholder {
@@ -3528,11 +3533,6 @@ gmp-place-autocomplete {
 .operators_select_col .select2-container--default .select2-selection--single{
   height: 32px !important;
   min-height: 32px !important;
-}
-
-#score_maker .select2-container--default .select2-selection--single .select2-selection__rendered,
-.operators_select_col .select2-container--default .select2-selection--single .select2-selection__rendered {
-  line-height: 32px !important;
 }
 
 #score_maker .select2-container {

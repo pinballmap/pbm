@@ -564,7 +564,7 @@ describe LocationMachineXrefsController do
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
       page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
-      page.find("input#cancel_machine_condition_#{@lmx.id}").click
+      page.find("button#cancel_machine_condition_#{@lmx.id}").click
 
       sleep 1
     end
