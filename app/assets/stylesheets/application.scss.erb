@@ -1222,6 +1222,49 @@ form#address_search_form input.lookup_search_input {
   padding: 95px 10px 10px 10px;
 }
 
+.operators_search_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.operators_select_col {
+  flex: 1;
+  min-width: 0;
+}
+
+// .operators_select_col .select2-container .select2-selection--multiple {
+//   min-height: 28px !important;
+//   height: 28px !important;
+//   padding-bottom: 0 !important;
+// }
+//
+// .operators_select_col .select2-container .select2-selection--multiple ul.select2-selection__rendered {
+//   padding: 0 4px;
+//   line-height: 26px;
+// }
+//
+// .operators_select_col .select2-search--inline .select2-search__field {
+//   height: 26px !important;
+//   margin: 0;
+// }
+
+.operators_search_btn {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--dark);
+  flex-shrink: 0;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+}
+
 /** END map **/
 
 /** Footer **/
@@ -1338,6 +1381,7 @@ span.or {
 }
 
 #region_page_body .location_search .search,
+#operators_page_body .location_search .search,
 #form .search_other_button input,
 #sort_toggle_btn {
   border: none;
@@ -3468,7 +3512,8 @@ gmp-place-autocomplete {
 .map_input_machine .select2.select2-container.select2-container--default,
 .map_input_limit .select2,
 .map_input_limit span.selection,
-.map_input_limit .select2-container .select2-selection--multiple {
+.map_input_limit .select2-container .select2-selection--multiple,
+.operators_select_col .select2-container .select2-selection--multiple {
   width: 100% !important;
   min-height: 38px !important;
 }
