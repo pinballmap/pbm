@@ -34,8 +34,6 @@
     %li.menu_header_02=link_to 'Logout', destroy_user_session_path, method: :delete
     - if (current_user && !current_user.region_id.blank?)
       %li.menu_header_02= link_to 'Admin', rails_admin_path
-  - if user_signed_in?
-    %li.menu_header_03=link_to 'Saved Locations', saved_path
   - if (@region)
     %li.menu_header_01=link_to 'Add Location', suggest_path
     %li=link_to 'About / Contact', about_path
@@ -53,7 +51,6 @@
   - if !(@region)
     %li=link_to 'Activity Feed', activity_path
     %li=link_to 'Location RSS', "/location_machine_xrefs.rss", {:class => 'feed_icon'}
-  %li=link_to 'Operators Map', operators_path
   %li=link_to 'Stats', stats_path
   %li=link_to 'FAQ', faq_path
   %li=link_to 'App', app_path

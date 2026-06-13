@@ -229,17 +229,15 @@ Rails.application.routes.draw do
   get 'pages/home'
   get '/search/autocomplete', to: 'search#autocomplete'
   get 'map' => 'maps#map'
-  get 'operators' => 'maps#operators'
+  get 'operators', to: redirect('/map')
   get 'operators_autocomplete' => 'maps#operators_autocomplete'
-  get 'operator_location_data' => 'maps#operator_location_data'
-  get 'saved' => 'maps#map', user_faved: true
+  get 'saved', to: redirect('/map')
   get 'map_location_data' => 'maps#map_location_data'
   post 'map_location_data' => 'maps#map_location_data'
   post 'region_location_load' => 'maps#region_location_load'
   post 'map_location_load' => 'maps#map_location_load'
   post 'get_bounds_load' => 'maps#get_bounds_load'
   post 'nearby_locations_load' => 'maps#nearby_locations_load'
-  post 'operator_location_load' => 'maps#operator_location_load'
   post 'get_bounds', to: 'maps#get_bounds'
   post 'map_nearby', to: 'maps#map_nearby'
   post 'locations', to: 'locations#index'

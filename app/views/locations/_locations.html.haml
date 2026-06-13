@@ -1,9 +1,10 @@
 - if (@locations)
-  - @operators_map = "operators" if request.url.include?('operator_location_data')
   :javascript
     $("#min_lookup_wrapper,#map_activity_button, #closest_button, #key_container").removeClass("hide_button");
 
     var locations_geojson = JSON.parse('#{@locations_geojson}');
+    var _favedSet = new Set(favedLocationIds);
+    locations_geojson.forEach(function(f) { f.properties.is_faved = _favedSet.has(f.id); });
     notFound_lat = "#{@nearby_lat || 0}";
     notFound_lon = "#{@nearby_lon || 0}";
     showLocations(notFound_lat, notFound_lon#{', true' if @city_search_mode});

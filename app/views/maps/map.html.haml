@@ -95,6 +95,12 @@
                   %option{ value: "" }
                   - if params[:by_operator_id].present?
                     %option{ value: params[:by_operator_id], selected: "selected" }= Operator.find_by(id: params[:by_operator_id])&.name
+              - if current_user
+                .map_input_limit
+                  .input_title Saved locations
+                  .machine_type_toggle
+                    %button#all_saved_toggle.machine_type_btn.active{:type => "button", :onclick => "setSavedMode(false)"} All
+                    %button#my_saved_toggle.machine_type_btn{:type => "button", :onclick => "setSavedMode(true)"} My Saved
           .filter_modal_footer
             %button.clear_filters_button{:type => "button", :onclick => "clearAllFilters(); updateClearFiltersButton();"} Clear
             %button.apply_filters_button{:type => "submit"} Apply
@@ -169,6 +175,9 @@
   var icActiveMode = false;
   var singleVersionActive = false;
   var icVersionActive = false;
+  var savedModeActive = false;
+  var currentUserId = #{current_user ? current_user.id : 'null'};
+  favedLocationIds = #{raw @faved_location_ids.to_json};
 
   (function() {
     var vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
@@ -228,6 +237,7 @@
            (mfr && mfr.length > 0) ||
            emModeActive ||
            icActiveMode ||
+           savedModeActive ||
            (yearGte && yearGte !== '') ||
            (yearLte && yearLte !== '') ||
            (operatorIds && operatorIds.length > 0);
@@ -258,6 +268,13 @@
     icActiveMode = active;
     $('#ic_toggle').toggleClass('active', icActiveMode);
     $('#all_ic_toggle').toggleClass('active', !icActiveMode);
+    updateClearFiltersButton();
+  }
+
+  function setSavedMode(active) {
+    savedModeActive = active;
+    $('#my_saved_toggle').toggleClass('active', active);
+    $('#all_saved_toggle').toggleClass('active', !active);
     updateClearFiltersButton();
   }
 
@@ -375,6 +392,7 @@
     #{Array(params[:by_machine_type]).include?('em') ? "emModeActive = true; $('#em_toggle').addClass('active'); $('#all_toggle').removeClass('active');" : ""}
     #{params[:by_ic_active].present? ? "icActiveMode = true; $('#ic_toggle').addClass('active'); $('#all_ic_toggle').removeClass('active');" : ""}
     #{params[:by_at_least_n_machines].present? ? "setNMachines('#{params[:by_at_least_n_machines].to_i}');" : ""}
+    #{current_user && params[:user_faved].present? ? "setSavedMode(true);" : ""}
     updateClearFiltersButton();
 
     $('#address').bind('input', function(event, ui) {
@@ -508,7 +526,7 @@
 
     var mapActivityVisible = $('#map_activity_container').html().trim() !== '';
 
-    getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_operator_id, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active: icActiveMode ? '1' : undefined, by_machine_year_gte, by_machine_year_lte });
+    getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_operator_id, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active: icActiveMode ? '1' : undefined, by_machine_year_gte, by_machine_year_lte, user_faved: savedModeActive ? currentUserId : undefined });
     clearSearch(event);
 
     if (mapActivityVisible) {
@@ -543,6 +561,9 @@
     }
     if (icActiveMode) {
       machineParams += '&by_ic_active=1';
+    }
+    if (savedModeActive) {
+      machineParams += '&user_faved=' + currentUserId;
     }
 
     hideFilterModal();
@@ -596,6 +617,7 @@
             by_ic_active: icActiveMode ? '1' : undefined,
             by_machine_year_gte: $('#by_machine_year_gte').val() || undefined,
             by_machine_year_lte: $('#by_machine_year_lte').val() || undefined,
+            user_faved: savedModeActive ? currentUserId : undefined,
             sort: currentSort
           },
           success: function(data) {

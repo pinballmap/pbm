@@ -1,5 +1,5 @@
 - if !mobile_device?
-  #header{:class => "#{(defined? @region and current_page?(region_homepage_path)) || current_page?(map_path) || current_page?(saved_path) || current_page?(operators_path) ? 'header_fixed' : '' }"}
+  #header{:class => "#{(defined? @region and current_page?(region_homepage_path)) || current_page?(map_path) ? 'header_fixed' : '' }"}
     %div.header_logo_container
       =link_to image_tag('icon-color-noBGsvg.svg', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Ball Logo', :style => "height: 42px;padding-right: 3px;"), root_path, :class => "logo_link"
       =link_to image_tag('pinballmap-logo-base4.png', :class => "#{@region ? 'header_image' : 'header_image_home'}", :alt => 'Pinball Map Logo'), root_path, :class => "logo_link"
@@ -44,10 +44,6 @@
       - else
         .header_buttons_child.header_menu_01
           =link_to 'Add Location', suggest_path, :class => "bold"
-      - if (current_user)
-        .header_buttons_child.header_menu_03.flex_center
-          =image_tag( 'icons/heart-filled.svg', :alt => 'heart icon', :class => 'fave_icon')
-          =link_to 'Saved Locations', saved_path, :class => "bold"
       - if (@region)
         %div.region_logo.header_buttons_child
           %span.region_name_page

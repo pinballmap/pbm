@@ -127,11 +127,8 @@
     =image_tag( 'playing.jpg', :alt => 'playing', :style => 'height: 310px;border-radius: 10px;')
   .news
     %p== We have tools to help out operators. You can register your business in our system, tag all your locations, and receive email notifications when people leave comments on your machines. Check this section of #{link_to 'the FAQ', faq_path(anchor: 'operators')} for operator-specific tips.
-    %p
-      If you want to quickly look up all your locations, try this special map!
-    %p.explore.center{:style => 'line-height: 50px;margin: 20px 0;'}
-      = link_to 'Operators Map', operators_path
     %p== To be added to our system, and to receive email notifications (please specify that you want this), #{link_to 'contact us', global_contact_path, :class => "bold"}.
+    %p You can view all your locations by visiting the map and filtering by operator.
 %div.flex_center#stack
   =link_to 'Stack', '#stack', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex

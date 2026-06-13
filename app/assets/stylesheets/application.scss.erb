@@ -921,8 +921,7 @@ p.alert {
 }
 
 #header ul li.menu_header_01,
-#header ul li.menu_header_02,
-#header ul li.menu_header_03 {
+#header ul li.menu_header_02 {
   display: none;
 }
 
@@ -1218,37 +1217,6 @@ form#address_search_form input.lookup_search_input {
   padding: 65px 10px 10px 10px;
 }
 
-#lookup.operators_lookup {
-  padding: 95px 10px 10px 10px;
-}
-
-.operators_search_wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.operators_search_wrapper .operators_select_col {
-  flex: 1;
-  min-width: 0;
-}
-
-.operators_search_btn {
-  background: none;
-  border: 0;
-  box-shadow: none;
-  padding: 0;
-  cursor: pointer;
-  color: var(--dark);
-  flex-shrink: 0;
-
-  svg {
-    width: 20px;
-    height: 20px;
-    display: block;
-  }
-}
-
 /** END map **/
 
 /** Footer **/
@@ -1365,7 +1333,6 @@ span.or {
 }
 
 #region_page_body .location_search .search,
-#operators_page_body .location_search .search,
 #form .search_other_button input,
 #sort_toggle_btn {
   border: none;
@@ -1608,12 +1575,6 @@ input.ic_eligible_hide {
   font-family: $Nunito_700Bold;
 }
 
-#operators_page_body #refresh_button {
-  padding: 0;
-  width: 0;
-  box-shadow: none;
-}
-
 #refresh_button:hover,
 #map_activity_button:hover,
 #closest_button:hover{
@@ -1779,11 +1740,6 @@ form select#by_operator_id {
 .location_tools img:active {
   transform:scale(.8);
   transition:transform 0.25s ease;
-}
-
-img.fave_icon {
-  height: 20px;
-  margin-right: 5px;
 }
 
 .address,
@@ -3172,8 +3128,7 @@ span.begin {
 }
 
 #region_page_body,
-#map_page_body,
-#operators_page_body {
+#map_page_body {
   display: block;
   margin: 0 auto;
   min-height: 100%;

@@ -8,10 +8,6 @@ class MapsController < ApplicationController
   rate_limit to: 100, within: 1.minute, name: "maps_general"
 
   def map
-    user = current_user.nil? ? nil : current_user
-
-    params[:user_faved] = user.id if user && !params[:user_faved].blank?
-
     if !params[:by_location_id].blank? && (loc = Location.includes(:machines).where(id: params[:by_location_id]).first)
       @title_params[:title] = "#{loc.name} - Pinball Map"
       machine_length = " - " + loc.machine_count.to_s + " " + "machine".pluralize(loc.machine_count) unless loc.machine_count.zero?
@@ -23,6 +19,8 @@ class MapsController < ApplicationController
 
     selected_machine_ids = (Array(params[:by_machine_id]) + Array(params[:by_machine_single_id]) + Array(params[:by_machine_id_ic]) + Array(params[:by_machine_single_id_ic])).map(&:to_i).uniq
     @selected_machines = Machine.where(id: selected_machine_ids)
+
+    @faved_location_ids = current_user ? UserFaveLocation.where(user_id: current_user.id).pluck(:location_id) : []
 
     @map_no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_city_id].blank? && params[:by_state_name].blank? && params[:by_city_no_state].blank? && params[:by_country].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank? && params[:by_is_stern_army].blank? && params[:by_machine_type].blank? && params[:by_machine_display].blank? && params[:manufacturer].blank? && params[:by_operator_id].blank? && params[:by_operator_name].blank? && params[:by_machine_id_ic].blank? && params[:by_machine_single_id_ic].blank? && params[:by_machine_year_gte].blank? && params[:by_machine_year_lte].blank?
 
@@ -180,7 +178,7 @@ class MapsController < ApplicationController
         properties: {
           machine_count: location.machine_count,
           id: location.id,
-          name: location.name.gsub(/'|"/, "’"),
+          name: location.name.gsub(/'|"/, "\u2019"),
           order: index
         },
         geometry: {

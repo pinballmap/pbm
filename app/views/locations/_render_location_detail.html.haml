@@ -77,10 +77,17 @@
 	$(function () {
 		$("#fave_location_img_#{l.id}").click(function() {
 			$.post('/users/#{current_user ? current_user.id : 'null'}/toggle_fave_location.json', {location_id: #{l.id}}, function(data) {
-				if ($("#fave_location_img_#{l.id}").attr('src') === '#{asset_path('icons/heart-filled.svg')}') {
-					$("#fave_location_img_#{l.id}").attr('src', '#{asset_path('icons/heart-empty.svg')}');
+				var isFaved = $("#fave_location_img_#{l.id}").attr('src') === '#{asset_path('icons/heart-filled.svg')}';
+				$("#fave_location_img_#{l.id}").attr('src', isFaved ? '#{asset_path('icons/heart-empty.svg')}' : '#{asset_path('icons/heart-filled.svg')}');
+				if (isFaved) {
+					favedLocationIds = favedLocationIds.filter(function(id) { return id !== #{l.id}; });
 				} else {
-					$("#fave_location_img_#{l.id}").attr('src', '#{asset_path('icons/heart-filled.svg')}');
+					favedLocationIds.push(#{l.id});
+				}
+				if (typeof locations_geojson !== 'undefined' && typeof map !== 'undefined' && map.getSource('point')) {
+					var feature = locations_geojson.find(function(f) { return f.id === #{l.id}; });
+					if (feature) { feature.properties.is_faved = !isFaved; }
+					map.getSource('point').setData({ type: 'FeatureCollection', features: locations_geojson });
 				}
 			});
 		});

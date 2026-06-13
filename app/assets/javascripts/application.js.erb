@@ -28,6 +28,7 @@ var lastSearchFn = null;
 var selectedLocationID;
 var notFound_lon;
 var notFound_lat;
+var favedLocationIds = [];
 
 function toggleData(name, id) {
   var main = id ? '_' + id : '';
@@ -97,7 +98,7 @@ function homeMapBounds() {
   setTimeout(getMapBounds, 800);
 }
 
-function getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_operator_id, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active, by_machine_year_gte, by_machine_year_lte } = {}) {
+function getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_operator_id, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active, by_machine_year_gte, by_machine_year_lte, user_faved } = {}) {
   mapAdjusted = 1;
   refresh_bounds = map.getBounds();
   var capturedBoundsData = {
@@ -111,7 +112,7 @@ function getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_ma
     $.ajax({
       url: "/get_bounds",
       type: "POST",
-      data: { boundsData: capturedBoundsData, by_at_least_n_machines: by_at_least_n_machines, by_type_id: by_type_id, by_machine_id: by_machine_id, by_machine_single_id: by_machine_single_id, manufacturer: manufacturer, by_operator_id: by_operator_id, by_machine_type: by_machine_type, by_machine_id_ic: by_machine_id_ic, by_machine_single_id_ic: by_machine_single_id_ic, by_ic_active: by_ic_active, by_machine_year_gte: by_machine_year_gte, by_machine_year_lte: by_machine_year_lte, sort: currentSort },
+      data: { boundsData: capturedBoundsData, by_at_least_n_machines: by_at_least_n_machines, by_type_id: by_type_id, by_machine_id: by_machine_id, by_machine_single_id: by_machine_single_id, manufacturer: manufacturer, by_operator_id: by_operator_id, by_machine_type: by_machine_type, by_machine_id_ic: by_machine_id_ic, by_machine_single_id_ic: by_machine_single_id_ic, by_ic_active: by_ic_active, by_machine_year_gte: by_machine_year_gte, by_machine_year_lte: by_machine_year_lte, user_faved: user_faved, sort: currentSort },
       success: function(data) {
         $('#locations').html(data);
         refresh_bounds = undefined;
@@ -152,6 +153,44 @@ function updateThemeToggleButton() {
   if (sun) sun.style.display = isDark ? 'block' : 'none';
 }
 
+function buildIconImageExpr(selectedId) {
+  var sel = selectedId != null ? selectedId : -1;
+  return [
+    "step", ["zoom"],
+    ['match', ['id'], sel, 'marker-z-sel',
+      ["case", ["get", "is_faved"], 'marker-z-2Heart',
+      ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
+      ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
+      'marker-z-10']]]
+    ], 9,
+    ['match', ['id'], sel,
+      ["case", [">=", ["get", "machine_count"], 10], 'marker-10-sel', 'marker-z-sel'],
+      ["case", ["get", "is_faved"],
+      ["case", [">=", ["get", "machine_count"], 10], 'marker-10Heart', 'marker-z-2Heart'],
+      ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
+      ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
+      'marker-10']]]
+    ], 11,
+    ['match', ['id'], sel,
+      ["case", [">=", ["get", "machine_count"], 10], 'marker-10-sel',
+      ["case", [">=", ["get", "machine_count"], 2], 'marker-2-1-sel', 'marker-z-sel']],
+      ["case", ["get", "is_faved"],
+      ["case", [">=", ["get", "machine_count"], 10], 'marker-10Heart', 'marker-2Heart'],
+      ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
+      ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
+      'marker-10']]]
+    ], 13,
+    ['match', ['id'], sel,
+      ["case", ["<=", ["get", "machine_count"], 9], 'marker-2-1-sel', 'marker-10-sel'],
+      ["case", ["get", "is_faved"],
+      ["case", [">=", ["get", "machine_count"], 10], 'marker-10Heart', 'marker-2Heart'],
+      ["case", ["<=", ["get", "machine_count"], 1], 'marker-1',
+      ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
+      'marker-10']]]
+    ]
+  ];
+}
+
 async function addMapLayersAndImages() {
   const promises = [
     map.loadImage("<%= asset_path('marker-1.png') %>"),
@@ -162,9 +201,12 @@ async function addMapLayersAndImages() {
     map.loadImage("<%= asset_path('marker-z-1.png') %>"),
     map.loadImage("<%= asset_path('marker-z-2.png') %>"),
     map.loadImage("<%= asset_path('marker-z-10.png') %>"),
-    map.loadImage("<%= asset_path('marker-z-sel.png') %>")
+    map.loadImage("<%= asset_path('marker-z-sel.png') %>"),
+    map.loadImage("<%= asset_path('marker-2Heart.png') %>"),
+    map.loadImage("<%= asset_path('marker-10Heart.png') %>"),
+    map.loadImage("<%= asset_path('marker-z-2Heart.png') %>")
   ]
-  const [marker_1, marker_2, marker_2_1_sel, marker_10, marker_10_sel, marker_z_1, marker_z_2, marker_z_10, marker_z_sel] = await Promise.all(promises)
+  const [marker_1, marker_2, marker_2_1_sel, marker_10, marker_10_sel, marker_z_1, marker_z_2, marker_z_10, marker_z_sel, marker_2Heart, marker_10Heart, marker_z_2Heart] = await Promise.all(promises)
 
   if (!map.hasImage('marker-1')) map.addImage('marker-1', marker_1.data);
   if (!map.hasImage('marker-2')) map.addImage('marker-2', marker_2.data);
@@ -175,6 +217,9 @@ async function addMapLayersAndImages() {
   if (!map.hasImage('marker-z-2')) map.addImage('marker-z-2', marker_z_2.data);
   if (!map.hasImage('marker-z-10')) map.addImage('marker-z-10', marker_z_10.data);
   if (!map.hasImage('marker-z-sel')) map.addImage('marker-z-sel', marker_z_sel.data);
+  if (!map.hasImage('marker-2Heart')) map.addImage('marker-2Heart', marker_2Heart.data);
+  if (!map.hasImage('marker-10Heart')) map.addImage('marker-10Heart', marker_10Heart.data);
+  if (!map.hasImage('marker-z-2Heart')) map.addImage('marker-z-2Heart', marker_z_2Heart.data);
 
   if (!map.getSource('point')) {
     map.addSource('point', {
@@ -197,21 +242,7 @@ async function addMapLayersAndImages() {
       'type': 'symbol',
       'source': 'point',
       'layout': {
-        'icon-image': [
-          "step", ["zoom"],
-          ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
-            ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
-            'marker-z-10']], 9,
-          ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
-            ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
-            'marker-10']], 11,
-          ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
-            ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
-            'marker-10']], 13,
-          ["case", ["<=", ["get", "machine_count"], 1], 'marker-1',
-            ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
-            'marker-10']],
-        ],
+        'icon-image': buildIconImageExpr(null),
         'icon-size': ["interpolate", ["linear"], ["zoom"], 1, 0.14, 4, 0.18, 9, 0.5, 16, 0.8],
         "symbol-sort-key": ["get", "order"],
         'text-field': ["step", ["zoom"],
@@ -231,7 +262,7 @@ async function addMapLayersAndImages() {
         "text-ignore-placement": false,
       },
       'paint': {
-        "text-color": ["case", [">", ["get", "machine_count"], 1], "#FFFFFF", "#000000"]
+        "text-color": ["case", ["get", "is_faved"], "#000000", [">", ["get", "machine_count"], 1], "#FFFFFF", "#000000"]
       }
     });
   }
@@ -319,39 +350,6 @@ function showLocations(notFound_lat, notFound_lon, skipMarkers) {
 
   map.on('click', 'points', function (e) {
     showLocationDetail(e.features[0].properties.id);
-    map.setLayoutProperty('points', 'icon-image',
-      ["step", ["zoom"],
-      ['match', ['id'], e.features[0].id, 'marker-z-sel',
-        ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
-        ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
-          'marker-z-10']]
-      ],
-      9,
-      ['match', ['id'], e.features[0].id,
-        ["case", [">=", ["get", "machine_count"], 10], 'marker-10-sel',
-          'marker-z-sel'],
-        ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
-        ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
-          'marker-10']]
-      ],
-      11,
-      ['match', ['id'], e.features[0].id,
-        ["case", [">=", ["get", "machine_count"], 10], 'marker-10-sel',
-          ["case", [">=", ["get", "machine_count"], 2], 'marker-2-1-sel',
-          'marker-z-sel']],
-        ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
-        ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
-          'marker-10']]
-      ],
-      13,
-      ['match', ['id'], e.features[0].id,
-        ["case", ["<=", ["get", "machine_count"], 9], 'marker-2-1-sel',
-          'marker-10-sel'],
-        ["case", ["<=", ["get", "machine_count"], 1], 'marker-1',
-        ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
-          'marker-10']]
-      ]]
-    )
   });
 
   var popup = new maplibregl.Popup({
@@ -547,39 +545,7 @@ function showLocationDetail(locationID) {
       $('.back_to_results').show();
       $('#sort_controls').hide();
 
-      map.setLayoutProperty('points', 'icon-image',
-        ["step", ["zoom"],
-        ['match', ['id'], locationID, 'marker-z-sel',
-          ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
-          ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
-            'marker-z-10']]
-        ],
-        9,
-        ['match', ['id'], locationID,
-          ["case", [">=", ["get", "machine_count"], 10], 'marker-10-sel',
-            'marker-z-sel'],
-          ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
-          ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
-            'marker-10']]
-        ],
-        11,
-        ['match', ['id'], locationID,
-          ["case", [">=", ["get", "machine_count"], 10], 'marker-10-sel',
-            ["case", [">=", ["get", "machine_count"], 2], 'marker-2-1-sel',
-            'marker-z-sel']],
-          ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
-          ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
-            'marker-10']]
-        ],
-        13,
-        ['match', ['id'], locationID,
-          ["case", ["<=", ["get", "machine_count"], 9], 'marker-2-1-sel',
-            'marker-10-sel'],
-          ["case", ["<=", ["get", "machine_count"], 1], 'marker-1',
-          ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
-            'marker-10']]
-        ]]
-      )
+      map.setLayoutProperty('points', 'icon-image', buildIconImageExpr(locationID))
 
       $('#location_detail').toggle();
 
@@ -598,21 +564,7 @@ function backToResults() {
   $('#next_link').show();
   $('#sort_controls').show();
   $('#location_detail').hide();
-  map.setLayoutProperty('points', 'icon-image', [
-    "step", ["zoom"],
-    ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
-      ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
-      'marker-z-10']], 9,
-    ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
-      ["case", ["<=", ["get", "machine_count"], 9], 'marker-z-2',
-      'marker-10']], 11,
-    ["case", ["<=", ["get", "machine_count"], 1], 'marker-z-1',
-      ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
-      'marker-10']], 13,
-    ["case", ["<=", ["get", "machine_count"], 1], 'marker-1',
-      ["case", ["<=", ["get", "machine_count"], 9], 'marker-2',
-      'marker-10']],
-  ]);
+  map.setLayoutProperty('points', 'icon-image', buildIconImageExpr(null));
 }
 
 function toggleSort() {
@@ -669,6 +621,7 @@ function clearAllFilters() {
     $('#ic_toggle').removeClass('active');
     $('#all_ic_toggle').addClass('active');
   }
+  if (typeof setSavedMode === 'function') setSavedMode(false);
 }
 
 function setRegion(regionName) {

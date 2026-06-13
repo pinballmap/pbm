@@ -548,12 +548,83 @@ describe MapsController do
       FactoryBot.create(:user_fave_location, user: user, location: FactoryBot.create(:location, name: 'Bar'))
       FactoryBot.create(:user_fave_location, location: FactoryBot.create(:location, name: 'Baz'))
 
-      visit '/saved'
+      visit "/map?user_faved=#{user.id}"
       sleep 1
 
       expect(page.body).to have_content('Foo')
       expect(page.body).to have_content('Bar')
       expect(page.body).to_not have_content('Baz')
+    end
+
+    it 'hides the saved filter toggle from logged-out users' do
+      visit '/map'
+      sleep 1
+
+      page.find('#open_filter_modal_button').click
+
+      expect(page).to_not have_css('#my_saved_toggle')
+    end
+
+    it 'filters to saved locations via My Saved toggle' do
+      user = FactoryBot.create(:user)
+      login(user)
+
+      faved_location = FactoryBot.create(:location, name: 'Pinball Palace', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
+      other_location = FactoryBot.create(:location, name: 'Other Arcade', zip: '97203', lat: 45.593049200000, lon: -122.732620200000)
+      FactoryBot.create(:location_machine_xref, location: faved_location, machine: FactoryBot.create(:machine, name: 'Faved Game', machine_group: nil))
+      FactoryBot.create(:location_machine_xref, location: other_location, machine: FactoryBot.create(:machine, name: 'Other Game', machine_group: nil))
+      FactoryBot.create(:user_fave_location, user: user, location: faved_location)
+
+      visit '/map'
+      sleep 1
+
+      fill_in('address', with: '97203')
+      page.find('#open_filter_modal_button').click
+      page.find('#my_saved_toggle').click
+      page.find('.apply_filters_button').click
+      sleep 1
+
+      expect(page).to have_content('Pinball Palace')
+      expect(page).to_not have_content('Other Arcade')
+    end
+
+    it 'shows clear filters button when My Saved is active and resets it on clear' do
+      user = FactoryBot.create(:user)
+      login(user)
+
+      visit '/map'
+      sleep 1
+
+      page.find('#open_filter_modal_button').click
+      page.find('#my_saved_toggle').click
+      page.find('.filter_modal_close').click
+
+      expect(page).to have_css('#clear_filters_button', visible: true)
+
+      page.find('#open_filter_modal_button').click
+      page.find('.clear_filters_button').click
+
+      expect(page).to have_css('#clear_filters_button', visible: :hidden)
+      expect(page).to have_css('#all_saved_toggle.active')
+      expect(page).to_not have_css('#my_saved_toggle.active')
+    end
+
+    it 'restores My Saved toggle from user_faved URL param' do
+      user = FactoryBot.create(:user)
+      login(user)
+
+      faved_location = FactoryBot.create(:location, name: 'Saved Spot', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
+      FactoryBot.create(:location, name: 'Other Spot', zip: '97203', lat: 45.593049200000, lon: -122.732620200000)
+      FactoryBot.create(:location_machine_xref, location: faved_location, machine: FactoryBot.create(:machine, name: 'Deep Link Game', machine_group: nil))
+      FactoryBot.create(:user_fave_location, user: user, location: faved_location)
+
+      visit '/map?user_faved=1'
+      sleep 1
+
+      expect(page).to have_css('#my_saved_toggle.active', visible: false)
+      expect(page).to have_css('#clear_filters_button', visible: true)
+      expect(page).to have_content('Saved Spot')
+      expect(page).to_not have_content('Other Spot')
     end
 
     it 'lets you search by address -- displays "Not Found" if no results' do
