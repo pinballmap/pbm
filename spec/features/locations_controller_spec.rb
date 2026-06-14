@@ -45,7 +45,7 @@ describe LocationsController do
 
   describe 'confirm location', type: :feature, js: true do
     before(:each) do
-      @operator = FactoryBot.create(:operator, name: "Be Best Pinball", id: 47)
+      @operator = FactoryBot.create(:operator, name: "Be Best Pinball")
       @user = FactoryBot.create(:user, username: 'ssw', admin_title: "Administrator", contributor_rank: "Super Mapper", operator: @operator, flag: "us-ca")
       login(@user)
     end
@@ -85,7 +85,7 @@ describe LocationsController do
           find("#confirm_location_button_#{location.id}.confirm_button").click
         end
 
-        expect(UserSubmission.count).to eq(3)
+        expect(UserSubmission.count).to eq(2)
       end
     end
 
@@ -869,7 +869,7 @@ describe LocationsController do
 
   describe 'recent_activity', type: :feature, js: true do
     before(:each) do
-      @operator = FactoryBot.create(:operator, name: "Be Best Pinball", id: 47)
+      @operator = FactoryBot.create(:operator, name: "Be Best Pinball")
       @location = FactoryBot.create(:location, name: 'Cleo', city: 'Townville', operator: @operator)
       @user = FactoryBot.create(:user, id: 789, username: 'pbm', admin_title: "Administrator", contributor_rank: "Super Mapper", operator: @operator, flag: "us-ca")
       @location2 = FactoryBot.create(:location, name: 'Sassimo', operator: @operator)
