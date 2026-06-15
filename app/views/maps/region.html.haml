@@ -61,6 +61,10 @@
     loadMapActivity();
   });
 
+  $("#map_activity_container").on("change", ".map_activity_filter", function() {
+    $(this).closest('.activity_filter_btn').toggleClass('is-selected', this.checked);
+  });
+
   function loadMapActivity() {
     $('#map_activity_container').html(loadingHTML());
     $.get('/user_submissions/list_within_range', {

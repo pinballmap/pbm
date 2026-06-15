@@ -1,37 +1,34 @@
 %div#map_activity.mt_20.mb_20.pt_10
-  .activity_filter
-    %div
-      =image_tag("icons/new_lmx.svg", :alt => "new_lmx", :class => 'activity_icon')
-      %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'new_lmx'}
-      %div
+  .activity_filter_container.bg_lightpurple
+    %p.bold.red.font18.center
+      Filter Activity
+    .activity_filter
+      %label.activity_filter_btn
+        =image_tag("icons/new_lmx.svg", :alt => "new_lmx", :class => 'activity_icon')
+        %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'new_lmx'}
         %span Machine added
-    %div
-      =image_tag("icons/remove_machine.svg", :alt => "remove_machine", :class => 'activity_icon')
-      %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'remove_machine'}
-      %div
+      %label.activity_filter_btn
+        =image_tag("icons/remove_machine.svg", :alt => "remove_machine", :class => 'activity_icon')
+        %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'remove_machine'}
         %span Machine removed
-    %div
-      =image_tag("icons/new_condition.svg", :alt => "new_condition", :class => 'activity_icon')
-      %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'new_condition'}
-      %div
+      %label.activity_filter_btn
+        =image_tag("icons/new_condition.svg", :alt => "new_condition", :class => 'activity_icon')
+        %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'new_condition'}
         %span New condition
-    %div
-      =image_tag("icons/new_msx.svg", :alt => "new_msx", :class => 'activity_icon')
-      %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'new_msx'}
-      %div
+      %label.activity_filter_btn
+        =image_tag("icons/new_msx.svg", :alt => "new_msx", :class => 'activity_icon')
+        %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'new_msx'}
         %span Your scores
-    %div
-      =image_tag("icons/confirm_location.svg", :alt => "confirm_location", :class => 'activity_icon')
-      %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'confirm_location'}
-      %div
+      %label.activity_filter_btn
+        =image_tag("icons/confirm_location.svg", :alt => "confirm_location", :class => 'activity_icon')
+        %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'confirm_location'}
         %span Location confirmed
-    %div
-      =image_tag("icons/add_location.svg", :alt => "add_location", :class => 'activity_icon')
-      %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'add_location'}
-      %div
+      %label.activity_filter_btn
+        =image_tag("icons/add_location.svg", :alt => "add_location", :class => 'activity_icon')
+        %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'add_location'}
         %span Location added
-  %div{:style => "text-align: center; margin: 0 15px 15px 15px;"}
-    %button.save_button.apply_map_activity_filters Apply Filters
+    %div{:style => "text-align: center; margin: 0 15px 15px 15px;"}
+      %button.save_button.apply_filter.apply_map_activity_filters Apply Filters
 
   %div.bold.flex_center{:style => 'margin: 12px;'}
     %span.sorted_submissions
@@ -50,3 +47,6 @@
 
 :javascript
   $(document).trigger('activity-loaded');
+  $('#map_activity_container .activity_filter_btn').each(function() {
+    $(this).toggleClass('is-selected', $(this).find('input[type="checkbox"]')[0].checked);
+  });

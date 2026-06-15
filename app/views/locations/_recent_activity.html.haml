@@ -21,6 +21,9 @@
         activeFilters.forEach(function(filter) {
           container.find('.loc_activity_filter[value="' + filter + '"]').prop('checked', true);
         });
+        container.find('.activity_filter_btn').each(function() {
+          $(this).toggleClass('is-selected', $(this).find('input[type="checkbox"]')[0].checked);
+        });
         if (afterLoad) afterLoad();
       });
     }
@@ -29,6 +32,10 @@
       if ($('#recent_location_activity_location_#{location.id}').is(':visible')) {
         loadLocationActivity(#{location.id}, '/locations/#{location.id}/render_recent_activity');
       }
+    });
+
+    $('#recent_location_activity_location_#{location.id}').on('change', '.loc_activity_filter', function() {
+      $(this).closest('.activity_filter_btn').toggleClass('is-selected', this.checked);
     });
 
     $('#recent_location_activity_location_#{location.id}').on('click', '.apply_location_activity_filters', function() {

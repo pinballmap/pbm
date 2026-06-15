@@ -609,6 +609,10 @@ ul li li {
   color: var(--brightpurple);
 }
 
+.purple {
+  color: var(--purple);
+}
+
 h1 {
   font-size: 28px;
   line-height: 41px;
@@ -1085,7 +1089,7 @@ form#address_search_form input.lookup_search_input {
 
 .activity_hr {
   border-bottom: 1px solid;
-  margin: 5px 20px;
+  margin: 5px 15px;
 }
 
 .hr {
@@ -2172,6 +2176,10 @@ div.machine_condition_meta {
   color: var(--black);
 }
 
+.recent_location_activity_location {
+  padding-top: 10px;
+}
+
 .add_machine_location form select option {
   font-size: 16px;
 }
@@ -2915,22 +2923,26 @@ input.score {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 10px 20px 10px 10px;
+  padding: 10px 20px 10px 15px;
+}
+
+.activity_filter_container {
+  @include radius(10px);
+  padding: 0 10px 10px;
+  margin: 10px;
+}
+
+.activity_filter_container p {
+  margin-bottom: 0 !important;
 }
 
 .activity_icon {
-  margin-right: 5px;
+  margin-right: 25px;
   height: 30px;
 }
 
 .activity_icon img {
   width: 30px;
-}
-
-.activity_date {
-  width: 25%;
-  margin-right: 10px;
-  text-align: center;
 }
 
 .former_machines_date {
@@ -2939,7 +2951,6 @@ input.score {
 }
 
 .activity_submission {
-  width: 70%;
   text-align: left;
 }
 
@@ -2952,6 +2963,7 @@ input.score {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+  padding-bottom: 10px;
 }
 
 .activity_filter_btn {
@@ -2961,7 +2973,7 @@ input.score {
   justify-content: center;
   gap: 4px;
   margin: 8px 5px;
-  padding: 10px 12px;
+  padding: 4px 6px;
   min-width: 72px;
   cursor: pointer;
   border: 1px solid var(--border);
@@ -2985,6 +2997,14 @@ input.score {
     border-color: var(--red);
     color: var(--red);
   }
+}
+
+.activity_filter_btn:hover {
+  background: var(--lightpink);
+}
+
+.apply_filter {
+  margin-top: 0;
 }
 
 img.banner_icon {

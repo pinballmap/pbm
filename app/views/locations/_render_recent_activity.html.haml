@@ -1,36 +1,33 @@
-.activity_filter
-  %div
-    =image_tag("icons/new_lmx.svg", :alt => "new_lmx", :class => 'activity_icon')
-    %input{:type => "checkbox", :class => "loc_activity_filter m_0", :value => 'new_lmx'}
-    %div
+.activity_filter_container.bg_lightpurple
+  %p.bold.red.font18.center
+    Filter Activity
+  .activity_filter
+    %label.activity_filter_btn
+      =image_tag("icons/new_lmx.svg", :alt => "new_lmx", :class => 'activity_icon')
+      %input{:type => "checkbox", :class => "loc_activity_filter m_0", :value => 'new_lmx'}
       %span Machine added
-  %div
-    =image_tag("icons/remove_machine.svg", :alt => "remove_machine", :class => 'activity_icon')
-    %input{:type => "checkbox", :class => "loc_activity_filter m_0", :value => 'remove_machine'}
-    %div
+    %label.activity_filter_btn
+      =image_tag("icons/remove_machine.svg", :alt => "remove_machine", :class => 'activity_icon')
+      %input{:type => "checkbox", :class => "loc_activity_filter m_0", :value => 'remove_machine'}
       %span Machine removed
-  %div
-    =image_tag("icons/new_condition.svg", :alt => "new_condition", :class => 'activity_icon')
-    %input{:type => "checkbox", :class => "loc_activity_filter m_0", :value => 'new_condition'}
-    %div
+    %label.activity_filter_btn
+      =image_tag("icons/new_condition.svg", :alt => "new_condition", :class => 'activity_icon')
+      %input{:type => "checkbox", :class => "loc_activity_filter m_0", :value => 'new_condition'}
       %span New condition
-  %div
-    =image_tag("icons/new_msx.svg", :alt => "new_msx", :class => 'activity_icon')
-    %input{:type => "checkbox", :class => "loc_activity_filter m_0", :value => 'new_msx'}
-    %div
+    %label.activity_filter_btn
+      =image_tag("icons/new_msx.svg", :alt => "new_msx", :class => 'activity_icon')
+      %input{:type => "checkbox", :class => "loc_activity_filter m_0", :value => 'new_msx'}
       %span Your scores
-  %div
-    =image_tag("icons/confirm_location.svg", :alt => "confirm_location", :class => 'activity_icon')
-    %input{:type => "checkbox", :class => "loc_activity_filter m_0", :value => 'confirm_location'}
-    %div
+    %label.activity_filter_btn
+      =image_tag("icons/confirm_location.svg", :alt => "confirm_location", :class => 'activity_icon')
+      %input{:type => "checkbox", :class => "loc_activity_filter m_0", :value => 'confirm_location'}
       %span Location confirmed
-  %div
-    =image_tag("icons/add_location.svg", :alt => "add_location", :class => 'activity_icon')
-    %input{:type => "checkbox", :class => "loc_activity_filter m_0", :value => 'add_location'}
-    %div
+    %label.activity_filter_btn
+      =image_tag("icons/add_location.svg", :alt => "add_location", :class => 'activity_icon')
+      %input{:type => "checkbox", :class => "loc_activity_filter m_0", :value => 'add_location'}
       %span Location added
-%div{:style => "width: 100%; text-align: center; margin-bottom: 15px;"}
-  %button.save_button.apply_location_activity_filters Apply Filters
+  %div{:style => "width: 100%; text-align: center; margin-bottom: 15px;"}
+    %button.save_button.apply_filter.apply_location_activity_filters Apply Filters
 
 %div.quick_button_content_header
   - if pagy.count == 0

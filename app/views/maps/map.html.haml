@@ -445,6 +445,13 @@
     mapActivityFilters.forEach(function(filter) {
       $('#map_activity_container .map_activity_filter[value="' + filter + '"]').prop('checked', true);
     });
+    $('#map_activity_container .activity_filter_btn').each(function() {
+      $(this).toggleClass('is-selected', $(this).find('input[type="checkbox"]')[0].checked);
+    });
+  });
+
+  $("#map_activity_container").on("change", ".map_activity_filter", function() {
+    $(this).closest('.activity_filter_btn').toggleClass('is-selected', this.checked);
   });
 
   $("#map_activity_container").on("click", ".apply_map_activity_filters", function() {

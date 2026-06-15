@@ -8,7 +8,9 @@
         The scores here will only show your own scores.
     .clear
 
-    .column.w_640
+    .column.w_640.activity_filter_container.bg_vlightpurple
+      %p.red.bold.font18.center
+        Filter Activity
       = form_tag activity_path, :method => 'get', id: 'activity_filter' do
         %label.activity_filter_btn
           =image_tag("icons/new_lmx.svg", :alt => "new_lmx", :class => 'activity_icon')
@@ -39,7 +41,7 @@
             =image_tag("icons/face-grin-beam-regular-full.svg", :alt => "your_activity", :class => 'activity_icon')
             %input{:type => "checkbox", :id => "filterYourActivity", :name => "filterActivity", :value => 'your_activity', :checked => Array(params[:submission_type]).include?('your_activity')}
             %span Your Activity
-        = submit_tag 'Apply Filters', :class => "save_button"
+        = submit_tag 'Apply Filters', :class => "save_button apply_filter"
 
     #activity.column.w_640.center
       = render partial: 'shared/activity_item', :locals => {show_location_link: true, page_activity: true}
