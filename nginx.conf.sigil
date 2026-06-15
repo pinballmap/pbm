@@ -56,9 +56,6 @@ server {
   {{ end }}
 
   if ($http_user_agent = "") { return 403; }
-  if ($http_user_agent ~* (scrapy|SleepBot)){
-      return 403;
-  }
 
 {{ if $is_redirect }}
   include {{ $.DOKKU_ROOT }}/{{ $.APP }}/nginx.conf.d/*.conf;
