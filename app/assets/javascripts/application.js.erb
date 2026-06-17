@@ -656,6 +656,14 @@ function show_new_machine_message() {
 
 document.addEventListener('DOMContentLoaded', function() {
   updateThemeToggleButton();
+
+  document.addEventListener('click', function(e) {
+    var menuBtn = document.getElementById('menu_button');
+    var menuCheckbox = document.getElementById('menu');
+    if (menuCheckbox && menuCheckbox.checked && menuBtn && !menuBtn.contains(e.target)) {
+      menuCheckbox.checked = false;
+    }
+  });
 });
 
 $(document).on('click', '.copy_icon', function () {
