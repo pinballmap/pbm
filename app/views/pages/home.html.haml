@@ -51,7 +51,7 @@
     %p== Check the #{link_to "blog", "https://blog.pinballmap.com/", :class => "bold"} to keep up with map news.
     %p== Follow us on #{link_to 'Mastodon', 'https://fosstodon.org/@pinballmap', :target => '_blank', :class => "bold"} and #{link_to 'Bluesky', 'https://bsky.app/profile/pinballmap.com', :target => '_blank', :class => "bold"}.
     %p== The podcast might be back. #{link_to "Mappin' Around with Scott & Ryan", 'https://pod.pinballmap.com/', :target => '_blank', :class => 'bold'} was silent for four years, but then we made some episodes. And now?
-    %p== #{link_to "Join the Pinball Map Discord", 'https://discord.gg/zK6xjyYHJf', :class => "bold", :target => '_blank'}! It's got developers, administrators, supporters, and perhaps more. Chat about the map.
+    %p== #{link_to "Join the Pinball Map Discord", 'https://discord.gg/zK6xjyYHJf', :class => "bold", :target => '_blank'}. It's got developers, administrators, supporters, and perhaps more. Chat about the map.
     %p== We can also regularly be found in the #{link_to 'Pinball People Discord', 'https://discord.gg/XffPx6VKTv', :class => "bold", :target => '_blank'}. It's a fun and friendly way to chat with other pinball fans from all over the world.
 %div.flex_center#api
   =link_to 'API', '#api', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
@@ -87,22 +87,9 @@
     %p== We have tools to help out operators. You can register your business in our system, tag all your locations, and receive email notifications when people leave comments on your machines. Check this section of #{link_to 'the FAQ', faq_path(anchor: 'operators')} for operator-specific tips.
     %p== To be added to our system, and to receive email notifications (please specify that you want this), #{link_to 'contact us', global_contact_path, :class => "bold"}.
     %p You can view all your locations by visiting the map and filtering by operator.
-%div.flex_center#store
-  =link_to 'Store', '#store', :class => "red font28 bold mt_20 mb_5 no_underline"
-%div.flex_center.mobile_flex
-  .news
-    =link_to image_tag('danny-pouch.jpg', :alt => 'Pinball Map Store', :style => 'height: 280px;border-radius: 10px;'), store_path, :target => "_blank"
-  .news
-    %p
-      Right now we just have some
-      %span.bold coin pouches
-      for sale.
-    %p
-      In the past we've had beanies, t-shirts, and stickers.
-    %p== Purchase them through the #{link_to 'Pinball Map store', store_path, :class => "bold"}.
-%div.flex_center.bg_lightpurple#support
+%div.flex_center#support
   =link_to 'Support Us', '#support', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
-%div.flex_center.mobile_flex.bg_lightpurple
+%div.flex_center.mobile_flex
   - if mobile_device?
     .news.center
       %p
@@ -110,7 +97,7 @@
         :javascript
           kofiwidget2.init('Support Pinball Map on Ko-fi', '#29abe0', 'P5P411XZAM');kofiwidget2.draw();
       %p
-        =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'width: 80%;'), "https://patreon.com/pinballmap", :target => "_blank"
+        =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'border-radius: 8px; width: 244px;'), "https://patreon.com/pinballmap", :target => "_blank"
   .news
     %p== #{link_to "Support Pinball Map via Ko-fi", "https://ko-fi.com/pinballmap", :class => "bold", :target => '_blank'} or #{link_to "Patreon", "https://patreon.com/pinballmap", :class => "bold", :target => '_blank'}. 100% of our operating costs are covered by supporters, and we are really thankful for that.
     %p== If you want, you can make recurring or one-time donations. Supporters can read our updates on Ko-fi and Patreon, get discounts for stuff, and have a "supporter" role in the #{link_to "Pinball Map Discord", 'https://discord.gg/zK6xjyYHJf', :class => "bold", :target => '_blank'}.
@@ -125,7 +112,20 @@
         kofiwidget2.init('Support Pinball Map on Ko-fi', '#29abe0', 'P5P411XZAM');kofiwidget2.draw();
       %br/
       %br/
-      =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'border-radius: 8px; width: 244px'), "https://patreon.com/pinballmap", :target => "_blank"
+      =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'border-radius: 8px; width: 244px;'), "https://patreon.com/pinballmap", :target => "_blank"
+%div.flex_center.bg_lightpurple#store
+  =link_to 'Store', '#store', :class => "red font28 bold mt_20 mb_5 no_underline"
+%div.flex_center.mobile_flex.bg_lightpurple
+  .news
+    =link_to image_tag('danny-pouch.jpg', :alt => 'Pinball Map Store', :style => 'height: 280px;border-radius: 10px;'), store_path, :target => "_blank"
+  .news
+    %p
+      Right now we just have some
+      %span.bold coin pouches
+      for sale.
+    %p
+      In the past we've had beanies, t-shirts, and stickers.
+    %p== Purchase them through the #{link_to 'Pinball Map store', store_path, :class => "bold"}.
 %div.flex_center#stack
   =link_to 'Stack', '#stack', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
