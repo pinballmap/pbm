@@ -3316,6 +3316,21 @@ gmp-place-autocomplete {
   color: var(--black);
   @include radius(10px);
   text-align: left !important;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) gmp-place-autocomplete {
+    color-scheme: dark;
+  }
+}
+
+html[data-theme="dark"] gmp-place-autocomplete {
+  color-scheme: dark;
+}
+
+html[data-theme="light"] gmp-place-autocomplete {
+  color-scheme: light;
 }
 
 #location_maker input.text,
