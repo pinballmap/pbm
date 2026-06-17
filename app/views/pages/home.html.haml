@@ -2,7 +2,7 @@
   %p.red.bold.p1
     %span{:style => 'width:42px;margin-right: 5px;'}
       =image_tag( 'icon-color-noBGsvg.svg', :style => 'height:42px;', :alt => 'Pinball Map Ball Logo')
-    Welcome to Pinball Map!
+    Welcome to Pinball Map
   %p.welcome.font20.center.mt_0{:style => 'max-width:540px;min-width:100px;line-height:32px;'}
     Founded in 2008, Pinball Map is an open source, crowdsourced worldwide map of public pinball machines.
   %p.explore
@@ -17,14 +17,14 @@
   %div.flex_center.italic.darkgrey
     %span== The map was #{link_to "last updated #{distance_of_time_in_words(Time.now, @last_updated_time)} ago", activity_path}
 %div.flex_center.bg_lightpurple#app
-  =link_to 'Use the App', '#app', :class => "red font28 bold mt_20 mb_5 no_underline"
+  =link_to 'Get the App', '#app', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
   .news{:style => 'display: flex;justify-content: center;'}
     =image_tag( 'lpurple-machine.png', :alt => 'machine graphic', :style => 'height:130px;')
   .news
     %p== On the go? Use the #{link_to "Pinball Map mobile app", app_path, :class => "red bold"} to find places to play near you.
     %p
-      Available for Android and iOS, the app is free and contains no ads, tracking, or tricks. Just pinball!
+      Available for Android and iOS, the app is free and contains no ads, tracking, or tricks. Just pinball.
 %div.flex_center.mb_10#about
   =link_to 'About', '#about', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
@@ -42,49 +42,6 @@
   - if !mobile_device?
     .news{:style => 'display: flex;justify-content: center;'}
       =image_tag( 'portland/app_logo-350.jpg', :alt => 'portland logo',:style => 'height:260px;;border-radius: 10px;')
-%div.flex_center.bg_lightpurple#store
-  =link_to 'Store', '#store', :class => "red font28 bold mt_20 mb_5 no_underline"
-%div.flex_center.mobile_flex.bg_lightpurple
-  .news
-    =link_to image_tag('danny-pouch.jpg', :alt => 'Pinball Map Store', :style => 'height: 280px;border-radius: 10px;'), store_path, :target => "_blank"
-  .news
-    %p
-      %span.bold Coin Pouches
-      for sale!
-    %p
-      We also have
-      %span.bold beanies!
-      They're waffle-knit with the classic Pinball Map ball logo embroidered in pink. No text.
-    %p
-      We also have
-      %span.bold stickers!
-    %p== Purchase them through the #{link_to 'Pinball Map store', store_path, :class => "bold"}.
-%div.flex_center#support
-  =link_to 'Support Us', '#support', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
-%div.flex_center.mobile_flex
-  - if mobile_device?
-    .news.center
-      %p
-        %script{src: "https://storage.ko-fi.com/cdn/widget/Widget_2.js", type: "text/javascript"}
-        :javascript
-          kofiwidget2.init('Support Pinball Map on Ko-fi', '#29abe0', 'P5P411XZAM');kofiwidget2.draw();
-      %p
-        =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'width: 80%;'), "https://patreon.com/pinballmap", :target => "_blank"
-  .news
-    %p== #{link_to "Support Pinball Map via Ko-fi", "https://ko-fi.com/pinballmap", :class => "bold", :target => '_blank'} or #{link_to "Patreon", "https://patreon.com/pinballmap", :class => "bold", :target => '_blank'}. All our operating costs are covered by supporters!
-    %p== You can make recurring or one-time donations. Supporters can read our updates on Ko-fi and Patreon, get discounts for stuff, and have a "supporter" role in the #{link_to "Pinball Map Discord", 'https://discord.gg/zK6xjyYHJf', :class => "bold", :target => '_blank'}.
-    %p
-      You can also support the map by
-      =link_to 'telling your friends', map_flier_path
-      about it (there's a handy flier) and updating it.
-  - if !mobile_device?
-    .news.center
-      %script{src: "https://storage.ko-fi.com/cdn/widget/Widget_2.js", type: "text/javascript"}
-      :javascript
-        kofiwidget2.init('Support Pinball Map on Ko-fi', '#29abe0', 'P5P411XZAM');kofiwidget2.draw();
-      %br/
-      %br/
-      =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'width: 80%;'), "https://patreon.com/pinballmap", :target => "_blank"
 %div.flex_center.bg_lightpurple#more
   =link_to 'Keep Up', '#more', :class => "red font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex.bg_lightpurple
@@ -93,9 +50,9 @@
   .news
     %p== Check the #{link_to "blog", "https://blog.pinballmap.com/", :class => "bold"} to keep up with map news.
     %p== Follow us on #{link_to 'Mastodon', 'https://fosstodon.org/@pinballmap', :target => '_blank', :class => "bold"} and #{link_to 'Bluesky', 'https://bsky.app/profile/pinballmap.com', :target => '_blank', :class => "bold"}.
-    %p== The podcast is back! #{link_to "Mappin' Around with Scott & Ryan", 'https://pod.pinballmap.com/', :target => '_blank', :class => 'bold'}. After four cold and dreary years, we are again making new episodes.
-    %p== #{link_to "Join the Pinball Map Discord", 'https://discord.gg/zK6xjyYHJf', :class => "bold", :target => '_blank'}! It's got developers, administrators, supporters, and perhaps more. Chat about the map!
-    %p== We can also regularly be found in the #{link_to 'Pinball People Discord', 'https://discord.gg/XffPx6VKTv', :class => "bold", :target => '_blank'}. It's a fun and friendly way to chat with other pinball fans from all over the world!
+    %p== The podcast might be back. #{link_to "Mappin' Around with Scott & Ryan", 'https://pod.pinballmap.com/', :target => '_blank', :class => 'bold'} was silent for four years, but then we made some episodes. And now?
+    %p== #{link_to "Join the Pinball Map Discord", 'https://discord.gg/zK6xjyYHJf', :class => "bold", :target => '_blank'}! It's got developers, administrators, supporters, and perhaps more. Chat about the map.
+    %p== We can also regularly be found in the #{link_to 'Pinball People Discord', 'https://discord.gg/XffPx6VKTv', :class => "bold", :target => '_blank'}. It's a fun and friendly way to chat with other pinball fans from all over the world.
 %div.flex_center#api
   =link_to 'API', '#api', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
@@ -104,6 +61,7 @@
       =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;')
   .news
     %p== Not only is the Pinball Map website and app open source, but there is also #{link_to 'an API', apipie_apipie_path}. With it, you can pull down map data and use it on your cool app.
+    %p== We recommend #{link_to 'contacting us', global_contact_path, :class => "bold"}. to talk about how you'll be using it, because we can give recommendations for optimal use (remember that our server resources are not infinite). We also have an #{link_to "llms.txt", "/llms.txt"} file to help guide your assisted coding.
     %p
       = link_to 'Stern Pinball', 'https://sternpinball.com/pinball-locator/', :target => '_blank'
       uses our data for their machine locator. Our API is also used by
@@ -114,9 +72,9 @@
       = link_to 'Scorbit', 'https://scorbit.io/', :target => '_blank'
       and
       = link_to 'Kineticist', 'https://www.kineticist.com/', :target => '_blank'
-      and many others!
+      and many others.
     %p
-      %span.bold If you use the data, provide attribution!
+      %span.bold If you use the data, provide attribution.
   - if !mobile_device?
     .news{:style => 'display: flex;justify-content: center;'}
       =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;')
@@ -129,6 +87,45 @@
     %p== We have tools to help out operators. You can register your business in our system, tag all your locations, and receive email notifications when people leave comments on your machines. Check this section of #{link_to 'the FAQ', faq_path(anchor: 'operators')} for operator-specific tips.
     %p== To be added to our system, and to receive email notifications (please specify that you want this), #{link_to 'contact us', global_contact_path, :class => "bold"}.
     %p You can view all your locations by visiting the map and filtering by operator.
+%div.flex_center#store
+  =link_to 'Store', '#store', :class => "red font28 bold mt_20 mb_5 no_underline"
+%div.flex_center.mobile_flex
+  .news
+    =link_to image_tag('danny-pouch.jpg', :alt => 'Pinball Map Store', :style => 'height: 280px;border-radius: 10px;'), store_path, :target => "_blank"
+  .news
+    %p
+      Right now we just have some
+      %span.bold coin pouches
+      for sale.
+    %p
+      In the past we've had beanies, t-shirts, and stickers.
+    %p== Purchase them through the #{link_to 'Pinball Map store', store_path, :class => "bold"}.
+%div.flex_center.bg_lightpurple#support
+  =link_to 'Support Us', '#support', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
+%div.flex_center.mobile_flex.bg_lightpurple
+  - if mobile_device?
+    .news.center
+      %p
+        %script{src: "https://storage.ko-fi.com/cdn/widget/Widget_2.js", type: "text/javascript"}
+        :javascript
+          kofiwidget2.init('Support Pinball Map on Ko-fi', '#29abe0', 'P5P411XZAM');kofiwidget2.draw();
+      %p
+        =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'width: 80%;'), "https://patreon.com/pinballmap", :target => "_blank"
+  .news
+    %p== #{link_to "Support Pinball Map via Ko-fi", "https://ko-fi.com/pinballmap", :class => "bold", :target => '_blank'} or #{link_to "Patreon", "https://patreon.com/pinballmap", :class => "bold", :target => '_blank'}. 100% of our operating costs are covered by supporters, and we are really thankful for that.
+    %p== If you want, you can make recurring or one-time donations. Supporters can read our updates on Ko-fi and Patreon, get discounts for stuff, and have a "supporter" role in the #{link_to "Pinball Map Discord", 'https://discord.gg/zK6xjyYHJf', :class => "bold", :target => '_blank'}.
+    %p
+      You can also support the map by
+      =link_to 'telling your friends', map_flier_path
+      about it (there's a handy flier) and updating it.
+  - if !mobile_device?
+    .news.center
+      %script{src: "https://storage.ko-fi.com/cdn/widget/Widget_2.js", type: "text/javascript"}
+      :javascript
+        kofiwidget2.init('Support Pinball Map on Ko-fi', '#29abe0', 'P5P411XZAM');kofiwidget2.draw();
+      %br/
+      %br/
+      =link_to image_tag('become_a_patron_button@2x.png', :alt => 'Become a Patron', :style => 'border-radius: 8px; width: 244px'), "https://patreon.com/pinballmap", :target => "_blank"
 %div.flex_center#stack
   =link_to 'Stack', '#stack', :class => "brightpurple font28 bold mt_20 mb_5 no_underline"
 %div.flex_center.mobile_flex
@@ -146,7 +143,7 @@
       along with open source gems. The app uses 
       =link_to 'React Native', 'https://reactnative.dev/', :target => '_blank', :class => 'bold'
       and likewise is aided by many open source packages.
-    %p== We use #{link_to 'Dokku', 'https://dokku.com/', :target => '_blank', :class => 'bold'} to build and deploy Pinball Map! It is a free service, though we support it with a monthly donation.
+    %p== We use #{link_to 'Dokku', 'https://dokku.com/', :target => '_blank', :class => 'bold'} to build and deploy Pinball Map. It is a free service, though we support it with a monthly donation.
     %p 
       =link_to 'DigitalOcean', 'https://www.digitalocean.com/', :target => '_blank', :class => 'bold'
       hosts our server and Postgresql database. This is fully paid for via our Ko-fi and Patreon supporters.
@@ -157,7 +154,7 @@
     %p== #{link_to 'Scout APM', 'https://scoutapm.com/', :target => '_blank', :class => 'bold'} tracks performance monitoring for the website and API. #{link_to 'Sentry', 'https://sentry.io/', :target => '_blank', :class => 'bold'} is used for crash reporting on the app.
     %p== The geocoding requests are processed by #{link_to 'Google Maps', 'https://developers.google.com/maps', :target => '_blank', :class => 'bold'} and #{link_to 'HERE Maps', 'https://developer.here.com/', :target => '_blank', :class => 'bold'}. We also use the Google Places API for location submissions.
     %p== We use GeoLite2 data from #{link_to 'MaxMind', 'https://www.maxmind.com/en/home', :target => '_blank', :class => 'bold'} to geolocate your general area (based on public IP address) and show nearby map results.
-    %p== Lastly, Pinball Map maintainers also help maintain the #{link_to 'Open Pinball Database (OPDB)', 'https://opdb.org/', :target => '_blank', :class => 'bold'}, and OPDB supplies the backglass images used on Pinball Map!
+    %p== Lastly, Pinball Map maintainers also help maintain the #{link_to 'Open Pinball Database (OPDB)', 'https://opdb.org/', :target => '_blank', :class => 'bold'}, and OPDB supplies the backglass images used on Pinball Map.
   - if !mobile_device?
     .news.center
       =link_to image_tag( 'stack-dokku-logo.svg', :alt => 'dokku logo', :style => 'width: 220px;', :class => 'pb_15'), 'https://dokku.com/', :target => '_blank'
