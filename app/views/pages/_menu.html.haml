@@ -34,28 +34,19 @@
     %li.menu_header_02=link_to 'Logout', destroy_user_session_path, method: :delete
     - if (current_user && !current_user.region_id.blank?)
       %li.menu_header_02= link_to 'Admin', rails_admin_path
-  - if (@region)
-    %li.menu_header_01=link_to 'Add Location', suggest_path
-    %li=link_to 'About / Contact', about_path
-    %li=link_to 'Activity Feed', region_activity_path
-    %li=link_to 'Location RSS', "/#{params[:region]}/location_machine_xrefs.rss", {:class => 'feed_icon'}
-    %hr/
-  - if (mobile_device? and !(@region))
-    %li=link_to 'Add Location', map_location_suggest_path
-  - if !current_page?(map_path)
-    %li=link_to 'Global Map', map_path
   %li=link_to 'User Profile', current_user.nil? ? inspire_profile_path : profile_user_path(current_user.id)
+  %li.menu_header_01=link_to 'Add Location', @region ? suggest_path : map_location_suggest_path, :class => "bold"
   %li=link_to 'Add High Score', add_score_path
-  - if !(@region)
-    %li=link_to 'Contact', global_contact_path
-  - if !(@region)
-    %li=link_to 'Activity Feed', activity_path
-    %li=link_to 'Location RSS', "/location_machine_xrefs.rss", {:class => 'feed_icon'}
+  - if (mobile_device? || @region)
+    %li=link_to 'Global Map', map_path
+  %li.menu_header_03{:class => "#{@region ? 'region_show' : ''}"}=link_to 'Activity Feed', @region ? region_activity_path : activity_path
+  %li=link_to 'Contact', @region ? about_path : global_contact_path
+  %hr/
   %li=link_to 'Stats', stats_path
   %li=link_to 'FAQ', faq_path
   %li=link_to 'App', app_path
   %li=link_to 'Blog', 'http://blog.pinballmap.com'
   %li=link_to 'Store', store_path
-  %li=link_to 'Map Flier', map_flier_path
   %li=link_to 'Donate', donate_path
-  %li=link_to "Podcast", "http://pod.pinballmap.com"
+  %li=link_to 'Podcast', 'http://pod.pinballmap.com'
+  %li=link_to 'Location RSS', @region ? "/#{params[:region]}/location_machine_xrefs.rss" : "/location_machine_xrefs.rss", {:class => 'feed_icon'}

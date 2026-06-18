@@ -35,15 +35,14 @@
             %span.login_slash
               |
             = link_to 'Admin', rails_admin_path
-      - if !current_page?(map_path)
-        .header_buttons_child
-          = link_to 'Map!', map_path
-      - if !(@region)
-        .header_buttons_child
-          =link_to 'Add Location', map_location_suggest_path, :class => "bold"
-      - else
-        .header_buttons_child.header_menu_01
-          =link_to 'Add Location', suggest_path, :class => "bold"
+      - unless current_page?(map_path) || ((defined? @region) and current_page?(region_homepage_path))
+        .header_buttons_child.flex_center
+          =image_tag( 'icons/map.svg', :alt => 'map icon', :class => 'header_icon')
+          =link_to 'Map!', map_path
+      .header_buttons_child.header_menu_01
+        =link_to 'Add Location', @region ? suggest_path : map_location_suggest_path, :class => "bold"
+      .header_buttons_child.header_menu_03{:class => "#{@region ? 'region_hide' : ''}"}
+        =link_to 'Activity Feed', @region ? region_activity_path : activity_path, :class => "bold"
       - if (@region)
         %div.region_logo.header_buttons_child
           %span.region_name_page
