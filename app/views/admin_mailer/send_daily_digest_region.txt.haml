@@ -24,11 +24,3 @@ Pictures Added
   = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
   = item[:user_name]
 
-High Scores
-
-- @high_scores.each do |item|
-  = item[:location_name]
-  = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
-  = item[:machine_name]
-  = number_with_delimiter(item[:high_score])
-  = item[:user_name]

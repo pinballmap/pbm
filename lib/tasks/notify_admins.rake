@@ -24,13 +24,13 @@ task send_daily_digest_region: :environment do
     email_subject = "Pinball Map - Daily activity digest (#{r.full_name}) - #{(Date.today - 1.day).strftime('%m/%d/%Y')}"
     email_body = r.generate_daily_digest_email_body
 
-    next if email_body[:machine_comments].empty? && email_body[:machine_removals].empty? && email_body[:pictures_added].empty? && email_body[:high_scores].empty?
+    next if email_body[:machine_comments].empty? && email_body[:machine_removals].empty? && email_body[:pictures_added].empty?
 
     email_to = r.users.map(&:email)
 
     next if email_to.blank? || email_to.nil?
 
-    AdminMailer.with(email_to: email_to, email_subject: email_subject, region_name: r.full_name, machine_comments: email_body[:machine_comments], machine_removals: email_body[:machine_removals], pictures_added: email_body[:pictures_added], high_scores: email_body[:high_scores]).send_daily_digest_region.deliver_later
+    AdminMailer.with(email_to: email_to, email_subject: email_subject, region_name: r.full_name, machine_comments: email_body[:machine_comments], machine_removals: email_body[:machine_removals], pictures_added: email_body[:pictures_added]).send_daily_digest_region.deliver_later
     sleep(8)
   end
 rescue StandardError => e

@@ -57,7 +57,6 @@ class AdminMailer < ApplicationMailer
     @machine_comments = params[:machine_comments]
     @machine_removals = params[:machine_removals]
     @pictures_added   = params[:pictures_added]
-    @high_scores      = params[:high_scores]
     @region_name      = params[:region_name]
     mail(to: params[:email_to], subject: params[:email_subject])
   end
@@ -66,7 +65,6 @@ class AdminMailer < ApplicationMailer
     @machine_comments  = params[:machine_comments]
     @machine_removals  = params[:machine_removals]
     @pictures_added    = params[:pictures_added]
-    @high_scores       = params[:high_scores]
     @location_metadata = params[:location_metadata]
     @remove_and_readd  = params[:remove_and_readd]
     mail(to: params[:user], subject: "Pinball Map - Daily global activity digest - #{(Date.today - 1.day).strftime('%m/%d/%Y')}")

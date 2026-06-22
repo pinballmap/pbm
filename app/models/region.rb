@@ -131,7 +131,6 @@ class Region < ApplicationRecord
       machine_comments: base.where(submission_type: UserSubmission::NEW_CONDITION_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, comment: us.comment, user_name: us.user_name } },
       machine_removals: base.where(submission_type: UserSubmission::REMOVE_MACHINE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, user_name: us.user_name } },
       pictures_added:   base.where(submission_type: UserSubmission::NEW_PICTURE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, user_name: us.user_name } },
-      high_scores:      base.where(submission_type: UserSubmission::NEW_SCORE_TYPE).order(:user_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, high_score: us.high_score, user_name: us.user_name } }
     }
   end
 
@@ -167,7 +166,6 @@ class Region < ApplicationRecord
       machine_comments:  base.where(submission_type: UserSubmission::NEW_CONDITION_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, comment: us.comment, user_name: us.user_name } },
       machine_removals:  base.where(submission_type: UserSubmission::REMOVE_MACHINE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, user_name: us.user_name } },
       pictures_added:    base.where(submission_type: UserSubmission::NEW_PICTURE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, user_name: us.user_name } },
-      high_scores:       base.where(submission_type: UserSubmission::NEW_SCORE_TYPE).order(:user_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, high_score: us.high_score, user_name: us.user_name } },
       location_metadata: base.where(submission_type: UserSubmission::LOCATION_METADATA_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, description: us.location&.description, user_name: us.user_name } },
       remove_and_readd:  remove_and_readd
     }

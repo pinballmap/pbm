@@ -33,17 +33,6 @@
         %br/
         = item[:user_name]
     %h3
-      High Scores
-    - @high_scores.each do |item|
-      %p
-        %a{href: "https://pinballmap.com/map?by_location_id=#{item[:location_id]}"}= item[:location_name]
-        %br/
-        = item[:machine_name]
-        %br/
-        = number_with_delimiter(item[:high_score])
-        %br/
-        = item[:user_name]
-    %h3
       Location Metadata Updates
     - @location_metadata.each do |item|
       %p
