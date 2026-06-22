@@ -176,12 +176,32 @@ class Region < ApplicationRecord
     pictures_added    = base.where(submission_type: UserSubmission::NEW_PICTURE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, user_name: us.user_name } }
     location_metadata = base.where(submission_type: UserSubmission::LOCATION_METADATA_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, description: us.location&.description, user_name: us.user_name } }
 
+    new_user_ids = User.where("created_at >= ?", 7.days.ago).pluck(:id)
+    new_user_activity = if new_user_ids.any?
+      base.where(
+        submission_type: [ UserSubmission::NEW_CONDITION_TYPE, UserSubmission::REMOVE_MACHINE_TYPE, UserSubmission::NEW_PICTURE_TYPE ],
+        user_id: new_user_ids
+      ).includes(:user).group_by(&:user_id).map do |_user_id, submissions|
+        user = submissions.first.user
+        {
+          user_name: submissions.first.user_name,
+          joined_at: user.created_at,
+          comments:  submissions.select { |s| s.submission_type == UserSubmission::NEW_CONDITION_TYPE }.map { |s| { location_name: s.location_name, location_id: s.location_id, machine_name: s.machine_name, comment: s.comment } },
+          removals:  submissions.select { |s| s.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.map { |s| { location_name: s.location_name, location_id: s.location_id, machine_name: s.machine_name } },
+          pictures:  submissions.select { |s| s.submission_type == UserSubmission::NEW_PICTURE_TYPE }.map { |s| { location_name: s.location_name, location_id: s.location_id } }
+        }
+      end
+    else
+      []
+    end
+
     {
       machine_comments:       machine_comments,
       machine_removals:       machine_removals,
       pictures_added:         pictures_added,
       location_metadata:      location_metadata,
       remove_and_readd:       remove_and_readd,
+      new_user_activity:       new_user_activity,
       machine_comments_count:  machine_comments.length,
       machine_removals_count:  machine_removals.length,
       pictures_added_count:    pictures_added.length,

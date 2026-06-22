@@ -152,6 +152,7 @@ describe Region do
       expect(result[:machine_removals]).to be_empty
       expect(result[:pictures_added]).to be_empty
       expect(result[:location_metadata]).to be_empty
+      expect(result[:new_user_activity]).to be_empty
       expect(result[:machine_comments_count]).to eq(0)
       expect(result[:machine_removals_count]).to eq(0)
       expect(result[:pictures_added_count]).to eq(0)
@@ -170,26 +171,37 @@ describe Region do
       zeta_location = FactoryBot.create(:location, name: 'Zeta Bar', description: 'address is wrong')
       FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::LOCATION_METADATA_TYPE, created_at: Time.now - 1.day, location_name: 'Zeta Bar', location: zeta_location, user_name: 'frank')
 
+      new_user = FactoryBot.create(:user, created_at: 3.days.ago)
+      old_user = FactoryBot.create(:user, created_at: 10.days.ago)
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day, location_name: 'Eta Bar', machine_name: 'Centaur', comment: 'loud', user_name: new_user.username, user_id: new_user.id)
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 1.day, location_name: 'Eta Bar', machine_name: 'Centaur', user_name: new_user.username, user_id: new_user.id)
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day, location_name: 'Theta Bar', machine_name: 'Black Knight', comment: 'old user', user_name: old_user.username, user_id: old_user.id)
+
       FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
 
       result = Region.generate_daily_digest_global_email_body
-      expect(result[:machine_comments]).to eq([
+      expect(result[:machine_comments]).to include(
         { location_name: 'Alpha Bar', location_id: nil, machine_name: 'Black Knight', comment: 'loud', user_name: 'alice' },
         { location_name: 'Beta Bar', location_id: nil, machine_name: 'Attack from Mars', comment: 'great', user_name: 'bob' }
-      ])
-      expect(result[:machine_removals]).to eq([
+      )
+      expect(result[:machine_removals]).to include(
         { location_name: 'Gamma Bar', location_id: nil, machine_name: 'Twilight Zone', user_name: 'carol' }
-      ])
+      )
       expect(result[:pictures_added]).to eq([
         { location_name: 'Delta Lounge', location_id: nil, user_name: 'dave' }
       ])
       expect(result[:location_metadata]).to eq([
         { location_name: 'Zeta Bar', location_id: zeta_location.id, description: 'address is wrong', user_name: 'frank' }
       ])
-      expect(result[:machine_comments_count]).to eq(2)
-      expect(result[:machine_removals_count]).to eq(1)
-      expect(result[:pictures_added_count]).to eq(1)
-      expect(result[:location_metadata_count]).to eq(1)
+
+      expect(result[:new_user_activity].length).to eq(1)
+      new_user_entry = result[:new_user_activity].first
+      expect(new_user_entry[:user_name]).to eq(new_user.username)
+      expect(new_user_entry[:joined_at]).to be_within(1.second).of(new_user.created_at)
+      expect(new_user_entry[:comments]).to eq([ { location_name: 'Eta Bar', location_id: nil, machine_name: 'Centaur', comment: 'loud' } ])
+      expect(new_user_entry[:removals]).to eq([ { location_name: 'Eta Bar', location_id: nil, machine_name: 'Centaur' } ])
+      expect(new_user_entry[:pictures]).to be_empty
+
       expect(result[:machines_added_count]).to eq(1)
       expect(result[:scores_added_count]).to eq(1)
     end

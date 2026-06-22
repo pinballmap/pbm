@@ -9,6 +9,23 @@ Summary
 = pluralize(@scores_added_count, "score") + " added"
 = pluralize(@location_metadata_count, "location metadata update")
 
+New User Activity (joined within 7 days)
+
+- @new_user_activity.each do |user|
+  = "#{user[:user_name]} (joined #{time_ago_in_words(user[:joined_at])} ago)"
+  - unless user[:comments].empty?
+    = "  Comments:"
+    - user[:comments].each do |c|
+      = "  #{c[:location_name]} (https://pinballmap.com/map?by_location_id=#{c[:location_id]}) - #{c[:machine_name]}: #{c[:comment]}"
+  - unless user[:removals].empty?
+    = "  Removals:"
+    - user[:removals].each do |r|
+      = "  #{r[:location_name]} (https://pinballmap.com/map?by_location_id=#{r[:location_id]}) - #{r[:machine_name]}"
+  - unless user[:pictures].empty?
+    = "  Pictures:"
+    - user[:pictures].each do |pic|
+      = "  #{pic[:location_name]} (https://pinballmap.com/map?by_location_id=#{pic[:location_id]})"
+
 Machine Comments
 
 - @machine_comments.each do |item|

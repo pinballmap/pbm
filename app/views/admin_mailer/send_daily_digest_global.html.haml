@@ -20,6 +20,31 @@
       %br/
       #{pluralize(@location_metadata_count, "location metadata update")}
     %h3
+      New User Activity (joined within 7 days)
+    - @new_user_activity.each do |user|
+      %p
+        %strong= "#{user[:user_name]} (joined #{time_ago_in_words(user[:joined_at])} ago)"
+        - unless user[:comments].empty?
+          %br/
+          Comments:
+          - user[:comments].each do |c|
+            %br/
+            %a{href: "https://pinballmap.com/map?by_location_id=#{c[:location_id]}"}= c[:location_name]
+            \&mdash; #{c[:machine_name]}: "#{c[:comment]}"
+        - unless user[:removals].empty?
+          %br/
+          Removals:
+          - user[:removals].each do |r|
+            %br/
+            %a{href: "https://pinballmap.com/map?by_location_id=#{r[:location_id]}"}= r[:location_name]
+            \&mdash; #{r[:machine_name]}
+        - unless user[:pictures].empty?
+          %br/
+          Pictures:
+          - user[:pictures].each do |pic|
+            %br/
+            %a{href: "https://pinballmap.com/map?by_location_id=#{pic[:location_id]}"}= pic[:location_name]
+    %h3
       Machine Comments
     - @machine_comments.each do |item|
       %p
