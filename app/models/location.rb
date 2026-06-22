@@ -120,13 +120,13 @@ class Location < ApplicationRecord
     where(id: UserFaveLocation.where(user_id: user_id).select(:location_id))
   }
   scope :manufacturer, lambda { |manufacturer|
-    where(id: joins(:machines).where(machines: { manufacturer: Array(manufacturer) }).select("locations.id"))
+    where(id: Location.joins(:machines).where(machines: { manufacturer: Array(manufacturer) }).select("locations.id"))
   }
   scope :by_machine_type, lambda { |machine_type|
-    where(id: joins(:machines).where(machines: { machine_type: Array(machine_type) }).select("locations.id"))
+    where(id: Location.joins(:machines).where(machines: { machine_type: Array(machine_type) }).select("locations.id"))
   }
   scope :by_machine_display, lambda { |machine_display|
-    where(id: joins(:machines).where(machines: { machine_display: Array(machine_display) }).select("locations.id"))
+    where(id: Location.joins(:machines).where(machines: { machine_display: Array(machine_display) }).select("locations.id"))
   }
 
   before_destroy do |record|
