@@ -97,7 +97,7 @@ describe Region do
   end
 
   describe '#generate_daily_digest_email_body' do
-    it 'returns empty collections when there is no activity that day' do
+    it 'returns empty collections and zero counts when there is no activity that day' do
       FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
 
@@ -105,15 +105,20 @@ describe Region do
       expect(result[:machine_comments]).to be_empty
       expect(result[:machine_removals]).to be_empty
       expect(result[:pictures_added]).to be_empty
-      expect(result[:high_scores]).to be_empty
+      expect(result[:machine_comments_count]).to eq(0)
+      expect(result[:machine_removals_count]).to eq(0)
+      expect(result[:pictures_added_count]).to eq(0)
+      expect(result[:machines_added_count]).to eq(0)
+      expect(result[:scores_added_count]).to eq(0)
     end
 
-    it 'returns all four activity types from yesterday, scoped to region, sorted appropriately' do
+    it 'returns activity types from yesterday, scoped to region, sorted appropriately, with correct counts' do
       FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day, location_name: 'Bar Place', machine_name: 'Black Knight', comment: 'tilty', user_name: 'alice')
       FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day, location_name: 'Foo Place', machine_name: 'Attack from Mars', comment: 'plays great', user_name: 'bob')
       FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 1.day, location_name: 'Arcade One', machine_name: 'Centaur', user_name: 'carol')
       FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day, location_name: 'Pinhead Pub', user_name: 'dave')
-      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 1.day, location_name: 'Arcade One', machine_name: 'Centaur', high_score: 1_500_000, user_name: 'alice')
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_LMX_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 1.day)
 
       FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region_id: @other_region.id, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day)
@@ -129,14 +134,16 @@ describe Region do
       expect(result[:pictures_added]).to eq([
         { location_name: 'Pinhead Pub', location_id: nil, user_name: 'dave' }
       ])
-      expect(result[:high_scores]).to eq([
-        { location_name: 'Arcade One', location_id: nil, machine_name: 'Centaur', high_score: 1_500_000, user_name: 'alice' }
-      ])
+      expect(result[:machine_comments_count]).to eq(2)
+      expect(result[:machine_removals_count]).to eq(1)
+      expect(result[:pictures_added_count]).to eq(1)
+      expect(result[:machines_added_count]).to eq(1)
+      expect(result[:scores_added_count]).to eq(1)
     end
   end
 
   describe '.generate_daily_digest_global_email_body' do
-    it 'returns empty collections when there is no activity that day' do
+    it 'returns empty collections and zero counts when there is no activity that day' do
       FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)
       FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 2.day)
 
@@ -144,16 +151,22 @@ describe Region do
       expect(result[:machine_comments]).to be_empty
       expect(result[:machine_removals]).to be_empty
       expect(result[:pictures_added]).to be_empty
-      expect(result[:high_scores]).to be_empty
       expect(result[:location_metadata]).to be_empty
+      expect(result[:machine_comments_count]).to eq(0)
+      expect(result[:machine_removals_count]).to eq(0)
+      expect(result[:pictures_added_count]).to eq(0)
+      expect(result[:location_metadata_count]).to eq(0)
+      expect(result[:machines_added_count]).to eq(0)
+      expect(result[:scores_added_count]).to eq(0)
     end
 
-    it 'returns all four activity types from yesterday across all regions, sorted appropriately' do
+    it 'returns activity types from yesterday across all regions, sorted appropriately, with correct counts' do
       FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day, location_name: 'Alpha Bar', machine_name: 'Black Knight', comment: 'loud', user_name: 'alice')
       FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day, location_name: 'Beta Bar', machine_name: 'Attack from Mars', comment: 'great', user_name: 'bob')
       FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::REMOVE_MACHINE_TYPE, created_at: Time.now - 1.day, location_name: 'Gamma Bar', machine_name: 'Twilight Zone', user_name: 'carol')
       FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day, location_name: 'Delta Lounge', user_name: 'dave')
-      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 1.day, location_name: 'Epsilon Arcade', machine_name: 'Centaur', high_score: 2_000_000, user_name: 'eve')
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_LMX_TYPE, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: Time.now - 1.day)
       zeta_location = FactoryBot.create(:location, name: 'Zeta Bar', description: 'address is wrong')
       FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::LOCATION_METADATA_TYPE, created_at: Time.now - 1.day, location_name: 'Zeta Bar', location: zeta_location, user_name: 'frank')
 
@@ -170,12 +183,15 @@ describe Region do
       expect(result[:pictures_added]).to eq([
         { location_name: 'Delta Lounge', location_id: nil, user_name: 'dave' }
       ])
-      expect(result[:high_scores]).to eq([
-        { location_name: 'Epsilon Arcade', location_id: nil, machine_name: 'Centaur', high_score: 2_000_000, user_name: 'eve' }
-      ])
       expect(result[:location_metadata]).to eq([
         { location_name: 'Zeta Bar', location_id: zeta_location.id, description: 'address is wrong', user_name: 'frank' }
       ])
+      expect(result[:machine_comments_count]).to eq(2)
+      expect(result[:machine_removals_count]).to eq(1)
+      expect(result[:pictures_added_count]).to eq(1)
+      expect(result[:location_metadata_count]).to eq(1)
+      expect(result[:machines_added_count]).to eq(1)
+      expect(result[:scores_added_count]).to eq(1)
     end
   end
 
