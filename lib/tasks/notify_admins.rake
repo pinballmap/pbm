@@ -30,7 +30,7 @@ task send_daily_digest_region: :environment do
 
     next if email_to.blank? || email_to.nil?
 
-    AdminMailer.with(email_to: email_to, email_subject: email_subject, region_name: r.full_name, machine_comments: email_body[:machine_comments], machine_removals: email_body[:machine_removals], pictures_added: email_body[:pictures_added]).send_daily_digest_region.deliver_later
+    AdminMailer.with(email_to: email_to, email_subject: email_subject, region_name: r.full_name, machine_comments: email_body[:machine_comments], machine_removals: email_body[:machine_removals], pictures_added: email_body[:pictures_added], machine_comments_count: email_body[:machine_comments_count], machine_removals_count: email_body[:machine_removals_count], pictures_added_count: email_body[:pictures_added_count], machines_added_count: email_body[:machines_added_count], scores_added_count: email_body[:scores_added_count]).send_daily_digest_region.deliver_later
     sleep(8)
   end
 rescue StandardError => e

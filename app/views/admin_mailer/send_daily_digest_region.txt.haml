@@ -1,5 +1,13 @@
 Here is the daily activity digest for #{@region_name} on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
 
+Summary
+
+= pluralize(@machines_added_count, "machine") + " added"
+= pluralize(@machine_removals_count, "machine") + " removed"
+= pluralize(@machine_comments_count, "machine comment")
+= pluralize(@pictures_added_count, "picture") + " added"
+= pluralize(@scores_added_count, "score") + " added"
+
 Machine Comments
 
 - @machine_comments.each do |item|
