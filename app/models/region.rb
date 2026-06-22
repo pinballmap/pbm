@@ -139,7 +139,7 @@ class Region < ApplicationRecord
       machine_removals_count: machine_removals.length,
       pictures_added_count:   pictures_added.length,
       machines_added_count:   base.where(submission_type: UserSubmission::NEW_LMX_TYPE).count,
-      scores_added_count:     base.where(submission_type: UserSubmission::NEW_SCORE_TYPE).count,
+      scores_added_count:     base.where(submission_type: UserSubmission::NEW_SCORE_TYPE).count
     }
   end
 
@@ -207,7 +207,7 @@ class Region < ApplicationRecord
       pictures_added_count:    pictures_added.length,
       location_metadata_count: location_metadata.length,
       machines_added_count:    base.where(submission_type: UserSubmission::NEW_LMX_TYPE).count,
-      scores_added_count:      base.where(submission_type: UserSubmission::NEW_SCORE_TYPE).count,
+      scores_added_count:      base.where(submission_type: UserSubmission::NEW_SCORE_TYPE).count
     }
   end
 
