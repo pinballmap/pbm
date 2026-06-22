@@ -49,4 +49,4 @@
   %li=link_to 'Store', store_path
   %li=link_to 'Donate', donate_path
   %li=link_to 'Podcast', 'http://pod.pinballmap.com'
-  %li=link_to 'Location RSS', @region ? "/#{params[:region]}/location_machine_xrefs.rss" : "/location_machine_xrefs.rss", {:class => 'feed_icon'}
+  %li=link_to 'Location RSS', @region ? "/#{@region.name}/location_machine_xrefs.rss" : "/location_machine_xrefs.rss", {:class => 'feed_icon'}
