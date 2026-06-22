@@ -132,6 +132,7 @@ RSpec.configure do |config|
 
   config.after do
     Rails.cache.clear
+    Capybara.reset_sessions!
     DatabaseCleaner.clean
     Warden.test_reset!
   end
