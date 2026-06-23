@@ -385,6 +385,25 @@ describe MapsController do
       expect(page).to have_css('#clear_filters_button', visible: true)
     end
 
+    it 'select all link selects all location types and shows clear filters button' do
+      FactoryBot.create(:location_type, name: 'bar')
+      FactoryBot.create(:location_type, name: 'arcade')
+
+      visit '/map'
+      sleep 1
+
+      expect(page).to have_css('#clear_filters_button', visible: :hidden)
+
+      page.find('#open_filter_modal_button').click
+      page.find('#select_all_location_types').click
+
+      selected = page.find('#by_type_id', visible: :all).all('option:checked').map(&:text)
+      expect(selected).to include('bar', 'arcade')
+      page.find('.filter_modal_close').click
+
+      expect(page).to have_css('#clear_filters_button', visible: true)
+    end
+
     it 'shows single version toggle if machine is in a group and respects single version filter' do
       @machine_group = FactoryBot.create(:machine_group)
       rip_city_location = FactoryBot.create(:location, region: nil, name: 'Rip City', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)

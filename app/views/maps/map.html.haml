@@ -82,7 +82,9 @@
                   %button#n_machines_10.machine_type_btn.n_machines_btn{:type => "button", :onclick => "setNMachines('10')"} 10+
                   %button#n_machines_20.machine_type_btn.n_machines_btn{:type => "button", :onclick => "setNMachines('20')"} 20+
               .map_input_limit
-                .input_title Location type
+                .input_title_row
+                  .input_title Location type
+                  %a#select_all_location_types{href: "#"} select all
                 = select_tag "by_type_id[]", options_from_collection_for_select(LocationType.all.sort_by(&:name), 'id', 'name', params["by_type_id"]), multiple: "multiple", :class => 'by_type_id', :id => 'by_type_id'
               .map_input_limit
                 .input_title Location has at least 1 Stern Insider Connected machine?
@@ -383,6 +385,14 @@
       }
     });
     $('#by_type_id').on('select2:select select2:unselect change', updateClearFiltersButton);
+
+    $('#select_all_location_types').on('click', function(e) {
+      e.preventDefault();
+      var $select = $('#by_type_id');
+      var allValues = $select.find('option').map(function() { return $(this).val(); }).get();
+      $select.val(allValues).trigger('change');
+      updateClearFiltersButton();
+    });
     $('#by_manufacturer').on('select2:select select2:unselect change', updateClearFiltersButton);
     $('#by_operator_id').on('select2:select select2:unselect change', updateClearFiltersButton);
     $('#by_machine_year_gte, #by_machine_year_lte').on('change', updateClearFiltersButton);
