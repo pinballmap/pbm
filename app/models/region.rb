@@ -127,9 +127,10 @@ class Region < ApplicationRecord
     end_of_day = (Time.now - 1.day).end_of_day
     base = UserSubmission.where(deleted_at: nil).where(created_at: start_of_day..end_of_day, region_id: self)
 
-    machine_comments = base.where(submission_type: UserSubmission::NEW_CONDITION_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, comment: us.comment, user_name: us.user_name } }
-    machine_removals = base.where(submission_type: UserSubmission::REMOVE_MACHINE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, user_name: us.user_name } }
-    pictures_added   = base.where(submission_type: UserSubmission::NEW_PICTURE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, user_name: us.user_name } }
+    machine_comments  = base.where(submission_type: UserSubmission::NEW_CONDITION_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, comment: us.comment, user_name: us.user_name } }
+    machine_removals  = base.where(submission_type: UserSubmission::REMOVE_MACHINE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, user_name: us.user_name } }
+    pictures_added_raw = base.where(submission_type: UserSubmission::NEW_PICTURE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, user_name: us.user_name } }
+    pictures_added    = pictures_added_raw.uniq { |item| item[:location_id] }
 
     {
       machine_comments:      machine_comments,
@@ -137,7 +138,7 @@ class Region < ApplicationRecord
       pictures_added:        pictures_added,
       machine_comments_count: machine_comments.length,
       machine_removals_count: machine_removals.length,
-      pictures_added_count:   pictures_added.length,
+      pictures_added_count:   pictures_added_raw.length,
       machines_added_count:   base.where(submission_type: UserSubmission::NEW_LMX_TYPE).count,
       scores_added_count:     base.where(submission_type: UserSubmission::NEW_SCORE_TYPE).count
     }
@@ -171,10 +172,11 @@ class Region < ApplicationRecord
       ORDER BY first.created_at DESC
     SQL
 
-    machine_comments  = base.where(submission_type: UserSubmission::NEW_CONDITION_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, comment: us.comment, user_name: us.user_name } }
-    machine_removals  = base.where(submission_type: UserSubmission::REMOVE_MACHINE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, user_name: us.user_name } }
-    pictures_added    = base.where(submission_type: UserSubmission::NEW_PICTURE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, user_name: us.user_name } }
-    location_metadata = base.where(submission_type: UserSubmission::LOCATION_METADATA_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, description: us.location&.description, user_name: us.user_name } }
+    machine_comments   = base.where(submission_type: UserSubmission::NEW_CONDITION_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, comment: us.comment, user_name: us.user_name } }
+    machine_removals   = base.where(submission_type: UserSubmission::REMOVE_MACHINE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, user_name: us.user_name } }
+    pictures_added_raw = base.where(submission_type: UserSubmission::NEW_PICTURE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, user_name: us.user_name } }
+    pictures_added     = pictures_added_raw.uniq { |item| item[:location_id] }
+    location_metadata  = base.where(submission_type: UserSubmission::LOCATION_METADATA_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, description: us.location&.description, user_name: us.user_name } }
 
     new_user_ids = User.where("created_at >= ?", 7.days.ago).pluck(:id)
     new_user_activity = if new_user_ids.any?
@@ -204,7 +206,7 @@ class Region < ApplicationRecord
       new_user_activity:       new_user_activity,
       machine_comments_count:  machine_comments.length,
       machine_removals_count:  machine_removals.length,
-      pictures_added_count:    pictures_added.length,
+      pictures_added_count:    pictures_added_raw.length,
       location_metadata_count: location_metadata.length,
       machines_added_count:    base.where(submission_type: UserSubmission::NEW_LMX_TYPE).count,
       scores_added_count:      base.where(submission_type: UserSubmission::NEW_SCORE_TYPE).count
