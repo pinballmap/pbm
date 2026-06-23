@@ -156,12 +156,14 @@
   inputField.addEventListener("input", inputDisplayToggle);
 
   function clearSearch(event) {
-    document.getElementById('address').value = "";
+    var addressField = document.getElementById('address');
+    addressField.value = "";
     document.getElementById('by_city_name').value = "";
     document.getElementById('by_state_name').value = "";
     document.getElementById('by_city_no_state').value = "";
     document.getElementById('by_location_id').value = "";
     event.target.style.display = "none";
+    addressField.focus();
   }
 
   clearButton2.addEventListener("click", clearSearch);
