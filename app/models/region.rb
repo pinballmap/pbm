@@ -176,7 +176,8 @@ class Region < ApplicationRecord
     machine_removals   = base.where(submission_type: UserSubmission::REMOVE_MACHINE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, user_name: us.user_name } }
     pictures_added_raw = base.where(submission_type: UserSubmission::NEW_PICTURE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, user_name: us.user_name } }
     pictures_added     = pictures_added_raw.uniq { |item| item[:location_id] }
-    location_metadata  = base.where(submission_type: UserSubmission::LOCATION_METADATA_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, description: us.location&.description, user_name: us.user_name } }
+    location_metadata_raw = base.where(submission_type: UserSubmission::LOCATION_METADATA_TYPE).order(id: :desc).map { |us| { location_name: us.location_name, location_id: us.location_id, description: us.location&.description, user_name: us.user_name } }
+    location_metadata     = location_metadata_raw.uniq { |item| item[:location_id] }.sort_by { |item| item[:location_name] }
 
     new_user_ids = User.where("created_at >= ?", 7.days.ago).pluck(:id)
     new_user_activity = if new_user_ids.any?

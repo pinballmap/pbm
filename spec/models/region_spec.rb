@@ -205,6 +205,18 @@ describe Region do
       expect(result[:machines_added_count]).to eq(1)
       expect(result[:scores_added_count]).to eq(1)
     end
+
+    it 'deduplicates location_metadata to only the most recent submission per location' do
+      zeta_location = FactoryBot.create(:location, name: 'Zeta Bar', description: 'final description')
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::LOCATION_METADATA_TYPE, created_at: Time.now - 1.day - 2.hours, location_name: 'Zeta Bar', location: zeta_location, user_name: 'first_editor')
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::LOCATION_METADATA_TYPE, created_at: Time.now - 1.day - 1.hour, location_name: 'Zeta Bar', location: zeta_location, user_name: 'second_editor')
+      FactoryBot.create(:user_submission, region_id: nil, submission_type: UserSubmission::LOCATION_METADATA_TYPE, created_at: Time.now - 1.day, location_name: 'Zeta Bar', location: zeta_location, user_name: 'final_editor')
+
+      result = Region.generate_daily_digest_global_email_body
+      expect(result[:location_metadata].length).to eq(1)
+      expect(result[:location_metadata].first[:user_name]).to eq('final_editor')
+      expect(result[:location_metadata_count]).to eq(1)
+    end
   end
 
   describe '#generate_weekly_global_email_body' do
