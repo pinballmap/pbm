@@ -58,6 +58,29 @@ describe MapsController do
       expect(find('#by_location_id', visible: :hidden).value).to eq('')
     end
 
+    it 'selecting a specific location from autocomplete clears all active filters' do
+      FactoryBot.create(:machine, name: 'Sass Pro')
+
+      visit '/map'
+
+      sleep 1
+
+      # Apply a machine filter
+      page.find('#open_filter_modal_button').click
+      page.find('#by_machine_select + .select2-container .select2-selection').click
+      page.find('#by_machine_select + .select2-container .select2-search__field').set('Sass Pro')
+      sleep 0.5
+      page.find('.select2-results__option', text: /Sass Pro/).click
+      page.find('.filter_modal_close').click
+      expect(page.execute_script("return $('#by_machine_select').val()")).to_not be_empty
+
+      # Simulate selecting a specific location from the address autocomplete (not a city)
+      page.execute_script("$('#address').autocomplete('instance')._trigger('select', null, { item: { type: 'location', id: 42, name: 'Rip City' } });")
+
+      expect(page.execute_script("return $('#by_machine_select').val()")).to be_empty
+      expect(page.find('#clear_filters_button', visible: :all)['style']).to include('display: none')
+    end
+
     it 'lets you search by address and machine and respects if you change or clear out the machine search value' do
       rip_city_location = FactoryBot.create(:location, region: nil, name: 'Rip City', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
       no_way_location = FactoryBot.create(:location, region: nil, name: 'No Way', zip: '97203', lat: 45.593049200000, lon: -122.732620200000)

@@ -431,10 +431,8 @@
       } else {
         $('#address').val(ui.item.name);
         $('#by_location_id').val(ui.item.id);
-        $('#by_machine_select').val(null).trigger('change');
-        $('#by_type_id').val(null).trigger('change');
-        $('#single_hide').hide();
-        setSingleVersion(false);
+        clearAllFilters();
+        updateClearFiltersButton();
       }
       $('#address_search_form').submit();
     });
