@@ -101,6 +101,7 @@ class AdminMailer < ApplicationMailer
     @operator = params[:operator]
     @location_comments = params[:location_comments]
     @location_machines = params[:location_machines]
+    @admin_notes = params[:admin_notes]
     @place_id = params[:place_id]
     @remote_ip = params[:remote_ip]
     @headers = params[:headers]

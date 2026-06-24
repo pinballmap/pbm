@@ -31,8 +31,11 @@
       Zone: #{@zone}
     %p 
       Comments: #{@location_comments}
-    %p 
+    %p
       Machines: #{@location_machines}
+    - if @admin_notes.present?
+      %p
+        Admin Notes: #{@admin_notes}
     %p
       Google Places ID: #{@place_id}
     %p
