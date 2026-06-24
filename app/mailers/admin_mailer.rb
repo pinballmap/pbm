@@ -73,6 +73,8 @@ class AdminMailer < ApplicationMailer
     @location_metadata       = params[:location_metadata]
     @remove_and_readd        = params[:remove_and_readd]
     @new_user_activity       = params[:new_user_activity]
+    @proxy_machine_additions = params[:proxy_machine_additions]
+    @proxy_machine_comments  = params[:proxy_machine_comments]
     @machine_comments_count  = params[:machine_comments_count]
     @machine_removals_count  = params[:machine_removals_count]
     @pictures_added_count    = params[:pictures_added_count]

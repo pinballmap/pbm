@@ -153,6 +153,8 @@ describe Region do
       expect(result[:pictures_added]).to be_empty
       expect(result[:location_metadata]).to be_empty
       expect(result[:new_user_activity]).to be_empty
+      expect(result[:proxy_machine_additions]).to be_empty
+      expect(result[:proxy_machine_comments]).to be_empty
       expect(result[:machine_comments_count]).to eq(0)
       expect(result[:machine_removals_count]).to eq(0)
       expect(result[:pictures_added_count]).to eq(0)
@@ -204,6 +206,52 @@ describe Region do
 
       expect(result[:machines_added_count]).to eq(1)
       expect(result[:scores_added_count]).to eq(1)
+    end
+
+    it 'returns empty proxy machine collections when there is no proxy machine activity' do
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_LMX_TYPE, machine_id: 999, created_at: Time.now - 1.day)
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_CONDITION_TYPE, machine_id: 999, created_at: Time.now - 1.day)
+
+      result = Region.generate_daily_digest_global_email_body
+      expect(result[:proxy_machine_additions]).to be_empty
+      expect(result[:proxy_machine_comments]).to be_empty
+    end
+
+    it 'captures new_lmx submissions for all three proxy machine IDs' do
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_LMX_TYPE, machine_id: 847, created_at: Time.now - 1.day, location_name: 'Arcade One', machine_name: 'Proxy Machine A', user_name: 'alice')
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_LMX_TYPE, machine_id: 3251, created_at: Time.now - 1.day, location_name: 'Bar Two', machine_name: 'Proxy Machine B', user_name: 'bob')
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_LMX_TYPE, machine_id: 1116, created_at: Time.now - 1.day, location_name: 'Club Three', machine_name: 'Proxy Machine C', user_name: 'carol')
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_LMX_TYPE, machine_id: 999, created_at: Time.now - 1.day, location_name: 'Not A Proxy', machine_name: 'Real Machine', user_name: 'dave')
+
+      result = Region.generate_daily_digest_global_email_body
+      expect(result[:proxy_machine_additions]).to eq([
+        { location_name: 'Arcade One', location_id: nil, machine_name: 'Proxy Machine A', user_name: 'alice' },
+        { location_name: 'Bar Two', location_id: nil, machine_name: 'Proxy Machine B', user_name: 'bob' },
+        { location_name: 'Club Three', location_id: nil, machine_name: 'Proxy Machine C', user_name: 'carol' }
+      ])
+    end
+
+    it 'captures new_condition submissions for all three proxy machine IDs' do
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_CONDITION_TYPE, machine_id: 847, created_at: Time.now - 1.day, location_name: 'Arcade One', machine_name: 'Proxy Machine A', comment: 'not a real pinball machine', user_name: 'alice')
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_CONDITION_TYPE, machine_id: 3251, created_at: Time.now - 1.day, location_name: 'Bar Two', machine_name: 'Proxy Machine B', comment: 'this is a jukebox', user_name: 'bob')
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_CONDITION_TYPE, machine_id: 1116, created_at: Time.now - 1.day, location_name: 'Club Three', machine_name: 'Proxy Machine C', comment: 'proxy for darts', user_name: 'carol')
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_CONDITION_TYPE, machine_id: 999, created_at: Time.now - 1.day, location_name: 'Not A Proxy', machine_name: 'Real Machine', comment: 'plays great', user_name: 'dave')
+
+      result = Region.generate_daily_digest_global_email_body
+      expect(result[:proxy_machine_comments]).to eq([
+        { location_name: 'Arcade One', location_id: nil, machine_name: 'Proxy Machine A', comment: 'not a real pinball machine', user_name: 'alice' },
+        { location_name: 'Bar Two', location_id: nil, machine_name: 'Proxy Machine B', comment: 'this is a jukebox', user_name: 'bob' },
+        { location_name: 'Club Three', location_id: nil, machine_name: 'Proxy Machine C', comment: 'proxy for darts', user_name: 'carol' }
+      ])
+    end
+
+    it 'excludes proxy machine submissions from outside the digest window' do
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_LMX_TYPE, machine_id: 847, created_at: Time.now - 2.days, location_name: 'Old Arcade', machine_name: 'Proxy Machine A', user_name: 'alice')
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_CONDITION_TYPE, machine_id: 847, created_at: Time.now - 2.days, location_name: 'Old Arcade', machine_name: 'Proxy Machine A', comment: 'too old', user_name: 'alice')
+
+      result = Region.generate_daily_digest_global_email_body
+      expect(result[:proxy_machine_additions]).to be_empty
+      expect(result[:proxy_machine_comments]).to be_empty
     end
 
     it 'deduplicates location_metadata to only the most recent submission per location' do

@@ -66,3 +66,23 @@ Suspected Comment Removal (Remove + Re-add Within 5 Minutes)
   = item[:machine_name]
   = item[:user_name]
   = "Removed: #{item[:removed_at].strftime('%H:%M:%S')} / Re-added: #{item[:readded_at].strftime('%H:%M:%S')}"
+
+Proxy Machine Activity (Machine IDs 847, 1116, 3251)
+
+- if @proxy_machine_additions&.any?
+  = "Additions:"
+  - @proxy_machine_additions.each do |item|
+    = item[:location_name]
+    = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
+    = item[:machine_name]
+    = item[:user_name]
+- if @proxy_machine_comments&.any?
+  = "Comments:"
+  - @proxy_machine_comments.each do |item|
+    = item[:location_name]
+    = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
+    = item[:machine_name]
+    = item[:comment]
+    = item[:user_name]
+- if @proxy_machine_additions&.empty? && @proxy_machine_comments&.empty?
+  = "None"

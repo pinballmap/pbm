@@ -57,6 +57,7 @@ class Region < ApplicationRecord
   end
 
   MOBILE_CACHE_KEY = "api/v1/regions/index"
+  PROXY_MACHINE_IDS = [ 847, 3251, 1116 ].freeze
 
   before_save do
     Status.where(status_type: "regions").update({ updated_at: Time.current })
@@ -179,6 +180,14 @@ class Region < ApplicationRecord
     location_metadata_raw = base.where(submission_type: UserSubmission::LOCATION_METADATA_TYPE).order(id: :desc).map { |us| { location_name: us.location_name, location_id: us.location_id, description: us.location&.description, user_name: us.user_name } }
     location_metadata     = location_metadata_raw.uniq { |item| item[:location_id] }.sort_by { |item| item[:location_name] }
 
+    proxy_machine_additions = base.where(submission_type: UserSubmission::NEW_LMX_TYPE, machine_id: PROXY_MACHINE_IDS)
+      .order(:location_name)
+      .map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, user_name: us.user_name } }
+
+    proxy_machine_comments = base.where(submission_type: UserSubmission::NEW_CONDITION_TYPE, machine_id: PROXY_MACHINE_IDS)
+      .order(:location_name)
+      .map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, comment: us.comment, user_name: us.user_name } }
+
     new_user_ids = User.where("created_at >= ?", 7.days.ago).pluck(:id)
     new_user_activity = if new_user_ids.any?
       base.where(
@@ -199,12 +208,14 @@ class Region < ApplicationRecord
     end
 
     {
-      machine_comments:       machine_comments,
-      machine_removals:       machine_removals,
-      pictures_added:         pictures_added,
-      location_metadata:      location_metadata,
-      remove_and_readd:       remove_and_readd,
+      machine_comments:        machine_comments,
+      machine_removals:        machine_removals,
+      pictures_added:          pictures_added,
+      location_metadata:       location_metadata,
+      remove_and_readd:        remove_and_readd,
       new_user_activity:       new_user_activity,
+      proxy_machine_additions: proxy_machine_additions,
+      proxy_machine_comments:  proxy_machine_comments,
       machine_comments_count:  machine_comments.length,
       machine_removals_count:  machine_removals.length,
       pictures_added_count:    pictures_added_raw.length,

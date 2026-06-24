@@ -91,3 +91,29 @@
         = item[:user_name]
         %br/
         Removed: #{item[:removed_at].strftime('%H:%M:%S')} / Re-added: #{item[:readded_at].strftime('%H:%M:%S')}
+    %h3
+      Proxy Machine Activity (Machine IDs 847, 1116, 3251)
+    - if @proxy_machine_additions&.any?
+      %p
+        %strong Additions:
+      - @proxy_machine_additions.each do |item|
+        %p
+          %a{href: "https://pinballmap.com/map?by_location_id=#{item[:location_id]}"}= item[:location_name]
+          %br/
+          = item[:machine_name]
+          %br/
+          = item[:user_name]
+    - if @proxy_machine_comments&.any?
+      %p
+        %strong Comments:
+      - @proxy_machine_comments.each do |item|
+        %p
+          %a{href: "https://pinballmap.com/map?by_location_id=#{item[:location_id]}"}= item[:location_name]
+          %br/
+          = item[:machine_name]
+          %br/
+          "#{item[:comment]}"
+          %br/
+          = item[:user_name]
+    - if @proxy_machine_additions&.empty? && @proxy_machine_comments&.empty?
+      %p None
