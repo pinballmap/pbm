@@ -157,14 +157,7 @@ server {
   ssl_prefer_server_ciphers off;
   {{ end }}
 
-  if ($http_user_agent = "") { return 403; }
-  if ($http_user_agent ~* (bingbot|scrapy|SleepBot)){
-      return 403;
-  }
-
   location    / {
-    limit_req zone=bots_nginx;
-    limit_req_status 429;
     grpc_pass  grpc://{{ $.APP }}-{{ $upstream_port }};
   }
 
