@@ -150,6 +150,9 @@ User-agent: YouBot
 User-agent: ZanistaBot
 Disallow: /
 
+User-agent: bingbot
+Disallow: /map?*by_location_name
+
 User-Agent: *
 Disallow: /poohbear
 Crawl-delay: 3
