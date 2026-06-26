@@ -20,6 +20,8 @@ module Api
         end
 
         return_response({ id: lpx.id, location_id: lpx.location_id, url: url }, "location_picture")
+      rescue Vips::Error
+        return_response("Photo could not be processed", "errors")
       rescue ActiveRecord::RecordNotFound
         return_response("Failed to find lpx", "errors")
       end
