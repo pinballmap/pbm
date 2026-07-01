@@ -41,13 +41,24 @@ describe SuggestedLocation do
     end
 
     it 'should generate admin notes if certain conditions are met' do
-      location_without_type = FactoryBot.create(:suggested_location, name: 'Bar Bar The Bar', machines: 'Batman', street: '123 Eye Way', location_type_id: nil)
-      expect(location_without_type.admin_notes).to eq('No location type, please add')
+      location_without_type = FactoryBot.create(:suggested_location, name: 'Bar Bar The Bar', machines: 'Batman', street: '123 Eye Way', location_type_id: nil, place_id: 'abc123')
+      expect(location_without_type.admin_notes).to eq('No location type, please add;')
 
       FactoryBot.create(:location, name: 'Nacho', street: '123 Eye Way', city: 'Garbon', zip: '90210')
-      possible_duplicate_location = FactoryBot.create(:suggested_location, name: 'Nacho', street: '123 Eye Way', city: 'Garbon', zip: '90210', machines: "Batman", location_type_id: nil)
+      possible_duplicate_location = FactoryBot.create(:suggested_location, name: 'Nacho', street: '123 Eye Way', city: 'Garbon', zip: '90210', machines: "Batman", location_type_id: nil, place_id: 'abc123')
 
-      expect(possible_duplicate_location.admin_notes).to eq('Possible duplicate, please check; No location type, please add')
+      expect(possible_duplicate_location.admin_notes).to eq('Possible duplicate, please check; No location type, please add;')
+    end
+
+    it 'should note when place_id is missing' do
+      location_without_place_id = FactoryBot.create(:suggested_location, name: 'Bar Bar The Bar', machines: 'Batman', street: '123 Eye Way', place_id: nil)
+      expect(location_without_place_id.admin_notes).to eq('Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder;')
+
+      location_without_type_or_place_id = FactoryBot.create(:suggested_location, name: 'Bar Bar The Bar', machines: 'Batman', street: '123 Eye Way', location_type_id: nil, place_id: nil)
+      expect(location_without_type_or_place_id.admin_notes).to eq('No location type, please add; Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder')
+
+      location_with_place_id = FactoryBot.create(:suggested_location, name: 'Bar Bar The Bar', machines: 'Batman', street: '123 Eye Way', place_id: 'ChIJ123')
+      expect(location_with_place_id.admin_notes).to be(nil)
     end
   end
 
@@ -70,11 +81,12 @@ describe SuggestedLocation do
     it 'should create a rails_admin history entry' do
       @suggested_location.convert_to_location(@user.email)
 
+      location_id = Location.last.id
       results = ActiveRecord::Base.connection.execute(<<HERE)
 select event, item_type, item_id from versions order by created_at limit 1
 HERE
 
-      expect(results.values).to eq([ [ 'converted from suggested location', 'Location', 1 ] ])
+      expect(results.values).to eq([ [ 'converted from suggested location', 'Location', location_id ] ])
     end
 
     it 'requires country' do
