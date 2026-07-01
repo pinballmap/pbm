@@ -147,7 +147,7 @@ GEM
       unaccent (~> 0.3)
     country_select (11.0.0)
       countries (> 6.0, < 9.0)
-    crass (1.0.6)
+    crass (1.0.7)
     csv (3.3.5)
     dalli (5.0.5)
       logger
