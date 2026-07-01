@@ -157,6 +157,21 @@ describe UsersController do
       expect(page).to have_content("Average: 1,500,000")
     end
 
+    it 'flags machines already on your life list in the add-machine dropdown' do
+      machine_on_list = FactoryBot.create(:machine, name: 'Machine On List')
+      machine_not_on_list = FactoryBot.create(:machine, name: 'Machine Not On List')
+      FactoryBot.create(:user_machine_xref, user: @user, machine: machine_on_list)
+
+      visit "/users/#{@user.id}/profile"
+
+      page.find('#life_list_machine_select + .select2-container .select2-selection').click
+      page.find('#life_list_machine_select + .select2-container .select2-search__field').set('Machine')
+
+      expect(page).to have_css('.select2-results__option .already_on_list', text: /Machine On List.*already on your list/)
+      expect(page).to have_css('.select2-results__option', text: 'Machine Not On List')
+      expect(page).to_not have_css('.already_on_list', text: /Machine Not On List/)
+    end
+
     it 'Only lets you edit your own account' do
       not_your_user = FactoryBot.create(:user)
 

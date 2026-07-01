@@ -137,6 +137,8 @@
           %div.ml_8.font16 No machines or scores to list yet
 
 :javascript
+  var lifeListMachineIds = new Set(#{(@user_machine_ids || []).to_json});
+
   $(document).ready(function() {
     $('.user_flag_select').select2({
       placeholder: 'Select a flag',
@@ -146,7 +148,8 @@
 
     $('#life_list_machine_select').select2({
       placeholder: 'Search for a machine...',
-      closeOnSelect: true
+      closeOnSelect: true,
+      templateResult: formatMachineOption
     });
 
     $('#add_life_list_profile').submit(function() {
@@ -178,6 +181,13 @@
       return false;
     });
   });
+  function formatMachineOption (state) {
+    if (!state.id) { return state.text; }
+    if (lifeListMachineIds.has(parseInt(state.id, 10))) {
+      return $('<span class="already_on_list">&#10003; ' + state.text + ' <em>(already on your list)</em></span>');
+    }
+    return state.text;
+  }
   function formatOptions (state) {
     if (!state.id) { return state.text; }
     var $state = $(
