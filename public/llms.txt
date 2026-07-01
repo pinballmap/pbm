@@ -2,7 +2,7 @@
 
 Pinball Map (pinballmap.com) is a crowdsourced directory of pinball machines at locations worldwide. This document is for AI coding assistants helping developers build apps against this API.
 
-Full interactive documentation: https://pinballmap.com/api/v1/docs
+Full documentation: https://pinballmap.com/api/v1/docs
 
 ## Base URL and Format
 
