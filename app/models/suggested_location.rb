@@ -43,7 +43,7 @@ class SuggestedLocation < ApplicationRecord
 
     if place_id.blank?
       if admin_notes.blank?
-        self.admin_notes = "Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder;"
+        self.admin_notes = "Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder"
       else
         self.admin_notes += " Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder"
       end

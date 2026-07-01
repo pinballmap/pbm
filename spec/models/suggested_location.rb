@@ -52,7 +52,7 @@ describe SuggestedLocation do
 
     it 'should note when place_id is missing' do
       location_without_place_id = FactoryBot.create(:suggested_location, name: 'Bar Bar The Bar', machines: 'Batman', street: '123 Eye Way', place_id: nil)
-      expect(location_without_place_id.admin_notes).to eq('Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder;')
+      expect(location_without_place_id.admin_notes).to eq('Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder')
 
       location_without_type_or_place_id = FactoryBot.create(:suggested_location, name: 'Bar Bar The Bar', machines: 'Batman', street: '123 Eye Way', location_type_id: nil, place_id: nil)
       expect(location_without_type_or_place_id.admin_notes).to eq('No location type, please add; Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder')
