@@ -22,6 +22,7 @@
     var form = $(this);
     $.post(form.attr('action'), form.serialize(), function() {
       $('#life_list_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_life_list');
+      $('#life_list_indicator_lmx_#{lmx.id}').removeClass('hidden');
     });
     return false;
   });
@@ -32,6 +33,7 @@
       $.post(form.attr('action'), form.serialize(), function() {
         $('#life_list_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_life_list');
         $('#show_high_scores_lmx_#{lmx.id}').load('/location_machine_xrefs/#{lmx.id}/render_machine_scores');
+        $('#life_list_indicator_lmx_#{lmx.id}').addClass('hidden');
       });
       return false;
     });

@@ -200,6 +200,64 @@ describe LocationsController do
     end
   end
 
+  describe 'life list indicator', type: :feature, js: true do
+    before(:each) do
+      @location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
+      @machine = FactoryBot.create(:machine, name: 'Bawb')
+      @lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
+    end
+
+    it 'is not shown to logged out users' do
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      expect(page).to_not have_selector("#life_list_indicator_lmx_#{@lmx.id}")
+    end
+
+    it 'is not shown to logged in users when the machine is not on their life list' do
+      login(FactoryBot.create(:user))
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      expect(page).to_not have_selector("#life_list_indicator_lmx_#{@lmx.id}")
+    end
+
+    it 'is shown to logged in users when the machine is on their life list' do
+      user = FactoryBot.create(:user)
+      FactoryBot.create(:user_machine_xref, user: user, machine: @machine)
+      login(user)
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      expect(page).to have_selector("#life_list_indicator_lmx_#{@lmx.id}")
+    end
+
+    it 'appears immediately when adding the machine to your list from machine details, and disappears when removing it' do
+      user = FactoryBot.create(:user)
+      login(user)
+
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      expect(page).to_not have_selector("#life_list_indicator_lmx_#{@lmx.id}")
+
+      page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
+
+      sleep 1
+
+      find("#life_list_form_#{@lmx.id} button").click
+
+      sleep 1
+
+      expect(page).to have_selector("#life_list_indicator_lmx_#{@lmx.id}")
+
+      find("#remove_life_list_form_#{@lmx.id} input[type=submit]").click
+      page.driver.browser.switch_to.alert.accept
+
+      sleep 1
+
+      expect(page).to_not have_selector("#life_list_indicator_lmx_#{@lmx.id}")
+    end
+  end
+
   describe 'remove machine', type: :feature, js: true do
     before(:each) do
       @user = FactoryBot.create(:user, id: 1001, username: 'ssw', email: 'ssw@test.com')

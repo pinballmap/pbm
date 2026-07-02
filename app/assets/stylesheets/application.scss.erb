@@ -19,7 +19,6 @@
   --buttons: #ffffff;
   --border: #aeb1d2;
   --machinename: #66017b;
-  --details: #fafaff;
   --explore: #fffbfd;
   --mask: rgba(245, 251, 255, 0.7);
   --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Inverted.png' %>) repeat;
@@ -61,7 +60,6 @@
     --buttons: #ac9fc7;
     --border: #88788a;
     --machinename: #f9f2fa;
-    --details: #413244;
     --explore: #dfdaf0;
     --mask: rgba(90, 100, 117, 0.4);
     --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Simple.png' %>) repeat;
@@ -98,7 +96,6 @@ html[data-theme="dark"] {
   --buttons: #ac9fc7;
   --border: #88788a;
   --machinename: #f9f2fa;
-  --details: #413244;
   --explore: #dfdaf0;
   --mask: rgba(90, 100, 117, 0.4);
   --splashtile: url(<%= asset_path 'PPM-SplashTile-BW-Simple.png' %>) repeat;
@@ -1803,6 +1800,28 @@ li.address_full {
   padding: 0 !important;
 }
 
+.machine_icons_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.life_list_indicator {
+  display: flex;
+  align-items: center;
+  height: 33px;
+  cursor: default;
+}
+
+.life_list_indicator.hidden {
+  display: none;
+}
+
+.life_list_indicator img {
+  width: 26px;
+}
+
 #search_results .machine_names div {
   font-size: 18px;
   padding: 5px 0 !important;
@@ -2198,11 +2217,15 @@ div.machine_condition_meta {
   font-size: 16px;
 }
 
-
 .remove_machine_button {
   background: none;
   border: none;
   height: 33px;
+}
+
+.remove_machine_button:hover {
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 0, 0, .25) 0%, rgba(255, 0, 0, 0) 75%);
 }
 
 .remove_machine_button img {
@@ -2236,7 +2259,7 @@ br.clear {
 
 .machine_tools_lmx_toggle {
   margin: 10px auto;
-  background-color: var(--details);
+  background-color: var(--lightpurple);
   color: var(--darkgrey);  
   border-radius: 10px;
   font-size: 14px;
@@ -2248,7 +2271,7 @@ br.clear {
 .machine_tools_lmx_toggle:hover {
   color: var(--ahref);
   text-decoration: underline;
-  background-color: var(--white);
+  background-color: var(--lightpink);
 }
 
 .machine_tools_lmx_toggle img.banner_icon {
@@ -2806,7 +2829,8 @@ input.score {
 .permalink + .permalink_tooltip,
 .confirm_button + .confirm_location_tooltip,
 .comment_edited_asterisk + .comment_edited_tooltip,
-.score_edited_asterisk + .score_edited_tooltip {
+.score_edited_asterisk + .score_edited_tooltip,
+.life_list_indicator + .life_list_indicator_tooltip {
   visibility: hidden;
   line-height: 14px;
   font-size: 16px;
@@ -2826,13 +2850,19 @@ input.score {
   margin-top: 50px;
 }
 
+.life_list_indicator + .life_list_indicator_tooltip {
+  margin-left: -85px;
+  margin-top: 38px;
+}
+
 .meta_image + .meta_image_tooltip::after,
 .meta_image_notlogged + .meta_image_tooltip::after,
 .fave_location + .fave_location_tooltip::after,
 .permalink + .permalink_tooltip::after,
 .confirm_button + .confirm_location_tooltip::after,
 .comment_edited_asterisk + .comment_edited_tooltip::after,
-.score_edited_asterisk + .score_edited_tooltip::after {
+.score_edited_asterisk + .score_edited_tooltip::after,
+.life_list_indicator + .life_list_indicator_tooltip::after {
   content: "";
   position: absolute;
 }
@@ -2850,6 +2880,11 @@ input.score {
 .score_edited_asterisk:hover + .score_edited_tooltip {
   visibility: visible;
   width: 220px;
+}
+
+.life_list_indicator:hover + .life_list_indicator_tooltip {
+  visibility: visible;
+  width: 195px;
 }
 
 .comment_edited_asterisk,

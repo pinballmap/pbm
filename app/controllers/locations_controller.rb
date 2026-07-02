@@ -181,8 +181,9 @@ class LocationsController < ApplicationController
     machines = LocationMachineXref.where(location_id: params[:id]).includes(:machine)
     machines = machines.sort { |a, b| a.machine.massaged_name <=> b.machine.massaged_name }
     logged_in = current_user ? "logged_in" : "logged_out"
+    life_list_machine_ids = current_user ? UserMachineXref.where(user_id: current_user.id, machine_id: machines.map(&:machine_id)).pluck(:machine_id).to_set : Set.new
 
-    render partial: "locations/render_machines", locals: { location_machine_xrefs: machines, logged_in: logged_in }
+    render partial: "locations/render_machines", locals: { location_machine_xrefs: machines, logged_in: logged_in, life_list_machine_ids: life_list_machine_ids }
   end
 
   def render_machines_count
