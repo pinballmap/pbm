@@ -5,6 +5,8 @@ class LocationMachineXref < ApplicationRecord
   has_many :machine_score_xrefs, -> { order "created_at desc" }
   has_many :machine_conditions, -> { order "created_at desc" }
 
+  attr_accessor :in_life_list
+
   default_scope { where(deleted_at: nil) }
 
   after_create :update_location, :create_user_submission

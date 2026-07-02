@@ -392,7 +392,7 @@ module Api
 
       api :GET, "/api/v1/locations/:id.json", "Display the details of this location"
       param :id, Integer, desc: "ID of location", required: true
-      param :no_details, Integer, desc: "Omit lmx/condition data from pull", required: false
+      param :no_details, Integer, desc: "Omit lmx/condition data from pull. When no_details=1 and the request is authenticated (user_email/user_token), each lmx includes an in_life_list boolean", required: false
       param :metadata_only, Integer, desc: "Omit entire lmx list from pull", required: false
       formats [ "json" ]
       def show
@@ -400,9 +400,16 @@ module Api
 
         if params[:no_details] == "1"
           location = Location.includes(:location_machine_xrefs, :last_updated_by_user).find(params[:id])
-          includes = [ :location_machine_xrefs ]
           methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank last_updated_by_flag operator_has_email operator_email_opt_in operator_phone_opt_in operator_website num_machines lpx_count]
           except = %i[zone_id created_at region_id is_stern_army country]
+
+          if current_user
+            life_list_machine_ids = UserMachineXref.where(user_id: current_user.id, machine_id: location.location_machine_xrefs.map(&:machine_id)).pluck(:machine_id).to_set
+            location.location_machine_xrefs.each { |lmx| lmx.in_life_list = life_list_machine_ids.include?(lmx.machine_id) }
+            includes = [ location_machine_xrefs: { methods: :in_life_list } ]
+          else
+            includes = [ :location_machine_xrefs ]
+          end
         elsif params[:metadata_only] == "1"
           location = Location.includes(:last_updated_by_user).find(params[:id])
           includes = []
