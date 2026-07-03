@@ -499,7 +499,7 @@ describe LocationsController do
       click_on 'location_search_button'
 
       within('div#show_location_detail_location_75') do
-        expect(page).to have_content('1 machine not in your Life List')
+        expect(page).to have_content('1 machine not in your Machine List')
       end
     end
 
