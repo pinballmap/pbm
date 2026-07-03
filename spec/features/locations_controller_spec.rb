@@ -57,9 +57,8 @@ describe LocationsController do
         visit "/#{region ? region.name : 'map'}/?by_location_id=" + location.id.to_s
 
         sleep 1
-        page.accept_alert 'Thanks for confirming this line-up!' do
-          find("#confirm_location_button_#{location.id}.confirm_button").click
-        end
+        find("#confirm_location_banner_#{location.id}").click
+        find('#confirm_modal_confirm_btn').click
 
         sleep 1
 
@@ -73,17 +72,15 @@ describe LocationsController do
         expect(UserSubmission.count).to eq(1)
 
         sleep 1
-        page.accept_alert 'Thanks for confirming this line-up!' do
-          find("#confirm_location_button_#{location.id}.confirm_button").click
-        end
+        find("#confirm_location_banner_#{location.id}").click
+        find('#confirm_modal_confirm_btn').click
 
         expect(UserSubmission.count).to eq(1)
 
         FactoryBot.create(:user_submission, created_at: Time.now, location: location, machine_name: 'Pizza Attack', submission_type: UserSubmission::NEW_LMX_TYPE)
 
-        page.accept_alert 'Thanks for confirming this line-up!' do
-          find("#confirm_location_button_#{location.id}.confirm_button").click
-        end
+        find("#confirm_location_banner_#{location.id}").click
+        find('#confirm_modal_confirm_btn').click
 
         expect(UserSubmission.count).to eq(2)
       end
@@ -956,25 +953,6 @@ describe LocationsController do
 
       expect(find('#search_results')).to_not have_content('Regionless place')
       expect(find('#search_results')).to have_content('Cleo')
-    end
-  end
-
-  describe 'former_machines', type: :feature, js: true do
-    before(:each) do
-      @location = FactoryBot.create(:location, name: 'Cleo')
-      @location2 = FactoryBot.create(:location, name: 'Sassimo')
-    end
-    it 'returns a list of machines that have been removed from the location' do
-      FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location, machine_name: 'Sassy Madness', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-      FactoryBot.create(:user_submission, created_at: '2022-01-02', location: @location2, machine_name: 'Pizza Attack', submission_type: UserSubmission::REMOVE_MACHINE_TYPE)
-
-      visit '/map/?by_location_id=' + @location.id.to_s
-
-      find("#former_machines_location_banner_#{@location.id}").click
-      sleep(0.5)
-
-      expect(find('.former_machines_location')).to have_content('Sassy Madness')
-      expect(find('.former_machines_location')).to_not have_content('Pizza Attack')
     end
   end
 

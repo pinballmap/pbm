@@ -54,11 +54,6 @@ function toggle_machine_data(name, id) {
   } else {
     $('#recent_location_activity_location_' + id).hide();
   }
-  if (name == 'former_machines_location') {
-    $('#former_machines_location_' + id).toggle();
-  } else {
-    $('#former_machines_location_' + id).hide();
-  }
 }
 
 function regionMapLocations(region_id) {
@@ -597,6 +592,22 @@ function showFilterModal() {
 function hideFilterModal() {
   $('#filter_modal_overlay').hide();
   $('#filter_modal').hide();
+}
+
+function showConfirmModal(message, onConfirm, opts) {
+  opts = opts || {};
+  $('#confirm_modal_message').text(message);
+  $('#confirm_modal_confirm_btn').text(opts.confirmText || 'Confirm');
+  $('#confirm_modal_cancel_btn').text(opts.cancelText || 'Cancel');
+  $('#confirm_modal_confirm_btn').off('click').one('click', function () {
+    hideConfirmModal();
+    onConfirm();
+  });
+  $('#confirm_modal_overlay, #confirm_modal').show();
+}
+
+function hideConfirmModal() {
+  $('#confirm_modal_overlay, #confirm_modal').hide();
 }
 
 function clearAllFilters() {

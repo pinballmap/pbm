@@ -1,0 +1,7 @@
+#confirm_modal_overlay{:style => "display: none;", :onclick => "hideConfirmModal();"}
+#confirm_modal{:style => "display: none;"}
+  .confirm_modal_body
+    %p#confirm_modal_message
+  .confirm_modal_footer
+    %button#confirm_modal_cancel_btn.cancel_confirm_button{:type => "button", :onclick => "hideConfirmModal();"} Cancel
+    %button#confirm_modal_confirm_btn.confirm_confirm_button{:type => "button"} Confirm

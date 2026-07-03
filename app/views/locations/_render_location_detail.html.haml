@@ -5,9 +5,6 @@
 		%div.location_tools.pointer
 			- if !user_signed_in?
 				=link_to new_user_session_path, :class => "no_underline" do
-					=image_tag('icons/confirm-location.svg', :class => 'confirm_button')
-					%span.confirm_location_tooltip
-						Confirm Line-Up
 					=image_tag('icons/lead-pencil.svg', :class => 'meta_image_notlogged')
 					%span.meta_image_tooltip
 						Update Location Info
@@ -15,9 +12,6 @@
 					%span.fave_location_tooltip
 						Favorite This Location
 			- else
-				=image_tag('icons/confirm-location.svg', :class => 'confirm_button', :id => "confirm_location_button_#{l.id}")
-				%span.confirm_location_tooltip
-					Confirm Line-Up
 				=image_tag('icons/lead-pencil.svg', :class => 'meta_image')
 				%span.meta_image_tooltip
 					Update Location Info
@@ -33,7 +27,7 @@
 		%div.location_thumbs[l, :thumbs]
 			= render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
 	%div.quick_buttons
-		- icon_path3 = image_tag('icons/plus.svg', :alt => 'Add Machine Icon', :class => 'banner_icon')
+		- icon_path3 = image_tag('icons/plus-outline.svg', :alt => 'Add Machine Icon', :class => 'banner_icon')
 		%div.quick_button_sub_container
 			- if !user_signed_in?
 				=link_to new_user_session_path, :class => "no_underline" do
@@ -43,6 +37,22 @@
 			- else
 				= quick_buttons('add_machine_location', icon_path3, l)
 				%div.quick_button_desc Add a machine
+
+		- icon_path = image_tag('icons/newspaper-variant-multiple-outline.svg', :alt => 'Recent Activity Icon', :class => 'banner_icon')
+		%div.quick_button_sub_container
+			= quick_buttons('recent_location_activity_location', icon_path, l)
+			%div.quick_button_desc Recent activity
+
+		- icon_path_confirm = image_tag('icons/check-outline.svg', :alt => 'Confirm Lineup Icon', :class => 'banner_icon')
+		%div.quick_button_sub_container
+			- if !user_signed_in?
+				=link_to new_user_session_path, :class => "no_underline" do
+					%div.sub_nav_item.confirm_location_toggle
+						=icon_path_confirm
+				%div.quick_button_desc Confirm lineup
+			- else
+				= quick_buttons('confirm_location', icon_path_confirm, l)
+				%div.quick_button_desc Confirm lineup
 
 		- icon_path4 = image_tag('icons/image.svg', :alt => 'Upload Picture Icon', :class => 'banner_icon')
 		%div.quick_button_sub_container
@@ -55,20 +65,9 @@
 				= quick_buttons('add_picture_location', icon_path4, l)
 				%div.quick_button_desc Upload a picture
 
-		- icon_path = image_tag('icons/newspaper-variant-multiple-outline.svg', :alt => 'Recent Activity Icon', :class => 'banner_icon')
-		%div.quick_button_sub_container
-			= quick_buttons('recent_location_activity_location', icon_path, l)
-			%div.quick_button_desc Recent activity
-
-		- icon_path2 = image_tag('machine-pink.png', :alt => 'Recent Activity Icon', :class => 'banner_icon former_machines')
-		%div.quick_button_sub_container
-			= quick_buttons('former_machines_location', icon_path2, l)
-			%div.quick_button_desc Former machines
-
 	= render :partial => 'locations/add_machine', :locals => {:location => l}
 	= render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
 	= render :partial => 'locations/recent_activity', :locals => {:location => l}
-	= render :partial => 'locations/former_machines', :locals => {:location => l}
 	%div{:id => "show_machines_location_count_#{l.id}", :class => 'black font18 center lmx_count'}
 		= render :partial => 'locations/render_machines_count', :locals => {:location => l}
 	= render :partial => 'locations/show_machines', :locals => {:location => l}
@@ -91,11 +90,12 @@
 				}
 			});
 		});
-		$('#confirm_location_button_#{l.id}').click(function () {
-			window.alert("Thanks for confirming this line-up!");
-			$.get('/locations/#{l.id}/confirm', {}, function(data) {
-			updateLocationUpdatedText(#{l.id});
-			});
+		$('#confirm_location_banner_#{l.id}').click(function () {
+			showConfirmModal('Confirm the lineup at #{j l.name}?', function () {
+				$.get('/locations/#{l.id}/confirm', {}, function(data) {
+					updateLocationUpdatedText(#{l.id});
+				});
+			}, { confirmText: 'Confirm lineup' });
 		});
 
 		if ( $("#thumbs_location_#{l.id}").prop('scrollHeight') > $("#thumbs_location_#{l.id}").height() ) {

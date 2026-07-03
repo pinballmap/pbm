@@ -173,10 +173,6 @@ class Location < ApplicationRecord
     machines.sort_by(&:massaged_name).map(&:id)
   end
 
-  def former_machines
-    UserSubmission.where.not(machine_name: nil).where(submission_type: "remove_machine", location_id: self, deleted_at: nil).where(location_id: self).order("created_at DESC").limit(30)
-  end
-
   def full_street_address
     [ street, city, state, zip ].compact.join(", ")
   end

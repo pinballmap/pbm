@@ -164,7 +164,6 @@ Rails.application.routes.draw do
       get :render_last_updated
       get :render_location_detail
       get :render_machines
-      get :render_former_machines
       get :render_recent_activity
     end
   end

@@ -1238,6 +1238,70 @@ form#address_search_form input.lookup_search_input {
 
 /** END map **/
 
+/** Confirm modal **/
+
+#confirm_modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 210;
+}
+
+#confirm_modal {
+  border: 5px solid var(--border);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  @include radius(8px);
+  box-shadow: 0 5px 20px var(--shadow);
+  z-index: 211;
+}
+
+.confirm_modal_body {
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.confirm_modal_footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.cancel_confirm_button,
+.confirm_confirm_button {
+  padding: 6px 16px;
+  @include radius(10px);
+  font-size: 14px;
+  font-family: $Nunito_600SemiBold;
+  cursor: pointer;
+  border: none;
+}
+
+.cancel_confirm_button {
+  background: var(--lightpurple);
+  color: var(--darkgrey);
+}
+
+.confirm_confirm_button {
+  background: var(--lightpink);
+  color: var(--red);
+  border: 1px solid var(--red);
+}
+
+/** END confirm modal **/
+
 /** Footer **/
 
 #footer {
@@ -1748,7 +1812,6 @@ form select#by_operator_id {
 }
 
 .location_tools {
-  min-width: 120px;
   height: 26px;
 }
 
@@ -2207,7 +2270,6 @@ div.machine_condition_meta {
 .add_picture_location,
 .add_machine_location,
 .recent_location_activity_location,
-.former_machines_location,
 #map_activity {
   background-color: var(--bg_vlightpurple);
   color: var(--black);
@@ -2664,7 +2726,7 @@ input.lookup_search_input:focus {
 .add_picture_location_toggle,
 .add_machine_location_toggle,
 .recent_location_activity_location_toggle,
-.former_machines_location_toggle {
+.confirm_location_toggle {
   color: #000e18;
   font-family: $Nunito_600SemiBold;
   background: var(--buttons);
@@ -2688,7 +2750,7 @@ input.lookup_search_input:focus {
 .add_picture_location_toggle:hover,
 .add_machine_location_toggle:hover,
 .recent_location_activity_location_toggle:hover,
-.former_machines_location_toggle:hover {
+.confirm_location_toggle:hover {
   background-color: var(--purple);
   color: #333333;
 }
@@ -2831,7 +2893,6 @@ input.score {
 .meta_image_notlogged + .meta_image_tooltip,
 .fave_location + .fave_location_tooltip,
 .permalink + .permalink_tooltip,
-.confirm_button + .confirm_location_tooltip,
 .comment_edited_asterisk + .comment_edited_tooltip,
 .score_edited_asterisk + .score_edited_tooltip,
 .life_list_indicator + .life_list_indicator_tooltip {
@@ -2863,7 +2924,6 @@ input.score {
 .meta_image_notlogged + .meta_image_tooltip::after,
 .fave_location + .fave_location_tooltip::after,
 .permalink + .permalink_tooltip::after,
-.confirm_button + .confirm_location_tooltip::after,
 .comment_edited_asterisk + .comment_edited_tooltip::after,
 .score_edited_asterisk + .score_edited_tooltip::after,
 .life_list_indicator + .life_list_indicator_tooltip::after {
@@ -2874,8 +2934,7 @@ input.score {
 .meta_image:hover + .meta_image_tooltip,
 .meta_image_notlogged:hover + .meta_image_tooltip,
 .fave_location:hover + .fave_location_tooltip,
-.permalink:hover + .permalink_tooltip,
-.confirm_button:hover + .confirm_location_tooltip {
+.permalink:hover + .permalink_tooltip {
   visibility: visible;
   width: 180px;
 }
@@ -3024,11 +3083,6 @@ input.score {
 
 .activity_icon img {
   width: 30px;
-}
-
-.former_machines_date {
-  width: 28%;
-  margin-left: 10px;
 }
 
 .activity_submission {
