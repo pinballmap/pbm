@@ -44,7 +44,7 @@
             %div.life_list_count.darkgrey.pb_15
               = pluralize(l.machines.count { |machine| !life_list_machine_ids.include?(machine.id) }, 'machine')
               not in your
-              =link_to 'Life List', profile_user_path(current_user.id)
+              =link_to 'Machine List', profile_user_path(current_user.id), onclick: "event.stopPropagation();"
 - unless @locations.size == 0
   #next_link{:style => 'margin: 20px 10px'}
     != @pagy.series_nav() if @pagy.pages > 1
