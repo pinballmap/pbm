@@ -4,6 +4,7 @@
       %button#sort_toggle_btn{onclick: "toggleSort();"} Sort by: A-Z
     - else
       %button#sort_toggle_btn{onclick: "toggleSort();"} Sort by: # of machines
+- life_list_machine_ids = @locations.present? ? user_life_list_machine_ids : Set.new
 - @locations.each do |l|
   %div.search_result[l]
     - if (@locations.size == 1 && @results_init == true)
@@ -39,6 +40,11 @@
             %div.darkgrey.italic.pb_15
               plus
               = pluralize(l.machine_count - 5, 'more machine')
+          - if life_list_machine_ids.present?
+            %div.life_list_count.darkgrey.pb_15
+              = pluralize(l.machines.count { |machine| !life_list_machine_ids.include?(machine.id) }, 'machine')
+              not in your
+              =link_to 'Life List', profile_user_path(current_user.id)
 - unless @locations.size == 0
   #next_link{:style => 'margin: 20px 10px'}
     != @pagy.series_nav() if @pagy.pages > 1

@@ -453,6 +453,59 @@ describe LocationsController do
       end
     end
 
+    it 'does not show life list progress to logged out users' do
+      cleo = FactoryBot.create(:location, id: 71, region: @region, name: 'Cleo')
+      FactoryBot.create(:location, id: 72, region: @region, name: 'Zelda')
+      FactoryBot.create(:location_machine_xref, machine: FactoryBot.create(:machine, id: 8811, name: 'Bawb'), location: cleo)
+
+      visit '/portland'
+
+      click_on 'location_search_button'
+
+      within('div#show_location_detail_location_71') do
+        expect(page).to_not have_content('in your Life List')
+      end
+    end
+
+    it 'does not show life list progress to logged in users with an empty life list' do
+      user = FactoryBot.create(:user)
+      login(user)
+
+      cleo = FactoryBot.create(:location, id: 73, region: @region, name: 'Cleo')
+      FactoryBot.create(:location, id: 74, region: @region, name: 'Zelda')
+      FactoryBot.create(:location_machine_xref, machine: FactoryBot.create(:machine, id: 8821, name: 'Bawb'), location: cleo)
+
+      visit '/portland'
+
+      click_on 'location_search_button'
+
+      within('div#show_location_detail_location_73') do
+        expect(page).to_not have_content('in your Life List')
+      end
+    end
+
+    it 'shows how many machines at the location are not in the life list of logged in users with a non-empty life list' do
+      user = FactoryBot.create(:user)
+
+      cleo = FactoryBot.create(:location, id: 75, region: @region, name: 'Cleo')
+      FactoryBot.create(:location, id: 76, region: @region, name: 'Zelda')
+      on_list_machine = FactoryBot.create(:machine, id: 8831, name: 'Bawb')
+      not_on_list_machine = FactoryBot.create(:machine, id: 8832, name: 'Barb')
+      FactoryBot.create(:location_machine_xref, machine: on_list_machine, location: cleo)
+      FactoryBot.create(:location_machine_xref, machine: not_on_list_machine, location: cleo)
+      FactoryBot.create(:user_machine_xref, user: user, machine: on_list_machine)
+
+      login(user)
+
+      visit '/portland'
+
+      click_on 'location_search_button'
+
+      within('div#show_location_detail_location_75') do
+        expect(page).to have_content('1 machine not in your Life List')
+      end
+    end
+
     it 'shows numbers of machines at location' do
       cleo = FactoryBot.create(:location, id: 53, region: @region, name: 'Cleo')
 

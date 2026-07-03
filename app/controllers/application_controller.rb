@@ -229,6 +229,12 @@ class ApplicationController < ActionController::Base
 
   helper_method :is_bot?
 
+  def user_life_list_machine_ids
+    @user_life_list_machine_ids ||= current_user ? UserMachineXref.where(user_id: current_user.id).pluck(:machine_id).to_set : Set.new
+  end
+
+  helper_method :user_life_list_machine_ids
+
   protected
 
   def default_url_options
