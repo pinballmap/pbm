@@ -2364,10 +2364,31 @@ br.clear {
   box-shadow: 2px 5px 10px var(--shadow);
 }
 
-.search_result div.distance {
-  margin: 15px 0 4px 15px;
-  color: var(--grey);
+.location_meta_footer {
+  text-align: center;
+  background: var(--purple2);
+  padding: 12px 0;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   font-size: 14px;
+}
+
+.location_meta_row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 16px;
+}
+
+.location_meta_item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.location_meta_item img {
+  width: 20px;
+  height: 20px;
 }
 
 #form select,
@@ -3000,14 +3021,6 @@ input.score {
 
 .show_location_detail_location .location_type img {
   width: 40px;
-}
-
-.show_location_detail_location > div.life_list_count {
-  text-align: center;
-  background: var(--purple2);
-  padding: 5px 0;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
 }
 
 .location_thumbs {

@@ -18,13 +18,13 @@ describe MapsController do
     it 'shows distance from nearby_lat/nearby_lon when present (Nearby locations search)' do
       post get_bounds_path, params: { boundsData: bounds_data, nearby_lat: '11.11', nearby_lon: '-11.11' }
 
-      expect(response.body).to include('distance:')
+      expect(response.body).to include('alt="distance"')
     end
 
     it 'does not show distance when nearby_lat/nearby_lon are absent (plain bounds search)' do
       post get_bounds_path, params: { boundsData: bounds_data }
 
-      expect(response.body).not_to include('distance:')
+      expect(response.body).not_to include('alt="distance"')
     end
   end
 

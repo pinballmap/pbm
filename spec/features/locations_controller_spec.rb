@@ -499,7 +499,27 @@ describe LocationsController do
       click_on 'location_search_button'
 
       within('div#show_location_detail_location_75') do
-        expect(page).to have_content('1 machine not in your Machine List')
+        expect(page).to have_content('1 not in list')
+      end
+    end
+
+    it 'hides the not-in-list count when every machine at the location is already in the life list' do
+      user = FactoryBot.create(:user)
+
+      cleo = FactoryBot.create(:location, id: 77, region: @region, name: 'Cleo')
+      FactoryBot.create(:location, id: 78, region: @region, name: 'Zelda')
+      on_list_machine = FactoryBot.create(:machine, id: 8841, name: 'Bawb')
+      FactoryBot.create(:location_machine_xref, machine: on_list_machine, location: cleo)
+      FactoryBot.create(:user_machine_xref, user: user, machine: on_list_machine)
+
+      login(user)
+
+      visit '/portland'
+
+      click_on 'location_search_button'
+
+      within('div#show_location_detail_location_77') do
+        expect(page).to_not have_content('not in list')
       end
     end
 

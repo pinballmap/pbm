@@ -15,16 +15,6 @@
         %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id});"}
           %div.name.bold.font22
             = l.name
-          - if (l.location_type)
-            %div.location_type
-              - if (l.location_type.icon.present?)
-                %div.location_type_container
-                  =image_tag("icons/#{l.location_type.icon}.svg", :alt => "#{l.location_type.icon}")
-              %span
-                #{l.location_type.name}
-          - if !@nearby_lat.blank?
-            %div.distance
-              distance: #{l.distance_from([@nearby_lat, @nearby_lon]).round(2)} miles
           - if (l.state.blank?)
             %div.address
               %span.address_name[l, :location_summary] #{[l.street, l.city].join(', ')}
@@ -40,11 +30,27 @@
             %div.darkgrey.italic.pb_15
               plus
               = pluralize(l.machine_count - 5, 'more machine')
-          - if life_list_machine_ids.present?
-            %div.life_list_count.darkgrey.pb_15
-              = pluralize(l.machines.count { |machine| !life_list_machine_ids.include?(machine.id) }, 'machine')
-              not in your
-              =link_to 'Machine List', profile_user_path(current_user.id), onclick: "event.stopPropagation();"
+          - not_in_list_count = life_list_machine_ids.present? ? l.machines.count { |machine| !life_list_machine_ids.include?(machine.id) } : 0
+          - show_distance = !@nearby_lat.blank?
+          - show_location_type = l.location_type.present?
+          - if show_distance || show_location_type || not_in_list_count > 0
+            %div.location_meta_footer.darkgrey
+              %div.location_meta_row
+                - if show_location_type
+                  %div.location_meta_item
+                    - if l.location_type.icon.present?
+                      =image_tag("icons/#{l.location_type.icon}.svg", :alt => l.location_type.icon)
+                    %span= l.location_type.name
+                - if show_distance
+                  %div.location_meta_item
+                    =image_tag("icons/compass.svg", :alt => "distance")
+                    %span= "#{l.distance_from([@nearby_lat, @nearby_lon]).round(2)} mi"
+                - if not_in_list_count > 0
+                  %div.location_meta_item
+                    =image_tag("icons/clipboard-list-outline-light.svg", :alt => "not in list")
+                    %span
+                      #{not_in_list_count} not in
+                      = link_to 'list', profile_user_path(current_user.id), onclick: "event.stopPropagation();"
 - unless @locations.size == 0
   #next_link{:style => 'margin: 20px 10px'}
     != @pagy.series_nav() if @pagy.pages > 1
