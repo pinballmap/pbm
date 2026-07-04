@@ -5,8 +5,8 @@
     var locations_geojson = JSON.parse('#{@locations_geojson}');
     var _favedSet = new Set(favedLocationIds);
     locations_geojson.forEach(function(f) { f.properties.is_faved = _favedSet.has(f.id); });
-    notFound_lat = "#{@nearby_lat || 0}";
-    notFound_lon = "#{@nearby_lon || 0}";
+    notFound_lat = "#{j(@nearby_lat || 0)}";
+    notFound_lon = "#{j(@nearby_lon || 0)}";
     showLocations(notFound_lat, notFound_lon#{', true' if @city_search_mode});
     #{"(function() { var nMachines = $('#by_at_least_n_machines').val() || undefined; var typeIds = $('#by_type_id').val() || undefined; var mfr = $('#by_manufacturer').val() || undefined; var mType = (typeof emModeActive !== 'undefined' && emModeActive) ? ['em', 'me'] : undefined; var icActive = (typeof icActiveMode !== 'undefined' && icActiveMode) ? '1' : undefined; var yearGte = $('#by_machine_year_gte').val() || undefined; var yearLte = $('#by_machine_year_lte').val() || undefined; var machineIds = machineSelectIds(); var byMachineId, byMachineSingleId, byMachineIdIc, byMachineSingleIdIc; var icChecked = $('#icVersion').is(':checked'); if (icChecked && machineIds.length) { if (machineIds.length === 1 && machineGroups[machineIds[0]] && !$('#singleVersion').is(':checked')) { byMachineIdIc = machineIds; } else { byMachineSingleIdIc = machineIds; } } else if (machineIds.length === 1 && machineGroups[machineIds[0]] && !$('#singleVersion').is(':checked')) { byMachineId = machineIds; } else if (machineIds.length) { byMachineSingleId = machineIds; } getMapBounds({ by_at_least_n_machines: nMachines, by_type_id: typeIds, by_machine_id: byMachineId, by_machine_single_id: byMachineSingleId, manufacturer: mfr, by_machine_type: mType, by_machine_id_ic: byMachineIdIc, by_machine_single_id_ic: byMachineSingleIdIc, by_ic_active: icActive, by_machine_year_gte: yearGte, by_machine_year_lte: yearLte }); })();" if @city_search_mode}
 
