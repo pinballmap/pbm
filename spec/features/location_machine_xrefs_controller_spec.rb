@@ -1158,7 +1158,9 @@ describe LocationMachineXrefsController do
 
       page.find('input#location_search_button').click
 
-      expect(page).to have_content("Cleo\nbar")
+      within('div#show_location_detail_location_46') do
+        expect(page).to have_content('bar')
+      end
       expect(page).to have_content('Bawb')
     end
 
