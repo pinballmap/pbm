@@ -150,6 +150,8 @@ class MapsController < ApplicationController
   def get_bounds_load
     @results_init = params[:results_init] if params[:results_init].present?
     @sort = params[:sort]
+    @nearby_lat = params[:nearby_lat].presence
+    @nearby_lon = params[:nearby_lon].presence
     @bounds = [ params[:boundsData][:sw][:lat], params[:boundsData][:sw][:lng], params[:boundsData][:ne][:lat], params[:boundsData][:ne][:lng] ]
 
     if @locations_size == 0 && @results_init == true

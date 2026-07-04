@@ -6,6 +6,28 @@ describe MapsController do
     @location = FactoryBot.create(:location, region: @region, state: 'OR')
   end
 
+  describe 'get_bounds', type: :request do
+    let(:bounds_data) { { sw: { lat: -90, lng: -180 }, ne: { lat: 90, lng: 180 } } }
+
+    before(:each) do
+      # a second location within bounds forces the multi-result list branch
+      # (a single result renders the location detail partial instead, which has no distance div)
+      FactoryBot.create(:location, name: 'Second Location', region: @region, state: 'OR', lat: '12.12', lon: '-12.12')
+    end
+
+    it 'shows distance from nearby_lat/nearby_lon when present (Nearby locations search)' do
+      post get_bounds_path, params: { boundsData: bounds_data, nearby_lat: '11.11', nearby_lon: '-11.11' }
+
+      expect(response.body).to include('distance:')
+    end
+
+    it 'does not show distance when nearby_lat/nearby_lon are absent (plain bounds search)' do
+      post get_bounds_path, params: { boundsData: bounds_data }
+
+      expect(response.body).not_to include('distance:')
+    end
+  end
+
   describe 'Regionless', type: :feature, js: true do
     it 'should perform a search on initial load' do
       visit '/map'

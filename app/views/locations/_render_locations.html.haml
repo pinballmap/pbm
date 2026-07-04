@@ -62,7 +62,7 @@
     $.ajax({
       url: `${url}`,
       type: 'POST',
-      data: { region_id, boundsData: boundsData, results_init },
+      data: { region_id, boundsData: boundsData, results_init, nearby_lat: nearbySearchActive ? center_lat : undefined, nearby_lon: nearbySearchActive ? center_lon : undefined },
       success: function(data) {
         $("#search_results").html(data);
       }
