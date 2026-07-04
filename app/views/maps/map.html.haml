@@ -157,15 +157,18 @@
   }
   inputField.addEventListener("input", inputDisplayToggle);
 
-  function clearSearch(event) {
-    var addressField = document.getElementById('address');
-    addressField.value = "";
+  function clearAddressFields() {
+    document.getElementById('address').value = "";
     document.getElementById('by_city_name').value = "";
     document.getElementById('by_state_name').value = "";
     document.getElementById('by_city_no_state').value = "";
     document.getElementById('by_location_id').value = "";
-    event.target.style.display = "none";
-    addressField.focus();
+    clearButton2.style.display = "none";
+  }
+
+  function clearSearch() {
+    clearAddressFields();
+    document.getElementById('address').focus();
   }
 
   clearButton2.addEventListener("click", clearSearch);
@@ -545,7 +548,7 @@
     var mapActivityVisible = $('#map_activity_container').html().trim() !== '';
 
     getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_operator_id, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active: icActiveMode ? '1' : undefined, by_machine_year_gte, by_machine_year_lte, user_faved: savedModeActive ? currentUserId : undefined });
-    clearSearch(event);
+    clearAddressFields();
 
     if (mapActivityVisible) {
       loadMapActivity();
