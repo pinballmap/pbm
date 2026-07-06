@@ -473,6 +473,7 @@
     $('#map_activity_container .map_activity_filter:checked').each(function() {
       mapActivityFilters.push(this.value);
     });
+    hideActivityFilterModal('map_activity_filter_modal');
     loadMapActivity();
   });
 

@@ -1,0 +1,51 @@
+- checkbox_name ||= nil
+- checkbox_class ||= nil
+- checked_values ||= []
+- checkbox_ids ||= {}
+- show_your_activity ||= false
+- apply_button_classes ||= ""
+- apply_as_submit ||= false
+
+%div{id: "#{modal_id}_overlay", class: "activity_filter_modal_overlay", style: "display: none;", onclick: "hideActivityFilterModal('#{modal_id}');"}
+%div{id: modal_id, class: "activity_filter_modal", style: "display: none;"}
+  .filter_modal_header
+    %h3 Filter Activity
+    %div.filter_modal_close{onclick: "hideActivityFilterModal('#{modal_id}');"}
+      X
+  .filter_modal_body
+    .activity_filter
+      %label.activity_filter_btn
+        =image_tag("icons/new_lmx.svg", :alt => "new_lmx", :class => 'activity_icon')
+        %input{:type => "checkbox", :class => checkbox_class, :name => checkbox_name, :id => checkbox_ids['new_lmx'], :value => 'new_lmx', :checked => checked_values.include?('new_lmx')}
+        %span Machine added
+      %label.activity_filter_btn
+        =image_tag("icons/remove_machine.svg", :alt => "remove_machine", :class => 'activity_icon')
+        %input{:type => "checkbox", :class => checkbox_class, :name => checkbox_name, :id => checkbox_ids['remove_machine'], :value => 'remove_machine', :checked => checked_values.include?('remove_machine')}
+        %span Machine removed
+      %label.activity_filter_btn
+        =image_tag("icons/new_condition.svg", :alt => "new_condition", :class => 'activity_icon')
+        %input{:type => "checkbox", :class => checkbox_class, :name => checkbox_name, :id => checkbox_ids['new_condition'], :value => 'new_condition', :checked => checked_values.include?('new_condition')}
+        %span New condition
+      %label.activity_filter_btn
+        =image_tag("icons/new_msx.svg", :alt => "new_msx", :class => 'activity_icon')
+        %input{:type => "checkbox", :class => checkbox_class, :name => checkbox_name, :id => checkbox_ids['new_msx'], :value => 'new_msx', :checked => checked_values.include?('new_msx')}
+        %span Your scores
+      %label.activity_filter_btn
+        =image_tag("icons/confirm_location.svg", :alt => "confirm_location", :class => 'activity_icon')
+        %input{:type => "checkbox", :class => checkbox_class, :name => checkbox_name, :id => checkbox_ids['confirm_location'], :value => 'confirm_location', :checked => checked_values.include?('confirm_location')}
+        %span Location confirmed
+      %label.activity_filter_btn
+        =image_tag("icons/add_location.svg", :alt => "add_location", :class => 'activity_icon')
+        %input{:type => "checkbox", :class => checkbox_class, :name => checkbox_name, :id => checkbox_ids['add_location'], :value => 'add_location', :checked => checked_values.include?('add_location')}
+        %span Location added
+      - if show_your_activity
+        %label.activity_filter_btn
+          =image_tag("icons/face-grin-beam-regular-full.svg", :alt => "your_activity", :class => 'activity_icon')
+          %input{:type => "checkbox", :class => checkbox_class, :name => checkbox_name, :id => checkbox_ids['your_activity'], :value => 'your_activity', :checked => checked_values.include?('your_activity')}
+          %span Your Activity
+  .filter_modal_footer
+    %button.clear_filters_button{:type => "button", :onclick => "clearActivityFilterModal('#{modal_id}');"} Clear
+    - if apply_as_submit
+      = submit_tag 'Apply Filters', :class => "apply_filters_button #{apply_button_classes}".strip
+    - else
+      %button.apply_filters_button{:type => "button", :class => apply_button_classes} Apply Filters

@@ -602,6 +602,22 @@ function hideFilterModal() {
   $('#filter_modal').hide();
 }
 
+function showActivityFilterModal(id) {
+  $('#' + id + '_overlay').show();
+  $('#' + id).show();
+}
+
+function hideActivityFilterModal(id) {
+  $('#' + id + '_overlay').hide();
+  $('#' + id).hide();
+}
+
+function clearActivityFilterModal(id) {
+  var $modal = $('#' + id);
+  $modal.find('input[type="checkbox"]').prop('checked', false);
+  $modal.find('.activity_filter_btn').removeClass('is-selected');
+}
+
 function showConfirmModal(message, onConfirm, opts) {
   opts = opts || {};
   $('#confirm_modal_message').text(message);

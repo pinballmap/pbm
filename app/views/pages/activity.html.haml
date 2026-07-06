@@ -8,40 +8,19 @@
         The scores here will only show your own scores.
     .clear
 
-    .column.w_640.activity_filter_container.bg_vlightpurple
-      %p.red.bold.font18.center
-        Filter Activity
-      = form_tag activity_path, :method => 'get', id: 'activity_filter' do
-        %label.activity_filter_btn
-          =image_tag("icons/new_lmx.svg", :alt => "new_lmx", :class => 'activity_icon')
-          %input{:type => "checkbox", :id => "filterNewLmx", :name => "filterActivity", :value => 'new_lmx', :checked => Array(params[:submission_type]).include?('new_lmx')}
-          %span Machine added
-        %label.activity_filter_btn
-          =image_tag("icons/remove_machine.svg", :alt => "remove_machine", :class => 'activity_icon')
-          %input{:type => "checkbox", :id => "filterRemoveMachine", :name => "filterActivity", :value => 'remove_machine', :checked => Array(params[:submission_type]).include?('remove_machine')}
-          %span Machine removed
-        %label.activity_filter_btn
-          =image_tag("icons/new_condition.svg", :alt => "new_condition", :class => 'activity_icon')
-          %input{:type => "checkbox", :id => "filterNewCondition", :name => "filterActivity", :value => 'new_condition', :checked => Array(params[:submission_type]).include?('new_condition')}
-          %span New condition
-        %label.activity_filter_btn
-          =image_tag("icons/new_msx.svg", :alt => "new_msx", :class => 'activity_icon')
-          %input{:type => "checkbox", :id => "filterNewMsx", :name => "filterActivity", :value => 'new_msx', :checked => Array(params[:submission_type]).include?('new_msx')}
-          %span Your scores
-        %label.activity_filter_btn
-          =image_tag("icons/confirm_location.svg", :alt => "confirm_location", :class => 'activity_icon')
-          %input{:type => "checkbox", :id => "filterConfirmLocation", :name => "filterActivity", :value => 'confirm_location', :checked => Array(params[:submission_type]).include?('confirm_location')}
-          %span Location confirmed
-        %label.activity_filter_btn
-          =image_tag("icons/add_location.svg", :alt => "add_location", :class => 'activity_icon')
-          %input{:type => "checkbox", :id => "filterAddLocation", :name => "filterActivity", :value => 'add_location', :checked => Array(params[:submission_type]).include?('add_location')}
-          %span Location added
-        - if user_signed_in?
-          %label.activity_filter_btn
-            =image_tag("icons/face-grin-beam-regular-full.svg", :alt => "your_activity", :class => 'activity_icon')
-            %input{:type => "checkbox", :id => "filterYourActivity", :name => "filterActivity", :value => 'your_activity', :checked => Array(params[:submission_type]).include?('your_activity')}
-            %span Your Activity
-        = submit_tag 'Apply Filters', :class => "save_button apply_filter"
+    .column.w_640.flex_center#activity_filter{:style => "margin: 10px 0;"}
+      %button#page_activity_filter_modal_button.filter_button{:type => "button", :onclick => "showActivityFilterModal('page_activity_filter_modal');"}
+        %svg{xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 20 20", fill: "currentColor", "aria-hidden": "true"}
+          %path{d: "M5 1.6c0-.553-.448-.6-1-.6-.553 0-1 .047-1 .6V10h2V1.6zM3 18.4c0 .551.447.6 1 .6.552 0 1-.049 1-.6V15H3v3.4zM6.399 11h-4.8C1.046 11 1 11.448 1 12v1c0 .553.046 1 .599 1H6.4c.55 0 .6-.447.6-1v-1c0-.552-.05-1-.601-1zm12 1h-4.801c-.552 0-.598.448-.598 1v1c0 .553.046 1 .599 1H18.4c.55 0 .6-.447.6-1v-1c0-.552-.05-1-.601-1zM13 7c0-.552-.05-1-.601-1h-4.8C7.046 6 7 6.448 7 7v1c0 .553.046 1 .599 1H12.4c.55 0 .6-.447.6-1V7zm-2-5.4c0-.553-.448-.6-1-.6-.553 0-1 .047-1 .6V5h2V1.6zM9 18.4c0 .551.447.6 1 .6.552 0 1-.049 1-.6V10H9v8.4zm8-16.8c0-.553-.448-.6-1-.6-.553 0-1 .047-1 .6V11h2V1.6zm-2 16.8c0 .551.447.6 1 .6.552 0 1-.049 1-.6V16h-2v2.4z"}
+        Filter
+
+    = form_tag activity_path, :method => 'get', id: 'page_activity_filter_form' do
+      = render 'shared/activity_filter_modal', modal_id: "page_activity_filter_modal",
+        checkbox_name: "filterActivity",
+        checkbox_ids: { 'new_lmx' => 'filterNewLmx', 'remove_machine' => 'filterRemoveMachine', 'new_condition' => 'filterNewCondition', 'new_msx' => 'filterNewMsx', 'confirm_location' => 'filterConfirmLocation', 'add_location' => 'filterAddLocation', 'your_activity' => 'filterYourActivity' },
+        checked_values: Array(params[:submission_type]),
+        show_your_activity: user_signed_in?,
+        apply_as_submit: true
 
     #activity.column.w_640.center
       = render partial: 'shared/activity_item', :locals => {show_location_link: true, page_activity: true}
@@ -66,9 +45,10 @@
     refreshActivityList(url, pagenum, true)
   });
 
-  $('.save_button').on('click', function(e) {
+  $('.apply_filters_button').on('click', function(e) {
     e.preventDefault();
     let url = new URL(window.location.href);
+    hideActivityFilterModal('page_activity_filter_modal');
     refreshActivityList(url);
   });
 

@@ -44,6 +44,7 @@
         filters.push(this.value);
       });
       window.locationActivityFilters[#{location.id}] = filters;
+      hideActivityFilterModal('loc_activity_filter_modal_#{location.id}');
       loadLocationActivity(#{location.id}, '/locations/#{location.id}/render_recent_activity');
     });
 

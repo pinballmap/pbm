@@ -333,8 +333,9 @@ describe PagesController do
     it 'filters region activity' do
       visit '/portland/activity'
 
+      find('#page_activity_filter_modal_button').click
       find('label.activity_filter_btn', text: 'Machine added').click
-      find('.save_button').click
+      find('.apply_filters_button').click
 
       expect(page).to have_content("Here's a feed of edits to the Portland Pinball Map")
       expect(page).to have_content("added to Clark's Depot")
@@ -372,8 +373,9 @@ describe PagesController do
     it 'filters activity' do
       visit '/activity'
 
+      find('#page_activity_filter_modal_button').click
       find('label.activity_filter_btn', text: 'Machine added').click
-      find('.save_button').click
+      find('.apply_filters_button').click
 
       expect(page).to have_content("added to Clark's Depot")
       expect(page).to have_content("added to Ripley's Hut")
@@ -381,8 +383,9 @@ describe PagesController do
       expect(page).to_not have_content("removed from Clark's Depot")
       expect(page).to_not have_content("added to Doughnut Haven")
 
+      find('#page_activity_filter_modal_button').click
       find('label.activity_filter_btn', text: 'Machine added').click
-      find('.save_button').click
+      find('.apply_filters_button').click
 
       expect(page).to have_content("added to Clark's Depot")
       expect(page).to have_content("added to Ripley's Hut")
@@ -441,8 +444,9 @@ describe PagesController do
       end
       visit '/activity'
 
+      find('#page_activity_filter_modal_button').click
       find('label.activity_filter_btn', text: 'Machine added').click
-      find('.save_button').click
+      find('.apply_filters_button').click
       click_link("2")
 
       expect(page).to_not have_content("removed from")

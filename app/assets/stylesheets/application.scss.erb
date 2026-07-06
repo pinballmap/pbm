@@ -1145,7 +1145,7 @@ form#address_search_form input.lookup_search_input {
   }
 }
 
-#filter_modal_overlay {
+%filter_modal_overlay_base {
   position: fixed;
   top: 0;
   left: 0;
@@ -1155,12 +1155,10 @@ form#address_search_form input.lookup_search_input {
   z-index: 30;
 }
 
-#filter_modal {
+%filter_modal_base {
   border: 5px solid var(--border);
   position: fixed;
-  top: 52px;
   left: 50%;
-  transform: translateX(-50%);
   width: 90%;
   max-width: 500px;
   max-height: var(--modal-max-height, calc(100vh - 72px));
@@ -1170,6 +1168,26 @@ form#address_search_form input.lookup_search_input {
   @include radius(8px);
   box-shadow: 0 5px 20px var(--shadow);
   z-index: 201;
+}
+
+#filter_modal_overlay {
+  @extend %filter_modal_overlay_base;
+}
+
+#filter_modal {
+  @extend %filter_modal_base;
+  top: 52px;
+  transform: translateX(-50%);
+}
+
+.activity_filter_modal_overlay {
+  @extend %filter_modal_overlay_base;
+}
+
+.activity_filter_modal {
+  @extend %filter_modal_base;
+  top: 15vh;
+  transform: translateX(-50%);
 }
 
 .filter_modal_header {
@@ -2430,6 +2448,7 @@ form select:hover {
   border-radius: 50%;
   height: 30px;
   width: 30px;
+  flex-shrink: 0;
   text-align: center;
 }
 

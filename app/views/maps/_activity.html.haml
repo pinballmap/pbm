@@ -1,43 +1,18 @@
 %div#map_activity.mt_20.mb_20.pt_10
-  .activity_filter_container.bg_lightpurple
-    %p.bold.red.font18.center
-      Filter Activity
-    .activity_filter
-      %label.activity_filter_btn
-        =image_tag("icons/new_lmx.svg", :alt => "new_lmx", :class => 'activity_icon')
-        %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'new_lmx'}
-        %span Machine added
-      %label.activity_filter_btn
-        =image_tag("icons/remove_machine.svg", :alt => "remove_machine", :class => 'activity_icon')
-        %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'remove_machine'}
-        %span Machine removed
-      %label.activity_filter_btn
-        =image_tag("icons/new_condition.svg", :alt => "new_condition", :class => 'activity_icon')
-        %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'new_condition'}
-        %span New condition
-      %label.activity_filter_btn
-        =image_tag("icons/new_msx.svg", :alt => "new_msx", :class => 'activity_icon')
-        %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'new_msx'}
-        %span Your scores
-      %label.activity_filter_btn
-        =image_tag("icons/confirm_location.svg", :alt => "confirm_location", :class => 'activity_icon')
-        %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'confirm_location'}
-        %span Location confirmed
-      %label.activity_filter_btn
-        =image_tag("icons/add_location.svg", :alt => "add_location", :class => 'activity_icon')
-        %input{:type => "checkbox", :class => "map_activity_filter m_0", :value => 'add_location'}
-        %span Location added
-    %div{:style => "text-align: center; margin: 0 15px 15px 15px;"}
-      %button.save_button.apply_filter.apply_map_activity_filters Apply Filters
-
   %div.bold.flex_center{:style => 'margin: 12px;'}
     %span.sorted_submissions
       - if pagy.count == 0
         No recent edits within the map view
       - else
         Showing #{pagy.from}-#{pagy.to} of #{pagy.count} recent edits within the map view
+    %button#map_activity_filter_modal_button.filter_button{:type => "button", :style => "margin: 0 10px;", :onclick => "showActivityFilterModal('map_activity_filter_modal');"}
+      %svg{xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 20 20", fill: "currentColor", "aria-hidden": "true"}
+        %path{d: "M5 1.6c0-.553-.448-.6-1-.6-.553 0-1 .047-1 .6V10h2V1.6zM3 18.4c0 .551.447.6 1 .6.552 0 1-.049 1-.6V15H3v3.4zM6.399 11h-4.8C1.046 11 1 11.448 1 12v1c0 .553.046 1 .599 1H6.4c.55 0 .6-.447.6-1v-1c0-.552-.05-1-.601-1zm12 1h-4.801c-.552 0-.598.448-.598 1v1c0 .553.046 1 .599 1H18.4c.55 0 .6-.447.6-1v-1c0-.552-.05-1-.601-1zM13 7c0-.552-.05-1-.601-1h-4.8C7.046 6 7 6.448 7 7v1c0 .553.046 1 .599 1H12.4c.55 0 .6-.447.6-1V7zm-2-5.4c0-.553-.448-.6-1-.6-.553 0-1 .047-1 .6V5h2V1.6zM9 18.4c0 .551.447.6 1 .6.552 0 1-.049 1-.6V10H9v8.4zm8-16.8c0-.553-.448-.6-1-.6-.553 0-1 .047-1 .6V11h2V1.6zm-2 16.8c0 .551.447.6 1 .6.552 0 1-.049 1-.6V16h-2v2.4z"}
+      Filter
     %span.close_activity.pointer{:onclick => "closeActivity();"}
       X
+
+  = render 'shared/activity_filter_modal', modal_id: "map_activity_filter_modal", checkbox_class: "map_activity_filter m_0", apply_button_classes: "apply_map_activity_filters"
 
   = render 'shared/activity_item', show_location_link: true, page_activity: false
 
