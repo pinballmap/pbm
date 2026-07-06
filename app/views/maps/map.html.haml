@@ -7,7 +7,8 @@
         = hidden_field_tag :by_state_name
         = hidden_field_tag :by_city_no_state
         .map_input_search
-          %span.input_title Search
+          - unless mobile_device?
+            %span.input_title Search
           .search_input_wrapper
             = text_field_tag "address", params[:address], class: 'lookup_search_input', placeholder: 'City, venue, or address...', clear_id: 'clearButton2'
             #clearButton2{input_id: "address"}
