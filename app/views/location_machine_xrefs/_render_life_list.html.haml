@@ -6,12 +6,12 @@
       %div.add_life_list Add machine to your list
 - elsif (umx = UserMachineXref.find_by(user: current_user, machine_id: lmx.machine_id))
   - has_scores = MachineScoreXref.where(user: current_user, machine_id: lmx.machine_id).exists?
-  %p.in_life_list== You've played <strong>#{lmx.machine.name}</strong>. #{link_to 'See your list', profile_user_path(current_user.id)}.
+  %p.in_life_list== You've played <strong>#{lmx.machine.name}</strong>. #{link_to 'See your list', profile_user_path(current_user.id, anchor: 'life_list_section')}.
   - unless has_scores
     = form_tag user_machine_xref_path(umx.id), method: :delete, id: "remove_life_list_form_#{lmx.id}", data: { machine_name: lmx.machine.name } do
       = submit_tag 'Remove from list?', class: 'delete_high_score_button', style: 'color: var(--red);'
 - else
-  %p.in_life_list== Have you played <strong>#{lmx.machine.name}</strong>? You can track every machine you've played #{link_to 'in your profile', profile_user_path(current_user.id)}.
+  %p.in_life_list== Have you played <strong>#{lmx.machine.name}</strong>? You can track every machine you've played #{link_to 'in your profile', profile_user_path(current_user.id, anchor: 'life_list_section')}.
   = form_tag user_machine_xrefs_path, method: :post, id: "life_list_form_#{lmx.id}" do
     = hidden_field_tag :machine_id, lmx.machine_id
     = button_tag type: 'submit', class: 'life_list_lmx' do

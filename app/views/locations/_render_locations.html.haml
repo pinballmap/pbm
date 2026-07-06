@@ -50,7 +50,7 @@
                     =image_tag("icons/clipboard-list-outline-light.svg", :alt => "not in list")
                     %span
                       #{not_in_list_count} not in
-                      = link_to 'list', profile_user_path(current_user.id), onclick: "event.stopPropagation();"
+                      = link_to 'list', profile_user_path(current_user.id, anchor: 'life_list_section'), onclick: "event.stopPropagation();"
 - unless @locations.size == 0
   #next_link{:style => 'margin: 20px 10px'}
     != @pagy.series_nav() if @pagy.pages > 1

@@ -91,7 +91,7 @@
             - @user.list_fave_locations.each do |fave_location|
               %span.location_edited.mb_5
                 = link_to(fave_location.location.name, map_path + "/?by_location_id=#{fave_location.location.id}")
-      %div.darkgrey.stats.font18
+      %div.darkgrey.stats.font18#life_list_section
         %div.ml_5.bold.mb_15
           Your Machine List and High Scores:
         - if current_user && current_user.id == @user.id
