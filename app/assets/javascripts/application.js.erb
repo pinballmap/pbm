@@ -664,6 +664,10 @@ function pickRandomMachine(locationId) {
 }
 
 function clearAllFilters() {
+  // A plain "clear filters" action shouldn't also wipe an active
+  // address/location search - suppress the individual filter-change
+  // handlers below from invalidating it while this runs.
+  if (typeof suppressAnchorInvalidation !== 'undefined') suppressAnchorInvalidation = true;
   $('#by_machine_select').val(null).trigger('change');
   $('#single_hide').hide();
   if (typeof setSingleVersion === 'function') setSingleVersion(false);
@@ -686,6 +690,8 @@ function clearAllFilters() {
     $('#all_ic_toggle').addClass('active');
   }
   if (typeof setSavedMode === 'function') setSavedMode(false);
+  if (typeof updateClearFiltersButton === 'function') updateClearFiltersButton();
+  if (typeof suppressAnchorInvalidation !== 'undefined') suppressAnchorInvalidation = false;
 }
 
 function setRegion(regionName) {

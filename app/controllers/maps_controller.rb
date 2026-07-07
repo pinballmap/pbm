@@ -212,7 +212,7 @@ class MapsController < ApplicationController
         params[:by_location_id].blank? &&
         params[:by_city_name].blank? &&
         params[:by_city_no_state].blank?
-      fuzzy = Location.by_location_name(params[:address]).select([ "name", "id", "lat", "lon", "machine_count" ])
+      fuzzy = apply_scopes(Location.by_location_name(params[:address])).select([ "name", "id", "lat", "lon", "machine_count" ])
       if fuzzy.any?
         @locations = fuzzy
         @fuzzy_location_ids = fuzzy.map(&:id)

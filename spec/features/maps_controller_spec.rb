@@ -6,6 +6,28 @@ describe MapsController do
     @location = FactoryBot.create(:location, region: @region, state: 'OR')
   end
 
+  describe 'map_location_data', type: :request do
+    it 'excludes a name-matched location when it does not satisfy an active machine filter' do
+      matching_machine = FactoryBot.create(:machine, name: 'Transformers')
+      FactoryBot.create(:location_machine_xref, location: @location, machine: matching_machine)
+      other_machine = FactoryBot.create(:machine, name: 'Pokemon')
+
+      get map_location_data_path, params: { address: @location.name, by_machine_single_id: [ other_machine.id ] }
+
+      expect(response.body).not_to include(@location.name)
+      expect(response.body).to include("locations_geojson = JSON.parse('[]')")
+    end
+
+    it 'includes a name-matched location when it satisfies an active machine filter' do
+      matching_machine = FactoryBot.create(:machine, name: 'Transformers')
+      FactoryBot.create(:location_machine_xref, location: @location, machine: matching_machine)
+
+      get map_location_data_path, params: { address: @location.name, by_machine_single_id: [ matching_machine.id ] }
+
+      expect(response.body).to include(@location.name)
+    end
+  end
+
   describe 'get_bounds', type: :request do
     let(:bounds_data) { { sw: { lat: -90, lng: -180 }, ne: { lat: 90, lng: 180 } } }
 
@@ -70,14 +92,17 @@ describe MapsController do
       fill_in('address', with: 'foo')
       expect(page.execute_script("return $('#by_machine_select').val()")).to_not eq([])
 
-      # selecting a machine via select2 clears by_location_id
-      page.execute_script("$('#by_location_id').val('99'); $('#by_machine_select').val(null).trigger('change');")
+      # selecting a machine via select2 clears by_location_id and the stale
+      # address text, so the search doesn't fall back to an unbounded
+      # fuzzy name match on whatever venue was previously searched
+      page.execute_script("$('#by_location_id').val('99'); $('#address').val('Marc\\'s Bar'); $('#by_machine_select').val(null).trigger('change');")
       page.find('#open_filter_modal_button').click
       page.find('#by_machine_select + .select2-container .select2-selection').click
       page.find('#by_machine_select + .select2-container .select2-search__field').set('Sass Pro')
       sleep 0.5
       page.find('.select2-results__option', text: /Sass Pro/).click
       expect(find('#by_location_id', visible: :hidden).value).to eq('')
+      expect(find('#address').value).to eq('')
     end
 
     it 'selecting a specific location from autocomplete clears all active filters' do

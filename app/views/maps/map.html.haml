@@ -105,7 +105,7 @@
                     %button#all_saved_toggle.machine_type_btn.active{:type => "button", :onclick => "setSavedMode(false)"} All
                     %button#my_saved_toggle.machine_type_btn{:type => "button", :onclick => "setSavedMode(true)"} My Saved
           .filter_modal_footer
-            %button.clear_filters_button{:type => "button", :onclick => "clearAllFilters(); updateClearFiltersButton();"} Clear
+            %button.clear_filters_button{:type => "button", :onclick => "clearAllFilters();"} Clear
             %button.apply_filters_button{:type => "submit"} Apply
   #map
     #map_canvas
@@ -165,6 +165,25 @@
     document.getElementById('by_city_no_state').value = "";
     document.getElementById('by_location_id').value = "";
     clearButton2.style.display = "none";
+  }
+
+  // A resolved address/location search is only meaningful until the user
+  // changes a filter - after that it's a stale anchor that would otherwise
+  // send map_location_data down its unbounded fuzzy-name-match fallback
+  // (matching venues by name nationwide instead of the current map area).
+  // Clearing it here routes the next search through the bounds-aware
+  // /get_bounds path instead. Suppressed while restoring state from the
+  // URL on page load, and while clearAllFilters() is running (a plain
+  // "clear filters" action should not also wipe an active location search).
+  var restoringFromUrl = true;
+  var suppressAnchorInvalidation = false;
+
+  function invalidateLocationAnchor() {
+    if (restoringFromUrl || suppressAnchorInvalidation) return;
+    clearAddressFields();
+    if (mapLoaded === 1 && map.getZoom() > 12) {
+      map.setZoom(map.getZoom() - 2);
+    }
   }
 
   function clearSearch() {
@@ -252,6 +271,7 @@
   }
 
   function updateClearFiltersButton() {
+    invalidateLocationAnchor();
     if (filtersApplied()) {
       $('#clear_filters_button').css('display', 'flex');
     } else {
@@ -261,7 +281,6 @@
 
   function clearFiltersAndApply() {
     clearAllFilters();
-    updateClearFiltersButton();
     $('#address_search_form').submit();
   }
 
@@ -322,7 +341,6 @@
       var d = e.params.data;
       machineGroups[String(d.id)] = (d.group_id != null && d.group_id !== '') ? d.group_id : null;
       machineIcEligible[String(d.id)] = d.ic_eligible || false;
-      $('#by_location_id').val('');
       updateMachineSingleHide();
       updateClearFiltersButton();
     });
@@ -410,6 +428,7 @@
     #{params[:by_at_least_n_machines].present? ? "setNMachines('#{params[:by_at_least_n_machines].to_i}');" : ""}
     #{current_user && params[:user_faved].present? ? "setSavedMode(true);" : ""}
     updateClearFiltersButton();
+    restoringFromUrl = false;
 
     $('#address').bind('input', function(event, ui) {
       event.preventDefault();
@@ -446,7 +465,6 @@
         $('#address').val(ui.item.name);
         $('#by_location_id').val(ui.item.id);
         clearAllFilters();
-        updateClearFiltersButton();
       }
       $('#address_search_form').submit();
     });
