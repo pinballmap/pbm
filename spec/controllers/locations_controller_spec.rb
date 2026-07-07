@@ -111,6 +111,17 @@ describe LocationsController, type: :controller do
     end
   end
 
+  describe '#random_machine' do
+    it 'is accessible when logged out' do
+      login(nil)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
+
+      get 'random_machine', params: { id: @location.id }
+
+      expect(response).to be_successful
+    end
+  end
+
   describe '#render_location_detail' do
     render_views
 
