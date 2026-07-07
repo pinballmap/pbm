@@ -167,23 +167,15 @@
     clearButton2.style.display = "none";
   }
 
-  // A resolved address/location search is only meaningful until the user
-  // changes a filter - after that it's a stale anchor that would otherwise
-  // send map_location_data down its unbounded fuzzy-name-match fallback
-  // (matching venues by name nationwide instead of the current map area).
-  // Clearing it here routes the next search through the bounds-aware
-  // /get_bounds path instead. Suppressed while restoring state from the
-  // URL on page load, and while clearAllFilters() is running (a plain
-  // "clear filters" action should not also wipe an active location search).
+  // Filter changes mark an address/location search anchor as stale,
+  // so the two don't conflict
   var restoringFromUrl = true;
   var suppressAnchorInvalidation = false;
+  var locationAnchorStale = false;
 
   function invalidateLocationAnchor() {
     if (restoringFromUrl || suppressAnchorInvalidation) return;
-    clearAddressFields();
-    if (mapLoaded === 1 && map.getZoom() > 12) {
-      map.setZoom(map.getZoom() - 2);
-    }
+    locationAnchorStale = true;
   }
 
   function clearSearch() {
@@ -194,8 +186,6 @@
   clearButton2.addEventListener("click", clearSearch);
   var savedLocations = "";
 
-  // Tracks machine_group_id for each selected machine, so we know when a
-  // single selection belongs to a group (and the exact-version toggle applies).
   var machineGroups = #{raw @selected_machines.to_h { |m| [m.id.to_s, m.machine_group_id] }.to_json};
   var machineIcEligible = #{raw @selected_machines.to_h { |m| [m.id.to_s, m.ic_eligible] }.to_json};
   var emModeActive = false;
@@ -577,6 +567,11 @@
 
   $('#address_search_form').on('submit', function(e) {
     e.preventDefault();
+
+    if (locationAnchorStale) {
+      clearAddressFields();
+      locationAnchorStale = false;
+    }
 
     nearbySearchActive = false;
     var machineIds = machineSelectIds();

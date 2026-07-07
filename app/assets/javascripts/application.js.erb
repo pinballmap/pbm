@@ -692,6 +692,7 @@ function clearAllFilters() {
   if (typeof setSavedMode === 'function') setSavedMode(false);
   if (typeof updateClearFiltersButton === 'function') updateClearFiltersButton();
   if (typeof suppressAnchorInvalidation !== 'undefined') suppressAnchorInvalidation = false;
+  if (typeof locationAnchorStale !== 'undefined') locationAnchorStale = false;
 }
 
 function setRegion(regionName) {

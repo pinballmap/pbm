@@ -92,15 +92,24 @@ describe MapsController do
       fill_in('address', with: 'foo')
       expect(page.execute_script("return $('#by_machine_select').val()")).to_not eq([])
 
-      # selecting a machine via select2 clears by_location_id and the stale
-      # address text, so the search doesn't fall back to an unbounded
-      # fuzzy name match on whatever venue was previously searched
+      # selecting a machine via select2 marks by_location_id and the stale
+      # address text for invalidation, but doesn't clear them until Apply
+      # is actually submitted - filters shouldn't take effect while the
+      # modal is still open
       page.execute_script("$('#by_location_id').val('99'); $('#address').val('Marc\\'s Bar'); $('#by_machine_select').val(null).trigger('change');")
       page.find('#open_filter_modal_button').click
       page.find('#by_machine_select + .select2-container .select2-selection').click
       page.find('#by_machine_select + .select2-container .select2-search__field').set('Sass Pro')
       sleep 0.5
       page.find('.select2-results__option', text: /Sass Pro/).click
+      expect(find('#by_location_id', visible: :hidden).value).to eq('99')
+      expect(find('#address').value).to eq("Marc's Bar")
+
+      # once Apply is submitted, the stale location fields are cleared so
+      # the search doesn't fall back to an unbounded fuzzy name match on
+      # whatever venue was previously searched
+      page.find('.apply_filters_button').click
+      sleep 0.5
       expect(find('#by_location_id', visible: :hidden).value).to eq('')
       expect(find('#address').value).to eq('')
     end
