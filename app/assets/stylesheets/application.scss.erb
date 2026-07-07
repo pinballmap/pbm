@@ -1198,6 +1198,11 @@ form#address_search_form input.lookup_search_input {
   border-bottom: 1px solid var(--border);
 }
 
+#filter_modal .filter_modal_header {
+  justify-content: flex-end;
+  gap: 10px;
+}
+
 .filter_modal_header h3 {
   margin: 0;
   font-size: 18px;
@@ -1211,12 +1216,12 @@ form#address_search_form input.lookup_search_input {
 }
 
 .filter_modal_body {
-  padding: 16px;
+  padding: 8px;
   overflow-y: auto;
 }
 
 .filter_modal_section {
-  padding: 10px;
+  padding: 10px 10px 1px 10px;
   @include radius(8px);
   background: var(--lightpurple);
 }
@@ -2605,7 +2610,7 @@ input.submit_button:hover,
 }
 
 .map_input_limit {
-  margin: 15px auto 20px;
+  margin: 8px auto 16px;
 }
 
 .map_input_search span.input_title {

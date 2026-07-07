@@ -27,12 +27,13 @@
         #filter_modal_overlay{:style => "display: none;", :onclick => "hideFilterModal();"}
         #filter_modal{:style => "display: none;"}
           .filter_modal_header
-            %h3 Filter Map Results
+            %button.clear_filters_button{:type => "button", :onclick => "clearAllFilters();"} Clear
+            %button.apply_filters_button{:type => "submit"} Apply
             %div.filter_modal_close{:onclick => "hideFilterModal();"}
               X
           .filter_modal_body
             .filter_modal_section
-              %div.font18.bold.center.brightpurple.mb_15
+              %div.font18.bold.center.brightpurple.mb_8
                 Machine Filters
               .map_input_machine
                 .input_title Machine
@@ -65,12 +66,12 @@
                 .machine_type_toggle
                   %button#all_toggle.machine_type_btn.active{:type => "button", :onclick => "setMachineType('all')"} All
                   %button#em_toggle.machine_type_btn{:type => "button", :onclick => "setMachineType('em')"} EM
-              .map_input_limit
+              .map_input_limit{:style => "margin-bottom: 10px"}
                 .input_title Machine year
                 .year_range_selects
                   = select_tag "by_machine_year_gte", options_for_select([['From', '']] + @machine_years.map { |y| [y.to_s, y] }, params[:by_machine_year_gte])
                   = select_tag "by_machine_year_lte", options_for_select([['To', '']] + @machine_years.map { |y| [y.to_s, y] }, params[:by_machine_year_lte])
-            .filter_modal_section.mt_20
+            .filter_modal_section.mt_10
               %div.font18.bold.center.brightpurple
                 Location Filters
               .map_input_limit
@@ -92,21 +93,18 @@
                 .machine_type_toggle
                   %button#all_ic_toggle.machine_type_btn.active{:type => "button", :onclick => "setIcActive(false)"} All
                   %button#ic_toggle.machine_type_btn{:type => "button", :onclick => "setIcActive(true)"} Has IC
-              .map_input_limit.operators_select_col
+              .map_input_limit.operators_select_col{:style => (current_user ? nil : "margin-bottom: 10px")}
                 .input_title Operator
                 %select.by_operator_id{ id: "by_operator_id", name: "by_operator_id" }
                   %option{ value: "" }
                   - if params[:by_operator_id].present?
                     %option{ value: params[:by_operator_id], selected: "selected" }= Operator.find_by(id: params[:by_operator_id])&.name
               - if current_user
-                .map_input_limit
+                .map_input_limit{:style => "margin-bottom: 10px"}
                   .input_title Saved locations
                   .machine_type_toggle
                     %button#all_saved_toggle.machine_type_btn.active{:type => "button", :onclick => "setSavedMode(false)"} All
                     %button#my_saved_toggle.machine_type_btn{:type => "button", :onclick => "setSavedMode(true)"} My Saved
-          .filter_modal_footer
-            %button.clear_filters_button{:type => "button", :onclick => "clearAllFilters();"} Clear
-            %button.apply_filters_button{:type => "submit"} Apply
   #map
     #map_canvas
 
