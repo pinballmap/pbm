@@ -634,6 +634,35 @@ function hideConfirmModal() {
   $('#confirm_modal_overlay, #confirm_modal').hide();
 }
 
+var randomMachineFetching = false;
+
+function showRandomMachineModal(locationId) {
+  $('#random_machine_result').text('').removeClass('random_machine_reveal');
+  $('#random_machine_modal_overlay, #random_machine_modal').show();
+  $('#random_machine_pick_btn').off('click').on('click', function () {
+    pickRandomMachine(locationId);
+  });
+}
+
+function hideRandomMachineModal() {
+  $('#random_machine_modal_overlay, #random_machine_modal').hide();
+}
+
+function pickRandomMachine(locationId) {
+  if (randomMachineFetching) return;
+  randomMachineFetching = true;
+  $('#random_machine_pick_btn').prop('disabled', true);
+  $.get('/locations/' + locationId + '/random_machine', {}, function (data) {
+    var $result = $('#random_machine_result');
+    $result.removeClass('random_machine_reveal').text(data.name || 'No machines found');
+    void $result[0].offsetWidth;
+    $result.addClass('random_machine_reveal');
+  }).always(function () {
+    randomMachineFetching = false;
+    setTimeout(function () { $('#random_machine_pick_btn').prop('disabled', false); }, 400);
+  });
+}
+
 function clearAllFilters() {
   $('#by_machine_select').val(null).trigger('change');
   $('#single_hide').hide();

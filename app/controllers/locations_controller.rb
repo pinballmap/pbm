@@ -242,6 +242,12 @@ class LocationsController < ApplicationController
     end
   end
 
+  def random_machine
+    l = Location.find(params[:id])
+    machine = l.machines.order(Arel.sql("RANDOM()")).limit(1).pick(:name, :year, :manufacturer)
+    render json: { name: machine ? Machine.new(name: machine[0], year: machine[1], manufacturer: machine[2]).name_and_year : nil }
+  end
+
   def not_found
     @record_not_found = true
   end

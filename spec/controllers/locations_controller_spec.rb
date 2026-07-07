@@ -110,4 +110,46 @@ describe LocationsController, type: :controller do
       expect(response.status).to eq(404)
     end
   end
+
+  describe '#render_location_detail' do
+    render_views
+
+    it 'does not show the random machine icon when the location has no machines' do
+      get 'render_location_detail', params: { id: @location.id }
+
+      expect(response).to be_successful
+      expect(response.body).to_not include('class="random_machine_icon"')
+    end
+
+    it 'does not show the random machine icon when the location has only one machine' do
+      FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
+
+      get 'render_location_detail', params: { id: @location.id }
+
+      expect(response).to be_successful
+      expect(response.body).to_not include('class="random_machine_icon"')
+    end
+
+    it 'shows the random machine icon when the location has more than one machine' do
+      FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine))
+
+      get 'render_location_detail', params: { id: @location.id }
+
+      expect(response).to be_successful
+      expect(response.body).to include('class="random_machine_icon"')
+    end
+
+    it 'shows the random machine icon after a second machine is added to a location that had one' do
+      FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
+
+      get 'render_location_detail', params: { id: @location.id }
+      expect(response.body).to_not include('class="random_machine_icon"')
+
+      FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine))
+
+      get 'render_location_detail', params: { id: @location.id }
+      expect(response.body).to include('class="random_machine_icon"')
+    end
+  end
 end

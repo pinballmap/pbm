@@ -68,8 +68,11 @@
 	= render :partial => 'locations/add_machine', :locals => {:location => l}
 	= render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
 	= render :partial => 'locations/recent_activity', :locals => {:location => l}
-	%div{:id => "show_machines_location_count_#{l.id}", :class => 'black font18 center lmx_count'}
-		= render :partial => 'locations/render_machines_count', :locals => {:location => l}
+	%div.lmx_count_row
+		%div{:id => "show_machines_location_count_#{l.id}", :class => 'black font18 center lmx_count'}
+			= render :partial => 'locations/render_machines_count', :locals => {:location => l}
+		- if l.machines.count > 1
+			=image_tag('icons/dice-multiple-outline.svg', :alt => 'Pick a random machine', :class => 'random_machine_icon', :id => "random_machine_icon_#{l.id}")
 	= render :partial => 'locations/show_machines', :locals => {:location => l}
 
 :javascript
@@ -96,6 +99,9 @@
 					updateLocationUpdatedText(#{l.id});
 				});
 			}, { confirmText: 'Confirm lineup' });
+		});
+		$('#random_machine_icon_#{l.id}').click(function () {
+			showRandomMachineModal(#{l.id});
 		});
 
 		if ( $("#thumbs_location_#{l.id}").prop('scrollHeight') > $("#thumbs_location_#{l.id}").height() ) {

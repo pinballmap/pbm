@@ -1,0 +1,8 @@
+#random_machine_modal_overlay{:style => "display: none;", :onclick => "hideRandomMachineModal();"}
+#random_machine_modal{:style => "display: none;"}
+	.confirm_modal_body
+		%p Can't decide which machine to play? Let us help.
+		%p#random_machine_result
+		%button#random_machine_pick_btn.confirm_confirm_button{:type => "button"} Pick a random machine
+	.confirm_modal_footer
+		%button.cancel_confirm_button{:type => "button", :onclick => "hideRandomMachineModal();"} Close

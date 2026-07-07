@@ -165,6 +165,7 @@ Rails.application.routes.draw do
       get :render_location_detail
       get :render_machines
       get :render_recent_activity
+      get :random_machine
     end
   end
 

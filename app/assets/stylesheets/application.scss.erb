@@ -1127,9 +1127,9 @@ form#address_search_form input.lookup_search_input {
 }
 
 .filter_button {
-  background: var(--lightpink);
-  border: 1px solid var(--red);
-  color: var(--red);
+  background: var(--purple2);
+  color: var(--brightpurple);
+  border: 1px solid var(--brightpurple);
   padding: 5px 14px;
   @include radius(10px);
   font-size: 14px;
@@ -1245,9 +1245,9 @@ form#address_search_form input.lookup_search_input {
 }
 
 .apply_filters_button {
-  background: var(--lightpink);
-  color: var(--red);
-  border: 1px solid var(--red);
+  background: var(--purple2);
+  color: var(--brightpurple);
+  border: 1px solid var(--brightpurple);
 }
 
 #lookup.map_lookup {
@@ -1258,7 +1258,8 @@ form#address_search_form input.lookup_search_input {
 
 /** Confirm modal **/
 
-#confirm_modal_overlay {
+#confirm_modal_overlay,
+#random_machine_modal_overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -1268,7 +1269,8 @@ form#address_search_form input.lookup_search_input {
   z-index: 210;
 }
 
-#confirm_modal {
+#confirm_modal,
+#random_machine_modal {
   border: 5px solid var(--border);
   position: fixed;
   top: 50%;
@@ -1313,12 +1315,50 @@ form#address_search_form input.lookup_search_input {
 }
 
 .confirm_confirm_button {
-  background: var(--lightpink);
-  color: var(--red);
-  border: 1px solid var(--red);
+  background: var(--purple2);
+  color: var(--brightpurple);
+  border: 1px solid var(--brightpurple);
 }
 
 /** END confirm modal **/
+
+/** Random machine picker **/
+
+.random_machine_icon {
+  cursor: pointer;
+  vertical-align: middle;
+  margin-left: 6px;
+  width: 28px;
+  transition: transform 0.5s ease;
+  filter: var(--filter);
+}
+
+.random_machine_icon:hover {
+  transform: rotate(360deg);
+}
+
+#random_machine_result {
+  font-family: $Nunito_600SemiBold;
+  min-height: 24px;
+}
+
+#random_machine_result.random_machine_reveal {
+  animation: random_machine_grow 0.3s ease-out;
+}
+
+@keyframes random_machine_grow {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/** END random machine picker **/
 
 /** Footer **/
 
@@ -1622,9 +1662,9 @@ input.ic_eligible_hide {
   font-family: $Nunito_600SemiBold;
 
   &.active {
-    background: var(--lightpink);
-    color: var(--red);
-    border-color: var(--red);
+    background: var(--purple2);
+    color: var(--brightpurple);
+    border: 1px solid var(--brightpurple);
   }
 }
 
@@ -1853,8 +1893,15 @@ li.address_full {
   padding: 0 0 0 5px;
 }
 
-.lmx_count {
+.lmx_count_row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   margin: 20px auto 10px;
+}
+
+.lmx_count {
   width: fit-content;
   border-bottom: 5px solid var(--purple);
 }
