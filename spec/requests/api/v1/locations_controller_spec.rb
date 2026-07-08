@@ -1267,17 +1267,17 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to_not include('operator_phone_opt_in')
     end
 
-    it 'omits in_life_list when no_details is 1 and the request is unauthenticated' do
+    it 'omits in_life_list when no_details is 1 and no user_id is included' do
       get "/api/v1/locations/#{@location.id}.json", params: { no_details: 1 }
 
       expect(response.body).to_not include('in_life_list')
     end
 
-    it 'includes in_life_list per lmx when no_details is 1 and the request is authenticated' do
+    it 'includes in_life_list per lmx when no_details is 1 and user_id is included' do
       FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine, id: 9999, name: 'Not In List'))
       FactoryBot.create(:user_machine_xref, user: @user, machine_id: 7777)
 
-      get "/api/v1/locations/#{@location.id}.json", params: { no_details: 1, user_email: @user.email, user_token: @user.authentication_token }
+      get "/api/v1/locations/#{@location.id}.json", params: { no_details: 1, user_id: @user.id }
 
       lmxes = JSON.parse(response.body)['location_machine_xrefs']
       in_life_list_lmx = lmxes.find { |lmx| lmx['machine_id'] == 7777 }
