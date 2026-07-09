@@ -39,6 +39,10 @@
     {
       "command": "rake send_duplicate_locations_report",
       "schedule": "30 8 * * *"
+    },
+    {
+      "command": "rake update_lmx_counts",
+      "schedule": "0 */12 * * *"
     }
   ]
 }

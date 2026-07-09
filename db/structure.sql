@@ -592,7 +592,8 @@ CREATE TABLE public.machines (
     opdb_img_width integer,
     machine_type character varying,
     machine_display character varying,
-    ic_eligible boolean
+    ic_eligible boolean,
+    lmx_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -2913,6 +2914,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260709125828'),
 ('20260528000000'),
 ('20260511000000'),
 ('20260506000000'),

@@ -45,6 +45,30 @@ describe Api::V1::MachinesController, type: :request do
       expect(response.body.scan('created_at').size).to eq(0)
       expect(response.body.scan('updated_at').size).to eq(0)
       expect(response.body.scan('ipdb_id').size).to eq(0)
+      expect(response.body.scan('lmx_count').size).to eq(0)
+    end
+
+    it 'excludes lmx_count when no_details param is used without lmx_count param' do
+      get '/api/v1/machines.json?no_details=1&manufacturer=Stern'
+
+      expect(response.body.scan('lmx_count').size).to eq(0)
+    end
+
+    it 'includes lmx_count when no_details and lmx_count params are both present' do
+      Machine.find(66).update_columns(lmx_count: 3)
+
+      get '/api/v1/machines.json?no_details=1&lmx_count=1'
+
+      expect(response.body.scan('lmx_count').size).to eq(2)
+      expect(response.body).to include('"lmx_count":3')
+    end
+
+    it 'includes lmx_count by default when no_details is not set' do
+      Machine.find(66).update_columns(lmx_count: 3)
+
+      get '/api/v1/machines.json'
+
+      expect(response.body).to include('"lmx_count":3')
     end
 
     it 'respects region filter' do

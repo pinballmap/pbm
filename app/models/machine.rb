@@ -16,6 +16,7 @@ class Machine < ApplicationRecord
   end
 
   MOBILE_CACHE_KEY = "api/v1/machines/no_details"
+  MOBILE_CACHE_KEY_WITH_LMX_COUNT = "api/v1/machines/no_details/lmx_count"
 
   before_destroy do |record|
     MachineScoreXref.where("location_machine_xref_id in (select id from location_machine_xrefs where machine_id = #{record.id})").destroy_all
@@ -30,7 +31,7 @@ class Machine < ApplicationRecord
     Status.where(status_type: "machines").update({ updated_at: Time.current })
   end
 
-  after_commit -> { Rails.cache.delete(MOBILE_CACHE_KEY) }
+  after_commit -> { Rails.cache.delete(MOBILE_CACHE_KEY); Rails.cache.delete(MOBILE_CACHE_KEY_WITH_LMX_COUNT) }
 
   def massaged_name
     name.sub(/^the /i, "")
