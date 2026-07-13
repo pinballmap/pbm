@@ -26,9 +26,9 @@
     $('#show_machines_location_#{l.id}').html(loadingHTML());
 
     $.post(this.action, $(this).serialize(), function (data) {
-      $('#show_machines_location_#{l.id}').load('/locations/#{l.id}/render_machines', function() {
+      $('#show_machines_location_#{l.id}').load('/locations/#{l.id}/render_machines?' + machineSortQueryParam(), function() {
         updateLocationUpdatedText(#{l.id});
-        $('#show_machines_location_count_#{l.id}').load('/locations/#{l.id}/render_machines_count', function() {});
+        $('#lmx_count_row_#{l.id}').load('/locations/#{l.id}/render_lmx_count_row', function() {});
       });
     });
 

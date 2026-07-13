@@ -1899,16 +1899,61 @@ li.address_full {
 }
 
 .lmx_count_row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin: 20px auto 10px;
+}
+
+.lmx_count_center {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin: 20px auto 10px;
+}
+
+.lmx_sort_container {
+  justify-self: end;
+  padding-right: 10px;
 }
 
 .lmx_count {
   width: fit-content;
   border-bottom: 5px solid var(--purple);
+}
+
+.machine_sort_icon {
+  cursor: pointer;
+  vertical-align: middle;
+  width: 24px;
+  filter: var(--filter);
+}
+
+.machine_sort_options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.machine_sort_btn {
+  cursor: pointer;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  background: var(--lightpurple);
+  border-radius: 10px;
+  font-size: 14px;
+  user-select: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.machine_sort_btn:hover {
+  background: var(--lightpink);
+}
+
+.machine_sort_btn.is-selected {
+  background: var(--lightpink);
+  border-color: var(--red);
+  color: var(--red);
 }
 
 .machine_name_container {

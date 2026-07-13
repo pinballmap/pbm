@@ -1,0 +1,17 @@
+#machine_sort_modal_overlay.activity_filter_modal_overlay{:style => "display: none;", :onclick => "hideMachineSortModal();"}
+#machine_sort_modal.activity_filter_modal{:style => "display: none;"}
+	.filter_modal_header
+		%h3 Sort Machines
+		%div.filter_modal_close{:onclick => "hideMachineSortModal();"} X
+	.filter_modal_body
+		.machine_sort_options
+			%div.machine_sort_btn{:data => {:sort => 'alphabetical'}} Alphabetical
+			%div.machine_sort_btn{:data => {:sort => 'year_newest'}} Year (Newest First)
+			%div.machine_sort_btn{:data => {:sort => 'year_oldest'}} Year (Oldest First)
+			%div.machine_sort_btn{:data => {:sort => 'rarest'}} Rarest First
+			%div.machine_sort_btn{:data => {:sort => 'most_common'}} Most Common First
+			%div.machine_sort_btn{:data => {:sort => 'manufacturer'}} Manufacturer
+			- if user_signed_in?
+				%div.machine_sort_btn{:data => {:sort => 'not_in_life_list'}} Not in Life List First
+	.filter_modal_footer
+		%button.cancel_confirm_button{:type => "button", :onclick => "hideMachineSortModal();"} Close

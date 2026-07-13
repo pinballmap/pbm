@@ -1,0 +1,11 @@
+%div.lmx_count_spacer
+%div.lmx_count_center
+	%div{:id => "show_machines_location_count_#{location.id}", :class => 'black font18 center lmx_count'}
+		= render :partial => 'locations/render_machines_count', :locals => {:location => location}
+	- if location.machines.count > 1
+		=image_tag('icons/dice-multiple-outline.svg', :alt => 'Pick a random machine', :class => 'random_machine_icon', :id => "random_machine_icon_#{location.id}")
+- if location.machines.count > 1
+	%div.lmx_sort_container
+		=image_tag('icons/sort-variant.svg', :alt => 'Sort machines', :class => 'machine_sort_icon', :id => "machine_sort_icon_#{location.id}")
+- else
+	%div.lmx_count_spacer

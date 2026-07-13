@@ -2,7 +2,7 @@ class LocationsController < ApplicationController
   respond_to :html, only: %i[index]
   has_scope :by_location_name, :by_city_id, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :by_city_name, :by_city_no_state, :by_center_point_and_ne_boundary, :by_is_stern_army, :by_ic_active, :user_faved, :by_machine_name, :region, :by_machine_year_gte, :by_machine_year_lte
   has_scope :by_type_id, :by_location_id, :by_operator_id, :by_zone_id, :by_machine_id, :by_machine_single_id, :by_machine_group_id, :by_machine_id_ic, :by_machine_single_id_ic, :by_machine_year, :by_ipdb_id, :by_opdb_id, :manufacturer, :by_machine_type, :by_machine_display, :by_country, :by_state_name, :by_state_id, type: :array
-  before_action :authenticate_user!, except: %i[index autocomplete autocomplete_city render_machines render_machines_count render_last_updated render_location_detail render_recent_activity sanitize_integers random_machine]
+  before_action :authenticate_user!, except: %i[index autocomplete autocomplete_city render_machines render_lmx_count_row render_last_updated render_location_detail render_recent_activity sanitize_integers random_machine]
   before_action :normalize_array_params
   rate_limit to: 100, within: 1.minute, only: :index, name: "locations_index"
   rate_limit to: 12, within: 3.seconds, only: :render_location_detail, name: "locations_render_location_detail"
@@ -177,17 +177,20 @@ class LocationsController < ApplicationController
     end
   end
 
+  MACHINE_SORT_OPTIONS = %w[alphabetical year_newest year_oldest rarest most_common manufacturer not_in_life_list].freeze
+
   def render_machines
     machines = LocationMachineXref.where(location_id: params[:id]).includes(:machine)
-    machines = machines.sort { |a, b| a.machine.massaged_name <=> b.machine.massaged_name }
     logged_in = current_user ? "logged_in" : "logged_out"
     life_list_machine_ids = current_user ? UserMachineXref.where(user_id: current_user.id, machine_id: machines.map(&:machine_id)).pluck(:machine_id).to_set : Set.new
+    sort = MACHINE_SORT_OPTIONS.include?(params[:sort]) ? params[:sort] : "alphabetical"
+    machines = machines.sort_by { |lmx| machine_sort_key(lmx, sort, life_list_machine_ids) }
 
     render partial: "locations/render_machines", locals: { location_machine_xrefs: machines, logged_in: logged_in, life_list_machine_ids: life_list_machine_ids }
   end
 
-  def render_machines_count
-    render partial: "locations/render_machines_count", locals: { location: Location.find(params[:id]) }
+  def render_lmx_count_row
+    render partial: "locations/lmx_count_row", locals: { location: Location.find(params[:id]) }
   end
 
   def render_update_metadata
@@ -275,5 +278,27 @@ class LocationsController < ApplicationController
     l = Location.find(params[:id])
     l.confirm(current_user || nil)
     l
+  end
+
+  private
+
+  def machine_sort_key(lmx, sort, life_list_machine_ids)
+    machine = lmx.machine
+    case sort
+    when "year_newest"
+      [ -machine.year, machine.massaged_name ]
+    when "year_oldest"
+      [ machine.year, machine.massaged_name ]
+    when "rarest"
+      [ machine.lmx_count, machine.massaged_name ]
+    when "most_common"
+      [ -machine.lmx_count, machine.massaged_name ]
+    when "manufacturer"
+      [ machine.manufacturer, machine.massaged_name ]
+    when "not_in_life_list"
+      [ life_list_machine_ids.include?(machine.id) ? 1 : 0, machine.massaged_name ]
+    else
+      [ machine.massaged_name ]
+    end
   end
 end

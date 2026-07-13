@@ -648,6 +648,35 @@ function hideRandomMachineModal() {
   $('#random_machine_modal_overlay, #random_machine_modal').hide();
 }
 
+var currentMachineSort = 'alphabetical';
+var currentMachineSortLocationId = null;
+
+function showMachineSortModal(locationId) {
+  currentMachineSortLocationId = locationId;
+  $('#machine_sort_modal .machine_sort_btn').each(function () {
+    $(this).toggleClass('is-selected', $(this).data('sort') === currentMachineSort);
+  });
+  $('#machine_sort_modal_overlay, #machine_sort_modal').show();
+}
+
+function hideMachineSortModal() {
+  $('#machine_sort_modal_overlay, #machine_sort_modal').hide();
+}
+
+function machineSortQueryParam() {
+  return 'sort=' + encodeURIComponent(currentMachineSort);
+}
+
+$(function () {
+  $('#machine_sort_modal').on('click', '.machine_sort_btn', function () {
+    currentMachineSort = $(this).data('sort');
+    hideMachineSortModal();
+    if (currentMachineSortLocationId) {
+      $('#show_machines_location_' + currentMachineSortLocationId).load('/locations/' + currentMachineSortLocationId + '/render_machines?' + machineSortQueryParam());
+    }
+  });
+});
+
 function pickRandomMachine(locationId) {
   if (randomMachineFetching) return;
   randomMachineFetching = true;

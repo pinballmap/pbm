@@ -162,5 +162,86 @@ describe LocationsController, type: :controller do
       get 'render_location_detail', params: { id: @location.id }
       expect(response.body).to include('class="random_machine_icon"')
     end
+
+    it 'does not show the machine sort icon when the location has one or fewer machines' do
+      FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
+
+      get 'render_location_detail', params: { id: @location.id }
+
+      expect(response).to be_successful
+      expect(response.body).to_not include('class="machine_sort_icon"')
+    end
+
+    it 'shows the machine sort icon when the location has more than one machine' do
+      FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine))
+
+      get 'render_location_detail', params: { id: @location.id }
+
+      expect(response).to be_successful
+      expect(response.body).to include('class="machine_sort_icon"')
+    end
+  end
+
+  describe '#render_machines' do
+    render_views
+
+    let(:zaphod) { FactoryBot.create(:machine, name: 'Zaphod', year: 1990, manufacturer: 'Zeta Corp', lmx_count: 5) }
+    let(:apple) { FactoryBot.create(:machine, name: 'Apple Delight', year: 2010, manufacturer: 'Acme', lmx_count: 50) }
+    let(:the_beast) { FactoryBot.create(:machine, name: 'The Beast', year: 2000, manufacturer: 'Midway', lmx_count: 20) }
+
+    before(:each) do
+      FactoryBot.create(:location_machine_xref, location: @location, machine: zaphod)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: apple)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: the_beast)
+    end
+
+    def machine_order_from_response
+      response.body.scan(/machine_name">\s*(.*?)\s*</).flatten
+    end
+
+    it 'defaults to alphabetical order (ignoring a leading "The") for an unrecognized sort param' do
+      get 'render_machines', params: { id: @location.id, sort: 'bogus' }
+
+      expect(machine_order_from_response).to eq([ 'Apple Delight', 'The Beast', 'Zaphod' ])
+    end
+
+    it 'sorts by year, newest first' do
+      get 'render_machines', params: { id: @location.id, sort: 'year_newest' }
+
+      expect(machine_order_from_response).to eq([ 'Apple Delight', 'The Beast', 'Zaphod' ])
+    end
+
+    it 'sorts by year, oldest first' do
+      get 'render_machines', params: { id: @location.id, sort: 'year_oldest' }
+
+      expect(machine_order_from_response).to eq([ 'Zaphod', 'The Beast', 'Apple Delight' ])
+    end
+
+    it 'sorts rarest first by lmx_count ascending' do
+      get 'render_machines', params: { id: @location.id, sort: 'rarest' }
+
+      expect(machine_order_from_response).to eq([ 'Zaphod', 'The Beast', 'Apple Delight' ])
+    end
+
+    it 'sorts most common first by lmx_count descending' do
+      get 'render_machines', params: { id: @location.id, sort: 'most_common' }
+
+      expect(machine_order_from_response).to eq([ 'Apple Delight', 'The Beast', 'Zaphod' ])
+    end
+
+    it 'sorts alphabetically by manufacturer' do
+      get 'render_machines', params: { id: @location.id, sort: 'manufacturer' }
+
+      expect(machine_order_from_response).to eq([ 'Apple Delight', 'The Beast', 'Zaphod' ])
+    end
+
+    it 'sorts machines not in the life list first, then alphabetically, when logged in' do
+      FactoryBot.create(:user_machine_xref, user: @user, machine: apple)
+
+      get 'render_machines', params: { id: @location.id, sort: 'not_in_life_list' }
+
+      expect(machine_order_from_response).to eq([ 'The Beast', 'Zaphod', 'Apple Delight' ])
+    end
   end
 end
