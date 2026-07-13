@@ -30,6 +30,7 @@
         =area_chart @user_submissions_all.group_by_year(:created_at).count, xmin: "2018-01-01", thousands: ",", height: "400px"
       %div.mt_20.mb_20
         %p.bold.center Map edits (and more) by type
+        %p.center (The "Add Location" metric is very undercounted here)
         = bar_chart @user_submissions_type_count, height: "400px"
     .column.w_560.bg_vlightpurple
       %p.font20.center.bold.pbt_5.bg_lightpurple
