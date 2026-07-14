@@ -5,7 +5,8 @@ class MachineScoreXrefsController < ApplicationController
   rate_limit to: 80, within: 2.minutes, only: :create, name: "msx_create"
 
   def new
-    @all_machines = Machine.order(:name).select(:id, :name, :year, :manufacturer).map { |m| [ m.name_and_year, m.id ] }
+    @all_machines = Machine.select_option_data
+    @life_list_machine_ids = current_user ? current_user.user_machine_xrefs.pluck(:machine_id) : []
   end
 
   def create

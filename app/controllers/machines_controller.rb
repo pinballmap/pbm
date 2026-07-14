@@ -11,7 +11,11 @@ class MachinesController < ApplicationController
       results = results.where(manufacturer: Array(params[:manufacturer])) if params[:manufacturer].present?
       results = results.where("year >= ?", params[:by_machine_year_gte].to_i) if params[:by_machine_year_gte].present?
       results = results.where("year <= ?", params[:by_machine_year_lte].to_i) if params[:by_machine_year_lte].present?
-      results = results.sort_by(&:name)
+      results = results.to_a
+
+      sort = Machine::SORT_OPTIONS.include?(params[:sort]) ? params[:sort] : "alphabetical"
+      life_list_machine_ids = current_user ? UserMachineXref.where(user_id: current_user.id, machine_id: results.map(&:id)).pluck(:machine_id).to_set : Set.new
+      results = results.sort_by { |m| Machine.sort_key(m, sort, life_list_machine_ids) }
                        .map { |m| { label: m.name_and_year, value: m.name_and_year, id: m.id, group_id: m.machine_group_id, ic_eligible: m.ic_eligible } }
     else
       sql = <<-SQL

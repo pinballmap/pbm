@@ -177,14 +177,12 @@ class LocationsController < ApplicationController
     end
   end
 
-  MACHINE_SORT_OPTIONS = %w[alphabetical year_newest year_oldest rarest most_common manufacturer not_in_life_list].freeze
-
   def render_machines
     machines = LocationMachineXref.where(location_id: params[:id]).includes(:machine)
     logged_in = current_user ? "logged_in" : "logged_out"
     life_list_machine_ids = current_user ? UserMachineXref.where(user_id: current_user.id, machine_id: machines.map(&:machine_id)).pluck(:machine_id).to_set : Set.new
-    sort = MACHINE_SORT_OPTIONS.include?(params[:sort]) ? params[:sort] : "alphabetical"
-    machines = machines.sort_by { |lmx| machine_sort_key(lmx, sort, life_list_machine_ids) }
+    sort = Machine::SORT_OPTIONS.include?(params[:sort]) ? params[:sort] : "alphabetical"
+    machines = machines.sort_by { |lmx| Machine.sort_key(lmx.machine, sort, life_list_machine_ids) }
 
     render partial: "locations/render_machines", locals: { location_machine_xrefs: machines, logged_in: logged_in, life_list_machine_ids: life_list_machine_ids }
   end
@@ -278,27 +276,5 @@ class LocationsController < ApplicationController
     l = Location.find(params[:id])
     l.confirm(current_user || nil)
     l
-  end
-
-  private
-
-  def machine_sort_key(lmx, sort, life_list_machine_ids)
-    machine = lmx.machine
-    case sort
-    when "year_newest"
-      [ -machine.year, machine.massaged_name ]
-    when "year_oldest"
-      [ machine.year, machine.massaged_name ]
-    when "rarest"
-      [ machine.lmx_count, machine.massaged_name ]
-    when "most_common"
-      [ -machine.lmx_count, machine.massaged_name ]
-    when "manufacturer"
-      [ machine.manufacturer, machine.massaged_name ]
-    when "not_in_life_list"
-      [ life_list_machine_ids.include?(machine.id) ? 1 : 0, machine.massaged_name ]
-    else
-      [ machine.massaged_name ]
-    end
   end
 end

@@ -2,23 +2,34 @@
 %span.red.font14.p_10.block Select a machine and then click the Add button.
 = form_tag location_machine_xrefs_path, :method => 'post', :id => "add_new_machine_#{l.id}" do
   = hidden_field_tag :location_id, l.id
-  = select_tag "add_machine_by_id_#{l.id}", options_for_select(['']) + options_from_collection_for_select(Machine.all.sort_by(&:massaged_name), 'id', 'name_and_year', params["add_machine_by_id_#{l.id}"]), :class => 'lookup_search_select'
-  %span or
-  = text_field_tag "add_machine_by_name_#{l.id}", params["add_machine_by_name_#{l.id}"], :class => 'lookup_search_input'
-  = submit_tag 'Add', :id => 'add'
+  %div.add_machine_select_wrapper
+    = select_tag "add_machine_by_id_#{l.id}", options_for_select(['']) + options_for_select(machine_select_options(params["add_machine_by_id_#{l.id}"])), :class => 'lookup_search_select'
+    %div.machine_sort_trigger_wrapper
+      =image_tag('icons/sort-variant.svg', :alt => 'Sort machines', :class => 'machine_sort_icon', :id => "add_machine_sort_icon_#{l.id}")
+  = submit_tag 'Add', :id => 'add', :class => 'add_machine_submit'
 
 :javascript
+  var currentAddMachineSort_#{l.id} = 'alphabetical';
+
   $(function () {
     $("#dialog-message").css("display","none");
-    $('#add_machine_by_name_#{l.id}').autocomplete({ 
-      source: '#{autocomplete_machines_path}',
-      minLength: 2,
-      delay: 500 
+
+    $('#add_machine_by_id_#{l.id}').select2({
+      placeholder: 'Select a machine...',
+      allowClear: true,
+      sorter: function (data) {
+        return data.slice().sort(machineSortComparator(currentAddMachineSort_#{l.id}));
+      }
+    });
+
+    $('#add_machine_sort_icon_#{l.id}').on('click', function () {
+      openMachineSortModal({
+        allowedSorts: ['alphabetical', 'year_newest', 'year_oldest', 'manufacturer'],
+        currentSort: currentAddMachineSort_#{l.id},
+        onSelect: function (sort) {
+          currentAddMachineSort_#{l.id} = sort;
+        }
       });
-    $('#add_machine_by_name_#{l.id}').bind('autocompleteselect', function(event, ui) {
-      event.preventDefault();
-      $(this).val('');
-      $('#add_machine_by_id_#{l.id}').val(ui.item.id);
     });
   });
 

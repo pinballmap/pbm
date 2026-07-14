@@ -2668,6 +2668,11 @@ input.submit_button:hover,
   margin-bottom: 8px;
 }
 
+li .input_title_row {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
 .input_title_row {
   position: relative;
   margin-bottom: 8px;
@@ -2685,6 +2690,13 @@ input.submit_button:hover,
     font-size: 12px;
     text-decoration: underline;
     cursor: pointer;
+  }
+
+  .machine_sort_trigger_wrapper {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
 
@@ -3712,6 +3724,10 @@ gmp-place-autocomplete {
 }
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: var(--darkgrey) !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
   color: var(--medgrey) !important;
 }
 
@@ -3791,14 +3807,36 @@ gmp-place-autocomplete {
 
 #score_maker .select2-container--default .select2-selection--single .select2-selection__arrow,
 .operators_select_col .select2-container--default .select2-selection--single .select2-selection__arrow,
+.add_machine_select_wrapper .select2-container--default .select2-selection--single .select2-selection__arrow,
 #score_maker .select2-container--default .select2-selection--single,
-.operators_select_col .select2-container--default .select2-selection--single{
+.operators_select_col .select2-container--default .select2-selection--single,
+.add_machine_select_wrapper .select2-container--default .select2-selection--single {
   height: 32px !important;
   min-height: 32px !important;
 }
 
 #score_maker .select2-container {
   width: 80% !important;
+}
+
+.add_machine_select_wrapper {
+  margin: 0 10px 10px 10px;
+  position: relative;
+}
+
+.add_machine_select_wrapper .select2-container {
+  width: 92% !important;
+}
+
+.add_machine_select_wrapper .machine_sort_trigger_wrapper {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.add_machine_submit {
+  margin-left: 10px;
 }
 
 .map_input_limit .select2-container .select2-selection--multiple {

@@ -5,7 +5,7 @@
       - if user_signed_in?
         %p.center Only submit NEW locations (check first).
         %p.center Do not submit your home (even if it's a short-term rental).
-        %p.center Do not submit same location multiple times. Review takes 0 - 7 days.
+        %p.center Do not submit the same location multiple times. Review takes 0 - 7 days.
         %p.center New business that isn't open yet? We don't add until it's open - TELL US THE OPENING DATE.
         #location_maker
           = form_tag @region ? submitted_new_location_path : map_submitted_new_location_path, :method => 'post', :id => "submit_location" do
@@ -56,8 +56,11 @@
                 %label{:for => "location_comments"} Comments:
                 %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text", :placeholder => 'OPENING DATE; hours; type of payment system(s) they use (door fee, cash, cards); accessibility issues'}
               %li.machines_textinput
-                %label{:for => "location_type"} Machines:
-                = select_tag "location_machines", options_from_collection_for_select(Machine.all.sort_by(&:massaged_name), 'id', 'name_and_year', params["location_machines_ids"]), multiple: "multiple", :class => 'location_machines', :id => 'location_machines', name: "location_machines_ids[]", required: true
+                .input_title_row
+                  %label{:for => "location_type"} Machines:
+                  %div.machine_sort_trigger_wrapper
+                    =image_tag('icons/sort-variant.svg', :alt => 'Sort machines', :class => 'machine_sort_icon', :id => 'suggest_machine_sort_icon')
+                = select_tag "location_machines", options_for_select(machine_select_options(params["location_machines_ids"])), multiple: "multiple", :class => 'location_machines', :id => 'location_machines', name: "location_machines_ids[]", required: true
               %li.brightpurple
                 Unsure what "model" the machine is (e.g., Pro, Premium, LE, etc.)? The safest assumption is Pro (the baseline model).
               %li.submit.mt_5{:style => "clear:both;"}
@@ -161,8 +164,24 @@
     });
   }
 
+  var currentSuggestMachineSort = 'alphabetical';
+
   $(document).ready(function() {
     $('.location_machines').select2({
       placeholder: 'Select the machines at this location',
+      closeOnSelect: false,
+      sorter: function (data) {
+        return data.slice().sort(machineSortComparator(currentSuggestMachineSort));
+      }
+    });
+
+    $('#suggest_machine_sort_icon').on('click', function () {
+      openMachineSortModal({
+        allowedSorts: ['alphabetical', 'year_newest', 'year_oldest', 'manufacturer'],
+        currentSort: currentSuggestMachineSort,
+        onSelect: function (sort) {
+          currentSuggestMachineSort = sort;
+        }
+      });
     });
   });

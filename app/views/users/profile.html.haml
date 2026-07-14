@@ -97,7 +97,10 @@
         - if current_user && current_user.id == @user.id
           %div.ml_8.mb_20.font16 You can manage a "life list" of all the pinball machines you've ever played. Any time you add a score, that machine will be added to your list. And you can manually add machines below or when viewing a machine at a location. #{link_to 'Click here to add new high scores', add_score_path, class: 'red bold'}
           %div.machine_comments_container{style: 'width: 80%; margin: 10px auto 20px;'}
-            %div.bold.font16.mb_8 Add machines to your list
+            .input_title_row
+              %div.bold.font16.mb_8 Add machines to your list
+              %div.machine_sort_trigger_wrapper
+                =image_tag('icons/sort-variant.svg', :alt => 'Sort machines', :class => 'machine_sort_icon', :id => 'life_list_machine_sort_icon')
             = form_tag user_machine_xrefs_path, method: :post, id: 'add_life_list_profile' do
               = select_tag 'machine_id[]', options_for_select(@all_machines), id: 'life_list_machine_select', style: 'width: 100%;', multiple: true
               %br/
@@ -138,6 +141,7 @@
 
 :javascript
   var lifeListMachineIds = new Set(#{(@user_machine_ids || []).to_json});
+  var currentLifeListMachineSort = 'alphabetical';
 
   $(document).ready(function() {
     $('.user_flag_select').select2({
@@ -148,8 +152,21 @@
 
     $('#life_list_machine_select').select2({
       placeholder: 'Search for a machine...',
-      closeOnSelect: true,
-      templateResult: formatMachineOption
+      closeOnSelect: false,
+      templateResult: formatMachineOption,
+      sorter: function (data) {
+        return data.slice().sort(machineSortComparator(currentLifeListMachineSort, lifeListMachineIds));
+      }
+    });
+
+    $('#life_list_machine_sort_icon').on('click', function () {
+      openMachineSortModal({
+        allowedSorts: ['alphabetical', 'year_newest', 'year_oldest', 'rarest', 'most_common', 'manufacturer', 'not_in_life_list'],
+        currentSort: currentLifeListMachineSort,
+        onSelect: function (sort) {
+          currentLifeListMachineSort = sort;
+        }
+      });
     });
 
     $('#add_life_list_profile').submit(function() {

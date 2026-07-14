@@ -5,23 +5,15 @@ class LocationMachineXrefsController < ApplicationController
   rate_limit to: 50, within: 10.minutes, only: :update_machine_condition, name: "lmx_update_machine_condition"
 
   def create
-    machine = nil
     location = Location.find(params[:location_id])
     user = current_user.nil? ? nil : current_user
 
-    if !params["add_machine_by_id_#{location.id}"].empty?
-      machine = Machine.find(params["add_machine_by_id_#{location.id}"])
-    elsif !params["add_machine_by_name_#{location.id}"].empty?
-      machine = Machine.where([ "lower(name) = ?", params["add_machine_by_name_#{location.id}"].downcase ]).first
-
-      if machine.nil?
-        render js: "show_new_machine_message();"
-        return
-      end
-    else
-      # blank submit
+    if params["add_machine_by_id_#{location.id}"].empty?
+      render js: "show_new_machine_message();"
       return
     end
+
+    machine = Machine.find(params["add_machine_by_id_#{location.id}"])
 
     lmx = LocationMachineXref.unscoped.where([ "location_id = ? and machine_id = ?", location.id, machine.id ]).where.not(deleted_at: nil).where(deleted_at: 7.days.ago..Time.current).order(updated_at: :desc).first
 

@@ -649,12 +649,19 @@ function hideRandomMachineModal() {
 }
 
 var currentMachineSort = 'alphabetical';
-var currentMachineSortLocationId = null;
+var machineSortModalConfig = null;
 
-function showMachineSortModal(locationId) {
-  currentMachineSortLocationId = locationId;
+function machineSortQueryParam() {
+  return 'sort=' + encodeURIComponent(currentMachineSort);
+}
+
+// config: { allowedSorts: [...machine sort keys], currentSort: '...', onSelect: function(sort) {} }
+function openMachineSortModal(config) {
+  machineSortModalConfig = config;
   $('#machine_sort_modal .machine_sort_btn').each(function () {
-    $(this).toggleClass('is-selected', $(this).data('sort') === currentMachineSort);
+    var sort = $(this).data('sort');
+    $(this).toggle(config.allowedSorts.indexOf(sort) !== -1);
+    $(this).toggleClass('is-selected', sort === config.currentSort);
   });
   $('#machine_sort_modal_overlay, #machine_sort_modal').show();
 }
@@ -663,16 +670,61 @@ function hideMachineSortModal() {
   $('#machine_sort_modal_overlay, #machine_sort_modal').hide();
 }
 
-function machineSortQueryParam() {
-  return 'sort=' + encodeURIComponent(currentMachineSort);
+// Client-side comparator for select2 `sorter` on statically-rendered machine
+// <option> lists (each carries data-year/manufacturer/lmx-count/massaged-name).
+// lifeListMachineIds is an optional Set of machine ids for the 'not_in_life_list' sort.
+function machineSortComparator(sort, lifeListMachineIds) {
+  function keyOf(option) {
+    var $option = $(option);
+    return {
+      id: parseInt($option.attr('value'), 10),
+      name: $option.attr('data-massaged-name') || '',
+      year: parseInt($option.attr('data-year'), 10) || 0,
+      manufacturer: $option.attr('data-manufacturer') || '',
+      lmxCount: parseInt($option.attr('data-lmx-count'), 10) || 0
+    };
+  }
+
+  return function (a, b) {
+    var ka = keyOf(a.element);
+    var kb = keyOf(b.element);
+    var cmp = 0;
+
+    switch (sort) {
+      case 'year_newest':
+        cmp = kb.year - ka.year;
+        break;
+      case 'year_oldest':
+        cmp = ka.year - kb.year;
+        break;
+      case 'rarest':
+        cmp = ka.lmxCount - kb.lmxCount;
+        break;
+      case 'most_common':
+        cmp = kb.lmxCount - ka.lmxCount;
+        break;
+      case 'manufacturer':
+        cmp = ka.manufacturer.localeCompare(kb.manufacturer);
+        break;
+      case 'not_in_life_list':
+        var aIn = (lifeListMachineIds && lifeListMachineIds.has(ka.id)) ? 1 : 0;
+        var bIn = (lifeListMachineIds && lifeListMachineIds.has(kb.id)) ? 1 : 0;
+        cmp = aIn - bIn;
+        break;
+      default:
+        cmp = 0;
+    }
+
+    return cmp !== 0 ? cmp : ka.name.localeCompare(kb.name);
+  };
 }
 
 $(function () {
   $('#machine_sort_modal').on('click', '.machine_sort_btn', function () {
-    currentMachineSort = $(this).data('sort');
+    var sort = $(this).data('sort');
     hideMachineSortModal();
-    if (currentMachineSortLocationId) {
-      $('#show_machines_location_' + currentMachineSortLocationId).load('/locations/' + currentMachineSortLocationId + '/render_machines?' + machineSortQueryParam());
+    if (machineSortModalConfig && machineSortModalConfig.onSelect) {
+      machineSortModalConfig.onSelect(sort);
     }
   });
 });

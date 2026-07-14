@@ -35,7 +35,11 @@ describe LocationMachineXrefsController do
         sleep 1
 
         find("#add_machine_location_banner_#{location.id}").click
-        select(@machine_to_add.name, from: 'add_machine_by_id_11')
+        sleep 0.3
+        page.find('#add_machine_by_id_11 + .select2-container .select2-selection').click
+        page.find('.select2-search__field').set(@machine_to_add.name)
+        sleep 0.3
+        page.find('.select2-results__option', text: @machine_to_add.name).click
         click_on 'add'
 
         sleep 1
@@ -79,7 +83,11 @@ describe LocationMachineXrefsController do
       expect(location.reload.machine_count).to eq(0)
 
       find("#add_machine_location_banner_#{location.id}").click
-      fill_in('add_machine_by_name_11', with: @machine_to_add.name)
+      sleep 0.3
+      page.find('#add_machine_by_id_11 + .select2-container .select2-selection').click
+      page.find('.select2-search__field').set(@machine_to_add.name)
+      sleep 0.3
+      page.find('.select2-results__option', text: @machine_to_add.name).click
       click_on 'add'
 
       sleep 1
@@ -113,7 +121,11 @@ describe LocationMachineXrefsController do
       sleep 1
 
       find("#add_machine_location_banner_#{location.id}").click
-      fill_in('add_machine_by_name_11', with: @machine_to_add.name)
+      sleep 0.3
+      page.find('#add_machine_by_id_11 + .select2-container .select2-selection').click
+      page.find('.select2-search__field').set(@machine_to_add.name)
+      sleep 0.3
+      page.find('.select2-results__option', text: @machine_to_add.name).click
       click_on 'add'
 
       sleep 1
@@ -147,7 +159,11 @@ describe LocationMachineXrefsController do
       lmx.save
 
       find("#add_machine_location_banner_#{location.id}").click
-      fill_in('add_machine_by_name_11', with: @machine_to_add.name)
+      sleep 0.3
+      page.find('#add_machine_by_id_11 + .select2-container .select2-selection').click
+      page.find('.select2-search__field').set(@machine_to_add.name)
+      sleep 0.3
+      page.find('.select2-results__option', text: @machine_to_add.name).click
       click_on 'add'
 
       sleep 1
@@ -185,39 +201,11 @@ describe LocationMachineXrefsController do
       expect(page.body).to have_content('9,999')
     end
 
-    it 'Should add by name of existing machine' do
+    it 'Should show a message when submitting without selecting a machine' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       find("#add_machine_location_banner_#{@location.id}").click
-      fill_in('add_machine_by_name_1', with: @machine_to_add.name)
-      click_on 'add'
-
-      sleep 1
-
-      expect(@location.reload.machine_count).to eq(1)
-      expect(@location.machines.first).to eq(@machine_to_add)
-
-      expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
-
-      visit "/#{@region.name}/?by_location_id=#{@location.id}"
-
-      find("#add_machine_location_banner_#{@location.id}").click
-      fill_in('add_machine_by_name_1', with: @machine_to_add.name.downcase)
-      click_on 'add'
-
-      sleep 1
-
-      expect(@location.machine_count).to eq(1)
-      expect(@location.machines.first).to eq(@machine_to_add)
-
-      expect(find("#show_machines_location_#{@location.id}")).to have_content(@machine_to_add.name)
-    end
-
-    it 'Should not add by name of new machine' do
-      visit "/#{@region.name}/?by_location_id=#{@location.id}"
-
-      find("#add_machine_location_banner_#{@location.id}").click
-      fill_in('add_machine_by_name_1', with: 'New Machine Name')
+      sleep 0.3
       page.accept_alert 'Please choose a machine from the list. If the machine is not in the list, it is likely a game (e.g., a non-pinball game) that we do not include on Pinball Map. If you think the list is missing a pinball machine, please contact us.' do
         click_on 'add'
       end
@@ -225,8 +213,6 @@ describe LocationMachineXrefsController do
       sleep 1
 
       expect(@location.machine_count).to eq(0)
-
-      expect(find("#show_machines_location_#{@location.id}")).to_not have_content('New Machine Name')
     end
 
     it 'should display year/manufacturer where appropriate in dropdown' do
@@ -239,7 +225,7 @@ describe LocationMachineXrefsController do
 
       find("#add_machine_location_banner_#{@location.id}").click
 
-      expect(page).to have_select('add_machine_by_id_1', with_options: [
+      expect(page).to have_select('add_machine_by_id_1', visible: false, with_options: [
         'Wizard of Oz',
         'X-Men (stern)',
         'Dirty Harry (2001)',
@@ -702,15 +688,15 @@ describe LocationMachineXrefsController do
 
       sleep(1)
 
-      fill_in('add_machine_by_name_1', with: 'sassy')
+      page.find('#add_machine_by_id_1 + .select2-container .select2-selection').click
+      page.find('.select2-search__field').set('sassy')
 
-      page.execute_script %{ $('#add_machine_by_name_1').trigger('focus') }
-      page.execute_script %{ $('#add_machine_by_name_1').trigger('keydown') }
+      sleep 0.5
 
-      expect(page).to have_xpath('//div[contains(text(), "Sassy Madness (Bally, 1980)")]')
-      expect(page).to have_xpath('//div[contains(text(), "Sassy Madness (Bally, 2010)")]')
+      expect(page).to have_css('.select2-results__option', text: 'Sassy Madness (Bally, 1980)')
+      expect(page).to have_css('.select2-results__option', text: 'Sassy Madness (Bally, 2010)')
 
-      find(:xpath, '//div[contains(text(), "Sassy Madness (Bally, 2010)")]').click
+      page.find('.select2-results__option', text: 'Sassy Madness (Bally, 2010)').click
 
       click_on 'add'
 
@@ -733,14 +719,14 @@ describe LocationMachineXrefsController do
 
       sleep(1)
 
-      fill_in('add_machine_by_name_1', with: 'sassy')
+      page.find('#add_machine_by_id_1 + .select2-container .select2-selection').click
+      page.find('.select2-search__field').set('sassy')
 
-      page.execute_script %{ $('#add_machine_by_name_1').trigger('focus') }
-      page.execute_script %{ $('#add_machine_by_name_1').trigger('keydown') }
+      sleep 0.5
 
-      expect(page).to have_xpath('//div[contains(text(), "Sassy From The Black Lagoon")]')
-      expect(page).to have_xpath('//div[contains(text(), "Sassy Madness")]')
-      expect(page).to_not have_xpath('//div[contains(text(), "Cleo Game")]')
+      expect(page).to have_css('.select2-results__option', text: 'Sassy From The Black Lagoon')
+      expect(page).to have_css('.select2-results__option', text: 'Sassy Madness')
+      expect(page).to_not have_css('.select2-results__option', text: 'Cleo Game')
     end
 
     it 'searches by machine name from input' do

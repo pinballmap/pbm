@@ -36,7 +36,10 @@
               %div.font18.bold.center.brightpurple.mb_8
                 Machine Filters
               .map_input_machine
-                .input_title Machine
+                .input_title_row
+                  .input_title Machine
+                  %div.machine_sort_trigger_wrapper
+                    =image_tag('icons/sort-variant.svg', :alt => 'Sort machines', :class => 'machine_sort_icon', :id => 'map_machine_sort_icon')
                 %select.by_machine_select{ multiple: "multiple", id: "by_machine_select" }
                   - @selected_machines.each do |m|
                     %option{ value: m.id, selected: "selected" }= m.name_and_year
@@ -191,6 +194,7 @@
   var singleVersionActive = false;
   var icVersionActive = false;
   var savedModeActive = false;
+  var currentMapMachineSort = 'alphabetical';
   var currentUserId = #{current_user ? current_user.id : 'null'};
   favedLocationIds = #{raw @faved_location_ids.to_json};
 
@@ -297,7 +301,7 @@
     $('#by_machine_select').select2({
       placeholder: 'Select machines...',
       width: '100%',
-      closeOnSelect: true,
+      closeOnSelect: false,
       minimumInputLength: 0,
       ajax: {
         url: '/machines/autocomplete',
@@ -305,7 +309,7 @@
         delay: 350,
         cache: true,
         data: function (params) {
-          var d = { term: params.term };
+          var d = { term: params.term, sort: currentMapMachineSort };
           if (emModeActive) d.machine_type = ['em', 'me'];
           var mfr = $('#by_manufacturer').val();
           if (mfr && mfr.length > 0) d.manufacturer = mfr;
@@ -335,6 +339,16 @@
     $('#by_machine_select').on('select2:unselect', function() {
       updateMachineSingleHide();
       updateClearFiltersButton();
+    });
+
+    $('#map_machine_sort_icon').on('click', function () {
+      openMachineSortModal({
+        allowedSorts: ['alphabetical', 'year_newest', 'year_oldest', 'rarest', 'most_common', 'manufacturer', 'not_in_life_list'],
+        currentSort: currentMapMachineSort,
+        onSelect: function (sort) {
+          currentMapMachineSort = sort;
+        }
+      });
     });
 
     $('.by_type_id').select2({

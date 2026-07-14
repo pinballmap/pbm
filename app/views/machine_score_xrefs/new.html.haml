@@ -9,7 +9,10 @@
           = form_tag machine_score_xrefs_path, method: :post, id: 'add_score_form' do
             %ul
               %li
-                %label{for: 'machine_id'} Machine:
+                .input_title_row
+                  %label{for: 'machine_id'} Machine:
+                  %div.machine_sort_trigger_wrapper
+                    =image_tag('icons/sort-variant.svg', :alt => 'Sort machines', :class => 'machine_sort_icon', :id => 'score_machine_sort_icon')
                 = select_tag 'machine_id', options_for_select(@all_machines), id: 'score_machine_select', style: 'width: 100%;', include_blank: true
               %li
                 %label{for: 'score'} Score:
@@ -22,9 +25,25 @@
         %p.center== To add a high score you first need to #{link_to 'login', new_user_session_path, class: 'red bold'}. Thank you!
 
 :javascript
+  var currentScoreMachineSort = 'alphabetical';
+  var scoreLifeListMachineIds = new Set(#{(@life_list_machine_ids || []).to_json});
+
   $(document).ready(function() {
     $('#score_machine_select').select2({
       placeholder: 'Search for a machine...',
+      sorter: function (data) {
+        return data.slice().sort(machineSortComparator(currentScoreMachineSort, scoreLifeListMachineIds));
+      }
+    });
+
+    $('#score_machine_sort_icon').on('click', function () {
+      openMachineSortModal({
+        allowedSorts: ['alphabetical', 'year_newest', 'year_oldest', 'rarest', 'most_common', 'manufacturer', 'not_in_life_list'],
+        currentSort: currentScoreMachineSort,
+        onSelect: function (sort) {
+          currentScoreMachineSort = sort;
+        }
+      });
     });
 
     $('#score_machine_select').on('change', function() {

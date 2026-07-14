@@ -103,7 +103,14 @@
 			showRandomMachineModal(#{l.id});
 		});
 		$(document).off('click', '#machine_sort_icon_#{l.id}').on('click', '#machine_sort_icon_#{l.id}', function () {
-			showMachineSortModal(#{l.id});
+			openMachineSortModal({
+				allowedSorts: ['alphabetical', 'year_newest', 'year_oldest', 'rarest', 'most_common', 'manufacturer', 'not_in_life_list'],
+				currentSort: currentMachineSort,
+				onSelect: function (sort) {
+					currentMachineSort = sort;
+					$('#show_machines_location_#{l.id}').load('/locations/#{l.id}/render_machines?' + machineSortQueryParam());
+				}
+			});
 		});
 
 		if ( $("#thumbs_location_#{l.id}").prop('scrollHeight') > $("#thumbs_location_#{l.id}").height() ) {

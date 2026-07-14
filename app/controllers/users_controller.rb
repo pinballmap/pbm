@@ -25,7 +25,7 @@ class UsersController < ApplicationController
     @life_list_stats = @user.profile_life_list_stats
     @edited_locations = @user.profile_list_of_edited_locations
     if current_user&.id == @user.id
-      @all_machines = Machine.order(:name).select(:id, :name, :year, :manufacturer).map { |m| [ m.name_and_year, m.id ] }
+      @all_machines = Machine.select_option_data
       @user_machine_ids = @user.user_machine_xrefs.pluck(:machine_id)
     end
   end
