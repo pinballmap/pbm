@@ -72,8 +72,8 @@
               .map_input_limit{:style => "margin-bottom: 10px"}
                 .input_title Machine year
                 .year_range_selects
-                  = select_tag "by_machine_year_gte", options_for_select([['From', '']] + @machine_years.map { |y| [y.to_s, y] }, params[:by_machine_year_gte])
-                  = select_tag "by_machine_year_lte", options_for_select([['To', '']] + @machine_years.map { |y| [y.to_s, y] }, params[:by_machine_year_lte])
+                  = select_tag "by_machine_year_gte", options_for_select([['From', '']] + (params[:by_machine_year_gte].present? ? [[params[:by_machine_year_gte], params[:by_machine_year_gte]]] : []), params[:by_machine_year_gte])
+                  = select_tag "by_machine_year_lte", options_for_select([['To', '']] + (params[:by_machine_year_lte].present? ? [[params[:by_machine_year_lte], params[:by_machine_year_lte]]] : []), params[:by_machine_year_lte])
             .filter_modal_section.mt_10
               %div.font18.bold.center.brightpurple
                 Location Filters
@@ -197,6 +197,26 @@
   var currentMapMachineSort = 'alphabetical';
   var currentUserId = #{current_user ? current_user.id : 'null'};
   favedLocationIds = #{raw @faved_location_ids.to_json};
+  var machineYearsData = null;
+
+  function populateMachineYearSelects() {
+    if (machineYearsData !== null) { return; }
+    $.getJSON('/machines/years', function (years) {
+      machineYearsData = years;
+      var gteVal = $('#by_machine_year_gte').val();
+      var lteVal = $('#by_machine_year_lte').val();
+      var gteOptions = '<option value="">From</option>';
+      var lteOptions = '<option value="">To</option>';
+      years.forEach(function (y) {
+        gteOptions += '<option value="' + y + '">' + y + '</option>';
+      });
+      years.slice().reverse().forEach(function (y) {
+        lteOptions += '<option value="' + y + '">' + y + '</option>';
+      });
+      $('#by_machine_year_gte').html(gteOptions).val(gteVal);
+      $('#by_machine_year_lte').html(lteOptions).val(lteVal);
+    });
+  }
 
   (function() {
     var vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
@@ -344,6 +364,8 @@
       updateMachineSingleHide();
       updateClearFiltersButton();
     });
+
+    $('#open_filter_modal_button').on('click', populateMachineYearSelects);
 
     $('#map_machine_sort_icon').on('click', function () {
       openMachineSortModal({

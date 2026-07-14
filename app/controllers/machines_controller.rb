@@ -46,4 +46,11 @@ class MachinesController < ApplicationController
     end
     render json: list.map { |m| { id: m, text: m } }
   end
+
+  def years
+    years = Rails.cache.fetch("machine_years", expires_in: 1.day) do
+      Machine.distinct.pluck(:year).compact.sort
+    end
+    render json: years
+  end
 end

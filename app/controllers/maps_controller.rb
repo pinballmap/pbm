@@ -15,8 +15,6 @@ class MapsController < ApplicationController
       @title_params[:title_meta] = "#{loc.name} on Pinball Map! " + loc.full_street_address + machine_length.to_s + machine_list.to_s
     end
 
-    @machine_years = Rails.cache.fetch("machine_years", expires_in: 1.day) { Machine.distinct.pluck(:year).compact.sort }
-
     selected_machine_ids = (Array(params[:by_machine_id]) + Array(params[:by_machine_single_id]) + Array(params[:by_machine_id_ic]) + Array(params[:by_machine_single_id_ic])).map(&:to_i).uniq
     @selected_machines = Machine.where(id: selected_machine_ids)
 

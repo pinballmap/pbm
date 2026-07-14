@@ -176,6 +176,7 @@ Rails.application.routes.draw do
     collection do
       get :autocomplete
       get :manufacturers
+      get :years
     end
   end
 
