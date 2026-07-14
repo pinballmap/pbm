@@ -16,7 +16,7 @@ class MachinesController < ApplicationController
       sort = Machine::SORT_OPTIONS.include?(params[:sort]) ? params[:sort] : "alphabetical"
       life_list_machine_ids = current_user ? UserMachineXref.where(user_id: current_user.id, machine_id: results.map(&:id)).pluck(:machine_id).to_set : Set.new
       results = results.sort_by { |m| Machine.sort_key(m, sort, life_list_machine_ids) }
-                       .map { |m| { label: m.name_and_year, value: m.name_and_year, id: m.id, group_id: m.machine_group_id, ic_eligible: m.ic_eligible } }
+                       .map { |m| { label: m.name_and_year, value: m.name_and_year, id: m.id, group_id: m.machine_group_id, ic_eligible: m.ic_eligible, in_life_list: life_list_machine_ids.include?(m.id) } }
     else
       sql = <<-SQL
       select distinct m.name, m."year", m.id, m.machine_group_id, m.manufacturer from locations l

@@ -31,6 +31,11 @@
   $(document).ready(function() {
     $('#score_machine_select').select2({
       placeholder: 'Search for a machine...',
+      allowClear: true,
+      templateResult: function (state) {
+        if (!state.id) { return state.text; }
+        return renderMachineOptionWithLifeListIcon(state.text, scoreLifeListMachineIds.has(parseInt(state.id, 10)));
+      },
       sorter: function (data) {
         return data.slice().sort(machineSortComparator(currentScoreMachineSort, scoreLifeListMachineIds));
       }

@@ -322,10 +322,14 @@
         processResults: function (data) {
           return {
             results: data.map(function (m) {
-              return { id: m.id, text: m.value, group_id: m.group_id, ic_eligible: m.ic_eligible };
+              return { id: m.id, text: m.value, group_id: m.group_id, ic_eligible: m.ic_eligible, in_life_list: m.in_life_list };
             })
           };
         }
+      },
+      templateResult: function (state) {
+        if (!state.id) { return state.text; }
+        return renderMachineOptionWithLifeListIcon(state.text, !!state.in_life_list);
       }
     });
 

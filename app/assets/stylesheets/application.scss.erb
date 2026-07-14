@@ -814,7 +814,7 @@ p.alert {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 150;
+  z-index: 2000;
 }
 
 #page.submitted #flash-message #flash_alert {
@@ -3785,8 +3785,26 @@ gmp-place-autocomplete {
   color: var(--black) !important;
 }
 
-.already_on_list {
-  color: var(--medgrey) !important;
+.machine_option_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.machine_option_name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.life_list_toast_icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-left: 8px;
+  cursor: pointer;
 }
 
 .map_input_machine .select2-container .select2-selection--multiple,

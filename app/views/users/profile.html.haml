@@ -200,10 +200,7 @@
   });
   function formatMachineOption (state) {
     if (!state.id) { return state.text; }
-    if (lifeListMachineIds.has(parseInt(state.id, 10))) {
-      return $('<span class="already_on_list">&#10003; ' + state.text + ' <em>(already on your list)</em></span>');
-    }
-    return state.text;
+    return renderMachineOptionWithLifeListIcon(state.text, lifeListMachineIds.has(parseInt(state.id, 10)));
   }
   function formatOptions (state) {
     if (!state.id) { return state.text; }

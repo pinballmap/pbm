@@ -167,9 +167,13 @@ describe UsersController do
       page.find('#life_list_machine_select + .select2-container .select2-selection').click
       page.find('#life_list_machine_select + .select2-container .select2-search__field').set('Machine')
 
-      expect(page).to have_css('.select2-results__option .already_on_list', text: /Machine On List.*already on your list/)
-      expect(page).to have_css('.select2-results__option', text: 'Machine Not On List')
-      expect(page).to_not have_css('.already_on_list', text: /Machine Not On List/)
+      on_list_option = page.find('.select2-results__option', text: 'Machine On List')
+      expect(on_list_option).to have_css('.life_list_toast_icon')
+      expect(on_list_option['aria-disabled']).to eq('true')
+
+      not_on_list_option = page.find('.select2-results__option', text: 'Machine Not On List')
+      expect(not_on_list_option).to have_no_css('.life_list_toast_icon')
+      expect(not_on_list_option['aria-disabled']).to_not eq('true')
     end
 
     it 'Only lets you edit your own account' do

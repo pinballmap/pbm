@@ -719,6 +719,41 @@ function machineSortComparator(sort, lifeListMachineIds) {
   };
 }
 
+var lifeListClipboardIconSrc = "<%= asset_path('icons/clipboard-list-outline.svg') %>";
+
+// Wraps a select2 option's text with a right-aligned clipboard icon when the
+// machine is already in the user's life list; used across profile, add-score,
+// and the map machine filter templateResult functions.
+function renderMachineOptionWithLifeListIcon(text, inLifeList) {
+  if (!inLifeList) { return text; }
+  return $(
+    '<span class="machine_option_row">' +
+      '<span class="machine_option_name">' + text + '</span>' +
+      '<img src="' + lifeListClipboardIconSrc + '" class="life_list_toast_icon" alt="Machine in your Life List" />' +
+    '</span>'
+  );
+}
+
+// Clicking the life-list icon inside a select2 dropdown option should show a
+// toast, not select the row. Select2 selects on 'mouseup' (bubble phase), so a
+// capture-phase listener here runs first and can stop it from reaching select2.
+// Single-select select2 instances also blur their search input on 'mousedown'
+// (before 'mouseup' fires), which closes the dropdown early - block that too.
+document.addEventListener('mousedown', function (e) {
+  if (e.target.closest && e.target.closest('.life_list_toast_icon')) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+}, true);
+
+document.addEventListener('mouseup', function (e) {
+  if (e.target.closest && e.target.closest('.life_list_toast_icon')) {
+    e.stopPropagation();
+    e.preventDefault();
+    show_ajax_message('Machine in your Life List', 'notice');
+  }
+}, true);
+
 $(function () {
   $('#machine_sort_modal').on('click', '.machine_sort_btn', function () {
     var sort = $(this).data('sort');

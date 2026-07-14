@@ -60,14 +60,16 @@ class Machine < ApplicationRecord
 
   # Builds [text, value, html_attrs] triples for options_for_select, with data
   # attributes a select2 `sorter` can read to re-sort client-side without a round trip.
-  def self.select_option_data(selected_ids = [])
+  def self.select_option_data(selected_ids = [], disabled_ids = [])
     selected_ids = Array(selected_ids).map(&:to_s)
+    disabled_ids = Array(disabled_ids).map(&:to_s)
     Machine.all.sort_by(&:massaged_name).map do |m|
       [
         m.name_and_year,
         m.id,
         {
           selected: selected_ids.include?(m.id.to_s),
+          disabled: disabled_ids.include?(m.id.to_s),
           data: {
             year: m.year,
             manufacturer: m.manufacturer,
