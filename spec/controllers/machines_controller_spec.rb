@@ -75,4 +75,22 @@ describe MachinesController, type: :controller do
       expect(machine_names_from_response).to eq([ 'Apple Delight (Acme, 2010)', 'The Beast (Midway, 2000)', 'Zaphod (Zeta Corp, 1990)' ])
     end
   end
+
+  describe '#opdb_img' do
+    it 'returns the opdb_img and ic_eligible for a machine' do
+      machine = FactoryBot.create(:machine, opdb_img: '/public/favicon.ico', ic_eligible: true)
+
+      get 'opdb_img', params: { id: machine.id }
+
+      expect(JSON.parse(response.body)).to eq('opdb_img' => '/public/favicon.ico', 'ic_eligible' => true)
+    end
+
+    it 'returns nil opdb_img and false ic_eligible when the machine has neither' do
+      machine = FactoryBot.create(:machine, opdb_img: nil, ic_eligible: false)
+
+      get 'opdb_img', params: { id: machine.id }
+
+      expect(JSON.parse(response.body)).to eq('opdb_img' => nil, 'ic_eligible' => false)
+    end
+  end
 end

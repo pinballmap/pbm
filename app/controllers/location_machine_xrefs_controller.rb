@@ -14,12 +14,15 @@ class LocationMachineXrefsController < ApplicationController
     end
 
     machine = Machine.find(params["add_machine_by_id_#{location.id}"])
+    ic_enabled = machine.ic_eligible ? ic_enabled_param(location.id) : nil
+    condition = params["machine_condition_#{location.id}"].presence
 
     lmx = LocationMachineXref.unscoped.where([ "location_id = ? and machine_id = ?", location.id, machine.id ]).where.not(deleted_at: nil).where(deleted_at: 7.days.ago..Time.current).order(updated_at: :desc).first
 
     if lmx
       lmx.deleted_at = nil
       lmx.user_id = user.id
+      lmx.ic_enabled = ic_enabled unless ic_enabled.nil?
       lmx.save
       Location.increment_counter(:machine_count, location.id)
       lmx.create_user_submission
@@ -29,9 +32,17 @@ class LocationMachineXrefsController < ApplicationController
       location.date_last_updated = Date.today
       location.last_updated_by_user_id = user.id
       location.save(validate: false)
+
+      lmx.create_ic_user_submission(user) unless ic_enabled.nil?
+      apply_machine_condition(lmx, condition, user)
     else
-      LocationMachineXref.where([ "location_id = ? and machine_id = ?", location.id, machine.id ]).where(deleted_at: nil).first ||
-        LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user.id)
+      existing = LocationMachineXref.where([ "location_id = ? and machine_id = ?", location.id, machine.id ]).where(deleted_at: nil).first
+
+      unless existing
+        new_lmx = LocationMachineXref.create(location_id: location.id, machine_id: machine.id, user_id: user.id, ic_enabled: ic_enabled)
+        new_lmx.create_ic_user_submission(user) unless ic_enabled.nil?
+        apply_machine_condition(new_lmx, condition, user)
+      end
     end
   end
 
@@ -166,6 +177,12 @@ class LocationMachineXrefsController < ApplicationController
 
   def ic_toggle
     lmx = LocationMachineXref.find(params[:id])
+
+    unless lmx.machine.ic_eligible
+      render nothing: true
+      return
+    end
+
     user = current_user
     lmx.toggle!(:ic_enabled)
     render partial: "location_machine_xrefs/ic_button", locals: { lmx: lmx }
@@ -180,6 +197,19 @@ class LocationMachineXrefsController < ApplicationController
   end
 
   private
+
+  def ic_enabled_param(location_id)
+    case params["ic_enabled_#{location_id}"]
+    when "true" then true
+    when "false" then false
+    end
+  end
+
+  def apply_machine_condition(lmx, condition, user)
+    return if condition.blank? || condition.match?(/<a href/)
+
+    lmx.update_condition(condition, user_id: user.id)
+  end
 
   def location_machine_xref_params
     params.require(:location_machine_xref).permit(:machine_id, :location_id, :ic_enabled)

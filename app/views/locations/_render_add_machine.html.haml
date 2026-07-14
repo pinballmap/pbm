@@ -6,6 +6,17 @@
     = select_tag "add_machine_by_id_#{l.id}", options_for_select(['']) + options_for_select(machine_select_options(params["add_machine_by_id_#{l.id}"])), :class => 'lookup_search_select'
     %div.machine_sort_trigger_wrapper
       =image_tag('icons/sort-variant.svg', :alt => 'Sort machines', :class => 'machine_sort_icon', :id => "add_machine_sort_icon_#{l.id}")
+  %div{:id => "add_machine_backglass_preview_#{l.id}", :class => 'add_machine_backglass_preview', :style => 'display: none;'}
+    %img{:alt => 'backglass image', :class => 'backglass_img', :id => "add_machine_backglass_img_#{l.id}"}
+  = text_area_tag "machine_condition_#{l.id}", nil, placeholder: 'You can also include a machine comment...', class: 'add_machine_condition_input', id: "add_machine_condition_#{l.id}", rows: 3, style: 'display: none;'
+  %div{:id => "add_machine_ic_prompt_#{l.id}", :class => 'add_machine_ic_prompt', :style => 'display: none;'}
+    %span.add_machine_ic_question Does this machine have Stern Insider Connected enabled?
+    %label
+      = radio_button_tag "ic_enabled_#{l.id}", 'true', false, id: "add_machine_ic_yes_#{l.id}"
+      Yes
+    %label
+      = radio_button_tag "ic_enabled_#{l.id}", 'false', false, id: "add_machine_ic_no_#{l.id}"
+      No
   = submit_tag 'Add', :id => 'add', :class => 'add_machine_submit'
 
 :javascript
@@ -29,6 +40,34 @@
         onSelect: function (sort) {
           currentAddMachineSort_#{l.id} = sort;
         }
+      });
+    });
+
+    $('#add_machine_by_id_#{l.id}').on('change', function () {
+      var machineId = $(this).val();
+
+      $('input[name="ic_enabled_#{l.id}"]').prop('checked', false);
+
+      if (!machineId) {
+        $('#add_machine_backglass_preview_#{l.id}').hide();
+        $('#add_machine_backglass_img_#{l.id}').attr('src', '');
+        $('#add_machine_condition_#{l.id}').hide().val('');
+        $('#add_machine_ic_prompt_#{l.id}').hide();
+        return;
+      }
+
+      $('#add_machine_condition_#{l.id}').show();
+
+      $.getJSON('/machines/' + machineId + '/opdb_img', function (data) {
+        if (data.opdb_img) {
+          $('#add_machine_backglass_img_#{l.id}').attr('src', data.opdb_img);
+          $('#add_machine_backglass_preview_#{l.id}').show();
+        } else {
+          $('#add_machine_backglass_preview_#{l.id}').hide();
+          $('#add_machine_backglass_img_#{l.id}').attr('src', '');
+        }
+
+        $('#add_machine_ic_prompt_#{l.id}').toggle(!!data.ic_eligible);
       });
     });
   });

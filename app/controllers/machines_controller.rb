@@ -1,7 +1,7 @@
 class MachinesController < ApplicationController
   def opdb_img
-    machine = Machine.select(:opdb_img).find(params[:id])
-    render json: { opdb_img: machine.opdb_img.presence }
+    machine = Machine.select(:opdb_img, :ic_eligible).find(params[:id])
+    render json: { opdb_img: machine.opdb_img.presence, ic_eligible: machine.ic_eligible }
   end
 
   def autocomplete

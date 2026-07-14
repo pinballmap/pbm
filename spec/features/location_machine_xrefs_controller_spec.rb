@@ -232,6 +232,79 @@ describe LocationMachineXrefsController do
         'Fireball (bally, 2000)'
       ])
     end
+
+    def select_machine_to_add(location_id, machine)
+      find("#add_machine_location_banner_#{location_id}").click
+      sleep 0.3
+      page.find("#add_machine_by_id_#{location_id} + .select2-container .select2-selection").click
+      page.find('.select2-search__field').set(machine.name)
+      sleep 0.3
+      page.find('.select2-results__option', text: machine.name).click
+      sleep 0.5
+    end
+
+    it 'shows the backglass image after selecting a machine with an opdb_img' do
+      machine = FactoryBot.create(:machine, name: 'Twilight Zone', opdb_img: '/public/favicon.ico')
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+      select_machine_to_add(@location.id, machine)
+
+      expect(page).to have_css("#add_machine_backglass_preview_#{@location.id}", visible: :visible)
+      expect(find("#add_machine_backglass_img_#{@location.id}", visible: :all)[:src]).to include('favicon.ico')
+    end
+
+    it 'does not show the backglass image for a machine with no opdb_img' do
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+      select_machine_to_add(@location.id, @machine_to_add)
+
+      expect(page).to_not have_css("#add_machine_backglass_preview_#{@location.id}", visible: :visible)
+    end
+
+    it 'shows the IC-eligible prompt after selecting an ic_eligible machine' do
+      machine = FactoryBot.create(:machine, name: 'Stern IC Machine', ic_eligible: true)
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+      select_machine_to_add(@location.id, machine)
+
+      expect(page).to have_css("#add_machine_ic_prompt_#{@location.id}", visible: :visible)
+      expect(page).to have_content('Does this machine have Stern Insider Connected enabled?')
+    end
+
+    it 'does not show the IC-eligible prompt after selecting a non ic_eligible machine' do
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+      select_machine_to_add(@location.id, @machine_to_add)
+
+      expect(page).to_not have_css("#add_machine_ic_prompt_#{@location.id}", visible: :visible)
+    end
+
+    it 'shows the condition input after selecting a machine' do
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+      select_machine_to_add(@location.id, @machine_to_add)
+
+      expect(page).to have_css("#add_machine_condition_#{@location.id}", visible: :visible)
+    end
+
+    it 'creates a machine_condition and all three user_submissions when ic status and a condition are filled out via the UI' do
+      machine = FactoryBot.create(:machine, name: 'Stern IC Machine', ic_eligible: true)
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+      select_machine_to_add(@location.id, machine)
+
+      choose "add_machine_ic_yes_#{@location.id}"
+      fill_in "add_machine_condition_#{@location.id}", with: 'Great shape'
+      click_on 'add'
+
+      sleep 1
+
+      lmx = LocationMachineXref.find_by(location_id: @location.id, machine_id: machine.id)
+      expect(lmx.ic_enabled).to eq(true)
+      expect(lmx.machine_conditions.first.comment).to eq('Great shape')
+
+      expect(UserSubmission.count).to eq(3)
+      expect(UserSubmission.where(submission_type: UserSubmission::NEW_LMX_TYPE).count).to eq(1)
+      expect(UserSubmission.where(submission_type: UserSubmission::IC_TOGGLE_TYPE).count).to eq(1)
+      expect(UserSubmission.where(submission_type: UserSubmission::NEW_CONDITION_TYPE).count).to eq(1)
+    end
   end
 
   describe 'feeds', type: :feature, js: true do
