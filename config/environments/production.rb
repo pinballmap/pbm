@@ -42,14 +42,10 @@ Rails.application.configure do
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
   config.colorize_logging = false
 
-  config.rails_semantic_logger.add_file_appender = false
-  config.rails_semantic_logger.format = :color
   config.rails_semantic_logger.quiet_assets = true
-  config.semantic_logger.add_appender(
-    io: STDOUT,
-    level: config.log_level,
-    formatter: config.rails_semantic_logger.format
-  )
+  config.rails_semantic_logger.appenders do |appenders|
+    appenders.add(io: STDOUT, level: config.log_level, formatter: :color)
+  end
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id, lambda { |request| request.ip }, lambda { |request| request.headers['AppVersion'] }, lambda { |request| request.user_agent } ]
