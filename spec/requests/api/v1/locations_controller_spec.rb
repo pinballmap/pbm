@@ -993,6 +993,40 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to include('pagy')
     end
 
+    it 'forces pagination when the bounding box exceeds the mileage cap and no limit is given, but leaves no_details=2 unpaginated' do
+      FactoryBot.create(:location, name: 'World_Portland', lat: 45.526112069408704, lon: -122.60884314086321)
+      FactoryBot.create(:location, name: 'World_Sydney', lat: -33.868820, lon: 151.209290)
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: -85, swlon: -179, nelat: 85, nelon: 179 }
+
+      expect(response.body).to include('pagy')
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body['locations'].size).to eq(3) # World_Portland, World_Sydney, and the Satchmo location from before(:each)
+      expect(response.body).to include('World_Portland')
+      expect(response.body).to include('World_Sydney')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: -85, swlon: -179, nelat: 85, nelon: 179, no_details: 2 }
+
+      expect(response.body).to_not include('pagy')
+      expect(response.body).to include('World_Portland')
+      expect(response.body).to include('World_Sydney')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427 }
+
+      expect(response.body).to_not include('pagy')
+    end
+
+    it 'truncates results to the forced limit when the bounding box exceeds the mileage cap and no limit is given' do
+      forced_limit = Api::V1::LocationsController::FORCED_LIMIT_FOR_OVERSIZED_BBOX
+      FactoryBot.create_list(:location, forced_limit + 5, region: @region)
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: -85, swlon: -179, nelat: 85, nelon: 179 }
+
+      parsed_body = JSON.parse(response.body)
+      expect(parsed_body['locations'].size).to eq(forced_limit)
+      expect(parsed_body['pagy']['count']).to eq(forced_limit + 6) # +5 created here, +1 Satchmo from before(:each)
+    end
+
     it 'orders results when order_by param is present' do
       location_01 = FactoryBot.create(:location, name: 'A_Location', id: 6000, lat: 45.526112069408704, lon: -122.60884314086321)
       location_02 = FactoryBot.create(:location, name: 'B_Location', id: 7000, lat: 45.53007190362438, lon: -122.60795065851514)

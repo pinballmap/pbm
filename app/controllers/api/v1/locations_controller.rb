@@ -13,6 +13,8 @@ module Api
       rate_limit to: 30, within: 10.minutes, only: [ :suggest, :update ], name: "api_locations_suggest_update"
 
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION = 50
+      MAX_BBOX_DIAGONAL_MILES_FOR_UNLIMITED_RESULTS = 500
+      FORCED_LIMIT_FOR_OVERSIZED_BBOX = 50
 
       api :POST, "/api/v1/locations/suggest.json", "Suggest a new location to add to the map"
       description "This doesn't actually create a new location, it just sends location information to region admins. Please send a region or lat/lon combo to get suggestions to the right people."
@@ -211,7 +213,7 @@ module Api
       end
 
       api :GET, "/api/v1/locations/within_bounding_box(.:format)", "Returns locations within transmitted bounding box"
-      description "This sends locations within the sw_corner and ne_corner bounding box. It includes a list of machines at the location."
+      description "This sends locations within the sw_corner and ne_corner bounding box. It includes a list of machines at the location. If the bounding box diagonal exceeds #{MAX_BBOX_DIAGONAL_MILES_FOR_UNLIMITED_RESULTS} miles and no limit param and no_details != 2 is sent, results are capped at #{FORCED_LIMIT_FOR_OVERSIZED_BBOX} and pagination metadata is included in the response."
       param :swlat, String, "SW_Latitude", required: true
       param :swlon, String, "SW_Longitude", required: true
       param :nelat, String, "NE_Latitude", required: true
@@ -269,27 +271,32 @@ module Api
           return
         end
 
+        bbox_diagonal_miles = Geocoder::Calculations.distance_between([ params[:swlat].to_f, params[:swlon].to_f ], [ params[:nelat].to_f, params[:nelon].to_f ])
+        force_limit = params[:limit].blank? && params[:no_details] != "2" && bbox_diagonal_miles > MAX_BBOX_DIAGONAL_MILES_FOR_UNLIMITED_RESULTS
+        paginated = params[:limit].present? || force_limit
+        pagy_limit_override = force_limit ? { limit: FORCED_LIMIT_FOR_OVERSIZED_BBOX } : {}
+
         if params[:user_faved]
           user = User.find(params[:user_faved])
           fave_locations = UserFaveLocation.select(:location_id).where(user_id: user)
 
-          if params[:limit].blank?
-            locations_within = apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds).order(order_by).uniq
+          if paginated
+            @pagy, locations_within = pagy(apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds).order(order_by).distinct, **pagy_limit_override)
           else
-            @pagy, locations_within = pagy(apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds).order(order_by).distinct)
+            locations_within = apply_scopes(Location.where(id: fave_locations)).includes(:machines).within_bounding_box(bounds).order(order_by).uniq
           end
         elsif params[:no_details] == "2"
           locations_within = apply_scopes(Location).within_bounding_box(bounds).order(order_by).uniq
         else
-          if params[:limit].blank?
+          if !paginated
             locations_within = apply_scopes(Location).includes(:machines).within_bounding_box(bounds).order(order_by).uniq
-          elsif params[:user_lat] && params[:user_lon] && params[:order_by] == "distance"
+          elsif params[:limit].present? && params[:user_lat] && params[:user_lon] && params[:order_by] == "distance"
             @pagy, locations_within = pagy(apply_scopes(Location).includes(:machines).within_bounding_box(bounds)
               .select("locations.*, #{Geocoder::Sql.full_distance(params[:user_lat], params[:user_lon], :lat, :lon)} AS distance")
               .order("distance ASC"))
             @pagy_hash = @pagy.data_hash(data_keys: %i[count first_url previous_url next_url page pages page_url previous next from to in last last_url limit options])
           else
-            @pagy, locations_within = pagy(apply_scopes(Location).includes(:machines).within_bounding_box(bounds).order(order_by).distinct)
+            @pagy, locations_within = pagy(apply_scopes(Location).includes(:machines).within_bounding_box(bounds).order(order_by).distinct, **pagy_limit_override)
             @pagy_hash = @pagy.data_hash(data_keys: %i[count first_url previous_url next_url page pages page_url previous next from to in last last_url limit options])
           end
         end
@@ -318,10 +325,10 @@ module Api
 
         if !locations_within.empty?
           respond_to do |format|
-            if params[:limit].blank?
-              format.json { return_response(locations_within, "locations", [], includes, 200, except, nil) }
-            else
+            if paginated
               format.json { return_response(locations_within, "locations", [], includes, 200, except, true) }
+            else
+              format.json { return_response(locations_within, "locations", [], includes, 200, except, nil) }
             end
             format.geojson { render json: container_geojson.to_json }
           end
