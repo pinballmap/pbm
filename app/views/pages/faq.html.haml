@@ -59,9 +59,14 @@
       %p.question#1 
         =link_to 'Can I use Pinball Map data on my own site?', '#1', :class => "no_underline"
       %p.answer
-        You can use our public API to fetch data and use it for your app. When using Pinball Map data, 
-        %span.bold according to our data license you must include attribution and a link back to this site. 
-        If you need bulk data for a project, please get in touch. We have collaborated with many folks on their projects, from student projects to services by major pinball companies. Please do not just scrape large amounts of this site for your own arcade/pinball mapping site, with no attribution. Thousands of people have been contributing their time and effort to this site since 2008.
+        You can use
+        #{link_to 'our API', apipie_apipie_path}
+        to fetch data and use it for your app. When using Pinball Map data,
+        %span.bold according to our data license you must include attribution and a link back to this site.
+        It is against the data usage agreement to clone the site or primary functionality. Don't make a map for finding where to play using our data. Again,
+        %span.bold.red do not just scrape large amounts of this site for your own arcade/pinball mapping site. Thousands of people have been contributing their time and effort to this site since 2008, and this is the data's home.
+      %p.answer
+        If you need bulk data for a project, please get in touch. We have collaborated with many folks on their projects, from student projects to services by major pinball companies.
       %p.font20.center.bold.pbt_5.bg_lightpurple#data-management
         =link_to 'Data Management', '#data-management', :class => "no_underline brightpurple"
       %p.question#16
