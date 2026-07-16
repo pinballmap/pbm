@@ -1,6 +1,6 @@
 module Api
   module V1
-    class ZonesController < ApplicationController
+    class ZonesController < BaseController
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors

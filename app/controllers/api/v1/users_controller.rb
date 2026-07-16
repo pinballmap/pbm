@@ -1,6 +1,6 @@
 module Api
   module V1
-    class UsersController < ApplicationController
+    class UsersController < BaseController
       TLD_TYPOS = {
         "ocm" => "com", "cmo" => "com", "omc" => "com", "moc" => "com", "mco" => "com",
         "vom" => "com", "xom" => "com", "cpm" => "com", "con" => "com", "cob" => "com",
@@ -11,8 +11,8 @@ module Api
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
-      rate_limit to: 50, within: 2.minutes, only: :profile_info, name: "api_users_profile_info"
-      rate_limit to: 10, within: 1.minute, only: [ :forgot_password, :resend_confirmation, :auth_details, :destroy, :signup, :update_password, :update_email ], name: "api_users_auth_actions"
+      rate_limit to: 50, within: 2.minutes, by: :api_token_rate_limit_key, only: :profile_info, name: "api_users_profile_info"
+      rate_limit to: 10, within: 1.minute, by: :api_token_rate_limit_key, only: [ :forgot_password, :resend_confirmation, :auth_details, :destroy, :signup, :update_password, :update_email ], name: "api_users_auth_actions"
 
       api :GET, "/api/v1/users/:id/list_fave_locations.json", "Fetch list of favorite locations"
       description "Fetch list of favorite locations"

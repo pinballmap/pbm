@@ -1,0 +1,14 @@
+- if api_token.pending?
+  = form_tag "/api_token_approvals/#{api_token.id}/approve", method: :post do
+    = submit_tag 'APPROVE'
+  %br/
+  = form_tag "/api_token_approvals/#{api_token.id}/deny", method: :post do
+    = submit_tag 'DENY'
+- elsif api_token.active?
+  = form_tag "/api_token_approvals/#{api_token.id}/revoke", method: :post do
+    = submit_tag 'REVOKE'
+  %br/
+  = form_tag "/api_token_approvals/#{api_token.id}/regenerate", method: :post do
+    = submit_tag 'REGENERATE'
+- else
+  %p= "This token is #{api_token.status_label.downcase}."

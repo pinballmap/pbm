@@ -1,10 +1,10 @@
 module Api
   module V1
-    class LocationPictureXrefsController < ApplicationController
+    class LocationPictureXrefsController < BaseController
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
-      rate_limit to: 20, within: 1.minute, only: :create, name: "api_lpx_create"
+      rate_limit to: 20, within: 1.minute, by: :api_token_rate_limit_key, only: :create, name: "api_lpx_create"
 
       api :GET, "/api/v1/location_picture_xrefs/:id.json", "Get info about a single lpx"
       param :id, Integer, desc: "LPX id", required: true

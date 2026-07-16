@@ -1,9 +1,9 @@
 module Api
   module V1
-    class MachineConditionsController < ApplicationController
+    class MachineConditionsController < BaseController
       skip_before_action :verify_authenticity_token
       before_action :allow_cors
-      rate_limit to: 50, within: 5.minutes, only: :update, name: "api_machine_conditions_update"
+      rate_limit to: 50, within: 5.minutes, by: :api_token_rate_limit_key, only: :update, name: "api_machine_conditions_update"
 
       api :PUT, "/api/v1/machine_conditions/:id.json", "Update attributes on a machine condition"
       param :id, Integer, desc: "ID of the machine condition you want to update", required: true

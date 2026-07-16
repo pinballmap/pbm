@@ -1,0 +1,13 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  %body
+    %p
+      #{@user_email} has requested an API token.
+    %p
+      Their stated use:
+    %p
+      = simple_format(@requested_use)
+    %p
+      Review and approve/deny this request in the admin panel.

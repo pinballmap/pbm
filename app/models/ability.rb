@@ -10,7 +10,7 @@ class Ability
     can :manage, [ Event, RegionLinkXref, Zone ], region_id: user.region_id
 
     if user.is_super_admin
-      can :manage, [ Operator, Location, User, UserSubmission, SuggestedLocation, MachineCondition, BannedIp, LocationPictureXref, MachineScoreXref ]
+      can :manage, [ Operator, Location, User, UserSubmission, SuggestedLocation, MachineCondition, BannedIp, LocationPictureXref, MachineScoreXref, ApiToken ]
     else
       can :manage, [ Location, Operator ], region_id: user.region_id
       can %i[read destroy], [ SuggestedLocation ], region_id: user.region_id

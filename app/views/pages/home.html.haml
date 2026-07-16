@@ -61,7 +61,7 @@
       =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;')
   .news
     %p== Not only is the Pinball Map website and app open source, but there is also #{link_to 'an API', apipie_apipie_path}. With it, you can pull down map data and use it on your cool app.
-    %p== We recommend #{link_to 'contacting us', global_contact_path, :class => "bold"} to talk about how you'll be using it, because we can give recommendations for optimal use (remember that our server resources are not infinite). We also have an #{link_to "llms.txt", "/llms.txt"} file to help guide your assisted coding.
+    %p== API use requires a key, which can be #{link_to 'requested here', api_token_path, :class => "bold"}. We are happy to give recommendations for optimal use (remember that our server resources are not infinite). We also have an #{link_to "llms.txt", "/llms.txt"} file to help guide your assisted coding.
     %p Note that using the data to essentially clone this site ("find machines to play") is not an acceptable use of the data.
     %p
       = link_to 'Stern Pinball', 'https://sternpinball.com/pinball-locator/', :target => '_blank'
@@ -170,6 +170,9 @@
     =image_tag( 'sassy.jpg', :alt => 'sassy', :style => 'height: 310px;border-radius: 10px;')
   .news
     %p.mobile_center
+      =link_to 'Pinball Map API Tokens', 'https://blog.pinballmap.com/2026/07/16/api-tokens/', :target => '_blank', :class => 'bold'
+      %span.block.italic.m_5 July 16, 2026
+    %p.mobile_center
       =link_to 'Pinball Life List', 'https://blog.pinballmap.com/2026/05/16/pinball-life-list/', :target => '_blank', :class => 'bold'
       %span.block.italic.m_5 May 16, 2026
     %p.mobile_center
@@ -183,9 +186,6 @@
       %span.block.italic.m_5 April 23, 2026
     %p.mobile_center
       =link_to 'Pinball Map App 5.4.0', 'https://blog.pinballmap.com/2026/04/22/pinball-map-app-5-4-0/', :target => '_blank', :class => 'bold'
-      %span.block.italic.m_5 April 22, 2026
-    %p.mobile_center
-      =link_to 'Do More With RSS', 'https://blog.pinballmap.com/2026/04/22/do-more-with-rss/', :target => '_blank', :class => 'bold'
       %span.block.italic.m_5 April 22, 2026
 %div.flex_center.flex_column.mb_20#regions
   .region_map

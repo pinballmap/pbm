@@ -22,6 +22,20 @@ describe User do
     end
   end
 
+  describe '#destroy' do
+    it 'disables any pending or active api tokens before deleting the user' do
+      super_admin = FactoryBot.create(:user)
+      pending_token = FactoryBot.create(:api_token, user: @user)
+      active_token = FactoryBot.create(:api_token, user: @user, requested_use: 'second use')
+      active_token.approve!(approved_by: super_admin)
+
+      @user.destroy
+
+      expect(pending_token.reload.disabled_reason).to eq('account_deleted')
+      expect(active_token.reload.disabled_reason).to eq('account_deleted')
+    end
+  end
+
   describe '#num_machines_added' do
     it 'should return the number of machines this user has added' do
       FactoryBot.create(:user_submission, user: @user, submission_type: UserSubmission::NEW_LMX_TYPE)

@@ -112,4 +112,21 @@ class AdminMailer < ApplicationMailer
 
     mail(to: params[:to_users], reply_to: params[:user_email], cc: params[:cc_users], subject: params[:subject])
   end
+
+  def send_api_token_request_notification
+    @user_email = params[:user_email]
+    @requested_use = params[:requested_use]
+
+    mail(to: params[:to_users], reply_to: params[:user_email], cc: params[:cc_users], subject: params[:subject])
+  end
+
+  def send_api_token_approved
+    @token = params[:token]
+
+    mail(to: params[:to_users], subject: "Pinball Map - Your API token request has been approved")
+  end
+
+  def send_api_token_denied
+    mail(to: params[:to_users], subject: "Pinball Map - Your API token request was not approved")
+  end
 end

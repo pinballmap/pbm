@@ -215,6 +215,21 @@ Rails.application.routes.draw do
     end
   end
 
+  resource :api_token, only: [ :show, :create ] do
+    member do
+      post :regenerate
+    end
+  end
+
+  resources :api_token_approvals, only: [] do
+    member do
+      post :approve
+      post :deny
+      post :revoke
+      post :regenerate
+    end
+  end
+
   resources :users do
     member do
       get :profile, constraints: { id: /[^\/]+/ }

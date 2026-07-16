@@ -1,6 +1,6 @@
 module Api
   module V1
-    class MachineGroupsController < ApplicationController
+    class MachineGroupsController < BaseController
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors

@@ -1,12 +1,12 @@
 module Api
   module V1
-    class MachineScoreXrefsController < ApplicationController
+    class MachineScoreXrefsController < BaseController
       include ActionView::Helpers::NumberHelper
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
       has_scope :region, :limit, :zone_id
-      rate_limit to: 80, within: 2.minutes, only: :create, name: "api_msx_create"
+      rate_limit to: 80, within: 2.minutes, by: :api_token_rate_limit_key, only: :create, name: "api_msx_create"
 
       api :GET, "/api/v1/region/:region/machine_score_xrefs.json", "Fetch all high scores for a region"
       param :region, String, desc: "Name of the Region you want to see scores for", required: true

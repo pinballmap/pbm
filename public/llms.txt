@@ -12,9 +12,9 @@ Append `.json` to any endpoint (e.g. `GET /api/v1/locations.json`). All response
 
 ## Authentication
 
-Read-only (GET) endpoints are public — no auth required.
+**All API requests will soon require an `api_token` parameter, including read-only (GET) endpoints.** Request one at https://pinballmap.com/api_token (requires a Pinball Map account; approval is manual). Request a token now, even if you don't need it yet — do not wait until requests start failing. Once issued, include it as `api_token=your_token_here` on every request. The one exception is `GET /api/v1/location_machine_xrefs/most_recent_by_lat_lon.json`, which does not require a token.
 
-Write operations (POST, PUT, DELETE) require a user account. Pass credentials as query params on every write request:
+Write operations (POST, PUT, DELETE) also require a user account, separate from the api_token above. Pass credentials as query params on every write request:
 
 ```
 user_email=user@example.com&user_token=abc123

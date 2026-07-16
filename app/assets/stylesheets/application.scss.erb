@@ -2747,6 +2747,7 @@ li .input_title_row {
 #location_maker textarea,
 #contact_maker input.text,
 #contact_maker textarea,
+#api_token_maker textarea,
 #score_maker input.text,
 .edit_mode,
 #new_user input[type="email"],
@@ -3335,13 +3336,15 @@ img.small_banner_icon {
 
 #location_maker ul,
 #contact_maker ul,
-#score_maker ul {
+#score_maker ul,
+#api_token_maker ul {
   list-style-type: none;
 }
 
 #location_maker label,
 #contact_maker label,
-#score_maker label {
+#score_maker label,
+#api_token_maker label {
   display: block;
   color: var(--black);
   font-family: $Nunito_600SemiBold;
@@ -3645,7 +3648,8 @@ gmp-place-autocomplete {
   height: 32px;
 }
 
-#contact_maker textarea {
+#contact_maker textarea,
+#api_token_maker textarea {
   margin: 0;
   max-width: 400px;
   height: 100px;

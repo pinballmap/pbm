@@ -1,6 +1,6 @@
 module Api
   module V1
-    class OperatorsController < ApplicationController
+    class OperatorsController < BaseController
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors

@@ -1,14 +1,15 @@
 module Api
   module V1
-    class LocationMachineXrefsController < ApplicationController
+    class LocationMachineXrefsController < BaseController
       skip_before_action :verify_authenticity_token
+      skip_before_action :require_api_token, only: :most_recent_by_lat_lon
 
       before_action :allow_cors
       has_scope :region, :limit
 
-      rate_limit to: 100, within: 5.minutes, only: :destroy, name: "api_lmx_destroy"
-      rate_limit to: 50, within: 10.minutes, only: :update, name: "api_lmx_update"
-      rate_limit to: 120, within: 1.minute, only: :index, name: "api_lmx_index"
+      rate_limit to: 100, within: 5.minutes, by: :api_token_rate_limit_key, only: :destroy, name: "api_lmx_destroy"
+      rate_limit to: 50, within: 10.minutes, by: :api_token_rate_limit_key, only: :update, name: "api_lmx_update"
+      rate_limit to: 120, within: 1.minute, by: :api_token_rate_limit_key, only: :index, name: "api_lmx_index"
 
       DEFAULT_TOP_N_MACHINES = 25
       DEFAULT_MOST_RECENT_MACHINES = 3

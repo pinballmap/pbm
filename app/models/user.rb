@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :user_submissions
   has_many :user_fave_locations
   has_many :user_machine_xrefs
+  has_many :api_tokens
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
 
@@ -22,6 +23,8 @@ class User < ApplicationRecord
   validate :validate_username
 
   devise :database_authenticatable, :confirmable, :registerable, :recoverable, :rememberable, :validatable, authentication_keys: [ :login ], confirmation_keys: [ :login ]
+
+  before_destroy :disable_api_tokens
 
   scope :admins, -> { where("region_id is not null") }
   scope :non_admins, -> { where("region_id is null") }
@@ -300,5 +303,11 @@ class User < ApplicationRecord
 
   def self.find_record(login)
     where([ "lower(username) = :value OR lower(email) = :value", { value: login.downcase } ]).first
+  end
+
+  private
+
+  def disable_api_tokens
+    api_tokens.where(disabled_at: nil).find_each(&:disable_for_account_deletion!)
   end
 end

@@ -236,6 +236,45 @@ ALTER SEQUENCE public.active_storage_variant_records_id_seq OWNED BY public.acti
 
 
 --
+-- Name: api_tokens; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.api_tokens (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    token character varying,
+    requested_use text NOT NULL,
+    approved_at timestamp(6) without time zone,
+    approved_by_user_id integer,
+    disabled_at timestamp(6) without time zone,
+    disabled_reason character varying,
+    disabled_by_user_id integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    exempt_from_rate_limit boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: api_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.api_tokens_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: api_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.api_tokens_id_seq OWNED BY public.api_tokens.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1571,6 +1610,13 @@ ALTER TABLE ONLY public.active_storage_variant_records ALTER COLUMN id SET DEFAU
 
 
 --
+-- Name: api_tokens id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.api_tokens ALTER COLUMN id SET DEFAULT nextval('public.api_tokens_id_seq'::regclass);
+
+
+--
 -- Name: banned_ips id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1853,6 +1899,14 @@ ALTER TABLE ONLY public.active_storage_blobs
 
 ALTER TABLE ONLY public.active_storage_variant_records
     ADD CONSTRAINT active_storage_variant_records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: api_tokens api_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.api_tokens
+    ADD CONSTRAINT api_tokens_pkey PRIMARY KEY (id);
 
 
 --
@@ -2183,6 +2237,41 @@ CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_b
 --
 
 CREATE UNIQUE INDEX index_active_storage_variant_records_uniqueness ON public.active_storage_variant_records USING btree (blob_id, variation_digest);
+
+
+--
+-- Name: index_api_tokens_on_approved_by_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_api_tokens_on_approved_by_user_id ON public.api_tokens USING btree (approved_by_user_id);
+
+
+--
+-- Name: index_api_tokens_on_disabled_by_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_api_tokens_on_disabled_by_user_id ON public.api_tokens USING btree (disabled_by_user_id);
+
+
+--
+-- Name: index_api_tokens_on_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_api_tokens_on_token ON public.api_tokens USING btree (token);
+
+
+--
+-- Name: index_api_tokens_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_api_tokens_on_user_id ON public.api_tokens USING btree (user_id);
+
+
+--
+-- Name: index_api_tokens_on_user_id_active_unique; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_api_tokens_on_user_id_active_unique ON public.api_tokens USING btree (user_id) WHERE ((disabled_at IS NULL) AND (approved_at IS NOT NULL));
 
 
 --
@@ -2914,6 +3003,8 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260716140000'),
+('20260715120000'),
 ('20260709125828'),
 ('20260528000000'),
 ('20260511000000'),

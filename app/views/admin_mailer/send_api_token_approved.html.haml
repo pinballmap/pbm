@@ -1,0 +1,15 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  %body
+    %p
+      Your Pinball Map API token request has been approved.
+    %p
+      Your token:
+    %p
+      %code= @token
+    %p
+      Include this token as the api_token parameter (or X-Api-Token header) on your API requests.
+    %p
+      Now that it's approved, if you need to regenerate it, you can do so at http://pinballmap.com/api_token

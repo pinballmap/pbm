@@ -1,6 +1,6 @@
 module Api
   module V1
-    class MachinesController < ApplicationController
+    class MachinesController < BaseController
       before_action :allow_cors
 
       api :GET, "/api/v1/machines.json", "Fetch all machines"

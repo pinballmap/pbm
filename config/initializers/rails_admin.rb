@@ -850,4 +850,43 @@ RailsAdmin.config do |config|
       field :updated_at, :datetime
     end
   end
+  config.model ApiToken do
+    list do
+      field :user, :belongs_to_association
+      field :requested_use, :string
+      field :status_label, :string do
+        label "Status"
+      end
+      field :created_at, :datetime
+    end
+    edit do
+      field :requested_use, :string do
+        html_attributes rows: 5, cols: 50
+      end
+      field :disabled_at, :datetime
+      field :disabled_reason, :string
+      field :exempt_from_rate_limit, :boolean
+    end
+    show do
+      field :status_label, :string do
+        label "ACTIONS"
+        pretty_value do
+          bindings[:view].render partial: "api_token_actions", locals: { api_token: bindings[:object] }
+        end
+      end
+      field :user, :belongs_to_association
+      field :requested_use, :string
+      field :token, :string do
+        read_only true
+      end
+      field :approved_at, :datetime
+      field :approved_by, :belongs_to_association
+      field :disabled_at, :datetime
+      field :disabled_reason, :string
+      field :disabled_by, :belongs_to_association
+      field :exempt_from_rate_limit, :boolean
+      field :created_at, :datetime
+      field :updated_at, :datetime
+    end
+  end
 end

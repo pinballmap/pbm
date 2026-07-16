@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   def append_info_to_payload(payload)
     if Rails.env.production?
       super
-      payload[:user_id] = current_user&.id
+      payload[:user_id] = current_user&.id || @api_token_user_id
       payload[:bot_or_not] = browser.bot? ? "IsBot" : "NotBot"
     end
   end
@@ -129,6 +129,24 @@ class ApplicationController < ActionController::Base
     AdminMailer.with(name: params[:name], email: params[:email], message: params[:message], user_name: user&.username, user_email: user&.email, to_users: ENV.fetch("EMAIL_ADMIN", "admin@pinballmap.com"), cc_users: Array(User.all.select(&:is_super_admin).map(&:email)) + Array(region&.users&.map(&:email)), subject: add_host_info_to_subject(region.nil? ? "Pinball Map - Message from #{sender_name}" : "Pinball Map - Message (#{region.full_name}) from #{sender_name}"), remote_ip: request.remote_ip, headers: request.headers["AppVersion"], user_agent: request.user_agent).send_admin_notification.deliver_later
 
     UserSubmission.create(region_id: region&.id, submission_type: UserSubmission::CONTACT_US_TYPE, submission: body, user_id: user&.id)
+  end
+
+  def notify_super_admins_of_api_token_request(api_token)
+    AdminMailer.with(
+      to_users: ENV.fetch("EMAIL_ADMIN", "admin@pinballmap.com"),
+      cc_users: Array(User.all.select(&:is_super_admin).map(&:email)),
+      user_email: api_token.user.email,
+      requested_use: api_token.requested_use,
+      subject: add_host_info_to_subject("Pinball Map - New API token request - #{api_token.user.email}")
+    ).send_api_token_request_notification.deliver_later
+  end
+
+  def notify_api_token_approved(api_token)
+    AdminMailer.with(to_users: api_token.user.email, token: api_token.token).send_api_token_approved.deliver_later
+  end
+
+  def notify_api_token_denied(api_token)
+    AdminMailer.with(to_users: api_token.user.email).send_api_token_denied.deliver_later
   end
 
   def return_response(data, root, includes = [], methods = [], http_status = 200, except = [], pagy = nil)

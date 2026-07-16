@@ -87,6 +87,11 @@ FactoryBot.define do
     confirmed_at { Date.today }
   end
 
+  factory :api_token do
+    association :user
+    requested_use { 'Building a scoreboard app for my local arcade.' }
+  end
+
   factory :location_picture_xref do
     association :location
     association :user

@@ -1,6 +1,6 @@
 module Api
   module V1
-    class RegionLinkXrefsController < ApplicationController
+    class RegionLinkXrefsController < BaseController
       skip_before_action :verify_authenticity_token
 
       before_action :allow_cors
