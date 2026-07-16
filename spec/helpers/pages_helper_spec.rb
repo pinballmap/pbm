@@ -44,6 +44,10 @@ describe PagesHelper, type: :helper do
         expect(helper.title_for_path(donate_path)).to eq('Donate - Pinball Map')
       end
 
+      it 'displays the api title' do
+        expect(helper.title_for_path(api_token_path)).to eq('API Token - Pinball Map')
+      end
+
       it 'displays the add score title' do
         expect(helper.title_for_path(add_score_path)).to eq('Add High Score - Pinball Map')
       end

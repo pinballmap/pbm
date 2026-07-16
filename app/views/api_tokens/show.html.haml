@@ -2,12 +2,12 @@
   .column_container
     .column.bg_vlightpurple.w_450
       %p.red.font18.bold.center
-        Request a Pinball Map API Token
+        Pinball Map API Token
       - if @api_token.nil? || @api_token.denied?
         %p
           Starting in 2026, all API requests must include an
           %span.bold api_token
-          parameter. See the
+          parameter. See this
           = link_to "blog post", "https://blog.pinballmap.com/2026/07/16/api-tokens/"
           for more details.
         %p
@@ -22,7 +22,7 @@
           file for tips. Do not make thousands of unnecessary requests.
         - if user_signed_in?
           %p
-            Describe your planned use of the API below. Includes details such as which endpoints you are planning to use.
+            Describe your planned use of the API below. Include details such as which endpoints you are planning to use.
           - if @api_token&.denied?
             %p.red
               Your previous request was not approved. Feel free to submit a new one with more detail.

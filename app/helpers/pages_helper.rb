@@ -51,6 +51,8 @@ module PagesHelper
       "Store - "
     elsif path == donate_path
       "Donate - "
+    elsif path == api_token_path
+      "API Token - "
     elsif path == add_score_path
       "Add High Score - "
     elsif path.match?(/inspire_profile/)
@@ -111,6 +113,8 @@ module PagesHelper
       "Pinball Map Store!"
     elsif path == donate_path
       "Donate to Pinball Map. Donations help us manage the costs of running the site. Thank you!"
+    elsif path == api_token_path
+      "Request or manage an API token so that you can use the Pinball Map API"
     elsif path == add_score_path
       "Track your high scores for every pinball machine you've ever played! "
     elsif path.match?(/profile/)
