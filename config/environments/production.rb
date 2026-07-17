@@ -44,11 +44,11 @@ Rails.application.configure do
 
   config.rails_semantic_logger.quiet_assets = true
   config.rails_semantic_logger.appenders do |appenders|
-    appenders.add(io: STDOUT, level: config.log_level, formatter: :color)
+    appenders.add(io: STDOUT, level: config.log_level, formatter: :json)
   end
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id, lambda { |request| request.ip }, lambda { |request| request.headers['AppVersion'] }, lambda { |request| request.user_agent } ]
+  config.log_tags = [ :request_id, lambda { |request| request.ip }, lambda { |request| request.headers['AppVersion'] }, lambda { |request| (request.params["api_token"].presence || request.headers["X-Api-Token"].presence)&.first(8) }, lambda { |request| request.user_agent } ]
 
   # Log to STDOUT by default
   # config.logger = ActiveSupport::Logger.new(STDOUT)
