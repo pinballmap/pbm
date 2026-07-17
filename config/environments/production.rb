@@ -44,7 +44,7 @@ Rails.application.configure do
 
   config.rails_semantic_logger.quiet_assets = true
   config.rails_semantic_logger.appenders do |appenders|
-    appenders.add(io: STDOUT, level: config.log_level, formatter: :json)
+    appenders.add(io: STDOUT, level: config.log_level, formatter: :color)
   end
 
   # Prepend all log lines with the following tags.
