@@ -1,7 +1,7 @@
 module Api
   module V1
     class BaseController < ApplicationController
-      API_TOKEN_REQUIRED_MSG = "A valid api_token is required for this endpoint. Visit /api_token to request one.".freeze
+      API_TOKEN_REQUIRED_MSG = "A valid api_token is required for this endpoint. Visit https://pinballmap.com/api_token to request one.".freeze
       GLOBAL_RATE_LIMIT_SCOPE = "api_v1".freeze
 
       before_action :require_api_token, if: -> { self.class.api_token_gate_enabled? }
