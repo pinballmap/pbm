@@ -554,7 +554,9 @@ function showLocationDetail(locationID) {
 
       $('#location_detail').html(loadingHTML());
       $.get('/locations/' + locationID + '/render_location_detail', function (data) {
-        $('#location_detail').html(data);
+        if (selectedLocationID === locationID) {
+          $('#location_detail').html(data);
+        }
       });
     }
   }
