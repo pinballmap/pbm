@@ -1279,6 +1279,17 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to include('567890')
     end
 
+    it 'includes name, manufacturer, and year on each lmx' do
+      get "/api/v1/locations/#{@location.id}.json"
+
+      lmxes = JSON.parse(response.body)['location_machine_xrefs']
+      cleo_lmx = lmxes.find { |lmx| lmx['machine_id'] == 7777 }
+
+      expect(cleo_lmx['name']).to eq('Cleo')
+      expect(cleo_lmx).to have_key('manufacturer')
+      expect(cleo_lmx).to have_key('year')
+    end
+
     it 'respects no_details and shows fewer location fields' do
       get "/api/v1/locations/#{@location.id}.json", params: { no_details: 1 }
 
@@ -1288,6 +1299,9 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to_not include('567890')
       expect(response.body).to include('operator_email_opt_in')
       expect(response.body).to include('operator_phone_opt_in')
+
+      lmxes = JSON.parse(response.body)['location_machine_xrefs']
+      expect(lmxes).to all(satisfy { |lmx| !lmx.key?('name') && !lmx.key?('manufacturer') && !lmx.key?('year') })
 
       get "/api/v1/locations/#{@location.id}.json", params: { no_details: 2 }
 

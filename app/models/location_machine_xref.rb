@@ -124,4 +124,16 @@ class LocationMachineXref < ApplicationRecord
   def last_updated_by_username
     user ? user.username : ""
   end
+
+  def name
+    machine&.name
+  end
+
+  def manufacturer
+    machine&.manufacturer
+  end
+
+  def year
+    machine&.year
+  end
 end

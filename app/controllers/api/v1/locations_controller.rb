@@ -399,8 +399,8 @@ module Api
 
       api :GET, "/api/v1/locations/:id.json", "Display the details of this location"
       param :id, Integer, desc: "ID of location", required: true
-      param :no_details, Integer, desc: "Omit lmx/condition data from pull. When no_details=1 and user_id is included, each lmx includes an in_life_list boolean", required: false
-      param :metadata_only, Integer, desc: "Omit entire lmx list from pull", required: false
+      param :no_details, Integer, desc: "Omit lmx/condition data from pull. When no_details=1 and user_id is included, each lmx includes an in_life_list boolean; no_details=2 includes the first 5 machines and a count of machine - optimized for when you click a map marker on the app and it displays in the bottom sheet", required: false
+      param :metadata_only, Integer, desc: "Omit entire lmx list from pull - optimized for the app in order to refetch a small subset of location data after a particular update", required: false
       param :user_id, Integer, desc: "When included with no_details=1, each lmx includes an in_life_list boolean for this user", required: false
       formats [ "json" ]
       def show
@@ -429,8 +429,8 @@ module Api
           methods = %i[machine_names_first_no_year num_machines]
           except = %i[phone website updated_at region_id description operator_id date_last_updated last_updated_by_user_id ic_active zone_id created_at is_stern_army country users_count user_submissions_count place_id]
         else
-          location = Location.includes(location_machine_xrefs: [ :user, { machine_conditions: :user }, { machine_score_xrefs: :user } ]).find(params[:id])
-          includes = [ location_machine_xrefs: { include: { machine_conditions: { methods: %i[username operator_id admin_title contributor_rank flag] }, machine_score_xrefs: { methods: %i[username operator_id admin_title contributor_rank flag] } }, methods: :last_updated_by_username } ]
+          location = Location.includes(location_machine_xrefs: [ :user, :machine, { machine_conditions: :user }, { machine_score_xrefs: :user } ]).find(params[:id])
+          includes = [ location_machine_xrefs: { include: { machine_conditions: { methods: %i[username operator_id admin_title contributor_rank flag] }, machine_score_xrefs: { methods: %i[username operator_id admin_title contributor_rank flag] } }, methods: %i[last_updated_by_username name manufacturer year] } ]
           methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank last_updated_by_flag num_machines]
           except = []
         end
