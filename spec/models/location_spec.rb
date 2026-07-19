@@ -167,6 +167,34 @@ describe Location do
       expect(submission.region).to eq(nil)
       expect(submission.submission_type).to eq(UserSubmission::CONFIRM_LOCATION_TYPE)
     end
+
+    it 'does not create a new submission when the same user re-confirms too soon, but still updates last_updated_by_user_id and date_last_updated' do
+      user = FactoryBot.create(:user, username: 'ssw')
+      location = FactoryBot.create(:location, name: 'foo', city: 'Portland')
+
+      location.confirm(user)
+      submission_count_before = UserSubmission.count
+
+      location.confirm(user)
+
+      expect(UserSubmission.count).to eq(submission_count_before)
+      expect(location.reload.last_updated_by_user_id).to eq(user.id)
+      expect(location.date_last_updated).to eq(Date.today)
+    end
+
+    it 'creates a new submission when a different user confirms shortly after another user', :aggregate_failures do
+      first_user = FactoryBot.create(:user, username: 'first')
+      second_user = FactoryBot.create(:user, username: 'second')
+      location = FactoryBot.create(:location, name: 'foo', city: 'Portland')
+
+      location.confirm(first_user)
+      submission_count_before = UserSubmission.count
+
+      location.confirm(second_user)
+
+      expect(UserSubmission.count).to eq(submission_count_before + 1)
+      expect(location.reload.last_updated_by_user_id).to eq(second_user.id)
+    end
   end
 
   describe '#num_machines' do
