@@ -6,6 +6,7 @@
                 "appID": "3NCUYHG3MJ.net.isaacruiz.ppm",
                 "paths": [
                 "NOT /store",
+                "NOT /api_token",
                 "NOT /app/*",
                 "NOT /donate",
                 "NOT /users/*",
@@ -29,6 +30,11 @@
                         "/": "/store",
                         "exclude": true,
                         "comment": "Exclude store"
+                    },
+                    {
+                        "/": "/api_token",
+                        "exclude": true,
+                        "comment": "Exclude api_token"
                     },
                     {
                         "/": "/app/*",
