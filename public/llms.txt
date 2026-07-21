@@ -39,6 +39,8 @@ Examples of broken patterns and their correct replacements:
 
 A well-designed client typically makes fewer than 10 API calls for a full app startup sequence.
 
+Additionally, a well-designed app stores fetched data locally (e.g. in its own database) and serves pages from that store, rather than calling this API fresh on every page load or every visitor. Refresh the local copy on a schedule — a periodic job or timer independent of user traffic — instead of triggering an API call each time someone visits your site. If your request volume to this API scales with your own site's traffic rather than with how often the underlying data actually changes, that's a sign you need a cache. This is one of the most frequent reasons we end up blocking an app for unnecessary request volume.
+
 ## Rate Limiting
 
 Two layers of rate limiting are in place: Rack::Attack (IP-based) and per-endpoint controller limits. Exceeding a limit returns HTTP 429. These limits exist to prevent abuse, not to restrict normal usage — a well-designed app will never come close to them.
