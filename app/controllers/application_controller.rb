@@ -187,7 +187,7 @@ class ApplicationController < ActionController::Base
     if current_user.nil?
       email = params[:user_email].presence
       if email && User.exists?(email: email, is_disabled: true)
-        render json: { error: ACCOUNT_DISABLED_MSG }, status: :unauthorized
+        render json: { error: ACCOUNT_DISABLED_MSG }, status: :forbidden
         return nil
       end
       return_response(AUTH_REQUIRED_MSG, "errors")

@@ -114,7 +114,7 @@ module Api
         end
 
         if user.is_disabled
-          render json: { error: ACCOUNT_DISABLED_MSG }, status: :unauthorized
+          render json: { error: ACCOUNT_DISABLED_MSG }, status: :forbidden
           return
         end
 

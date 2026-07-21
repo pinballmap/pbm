@@ -64,7 +64,7 @@ describe Api::V1::UsersController, type: :request do
 
       get '/api/v1/users/auth_details.json', params: { login: 'disabled', password: 'okokokok' }
 
-      expect(response).to have_http_status(:unauthorized)
+      expect(response).to have_http_status(:forbidden)
       expect(JSON.parse(response.body)['error']).to eq('account_disabled')
     end
 
