@@ -124,6 +124,7 @@ Rails.application.routes.draw do
     get 'store' => redirect('/store')
     get 'donate' => redirect('/donate')
     get 'stats' => redirect('/stats')
+    get 'flier' => redirect('/flier')
 
     resources :events, only: [:index, :show]
     resources :regions, only: [:index, :show]
