@@ -68,7 +68,9 @@ Several endpoints accept a `no_details` param that strips fields you likely don'
 | | Full (default) | no_details=1 | no_details=2 |
 |---|---|---|---|
 | Location fields omitted | none | `phone`, `website`, `description`, `created_at`, `updated_at`, `date_last_updated`, `last_updated_by_user_id`, `region_id`, `users_count`, `user_submissions_count` | all of level 1, plus `street`, `city`, `state`, `zip`, `updated_at`, `location_type_id`, `operator_id` — essentially just ID, name, lat, lon |
-| Machine data | full LMX list with machine conditions and scores | machine names + count, no conditions | none (within_bounding_box) or machine names without year (show) |
+| Machine data | full LMX list with machine conditions and scores; each LMX also includes the machine's `name`, `manufacturer`, and `year` directly (show endpoint) | machine names + count, no conditions | none (within_bounding_box) or machine names without year (show) |
+
+Because the full (default) `GET /locations/:id.json` response embeds `name`, `manufacturer`, and `year` on every LMX, you do not need a separate call to `/api/v1/machines.json` just to label the machines at a location — only fetch it if you need other machine fields (e.g. `ipdb_id`, `is_active`, `machine_group_id`).
 
 The `GET /locations/:id.json` show endpoint also accepts `metadata_only=1`, which returns the location record with no LMX list at all — useful when you only need to refresh location metadata.
 
