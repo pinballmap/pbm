@@ -49,32 +49,32 @@
                     {
                         "/": "/users/*",
                         "exclude": true,
-                        "comment": "Exclude donate"
+                        "comment": "Exclude users"
                     },
                     {
                         "/": "/faq",
                         "exclude": true,
-                        "comment": "Exclude donate"
+                        "comment": "Exclude faq"
                     },
                     {
                         "/": "/privacy",
                         "exclude": true,
-                        "comment": "Exclude flier"
+                        "comment": "Exclude privacy"
                     },
                     {
                         "/": "/admin/*",
                         "exclude": true,
-                        "comment": "Exclude flier"
+                        "comment": "Exclude admin"
                     },
                     {
                         "/": "/*/flier",
                         "exclude": true,
-                        "comment": "Exclude privacy"
+                        "comment": "Exclude flier"
                     },
                     {
                         "/": "/flier",
                         "exclude": true,
-                        "comment": "Exclude donate"
+                        "comment": "Exclude flier"
                     },
                     {
                         "/": "/location_machine_xrefs.rss",
