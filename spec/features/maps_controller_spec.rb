@@ -725,6 +725,19 @@ describe MapsController do
       expect(page).to_not have_content('Other Spot')
     end
 
+    it 'filters by opdb_id URL param on initial load and keeps the filter after the map bounds reload' do
+      machine = FactoryBot.create(:machine, name: 'Deep Link Game', opdb_id: 'GweeP-MW95j', machine_group: nil)
+      matching_location = FactoryBot.create(:location, name: 'OPDB Spot', zip: '97203', lat: 45.590502800000, lon: -122.754940100000)
+      FactoryBot.create(:location, name: 'Other Spot', zip: '97203', lat: 45.593049200000, lon: -122.732620200000)
+      FactoryBot.create(:location_machine_xref, location: matching_location, machine: machine)
+
+      visit "/map?by_opdb_id=#{machine.opdb_id}"
+      sleep 1
+
+      expect(page).to have_content('OPDB Spot')
+      expect(page).to_not have_content('Other Spot')
+    end
+
     it 'lets you search by address -- displays "Not Found" if no results' do
       FactoryBot.create(:location, region: nil, name: 'Troy', zip: '48098', lat: 42.5925, lon: 83.1756)
 
