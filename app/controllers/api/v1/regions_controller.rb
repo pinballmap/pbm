@@ -2,6 +2,7 @@ module Api
   module V1
     class RegionsController < BaseController
       skip_before_action :verify_authenticity_token
+      skip_before_action :require_api_token, only: :location_and_machine_counts
 
       before_action :allow_cors
 

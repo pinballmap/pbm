@@ -2,7 +2,7 @@ module Api
   module V1
     class LocationMachineXrefsController < BaseController
       skip_before_action :verify_authenticity_token
-      skip_before_action :require_api_token, only: :most_recent_by_lat_lon
+      skip_before_action :require_api_token, only: %i[most_recent_by_lat_lon destroy top_n_machines]
 
       before_action :allow_cors
       has_scope :region, :limit

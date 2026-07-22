@@ -2,6 +2,7 @@ module Api
   module V1
     class UserSubmissionsController < BaseController
       skip_before_action :verify_authenticity_token
+      skip_before_action :require_api_token, only: %i[top_users total_user_submission_count_week total_user_submission_count]
 
       before_action :allow_cors
 

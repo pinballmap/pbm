@@ -4,6 +4,7 @@ module Api
       include ActionView::Helpers::NumberHelper
       include Pagy::Method
       skip_before_action :verify_authenticity_token
+      skip_before_action :require_api_token, only: %i[top_cities top_cities_by_machine type_count countries top_locations]
 
       before_action :allow_cors
       before_action :normalize_array_params
