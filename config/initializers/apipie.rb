@@ -9,6 +9,7 @@ Apipie.configure do |config|
   config.app_info = "
     The Pinball Map API is for services that want to extend beyond our offered functionality, or do something neat with the data. It is not for creating a clone where people can find machines to play. If you create a clone, that is against our data usage agreement and you will likely be blocked.<br><br>
     API use requires a key, which can be requested here: https://pinballmap.com/api_token
+    Keep your key server-side only &mdash; never embed it in browser JavaScript or other client-side code end users can inspect. If your app has a JS frontend, proxy requests through your own backend.<br><br>
     If you use this data, include attribution.<br><br>
     If you are making thousands of requests in a short amount of time, you are doing something wrong (there's always a better way) and you might get blocked.<br><br>
     Check https://pinballmap.com/llms.txt for more tips.<br><br>
