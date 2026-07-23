@@ -1,5 +1,5 @@
 %div.quick_button_content_header Add a Machine
-%span.red.font14.p_10.block Select a machine and then click the Add button.
+%div.font14.p_10.center Tip: only add machines that are on the floor.
 = form_tag location_machine_xrefs_path, :method => 'post', :id => "add_new_machine_#{l.id}" do
   = hidden_field_tag :location_id, l.id
   %div.add_machine_select_wrapper
