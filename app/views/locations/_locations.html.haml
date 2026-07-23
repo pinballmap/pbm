@@ -63,6 +63,9 @@
 #results_container
   - if @locations_size > 1
     #search_results_count
+      - if (filter_summary = FilterSummary.new(params).to_s)
+        %p.bold
+          Showing locations with #{filter_summary}
       %p.bold.red
         #{number_with_delimiter(@locations_size,:delimiter => ",")} locations & #{number_with_delimiter(@machines_sum,:delimiter => ",")} machines in map results
   - unless @locations_size == 1
