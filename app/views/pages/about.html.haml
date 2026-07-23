@@ -23,6 +23,12 @@
         Just
         %span.bold remove the machines
         and we'll auto-delete it within a week.
+      %p
+        If you want to be
+        %span.bold added as an operator,
+        please see this
+        =link_to "FAQ section", faq_path(anchor: 'operators')
+        and then answer the 5 questions.
       #contact_maker.pb_10
         = form_tag contact_sent_path, :method => 'post' do
           %ul.pl_0
