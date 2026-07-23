@@ -48,6 +48,37 @@ describe MapsController do
 
       expect(response.body).not_to include('alt="distance"')
     end
+
+    it 'filters by by_opdb_id, which has no machine-picker widget of its own and would otherwise be dropped on a pan-and-refresh' do
+      matching_machine = FactoryBot.create(:machine, name: 'Transformers', machine_group: nil, opdb_id: 'abc123')
+      FactoryBot.create(:location_machine_xref, location: @location, machine: matching_machine)
+
+      post get_bounds_path, params: { boundsData: bounds_data, by_opdb_id: [ 'abc123' ] }
+
+      expect(response.body).to include(@location.name)
+      expect(response.body).not_to include('Second Location')
+    end
+
+    it 'filters by by_ipdb_id' do
+      matching_machine = FactoryBot.create(:machine, name: 'Transformers', machine_group: nil, ipdb_id: 4321)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: matching_machine)
+
+      post get_bounds_path, params: { boundsData: bounds_data, by_ipdb_id: [ 4321 ] }
+
+      expect(response.body).to include(@location.name)
+      expect(response.body).not_to include('Second Location')
+    end
+
+    it 'filters by by_machine_group_id, expanding to every machine in the group' do
+      group = FactoryBot.create(:machine_group, name: 'Transformers')
+      matching_machine = FactoryBot.create(:machine, name: 'Transformers (Pro)', machine_group: group)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: matching_machine)
+
+      post get_bounds_path, params: { boundsData: bounds_data, by_machine_group_id: [ group.id ] }
+
+      expect(response.body).to include(@location.name)
+      expect(response.body).not_to include('Second Location')
+    end
   end
 
   describe 'Regionless', type: :feature, js: true do

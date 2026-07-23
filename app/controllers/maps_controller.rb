@@ -1,6 +1,7 @@
 class MapsController < ApplicationController
   respond_to :html, only: %i[get_bounds]
   before_action :normalize_array_params
+  before_action :normalize_machine_lookup_params
   has_scope :by_location_name, :by_at_least_n_machines, :user_faved, :by_city_name, :by_city_no_state, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte
   has_scope :by_type_id, :by_location_id, :by_machine_id, :by_operator_id, :by_machine_single_id, :by_machine_type, :by_machine_display, :manufacturer, :by_country, :by_state_name, :by_machine_id_ic, :by_machine_single_id_ic, type: :array
 
@@ -378,5 +379,37 @@ class MapsController < ApplicationController
 
   def zone_condition
     [ "zone_id = ?", params[:by_zone_id] ] unless params[:by_zone_id].blank?
+  end
+
+  # The map's machine picker (and the pan-and-refresh flow, which rebuilds its filter params
+  # from that widget's current selection) only knows about by_machine_id/by_machine_single_id.
+  # by_opdb_id/by_ipdb_id/by_machine_group_id have no widget representation, so without this,
+  # panning the map after loading a URL with one of those params silently drops the filter.
+  # Folding them into by_machine_id/by_machine_single_id here makes them ride the same,
+  # already-widget-aware path as a normal machine selection.
+  def normalize_machine_lookup_params
+    opdb_ids = Array(params[:by_opdb_id]).reject(&:blank?)
+    ipdb_ids = Array(params[:by_ipdb_id]).reject(&:blank?)
+    group_ids = Array(params[:by_machine_group_id]).reject(&:blank?)
+
+    return if opdb_ids.empty? && ipdb_ids.empty? && group_ids.empty?
+
+    single_ids = Array(params[:by_machine_single_id]).reject(&:blank?)
+    single_ids += Machine.where(opdb_id: opdb_ids).pluck(:id).map(&:to_s) if opdb_ids.any?
+    single_ids += Machine.where(ipdb_id: ipdb_ids.map(&:to_i)).pluck(:id).map(&:to_s) if ipdb_ids.any?
+    params[:by_machine_single_id] = single_ids.uniq if single_ids.any?
+
+    if group_ids.any?
+      group_machine_ids = Array(params[:by_machine_id]).reject(&:blank?)
+      group_ids.each do |group_id|
+        representative_id = Machine.where(machine_group_id: group_id.to_i).pick(:id)
+        group_machine_ids << representative_id.to_s if representative_id
+      end
+      params[:by_machine_id] = group_machine_ids.uniq if group_machine_ids.any?
+    end
+
+    params.delete(:by_opdb_id)
+    params.delete(:by_ipdb_id)
+    params.delete(:by_machine_group_id)
   end
 end
