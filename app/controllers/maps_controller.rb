@@ -2,8 +2,8 @@ class MapsController < ApplicationController
   respond_to :html, only: %i[get_bounds]
   before_action :normalize_array_params
   before_action :normalize_machine_lookup_params
-  has_scope :by_location_name, :by_at_least_n_machines, :user_faved, :by_city_name, :by_city_no_state, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte, :by_all_ages, :by_payment_type
-  has_scope :by_type_id, :by_location_id, :by_machine_id, :by_operator_id, :by_machine_single_id, :by_machine_type, :by_machine_display, :manufacturer, :by_country, :by_state_name, :by_machine_id_ic, :by_machine_single_id_ic, type: :array
+  has_scope :by_location_name, :by_at_least_n_machines, :user_faved, :by_city_name, :by_city_no_state, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte, :by_payment_type
+  has_scope :by_type_id, :by_location_id, :by_machine_id, :by_operator_id, :by_machine_single_id, :by_machine_type, :by_machine_display, :manufacturer, :by_country, :by_state_name, :by_machine_id_ic, :by_machine_single_id_ic, :by_all_ages, type: :array
 
   rate_limit to: 100, within: 2.minutes, only: :region, name: "maps_region"
   rate_limit to: 100, within: 1.minute, name: "maps_general"

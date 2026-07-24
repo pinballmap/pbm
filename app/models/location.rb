@@ -119,7 +119,7 @@ class Location < ApplicationRecord
   }
   scope :by_is_stern_army, ->(_non_blank_param) { where(is_stern_army: true) }
   scope :by_ic_active, ->(_non_blank_param) { where(ic_active: true) }
-  scope :by_all_ages, ->(value) { where(all_ages: [ value, "At Times" ]) }
+  scope :by_all_ages, ->(value) { where(all_ages: (Array(value) + [ "At Times" ]).uniq) }
   scope :by_payment_type, ->(value) { where(payment_type: value) }
   scope :regionless_only, ->(_non_blank_param) { where(region_id: nil) }
   scope :zoneless, -> { where(zone_id: nil) }

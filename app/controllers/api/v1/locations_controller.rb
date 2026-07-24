@@ -9,8 +9,8 @@ module Api
       before_action :allow_cors
       before_action :normalize_array_params
 
-      has_scope :by_location_name, :by_machine_name, :by_city_id, :by_city_no_state, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region, :by_is_stern_army, :regionless_only, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte, :by_all_ages, :by_payment_type
-      has_scope :by_type_id, :by_location_id, :by_machine_id, :by_zone_id, :by_operator_id, :by_machine_single_id, :by_machine_group_id, :by_ipdb_id, :by_opdb_id, :manufacturer, :by_machine_type, :by_machine_display, :by_machine_id_ic, :by_machine_single_id_ic, :by_machine_year, :by_country, :by_state_name, :by_state_id, type: :array
+      has_scope :by_location_name, :by_machine_name, :by_city_id, :by_city_no_state, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region, :by_is_stern_army, :regionless_only, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte, :by_payment_type
+      has_scope :by_type_id, :by_location_id, :by_machine_id, :by_zone_id, :by_operator_id, :by_machine_single_id, :by_machine_group_id, :by_ipdb_id, :by_opdb_id, :manufacturer, :by_machine_type, :by_machine_display, :by_machine_id_ic, :by_machine_single_id_ic, :by_machine_year, :by_country, :by_state_name, :by_state_id, :by_all_ages, type: :array
       rate_limit to: 30, within: 10.minutes, by: :api_token_rate_limit_key, only: [ :suggest, :update ], name: "api_locations_suggest_update"
 
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION = 50
