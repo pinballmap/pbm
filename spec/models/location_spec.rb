@@ -213,6 +213,50 @@ describe Location do
     end
   end
 
+  describe 'validates all_ages' do
+    it 'only allows Yes, At Times, or blank' do
+      [ 'Yes', 'At Times', '', nil ].each do |v|
+        @l.all_ages = v
+        expect { @l.save! }.to_not raise_error
+      end
+
+      @l.all_ages = 'No'
+      expect { @l.save! }.to raise_error
+    end
+  end
+
+  describe 'validates payment_type' do
+    it 'only allows Free Play, or blank' do
+      [ 'Free Play', '', nil ].each do |v|
+        @l.payment_type = v
+        expect { @l.save! }.to_not raise_error
+      end
+
+      @l.payment_type = 'Per Game'
+      expect { @l.save! }.to raise_error
+    end
+  end
+
+  describe 'by_all_ages scope' do
+    it 'includes At Times-tagged locations for a Yes filter' do
+      yes_location = FactoryBot.create(:location, all_ages: 'Yes')
+      at_times_location = FactoryBot.create(:location, all_ages: 'At Times')
+      FactoryBot.create(:location, all_ages: nil)
+
+      expect(Location.by_all_ages('Yes')).to include(yes_location, at_times_location)
+    end
+  end
+
+  describe 'by_payment_type scope' do
+    it 'matches only the exact payment type' do
+      free_play_location = FactoryBot.create(:location, payment_type: 'Free Play')
+      other_location = FactoryBot.create(:location)
+
+      expect(Location.by_payment_type('Free Play')).to include(free_play_location)
+      expect(Location.by_payment_type('Free Play')).to_not include(other_location)
+    end
+  end
+
   describe '#update_metadata' do
     it 'works with a regionless location' do
       regionless_location = FactoryBot.create(:location, name: 'REGIONLESS', region: nil)
@@ -271,6 +315,28 @@ Changed location type to bar to quarterworld
       @l.update_metadata(u, description: '1' * 600)
 
       expect(@l.description.size).to eq(549)
+    end
+
+    it 'updates all_ages and payment_type and records them in the submission' do
+      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      @l.update_metadata(u, all_ages: 'Yes', payment_type: 'Free Play')
+
+      expect(@l.reload.all_ages).to eq('Yes')
+      expect(@l.payment_type).to eq('Free Play')
+
+      user_submission = UserSubmission.third
+      expect(user_submission.submission).to eq(<<-HERE.strip)
+Changed all ages status to Yes
+Changed payment type to Free Play to quarterworld
+      HERE
+    end
+
+    it 'rejects an invalid all_ages or payment_type value' do
+      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      values, message_type = @l.update_metadata(u, all_ages: 'Maybe')
+
+      expect(message_type).to eq('errors')
+      expect(values).to include('All ages is not included in the list')
     end
   end
 end

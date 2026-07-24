@@ -87,6 +87,18 @@
                   %button#n_machines_10.machine_type_btn.n_machines_btn{:type => "button", :onclick => "setNMachines('10')"} 10+
                   %button#n_machines_20.machine_type_btn.n_machines_btn{:type => "button", :onclick => "setNMachines('20')"} 20+
               .map_input_limit
+                .input_title All ages
+                = hidden_field_tag "by_all_ages", (params[:by_all_ages] == "Yes" ? "Yes" : '')
+                .machine_type_toggle
+                  %button#all_ages_all.machine_type_btn.all_ages_btn.active{:type => "button", :onclick => "setAllAges('')"} All
+                  %button#all_ages_yes.machine_type_btn.all_ages_btn{:type => "button", :onclick => "setAllAges('Yes')"} All Ages?
+              .map_input_limit
+                .input_title Free Play?
+                = hidden_field_tag "by_payment_type", (params[:by_payment_type] == "Free Play" ? "Free Play" : '')
+                .machine_type_toggle
+                  %button#payment_type_any.machine_type_btn.payment_type_btn.active{:type => "button", :onclick => "setPaymentType('')"} Any
+                  %button#payment_type_free.machine_type_btn.payment_type_btn{:type => "button", :onclick => "setPaymentType('Free Play')"} Free Play
+              .map_input_limit
                 .input_title_row
                   .input_title Location type
                   %a#select_all_location_types{href: "#"} select all
@@ -242,6 +254,20 @@
     updateClearFiltersButton();
   }
 
+  function setAllAges(val) {
+    $('#by_all_ages').val(val);
+    $('.all_ages_btn').removeClass('active');
+    $('#' + (val === '' ? 'all_ages_all' : 'all_ages_yes')).addClass('active');
+    updateClearFiltersButton();
+  }
+
+  function setPaymentType(val) {
+    $('#by_payment_type').val(val);
+    $('.payment_type_btn').removeClass('active');
+    $('#' + (val === '' ? 'payment_type_any' : 'payment_type_free')).addClass('active');
+    updateClearFiltersButton();
+  }
+
   function machineSelectIds() {
     return $('#by_machine_select').val() || [];
   }
@@ -270,6 +296,8 @@
     var yearGte = $('#by_machine_year_gte').val();
     var yearLte = $('#by_machine_year_lte').val();
     var operatorIds = $('#by_operator_id').val();
+    var allAges = $('#by_all_ages').val();
+    var paymentType = $('#by_payment_type').val();
     return (machineIds && machineIds.length > 0) ||
            (nMachines !== null && nMachines !== '') ||
            (typeIds && typeIds.length > 0) ||
@@ -279,7 +307,9 @@
            savedModeActive ||
            (yearGte && yearGte !== '') ||
            (yearLte && yearLte !== '') ||
-           (operatorIds && operatorIds.length > 0);
+           (operatorIds && operatorIds.length > 0) ||
+           (allAges && allAges !== '') ||
+           (paymentType && paymentType !== '');
   }
 
   function updateClearFiltersButton() {
@@ -454,6 +484,8 @@
     #{Array(params[:by_machine_type]).include?('em') ? "emModeActive = true; $('#em_toggle').addClass('active'); $('#all_toggle').removeClass('active');" : ""}
     #{params[:by_ic_active].present? ? "icActiveMode = true; $('#ic_toggle').addClass('active'); $('#all_ic_toggle').removeClass('active');" : ""}
     #{params[:by_at_least_n_machines].present? ? "setNMachines('#{params[:by_at_least_n_machines].to_i}');" : ""}
+    #{params[:by_all_ages] == "Yes" ? "setAllAges('Yes');" : ""}
+    #{params[:by_payment_type] == "Free Play" ? "setPaymentType('Free Play');" : ""}
     #{current_user && params[:user_faved].present? ? "setSavedMode(true);" : ""}
     updateClearFiltersButton();
     restoringFromUrl = false;
@@ -576,6 +608,8 @@
     var by_machine_year_gte = $('#by_machine_year_gte').val() || undefined;
     var by_machine_year_lte = $('#by_machine_year_lte').val() || undefined;
     var by_machine_type = emModeActive ? ['em', 'me'] : undefined;
+    var by_all_ages = $('#by_all_ages').val() || undefined;
+    var by_payment_type = $('#by_payment_type').val() || undefined;
     $('#intro_container').css('display','none');
 
     var machineIds = machineSelectIds();
@@ -595,7 +629,7 @@
 
     var mapActivityVisible = $('#map_activity_container').html().trim() !== '';
 
-    getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_operator_id, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active: icActiveMode ? '1' : undefined, by_machine_year_gte, by_machine_year_lte, user_faved: savedModeActive ? currentUserId : undefined });
+    getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_operator_id, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active: icActiveMode ? '1' : undefined, by_machine_year_gte, by_machine_year_lte, user_faved: savedModeActive ? currentUserId : undefined, by_all_ages, by_payment_type });
     clearAddressFields();
 
     if (mapActivityVisible) {
@@ -693,6 +727,8 @@
             by_machine_year_gte: $('#by_machine_year_gte').val() || undefined,
             by_machine_year_lte: $('#by_machine_year_lte').val() || undefined,
             user_faved: savedModeActive ? currentUserId : undefined,
+            by_all_ages: $('#by_all_ages').val() || undefined,
+            by_payment_type: $('#by_payment_type').val() || undefined,
             sort: currentSort
           },
           success: function(data) {

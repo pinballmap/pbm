@@ -8,7 +8,7 @@ describe SuggestedLocationsController, type: :controller do
     @z = FactoryBot.create(:zone, name: 'z', region: @r)
     @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', id: 1112)
 
-    @sl = FactoryBot.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', country: 'US', phone: '503-391-9288', lat: 11.11, lon: 22.22, website: 'http://www.cool.com', region: @r, location_type: @lt, operator: @o, zone: @z, machines: [ 21, 22, 23, 24 ], user_id: @user.id)
+    @sl = FactoryBot.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', country: 'US', phone: '503-391-9288', lat: 11.11, lon: 22.22, website: 'http://www.cool.com', region: @r, location_type: @lt, operator: @o, zone: @z, all_ages: 'Yes', payment_type: 'Free Play', machines: [ 21, 22, 23, 24 ], user_id: @user.id)
 
     login(@user)
   end
@@ -36,6 +36,8 @@ describe SuggestedLocationsController, type: :controller do
       expect(l.location_type).to eq(@lt)
       expect(l.zone).to eq(@z)
       expect(l.operator).to eq(@o)
+      expect(l.all_ages).to eq('Yes')
+      expect(l.payment_type).to eq('Free Play')
 
       expect(SuggestedLocation.all.size).to eq(0)
 

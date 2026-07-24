@@ -62,6 +62,30 @@ describe SuggestedLocation do
     end
   end
 
+  describe 'validates all_ages' do
+    it 'only allows Yes, At Times, or blank' do
+      [ 'Yes', 'At Times', '', nil ].each do |v|
+        @suggested_location.all_ages = v
+        expect { @suggested_location.save! }.to_not raise_error
+      end
+
+      @suggested_location.all_ages = 'No'
+      expect { @suggested_location.save! }.to raise_error
+    end
+  end
+
+  describe 'validates payment_type' do
+    it 'only allows Free Play, or blank' do
+      [ 'Free Play', '', nil ].each do |v|
+        @suggested_location.payment_type = v
+        expect { @suggested_location.save! }.to_not raise_error
+      end
+
+      @suggested_location.payment_type = 'Per Game'
+      expect { @suggested_location.save! }.to raise_error
+    end
+  end
+
   describe '#address_incomplete?' do
     it 'should be true based on lack of address' do
       expect(@suggested_location.address_incomplete?).to be(false)
@@ -94,6 +118,18 @@ HERE
       @suggested_location.convert_to_location(@user.email)
 
       expect(@suggested_location.errors.messages).to include(base: [ 'Country is a required field for conversion.' ])
+    end
+
+    it 'carries all_ages and payment_type onto the created location' do
+      @suggested_location.all_ages = 'Yes'
+      @suggested_location.payment_type = 'Free Play'
+      @suggested_location.save!
+
+      @suggested_location.convert_to_location(@user.email)
+
+      location = Location.last
+      expect(location.all_ages).to eq('Yes')
+      expect(location.payment_type).to eq('Free Play')
     end
   end
 end

@@ -604,6 +604,43 @@ describe LocationsController do
     end
   end
 
+  describe 'all_ages and payment_type badges', type: :feature, js: true do
+    it 'shows the All Ages badge for Yes and At Times, but not for blank' do
+      yes_location = FactoryBot.create(:location, id: 91, region: @region, name: 'Yes Location', all_ages: 'Yes')
+      at_times_location = FactoryBot.create(:location, id: 93, region: @region, name: 'At Times Location', all_ages: 'At Times')
+      blank_location = FactoryBot.create(:location, id: 94, region: @region, name: 'Blank Location')
+
+      visit '/portland'
+      click_on 'location_search_button'
+
+      within('div#show_location_detail_location_91') do
+        expect(page).to have_content('All Ages')
+        expect(page).to_not have_content('All Ages At Times')
+      end
+      within('div#show_location_detail_location_93') do
+        expect(page).to have_content('All Ages At Times')
+      end
+      within('div#show_location_detail_location_94') do
+        expect(page).to_not have_content('All Ages')
+      end
+    end
+
+    it 'shows the payment type value when present, with no label prefix' do
+      free_play_location = FactoryBot.create(:location, id: 95, region: @region, name: 'Free Play Location', payment_type: 'Free Play')
+      blank_location = FactoryBot.create(:location, id: 96, region: @region, name: 'Blank Payment Location')
+
+      visit '/portland'
+      click_on 'location_search_button'
+
+      within('div#show_location_detail_location_95') do
+        expect(page).to have_content('Free Play')
+      end
+      within('div#show_location_detail_location_96') do
+        expect(page).to_not have_content('Free Play')
+      end
+    end
+  end
+
   describe 'initial search by passed in param', type: :feature, js: true do
     before(:each) do
       @type = FactoryBot.create(:location_type, name: 'Bar')
@@ -847,6 +884,40 @@ describe LocationsController do
 
       expect(find('#search_results')).to have_content('McGannyville')
       expect(find('#search_results')).to_not have_content('Weakerton')
+    end
+
+    it 'by_all_ages loads results on a direct URL visit, including At Times-tagged locations' do
+      FactoryBot.create(:location, city: 'McGannyville', state: 'TX', name: 'Jolene', all_ages: 'Yes')
+      FactoryBot.create(:location, city: 'Someplace', state: 'CA', name: 'Sassafras', all_ages: 'At Times')
+      FactoryBot.create(:location, city: 'Weakerton', state: 'OR', name: 'Plover')
+
+      visit '/map/?by_all_ages=Yes'
+
+      expect(find('#search_results')).to have_content('McGannyville')
+      expect(find('#search_results')).to have_content('Someplace')
+      expect(find('#search_results')).to_not have_content('Weakerton')
+    end
+
+    it 'by_payment_type loads results on a direct URL visit' do
+      FactoryBot.create(:location, city: 'McGannyville', state: 'TX', name: 'Jolene', payment_type: 'Free Play')
+      FactoryBot.create(:location, city: 'Weakerton', state: 'OR', name: 'Plover')
+
+      visit '/map/?by_payment_type=Free+Play'
+
+      expect(find('#search_results')).to have_content('McGannyville')
+      expect(find('#search_results')).to_not have_content('Weakerton')
+    end
+
+    it 'still loads the map, showing no results, when given a bogus by_all_ages or by_payment_type value' do
+      FactoryBot.create(:location, city: 'McGannyville', state: 'TX', name: 'Jolene', all_ages: 'Yes')
+
+      visit '/map/?by_all_ages=bogus'
+
+      expect(page).to have_content('No results in the current map view.')
+
+      visit '/map/?by_payment_type=bogus'
+
+      expect(page).to have_content('No results in the current map view.')
     end
 
     it 'by_is_stern_army' do
@@ -1165,6 +1236,23 @@ describe LocationsController do
 
       expect(page).to_not have_css('div#flash_error')
       expect(page).to have_content("Last updated by ssw on #{Time.now.strftime('%b %d, %Y')}")
+    end
+
+    it 'allows users to update all_ages and payment_type, and displays them' do
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find('.meta_image').click
+      select('Yes', from: "new_all_ages_#{@location.id}")
+      select('Free Play', from: "new_payment_type_#{@location.id}")
+      click_on 'Save'
+
+      sleep 1
+
+      expect(@location.reload.all_ages).to eq('Yes')
+      expect(@location.payment_type).to eq('Free Play')
+
+      expect(page).to have_content('All Ages')
+      expect(page).to have_content('Free Play')
     end
 
     it 'allows users to update a location metadata - TWICE' do

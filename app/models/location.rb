@@ -1,11 +1,16 @@
 class Location < ApplicationRecord
   has_paper_trail only: %i[name street city state region zone lat lon is_stern_army]
 
+  ALL_AGES_VALUES = [ "Yes", "At Times" ]
+  PAYMENT_TYPE_VALUES = [ "Free Play" ]
+
   validates_presence_of :name, :street, :city, :country
   validates :phone, phone: { possible: true, allow_blank: true, message: "Phone format not valid." }
   validates :website, format: { with: %r{\Ahttp(s?)://}, message: "must begin with http:// or https://" }, if: :website?
   validates :name, :street, :city, format: { with: /\A\S.*/, message: "Can't start with a blank", multiline: true }
   validates :lat, :lon, presence: { message: "Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon" }
+  validates :all_ages, inclusion: { in: ALL_AGES_VALUES }, allow_blank: true
+  validates :payment_type, inclusion: { in: PAYMENT_TYPE_VALUES }, allow_blank: true
 
   belongs_to :location_type, optional: true
   belongs_to :zone, optional: true
@@ -114,6 +119,8 @@ class Location < ApplicationRecord
   }
   scope :by_is_stern_army, ->(_non_blank_param) { where(is_stern_army: true) }
   scope :by_ic_active, ->(_non_blank_param) { where(ic_active: true) }
+  scope :by_all_ages, ->(value) { where(all_ages: [ value, "At Times" ]) }
+  scope :by_payment_type, ->(value) { where(payment_type: value) }
   scope :regionless_only, ->(_non_blank_param) { where(region_id: nil) }
   scope :zoneless, -> { where(zone_id: nil) }
   scope :user_faved, lambda { |user_id|
@@ -241,6 +248,16 @@ class Location < ApplicationRecord
     self.location_type_id = location_type_id
   end
 
+  def update_all_ages(new_all_ages)
+    @updates.push("Changed all ages status to #{new_all_ages.presence || 'BLANK'}")
+    self.all_ages = new_all_ages
+  end
+
+  def update_payment_type(new_payment_type)
+    @updates.push("Changed payment type to #{new_payment_type.presence || 'BLANK'}")
+    self.payment_type = new_payment_type
+  end
+
   def update_metadata(user, options = {})
     @updates = []
     @validation_errors = []
@@ -250,6 +267,8 @@ class Location < ApplicationRecord
     update_website(options[:website]) if options[:website]
     update_operator(options[:operator_id]) if options[:operator_id]
     update_location_type(options[:location_type_id]) if options[:location_type_id]
+    update_all_ages(options[:all_ages]) if options[:all_ages]
+    update_payment_type(options[:payment_type]) if options[:payment_type]
 
     @validation_errors.push("Invalid") unless valid?
 

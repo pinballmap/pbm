@@ -2,7 +2,7 @@ class MapsController < ApplicationController
   respond_to :html, only: %i[get_bounds]
   before_action :normalize_array_params
   before_action :normalize_machine_lookup_params
-  has_scope :by_location_name, :by_at_least_n_machines, :user_faved, :by_city_name, :by_city_no_state, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte
+  has_scope :by_location_name, :by_at_least_n_machines, :user_faved, :by_city_name, :by_city_no_state, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte, :by_all_ages, :by_payment_type
   has_scope :by_type_id, :by_location_id, :by_machine_id, :by_operator_id, :by_machine_single_id, :by_machine_type, :by_machine_display, :manufacturer, :by_country, :by_state_name, :by_machine_id_ic, :by_machine_single_id_ic, type: :array
 
   rate_limit to: 100, within: 2.minutes, only: :region, name: "maps_region"
@@ -21,7 +21,7 @@ class MapsController < ApplicationController
 
     @faved_location_ids = current_user ? UserFaveLocation.where(user_id: current_user.id).pluck(:location_id) : []
 
-    @map_no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_city_id].blank? && params[:by_state_name].blank? && params[:by_city_no_state].blank? && params[:by_country].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank? && params[:by_is_stern_army].blank? && params[:by_machine_type].blank? && params[:by_machine_display].blank? && params[:manufacturer].blank? && params[:by_operator_id].blank? && params[:by_operator_name].blank? && params[:by_machine_id_ic].blank? && params[:by_machine_single_id_ic].blank? && params[:by_machine_year_gte].blank? && params[:by_machine_year_lte].blank? && params[:by_opdb_id].blank? && params[:by_ipdb_id].blank?
+    @map_no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_city_id].blank? && params[:by_state_name].blank? && params[:by_city_no_state].blank? && params[:by_country].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank? && params[:by_is_stern_army].blank? && params[:by_machine_type].blank? && params[:by_machine_display].blank? && params[:manufacturer].blank? && params[:by_operator_id].blank? && params[:by_operator_name].blank? && params[:by_machine_id_ic].blank? && params[:by_machine_single_id_ic].blank? && params[:by_machine_year_gte].blank? && params[:by_machine_year_lte].blank? && params[:by_opdb_id].blank? && params[:by_ipdb_id].blank? && params[:by_all_ages].blank? && params[:by_payment_type].blank?
 
     @nearby_lat = 39.5718
     @nearby_lon = -99.1066
@@ -85,7 +85,7 @@ class MapsController < ApplicationController
     elsif @locations_size == 1 && @results_init == true
       @pagy, @locations = pagy(apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance).includes(:location_type, :machines))
     else
-      @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count")).includes(:location_type, :machines), limit: 50, request_path: "/nearby_locations_load")
+      @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count, locations.all_ages, locations.payment_type")).includes(:location_type, :machines), limit: 50, request_path: "/nearby_locations_load")
     end
 
     if @results_init == true
@@ -121,7 +121,7 @@ class MapsController < ApplicationController
     elsif @locations_size == 1 && @results_init == true
       @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).includes(:location_type, :machines))
     else
-      @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).where(city_condition).where(zone_condition).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order(sort_order).includes(:location_type, :machines), limit: 50, request_path: "/region_location_load")
+      @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).where(city_condition).where(zone_condition).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "all_ages", "payment_type" ]).order(sort_order).includes(:location_type, :machines), limit: 50, request_path: "/region_location_load")
     end
 
     if @results_init == true
@@ -158,7 +158,7 @@ class MapsController < ApplicationController
     elsif @locations_size == 1 && @results_init == true
       @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).includes(:location_type, :machines))
     else
-      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order(sort_order).includes(:location_type, :machines), limit: 50, request_path: "/get_bounds_load")
+      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "all_ages", "payment_type" ]).order(sort_order).includes(:location_type, :machines), limit: 50, request_path: "/get_bounds_load")
     end
 
     if @results_init == true
@@ -240,7 +240,7 @@ class MapsController < ApplicationController
     elsif @locations_size == 1 && @results_init == true
       @pagy, @locations = pagy(base_scope.distinct.includes(:location_type, :machines))
     else
-      @pagy, @locations = pagy(base_scope.select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).distinct.order(sort_order).includes(:location_type, :machines), limit: 50, request_path: "/map_location_load")
+      @pagy, @locations = pagy(base_scope.select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "all_ages", "payment_type" ]).distinct.order(sort_order).includes(:location_type, :machines), limit: 50, request_path: "/map_location_load")
     end
 
     if @results_init == true
@@ -271,7 +271,7 @@ class MapsController < ApplicationController
     elsif @locations_size == 1 && @results_init == true
       @pagy, @locations = pagy(Location.where(operator_id: params[:by_operator_id]).includes(:location_type, :machines))
     else
-      @pagy, @locations = pagy(Location.where(operator_id: params[:by_operator_id]).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count" ]).order(sort_order).includes(:location_type, :machines).limit(100))
+      @pagy, @locations = pagy(Location.where(operator_id: params[:by_operator_id]).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "all_ages", "payment_type" ]).order(sort_order).includes(:location_type, :machines).limit(100))
     end
 
     if @results_init == true

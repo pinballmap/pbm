@@ -108,6 +108,16 @@ RailsAdmin.config do |config|
       field :location_type, :belongs_to_association
       field :website, :string
       field :description, :string
+      field :all_ages, :enum do
+        enum do
+          Location::ALL_AGES_VALUES
+        end
+      end
+      field :payment_type, :enum do
+        enum do
+          Location::PAYMENT_TYPE_VALUES
+        end
+      end
       field :place_id, :string
       field :is_stern_army, :boolean do
         visible do
@@ -137,6 +147,16 @@ RailsAdmin.config do |config|
       field :updated_at, :datetime
       field :description do
         html_attributes rows: 5, cols: 50
+      end
+      field :all_ages, :enum do
+        enum do
+          Location::ALL_AGES_VALUES
+        end
+      end
+      field :payment_type, :enum do
+        enum do
+          Location::PAYMENT_TYPE_VALUES
+        end
       end
       field :place_id, :string
       field :is_stern_army, :boolean do
@@ -181,6 +201,16 @@ RailsAdmin.config do |config|
       field :website, :string
       field :description do
         html_attributes rows: 5, cols: 50
+      end
+      field :all_ages, :enum do
+        enum do
+          Location::ALL_AGES_VALUES
+        end
+      end
+      field :payment_type, :enum do
+        enum do
+          Location::PAYMENT_TYPE_VALUES
+        end
       end
       field :place_id, :string
       field :region_id do
@@ -230,6 +260,16 @@ RailsAdmin.config do |config|
       field :website, :string
       field :description do
         html_attributes rows: 5, cols: 50
+      end
+      field :all_ages, :enum do
+        enum do
+          Location::ALL_AGES_VALUES
+        end
+      end
+      field :payment_type, :enum do
+        enum do
+          Location::PAYMENT_TYPE_VALUES
+        end
       end
       field :place_id, :string
       field :region_id do
@@ -771,6 +811,16 @@ RailsAdmin.config do |config|
       field :place_id, :string
       field :phone, :string
       field :operator, :belongs_to_association
+      field :all_ages, :enum do
+        enum do
+          Location::ALL_AGES_VALUES
+        end
+      end
+      field :payment_type, :enum do
+        enum do
+          Location::PAYMENT_TYPE_VALUES
+        end
+      end
       field :created_at, :datetime
     end
     edit do
@@ -813,6 +863,16 @@ RailsAdmin.config do |config|
         required false
       end
       field :website, :string
+      field :all_ages, :enum do
+        enum do
+          Location::ALL_AGES_VALUES
+        end
+      end
+      field :payment_type, :enum do
+        enum do
+          Location::PAYMENT_TYPE_VALUES
+        end
+      end
       field :comments do
         html_attributes rows: 5, cols: 50
       end
@@ -840,6 +900,8 @@ RailsAdmin.config do |config|
       field :lat, :decimal
       field :lon, :decimal
       field :website, :string
+      field :all_ages, :string
+      field :payment_type, :string
       field :comments do
         html_attributes rows: 5, cols: 50
       end

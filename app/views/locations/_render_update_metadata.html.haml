@@ -44,6 +44,14 @@
           = image_tag('icons/email-outline.svg', class: 'copy_icon', data: { copy: l.operator_email_opt_in })
         - if l.operator_phone_opt_in
           = image_tag('icons/phone.svg', class: 'copy_icon', data: { copy: l.operator_phone_opt_in })
+  - if l.all_ages?
+    %div.all_ages
+      = image_tag('icons/human-male-girl.svg', :class => 'meta_icon')
+      %span.darkgrey= l.all_ages == "Yes" ? "All Ages" : "All Ages At Times"
+  - if l.payment_type?
+    %div.payment_type
+      = image_tag('icons/coins-solid-full.svg', :class => 'meta_icon')
+      %span.darkgrey= l.payment_type
   - if !l.description.blank?
     %div.description
       = image_tag('icons/notebook-outline.svg', :class => 'meta_icon float_l')
@@ -73,6 +81,12 @@
     .clear
     = label_tag "Location Type: "
     = select_tag "new_location_type_#{l.id}", options_for_select([['']]) + options_from_collection_for_select(LocationType.all, 'id', 'name', l.location_type_id)
+    .clear
+    = label_tag "All Ages? "
+    = select_tag "new_all_ages_#{l.id}", options_for_select([['']] + Location::ALL_AGES_VALUES, l.all_ages)
+    .clear
+    = label_tag "Free Play? "
+    = select_tag "new_payment_type_#{l.id}", options_for_select([['']] + Location::PAYMENT_TYPE_VALUES, l.payment_type)
     .clear
     = label_tag "Location Description: "
     = text_area_tag "new_desc_#{l.id}", (l.description.to_s == '') ? '' : l.description, :cols => 20, :rows => 3, :class => 'edit_mode', :placeholder => 'Hours; type of payment system(s) they use (door fee, cash, cards); accessibility issues'

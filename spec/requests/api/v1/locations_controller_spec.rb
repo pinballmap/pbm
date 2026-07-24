@@ -6,8 +6,8 @@ describe Api::V1::LocationsController, type: :request do
     @another_region = FactoryBot.create(:region, name: 'seattle', full_name: 'Seattle', lat: 20, lon: 20)
     @out_of_bounds_region = FactoryBot.create(:region, name: 'vancouver', full_name: 'Vancouver', lat: 100, lon: 100)
     @location = FactoryBot.create(:location, region: @region, name: 'Satchmo', state: 'OR', zip: '97203', lat: 42.18, lon: -71.18)
-    @user = FactoryBot.create(:user, id: 111, username: 'cibw', email: 'foo@bar.com', region: @region, authentication_token: '1G8_s7P-V-4MGojaKD7a', operator_id: 2000, admin_title: 'Administrator', contributor_rank: 'Magician')
-    @another_region_admin_user = FactoryBot.create(:user, id: 222, username: 'latguy', email: 'lat@guy.com', region: @another_region)
+    @user = FactoryBot.create(:user, username: 'cibw', email: 'foo@bar.com', region: @region, authentication_token: '1G8_s7P-V-4MGojaKD7a', operator_id: 2000, admin_title: 'Administrator', contributor_rank: 'Magician')
+    @another_region_admin_user = FactoryBot.create(:user, username: 'latguy', email: 'lat@guy.com', region: @another_region)
     FactoryBot.create(:user, email: 'super_admin@bar.com', region: nil, is_super_admin: 1)
   end
 
@@ -50,14 +50,14 @@ describe Api::V1::LocationsController, type: :request do
       z = FactoryBot.create(:zone, name: 'zone')
       FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
 
-      expect { post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com', 'foo@bar.com' ], subject: 'Pinball Map - New location (Portland) - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: nil, location_phone: 'phone', location_website: 'website', location_type: 'type', operator: 'operator', zone: 'zone', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', admin_notes: 'Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder', place_id: nil, remote_ip: '127.0.0.1', headers: nil, user_agent: nil, user_info: ' by cibw (foo@bar.com)', user_email: 'foo@bar.com' }, args: [] })
+      expect { post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com', 'foo@bar.com' ], subject: 'Pinball Map - New location (Portland) - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: nil, location_phone: 'phone', location_website: 'website', location_type: 'type', operator: 'operator', zone: 'zone', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', location_all_ages: nil, location_payment_type: nil, admin_notes: 'Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder', place_id: nil, remote_ip: '127.0.0.1', headers: nil, user_agent: nil, user_info: ' by cibw (foo@bar.com)', user_email: 'foo@bar.com' }, args: [] })
     end
 
     it 'Searches boundary boxes by transmitted lat/lon (geocoded, not user location)' do
       FactoryBot.create(:location_type, name: 'type')
       FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
 
-      expect { post '/api/v1/locations/suggest.json', params: { region_id: nil, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: nil, location_zone: nil, location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', lat: 20, lon: 20 } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com', 'lat@guy.com' ], subject: 'Pinball Map - New location (Seattle) - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: nil, location_phone: 'phone', location_website: 'website', location_type: 'type', operator: '', zone: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', admin_notes: 'Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder', place_id: nil, remote_ip: '127.0.0.1', headers: nil, user_agent: nil, user_info: ' by cibw (foo@bar.com)', user_email: 'foo@bar.com' }, args: [] })
+      expect { post '/api/v1/locations/suggest.json', params: { region_id: nil, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: nil, location_zone: nil, location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', lat: 20, lon: 20 } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com', 'lat@guy.com' ], subject: 'Pinball Map - New location (Seattle) - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: nil, location_phone: 'phone', location_website: 'website', location_type: 'type', operator: '', zone: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', location_all_ages: nil, location_payment_type: nil, admin_notes: 'Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder', place_id: nil, remote_ip: '127.0.0.1', headers: nil, user_agent: nil, user_info: ' by cibw (foo@bar.com)', user_email: 'foo@bar.com' }, args: [] })
     end
 
     it 'tags a user when appropriate' do
@@ -65,7 +65,7 @@ describe Api::V1::LocationsController, type: :request do
       post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
 
       expect(response).to be_successful
-      expect(UserSubmission.first.user_id).to eq(111)
+      expect(UserSubmission.first.user_id).to eq(@user.id)
     end
 
     it 'does not bomb out when operator and type and zone are blank' do
@@ -83,6 +83,15 @@ describe Api::V1::LocationsController, type: :request do
 
       expect(response).to be_successful
       expect(SuggestedLocation.first.machines).to eq('Jolene (Pro) (Burrito, 1995), Happy Dog (Premium) (Burrito, 2001),')
+    end
+
+    it 'accepts and stores location_all_ages and location_payment_type' do
+      FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
+      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_all_ages: 'Yes', location_payment_type: 'Free Play', location_machines: 'Jolene (Pro) (Burrito, 1995),', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(SuggestedLocation.first.all_ages).to eq('Yes')
+      expect(SuggestedLocation.first.payment_type).to eq('Free Play')
     end
   end
 
@@ -304,6 +313,28 @@ describe Api::V1::LocationsController, type: :request do
 
       expect(response.body).to include('true')
     end
+
+    it 'respects by_all_ages filter, including At Times-tagged locations' do
+      FactoryBot.create(:location, region: @region, name: 'Yes Place', all_ages: 'Yes')
+      FactoryBot.create(:location, region: @region, name: 'At Times Place', all_ages: 'At Times')
+      FactoryBot.create(:location, region: @region, name: 'Blank Place')
+
+      get "/api/v1/region/#{@region.name}/locations.json", params: { by_all_ages: 'Yes' }
+
+      expect(response.body).to include('Yes Place')
+      expect(response.body).to include('At Times Place')
+      expect(response.body).to_not include('Blank Place')
+    end
+
+    it 'respects by_payment_type filter' do
+      FactoryBot.create(:location, region: @region, name: 'Free Play Place', payment_type: 'Free Play')
+      FactoryBot.create(:location, region: @region, name: 'Blank Payment Place')
+
+      get "/api/v1/region/#{@region.name}/locations.json", params: { by_payment_type: 'Free Play' }
+
+      expect(response.body).to include('Free Play Place')
+      expect(response.body).to_not include('Blank Payment Place')
+    end
   end
 
   describe '#update' do
@@ -412,6 +443,26 @@ describe Api::V1::LocationsController, type: :request do
       expect(location['phone']).to eq(nil)
     end
 
+    it 'allows you to update all_ages and payment_type' do
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { all_ages: 'Yes', payment_type: 'Free Play', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      expect(response).to be_successful
+
+      updated_location = @location.reload
+      expect(updated_location.all_ages).to eq('Yes')
+      expect(updated_location.payment_type).to eq('Free Play')
+
+      location = JSON.parse(response.body)['location']
+      expect(location['all_ages']).to eq('Yes')
+      expect(location['payment_type']).to eq('Free Play')
+    end
+
+    it 'responds with an error if an invalid all_ages or payment_type is sent' do
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { all_ages: 'Maybe', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to include('All ages is not included in the list')
+    end
+
     it 'tags update with user_id when authenticating' do
       put '/api/v1/locations/' + @location.id.to_s + '.json', params: { description: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
@@ -419,7 +470,7 @@ describe Api::V1::LocationsController, type: :request do
       updated_location = @location.reload
 
       expect(updated_location.description).to eq('foo')
-      expect(updated_location.last_updated_by_user_id).to eq(111)
+      expect(updated_location.last_updated_by_username).to eq('cibw')
     end
   end
 
@@ -537,6 +588,24 @@ describe Api::V1::LocationsController, type: :request do
       expect(locations.size).to eq(1)
 
       expect(locations[0]['name']).to eq('Closest Stern Location')
+    end
+
+    it 'respects by_all_ages and by_payment_type filters' do
+      yes_location = FactoryBot.create(:location, region: @region, name: 'Closest Yes Location', street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63, all_ages: 'Yes')
+      blank_location = FactoryBot.create(:location, region: @region, name: 'Closest Blank Location', street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63)
+      free_play_location = FactoryBot.create(:location, region: @region, name: 'Closest Free Play Location', street: '123 pine', city: 'portland', state: 'OR', zip: '97202', lat: 45.49, lon: -122.63, payment_type: 'Free Play')
+
+      get '/api/v1/locations/closest_by_address.json', params: { address: '97202', by_all_ages: 'Yes', send_all_within_distance: 1 }
+
+      names = JSON.parse(response.body)['locations'].map { |l| l['name'] }
+      expect(names).to include('Closest Yes Location')
+      expect(names).to_not include('Closest Blank Location')
+
+      get '/api/v1/locations/closest_by_address.json', params: { address: '97202', by_payment_type: 'Free Play', send_all_within_distance: 1 }
+
+      names = JSON.parse(response.body)['locations'].map { |l| l['name'] }
+      expect(names).to include('Closest Free Play Location')
+      expect(names).to_not include('Closest Blank Location')
     end
 
     it 'respects by_machine_type and by_machine_display filters and by_machine_year' do
@@ -854,6 +923,24 @@ describe Api::V1::LocationsController, type: :request do
       location = JSON.parse(response.body)['location']
       expect(location['id']).to eq(close_location_two.id)
     end
+
+    it 'respects by_all_ages and by_payment_type filters' do
+      yes_location = FactoryBot.create(:location, region: @region, lat: 45.49, lon: -122.63, all_ages: 'Yes')
+      blank_location = FactoryBot.create(:location, region: @region, lat: 45.49, lon: -122.631)
+      free_play_location = FactoryBot.create(:location, region: @region, lat: 45.491, lon: -122.63, payment_type: 'Free Play')
+
+      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: yes_location.lat, lon: yes_location.lon, by_all_ages: 'Yes', send_all_within_distance: 1 }
+
+      ids = JSON.parse(response.body)['locations'].map { |l| l['id'] }
+      expect(ids).to include(yes_location.id)
+      expect(ids).to_not include(blank_location.id)
+
+      get '/api/v1/locations/closest_by_lat_lon.json', params: { lat: yes_location.lat, lon: yes_location.lon, by_payment_type: 'Free Play', send_all_within_distance: 1 }
+
+      ids = JSON.parse(response.body)['locations'].map { |l| l['id'] }
+      expect(ids).to include(free_play_location.id)
+      expect(ids).to_not include(blank_location.id)
+    end
   end
 
   describe '#within_bounding_box' do
@@ -974,6 +1061,36 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to_not include('123 Main St')
       expect(response.body).to_not include('111-222-3333')
       expect(response.body).to_not include('https://website.gov')
+    end
+
+    it 'includes all_ages and payment_type at no_details=1 but excludes them at no_details=2' do
+      FactoryBot.create(:location, name: 'Close_1', region: @region, lat: 45.526112069408704, lon: -122.60884314086321, all_ages: 'At Times', payment_type: 'Free Play')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, no_details: 1 }
+
+      expect(response.body).to include('At Times')
+      expect(response.body).to include('Free Play')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, no_details: 2 }
+
+      expect(response.body).to_not include('At Times')
+      expect(response.body).to_not include('Free Play')
+    end
+
+    it 'respects by_all_ages and by_payment_type filters' do
+      yes_location = FactoryBot.create(:location, name: 'Close_Yes', region: @region, lat: 45.526112069408704, lon: -122.60884314086321, all_ages: 'Yes')
+      blank_location = FactoryBot.create(:location, name: 'Close_Blank', region: @region, lat: 45.53007190362438, lon: -122.60795065851514)
+      free_play_location = FactoryBot.create(:location, name: 'Close_FreePlay', region: @region, lat: 45.53007190362438, lon: -122.60795065851514, payment_type: 'Free Play')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, by_all_ages: 'Yes' }
+
+      expect(response.body).to include('Close_Yes')
+      expect(response.body).to_not include('Close_Blank')
+
+      get '/api/v1/locations/within_bounding_box.json', params: { swlat: 45.478363717877436, swlon: -122.64672405963799, nelat: 45.54521396088108, nelon: -122.56878059990427, by_payment_type: 'Free Play' }
+
+      expect(response.body).to include('Close_FreePlay')
+      expect(response.body).to_not include('Close_Blank')
     end
 
     it 'limits results when limit param is present and includes pagy metadata' do
@@ -1313,6 +1430,20 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to_not include('567890')
       expect(response.body).to_not include('operator_email_opt_in')
       expect(response.body).to_not include('operator_phone_opt_in')
+    end
+
+    it 'includes all_ages and payment_type at both no_details=1 and no_details=2' do
+      @location.update(all_ages: 'At Times', payment_type: 'Free Play')
+
+      get "/api/v1/locations/#{@location.id}.json", params: { no_details: 1 }
+
+      expect(response.body).to include('At Times')
+      expect(response.body).to include('Free Play')
+
+      get "/api/v1/locations/#{@location.id}.json", params: { no_details: 2 }
+
+      expect(response.body).to include('At Times')
+      expect(response.body).to include('Free Play')
     end
 
     it 'omits in_life_list when no_details is 1 and no user_id is included' do

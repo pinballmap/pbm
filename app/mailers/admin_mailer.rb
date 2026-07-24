@@ -101,6 +101,8 @@ class AdminMailer < ApplicationMailer
     @location_website = params[:location_website]
     @location_type = params[:location_type]
     @operator = params[:operator]
+    @location_all_ages = params[:location_all_ages]
+    @location_payment_type = params[:location_payment_type]
     @location_comments = params[:location_comments]
     @location_machines = params[:location_machines]
     @admin_notes = params[:admin_notes]

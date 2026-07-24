@@ -101,7 +101,7 @@ function homeMapBounds() {
   setTimeout(getMapBounds, 800);
 }
 
-function getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_operator_id, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active, by_machine_year_gte, by_machine_year_lte, user_faved } = {}) {
+function getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_operator_id, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active, by_machine_year_gte, by_machine_year_lte, user_faved, by_all_ages, by_payment_type } = {}) {
   mapAdjusted = 1;
   refresh_bounds = map.getBounds();
   var capturedBoundsData = {
@@ -115,7 +115,7 @@ function getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_ma
     $.ajax({
       url: "/get_bounds",
       type: "POST",
-      data: { boundsData: capturedBoundsData, by_at_least_n_machines: by_at_least_n_machines, by_type_id: by_type_id, by_machine_id: by_machine_id, by_machine_single_id: by_machine_single_id, manufacturer: manufacturer, by_operator_id: by_operator_id, by_machine_type: by_machine_type, by_machine_id_ic: by_machine_id_ic, by_machine_single_id_ic: by_machine_single_id_ic, by_ic_active: by_ic_active, by_machine_year_gte: by_machine_year_gte, by_machine_year_lte: by_machine_year_lte, user_faved: user_faved, sort: currentSort, nearby_lat: nearbySearchActive ? center_lat : undefined, nearby_lon: nearbySearchActive ? center_lon : undefined },
+      data: { boundsData: capturedBoundsData, by_at_least_n_machines: by_at_least_n_machines, by_type_id: by_type_id, by_machine_id: by_machine_id, by_machine_single_id: by_machine_single_id, manufacturer: manufacturer, by_operator_id: by_operator_id, by_machine_type: by_machine_type, by_machine_id_ic: by_machine_id_ic, by_machine_single_id_ic: by_machine_single_id_ic, by_ic_active: by_ic_active, by_machine_year_gte: by_machine_year_gte, by_machine_year_lte: by_machine_year_lte, user_faved: user_faved, by_all_ages: by_all_ages, by_payment_type: by_payment_type, sort: currentSort, nearby_lat: nearbySearchActive ? center_lat : undefined, nearby_lon: nearbySearchActive ? center_lon : undefined },
       success: function(data) {
         $('#locations').html(data);
         refresh_bounds = undefined;
@@ -415,10 +415,10 @@ function switchSection(newSection) {
   $("#" + newSection + "_section_link").toggleClass("active_section_link");
 }
 
-function initSearch(userFaved, locationIDs, operatorIDs, locationTypeIDs, zoneIDs, machineIDs, machineID, machineGroupId, byMachineIDsIC, byMachineIDIC, byMachineYear, ipdbIDs, opdbIDs, cityID, lat, lon, byAtLeastNMachines, byAtLeastNMachinesCity, byAtLeastNMachinesType, byAtLeastNMachinesZone, byCityName, byStateName, byCityNoState, byCountry, byICActive, byIsSternArmy, byMachineType, byMachineDisplay, byManufacturer, region, byMachineYearGte, byMachineYearLte) {
-  if (userFaved || locationIDs || operatorIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || machineGroupId || byMachineIDsIC || byMachineIDIC || byMachineYear || ipdbIDs || opdbIDs || cityID || byAtLeastNMachines || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || byCityName || byStateName || byCityNoState || byCountry || byICActive || byIsSternArmy || byMachineType || byMachineDisplay || byManufacturer || region || byMachineYearGte || byMachineYearLte) {
+function initSearch(userFaved, locationIDs, operatorIDs, locationTypeIDs, zoneIDs, machineIDs, machineID, machineGroupId, byMachineIDsIC, byMachineIDIC, byMachineYear, ipdbIDs, opdbIDs, cityID, lat, lon, byAtLeastNMachines, byAtLeastNMachinesCity, byAtLeastNMachinesType, byAtLeastNMachinesZone, byCityName, byStateName, byCityNoState, byCountry, byICActive, byIsSternArmy, byMachineType, byMachineDisplay, byManufacturer, region, byMachineYearGte, byMachineYearLte, byAllAges, byPaymentType) {
+  if (userFaved || locationIDs || operatorIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || machineGroupId || byMachineIDsIC || byMachineIDIC || byMachineYear || ipdbIDs || opdbIDs || cityID || byAtLeastNMachines || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || byCityName || byStateName || byCityNoState || byCountry || byICActive || byIsSternArmy || byMachineType || byMachineDisplay || byManufacturer || region || byMachineYearGte || byMachineYearLte || byAllAges || byPaymentType) {
 
-    if (region && !(userFaved || locationIDs || operatorIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || machineGroupId || byMachineIDsIC || byMachineIDIC || byMachineYear || ipdbIDs || opdbIDs || cityID || machineGroupId || byAtLeastNMachines || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || byCityName || byStateName || byICActive || byIsSternArmy || byMachineType || byMachineDisplay || byManufacturer || byMachineYearGte || byMachineYearLte)) {
+    if (region && !(userFaved || locationIDs || operatorIDs || locationTypeIDs || zoneIDs || machineIDs || machineID || machineGroupId || byMachineIDsIC || byMachineIDIC || byMachineYear || ipdbIDs || opdbIDs || cityID || machineGroupId || byAtLeastNMachines || byAtLeastNMachinesCity || byAtLeastNMachinesType || byAtLeastNMachinesZone || byCityName || byStateName || byICActive || byIsSternArmy || byMachineType || byMachineDisplay || byManufacturer || byMachineYearGte || byMachineYearLte || byAllAges || byPaymentType)) {
       return;
     }
 
@@ -523,6 +523,8 @@ function initSearch(userFaved, locationIDs, operatorIDs, locationTypeIDs, zoneID
     params.set('region', region || '');
     params.set('by_machine_year_gte', byMachineYearGte || '');
     params.set('by_machine_year_lte', byMachineYearLte || '');
+    params.set('by_all_ages', byAllAges || '');
+    params.set('by_payment_type', byPaymentType || '');
 
     lastSearchFn = function() {
       params.set('sort', currentSort);
@@ -792,6 +794,8 @@ function clearAllFilters() {
   $('#ic_eligible_hide').hide();
   if (typeof setIcVersion === 'function') setIcVersion(false);
   if (typeof setNMachines === 'function') setNMachines('');
+  if (typeof setAllAges === 'function') setAllAges('');
+  if (typeof setPaymentType === 'function') setPaymentType('');
   $('#by_type_id').val(null).trigger('change');
   $('#by_manufacturer').val(null).trigger('change');
   $('#by_operator_id').val(null).trigger('change');

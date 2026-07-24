@@ -9,7 +9,7 @@ module Api
       before_action :allow_cors
       before_action :normalize_array_params
 
-      has_scope :by_location_name, :by_machine_name, :by_city_id, :by_city_no_state, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region, :by_is_stern_army, :regionless_only, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte
+      has_scope :by_location_name, :by_machine_name, :by_city_id, :by_city_no_state, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :region, :by_is_stern_army, :regionless_only, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte, :by_all_ages, :by_payment_type
       has_scope :by_type_id, :by_location_id, :by_machine_id, :by_zone_id, :by_operator_id, :by_machine_single_id, :by_machine_group_id, :by_ipdb_id, :by_opdb_id, :manufacturer, :by_machine_type, :by_machine_display, :by_machine_id_ic, :by_machine_single_id_ic, :by_machine_year, :by_country, :by_state_name, :by_state_id, type: :array
       rate_limit to: 30, within: 10.minutes, by: :api_token_rate_limit_key, only: [ :suggest, :update ], name: "api_locations_suggest_update"
 
@@ -32,6 +32,8 @@ module Api
       param :location_type, String, desc: "Type of location", required: false
       param :location_operator, String, desc: "Machine operator of new location", required: false
       param :location_zone, String, desc: "Machine operator of new location", required: false
+      param :location_all_ages, String, desc: "Whether the location is all ages. One of 'Yes', 'At Times'", required: false
+      param :location_payment_type, String, desc: "Whether the location is free to play. The only accepted value is 'Free Play'", required: false
       param :location_comments, String, desc: "Comments", required: false
       param :place_id, String, desc: "Google Maps Place ID", required: false
       param :location_machines, String, desc: "List of machines at new location", required: false
@@ -90,6 +92,8 @@ module Api
       param :no_details, Integer, desc: "Omit lmx/condition data from pull. Additional filtering required for this endpoint.", required: false
       param :with_lmx, Integer, desc: "Include location machine details such as comments. Additional filtering required for this endpoint.", required: false
       param :regionless_only, Integer, desc: "Show only regionless locations", required: false
+      param :by_all_ages, String, desc: "Send only all ages locations. Locations tagged 'Yes' or 'At Times' are both included. Additional filtering required for this endpoint.", required: false
+      param :by_payment_type, String, desc: "Send only free play locations. The only accepted value is 'Free Play'. Additional filtering required for this endpoint.", required: false
       formats [ "json" ]
       def index
         return return_response(FILTERING_REQUIRED_MSG, "errors") unless %i[region by_location_name by_location_id by_machine_id by_machine_single_id by_machine_group_id by_machine_id_ic by_machine_single_id_ic by_ipdb_id by_opdb_id by_machine_name by_city_id by_city_no_state by_zone_id by_operator_id by_type_id by_is_stern_army regionless_only place_id].any? { params[_1].present? }
@@ -147,6 +151,8 @@ module Api
       param :phone, String, desc: "Phone number of location", required: false
       param :location_type, Integer, desc: "ID of location type", required: false
       param :operator_id, Integer, desc: "ID of the operator", required: false
+      param :all_ages, String, desc: "Whether the location is all ages. One of 'Yes', 'At Times'", required: false
+      param :payment_type, String, desc: "Whether the location is free to play. The only accepted value is 'Free Play'", required: false
       formats [ "json" ]
       def update
         location = Location.find(params[:id])
@@ -158,7 +164,9 @@ module Api
           website: params[:website],
           phone: params[:phone],
           location_type_id: params[:location_type],
-          operator_id: params[:operator_id]
+          operator_id: params[:operator_id],
+          all_ages: params[:all_ages],
+          payment_type: params[:payment_type]
         )
 
         return_response(values, message_type)
@@ -188,6 +196,8 @@ module Api
       param :max_distance, String, desc: 'Closest location within "max_distance" miles, with a max of 500', required: false
       param :no_details, Integer, desc: "Omit data that app does not need from pull", required: false
       param :send_all_within_distance, String, desc: "Send all locations within max_distance param, or #{MAX_MILES_TO_SEARCH_FOR_CLOSEST_LOCATION} miles.", required: false
+      param :by_all_ages, String, desc: "Send only all ages locations. Locations tagged 'Yes' or 'At Times' are both included.", required: false
+      param :by_payment_type, String, desc: "Send only free play locations. The only accepted value is 'Free Play'.", required: false
       formats [ "json" ]
       def closest_by_lat_lon
         if params[:max_distance].blank?
@@ -239,6 +249,8 @@ module Api
       param :by_machine_type, String, desc: "Locations with machines of this type (em, ss, me). Multiple types can be chained together like by_machine_type[]=ss&by_machine_type[]=em.", required: false
       param :by_machine_display, String, desc: "Locations with machines with this display (alphanumeric, lcd, dmd, reels, lights). Multiple display types can be chained together like by_machine_display[]=dmd&by_machine_display[]=reels.", required: false
       param :no_details, Integer, desc: "Omit data that app does not need from pull (options include '1' or '2')", required: false
+      param :by_all_ages, String, desc: "Send only all ages locations. Locations tagged 'Yes' or 'At Times' are both included. Multiple values are not supported.", required: false
+      param :by_payment_type, String, desc: "Send only free play locations. The only accepted value is 'Free Play'.", required: false
       param :limit, Integer, desc: "Limit results to a quantity and include pagination metadata in response", required: false
       param :order_by, String, desc: "Order results descending by a field in the locations scope. Allowed fields are updated_at, name, machine_count, distance. Otherwise, sorts by location ID. Using distance requires user_lat and user_lon params"
       param :machines_only, Integer, desc: "When set to '1', returns only a flat list of unique machine_ids found across all matching locations. No location data is included.", required: false
@@ -256,7 +268,7 @@ module Api
           except = %i[country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at users_count user_submissions_count place_id]
           includes = %i[machine_names_first machine_ids num_machines]
         elsif params[:no_details] == "2"
-          except = %i[street city state zip country updated_at location_type_id operator_id country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at users_count user_submissions_count place_id]
+          except = %i[street city state zip country updated_at location_type_id operator_id country last_updated_by_user_id description region_id zone_id website phone ic_active is_stern_army date_last_updated created_at users_count user_submissions_count place_id all_ages payment_type]
           includes = []
         else
           except = []
@@ -356,6 +368,8 @@ module Api
       param :by_machine_year, Integer, desc: "Locations with at least one machine manufacturered in this year", required: false
       param :by_machine_year_gte, Integer, desc: "Locations with at least one machine manufactured in this year or later", required: false
       param :by_machine_year_lte, Integer, desc: "Locations with at least one machine manufactured in this year or earlier", required: false
+      param :by_all_ages, String, desc: "Send only all ages locations. Locations tagged 'Yes' or 'At Times' are both included.", required: false
+      param :by_payment_type, String, desc: "Send only free play locations. The only accepted value is 'Free Play'.", required: false
       formats [ "json" ]
       def closest_by_address
         if params[:max_distance].blank?
