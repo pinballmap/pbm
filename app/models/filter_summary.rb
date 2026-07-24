@@ -41,6 +41,8 @@ class FilterSummary
       at_least_n_machines_fragment,
       stern_army_fragment,
       ic_active_fragment,
+      all_ages_fragment,
+      payment_type_fragment,
       operator_fragment,
       zone_fragment,
       geography_fragment
@@ -145,6 +147,14 @@ class FilterSummary
     return nil if IC_FAMILIES.any? { |family| values_for(family).any? }
 
     "at least one Stern Insider Connected machine"
+  end
+
+  def all_ages_fragment
+    "all ages allowed" if @params[:by_all_ages].present?
+  end
+
+  def payment_type_fragment
+    "free play" if @params[:by_payment_type].present?
   end
 
   def operator_fragment

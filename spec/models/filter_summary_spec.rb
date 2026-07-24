@@ -257,6 +257,22 @@ describe FilterSummary do
       end
     end
 
+    describe 'by_all_ages' do
+      it 'shows an all ages allowed clause' do
+        summary = described_class.new(by_all_ages: 'Yes')
+
+        expect(summary.to_s).to eq('all ages allowed')
+      end
+    end
+
+    describe 'by_payment_type' do
+      it 'shows a free play clause' do
+        summary = described_class.new(by_payment_type: 'Free Play')
+
+        expect(summary.to_s).to eq('free play')
+      end
+    end
+
     describe 'by_operator_id' do
       it 'shows the operator name(s)' do
         operator = FactoryBot.create(:operator, name: 'Quarterworld')
