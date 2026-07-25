@@ -1,10 +1,4 @@
 %div.metadata[l, :metadata_show]
-  - if (l.location_type && l.location_type.icon.present?)
-    %div.location_type
-      %div.location_type_container
-        =image_tag("icons/#{l.location_type.icon}.svg", :alt => "#{l.location_type.icon}")
-        %span
-          #{l.location_type.name}
   - if (l.state.blank? && l.zip.blank?)
     %div.address_full= [l.street, l.city].join(', ')
   - elsif (l.state.blank?)
@@ -13,6 +7,21 @@
     %div.address_full= [l.street, l.city, l.state].join(', ')
   - else
     %div.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
+  - if l.location_type || l.all_ages? || l.payment_type?
+    %div.location_meta_row.m_10
+      - if l.location_type
+        %div.location_meta_item
+          - if l.location_type.icon.present?
+            =image_tag("icons/#{l.location_type.icon}.svg", :alt => l.location_type.icon, :class => 'meta_icon')
+          %span= l.location_type.name
+      - if l.all_ages?
+        %div.location_meta_item
+          =image_tag("icons/human-male-girl.svg", :alt => "all ages", :class => 'meta_icon')
+          %span= l.all_ages == "Yes" ? "All Ages" : "All Ages At Times"
+      - if l.payment_type?
+        %div.location_meta_item
+          =image_tag("icons/coins-solid-full.svg", :alt => "free play", :class => 'meta_icon')
+          %span= l.payment_type
   - if mobile_device? && !l.phone.blank?
     %div.phone
       = image_tag('icons/phone.svg', :class => 'meta_icon')
@@ -44,14 +53,6 @@
           = image_tag('icons/email-outline.svg', class: 'copy_icon', data: { copy: l.operator_email_opt_in })
         - if l.operator_phone_opt_in
           = image_tag('icons/phone.svg', class: 'copy_icon', data: { copy: l.operator_phone_opt_in })
-  - if l.all_ages?
-    %div.all_ages
-      = image_tag('icons/human-male-girl.svg', :class => 'meta_icon')
-      %span.darkgrey= l.all_ages == "Yes" ? "All Ages" : "All Ages At Times"
-  - if l.payment_type?
-    %div.payment_type
-      = image_tag('icons/coins-solid-full.svg', :class => 'meta_icon')
-      %span.darkgrey= l.payment_type
   - if !l.description.blank?
     %div.description
       = image_tag('icons/notebook-outline.svg', :class => 'meta_icon float_l')
