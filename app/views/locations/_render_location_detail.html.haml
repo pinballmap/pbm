@@ -76,6 +76,9 @@
 	currentMachineSort = 'alphabetical';
 
 	$(function () {
+		$('#location_detail_location_#{l.id} .meta_image').click(function () {
+			showMetadataEditModal(#{l.id});
+		});
 		$("#fave_location_img_#{l.id}").click(function() {
 			$.post('/users/#{current_user ? current_user.id : 'null'}/toggle_fave_location.json', {location_id: #{l.id}}, function(data) {
 				var isFaved = $("#fave_location_img_#{l.id}").attr('src') === '#{asset_path('icons/heart-filled.svg')}';

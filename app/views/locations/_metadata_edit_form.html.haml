@@ -1,0 +1,52 @@
+.metadata_edit_location
+  %div.mb_8{:style => 'line-height: 20px;'}
+    Is this location
+    %span.red.bold closed or are all the machines gone?
+    Simply remove the machines.
+  %div.mb_20{:style => 'line-height: 20px;'}
+    Does the location have a new name or address?
+    = link_to 'Contact us', global_contact_path, :class => 'bold brightpurple'
+    with the details.
+  = form_tag update_metadata_locations_path(:action => 'update_metadata', id: l.id), :id => "update_metadata_#{l.id}", :method => 'patch' do
+    = hidden_field_tag :id, l.id
+    .metadata_field
+      = label_tag "Phone #: "
+      = text_field_tag "new_phone", l.phone, :class => 'edit_mode'
+    .metadata_field
+      = label_tag "Website: "
+      = text_field_tag "new_website", l.website, :class => 'edit_mode'
+    .metadata_field
+      = label_tag "Operator: "
+      = select_tag "new_operator", options_for_select([['']]) + options_from_collection_for_select(Operator.order(:name).all, 'id', 'name', l.operator_id)
+    .metadata_field
+      = label_tag "Location Type: "
+      = select_tag "new_location_type", options_for_select([['']]) + options_from_collection_for_select(LocationType.all, 'id', 'name', l.location_type_id)
+    .metadata_field
+      = label_tag "All Ages? "
+      %div.metadata_field_tip Leave blank if you're not sure.
+      = select_tag "new_all_ages", options_for_select([['']] + Location::ALL_AGES_VALUES, l.all_ages)
+    .metadata_field
+      = label_tag "Free Play? "
+      %div.metadata_field_tip Free Play means a place with or without an entrance fee and then the games are free to play. Leave blank if you're not sure. If some times or some games are not free play, Free Play may still be the best choice (location description should contain details).
+      = select_tag "new_payment_type", options_for_select([['']] + Location::PAYMENT_TYPE_VALUES, l.payment_type)
+    .metadata_field
+      = label_tag "Location Description: "
+      = text_area_tag "new_desc", (l.description.to_s == '') ? '' : l.description, :cols => 20, :rows => 3, :class => 'edit_mode', :placeholder => 'Hours; type of payment system(s) they use (door fee, cash, cards); accessibility issues'
+
+:javascript
+  $('#update_metadata_#{l.id}').submit(function () {
+    $('#metadata_edit_modal_body').html(loadingHTML());
+
+    var form = $(this);
+    $.post(form.attr('action'), form.serialize(), function (data) {
+      if (typeof data["error"] !== 'undefined') {
+        show_ajax_message(JSON.stringify(data["error"]), 'error');
+      }
+
+      hideMetadataEditModal();
+      $('#metadata_location_#{l.id}').load('/locations/#{l.id}/render_update_metadata');
+      updateLocationUpdatedText(#{l.id});
+    });
+
+    return false;
+  });

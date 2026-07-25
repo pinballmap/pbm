@@ -195,6 +195,10 @@ class LocationsController < ApplicationController
     render partial: "locations/render_update_metadata", locals: { l: Location.find(params[:id]) }
   end
 
+  def render_metadata_edit_form
+    render partial: "locations/metadata_edit_form", locals: { l: Location.find(params[:id]) }
+  end
+
   def render_last_updated
     render partial: "locations/render_last_updated", locals: { l: Location.find(params[:id]) }
   end
@@ -258,13 +262,13 @@ class LocationsController < ApplicationController
 
     values, message_type = l.update_metadata(
       current_user.nil? ? nil : current_user,
-      phone: params["new_phone_#{l.id}"],
-      website: params["new_website_#{l.id}"],
-      operator_id: params["new_operator_#{l.id}"],
-      location_type_id: params["new_location_type_#{l.id}"],
-      all_ages: params["new_all_ages_#{l.id}"],
-      payment_type: params["new_payment_type_#{l.id}"],
-      description: params["new_desc_#{l.id}"]
+      phone: params[:new_phone],
+      website: params[:new_website],
+      operator_id: params[:new_operator],
+      location_type_id: params[:new_location_type],
+      all_ages: params[:new_all_ages],
+      payment_type: params[:new_payment_type],
+      description: params[:new_desc]
     )
 
     if message_type == "errors"

@@ -1,0 +1,9 @@
+#metadata_edit_modal_overlay{:style => "display: none;", :onclick => "hideMetadataEditModal();"}
+#metadata_edit_modal{:style => "display: none;"}
+  .filter_modal_header
+    %h3 Edit Location Info
+    %button.clear_filters_button{:type => "button", :onclick => "hideMetadataEditModal();"} Cancel
+    %button.apply_filters_button{:type => "button", :onclick => "$('#metadata_edit_modal_body form').submit();"} Save
+    %div.filter_modal_close{:onclick => "hideMetadataEditModal();"}
+      X
+  .filter_modal_body#metadata_edit_modal_body

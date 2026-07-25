@@ -1137,7 +1137,7 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.meta_image').click
-      expect(page).to have_select("new_operator_#{@location.id}", with_options: [ 'Quarterworld', 'Regionless operator' ])
+      expect(page).to have_select("new_operator", with_options: [ 'Quarterworld', 'Regionless operator' ])
     end
 
     it 'regionless page: lets you pick any operator' do
@@ -1150,7 +1150,7 @@ describe LocationsController do
       visit '/map/?by_location_id=' + regionless_location.id.to_s
 
       find('.meta_image').click
-      expect(page).to have_select("new_operator_#{regionless_location.id}", with_options: [ 'Other region operator', 'Quarterworld', 'Regionless operator' ])
+      expect(page).to have_select("new_operator", with_options: [ 'Other region operator', 'Quarterworld', 'Regionless operator' ])
     end
 
     it 'does not save data if any formats are invalid - website and phone' do
@@ -1159,9 +1159,9 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.meta_image').click
-      fill_in('new_phone_' + @location.id.to_s, with: 'THIS IS INVALID')
-      fill_in('new_website_' + @location.id.to_s, with: 'http://www.pinballmap.com')
-      select('Quarterworld', from: "new_operator_#{@location.id}")
+      fill_in('new_phone', with: 'THIS IS INVALID')
+      fill_in('new_website', with: 'http://www.pinballmap.com')
+      select('Quarterworld', from: "new_operator")
       click_on 'Save'
 
       sleep 1
@@ -1176,9 +1176,9 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.meta_image').click
-      fill_in("new_phone_#{@location.id}", with: '503-488-1938')
-      fill_in("new_website_#{@location.id}", with: 'www.foo.com')
-      select('Bar', from: "new_location_type_#{@location.id}")
+      fill_in("new_phone", with: '503-488-1938')
+      fill_in("new_website", with: 'www.foo.com')
+      select('Bar', from: "new_location_type")
       click_on 'Save'
 
       sleep 1
@@ -1193,7 +1193,7 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.meta_image').click
-      fill_in("new_phone_#{@location.id}", with: 'THIS IS SPAM')
+      fill_in("new_phone", with: 'THIS IS SPAM')
       click_on 'Save'
 
       sleep 1
@@ -1203,8 +1203,8 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.meta_image').click
-      fill_in("new_phone_#{@location.id}", with: '')
-      fill_in("new_website_#{@location.id}", with: 'THIS IS SPAM')
+      fill_in("new_phone", with: '')
+      fill_in("new_website", with: 'THIS IS SPAM')
       click_on 'Save'
 
       sleep 1
@@ -1219,10 +1219,10 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.meta_image').click
-      fill_in("new_website_#{@location.id}", with: 'http://www.foo.com')
-      fill_in("new_phone_#{@location.id}", with: '503-285-3928')
-      select('Bar', from: "new_location_type_#{@location.id}")
-      select('Quarterworld', from: "new_operator_#{@location.id}")
+      fill_in("new_website", with: 'http://www.foo.com')
+      fill_in("new_phone", with: '503-285-3928')
+      select('Bar', from: "new_location_type")
+      select('Quarterworld', from: "new_operator")
       click_on 'Save'
 
       sleep 1
@@ -1242,8 +1242,8 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.meta_image').click
-      select('Yes', from: "new_all_ages_#{@location.id}")
-      select('Free Play', from: "new_payment_type_#{@location.id}")
+      select('Yes', from: "new_all_ages")
+      select('Free Play', from: "new_payment_type")
       click_on 'Save'
 
       sleep 1
@@ -1259,7 +1259,7 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.meta_image').click
-      fill_in("new_website_#{@location.id}", with: 'http://www.foo.com')
+      fill_in("new_website", with: 'http://www.foo.com')
       click_on 'Save'
 
       sleep 1
@@ -1268,7 +1268,7 @@ describe LocationsController do
       expect(page).to_not have_css('div#flash_error')
 
       find('.meta_image').click
-      fill_in("new_website_#{@location.id}", with: 'http://www.bar.com')
+      fill_in("new_website", with: 'http://www.bar.com')
       click_on 'Save'
 
       sleep 1
@@ -1281,7 +1281,7 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find("#location_detail_location_#{@location.id} .meta_image").click
-      fill_in("new_desc_#{@location.id}", with: 'http://hopethisdoesntwork.com foo bar baz')
+      fill_in("new_desc", with: 'http://hopethisdoesntwork.com foo bar baz')
       click_on 'Save'
 
       sleep 1
@@ -1293,7 +1293,7 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find("#location_detail_location_#{@location.id} .meta_image").click
-      fill_in("new_desc_#{@location.id}", with: 'https://hopethisdoesntwork.com foo bar baz')
+      fill_in("new_desc", with: 'https://hopethisdoesntwork.com foo bar baz')
       click_on 'Save'
 
       sleep 1
@@ -1305,7 +1305,7 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find("#location_detail_location_#{@location.id} .meta_image").click
-      fill_in("new_desc_#{@location.id}", with: 'COOL DESC')
+      fill_in("new_desc", with: 'COOL DESC')
       click_on 'Save'
 
       sleep 1
@@ -1321,7 +1321,7 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find("#location_detail_location_#{@location.id} .meta_image").click
-      fill_in("new_desc_#{@location.id}", with: 'COOL DESC')
+      fill_in("new_desc", with: 'COOL DESC')
       click_on 'Save'
 
       sleep 1
@@ -1329,7 +1329,7 @@ describe LocationsController do
       expect(Location.find(@location.id).description).to eq('COOL DESC')
 
       find("#location_detail_location_#{@location.id} .meta_image").click
-      fill_in("new_desc_#{@location.id}", with: 'COOLER DESC')
+      fill_in("new_desc", with: 'COOLER DESC')
       click_on 'Save'
 
       sleep 1
@@ -1341,7 +1341,7 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find("#location_detail_location_#{@location.id} .meta_image").click
-      fill_in("new_desc_#{@location.id}", with: 'COOL DESC')
+      fill_in("new_desc", with: 'COOL DESC')
       click_on 'Save'
 
       sleep 1
@@ -1353,7 +1353,7 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find("#location_detail_location_#{@location.id} .meta_image").click
-      fill_in("new_desc_#{@location.id}", with: nil)
+      fill_in("new_desc", with: nil)
       click_on 'Save'
 
       sleep 1
@@ -1365,7 +1365,7 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find("#location_detail_location_#{@location.id} .meta_image").click
-      fill_in("new_desc_#{@location.id}", with: 'coooool')
+      fill_in("new_desc", with: 'coooool')
       click_on 'Save'
 
       sleep 1
@@ -1382,7 +1382,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur por
 HERE
 
       find("#location_detail_location_#{@location.id} .meta_image").click
-      fill_in("new_desc_#{@location.id}", with: string_that_is_too_large)
+      fill_in("new_desc", with: string_that_is_too_large)
       click_on 'Save'
 
       sleep 1

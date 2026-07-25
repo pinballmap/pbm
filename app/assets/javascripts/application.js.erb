@@ -652,6 +652,18 @@ function hideRandomMachineModal() {
   $('#random_machine_modal_overlay, #random_machine_modal').hide();
 }
 
+function showMetadataEditModal(locationId) {
+  $('#metadata_edit_modal_body').html(loadingHTML());
+  $('#metadata_edit_modal_overlay, #metadata_edit_modal').show();
+  $.get('/locations/' + locationId + '/render_metadata_edit_form', function (data) {
+    $('#metadata_edit_modal_body').html(data);
+  });
+}
+
+function hideMetadataEditModal() {
+  $('#metadata_edit_modal_overlay, #metadata_edit_modal').hide();
+}
+
 var currentMachineSort = 'alphabetical';
 var machineSortModalConfig = null;
 

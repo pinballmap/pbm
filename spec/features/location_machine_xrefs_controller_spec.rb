@@ -1231,7 +1231,7 @@ describe LocationMachineXrefsController do
       page.find('input#location_search_button').click
 
       page.find("#location_detail_location_#{@location.id} .meta_image").click
-      fill_in("new_desc_#{@location.id}", with: 'New Description')
+      fill_in("new_desc", with: 'New Description')
       click_on 'Save'
 
       expect(page).to have_content('New Description')
