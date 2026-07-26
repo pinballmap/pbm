@@ -605,11 +605,11 @@ describe LocationsController do
   end
 
   describe 'all_ages and payment_type badges', type: :feature, js: true do
-    it 'shows the All Ages badge for Yes and At Times, but not for blank or Not All Ages' do
+    it 'shows the All Ages badge for Yes and At Times, but not for blank or No' do
       yes_location = FactoryBot.create(:location, id: 91, region: @region, name: 'Yes Location', all_ages: 'Yes')
       at_times_location = FactoryBot.create(:location, id: 93, region: @region, name: 'At Times Location', all_ages: 'At Times')
       blank_location = FactoryBot.create(:location, id: 94, region: @region, name: 'Blank Location')
-      not_all_ages_location = FactoryBot.create(:location, id: 97, region: @region, name: 'Data Mgmt Location', all_ages: 'Not All Ages')
+      not_all_ages_location = FactoryBot.create(:location, id: 97, region: @region, name: 'Data Mgmt Location', all_ages: 'No')
 
       visit '/portland'
       click_on 'location_search_button'
@@ -629,10 +629,10 @@ describe LocationsController do
       end
     end
 
-    it 'shows the payment type value when present, with no label prefix, but not for Not Free Play' do
+    it 'shows the payment type value when present, with no label prefix, but not for No' do
       free_play_location = FactoryBot.create(:location, id: 95, region: @region, name: 'Free Play Location', payment_type: 'Free Play')
       blank_location = FactoryBot.create(:location, id: 96, region: @region, name: 'Blank Payment Location')
-      not_free_play_location = FactoryBot.create(:location, id: 98, region: @region, name: 'Data Mgmt Payment Location', payment_type: 'Not Free Play')
+      not_free_play_location = FactoryBot.create(:location, id: 98, region: @region, name: 'Data Mgmt Payment Location', payment_type: 'No')
 
       visit '/portland'
       click_on 'location_search_button'
@@ -1280,8 +1280,8 @@ describe LocationsController do
 
       sleep 1
 
-      expect(@location.reload.all_ages).to eq('Not All Ages')
-      expect(@location.payment_type).to eq('Not Free Play')
+      expect(@location.reload.all_ages).to eq('No')
+      expect(@location.payment_type).to eq('No')
 
       expect(page).to_not have_content('All Ages')
       expect(page).to_not have_content('Free Play')

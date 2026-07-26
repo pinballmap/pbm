@@ -53,10 +53,10 @@
                   = select_tag :location_zone, options_for_select(@zones)
               %li
                 %label{:for => "location_all_ages"} All Ages?
-                = select_tag :location_all_ages, options_for_select([ [ "" ] ] + Location::ALL_AGES_VALUES)
+                = select_tag :location_all_ages, options_for_select([ [ "" ] ] + Location::ALL_AGES_OPTIONS)
               %li
                 %label{:for => "location_payment_type"} Free Play?
-                = select_tag :location_payment_type, options_for_select([ [ "" ] ] + Location::PAYMENT_TYPE_VALUES)
+                = select_tag :location_payment_type, options_for_select([ [ "" ] ] + Location::PAYMENT_TYPE_OPTIONS)
               .clear
               %li.textbox
                 %label{:for => "location_comments"} Comments:

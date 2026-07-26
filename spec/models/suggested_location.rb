@@ -63,20 +63,20 @@ describe SuggestedLocation do
   end
 
   describe 'validates all_ages' do
-    it 'only allows Yes, At Times, Not All Ages, or blank' do
-      [ 'Yes', 'At Times', 'Not All Ages', '', nil ].each do |v|
+    it 'only allows Yes, At Times, No, or blank' do
+      [ 'Yes', 'At Times', 'No', '', nil ].each do |v|
         @suggested_location.all_ages = v
         expect { @suggested_location.save! }.to_not raise_error
       end
 
-      @suggested_location.all_ages = 'No'
+      @suggested_location.all_ages = 'Not All Ages'
       expect { @suggested_location.save! }.to raise_error
     end
   end
 
   describe 'validates payment_type' do
-    it 'only allows Free Play, Not Free Play, or blank' do
-      [ 'Free Play', 'Not Free Play', '', nil ].each do |v|
+    it 'only allows Free Play, No, or blank' do
+      [ 'Free Play', 'No', '', nil ].each do |v|
         @suggested_location.payment_type = v
         expect { @suggested_location.save! }.to_not raise_error
       end

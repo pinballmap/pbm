@@ -1,10 +1,11 @@
 class Location < ApplicationRecord
   has_paper_trail only: %i[name street city state region zone lat lon is_stern_army]
 
-  NOT_ALL_AGES = "Not All Ages"
-  NOT_FREE_PLAY = "Not Free Play"
-  ALL_AGES_VALUES = [ "Yes", "At Times", NOT_ALL_AGES ]
-  PAYMENT_TYPE_VALUES = [ "Free Play", NOT_FREE_PLAY ]
+  NOT_VALUE = "No"
+  ALL_AGES_VALUES = [ "Yes", "At Times", NOT_VALUE ]
+  PAYMENT_TYPE_VALUES = [ "Free Play", NOT_VALUE ]
+  ALL_AGES_OPTIONS = [ [ "Yes", "Yes" ], [ "At Times", "At Times" ], [ "Not All Ages", NOT_VALUE ] ]
+  PAYMENT_TYPE_OPTIONS = [ [ "Free Play", "Free Play" ], [ "Not Free Play", NOT_VALUE ] ]
 
   validates_presence_of :name, :street, :city, :country
   validates :phone, phone: { possible: true, allow_blank: true, message: "Phone format not valid." }
@@ -159,11 +160,11 @@ class Location < ApplicationRecord
   end
 
   def display_all_ages?
-    all_ages.present? && all_ages != NOT_ALL_AGES
+    all_ages.present? && all_ages != NOT_VALUE
   end
 
   def display_payment_type?
-    payment_type.present? && payment_type != NOT_FREE_PLAY
+    payment_type.present? && payment_type != NOT_VALUE
   end
 
   def num_machines

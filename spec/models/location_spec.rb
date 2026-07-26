@@ -214,20 +214,20 @@ describe Location do
   end
 
   describe 'validates all_ages' do
-    it 'only allows Yes, At Times, Not All Ages, or blank' do
-      [ 'Yes', 'At Times', 'Not All Ages', '', nil ].each do |v|
+    it 'only allows Yes, At Times, No, or blank' do
+      [ 'Yes', 'At Times', 'No', '', nil ].each do |v|
         @l.all_ages = v
         expect { @l.save! }.to_not raise_error
       end
 
-      @l.all_ages = 'No'
+      @l.all_ages = 'Not All Ages'
       expect { @l.save! }.to raise_error
     end
   end
 
   describe 'validates payment_type' do
-    it 'only allows Free Play, Not Free Play, or blank' do
-      [ 'Free Play', 'Not Free Play', '', nil ].each do |v|
+    it 'only allows Free Play, No, or blank' do
+      [ 'Free Play', 'No', '', nil ].each do |v|
         @l.payment_type = v
         expect { @l.save! }.to_not raise_error
       end
@@ -238,18 +238,18 @@ describe Location do
   end
 
   describe '#display_all_ages?' do
-    it 'is true for Yes and At Times, false for blank or Not All Ages' do
+    it 'is true for Yes and At Times, false for blank or No' do
       expect(FactoryBot.build(:location, all_ages: 'Yes').display_all_ages?).to eq(true)
       expect(FactoryBot.build(:location, all_ages: 'At Times').display_all_ages?).to eq(true)
-      expect(FactoryBot.build(:location, all_ages: 'Not All Ages').display_all_ages?).to eq(false)
+      expect(FactoryBot.build(:location, all_ages: 'No').display_all_ages?).to eq(false)
       expect(FactoryBot.build(:location, all_ages: nil).display_all_ages?).to eq(false)
     end
   end
 
   describe '#display_payment_type?' do
-    it 'is true for Free Play, false for blank or Not Free Play' do
+    it 'is true for Free Play, false for blank or No' do
       expect(FactoryBot.build(:location, payment_type: 'Free Play').display_payment_type?).to eq(true)
-      expect(FactoryBot.build(:location, payment_type: 'Not Free Play').display_payment_type?).to eq(false)
+      expect(FactoryBot.build(:location, payment_type: 'No').display_payment_type?).to eq(false)
       expect(FactoryBot.build(:location, payment_type: nil).display_payment_type?).to eq(false)
     end
   end

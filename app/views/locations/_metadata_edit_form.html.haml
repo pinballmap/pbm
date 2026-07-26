@@ -24,14 +24,14 @@
     .metadata_field
       = label_tag "All Ages? "
       %div.metadata_field_tip Leave blank if you're not sure.
-      = select_tag "new_all_ages", options_for_select([['']] + Location::ALL_AGES_VALUES, l.all_ages), :class => 'not_option_select', :data => { :not_value => Location::NOT_ALL_AGES }
-      %div.metadata_field_tip.not_option_note{:style => (l.all_ages == Location::NOT_ALL_AGES ? '' : 'display:none;')}
+      = select_tag "new_all_ages", options_for_select([['']] + Location::ALL_AGES_OPTIONS, l.all_ages), :class => 'not_option_select', :data => { :not_value => Location::NOT_VALUE }
+      %div.metadata_field_tip.not_option_note{:style => (l.all_ages == Location::NOT_VALUE ? '' : 'display:none;')}
         Note: this selection is used for data management, but will not be displayed in the location details
     .metadata_field
       = label_tag "Free Play? "
       %div.metadata_field_tip Free Play means a place with or without an entrance fee and then the games are free to play. Leave blank if you're not sure. If some times or some games are not free play, Free Play may still be the best choice (location description should contain details).
-      = select_tag "new_payment_type", options_for_select([['']] + Location::PAYMENT_TYPE_VALUES, l.payment_type), :class => 'not_option_select', :data => { :not_value => Location::NOT_FREE_PLAY }
-      %div.metadata_field_tip.not_option_note{:style => (l.payment_type == Location::NOT_FREE_PLAY ? '' : 'display:none;')}
+      = select_tag "new_payment_type", options_for_select([['']] + Location::PAYMENT_TYPE_OPTIONS, l.payment_type), :class => 'not_option_select', :data => { :not_value => Location::NOT_VALUE }
+      %div.metadata_field_tip.not_option_note{:style => (l.payment_type == Location::NOT_VALUE ? '' : 'display:none;')}
         Note: this selection is used for data management, but will not be displayed in the location details
     .metadata_field
       = label_tag "Location Description: "
