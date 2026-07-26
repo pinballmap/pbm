@@ -53,13 +53,15 @@
                   = select_tag :location_zone, options_for_select(@zones)
               %li
                 %label{:for => "location_all_ages"} All Ages?
+                %div.metadata_field_tip Leave blank if you're not sure.
                 = select_tag :location_all_ages, options_for_select([ [ "" ] ] + Location::ALL_AGES_OPTIONS)
               %li
                 %label{:for => "location_payment_type"} Free Play?
+                %div.metadata_field_tip Free Play means a place with or without an entrance fee and then the games are free to play. Leave blank if you're not sure. If some times or some games are not free play, Free Play may still be the best choice (location description should contain details).
                 = select_tag :location_payment_type, options_for_select([ [ "" ] ] + Location::PAYMENT_TYPE_OPTIONS)
               .clear
               %li.textbox
-                %label{:for => "location_comments"} Comments:
+                %label{:for => "location_comments"} Location Description:
                 %textarea{:type => "text", :name => "location_comments", :params => "location_comments", :class => "text", :placeholder => 'OPENING DATE; hours; type of payment system(s) they use (door fee, cash, cards); accessibility issues'}
               %li.machines_textinput
                 .input_title_row
