@@ -9,3 +9,5 @@
 		=image_tag('icons/sort-variant.svg', :alt => 'Sort machines', :class => 'machine_sort_icon', :id => "machine_sort_icon_#{location.id}")
 - else
 	%div.lmx_count_spacer
+- if location.machines.count.zero?
+	%div{:id => "location_removal_notice_#{location.id}", :class => 'location_removal_notice'} This location will be automatically removed from the map soon.

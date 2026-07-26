@@ -176,6 +176,26 @@ describe LocationsController do
     end
   end
 
+  describe 'zero machines notice', type: :feature, js: true do
+    it 'shows an automatic removal notice when the location has no machines' do
+      location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
+
+      visit '/portland/?by_location_id=' + location.id.to_s
+
+      expect(find("#location_removal_notice_#{location.id}")).to have_content('This location will be automatically removed from the map soon.')
+    end
+
+    it 'does not show an automatic removal notice when the location has machines' do
+      location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
+      machine = FactoryBot.create(:machine, name: 'Bawb')
+      FactoryBot.create(:location_machine_xref, location: location, machine: machine)
+
+      visit '/portland/?by_location_id=' + location.id.to_s
+
+      expect(page).to_not have_selector("#location_removal_notice_#{location.id}")
+    end
+  end
+
   describe 'remove machine - not authed', type: :feature, js: true do
     before(:each) do
       @location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
