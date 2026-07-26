@@ -305,6 +305,26 @@ describe LocationMachineXrefsController do
       expect(UserSubmission.where(submission_type: UserSubmission::IC_TOGGLE_TYPE).count).to eq(1)
       expect(UserSubmission.where(submission_type: UserSubmission::NEW_CONDITION_TYPE).count).to eq(1)
     end
+
+    it 'clears the machine selection and its details after adding a machine' do
+      machine = FactoryBot.create(:machine, name: 'Stern IC Machine', opdb_img: '/public/favicon.ico', ic_eligible: true)
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+      select_machine_to_add(@location.id, machine)
+
+      choose "add_machine_ic_yes_#{@location.id}"
+      fill_in "add_machine_condition_#{@location.id}", with: 'Great shape'
+      click_on 'add'
+
+      sleep 1
+
+      expect(find("#add_machine_by_id_#{@location.id} + .select2-container .select2-selection")).to have_content('Select a machine...')
+      expect(page).to_not have_css("#add_machine_backglass_preview_#{@location.id}", visible: :visible)
+      expect(page).to_not have_css("#add_machine_condition_#{@location.id}", visible: :visible)
+      expect(find("#add_machine_condition_#{@location.id}", visible: :all).value).to eq('')
+      expect(page).to_not have_css("#add_machine_ic_prompt_#{@location.id}", visible: :visible)
+      expect(find("#add_machine_ic_yes_#{@location.id}", visible: :all)).to_not be_checked
+    end
   end
 
   describe 'feeds', type: :feature, js: true do

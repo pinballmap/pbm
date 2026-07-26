@@ -80,6 +80,8 @@
         updateLocationUpdatedText(#{l.id});
         $('#lmx_count_row_#{l.id}').load('/locations/#{l.id}/render_lmx_count_row', function() {});
       });
+
+      $('#add_machine_by_id_#{l.id}').val('').trigger('change');
     });
 
     return false;
