@@ -7,18 +7,18 @@
     %div.address_full= [l.street, l.city, l.state].join(', ')
   - else
     %div.address_full= [l.street, l.city, l.state + " " + l.zip].join(', ')
-  - if l.location_type || l.all_ages? || l.payment_type?
+  - if l.location_type || l.display_all_ages? || l.display_payment_type?
     %div.location_meta_row.m_10
       - if l.location_type
         %div.location_meta_item
           - if l.location_type.icon.present?
             =image_tag("icons/#{l.location_type.icon}.svg", :alt => l.location_type.icon, :class => 'meta_icon')
           %span= l.location_type.name
-      - if l.all_ages?
+      - if l.display_all_ages?
         %div.location_meta_item
           =image_tag("icons/human-male-girl.svg", :alt => "all ages", :class => 'meta_icon')
           %span= l.all_ages == "Yes" ? "All Ages" : "All Ages At Times"
-      - if l.payment_type?
+      - if l.display_payment_type?
         %div.location_meta_item
           =image_tag("icons/coins-solid-full.svg", :alt => "free play", :class => 'meta_icon')
           %span= l.payment_type

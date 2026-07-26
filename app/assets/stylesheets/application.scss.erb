@@ -1184,6 +1184,7 @@ form#address_search_form input.lookup_search_input {
   @extend %filter_modal_base;
   top: 52px;
   transform: translateX(-50%);
+  flex-wrap: nowrap !important;
 }
 
 .activity_filter_modal_overlay {
@@ -1225,6 +1226,8 @@ form#address_search_form input.lookup_search_input {
 .filter_modal_body {
   padding: 8px;
   overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .filter_modal_section {
@@ -2834,6 +2837,10 @@ input.lookup_search_input:focus {
   line-height: 18px;
   color: var(--darkgrey);
   margin-bottom: 8px;
+}
+
+.not_option_note {
+  color: var(--red);
 }
 
 .metadata_edit_location input.edit_mode {

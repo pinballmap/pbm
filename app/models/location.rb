@@ -1,8 +1,10 @@
 class Location < ApplicationRecord
   has_paper_trail only: %i[name street city state region zone lat lon is_stern_army]
 
-  ALL_AGES_VALUES = [ "Yes", "At Times" ]
-  PAYMENT_TYPE_VALUES = [ "Free Play" ]
+  NOT_ALL_AGES = "Not All Ages"
+  NOT_FREE_PLAY = "Not Free Play"
+  ALL_AGES_VALUES = [ "Yes", "At Times", NOT_ALL_AGES ]
+  PAYMENT_TYPE_VALUES = [ "Free Play", NOT_FREE_PLAY ]
 
   validates_presence_of :name, :street, :city, :country
   validates :phone, phone: { possible: true, allow_blank: true, message: "Phone format not valid." }
@@ -154,6 +156,14 @@ class Location < ApplicationRecord
 
   def user_fave?(user_id)
     UserFaveLocation.where(user_id: user_id, location_id: id).any?
+  end
+
+  def display_all_ages?
+    all_ages.present? && all_ages != NOT_ALL_AGES
+  end
+
+  def display_payment_type?
+    payment_type.present? && payment_type != NOT_FREE_PLAY
   end
 
   def num_machines

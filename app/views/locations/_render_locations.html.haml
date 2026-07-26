@@ -33,7 +33,7 @@
           - not_in_list_count = life_list_machine_ids.present? ? l.machines.count { |machine| !life_list_machine_ids.include?(machine.id) } : 0
           - show_distance = !@nearby_lat.blank?
           - show_location_type = l.location_type.present?
-          - if show_distance || show_location_type || not_in_list_count > 0 || l.all_ages? || l.payment_type?
+          - if show_distance || show_location_type || not_in_list_count > 0 || l.display_all_ages? || l.display_payment_type?
             %div.location_meta_footer.darkgrey
               %div.location_meta_row
                 - if show_location_type
@@ -41,11 +41,11 @@
                     - if l.location_type.icon.present?
                       =image_tag("icons/#{l.location_type.icon}.svg", :alt => l.location_type.icon)
                     %span= l.location_type.name
-                - if l.all_ages?
+                - if l.display_all_ages?
                   %div.location_meta_item
                     =image_tag("icons/human-male-girl.svg", :alt => "all ages")
                     %span= l.all_ages == "Yes" ? "All Ages" : "All Ages At Times"
-                - if l.payment_type?
+                - if l.display_payment_type?
                   %div.location_meta_item
                     =image_tag("icons/coins-solid-full.svg", :alt => "free play")
                     %span= l.payment_type

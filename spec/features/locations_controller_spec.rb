@@ -605,10 +605,11 @@ describe LocationsController do
   end
 
   describe 'all_ages and payment_type badges', type: :feature, js: true do
-    it 'shows the All Ages badge for Yes and At Times, but not for blank' do
+    it 'shows the All Ages badge for Yes and At Times, but not for blank or Not All Ages' do
       yes_location = FactoryBot.create(:location, id: 91, region: @region, name: 'Yes Location', all_ages: 'Yes')
       at_times_location = FactoryBot.create(:location, id: 93, region: @region, name: 'At Times Location', all_ages: 'At Times')
       blank_location = FactoryBot.create(:location, id: 94, region: @region, name: 'Blank Location')
+      not_all_ages_location = FactoryBot.create(:location, id: 97, region: @region, name: 'Data Mgmt Location', all_ages: 'Not All Ages')
 
       visit '/portland'
       click_on 'location_search_button'
@@ -623,11 +624,15 @@ describe LocationsController do
       within('div#show_location_detail_location_94') do
         expect(page).to_not have_content('All Ages')
       end
+      within('div#show_location_detail_location_97') do
+        expect(page).to_not have_content('All Ages')
+      end
     end
 
-    it 'shows the payment type value when present, with no label prefix' do
+    it 'shows the payment type value when present, with no label prefix, but not for Not Free Play' do
       free_play_location = FactoryBot.create(:location, id: 95, region: @region, name: 'Free Play Location', payment_type: 'Free Play')
       blank_location = FactoryBot.create(:location, id: 96, region: @region, name: 'Blank Payment Location')
+      not_free_play_location = FactoryBot.create(:location, id: 98, region: @region, name: 'Data Mgmt Payment Location', payment_type: 'Not Free Play')
 
       visit '/portland'
       click_on 'location_search_button'
@@ -636,6 +641,9 @@ describe LocationsController do
         expect(page).to have_content('Free Play')
       end
       within('div#show_location_detail_location_96') do
+        expect(page).to_not have_content('Free Play')
+      end
+      within('div#show_location_detail_location_98') do
         expect(page).to_not have_content('Free Play')
       end
     end
@@ -1253,6 +1261,30 @@ describe LocationsController do
 
       expect(page).to have_content('All Ages')
       expect(page).to have_content('Free Play')
+    end
+
+    it 'shows a data management note when a Not option is selected, and does not display those values afterward' do
+      visit '/portland/?by_location_id=' + @location.id.to_s
+
+      find('.meta_image').click
+
+      expect(page).to_not have_css('.not_option_note', visible: true)
+
+      select('Not All Ages', from: "new_all_ages")
+      select('Not Free Play', from: "new_payment_type")
+
+      expect(page).to have_css('.not_option_note', visible: true, count: 2)
+      expect(page).to have_content('this selection is used for data management, but will not be displayed in the location details')
+
+      click_on 'Save'
+
+      sleep 1
+
+      expect(@location.reload.all_ages).to eq('Not All Ages')
+      expect(@location.payment_type).to eq('Not Free Play')
+
+      expect(page).to_not have_content('All Ages')
+      expect(page).to_not have_content('Free Play')
     end
 
     it 'allows users to update a location metadata - TWICE' do
