@@ -114,6 +114,7 @@ RailsAdmin.config do |config|
         end
       end
       field :payment_type, :enum do
+        label "Free Play"
         enum do
           Location::PAYMENT_TYPE_VALUES
         end
@@ -154,6 +155,7 @@ RailsAdmin.config do |config|
         end
       end
       field :payment_type, :enum do
+        label "Free Play"
         enum do
           Location::PAYMENT_TYPE_VALUES
         end
@@ -208,6 +210,7 @@ RailsAdmin.config do |config|
         end
       end
       field :payment_type, :enum do
+        label "Free Play"
         enum do
           Location::PAYMENT_TYPE_VALUES
         end
@@ -267,6 +270,7 @@ RailsAdmin.config do |config|
         end
       end
       field :payment_type, :enum do
+        label "Free Play"
         enum do
           Location::PAYMENT_TYPE_VALUES
         end
@@ -817,6 +821,7 @@ RailsAdmin.config do |config|
         end
       end
       field :payment_type, :enum do
+        label "Free Play"
         enum do
           Location::PAYMENT_TYPE_VALUES
         end
@@ -869,6 +874,7 @@ RailsAdmin.config do |config|
         end
       end
       field :payment_type, :enum do
+        label "Free Play"
         enum do
           Location::PAYMENT_TYPE_VALUES
         end
@@ -901,7 +907,9 @@ RailsAdmin.config do |config|
       field :lon, :decimal
       field :website, :string
       field :all_ages, :string
-      field :payment_type, :string
+      field :payment_type, :string do
+        label "Free Play"
+      end
       field :comments do
         html_attributes rows: 5, cols: 50
       end

@@ -3,7 +3,7 @@ require "uri"
 class SuggestedLocation < ApplicationRecord
   has_paper_trail
   validates_presence_of :name, :street, :machines, on: :create
-  validates_presence_of :name, :street, :city, :zip, on: :update
+  validates_presence_of :name, :street, :city, on: :update
 
   validates :website, format: { with: %r{\Ahttp(s?)://}, message: "must begin with http:// or https://" }, if: :website?, on: :update
   validates :name, :street, :city, format: { with: /\A\S.*/, message: "Can't start with a blank", multiline: true }, on: :update
@@ -66,17 +66,13 @@ class SuggestedLocation < ApplicationRecord
   end
 
   def convert_to_location(user_email)
-    if country.blank? || country.nil?
-      errors.add(:base, "Country is a required field for conversion.")
+    errors.add(:base, "Country is a required field for conversion.") if country.blank?
+    errors.add(:base, "Phone format not valid. Try adding the country code.") if !phone.blank? && (Phonelib.invalid? phone)
+    errors.add(:base, "Free play is a required field for conversion.") if payment_type.blank?
+    errors.add(:base, "All ages is a required field for conversion.") if all_ages.blank?
+    errors.add(:base, "Location type is a required field for conversion.") if location_type_id.blank?
 
-      return
-    end
-
-    if !phone.blank? && (Phonelib.invalid? phone)
-      errors.add(:base, "Phone format not valid. Try adding the country code.")
-
-      return
-    end
+    return if errors.any?
 
     location = Location.create(name: name, street: street, city: city, state: state, zip: zip, country: country, phone: phone, lat: lat, lon: lon, website: website, description: comments, region_id: region_id, location_type_id: location_type_id, operator_id: operator_id, zone_id: zone_id, last_updated_by_user_id: user_id, place_id: place_id, all_ages: all_ages, payment_type: payment_type)
 

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SuggestedLocation do
   before(:each) do
-    @suggested_location = FactoryBot.create(:suggested_location, id: 1000, region: FactoryBot.create(:region, name: 'chicago'), lat: 1, lon: 2, name: 'foo', street: 'foo', state: 'OR', zip: '97203', city: 'Portland', machines: 'Batman')
+    @suggested_location = FactoryBot.create(:suggested_location, id: 1000, region: FactoryBot.create(:region, name: 'chicago'), lat: 1, lon: 2, name: 'foo', street: 'foo', state: 'OR', zip: '97203', city: 'Portland', machines: 'Batman', all_ages: 'Yes', payment_type: 'Free Play')
     @user = FactoryBot.create(:user, email: 'yeah@ok.com')
   end
 
@@ -86,6 +86,13 @@ describe SuggestedLocation do
     end
   end
 
+  describe 'validates presence on update' do
+    it 'does not require zip' do
+      @suggested_location.zip = nil
+      expect { @suggested_location.save! }.to_not raise_error
+    end
+  end
+
   describe '#address_incomplete?' do
     it 'should be true based on lack of address' do
       expect(@suggested_location.address_incomplete?).to be(false)
@@ -118,6 +125,40 @@ HERE
       @suggested_location.convert_to_location(@user.email)
 
       expect(@suggested_location.errors.messages).to include(base: [ 'Country is a required field for conversion.' ])
+    end
+
+    it 'requires payment_type' do
+      @suggested_location.payment_type = nil
+      @suggested_location.convert_to_location(@user.email)
+
+      expect(@suggested_location.errors.messages).to include(base: [ 'Free play is a required field for conversion.' ])
+    end
+
+    it 'requires all_ages' do
+      @suggested_location.all_ages = nil
+      @suggested_location.convert_to_location(@user.email)
+
+      expect(@suggested_location.errors.messages).to include(base: [ 'All ages is a required field for conversion.' ])
+    end
+
+    it 'requires location_type' do
+      @suggested_location.location_type_id = nil
+      @suggested_location.convert_to_location(@user.email)
+
+      expect(@suggested_location.errors.messages).to include(base: [ 'Location type is a required field for conversion.' ])
+    end
+
+    it 'reports all missing fields at once, not just the first' do
+      @suggested_location.payment_type = nil
+      @suggested_location.all_ages = nil
+      @suggested_location.location_type_id = nil
+      @suggested_location.convert_to_location(@user.email)
+
+      expect(@suggested_location.errors[:base]).to contain_exactly(
+        'Free play is a required field for conversion.',
+        'All ages is a required field for conversion.',
+        'Location type is a required field for conversion.'
+      )
     end
 
     it 'carries all_ages and payment_type onto the created location' do
