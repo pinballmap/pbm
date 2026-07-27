@@ -801,5 +801,23 @@ describe Api::V1::UsersController, type: :request do
       body = JSON.parse(response.body)
       expect(body['profile_info']['num_life_list_machines']).to eq(1)
     end
+
+    it 'returns only id and life_list_machine_ids when life_list_ids_only param is present' do
+      get '/api/v1/users/111/profile_info.json', params: { life_list_ids_only: 1 }
+
+      expect(response).to be_successful
+      body = JSON.parse(response.body)
+      expect(body['profile_info'].keys).to match_array(%w[id life_list_machine_ids])
+      expect(body['profile_info']['life_list_machine_ids']).to eq([ @machine.id ])
+    end
+
+    it 'prefers life_list_ids_only over life_list when both params are present' do
+      get '/api/v1/users/111/profile_info.json', params: { life_list: 1, life_list_ids_only: 1 }
+
+      expect(response).to be_successful
+      body = JSON.parse(response.body)
+      expect(body['profile_info'].keys).to match_array(%w[id life_list_machine_ids])
+      expect(body['profile_info']['life_list_machine_ids']).to eq([ @machine.id ])
+    end
   end
 end

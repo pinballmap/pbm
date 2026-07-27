@@ -151,6 +151,10 @@ class User < ApplicationRecord
     user_machine_xrefs.count
   end
 
+  def life_list_machine_ids
+    user_machine_xrefs.pluck(:machine_id)
+  end
+
   def profile_life_list_stats
     life_list = UserMachineXref
       .where(user: self)

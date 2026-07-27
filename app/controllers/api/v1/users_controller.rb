@@ -209,9 +209,15 @@ module Api
       param :id, Integer, desc: "ID of user", required: true
       param :new_score_list_only, Integer, desc: "When present, the old high score list is gone (recent 50); only showing the new list of highest high score per machine, all scores per machine, and average and count", required: false
       param :life_list, Integer, desc: "When present, returns the life list (all machines the user has played) with associated score data instead of profile_machine_scores_stats", required: false
+      param :life_list_ids_only, Integer, desc: "When present, returns only id and life_list_machine_ids (the machine_ids on the user's life list), skipping all other profile_info fields. Takes precedence over life_list and new_score_list_only.", required: false
       formats [ "json" ]
       def profile_info
         user = User.find(params[:id])
+
+        if params[:life_list_ids_only]
+          return return_response(user, "profile_info", [], [ :life_list_machine_ids ])
+        end
+
         includes = %i[admin_rank_int admin_title contributor_rank_int contributor_rank flag num_total_submissions num_machines_added num_machines_removed num_locations_edited num_locations_suggested num_lmx_comments_left num_msx_scores_added num_life_list_machines profile_list_of_edited_locations profile_list_of_high_scores operator_name created_at profile_machine_scores_stats]
         includes.delete(:profile_list_of_high_scores) if params[:new_score_list_only]
 
