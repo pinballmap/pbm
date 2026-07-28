@@ -87,11 +87,11 @@
                   %button#n_machines_10.machine_type_btn.n_machines_btn{:type => "button", :onclick => "setNMachines('10')"} 10+
                   %button#n_machines_20.machine_type_btn.n_machines_btn{:type => "button", :onclick => "setNMachines('20')"} 20+
               .map_input_limit
-                .input_title All ages
+                .input_title All ages?
                 = hidden_field_tag "by_all_ages", (params[:by_all_ages] == "Yes" ? "Yes" : '')
                 .machine_type_toggle
                   %button#all_ages_all.machine_type_btn.all_ages_btn.active{:type => "button", :onclick => "setAllAges('')"} All
-                  %button#all_ages_yes.machine_type_btn.all_ages_btn{:type => "button", :onclick => "setAllAges('Yes')"} All Ages?
+                  %button#all_ages_yes.machine_type_btn.all_ages_btn{:type => "button", :onclick => "setAllAges('Yes')"} All Ages
               .map_input_limit
                 .input_title Free Play?
                 = hidden_field_tag "by_payment_type", (params[:by_payment_type] == "Free Play" ? "Free Play" : '')
