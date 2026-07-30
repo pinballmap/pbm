@@ -15,6 +15,8 @@ class AdminMailer < ApplicationMailer
     @scores_added_count = params[:scores_added_count]
     @scores_deleted_count = params[:scores_deleted_count]
     @machine_comments_deleted_count = params[:machine_comments_deleted_count]
+    @location_metadata_count = params[:location_metadata_count]
+    @user_submissions_count = params[:user_submissions_count]
 
     mail(to: params[:user], subject: "Pinball Map - Weekly admin global digest - #{Date.today.strftime('%m/%d/%Y')}")
   end
@@ -35,6 +37,8 @@ class AdminMailer < ApplicationMailer
     @pictures_added_count = params[:pictures_added_count]
     @pictures_removed_count = params[:pictures_removed_count]
     @scores_added_count = params[:scores_added_count]
+    @location_metadata_count = params[:location_metadata_count]
+    @user_submissions_count = params[:user_submissions_count]
 
     mail(to: params[:email_to], subject: params[:email_subject])
   end

@@ -303,6 +303,9 @@ describe Region do
       FactoryBot.create(:user_submission, region: nil, submission: 'foo', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
       FactoryBot.create(:user_submission, region_id: @region.id, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
 
+      FactoryBot.create(:user_submission, region: nil, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
+      FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
+
       expect(Region.generate_weekly_global_email_body[:machineless_locations]).to eq([ 'Another Region Location (Portland, OR)', 'Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)' ])
       expect(Region.generate_weekly_global_email_body[:suggested_locations_count]).to eq(2)
       expect(Region.generate_weekly_global_email_body[:locations_added_count]).to eq(3)
@@ -314,6 +317,8 @@ describe Region do
       expect(Region.generate_weekly_global_email_body[:scores_added_count]).to eq(2)
       expect(Region.generate_weekly_global_email_body[:scores_deleted_count]).to eq(1)
       expect(Region.generate_weekly_global_email_body[:machine_comments_deleted_count]).to eq(1)
+      expect(Region.generate_weekly_global_email_body[:location_metadata_count]).to eq(2)
+      expect(Region.generate_weekly_global_email_body[:user_submissions_count]).to eq(19)
     end
   end
 
@@ -372,6 +377,9 @@ describe Region do
       FactoryBot.create(:user_submission, region: @region, submission: 'foo', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
       FactoryBot.create(:user_submission, region: @region, submission: 'bar', submission_type: UserSubmission::NEW_PICTURE_TYPE, created_at: Time.now - 1.day)
 
+      FactoryBot.create(:user_submission, region: @region, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
+      FactoryBot.create(:user_submission, region: @another_region, submission_type: UserSubmission::LOCATION_METADATA_TYPE)
+
       expect(@region.generate_weekly_admin_email_body[:suggested_locations]).to eq([ 'SL 1', 'SL 2' ])
       expect(@region.generate_weekly_admin_email_body[:machineless_locations]).to eq([ 'Empty Location (Troy, OR)', 'Another Empty Location (Rochester, OR)', 'Test Location Name (Portland, OR)' ])
       expect(@region.generate_weekly_admin_email_body[:suggested_locations_count]).to eq(2)
@@ -385,6 +393,8 @@ describe Region do
       expect(@region.generate_weekly_admin_email_body[:pictures_added_count]).to eq(2)
       expect(@region.generate_weekly_admin_email_body[:scores_added_count]).to eq(2)
       expect(@region.generate_weekly_admin_email_body[:full_name]).to eq('Portland')
+      expect(@region.generate_weekly_admin_email_body[:location_metadata_count]).to eq(1)
+      expect(@region.generate_weekly_admin_email_body[:user_submissions_count]).to eq(22)
     end
   end
 

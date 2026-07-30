@@ -256,7 +256,11 @@ class Region < ApplicationRecord
 
       scores_deleted_count: UserSubmission.where.not(deleted_at: nil).where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::NEW_SCORE_TYPE).count,
 
-      machine_comments_deleted_count: UserSubmission.where.not(deleted_at: nil).where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::NEW_CONDITION_TYPE).count
+      machine_comments_deleted_count: UserSubmission.where.not(deleted_at: nil).where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::NEW_CONDITION_TYPE).count,
+
+      location_metadata_count: UserSubmission.where(deleted_at: nil).where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::LOCATION_METADATA_TYPE).count,
+
+      user_submissions_count: UserSubmission.where(deleted_at: nil).where("created_at is not null and created_at > ? and created_at < ?", start_of_week, end_of_week).count
     }
   end
 
@@ -292,7 +296,11 @@ class Region < ApplicationRecord
 
       pictures_removed_count: UserSubmission.where(deleted_at: nil).where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_week, end_of_week, UserSubmission::REMOVE_PICTURE_TYPE, self).count,
 
-      scores_added_count: UserSubmission.where(deleted_at: nil).where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_week, end_of_week, UserSubmission::NEW_SCORE_TYPE, self).count
+      scores_added_count: UserSubmission.where(deleted_at: nil).where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_week, end_of_week, UserSubmission::NEW_SCORE_TYPE, self).count,
+
+      location_metadata_count: UserSubmission.where(deleted_at: nil).where("created_at is not null and created_at > ? and created_at < ? and submission_type = ? and region_id = ?", start_of_week, end_of_week, UserSubmission::LOCATION_METADATA_TYPE, self).count,
+
+      user_submissions_count: UserSubmission.where(deleted_at: nil).where("created_at is not null and created_at > ? and created_at < ? and region_id = ?", start_of_week, end_of_week, self).count
     }
   end
 
