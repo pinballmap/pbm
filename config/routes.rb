@@ -91,7 +91,6 @@ Rails.application.routes.draw do
       end
 
       scope 'region/:region', constraints: lambda { |request| Region.where('lower(name) = ?', request.params[:region].downcase).any? } do
-        resources :events, only: [:index, :show]
         resources :location_machine_xrefs, only: [:index]
         resources :locations, only: [:index, :show]
         resources :machine_score_xrefs, only: [:index, :show]
