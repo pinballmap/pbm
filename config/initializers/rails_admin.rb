@@ -927,6 +927,7 @@ RailsAdmin.config do |config|
       field :status_label, :string do
         label "Status"
       end
+      field :token, :string
       field :created_at, :datetime
     end
     edit do
