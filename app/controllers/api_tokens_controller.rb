@@ -42,6 +42,6 @@ class ApiTokensController < ApplicationController
 
   def requesting_blocked?
     latest = ApiToken.where(user: current_user).order(created_at: :desc).first
-    latest.present? && (latest.pending? || latest.active? || latest.revoked?)
+    latest.present? && (latest.pending? || latest.active?)
   end
 end

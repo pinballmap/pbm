@@ -132,11 +132,15 @@ class ApplicationController < ActionController::Base
   end
 
   def notify_super_admins_of_api_token_request(api_token)
+    history = ApiToken.disabled_history_summary(api_token.user, excluding: api_token)
+
     AdminMailer.with(
       to_users: ENV.fetch("EMAIL_ADMIN", "admin@pinballmap.com"),
       cc_users: Array(User.all.select(&:is_super_admin).map(&:email)),
       user_email: api_token.user.email,
       requested_use: api_token.requested_use,
+      prior_revoked_count: history[:revoked],
+      prior_denied_count: history[:denied],
       subject: add_host_info_to_subject("Pinball Map - New API token request - #{api_token.user.email}")
     ).send_api_token_request_notification.deliver_later
   end

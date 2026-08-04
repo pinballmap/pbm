@@ -75,6 +75,12 @@ class ApiToken < ApplicationRecord
     where(user_id: user.id).order(created_at: :desc).first&.revoked? || false
   end
 
+  def self.disabled_history_summary(user, excluding: nil)
+    scope = where(user: user)
+    scope = scope.where.not(id: excluding.id) if excluding
+    { revoked: scope.revoked.count, denied: scope.denied.count }
+  end
+
   def status_label
     return "Pending" if pending?
     return "Active" if active?

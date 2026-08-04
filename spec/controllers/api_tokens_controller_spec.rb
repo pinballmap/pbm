@@ -32,6 +32,18 @@ describe ApiTokensController, type: :controller do
         expect(response).to be_successful
         expect(response.body).to include(api_token.reload.token)
       end
+
+      it 'renders the resubmit form and revocation notice when the user has a revoked token' do
+        api_token = FactoryBot.create(:api_token, user: @user, requested_use: 'testing')
+        admin = FactoryBot.create(:user, is_super_admin: true)
+        api_token.approve!(approved_by: admin)
+        api_token.revoke!(by: admin)
+
+        get :show
+        expect(response).to be_successful
+        expect(response.body).to include('Your API token access has been revoked')
+        expect(response.body).to include('Request API Token')
+      end
     end
 
     context 'when logged out' do
@@ -88,15 +100,20 @@ describe ApiTokensController, type: :controller do
       }.not_to change(ApiToken, :count)
     end
 
-    it 'does not allow a new request after revocation' do
+    it 'allows a new request after revocation and flags the prior revocation to admins' do
       api_token = FactoryBot.create(:api_token, user: @user, requested_use: 'first')
       admin = FactoryBot.create(:user, is_super_admin: true)
       api_token.approve!(approved_by: admin)
       api_token.revoke!(by: admin)
 
-      expect {
-        post :create, params: { api_token: { requested_use: 'second' } }
-      }.not_to change(ApiToken, :count)
+      perform_enqueued_jobs do
+        expect {
+          post :create, params: { api_token: { requested_use: 'second, with revised plan' } }
+        }.to change(ApiToken, :count).by(1)
+      end
+
+      mail = ActionMailer::Base.deliveries.last
+      expect(mail.body.encoded).to include('1 previously revoked token')
     end
 
     it 'allows a new request after a denial' do

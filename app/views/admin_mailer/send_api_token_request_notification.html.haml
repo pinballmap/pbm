@@ -9,5 +9,11 @@
       Their stated use:
     %p
       = simple_format(@requested_use)
+    - history_notes = []
+    - history_notes << pluralize(@prior_revoked_count, "previously revoked token") if @prior_revoked_count > 0
+    - history_notes << pluralize(@prior_denied_count, "previously denied token") if @prior_denied_count > 0
+    - if history_notes.any?
+      %p.red
+        Heads up: this user has #{history_notes.to_sentence}.
     %p
       Review and approve/deny this request in the admin panel.

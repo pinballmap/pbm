@@ -122,6 +122,8 @@ class AdminMailer < ApplicationMailer
   def send_api_token_request_notification
     @user_email = params[:user_email]
     @requested_use = params[:requested_use]
+    @prior_revoked_count = params[:prior_revoked_count].to_i
+    @prior_denied_count = params[:prior_denied_count].to_i
 
     mail(to: params[:to_users], reply_to: params[:user_email], cc: params[:cc_users], subject: params[:subject])
   end
