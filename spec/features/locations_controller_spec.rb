@@ -113,7 +113,7 @@ describe LocationsController do
 
       visit '/portland/?by_location_id=' + location.id.to_s
 
-      expect(find("#last_updated_location_#{location.id}")).to have_content("Location updated 2 times by 2 users")
+      expect(find("#last_updated_location_#{location.id}")).to have_content("2 edits by 2 users")
     end
   end
 

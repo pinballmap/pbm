@@ -843,6 +843,25 @@ function updateLocationUpdatedText(id) {
   return false;
 }
 
+function initReadMoreToggle(id) {
+  var textEl = document.getElementById('desc_show_location_' + id);
+  var toggle = document.getElementById('read_more_toggle_' + id);
+  if (!textEl || !toggle) return;
+
+  toggle.style.display = 'none';
+  toggle.textContent = 'READ MORE';
+  toggle.onclick = function () {
+    var isClamped = textEl.classList.toggle('clamped');
+    toggle.textContent = isClamped ? 'READ MORE' : 'READ LESS';
+  };
+
+  requestAnimationFrame(function () {
+    if (textEl.scrollHeight > textEl.clientHeight + 1) {
+      toggle.style.display = 'block';
+    }
+  });
+}
+
 var fade_flash = function () {
   $("#flash_notice").delay(2400).fadeOut("slow");
   $("#flash_alert").delay(2400).fadeOut("slow");

@@ -22,26 +22,34 @@
         %div.location_meta_item
           =image_tag("icons/coins-solid-full.svg", :alt => "free play", :class => 'meta_icon')
           %span= l.payment_type
-  - if mobile_device? && !l.phone.blank?
-    %div.phone
-      = image_tag('icons/phone.svg', :class => 'meta_icon')
-      = link_to l.phone, "tel:" + l.phone, :type => 'tel'
-  - else
-    - if l.phone?
-      %div.phone
-        = image_tag('icons/phone.svg', :class => 'meta_icon')
-        = l.phone
-  - if l.website?
-    %div.website
-      = image_tag('icons/web.svg', :class => 'meta_icon')
-      = link_to "Website", l.website, :class => 'website', :target => 'blank'
-  - if l.place_id?
-    %div.hours
-      = image_tag('icons/clock-time-four-outline.svg', :class => 'meta_icon')
-      = link_to "Hours", "https://www.google.com/maps/place/?q=place_id:" + l.place_id, :class => 'hours', :target => 'blank'
-      %span.grey.italic (Google Maps)
+  - if l.phone? || l.website? || l.place_id?
+    %div.location_action_row
+      - if l.phone?
+        - if mobile_device?
+          = link_to "tel:" + l.phone, :class => 'location_action_button', :type => 'tel' do
+            = image_tag('icons/phone.svg', :class => 'meta_icon location_action_icon')
+            %span Call
+        - else
+          %div.location_action_button.copy_icon{:data => {:copy => l.phone}}
+            = image_tag('icons/phone.svg', :class => 'meta_icon location_action_icon copy_icon', :data => {:copy => l.phone})
+            %span Call
+      - if l.website?
+        = link_to l.website, :class => 'location_action_button', :target => 'blank' do
+          = image_tag('icons/web.svg', :class => 'meta_icon location_action_icon')
+          %span Website
+      - if l.place_id?
+        = link_to "https://www.google.com/maps/place/?q=place_id:" + l.place_id, :class => 'location_action_button', :target => 'blank' do
+          = image_tag('icons/clock-time-four-outline.svg', :class => 'meta_icon location_action_icon')
+          %span Hours
+  - if !l.description.blank?
+    %div.metadata_card.description.font16
+      = image_tag('icons/notebook-outline.svg', :class => 'meta_icon float_l')
+      %div.clamped[l, :desc_show]= l.description
+      %span.read_more_toggle.pointer{:id => "read_more_toggle_#{l.id}"} READ MORE
+    :javascript
+      initReadMoreToggle(#{l.id});
   - if (l.operator_id)
-    %div.operator
+    %div.metadata_card.operator
       = image_tag('icons/wrench.svg', :class => 'meta_icon')
       %span.darkgrey Operated by:
       %span
@@ -49,13 +57,24 @@
           &nbsp;#{l.operator.name}
         - else
           = link_to l.operator.name, l.operator.website, target: '_blank'
-        - if l.operator_email_opt_in
-          = image_tag('icons/email-outline.svg', class: 'copy_icon', data: { copy: l.operator_email_opt_in })
-        - if l.operator_phone_opt_in
-          = image_tag('icons/phone.svg', class: 'copy_icon', data: { copy: l.operator_phone_opt_in })
-  - if !l.description.blank?
-    %div.description
-      = image_tag('icons/notebook-outline.svg', :class => 'meta_icon float_l')
-      %div[l, :desc_show]= l.description
-  %div[l, :last_updated]
+      - if l.operator_email_opt_in || l.operator_phone_opt_in
+        %div.location_action_row
+          - if l.operator_email_opt_in
+            %div.location_action_button.copy_icon{:data => {:copy => l.operator_email_opt_in}}
+              = image_tag('icons/email-outline.svg', :class => 'meta_icon location_action_icon copy_icon', :data => {:copy => l.operator_email_opt_in})
+              %span Email
+          - if l.operator_phone_opt_in
+            %div.location_action_button.copy_icon{:data => {:copy => l.operator_phone_opt_in}}
+              = image_tag('icons/phone.svg', :class => 'meta_icon location_action_icon copy_icon', :data => {:copy => l.operator_phone_opt_in})
+              %span Call/Text
+  %div.edit_location_details_link
+    - if !user_signed_in?
+      = link_to new_user_session_path, :class => "no_underline brightpurple" do
+        = image_tag('icons/lead-pencil.svg', :class => 'meta_icon')
+        Edit location details
+    - else
+      %span.meta_image.pointer.brightpurple
+        = image_tag('icons/lead-pencil.svg', :class => 'meta_icon')
+        Edit location details
+  %div.metadata_card.last_updated_card[l, :last_updated]
     = render :partial => 'locations/render_last_updated', :locals => {:l => l}

@@ -5,16 +5,10 @@
 		%div.location_tools.pointer
 			- if !user_signed_in?
 				=link_to new_user_session_path, :class => "no_underline" do
-					=image_tag('icons/lead-pencil.svg', :class => 'meta_image_notlogged')
-					%span.meta_image_tooltip
-						Update Location Info
 					=image_tag( 'icons/heart-empty.svg', :alt => 'fave this location', :class => 'fave_location')
 					%span.fave_location_tooltip
 						Favorite This Location
 			- else
-				=image_tag('icons/lead-pencil.svg', :class => 'meta_image')
-				%span.meta_image_tooltip
-					Update Location Info
 				=image_tag( l.user_fave?(current_user.id) ? 'icons/heart-filled.svg' : 'icons/heart-empty.svg', :alt => 'fave this location', :id => "fave_location_img_#{l.id}", :class => 'fave_location')
 				%span.fave_location_tooltip
 					Favorite This Location
@@ -76,7 +70,7 @@
 	currentMachineSort = 'alphabetical';
 
 	$(function () {
-		$('#location_detail_location_#{l.id} .meta_image').click(function () {
+		$(document).off('click', '#location_detail_location_#{l.id} .meta_image').on('click', '#location_detail_location_#{l.id} .meta_image', function () {
 			showMetadataEditModal(#{l.id});
 		});
 		$("#fave_location_img_#{l.id}").click(function() {
