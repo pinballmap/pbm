@@ -10,6 +10,7 @@ map $http_user_agent $limit_key {
   "~*meta-webindexer" "meta-webindexer";
   "~*bingbot" "bingbot";
   "~*SERankingBacklinksBot" "SERankingBacklinksBot";
+  "~*AwarioBot" "AwarioBot";
 }
 
 limit_req_zone $limit_key zone=bots_nginx:10m rate=10r/m;
