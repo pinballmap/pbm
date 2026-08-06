@@ -76,6 +76,9 @@
       and many others.
     %p
       %span.bold If you use the data, provide attribution.
+      See
+      =link_to 'this FAQ item', faq_path(anchor: '1')
+      for more detailed information about data usage and attribution.
   - if !mobile_device?
     .news{:style => 'display: flex;justify-content: center;'}
       =image_tag( 'cleo.png', :alt => 'cleo', :style => 'height: 220px;')
