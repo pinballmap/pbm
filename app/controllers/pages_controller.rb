@@ -125,6 +125,10 @@ limit 25")
        .sort_by { |k, _| label_order.index(k) || label_order.size }
        .to_h
 
+    @user_submissions_type_count["Add Location"] = Rails.cache.fetch("locations_added_total_cache", expires_in: 1.hour) do
+      Location.maximum(:id) || 0
+    end
+
     @top_cities_by_machine = Rails.cache.fetch("top_cities_by_machine_cache", expires_in: 1.hour) do
       xid = Arel::Table.new("location_machine_xrefs")
       lid = Arel::Table.new("locations")
