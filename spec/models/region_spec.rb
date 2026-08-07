@@ -155,6 +155,7 @@ describe Region do
       expect(result[:new_user_activity]).to be_empty
       expect(result[:proxy_machine_additions]).to be_empty
       expect(result[:proxy_machine_comments]).to be_empty
+      expect(result[:for_sale_comments]).to be_empty
       expect(result[:machine_comments_count]).to eq(0)
       expect(result[:machine_removals_count]).to eq(0)
       expect(result[:pictures_added_count]).to eq(0)
@@ -252,6 +253,32 @@ describe Region do
       result = Region.generate_daily_digest_global_email_body
       expect(result[:proxy_machine_additions]).to be_empty
       expect(result[:proxy_machine_comments]).to be_empty
+    end
+
+    it 'returns empty for_sale_comments when there is no matching activity' do
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day, comment: 'plays great')
+
+      result = Region.generate_daily_digest_global_email_body
+      expect(result[:for_sale_comments]).to be_empty
+    end
+
+    it 'captures new_condition submissions whose comment mentions "for sale", case-insensitively' do
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day, location_name: 'Arcade One', machine_name: 'Medieval Madness', comment: 'this machine is for sale, contact me', user_name: 'alice')
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day, location_name: 'Bar Two', machine_name: 'Twilight Zone', comment: 'FOR SALE $6000 obo', user_name: 'bob')
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 1.day, location_name: 'Club Three', machine_name: 'Centaur', comment: 'plays great, no issues', user_name: 'carol')
+
+      result = Region.generate_daily_digest_global_email_body
+      expect(result[:for_sale_comments]).to eq([
+        { location_name: 'Arcade One', location_id: nil, machine_name: 'Medieval Madness', comment: 'this machine is for sale, contact me', user_name: 'alice' },
+        { location_name: 'Bar Two', location_id: nil, machine_name: 'Twilight Zone', comment: 'FOR SALE $6000 obo', user_name: 'bob' }
+      ])
+    end
+
+    it 'excludes for_sale comments from outside the digest window' do
+      FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.days, location_name: 'Old Arcade', machine_name: 'Medieval Madness', comment: 'for sale', user_name: 'alice')
+
+      result = Region.generate_daily_digest_global_email_body
+      expect(result[:for_sale_comments]).to be_empty
     end
 
     it 'deduplicates location_metadata to only the most recent submission per location' do

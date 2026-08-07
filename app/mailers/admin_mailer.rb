@@ -79,6 +79,7 @@ class AdminMailer < ApplicationMailer
     @new_user_activity       = params[:new_user_activity]
     @proxy_machine_additions = params[:proxy_machine_additions]
     @proxy_machine_comments  = params[:proxy_machine_comments]
+    @for_sale_comments       = params[:for_sale_comments]
     @machine_comments_count  = params[:machine_comments_count]
     @machine_removals_count  = params[:machine_removals_count]
     @pictures_added_count    = params[:pictures_added_count]

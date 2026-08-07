@@ -117,3 +117,17 @@
           = item[:user_name]
     - if @proxy_machine_additions&.empty? && @proxy_machine_comments&.empty?
       %p None
+    %h3
+      Suspected For-Sale Listings
+    - if @for_sale_comments&.any?
+      - @for_sale_comments.each do |item|
+        %p
+          %a{href: "https://pinballmap.com/map?by_location_id=#{item[:location_id]}"}= item[:location_name]
+          %br/
+          = item[:machine_name]
+          %br/
+          "#{item[:comment]}"
+          %br/
+          = item[:user_name]
+    - else
+      %p None

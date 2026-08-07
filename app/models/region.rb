@@ -188,6 +188,10 @@ class Region < ApplicationRecord
       .order(:location_name)
       .map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, comment: us.comment, user_name: us.user_name } }
 
+    for_sale_comments = base.where(submission_type: UserSubmission::NEW_CONDITION_TYPE).where("comment ILIKE ?", "%for sale%")
+      .order(:location_name)
+      .map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, comment: us.comment, user_name: us.user_name } }
+
     new_user_ids = User.where("created_at >= ?", 7.days.ago).pluck(:id)
     new_user_activity = if new_user_ids.any?
       base.where(
@@ -216,6 +220,7 @@ class Region < ApplicationRecord
       new_user_activity:       new_user_activity,
       proxy_machine_additions: proxy_machine_additions,
       proxy_machine_comments:  proxy_machine_comments,
+      for_sale_comments:       for_sale_comments,
       machine_comments_count:  machine_comments.length,
       machine_removals_count:  machine_removals.length,
       pictures_added_count:    pictures_added_raw.length,
