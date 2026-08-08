@@ -2,6 +2,7 @@
   --red: #fe46b0;
   --lightpink: #fff1f1;
   --brightpurple: #66017b;
+  --blue: #e3f3ff;
   --darkblue: #250529;
   --purple: #e0e0ff;
   --purple2: #e0e0ff;
@@ -47,6 +48,7 @@
     --red: #f6d3fc;
     --lightpink: #47475f;
     --brightpurple: #f6ddfa;
+    --blue: #2d8ad3;
     --darkblue: #1d151e;
     --purple: #e0e0ff;
     --purple2: #5f5063;
@@ -87,6 +89,7 @@ html[data-theme="dark"] {
   --red: #f6d3fc;
   --lightpink: #47475f;
   --brightpurple: #f6ddfa;
+  --blue: #e3f3ff;
   --darkblue: #1d151e;
   --purple: #e0e0ff;
   --purple2: #5f5063;
@@ -126,6 +129,7 @@ html[data-theme="light"] {
   --red: #fe46b0;
   --lightpink: #fff1f1;
   --brightpurple: #66017b;
+  --blue: #2d8ad3;
   --darkblue: #250529;
   --purple: #e0e0ff;
   --purple2: #e0e0ff;
@@ -2583,6 +2587,7 @@ br.clear {
 
 .operator .location_action_row {
   margin-left: 20px;
+  margin-bottom: 0;
 }
 
 .operator .location_action_button {
@@ -2607,6 +2612,10 @@ br.clear {
 .description.metadata_card,
 .operator.metadata_card {
   background: var(--metadata_card_bg);
+}
+
+.operator.metadata_card a {
+  color: var(--blue);
 }
 
 .last_updated_card {
@@ -3110,6 +3119,7 @@ div.last_updated {
 span.last_updated_username a {
   font-family: $Nunito_700Bold;
   font-size: 16px;
+  color: var(--red);
 }
 
 .stale {
@@ -3157,7 +3167,6 @@ input.score {
 
 .location_detail {
   font-size: 16px;
-  line-height: 24px;
   height: 100%;
   font-family: $Nunito_400Regular;
   @include radius(10px);
@@ -3256,7 +3265,7 @@ input.score {
 .read_more_toggle {
   display: none;
   margin-left: 23px;
-  color: var(--ahref);
+  color: var(--blue);
   text-decoration: underline;
   font-size: 14px;
 }

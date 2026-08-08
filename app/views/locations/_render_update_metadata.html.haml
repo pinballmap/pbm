@@ -51,7 +51,7 @@
   - if (l.operator_id)
     %div.metadata_card.operator
       = image_tag('icons/wrench.svg', :class => 'meta_icon')
-      %span.darkgrey Operated by:
+      %span.darkgrey Operated by
       %span
         - if l.operator.website.blank?
           &nbsp;#{l.operator.name}
