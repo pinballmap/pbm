@@ -25,7 +25,7 @@
             Describe your planned use of the API below. Include details such as the name of your service, a link to it, a description of what it does, and which endpoints you are planning to use.
           - if @api_token&.denied?
             %p.red
-              Your previous request was not approved. You may not have included the basic details described above. Feel free to submit a new one with more detail.
+              Your previous request was not approved. You may not have included the details described above. Feel free to submit a new one with more detail.
           - elsif @api_token&.revoked?
             %p.red
               Your API token access has been revoked. Contact us if you think this is a mistake. Or, if you understand why, you can submit a request for a new one with a revised plan.
@@ -41,7 +41,7 @@
           %p.red== To request a token you first need to #{link_to 'login', new_user_session_path, :class => "red bold"}. Thank you!
       - elsif @api_token.pending?
         %p
-          Your API token request is pending review. We'll email you once it's been approved (check your spam!).
+          Your API token request is pending review. We'll email you once it's been approved (check your spam or, better yet, whitelist admin@pinballmap.com!).
       - elsif @api_token.active?
         %p
           Your API token:
