@@ -1476,6 +1476,24 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to_not include('foo bar')
       expect(response.body).to_not include('567890')
     end
+
+    it 'sets last_updated_by_user_deleted to true when the last updating user has been deleted, and false for an active user' do
+      @location.update(last_updated_by_user: @user)
+
+      get "/api/v1/locations/#{@location.id}.json", params: { no_details: 1 }
+      expect(JSON.parse(response.body)['last_updated_by_user_deleted']).to eq(false)
+
+      get "/api/v1/locations/#{@location.id}.json", params: { metadata_only: 1 }
+      expect(JSON.parse(response.body)['last_updated_by_user_deleted']).to eq(false)
+
+      @user.destroy
+
+      get "/api/v1/locations/#{@location.id}.json", params: { no_details: 1 }
+      expect(JSON.parse(response.body)['last_updated_by_user_deleted']).to eq(true)
+
+      get "/api/v1/locations/#{@location.id}.json", params: { metadata_only: 1 }
+      expect(JSON.parse(response.body)['last_updated_by_user_deleted']).to eq(true)
+    end
   end
 
   describe '#top_cities' do

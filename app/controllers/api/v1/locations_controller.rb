@@ -423,7 +423,7 @@ module Api
 
         if params[:no_details] == "1"
           location = Location.includes(:location_machine_xrefs, :last_updated_by_user).find(params[:id])
-          methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank last_updated_by_flag operator_has_email operator_email_opt_in operator_phone_opt_in operator_website num_machines lpx_count]
+          methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank last_updated_by_flag last_updated_by_user_deleted operator_has_email operator_email_opt_in operator_phone_opt_in operator_website num_machines lpx_count]
           except = %i[zone_id created_at region_id is_stern_army country]
 
           if params[:user_id].present?
@@ -436,7 +436,7 @@ module Api
         elsif params[:metadata_only] == "1"
           location = Location.includes(:last_updated_by_user).find(params[:id])
           includes = []
-          methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank last_updated_by_flag num_machines]
+          methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank last_updated_by_flag last_updated_by_user_deleted num_machines]
           except = %i[zone_id created_at region_id is_stern_army country]
         elsif params[:no_details] == "2"
           location = Location.includes(:machines).find(params[:id])

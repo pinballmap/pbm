@@ -59,6 +59,10 @@ class UserSubmission < ApplicationRecord
     user&.flag
   end
 
+  def user_deleted
+    user_id.present? && user.blank?
+  end
+
   def location_operator_id
     location&.operator_id
   end

@@ -322,6 +322,10 @@ class Location < ApplicationRecord
     last_updated_by_user&.flag
   end
 
+  def last_updated_by_user_deleted
+    last_updated_by_user_id.present? && last_updated_by_user.blank?
+  end
+
   def operator_has_email
     operator&.email.blank? ? false : true
   end

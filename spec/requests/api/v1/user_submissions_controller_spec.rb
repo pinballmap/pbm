@@ -188,6 +188,25 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response.body).to include('us')
     end
 
+    it 'sets user_deleted to true when the submitting user has been deleted, and false otherwise' do
+      location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606')
+      active_user = FactoryBot.create(:user)
+      deleted_user = FactoryBot.create(:user)
+
+      FactoryBot.create(:user_submission, user: active_user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_LMX_TYPE, created_at: '2020-01-01', submission: 'active user submission', location_name: location.name)
+      FactoryBot.create(:user_submission, user: deleted_user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_LMX_TYPE, created_at: '2020-01-02', submission: 'deleted user submission', location_name: location.name)
+      deleted_user.destroy
+
+      get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606' }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(2)
+      expect(json.find { |s| s['submission'] == 'deleted user submission' }['user_deleted']).to eq(true)
+      expect(json.find { |s| s['submission'] == 'active user submission' }['user_deleted']).to eq(false)
+    end
+
      it 'excludes a submission_type when restrict_to param (alone) is included' do
       location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606', name: 'bawb')
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
@@ -504,6 +523,25 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response.body).to include('us')
     end
 
+    it 'sets user_deleted to true when the submitting user has been deleted, and false otherwise' do
+      location = FactoryBot.create(:location, name: 'bawb', id: 111)
+      active_user = FactoryBot.create(:user)
+      deleted_user = FactoryBot.create(:user)
+
+      FactoryBot.create(:user_submission, user: active_user, location: location, submission_type: UserSubmission::NEW_LMX_TYPE, created_at: '2020-01-01', submission: 'active user submission', location_name: location.name)
+      FactoryBot.create(:user_submission, user: deleted_user, location: location, submission_type: UserSubmission::NEW_LMX_TYPE, created_at: '2020-01-02', submission: 'deleted user submission', location_name: location.name)
+      deleted_user.destroy
+
+      get '/api/v1/user_submissions.json'
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(2)
+      expect(json.find { |s| s['submission'] == 'deleted user submission' }['user_deleted']).to eq(true)
+      expect(json.find { |s| s['submission'] == 'active user submission' }['user_deleted']).to eq(false)
+    end
+
     it 'excludes locationless new_msx entries by default (old clients)' do
       location = FactoryBot.create(:location, name: 'bawb')
       FactoryBot.create(:user_submission, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'user scored on machine', location_name: nil)
@@ -714,6 +752,25 @@ describe Api::V1::UserSubmissionsController, type: :request do
       expect(response.body).to include('Grand Champ Mapper')
       expect(response.body).to include('flag')
       expect(response.body).to include('us')
+    end
+
+    it 'sets user_deleted to true when the submitting user has been deleted, and false otherwise' do
+      location = FactoryBot.create(:location, name: 'bawb', id: 111)
+      active_user = FactoryBot.create(:user)
+      deleted_user = FactoryBot.create(:user)
+
+      FactoryBot.create(:user_submission, user: active_user, location: location, submission_type: UserSubmission::NEW_LMX_TYPE, created_at: '2020-01-01', submission: 'active user submission', location_name: location.name)
+      FactoryBot.create(:user_submission, user: deleted_user, location: location, submission_type: UserSubmission::NEW_LMX_TYPE, created_at: '2020-01-02', submission: 'deleted user submission', location_name: location.name)
+      deleted_user.destroy
+
+      get '/api/v1/user_submissions/location.json', params: { id: 111 }
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body)['user_submissions']
+
+      expect(json.count).to eq(2)
+      expect(json.find { |s| s['submission'] == 'deleted user submission' }['user_deleted']).to eq(true)
+      expect(json.find { |s| s['submission'] == 'active user submission' }['user_deleted']).to eq(false)
     end
   end
 

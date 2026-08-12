@@ -52,8 +52,12 @@ class MachineCondition < ApplicationRecord
     user&.flag
   end
 
+  def user_deleted
+    user_id.present? && user.blank?
+  end
+
   def as_json(options = {})
-    options[:methods] = %i[ username operator_id admin_title contributor_rank flag ]
+    options[:methods] = %i[ username operator_id admin_title contributor_rank flag user_deleted ]
     super
   end
 end

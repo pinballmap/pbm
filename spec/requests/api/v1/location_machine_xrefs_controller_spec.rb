@@ -151,6 +151,23 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       expect(lmx['machine_score_xrefs'].size).to eq(0)
     end
+
+    it 'sets user_deleted to true for a machine condition whose user has been deleted, and false otherwise' do
+      active_user = FactoryBot.create(:user, id: 215, email: 'geah@ok.com', authentication_token: '2345', username: 'active')
+      deleted_user = FactoryBot.create(:user, id: 216, email: 'heah@ok.com', authentication_token: '3456', username: 'gone')
+
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, user: active_user, comment: 'still here')
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, user: deleted_user, comment: 'account gone')
+      deleted_user.destroy
+
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json'
+      expect(response).to be_successful
+
+      machine_conditions = JSON.parse(response.body)['location_machine']['machine_conditions']
+
+      expect(machine_conditions.find { |c| c['comment'] == 'account gone' }['user_deleted']).to eq(true)
+      expect(machine_conditions.find { |c| c['comment'] == 'still here' }['user_deleted']).to eq(false)
+    end
   end
 
   describe '#create' do
