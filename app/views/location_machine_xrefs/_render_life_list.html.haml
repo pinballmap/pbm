@@ -1,3 +1,5 @@
+%div.bold.font20.center.p_10.brightpurple
+  Your Machine List
 - if !user_signed_in?
   %p.in_life_list== Have you played <strong>#{lmx.machine.name}</strong>? If you were logged in you could track every machine you've played.
   = link_to new_user_session_path, class: 'no_underline' do
