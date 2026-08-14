@@ -96,6 +96,12 @@ describe UserSubmissionsController, type: :controller do
       expect(submissions).to include(@score_submission)
     end
 
+    it 'returns a 400 instead of raising when boundsData is missing' do
+      get 'list_within_range'
+
+      expect(response).to have_http_status(:bad_request)
+    end
+
     it 'excludes submissions outside the bounding box' do
       distant_location = FactoryBot.create(:location, lat: '12.0', lon: '-12.0')
       distant_submission = FactoryBot.create(:user_submission, location: distant_location, lat: distant_location.lat, lon: distant_location.lon, submission_type: 'new_lmx', submission: 'Distant submission', location_name: distant_location.name)
