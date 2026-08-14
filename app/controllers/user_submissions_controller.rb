@@ -2,9 +2,7 @@ class UserSubmissionsController < ApplicationController
   has_scope :region
 
   def list_within_range
-    unless params[:boundsData].is_a?(ActionController::Parameters) &&
-           params[:boundsData][:sw].is_a?(ActionController::Parameters) &&
-           params[:boundsData][:ne].is_a?(ActionController::Parameters)
+    unless params.dig(:boundsData, :sw, :lat)
       return render plain: "boundsData param (with sw/ne lat/lng) is required", status: :bad_request
     end
 
