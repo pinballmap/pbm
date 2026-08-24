@@ -1,6 +1,6 @@
 #page_body
   .column_container
-    .column.bg_vlightpurple.w_450
+    .column.bg_vlightpurple.w_560
       %p.red.font18.bold.center
         Contact Pinball Map
       %p
@@ -29,17 +29,17 @@
             - if !user_signed_in?
               %li
                 %label{:for => "contact_name"} Your Name:
-                %input{:type => "text", :name => "contact_name", :params => "contact_name", :class => "text w_400"}
+                %input{:type => "text", :name => "contact_name", :params => "contact_name", :class => "text"}
               %li
                 %label{:for => "contact_email"} Your Email:
-                %input{:type => "text", :name => "contact_email", :params => "contact_email", :class => "text w_400", required: true}
+                %input{:type => "text", :name => "contact_email", :params => "contact_email", :class => "text", required: true}
             %li.msg.h_auto
               %label{:for => "contact_msg"} Message:
-              %textarea{:type => "text", :name => "contact_msg", :params => "contact_msg", :class => "text w_400", required: true}
+              %textarea{:type => "text", :name => "contact_msg", :params => "contact_msg", :class => "text", required: true}
             - if !user_signed_in?
               %li
                 %span.red Security Question (required)
                 %label{:for => "security_question"} What are we mapping on this site?
-                %input{:type => "text", :name => "security_question", :params => "security_question", :class => "text w_400", required: true}
+                %input{:type => "text", :name => "security_question", :params => "security_question", :class => "text", required: true}
             %li.submit{:style => "clear:both;"}
               %input{:type => "submit", :value => "Submit Comment", :class => "submit_button"}
