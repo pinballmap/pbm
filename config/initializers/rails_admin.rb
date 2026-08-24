@@ -120,6 +120,8 @@ RailsAdmin.config do |config|
         end
       end
       field :place_id, :string
+      field :lat, :decimal
+      field :lon, :decimal
       field :is_stern_army, :boolean do
         visible do
           bindings[:view]._current_user.is_super_admin
