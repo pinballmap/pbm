@@ -1,6 +1,6 @@
 desc "Tags machines with opdb changelog data"
 task tag_opdb_changelog: :environment do
-  response = Net::HTTP.get_response(URI("https://matchplay.events/api/opdb/changelog"), { Authorization: "Bearer #{ENV.fetch('OPDB_KEY')}" })
+  response = Net::HTTP.get_response(URI("https://app.matchplay.events/api/opdb/changelog"), { Authorization: "Bearer #{ENV.fetch('OPDB_KEY')}" })
   Machine.tag_with_opdb_changelog_json(response.body)
 rescue StandardError => e
   error_subject = "Tag OPDB changelog rake task error"
