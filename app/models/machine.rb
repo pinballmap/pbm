@@ -100,11 +100,11 @@ class Machine < ApplicationRecord
 
   def self.tag_with_opdb_changelog_json(opdb_json)
     JSON.parse(opdb_json).each do |r|
-      m = Machine.find_by_opdb_id(r["opdb_id_deleted"])
+      m = Machine.find_by_opdb_id(r["opdbIdDeleted"])
       next unless m
 
       if r["action"] == "move"
-        m.opdb_id = r["opdb_id_replacement"]
+        m.opdb_id = r["opdbIdReplacement"]
       elsif r["action"] == "delete"
         m.opdb_id = ""
       end
