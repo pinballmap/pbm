@@ -440,11 +440,11 @@ describe Api::V1::UsersController, type: :request do
   end
   describe '#update_email' do
     before(:each) do
-      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw', password: 'password', password_confirmation: 'password')
     end
 
     it 'updates the email address' do
-      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', email: 'new@email.com' }
+      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'password', email: 'new@email.com' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['msg']).to eq('Email updated.')
@@ -454,15 +454,39 @@ describe Api::V1::UsersController, type: :request do
     it 'does not let you update another user email' do
       FactoryBot.create(:user, id: 222, username: 'other', email: 'other@email.com')
 
-      post '/api/v1/users/222/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', email: 'hacked@email.com' }
+      post '/api/v1/users/222/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'password', email: 'hacked@email.com' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unauthorized user update.')
       expect(User.find(222).email).to eq('other@email.com')
     end
 
+    it 'requires the correct current password' do
+      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'wrongpassword', email: 'new@email.com' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to include('Current password')
+      expect(@user.reload.email).to eq('foo@bar.com')
+    end
+
+    it 'gives an actionable message when the current password field is missing (older app versions)' do
+      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', email: 'new@email.com' }, headers: { 'AppVersion' => '1.0' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Current password can not be blank. Update the app if this field is not visible.')
+      expect(@user.reload.email).to eq('foo@bar.com')
+    end
+
+    it 'gives a plain message when the current password field is missing and there is no AppVersion header' do
+      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', email: 'new@email.com' }
+
+      expect(response).to be_successful
+      expect(JSON.parse(response.body)['errors']).to eq('Current password can not be blank.')
+      expect(@user.reload.email).to eq('foo@bar.com')
+    end
+
     it 'does not allow a blank email' do
-      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', email: '' }
+      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'password', email: '' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Email can not be blank')
@@ -471,7 +495,7 @@ describe Api::V1::UsersController, type: :request do
     it 'does not allow a duplicate email' do
       FactoryBot.create(:user, id: 222, username: 'other', email: 'taken@email.com')
 
-      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', email: 'taken@email.com' }
+      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'password', email: 'taken@email.com' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to include('Email')
@@ -479,7 +503,7 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'tells you if this user does not exist' do
-      post '/api/v1/users/999/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', email: 'new@email.com' }
+      post '/api/v1/users/999/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'password', email: 'new@email.com' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unknown user')

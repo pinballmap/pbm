@@ -336,6 +336,7 @@ module Api
       api :POST, "/api/v1/users/:id/update_email", "Update email address"
       description "Update email address for a user"
       param :id, Integer, desc: "ID of user", required: true
+      param :current_password, String, desc: "Current password", required: true
       param :email, String, desc: "New email address", required: true
       formats [ "json" ]
       def update_email
@@ -346,12 +347,19 @@ module Api
           return
         end
 
+        if params[:current_password].blank?
+          message = "Current password can not be blank."
+          message += " Update the app if this field is not visible." if request.headers["AppVersion"].present?
+          return_response(message, "errors")
+          return
+        end
+
         if params[:email].blank?
           return_response("Email can not be blank", "errors")
           return
         end
 
-        if user.update(email: params[:email])
+        if user.update_with_password(current_password: params[:current_password], email: params[:email])
           return_response("Email updated.", "msg")
         else
           return_response(user.errors.full_messages.join(", "), "errors")
