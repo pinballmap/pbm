@@ -99,7 +99,7 @@ class Machine < ApplicationRecord
   end
 
   def self.tag_with_opdb_changelog_json(opdb_json)
-    JSON.parse(opdb_json).each do |r|
+    JSON.parse(opdb_json)["data"].each do |r|
       m = Machine.find_by_opdb_id(r["opdbIdDeleted"])
       next unless m
 

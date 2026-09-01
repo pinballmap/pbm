@@ -65,4 +65,20 @@ HERE
       expect(m3.reload.opdb_img).to eq(nil)
     end
   end
+
+  describe '#tag_with_opdb_changelog_json' do
+    it 'updates opdb_id for moved machines and clears it for deleted machines, using the changelog json export' do
+      moved = FactoryBot.create(:machine, opdb_id: 'GrdNZ-MQo1e')
+      deleted = FactoryBot.create(:machine, opdb_id: 'GrkL5-MLvrX-AR5n9')
+      untouched = FactoryBot.create(:machine, opdb_id: 'GrZBr-MyNZz')
+
+      Machine.tag_with_opdb_changelog_json(<<HERE)
+{"data":[{"changelogId":1,"action":"move","opdbIdDeleted":"GrdNZ-MQo1e","opdbIdReplacement":"GRveZ-MNE38","createdAt":"2018-10-19T15:06:20.000000Z"},{"changelogId":2,"action":"delete","opdbIdDeleted":"GrkL5-MLvrX-AR5n9","opdbIdReplacement":null,"createdAt":"2018-11-13T15:37:42.000000Z"}]}
+HERE
+
+      expect(moved.reload.opdb_id).to eq('GRveZ-MNE38')
+      expect(deleted.reload.opdb_id).to eq('')
+      expect(untouched.reload.opdb_id).to eq('GrZBr-MyNZz')
+    end
+  end
 end
