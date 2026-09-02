@@ -127,20 +127,6 @@ HERE
       expect(@suggested_location.errors.messages).to include(base: [ 'Country is a required field for conversion.' ])
     end
 
-    it 'requires payment_type' do
-      @suggested_location.payment_type = nil
-      @suggested_location.convert_to_location(@user.email)
-
-      expect(@suggested_location.errors.messages).to include(base: [ 'Free play is a required field for conversion.' ])
-    end
-
-    it 'requires all_ages' do
-      @suggested_location.all_ages = nil
-      @suggested_location.convert_to_location(@user.email)
-
-      expect(@suggested_location.errors.messages).to include(base: [ 'All ages is a required field for conversion.' ])
-    end
-
     it 'requires location_type' do
       @suggested_location.location_type_id = nil
       @suggested_location.convert_to_location(@user.email)
@@ -155,8 +141,6 @@ HERE
       @suggested_location.convert_to_location(@user.email)
 
       expect(@suggested_location.errors[:base]).to contain_exactly(
-        'Free play is a required field for conversion.',
-        'All ages is a required field for conversion.',
         'Location type is a required field for conversion.'
       )
     end

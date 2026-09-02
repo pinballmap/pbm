@@ -68,8 +68,6 @@ class SuggestedLocation < ApplicationRecord
   def convert_to_location(user_email)
     errors.add(:base, "Country is a required field for conversion.") if country.blank?
     errors.add(:base, "Phone format not valid. Try adding the country code.") if !phone.blank? && (Phonelib.invalid? phone)
-    errors.add(:base, "Free play is a required field for conversion.") if payment_type.blank?
-    errors.add(:base, "All ages is a required field for conversion.") if all_ages.blank?
     errors.add(:base, "Location type is a required field for conversion.") if location_type_id.blank?
 
     return if errors.any?
