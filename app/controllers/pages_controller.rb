@@ -17,18 +17,18 @@ class PagesController < ApplicationController
   respond_to :html, only: %i[set_activities]
   before_action :authenticate_user!, only: %i[submitted_new_location]
   rate_limit to: 5, within: 10.minutes, only: :contact_sent, name: "pages_contact_sent"
-  rate_limit to: 100, within: 3.minutes, only: :recent_activity, name: "pages_recent_activity"
+  rate_limit to: 30, within: 1.minutes, only: :recent_activity, name: "pages_recent_activity"
 
   def contact_sent
     user = current_user.nil? ? nil : current_user
     return if is_bot? || params["contact_msg"].blank? || (!user && params["contact_email"].blank?) || params["contact_msg"].match?(/vape/) || params["contact_msg"].match?(/seo/)
 
     if user
-      @contact_thanks = "Thanks for contacting us! If you are expecting a reply, check your spam folder or whitelist admin@pinballmap.com".freeze
+      @contact_thanks = "Thanks for contacting us. We reply to nearly every message. Check your SPAM folder or whitelist admin@pinballmap.com".freeze
       send_admin_notification({ email: params["contact_email"], name: params["contact_name"], message: params["contact_msg"] }, @region, user)
     else
       if params["security_question"] =~ /pinball/i
-        @contact_thanks = "Thanks for contacting us! If you are expecting a reply, check your spam folder or whitelist admin@pinballmap.com".freeze
+        @contact_thanks = "Thanks for contacting us. We reply to nearly every message. Check your SPAM folder or whitelist admin@pinballmap.com".freeze
         send_admin_notification({ email: params["contact_email"], name: params["contact_name"], message: params["contact_msg"] }, @region, user)
       else
         flash.now[:alert] = "You failed the security test. Please go back and try again."

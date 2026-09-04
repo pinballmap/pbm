@@ -5,8 +5,9 @@ class MapsController < ApplicationController
   has_scope :by_location_name, :by_at_least_n_machines, :user_faved, :by_city_name, :by_city_no_state, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte, :by_payment_type
   has_scope :by_type_id, :by_location_id, :by_machine_id, :by_operator_id, :by_machine_single_id, :by_machine_type, :by_machine_display, :manufacturer, :by_country, :by_state_name, :by_machine_id_ic, :by_machine_single_id_ic, :by_all_ages, type: :array
 
-  rate_limit to: 100, within: 2.minutes, only: :region, name: "maps_region"
-  rate_limit to: 100, within: 1.minute, name: "maps_general"
+  rate_limit to: 100, within: 5.minutes, only: :region, name: "maps_region"
+  rate_limit to: 80, within: 1.minute, only: %i[region map operators_autocomplete map_location_data], name: "maps_general"
+  rate_limit to: 100, within: 1.minute, only: %i[region_location_load map_location_load get_bounds_load nearby_locations_load get_bounds region_init_load], name: "maps_post_load"
 
   def map
     if !params[:by_location_id].blank? && (loc = Location.includes(:machines).where(id: params[:by_location_id]).first)
@@ -282,6 +283,8 @@ class MapsController < ApplicationController
   end
 
   def geocode
+    return if geocode_rate_limited?
+
     if Rails.env.test?
       results = Geocoder.search(params[:address], lookup: :test)
     else
@@ -292,6 +295,11 @@ class MapsController < ApplicationController
       @nearby_lat = results.first.latitude
       @nearby_lon = results.first.longitude
     end
+  end
+
+  def geocode_rate_limited?
+    count = Rails.cache.increment("rate-limit:maps:geocode:#{request.remote_ip}", 1, expires_in: 4.minutes)
+    count && count > 20
   end
 
   def region

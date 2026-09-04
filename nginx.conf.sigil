@@ -11,6 +11,7 @@ map $http_user_agent $limit_key {
   "~*bingbot" "bingbot";
   "~*SERankingBacklinksBot" "SERankingBacklinksBot";
   "~*AwarioBot" "AwarioBot";
+  "~*DataForSeoBot" "DataForSeoBot";
 }
 
 limit_req_zone $limit_key zone=bots_nginx:10m rate=10r/m;

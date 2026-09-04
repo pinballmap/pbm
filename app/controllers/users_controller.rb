@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  rate_limit to: 30, within: 5.minutes, only: :profile, name: "users_profile"
+  rate_limit to: 20, within: 1.minute, only: :profile, name: "users_profile"
 
   def fave_locations
     @user = User.find(params[:id])

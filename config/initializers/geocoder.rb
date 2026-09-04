@@ -6,6 +6,7 @@ elsif !File.exist?('tmp/GeoLite2-City.mmdb') && !Rails.env.test?
 end
 
 Geocoder.configure(
+  cache: Rails.cache,
 
   # street address geocoding service (default :nominatim)
   lookup: :google,
