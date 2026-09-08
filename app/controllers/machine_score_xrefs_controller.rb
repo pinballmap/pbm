@@ -24,7 +24,7 @@ class MachineScoreXrefsController < ApplicationController
       msx.save
       msx.create_user_submission
       UserMachineXref.find_or_create_by(user: current_user, machine_id: machine_id)
-      render nothing: true
+      head :ok
     else
       if score.blank?
         redirect_to add_score_path, alert: "Score can't be blank."
@@ -66,7 +66,7 @@ class MachineScoreXrefsController < ApplicationController
       msx.destroy
     end
 
-    render nothing: true
+    head :ok
   end
 
   def update
@@ -88,7 +88,7 @@ class MachineScoreXrefsController < ApplicationController
 
     msx.update(machine_score_xref_params) if user && (user.id == msx.user_id)
 
-    render nothing: true
+    head :ok
   end
 
   private

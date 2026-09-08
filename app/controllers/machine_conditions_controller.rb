@@ -13,7 +13,7 @@ class MachineConditionsController < ApplicationController
       mcx.destroy
     end
 
-    render nothing: true
+    head :ok
   end
 
   def update
@@ -27,7 +27,7 @@ class MachineConditionsController < ApplicationController
 
     mcx.update(condition_params) if user && (user.id == mcx.user_id)
 
-    render nothing: true
+    head :ok
   end
 
   private

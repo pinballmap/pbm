@@ -24,7 +24,7 @@ class LocationPictureXrefsController < ApplicationController
     lpx.create_remove_user_submission(current_user)
     lpx.destroy
 
-    render nothing: true
+    head :ok
   end
 
   private

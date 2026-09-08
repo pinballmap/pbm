@@ -56,7 +56,7 @@ class LocationMachineXrefsController < ApplicationController
 
     lmx.destroy({ user_id: user_id }) unless lmx&.nil?
 
-    render nothing: true
+    head :ok
   end
 
   def update_machine_condition
@@ -76,7 +76,7 @@ class LocationMachineXrefsController < ApplicationController
       lmx
     end
 
-    render nothing: true
+    head :ok
   end
 
   def not_found
@@ -179,7 +179,7 @@ class LocationMachineXrefsController < ApplicationController
     lmx = LocationMachineXref.find(params[:id])
 
     unless lmx.machine.ic_eligible
-      render nothing: true
+      head :ok
       return
     end
 

@@ -274,7 +274,7 @@ class LocationsController < ApplicationController
     if message_type == "errors"
       render json: { error: values.uniq.join("<br />") }
     else
-      render nothing: true
+      head :ok
     end
   end
 

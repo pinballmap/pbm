@@ -5,7 +5,7 @@ class UserMachineXrefsController < ApplicationController
     Array(params[:machine_id]).each do |machine_id|
       UserMachineXref.find_or_create_by(user: current_user, machine_id: machine_id)
     end
-    render nothing: true
+    head :ok
   end
 
   def destroy
@@ -20,6 +20,6 @@ class UserMachineXrefsController < ApplicationController
       umx.destroy
     end
 
-    render nothing: true
+    head :ok
   end
 end
