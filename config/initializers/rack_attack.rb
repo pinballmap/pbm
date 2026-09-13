@@ -1,7 +1,7 @@
 ESCALATING_BAN_TIERS = [
-  { maxretry: 1, findtime: 1.minute,   bantime: 1.minute   },
-  { maxretry: 3, findtime: 15.minutes, bantime: 15.minutes },
-  { maxretry: 5, findtime: 30.minutes, bantime: 1.hour     }
+  { maxretry: 1, findtime: 1.minute,   bantime: 3.minute   },
+  { maxretry: 3, findtime: 15.minutes, bantime: 30.minutes },
+  { maxretry: 5, findtime: 30.minutes, bantime: 3.hours     }
 ].freeze
 
 ESCALATING_BAN_NAMES = %w[users_profile pages_recent_activity maps_general maps_region bot].freeze
