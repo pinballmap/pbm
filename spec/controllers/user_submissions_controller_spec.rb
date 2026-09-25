@@ -86,6 +86,38 @@ describe UserSubmissionsController, type: :controller do
       expect(submissions).to_not include(@score_submission)
     end
 
+    it 'returns scores from all users when all_msx is the only filter' do
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@example.com')
+      other_score = FactoryBot.create(:user_submission, location: @location, lat: @location.lat, lon: @location.lon, submission_type: 'new_msx', user: other_user, submission: 'Other user score', location_name: @location.name)
+
+      get 'list_within_range', params: bounds_params.merge(submission_type: [ 'all_msx' ])
+
+      expect(response).to be_successful
+      submissions = assigns(:recent_activity)
+      expect(submissions).to include(@score_submission)
+      expect(submissions).to include(other_score)
+      expect(submissions).to_not include(@lmx_submission)
+    end
+
+    it 'returns scores from all users when logged out and all_msx is the filter' do
+      login(nil)
+
+      get 'list_within_range', params: bounds_params.merge(submission_type: [ 'all_msx' ])
+
+      expect(response).to be_successful
+      expect(assigns(:recent_activity)).to include(@score_submission)
+    end
+
+    it 'combines all_msx with other submission types' do
+      get 'list_within_range', params: bounds_params.merge(submission_type: [ 'all_msx', 'new_lmx' ])
+
+      expect(response).to be_successful
+      submissions = assigns(:recent_activity)
+      expect(submissions).to include(@score_submission)
+      expect(submissions).to include(@lmx_submission)
+      expect(submissions).to_not include(@remove_submission)
+    end
+
     it 'returns all activity types when an empty filter array is given' do
       get 'list_within_range', params: bounds_params.merge(submission_type: [])
 

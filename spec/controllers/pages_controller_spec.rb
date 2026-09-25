@@ -254,6 +254,13 @@ describe PagesController, type: :controller do
         doc = Nokogiri::HTML(response.body)
         expect(doc.at('#filterYourActivity')['checked']).to eq('checked')
       end
+
+      it 'pre-checks the all_msx checkbox when submission_type param is present in URL' do
+        get 'recent_activity', params: { submission_type: [ 'all_msx' ] }
+        doc = Nokogiri::HTML(response.body)
+        expect(doc.at('#filterAllMsx')['checked']).to eq('checked')
+        expect(doc.at('#filterNewMsx')['checked']).to be_nil
+      end
     end
 
     it 'your_activity filter returns empty when logged out' do
@@ -269,6 +276,64 @@ describe PagesController, type: :controller do
       get 'recent_activity', params: { submission_type: [ 'your_activity' ] }
 
       expect(assigns(:recent_activity)).to be_empty
+    end
+
+    context 'all_msx filter' do
+      before(:each) do
+        @other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.com')
+        @own_score = FactoryBot.create(:user_submission,
+          submission_type: 'new_msx',
+          user: @user,
+          location: @location,
+          location_name: @location.name,
+          submission: 'ssw added a high score'
+        )
+        @other_score = FactoryBot.create(:user_submission,
+          submission_type: 'new_msx',
+          user: @other_user,
+          location: @location,
+          location_name: @location.name,
+          submission: 'other added a high score'
+        )
+      end
+
+      it 'returns scores from all users' do
+        login(@user)
+
+        get 'recent_activity', params: { submission_type: [ 'all_msx' ] }
+
+        expect(assigns(:recent_activity)).to contain_exactly(@own_score, @other_score)
+      end
+
+      it 'returns scores from all users when logged out' do
+        get 'recent_activity', params: { submission_type: [ 'all_msx' ] }
+
+        expect(assigns(:recent_activity)).to contain_exactly(@own_score, @other_score)
+      end
+
+      it 'does not include locationless scores from other users' do
+        login(@user)
+        FactoryBot.create(:user_submission,
+          submission_type: 'new_msx',
+          user: @other_user,
+          machine: @machine,
+          submission: 'other added a high score of 5,000 on Cleo',
+          location_name: nil,
+          region: nil
+        )
+
+        get 'recent_activity', params: { submission_type: [ 'all_msx' ] }
+
+        expect(assigns(:recent_activity)).to contain_exactly(@own_score, @other_score)
+      end
+
+      it 'combined with your_activity returns only the current user scores' do
+        login(@user)
+
+        get 'recent_activity', params: { submission_type: [ 'your_activity', 'all_msx' ] }
+
+        expect(assigns(:recent_activity)).to contain_exactly(@own_score)
+      end
     end
   end
 

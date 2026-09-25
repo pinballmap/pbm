@@ -22,6 +22,25 @@ class UserSubmission < ApplicationRecord
     ).or(where(submission_type: "new_msx", user_id: user&.id)).where.not(submission: nil).order("created_at DESC")
   }
 
+  # Builds the activity filter scope. "new_msx" means the current user's scores
+  # (ignored when logged out); "all_msx" means every user's scores.
+  def self.activity_scope(requested_types, user)
+    all_scores = requested_types.include?("all_msx")
+    own_scores = requested_types.include?("new_msx") && user.present?
+    general_types = requested_types.excluding("new_msx", "all_msx")
+
+    scopes = []
+    scopes << where(submission_type: general_types) if general_types.any?
+    if all_scores
+      scopes << where(submission_type: "new_msx")
+    elsif own_scores
+      scopes << where(submission_type: "new_msx", user: user)
+    end
+    return none if scopes.empty?
+
+    scopes.reduce(:or).where(deleted_at: nil)
+  end
+
   scope :at_location, ->(location) { where(location_id: location) }
   scope :with_coordinates, -> { where.not(lat: nil) }
 

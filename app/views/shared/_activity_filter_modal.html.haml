@@ -31,6 +31,10 @@
         %input{:type => "checkbox", :class => checkbox_class, :name => checkbox_name, :id => checkbox_ids['new_msx'], :value => 'new_msx', :checked => checked_values.include?('new_msx')}
         %span Your scores
       %label.activity_filter_btn
+        =image_tag("icons/new_msx_all.svg", :alt => "all_msx", :class => 'activity_icon')
+        %input{:type => "checkbox", :class => checkbox_class, :name => checkbox_name, :id => checkbox_ids['all_msx'], :value => 'all_msx', :checked => checked_values.include?('all_msx')}
+        %span All scores
+      %label.activity_filter_btn
         =image_tag("icons/confirm_location.svg", :alt => "confirm_location", :class => 'activity_icon')
         %input{:type => "checkbox", :class => checkbox_class, :name => checkbox_name, :id => checkbox_ids['confirm_location'], :value => 'confirm_location', :checked => checked_values.include?('confirm_location')}
         %span Location confirmed

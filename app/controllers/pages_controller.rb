@@ -212,20 +212,7 @@ limit 25")
     filter_own = raw_types.delete("your_activity").present? && user.present?
     requested_types = raw_types.presence || (filter_own ? %w[add_location new_lmx remove_machine new_condition confirm_location new_msx] : [])
 
-    general_types = requested_types.excluding("new_msx")
-    include_msx = requested_types.include?("new_msx") && user.present?
-
-    scope = if general_types.any? && include_msx
-      UserSubmission.where(submission_type: general_types, deleted_at: nil)
-                    .or(UserSubmission.where(submission_type: "new_msx", user: user, deleted_at: nil))
-    elsif include_msx
-      UserSubmission.where(submission_type: "new_msx", user: user, deleted_at: nil)
-    elsif general_types.any?
-      UserSubmission.where(submission_type: general_types, deleted_at: nil)
-    else
-      UserSubmission.none
-    end
-
+    scope = UserSubmission.activity_scope(requested_types, user)
     scope = scope.where(region_id: @region.id) if @region
     scope = scope.where(user: user) if filter_own
     base = scope.where.not(submission: nil)

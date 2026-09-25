@@ -2,13 +2,13 @@
 
 - conditions.each do |mcx|
   %div{:id => "container_past_machine_condition_#{mcx.id}"}
-    %div.machine_condition_new_line{:id => "editing_past_machine_condition_#{mcx.id}", :style=>"display:none;"}
+    %div.machine_condition_new_line.mb_8{:id => "editing_past_machine_condition_#{mcx.id}", :style=>"display:none;"}
       = form_tag machine_condition_path(id: mcx.id), :id => "update_condition_#{mcx.id}", :method => 'put' do
         = text_area_tag 'comment', "#{mcx.comment}", :cols => 20, :rows => 3, :class => 'edit_mode'
         .clear
         = submit_tag 'Update Comment', :class => 'update_condition_submit'
         %a.button{:id => "cancel_update_condition_#{mcx.id}"} Cancel Update
-    %div.machine_condition_new_line{:id => "showing_past_machine_condition_#{mcx.id}"}
+    %div.machine_condition_new_line.mb_8{:id => "showing_past_machine_condition_#{mcx.id}"}
       %span.machine_condition= "#{mcx.comment}"
       .clear
       %div.machine_condition_author

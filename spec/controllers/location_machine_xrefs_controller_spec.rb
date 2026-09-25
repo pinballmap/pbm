@@ -11,7 +11,7 @@ describe LocationMachineXrefsController, type: :controller do
   describe 'render_machine_scores' do
     render_views
 
-    it 'only returns scores belonging to the current user' do
+    it "limits the user's section to their own scores and shows everyone's scores separately" do
       machine = FactoryBot.create(:machine)
       lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: machine)
       other_user = FactoryBot.create(:user)
@@ -22,8 +22,25 @@ describe LocationMachineXrefsController, type: :controller do
       login(@user)
       get 'render_machine_scores', params: { id: lmx.id }
 
+      own_section, everyone_section = response.body.split("Everyone's scores on this copy")
+
+      expect(own_section).to include('1,000')
+      expect(own_section).not_to include('9,999')
+      expect(everyone_section).to include('9,999')
+      expect(everyone_section).to include('1,000')
+    end
+
+    it "hides everyone's scores when they are all the current user's" do
+      machine = FactoryBot.create(:machine)
+      lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: machine)
+
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, machine_id: machine.id, score: 1000, user: @user)
+
+      login(@user)
+      get 'render_machine_scores', params: { id: lmx.id }
+
       expect(response.body).to include('1,000')
-      expect(response.body).not_to include('9,999')
+      expect(response.body).not_to include("Everyone's scores on this copy")
     end
   end
 

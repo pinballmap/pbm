@@ -393,6 +393,29 @@ describe PagesController do
       expect(page).to have_content("removed from Clark's Depot")
       expect(page).to_not have_content("added to Doughnut Haven")
     end
+    it 'filters activity to all scores' do
+      login(@user2)
+      visit '/activity'
+
+      find('#page_activity_filter_modal_button').click
+      find('label.activity_filter_btn', text: 'All scores').click
+      find('.apply_filters_button').click
+
+      expect(page).to have_content("5,555")
+      expect(page).to have_content("9,000")
+      expect(page).to_not have_content("added to Clark's Depot")
+      expect(page).to_not have_content("removed from Clark's Depot")
+    end
+    it 'shows all scores when logged out' do
+      visit '/activity'
+
+      find('#page_activity_filter_modal_button').click
+      find('label.activity_filter_btn', text: 'All scores').click
+      find('.apply_filters_button').click
+
+      expect(page).to have_content("5,555")
+      expect(page).to have_content("9,000")
+    end
   end
 
   describe 'activity page pagination', type: :feature, js: true do

@@ -2237,7 +2237,7 @@ span.machine_year_man {
   width: 220px;
   background: var(--buttons);
   @include radius(10px);
-  margin: 10px auto;
+  margin: 10px auto 15px;
   text-align: center;
   box-shadow: 2px 5px 10px var(--shadow);
   -webkit-box-shadow: 2px 5px 10px var(--shadow);
@@ -2348,9 +2348,26 @@ div.machine_condition_meta {
 .high_score_new_line {
   font-size: 14px;
   line-height: 21px;
+  padding: 0 0 8px 10px;
   border-bottom: 1px solid var(--purple);
-  margin-bottom: 10px;
-  padding: 0 0 5px 10px;
+}
+
+.high_score_rank_row {
+  display: flex;
+  align-items: center;
+}
+
+.high_score_rank {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  font-family: $Nunito_700Bold;
+  color: var(--darkgrey);
+  font-size: 18px;
+}
+
+.high_score_rank_content {
+  flex: 1;
 }
 
 #locations .highest_score p {

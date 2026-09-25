@@ -5,7 +5,7 @@
       %p.center
         Here's a feed of edits to #{@region_fullname} Pinball Map going back to 2018/19-ish.
       %p.center
-        The scores here will only show your own scores.
+        By default, scores only show your own. Use the "All scores" filter to see everyone's.
     .clear
 
     .column.w_640.flex_center#activity_filter{:style => "margin: 10px 0;"}
@@ -17,7 +17,7 @@
     = form_tag activity_path, :method => 'get', id: 'page_activity_filter_form' do
       = render 'shared/activity_filter_modal', modal_id: "page_activity_filter_modal",
         checkbox_name: "filterActivity",
-        checkbox_ids: { 'new_lmx' => 'filterNewLmx', 'remove_machine' => 'filterRemoveMachine', 'new_condition' => 'filterNewCondition', 'new_msx' => 'filterNewMsx', 'confirm_location' => 'filterConfirmLocation', 'add_location' => 'filterAddLocation', 'your_activity' => 'filterYourActivity' },
+        checkbox_ids: { 'new_lmx' => 'filterNewLmx', 'remove_machine' => 'filterRemoveMachine', 'new_condition' => 'filterNewCondition', 'new_msx' => 'filterNewMsx', 'all_msx' => 'filterAllMsx','confirm_location' => 'filterConfirmLocation', 'add_location' => 'filterAddLocation', 'your_activity' => 'filterYourActivity' },
         checked_values: Array(params[:submission_type]),
         show_your_activity: user_signed_in?,
         apply_as_submit: true

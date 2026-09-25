@@ -27,9 +27,23 @@ module Api
       api :GET, "/api/v1/location_machine_xrefs/:id.json", "Get info about a single lmx"
       param :id, Integer, desc: "The location machine ID (LMX ID)", required: true
       param :user_id, Integer, desc: "Limits scores (not comments) to a single user. If user ID param is 0, excludes all scores.", required: false
+      param :all_scores, Integer, desc: "Set to 1 alongside user_id to return the user's top scores under machine_score_xrefs_user and the top scores from all users under machine_score_xrefs_all (both max 10, sorted by score), instead of machine_score_xrefs. Also returns machine_score_xrefs_all_only_user, which is true when every score in machine_score_xrefs_all belongs to this user (the two lists are identical). With user_id=0, machine_score_xrefs_user is empty. Ignored without user_id.", required: false
       formats [ "json" ]
       def show
-        if params[:user_id] == "0"
+        if params[:user_id].present? && ActiveModel::Type::Boolean.new.cast(params[:all_scores])
+          lmx = LocationMachineXref.includes(:machine).find(params[:id])
+
+          user_scores = params[:user_id] == "0" ? [] : lmx.sorted_machine_scores(params[:user_id].to_i).includes(:user)
+          all_scores = lmx.sorted_machine_all_scores.to_a
+
+          lmx_json = lmx.as_json(include: [ sorted_machine_conditions: { methods: %i[username operator_id admin_title contributor_rank flag user_deleted] } ], methods: [ :machine ], root: false).merge(
+            "machine_score_xrefs_user" => user_scores.as_json(methods: %i[username]),
+            "machine_score_xrefs_all" => all_scores.as_json(methods: %i[username operator_id admin_title contributor_rank flag user_deleted]),
+            "machine_score_xrefs_all_only_user" => user_scores.present? && all_scores.all? { |msx| msx.user_id == params[:user_id].to_i }
+          )
+          render json: { "location_machine" => lmx_json }
+          return
+        elsif params[:user_id] == "0"
           lmx = LocationMachineXref.includes(:machine).find(params[:id])
 
           methods = [ sorted_machine_conditions: { methods: %i[username operator_id admin_title contributor_rank flag user_deleted] } ]

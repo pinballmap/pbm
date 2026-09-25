@@ -1,5 +1,5 @@
 class MachineScoreXref < ApplicationRecord
-  MAX_HISTORY_SIZE_TO_DISPLAY = 8
+  MAX_HISTORY_SIZE_TO_DISPLAY = 10
 
   has_paper_trail
 
@@ -53,6 +53,10 @@ class MachineScoreXref < ApplicationRecord
 
   def flag
     user&.flag
+  end
+
+  def user_deleted
+    user_id.present? && user.blank?
   end
 
   def create_user_submission

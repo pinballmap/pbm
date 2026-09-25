@@ -168,6 +168,98 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(machine_conditions.find { |c| c['comment'] == 'account gone' }['user_deleted']).to eq(true)
       expect(machine_conditions.find { |c| c['comment'] == 'still here' }['user_deleted']).to eq(false)
     end
+
+    it 'returns machine_score_xrefs_user and machine_score_xrefs_all when user_id and all_scores are present' do
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 500, user_id: 212)
+      FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'plays soft')
+
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_id: 212, all_scores: 1 }
+      expect(response).to be_successful
+
+      lmx = JSON.parse(response.body)['location_machine']
+
+      expect(lmx).not_to have_key('machine_score_xrefs')
+      expect(lmx['machine_conditions'].size).to eq(1)
+      expect(lmx['machine']['name']).to eq('Cleo')
+
+      expect(lmx['machine_score_xrefs_user'].map { |s| s['score'] }).to eq([ 998899, 500 ])
+      expect(lmx['machine_score_xrefs_user'][0]['username']).to eq('doff')
+      expect(lmx['machine_score_xrefs_user'][0].keys).not_to include('operator_id', 'admin_title', 'contributor_rank', 'flag', 'user_deleted')
+
+      expect(lmx['machine_score_xrefs_all'].map { |s| s['score'] }).to eq([ 998899, 112211, 500 ])
+      expect(lmx['machine_score_xrefs_all'].map { |s| s['username'] }).to eq(%w[doff crest doff])
+      expect(lmx['machine_score_xrefs_all'][0].keys).to include('operator_id', 'admin_title', 'contributor_rank', 'flag', 'user_deleted')
+    end
+
+    it 'returns empty machine_score_xrefs_user but fills machine_score_xrefs_all when user_id=0 and all_scores are present' do
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_id: 0, all_scores: 1 }
+      expect(response).to be_successful
+
+      lmx = JSON.parse(response.body)['location_machine']
+
+      expect(lmx).not_to have_key('machine_score_xrefs')
+      expect(lmx['machine_score_xrefs_user']).to eq([])
+      expect(lmx['machine_score_xrefs_all'].map { |s| s['score'] }).to eq([ 998899, 112211 ])
+    end
+
+    it 'caps machine_score_xrefs_user and machine_score_xrefs_all at 10' do
+      11.times { |i| FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 1000 + i, user_id: 212) }
+
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_id: 212, all_scores: 1 }
+
+      lmx = JSON.parse(response.body)['location_machine']
+
+      expect(lmx['machine_score_xrefs_user'].size).to eq(10)
+      expect(lmx['machine_score_xrefs_user'][0]['score']).to eq(998899)
+      expect(lmx['machine_score_xrefs_all'].size).to eq(10)
+      expect(lmx['machine_score_xrefs_all'].map { |s| s['score'] }.first(2)).to eq([ 998899, 112211 ])
+    end
+
+    it 'sets user_deleted in machine_score_xrefs_all for a score whose user has been deleted' do
+      User.find(213).destroy
+
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_id: 212, all_scores: 1 }
+
+      scores = JSON.parse(response.body)['location_machine']['machine_score_xrefs_all']
+
+      expect(scores.find { |s| s['score'] == 112211 }['user_deleted']).to eq(true)
+      expect(scores.find { |s| s['score'] == 112211 }['username']).to be_nil
+      expect(scores.find { |s| s['score'] == 998899 }['user_deleted']).to eq(false)
+    end
+
+    it 'sets machine_score_xrefs_all_only_user only when every score in machine_score_xrefs_all belongs to the user' do
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_id: 212, all_scores: 1 }
+      expect(JSON.parse(response.body)['location_machine']['machine_score_xrefs_all_only_user']).to eq(false)
+
+      MachineScoreXref.where(user_id: 213).destroy_all
+
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_id: 212, all_scores: 1 }
+      expect(JSON.parse(response.body)['location_machine']['machine_score_xrefs_all_only_user']).to eq(true)
+
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_id: 0, all_scores: 1 }
+      expect(JSON.parse(response.body)['location_machine']['machine_score_xrefs_all_only_user']).to eq(false)
+    end
+
+    it 'sets machine_score_xrefs_all_only_user when the user holds the top 10 even if others have lower scores' do
+      10.times { |i| FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 200_000 + i, user_id: 212) }
+
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_id: 212, all_scores: 1 }
+
+      lmx = JSON.parse(response.body)['location_machine']
+
+      expect(lmx['machine_score_xrefs_all'].map { |s| s['score'] }).not_to include(112211)
+      expect(lmx['machine_score_xrefs_all_only_user']).to eq(true)
+    end
+
+    it 'keeps the legacy shape when all_scores is present without user_id' do
+      get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { all_scores: 1 }
+
+      lmx = JSON.parse(response.body)['location_machine']
+
+      expect(lmx['machine_score_xrefs'].size).to eq(2)
+      expect(lmx).not_to have_key('machine_score_xrefs_user')
+      expect(lmx).not_to have_key('machine_score_xrefs_all')
+    end
   end
 
   describe '#create' do

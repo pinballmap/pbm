@@ -14,7 +14,7 @@
       = submit_tag 'Remove from list?', class: 'delete_high_score_button', style: 'color: var(--red);'
 - else
   %p.in_life_list== Have you played <strong>#{lmx.machine.name}</strong>? You can track every machine you've played #{link_to 'in your profile', profile_user_path(current_user.id, anchor: 'life_list_section')}.
-  = form_tag user_machine_xrefs_path, method: :post, id: "life_list_form_#{lmx.id}" do
+  = form_tag user_machine_xrefs_path, method: :post, id: "life_list_form_#{lmx.id}", style: "width: 100%;" do
     = hidden_field_tag :machine_id, lmx.machine_id
     = button_tag type: 'submit', class: 'life_list_lmx' do
       = image_tag("icons/clipboard-list-outline.svg", alt: "Add to Life List", class: "machine_comment_icon")

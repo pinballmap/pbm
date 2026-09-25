@@ -222,7 +222,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['high_score']).to eq('Successfully updated high score')
-      expect(MachineScoreXref.last.score).to eq(200)
+      expect(owned_high_score.reload.score).to eq(200)
       expect(UserSubmission.last.high_score).to eq(200)
     end
 
