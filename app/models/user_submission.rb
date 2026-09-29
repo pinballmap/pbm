@@ -22,8 +22,6 @@ class UserSubmission < ApplicationRecord
     ).or(where(submission_type: "new_msx", user_id: user&.id)).where.not(submission: nil).order("created_at DESC")
   }
 
-  # Builds the activity filter scope. "new_msx" means the current user's scores
-  # (ignored when logged out); "all_msx" means every user's scores.
   def self.activity_scope(requested_types, user)
     all_scores = requested_types.include?("all_msx")
     own_scores = requested_types.include?("new_msx") && user.present?
