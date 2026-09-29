@@ -101,10 +101,6 @@ describe Api::V1::LocationsController, type: :request do
       assert_response :success
     end
 
-    it 'allows token authentication via request headers' do
-      get "/api/v1/region/#{@region.name}/locations.json", params: { headers: { 'X-User-Email' => 'foo@bar.com', 'X-User-Token' => '1G8_s7P-V-4MGojaKD7a' } }
-      assert_response :success
-    end
 
     it 'forces you to filter' do
       FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'la'), name: 'Cleo')
@@ -1333,6 +1329,28 @@ describe Api::V1::LocationsController, type: :request do
       put '/api/v1/locations/' + @location.id.to_s + '/confirm.json'
 
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::AUTH_REQUIRED_MSG)
+    end
+
+    it 'allows token authentication via request headers' do
+      put '/api/v1/locations/' + @location.id.to_s + '/confirm.json', headers: { 'X-User-Email' => 'foo@bar.com', 'X-User-Token' => '1G8_s7P-V-4MGojaKD7a' }
+
+      expect(JSON.parse(response.body)['msg']).to eq('Thanks for confirming the line-up at this location!')
+      expect(@location.reload.last_updated_by_user).to eq(@user)
+    end
+
+    it 'rejects request headers with an invalid token' do
+      put '/api/v1/locations/' + @location.id.to_s + '/confirm.json', headers: { 'X-User-Email' => 'foo@bar.com', 'X-User-Token' => 'wrong' }
+
+      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::AUTH_REQUIRED_MSG)
+    end
+
+    it 'reports a disabled account when the email is sent via request header' do
+      FactoryBot.create(:user, email: 'disabled@bar.com', authentication_token: 'disabledtoken', is_disabled: true)
+
+      put '/api/v1/locations/' + @location.id.to_s + '/confirm.json', headers: { 'X-User-Email' => 'disabled@bar.com', 'X-User-Token' => 'wrong' }
+
+      expect(response).to have_http_status(:forbidden)
+      expect(JSON.parse(response.body)['error']).to eq(Api::V1::LocationsController::ACCOUNT_DISABLED_MSG)
     end
   end
 

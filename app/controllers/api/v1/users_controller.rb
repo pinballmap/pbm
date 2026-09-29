@@ -86,8 +86,8 @@ module Api
         return_response("Unknown asset", "errors")
       end
 
-      api :GET, "/api/v1/users/auth_details.json", "Fetch auth info for a user"
-      description "This info includes the user's API token."
+      api :POST, "/api/v1/users/auth_details.json", "Fetch auth info for a user"
+      description "This info includes the user's API token. Send login and password in the request body; GET with query params is deprecated because it exposes the password in URLs and logs."
       param :login, String, desc: "User's username or email address", required: true
       param :password, String, desc: "User's password", required: true
       def auth_details

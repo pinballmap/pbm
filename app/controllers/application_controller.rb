@@ -189,7 +189,7 @@ class ApplicationController < ActionController::Base
 
   def require_api_user
     if current_user.nil?
-      email = params[:user_email].presence
+      email = params[:user_email].presence || request.headers["X-User-Email"].presence
       if email && User.exists?(email: email, is_disabled: true)
         render json: { error: ACCOUNT_DISABLED_MSG }, status: :forbidden
         return nil

@@ -45,6 +45,7 @@ Rails.application.routes.draw do
         collection do
           get  :total_user_count
           get  :auth_details
+          post :auth_details
           get  :life_list_info
           post :signup
           post :forgot_password
