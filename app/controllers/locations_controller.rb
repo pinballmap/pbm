@@ -5,7 +5,8 @@ class LocationsController < ApplicationController
   before_action :authenticate_user!, except: %i[index autocomplete autocomplete_city render_machines render_lmx_count_row render_last_updated render_location_detail render_recent_activity sanitize_integers random_machine]
   before_action :normalize_array_params
   rate_limit to: 100, within: 1.minute, only: :index, name: "locations_index"
-  rate_limit to: 12, within: 3.seconds, only: :render_location_detail, name: "locations_render_location_detail"
+  rate_limit to: 10, within: 5.seconds, only: :render_location_detail, name: "locations_render_location_detail"
+  rate_limit to: 150, within: 10.minutes, only: :render_location_detail, name: "locations_render_location_detail_sustained"
 
   def is_bot?
     browser.bot?
