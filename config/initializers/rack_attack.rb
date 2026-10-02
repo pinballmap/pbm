@@ -4,7 +4,7 @@ ESCALATING_BAN_TIERS = [
   { maxretry: 5, findtime: 30.minutes, bantime: 3.hours     }
 ].freeze
 
-ESCALATING_BAN_NAMES = %w[users_profile pages_recent_activity maps_general maps_region bot locations_render_location_detail_sustained].freeze
+ESCALATING_BAN_NAMES = %w[users_profile pages_recent_activity maps_general maps_region bot locations_render_location_detail_sustained maps_post_load].freeze
 
 unless Rails.env.test?
   Rack::Attack.throttle('api/v1/no-app-version', limit: 180, period: 1.minute) do |req|
