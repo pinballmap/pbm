@@ -23,6 +23,7 @@
         please see this
         =link_to "FAQ section", faq_path(anchor: 'operators')
         and then answer the 5 questions.
+      %p== To submit a new location, use the #{link_to 'Suggest Location form', map_location_suggest_path}.
       #contact_maker.pb_10
         = form_tag global_contact_sent_path, :method => 'post' do
           %ul.pl_0
