@@ -94,6 +94,23 @@ describe LocationMachineXref do
       expect(new_last_submission.id).to eq(last_submission.id)
     end
 
+    it 'should increment num_machines_removed on soft delete, but not again on force delete' do
+      location = FactoryBot.create(:location, name: 'Regionless Location', region: nil)
+      user = User.find(1)
+      lmx = FactoryBot.create(:location_machine_xref, location: location, machine: @m, user_id: user.id)
+
+      lmx.deleted_at = Time.now
+      lmx.save
+
+      lmx.destroy({ user_id: user.id })
+
+      expect(user.reload.num_machines_removed).to eq(1)
+
+      lmx.destroy({ user_id: user.id }, force: true)
+
+      expect(user.reload.num_machines_removed).to eq(1)
+    end
+
     it 'works with regionless locations' do
       regionless_location = FactoryBot.create(:location, name: 'Regionless Location', region: nil)
       user = User.find(1)

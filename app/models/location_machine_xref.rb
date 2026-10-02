@@ -97,7 +97,7 @@ class LocationMachineXref < ApplicationRecord
     location.last_updated_by_user_id = user.nil? ? nil : user.id
     location.save(validate: false)
     location
-    User.increment_counter(:num_machines_removed, user&.id) unless self.deleted_at.present?
+    User.increment_counter(:num_machines_removed, user&.id) unless force && self.deleted_at.present?
     location.users_count = UserSubmission.where(location_id: location.id).count("DISTINCT user_id")
     location.save(validate: false)
 
