@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
       super
       payload[:user_id] = current_user&.id || @api_token_user_id
       payload[:bot_or_not] = browser.bot? ? "IsBot" : "NotBot"
+      payload[:client] = "#{request.headers['Sec-Fetch-Site'] || 'NoFetch'}-#{request.xhr? ? 'Xhr' : 'NoXhr'}-#{request.cookies['_pbm_session'] ? 'Sess' : 'NoSess'}"
     end
   end
 
