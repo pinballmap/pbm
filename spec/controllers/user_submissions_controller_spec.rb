@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe UserSubmissionsController, type: :controller do
   before(:each) do
-    @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com')
+    @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.test')
     login(@user)
 
     @location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606')
@@ -55,7 +55,7 @@ describe UserSubmissionsController, type: :controller do
     end
 
     it 'returns only the current user\'s scores when new_msx is the only filter' do
-      other_user = FactoryBot.create(:user, username: 'other', email: 'other@example.com')
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@pinballmap.test')
       other_score = FactoryBot.create(:user_submission, location: @location, lat: @location.lat, lon: @location.lon, submission_type: 'new_msx', user: other_user, submission: 'Other user score', location_name: @location.name)
 
       get 'list_within_range', params: bounds_params.merge(submission_type: [ 'new_msx' ])
@@ -87,7 +87,7 @@ describe UserSubmissionsController, type: :controller do
     end
 
     it 'returns scores from all users when all_msx is the only filter' do
-      other_user = FactoryBot.create(:user, username: 'other', email: 'other@example.com')
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@pinballmap.test')
       other_score = FactoryBot.create(:user_submission, location: @location, lat: @location.lat, lon: @location.lon, submission_type: 'new_msx', user: other_user, submission: 'Other user score', location_name: @location.name)
 
       get 'list_within_range', params: bounds_params.merge(submission_type: [ 'all_msx' ])

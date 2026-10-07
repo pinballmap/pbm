@@ -9,7 +9,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
     @score_one = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, machine_id: @lmx.machine_id, score: 123, user_id: FactoryBot.create(:user, id: 333, username: 'ssw').id)
     @score_two = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, machine_id: @lmx.machine_id, score: 100, user_id: nil)
-    @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'cibw')
+    @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.test', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'cibw')
   end
 
   describe '#index' do
@@ -81,28 +81,28 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
   describe '#create' do
     it 'errors for unknown lmx' do
-      post '/api/v1/machine_score_xrefs.json', params: { location_machine_xref_id: -1, score: 1234, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/machine_score_xrefs.json', params: { location_machine_xref_id: -1, score: 1234, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
     end
 
     it 'errors for blank scores' do
-      post '/api/v1/machine_score_xrefs.json', params: { location_machine_xref_id: @lmx.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/machine_score_xrefs.json', params: { location_machine_xref_id: @lmx.id.to_s, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['errors']).to eq('Score can not be blank and must be a numeric value')
     end
 
     it 'errors when numbers are larger than bigints (>9223372036854775807)' do
-      post '/api/v1/machine_score_xrefs.json', params: { location_machine_xref_id: @lmx.id.to_s, score: 9_223_372_036_854_775_808, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/machine_score_xrefs.json', params: { location_machine_xref_id: @lmx.id.to_s, score: 9_223_372_036_854_775_808, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['errors']).to eq('Number is too large. Please enter a valid score.')
     end
 
     it 'return an error if you enter a non-integer score' do
-      post '/api/v1/machine_score_xrefs.json', params: { location_machine_xref_id: @lmx.id.to_s, score: 'fword', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/machine_score_xrefs.json', params: { location_machine_xref_id: @lmx.id.to_s, score: 'fword', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['errors']).to eq('Score can not be blank and must be a numeric value')
@@ -116,7 +116,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     end
 
     it 'creates a new score -- authed' do
-      post '/api/v1/machine_score_xrefs.json', params: { location_machine_xref_id: @lmx.id.to_s, score: 1234, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/machine_score_xrefs.json', params: { location_machine_xref_id: @lmx.id.to_s, score: 1234, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['machine_score_xref']['score']).to eq(1234)
@@ -140,7 +140,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     end
 
     it 'creates a locationless score when machine_id is provided instead of location_machine_xref_id' do
-      post '/api/v1/machine_score_xrefs.json', params: { machine_id: @machine.id.to_s, score: 9999, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/machine_score_xrefs.json', params: { machine_id: @machine.id.to_s, score: 9999, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['machine_score_xref']['score']).to eq(9999)
@@ -160,14 +160,14 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     end
 
     it 'errors when machine_id does not exist' do
-      post '/api/v1/machine_score_xrefs.json', params: { machine_id: -1, score: 9999, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/machine_score_xrefs.json', params: { machine_id: -1, score: 9999, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
     end
 
     it 'errors when neither location_machine_xref_id nor machine_id is provided' do
-      post '/api/v1/machine_score_xrefs.json', params: { score: 9999, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/machine_score_xrefs.json', params: { score: 9999, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['errors']).to eq('location_machine_xref_id or machine_id is required')
@@ -176,7 +176,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
   describe '#destroy' do
     it 'notifies you when it can not find a high score' do
-      delete '/api/v1/machine_score_xrefs/1234.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      delete '/api/v1/machine_score_xrefs/1234.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find high score')
@@ -186,7 +186,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
       owned_high_score = FactoryBot.create(:machine_score_xref, user: @user, id: 56)
       FactoryBot.create(:user_submission, created_at: '2025-01-01', submission_type: UserSubmission::NEW_SCORE_TYPE, machine_score_xref_id: 56)
 
-      delete '/api/v1/machine_score_xrefs/' + owned_high_score.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      delete '/api/v1/machine_score_xrefs/' + owned_high_score.id.to_s + '.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['high_score']).to eq('Successfully removed high score')
@@ -195,10 +195,10 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     end
 
     it 'does not delete when you do not own the high score' do
-      @evil_user = FactoryBot.create(:user, id: 222, email: 'yeah@ok.com', authentication_token: '123', username: 'sass')
+      @evil_user = FactoryBot.create(:user, id: 222, email: 'yeah@ok.test', authentication_token: '123', username: 'sass')
       owned_high_score = FactoryBot.create(:machine_score_xref, user: @user)
 
-      delete '/api/v1/machine_score_xrefs/' + owned_high_score.id.to_s + '.json', params: { user_email: 'yeah@ok.com', user_token: '123' }
+      delete '/api/v1/machine_score_xrefs/' + owned_high_score.id.to_s + '.json', params: { user_email: 'yeah@ok.test', user_token: '123' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('You can only delete high scores that you own')
@@ -208,7 +208,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
 
   describe '#update' do
     it 'notifies you when it can not find a high score' do
-      put '/api/v1/machine_score_xrefs/123.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', score: 200 }
+      put '/api/v1/machine_score_xrefs/123.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', score: 200 }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find high score')
@@ -218,7 +218,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
       owned_high_score = FactoryBot.create(:machine_score_xref, user: @user, score: 100, id: 57)
       FactoryBot.create(:user_submission, created_at: '2025-01-01', submission_type: UserSubmission::NEW_SCORE_TYPE, high_score: 100, machine_score_xref_id: 57)
 
-      put '/api/v1/machine_score_xrefs/' + owned_high_score.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', score: 200 }
+      put '/api/v1/machine_score_xrefs/' + owned_high_score.id.to_s + '.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', score: 200 }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['high_score']).to eq('Successfully updated high score')
@@ -227,10 +227,10 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     end
 
     it 'does not update when you do not own the high score' do
-      @evil_user = FactoryBot.create(:user, id: 222, email: 'yeah@ok.com', authentication_token: '123', username: 'sass')
+      @evil_user = FactoryBot.create(:user, id: 222, email: 'yeah@ok.test', authentication_token: '123', username: 'sass')
       owned_high_score = FactoryBot.create(:machine_score_xref, user: @user, score: 100)
 
-      put '/api/v1/machine_score_xrefs/' + owned_high_score.id.to_s + '.json', params: { user_email: 'yeah@ok.com', user_token: '123', score: 200 }
+      put '/api/v1/machine_score_xrefs/' + owned_high_score.id.to_s + '.json', params: { user_email: 'yeah@ok.test', user_token: '123', score: 200 }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('You can only update high scores that you own')
@@ -249,7 +249,7 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
       FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, location: @location, machine_id: @lmx.machine_id, user: @user, score: 5000)
       FactoryBot.create(:machine_score_xref, location_machine_xref: lmx2, location: @location, machine_id: lmx2.machine_id, user: @user, score: 5500)
       FactoryBot.create(:machine_score_xref, location_machine_xref: lmx3, location: @location, machine_id: lmx3.machine_id, user: @user, score: 6000)
-      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, location: @location, machine_id: @lmx.machine_id, user: FactoryBot.create(:user, id: 3334, email: 'yeahb@ok.com', authentication_token: '345', username: 'bert'), score: 7000)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, location: @location, machine_id: @lmx.machine_id, user: FactoryBot.create(:user, id: 3334, email: 'yeahb@ok.test', authentication_token: '345', username: 'bert'), score: 7000)
     end
     it 'shows the highest single score for all machines that have a score' do
       get '/api/v1/machine_score_xrefs/highest.json'

@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe LocationsController, type: :controller do
   before(:each) do
-    @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', id: 1111)
+    @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.test', id: 1111)
     login(@user)
 
     region = FactoryBot.create(:region, name: 'portland')
     @location = FactoryBot.create(:location, id: 777, region: region)
     @machine = FactoryBot.create(:machine)
-    FactoryBot.create(:user, email: 'foo@bar.com', region: region)
+    FactoryBot.create(:user, email: 'foo@bar.test', region: region)
   end
 
   describe '#update_metadata' do
@@ -63,7 +63,7 @@ describe LocationsController, type: :controller do
     end
 
     it 'returns only the current user\'s scores when new_msx is the only filter' do
-      other_user = FactoryBot.create(:user, username: 'other', email: 'other@example.com')
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@pinballmap.test')
       other_score = FactoryBot.create(:user_submission, location: @location, submission_type: 'new_msx', user: other_user, submission: 'Other user score', location_name: @location.name)
 
       get 'render_recent_activity', params: { id: @location.id, submission_type: [ 'new_msx' ] }
@@ -95,7 +95,7 @@ describe LocationsController, type: :controller do
     end
 
     it 'returns scores from all users when all_msx is the only filter' do
-      other_user = FactoryBot.create(:user, username: 'other', email: 'other@example.com')
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@pinballmap.test')
       other_score = FactoryBot.create(:user_submission, location: @location, submission_type: 'new_msx', user: other_user, submission: 'Other user score', location_name: @location.name)
 
       get 'render_recent_activity', params: { id: @location.id, submission_type: [ 'all_msx' ] }

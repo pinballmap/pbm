@@ -4,8 +4,8 @@ describe LocationMachineXrefsController, type: :controller do
   before(:each) do
     @region = FactoryBot.create(:region, name: 'portland')
     @location = FactoryBot.create(:location, id: 1)
-    @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com')
-    FactoryBot.create(:user, email: 'foo@bar.com', region: @region)
+    @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.test')
+    FactoryBot.create(:user, email: 'foo@bar.test', region: @region)
   end
 
   describe 'render_machine_scores' do

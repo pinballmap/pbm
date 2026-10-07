@@ -18,7 +18,7 @@ describe LocationMachineXrefsController do
 
   describe 'add machines', type: :feature, js: true do
     before(:each) do
-      @user = FactoryBot.create(:user, email: 'ssw@bar.com', region: @region, username: 'ssw')
+      @user = FactoryBot.create(:user, email: 'ssw@bar.test', region: @region, username: 'ssw')
       @machine_to_add = FactoryBot.create(:machine, name: 'Medieval Madness')
       FactoryBot.create(:machine, name: 'Star Wars')
 
@@ -423,7 +423,7 @@ describe LocationMachineXrefsController do
   describe 'machine descriptions', type: :feature, js: true do
     before(:each) do
       @lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine))
-      @user = FactoryBot.create(:user, id: 11, username: 'ssw', email: 'foo@bar.com', admin_title: "Administrator", contributor_rank: "Super Mapper", flag: "us-ca")
+      @user = FactoryBot.create(:user, id: 11, username: 'ssw', email: 'foo@bar.test', admin_title: "Administrator", contributor_rank: "Super Mapper", flag: "us-ca")
 
       login(@user)
     end
@@ -526,7 +526,7 @@ describe LocationMachineXrefsController do
       operator = FactoryBot.create(:operator, name: "Be Best Pinball", id: 47)
       location = FactoryBot.create(:location, id: 2, region: @region, operator: operator)
       lmx = FactoryBot.create(:location_machine_xref, location: location, machine: FactoryBot.create(:machine))
-      user = FactoryBot.create(:user, id: 12, username: 'pbm', email: 'foot@bar.com', admin_title: "Administrator", contributor_rank: "Super Mapper", operator: operator, flag: "us-ca")
+      user = FactoryBot.create(:user, id: 12, username: 'pbm', email: 'foot@bar.test', admin_title: "Administrator", contributor_rank: "Super Mapper", operator: operator, flag: "us-ca")
       login(user)
 
       visit "/#{@region.name}/?by_location_id=#{location.id}"
@@ -562,7 +562,7 @@ describe LocationMachineXrefsController do
     it 'displays if the person commenting is the operator at that location' do
       operator = FactoryBot.create(:operator, region: nil, id: 455, name: 'Gold Star Pinball')
       location = FactoryBot.create(:location, id: 456, name: 'Pinball Supreme', operator: operator)
-      user = FactoryBot.create(:user, id: 457, username: 'bill', email: 'foop@bar.com', operator: operator)
+      user = FactoryBot.create(:user, id: 457, username: 'bill', email: 'foop@bar.test', operator: operator)
       lmx = FactoryBot.create(:location_machine_xref, location: location, machine: FactoryBot.create(:machine))
       FactoryBot.create(:machine_condition, location_machine_xref: lmx, user: user, comment: 'Fixed the left flipper')
 
@@ -703,7 +703,7 @@ describe LocationMachineXrefsController do
 
   describe 'insider connected', type: :feature, js: true do
     before(:each) do
-      @user = FactoryBot.create(:user, id: 11, username: 'ssw', email: 'foo@bar.com')
+      @user = FactoryBot.create(:user, id: 11, username: 'ssw', email: 'foo@bar.test')
 
       login(@user)
     end
@@ -1183,7 +1183,7 @@ describe LocationMachineXrefsController do
     end
 
     it 'searches by operator - displays website when available' do
-      l = FactoryBot.create(:location, id: 43, region: @region, name: 'Cleo', operator: FactoryBot.create(:operator, name: 'Quarter Bean', region: @region, website: 'website.com'))
+      l = FactoryBot.create(:location, id: 43, region: @region, name: 'Cleo', operator: FactoryBot.create(:operator, name: 'Quarter Bean', region: @region, website: 'website.test'))
       FactoryBot.create(:location_machine_xref, location: l)
 
       visit "/#{@region.name}?by_location_id=#{l.reload.id}"
@@ -1218,7 +1218,7 @@ describe LocationMachineXrefsController do
     end
 
     it 'displays message about operator receiving machine comments' do
-      l = FactoryBot.create(:location, id: 45, region: @region, name: 'Cleo', operator: FactoryBot.create(:operator, name: 'Quarter Bean', email: 'foo@bar.com', region: @region))
+      l = FactoryBot.create(:location, id: 45, region: @region, name: 'Cleo', operator: FactoryBot.create(:operator, name: 'Quarter Bean', email: 'foo@bar.test', region: @region))
       FactoryBot.create(:location_machine_xref, location: l)
 
       visit "/#{@region.name}?by_location_id=#{l.reload.id}"

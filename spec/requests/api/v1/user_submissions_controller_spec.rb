@@ -165,7 +165,7 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
     it 'includes location_operator_id, user_operator_id, admin_title, contributor_rank, flag fields' do
       location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606', operator_id: 543)
-      user = FactoryBot.create(:user, id: 121, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123', operator_id: 542, admin_title: 'Administrator', contributor_rank: 'Grand Champ Mapper', flag: 'us')
+      user = FactoryBot.create(:user, id: 121, username: 'ssw', email: 'yeah@ok.test', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123', operator_id: 542, admin_title: 'Administrator', contributor_rank: 'Grand Champ Mapper', flag: 'us')
 
       FactoryBot.create(:user_submission, user: user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2020-01-01', submission: 'ssw added a high score of 504,570 on Tag-Team Pinball (Gottlieb, 1985) at Bottles in Portland', location_name: location.name)
 
@@ -210,7 +210,7 @@ describe Api::V1::UserSubmissionsController, type: :request do
      it 'excludes a submission_type when restrict_to param (alone) is included' do
       location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606', name: 'bawb')
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.test) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
 
       get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606', restrict_to: 'new_msx' }
 
@@ -222,11 +222,11 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
     it 'restricts submission type to a specific user when restrict_to and user_id are both used' do
       location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606', name: 'bawb')
-      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
+      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.test', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
 
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: @user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
 
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: @user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: @user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.test) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
 
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, user_name: user.name, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
 
@@ -251,11 +251,11 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
     it 'excludes restrict_to submission_type when a submission_type is specified' do
       location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606', name: 'bawb')
-      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
+      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.test', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
 
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user_id: user.id, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by xxw', location_name: location.name)
 
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: @user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: @user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.test) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
 
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user_id: user.id, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
 
@@ -271,10 +271,10 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
     it 'restricts submission types to a specific user when user_id (alone) is used' do
       location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606', name: 'bawb')
-      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
+      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.test', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
 
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.test) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, user_name: user.name, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
 
       get '/api/v1/user_submissions/list_within_range.json', params: { lat: '45.6008356', lon: '-122.760606', user_id: 122 }
@@ -383,7 +383,7 @@ describe Api::V1::UserSubmissionsController, type: :request do
     it 'excludes a submission_type when restrict_to param (alone) is included' do
       location = FactoryBot.create(:location, name: 'bawb', id: 111)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.test) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
 
       get '/api/v1/user_submissions.json', params: { restrict_to: 'new_msx' }
 
@@ -396,10 +396,10 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
     it 'restricts submission type to a specific user when restrict_to and user_id are both used' do
       location = FactoryBot.create(:location, name: 'bawb', id: 111)
-      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
+      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.test', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
 
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.test) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, user_name: user.name, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
 
       get '/api/v1/user_submissions.json', params: { restrict_to: 'new_msx', user_id: 122 }
@@ -425,10 +425,10 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
     it 'restricts submission types to a specific user when user_id (alone) is used' do
       location = FactoryBot.create(:location, name: 'bawb', id: 111)
-      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
+      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.test', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
 
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.test) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, user_name: user.name, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
 
       get '/api/v1/user_submissions.json', params: { user_id: 122 }
@@ -454,8 +454,8 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
     it 'only shows submissions with a submission field and a location_name field' do
       location = FactoryBot.create(:location, name: 'bawb', id: 111)
-      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
-      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles')
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (test@email.test) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (test@email.test) added a high score of 1234 on Cheetah at Bottles')
       FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2019-06-01', location_name: location.name)
 
       get '/api/v1/user_submissions.json'
@@ -500,7 +500,7 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
     it 'includes location_operator_id, user_operator_id, admin_title, contributor_rank, flag fields' do
       location = FactoryBot.create(:location, name: 'bawb', id: 111, operator_id: 543)
-      user = FactoryBot.create(:user, id: 121, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123', operator_id: 542, admin_title: 'Administrator', contributor_rank: 'Grand Champ Mapper', flag: 'us')
+      user = FactoryBot.create(:user, id: 121, username: 'ssw', email: 'yeah@ok.test', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123', operator_id: 542, admin_title: 'Administrator', contributor_rank: 'Grand Champ Mapper', flag: 'us')
 
       FactoryBot.create(:user_submission, user: user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2020-01-01', submission: 'ssw added a high score of 504,570 on Tag-Team Pinball (Gottlieb, 1985) at Bottles in Portland', location_name: location.name)
 
@@ -616,7 +616,7 @@ describe Api::V1::UserSubmissionsController, type: :request do
     it 'excludes a submission_type when restrict_to param (alone) is included' do
       location = FactoryBot.create(:location, name: 'bawb', id: 111)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.test) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
 
       get '/api/v1/user_submissions/location.json', params: { id: 111, restrict_to: 'new_msx' }
 
@@ -628,10 +628,10 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
     it 'restricts submission type to a specific user when restrict_to and user_id are both used' do
       location = FactoryBot.create(:location, name: 'bawb', id: 111)
-      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
+      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.test', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
 
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.test) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, user_name: user.name, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
 
       get '/api/v1/user_submissions/location.json', params: { id: 111, restrict_to: 'new_msx', user_id: 122 }
@@ -657,10 +657,10 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
     it 'restricts submission types to a specific user when user_id (alone) is used' do
       location = FactoryBot.create(:location, name: 'bawb', id: 111)
-      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
+      user = FactoryBot.create(:user, id: 122, username: 'xxw', email: 'yeahb@ok.test', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc1234')
 
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_LMX_TYPE, submission: 'Cheetah was added to bawb by ssw', location_name: location.name)
-      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User ssw (test@email.test) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
       FactoryBot.create(:user_submission, created_at: Time.now.strftime('%Y-%m-%d'), user: user, user_name: user.name, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'User xxw added a high score of 54321 on Cheetah at Bottles', location_name: location.name)
 
       get '/api/v1/user_submissions/location.json', params: { id: 111, user_id: 122 }
@@ -686,8 +686,8 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
     it 'only shows submissions with a submission field and a location_name field' do
       location = FactoryBot.create(:location, name: 'bawb', id: 111)
-      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
-      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (test@email.com) added a high score of 1234 on Cheetah at Bottles')
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (test@email.test) added a high score of 1234 on Cheetah at Bottles', location_name: location.name)
+      FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2016-01-01', submission: 'User ssw (test@email.test) added a high score of 1234 on Cheetah at Bottles')
       FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2019-06-01', location_name: location.name)
 
       get '/api/v1/user_submissions/location.json', params: { id: 111 }
@@ -731,7 +731,7 @@ describe Api::V1::UserSubmissionsController, type: :request do
 
     it 'includes location_operator_id, user_operator_id, admin_title, contributor_rank, flag fields' do
       location = FactoryBot.create(:location, name: 'bawb', id: 111, operator_id: 543)
-      user = FactoryBot.create(:user, id: 121, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123', operator_id: 542, admin_title: 'Administrator', contributor_rank: 'Grand Champ Mapper', flag: 'us')
+      user = FactoryBot.create(:user, id: 121, username: 'ssw', email: 'yeah@ok.test', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123', operator_id: 542, admin_title: 'Administrator', contributor_rank: 'Grand Champ Mapper', flag: 'us')
 
       FactoryBot.create(:user_submission, user: user, location: location, lat: location.lat, lon: location.lon, submission_type: UserSubmission::NEW_SCORE_TYPE, created_at: '2020-01-01', submission: 'ssw added a high score of 504,570 on Tag-Team Pinball (Gottlieb, 1985) at Bottles in Portland', location_name: location.name)
 

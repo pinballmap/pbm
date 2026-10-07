@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Operator do
   before(:each) do
     @r = FactoryBot.create(:region, full_name: 'Portland')
-    @o = FactoryBot.create(:operator, region: @r, email: 'foo@bar.com')
-    @no_changes_operator = FactoryBot.create(:operator, region: @r, email: 'bar@baz.com')
+    @o = FactoryBot.create(:operator, region: @r, email: 'foo@bar.test')
+    @no_changes_operator = FactoryBot.create(:operator, region: @r, email: 'bar@baz.test')
     @no_email_operator = FactoryBot.create(:operator, region: @r)
     @status = FactoryBot.create(:status, status_type: 'operators', updated_at: Time.current - 1.day)
   end
@@ -27,7 +27,7 @@ describe Operator do
 
   describe '#update' do
     it 'should update timestamp in status table' do
-      @no_email_operator.update(email: 'foo@bar.com')
+      @no_email_operator.update(email: 'foo@bar.test')
 
       expect(@status.reload.updated_at).to be_within(1.second).of Time.current
     end
@@ -35,23 +35,23 @@ describe Operator do
 
   describe '#digest_recipients' do
     it 'returns only the operator email when no linked users exist' do
-      expect(@o.digest_recipients).to eq([ 'foo@bar.com' ])
+      expect(@o.digest_recipients).to eq([ 'foo@bar.test' ])
     end
 
     it 'includes emails from linked users' do
-      FactoryBot.create(:user, email: 'tech1@bar.com', operator: @o)
-      expect(@o.digest_recipients).to contain_exactly('foo@bar.com', 'tech1@bar.com')
+      FactoryBot.create(:user, email: 'tech1@bar.test', operator: @o)
+      expect(@o.digest_recipients).to contain_exactly('foo@bar.test', 'tech1@bar.test')
     end
 
     it 'deduplicates when a linked user shares the operator email' do
-      FactoryBot.create(:user, email: 'foo@bar.com', operator: @o)
-      expect(@o.digest_recipients).to eq([ 'foo@bar.com' ])
+      FactoryBot.create(:user, email: 'foo@bar.test', operator: @o)
+      expect(@o.digest_recipients).to eq([ 'foo@bar.test' ])
     end
 
     it 'includes multiple linked user emails' do
-      FactoryBot.create(:user, email: 'tech1@bar.com', operator: @o)
-      FactoryBot.create(:user, email: 'tech2@bar.com', operator: @o)
-      expect(@o.digest_recipients).to contain_exactly('foo@bar.com', 'tech1@bar.com', 'tech2@bar.com')
+      FactoryBot.create(:user, email: 'tech1@bar.test', operator: @o)
+      FactoryBot.create(:user, email: 'tech2@bar.test', operator: @o)
+      expect(@o.digest_recipients).to contain_exactly('foo@bar.test', 'tech1@bar.test', 'tech2@bar.test')
     end
   end
 

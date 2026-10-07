@@ -21,7 +21,7 @@ delete from user_submissions where submission_type = 'contact_us';
 
 UPDATE users
     SET username = CONCAT('user', id, random()),
-        email = CONCAT('user', id, '@example.com'),
+        email = CONCAT('user', id, '@pinballmap.test'),
         encrypted_password = '',
         password_salt = '',
         reset_password_token = concat('userreset', id),

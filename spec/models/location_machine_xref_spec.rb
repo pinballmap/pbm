@@ -3,7 +3,7 @@ require 'spec_helper'
 describe LocationMachineXref do
   before(:each) do
     @r = FactoryBot.create(:region, name: 'Portland', should_email_machine_removal: 0)
-    @u = FactoryBot.create(:user, id: 1, region: @r, username: 'ssw', email: 'foo@bar.com')
+    @u = FactoryBot.create(:user, id: 1, region: @r, username: 'ssw', email: 'foo@bar.test')
     @l = FactoryBot.create(:location, region: @r, name: 'Cool Bar')
     @m = FactoryBot.create(:machine, name: 'Sassy')
     @lmx = FactoryBot.create(:location_machine_xref, location: @l, machine: @m)

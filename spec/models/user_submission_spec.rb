@@ -3,8 +3,8 @@ require 'spec_helper'
 describe UserSubmission do
   describe '.activity_scope' do
     before(:each) do
-      @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@ok.com')
-      @other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.com')
+      @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@ok.test')
+      @other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.test')
 
       @own_score = FactoryBot.create(:user_submission, submission_type: 'new_msx', user: @user)
       @other_score = FactoryBot.create(:user_submission, submission_type: 'new_msx', user: @other_user)

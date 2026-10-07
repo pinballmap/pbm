@@ -6,9 +6,9 @@ describe SuggestedLocationsController, type: :controller do
     @lt = FactoryBot.create(:location_type, name: 'lt')
     @o = FactoryBot.create(:operator, name: 'o', region: @r)
     @z = FactoryBot.create(:zone, name: 'z', region: @r)
-    @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', id: 1112)
+    @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.test', id: 1112)
 
-    @sl = FactoryBot.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', country: 'US', phone: '503-391-9288', lat: 11.11, lon: 22.22, website: 'http://www.cool.com', region: @r, location_type: @lt, operator: @o, zone: @z, all_ages: 'Yes', payment_type: 'Free Play', machines: [ 21, 22, 23, 24 ], user_id: @user.id)
+    @sl = FactoryBot.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', country: 'US', phone: '503-391-9288', lat: 11.11, lon: 22.22, website: 'http://www.cool.test', region: @r, location_type: @lt, operator: @o, zone: @z, all_ages: 'Yes', payment_type: 'Free Play', machines: [ 21, 22, 23, 24 ], user_id: @user.id)
 
     login(@user)
   end
@@ -31,7 +31,7 @@ describe SuggestedLocationsController, type: :controller do
       expect(l.phone).to eq('503-391-9288')
       expect(l.lat).to eq(11.11)
       expect(l.lon).to eq(22.22)
-      expect(l.website).to eq('http://www.cool.com')
+      expect(l.website).to eq('http://www.cool.test')
       expect(l.region).to eq(@r)
       expect(l.location_type).to eq(@lt)
       expect(l.zone).to eq(@z)
@@ -65,7 +65,7 @@ describe SuggestedLocationsController, type: :controller do
     end
 
     it 'should still creat user submissions if user is nil' do
-      sl = FactoryBot.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', country: 'US', phone: '503-391-9288', lat: 11.11, lon: 22.22, website: 'http://www.cool.com', region: @r, location_type: @lt, operator: @o, zone: @z, all_ages: 'Yes', payment_type: 'Free Play', machines: [ 21, 22, 23, 24 ], user_id: nil)
+      sl = FactoryBot.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', country: 'US', phone: '503-391-9288', lat: 11.11, lon: 22.22, website: 'http://www.cool.test', region: @r, location_type: @lt, operator: @o, zone: @z, all_ages: 'Yes', payment_type: 'Free Play', machines: [ 21, 22, 23, 24 ], user_id: nil)
 
       m_one = FactoryBot.create(:machine, name: 'The Dark Knight', manufacturer: 'Stern', year: '2008', id: 21)
 

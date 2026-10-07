@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe UserMachineXrefsController, type: :controller do
   before(:each) do
-    @user = FactoryBot.create(:user, username: 'cibw', email: 'yeah@ok.com')
+    @user = FactoryBot.create(:user, username: 'cibw', email: 'yeah@ok.test')
     @machine = FactoryBot.create(:machine)
   end
 

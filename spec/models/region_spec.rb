@@ -455,16 +455,16 @@ describe Region do
       expect(@region.primary_email_contact).to eq('email_not_found@noemailfound.noemail')
     end
     it 'should return the primary email contact if they are flagged' do
-      FactoryBot.create(:user, region: @region, email: 'not@primary.com')
-      FactoryBot.create(:user, region: @region, email: 'is@primary.com', is_primary_email_contact: 1)
+      FactoryBot.create(:user, region: @region, email: 'not@primary.test')
+      FactoryBot.create(:user, region: @region, email: 'is@primary.test', is_primary_email_contact: 1)
 
-      expect(@region.primary_email_contact).to eq('is@primary.com')
+      expect(@region.primary_email_contact).to eq('is@primary.test')
     end
     it 'should return the first user if there is no primary email contact' do
-      FactoryBot.create(:user, region: @region, email: 'first@first.com')
-      FactoryBot.create(:user, region: @region, email: 'second@second.com')
+      FactoryBot.create(:user, region: @region, email: 'first@first.test')
+      FactoryBot.create(:user, region: @region, email: 'second@second.test')
 
-      expect(@region.primary_email_contact).to eq('first@first.com')
+      expect(@region.primary_email_contact).to eq('first@first.test')
     end
   end
 
@@ -495,10 +495,10 @@ describe Region do
       expect(@region.all_admin_email_addresses).to eq([ 'email_not_found@noemailfound.noemail' ])
     end
     it 'should return all admin email addresses' do
-      FactoryBot.create(:user, region: @region, email: 'not@primary.com')
-      FactoryBot.create(:user, region: @region, email: 'is@primary.com', is_primary_email_contact: 1)
+      FactoryBot.create(:user, region: @region, email: 'not@primary.test')
+      FactoryBot.create(:user, region: @region, email: 'is@primary.test', is_primary_email_contact: 1)
 
-      expect(@region.all_admin_email_addresses).to eq([ 'is@primary.com', 'not@primary.com' ])
+      expect(@region.all_admin_email_addresses).to eq([ 'is@primary.test', 'not@primary.test' ])
     end
   end
 

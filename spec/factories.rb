@@ -101,7 +101,7 @@ FactoryBot.define do
   factory :region_link_xref do
     name { 'Test Link Name' }
     description { 'This is a test link' }
-    url { 'http://www.foo.com' }
+    url { 'http://www.foo.test' }
     category { 'Test Category' }
     association :region
   end

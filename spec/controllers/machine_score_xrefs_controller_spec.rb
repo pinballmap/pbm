@@ -3,7 +3,7 @@ require 'spec_helper'
 describe MachineScoreXrefsController, type: :controller do
   before(:each) do
     @lmx = FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location), machine: FactoryBot.create(:machine))
-    @user = FactoryBot.create(:user, username: 'cibw', email: 'yeah@ok.com')
+    @user = FactoryBot.create(:user, username: 'cibw', email: 'yeah@ok.test')
     @msx = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, machine_id: @lmx.machine_id, score: 300, user: @user)
   end
 

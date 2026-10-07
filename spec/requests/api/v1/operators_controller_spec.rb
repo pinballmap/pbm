@@ -46,7 +46,7 @@ describe Api::V1::OperatorsController, type: :request do
 
   describe '#show' do
     it 'sends back appropriate operator metadata' do
-      operator = FactoryBot.create(:operator, region: @region, name: 'Sass', email: 'foo@bar.com', email_opt_in: true, phone_opt_in: false, phone: '111-222-3333')
+      operator = FactoryBot.create(:operator, region: @region, name: 'Sass', email: 'foo@bar.test', email_opt_in: true, phone_opt_in: false, phone: '111-222-3333')
 
       get "/api/v1/operators/#{operator.id}.json"
       expect(response).to be_successful
@@ -56,7 +56,7 @@ describe Api::V1::OperatorsController, type: :request do
       operator_json = parsed_body['operator']
 
       expect(operator_json['name']).to eq('Sass')
-      expect(response.body).not_to include('foo@bar.com')
+      expect(response.body).not_to include('foo@bar.test')
       expect(response.body).not_to include('111-222-3333')
       expect(operator_json['operator_has_email']).to eq(true)
     end

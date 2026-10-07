@@ -59,7 +59,7 @@ describe MachinesController, type: :controller do
     end
 
     it 'sorts machines not in the current user\'s life list first, then alphabetically, when logged in' do
-      user = FactoryBot.create(:user, email: 'ssw@yeah.com')
+      user = FactoryBot.create(:user, email: 'ssw@yeah.test')
       login(user)
       FactoryBot.create(:user_machine_xref, user: user, machine: apple)
 

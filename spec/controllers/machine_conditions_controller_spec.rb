@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe MachineConditionsController, type: :controller do
   before(:each) do
-    FactoryBot.create(:user, email: 'foo@bar.com', region: @region)
+    FactoryBot.create(:user, email: 'foo@bar.test', region: @region)
     @region = FactoryBot.create(:region, name: 'portland')
     @location = FactoryBot.create(:location, id: 1)
     @machine = FactoryBot.create(:machine)
-    @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com')
+    @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.test')
     @lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
     @lmx.update_condition('foo', { user_id: @user.id })
   end
@@ -35,7 +35,7 @@ describe MachineConditionsController, type: :controller do
     it 'should not update MachineConditions that you do not own' do
       mc = @lmx.machine_conditions.first
 
-      bad_user = FactoryBot.create(:user, username: 'acidburn', email: 'crash@override.com')
+      bad_user = FactoryBot.create(:user, username: 'acidburn', email: 'crash@override.test')
       login(bad_user)
 
       post 'update', params: { comment: 'Civil War was a bad movie', id: mc.id }
@@ -60,7 +60,7 @@ describe MachineConditionsController, type: :controller do
     it 'should not destroy MachineConditions that you do not own' do
       mc = @lmx.machine_conditions.first
 
-      bad_user = FactoryBot.create(:user, username: 'acidburn', email: 'crash@override.com')
+      bad_user = FactoryBot.create(:user, username: 'acidburn', email: 'crash@override.test')
       login(bad_user)
 
       post 'destroy', params: { id: mc.id }

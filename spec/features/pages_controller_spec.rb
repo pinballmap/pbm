@@ -92,7 +92,7 @@ describe PagesController do
 
   describe 'Location suggestions', type: :feature, js: true do
     it 'limits state dropdown to unique states within a region' do
-      @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
+      @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.test', created_at: '02/02/2016')
       login(@user)
       chicago = FactoryBot.create(:region, name: 'chicago')
 

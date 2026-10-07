@@ -52,7 +52,7 @@ describe MachineScoreXref do
 
     describe '#create_user_submission' do
       it 'creates a user submission' do
-        user = FactoryBot.create(:user, username: 'cibw', email: 'yeah@ok.com')
+        user = FactoryBot.create(:user, username: 'cibw', email: 'yeah@ok.test')
         msx = FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, machine_id: @lmx.machine_id, user: user, score: 100)
 
         msx.create_user_submission
@@ -67,7 +67,7 @@ describe MachineScoreXref do
       end
 
       it 'creates a locationless user submission when no lmx is present' do
-        user = FactoryBot.create(:user, username: 'cibw', email: 'yeah@ok.com')
+        user = FactoryBot.create(:user, username: 'cibw', email: 'yeah@ok.test')
         machine = FactoryBot.create(:machine)
         msx = FactoryBot.create(:machine_score_xref, location_machine_xref: nil, machine_id: machine.id, user: user, score: 500)
 

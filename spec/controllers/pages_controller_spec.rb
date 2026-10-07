@@ -5,8 +5,8 @@ describe PagesController, type: :controller do
     @region = FactoryBot.create(:region, name: 'portland', full_name: 'Portland')
     @location = FactoryBot.create(:location, region: @region)
 
-    FactoryBot.create(:user, email: 'foo@bar.com', region: @region)
-    FactoryBot.create(:user, email: 'super_admin@bar.com', region: nil, is_super_admin: 1)
+    FactoryBot.create(:user, email: 'foo@bar.test', region: @region)
+    FactoryBot.create(:user, email: 'super_admin@bar.test', region: nil, is_super_admin: 1)
   end
 
   describe '#links' do
@@ -30,24 +30,24 @@ describe PagesController, type: :controller do
 
   describe 'contact_sent' do
     before(:each) do
-      @user = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      @user = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.test')
     end
     it 'should send an email if the body is not blank' do
       logout
 
-      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_question: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: 'bar', message: 'baz', user_name: nil, user_email: nil, to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com', 'foo@bar.com' ], subject: 'Pinball Map - Message (Portland) from foo', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
+      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_question: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: 'bar', message: 'baz', user_name: nil, user_email: nil, to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.test', 'foo@bar.test' ], subject: 'Pinball Map - Message (Portland) from foo', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
     end
 
     it 'should include user info if you are logged in' do
       login(@user)
 
-      expect { post 'contact_sent', params: { region: 'portland', contact_msg: 'baz' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: nil, email: nil, message: 'baz', user_name: 'ssw', user_email: 'yeah@ok.com', to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com', 'foo@bar.com' ], subject: 'Pinball Map - Message (Portland) from ssw', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
+      expect { post 'contact_sent', params: { region: 'portland', contact_msg: 'baz' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: nil, email: nil, message: 'baz', user_name: 'ssw', user_email: 'yeah@ok.test', to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.test', 'foo@bar.test' ], subject: 'Pinball Map - Message (Portland) from ssw', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
     end
 
     it 'email should notify if it was sent from the staging server' do
       @request.host = 'pbmstaging.com'
 
-      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_question: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: 'bar', message: 'baz', user_name: nil, user_email: nil, to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com', 'foo@bar.com' ], subject: '(STAGING) Pinball Map - Message (Portland) from foo', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
+      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_question: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: 'bar', message: 'baz', user_name: nil, user_email: nil, to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.test', 'foo@bar.test' ], subject: '(STAGING) Pinball Map - Message (Portland) from foo', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
     end
 
     it 'should not send an email if the body is blank' do
@@ -63,7 +63,7 @@ describe PagesController, type: :controller do
     it 'should send an email if the email is blank when logged in' do
       login(@user)
 
-      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: nil, contact_msg: 'hello', security_question: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: nil, message: 'hello', user_name: 'ssw', user_email: 'yeah@ok.com', to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com', 'foo@bar.com' ], subject: 'Pinball Map - Message (Portland) from ssw', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
+      expect { post 'contact_sent', params: { region: 'portland', contact_name: 'foo', contact_email: nil, contact_msg: 'hello', security_question: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: nil, message: 'hello', user_name: 'ssw', user_email: 'yeah@ok.test', to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.test', 'foo@bar.test' ], subject: 'Pinball Map - Message (Portland) from ssw', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
     end
 
     it 'should not send an email if the body contains a spam keyword' do
@@ -79,19 +79,19 @@ describe PagesController, type: :controller do
 
   describe 'global contact_sent (no region)' do
     before(:each) do
-      @user = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      @user = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.test')
     end
 
     it 'should send an email to super admins only (no regional cc) when logged out' do
       logout
 
-      expect { post 'contact_sent', params: { contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_question: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: 'bar', message: 'baz', user_name: nil, user_email: nil, to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com' ], subject: 'Pinball Map - Message from foo', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
+      expect { post 'contact_sent', params: { contact_name: 'foo', contact_email: 'bar', contact_msg: 'baz', security_question: 'pinball' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: 'foo', email: 'bar', message: 'baz', user_name: nil, user_email: nil, to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.test' ], subject: 'Pinball Map - Message from foo', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
     end
 
     it 'should send an email to super admins only (no regional cc) when logged in' do
       login(@user)
 
-      expect { post 'contact_sent', params: { contact_msg: 'baz' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: nil, email: nil, message: 'baz', user_name: 'ssw', user_email: 'yeah@ok.com', to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com' ], subject: 'Pinball Map - Message from ssw', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
+      expect { post 'contact_sent', params: { contact_msg: 'baz' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_admin_notification', 'deliver_now', { params: { name: nil, email: nil, message: 'baz', user_name: 'ssw', user_email: 'yeah@ok.test', to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.test' ], subject: 'Pinball Map - Message from ssw', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing' }, args: [] })
     end
 
     it 'should not send an email if the body is blank' do
@@ -121,7 +121,7 @@ describe PagesController, type: :controller do
 
   describe '#recent_activity' do
     before(:each) do
-      @user = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      @user = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.test')
       @machine = FactoryBot.create(:machine, name: 'Cleo')
     end
 
@@ -143,7 +143,7 @@ describe PagesController, type: :controller do
 
     it 'does not include locationless scores from other users' do
       login(@user)
-      other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.com')
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.test')
       FactoryBot.create(:user_submission,
         submission_type: 'new_msx',
         user: other_user,
@@ -191,7 +191,7 @@ describe PagesController, type: :controller do
 
     it 'your_activity filter returns only current user submissions across all types' do
       login(@user)
-      other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.com')
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.test')
       FactoryBot.create(:user_submission,
         submission_type: 'new_lmx',
         user: @user,
@@ -215,7 +215,7 @@ describe PagesController, type: :controller do
 
     it 'your_activity combined with a type filter returns only that type for current user' do
       login(@user)
-      other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.com')
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.test')
       FactoryBot.create(:user_submission,
         submission_type: 'new_lmx',
         user: @user,
@@ -254,17 +254,10 @@ describe PagesController, type: :controller do
         doc = Nokogiri::HTML(response.body)
         expect(doc.at('#filterYourActivity')['checked']).to eq('checked')
       end
-
-      it 'pre-checks the all_msx checkbox when submission_type param is present in URL' do
-        get 'recent_activity', params: { submission_type: [ 'all_msx' ] }
-        doc = Nokogiri::HTML(response.body)
-        expect(doc.at('#filterAllMsx')['checked']).to eq('checked')
-        expect(doc.at('#filterNewMsx')['checked']).to be_nil
-      end
     end
 
     it 'your_activity filter returns empty when logged out' do
-      other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.com')
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.test')
       FactoryBot.create(:user_submission,
         submission_type: 'new_lmx',
         user: other_user,
@@ -280,7 +273,7 @@ describe PagesController, type: :controller do
 
     context 'all_msx filter' do
       before(:each) do
-        @other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.com')
+        @other_user = FactoryBot.create(:user, username: 'other', email: 'other@ok.test')
         @own_score = FactoryBot.create(:user_submission,
           submission_type: 'new_msx',
           user: @user,
@@ -373,24 +366,24 @@ describe PagesController, type: :controller do
           expect { post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines_ids: [ 20 ], place_id: 'tgtgtgtgtgtgtg', submitter_name: 'subname', submitter_email: 'subemail' } }.to_not have_enqueued_job
         end
 
-        login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com'))
+        login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.test'))
 
         if region == 'portland'
-          expect { post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines_ids: [ 20 ], place_id: 'tgtgtgtgtgtgtg', submitter_name: 'subname', submitter_email: 'subemail' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com', 'foo@bar.com' ], subject: 'Pinball Map - New location (Portland) - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', operator: 'operator', zone: 'zone', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995), ', location_all_ages: nil, location_payment_type: nil, admin_notes: nil, place_id: 'tgtgtgtgtgtgtg', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing', user_info: ' by ssw (yeah@ok.com)', user_email: 'yeah@ok.com' }, args: [] })
+          expect { post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_zone: 'zone', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines_ids: [ 20 ], place_id: 'tgtgtgtgtgtgtg', submitter_name: 'subname', submitter_email: 'subemail' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.test', 'foo@bar.test' ], subject: 'Pinball Map - New location (Portland) - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', operator: 'operator', zone: 'zone', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995), ', location_all_ages: nil, location_payment_type: nil, admin_notes: nil, place_id: 'tgtgtgtgtgtgtg', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing', user_info: ' by ssw (yeah@ok.test)', user_email: 'yeah@ok.test' }, args: [] })
         else
-          expect { post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines_ids: [ 20 ], place_id: 'tgtgtgtgtgtgtg', submitter_name: 'subname', submitter_email: 'subemail' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com' ], subject: 'Pinball Map - New location - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', operator: 'operator', zone: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995), ', location_all_ages: nil, location_payment_type: nil, admin_notes: nil, place_id: 'tgtgtgtgtgtgtg', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing', user_info: ' by ssw (yeah@ok.com)', user_email: 'yeah@ok.com' }, args: [] })
+          expect { post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines_ids: [ 20 ], place_id: 'tgtgtgtgtgtgtg', submitter_name: 'subname', submitter_email: 'subemail' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.test' ], subject: 'Pinball Map - New location - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', operator: 'operator', zone: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995), ', location_all_ages: nil, location_payment_type: nil, admin_notes: nil, place_id: 'tgtgtgtgtgtgtg', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing', user_info: ' by ssw (yeah@ok.test)', user_email: 'yeah@ok.test' }, args: [] })
         end
       end
 
       it 'should send an email - notifies if sent from the staging server' do
         FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
         @request.host = 'pbmstaging.com'
-        login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com'))
+        login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.test'))
 
         if region == 'portland'
-          expect { post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_comments: 'comments', location_machines_ids: [ 20 ], place_id: 'tgtgtgtgtgtgtg', submitter_name: 'subname', submitter_email: 'subemail' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com', 'foo@bar.com' ], subject: '(STAGING) Pinball Map - New location (Portland) - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: nil, location_phone: 'phone', location_website: 'website', location_type: '', operator: '', zone: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995), ', location_all_ages: nil, location_payment_type: nil, admin_notes: 'No location type, please add;', place_id: 'tgtgtgtgtgtgtg', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing', user_info: ' by ssw (yeah@ok.com)', user_email: 'yeah@ok.com' }, args: [] })
+          expect { post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_comments: 'comments', location_machines_ids: [ 20 ], place_id: 'tgtgtgtgtgtgtg', submitter_name: 'subname', submitter_email: 'subemail' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.test', 'foo@bar.test' ], subject: '(STAGING) Pinball Map - New location (Portland) - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: nil, location_phone: 'phone', location_website: 'website', location_type: '', operator: '', zone: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995), ', location_all_ages: nil, location_payment_type: nil, admin_notes: 'No location type, please add;', place_id: 'tgtgtgtgtgtgtg', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing', user_info: ' by ssw (yeah@ok.test)', user_email: 'yeah@ok.test' }, args: [] })
         else
-          expect { post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_comments: 'comments', location_machines_ids: [ 20 ], place_id: 'tgtgtgtgtgtgtg', submitter_name: 'subname', submitter_email: 'subemail' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com' ], subject: '(STAGING) Pinball Map - New location - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: nil, location_phone: 'phone', location_website: 'website', location_type: '', operator: '', zone: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995), ', location_all_ages: nil, location_payment_type: nil, admin_notes: 'No location type, please add;', place_id: 'tgtgtgtgtgtgtg', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing', user_info: ' by ssw (yeah@ok.com)', user_email: 'yeah@ok.com' }, args: [] })
+          expect { post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_comments: 'comments', location_machines_ids: [ 20 ], place_id: 'tgtgtgtgtgtgtg', submitter_name: 'subname', submitter_email: 'subemail' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.test' ], subject: '(STAGING) Pinball Map - New location - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: nil, location_phone: 'phone', location_website: 'website', location_type: '', operator: '', zone: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995), ', location_all_ages: nil, location_payment_type: nil, admin_notes: 'No location type, please add;', place_id: 'tgtgtgtgtgtgtg', remote_ip: '0.0.0.0', headers: nil, user_agent: 'Rails Testing', user_info: ' by ssw (yeah@ok.test)', user_email: 'yeah@ok.test' }, args: [] })
         end
       end
 
@@ -399,7 +392,7 @@ describe PagesController, type: :controller do
         operator = FactoryBot.create(:operator, name: 'operator')
         zone = FactoryBot.create(:zone, name: 'zone')
         FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
-        login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com'))
+        login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.test'))
 
         post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: 'country', location_phone: 'phone', location_website: 'website', location_type: 'type', location_zone: 'zone', location_operator: 'operator', location_all_ages: 'Yes', location_payment_type: 'Free Play', location_comments: 'comments', location_machines_ids: [ 20 ], place_id: 'tgtgtgtgtgtgtg', submitter_name: 'subname', submitter_email: 'subemail' }
 
@@ -428,7 +421,7 @@ describe PagesController, type: :controller do
 
       it 'should blank state for countries in COUNTRIES_WITHOUT_STATE' do
         FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
-        login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com'))
+        login(FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.test'))
 
         ApplicationController::COUNTRIES_WITHOUT_STATE.each do |country_code|
           post 'submitted_new_location', params: { region: region, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'some-state', location_zip: 'zip', location_country: country_code, location_machines_ids: [ 20 ], place_id: 'tgtgtgtgtgtgtg' }

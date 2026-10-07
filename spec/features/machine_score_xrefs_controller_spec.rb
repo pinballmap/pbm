@@ -163,7 +163,7 @@ describe MachineScoreXrefsController do
   describe 'edit or delete scores', type: :feature, js: true do
     before(:each) do
       @lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine))
-      @user = FactoryBot.create(:user, id: 11, username: 'ssw', email: 'foo@bar.com')
+      @user = FactoryBot.create(:user, id: 11, username: 'ssw', email: 'foo@bar.test')
 
       login(@user)
     end

@@ -8,12 +8,12 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
     @lmx = FactoryBot.create(:location_machine_xref, machine_id: @machine.id, location_id: @location.id)
 
-    FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+    FactoryBot.create(:user, id: 111, email: 'foo@bar.test', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
   end
 
   describe '#delete' do
     it 'soft-deletes an lmx' do
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(response.status).to eq(200)
 
@@ -23,7 +23,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'creates a user submission for the deletion' do
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }, headers: { HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['msg']).to eq('Successfully deleted lmx #' + @lmx.id.to_s)
@@ -103,8 +103,8 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
   describe '#show' do
     before(:each) do
-      FactoryBot.create(:user, id: 212, email: 'beah@ok.com', authentication_token: '123', username: 'doff')
-      FactoryBot.create(:user, id: 213, email: 'ceah@ok.com', authentication_token: '234', username: 'crest')
+      FactoryBot.create(:user, id: 212, email: 'beah@ok.test', authentication_token: '123', username: 'doff')
+      FactoryBot.create(:user, id: 213, email: 'ceah@ok.test', authentication_token: '234', username: 'crest')
 
       FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 998899, user_id: 212)
       FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 112211, user_id: 213)
@@ -133,7 +133,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'does not error when user_id is present but user has no scores' do
-      FactoryBot.create(:user, id: 214, email: 'feah@ok.com', authentication_token: '1234', username: 'meff')
+      FactoryBot.create(:user, id: 214, email: 'feah@ok.test', authentication_token: '1234', username: 'meff')
 
       get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_id: 214 }
       expect(response).to be_successful
@@ -153,8 +153,8 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'sets user_deleted to true for a machine condition whose user has been deleted, and false otherwise' do
-      active_user = FactoryBot.create(:user, id: 215, email: 'geah@ok.com', authentication_token: '2345', username: 'active')
-      deleted_user = FactoryBot.create(:user, id: 216, email: 'heah@ok.com', authentication_token: '3456', username: 'gone')
+      active_user = FactoryBot.create(:user, id: 215, email: 'geah@ok.test', authentication_token: '2345', username: 'active')
+      deleted_user = FactoryBot.create(:user, id: 216, email: 'heah@ok.test', authentication_token: '3456', username: 'gone')
 
       FactoryBot.create(:machine_condition, location_machine_xref: @lmx, user: active_user, comment: 'still here')
       FactoryBot.create(:machine_condition, location_machine_xref: @lmx, user: deleted_user, comment: 'account gone')
@@ -264,13 +264,13 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
   describe '#create' do
     it 'updates condition on existing lmx' do
-      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(LocationMachineXref.all.size).to eq(1)
     end
 
     it 'updates condition on existing lmx - authed' do
-      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       updated_lmx = @lmx.reload
@@ -281,7 +281,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'creates new lmx when appropriate' do
       new_machine = FactoryBot.create(:machine, id: 11, name: 'sass')
 
-      post '/api/v1/location_machine_xrefs.json', params: { machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(response.status).to eq(201)
 
@@ -289,7 +289,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it "doesn't let you add machines that don't exist" do
-      post '/api/v1/location_machine_xrefs.json', params: { machine_id: -666, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: -666, location_id: @location.id.to_s, condition: 'foo', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
 
@@ -303,7 +303,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'plays soft')
       FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 998899)
 
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(response.status).to eq(200)
 
@@ -317,7 +317,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       @location.date_last_updated = Date.today - 2.days
       @location.save
 
-      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(response.status).to eq(200)
@@ -345,13 +345,13 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
     it 'should include latest user id for re-added soft-deleted lmx' do
       FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'plays soft')
-      FactoryBot.create(:user, id: 211, email: 'yeah@ok.com', authentication_token: '123', username: 'doff')
+      FactoryBot.create(:user, id: 211, email: 'yeah@ok.test', authentication_token: '123', username: 'doff')
 
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(response.status).to eq(200)
 
-      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, user_email: 'yeah@ok.com', user_token: '123' }
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, user_email: 'yeah@ok.test', user_token: '123' }
 
       get '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json'
 
@@ -363,20 +363,20 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
     it 'should correctly toggle location ic_active when machine removed and when re-added' do
       FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'plays soft')
-      FactoryBot.create(:user, id: 211, email: 'yeah@ok.com', authentication_token: '123', username: 'doff')
+      FactoryBot.create(:user, id: 211, email: 'yeah@ok.test', authentication_token: '123', username: 'doff')
       @lmx.ic_enabled = true
       @lmx.save
 
       @location.ic_active = true
       @location.save
 
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(response.status).to eq(200)
       @location.reload
       expect(@location.ic_active).to eq(false)
 
-      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, user_email: 'yeah@ok.com', user_token: '123' }
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, user_email: 'yeah@ok.test', user_token: '123' }
 
       @location.reload
       expect(@location.ic_active).to eq(true)
@@ -386,7 +386,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'plays soft')
       FactoryBot.create(:machine_score_xref, location_machine_xref: @lmx, score: 998899)
 
-      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      delete '/api/v1/location_machine_xrefs/' + @lmx.id.to_s + '.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(response.status).to eq(200)
 
@@ -399,7 +399,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
       expect(LocationMachineXref.all.size).to eq(0)
 
-      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, location_id: @location.id.to_s, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(response.status).to eq(201)
@@ -418,7 +418,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'does not create a machine condition if you pass a blank condition' do
       new_machine = FactoryBot.create(:machine, id: 22, name: 'sass')
 
-      post '/api/v1/location_machine_xrefs.json', params: { machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: new_machine.id.to_s, location_id: @location.id.to_s, condition: '', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(response.status).to eq(201)
 
@@ -426,15 +426,15 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'returns an error unless the machine_id and location_id are both present' do
-      post '/api/v1/location_machine_xrefs.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/location_machine_xrefs.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
 
-      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/location_machine_xrefs.json', params: { machine_id: @machine.id.to_s, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
 
-      post '/api/v1/location_machine_xrefs.json', params: { location_id: @location.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/location_machine_xrefs.json', params: { location_id: @location.id.to_s, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find machine')
     end
@@ -459,7 +459,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     it 'updates condition' do
       FactoryBot.create(:machine_condition, location_machine_xref: @lmx, comment: 'bar')
 
-      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, params: { condition: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put '/api/v1/location_machine_xrefs/' + @lmx.id.to_s, params: { condition: 'foo', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['comment']).to eq('foo')
       expect(JSON.parse(response.body)['location_machine']['machine_conditions'][0]['username']).to eq('ssw')
@@ -562,7 +562,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'toggles insider connected to be able to be toggled - authed' do
-      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['location_machine']['ic_enabled']).to eq(true)
@@ -574,7 +574,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       ic_enabled = lmx['ic_enabled']
       expect(ic_enabled).to be true
 
-      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['location_machine']['ic_enabled']).to eq(false)
@@ -588,7 +588,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'does not allow non-eligible machines to be toggled - authed' do
-      put "/api/v1/location_machine_xrefs/#{@lmx3.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx3.id}/ic_toggle.json", params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to match(/Could not update Insider Connected for this machine/)
@@ -602,7 +602,7 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
     end
 
     it 'creates a user submission for the toggle - authed' do
-      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       expect(response).to be_successful
 
       get "/api/v1/user_submissions/location.json?id=#{@lmx.location.id};submission_type=ic_toggle"
@@ -619,31 +619,31 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
       expect(location['ic_active']).to be nil
 
       # toggle one on
-      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       get "/api/v1/locations/#{@lmx.location.id}.json"
       location = JSON.parse(response.body)
       expect(location['ic_active']).to be true
 
       # toggle both on
-      put "/api/v1/location_machine_xrefs/#{@lmx2.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx2.id}/ic_toggle.json", params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       get "/api/v1/locations/#{@lmx.location.id}.json"
       location = JSON.parse(response.body)
       expect(location['ic_active']).to be true
 
       # toggle one off
-      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       get "/api/v1/locations/#{@lmx.location.id}.json"
       location = JSON.parse(response.body)
       expect(location['ic_active']).to be true
 
       # toggle the other off
-      put "/api/v1/location_machine_xrefs/#{@lmx2.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx2.id}/ic_toggle.json", params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       get "/api/v1/locations/#{@lmx2.location.id}.json"
       location = JSON.parse(response.body)
       expect(location['ic_active']).to be false
 
       # toggle one back on
-      put "/api/v1/location_machine_xrefs/#{@lmx2.id}/ic_toggle.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx2.id}/ic_toggle.json", params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       get "/api/v1/locations/#{@lmx2.location.id}.json"
       location = JSON.parse(response.body)
       expect(location['ic_active']).to be true
@@ -651,26 +651,26 @@ describe Api::V1::LocationMachineXrefsController, type: :request do
 
     it 'it should toggle via the ic_enabled param' do
       # don't toggle with nil
-      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { ic_enabled: nil, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
-      get "/api/v1/location_machine_xrefs/#{@lmx.id}.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { ic_enabled: nil, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      get "/api/v1/location_machine_xrefs/#{@lmx.id}.json", params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       location = JSON.parse(response.body)
       expect(location['location_machine']['ic_enabled']).to be nil
 
       # set to false
-      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { ic_enabled: 'false', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
-      get "/api/v1/location_machine_xrefs/#{@lmx.id}.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { ic_enabled: 'false', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      get "/api/v1/location_machine_xrefs/#{@lmx.id}.json", params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       location = JSON.parse(response.body)
       expect(location['location_machine']['ic_enabled']).to be false
 
       # set to true
-      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { ic_enabled: 'true', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
-      get "/api/v1/location_machine_xrefs/#{@lmx.id}.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { ic_enabled: 'true', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      get "/api/v1/location_machine_xrefs/#{@lmx.id}.json", params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       location = JSON.parse(response.body)
       expect(location['location_machine']['ic_enabled']).to be true
 
       # set to false again
-      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { ic_enabled: 'false', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
-      get "/api/v1/location_machine_xrefs/#{@lmx.id}.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      put "/api/v1/location_machine_xrefs/#{@lmx.id}/ic_toggle.json", params: { ic_enabled: 'false', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      get "/api/v1/location_machine_xrefs/#{@lmx.id}.json", params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
       location = JSON.parse(response.body)
       expect(location['location_machine']['ic_enabled']).to be false
     end

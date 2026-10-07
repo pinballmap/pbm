@@ -3,7 +3,7 @@ require 'spec_helper'
 describe UsersController do
   describe 'Profile', type: :feature, js: true do
     before(:each) do
-      @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
+      @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.test', created_at: '02/02/2016')
       login(@user)
     end
 
@@ -30,7 +30,7 @@ describe UsersController do
     end
 
     it 'works when username has a period' do
-      @user_period = FactoryBot.create(:user, username: 'ssw.pbm', email: 'ssw.pbm@yeah.com', created_at: '02/02/2016')
+      @user_period = FactoryBot.create(:user, username: 'ssw.pbm', email: 'ssw.pbm@yeah.test', created_at: '02/02/2016')
       title = @user_period.username + "'s User Profile - Pinball Map"
 
       visit "/users/#{@user_period.username}/profile"
@@ -101,7 +101,7 @@ describe UsersController do
 
     it 'shows when user is an operator' do
       operator = FactoryBot.create(:operator, region: nil, id: 465, name: 'Gold Star Pinball')
-      user = FactoryBot.create(:user, username: 'sswb', email: 'sswb@yeah.com', created_at: '02/02/2016', operator: operator)
+      user = FactoryBot.create(:user, username: 'sswb', email: 'sswb@yeah.test', created_at: '02/02/2016', operator: operator)
       login(user)
 
       visit "/users/#{user.id}/profile"
@@ -191,7 +191,7 @@ describe UsersController do
   end
   describe 'update_user_flag', type: :feature, js: true do
     before(:each) do
-      @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.com', created_at: '02/02/2016')
+      @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.test', created_at: '02/02/2016')
       login(@user)
     end
     it 'validates user flag' do

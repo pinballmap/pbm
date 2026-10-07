@@ -3,27 +3,27 @@ require 'spec_helper'
 describe Api::V1::UsersController, type: :request do
   describe '#auth_details' do
     before(:each) do
-      @user = FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123')
+      @user = FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.test', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123')
     end
 
     it 'returns all app-centric user data' do
-      get '/api/v1/users/auth_details.json', params: { login: 'yeah@ok.com', password: 'okokokok' }
+      get '/api/v1/users/auth_details.json', params: { login: 'yeah@ok.test', password: 'okokokok' }
 
       expect(response).to be_successful
       expect(response.body).to include('ssw')
-      expect(response.body).to include('yeah@ok.com')
+      expect(response.body).to include('yeah@ok.test')
       expect(response.body).to include('abc123')
 
       get '/api/v1/users/auth_details.json', params: { login: 'ssw', password: 'okokokok' }
 
       expect(response).to be_successful
       expect(response.body).to include('ssw')
-      expect(response.body).to include('yeah@ok.com')
+      expect(response.body).to include('yeah@ok.test')
       expect(response.body).to include('abc123')
     end
 
     it 'accepts credentials via POST body' do
-      post '/api/v1/users/auth_details.json', params: { login: 'yeah@ok.com', password: 'okokokok' }
+      post '/api/v1/users/auth_details.json', params: { login: 'yeah@ok.test', password: 'okokokok' }
 
       expect(response).to be_successful
       expect(response.body).to include('ssw')
@@ -35,18 +35,18 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'handles username/email as case insensitive' do
-      get '/api/v1/users/auth_details.json', params: { login: 'yEAh@ok.com', password: 'okokokok' }
+      get '/api/v1/users/auth_details.json', params: { login: 'yEAh@ok.test', password: 'okokokok' }
 
       expect(response).to be_successful
       expect(response.body).to include('ssw')
-      expect(response.body).to include('yeah@ok.com')
+      expect(response.body).to include('yeah@ok.test')
       expect(response.body).to include('abc123')
 
       get '/api/v1/users/auth_details.json', params: { login: 'sSW', password: 'okokokok' }
 
       expect(response).to be_successful
       expect(response.body).to include('ssw')
-      expect(response.body).to include('yeah@ok.com')
+      expect(response.body).to include('yeah@ok.test')
       expect(response.body).to include('abc123')
     end
 
@@ -118,9 +118,9 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'works via email' do
-      FactoryBot.create(:user, email: 'yeah@ok.com')
+      FactoryBot.create(:user, email: 'yeah@ok.test')
 
-      post '/api/v1/users/resend_confirmation.json', params: { identification: 'yeah@ok.com' }
+      post '/api/v1/users/resend_confirmation.json', params: { identification: 'yeah@ok.test' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['msg']).to eq('Confirmation info resent.')
@@ -150,9 +150,9 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'works via email' do
-      FactoryBot.create(:user, email: 'yeah@ok.com')
+      FactoryBot.create(:user, email: 'yeah@ok.test')
 
-      post '/api/v1/users/forgot_password.json', params: { identification: 'yeah@ok.com' }
+      post '/api/v1/users/forgot_password.json', params: { identification: 'yeah@ok.test' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['msg']).to eq('Password reset request successful.')
@@ -161,16 +161,16 @@ describe Api::V1::UsersController, type: :request do
 
   describe '#signup' do
     it 'returns all app-centric user data if successful' do
-      post '/api/v1/users/signup.json', params: { username: 'foo', email: 'yeah@ok.com', password: 'okokokok', confirm_password: 'okokokok' }
+      post '/api/v1/users/signup.json', params: { username: 'foo', email: 'yeah@ok.test', password: 'okokokok', confirm_password: 'okokokok' }
 
       expect(response).to be_successful
       expect(response.body).to include('foo')
-      expect(response.body).to include('yeah@ok.com')
+      expect(response.body).to include('yeah@ok.test')
       expect(response.body).to include('authentication_token')
     end
 
     it 'requires a username and email address' do
-      post '/api/v1/users/signup.json', params: { username: '', email: 'yeah@ok.com', password: 'okokokok', confirm_password: 'okokokok' }
+      post '/api/v1/users/signup.json', params: { username: '', email: 'yeah@ok.test', password: 'okokokok', confirm_password: 'okokokok' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('username and email are required fields')
@@ -182,32 +182,32 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'does not allow blank passwords' do
-      post '/api/v1/users/signup.json', params: { username: 'yeah', email: 'yeah@ok.com', password: '', confirm_password: '' }
+      post '/api/v1/users/signup.json', params: { username: 'yeah', email: 'yeah@ok.test', password: '', confirm_password: '' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('password can not be blank')
     end
 
     it 'tells you if passwords do not match' do
-      post '/api/v1/users/signup.json', params: { username: 'yeah', email: 'yeah@ok.com', password: 'okokokok', confirm_password: 'NOPE' }
+      post '/api/v1/users/signup.json', params: { username: 'yeah', email: 'yeah@ok.test', password: 'okokokok', confirm_password: 'NOPE' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('your entered passwords do not match')
     end
 
     it 'does not allow duplicated usernames' do
-      FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123')
+      FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.test', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123')
 
-      post '/api/v1/users/signup.json', params: { username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', confirm_password: 'okokokok' }
+      post '/api/v1/users/signup.json', params: { username: 'ssw', email: 'yeah@ok.test', password: 'okokokok', confirm_password: 'okokokok' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('This username already exists')
     end
 
     it 'does not allow duplicated email addresses' do
-      FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.com', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123')
+      FactoryBot.create(:user, id: 1, username: 'ssw', email: 'yeah@ok.test', password: 'okokokok', password_confirmation: 'okokokok', authentication_token: 'abc123')
 
-      post '/api/v1/users/signup.json', params: { username: 'CLEO', email: 'yeah@ok.com', password: 'okokokok', confirm_password: 'okokokok' }
+      post '/api/v1/users/signup.json', params: { username: 'CLEO', email: 'yeah@ok.test', password: 'okokokok', confirm_password: 'okokokok' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('This email address already exists')
@@ -228,27 +228,27 @@ describe Api::V1::UsersController, type: :request do
 
   describe '#add_fave_location' do
     it 'adds a location to your list of favorites' do
-      user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      user = FactoryBot.create(:user, id: 111, email: 'foo@bar.test', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
 
       new_location = FactoryBot.create(:location, id: 555)
 
       expect(UserFaveLocation.all.count).to eq(0)
 
-      post '/api/v1/users/111/add_fave_location.json', params: { location_id: 555, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/111/add_fave_location.json', params: { location_id: 555, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(UserFaveLocation.first.user_id).to eq(user.id)
       expect(UserFaveLocation.first.location_id).to eq(new_location.id)
     end
 
     it 'rejects duplicate attempts to add' do
-      FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      FactoryBot.create(:user, id: 111, email: 'foo@bar.test', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
       FactoryBot.create(:location, id: 555)
 
-      post '/api/v1/users/111/add_fave_location.json', params: { location_id: 555, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/111/add_fave_location.json', params: { location_id: 555, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(UserFaveLocation.all.size).to eq(1)
 
-      post '/api/v1/users/111/add_fave_location.json', params: { location_id: 555, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/111/add_fave_location.json', params: { location_id: 555, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('This location is already saved as a fave.')
@@ -256,14 +256,14 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'does not let you do this for other users' do
-      FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      FactoryBot.create(:user, id: 111, email: 'foo@bar.test', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
       FactoryBot.create(:user, id: 112)
 
       FactoryBot.create(:location, id: 555)
 
       expect(UserFaveLocation.all.count).to eq(0)
 
-      post '/api/v1/users/112/add_fave_location.json', params: { location_id: 555, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/112/add_fave_location.json', params: { location_id: 555, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unauthorized user update.')
@@ -271,14 +271,14 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'tells you if this user does not exist' do
-      post '/api/v1/users/234/add_fave_location.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/234/add_fave_location.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unknown asset')
     end
 
     it 'tells you if this location does not exist' do
-      post '/api/v1/users/111/add_fave_location.json', params: { location_id: 999, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/111/add_fave_location.json', params: { location_id: 999, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unknown asset')
@@ -287,12 +287,12 @@ describe Api::V1::UsersController, type: :request do
 
   describe '#remove_fave_location' do
     it 'removes a location to your list of favorites' do
-      user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      user = FactoryBot.create(:user, id: 111, email: 'foo@bar.test', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
 
       FactoryBot.create(:user_fave_location, user: user, location: FactoryBot.create(:location, id: 123))
       FactoryBot.create(:user_fave_location, user: user, location: FactoryBot.create(:location, id: 456))
 
-      post '/api/v1/users/111/remove_fave_location.json', params: { location_id: 123, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/111/remove_fave_location.json', params: { location_id: 123, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(UserFaveLocation.all.count).to eq(1)
       expect(UserFaveLocation.first.user_id).to eq(user.id)
@@ -300,24 +300,24 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'does not let you do this for other users' do
-      FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      FactoryBot.create(:user, id: 111, email: 'foo@bar.test', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
 
       FactoryBot.create(:user_fave_location, user: FactoryBot.create(:user, id: 777), location: FactoryBot.create(:location, id: 123))
 
-      post '/api/v1/users/777/remove_fave_location.json', params: { location_id: 123, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/777/remove_fave_location.json', params: { location_id: 123, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(UserFaveLocation.all.count).to eq(1)
     end
 
     it 'tells you if this user does not exist' do
-      post '/api/v1/users/234/remove_fave_location.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/234/remove_fave_location.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unknown asset')
     end
 
     it 'tells you if this location does not exist' do
-      post '/api/v1/users/111/remove_fave_location.json', params: { location_id: 999, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/111/remove_fave_location.json', params: { location_id: 999, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unknown asset')
@@ -326,7 +326,7 @@ describe Api::V1::UsersController, type: :request do
 
   describe '#list_fave_locations' do
     it 'sends all favorited locations for a user' do
-      user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      user = FactoryBot.create(:user, id: 111, email: 'foo@bar.test', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
 
       location = FactoryBot.create(:location, id: 123)
       FactoryBot.create(:user_fave_location, user: user, location: location)
@@ -335,7 +335,7 @@ describe Api::V1::UsersController, type: :request do
 
       FactoryBot.create(:user_fave_location, user: FactoryBot.create(:user), location: FactoryBot.create(:location, id: 789))
 
-      get '/api/v1/users/111/list_fave_locations.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      get '/api/v1/users/111/list_fave_locations.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       json = JSON.parse(response.body)['user_fave_locations']
@@ -348,7 +348,7 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'tells you if this user does not exist' do
-      get '/api/v1/users/234/list_fave_locations.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      get '/api/v1/users/234/list_fave_locations.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unknown user')
@@ -358,7 +358,7 @@ describe Api::V1::UsersController, type: :request do
   describe '#profile_info' do
     before(:each) do
       FactoryBot.create(:operator, id: 889, name: 'Craig T Pinball LLC')
-      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw', created_at: '2016-01-01', admin_title: 'Administrator', contributor_rank: 'Magician', flag: 'us', operator_id: 889)
+      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.test', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw', created_at: '2016-01-01', admin_title: 'Administrator', contributor_rank: 'Magician', flag: 'us', operator_id: 889)
       location = FactoryBot.create(:location, id: 100, region_id: 1000, name: 'location')
       another_location = FactoryBot.create(:location, id: 101, region_id: 1001, name: 'another location')
 
@@ -398,11 +398,11 @@ describe Api::V1::UsersController, type: :request do
       FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, location: location, machine_id: lmx.machine_id, user: @user, score: 4000)
       FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, location: location, machine_id: lmx.machine_id, user: @user, score: 5000)
       FactoryBot.create(:machine_score_xref, location_machine_xref: lmx2, location: location, machine_id: lmx2.machine_id, user: @user, score: 5500)
-      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, location: location, machine_id: lmx.machine_id, user: FactoryBot.create(:user, id: 3334, email: 'yeahb@ok.com', authentication_token: '345', username: 'bert'), score: 7000)
+      FactoryBot.create(:machine_score_xref, location_machine_xref: lmx, location: location, machine_id: lmx.machine_id, user: FactoryBot.create(:user, id: 3334, email: 'yeahb@ok.test', authentication_token: '345', username: 'bert'), score: 7000)
     end
 
     it 'returns all profile stats for a given user' do
-      get '/api/v1/users/111/profile_info.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      get '/api/v1/users/111/profile_info.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       json = JSON.parse(response.body)['profile_info']
@@ -434,14 +434,14 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'tells you if this user does not exist' do
-      get '/api/v1/users/-1/profile_info.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      get '/api/v1/users/-1/profile_info.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find user')
     end
 
     it 'excludes profile_list_of_high_scores when using the new_score_list_only flag' do
-      get '/api/v1/users/111/profile_info.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', new_score_list_only: 1 }
+      get '/api/v1/users/111/profile_info.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', new_score_list_only: 1 }
 
       expect(response).to be_successful
       json = JSON.parse(response.body)['profile_info']
@@ -452,70 +452,70 @@ describe Api::V1::UsersController, type: :request do
   end
   describe '#update_email' do
     before(:each) do
-      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw', password: 'password', password_confirmation: 'password')
+      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.test', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw', password: 'password', password_confirmation: 'password')
     end
 
     it 'updates the email address' do
-      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'password', email: 'new@email.com' }
+      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'password', email: 'new@email.test' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['msg']).to eq('Email updated.')
-      expect(@user.reload.email).to eq('new@email.com')
+      expect(@user.reload.email).to eq('new@email.test')
     end
 
     it 'does not let you update another user email' do
-      FactoryBot.create(:user, id: 222, username: 'other', email: 'other@email.com')
+      FactoryBot.create(:user, id: 222, username: 'other', email: 'other@email.test')
 
-      post '/api/v1/users/222/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'password', email: 'hacked@email.com' }
+      post '/api/v1/users/222/update_email.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'password', email: 'hacked@email.test' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unauthorized user update.')
-      expect(User.find(222).email).to eq('other@email.com')
+      expect(User.find(222).email).to eq('other@email.test')
     end
 
     it 'requires the correct current password' do
-      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'wrongpassword', email: 'new@email.com' }
+      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'wrongpassword', email: 'new@email.test' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to include('Current password')
-      expect(@user.reload.email).to eq('foo@bar.com')
+      expect(@user.reload.email).to eq('foo@bar.test')
     end
 
     it 'gives an actionable message when the current password field is missing (older app versions)' do
-      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', email: 'new@email.com' }, headers: { 'AppVersion' => '1.0' }
+      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', email: 'new@email.test' }, headers: { 'AppVersion' => '1.0' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Current password can not be blank. Update the app if this field is not visible.')
-      expect(@user.reload.email).to eq('foo@bar.com')
+      expect(@user.reload.email).to eq('foo@bar.test')
     end
 
     it 'gives a plain message when the current password field is missing and there is no AppVersion header' do
-      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', email: 'new@email.com' }
+      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', email: 'new@email.test' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Current password can not be blank.')
-      expect(@user.reload.email).to eq('foo@bar.com')
+      expect(@user.reload.email).to eq('foo@bar.test')
     end
 
     it 'does not allow a blank email' do
-      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'password', email: '' }
+      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'password', email: '' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Email can not be blank')
     end
 
     it 'does not allow a duplicate email' do
-      FactoryBot.create(:user, id: 222, username: 'other', email: 'taken@email.com')
+      FactoryBot.create(:user, id: 222, username: 'other', email: 'taken@email.test')
 
-      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'password', email: 'taken@email.com' }
+      post '/api/v1/users/111/update_email.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'password', email: 'taken@email.test' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to include('Email')
-      expect(@user.reload.email).to eq('foo@bar.com')
+      expect(@user.reload.email).to eq('foo@bar.test')
     end
 
     it 'tells you if this user does not exist' do
-      post '/api/v1/users/999/update_email.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'password', email: 'new@email.com' }
+      post '/api/v1/users/999/update_email.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'password', email: 'new@email.test' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unknown user')
@@ -524,11 +524,11 @@ describe Api::V1::UsersController, type: :request do
 
   describe '#update_password' do
     before(:each) do
-      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw', password: 'oldpassword', password_confirmation: 'oldpassword')
+      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.test', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw', password: 'oldpassword', password_confirmation: 'oldpassword')
     end
 
     it 'updates the password' do
-      post '/api/v1/users/111/update_password.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'oldpassword', password: 'newpassword', password_confirmation: 'newpassword' }
+      post '/api/v1/users/111/update_password.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'oldpassword', password: 'newpassword', password_confirmation: 'newpassword' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['msg']).to eq('Password updated.')
@@ -536,9 +536,9 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'does not let you update another user password' do
-      FactoryBot.create(:user, id: 222, username: 'other', email: 'other@email.com', password: 'otherpassword', password_confirmation: 'otherpassword')
+      FactoryBot.create(:user, id: 222, username: 'other', email: 'other@email.test', password: 'otherpassword', password_confirmation: 'otherpassword')
 
-      post '/api/v1/users/222/update_password.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'oldpassword', password: 'newpassword', password_confirmation: 'newpassword' }
+      post '/api/v1/users/222/update_password.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'oldpassword', password: 'newpassword', password_confirmation: 'newpassword' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unauthorized user update.')
@@ -546,7 +546,7 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'requires the correct current password' do
-      post '/api/v1/users/111/update_password.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'wrongpassword', password: 'newpassword', password_confirmation: 'newpassword' }
+      post '/api/v1/users/111/update_password.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'wrongpassword', password: 'newpassword', password_confirmation: 'newpassword' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to include('Current password')
@@ -554,7 +554,7 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'requires password and confirmation to match' do
-      post '/api/v1/users/111/update_password.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'oldpassword', password: 'newpassword', password_confirmation: 'different' }
+      post '/api/v1/users/111/update_password.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'oldpassword', password: 'newpassword', password_confirmation: 'different' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to include("Password confirmation doesn't match")
@@ -562,7 +562,7 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'tells you if this user does not exist' do
-      post '/api/v1/users/999/update_password.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'oldpassword', password: 'newpassword', password_confirmation: 'newpassword' }
+      post '/api/v1/users/999/update_password.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', current_password: 'oldpassword', password: 'newpassword', password_confirmation: 'newpassword' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unknown user')
@@ -571,11 +571,11 @@ describe Api::V1::UsersController, type: :request do
 
   describe '#destroy' do
     before(:each) do
-      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.test', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
     end
 
     it 'deletes the user' do
-      delete '/api/v1/users/111.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      delete '/api/v1/users/111.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['msg']).to eq('User deleted.')
@@ -585,7 +585,7 @@ describe Api::V1::UsersController, type: :request do
     it 'does not let you delete another user' do
       FactoryBot.create(:user, id: 222, username: 'other')
 
-      delete '/api/v1/users/222.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      delete '/api/v1/users/222.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unauthorized user update.')
@@ -593,7 +593,7 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'tells you if this user does not exist' do
-      delete '/api/v1/users/999.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      delete '/api/v1/users/999.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unknown user')
@@ -612,10 +612,10 @@ describe Api::V1::UsersController, type: :request do
   end
   describe '#update_user_flag' do
     before(:each) do
-      FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      FactoryBot.create(:user, id: 111, email: 'foo@bar.test', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
     end
     it 'updates your user flag field' do
-      post '/api/v1/users/111/update_user_flag.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', flag: 'us-ca' }
+      post '/api/v1/users/111/update_user_flag.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', flag: 'us-ca' }
 
       expect(response).to be_successful
       expect(response.body).to_not include('error')
@@ -623,7 +623,7 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'does not let you do this for other users' do
-      post '/api/v1/users/777/update_user_flag.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', flag: 'us-ca' }
+      post '/api/v1/users/777/update_user_flag.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', flag: 'us-ca' }
 
       expect(response).to be_successful
       expect(response.body).to_not include('us-ca')
@@ -631,7 +631,7 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'does not let you save a value not in the list' do
-      post '/api/v1/users/111/update_user_flag.json', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', flag: 'yyy' }
+      post '/api/v1/users/111/update_user_flag.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', flag: 'yyy' }
 
       expect(response).to be_successful
       expect(response.body).to_not include('yyy')
@@ -713,14 +713,14 @@ describe Api::V1::UsersController, type: :request do
 
   describe '#add_life_list_machine' do
     before(:each) do
-      FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      FactoryBot.create(:user, id: 111, email: 'foo@bar.test', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
       FactoryBot.create(:machine, id: 77)
     end
 
     it 'adds a machine to the life list' do
       expect(UserMachineXref.count).to eq(0)
 
-      post '/api/v1/users/111/add_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/111/add_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['success']).to eq('Successfully added to life list')
@@ -730,8 +730,8 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'handles a duplicate add gracefully' do
-      post '/api/v1/users/111/add_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
-      post '/api/v1/users/111/add_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/111/add_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/111/add_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(UserMachineXref.count).to eq(1)
@@ -740,7 +740,7 @@ describe Api::V1::UsersController, type: :request do
     it 'does not let you do this for other users' do
       FactoryBot.create(:user, id: 112)
 
-      post '/api/v1/users/112/add_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/112/add_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unauthorized user update.')
@@ -748,7 +748,7 @@ describe Api::V1::UsersController, type: :request do
     end
 
     it 'returns an error for an unknown machine' do
-      post '/api/v1/users/111/add_life_list_machine.json', params: { machine_id: 999, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/111/add_life_list_machine.json', params: { machine_id: 999, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unknown asset')
@@ -757,7 +757,7 @@ describe Api::V1::UsersController, type: :request do
 
   describe '#remove_life_list_machine' do
     before(:each) do
-      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.com', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
+      @user = FactoryBot.create(:user, id: 111, email: 'foo@bar.test', authentication_token: '1G8_s7P-V-4MGojaKD7a', username: 'ssw')
       @machine = FactoryBot.create(:machine, id: 77)
       FactoryBot.create(:user_machine_xref, user: @user, machine: @machine)
     end
@@ -765,7 +765,7 @@ describe Api::V1::UsersController, type: :request do
     it 'removes a machine from the life list' do
       expect(UserMachineXref.count).to eq(1)
 
-      post '/api/v1/users/111/remove_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/111/remove_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['success']).to eq('Successfully removed from life list')
@@ -776,7 +776,7 @@ describe Api::V1::UsersController, type: :request do
       lmx = FactoryBot.create(:location_machine_xref, machine: @machine)
       FactoryBot.create(:machine_score_xref, user: @user, machine: @machine, location_machine_xref: lmx)
 
-      post '/api/v1/users/111/remove_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/111/remove_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Cannot remove a machine that has scores from your list')
@@ -787,7 +787,7 @@ describe Api::V1::UsersController, type: :request do
     it 'does not let you do this for other users' do
       FactoryBot.create(:user, id: 112)
 
-      post '/api/v1/users/112/remove_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/112/remove_life_list_machine.json', params: { machine_id: 77, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Unauthorized user update.')
@@ -797,7 +797,7 @@ describe Api::V1::UsersController, type: :request do
     it 'returns an error when machine is not in life list' do
       other_machine = FactoryBot.create(:machine)
 
-      post '/api/v1/users/111/remove_life_list_machine.json', params: { machine_id: other_machine.id, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/users/111/remove_life_list_machine.json', params: { machine_id: other_machine.id, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Machine not in life list')

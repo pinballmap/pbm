@@ -4,8 +4,8 @@ describe LocationPictureXrefsController, type: :controller do
   before(:each) do
     @portland = FactoryBot.create(:region, name: 'portland', full_name: 'Portland')
     @location = FactoryBot.create(:location, name: 'Sassy', region: @portland)
-    @user = FactoryBot.create(:user, region: @portland, email: 'foo@bar.com')
-    FactoryBot.create(:user, region: FactoryBot.create(:region), email: 'baz@bong.com', is_super_admin: 't')
+    @user = FactoryBot.create(:user, region: @portland, email: 'foo@bar.test')
+    FactoryBot.create(:user, region: FactoryBot.create(:region), email: 'baz@bong.test', is_super_admin: 't')
   end
 
   describe '#create' do

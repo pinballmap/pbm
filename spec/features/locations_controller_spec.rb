@@ -277,7 +277,7 @@ describe LocationsController do
 
   describe 'remove machine', type: :feature, js: true do
     before(:each) do
-      @user = FactoryBot.create(:user, id: 1001, username: 'ssw', email: 'ssw@test.com')
+      @user = FactoryBot.create(:user, id: 1001, username: 'ssw', email: 'ssw@test.test')
       login(@user)
 
       @location = FactoryBot.create(:location, region_id: @region.id, name: 'Cleo')
@@ -1112,7 +1112,7 @@ describe LocationsController do
     end
 
     it 'shows only your own scores' do
-      other_user = FactoryBot.create(:user, username: 'other', email: 'other@example.com')
+      other_user = FactoryBot.create(:user, username: 'other', email: 'other@pinballmap.test')
       FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user: other_user, user_name: 'other', high_score: '4444', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'score added by other')
       FactoryBot.create(:user_submission, created_at: '2022-01-06', location: @location, user: @user, user_name: 'pbm', high_score: '3333', machine_name: 'Sassy Madness', submission_type: UserSubmission::NEW_SCORE_TYPE, submission: 'score added by pbm')
 
@@ -1205,7 +1205,7 @@ describe LocationsController do
 
       find('.meta_image').click
       fill_in("new_phone", with: '503-488-1938')
-      fill_in("new_website", with: 'www.foo.com')
+      fill_in("new_website", with: 'www.foo.test')
       select('Bar', from: "new_location_type")
       click_on 'Save'
 
@@ -1247,7 +1247,7 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.meta_image').click
-      fill_in("new_website", with: 'http://www.foo.com')
+      fill_in("new_website", with: 'http://www.foo.test')
       fill_in("new_phone", with: '503-285-3928')
       select('Bar', from: "new_location_type")
       select('Quarterworld', from: "new_operator")
@@ -1255,7 +1255,7 @@ describe LocationsController do
 
       sleep 1
 
-      expect(@location.reload.website).to eq('http://www.foo.com')
+      expect(@location.reload.website).to eq('http://www.foo.test')
       expect(@location.phone).to eq('503-285-3928')
       expect(@location.operator_id).to eq(o.id)
       expect(@location.location_type_id).to eq(t.id)
@@ -1311,21 +1311,21 @@ describe LocationsController do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
       find('.meta_image').click
-      fill_in("new_website", with: 'http://www.foo.com')
+      fill_in("new_website", with: 'http://www.foo.test')
       click_on 'Save'
 
       sleep 1
 
-      expect(Location.find(@location.id).website).to eq('http://www.foo.com')
+      expect(Location.find(@location.id).website).to eq('http://www.foo.test')
       expect(page).to_not have_css('div#flash_error')
 
       find('.meta_image').click
-      fill_in("new_website", with: 'http://www.bar.com')
+      fill_in("new_website", with: 'http://www.bar.test')
       click_on 'Save'
 
       sleep 1
 
-      expect(Location.find(@location.id).website).to eq('http://www.bar.com')
+      expect(Location.find(@location.id).website).to eq('http://www.bar.test')
       expect(page).to_not have_css('div#flash_error')
     end
 

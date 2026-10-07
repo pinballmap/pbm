@@ -6,32 +6,32 @@ describe Api::V1::LocationsController, type: :request do
     @another_region = FactoryBot.create(:region, name: 'seattle', full_name: 'Seattle', lat: 20, lon: 20)
     @out_of_bounds_region = FactoryBot.create(:region, name: 'vancouver', full_name: 'Vancouver', lat: 100, lon: 100)
     @location = FactoryBot.create(:location, region: @region, name: 'Satchmo', state: 'OR', zip: '97203', lat: 42.18, lon: -71.18)
-    @user = FactoryBot.create(:user, username: 'cibw', email: 'foo@bar.com', region: @region, authentication_token: '1G8_s7P-V-4MGojaKD7a', operator_id: 2000, admin_title: 'Administrator', contributor_rank: 'Magician')
-    @another_region_admin_user = FactoryBot.create(:user, username: 'latguy', email: 'lat@guy.com', region: @another_region)
-    FactoryBot.create(:user, email: 'super_admin@bar.com', region: nil, is_super_admin: 1)
+    @user = FactoryBot.create(:user, username: 'cibw', email: 'foo@bar.test', region: @region, authentication_token: '1G8_s7P-V-4MGojaKD7a', operator_id: 2000, admin_title: 'Administrator', contributor_rank: 'Magician')
+    @another_region_admin_user = FactoryBot.create(:user, username: 'latguy', email: 'lat@guy.test', region: @another_region)
+    FactoryBot.create(:user, email: 'super_admin@bar.test', region: nil, is_super_admin: 1)
   end
 
   describe '#suggest' do
     it 'errors when required fields are not sent' do
-      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
 
-      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_machines: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_machines: 'foo', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
 
-      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'baz', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'baz', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
 
-      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'baz', location_machines: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'baz', location_machines: '', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to eq('Location name, and a list of machines are required')
     end
 
     it 'errors when region is not available' do
-      post '/api/v1/locations/suggest.json', params: { region_id: -1, location_machines: 'foo', location_name: 'bar', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/locations/suggest.json', params: { region_id: -1, location_machines: 'foo', location_name: 'bar', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find region')
@@ -50,19 +50,19 @@ describe Api::V1::LocationsController, type: :request do
       z = FactoryBot.create(:zone, name: 'zone')
       FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
 
-      expect { post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com', 'foo@bar.com' ], subject: 'Pinball Map - New location (Portland) - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: nil, location_phone: 'phone', location_website: 'website', location_type: 'type', operator: 'operator', zone: 'zone', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', location_all_ages: nil, location_payment_type: nil, admin_notes: 'Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder', place_id: nil, remote_ip: '127.0.0.1', headers: nil, user_agent: nil, user_info: ' by cibw (foo@bar.com)', user_email: 'foo@bar.com' }, args: [] })
+      expect { post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_zone: 'zone', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.test', 'foo@bar.test' ], subject: 'Pinball Map - New location (Portland) - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: nil, location_phone: 'phone', location_website: 'website', location_type: 'type', operator: 'operator', zone: 'zone', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', location_all_ages: nil, location_payment_type: nil, admin_notes: 'Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder', place_id: nil, remote_ip: '127.0.0.1', headers: nil, user_agent: nil, user_info: ' by cibw (foo@bar.test)', user_email: 'foo@bar.test' }, args: [] })
     end
 
     it 'Searches boundary boxes by transmitted lat/lon (geocoded, not user location)' do
       FactoryBot.create(:location_type, name: 'type')
       FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
 
-      expect { post '/api/v1/locations/suggest.json', params: { region_id: nil, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: nil, location_zone: nil, location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', lat: 20, lon: 20 } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.com', 'lat@guy.com' ], subject: 'Pinball Map - New location (Seattle) - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: nil, location_phone: 'phone', location_website: 'website', location_type: 'type', operator: '', zone: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', location_all_ages: nil, location_payment_type: nil, admin_notes: 'Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder', place_id: nil, remote_ip: '127.0.0.1', headers: nil, user_agent: nil, user_info: ' by cibw (foo@bar.com)', user_email: 'foo@bar.com' }, args: [] })
+      expect { post '/api/v1/locations/suggest.json', params: { region_id: nil, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: nil, location_zone: nil, location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', lat: 20, lon: 20 } }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with('AdminMailer', 'send_new_location_notification', 'deliver_now', { params: { to_users: 'admin@pinballmap.com', cc_users: [ 'super_admin@bar.test', 'lat@guy.test' ], subject: 'Pinball Map - New location (Seattle) - name', location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_country: nil, location_phone: 'phone', location_website: 'website', location_type: 'type', operator: '', zone: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', location_all_ages: nil, location_payment_type: nil, admin_notes: 'Missing place_id, please add - https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder', place_id: nil, remote_ip: '127.0.0.1', headers: nil, user_agent: nil, user_info: ' by cibw (foo@bar.test)', user_email: 'foo@bar.test' }, args: [] })
     end
 
     it 'tags a user when appropriate' do
       FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
-      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: 'type', location_operator: 'operator', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
 
       expect(response).to be_successful
       expect(UserSubmission.first.user_id).to eq(@user.id)
@@ -70,7 +70,7 @@ describe Api::V1::LocationsController, type: :request do
 
     it 'does not bomb out when operator and type and zone are blank' do
       FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
-      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: nil, location_zone: '', location_operator: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: nil, location_zone: '', location_operator: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
 
       expect(response).to be_successful
       expect(SuggestedLocation.first.location_type).to eq(nil)
@@ -79,7 +79,7 @@ describe Api::V1::LocationsController, type: :request do
     end
 
     it 'does not bomb out if machine list contains string of machine names' do
-      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: nil, location_zone: '', location_operator: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995), Happy Dog (Premium) (Burrito, 2001),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
+      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_phone: 'phone', location_website: 'website', location_type: nil, location_zone: '', location_operator: '', location_comments: 'comments', location_machines: 'Jolene (Pro) (Burrito, 1995), Happy Dog (Premium) (Burrito, 2001),', submitter_name: 'subname', submitter_email: 'subemail', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', HTTP_USER_AGENT: 'cleOS' }
 
       expect(response).to be_successful
       expect(SuggestedLocation.first.machines).to eq('Jolene (Pro) (Burrito, 1995), Happy Dog (Premium) (Burrito, 2001),')
@@ -87,7 +87,7 @@ describe Api::V1::LocationsController, type: :request do
 
     it 'accepts and stores location_all_ages and location_payment_type' do
       FactoryBot.create(:machine, name: 'Jolene (Pro)', manufacturer: 'Burrito', year: '1995', id: 20)
-      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_all_ages: 'Yes', location_payment_type: 'Free Play', location_machines: 'Jolene (Pro) (Burrito, 1995),', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      post '/api/v1/locations/suggest.json', params: { region_id: @region.id.to_s, location_name: 'name', location_street: 'street', location_city: 'city', location_state: 'state', location_zip: 'zip', location_all_ages: 'Yes', location_payment_type: 'Free Play', location_machines: 'Jolene (Pro) (Burrito, 1995),', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(SuggestedLocation.first.all_ages).to eq('Yes')
@@ -97,7 +97,7 @@ describe Api::V1::LocationsController, type: :request do
 
   describe '#index' do
     it 'allows token authentication via query params' do
-      get "/api/v1/region/#{@region.name}/locations.json", params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      get "/api/v1/region/#{@region.name}/locations.json", params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       assert_response :success
     end
 
@@ -335,7 +335,7 @@ describe Api::V1::LocationsController, type: :request do
 
   describe '#update' do
     it 'throws an error if the location does not exist' do
-      put '/api/v1/locations/666', params: { user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      put '/api/v1/locations/666', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find location')
     end
@@ -350,7 +350,7 @@ describe Api::V1::LocationsController, type: :request do
       type = FactoryBot.create(:location_type, name: 'bar')
       operator = FactoryBot.create(:operator, name: 'CleoWorld')
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { description: 'foo', website: 'http://bar', phone: '5038471772', zip: '97777', location_type: type.id.to_s, operator_id: operator.id.to_s, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { description: 'foo', website: 'http://bar', phone: '5038471772', zip: '97777', location_type: type.id.to_s, operator_id: operator.id.to_s, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       updated_location = @location.reload
@@ -379,7 +379,7 @@ describe Api::V1::LocationsController, type: :request do
       type = FactoryBot.create(:location_type, name: 'bar')
       @location.location_type_id = type.id
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { description: 'foo', website: 'http://bar', phone: '5039183717', zip: '97777', location_type: '', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { description: 'foo', website: 'http://bar', phone: '5039183717', zip: '97777', location_type: '', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       updated_location = @location.reload
@@ -399,7 +399,7 @@ describe Api::V1::LocationsController, type: :request do
       new_type = FactoryBot.create(:location_type, name: 'baz')
       @location.location_type_id = type.id
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { location_type: new_type.id, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { location_type: new_type.id, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       updated_location = @location.reload
@@ -408,19 +408,19 @@ describe Api::V1::LocationsController, type: :request do
     end
 
     it 'responds with an error if an invalid phone number is sent' do
-      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { phone: 'NOT A PHONE NUMBER', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { phone: 'NOT A PHONE NUMBER', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['errors']).to eq([ 'Invalid phone format.' ])
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { phone: '444-4444', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { phone: '444-4444', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
 
       expect(JSON.parse(response.body)['errors']).to eq([ 'Invalid phone format.' ])
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { phone: '11-444-4444-11-44', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { phone: '11-444-4444-11-44', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
 
@@ -430,7 +430,7 @@ describe Api::V1::LocationsController, type: :request do
     it 'blank phone number deletes phone number' do
       @location.phone = '503-294-9948'
 
-      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { phone: nil, user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { phone: nil, user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       parsed_body = JSON.parse(response.body)
@@ -440,7 +440,7 @@ describe Api::V1::LocationsController, type: :request do
     end
 
     it 'allows you to update all_ages and payment_type' do
-      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { all_ages: 'Yes', payment_type: 'Free Play', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { all_ages: 'Yes', payment_type: 'Free Play', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       updated_location = @location.reload
@@ -453,14 +453,14 @@ describe Api::V1::LocationsController, type: :request do
     end
 
     it 'responds with an error if an invalid all_ages or payment_type is sent' do
-      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { all_ages: 'Maybe', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { all_ages: 'Maybe', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
 
       expect(response).to be_successful
       expect(JSON.parse(response.body)['errors']).to include('All ages is not included in the list')
     end
 
     it 'tags update with user_id when authenticating' do
-      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { description: 'foo', user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a' }
+      put '/api/v1/locations/' + @location.id.to_s + '.json', params: { description: 'foo', user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a' }
       expect(response).to be_successful
 
       updated_location = @location.reload
@@ -1248,7 +1248,7 @@ describe Api::V1::LocationsController, type: :request do
     end
 
     it 'displays details of pictures at location' do
-      post '/api/v1/location_picture_xrefs.json', params: { location_id: @location.id.to_s, photo: fixture_file_upload('PPM-Splash-200.png', 'image/png'), user_email: 'foo@bar.com', user_token: '1G8_s7P-V-4MGojaKD7a', format: :js }
+      post '/api/v1/location_picture_xrefs.json', params: { location_id: @location.id.to_s, photo: fixture_file_upload('PPM-Splash-200.png', 'image/png'), user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', format: :js }
 
       expect(response).to be_successful
       expect(response.body).to include('location_picture')
@@ -1308,7 +1308,7 @@ describe Api::V1::LocationsController, type: :request do
   describe '#confirm_location' do
     it 'sets date_last_updated on location' do
       Timecop.travel(Time.zone.local(2010, 6, 1, 13, 0, 0)) do
-        put '/api/v1/locations/' + @location.id.to_s + '/confirm.json', params: { user_token: '1G8_s7P-V-4MGojaKD7a', user_email: 'foo@bar.com' }
+        put '/api/v1/locations/' + @location.id.to_s + '/confirm.json', params: { user_token: '1G8_s7P-V-4MGojaKD7a', user_email: 'foo@bar.test' }
       end
       expect(response).to be_successful
 
@@ -1320,7 +1320,7 @@ describe Api::V1::LocationsController, type: :request do
     end
 
     it 'throws an error if the location does not exist' do
-      put '/api/v1/locations/666/confirm.json', params: { user_token: '1G8_s7P-V-4MGojaKD7a', user_email: 'foo@bar.com' }
+      put '/api/v1/locations/666/confirm.json', params: { user_token: '1G8_s7P-V-4MGojaKD7a', user_email: 'foo@bar.test' }
 
       expect(JSON.parse(response.body)['errors']).to eq('Failed to find location')
     end
@@ -1329,28 +1329,6 @@ describe Api::V1::LocationsController, type: :request do
       put '/api/v1/locations/' + @location.id.to_s + '/confirm.json'
 
       expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::AUTH_REQUIRED_MSG)
-    end
-
-    it 'allows token authentication via request headers' do
-      put '/api/v1/locations/' + @location.id.to_s + '/confirm.json', headers: { 'X-User-Email' => 'foo@bar.com', 'X-User-Token' => '1G8_s7P-V-4MGojaKD7a' }
-
-      expect(JSON.parse(response.body)['msg']).to eq('Thanks for confirming the line-up at this location!')
-      expect(@location.reload.last_updated_by_user).to eq(@user)
-    end
-
-    it 'rejects request headers with an invalid token' do
-      put '/api/v1/locations/' + @location.id.to_s + '/confirm.json', headers: { 'X-User-Email' => 'foo@bar.com', 'X-User-Token' => 'wrong' }
-
-      expect(JSON.parse(response.body)['errors']).to eq(Api::V1::LocationsController::AUTH_REQUIRED_MSG)
-    end
-
-    it 'reports a disabled account when the email is sent via request header' do
-      FactoryBot.create(:user, email: 'disabled@bar.com', authentication_token: 'disabledtoken', is_disabled: true)
-
-      put '/api/v1/locations/' + @location.id.to_s + '/confirm.json', headers: { 'X-User-Email' => 'disabled@bar.com', 'X-User-Token' => 'wrong' }
-
-      expect(response).to have_http_status(:forbidden)
-      expect(JSON.parse(response.body)['error']).to eq(Api::V1::LocationsController::ACCOUNT_DISABLED_MSG)
     end
   end
 

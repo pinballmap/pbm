@@ -95,13 +95,13 @@ describe Location do
       expect { @l.save! }.to_not raise_error
     end
     it 'should not update location with websites that do not start with http:// or https://' do
-      @l.update(website: 'lol.com')
+      @l.update(website: 'lol.test')
       expect { @l.save! }.to raise_error
 
-      @l.update(website: 'http://lol.com')
+      @l.update(website: 'http://lol.test')
       expect { @l.save! }.to_not raise_error
 
-      @l.update(website: 'https://lol.com')
+      @l.update(website: 'https://lol.test')
       expect { @l.save! }.to_not raise_error
     end
   end
@@ -277,7 +277,7 @@ describe Location do
   describe '#update_metadata' do
     it 'works with a regionless location' do
       regionless_location = FactoryBot.create(:location, name: 'REGIONLESS', region: nil)
-      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.test')
       regionless_location.update_metadata(u, description: 'foo')
 
       user_submission = UserSubmission.third
@@ -289,7 +289,7 @@ describe Location do
     end
 
     it 'creates a user submission for updated metadata' do
-      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.test')
       @l.update_metadata(u, description: 'foo')
 
       user_submission = UserSubmission.third
@@ -309,7 +309,7 @@ describe Location do
     end
 
     it 'creates a user submission for updated metadata -- all fields' do
-      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.test')
       FactoryBot.create(:operator, id: 1, name: 'operator')
       FactoryBot.create(:location_type, id: 1, name: 'bar')
 
@@ -328,14 +328,14 @@ Changed location type to bar to quarterworld
     end
 
     it 'truncates location description to 549 characters' do
-      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.test')
       @l.update_metadata(u, description: '1' * 600)
 
       expect(@l.description.size).to eq(549)
     end
 
     it 'updates all_ages and payment_type and records them in the submission' do
-      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.test')
       @l.update_metadata(u, all_ages: 'Yes', payment_type: 'Free Play')
 
       expect(@l.reload.all_ages).to eq('Yes')
@@ -349,7 +349,7 @@ Changed payment type to Free Play to quarterworld
     end
 
     it 'rejects an invalid all_ages or payment_type value' do
-      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.com')
+      u = FactoryBot.create(:user, username: 'ssw', email: 'yeah@ok.test')
       values, message_type = @l.update_metadata(u, all_ages: 'Maybe')
 
       expect(message_type).to eq('errors')

@@ -9,8 +9,8 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
   describe 'machine descriptions cached', type: :feature, js: true do
     before(:each) do
       @lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine))
-      @user = FactoryBot.create(:user, id: 11, username: 'ssw', email: 'foo@bar.com')
-      @user2 = FactoryBot.create(:user, id: 12, username: 'barnne', email: 'bar@example.com')
+      @user = FactoryBot.create(:user, id: 11, username: 'ssw', email: 'foo@bar.test')
+      @user2 = FactoryBot.create(:user, id: 12, username: 'barnne', email: 'bar@pinballmap.test')
     end
 
     it 'it should show the correctly cached page' do
