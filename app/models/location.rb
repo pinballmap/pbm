@@ -9,8 +9,8 @@ class Location < ApplicationRecord
 
   validates_presence_of :name, :street, :city, :country
   validates :phone, phone: { possible: true, allow_blank: true, message: "Phone format not valid." }
-  validates :website, format: { with: %r{\Ahttp(s?)://}, message: "must begin with http:// or https://" }, if: :website?
-  validates :name, :street, :city, format: { with: /\A\S.*/, message: "Can't start with a blank", multiline: true }
+  validates :website, format: { with: %r{\Ahttps?://.*\z}m, message: "must begin with http:// or https://" }, if: :website?
+  validates :name, :street, :city, format: { with: /\A\S.*\z/m, message: "Can't start with a blank" }
   validates :lat, :lon, presence: { message: "Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon" }
   validates :all_ages, inclusion: { in: ALL_AGES_VALUES }, allow_blank: true
   validates :payment_type, inclusion: { in: PAYMENT_TYPE_VALUES }, allow_blank: true

@@ -5,8 +5,8 @@ class SuggestedLocation < ApplicationRecord
   validates_presence_of :name, :street, :machines, on: :create
   validates_presence_of :name, :street, :city, on: :update
 
-  validates :website, format: { with: %r{\Ahttp(s?)://}, message: "must begin with http:// or https://" }, if: :website?, on: :update
-  validates :name, :street, :city, format: { with: /\A\S.*/, message: "Can't start with a blank", multiline: true }, on: :update
+  validates :website, format: { with: %r{\Ahttps?://.*\z}m, message: "must begin with http:// or https://" }, if: :website?, on: :update
+  validates :name, :street, :city, format: { with: /\A\S.*\z/m, message: "Can't start with a blank" }, on: :update
   validates :lat, :lon, presence: { message: "Latitude/Longitude failed to generate. Please double check address and try again, or manually enter the lat/lon" }, on: :update
   validates :all_ages, inclusion: { in: Location::ALL_AGES_VALUES }, allow_blank: true
   validates :payment_type, inclusion: { in: Location::PAYMENT_TYPE_VALUES }, allow_blank: true
