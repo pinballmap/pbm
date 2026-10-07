@@ -90,7 +90,7 @@ function findClosestLocations() {
     center: [center_lon, center_lat],
     zoom: 8
   });
-  getMapBounds();
+  getMapBounds(typeof currentMapFilterParams === 'function' ? currentMapFilterParams() : {});
 }
 
 function homeMapBounds() {

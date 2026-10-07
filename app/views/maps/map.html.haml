@@ -599,8 +599,7 @@
     return false;
   });
 
-  document.getElementById("refresh_button").addEventListener("click", function(event) {
-    nearbySearchActive = false;
+  function currentMapFilterParams() {
     var by_at_least_n_machines = $('#by_at_least_n_machines').val();
     var by_type_id = $('#by_type_id').val();
     var manufacturer = $('#by_manufacturer').val();
@@ -610,7 +609,6 @@
     var by_machine_type = emModeActive ? ['em', 'me'] : undefined;
     var by_all_ages = $('#by_all_ages').val() || undefined;
     var by_payment_type = $('#by_payment_type').val() || undefined;
-    $('#intro_container').css('display','none');
 
     var machineIds = machineSelectIds();
     var by_machine_id, by_machine_single_id, by_machine_id_ic, by_machine_single_id_ic;
@@ -627,9 +625,16 @@
       by_machine_single_id = machineIds;
     }
 
+    return { by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_operator_id, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active: icActiveMode ? '1' : undefined, by_machine_year_gte, by_machine_year_lte, user_faved: savedModeActive ? currentUserId : undefined, by_all_ages, by_payment_type };
+  }
+
+  document.getElementById("refresh_button").addEventListener("click", function(event) {
+    nearbySearchActive = false;
+    $('#intro_container').css('display','none');
+
     var mapActivityVisible = $('#map_activity_container').html().trim() !== '';
 
-    getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_operator_id, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active: icActiveMode ? '1' : undefined, by_machine_year_gte, by_machine_year_lte, user_faved: savedModeActive ? currentUserId : undefined, by_all_ages, by_payment_type });
+    getMapBounds(currentMapFilterParams());
     clearAddressFields();
 
     if (mapActivityVisible) {
