@@ -115,42 +115,29 @@ Rails.application.routes.draw do
   post '/activity' => 'pages#recent_activity'
   get '/stats' => 'pages#stats'
   get '/addscore' => 'machine_score_xrefs#new', as: 'add_score'
-
-  scope ':region', constraints: lambda { |request| Region.where('lower(name) = ?', request.params[:region].downcase).any? } do
-    get 'app' => redirect('/app')
-    get 'app/support' => redirect('/faq')
-    get 'privacy' => redirect('/privacy')
-    get 'faq' => redirect('/faq')
-    get 'store' => redirect('/store')
-    get 'donate' => redirect('/donate')
-    get 'stats' => redirect('/stats')
-    get 'flier' => redirect('/flier')
-
-    resources :events, only: [:index, :show]
-    resources :regions, only: [:index, :show]
-    resources :location_machine_xrefs, only: [:index], format: 'rss', :as => :lmx_rss
-    get '/location_machine_xrefs/machine_id(/:machine_id)', to: 'location_machine_xrefs#index', format: 'rss', :as => :single_lmx_rss_region
-    resources :machine_score_xrefs, only: [:index], format: 'rss', :as => :msx_rss
-
-    resources :pages
-
-    get ':region' + '.rss' => 'location_machine_xrefs#index', format: 'xml'
-    get ':region' + '_scores.rss' => 'machine_score_xrefs#index', format: 'xml'
-
-    get '/' => 'maps#region', as: 'region_homepage'
-    get '/about' => 'pages#about'
-    get '/contact' => 'pages#contact'
-    post '/contact_sent' => 'pages#contact_sent'
-    get '/links' => 'pages#links'
-    get '/high_rollers' => 'pages#high_rollers'
-    get '/suggest' => 'pages#suggest_new_location'
-    post '/submitted_new_location' => 'pages#submitted_new_location'
-    get '/activity' => 'pages#recent_activity', as: 'region_activity'
-    post '/activity' => 'pages#recent_activity', as: 'region_post_activity'
-    get '/photos' => 'pages#photos', as: 'region_photos'
-
-    get '*page', to: 'locations#unknown_route'
-  end
+  get 'user_submissions/list_within_range' => 'user_submissions#list_within_range'
+  get 'inspire_profile' => 'pages#inspire_profile'
+  get 'pages/home'
+  get '/search/autocomplete', to: 'search#autocomplete'
+  get 'map' => 'maps#map'
+  get 'operators', to: redirect('/map')
+  get 'operators_autocomplete' => 'maps#operators_autocomplete'
+  get 'saved', to: redirect('/map')
+  get 'map_location_data' => 'maps#map_location_data'
+  post 'map_location_data' => 'maps#map_location_data'
+  post 'region_location_load' => 'maps#region_location_load'
+  post 'map_location_load' => 'maps#map_location_load'
+  post 'get_bounds_load' => 'maps#get_bounds_load'
+  post 'nearby_locations_load' => 'maps#nearby_locations_load'
+  post 'get_bounds', to: 'maps#get_bounds'
+  post 'region_init_load', to: 'maps#region_init_load'
+  get  'contact' => 'pages#contact', as: 'global_contact'
+  post 'contact_sent' => 'pages#contact_sent', as: 'global_contact_sent'
+  get 'suggest' => 'pages#suggest_new_location', as: 'map_location_suggest'
+  get 'check_place_id' => 'pages#check_place_id', as: 'map_check_place_id'
+  post 'submitted_new_location' => 'pages#submitted_new_location', as: 'map_submitted_new_location'
+  get 'flier' => 'pages#flier', as: 'map_flier'
+  get 'photos' => 'pages#photos'
 
   resources :locations, only: [:index, :show] do
     collection do
@@ -171,6 +158,7 @@ Rails.application.routes.draw do
       get :random_machine
     end
   end
+  post 'locations', to: 'locations#index'
 
   resources :machines, only: [:index, :show] do
     member do
@@ -242,31 +230,41 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'user_submissions/list_within_range' => 'user_submissions#list_within_range'
+  scope ':region', constraints: lambda { |request| Region.where('lower(name) = ?', request.params[:region].downcase).any? } do
+    get 'app' => redirect('/app')
+    get 'app/support' => redirect('/faq')
+    get 'privacy' => redirect('/privacy')
+    get 'faq' => redirect('/faq')
+    get 'store' => redirect('/store')
+    get 'donate' => redirect('/donate')
+    get 'stats' => redirect('/stats')
+    get 'flier' => redirect('/flier')
 
-  get 'inspire_profile' => 'pages#inspire_profile'
-  get 'pages/home'
-  get '/search/autocomplete', to: 'search#autocomplete'
-  get 'map' => 'maps#map'
-  get 'operators', to: redirect('/map')
-  get 'operators_autocomplete' => 'maps#operators_autocomplete'
-  get 'saved', to: redirect('/map')
-  get 'map_location_data' => 'maps#map_location_data'
-  post 'map_location_data' => 'maps#map_location_data'
-  post 'region_location_load' => 'maps#region_location_load'
-  post 'map_location_load' => 'maps#map_location_load'
-  post 'get_bounds_load' => 'maps#get_bounds_load'
-  post 'nearby_locations_load' => 'maps#nearby_locations_load'
-  post 'get_bounds', to: 'maps#get_bounds'
-  post 'locations', to: 'locations#index'
-  post 'region_init_load', to: 'maps#region_init_load'
-  get  'contact' => 'pages#contact', as: 'global_contact'
-  post 'contact_sent' => 'pages#contact_sent', as: 'global_contact_sent'
-  get 'suggest' => 'pages#suggest_new_location', as: 'map_location_suggest'
-  get 'check_place_id' => 'pages#check_place_id', as: 'map_check_place_id'
-  post 'submitted_new_location' => 'pages#submitted_new_location', as: 'map_submitted_new_location'
-  get 'flier' => 'pages#flier', as: 'map_flier'
-  get 'photos' => 'pages#photos'
+    resources :events, only: [:index, :show]
+    resources :regions, only: [:index, :show]
+    resources :location_machine_xrefs, only: [:index], format: 'rss', :as => :lmx_rss
+    get '/location_machine_xrefs/machine_id(/:machine_id)', to: 'location_machine_xrefs#index', format: 'rss', :as => :single_lmx_rss_region
+    resources :machine_score_xrefs, only: [:index], format: 'rss', :as => :msx_rss
+
+    resources :pages
+
+    get ':region' + '.rss' => 'location_machine_xrefs#index', format: 'xml'
+    get ':region' + '_scores.rss' => 'machine_score_xrefs#index', format: 'xml'
+
+    get '/' => 'maps#region', as: 'region_homepage'
+    get '/about' => 'pages#about'
+    get '/contact' => 'pages#contact'
+    post '/contact_sent' => 'pages#contact_sent'
+    get '/links' => 'pages#links'
+    get '/high_rollers' => 'pages#high_rollers'
+    get '/suggest' => 'pages#suggest_new_location'
+    post '/submitted_new_location' => 'pages#submitted_new_location'
+    get '/activity' => 'pages#recent_activity', as: 'region_activity'
+    post '/activity' => 'pages#recent_activity', as: 'region_post_activity'
+    get '/photos' => 'pages#photos', as: 'region_photos'
+
+    get '*page', to: 'locations#unknown_route'
+  end
 
   # legacy names for regions
   get '/milwaukee' => redirect('/wisconsin')
