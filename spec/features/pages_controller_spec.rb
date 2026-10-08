@@ -479,4 +479,45 @@ describe PagesController do
       expect(page).to_not have_content("hello there")
     end
   end
+
+  describe 'Photos', type: :feature do
+    it 'redirects non-admins away' do
+      login(FactoryBot.create(:user))
+
+      visit '/photos'
+
+      expect(page).to have_current_path(root_path)
+    end
+
+    it 'lists photos with location links for admins' do
+      login(FactoryBot.create(:user, region: @region))
+      lpx = FactoryBot.create(:location_picture_xref, location: @location)
+
+      visit '/photos'
+
+      expect(page).to have_css(".location_picture_xref_#{lpx.id} img")
+      expect(page).to have_link("Clark's Depot", href: "/map?by_location_id=#{@location.id}")
+    end
+
+    it 'opens photos in the lightbox', js: true do
+      login(FactoryBot.create(:user, region: @region))
+      FactoryBot.create(:location_picture_xref, location: @location)
+
+      visit '/photos'
+      find('a.photo_review_thumb').click
+
+      expect(page).to have_css('#lightbox', visible: true)
+      expect(page).to have_button('Remove this photo')
+    end
+
+    it 'paginates at 10 photos per page' do
+      login(FactoryBot.create(:user, region: @region))
+      11.times { FactoryBot.create(:location_picture_xref, location: @location) }
+
+      visit '/photos'
+
+      expect(page).to have_css('.photo_review_item', count: 10)
+      expect(page).to have_css('#photos_pagination')
+    end
+  end
 end

@@ -9,6 +9,13 @@ describe PagesController, type: :controller do
     FactoryBot.create(:user, email: 'super_admin@bar.test', region: nil, is_super_admin: 1)
   end
 
+  describe '#photos' do
+    it 'requires login' do
+      get 'photos'
+      expect(response).to redirect_to new_user_session_path
+    end
+  end
+
   describe '#links' do
     it 'should redirect you to the about page' do
       get 'links', params: { region: 'portland' }

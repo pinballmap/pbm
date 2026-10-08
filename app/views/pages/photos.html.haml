@@ -1,0 +1,18 @@
+#page_body
+  .column_container
+    .column.w_560.bg_vlightpurple
+      %p.red.bold.p1 Uploaded Photos
+      %p.center
+        Showing #{@pagy.from}-#{@pagy.to} of #{number_with_delimiter(@pagy.count)} photos
+      .photo_review_list
+        - @photos.includes([:user]).each do |lpx|
+          .photo_review_item{:class => "location_picture_xref_#{lpx.id}"}
+            - delete_title = "<button class='lb-delete-btn' data-lpx-id='#{lpx.id}'>Remove this photo</button>"
+            = link_to image_tag(lpx.photo.variant(resize_to_limit: [240,240])), lpx.photo.variant(resize_to_limit: [1200,1200]), :class => "photo_review_thumb", :"data-lightbox" => "photo_review", :"data-title" => delete_title
+            - if lpx.location
+              %p{:style => "margin-top: 0;margin-bottom: 0;"}= link_to lpx.location.name, "/map?by_location_id=#{lpx.location_id}"
+            - if lpx.user
+              %p{:style => "margin-top: 0"}= link_to lpx.user.name, "/admin/user/#{lpx.user.id}"
+      - if @pagy.pages > 1
+        #photos_pagination{:style => 'margin: 20px 10px; padding-bottom: 20px;'}
+          != @pagy.series_nav()

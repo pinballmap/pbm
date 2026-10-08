@@ -15,7 +15,7 @@ class PagesController < ApplicationController
     "contact_us"        => "Contact Us"
   }.freeze
   respond_to :html, only: %i[set_activities]
-  before_action :authenticate_user!, only: %i[submitted_new_location]
+  before_action :authenticate_user!, only: %i[submitted_new_location photos]
   rate_limit to: 5, within: 10.minutes, only: :contact_sent, name: "pages_contact_sent"
   rate_limit to: 30, within: 1.minutes, only: :recent_activity, name: "pages_recent_activity"
 
@@ -247,6 +247,12 @@ limit 25")
   end
 
   def flier; end
+
+  def photos
+    return redirect_to root_path unless current_user.admin?
+
+    @pagy, @photos = pagy(LocationPictureXref.joins(:photo_attachment).includes(:location, photo_attachment: :blob).order(id: :desc), limit: 10)
+  end
 
   def home
     @locations_count_total = Location.all.count
