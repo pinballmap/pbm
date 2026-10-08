@@ -147,6 +147,7 @@ Rails.application.routes.draw do
     post '/submitted_new_location' => 'pages#submitted_new_location'
     get '/activity' => 'pages#recent_activity', as: 'region_activity'
     post '/activity' => 'pages#recent_activity', as: 'region_post_activity'
+    get '/photos' => 'pages#photos', as: 'region_photos'
 
     get '*page', to: 'locations#unknown_route'
   end

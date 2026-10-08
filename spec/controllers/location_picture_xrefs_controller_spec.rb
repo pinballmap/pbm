@@ -19,6 +19,14 @@ describe LocationPictureXrefsController, type: :controller do
       expect(user_submission.user_id).to eq(@user.id)
       expect(user_submission.submission_type).to eq(UserSubmission::NEW_PICTURE_TYPE)
     end
+
+    it 'saves the uploading user on the picture' do
+      login(@user)
+
+      post 'create', format: :js, params: { location_picture_xref: { location_id: @location.id, user_id: 999 } }
+
+      expect(LocationPictureXref.last.user_id).to eq(@user.id)
+    end
   end
 
   describe '#destroy' do

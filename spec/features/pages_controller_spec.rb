@@ -510,6 +510,44 @@ describe PagesController do
       expect(page).to have_button('Remove this photo')
     end
 
+    it 'shows uploaders without an admin link to regular admins' do
+      uploader = FactoryBot.create(:user, username: 'uploader')
+      FactoryBot.create(:location_picture_xref, location: @location, user: uploader)
+
+      login(FactoryBot.create(:user, region: @region))
+      visit '/photos'
+
+      expect(page).to have_content('uploader')
+      expect(page).to_not have_link('uploader')
+    end
+
+    it 'links uploaders to the admin user page for super admins' do
+      uploader = FactoryBot.create(:user, username: 'uploader')
+      FactoryBot.create(:location_picture_xref, location: @location, user: uploader)
+
+      login(FactoryBot.create(:user, region: @region, is_super_admin: true))
+      visit '/photos'
+
+      expect(page).to have_link('uploader', href: "/admin/user/#{uploader.id}")
+    end
+
+    it 'only shows photos from the region on the regional page' do
+      other_location = FactoryBot.create(:location, region: FactoryBot.create(:region, name: 'chicago'))
+      portland_lpx = FactoryBot.create(:location_picture_xref, location: @location)
+      chicago_lpx = FactoryBot.create(:location_picture_xref, location: other_location)
+
+      login(FactoryBot.create(:user, region: FactoryBot.create(:region, name: 'seattle')))
+      visit '/portland/photos'
+
+      expect(page).to have_css(".location_picture_xref_#{portland_lpx.id}")
+      expect(page).to_not have_css(".location_picture_xref_#{chicago_lpx.id}")
+
+      visit '/photos'
+
+      expect(page).to have_css(".location_picture_xref_#{portland_lpx.id}")
+      expect(page).to have_css(".location_picture_xref_#{chicago_lpx.id}")
+    end
+
     it 'paginates at 10 photos per page' do
       login(FactoryBot.create(:user, region: @region))
       11.times { FactoryBot.create(:location_picture_xref, location: @location) }

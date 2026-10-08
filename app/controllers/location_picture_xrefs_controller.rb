@@ -9,13 +9,13 @@ class LocationPictureXrefsController < ApplicationController
 
   def create
     @location_picture_xref = LocationPictureXref.new(location_picture_xref_params)
+    @location_picture_xref.user = current_user
 
     respond_to do |format|
       format.js if @location_picture_xref.save
     end
 
-    @location_picture_xref.user = current_user
-    @location_picture_xref.create_user_submission
+    @location_picture_xref.create_user_submission if @location_picture_xref.persisted?
   end
 
   def destroy
@@ -30,6 +30,6 @@ class LocationPictureXrefsController < ApplicationController
   private
 
   def location_picture_xref_params
-    params.require(:location_picture_xref).permit(:location_id, :description, :user_id, :photo)
+    params.require(:location_picture_xref).permit(:location_id, :description, :photo)
   end
 end

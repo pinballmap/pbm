@@ -251,7 +251,10 @@ limit 25")
   def photos
     return redirect_to root_path unless current_user.admin?
 
-    @pagy, @photos = pagy(LocationPictureXref.joins(:photo_attachment).includes(:location, photo_attachment: :blob).order(id: :desc), limit: 10)
+    photos = LocationPictureXref.joins(:photo_attachment).includes(:location, photo_attachment: :blob).order(id: :desc)
+    photos = photos.joins(:location).where(locations: { region_id: @region.id }) if @region
+
+    @pagy, @photos = pagy(photos, limit: 10)
   end
 
   def home
