@@ -6,7 +6,7 @@ module FeatureHelpers
     user
   end
 
-  def logout(user)
-    logout(user)
+  def logout(_user = nil)
+    super(:user)
   end
 end
