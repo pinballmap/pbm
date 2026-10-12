@@ -265,7 +265,9 @@ class Region < ApplicationRecord
 
       location_metadata_count: UserSubmission.where(deleted_at: nil).where("created_at is not null and created_at > ? and created_at < ? and submission_type = ?", start_of_week, end_of_week, UserSubmission::LOCATION_METADATA_TYPE).count,
 
-      user_submissions_count: UserSubmission.where(deleted_at: nil).where("created_at is not null and created_at > ? and created_at < ?", start_of_week, end_of_week).count
+      user_submissions_count: UserSubmission.where(deleted_at: nil).where("created_at is not null and created_at > ? and created_at < ?", start_of_week, end_of_week).count,
+
+      new_users_count: User.where("created_at is not null and created_at > ? and created_at < ?", start_of_week, end_of_week).count
     }
   end
 

@@ -301,6 +301,9 @@ describe Region do
       FactoryBot.create(:location, region: nil, name: 'Empty Location', city: 'Troy', state: 'OR')
       FactoryBot.create(:location, region: nil, name: 'Another Empty Location', city: 'Rochester', state: 'OR', created_at: Date.today - 2.week)
 
+      FactoryBot.create(:user, username: 'new_user_01', email: 'new_user_01@email.test')
+      FactoryBot.create(:user, username: 'new_user_02', email: 'new_user_02@email.test')
+
       FactoryBot.create(:user_submission, region: nil, submission_type: 'suggest_location')
       FactoryBot.create(:user_submission, region_id: @region.id, submission_type: 'suggest_location')
 
@@ -346,6 +349,7 @@ describe Region do
       expect(Region.generate_weekly_global_email_body[:machine_comments_deleted_count]).to eq(1)
       expect(Region.generate_weekly_global_email_body[:location_metadata_count]).to eq(2)
       expect(Region.generate_weekly_global_email_body[:user_submissions_count]).to eq(19)
+      expect(Region.generate_weekly_global_email_body[:new_users_count]).to eq(2)
     end
   end
 

@@ -17,6 +17,7 @@ class AdminMailer < ApplicationMailer
     @machine_comments_deleted_count = params[:machine_comments_deleted_count]
     @location_metadata_count = params[:location_metadata_count]
     @user_submissions_count = params[:user_submissions_count]
+    @new_users_count = params[:new_users_count]
 
     mail(to: params[:user], subject: "Pinball Map - Weekly admin global digest - #{Date.today.strftime('%m/%d/%Y')}")
   end
