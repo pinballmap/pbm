@@ -28,7 +28,8 @@ unless Rails.env.test?
       req.path.include?('wp-includes') ||
       req.path.include?('poohbear') ||
       req.path.include?('sleep(') ||
-      req.path.include?('.php')
+      req.path.include?('.php') ||
+      req.path.include?('.env')
     end
   end
 
