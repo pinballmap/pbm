@@ -14,6 +14,11 @@ Rails.application.routes.draw do
       resources :operators, only: [:index, :show]
       resources :statuses, only: [:index, :show]
 
+      # Paths end in "/json" (not ".json") because react-native-google-places-autocomplete
+      # appends Google's path to its requestUrl.
+      get "places/place/autocomplete/json", to: "places#autocomplete", defaults: { format: :json }
+      get "places/place/details/json", to: "places#details", defaults: { format: :json }
+
       resources :machine_score_xrefs, only: [:destroy, :update, :create, :show] do
         collection do
           get :highest
