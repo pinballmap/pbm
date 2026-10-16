@@ -125,17 +125,20 @@
 
   #map_buttons
     #closest_button.fixed.hide_button.toggle_btn_reg{:onclick => "findClosestLocations()"}
+      =image_tag('icons/crosshairs-gps.svg', :alt => 'location icon')
       Nearby locations
     #map_activity_button.fixed.hide_button.toggle_btn_reg
-      Activity feed
+      %svg{xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: "currentColor", "aria-hidden": "true"}
+        %path{d: "M20 5L20 19L4 19L4 5H20M20 3H4C2.89 3 2 3.89 2 5V19C2 20.11 2.89 21 4 21H20C21.11 21 22 20.11 22 19V5C22 3.89 21.11 3 20 3M18 15H6V17H18V15M10 7H6V13H10V7M12 9H18V7H12V9M18 11H12V13H18V11Z"}
+      Map activity
   #refresh_button.fixed.toggle_btn_reg Refresh map area
   - unless mobile_device?
     #key_container.fixed.hide_button.toggle_btn_reg.flex_center
-      =image_tag( 'marker-z-1-noShadow.png', :alt => '1 machine example',:style => 'height: 20px;padding-right: 5px;')
+      =image_tag('marker-z-1-noShadow.png', :alt => '1 machine example',:style => 'height: 20px;padding-right: 5px;')
       1 machine
-      =image_tag( 'marker-z-2-noShadow.png', :alt => '2 machines example',:style => 'height: 20px;padding: 0 5px 0 10px;')
+      =image_tag('marker-z-2-noShadow.png', :alt => '2 machines example',:style => 'height: 20px;padding: 0 5px 0 10px;')
       2-9
-      =image_tag( 'marker-z-10-noShadow.png', :alt => '10 machines example',:style => 'height: 20px;padding: 0 5px 0 10px;')
+      =image_tag('marker-z-10-noShadow.png', :alt => '10 machines example',:style => 'height: 20px;padding: 0 5px 0 10px;')
       10+
 
   %button#top_button{onclick: "topFunction()", title: "Go to top"} Top

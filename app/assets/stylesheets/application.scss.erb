@@ -30,6 +30,7 @@
   --pink_button_bg: #fee7f5;
   --metadata_card_bg: #ededfc;
   --last_updated_bg: #efe9f0;
+  --life_list_icon: #917c6f;
 }
 .matchplay_dark {
   display: none;
@@ -76,6 +77,7 @@
     --pink_button_bg: #47475f;
     --metadata_card_bg: #303041;
     --last_updated_bg: #413244;
+    --life_list_icon: #000000;
   }
 }
 
@@ -118,6 +120,7 @@ html[data-theme="light"] {
   --pink_button_bg: #fee7f5;
   --metadata_card_bg: #ededfc;
   --last_updated_bg: #efe9f0;
+  --life_list_icon: #917c6f;
 }
 
 html[data-theme="dark"] {
@@ -158,6 +161,7 @@ html[data-theme="dark"] {
   --pink_button_bg: #47475f;
   --metadata_card_bg: #303041;
   --last_updated_bg: #413244;
+  --life_list_icon: #000000;
 }
 
 /* nunito-regular - latin */
@@ -1715,7 +1719,7 @@ input.ic_eligible_hide {
 #map_activity_button,
 #closest_button,
 .search_modal button {
-  width: 110px;
+  width: 120px;
   background: var(--lightpink);
   text-align: center;
   padding: 5px;
@@ -1729,6 +1733,14 @@ input.ic_eligible_hide {
   top: 65px;
   color: #440152;
   background-color: #d5e5ff;
+  display: flex;
+  align-items: center;
+}
+
+#closest_button img, #map_activity_button svg {
+  width: 20px;
+  height: 20px;
+  margin: 5px;
 }
 
 .search_modal button {
@@ -1742,6 +1754,8 @@ input.ic_eligible_hide {
   background: var(--red);
   color: var(--white);
   top: 125px;
+  display: flex;
+  align-items: center;
 }
 
 #refresh_button {
@@ -2608,9 +2622,14 @@ br.clear {
   font-family: $Nunito_700Bold;
 }
 
-.location_meta_item img {
+.location_meta_item img,
+.location_meta_item svg {
   width: 20px;
   height: 20px;
+}
+
+.life_list_icon {
+  fill: var(--life_list_icon);
 }
 
 .location_action_row {
