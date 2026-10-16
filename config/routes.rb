@@ -122,6 +122,7 @@ Rails.application.routes.draw do
   get '/stats' => 'pages#stats'
   get '/addscore' => 'machine_score_xrefs#new', as: 'add_score'
   get 'user_submissions/list_within_range' => 'user_submissions#list_within_range'
+  get 'events/list_within_range' => 'events#list_within_range'
   get 'inspire_profile' => 'pages#inspire_profile'
   get 'pages/home'
   get '/search/autocomplete', to: 'search#autocomplete'

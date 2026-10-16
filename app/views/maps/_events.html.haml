@@ -1,0 +1,23 @@
+%div#map_events.mt_20.mb_20.pt_10
+  %div.bold.flex_center{:style => 'margin: 12px;'}
+    %span.sorted_submissions
+      - if pagy.count == 0
+        No upcoming events within the map view
+      - else
+        Showing #{pagy.from}-#{pagy.to} of #{pagy.count} upcoming events within the map view
+    %span.close_activity.pointer{:style => 'margin-left: 10px;', :onclick => "closeMapEvents();"}
+      X
+
+  %p.upcoming_events_source
+    Events mostly come from the
+    = link_to 'IFPA calendar', 'https://www.ifpapinball.com/calendar/', :target => '_blank', :rel => 'noopener'
+
+  - events.each do |e|
+    = render 'shared/event_item', e: e, show_location_link: true
+
+  - if pagy.pages > 1
+    #next_link{:style => 'margin: 20px 10px; padding-bottom: 20px;'}
+      != pagy.series_nav()
+
+  %p.upcoming_events_source.upcoming_events_missing
+    Some IFPA events may be missing (due to sloppy data entry from tournament directors)

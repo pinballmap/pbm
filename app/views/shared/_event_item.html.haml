@@ -1,0 +1,25 @@
+%div.upcoming_event
+  %div.upcoming_event_name= e.name
+  %div.upcoming_event_date= event_date_range(e)
+  - if show_location_link
+    %div.upcoming_event_location
+      - if e.location
+        = link_to e.location.name, "/map?by_location_id=#{e.location_id}"
+      - else
+        - if e.external_location_name.present?
+          %div= e.external_location_name
+        - if e.address.present?
+          %div.upcoming_event_address= e.address
+  %div.upcoming_event_links
+    - if e.ifpa_tournament_id
+      = link_to 'IFPA calendar page', "https://www.ifpapinball.com/tournaments/view.php?t=#{e.ifpa_tournament_id}", :target => '_blank', :rel => 'noopener'
+    - if e.external_link.to_s.match?(%r{\Ahttps?://}i)
+      = link_to 'Event website', e.external_link, :target => '_blank', :rel => 'noopener nofollow'
+  - if e.event_type.present?
+    %div.upcoming_event_type
+      %span.bold Tournament or league?
+      %em= e.event_type
+  - if e.long_desc.present?
+    %details.upcoming_event_details
+      %summary Details
+      = simple_format(e.long_desc)

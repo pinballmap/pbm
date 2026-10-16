@@ -1,6 +1,6 @@
 - if (@locations)
   :javascript
-    $("#min_lookup_wrapper,#map_activity_button, #closest_button, #key_container").removeClass("hide_button");
+    $("#min_lookup_wrapper,#map_activity_button, #map_events_button, #closest_button, #key_container").removeClass("hide_button");
 
     var locations_geojson = JSON.parse('#{@locations_geojson}');
     var _favedSet = new Set(favedLocationIds);

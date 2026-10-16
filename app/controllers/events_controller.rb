@@ -20,4 +20,16 @@ class EventsController < ApplicationController
       format.rss { respond_with @events }
     end
   end
+
+  def list_within_range
+    unless params.dig(:boundsData, :sw, :lat)
+      return render plain: "boundsData param (with sw/ne lat/lng) is required", status: :bad_request
+    end
+
+    bounds = [ params[:boundsData][:sw][:lat], params[:boundsData][:sw][:lng],
+               params[:boundsData][:ne][:lat], params[:boundsData][:ne][:lng] ]
+
+    @pagy, @events = pagy(Event.upcoming.within_bounding_box(bounds).includes(:location))
+    render partial: "maps/events", locals: { pagy: @pagy, events: @events }
+  end
 end

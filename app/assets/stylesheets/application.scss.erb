@@ -1620,7 +1620,10 @@ span.or {
   -webkit-transform: translateZ(0);
 }
 
-.hide_button,
+.hide_button {
+  display: none;
+}
+
 #single_hide {
   display: none;
   flex-direction: column;
@@ -1717,6 +1720,7 @@ input.ic_eligible_hide {
 
 #refresh_button,
 #map_activity_button,
+#map_events_button,
 #closest_button,
 .search_modal button {
   width: 120px;
@@ -1737,7 +1741,7 @@ input.ic_eligible_hide {
   align-items: center;
 }
 
-#closest_button img, #map_activity_button svg {
+#closest_button img, #map_activity_button svg, #map_events_button svg {
   width: 20px;
   height: 20px;
   margin: 5px;
@@ -1758,6 +1762,14 @@ input.ic_eligible_hide {
   align-items: center;
 }
 
+#map_events_button {
+  background: #fde7c4;
+  color: #440152;
+  top: 185px;
+  display: flex;
+  align-items: center;
+}
+
 #refresh_button {
   display: none;
   top: 50%;
@@ -1768,6 +1780,7 @@ input.ic_eligible_hide {
 
 #refresh_button:hover,
 #map_activity_button:hover,
+#map_events_button:hover,
 #closest_button:hover{
   cursor: pointer;
 }
@@ -1782,6 +1795,10 @@ input.ic_eligible_hide {
 
 #map_activity_button:hover {
   background-color: #dfa9e8;
+}
+
+#map_events_button:hover {
+  background-color: #f9cf8e;
 }
 
 #key_container {
@@ -2455,7 +2472,8 @@ div.machine_condition_meta {
 .add_machine_location,
 .recent_location_activity_location,
 .upcoming_events_location,
-#map_activity {
+#map_activity,
+#map_events {
   background-color: var(--bg_vlightpurple);
   color: var(--black);
 }
@@ -2485,6 +2503,16 @@ div.machine_condition_meta {
   font-family: $Nunito_600SemiBold;
 }
 
+.upcoming_event_location {
+  font-family: $Nunito_600SemiBold;
+}
+
+.upcoming_event_address {
+  color: var(--darkgrey);
+  font-family: $Nunito_400Regular;
+  font-size: 14px;
+}
+
 .upcoming_event_links a {
   margin-right: 15px;
 }
@@ -2494,19 +2522,22 @@ div.machine_condition_meta {
   margin-top: 5px;
 }
 
-#locations .upcoming_event_details p {
+#locations .upcoming_event_details p,
+#map_events .upcoming_event_details p {
   margin: 5px 0;
   padding-bottom: 0;
   overflow-wrap: anywhere;
 }
 
-#locations .upcoming_events_source {
+#locations .upcoming_events_source,
+#map_events .upcoming_events_source {
   font-size: 14px;
   padding: 0px 15px;
   text-align: center;
 }
 
-#locations .upcoming_events_missing {
+#locations .upcoming_events_missing,
+#map_events .upcoming_events_missing {
   padding: 10px 15px;
 }
 

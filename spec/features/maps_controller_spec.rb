@@ -907,7 +907,31 @@ describe MapsController do
 
       sleep 1
 
-      expect(page).to have_content('Activity feed')
+      expect(page).to have_content('Map activity')
+    end
+
+    it 'events button lists upcoming events within the map view' do
+      @location = FactoryBot.create(:location, lat: '45.6008356', lon: '-122.760606', city: 'Portland', zip: '97203', name: "Clark's Depot")
+      FactoryBot.create(:event, location: @location, name: 'Monday Strikes', start_date: Date.new(2030, 1, 7), end_date: Date.new(2030, 1, 7))
+      FactoryBot.create(:event, name: 'Distant Event', start_date: Date.new(2030, 1, 7), end_date: Date.new(2030, 1, 7), ifpa_tournament_id: 1001, latitude: 12.0, longitude: -12.0)
+
+      visit '/map'
+
+      fill_in('address', with: '97203')
+
+      click_on 'location_search_button'
+
+      expect(page).to have_css('#map_events_button', visible: true)
+      # Headless Chrome's screen size matches the tablet media query, which puts the map buttons under the sidebar
+      page.execute_script("$('#map_events_button').click()")
+
+      expect(find('#map_events_container')).to have_content('Monday Strikes')
+      expect(find('#map_events_container')).to have_link("Clark's Depot", href: "/map?by_location_id=#{@location.id}")
+      expect(page).to_not have_content('Distant Event')
+
+      find('#map_events .close_activity').click
+
+      expect(page).to_not have_content('Monday Strikes')
     end
   end
 end
