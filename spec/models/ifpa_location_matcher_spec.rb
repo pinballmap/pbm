@@ -53,6 +53,14 @@ describe IfpaLocationMatcher do
     expect(result.methods).to eq([ :address ])
   end
 
+  it "takes the house number from raw_address when search results join its lines with two spaces" do
+    l = location(lat: 40.1580)
+    result = IfpaLocationMatcher.match(tournament("address1" => "Chandler Court", "raw_address" => "Grizzlybird Brewing  5901 Chandler Ct, Westerville, OH 43082, US"))
+
+    expect(result.location).to eq(l)
+    expect(result.methods).to eq([ :address ])
+  end
+
   it "ignores raw_address house numbers on a different street" do
     location(lat: 40.1580)
 

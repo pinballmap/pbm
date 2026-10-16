@@ -92,11 +92,12 @@ class IfpaLocationMatcher
   end
 
   # Some tournaments leave the house number out of address1 ("E Spring St") but have it in raw_address,
-  # which can also hold a venue name: "I Need a Miracle Tickets\r\n5541 E Spring St, Long Beach, CA 90808, US"
+  # which can also hold a venue name: "I Need a Miracle Tickets\r\n5541 E Spring St, Long Beach, CA 90808, US".
+  # Search results replace that line break with two spaces: "I Need a Miracle Tickets  5541 E Spring St, ..."
   def number_from_raw_address
     return if @street.blank?
 
-    @t["raw_address"].to_s.split(/[\r\n,]+/).each do |part|
+    @t["raw_address"].to_s.split(/[\r\n,]+|\s{2,}/).each do |part|
       number, street = self.class.split_street(part, trailing_numbers: @trailing_numbers)
       return number if number && self.class.similarity(street, @street) >= STREET_SIMILARITY
     end
