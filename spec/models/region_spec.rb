@@ -68,34 +68,6 @@ describe Region do
     end
   end
 
-  describe '#delete_all_regionless_events' do
-    it 'should remove all regionless events' do
-      FactoryBot.create(:event, region: @region, name: 'New Event 1', start_date: Date.today, end_date: Date.today)
-      FactoryBot.create(:event, region: nil, name: 'Event No Region', start_date: Date.today - 1.day)
-
-      Region.delete_all_regionless_events
-
-      expect(Event.all.count).to eq(1)
-      expect(Event.first.name).to eq('New Event 1')
-    end
-  end
-
-  describe '#delete_all_expired_events' do
-    it 'should remove all expired events' do
-      FactoryBot.create(:event, region: @region, name: 'Old Event 1', start_date: Date.today - 2.week, end_date: Date.today - 2.week)
-      FactoryBot.create(:event, region: @region, name: 'Old Event 2', start_date: Date.today - 2.week)
-      FactoryBot.create(:event, region: @region, name: 'New Event 1', start_date: Date.today, end_date: Date.today)
-      FactoryBot.create(:event, region: @region, name: 'New Event 3', start_date: nil, end_date: Date.today)
-      FactoryBot.create(:event, region: @region, name: 'New Event 2', start_date: Date.today)
-      FactoryBot.create(:event, region: @region, name: 'Event No Date')
-
-      @region.delete_all_expired_events
-
-      expect(Event.all.count).to eq(3)
-      expect(Event.first.name).to eq('New Event 1')
-    end
-  end
-
   describe '#generate_daily_digest_email_body' do
     it 'returns empty collections and zero counts when there is no activity that day' do
       FactoryBot.create(:user_submission, region_id: @region.id, submission_type: UserSubmission::NEW_CONDITION_TYPE, created_at: Time.now - 2.day)

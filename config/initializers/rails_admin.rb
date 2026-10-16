@@ -37,18 +37,24 @@ RailsAdmin.config do |config|
       field :external_location_name, :string
       field :start_date, :date
       field :end_date, :date
+      field :event_type, :string
     end
     show do
       field :name, :string
       field :location, :belongs_to_association
       field :external_location_name, :string
+      field :address, :string
       field :long_desc, :text
       field :external_link, :string
-      field :category_no, :integer
       field :start_date, :date
       field :end_date, :date
       field :updated_at, :datetime
       field :category, :string
+      field :event_type, :string
+      field :region, :belongs_to_association
+      field :ifpa_tournament_id, :integer
+      field :latitude, :decimal
+      field :longitude, :decimal
     end
     edit do
       field :name, :string
@@ -58,12 +64,20 @@ RailsAdmin.config do |config|
         end
       end
       field :external_location_name, :string
+      field :address, :string
       field :long_desc, :text
       field :external_link, :string
-      field :category_no, :integer
       field :start_date, :date
       field :end_date, :date
       field :category, :string
+      field :event_type, :enum do
+        enum { %w[Tournament League] }
+      end
+      field :region_id do
+        render do
+          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:object].region_id, :object_type => 'event'}
+        end
+      end
     end
     create do
       field :name, :string
@@ -73,12 +87,15 @@ RailsAdmin.config do |config|
         end
       end
       field :external_location_name, :string
+      field :address, :string
       field :long_desc, :text
       field :external_link, :string
-      field :category_no, :integer
       field :start_date, :date
       field :end_date, :date
       field :category, :string
+      field :event_type, :enum do
+        enum { %w[Tournament League] }
+      end
       field :region_id do
         render do
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.region_id, :object_type => 'event'}

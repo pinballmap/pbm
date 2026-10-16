@@ -43,6 +43,14 @@
     {
       "command": "rake update_lmx_counts",
       "schedule": "0 */12 * * *"
+    },
+    {
+      "command": "rake import_ifpa_tournaments",
+      "schedule": "0 11 * * *"
+    },
+    {
+      "command": "rake delete_expired_events",
+      "schedule": "30 11 * * *"
     }
   ]
 }

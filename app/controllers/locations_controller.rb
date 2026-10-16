@@ -2,7 +2,7 @@ class LocationsController < ApplicationController
   respond_to :html, only: %i[index]
   has_scope :by_location_name, :by_city_id, :by_at_least_n_machines, :by_at_least_n_machines_city, :by_at_least_n_machines_zone, :by_at_least_n_machines_type, :by_city_name, :by_city_no_state, :by_center_point_and_ne_boundary, :by_is_stern_army, :by_ic_active, :user_faved, :by_machine_name, :region, :by_machine_year_gte, :by_machine_year_lte, :by_payment_type
   has_scope :by_type_id, :by_location_id, :by_operator_id, :by_zone_id, :by_machine_id, :by_machine_single_id, :by_machine_group_id, :by_machine_id_ic, :by_machine_single_id_ic, :by_machine_year, :by_ipdb_id, :by_opdb_id, :manufacturer, :by_machine_type, :by_machine_display, :by_country, :by_state_name, :by_state_id, :by_all_ages, type: :array
-  before_action :authenticate_user!, except: %i[index autocomplete autocomplete_city render_machines render_lmx_count_row render_last_updated render_location_detail render_recent_activity sanitize_integers random_machine]
+  before_action :authenticate_user!, except: %i[index autocomplete autocomplete_city render_machines render_lmx_count_row render_last_updated render_location_detail render_recent_activity render_upcoming_events sanitize_integers random_machine]
   before_action :normalize_array_params
   rate_limit to: 100, within: 1.minute, only: :index, name: "locations_index"
   rate_limit to: 10, within: 5.seconds, only: :render_location_detail, name: "locations_render_location_detail"
@@ -234,6 +234,13 @@ class LocationsController < ApplicationController
       @pagy, @recent_activity = pagy(user_submissions)
       render partial: "locations/render_recent_activity", locals: { l: l, pagy: @pagy }
     end
+  end
+
+  def render_upcoming_events
+    l = Location.find_by_id(params[:id])
+    return render file: Rails.public_path.join("404.html"), status: :not_found, layout: false unless l
+
+    render partial: "locations/render_upcoming_events", locals: { events: l.events.upcoming }
   end
 
   def random_machine

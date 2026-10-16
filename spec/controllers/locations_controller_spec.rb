@@ -154,8 +154,57 @@ describe LocationsController, type: :controller do
     end
   end
 
+  describe '#render_upcoming_events' do
+    render_views
+
+    it 'lists upcoming events at the location' do
+      FactoryBot.create(:event, location: @location, name: 'Monday Strikes', start_date: Date.new(2030, 1, 7), end_date: Date.new(2030, 1, 7),
+        ifpa_tournament_id: 1001, external_link: 'https://example.com', long_desc: 'Bring quarters', event_type: 'League')
+      FactoryBot.create(:event, location: @location, name: 'Bad Link Event', start_date: Date.new(2030, 1, 8), end_date: Date.new(2030, 1, 9),
+        external_link: 'javascript:alert(1)')
+      FactoryBot.create(:event, location: @location, name: 'Old Event', start_date: Date.current - 10, end_date: Date.current - 10)
+      FactoryBot.create(:event, name: 'Elsewhere Event', start_date: Date.new(2030, 1, 7), end_date: Date.new(2030, 1, 7))
+
+      get 'render_upcoming_events', params: { id: @location.id }
+
+      expect(response).to be_successful
+      expect(response.body).to include('2 upcoming events at this location')
+      expect(response.body).to include('Tournament or league?', '<em>League</em>')
+      expect(response.body).to include('Monday Strikes', 'Mon, Jan 7, 2030', 'Tue, Jan 8 - Wed, Jan 9, 2030')
+      expect(response.body).to include('https://www.ifpapinball.com/tournaments/view.php?t=1001', 'href="https://example.com"', 'Bring quarters')
+      expect(response.body).to_not include('javascript:alert', 'Old Event', 'Elsewhere Event')
+    end
+
+    it 'returns 404 for a missing location' do
+      get 'render_upcoming_events', params: { id: 0 }
+
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
   describe '#render_location_detail' do
     render_views
+
+    it 'does not show the upcoming events button when the location has no upcoming events' do
+      FactoryBot.create(:event, location: @location, name: 'Old Event', start_date: Date.current - 10, end_date: Date.current - 10)
+
+      get 'render_location_detail', params: { id: @location.id }
+
+      expect(response).to be_successful
+      expect(response.body).to_not include('upcoming_events_location_banner')
+      expect(response.body).to_not include('Old Event')
+    end
+
+    it 'shows the upcoming events button, without loading the events, when the location has upcoming events' do
+      FactoryBot.create(:event, location: @location, name: 'Monday Strikes', start_date: Date.new(2030, 1, 7), end_date: Date.new(2030, 1, 7))
+
+      get 'render_location_detail', params: { id: @location.id }
+
+      expect(response.body).to include("upcoming_events_location_banner_#{@location.id}")
+      expect(response.body).to include("upcoming_events_location_#{@location.id}")
+      expect(response.body).to include("/locations/#{@location.id}/render_upcoming_events")
+      expect(response.body).to_not include('Monday Strikes')
+    end
 
     it 'does not show the random machine icon when the location has no machines' do
       get 'render_location_detail', params: { id: @location.id }

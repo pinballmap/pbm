@@ -175,6 +175,10 @@ class Location < ApplicationRecord
     location_picture_xrefs.size
   end
 
+  def upcoming_events_count
+    events.upcoming.count
+  end
+
   def machine_names
     machines.sort_by(&:massaged_name).map(&:name_and_year)
   end
@@ -192,7 +196,7 @@ class Location < ApplicationRecord
   end
 
   def full_street_address
-    [ street, city, state, zip ].compact.join(", ")
+    [ street, city, state, zip ].compact_blank.join(", ")
   end
 
   # returns "city, state" if state is available otherwise just city

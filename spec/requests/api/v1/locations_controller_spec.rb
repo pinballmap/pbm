@@ -1383,6 +1383,30 @@ describe Api::V1::LocationsController, type: :request do
       expect(response.body).to include('Administrator')
     end
 
+    it 'includes the count of upcoming events with no_details=1 and full details, but not with no_details=2 or metadata_only' do
+      FactoryBot.create(:event, location: @location, start_date: Date.current + 3, end_date: Date.current + 3)
+      FactoryBot.create(:event, location: @location, start_date: Date.current + 10, end_date: nil)
+      FactoryBot.create(:event, location: @location, start_date: Date.current - 10, end_date: Date.current - 10)
+
+      get "/api/v1/locations/#{@location.id}.json", params: { no_details: 1 }
+      expect(JSON.parse(response.body)['upcoming_events_count']).to eq(2)
+
+      get "/api/v1/locations/#{@location.id}.json"
+      expect(JSON.parse(response.body)['upcoming_events_count']).to eq(2)
+
+      get "/api/v1/locations/#{@location.id}.json", params: { no_details: 2 }
+      expect(JSON.parse(response.body)).not_to have_key('upcoming_events_count')
+
+      get "/api/v1/locations/#{@location.id}.json", params: { metadata_only: 1 }
+      expect(JSON.parse(response.body)).not_to have_key('upcoming_events_count')
+    end
+
+    it 'shows an upcoming events count of 0 when there are none' do
+      get "/api/v1/locations/#{@location.id}.json", params: { no_details: 1 }
+
+      expect(JSON.parse(response.body)['upcoming_events_count']).to eq(0)
+    end
+
     it 'show location info plus comments and scores' do
       get "/api/v1/locations/#{@location.id}.json"
 

@@ -423,7 +423,7 @@ module Api
 
         if params[:no_details] == "1"
           location = Location.includes(:location_machine_xrefs, :last_updated_by_user).find(params[:id])
-          methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank last_updated_by_flag last_updated_by_user_deleted operator_has_email operator_email_opt_in operator_phone_opt_in operator_website num_machines lpx_count]
+          methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank last_updated_by_flag last_updated_by_user_deleted operator_has_email operator_email_opt_in operator_phone_opt_in operator_website num_machines lpx_count upcoming_events_count]
           except = %i[zone_id created_at region_id is_stern_army country]
 
           if params[:user_id].present?
@@ -446,7 +446,7 @@ module Api
         else
           location = Location.includes(location_machine_xrefs: [ :user, :machine, { machine_conditions: :user }, { machine_score_xrefs: :user } ]).find(params[:id])
           includes = [ location_machine_xrefs: { include: { machine_conditions: { methods: %i[username operator_id admin_title contributor_rank flag] }, machine_score_xrefs: { methods: %i[username operator_id admin_title contributor_rank flag] } }, methods: %i[last_updated_by_username name manufacturer year] } ]
-          methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank last_updated_by_flag num_machines]
+          methods = %i[last_updated_by_username last_updated_by_operator_id last_updated_by_admin_title last_updated_by_contributor_rank last_updated_by_flag num_machines upcoming_events_count]
           except = []
         end
 

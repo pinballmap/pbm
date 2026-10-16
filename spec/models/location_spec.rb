@@ -131,6 +131,18 @@ describe Location do
     end
   end
 
+  describe '#full_street_address' do
+    it 'joins the address parts' do
+      location = Location.new(street: '115 NW 5th Ave', city: 'Portland', state: 'OR', zip: '97209')
+      expect(location.full_street_address).to eq('115 NW 5th Ave, Portland, OR, 97209')
+    end
+
+    it 'skips nil and blank parts' do
+      location = Location.new(street: '1 Main St', city: 'Reykjavik', state: '', zip: nil)
+      expect(location.full_street_address).to eq('1 Main St, Reykjavik')
+    end
+  end
+
   describe '#confirm' do
     it 'sets date_last_updated and last_updated_by_user_id' do
       user = FactoryBot.create(:user, username: 'ssw')

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :location_types, only: [:index, :show]
       resources :machine_conditions, only: [:destroy, :update]
+      resources :events, only: [:index, :show]
       resources :machines, only: [:index, :show]
       resources :machine_groups, only: [:index, :show]
       resources :operators, only: [:index, :show]
@@ -160,6 +161,7 @@ Rails.application.routes.draw do
       get :render_location_detail
       get :render_machines
       get :render_recent_activity
+      get :render_upcoming_events
       get :random_machine
     end
   end

@@ -325,24 +325,6 @@ class Region < ApplicationRecord
     end
   end
 
-  def self.delete_all_regionless_events
-    Event.where("region_id is null").each do |e|
-      e.destroy
-    end
-  end
-
-  def delete_all_expired_events
-    events.each do |e|
-      if e.start_date.blank? && !e.end_date.blank?
-        e.destroy
-      elsif !e.start_date.blank? && e.end_date.blank?
-        e.destroy if e.start_date < 1.week.ago
-      elsif !e.end_date.blank?
-        e.destroy if e.end_date < 1.week.ago
-      end
-    end
-  end
-
   def move_to_new_region(new_region)
     locations.each do |l|
       l.region = new_region

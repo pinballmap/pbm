@@ -215,8 +215,8 @@ describe Api::V1::MachineScoreXrefsController, type: :request do
     end
 
     it 'updates when you own the high score' do
-      owned_high_score = FactoryBot.create(:machine_score_xref, user: @user, score: 100, id: 57)
-      FactoryBot.create(:user_submission, created_at: '2025-01-01', submission_type: UserSubmission::NEW_SCORE_TYPE, high_score: 100, machine_score_xref_id: 57)
+      owned_high_score = FactoryBot.create(:machine_score_xref, user: @user, score: 100)
+      FactoryBot.create(:user_submission, created_at: '2025-01-01', submission_type: UserSubmission::NEW_SCORE_TYPE, high_score: 100, machine_score_xref_id: owned_high_score.id)
 
       put '/api/v1/machine_score_xrefs/' + owned_high_score.id.to_s + '.json', params: { user_email: 'foo@bar.test', user_token: '1G8_s7P-V-4MGojaKD7a', score: 200 }
 

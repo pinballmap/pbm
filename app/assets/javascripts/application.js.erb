@@ -61,6 +61,13 @@ function toggle_machine_data(name, id) {
     $('#recent_location_activity_location_' + id).hide();
     $('#recent_location_activity_location_banner_' + id).removeClass('active');
   }
+  if (name == 'upcoming_events_location') {
+    $('#upcoming_events_location_' + id).toggle();
+    $('#upcoming_events_location_banner_' + id).toggleClass('active');
+  } else {
+    $('#upcoming_events_location_' + id).hide();
+    $('#upcoming_events_location_banner_' + id).removeClass('active');
+  }
 }
 
 function regionMapLocations(region_id) {

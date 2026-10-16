@@ -336,7 +336,11 @@ CREATE TABLE public.events (
     category character varying(255),
     external_location_name character varying(255),
     ifpa_calendar_id integer,
-    ifpa_tournament_id integer
+    ifpa_tournament_id integer,
+    address character varying,
+    event_type character varying,
+    latitude numeric(18,12),
+    longitude numeric(18,12)
 );
 
 
@@ -3007,6 +3011,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261015120000'),
 ('20260723143027'),
 ('20260723135606'),
 ('20260716140000'),

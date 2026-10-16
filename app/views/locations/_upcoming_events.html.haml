@@ -1,0 +1,12 @@
+%div[location, :upcoming_events]{:style => 'display:none'}
+
+:javascript
+  $(function() {
+    $('#upcoming_events_location_banner_#{location.id}').click(function() {
+      let container = $('#upcoming_events_location_#{location.id}');
+      if (container.is(':visible')) {
+        container.html(loadingHTML());
+        container.load('/locations/#{location.id}/render_upcoming_events');
+      }
+    });
+  });

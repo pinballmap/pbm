@@ -2440,13 +2440,60 @@ div.machine_condition_meta {
 .add_picture_location,
 .add_machine_location,
 .recent_location_activity_location,
+.upcoming_events_location,
 #map_activity {
   background-color: var(--bg_vlightpurple);
   color: var(--black);
 }
 
-.recent_location_activity_location {
+.recent_location_activity_location,
+.upcoming_events_location {
   padding-top: 10px;
+}
+
+.upcoming_event {
+  padding: 10px 15px;
+  border-bottom: 1px solid var(--shadow);
+  text-align: left;
+}
+
+.upcoming_event > div {
+  padding-bottom: 8px;
+}
+
+.upcoming_event_name {
+  font-family: $Nunito_700Bold;
+  font-size: 17px;
+}
+
+.upcoming_event_date {
+  color: var(--darkgrey);
+  font-family: $Nunito_600SemiBold;
+}
+
+.upcoming_event_links a {
+  margin-right: 15px;
+}
+
+.upcoming_event_details summary {
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+#locations .upcoming_event_details p {
+  margin: 5px 0;
+  padding-bottom: 0;
+  overflow-wrap: anywhere;
+}
+
+#locations .upcoming_events_source {
+  font-size: 14px;
+  padding: 0px 15px;
+  text-align: center;
+}
+
+#locations .upcoming_events_missing {
+  padding: 10px 15px;
 }
 
 .add_machine_location form select option {
@@ -3056,6 +3103,7 @@ input.lookup_search_input:focus {
 .add_picture_location_toggle:hover,
 .add_machine_location_toggle:hover,
 .recent_location_activity_location_toggle:hover,
+.upcoming_events_location_toggle:hover,
 .confirm_location_toggle:hover {
   background-color: var(--purple);
   color: #333333;
@@ -3063,9 +3111,39 @@ input.lookup_search_input:focus {
 
 .add_picture_location_toggle.active,
 .add_machine_location_toggle.active,
-.recent_location_activity_location_toggle.active {
+.recent_location_activity_location_toggle.active,
+.upcoming_events_location_toggle.active {
   background-color: var(--purple);
   color: #333333;
+}
+
+.upcoming_events_button_container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.upcoming_events_location_toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px 8px 16px;
+  margin-top: 10px;
+  border: none;
+  @include radius(25px);
+  background: var(--buttons);
+  color: #000e18;
+  font-family: $Nunito_600SemiBold;
+  font-size: 16px;
+  line-height: 20px;
+  cursor: pointer;
+  box-shadow: 2px 2px 10px var(--shadow);
+  -webkit-box-shadow: 2px 2px 10px var(--shadow);
+}
+
+.upcoming_events_location_toggle img.banner_icon {
+  height: 24px;
+  padding: 0;
 }
 
 .region_name,

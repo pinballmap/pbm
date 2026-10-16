@@ -20,6 +20,7 @@
 	- if ENV['AWS_BUCKET_NAME'].present? && !is_bot?
 		%div.location_thumbs[l, :thumbs]
 			= render :partial => 'location_picture_xrefs/show_thumbs', :locals => {:location_picture_xrefs => l.location_picture_xrefs}
+	- has_upcoming_events = l.events.upcoming.exists?
 	%div.quick_buttons
 		- icon_path3 = image_tag('icons/plus-outline.svg', :alt => 'Add Machine Icon', :class => 'banner_icon')
 		%div.quick_button_sub_container
@@ -59,9 +60,16 @@
 				= quick_buttons('add_picture_location', icon_path4, l)
 				%div.quick_button_desc Upload a picture
 
+	- if has_upcoming_events
+		%div.upcoming_events_button_container
+			%button.upcoming_events_location_toggle{:id => "upcoming_events_location_banner_#{l.id}", :type => 'button', :onclick => "toggle_machine_data('upcoming_events_location', #{l.id});"}
+				= image_tag('icons/calendar-outline.svg', :alt => '', :class => 'banner_icon')
+				%span Upcoming events
 	= render :partial => 'locations/add_machine', :locals => {:location => l}
 	= render :partial => 'location_picture_xrefs/add_picture', :locals => {:location => l}
 	= render :partial => 'locations/recent_activity', :locals => {:location => l}
+	- if has_upcoming_events
+		= render :partial => 'locations/upcoming_events', :locals => {:location => l}
 	%div.lmx_count_row{:id => "lmx_count_row_#{l.id}"}
 		= render :partial => 'locations/lmx_count_row', :locals => {:location => l}
 	= render :partial => 'locations/show_machines', :locals => {:location => l}
