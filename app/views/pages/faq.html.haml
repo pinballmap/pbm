@@ -119,6 +119,26 @@
           The location you submitted is a private residence. Or private in some other way. See 
           =link_to 'this', '#8'
           FAQ item.
+      %hr
+      %p.question#28
+        =link_to "How do I add non-IFPA events to the event listings on Pinball Map?", '#28', :class => "no_underline"
+      %p.answer
+        For over 15 years, we have maintained both an automated list of IFPA events as well as the ability to manually add individual events. In the early days we spent a lot of time adding leagues and other calendar items. However, the IFPA got more and more popular and people stopped submitting events to us.
+      %p.answer
+        Anyway, what we've learned is that manually managing events is not sustainable. If you want non-IFPA events listed, then you need to provide a JSON source for us to automatically fetch and parse. We would rather write code that works with your exports than do manually work.
+      %p.answer
+        = link_to 'Contact us', global_contact_path
+        if you want tips on how to format your data. And take a look at the
+        =link_to 'public.events table in our database', 'https://github.com/pinballmap/pbm/blob/master/db/structure.sql', :target => '_blank'
+        to see the fields we use.
+      %hr
+      %p.question#29
+        =link_to "Some upcoming IFPA events are not listed in a location's event list.", '#29', :class => "no_underline"
+      %p.answer
+        Every day we pull six months of events from the IFPA calendar. The IFPA does not tag events with Pinball Map location IDs, so we have to do our best to automatically tag the imported events based on address, lat/lon, and tournament name information. It's not a perfect system, and it's made more difficult because the IFPA tournament information can be messy or wrong.
+      %p.answer
+        = link_to 'Contact us', global_contact_path
+        if you want to see if we can fix something, or have you fix it on the IFPA-end.
       %p.font20.center.bold.pbt_5.bg_lightpurple#operators
         =link_to 'Operators', '#operators', :class => "no_underline brightpurple"
       %p.answer
@@ -137,7 +157,7 @@
           %li
             Whether you want to be
             %span.bold notified via email
-            when users leave comments on your machines (once a day email digest).
+            when users leave comments on your machines (once a day email digest containing the previous day's comments).
           %li If you have a website, give us the link and your business name will appear as a hyperlink.
           %li
             If you want users to be able to
