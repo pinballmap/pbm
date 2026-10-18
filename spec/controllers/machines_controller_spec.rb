@@ -74,6 +74,23 @@ describe MachinesController, type: :controller do
       expect(response).to be_successful
       expect(machine_names_from_response).to eq([ 'Apple Delight (Acme, 2010)', 'The Beast (Midway, 2000)', 'Zaphod (Zeta Corp, 1990)' ])
     end
+
+    it 'only returns machines at locations in the requested region for a region level search' do
+      portland = FactoryBot.create(:region, name: 'portland')
+      atlanta = FactoryBot.create(:region, name: 'atlanta')
+      FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location, region: portland), machine: zaphod)
+      FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location, region: atlanta), machine: apple)
+
+      get 'autocomplete', params: { term: '', region_level_search: '1', region: 'atlanta' }
+
+      expect(machine_names_from_response).to eq([ 'Apple Delight (Acme, 2010)' ])
+    end
+
+    it 'falls back to searching all machines for a region level search with an unknown region' do
+      get 'autocomplete', params: { term: '', region_level_search: '1', region: 'nowhere' }
+
+      expect(machine_names_from_response).to eq([ 'Apple Delight (Acme, 2010)', 'The Beast (Midway, 2000)', 'Zaphod (Zeta Corp, 1990)' ])
+    end
   end
 
   describe '#opdb_img' do

@@ -537,7 +537,7 @@ module Api
       formats [ "json" ]
       def autocomplete_city
         if params.fetch(:name, "").length > 2
-          locations = Location.where("clean_items(city) ilike '%' || clean_items(?) || '%'", params[:name]).sort_by(&:city).map do |l|
+          locations = Location.matching_words(:city, params[:name]).sort_by(&:city).map do |l|
             suffix = if l.state.present?
               ", #{l.state}"
             elsif l.country.present?
@@ -564,7 +564,7 @@ module Api
       formats [ "json" ]
       def autocomplete
         if params.fetch(:name, "").length > 2
-          locations = Location.where("clean_items(name) ilike '%' || clean_items(?) || '%'", params[:name]).sort_by(&:name).map { |l| { label: "#{l.name} (#{l.city}#{l.state.blank? ? '' : ', '}#{l.state})", value: l.name, id: l.id } }
+          locations = Location.autocomplete_by_name(params[:name]).map { |l| { label: "#{l.name} (#{l.city}#{l.state.blank? ? '' : ', '}#{l.state})", value: l.name, id: l.id } }
         else
           locations = []
         end

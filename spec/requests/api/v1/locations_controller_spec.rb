@@ -1659,6 +1659,26 @@ HERE
 HERE
     end
 
+    it 'matches each word independently and ranks phrase matches first' do
+      FactoryBot.create(:location, name: 'foo')
+      monroe = FactoryBot.create(:location, name: 'Friends Monroe Grill')
+      phrase = FactoryBot.create(:location, name: 'Best Friends Grill')
+      starts_with = FactoryBot.create(:location, name: 'Friends Grill')
+
+      get '/api/v1/locations/autocomplete', params: { name: 'Friends Gr' }
+
+      expect(JSON.parse(response.body).map { |l| l['id'] }).to eq([ starts_with.id, phrase.id, monroe.id ])
+    end
+
+    it 'limits the number of results' do
+      stub_const('Location::AUTOCOMPLETE_LIMIT', 2)
+      3.times { |i| FactoryBot.create(:location, name: "bar #{i}") }
+
+      get '/api/v1/locations/autocomplete', params: { name: 'bar' }
+
+      expect(JSON.parse(response.body).size).to eq(2)
+    end
+
     it 'should return an empty array if no found results' do
       FactoryBot.create(:location, name: 'foo')
       FactoryBot.create(:location, name: 'bar')

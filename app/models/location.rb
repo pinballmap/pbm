@@ -1,4 +1,6 @@
 class Location < ApplicationRecord
+  include WordSearchable
+
   has_paper_trail only: %i[name street city state region zone lat lon is_stern_army]
 
   NOT_VALUE = "No"
@@ -30,6 +32,7 @@ class Location < ApplicationRecord
   strip_attributes
 
   MAP_SCALE = 0.75
+  AUTOCOMPLETE_LIMIT = 50
 
   scope :region, lambda { |name|
     r = Region.find_by_name(name.downcase) || Region.where(name: "portland").first
@@ -47,7 +50,14 @@ class Location < ApplicationRecord
   scope :by_city_name, ->(city) { where(city: city) }
   scope :by_city_no_state, ->(city) { where(city: city).where(state: nil) }
   scope :by_state_name, ->(state) { where(state: Array(state)) }
-  scope :by_location_name, ->(name) { where("lower(regexp_replace(name, '’', '''', 'gi')) ilike ?", "%" + name.downcase.tr("’", "'") + "%") }
+  # Ranks exact phrase matches first, then names starting with the term.
+  scope :autocomplete_by_name, lambda { |term|
+    term = term.to_s
+    matching_words(:name, term)
+      .order(Arel.sql(sanitize_sql_array([ "clean_items(name) ilike '%' || clean_items(?) || '%' desc, clean_items(name) ilike clean_items(?) || '%' desc, name, id", term, term ])))
+      .limit(AUTOCOMPLETE_LIMIT)
+  }
+  scope :by_location_name, ->(name) { matching_words(:name, name) }
   scope :by_ipdb_id, lambda { |id|
     machine_ids = Machine.where(ipdb_id: Array(id).map(&:to_i)).select(:id)
     where(id: LocationMachineXref.where(machine_id: machine_ids).select(:location_id))

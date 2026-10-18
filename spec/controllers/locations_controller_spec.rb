@@ -11,6 +11,24 @@ describe LocationsController, type: :controller do
     FactoryBot.create(:user, email: 'foo@bar.test', region: region)
   end
 
+  describe '#autocomplete' do
+    it 'returns an empty array if below minimum character threshold' do
+      FactoryBot.create(:location, name: 'Friends Monroe Grill')
+
+      get 'autocomplete', params: { term: 'Fr' }
+
+      expect(response.body).to eq('[]')
+    end
+
+    it 'matches each word independently' do
+      monroe = FactoryBot.create(:location, name: 'Friends Monroe Grill')
+
+      get 'autocomplete', params: { term: 'Friends Gr' }
+
+      expect(JSON.parse(response.body).map { |l| l['id'] }).to eq([ monroe.id ])
+    end
+  end
+
   describe '#update_metadata' do
     it 'should return error json when phone number is in an invalid format' do
       get 'update_metadata', params: { region: 'portland', id: @location.id, new_phone: 'invalid' }

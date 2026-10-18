@@ -5,8 +5,8 @@ class MachinesController < ApplicationController
   end
 
   def autocomplete
-    if params[:region_level_search].nil?
-      results = Machine.where("clean_items(name) ilike '%' || clean_items(?) || '%'", params[:term].to_s)
+    if params[:region_level_search].nil? || @region.nil?
+      results = Machine.matching_words(:name, params[:term])
       results = results.where(machine_type: Array(params[:machine_type])) if params[:machine_type].present?
       results = results.where(manufacturer: Array(params[:manufacturer])) if params[:manufacturer].present?
       results = results.where("year >= ?", params[:by_machine_year_gte].to_i) if params[:by_machine_year_gte].present?
@@ -18,21 +18,15 @@ class MachinesController < ApplicationController
       results = results.sort_by { |m| Machine.sort_key(m, sort, life_list_machine_ids) }
                        .map { |m| { label: m.name_and_year, value: m.name_and_year, id: m.id, group_id: m.machine_group_id, ic_eligible: m.ic_eligible, in_life_list: life_list_machine_ids.include?(m.id) } }
     else
-      sql = <<-SQL
-      select distinct m.name, m."year", m.id, m.machine_group_id, m.manufacturer from locations l
-      inner join location_machine_xrefs lmx on lmx.location_id = l.id
-      inner join machines m on m.id = lmx.machine_id
-      where region_id = 1 and (clean_items(m.name)) ilike '%' || clean_items(:term) || '%'
-      order by m.name
-      SQL
+      region_machine_ids = LocationMachineXref.joins(:location).where(locations: { region_id: @region.id }).select(:machine_id)
 
-      sanitized_sql = ActiveRecord::Base.sanitize_sql_array([ sql, { term: params[:term] } ])
+      results = Machine.where(id: region_machine_ids)
+                       .matching_words(:name, params[:term])
+                       .order(:name)
+                       .map do |m|
+        name_year = "#{m.name} (#{m.manufacturer}, #{m.year})"
 
-      results = ActiveRecord::Base.connection.select_all(sanitized_sql)
-                                  .map do |m|
-        name_year = "#{m['name']} (#{m['manufacturer']}, #{m['year']})"
-
-        { label: name_year, value: name_year, id: m["id"], group_id: m["machine_group_id"] }
+        { label: name_year, value: name_year, id: m.id, group_id: m.machine_group_id }
       end
 
     end

@@ -13,12 +13,13 @@ class LocationsController < ApplicationController
   end
 
   def autocomplete
+    return render json: [] if params[:term].to_s.length < 3
+
     searchable_locations = @region&.locations || Location.all
 
     locations =
       searchable_locations
-      .where("clean_items(name) ilike '%' || clean_items(?) || '%'", params[:term])
-      .sort_by(&:name)
+      .autocomplete_by_name(params[:term])
       .map do |l|
         {
           label: "#{l.name} (#{l.city}#{l.state.blank? ? '' : ', '}#{l.state})",
@@ -32,7 +33,7 @@ class LocationsController < ApplicationController
 
   def autocomplete_city
     @searchable_cities =
-      Location.where("clean_items(city) ilike '%' || clean_items(?) || '%'", params[:term])
+      Location.matching_words(:city, params[:term])
               .sort_by(&:city)
               .map do |l|
                 {
