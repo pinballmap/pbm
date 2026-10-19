@@ -36,7 +36,7 @@ describe Api::V1::EventsController, type: :request do
       )
     end
 
-    it 'returns upcoming events within the radius' do
+    it 'returns upcoming events within the radius, with the detail fields' do
       near = event(name: 'Near', external_location_name: 'Ground Kontrol Arcade')
       event(name: 'Far', latitude: 47.6, longitude: -122.3)
 
@@ -44,9 +44,35 @@ describe Api::V1::EventsController, type: :request do
 
       expect(json['events'].map { |e| e['name'] }).to eq([ 'Near' ])
       expect(json['events'].first).to eq(
-        'id' => near.id, 'name' => 'Near', 'start_date' => near.start_date.iso8601, 'end_date' => near.end_date.iso8601,
-        'address' => near.address, 'external_location_name' => 'Ground Kontrol Arcade', 'location_name' => nil
+        'id' => near.id, 'ifpa_tournament_id' => 1001, 'name' => 'Near', 'start_date' => near.start_date.iso8601,
+        'end_date' => near.end_date.iso8601, 'address' => near.address, 'external_location_name' => 'Ground Kontrol Arcade',
+        'external_link' => 'https://example.com', 'event_type' => 'Tournament', 'long_desc' => 'Details', 'location_id' => nil,
+        'location_name' => nil
       )
+    end
+
+    it 'paginates events within the radius, 50 per page' do
+      51.times { |i| event(name: "Event #{i.to_s.rjust(2, '0')}") }
+
+      get '/api/v1/events.json', params: { lat: '45.52', lon: '-122.68', radius: '50' }
+
+      expect(json['events'].size).to eq(50)
+      expect(json['pagy']).to include('count' => 51, 'page' => 1, 'pages' => 2, 'next' => 2)
+
+      get '/api/v1/events.json', params: { lat: '45.52', lon: '-122.68', radius: '50', page: 2 }
+
+      expect(json['events'].map { |e| e['name'] }).to eq([ 'Event 50' ])
+      expect(json['pagy']).to include('page' => 2, 'previous' => 1)
+      expect(json['pagy']).not_to have_key('next')
+    end
+
+    it 'does not paginate events at a location' do
+      51.times { event(location: location) }
+
+      get '/api/v1/events.json', params: { location_id: location.id }
+
+      expect(json['events'].size).to eq(51)
+      expect(json).not_to have_key('pagy')
     end
 
     it 'includes the location name for events within the radius that are at a location' do
