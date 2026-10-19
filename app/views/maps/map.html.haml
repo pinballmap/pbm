@@ -727,7 +727,9 @@
 
     hideFilterModal();
     mapAdjusted = 0;
-    $('#intro_container,#map_activity').css('display','none');
+    $('#intro_container').css('display','none');
+    closeActivity();
+    closeMapEvents();
 
     var form = $(this);
     var formAction = form.attr('action');
