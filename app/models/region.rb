@@ -178,7 +178,7 @@ class Region < ApplicationRecord
     pictures_added_raw = base.where(submission_type: UserSubmission::NEW_PICTURE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, user_name: us.user_name } }
     pictures_added     = pictures_added_raw.uniq { |item| item[:location_id] }
     location_metadata_raw = base.where(submission_type: UserSubmission::LOCATION_METADATA_TYPE).order(id: :desc).map { |us| { location_name: us.location_name, location_id: us.location_id, description: us.location&.description, user_name: us.user_name } }
-    location_metadata     = location_metadata_raw.uniq { |item| item[:location_id] }.sort_by { |item| item[:location_name] }
+    location_metadata     = location_metadata_raw.uniq { |item| item[:location_id] }.sort_by { |item| item[:location_name].to_s }
 
     proxy_machine_additions = base.where(submission_type: UserSubmission::NEW_LMX_TYPE, machine_id: PROXY_MACHINE_IDS)
       .order(:location_name)
