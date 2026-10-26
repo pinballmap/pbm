@@ -14,6 +14,7 @@ development:
 test:
   <<: *default
 
+# Jobs live in the primary database: Solid Queue only uses another one if
+# config.solid_queue.connects_to is set.
 production:
-  database: queue
   <<: *default
