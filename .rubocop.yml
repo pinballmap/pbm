@@ -1,9 +1,6 @@
 inherit_gem:
   rubocop-rails-omakase: rubocop.yml
 
-plugins:
-  - rubocop-rspec
-
 Layout/HashAlignment:
   Enabled: false
 Layout/LineLength:
@@ -77,8 +74,6 @@ Style/HashSyntax:
 Metrics/ParameterLists:
   Max: 6
   MaxOptionalParameters: 4
-RSpec:
-  Enabled: false
 Style/SymbolProc:
   Enabled: false
 
