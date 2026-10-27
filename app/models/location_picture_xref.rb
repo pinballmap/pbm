@@ -5,7 +5,7 @@ class LocationPictureXref < ApplicationRecord
   has_one_attached :photo
 
   validates :photo, content_type: { in: %w[image/jpeg image/png image/webp image/heic image/heif], message: "must be a JPEG, PNG, WebP, or HEIC" },
-                    size: { less_than: 30.megabytes, message: "must be under 30MB" }
+                    size: { less_than: 12.megabytes, message: "must be under 12MB" } # nginx client-max-body-size is 12m
 
   after_create_commit :enqueue_variant_generation
 

@@ -27,9 +27,9 @@ describe LocationPictureXref, type: :model do
   end
 
   describe 'photo size validation' do
-    it 'rejects files over 30MB' do
+    it 'rejects files over 12MB' do
       attach_png(lpx)
-      allow(lpx.photo.blob).to receive(:byte_size).and_return(31.megabytes)
+      allow(lpx.photo.blob).to receive(:byte_size).and_return(13.megabytes)
       expect(lpx).not_to be_valid
       expect(lpx.errors[:photo]).to be_present
     end
