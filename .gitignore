@@ -17,3 +17,8 @@ logfile
 /config/master.key
 .vscode/extensions.json
 /.env.test.local
+
+# server inventories (ops/server-setup); keep outside the repo
+*-inventory.txt
+# nginx user-agent blocklist; kept private, see ops/server-setup/README.md
+/ops/server-setup/blocked-agents.conf

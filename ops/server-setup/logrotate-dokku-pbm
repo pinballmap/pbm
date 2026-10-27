@@ -1,0 +1,12 @@
+# Installed at /etc/logrotate.d/dokku-pbm by pbm-server-setup. Rotates the app
+# logs the Vector sink writes. Kept out of /etc/logrotate.d/dokku, which the
+# Dokku package owns. copytruncate means Vector needs no reload.
+/var/log/dokku/apps/pbm/*.log {
+        daily
+        copytruncate
+        rotate 7
+        missingok
+        notifempty
+        compress
+        delaycompress
+}

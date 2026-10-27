@@ -1,0 +1,18 @@
+# Installed at /etc/systemd/system/abuseipdb.service. Runs at boot and daily
+# from abuseipdb.timer. network-online (not network.target) so the ipsum
+# download doesn't run before DNS works. No RemainAfterExit: it would leave the
+# unit "active" after boot, and the timer can't start an active unit.
+# No Before=ufw.service: ufw starts before the network, so that would be an
+# ordering cycle, and systemd can break it by skipping networking (no SSH).
+# Order doesn't matter anyway, since the DROP rule is inserted at the top.
+[Unit]
+Description=ipset blackhole blacklist
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/abuseipdb.sh
+
+[Install]
+WantedBy=multi-user.target

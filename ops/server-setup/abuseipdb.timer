@@ -1,0 +1,13 @@
+# Installed at /etc/systemd/system/abuseipdb.timer. Refreshes the blocklist
+# daily, since ipsum updates daily. Persistent catches up a run missed while
+# the droplet was off.
+[Unit]
+Description=Daily refresh of ipset blackhole blacklist
+
+[Timer]
+OnCalendar=daily
+RandomizedDelaySec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target

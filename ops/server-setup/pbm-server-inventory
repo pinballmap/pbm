@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# Read-only dump of the app droplet's server-side setup, for filling in
+# settings.sh and checking a new droplet against the old one. Prints config
+# var names only, never values. See ops/server-setup/README.md.
+#
+#   ssh root@old-droplet 'bash -s' < ops/server-setup/pbm-server-inventory > old.txt
+#   ssh root@new-droplet 'bash -s' < ops/server-setup/pbm-server-inventory > new.txt
+#   diff old.txt new.txt
+set -uo pipefail
+
+APP="${APP:-pbm}"
+
+section() { printf '\n===== %s =====\n' "$*"; }
+run() { section "$*"; "$@" 2>&1; }
+
+run lsb_release -ds
+run uname -r
+run timedatectl show --property=Timezone
+run swapon --show
+run sysctl vm.swappiness
+run free -h
+run df -h / /boot
+run sh -c "debconf-show grub-pc | grep install_devices"
+run ls -l /dev/vda*
+run sh -c "[ -d /sys/firmware/efi ] && echo 'boot mode: EFI' || echo 'boot mode: BIOS'"
+run dokku version
+run docker version --format '{{.Server.Version}}'
+run dokku plugin:list
+run dokku domains:report --global
+
+for report in apps buildpacks builder domains ports proxy nginx letsencrypt checks \
+              ps resource docker-options storage network scheduler git cron logs; do
+  run dokku "${report}:report" "$APP"
+done
+
+section "config var names: $APP"
+dokku config:show "$APP" 2>&1 | awk -F: 'NR > 1 { print $1 }' | sort
+section "config var names: global"
+dokku config:show --global 2>&1 | awk -F: 'NR > 1 { print $1 }' | sort
+
+run ls -la "/home/dokku/$APP"
+run ls -la "/home/dokku/$APP/nginx.conf.d"
+for f in "/home/dokku/$APP"/nginx.conf.d/*.conf; do
+  [[ -e $f ]] && run cat "$f"
+done
+run ls -la /etc/nginx/conf.d
+
+run dokku ssh-keys:list
+run ls -la /etc/cron.d
+run crontab -l -u root
+run crontab -l -u dokku
+run ls -la /usr/local/bin
+run snap list
+run ls /etc/apt/sources.list.d
+run systemctl is-enabled logrotate.timer
+run ls -la /var/log/dokku/apps/pbm
+run ls -la /etc/logrotate.d
+run cat /etc/logrotate.d/dokku
+run docker ps --filter name=vector --format '{{.Names}} {{.Image}} {{.Status}}'
+run ufw status verbose
+run systemctl is-enabled abuseipdb.service abuseipdb.timer
+run systemctl list-timers --all
+run sh -c "ipset list blackhole -t | grep -i entries"
+run wc -l /home/dokku/tmp/banned_ips.txt
+run ls -la /etc/systemd/system
+run iptables -S
+run ip6tables -S
+run sh -c "sshd -T | grep -Ei '^(port|permitrootlogin|passwordauthentication) '"

@@ -1,0 +1,7 @@
+# nginx user-agent blocklist, included in the server block by nginx.conf.sigil.
+# The real list isn't in git, so blocked clients can't read what to change.
+# Copy it from the old droplet (see README). This example blocks nothing.
+#
+# if ($http_user_agent ~* (SomeBadClient|AnotherOne)) {
+#   return 403;
+# }

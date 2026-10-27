@@ -1,0 +1,212 @@
+#!/usr/bin/env bash
+# Builds the pbm app droplet from a fresh Ubuntu install: Dokku, the app's
+# server-side settings, and the nightly DB backup. Safe to rerun. Run as root
+# from a copy of ops/ on the droplet. See ops/server-setup/README.md.
+#
+#   LETSENCRYPT_EMAIL=you@example.com bash /root/ops/server-setup/pbm-server-setup
+set -euo pipefail
+
+here="$(cd "$(dirname "$0")" && pwd)"
+ops="$(dirname "$here")"
+
+# shellcheck source=settings.sh
+source "$here/settings.sh"
+
+step() { printf '\n==> %s\n' "$*"; }
+warn() { printf '\n!!! %s\n' "$*" >&2; warnings+=("$*"); }
+warnings=()
+
+[[ $EUID -eq 0 ]] || { echo "run as root" >&2; exit 1; }
+: "${DOKKU_TAG:?set DOKKU_TAG in settings.sh}"
+: "${DOMAINS:?set DOMAINS in settings.sh}"
+: "${LETSENCRYPT_EMAIL:?pass LETSENCRYPT_EMAIL=... when running this script}"
+[[ ${#PS_SCALE[@]} -gt 0 ]] || { echo "set PS_SCALE in settings.sh" >&2; exit 1; }
+
+export DEBIAN_FRONTEND=noninteractive
+
+step "System packages ($(lsb_release -ds))"
+apt-get update
+apt-get -y upgrade
+timedatectl set-timezone "$TIMEZONE"
+
+# GRUB updates reinstall the boot loader to these devices. If none of them
+# exist, the loader on disk goes stale against the new /boot/grub modules and
+# the droplet won't boot. Expect /dev/vda. Fresh DO images leave it empty, so
+# set it on BIOS droplets with grub-pc.
+grub_devices="$(debconf-show grub-pc 2>/dev/null | awk -F': ' '/grub-pc\/install_devices:/ { print $2 }' | tr ',' ' ')"
+if [[ -z $grub_devices && ! -d /sys/firmware/efi && -b /dev/vda ]] && dpkg -s grub-pc > /dev/null 2>&1; then
+  echo 'grub-pc grub-pc/install_devices multiselect /dev/vda' | debconf-set-selections
+  grub-install /dev/vda
+  grub_devices=/dev/vda
+fi
+grub_ok=false
+for dev in $grub_devices; do
+  [[ -b $dev ]] && grub_ok=true
+done
+$grub_ok || warn "grub-pc install_devices ('$grub_devices') has no existing disk; run 'dpkg-reconfigure grub-pc' and pick /dev/vda"
+
+if [[ -n $SWAP_SIZE ]] && ! swapon --show | grep -q .; then
+  step "Swap ($SWAP_SIZE)"
+  fallocate -l "$SWAP_SIZE" /swapfile
+  chmod 600 /swapfile
+  mkswap /swapfile
+  swapon /swapfile
+  grep -q '^/swapfile ' /etc/fstab || echo '/swapfile none swap sw 0 0' >> /etc/fstab
+fi
+# Per the Dokku troubleshooting docs: only swap under real memory pressure.
+echo 'vm.swappiness = 10' > /etc/sysctl.d/60-swappiness.conf
+sysctl -w vm.swappiness=10
+
+step "Dokku $DOKKU_TAG"
+if command -v dokku > /dev/null && [[ "$(dokku version)" == *"${DOKKU_TAG#v}"* ]]; then
+  echo "already installed"
+else
+  # Also installs Docker. Fails on Ubuntu releases Dokku doesn't support yet.
+  bootstrap="$(mktemp)"
+  wget -qO "$bootstrap" "https://dokku.com/install/${DOKKU_TAG}/bootstrap.sh"
+  DOKKU_TAG="$DOKKU_TAG" bash "$bootstrap"
+  rm -f "$bootstrap"
+fi
+
+step "Dokku SSH keys (from root's authorized_keys)"
+existing="$(dokku ssh-keys:list 2>/dev/null || true)"
+n=0
+while read -r key; do
+  [[ -z $key || $key == \#* ]] && continue
+  n=$((n + 1))
+  fingerprint="$(ssh-keygen -lf <(echo "$key") | awk '{ print $2 }')"
+  if grep -qF "$fingerprint" <<< "$existing"; then
+    echo "key $n already added"
+  else
+    echo "$key" | dokku ssh-keys:add "admin$n"
+  fi
+done < /root/.ssh/authorized_keys
+
+step "App $APP"
+new_app=false
+if ! dokku apps:exists "$APP" 2> /dev/null; then
+  dokku apps:create "$APP"
+  new_app=true
+fi
+
+# The Dokku installer sets the hostname as a global domain; clear it if unwanted.
+if [[ -n $GLOBAL_DOMAIN ]]; then
+  dokku domains:set-global "$GLOBAL_DOMAIN"
+else
+  dokku domains:clear-global
+fi
+# shellcheck disable=SC2086
+dokku domains:set "$APP" $DOMAINS
+
+dokku buildpacks:clear "$APP"
+for bp in "${BUILDPACKS[@]}"; do
+  dokku buildpacks:add "$APP" "$bp"
+done
+if [[ -n $BUILDPACK_STACK ]]; then
+  dokku buildpacks:set-property "$APP" stack "$BUILDPACK_STACK"
+else
+  dokku buildpacks:set-property "$APP" stack # back to Dokku's default
+fi
+
+for prop in "${NGINX_PROPERTIES[@]}"; do
+  dokku nginx:set "$APP" "${prop%%=*}" "${prop#*=}"
+done
+
+dokku ps:scale --skip-deploy "$APP" "${PS_SCALE[@]}"
+dokku config:set --no-restart "$APP" "${APP_CONFIG[@]}"
+
+# Solid Cache database. It starts empty; the release phase's db:migrate creates
+# the tables. Linking waits until the env is restored (README step 3), or the
+# restore would overwrite the new URL with the old one. Solid Queue uses the
+# managed DB, so queued jobs carry over.
+dokku plugin:installed postgres || dokku plugin:install https://github.com/dokku/dokku-postgres.git postgres
+dokku postgres:exists pbm-cache 2> /dev/null || dokku postgres:create pbm-cache
+
+# The repo's nginx.conf.sigil includes every file in this directory.
+# The blocklist isn't in git. Without a copy, fall back to the empty example,
+# but never over a list already on this droplet.
+install -d -o dokku -g dokku "/home/dokku/$APP/nginx.conf.d"
+blocklist="/home/dokku/$APP/nginx.conf.d/blocked-agents.conf"
+if [[ -f $here/blocked-agents.conf ]]; then
+  install -m 644 -o dokku -g dokku "$here/blocked-agents.conf" "$blocklist"
+elif [[ ! -f $blocklist ]]; then
+  install -m 644 -o dokku -g dokku "$here/blocked-agents.conf.example" "$blocklist"
+  warn "no blocked-agents.conf, so nginx blocks no user agents; copy it from the old droplet to $blocklist, then: dokku proxy:build-config $APP"
+fi
+
+# Keep the app.json cron jobs (digest emails etc.) from running on both
+# droplets at once. Only done when the app is first created, so a rerun after
+# cutover doesn't switch them off in production.
+if $new_app; then
+  # App-wide maintenance; cron:suspend only pauses a single task by ID.
+  if dokku cron:set "$APP" maintenance true; then
+    warn "cron is suspended for $APP; run 'dokku cron:set $APP maintenance false' at cutover"
+  else
+    warn "this Dokku can't suspend cron for an app; after each deploy before cutover, run 'crontab -r -u dokku' so app.json cron jobs don't run twice"
+  fi
+fi
+
+step "Logs"
+if [[ -n $VECTOR_SINK ]]; then
+  install -d "/var/log/dokku/apps/$APP"
+  dokku logs:set "$APP" vector-sink "$VECTOR_SINK"
+else
+  warn "VECTOR_SINK is blank in settings.sh, so app logs aren't written to /var/log/dokku/apps/$APP/"
+fi
+dokku logs:vector-start --vector-image "$VECTOR_IMAGE"
+install -m 644 "$here/logrotate-dokku-pbm" /etc/logrotate.d/dokku-pbm
+# The daily logrotate.timer picks this up; this just checks the syntax.
+logrotate --debug /etc/logrotate.d/dokku-pbm > /dev/null
+
+step "Firewall (ufw)"
+# SSH (rate-limited) and nginx only. The Nginx Full profile comes with nginx,
+# which Dokku installed above.
+apt-get install -y ufw
+ufw limit 22/tcp
+ufw allow 'Nginx Full'
+ufw --force enable
+
+step "IP blocklist (abuseipdb.sh)"
+apt-get install -y ipset wget
+install -m 755 "$here/abuseipdb.sh" /usr/local/bin/abuseipdb.sh
+install -m 644 "$here/abuseipdb.service" /etc/systemd/system/abuseipdb.service
+install -m 644 "$here/abuseipdb.timer" /etc/systemd/system/abuseipdb.timer
+install -d -o dokku -g dokku /home/dokku/tmp
+if [[ ! -f /home/dokku/tmp/banned_ips.txt ]]; then
+  warn "no /home/dokku/tmp/banned_ips.txt; copy it from the old droplet, then: systemctl start abuseipdb"
+fi
+systemctl daemon-reload
+systemctl enable abuseipdb.service
+systemctl enable --now abuseipdb.timer
+systemctl start abuseipdb.service
+echo "blackhole entries: $(ipset list blackhole -t | awk '/Number of entries/ { print $4 }')"
+
+step "Let's Encrypt"
+dokku plugin:installed letsencrypt || dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git letsencrypt
+dokku letsencrypt:set "$APP" email "$LETSENCRYPT_EMAIL"
+dokku letsencrypt:cron-job --add
+# letsencrypt:enable is a cutover step: validation needs DNS on this droplet.
+
+step "DB backup (ops/db-backup)"
+apt-get install -y postgresql-common
+if ! compgen -G '/etc/apt/sources.list.d/pgdg*' > /dev/null; then
+  /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+fi
+apt-get install -y "postgresql-client-$PG_MAJOR"
+snap list aws-cli > /dev/null 2>&1 || snap install aws-cli --classic
+
+install -m 755 "$ops/db-backup/pbm-db-backup" /usr/local/bin/pbm-db-backup
+if [[ ! -f /etc/pbm-db-backup.env ]]; then
+  install -m 600 "$ops/db-backup/pbm-db-backup.env.example" /etc/pbm-db-backup.env
+  warn "fill in /etc/pbm-db-backup.env, then test with: /usr/local/bin/pbm-db-backup"
+fi
+install -m 644 "$ops/db-backup/pbm-db-backup.cron" /etc/cron.d/pbm-db-backup
+
+step "Done"
+echo "Remaining steps are in ops/server-setup/README.md (restore env, deploy, test, cutover)."
+for w in "${warnings[@]}"; do
+  echo "!!! $w"
+done
+if passwd -S root | awk '{ exit $2 == "P" }'; then
+  echo "!!! root has no password, so the DO Recovery Console can't log in; set one with: passwd"
+fi
