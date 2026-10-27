@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# Nightly pg_dump of the DO managed Postgres cluster, uploaded to S3.
+# Installed at /usr/local/bin/pbm-db-backup on the app droplet and run from
+# /etc/cron.d/pbm-db-backup. See ops/db-backup/README.md.
+set -euo pipefail
+
+ENV_FILE="${PBM_DB_BACKUP_ENV:-/etc/pbm-db-backup.env}"
+
+# Exports PG* and AWS_* vars so neither the DB password nor AWS keys show up
+# on the command line (visible in ps).
+set -a
+# shellcheck source=/dev/null
+source "$ENV_FILE"
+set +a
+
+: "${S3_BUCKET:?S3_BUCKET must be set in $ENV_FILE}"
+: "${PGHOST:?PGHOST must be set in $ENV_FILE}"
+PG_DUMP="${PG_DUMP:-pg_dump}"
+PG_RESTORE="${PG_RESTORE:-pg_restore}"
+
+stamp="$(date -u +%Y-%m-%dT%H%MZ)"
+key="pbm-${stamp}.dump"
+workdir="$(mktemp -d /var/tmp/pbm-db-backup.XXXXXX)"
+trap 'rm -rf "$workdir"' EXIT
+
+dump="$workdir/$key"
+
+echo "starting dump of ${PGDATABASE:-?}@${PGHOST}"
+"$PG_DUMP" --format=custom --compress=6 --file="$dump"
+
+# Cheap sanity check that the archive is readable before uploading it.
+"$PG_RESTORE" --list "$dump" > /dev/null
+
+size="$(du -h "$dump" | cut -f1)"
+echo "dump ok ($size), uploading to s3://${S3_BUCKET}/${key}"
+aws s3 cp --only-show-errors "$dump" "s3://${S3_BUCKET}/${key}"
+
+echo "backup complete: s3://${S3_BUCKET}/${key}"
+
+# Dokku app and global env config. Lives on the host, not in the container.
+# The pbm- prefix keeps it under the bucket's 90-day expiry rule.
+if [[ -n "${DOKKU_APP:-}" ]]; then
+  env_file="$workdir/pbm-env-${stamp}.txt"
+  {
+    echo "# dokku config:export --format shell ${DOKKU_APP}"
+    dokku config:export --format shell "$DOKKU_APP"
+    echo "# dokku config:export --format shell --global"
+    dokku config:export --format shell --global
+  } > "$env_file"
+  aws s3 cp --only-show-errors "$env_file" "s3://${S3_BUCKET}/pbm-env-${stamp}.txt"
+  echo "env backup complete: s3://${S3_BUCKET}/pbm-env-${stamp}.txt"
+fi
+
+# Optional dead-man's switch (e.g. healthchecks.io): it alerts when this ping
+# stops arriving, which catches cron or the script silently failing.
+if [[ -n "${HEALTHCHECK_URL:-}" ]]; then
+  curl -fsS -m 10 --retry 3 "$HEALTHCHECK_URL" > /dev/null || echo "healthcheck ping failed"
+fi

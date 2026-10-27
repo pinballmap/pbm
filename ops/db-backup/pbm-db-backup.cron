@@ -1,0 +1,7 @@
+# Installed at /etc/cron.d/pbm-db-backup (root:root, 0644, no dots in the
+# filename or cron ignores it). Times are in the droplet's timezone; 09:15 UTC
+# is ~2am US Pacific. Output goes to syslog: journalctl -t pbm-db-backup
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+
+15 9 * * * root flock -n /run/pbm-db-backup.lock /usr/local/bin/pbm-db-backup 2>&1 | logger -t pbm-db-backup
