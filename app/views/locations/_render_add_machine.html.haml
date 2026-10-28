@@ -75,6 +75,11 @@
   });
 
   $('#add_new_machine_#{l.id}').submit(function () {
+    if (!$('#add_machine_by_id_#{l.id}').val()) {
+      show_new_machine_message();
+      return false;
+    }
+
     $('#show_machines_location_#{l.id}').html(loadingHTML());
 
     $.post(this.action, $(this).serialize(), function (data) {
