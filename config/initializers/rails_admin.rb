@@ -51,6 +51,7 @@ RailsAdmin.config do |config|
       field :updated_at, :datetime
       field :category, :string
       field :event_type, :string
+      field :ranking, :string
       field :region, :belongs_to_association
       field :ifpa_tournament_id, :integer
       field :latitude, :decimal
@@ -73,6 +74,7 @@ RailsAdmin.config do |config|
       field :event_type, :enum do
         enum { %w[Tournament League] }
       end
+      field :ranking, :string
       field :region_id do
         render do
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:object].region_id, :object_type => 'event'}
@@ -96,6 +98,7 @@ RailsAdmin.config do |config|
       field :event_type, :enum do
         enum { %w[Tournament League] }
       end
+      field :ranking, :string
       field :region_id do
         render do
           bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.region_id, :object_type => 'event'}

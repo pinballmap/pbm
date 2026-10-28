@@ -146,6 +146,7 @@ class IfpaTournamentImporter
       address: address,
       external_location_name: t["location_name"].to_s.strip.presence,
       event_type: t["event_type"].presence,
+      ranking: ranking_label(t["ranking_system"]),
       latitude: lat,
       longitude: lon,
       location_id: location&.id,
@@ -163,6 +164,14 @@ class IfpaTournamentImporter
     end
   rescue ActiveRecord::ActiveRecordError, ArgumentError => e
     add_error("Tournament #{t['tournament_id']} failed: #{e.class}: #{e.message}")
+  end
+
+  # IFPA sends e.g. MAIN, WOMEN, YOUTH, and shows MAIN as Open on its calendar
+  def ranking_label(ranking_system)
+    ranking_system = ranking_system.to_s.strip
+    return if ranking_system.empty?
+
+    ranking_system.casecmp?("MAIN") ? "Open" : ranking_system.capitalize
   end
 
   def nearest_region_id(lat, lon)

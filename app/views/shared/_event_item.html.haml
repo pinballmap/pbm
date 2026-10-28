@@ -19,6 +19,10 @@
     %div.upcoming_event_type
       %span.bold Tournament or league?
       %em= e.event_type
+  - if e.ranking.present?
+    %div.upcoming_event_type
+      %span.bold Ranking:
+      %em= e.ranking
   - if e.long_desc.present?
     %details.upcoming_event_details
       %summary Details

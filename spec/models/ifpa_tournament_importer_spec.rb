@@ -22,6 +22,7 @@ describe IfpaTournamentImporter do
       'longitude' => '-122.676',
       'raw_address' => '115 NW 5th Ave  Portland, OR 97209',
       'private_flag' => 'false',
+      'ranking_system' => 'MAIN',
       'website' => 'https://example.com',
       'details' => "Strikes!\r\n"
     }.merge(attrs)
@@ -131,7 +132,7 @@ describe IfpaTournamentImporter do
     expect(event).to have_attributes(
       ifpa_tournament_id: 1001, name: 'Monday Night Strikes', start_date: Date.new(2026, 10, 20), end_date: Date.new(2026, 10, 20),
       external_link: 'https://example.com', long_desc: 'Strikes!', address: '115 NW 5th Ave, Portland, OR, 97209',
-      external_location_name: 'Ground Kontrol', event_type: 'Tournament', location_id: location.id, region_id: region.id,
+      external_location_name: 'Ground Kontrol', event_type: 'Tournament', ranking: 'Open', location_id: location.id, region_id: region.id,
       category: 'IFPA Sanctioned Events'
     )
     expect([ event.latitude.to_f, event.longitude.to_f ]).to eq([ 45.524, -122.676 ])
@@ -191,7 +192,14 @@ describe IfpaTournamentImporter do
     ])
     run
 
-    expect(Event.pluck(:ifpa_tournament_id)).to contain_exactly(1003, 1004)
+    expect(Event.pluck(:ifpa_tournament_id, :ranking)).to contain_exactly([ 1003, 'Women' ], [ 1004, 'Open' ])
+  end
+
+  it 'stores rankings IFPA adds later in title case, and none when IFPA sends none' do
+    stub_ifpa([ tournament('ranking_system' => 'SENIOR'), tournament('tournament_id' => '1002', 'ranking_system' => '') ])
+    run
+
+    expect(Event.pluck(:ifpa_tournament_id, :ranking)).to contain_exactly([ 1001, 'Senior' ], [ 1002, nil ])
   end
 
   it 'deletes IFPA events in the fetched range that IFPA no longer returns' do

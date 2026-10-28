@@ -7,8 +7,8 @@ module Api
       NEARBY_PAGE_LIMIT = 50
       DISTANCE_UNITS = %w[m k].freeze
       # At a location the address is redundant, and the list shows everything the detail view would
-      LOCATION_LIST_FIELDS = %i[id name start_date end_date ifpa_tournament_id external_link event_type long_desc].freeze
-      DETAIL_FIELDS = %i[id ifpa_tournament_id name start_date end_date address external_location_name external_link event_type long_desc location_id].freeze
+      LOCATION_LIST_FIELDS = %i[id name start_date end_date ifpa_tournament_id external_link event_type ranking long_desc].freeze
+      DETAIL_FIELDS = %i[id ifpa_tournament_id name start_date end_date address external_location_name external_link event_type ranking long_desc location_id].freeze
       PAGY_KEYS = %i[count first_url previous_url next_url page pages page_url previous next from to in last last_url limit options].freeze
 
       skip_before_action :verify_authenticity_token

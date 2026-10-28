@@ -177,7 +177,7 @@ describe LocationsController, type: :controller do
 
     it 'lists upcoming events at the location' do
       FactoryBot.create(:event, location: @location, name: 'Monday Strikes', start_date: Date.new(2030, 1, 7), end_date: Date.new(2030, 1, 7),
-        ifpa_tournament_id: 1001, external_link: 'https://example.com', long_desc: 'Bring quarters', event_type: 'League')
+        ifpa_tournament_id: 1001, external_link: 'https://example.com', long_desc: 'Bring quarters', event_type: 'League', ranking: 'Youth')
       FactoryBot.create(:event, location: @location, name: 'Bad Link Event', start_date: Date.new(2030, 1, 8), end_date: Date.new(2030, 1, 9),
         external_link: 'javascript:alert(1)')
       FactoryBot.create(:event, location: @location, name: 'Old Event', start_date: Date.current - 10, end_date: Date.current - 10)
@@ -187,7 +187,7 @@ describe LocationsController, type: :controller do
 
       expect(response).to be_successful
       expect(response.body).to include('2 upcoming events at this location')
-      expect(response.body).to include('Tournament or league?', '<em>League</em>')
+      expect(response.body).to include('Tournament or league?', '<em>League</em>', 'Ranking:', '<em>Youth</em>')
       expect(response.body).to include('Monday Strikes', 'Mon, Jan 7, 2030', 'Tue, Jan 8 - Wed, Jan 9, 2030')
       expect(response.body).to include('https://www.ifpapinball.com/tournaments/view.php?t=1001', 'href="https://example.com"', 'Bring quarters')
       expect(response.body).to_not include('javascript:alert', 'Old Event', 'Elsewhere Event')

@@ -340,7 +340,8 @@ CREATE TABLE public.events (
     address character varying,
     event_type character varying,
     latitude numeric(18,12),
-    longitude numeric(18,12)
+    longitude numeric(18,12),
+    ranking character varying
 );
 
 
@@ -3011,6 +3012,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261028120000'),
 ('20261015120000'),
 ('20260723143027'),
 ('20260723135606'),

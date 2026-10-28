@@ -7,7 +7,7 @@ describe Api::V1::EventsController, type: :request do
     FactoryBot.create(:event, {
       name: 'Strikes', start_date: Date.current + 3, end_date: Date.current + 3, address: '115 NW 5th Ave Portland, OR 97209',
       latitude: 45.524, longitude: -122.676, ifpa_tournament_id: 1001, external_link: 'https://example.com',
-      event_type: 'Tournament', long_desc: 'Details'
+      event_type: 'Tournament', ranking: 'Women', long_desc: 'Details'
     }.merge(attrs))
   end
 
@@ -32,7 +32,8 @@ describe Api::V1::EventsController, type: :request do
       expect(json['events'].map { |e| e['id'] }).to eq([ sooner.id, later.id ])
       expect(json['events'].first).to eq(
         'id' => sooner.id, 'name' => 'Sooner', 'start_date' => sooner.start_date.iso8601, 'end_date' => sooner.end_date.iso8601,
-        'ifpa_tournament_id' => 1001, 'external_link' => 'https://example.com', 'event_type' => 'Tournament', 'long_desc' => 'Details'
+        'ifpa_tournament_id' => 1001, 'external_link' => 'https://example.com', 'event_type' => 'Tournament', 'ranking' => 'Women',
+        'long_desc' => 'Details'
       )
     end
 
@@ -46,8 +47,8 @@ describe Api::V1::EventsController, type: :request do
       expect(json['events'].first).to eq(
         'id' => near.id, 'ifpa_tournament_id' => 1001, 'name' => 'Near', 'start_date' => near.start_date.iso8601,
         'end_date' => near.end_date.iso8601, 'address' => near.address, 'external_location_name' => 'Ground Kontrol Arcade',
-        'external_link' => 'https://example.com', 'event_type' => 'Tournament', 'long_desc' => 'Details', 'location_id' => nil,
-        'location_name' => nil
+        'external_link' => 'https://example.com', 'event_type' => 'Tournament', 'ranking' => 'Women', 'long_desc' => 'Details',
+        'location_id' => nil, 'location_name' => nil
       )
     end
 
@@ -146,8 +147,8 @@ describe Api::V1::EventsController, type: :request do
       expect(json['event']).to eq(
         'id' => e.id, 'ifpa_tournament_id' => 1001, 'name' => 'Strikes', 'start_date' => e.start_date.iso8601,
         'end_date' => e.end_date.iso8601, 'address' => e.address, 'external_location_name' => 'Ground Kontrol Arcade',
-        'external_link' => 'https://example.com', 'event_type' => 'Tournament', 'long_desc' => 'Details', 'location_id' => location.id,
-        'location_name' => 'Ground Kontrol'
+        'external_link' => 'https://example.com', 'event_type' => 'Tournament', 'ranking' => 'Women', 'long_desc' => 'Details',
+        'location_id' => location.id, 'location_name' => 'Ground Kontrol'
       )
     end
 
