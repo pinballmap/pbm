@@ -27,7 +27,7 @@ describe IfpaTournamentImporter do
     }.merge(attrs)
   end
 
-  # responses: one entry per month, either an array of tournaments or a full response hash
+  # responses: one entry per request, either an array of tournaments or a full response hash
   def stub_ifpa(*responses)
     @requested_uris = []
     http = instance_double(Net::HTTP)
@@ -48,14 +48,13 @@ describe IfpaTournamentImporter do
     @requested_uris.map { |uri| Rack::Utils.parse_query(URI(uri).query) }
   end
 
-  it 'requests one month at a time with the page size and date range' do
+  it 'requests the whole range at once with the page size' do
     stub_ifpa
     run(months: 3)
 
-    expect(requested_queries.map { |q| [ q['start_date'], q['end_date'] ] }).to eq([
-      %w[2026-10-15 2026-11-14], %w[2026-11-15 2026-12-14], %w[2026-12-15 2027-01-14]
+    expect(requested_queries.map { |q| q.slice('start_date', 'end_date', 'total', 'start_pos') }).to eq([
+      { 'start_date' => '2026-10-15', 'end_date' => '2027-01-14', 'total' => '250', 'start_pos' => '1' }
     ])
-    expect(requested_queries.map { |q| [ q['total'], q['start_pos'] ] }.uniq).to eq([ %w[250 1] ])
   end
 
   describe 'paging' do
@@ -63,39 +62,46 @@ describe IfpaTournamentImporter do
       { 'total_results' => total.to_s, 'tournaments' => ids.map { |id| tournament('tournament_id' => id.to_s, 'location_name' => nil) } }
     end
 
-    it 'requests pages until it has every tournament in the month' do
-      stub_ifpa(page([ 1, 2 ], 5), page([ 3, 4 ], 5), page([ 5 ], 5), page([ 6 ], 1))
+    it 'requests pages until it has every tournament in the range' do
+      stub_ifpa(page([ 1, 2 ], 5), page([ 3, 4 ], 5), page([ 5 ], 5))
       importer = run(page_size: 2)
 
-      expect(requested_queries.map { |q| [ q['start_date'], q['start_pos'] ] }).to eq([
-        %w[2026-10-15 1], %w[2026-10-15 3], %w[2026-10-15 5], %w[2026-11-15 1]
-      ])
-      expect(Event.pluck(:ifpa_tournament_id)).to match_array([ 1, 2, 3, 4, 5, 6 ])
+      expect(requested_queries.map { |q| q['start_pos'] }).to eq(%w[1 3 5])
+      expect(Event.pluck(:ifpa_tournament_id)).to match_array([ 1, 2, 3, 4, 5 ])
       expect(importer.errors).to be_empty
     end
 
     it 'stops at the last full page when it lines up with total_results' do
-      stub_ifpa(page([ 1, 2 ], 4), page([ 3, 4 ], 4), page([], 0))
+      stub_ifpa(page([ 1, 2 ], 4), page([ 3, 4 ], 4))
       run(page_size: 2)
 
-      expect(requested_queries.map { |q| q['start_pos'] }).to eq(%w[1 3 1])
+      expect(requested_queries.map { |q| q['start_pos'] }).to eq(%w[1 3])
     end
 
-    it 'deletes canceled events once every page of a month is fetched' do
-      canceled = FactoryBot.create(:event, ifpa_tournament_id: 99, start_date: '2026-10-20')
-      stub_ifpa(page([ 1, 2 ], 3), page([ 3 ], 3), page([], 0))
+    it 'deletes canceled events once every page is fetched' do
+      canceled = FactoryBot.create(:event, ifpa_tournament_id: 99, start_date: '2026-10-20', end_date: '2026-10-20')
+      stub_ifpa(page([ 1, 2 ], 3), page([ 3 ], 3))
       run(page_size: 2)
 
       expect(Event.exists?(canceled.id)).to be false
     end
 
-    it 'does not delete in a month where a later page failed' do
-      kept = FactoryBot.create(:event, ifpa_tournament_id: 99, start_date: '2026-10-20')
+    it 'counts a tournament listed once per director as fully fetched' do
+      canceled = FactoryBot.create(:event, ifpa_tournament_id: 99, start_date: '2026-10-20', end_date: '2026-10-20')
+      stub_ifpa({ 'total_results' => '2', 'tournaments' => [ tournament('director_id' => '1'), tournament('director_id' => '2') ] })
+      importer = run
+
+      expect(Event.pluck(:ifpa_tournament_id)).to eq([ 1001 ])
+      expect(Event.exists?(canceled.id)).to be false
+      expect(importer.errors).to be_empty
+    end
+
+    it 'does not delete when a later page failed' do
+      kept = FactoryBot.create(:event, ifpa_tournament_id: 99, start_date: '2026-10-20', end_date: '2026-10-20')
       http = instance_double(Net::HTTP)
       responses = [
         instance_double(Net::HTTPOK, code: '200', body: page([ 1, 2 ], 3).to_json),
-        instance_double(Net::HTTPOK, code: '500', body: 'oops'),
-        instance_double(Net::HTTPOK, code: '200', body: page([], 0).to_json)
+        instance_double(Net::HTTPOK, code: '500', body: 'oops')
       ]
       allow(http).to receive(:get) { responses.shift }
       allow(Net::HTTP).to receive(:start).and_yield(http)
@@ -107,8 +113,8 @@ describe IfpaTournamentImporter do
     end
 
     it 'does not delete when results shifted between pages and a tournament came back twice' do
-      kept = FactoryBot.create(:event, ifpa_tournament_id: 99, start_date: '2026-10-20')
-      stub_ifpa(page([ 1, 2 ], 3), page([ 2 ], 3), page([], 0))
+      kept = FactoryBot.create(:event, ifpa_tournament_id: 99, start_date: '2026-10-20', end_date: '2026-10-20')
+      stub_ifpa(page([ 1, 2 ], 3), page([ 2 ], 3))
       importer = run(page_size: 2)
 
       expect(Event.exists?(kept.id)).to be true
@@ -188,9 +194,9 @@ describe IfpaTournamentImporter do
     expect(Event.pluck(:ifpa_tournament_id)).to contain_exactly(1003, 1004)
   end
 
-  it 'deletes IFPA events in fetched months that IFPA no longer returns' do
-    canceled = FactoryBot.create(:event, ifpa_tournament_id: 2001, start_date: '2026-11-20')
-    stub_ifpa([ tournament ], [])
+  it 'deletes IFPA events in the fetched range that IFPA no longer returns' do
+    canceled = FactoryBot.create(:event, ifpa_tournament_id: 2001, start_date: '2026-11-20', end_date: '2026-11-22')
+    stub_ifpa([ tournament ])
     run
 
     expect(Event.exists?(canceled.id)).to be false
@@ -200,44 +206,40 @@ describe IfpaTournamentImporter do
   it 'keeps a tournament moved to a later month' do
     stub_ifpa([ tournament ])
     run
-    stub_ifpa([], [ tournament('event_start_date' => '2026-11-20', 'event_end_date' => '2026-11-20') ])
+    stub_ifpa([ tournament('event_start_date' => '2026-11-20', 'event_end_date' => '2026-11-20') ])
     run
 
     expect(Event.sole.start_date).to eq(Date.new(2026, 11, 20))
   end
 
-  it 'does not delete events that started before today, non-IFPA events, or events past the fetched months' do
-    past = FactoryBot.create(:event, ifpa_tournament_id: 2001, start_date: '2026-10-14')
-    manual = FactoryBot.create(:event, start_date: '2026-10-20')
-    later = FactoryBot.create(:event, ifpa_tournament_id: 2002, start_date: '2027-01-20')
-    stub_ifpa([], [])
+  it 'does not delete events that started before today, non-IFPA events, or events ending past the fetched range' do
+    past = FactoryBot.create(:event, ifpa_tournament_id: 2001, start_date: '2026-10-14', end_date: '2026-10-14')
+    manual = FactoryBot.create(:event, start_date: '2026-10-20', end_date: '2026-10-20')
+    later = FactoryBot.create(:event, ifpa_tournament_id: 2002, start_date: '2027-01-20', end_date: '2027-01-20')
+    extended = FactoryBot.create(:event, ifpa_tournament_id: 2003, start_date: '2026-11-20', end_date: '2027-01-20')
+    stub_ifpa([])
     run
 
-    expect(Event.where(id: [ past.id, manual.id, later.id ]).count).to eq(3)
+    expect(Event.where(id: [ past.id, manual.id, later.id, extended.id ]).count).to eq(4)
   end
 
-  it 'does not delete in a month whose results were truncated' do
-    kept = FactoryBot.create(:event, ifpa_tournament_id: 2001, start_date: '2026-10-20')
-    stub_ifpa({ 'total_results' => '2500', 'tournaments' => [ tournament ] }, [])
+  it 'does not delete when the results were truncated' do
+    kept = FactoryBot.create(:event, ifpa_tournament_id: 2001, start_date: '2026-10-20', end_date: '2026-10-20')
+    stub_ifpa({ 'total_results' => '2500', 'tournaments' => [ tournament ] })
     importer = run
 
     expect(Event.exists?(kept.id)).to be true
     expect(importer.errors.first).to include('fetched 1 of 2500')
   end
 
-  it 'does not delete in a month whose request failed, and still imports the other months' do
-    kept = FactoryBot.create(:event, ifpa_tournament_id: 2001, start_date: '2026-10-20')
+  it 'does not delete when the request failed' do
+    kept = FactoryBot.create(:event, ifpa_tournament_id: 2001, start_date: '2026-10-20', end_date: '2026-10-20')
     http = instance_double(Net::HTTP)
-    responses = [
-      instance_double(Net::HTTPOK, code: '500', body: 'oops'),
-      instance_double(Net::HTTPOK, code: '200', body: { 'total_results' => '1', 'tournaments' => [ tournament('event_start_date' => '2026-11-20') ] }.to_json)
-    ]
-    allow(http).to receive(:get) { responses.shift }
+    allow(http).to receive(:get).and_return(instance_double(Net::HTTPOK, code: '500', body: 'oops'))
     allow(Net::HTTP).to receive(:start).and_yield(http)
     importer = run
 
     expect(Event.exists?(kept.id)).to be true
-    expect(Event.exists?(ifpa_tournament_id: 1001)).to be true
-    expect(importer.errors.first).to include('request failed: 500')
+    expect(importer.errors).to eq([ '2026-10-15..2026-12-14 from 1 request failed: 500 oops' ])
   end
 end

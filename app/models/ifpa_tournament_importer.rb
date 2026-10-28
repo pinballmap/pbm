@@ -3,11 +3,14 @@ require "json"
 
 # Syncs upcoming IFPA tournaments into Events, one row per tournament.
 #
-# Tournaments are fetched one month at a time, in pages of PAGE_SIZE (IFPA's maximum), pausing between requests to go
-# easy on IFPA's server. Each page is saved before the next is requested. Every run overwrites the fields we use, so
-# edits on IFPA's side come through. Once all months are fetched, IFPA events starting in a fully fetched month that
-# IFPA no longer returned are deleted as canceled. A month counts as fully fetched only when we got as many distinct
-# tournaments as IFPA's total_results, so a failed page, or results shifting between pages, never causes deletions.
+# The next MONTHS of tournaments are fetched as one date range, in pages of PAGE_SIZE (IFPA's maximum), pausing between
+# requests to go easy on IFPA's server. IFPA only returns tournaments that start and end within the range, so it isn't
+# split into smaller ranges: a multi-day tournament crossing a split would be in neither. Each page is saved before the
+# next is requested. Every run overwrites the fields we use, so edits on IFPA's side come through.
+#
+# Once every page is fetched, IFPA events within the range that IFPA no longer returned are deleted as canceled. The
+# range counts as fully fetched only when we got as many distinct tournament and director rows as IFPA's
+# total_results, so a failed page, or results shifting between pages, never causes deletions.
 #
 # Events starting before today are never deleted, so timezone differences can't remove an event before it happens.
 class IfpaTournamentImporter
@@ -15,12 +18,10 @@ class IfpaTournamentImporter
   CATEGORY = "IFPA Sanctioned Events".freeze
   MONTHS = 6
   PAGE_SIZE = 250
-  # A safety stop, well above the ~1500 tournaments a month we see
-  MAX_PAGES_PER_MONTH = 40
+  # A safety stop, well above the ~3000 tournaments we see over six months
+  MAX_PAGES = 60
   REGION_SEARCH_MILES = 100
   PAUSE_SECONDS = 8
-
-  Window = Data.define(:start_date, :end_date)
 
   attr_reader :errors, :stats
 
@@ -29,10 +30,8 @@ class IfpaTournamentImporter
   end
 
   def initialize(start_date: Date.current, months: MONTHS, page_size: PAGE_SIZE, pause_seconds: PAUSE_SECONDS, logger: Rails.logger)
-    @windows = months.times.map do |i|
-      window_start = start_date.next_month(i)
-      Window.new(start_date: window_start, end_date: start_date.next_month(i + 1) - 1)
-    end
+    @start_date = start_date
+    @end_date = start_date.next_month(months) - 1
     @page_size = page_size
     @pause_seconds = pause_seconds
     @logger = logger
@@ -42,44 +41,36 @@ class IfpaTournamentImporter
 
   def run
     seen_ids = Set.new
-    complete_windows = []
-    requests = 0
+    # IFPA returns a tournament once per director, so rows are counted by tournament and director
+    seen_rows = Set.new
+    total_results = nil
+    start_pos = 1
 
-    @windows.each do |window|
-      window_ids = Set.new
-      total_results = nil
-      start_pos = 1
+    MAX_PAGES.times do |i|
+      sleep(@pause_seconds) if i.positive?
 
-      MAX_PAGES_PER_MONTH.times do
-        sleep(@pause_seconds) if requests.positive?
-        requests += 1
+      response = fetch(start_pos)
+      break unless response
 
-        response = fetch(window, start_pos)
-        break unless response
-
-        tournaments = Array(response["tournaments"])
-        total_results = response["total_results"].to_i
-        tournaments.each do |t|
-          window_ids << t["tournament_id"].to_i
-          import(t)
-        end
-
-        start_pos += @page_size
-        break if tournaments.size < @page_size || start_pos > total_results
+      tournaments = Array(response["tournaments"])
+      total_results = response["total_results"].to_i
+      tournaments.each do |t|
+        seen_ids << t["tournament_id"].to_i
+        seen_rows << [ t["tournament_id"].to_i, t["director_id"].to_i ]
+        import(t)
       end
 
-      seen_ids.merge(window_ids)
-      # A failed request has already been reported
-      next if total_results.nil?
-
-      if window_ids.size < total_results
-        add_error("#{window.start_date}..#{window.end_date} fetched #{window_ids.size} of #{total_results} tournaments; skipping deletions for it")
-      else
-        complete_windows << window
-      end
+      start_pos += @page_size
+      break if tournaments.size < @page_size || start_pos > total_results
     end
 
-    delete_canceled(complete_windows, seen_ids)
+    # A failed first request has already been reported
+    if total_results && seen_rows.size < total_results
+      add_error("#{@start_date}..#{@end_date} fetched #{seen_rows.size} of #{total_results} tournaments; skipping deletions")
+    elsif total_results
+      delete_canceled(seen_ids)
+    end
+
     log("IFPA import: #{@stats.sort.map { |k, v| "#{k}=#{v}" }.join(' ')}")
     self
   end
@@ -87,16 +78,16 @@ class IfpaTournamentImporter
   private
 
   # start_pos counts from 1
-  def fetch(window, start_pos)
+  def fetch(start_pos)
     uri = URI(IFPA_SEARCH_URL)
     uri.query = URI.encode_www_form(
       api_key: ENV.fetch("IFPA_API_KEY", ""),
       total: @page_size,
       start_pos: start_pos,
-      start_date: window.start_date.iso8601,
-      end_date: window.end_date.iso8601
+      start_date: @start_date.iso8601,
+      end_date: @end_date.iso8601
     )
-    request = "#{window.start_date}..#{window.end_date} from #{start_pos}"
+    request = "#{@start_date}..#{@end_date} from #{start_pos}"
 
     response = Net::HTTP.start(uri.host, uri.port, use_ssl: true, open_timeout: 10, read_timeout: 60) do |http|
       http.get(uri.request_uri)
@@ -180,13 +171,12 @@ class IfpaTournamentImporter
     Location.where.not(region_id: nil).near([ lat, lon ], REGION_SEARCH_MILES).first&.region_id
   end
 
-  def delete_canceled(windows, seen_ids)
-    windows.each do |window|
-      canceled = Event.where.not(ifpa_tournament_id: nil)
-        .where(start_date: window.start_date..window.end_date)
-        .where.not(ifpa_tournament_id: seen_ids.to_a)
-      @stats[:deleted_canceled] += canceled.delete_all
-    end
+  # An event extended past the range is no longer returned, so only events ending within it are checked
+  def delete_canceled(seen_ids)
+    canceled = Event.where.not(ifpa_tournament_id: nil)
+      .where(start_date: @start_date..@end_date, end_date: @start_date..@end_date)
+      .where.not(ifpa_tournament_id: seen_ids.to_a)
+    @stats[:deleted_canceled] += canceled.delete_all
   end
 
   def add_error(message)
