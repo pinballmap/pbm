@@ -109,5 +109,18 @@ describe MachinesController, type: :controller do
 
       expect(JSON.parse(response.body)).to eq('opdb_img' => nil, 'ic_eligible' => false)
     end
+
+    it 'returns whether the machine is already at the location when a location_id is passed' do
+      machine = FactoryBot.create(:machine)
+      location = FactoryBot.create(:location)
+      other_location = FactoryBot.create(:location)
+      FactoryBot.create(:location_machine_xref, location: location, machine: machine)
+
+      get 'opdb_img', params: { id: machine.id, location_id: location.id }
+      expect(JSON.parse(response.body)['already_at_location']).to eq(true)
+
+      get 'opdb_img', params: { id: machine.id, location_id: other_location.id }
+      expect(JSON.parse(response.body)['already_at_location']).to eq(false)
+    end
   end
 end

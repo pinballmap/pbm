@@ -253,6 +253,27 @@ describe LocationMachineXrefsController do
       expect(find("#add_machine_backglass_img_#{@location.id}", visible: :all)[:src]).to include('favicon.ico')
     end
 
+    it 'shows a notice instead of the backglass and add button when the machine is already at the location' do
+      machine = FactoryBot.create(:machine, name: 'Twilight Zone', opdb_img: '/public/favicon.ico')
+      FactoryBot.create(:location_machine_xref, location: @location, machine: machine)
+
+      visit "/#{@region.name}/?by_location_id=#{@location.id}"
+      select_machine_to_add(@location.id, machine)
+
+      expect(page).to have_content('Twilight Zone is already listed at this location.')
+      expect(page).to_not have_css("#add_machine_backglass_preview_#{@location.id}", visible: :visible)
+      expect(page).to_not have_css("#add_new_machine_#{@location.id} .add_machine_submit", visible: :visible)
+
+      page.find("#add_machine_by_id_#{@location.id} + .select2-container .select2-selection").click
+      page.find('.select2-search__field').set(@machine_to_add.name)
+      sleep 0.3
+      page.find('.select2-results__option', text: @machine_to_add.name).click
+      sleep 0.5
+
+      expect(page).to_not have_content('is already listed at this location.')
+      expect(page).to have_css("#add_new_machine_#{@location.id} .add_machine_submit", visible: :visible)
+    end
+
     it 'does not show the backglass image for a machine with no opdb_img' do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
       select_machine_to_add(@location.id, @machine_to_add)

@@ -1,7 +1,9 @@
 class MachinesController < ApplicationController
   def opdb_img
     machine = Machine.select(:opdb_img, :ic_eligible).find(params[:id])
-    render json: { opdb_img: machine.opdb_img.presence, ic_eligible: machine.ic_eligible }
+    json = { opdb_img: machine.opdb_img.presence, ic_eligible: machine.ic_eligible }
+    json[:already_at_location] = LocationMachineXref.exists?(location_id: params[:location_id], machine_id: params[:id]) if params[:location_id].present?
+    render json: json
   end
 
   def autocomplete
