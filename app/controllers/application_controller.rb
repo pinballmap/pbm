@@ -206,18 +206,12 @@ class ApplicationController < ActionController::Base
     request.referrer.match?(/admin/) ? root_path : request.referrer
   end
 
+  NO_RETURN_PATHS = %w[/users/login /users/join /users/password/new /users/password/edit /users/confirmation /users/logout].freeze
+
   def store_location
     return unless request.get?
 
-    if request.path != "/users/login" &&
-       request.path != "/users/join" &&
-       request.path != "/users/password/new" &&
-       request.path != "/users/password/edit" &&
-       request.path != "/users/confirmation" &&
-       request.path != "/users/logout" &&
-       !request.xhr?
-      session[:previous_url] = request.fullpath
-    end
+    session[:previous_url] = request.fullpath if !NO_RETURN_PATHS.include?(request.path) && !request.xhr?
   end
 
   def after_sign_in_path_for(*)
