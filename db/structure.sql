@@ -335,7 +335,6 @@ CREATE TABLE public.events (
     updated_at timestamp without time zone,
     category character varying(255),
     external_location_name character varying(255),
-    ifpa_calendar_id integer,
     ifpa_tournament_id integer,
     address character varying,
     event_type character varying,
@@ -2284,13 +2283,6 @@ CREATE UNIQUE INDEX index_api_tokens_on_user_id_active_unique ON public.api_toke
 
 
 --
--- Name: index_events_on_ifpa_calendar_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_events_on_ifpa_calendar_id ON public.events USING btree (ifpa_calendar_id);
-
-
---
 -- Name: index_events_on_ifpa_tournament_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3012,6 +3004,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261028130000'),
 ('20261028120000'),
 ('20261015120000'),
 ('20260723143027'),
