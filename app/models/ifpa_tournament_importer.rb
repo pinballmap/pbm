@@ -10,7 +10,8 @@ require "json"
 #
 # Once every page is fetched, IFPA events within the range that IFPA no longer returned are deleted as canceled. The
 # range counts as fully fetched only when we got as many distinct tournament and director rows as IFPA's
-# total_results, so a failed page, or results shifting between pages, never causes deletions.
+# total_results, so a failed page, or results shifting between pages, never causes deletions. IFPA events starting
+# after the range are deleted too.
 #
 # Events starting before today are never deleted, so timezone differences can't remove an event before it happens.
 class IfpaTournamentImporter
@@ -108,7 +109,7 @@ class IfpaTournamentImporter
     return if tournament_id.zero?
 
     # Older imports made one row per nearby region; collapse those into one
-    rows = Event.where(ifpa_tournament_id: tournament_id).to_a
+    rows = Event.where(ifpa_tournament_id: tournament_id).order(:id).to_a
     event = rows.shift || Event.new(ifpa_tournament_id: tournament_id, category: CATEGORY)
     Event.where(id: rows.map(&:id)).delete_all if rows.any?
 
@@ -182,10 +183,15 @@ class IfpaTournamentImporter
 
   # An event extended past the range is no longer returned, so only events ending within it are checked
   def delete_canceled(seen_ids)
-    canceled = Event.where.not(ifpa_tournament_id: nil)
+    ifpa_events = Event.where.not(ifpa_tournament_id: nil)
+    canceled = ifpa_events
       .where(start_date: @start_date..@end_date, end_date: @start_date..@end_date)
       .where.not(ifpa_tournament_id: seen_ids.to_a)
     @stats[:deleted_canceled] += canceled.delete_all
+
+    # Events starting past the range were moved there or have mistyped years (e.g. 2109), and would otherwise stay
+    # until they expire. A real one is imported again once it's within the range.
+    @stats[:deleted_beyond_range] += ifpa_events.where(start_date: (@end_date + 1)..).delete_all
   end
 
   def add_error(message)

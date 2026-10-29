@@ -13,8 +13,6 @@ class Event < ApplicationRecord
   # Events are deleted once they ended (or started, with no end date) this long ago
   EXPIRE_AFTER = 1.week
 
-  default_scope { order :id }
-
   scope :region, ->(name) { where(region_id: Region.find_by_name(name.downcase).id).to_a }
   scope :upcoming, ->(date = Date.current - UPCOMING_GRACE_DAYS) { where(end_date: date..).or(where(end_date: nil, start_date: date..)).reorder(:start_date, :name, :id) }
   scope :expired, ->(cutoff = Date.current - EXPIRE_AFTER) { where(end_date: ...cutoff).or(where(end_date: nil, start_date: ...cutoff)) }

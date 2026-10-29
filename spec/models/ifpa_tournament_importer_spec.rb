@@ -223,12 +223,32 @@ describe IfpaTournamentImporter do
   it 'does not delete events that started before today, non-IFPA events, or events ending past the fetched range' do
     past = FactoryBot.create(:event, ifpa_tournament_id: 2001, start_date: '2026-10-14', end_date: '2026-10-14')
     manual = FactoryBot.create(:event, start_date: '2026-10-20', end_date: '2026-10-20')
-    later = FactoryBot.create(:event, ifpa_tournament_id: 2002, start_date: '2027-01-20', end_date: '2027-01-20')
+    manual_later = FactoryBot.create(:event, start_date: '2027-01-20', end_date: '2027-01-20')
     extended = FactoryBot.create(:event, ifpa_tournament_id: 2003, start_date: '2026-11-20', end_date: '2027-01-20')
     stub_ifpa([])
     run
 
-    expect(Event.where(id: [ past.id, manual.id, later.id, extended.id ]).count).to eq(4)
+    expect(Event.where(id: [ past.id, manual.id, manual_later.id, extended.id ]).count).to eq(4)
+  end
+
+  it 'deletes IFPA events starting past the fetched range' do
+    later = FactoryBot.create(:event, ifpa_tournament_id: 2002, start_date: '2026-12-15', end_date: '2026-12-15')
+    typo = FactoryBot.create(:event, ifpa_tournament_id: 2004, start_date: '2109-11-15', end_date: nil)
+    last_day = FactoryBot.create(:event, ifpa_tournament_id: 1001, start_date: '2026-12-14', end_date: '2026-12-14')
+    stub_ifpa([ tournament('event_start_date' => '2026-12-14', 'event_end_date' => '2026-12-14') ])
+    run
+
+    expect(Event.exists?(later.id)).to be false
+    expect(Event.exists?(typo.id)).to be false
+    expect(Event.exists?(last_day.id)).to be true
+  end
+
+  it 'does not delete events past the fetched range when the results were truncated' do
+    kept = FactoryBot.create(:event, ifpa_tournament_id: 2002, start_date: '2027-01-20', end_date: '2027-01-20')
+    stub_ifpa({ 'total_results' => '2500', 'tournaments' => [ tournament ] })
+    run
+
+    expect(Event.exists?(kept.id)).to be true
   end
 
   it 'does not delete when the results were truncated' do
