@@ -110,13 +110,14 @@ Rails.application.configure do
   config.active_record.attributes_for_inspect = [ :id ]
 
   # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
-  #
+  # Keep in sync with DOMAINS in ops/server-setup/settings.sh.
+  config.hosts = [
+    "pinballmap.com",
+    "www.pinballmap.com"
+  ]
+
   # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
   ActiveSupport::Notifications.subscribe(/rack_attack/) do |name, start, finish, request_id, payload|
     req = payload[:request]
