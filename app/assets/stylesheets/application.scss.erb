@@ -1776,6 +1776,21 @@ input.ic_eligible_hide {
   color: #440152;
   background-color: #e3fae5;
   font-family: $Nunito_700Bold;
+  animation: refresh_button_pop 0.4s ease-out;
+}
+
+@keyframes refresh_button_pop {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.15);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 #refresh_button:hover,
