@@ -1718,7 +1718,6 @@ input.ic_eligible_hide {
   justify-content: space-between;
 }
 
-#refresh_button,
 #map_activity_button,
 #map_events_button,
 #closest_button,
@@ -1770,38 +1769,10 @@ input.ic_eligible_hide {
   align-items: center;
 }
 
-#refresh_button {
-  display: none;
-  top: 50%;
-  color: #440152;
-  background-color: #e3fae5;
-  font-family: $Nunito_700Bold;
-  animation: refresh_button_pop 0.4s ease-out;
-}
-
-@keyframes refresh_button_pop {
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.15);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
-#refresh_button:hover,
 #map_activity_button:hover,
 #map_events_button:hover,
 #closest_button:hover{
   cursor: pointer;
-}
-
-#refresh_button:hover {
-  background-color: #CBE7CD;
 }
 
 #closest_button:hover {

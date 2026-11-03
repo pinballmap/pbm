@@ -1,13 +1,13 @@
 class MapsController < ApplicationController
-  respond_to :html, only: %i[get_bounds]
   before_action :normalize_array_params
   before_action :normalize_machine_lookup_params
-  has_scope :by_location_name, :by_at_least_n_machines, :user_faved, :by_city_name, :by_city_no_state, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte, :by_payment_type
-  has_scope :by_type_id, :by_location_id, :by_machine_id, :by_operator_id, :by_machine_single_id, :by_machine_type, :by_machine_display, :manufacturer, :by_country, :by_state_name, :by_machine_id_ic, :by_machine_single_id_ic, :by_all_ages, type: :array
+  has_scope :by_location_name, :by_at_least_n_machines, :user_faved, :by_city_name, :by_city_no_state, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte, :by_payment_type, :by_machine_name, :by_is_stern_army
+  has_scope :by_type_id, :by_location_id, :by_machine_id, :by_operator_id, :by_machine_single_id, :by_machine_type, :by_machine_display, :manufacturer, :by_country, :by_state_name, :by_machine_id_ic, :by_machine_single_id_ic, :by_all_ages, :by_machine_year, type: :array
 
   rate_limit to: 100, within: 5.minutes, only: :region, name: "maps_region"
   rate_limit to: 80, within: 1.minute, only: %i[region map operators_autocomplete map_location_data], name: "maps_general"
-  rate_limit to: 100, within: 1.minute, only: %i[region_location_load map_location_load get_bounds_load nearby_locations_load get_bounds region_init_load], name: "maps_post_load"
+  # Tripping this triggers the escalating ban, and results reload on every pan
+  rate_limit to: 200, within: 1.minute, only: %i[region_location_load map_location_load get_bounds_load nearby_locations_load get_bounds region_init_load], name: "maps_post_load"
 
   def map
     if !params[:by_location_id].blank? && (loc = Location.includes(:machines).where(id: params[:by_location_id]).first)
@@ -21,6 +21,11 @@ class MapsController < ApplicationController
     @selected_machines = Machine.where(id: selected_machine_ids)
 
     @faved_location_ids = current_user ? UserFaveLocation.where(user_id: current_user.id).pluck(:location_id) : []
+
+    @url_only_filters = {
+      by_is_stern_army: params[:by_is_stern_army].presence,
+      by_machine_year: Array(params[:by_machine_year]).compact_blank.presence
+    }.compact
 
     @map_no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_city_id].blank? && params[:by_state_name].blank? && params[:by_city_no_state].blank? && params[:by_country].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank? && params[:by_is_stern_army].blank? && params[:by_machine_type].blank? && params[:by_machine_display].blank? && params[:manufacturer].blank? && params[:by_operator_id].blank? && params[:by_operator_name].blank? && params[:by_machine_id_ic].blank? && params[:by_machine_single_id_ic].blank? && params[:by_machine_year_gte].blank? && params[:by_machine_year_lte].blank? && params[:by_opdb_id].blank? && params[:by_ipdb_id].blank? && params[:by_all_ages].blank? && params[:by_payment_type].blank?
 
@@ -86,7 +91,8 @@ class MapsController < ApplicationController
     elsif @locations_size == 1 && @results_init == true
       @pagy, @locations = pagy(apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance).includes(:location_type, :machines))
     else
-      @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count, locations.all_ages, locations.payment_type")).includes(:location_type, :machines), limit: 50, request_path: "/nearby_locations_load")
+      # No path: option; this action needs map_location_data's geocoding
+      @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count, locations.all_ages, locations.payment_type")).includes(:location_type, :machines), limit: 50)
     end
 
     if @results_init == true
@@ -122,7 +128,7 @@ class MapsController < ApplicationController
     elsif @locations_size == 1 && @results_init == true
       @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).includes(:location_type, :machines))
     else
-      @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).where(city_condition).where(zone_condition).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "all_ages", "payment_type" ]).order(sort_order).includes(:location_type, :machines), limit: 50, request_path: "/region_location_load")
+      @pagy, @locations = pagy(apply_scopes(Location).where([ "region_id = ?", @region_id ]).where(city_condition).where(zone_condition).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "all_ages", "payment_type" ]).order(sort_order).includes(:location_type, :machines), limit: 50, path: "/region_location_load")
     end
 
     if @results_init == true
@@ -134,33 +140,32 @@ class MapsController < ApplicationController
 
   def get_bounds
     @results_init = true
-    @locations = []
-    @locations_size = 0
-    @machines_sum = 0
-
+    @viewport_results = true
     @bounds = [ params[:boundsData][:sw][:lat], params[:boundsData][:sw][:lng], params[:boundsData][:ne][:lat], params[:boundsData][:ne][:lng] ]
+    scope = apply_scopes(Location).within_bounding_box(@bounds)
+    json = {}
 
-    @locations = apply_scopes(Location).within_bounding_box(@bounds).select([ "name", "id", "lat", "lon", "machine_count" ])
+    if params[:markers] != "0"
+      @locations = scope.select([ "name", "id", "lat", "lon", "machine_count" ])
+      construct_geojson
+      json[:features] = @geojson_features
+    end
 
-    construct_geojson
+    if params[:list] != "0"
+      if @locations_size.nil?
+        @locations_size = scope.count
+        @machines_sum = scope.sum(:machine_count)
+      end
+      load_bounds_list
+      json[:html] = render_to_string(partial: "locations/locations", formats: [ :html ], layout: false)
+    end
 
-    get_bounds_load
+    render json: json
   end
 
   def get_bounds_load
     @results_init = params[:results_init] if params[:results_init].present?
-    @sort = params[:sort]
-    @nearby_lat = params[:nearby_lat].presence
-    @nearby_lon = params[:nearby_lon].presence
-    @bounds = [ params[:boundsData][:sw][:lat], params[:boundsData][:sw][:lng], params[:boundsData][:ne][:lat], params[:boundsData][:ne][:lng] ]
-
-    if @locations_size == 0 && @results_init == true
-      @locations = []
-    elsif @locations_size == 1 && @results_init == true
-      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).includes(:location_type, :machines))
-    else
-      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "all_ages", "payment_type" ]).order(sort_order).includes(:location_type, :machines), limit: 50, request_path: "/get_bounds_load")
-    end
+    load_bounds_list
 
     if @results_init == true
       render partial: "locations/locations", layout: false
@@ -173,7 +178,7 @@ class MapsController < ApplicationController
     @locations_size = @locations.size
     @machines_sum = @locations.sum(&:machine_count)
 
-    @locations_geojson = @locations.sort { |a, b| a.machine_count - b.machine_count }.map.with_index do |location, index|
+    @geojson_features = @locations.sort { |a, b| a.machine_count - b.machine_count }.map.with_index do |location, index|
       {
         type: "Feature",
         id: location.id,
@@ -188,7 +193,8 @@ class MapsController < ApplicationController
           coordinates: [ location.lon.to_f, location.lat.to_f ]
         }
       }
-    end.to_json
+    end
+    @locations_geojson = @geojson_features.to_json
   end
 
   def map_location_data
@@ -219,14 +225,17 @@ class MapsController < ApplicationController
       end
     end
 
+    # City and geocoded address searches frame their matches, then the client
+    # loads everything in view (with @visible_area_params)
     if @locations.blank?
       geocode unless params[:address].blank?
       @near_distance = 15
+      @visible_area_params = { nearby_lat: @nearby_lat, nearby_lon: @nearby_lon } if @nearby_lat.present?
       nearby_locations
     else
       construct_geojson
 
-      @city_search_mode = params[:by_city_name].present? || params[:by_city_no_state].present?
+      @visible_area_params = {} if params[:by_city_name].present? || params[:by_city_no_state].present?
       map_location_load
     end
   end
@@ -241,7 +250,8 @@ class MapsController < ApplicationController
     elsif @locations_size == 1 && @results_init == true
       @pagy, @locations = pagy(base_scope.distinct.includes(:location_type, :machines))
     else
-      @pagy, @locations = pagy(base_scope.select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "all_ages", "payment_type" ]).distinct.order(sort_order).includes(:location_type, :machines), limit: 50, request_path: "/map_location_load")
+      # No path: option; this action needs map_location_data's fuzzy matches
+      @pagy, @locations = pagy(base_scope.select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "all_ages", "payment_type" ]).distinct.order(sort_order).includes(:location_type, :machines), limit: 50)
     end
 
     if @results_init == true
@@ -282,18 +292,19 @@ class MapsController < ApplicationController
     end
   end
 
+  # Cached so repeats (page turns, re-sorts) don't count toward the rate limit
   def geocode
-    return if geocode_rate_limited?
+    key = "maps:geocode:#{params[:address].to_s.downcase.squish}"
+    @nearby_lat, @nearby_lon = Rails.cache.fetch(key, expires_in: 30.days, skip_nil: true) do
+      next nil if geocode_rate_limited?
 
-    if Rails.env.test?
-      results = Geocoder.search(params[:address], lookup: :test)
-    else
-      results = Geocoder.search(params[:address], lookup: :here)
-      results = Geocoder.search(params[:address]) if results.blank?
-    end
-    if results.present?
-      @nearby_lat = results.first.latitude
-      @nearby_lon = results.first.longitude
+      if Rails.env.test?
+        results = Geocoder.search(params[:address], lookup: :test)
+      else
+        results = Geocoder.search(params[:address], lookup: :here)
+        results = Geocoder.search(params[:address]) if results.blank?
+      end
+      [ results.first.latitude, results.first.longitude ] if results.present?
     end
   end
 
@@ -376,6 +387,21 @@ class MapsController < ApplicationController
   end
 
   private
+
+  def load_bounds_list
+    @sort = params[:sort]
+    @nearby_lat = params[:nearby_lat].presence
+    @nearby_lon = params[:nearby_lon].presence
+    @bounds = [ params[:boundsData][:sw][:lat], params[:boundsData][:sw][:lng], params[:boundsData][:ne][:lat], params[:boundsData][:ne][:lng] ]
+
+    if @locations_size == 0 && @results_init == true
+      @locations = []
+    elsif @locations_size == 1 && @results_init == true
+      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).includes(:location_type, :machines))
+    else
+      @pagy, @locations = pagy(apply_scopes(Location).within_bounding_box(@bounds).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "all_ages", "payment_type" ]).order(sort_order).includes(:location_type, :machines), limit: 50, path: "/get_bounds_load")
+    end
+  end
 
   def sort_order
     params[:sort] == "machine_count" ? "locations.machine_count DESC, locations.name" : "locations.name"

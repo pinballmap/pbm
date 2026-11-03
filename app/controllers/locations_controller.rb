@@ -72,12 +72,17 @@ class LocationsController < ApplicationController
 
     @locations = apply_scopes(Location).select([ "id", "name", "lat", "lon", "machine_count" ]).uniq
 
-    if @locations.blank? && (params[:by_city_name].present? || params[:by_city_no_state].present?)
+    city_search = params[:by_city_name].present? || params[:by_city_no_state].present?
+
+    # Same as MapsController#map_location_data, for /map links
+    if @locations.blank? && city_search
       @address = params[:by_city_no_state].present? ? params[:by_city_no_state] : "#{params[:by_city_name]}, #{params[:by_state_name]}"
       geocode unless Rails.env.test?
+      @visible_area_params = { nearby_lat: @nearby_lat, nearby_lon: @nearby_lon } if @region.blank? && @nearby_lat.present?
       nearby_locations
     else
       construct_geojson
+      @visible_area_params = {} if @region.blank? && city_search
       map_location_load
     end
 
@@ -124,28 +129,23 @@ class LocationsController < ApplicationController
     elsif @locations_size == 1
       @pagy, @locations = pagy(apply_scopes(Location).near([ @nearby_lat, @nearby_lon ], @near_distance).includes(:location_type, :machines))
     else
-      if @region.present?
-        @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count, locations.all_ages, locations.payment_type")).includes(:location_type, :machines), limit: 50, request_path: "/region_location_load")
-      else
-        @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count, locations.all_ages, locations.payment_type")).includes(:location_type, :machines), limit: 50, request_path: "/map_location_load")
-      end
+      @pagy, @locations = pagy(apply_scopes(Location.near([ @nearby_lat, @nearby_lon ], @near_distance, select: "locations.id, locations.lat, locations.lon, locations.name, locations.location_type_id, locations.street, locations.city, locations.state, locations.zip, locations.machine_count, locations.all_ages, locations.payment_type")).includes(:location_type, :machines), limit: 50)
     end
   end
 
   def map_location_load
     @results_init = true
     @results_init = params[:results_init] if params[:results_init].present?
+    @sort = params[:sort]
 
     if @locations_size == 0
       @locations = []
     elsif @locations_size == 1
       @pagy, @locations = pagy(apply_scopes(Location).distinct.includes(:location_type, :machines))
     else
-      if @region.present?
-        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "all_ages", "payment_type", "region_id" ]).distinct.order("locations.name").includes(:location_type, :machines), limit: 50, request_path: "/region_location_load")
-      else
-        @pagy, @locations = pagy(apply_scopes(Location).select([ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "all_ages", "payment_type" ]).distinct.order("locations.name").includes(:location_type, :machines), limit: 50, request_path: "/map_location_load")
-      end
+      columns = [ "id", "lat", "lon", "name", "location_type_id", "street", "city", "state", "zip", "machine_count", "all_ages", "payment_type" ]
+      columns << "region_id" if @region.present?
+      @pagy, @locations = pagy(apply_scopes(Location).select(columns).distinct.order(sort_order).includes(:location_type, :machines), limit: 50)
     end
   end
 
@@ -279,5 +279,11 @@ class LocationsController < ApplicationController
     l = Location.find(params[:id])
     l.confirm(current_user || nil)
     l
+  end
+
+  private
+
+  def sort_order
+    params[:sort] == "machine_count" ? "locations.machine_count DESC, locations.name" : "locations.name"
   end
 end

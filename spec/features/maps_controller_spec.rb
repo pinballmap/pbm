@@ -37,16 +37,56 @@ describe MapsController do
       FactoryBot.create(:location, name: 'Second Location', region: @region, state: 'OR', lat: '12.12', lon: '-12.12')
     end
 
+    def json
+      JSON.parse(response.body)
+    end
+
+    def list_html
+      json['html']
+    end
+
+    it 'returns markers and the list by default' do
+      post get_bounds_path, params: { boundsData: bounds_data }
+
+      expect(json['features'].map { |f| f['id'] }).to contain_exactly(@location.id, Location.find_by(name: 'Second Location').id)
+      expect(list_html).to include('2 locations')
+      expect(list_html).to include('Second Location')
+      # Viewport results never reposition the map or touch the URL
+      expect(list_html).not_to include('showLocations')
+      expect(list_html).not_to include('pushState')
+    end
+
+    it 'skips the markers when markers=0, still counting the locations in the list' do
+      post get_bounds_path, params: { boundsData: bounds_data, markers: '0' }
+
+      expect(json).not_to have_key('features')
+      expect(list_html).to include('2 locations')
+    end
+
+    it 'skips the list when list=0' do
+      post get_bounds_path, params: { boundsData: bounds_data, list: '0' }
+
+      expect(json).not_to have_key('html')
+      expect(json['features'].size).to eq(2)
+    end
+
+    it 'says so when nothing is in view' do
+      post get_bounds_path, params: { boundsData: { sw: { lat: 1, lng: 1 }, ne: { lat: 2, lng: 2 } } }
+
+      expect(json['features']).to eq([])
+      expect(list_html).to include('No results in the current map view.')
+    end
+
     it 'shows distance from nearby_lat/nearby_lon when present (Nearby locations search)' do
       post get_bounds_path, params: { boundsData: bounds_data, nearby_lat: '11.11', nearby_lon: '-11.11' }
 
-      expect(response.body).to include('alt="distance"')
+      expect(list_html).to include('alt="distance"')
     end
 
     it 'does not show distance when nearby_lat/nearby_lon are absent (plain bounds search)' do
       post get_bounds_path, params: { boundsData: bounds_data }
 
-      expect(response.body).not_to include('alt="distance"')
+      expect(list_html).not_to include('alt="distance"')
     end
 
     it 'filters by by_opdb_id, which has no machine-picker widget of its own and would otherwise be dropped on a pan-and-refresh' do
@@ -55,8 +95,8 @@ describe MapsController do
 
       post get_bounds_path, params: { boundsData: bounds_data, by_opdb_id: [ 'abc123' ] }
 
-      expect(response.body).to include(@location.name)
-      expect(response.body).not_to include('Second Location')
+      expect(list_html).to include(@location.name)
+      expect(list_html).not_to include('Second Location')
     end
 
     it 'filters by by_ipdb_id' do
@@ -65,8 +105,8 @@ describe MapsController do
 
       post get_bounds_path, params: { boundsData: bounds_data, by_ipdb_id: [ 4321 ] }
 
-      expect(response.body).to include(@location.name)
-      expect(response.body).not_to include('Second Location')
+      expect(list_html).to include(@location.name)
+      expect(list_html).not_to include('Second Location')
     end
 
     it 'filters by by_machine_group_id, expanding to every machine in the group' do
@@ -76,8 +116,115 @@ describe MapsController do
 
       post get_bounds_path, params: { boundsData: bounds_data, by_machine_group_id: [ group.id ] }
 
-      expect(response.body).to include(@location.name)
-      expect(response.body).not_to include('Second Location')
+      expect(list_html).to include(@location.name)
+      expect(list_html).not_to include('Second Location')
+    end
+
+    it 'filters by by_is_stern_army, whatever its value' do
+      @location.update!(is_stern_army: true)
+
+      %w[1 true].each do |value|
+        post get_bounds_path, params: { boundsData: bounds_data, by_is_stern_army: value }
+
+        expect(json['features'].map { |f| f['id'] }).to eq([ @location.id ])
+      end
+    end
+
+    it 'filters by by_machine_name, which region machine searches carry over when the map moves' do
+      matching_machine = FactoryBot.create(:machine, name: 'Transformers', machine_group: nil)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: matching_machine)
+
+      post get_bounds_path, params: { boundsData: bounds_data, by_machine_name: 'Transformers' }
+
+      expect(json['features'].map { |f| f['id'] }).to eq([ @location.id ])
+      expect(list_html).not_to include('Second Location')
+    end
+  end
+
+  describe 'address geocoding', type: :request do
+    before(:each) do
+      # The test env uses null_store; this needs a real cache
+      allow(Rails).to receive(:cache).and_return(ActiveSupport::Cache::MemoryStore.new)
+      # Its name mustn't contain the search text, or the fuzzy name match wins
+      FactoryBot.create(:location, region: nil, name: 'Zip Spot', lat: 45.6008, lon: -122.7606)
+    end
+
+    it 'geocodes a repeated address once, so page turns and re-sorts do not use up the rate limit' do
+      expect(Geocoder).to receive(:search).with('97203', lookup: :test).once.and_call_original
+
+      25.times do |i|
+        get map_location_data_path, params: { address: '97203', page: (i % 2) + 1 }
+        expect(response.body).to include('Zip Spot')
+      end
+    end
+
+    it 'still rate limits lookups of different addresses' do
+      20.times { |i| get map_location_data_path, params: { address: "nowhere #{i}" } }
+
+      expect(Geocoder).not_to receive(:search)
+      get map_location_data_path, params: { address: '97203' }
+      expect(response.body).not_to include('Zip Spot')
+    end
+  end
+
+  describe 'region_init_load', type: :request do
+    it 'links later pages to region_location_load rather than re-running the initial load' do
+      51.times { |i| FactoryBot.create(:location, region: @region, name: "Region Spot #{i}") }
+
+      post region_init_load_path, params: { region_id: @region.id }
+
+      expect(response.body).to include('/region_location_load?')
+      expect(response.body).to include('page=2')
+
+      post '/region_location_load', params: { region_id: @region.id, results_init: 'false', page: 2 }
+
+      expect(response.body).to include('Region Spot')
+      expect(response.body.scan('class="search_result').size).to eq(2) # 52 locations, 50 per page
+    end
+  end
+
+  describe 'Region auto-refresh', type: :feature, js: true do
+    def user_moves_map(lng, lat, zoom)
+      page.execute_script("map.fire('movestart', { originalEvent: new MouseEvent('mousedown') }); map.jumpTo({ center: [#{lng}, #{lat}], zoom: #{zoom} });")
+    end
+
+    it 'keeps the machine filter from a region search when the user moves the map' do
+      machine = FactoryBot.create(:machine, name: 'Godzilla', machine_group: nil)
+      FactoryBot.create(:location_machine_xref, machine: machine, location: FactoryBot.create(:location, region: @region, name: 'Has It Here', lat: 45.5905, lon: -122.7549))
+      FactoryBot.create(:location_machine_xref, machine: machine, location: FactoryBot.create(:location, region: @region, name: 'Has It Far', lat: 45.0, lon: -121.0))
+      FactoryBot.create(:location, region: @region, name: 'Lacks It Here', lat: 45.5910, lon: -122.7550)
+
+      visit "/#{@region.name}"
+      page.find('div#other_search_options button#machine_section_link').click
+      select('Godzilla', from: 'by_machine_id')
+      page.find('input#machine_search_button').click
+
+      # The search covers the whole region
+      expect(find('#search_results')).to have_content('Has It Far')
+      expect(find('#search_results')).to have_content('Has It Here')
+      expect(find('#search_results')).to have_no_content('Lacks It Here')
+
+      # Moving the map narrows to the view, still filtered
+      user_moves_map(-122.7549, 45.5905, 12)
+      expect(find('#search_results')).to have_no_content('Has It Far')
+      expect(find('#search_results')).to have_content('Has It Here')
+      expect(find('#search_results')).to have_no_content('Lacks It Here')
+    end
+
+    it 'keeps the machine filter from a region direct link when the user moves the map' do
+      machine = FactoryBot.create(:machine, name: 'Godzilla', machine_group: nil)
+      FactoryBot.create(:location_machine_xref, machine: machine, location: FactoryBot.create(:location, region: @region, name: 'Has It Here', lat: 45.5905, lon: -122.7549))
+      FactoryBot.create(:location_machine_xref, machine: machine, location: FactoryBot.create(:location, region: @region, name: 'Has It Far', lat: 45.0, lon: -121.0))
+      FactoryBot.create(:location, region: @region, name: 'Lacks It Here', lat: 45.5910, lon: -122.7550)
+
+      visit "/#{@region.name}/?by_machine_id=#{machine.id}"
+      expect(find('#search_results')).to have_content('Has It Far')
+      expect(find('#search_results')).to have_no_content('Lacks It Here')
+
+      user_moves_map(-122.7549, 45.5905, 12)
+      expect(find('#search_results')).to have_no_content('Has It Far')
+      expect(find('#search_results')).to have_content('Has It Here')
+      expect(find('#search_results')).to have_no_content('Lacks It Here')
     end
   end
 
@@ -260,6 +407,10 @@ describe MapsController do
 
       page.find('#clearButton2', visible: false).click
 
+      # A single result zooms the map right in, and a search with no address
+      # covers the current view, so widen it first
+      page.execute_script("map.jumpTo({ center: [-122.6, 46.5], zoom: 6 });")
+
       click_on 'location_search_button'
 
       sleep 1
@@ -267,6 +418,73 @@ describe MapsController do
       expect(find('#search_results')).to have_content('Rip City')
       expect(find('#search_results')).to have_content('No Way')
       expect(find('#search_results')).to have_content('Far Off')
+    end
+
+    describe 'auto-refresh' do
+      # The map fires movestart with the originating DOM event for user
+      # gestures. Simulate that, then move the map.
+      def user_moves_map(lng, lat, zoom)
+        page.execute_script("map.fire('movestart', { originalEvent: new MouseEvent('mousedown') }); map.jumpTo({ center: [#{lng}, #{lat}], zoom: #{zoom} });")
+      end
+
+      def request_counts
+        page.evaluate_script('[markersRequestSeq, listRequestSeq]')
+      end
+
+      before(:each) do
+        FactoryBot.create(:location, region: nil, name: 'Rip City', lat: 45.5905, lon: -122.7549)
+        FactoryBot.create(:location, region: nil, name: 'Far Off', city: 'Seattle', lat: 47.6130, lon: -122.3447)
+        FactoryBot.create(:location, region: nil, name: 'Pub Place', city: 'London', lat: 51.5072, lon: -0.1276)
+
+        visit '/map'
+        sleep 1
+
+        user_moves_map(-122.5, 46.6, 6)
+        sleep 1 # let the debounced refresh finish
+        expect(find('#search_results')).to have_content('Far Off')
+      end
+
+      it 'refreshes results after the user moves the map, but not after programmatic moves' do
+        page.execute_script('map.jumpTo({ center: [-122.7549, 45.5905], zoom: 12 });')
+        sleep 1
+        expect(find('#search_results')).to have_content('Far Off')
+
+        user_moves_map(-122.7549, 45.5905, 12)
+        expect(find('#search_results')).to have_no_content('Far Off')
+        expect(find('#search_results')).to have_content('Rip City')
+      end
+
+      it 'keeps a link-only filter (by_is_stern_army) when the map moves, until filters are cleared' do
+        FactoryBot.create(:location, region: nil, name: 'Army Base', lat: 45.5910, lon: -122.7550, is_stern_army: true)
+
+        visit '/map?by_is_stern_army=true'
+        expect(find('#search_results')).to have_content('Army Base')
+        expect(find('#search_results')).to have_no_content('Rip City')
+
+        user_moves_map(-122.7549, 45.5905, 12)
+        sleep 1
+        expect(find('#search_results')).to have_content('Army Base')
+        expect(find('#search_results')).to have_no_content('Rip City')
+
+        find('#clear_filters_button').click
+        expect(find('#search_results')).to have_content('Rip City')
+        expect(find('#search_results')).to have_content('Army Base')
+      end
+
+      it 'reuses the markers when zooming in within the area they were loaded for' do
+        # Outside the area loaded so far: markers are fetched
+        markers_before, = request_counts
+        user_moves_map(-0.1276, 51.5072, 6)
+        expect(find('#search_results')).to have_content('Pub Place')
+        expect(request_counts.first).to eq(markers_before + 1)
+
+        # Zoomed in within it: only the list is fetched
+        markers_before, list_before = request_counts
+        user_moves_map(-0.1276, 51.5072, 10)
+        sleep 1
+        expect(request_counts).to eq([ markers_before, list_before + 1 ])
+        expect(find('#search_results')).to have_content('Pub Place')
+      end
     end
 
     it 'lets you filter by location type and number of machines with address and machine name' do
@@ -867,6 +1085,27 @@ describe MapsController do
       sleep 1
 
       expect(find('#search_results')).to have_content('Sass Barn 1')
+    end
+
+    it 'frames the nearest locations to a geocoded address, then shows everything in that view' do
+      # 97203 geocodes to 45.6008, -122.7606. North and South are within the
+      # 15 mile search radius and frame the map; Edge is ~16 miles away, just
+      # outside the radius but inside the framed view.
+      FactoryBot.create(:location, region: nil, name: 'North Spot', lat: 45.80, lon: -122.76)
+      FactoryBot.create(:location, region: nil, name: 'South Spot', lat: 45.40, lon: -122.76)
+      FactoryBot.create(:location, region: nil, name: 'Edge Spot', lat: 45.78, lon: -122.98)
+
+      visit '/map'
+      sleep 1
+
+      fill_in('address', with: '97203')
+      click_on 'location_search_button'
+
+      expect(find('#search_results')).to have_content('Edge Spot')
+      expect(find('#search_results')).to have_content('North Spot')
+      expect(find('#search_results')).to have_content('South Spot')
+      # Distances are still from the searched address
+      expect(page).to have_css('#search_results img[alt="distance"]')
     end
 
     it 'fuzzy matches a location name when no autocomplete suggestion is selected, and falls through to geocode when no match' do

@@ -12,8 +12,6 @@
   #map_buttons
     #map_activity_button.fixed.hide_button.toggle_btn_reg
       Activity feed
-  #refresh_button.fixed.toggle_btn_reg
-    Refresh map area
   - unless mobile_device?
     #key_container.fixed.hide_button.toggle_btn_reg.flex_center
       =image_tag( 'marker-z-1-noShadow.png', :alt => '1 machine example',:style => 'height: 20px;padding-right: 5px;')
@@ -87,13 +85,12 @@
     return false;
   });
 
-  document.getElementById("refresh_button").addEventListener("click", function() {
-    var mapActivityVisible = $('#map_activity_container').html().trim() !== '';
+  mapAutoRefreshFn = function() {
     $('#intro_container').css('display','none');
 
-    getMapBounds();
+    refreshMapArea(regionSearchFilters, { auto: true });
 
-    if (mapActivityVisible) {
+    if ($('#map_activity_container').html().trim() !== '') {
       loadMapActivity();
     }
-  });
+  };

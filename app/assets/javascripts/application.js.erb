@@ -4,23 +4,19 @@
 var map;
 var region;
 var region_id;
-var mapAdjusted = 0;
 var mapLoaded = 0;
 var search_string;
 var zoomLevel;
 var locationIDs = new Array();
 var searchSections = new Array();
-var refresh_bounds;
 var by_at_least_n_machines;
 var by_type_id;
 var by_machine_id;
 var by_machine_single_id;
-var locations_geojson;
+var locations_geojson = [];
 var results_init;
 var center_lat;
 var center_lon;
-var map_init = 0;
-var map_init_zoom;
 var stored_machine_id = "";
 var boundsData;
 var nearbySearchActive = false;
@@ -71,20 +67,12 @@ function toggle_machine_data(name, id) {
 }
 
 function regionMapLocations(region_id) {
-  mapAdjusted = 0;
-  var region_id = region_id;
-
+  regionSearchFilters = {};
   lastSearchFn = function() {
-    $('#locations').html(loadingHTML());
-    $.ajax({
+    loadSearchResults({
       url: "/region_init_load",
       type: "POST",
-      data: { region_id, sort: currentSort },
-      success: function(data) {
-        $('#locations').html(data);
-        refresh_bounds = undefined;
-        mapAdjusted = 0;
-      }
+      data: { region_id, sort: currentSort }
     });
   };
   lastSearchFn();
@@ -97,44 +85,185 @@ function findClosestLocations() {
     center: [center_lon, center_lat],
     zoom: 8
   });
-  getMapBounds(typeof currentMapFilterParams === 'function' ? currentMapFilterParams() : {});
+  refreshMapArea(typeof currentMapFilterParams === 'function' ? currentMapFilterParams() : {});
 }
 
-function homeMapBounds() {
-  mapAdjusted = 0;
-  locations_geojson = [];
-  showLocations();
-  map_init = 0;
-  setTimeout(getMapBounds, 800);
+function homeMapBounds(lat, lon, zoom) {
+  createMap([lon, lat], zoom);
+  setTimeout(function() { refreshMapArea({}); }, 800);
 }
 
-function getMapBounds({ by_at_least_n_machines, by_type_id, by_machine_id, by_machine_single_id, manufacturer, by_operator_id, by_machine_type, by_machine_id_ic, by_machine_single_id_ic, by_ic_active, by_machine_year_gte, by_machine_year_lte, user_faved, by_all_ages, by_payment_type } = {}) {
-  mapAdjusted = 1;
-  refresh_bounds = map.getBounds();
-  var capturedBoundsData = {
-    ne: refresh_bounds.getNorthEast(),
-    sw: refresh_bounds.getSouthWest(),
-  };
-  boundsData = capturedBoundsData;
+// A response only applies the parts (markers, list) no newer request has
+// claimed, so a slow response can't land on top of newer results
+var markersRequestSeq = 0;
+var listRequestSeq = 0;
+// get_bounds returns every marker in the bounds (no cap), so a view inside
+// these needs no new markers. Null after a search, which covers no fixed area.
+var markersBounds = null;
+var listStale = false;
 
-  lastSearchFn = function() {
-    $('#locations').html(loadingHTML());
-    $.ajax({
-      url: "/get_bounds",
-      type: "POST",
-      data: { boundsData: capturedBoundsData, by_at_least_n_machines: by_at_least_n_machines, by_type_id: by_type_id, by_machine_id: by_machine_id, by_machine_single_id: by_machine_single_id, manufacturer: manufacturer, by_operator_id: by_operator_id, by_machine_type: by_machine_type, by_machine_id_ic: by_machine_id_ic, by_machine_single_id_ic: by_machine_single_id_ic, by_ic_active: by_ic_active, by_machine_year_gte: by_machine_year_gte, by_machine_year_lte: by_machine_year_lte, user_faved: user_faved, by_all_ages: by_all_ages, by_payment_type: by_payment_type, sort: currentSort, nearby_lat: nearbySearchActive ? center_lat : undefined, nearby_lon: nearbySearchActive ? center_lon : undefined },
-      success: function(data) {
-        $('#locations').html(data);
-        refresh_bounds = undefined;
-        mapAdjusted = 0;
-        map.getSource("point").setData({
-          'type': 'FeatureCollection',
-          'features': locations_geojson
-        });
+var AUTO_REFRESH_DEBOUNCE_MS = 400;
+var mapAutoRefreshFn = null;
+var userMovedMap = false;
+var autoRefreshTimer = null;
+
+function cancelPendingAutoRefresh() {
+  userMovedMap = false;
+  if (autoRefreshTimer) {
+    clearTimeout(autoRefreshTimer);
+    autoRefreshTimer = null;
+  }
+}
+
+function onUserMoveStart() {
+  cancelPendingAutoRefresh();
+  userMovedMap = true;
+}
+
+function onMoveEnd() {
+  if (!userMovedMap || !mapAutoRefreshFn) return;
+  userMovedMap = false;
+  autoRefreshTimer = setTimeout(function() {
+    autoRefreshTimer = null;
+    if (map.isMoving()) {
+      // Momentum is still running; its moveend will try again
+      userMovedMap = true;
+      return;
+    }
+    mapAutoRefreshFn();
+  }, AUTO_REFRESH_DEBOUNCE_MS);
+}
+
+// Region search params that still apply after the user moves the map: what to
+// show (machine, type, ...), not where (location, city, zone, region)
+var regionSearchFilters = {};
+
+var SEARCH_FILTER_PARAMS = [
+  'by_machine_id', 'by_machine_single_id', 'by_machine_group_id', 'by_machine_id_ic',
+  'by_machine_single_id_ic', 'by_machine_name', 'by_machine_year', 'by_ipdb_id', 'by_opdb_id',
+  'manufacturer', 'by_machine_type', 'by_machine_display', 'by_type_id', 'by_operator_id',
+  'by_at_least_n_machines', 'by_ic_active', 'by_is_stern_army', 'user_faved',
+  'by_machine_year_gte', 'by_machine_year_lte', 'by_all_ages', 'by_payment_type'
+];
+
+function filtersFromSearchParams(query) {
+  var filters = {};
+  new URLSearchParams(query).forEach(function(value, key) {
+    if (value === '') return;
+    var name = key.replace(/\[\]$/, '');
+    if (/^by_at_least_n_machines_/.test(name)) name = 'by_at_least_n_machines';
+    if (SEARCH_FILTER_PARAMS.indexOf(name) === -1) return;
+    if (key.endsWith('[]')) {
+      (filters[name] = filters[name] || []).push(value);
+    } else {
+      filters[name] = value;
+    }
+  });
+  return filters;
+}
+
+function setLocationsHtml(html) {
+  selectedLocationID = null;
+  if (map && map.getLayer('points')) {
+    map.setLayoutProperty('points', 'icon-image', buildIconImageExpr(null));
+  }
+  $('#locations').css('opacity', '').html(html);
+}
+
+function setMarkerData(features) {
+  locations_geojson = features;
+  // Until the map loads, addMapLayersAndImages picks up locations_geojson
+  var source = map && map.getSource('point');
+  if (source) {
+    source.setData({ type: 'FeatureCollection', features: features });
+  }
+}
+
+function markFavedLocations(features) {
+  var faved = new Set(favedLocationIds);
+  features.forEach(function(f) { f.properties.is_faved = faved.has(f.id); });
+  return features;
+}
+
+function boundsContain(outer, inner) {
+  return !!outer && outer.contains(inner.getSouthWest()) && outer.contains(inner.getNorthEast());
+}
+
+function locationDetailOpen() {
+  return $('#location_detail').is(':visible');
+}
+
+function loadSearchResults(ajaxOptions) {
+  cancelPendingAutoRefresh();
+  var markersSeq = ++markersRequestSeq;
+  var listSeq = ++listRequestSeq;
+  markersBounds = null;
+  listStale = false;
+  $('#locations').css('opacity', '').html(loadingHTML());
+  return $.ajax(ajaxOptions).done(function(data) {
+    if (markersSeq !== markersRequestSeq || listSeq !== listRequestSeq) return;
+    setLocationsHtml(data);
+  });
+}
+
+// opts.auto: reuse markers that cover the view, keep the list on screen while
+// loading, and leave an open location detail alone. Returns whether it fetched.
+function refreshMapArea(filterParams, opts) {
+  opts = opts || {};
+  filterParams = filterParams || {};
+  cancelPendingAutoRefresh();
+  lastSearchFn = function() { refreshMapArea(filterParams, { auto: true }); };
+
+  var bounds = map.getBounds();
+  var wantMarkers = !opts.auto || !boundsContain(markersBounds, bounds);
+  var wantList = !opts.auto || !locationDetailOpen();
+  listStale = !wantList;
+  if (!wantMarkers && !wantList) return false;
+
+  var boundsParam = { ne: bounds.getNorthEast(), sw: bounds.getSouthWest() };
+  var markersSeq = wantMarkers ? ++markersRequestSeq : null;
+  var listSeq = wantList ? ++listRequestSeq : null;
+  if (wantMarkers) markersBounds = bounds;
+  if (wantList) {
+    if (opts.auto) {
+      $('#locations').css('opacity', 0.5);
+    } else {
+      $('#locations').html(loadingHTML());
+    }
+  }
+
+  $.ajax({
+    url: "/get_bounds",
+    type: "POST",
+    dataType: "json",
+    data: $.extend({}, filterParams, {
+      boundsData: boundsParam,
+      markers: wantMarkers ? 1 : 0,
+      list: wantList ? 1 : 0,
+      sort: currentSort,
+      nearby_lat: nearbySearchActive ? center_lat : undefined,
+      nearby_lon: nearbySearchActive ? center_lon : undefined
+    })
+  }).done(function(data) {
+    if (wantMarkers && markersSeq === markersRequestSeq) {
+      setMarkerData(markFavedLocations(data.features));
+    }
+    if (wantList && listSeq === listRequestSeq) {
+      boundsData = boundsParam;
+      setLocationsHtml(data.html);
+    }
+  }).fail(function() {
+    if (wantMarkers && markersSeq === markersRequestSeq) markersBounds = null;
+    if (wantList && listSeq === listRequestSeq) {
+      listStale = true;
+      if (opts.auto) {
+        $('#locations').css('opacity', '');
+      } else {
+        setLocationsHtml("<p id='not_found' class='red bold'>Couldn't load locations for this area. Please try again.</p>");
       }
-    });
-  };
-  lastSearchFn();
+    }
+  });
+  return true;
 }
 
 function getEffectiveTheme() {
@@ -278,85 +407,33 @@ async function addMapLayersAndImages() {
   }
 }
 
-function showLocations(notFound_lat, notFound_lon, skipMarkers) {
+function createMap(center, zoom) {
   let protocol = new pmtiles.Protocol();
   maplibregl.addProtocol("pmtiles", protocol.tile);
 
-  if (typeof refresh_bounds == 'undefined') {
-    var bounds = new maplibregl.LngLatBounds();
-    bounds_padding = 50;
-  } else {
-    var bounds = refresh_bounds;
-    bounds_padding = 0;
+  var options = {
+    container: 'map_canvas',
+    style: getEffectiveTheme() === 'dark' ? map_style_obj_dark : map_style_obj
+  };
+  if (center) {
+    options.center = center;
+    options.zoom = zoom;
   }
+  map = new maplibregl.Map(options);
+  map.dragRotate.disable();
+  map.keyboard.disable();
+  map.touchZoomRotate.disableRotation();
+  map.addControl(new maplibregl.ScaleControl({unit: 'imperial'}), 'bottom-right');
+  map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
+  map.addControl(new maplibregl.FullscreenControl(), 'top-right');
+  mapLoaded = 1;
+  map.once('load', addMapLayersAndImages);
 
-  var map_style = getEffectiveTheme() === 'dark' ? map_style_obj_dark : map_style_obj;
-
-  if (!skipMarkers && mapLoaded === 1 && map_init === 0 && mapAdjusted === 0 && locations_geojson.length > 0) {
-      map.getSource("point").setData({
-        'type': 'FeatureCollection',
-        'features': locations_geojson
-      });
-  } else if (mapAdjusted === 0 && mapLoaded === 0) {
-    if (map_init == 1) {
-      map = new maplibregl.Map({
-        container: 'map_canvas',
-        style: map_style,
-        center: [center_lon, center_lat],
-        zoom: map_init_zoom
-      });
-    } else {
-      map = new maplibregl.Map({
-        container: 'map_canvas',
-        style: map_style,
-      });
-    }
-    map.dragRotate.disable();
-    map.keyboard.disable();
-    map.touchZoomRotate.disableRotation();
-    map.addControl(new maplibregl.ScaleControl({unit: 'imperial'}), 'bottom-right');
-    map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
-    map.addControl(new maplibregl.FullscreenControl(), 'top-right');
-    mapLoaded = 1;
-    map.once('load', addMapLayersAndImages);
-  }
-
-  if (locations_geojson.length === 1) {
-    var location_coords = []
-    locations_geojson.forEach(function(feature) {
-      location_coords = feature.geometry.coordinates;
-    });
-    if (typeof refresh_bounds === 'undefined') {
-      map.setZoom(18);
-      map.setCenter(location_coords);
-    }
-    hideRefresh();
-    refreshButton();
-  } else if (locations_geojson.length == 0 && typeof refresh_bounds !== 'undefined') {
-    map.fitBounds(bounds, { padding: bounds_padding, animate: false });
-    map.getSource("point").setData({ type: 'FeatureCollection', features: [] });
-    document.getElementById("results_container").innerHTML = "<p id='not_found' class='red bold'>" + "No results in the current map view." + "<br />" + "Zoom out - move the map - change your filters - try again." + "</p>";
-    hideRefresh();
-    refreshButton();
-  } else if (locations_geojson.length == 0 && notFound_lon > 0 && notFound_lon?.length !== 0 && typeof notFound_lon !== 'undefined' && map_init == 0) {
-    map.jumpTo({
-      center: [notFound_lon, notFound_lat],
-      zoom: 10
-    });
-    document.getElementById("results_container").innerHTML = "<p id='not_found' class='red bold'>" + "No results in the current map view." + "<br />" + "Zoom out - move the map - change your filters - try again." + "</p>";
-    hideRefresh();
-  } else if (locations_geojson.length == 0 && map_init == 0) {
-    document.getElementById("results_container").innerHTML = "<p id='not_found' class='red bold'>" + "No results in the current map view." + "<br />" + "Zoom out - move the map - change your filters - try again." + "</p>";
-    map.setCenter([center_lon, center_lat]);
-    hideRefresh();
-  } else if (locations_geojson.length > 1) {
-    locations_geojson.forEach(function(feature) {
-      bounds.extend(feature.geometry.coordinates);
-    });
-    map.fitBounds(bounds, { padding: bounds_padding, animate: false });
-    hideRefresh();
-    refreshButton();
-  }
+  // User moves carry the originating DOM event; jumpTo/fitBounds don't
+  map.on('movestart', function (e) {
+    if (e.originalEvent) onUserMoveStart();
+  });
+  map.on('moveend', onMoveEnd);
 
   map.on('click', 'points', function (e) {
     showLocationDetail(e.features[0].properties.id);
@@ -378,7 +455,7 @@ function showLocations(notFound_lat, notFound_lon, skipMarkers) {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
 
-    popup.setLngLat(coordinates).setHTML(description).addTo(map);
+    popup.setLngLat(coordinates).setText(description).addTo(map);
   });
 
   map.on('mouseleave', 'points', function () {
@@ -387,19 +464,28 @@ function showLocations(notFound_lat, notFound_lon, skipMarkers) {
   });
 }
 
-function hideRefresh() {
-  document.getElementById("refresh_button").style.display = "none";
-}
+function showLocations(notFound_lat, notFound_lon, skipMarkers) {
+  if (!mapLoaded) createMap();
+  if (!skipMarkers) setMarkerData(locations_geojson);
 
-function refreshButton() {
-  map.on('zoomend', function () {
-    document.getElementById("refresh_button").style.display = "block";
-    mapAdjusted = 1;
-  });
-  map.on('dragend', function () {
-    document.getElementById("refresh_button").style.display = "block";
-    mapAdjusted = 1;
-  });
+  if (locations_geojson.length === 1) {
+    map.jumpTo({ center: locations_geojson[0].geometry.coordinates, zoom: 18 });
+  } else if (locations_geojson.length > 1) {
+    var bounds = new maplibregl.LngLatBounds();
+    locations_geojson.forEach(function(feature) {
+      bounds.extend(feature.geometry.coordinates);
+    });
+    map.fitBounds(bounds, { padding: 50, animate: false });
+  } else {
+    document.getElementById("results_container").innerHTML = "<p id='not_found' class='red bold'>" + "No results in the current map view." + "<br />" + "Zoom out - move the map - change your filters - try again." + "</p>";
+    var lat = parseFloat(notFound_lat);
+    var lon = parseFloat(notFound_lon);
+    if (lat && lon) {
+      map.jumpTo({ center: [lon, lat], zoom: 10 });
+    } else if (center_lat !== undefined && center_lon !== undefined) {
+      map.setCenter([center_lon, center_lat]);
+    }
+  }
 }
 
 function loadingHTML() {
@@ -532,12 +618,11 @@ function initSearch(userFaved, locationIDs, operatorIDs, locationTypeIDs, zoneID
     params.set('by_machine_year_lte', byMachineYearLte || '');
     params.set('by_all_ages', byAllAges || '');
     params.set('by_payment_type', byPaymentType || '');
+    regionSearchFilters = filtersFromSearchParams(params);
 
     lastSearchFn = function() {
       params.set('sort', currentSort);
-      var url = '/locations?' + params.toString();
-      $('#locations').html(loadingHTML());
-      $.get(url, function(data) { $('#locations').html(data); });
+      loadSearchResults({ url: '/locations?' + params.toString() });
     };
     lastSearchFn();
   }
@@ -579,6 +664,7 @@ function backToResults() {
   $('#sort_controls').show();
   $('#location_detail').hide();
   map.setLayoutProperty('points', 'icon-image', buildIconImageExpr(null));
+  if (listStale && lastSearchFn) lastSearchFn();
 }
 
 function toggleSort() {
@@ -831,6 +917,7 @@ function clearAllFilters() {
     $('#all_ic_toggle').addClass('active');
   }
   if (typeof setSavedMode === 'function') setSavedMode(false);
+  if (typeof urlOnlyFilters !== 'undefined') urlOnlyFilters = {};
   if (typeof updateClearFiltersButton === 'function') updateClearFiltersButton();
   if (typeof suppressAnchorInvalidation !== 'undefined') suppressAnchorInvalidation = false;
   if (typeof locationAnchorStale !== 'undefined') locationAnchorStale = false;

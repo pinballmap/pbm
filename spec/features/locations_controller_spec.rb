@@ -5,6 +5,25 @@ describe LocationsController do
     @region = FactoryBot.create(:region, name: 'portland', full_name: 'portland', lat: 1, lon: 2, motd: 'This is a MOTD', n_search_no: 4, should_email_machine_removal: 0)
   end
 
+  describe 'index sort', type: :request do
+    it 'sorts region search results by machine count when asked (the list sort toggle)' do
+      machine = FactoryBot.create(:machine, name: 'Godzilla')
+      few = FactoryBot.create(:location, region: @region, name: 'Aardvark Arcade')
+      many = FactoryBot.create(:location, region: @region, name: 'Zebra Bar')
+      FactoryBot.create(:location_machine_xref, location: few, machine: machine)
+      3.times { FactoryBot.create(:location_machine_xref, location: many, machine: FactoryBot.create(:machine)) }
+      FactoryBot.create(:location_machine_xref, location: many, machine: machine)
+
+      list = -> { response.body.split('id="search_results"').last } # past the marker JSON
+
+      get locations_path, params: { region: @region.name, by_machine_id: [ machine.id ] }
+      expect(list.call.index('Aardvark Arcade')).to be < list.call.index('Zebra Bar')
+
+      get locations_path, params: { region: @region.name, by_machine_id: [ machine.id ], sort: 'machine_count' }
+      expect(list.call.index('Zebra Bar')).to be < list.call.index('Aardvark Arcade')
+    end
+  end
+
   describe 'add as fave', type: :feature, js: true do
     it "doesn't give you the option unless you're logged in" do
       location = FactoryBot.create(:location, region: @region, name: 'Cleo')
@@ -840,11 +859,13 @@ describe LocationsController do
       expect(find('#search_results')).to_not have_content('Sass')
     end
 
+    # A city link frames its matches, then lists everything in that view, so
+    # these keep matches and non-matches apart (and away from the fixtures above)
     it 'by_city_name alone includes all locations with that city value regardless of state' do
-      location = FactoryBot.create(:location, city: 'McGannyville', state: 'CA', name: 'Cleo')
-      FactoryBot.create(:location, city: 'McGannyville', state: '', name: 'Sass')
-      FactoryBot.create(:location, city: 'McGannyville', state: 'TX', name: 'Jolene')
-      FactoryBot.create(:location, city: 'Weakerton', state: 'OR', name: 'Plover')
+      location = FactoryBot.create(:location, city: 'McGannyville', state: 'CA', name: 'Cleo', lat: 30, lon: -90)
+      FactoryBot.create(:location, city: 'McGannyville', state: '', name: 'Sass', lat: 30, lon: -90)
+      FactoryBot.create(:location, city: 'McGannyville', state: 'TX', name: 'Jolene', lat: 30, lon: -90)
+      FactoryBot.create(:location, city: 'Weakerton', state: 'OR', name: 'Plover', lat: 40, lon: -100)
 
       visit '/map/?by_city_name=' + location.city.to_s
 
@@ -855,10 +876,10 @@ describe LocationsController do
     end
 
     it 'by_city_name with by_state_name does not include locations that match city but not state' do
-      location = FactoryBot.create(:location, city: 'McGannyville', state: 'CA', name: 'Cleo')
-      FactoryBot.create(:location, city: 'McGannyville', state: '', name: 'Sass')
-      FactoryBot.create(:location, city: 'McGannyville', state: 'TX', name: 'Jolene')
-      FactoryBot.create(:location, city: 'Weakerton', state: 'OR', name: 'Plover')
+      location = FactoryBot.create(:location, city: 'McGannyville', state: 'CA', name: 'Cleo', lat: 30, lon: -90)
+      FactoryBot.create(:location, city: 'McGannyville', state: '', name: 'Sass', lat: 40, lon: -100)
+      FactoryBot.create(:location, city: 'McGannyville', state: 'TX', name: 'Jolene', lat: 40, lon: -100)
+      FactoryBot.create(:location, city: 'Weakerton', state: 'OR', name: 'Plover', lat: 40, lon: -100)
 
       visit '/map/?by_city_name=' + location.city.to_s + '&by_state_name=' + location.state.to_s
 
@@ -866,6 +887,20 @@ describe LocationsController do
       expect(find('#search_results')).to_not have_content('Sass')
       expect(find('#search_results')).to_not have_content('Jolene')
       expect(find('#search_results')).to_not have_content('Plover')
+    end
+
+    it 'a city link also shows other locations within the framed view, like a city search from the form' do
+      FactoryBot.create(:location, region: nil, city: 'Rivertown', state: 'OR', name: 'North Rivertown', lat: 45.60, lon: -122.80)
+      FactoryBot.create(:location, region: nil, city: 'Rivertown', state: 'OR', name: 'East Rivertown', lat: 45.45, lon: -122.55)
+      FactoryBot.create(:location, region: nil, city: 'Beaverton', state: 'OR', name: 'In Between', lat: 45.50, lon: -122.70)
+      FactoryBot.create(:location, region: nil, city: 'Seattle', state: 'WA', name: 'Far Away', lat: 47.61, lon: -122.34)
+
+      visit '/map/?by_city_name=Rivertown&by_state_name=OR'
+
+      expect(find('#search_results')).to have_content('In Between')
+      expect(find('#search_results')).to have_content('North Rivertown')
+      expect(find('#search_results')).to have_content('East Rivertown')
+      expect(find('#search_results')).to have_no_content('Far Away')
     end
 
     it 'by_state_name alone includes all locations with that state value' do
@@ -881,10 +916,10 @@ describe LocationsController do
     end
 
     it 'by_city_no_state only includes locations that do not have a state value' do
-      FactoryBot.create(:location, city: 'McGannyville', state: 'CA', name: 'Cleo')
-      location = FactoryBot.create(:location, city: 'McGannyville', state: '', name: 'Sass')
-      FactoryBot.create(:location, city: 'McGannyville', state: 'TX', name: 'Jolene')
-      FactoryBot.create(:location, city: 'Weakerton', state: 'OR', name: 'Plover')
+      FactoryBot.create(:location, city: 'McGannyville', state: 'CA', name: 'Cleo', lat: 40, lon: -100)
+      location = FactoryBot.create(:location, city: 'McGannyville', state: '', name: 'Sass', lat: 30, lon: -90)
+      FactoryBot.create(:location, city: 'McGannyville', state: 'TX', name: 'Jolene', lat: 40, lon: -100)
+      FactoryBot.create(:location, city: 'Weakerton', state: 'OR', name: 'Plover', lat: 40, lon: -100)
 
       visit '/map/?by_city_no_state=' + location.city.to_s
 

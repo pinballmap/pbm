@@ -48,18 +48,18 @@
   $(function () {
     $('.location_search').on('submit', function(e) {
       hideSearchModal();
-      mapAdjusted = 0;
       $('#intro_container').css('display','none');
       e.preventDefault();
       search_string = $(this).children(":input").filter(function(index, element) { return $(element).val() != ''; }).serialize();
 
       var form = $(this);
+      var formData = form.serialize();
+      regionSearchFilters = filtersFromSearchParams(formData);
 
-      $('#locations').html(loadingHTML());
-
-      $.get(form.attr('action'), form.serialize(), function(data, textStatus, jqxhr) {
-        $('#locations').html(data);
-      });
+      lastSearchFn = function() {
+        loadSearchResults({ url: form.attr('action'), data: formData + '&sort=' + currentSort });
+      };
+      lastSearchFn();
 
       return false;
 
