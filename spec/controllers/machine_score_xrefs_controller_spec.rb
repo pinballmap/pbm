@@ -109,6 +109,23 @@ describe MachineScoreXrefsController, type: :controller do
       expect(submission.submission).to eq('cibw added a high score of 400 on Test Machine Name at Test Location Name in Portland')
       expect(submission.high_score).to eq(400)
     end
+
+    it 'should not update a high score or its user submission that you do not own' do
+      @msx.create_user_submission
+      submission = UserSubmission.find_by(machine_score_xref_id: @msx.id)
+      original_submission_text = submission.submission
+
+      login(FactoryBot.create(:user, username: 'acidburn', email: 'crash@override.test'))
+
+      post 'update', params: { score: 999, id: @msx.id }
+
+      @msx.reload
+      submission.reload
+
+      expect(@msx.score).to eq(300)
+      expect(submission.high_score).to eq(300)
+      expect(submission.submission).to eq(original_submission_text)
+    end
   end
 
   describe 'destroy' do

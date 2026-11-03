@@ -1,12 +1,13 @@
 class UsersController < ApplicationController
   rate_limit to: 20, within: 1.minute, only: :profile, name: "users_profile"
+  before_action :authenticate_user!, only: %i[toggle_fave_location update_user_flag]
 
   def fave_locations
     @user = User.find(params[:id])
   end
 
   def toggle_fave_location
-    user = User.find(params[:id])
+    user = current_user
     location = Location.find(params[:location_id])
 
     if UserFaveLocation.where(user: user, location: location).any?

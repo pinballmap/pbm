@@ -3,6 +3,7 @@ class SuggestedLocationsController < ApplicationController
 
   def convert_to_location
     sl = SuggestedLocation.find(params[:id])
+    authorize! :update, sl
     sl.convert_to_location(params[:user_email])
 
     if sl.errors.any?

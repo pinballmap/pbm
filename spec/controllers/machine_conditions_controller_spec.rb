@@ -38,11 +38,17 @@ describe MachineConditionsController, type: :controller do
       bad_user = FactoryBot.create(:user, username: 'acidburn', email: 'crash@override.test')
       login(bad_user)
 
+      submission = UserSubmission.find_by(machine_condition_id: mc.id)
+      original_submission_text = submission.submission
+
       post 'update', params: { comment: 'Civil War was a bad movie', id: mc.id }
 
       mc.reload
+      submission.reload
 
       expect(mc.comment).to eq('foo')
+      expect(submission.comment).to eq('foo')
+      expect(submission.submission).to eq(original_submission_text)
     end
   end
 

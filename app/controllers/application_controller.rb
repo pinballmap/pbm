@@ -185,6 +185,8 @@ class ApplicationController < ActionController::Base
   end
 
   def token_matches?(user, token)
+    return false if user.authentication_token.blank? || token.blank?
+
     ActiveSupport::SecurityUtils.secure_compare(user.authentication_token.to_s, token.to_s)
   end
 

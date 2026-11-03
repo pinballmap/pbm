@@ -6,7 +6,7 @@ describe SuggestedLocationsController, type: :controller do
     @lt = FactoryBot.create(:location_type, name: 'lt')
     @o = FactoryBot.create(:operator, name: 'o', region: @r)
     @z = FactoryBot.create(:zone, name: 'z', region: @r)
-    @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.test', id: 1112)
+    @user = FactoryBot.create(:user, username: 'ssw', email: 'ssw@yeah.test', id: 1112, region: @r)
 
     @sl = FactoryBot.create(:suggested_location, name: 'name', street: 'street', city: 'city', state: 'OR', zip: '97203', country: 'US', phone: '503-391-9288', lat: 11.11, lon: 22.22, website: 'http://www.cool.test', region: @r, location_type: @lt, operator: @o, zone: @z, all_ages: 'Yes', payment_type: 'Free Play', machines: [ 21, 22, 23, 24 ], user_id: @user.id)
 
@@ -14,6 +14,16 @@ describe SuggestedLocationsController, type: :controller do
   end
 
   describe '#convert_to_location' do
+    it 'should not let a non-admin convert a suggested location' do
+      login(FactoryBot.create(:user, username: 'notadmin', email: 'notadmin@yeah.test'))
+
+      post :convert_to_location, format: :json, params: { id: @sl.id }
+
+      expect(Location.all.size).to eq(0)
+      expect(SuggestedLocation.all.size).to eq(1)
+      expect(response).to redirect_to('/users/login')
+    end
+
     it 'should create a corresponding location, delete itself, redirect to admin page' do
       m_one = FactoryBot.create(:machine, name: 'The Dark Knight', manufacturer: 'Stern', year: '2008', id: 21)
       m_two = FactoryBot.create(:machine, name: 'Challenger', manufacturer: 'Gottlieb', year: '1971', id: 22)

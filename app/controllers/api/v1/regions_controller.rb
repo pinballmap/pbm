@@ -5,6 +5,7 @@ module Api
       skip_before_action :require_api_token, only: :location_and_machine_counts
 
       before_action :allow_cors
+      rate_limit to: 5, within: 10.minutes, only: :contact, name: "api_regions_contact"
 
       MAX_MILES_TO_SEARCH_FOR_CLOSEST_REGION = 250
 
