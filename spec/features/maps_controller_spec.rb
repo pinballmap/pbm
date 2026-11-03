@@ -485,6 +485,53 @@ describe MapsController do
         expect(request_counts).to eq([ markers_before, list_before + 1 ])
         expect(find('#search_results')).to have_content('Pub Place')
       end
+
+      it 'keeps a single-result detail with unsaved input, and replaces it once the input is cleared' do
+        user_moves_map(-0.1276, 51.5072, 12)
+        expect(page).to have_css('#search_results .search_result > .location_detail')
+        expect(find('#search_results')).to have_content('Pub Place')
+
+        # The detail's forms load on demand; stand in for one
+        page.execute_script("$('#search_results .search_result > .location_detail').append('<textarea id=\"draft\"></textarea>'); $('#draft').val('Flipper is sticky');")
+        user_moves_map(-122.7549, 45.5905, 12)
+        sleep 1
+        expect(find('#search_results')).to have_content('Pub Place')
+        expect(find('#search_results')).to have_no_content('Rip City')
+
+        page.execute_script("$('#draft').val('')")
+        user_moves_map(-122.7550, 45.5906, 12)
+        expect(find('#search_results')).to have_content('Rip City')
+      end
+
+      it 'closes the activity and events panels when the user moves the map' do
+        FactoryBot.create(:event, location: Location.find_by(name: 'Rip City'), name: 'Monday Strikes', start_date: Date.new(2030, 1, 7), end_date: Date.new(2030, 1, 7))
+
+        page.execute_script("$('#map_events_button').click()")
+        expect(find('#map_events_container')).to have_content('Monday Strikes')
+        user_moves_map(-122.7549, 45.5905, 12)
+        expect(page).to have_no_content('Monday Strikes')
+        expect(find('#map_events_container', visible: :all).native.property('innerHTML').strip).to eq('')
+
+        page.execute_script("$('#map_activity_button').click()")
+        expect(find('#map_activity_container')).to have_content('No recent edits within the map view')
+        user_moves_map(-122.7550, 45.5906, 12)
+        expect(page).to have_no_content('No recent edits within the map view')
+      end
+
+      it 'keeps a panel closed when its response arrives after a pan closed it' do
+        page.execute_script("$('#map_activity_button').click(); closeActivity();")
+        sleep 1
+        expect(page).to have_no_content('No recent edits within the map view')
+      end
+
+      it 'replaces an untouched single-result detail when the map moves' do
+        user_moves_map(-0.1276, 51.5072, 12)
+        expect(page).to have_css('#search_results .search_result > .location_detail')
+
+        user_moves_map(-122.7549, 45.5905, 12)
+        expect(find('#search_results')).to have_content('Rip City')
+        expect(find('#search_results')).to have_no_content('Pub Place')
+      end
     end
 
     it 'lets you filter by location type and number of machines with address and machine name' do

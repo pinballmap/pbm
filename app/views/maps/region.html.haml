@@ -70,7 +70,7 @@
       boundsData: getMapBoundsData(),
       submission_type: mapActivityFilters
     }, function(data, textStatus, jqxhr) {
-      $('#map_activity_container').html(data);
+      fillOpenPanel('#map_activity_container', data);
     });
   }
 
@@ -90,7 +90,6 @@
 
     refreshMapArea(regionSearchFilters, { auto: true });
 
-    if ($('#map_activity_container').html().trim() !== '') {
-      loadMapActivity();
-    }
+    // The panel shows the area it was opened for; reopening loads the new one
+    closeActivity();
   };

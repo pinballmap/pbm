@@ -190,7 +190,21 @@ function boundsContain(outer, inner) {
 }
 
 function locationDetailOpen() {
-  return $('#location_detail').is(':visible');
+  return $('#location_detail').is(':visible') || singleResultDetailEdited();
+}
+
+// A one-location result shows its detail inline, with no way back to a list,
+// so only hold it while the user has unsaved input in it
+function singleResultDetailEdited() {
+  return $('#search_results .search_result > .location_detail').find('input, textarea, select').filter(function() {
+    if (this.type === 'hidden' || this.type === 'submit') return false;
+    if (this.tagName === 'SELECT') {
+      var defaultIndex = Math.max(0, Array.prototype.findIndex.call(this.options, function(o) { return o.defaultSelected; }));
+      return this.selectedIndex !== defaultIndex;
+    }
+    if (this.type === 'checkbox' || this.type === 'radio') return this.checked !== this.defaultChecked;
+    return this.value !== this.defaultValue;
+  }).length > 0;
 }
 
 function loadSearchResults(ajaxOptions) {
@@ -677,6 +691,14 @@ function toggleSort() {
 
 function closeActivity() {
   document.getElementById('map_activity_container').innerHTML = "";
+}
+
+// A panel closed (e.g. by a pan) while loading stays closed
+function fillOpenPanel(selector, html) {
+  var panel = $(selector);
+  if (panel.html().trim() === '') return false;
+  panel.html(html);
+  return true;
 }
 
 function showSearchModal() {

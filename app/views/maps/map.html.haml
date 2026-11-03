@@ -574,7 +574,7 @@
       page: page,
       submission_type: mapActivityFilters
     }, function(data) {
-      $('#map_activity_container').html(data);
+      fillOpenPanel('#map_activity_container', data);
     });
   });
 
@@ -592,7 +592,7 @@
       boundsData: getMapBoundsData(),
       submission_type: mapActivityFilters
     }, function(data, textStatus, jqxhr) {
-      $('#map_activity_container').html(data);
+      fillOpenPanel('#map_activity_container', data);
     });
   }
 
@@ -618,8 +618,7 @@
       boundsData: getMapBoundsData(),
       page: page || ''
     }, function(data) {
-      $('#map_events_container').html(data);
-      topFunction();
+      if (fillOpenPanel('#map_events_container', data)) topFunction();
     });
   }
 
@@ -677,12 +676,9 @@
       clearAddressFields();
     }
 
-    if ($('#map_activity_container').html().trim() !== '') {
-      loadMapActivity();
-    }
-    if ($('#map_events_container').html().trim() !== '') {
-      loadMapEvents();
-    }
+    // Panels show the area they were opened for; reopening loads the new one
+    closeActivity();
+    closeMapEvents();
   };
 
   $('#address_search_form').on('submit', function(e) {
