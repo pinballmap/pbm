@@ -22,6 +22,7 @@ unless Rails.env.test?
     ) do
       CGI.unescape(req.query_string) =~ %r{/etc/passwd} ||
       CGI.unescape(req.query_string) =~ %r{page=\D} ||
+      CGI.unescape(req.query_string) =~ /(?:\A|&)(?:by_at_least_n_machines\w*|by_machine_year_[gl]te|by_operator_id|by_type_id(?:\[\])?)=[^\d&]/ ||
       req.path.include?('/etc/passwd') ||
       req.path.include?('wp-admin') ||
       req.path.include?('wp-login') ||
