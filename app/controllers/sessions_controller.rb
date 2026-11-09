@@ -5,8 +5,6 @@ class SessionsController < Devise::SessionsController
 
   private
 
-  # Map searches update the URL client-side via pushState, so the server never
-  # sees them. The referer reflects the browser's actual URL, so prefer it.
   def store_referer_location
     referer = URI.parse(request.referer.to_s)
     return unless referer.host == request.host && referer.port == request.port
