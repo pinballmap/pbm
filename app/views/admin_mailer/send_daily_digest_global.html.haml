@@ -31,6 +31,13 @@
             %br/
             %a{href: "https://pinballmap.com/map?by_location_id=#{c[:location_id]}"}= c[:location_name]
             \&mdash; #{c[:machine_name]}: "#{c[:comment]}"
+        - unless user[:additions].empty?
+          %br/
+          Additions:
+          - user[:additions].each do |a|
+            %br/
+            %a{href: "https://pinballmap.com/map?by_location_id=#{a[:location_id]}"}= a[:location_name]
+            \&mdash; #{a[:machine_name]}
         - unless user[:removals].empty?
           %br/
           Removals:
@@ -53,6 +60,15 @@
         = item[:machine_name]
         %br/
         "#{item[:comment]}"
+        %br/
+        = item[:user_name]
+    %h3
+      Machine Additions
+    - @machine_additions.each do |item|
+      %p
+        %a{href: "https://pinballmap.com/map?by_location_id=#{item[:location_id]}"}= item[:location_name]
+        %br/
+        = item[:machine_name]
         %br/
         = item[:user_name]
     %h3

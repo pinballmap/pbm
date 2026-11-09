@@ -59,20 +59,25 @@ class AdminMailer < ApplicationMailer
   end
 
   def send_daily_digest_region
-    @machine_comments       = params[:machine_comments]
-    @machine_removals       = params[:machine_removals]
-    @pictures_added         = params[:pictures_added]
-    @region_name            = params[:region_name]
-    @machine_comments_count = params[:machine_comments_count]
-    @machine_removals_count = params[:machine_removals_count]
-    @pictures_added_count   = params[:pictures_added_count]
-    @machines_added_count   = params[:machines_added_count]
-    @scores_added_count     = params[:scores_added_count]
+    @machine_comments        = params[:machine_comments]
+    @machine_additions       = params[:machine_additions]
+    @machine_removals        = params[:machine_removals]
+    @pictures_added          = params[:pictures_added]
+    @location_metadata       = params[:location_metadata]
+    @new_user_activity       = params[:new_user_activity]
+    @region_name             = params[:region_name]
+    @machine_comments_count  = params[:machine_comments_count]
+    @machine_removals_count  = params[:machine_removals_count]
+    @pictures_added_count    = params[:pictures_added_count]
+    @location_metadata_count = params[:location_metadata_count]
+    @machines_added_count    = params[:machines_added_count]
+    @scores_added_count      = params[:scores_added_count]
     mail(to: params[:email_to], subject: params[:email_subject])
   end
 
   def send_daily_digest_global
     @machine_comments        = params[:machine_comments]
+    @machine_additions       = params[:machine_additions]
     @machine_removals        = params[:machine_removals]
     @pictures_added          = params[:pictures_added]
     @location_metadata       = params[:location_metadata]

@@ -128,21 +128,54 @@ class Region < ApplicationRecord
     end_of_day = (Time.now - 1.day).end_of_day
     base = UserSubmission.where(deleted_at: nil).where(created_at: start_of_day..end_of_day, region_id: self)
 
-    machine_comments  = base.where(submission_type: UserSubmission::NEW_CONDITION_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, comment: us.comment, user_name: us.user_name } }
-    machine_removals  = base.where(submission_type: UserSubmission::REMOVE_MACHINE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, user_name: us.user_name } }
+    machine_comments   = base.where(submission_type: UserSubmission::NEW_CONDITION_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, comment: us.comment, user_name: us.user_name } }
+    machine_additions  = base.where(submission_type: UserSubmission::NEW_LMX_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, user_name: us.user_name } }
+    machine_removals   = base.where(submission_type: UserSubmission::REMOVE_MACHINE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, user_name: us.user_name } }
     pictures_added_raw = base.where(submission_type: UserSubmission::NEW_PICTURE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, user_name: us.user_name } }
-    pictures_added    = pictures_added_raw.uniq { |item| item[:location_id] }
+    pictures_added     = pictures_added_raw.uniq { |item| item[:location_id] }
+    location_metadata  = Region.digest_location_metadata(base)
 
     {
-      machine_comments:      machine_comments,
-      machine_removals:      machine_removals,
-      pictures_added:        pictures_added,
-      machine_comments_count: machine_comments.length,
-      machine_removals_count: machine_removals.length,
-      pictures_added_count:   pictures_added_raw.length,
-      machines_added_count:   base.where(submission_type: UserSubmission::NEW_LMX_TYPE).count,
-      scores_added_count:     base.where(submission_type: UserSubmission::NEW_SCORE_TYPE).count
+      machine_comments:        machine_comments,
+      machine_additions:       machine_additions,
+      machine_removals:        machine_removals,
+      pictures_added:          pictures_added,
+      location_metadata:       location_metadata,
+      new_user_activity:       Region.digest_new_user_activity(base),
+      machine_comments_count:  machine_comments.length,
+      machine_removals_count:  machine_removals.length,
+      pictures_added_count:    pictures_added_raw.length,
+      location_metadata_count: location_metadata.length,
+      machines_added_count:    machine_additions.length,
+      scores_added_count:      base.where(submission_type: UserSubmission::NEW_SCORE_TYPE).count
     }
+  end
+
+  def self.digest_location_metadata(base)
+    base.where(submission_type: UserSubmission::LOCATION_METADATA_TYPE).order(id: :desc)
+      .map { |us| { location_name: us.location_name, location_id: us.location_id, description: us.location&.description, user_name: us.user_name } }
+      .uniq { |item| item[:location_id] }
+      .sort_by { |item| item[:location_name].to_s }
+  end
+
+  def self.digest_new_user_activity(base)
+    new_user_ids = User.where("created_at >= ?", 7.days.ago).pluck(:id)
+    return [] if new_user_ids.empty?
+
+    base.where(
+      submission_type: [ UserSubmission::NEW_CONDITION_TYPE, UserSubmission::NEW_LMX_TYPE, UserSubmission::REMOVE_MACHINE_TYPE, UserSubmission::NEW_PICTURE_TYPE ],
+      user_id: new_user_ids
+    ).includes(:user).group_by(&:user_id).map do |_user_id, submissions|
+      user = submissions.first.user
+      {
+        user_name: submissions.first.user_name,
+        joined_at: user.created_at,
+        comments:  submissions.select { |s| s.submission_type == UserSubmission::NEW_CONDITION_TYPE }.map { |s| { location_name: s.location_name, location_id: s.location_id, machine_name: s.machine_name, comment: s.comment } },
+        additions: submissions.select { |s| s.submission_type == UserSubmission::NEW_LMX_TYPE }.map { |s| { location_name: s.location_name, location_id: s.location_id, machine_name: s.machine_name } },
+        removals:  submissions.select { |s| s.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.map { |s| { location_name: s.location_name, location_id: s.location_id, machine_name: s.machine_name } },
+        pictures:  submissions.select { |s| s.submission_type == UserSubmission::NEW_PICTURE_TYPE }.map { |s| { location_name: s.location_name, location_id: s.location_id } }
+      }
+    end
   end
 
   def self.generate_daily_digest_global_email_body
@@ -174,11 +207,11 @@ class Region < ApplicationRecord
     SQL
 
     machine_comments   = base.where(submission_type: UserSubmission::NEW_CONDITION_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, comment: us.comment, user_name: us.user_name } }
+    machine_additions  = base.where(submission_type: UserSubmission::NEW_LMX_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, user_name: us.user_name } }
     machine_removals   = base.where(submission_type: UserSubmission::REMOVE_MACHINE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, user_name: us.user_name } }
     pictures_added_raw = base.where(submission_type: UserSubmission::NEW_PICTURE_TYPE).order(:location_name).map { |us| { location_name: us.location_name, location_id: us.location_id, user_name: us.user_name } }
     pictures_added     = pictures_added_raw.uniq { |item| item[:location_id] }
-    location_metadata_raw = base.where(submission_type: UserSubmission::LOCATION_METADATA_TYPE).order(id: :desc).map { |us| { location_name: us.location_name, location_id: us.location_id, description: us.location&.description, user_name: us.user_name } }
-    location_metadata     = location_metadata_raw.uniq { |item| item[:location_id] }.sort_by { |item| item[:location_name].to_s }
+    location_metadata  = digest_location_metadata(base)
 
     proxy_machine_additions = base.where(submission_type: UserSubmission::NEW_LMX_TYPE, machine_id: PROXY_MACHINE_IDS)
       .order(:location_name)
@@ -192,27 +225,11 @@ class Region < ApplicationRecord
       .order(:location_name)
       .map { |us| { location_name: us.location_name, location_id: us.location_id, machine_name: us.machine_name, comment: us.comment, user_name: us.user_name } }
 
-    new_user_ids = User.where("created_at >= ?", 7.days.ago).pluck(:id)
-    new_user_activity = if new_user_ids.any?
-      base.where(
-        submission_type: [ UserSubmission::NEW_CONDITION_TYPE, UserSubmission::REMOVE_MACHINE_TYPE, UserSubmission::NEW_PICTURE_TYPE ],
-        user_id: new_user_ids
-      ).includes(:user).group_by(&:user_id).map do |_user_id, submissions|
-        user = submissions.first.user
-        {
-          user_name: submissions.first.user_name,
-          joined_at: user.created_at,
-          comments:  submissions.select { |s| s.submission_type == UserSubmission::NEW_CONDITION_TYPE }.map { |s| { location_name: s.location_name, location_id: s.location_id, machine_name: s.machine_name, comment: s.comment } },
-          removals:  submissions.select { |s| s.submission_type == UserSubmission::REMOVE_MACHINE_TYPE }.map { |s| { location_name: s.location_name, location_id: s.location_id, machine_name: s.machine_name } },
-          pictures:  submissions.select { |s| s.submission_type == UserSubmission::NEW_PICTURE_TYPE }.map { |s| { location_name: s.location_name, location_id: s.location_id } }
-        }
-      end
-    else
-      []
-    end
+    new_user_activity = digest_new_user_activity(base)
 
     {
       machine_comments:        machine_comments,
+      machine_additions:       machine_additions,
       machine_removals:        machine_removals,
       pictures_added:          pictures_added,
       location_metadata:       location_metadata,
@@ -225,7 +242,7 @@ class Region < ApplicationRecord
       machine_removals_count:  machine_removals.length,
       pictures_added_count:    pictures_added_raw.length,
       location_metadata_count: location_metadata.length,
-      machines_added_count:    base.where(submission_type: UserSubmission::NEW_LMX_TYPE).count,
+      machines_added_count:    machine_additions.length,
       scores_added_count:      base.where(submission_type: UserSubmission::NEW_SCORE_TYPE).count
     }
   end

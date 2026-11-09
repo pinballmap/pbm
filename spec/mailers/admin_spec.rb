@@ -19,9 +19,12 @@ RSpec.describe AdminMailer, type: :mailer do
       comment_item  = { location_name: 'Foo Bar', location_id: 1, machine_name: 'Attack from Mars', comment: 'plays great', user_name: 'alice' }
       removal_item  = { location_name: 'Foo Bar', location_id: 1, machine_name: 'Black Knight', user_name: 'bob' }
       picture_item  = { location_name: 'Foo Bar', location_id: 1, user_name: 'carol' }
+      addition_item = { location_name: 'Foo Bar', location_id: 1, machine_name: 'Medieval Madness', user_name: 'dave' }
+      metadata_item = { location_name: 'Foo Bar', location_id: 1, description: 'open late', user_name: 'erin' }
+      new_user_item = { user_name: 'frank', joined_at: 2.days.ago, comments: [], additions: [ { location_name: 'Foo Bar', location_id: 1, machine_name: 'Centaur' } ], removals: [ { location_name: 'Foo Bar', location_id: 1, machine_name: 'Black Knight' } ], pictures: [] }
       email_subject = "Pinball Map - Daily activity digest (Portland) - #{(Date.today - 1.day).strftime('%m/%d/%Y')}"
 
-      email = AdminMailer.with(email_to: 'foo@bar.test', email_subject: email_subject, region_name: 'Portland', machine_comments: [ comment_item ], machine_removals: [ removal_item ], pictures_added: [ picture_item ], machine_comments_count: 1, machine_removals_count: 1, pictures_added_count: 1, machines_added_count: 0, scores_added_count: 0).send_daily_digest_region
+      email = AdminMailer.with(email_to: 'foo@bar.test', email_subject: email_subject, region_name: 'Portland', machine_comments: [ comment_item ], machine_additions: [ addition_item ], machine_removals: [ removal_item ], pictures_added: [ picture_item ], location_metadata: [ metadata_item ], new_user_activity: [ new_user_item ], machine_comments_count: 1, machine_removals_count: 1, pictures_added_count: 1, location_metadata_count: 1, machines_added_count: 1, scores_added_count: 0).send_daily_digest_region
 
       assert_emails 1 do
         email.deliver_later
@@ -30,6 +33,10 @@ RSpec.describe AdminMailer, type: :mailer do
       assert_equal [ 'foo@bar.test' ], email.to
       assert_equal [ 'admin@pinballmap.com' ], email.from
       assert_equal email_subject, email.subject
+
+      [ email.html_part, email.text_part ].each do |part|
+        expect(part.body.to_s).to include('Machine Additions', 'Medieval Madness', 'Location Metadata Updates', 'open late', 'New User Activity', 'frank', 'Additions:', 'Centaur')
+      end
     end
   end
 
@@ -37,7 +44,10 @@ RSpec.describe AdminMailer, type: :mailer do
     it 'should send a daily global digest email' do
       comment_item = { location_name: 'Foo Bar', location_id: 1, machine_name: 'Attack from Mars', comment: 'plays great', user_name: 'alice' }
 
-      email = AdminMailer.with(user: 'foo@bar.test', machine_comments: [ comment_item ], machine_removals: [], pictures_added: [], location_metadata: [], remove_and_readd: [], new_user_activity: [], machine_comments_count: 1, machine_removals_count: 0, pictures_added_count: 0, location_metadata_count: 0, machines_added_count: 0, scores_added_count: 0).send_daily_digest_global
+      addition_item = { location_name: 'Foo Bar', location_id: 1, machine_name: 'Medieval Madness', user_name: 'dave' }
+      new_user_item = { user_name: 'frank', joined_at: 2.days.ago, comments: [], additions: [ { location_name: 'Foo Bar', location_id: 1, machine_name: 'Centaur' } ], removals: [], pictures: [] }
+
+      email = AdminMailer.with(user: 'foo@bar.test', machine_comments: [ comment_item ], machine_additions: [ addition_item ], machine_removals: [], pictures_added: [], location_metadata: [], remove_and_readd: [], new_user_activity: [ new_user_item ], machine_comments_count: 1, machine_removals_count: 0, pictures_added_count: 0, location_metadata_count: 0, machines_added_count: 1, scores_added_count: 0).send_daily_digest_global
 
       assert_emails 1 do
         email.deliver_later
@@ -46,6 +56,10 @@ RSpec.describe AdminMailer, type: :mailer do
       assert_equal [ 'foo@bar.test' ], email.to
       assert_equal [ 'admin@pinballmap.com' ], email.from
       assert_equal "Pinball Map - Daily global activity digest - #{(Date.today - 1.day).strftime('%m/%d/%Y')}", email.subject
+
+      [ email.html_part, email.text_part ].each do |part|
+        expect(part.body.to_s).to include('Machine Additions', 'Medieval Madness', 'frank', 'Additions:', 'Centaur')
+      end
     end
   end
 

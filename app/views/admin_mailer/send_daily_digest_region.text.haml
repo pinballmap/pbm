@@ -1,4 +1,4 @@
-Here is the daily global activity digest for #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
+Here is the daily activity digest for #{@region_name} on #{(Time.now - 1.day).strftime('%m/%d/%Y')}.
 
 Summary
 
@@ -17,6 +17,10 @@ New User Activity (joined within 7 days)
     = "  Comments:"
     - user[:comments].each do |c|
       = "  #{c[:location_name]} (https://pinballmap.com/map?by_location_id=#{c[:location_id]}) - #{c[:machine_name]}: #{c[:comment]}"
+  - unless user[:additions].empty?
+    = "  Additions:"
+    - user[:additions].each do |a|
+      = "  #{a[:location_name]} (https://pinballmap.com/map?by_location_id=#{a[:location_id]}) - #{a[:machine_name]}"
   - unless user[:removals].empty?
     = "  Removals:"
     - user[:removals].each do |r|
@@ -33,6 +37,14 @@ Machine Comments
   = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
   = item[:machine_name]
   = item[:comment]
+  = item[:user_name]
+
+Machine Additions
+
+- @machine_additions.each do |item|
+  = item[:location_name]
+  = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
+  = item[:machine_name]
   = item[:user_name]
 
 Machine Removals
@@ -57,44 +69,3 @@ Location Metadata Updates
   = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
   = "Description: #{item[:description]}"
   = item[:user_name]
-
-Suspected Comment Removal (Remove + Re-add Within 5 Minutes)
-
-- @remove_and_readd.each do |item|
-  = item[:location_name]
-  = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
-  = item[:machine_name]
-  = item[:user_name]
-  = "Removed: #{item[:removed_at].strftime('%H:%M:%S')} / Re-added: #{item[:readded_at].strftime('%H:%M:%S')}"
-
-Proxy Machine Activity (Machine IDs 847, 1116, 3251)
-
-- if @proxy_machine_additions&.any?
-  = "Additions:"
-  - @proxy_machine_additions.each do |item|
-    = item[:location_name]
-    = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
-    = item[:machine_name]
-    = item[:user_name]
-- if @proxy_machine_comments&.any?
-  = "Comments:"
-  - @proxy_machine_comments.each do |item|
-    = item[:location_name]
-    = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
-    = item[:machine_name]
-    = item[:comment]
-    = item[:user_name]
-- if @proxy_machine_additions&.empty? && @proxy_machine_comments&.empty?
-  = "None"
-
-Suspected For-Sale Listings
-
-- if @for_sale_comments&.any?
-  - @for_sale_comments.each do |item|
-    = item[:location_name]
-    = " (https://pinballmap.com/map?by_location_id=#{item[:location_id]})"
-    = item[:machine_name]
-    = item[:comment]
-    = item[:user_name]
-- else
-  = "None"

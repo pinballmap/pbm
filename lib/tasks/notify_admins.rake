@@ -24,13 +24,13 @@ task send_daily_digest_region: :environment do
     email_subject = "Pinball Map - Daily activity digest (#{r.full_name}) - #{(Date.today - 1.day).strftime('%m/%d/%Y')}"
     email_body = r.generate_daily_digest_email_body
 
-    next if email_body[:machine_comments].empty? && email_body[:machine_removals].empty? && email_body[:pictures_added].empty?
+    next if email_body[:machine_comments].empty? && email_body[:machine_additions].empty? && email_body[:machine_removals].empty? && email_body[:pictures_added].empty? && email_body[:location_metadata].empty?
 
     email_to = r.users.map(&:email)
 
     next if email_to.blank? || email_to.nil?
 
-    AdminMailer.with(email_to: email_to, email_subject: email_subject, region_name: r.full_name, machine_comments: email_body[:machine_comments], machine_removals: email_body[:machine_removals], pictures_added: email_body[:pictures_added], machine_comments_count: email_body[:machine_comments_count], machine_removals_count: email_body[:machine_removals_count], pictures_added_count: email_body[:pictures_added_count], machines_added_count: email_body[:machines_added_count], scores_added_count: email_body[:scores_added_count]).send_daily_digest_region.deliver_later
+    AdminMailer.with(email_to: email_to, email_subject: email_subject, region_name: r.full_name, machine_comments: email_body[:machine_comments], machine_additions: email_body[:machine_additions], machine_removals: email_body[:machine_removals], pictures_added: email_body[:pictures_added], location_metadata: email_body[:location_metadata], new_user_activity: email_body[:new_user_activity], machine_comments_count: email_body[:machine_comments_count], machine_removals_count: email_body[:machine_removals_count], pictures_added_count: email_body[:pictures_added_count], location_metadata_count: email_body[:location_metadata_count], machines_added_count: email_body[:machines_added_count], scores_added_count: email_body[:scores_added_count]).send_daily_digest_region.deliver_later
     sleep(8)
   end
 rescue StandardError => e
