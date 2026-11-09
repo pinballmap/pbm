@@ -18,6 +18,7 @@ map $http_user_agent $limit_key {
   "~*Baiduspider" "Baiduspider";
   "~*DotBot" "DotBot";
   "~*ShapBot" "ShapBot";
+  "~*ElevenlabsCrawler" "ElevenlabsCrawler";
 }
 
 limit_req_zone $limit_key zone=bots_nginx:10m rate=10r/m;
