@@ -14,8 +14,9 @@ describe MachineScoreXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      sleep 1
+      page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
 
+      expect(page).to have_content("none yet (sign up to track scores)")
       expect(page).to_not have_selector("div#high_score_lmx_#{lmx.id}")
     end
   end
@@ -56,7 +57,7 @@ describe MachineScoreXrefsController do
       expect(page).to have_css("div.highest_score", text: "2,234")
     end
 
-    it 'does not show scores from other users' do
+    it 'does not show scores from other users as your own' do
       lmx = FactoryBot.create(:location_machine_xref, location: @location, machine: FactoryBot.create(:machine))
 
       FactoryBot.create(:machine_score_xref, location: @location, location_machine_xref: lmx, machine_id: lmx.machine_id, score: 8888, user: FactoryBot.create(:user))
@@ -65,7 +66,10 @@ describe MachineScoreXrefsController do
 
       page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
 
-      expect(page).to_not have_css(".high_score", text: "8,888")
+      expect(page).to have_content("Everyone's scores on this copy")
+      expect(page).to have_css(".high_score", text: "8,888")
+      expect(page).to_not have_content("Your high scores on this copy")
+      expect(page).to have_css("div.highest_score", text: "none yet (track your scores!)")
     end
 
     it 'removes non-digit characters from high scores' do
@@ -148,6 +152,7 @@ describe MachineScoreXrefsController do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
       page.find("div#machine_tools_lmx_banner_#{lmx.id}").click
 
+      expect(page).to have_css("div#high_score_lmx_#{lmx.id}")
       expect(page).to_not have_css('div.high_score_new_line')
 
       page.find("div#high_score_lmx_#{lmx.id}").click
@@ -193,6 +198,7 @@ describe MachineScoreXrefsController do
       visit '/map/?by_location_id=' + @lmx.location.id.to_s
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
 
+      expect(page).to have_css(".high_score", text: "100")
       expect(page).to_not have_selector("input[type=submit][value='delete']")
     end
 
@@ -222,6 +228,7 @@ describe MachineScoreXrefsController do
       visit '/map/?by_location_id=' + @lmx.location.id.to_s
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
 
+      expect(page).to have_css(".high_score", text: "100")
       expect(page).to_not have_selector('a#edit_high_score_' + @lmx.machine_score_xrefs.first.id.to_s + '.button')
     end
 
