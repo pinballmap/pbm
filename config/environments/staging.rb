@@ -121,9 +121,7 @@ Rails.application.configure do
   ActiveSupport::Notifications.subscribe(/rack_attack/) do |name, start, finish, request_id, payload|
     req = payload[:request]
     if req.env["rack.attack.match_type"] == :blocklist
-      Rails.logger.info "[Rack::Attack][Blocked]" <<
-                        "remote_ip: \"#{req.ip}\"," <<
-                        "path: \"#{req.path}\", "
+      Rails.logger.info "[Rack::Attack][Blocked] rule: \"#{req.env['rack.attack.matched']}\", remote_ip: \"#{req.ip}\", path: \"#{req.path}\""
     end
   end
 end
