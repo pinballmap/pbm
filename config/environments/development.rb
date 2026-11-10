@@ -42,7 +42,7 @@ Rails.application.configure do
   # Set localhost to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {:address => 'localhost', :port => 1025}
+  config.action_mailer.smtp_settings = { address: "localhost", port: 1025 }
 
   # "info" includes generic and useful information about system operation, but avoids logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII). If you
@@ -61,7 +61,7 @@ Rails.application.configure do
     appenders.add(io: STDOUT, level: config.log_level, formatter: :color)
   end
 
-  config.log_tags = [ :request_id, lambda { |request| request.ip }, lambda { |request| request.headers['AppVersion'] }, lambda { |request| (request.params["api_token"].presence || request.headers["X-Api-Token"].presence)&.first(8) }, lambda { |request| request.user_agent } ]
+  config.log_tags = [ :request_id, lambda { |request| request.ip }, lambda { |request| request.headers["AppVersion"] }, lambda { |request| (request.params["api_token"].presence || request.headers["X-Api-Token"].presence)&.first(8) }, lambda { |request| request.user_agent } ]
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

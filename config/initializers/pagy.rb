@@ -18,7 +18,7 @@ Pagy::OPTIONS[:ends]        = true                  # default
 Pagy::OPTIONS[:page_param]  = :page                 # default
 # Pagy::OPTIONS[:limit_extra] = false    # default true
 Pagy::OPTIONS[:limit_max]   = 50      # default
-Pagy::OPTIONS[:limit_key] = 'limit'
+Pagy::OPTIONS[:limit_key] = "limit"
 # Pagy::OPTIONS[:overflow] = :empty_page
 
 ############ JavaScript ####################################################################

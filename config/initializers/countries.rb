@@ -4,6 +4,6 @@ ISO3166::Data.register(
   name: "Kosovo",
   currency: "EUR",
   translations: {
-    "en" => "Kosovo",
+    "en" => "Kosovo"
   },
 )

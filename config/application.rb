@@ -1,6 +1,6 @@
 require_relative "boot"
-require_relative '../lib/middleware/semicolon_handling'
-require_relative '../lib/middleware/strip_www_authenticate'
+require_relative "../lib/middleware/semicolon_handling"
+require_relative "../lib/middleware/strip_www_authenticate"
 
 require "rails/all"
 
@@ -12,11 +12,11 @@ module Pbm
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
-		
+
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
-    config.autoload_lib(ignore: %w(assets tasks))
+    config.autoload_lib(ignore: %w[assets tasks])
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -29,9 +29,9 @@ module Pbm
     config.active_record.schema_format = :sql
 
     # Configure sensitive parameters which will be filtered from the log file.
-    config.filter_parameters += [:password]
+    config.filter_parameters += [ :password ]
 
-    config.assets.precompile = ["manifest.js"]
+    config.assets.precompile = [ "manifest.js" ]
 
     config.middleware.insert_after Rack::Runtime, Middleware::SemicolonHandling
     config.middleware.insert_before Warden::Manager, Middleware::StripWwwAuthenticate

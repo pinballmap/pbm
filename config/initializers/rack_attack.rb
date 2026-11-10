@@ -8,19 +8,19 @@ ESCALATING_BAN_NAMES = %w[users_profile pages_recent_activity maps_general maps_
 
 # Mirrors the check that raises ActionDispatch::RemoteIp::IpSpoofAttackError
 def spoofed_client_ip?(req)
-  client_ip = req.get_header('HTTP_CLIENT_IP').to_s.split(',').first&.strip
-  forwarded_ips = req.get_header('HTTP_X_FORWARDED_FOR').to_s.split(',').map(&:strip)
+  client_ip = req.get_header("HTTP_CLIENT_IP").to_s.split(",").first&.strip
+  forwarded_ips = req.get_header("HTTP_X_FORWARDED_FOR").to_s.split(",").map(&:strip)
   client_ip.present? && forwarded_ips.any? && !forwarded_ips.include?(client_ip)
 end
 
 unless Rails.env.test?
-  Rack::Attack.throttle('api/v1/no-app-version', limit: 180, period: 1.minute) do |req|
-    if req.path.start_with?('/api/v1/') && req.env['HTTP_APPVERSION'].blank?
+  Rack::Attack.throttle("api/v1/no-app-version", limit: 180, period: 1.minute) do |req|
+    if req.path.start_with?("/api/v1/") && req.env["HTTP_APPVERSION"].blank?
       req.ip
     end
   end
 
-  Rack::Attack.blocklist('fail2ban pentesters') do |req|
+  Rack::Attack.blocklist("fail2ban pentesters") do |req|
     Rack::Attack::Fail2Ban.filter(
       "pentesters-#{req.ip}",
       maxretry: 1,
@@ -30,14 +30,14 @@ unless Rails.env.test?
       CGI.unescape(req.query_string) =~ %r{/etc/passwd} ||
       CGI.unescape(req.query_string) =~ %r{page=\D} ||
       CGI.unescape(req.query_string) =~ /(?:\A|&)(?:by_at_least_n_machines\w*|by_machine_year_[gl]te|by_operator_id|by_type_id(?:\[\])?)=[^\d&]/ ||
-      req.path.include?('/etc/passwd') ||
-      req.path.include?('wp-admin') ||
-      req.path.include?('wp-login') ||
-      req.path.include?('wp-includes') ||
-      req.path.include?('poohbear') ||
-      req.path.include?('sleep(') ||
-      req.path.include?('.php') ||
-      req.path.include?('.env') ||
+      req.path.include?("/etc/passwd") ||
+      req.path.include?("wp-admin") ||
+      req.path.include?("wp-login") ||
+      req.path.include?("wp-includes") ||
+      req.path.include?("poohbear") ||
+      req.path.include?("sleep(") ||
+      req.path.include?(".php") ||
+      req.path.include?(".env") ||
       spoofed_client_ip?(req)
     end
   end
@@ -53,7 +53,7 @@ unless Rails.env.test?
     end
   end
 
-  Rack::Attack.blocklist('escalating repeat offenders') do |req|
+  Rack::Attack.blocklist("escalating repeat offenders") do |req|
     ESCALATING_BAN_TIERS.any? do |tier|
       Rack::Attack::Fail2Ban.banned?("repeat-offender-#{tier[:bantime].to_i}-#{req.ip}")
     end

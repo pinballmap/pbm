@@ -19,7 +19,7 @@ Rails.application.configure do
   config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.asset_host = ENV['ASSET_HOST']
+  config.asset_host = ENV["ASSET_HOST"]
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :amazon
@@ -47,7 +47,7 @@ Rails.application.configure do
   end
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id, lambda { |request| request.ip }, lambda { |request| request.headers['AppVersion'] }, lambda { |request| (request.params["api_token"].presence || request.headers["X-Api-Token"].presence)&.first(8) }, lambda { |request| request.user_agent } ]
+  config.log_tags = [ :request_id, lambda { |request| request.ip }, lambda { |request| request.headers["AppVersion"] }, lambda { |request| (request.params["api_token"].presence || request.headers["X-Api-Token"].presence)&.first(8) }, lambda { |request| request.user_agent } ]
 
   # Log to STDOUT by default
   # config.logger = ActiveSupport::Logger.new(STDOUT)
@@ -85,20 +85,20 @@ Rails.application.configure do
     authentication:   :login,
     user_name:        ENV["SMTP_USERNAME"],
     password:         ENV["SMTP_PASSWORD"],
-    domain:           'pbmstaging.com',
+    domain:           "pbmstaging.com",
     enable_starttls:  true,
     open_timeout:     5,
     read_timeout:     10
   }
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { :protocol => 'https', :host => 'pinballmap.com' }
+  config.action_mailer.default_url_options = { protocol: "https", host: "pinballmap.com" }
   config.middleware.use ExceptionNotification::Rack,
-    ignore_crawlers: %w{Googlebot bingbot AhrefsBot},
-    ignore_exceptions: ['ActionController::ParameterMissing', 'ActionView::Template::Error', 'ActionDispatch::Http::MimeNegotiation::InvalidType', 'ActionController::TooManyRequests', 'ActionDispatch::RemoteIp::IpSpoofAttackError'] +ExceptionNotifier.ignored_exceptions,
-    :email => {
-      :email_prefix => "[PBM Exception] ",
-      :sender_address => %{"PBM Exceptions" <exceptions@pinballmap.com>},
-      :exception_recipients => %w{admin@pbmstaging.com}
+    ignore_crawlers: %w[Googlebot bingbot AhrefsBot],
+    ignore_exceptions: [ "ActionController::ParameterMissing", "ActionView::Template::Error", "ActionDispatch::Http::MimeNegotiation::InvalidType", "ActionController::TooManyRequests", "ActionDispatch::RemoteIp::IpSpoofAttackError" ] +ExceptionNotifier.ignored_exceptions,
+    email: {
+      email_prefix: "[PBM Exception] ",
+      sender_address: %("PBM Exceptions" <exceptions@pinballmap.com>),
+      exception_recipients: %w[admin@pbmstaging.com]
     },
     error_grouping: true
 

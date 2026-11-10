@@ -8,7 +8,7 @@ RailsAdmin.config do |config|
 
   config.current_user_method(&:current_user)
 
-  config.audit_with :paper_trail, 'User', 'PaperTrail::Version'
+  config.audit_with :paper_trail, "User", "PaperTrail::Version"
 
   config.actions do
     dashboard                     # mandatory
@@ -20,14 +20,14 @@ RailsAdmin.config do |config|
     edit
     delete
     history_index do
-      only ['Location', 'SuggestedLocation', 'Operator', 'RegionLinkXref', 'Zone', 'Region', 'BannedIp', 'Machine', 'LocationType', 'MachineCondition']
+      only [ "Location", "SuggestedLocation", "Operator", "RegionLinkXref", "Zone", "Region", "BannedIp", "Machine", "LocationType", "MachineCondition" ]
     end
     history_show do
-      only ['Location', 'SuggestedLocation', 'Operator', 'RegionLinkXref', 'Zone', 'Region', 'BannedIp', 'Machine', 'LocationType', 'MachineCondition']
+      only [ "Location", "SuggestedLocation", "Operator", "RegionLinkXref", "Zone", "Region", "BannedIp", "Machine", "LocationType", "MachineCondition" ]
     end
   end
 
-  config.main_app_name = ['Pinball Map', 'Admin']
+  config.main_app_name = [ "Pinball Map", "Admin" ]
   config.excluded_models = []
 
   config.model Event do
@@ -61,7 +61,7 @@ RailsAdmin.config do |config|
       field :name, :string
       field :location_id do
         render do
-          bindings[:view].render :partial => 'location_select', :locals => {:object_type => 'event', :location_id => bindings[:object].location_id}
+          bindings[:view].render partial: "location_select", locals: { object_type: "event", location_id: bindings[:object].location_id }
         end
       end
       field :external_location_name, :string
@@ -77,7 +77,7 @@ RailsAdmin.config do |config|
       field :ranking, :string
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:object].region_id, :object_type => 'event'}
+          bindings[:view].render partial: "region_edit", locals: { region_id: bindings[:object].region_id, object_type: "event" }
         end
       end
     end
@@ -85,7 +85,7 @@ RailsAdmin.config do |config|
       field :name, :string
       field :location_id do
         render do
-          bindings[:view].render :partial => 'location_select', :locals => {:object_type => 'event', :location_id => nil}
+          bindings[:view].render partial: "location_select", locals: { object_type: "event", location_id: nil }
         end
       end
       field :external_location_name, :string
@@ -101,7 +101,7 @@ RailsAdmin.config do |config|
       field :ranking, :string
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.region_id, :object_type => 'event'}
+          bindings[:view].render partial: "region_edit", locals: { region_id: bindings[:view]._current_user.region_id, object_type: "event" }
         end
       end
     end
@@ -110,7 +110,7 @@ RailsAdmin.config do |config|
   end
   config.model Location do
     list do
-      scopes [nil, :zoneless]
+      scopes [ nil, :zoneless ]
       field :name, :string
       field :region, :belongs_to_association do
         visible do
@@ -193,17 +193,17 @@ RailsAdmin.config do |config|
       field :name, :string
       field :zone_id do
         render do
-          bindings[:view].render :partial => 'zone_select', :locals => {:object_type => 'location', :zone_id => bindings[:object].zone_id}
+          bindings[:view].render partial: "zone_select", locals: { object_type: "location", zone_id: bindings[:object].zone_id }
         end
       end
       field :location_type_id do
         render do
-          bindings[:view].render :partial => 'location_type_select', :locals => {:object_type => 'location', :location_type_id => bindings[:object].location_type_id}
+          bindings[:view].render partial: "location_type_select", locals: { object_type: "location", location_type_id: bindings[:object].location_type_id }
         end
       end
       field :operator_id do
         render do
-          bindings[:view].render :partial => 'operator_select', :locals => {:object_type => 'location', :operator_id => bindings[:object].operator_id}
+          bindings[:view].render partial: "operator_select", locals: { object_type: "location", operator_id: bindings[:object].operator_id }
         end
       end
       field :street, :string
@@ -212,7 +212,7 @@ RailsAdmin.config do |config|
       field :zip, :string
       field :country do
         render do
-          bindings[:view].render :partial => 'country_select', :locals => {:object_type => 'location', :country => bindings[:object].country}
+          bindings[:view].render partial: "country_select", locals: { object_type: "location", country: bindings[:object].country }
         end
       end
       field :phone, :string
@@ -240,7 +240,7 @@ RailsAdmin.config do |config|
       field :place_id, :string
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, :object_type => 'location'}
+          bindings[:view].render partial: "region_edit", locals: { region_id: bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, object_type: "location" }
         end
       end
       field :is_stern_army, :boolean do
@@ -253,17 +253,17 @@ RailsAdmin.config do |config|
       field :name, :string
       field :zone_id do
         render do
-          bindings[:view].render :partial => 'zone_select', :locals => {:object_type => 'location', :zone_id => nil}
+          bindings[:view].render partial: "zone_select", locals: { object_type: "location", zone_id: nil }
         end
       end
       field :location_type_id do
         render do
-          bindings[:view].render :partial => 'location_type_select', :locals => {:object_type => 'location', :location_type_id => nil}
+          bindings[:view].render partial: "location_type_select", locals: { object_type: "location", location_type_id: nil }
         end
       end
       field :operator_id do
         render do
-          bindings[:view].render :partial => 'operator_select', :locals => {:object_type => 'location', :operator_id => bindings[:object].operator_id}
+          bindings[:view].render partial: "operator_select", locals: { object_type: "location", operator_id: bindings[:object].operator_id }
         end
       end
       field :street, :string
@@ -272,7 +272,7 @@ RailsAdmin.config do |config|
       field :zip, :string
       field :country do
         render do
-          bindings[:view].render :partial => 'country_select', :locals => {:object_type => 'location', :country => bindings[:object].country}
+          bindings[:view].render partial: "country_select", locals: { object_type: "location", country: bindings[:object].country }
         end
       end
       field :phone, :string
@@ -300,7 +300,7 @@ RailsAdmin.config do |config|
       field :place_id, :string
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.region_id, :object_type => 'location'}
+          bindings[:view].render partial: "region_edit", locals: { region_id: bindings[:view]._current_user.region_id, object_type: "location" }
         end
       end
       field :location_machine_xrefs do
@@ -330,7 +330,7 @@ RailsAdmin.config do |config|
       field :description, :text
       field :photo do
         pretty_value do
-          bindings[:view].image_tag bindings[:object].photo.variant(resize_to_limit: [1200,1200])
+          bindings[:view].image_tag bindings[:object].photo.variant(resize_to_limit: [ 1200, 1200 ])
         end
       end
     end
@@ -342,7 +342,7 @@ RailsAdmin.config do |config|
       field :description, :text
       field :photo do
         pretty_value do
-          bindings[:view].image_tag bindings[:object].photo.variant(resize_to_limit: [1200,1200])
+          bindings[:view].image_tag bindings[:object].photo.variant(resize_to_limit: [ 1200, 1200 ])
         end
       end
     end
@@ -462,7 +462,7 @@ RailsAdmin.config do |config|
       field :phone, :string
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, :object_type => 'operator'}
+          bindings[:view].render partial: "region_edit", locals: { region_id: bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, object_type: "operator" }
         end
       end
       field :email_opt_in, :boolean
@@ -475,7 +475,7 @@ RailsAdmin.config do |config|
       field :phone, :string
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, :object_type => 'operator'}
+          bindings[:view].render partial: "region_edit", locals: { region_id: bindings[:view]._current_user.is_super_admin ? bindings[:object].region_id : bindings[:view]._current_user.region_id, object_type: "operator" }
         end
       end
     end
@@ -505,7 +505,7 @@ RailsAdmin.config do |config|
       field :full_name, :string
       field :name do
         render do
-          bindings[:view].render :partial => 'region_name_edit', :locals => {:region => bindings[:object]}
+          bindings[:view].render partial: "region_name_edit", locals: { region: bindings[:object] }
         end
       end
       field :motd, :string
@@ -563,7 +563,7 @@ RailsAdmin.config do |config|
       field :sort_order, :integer
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.region_id, :object_type => 'region_link_xref'}
+          bindings[:view].render partial: "region_edit", locals: { region_id: bindings[:view]._current_user.region_id, object_type: "region_link_xref" }
         end
       end
     end
@@ -572,7 +572,7 @@ RailsAdmin.config do |config|
   end
   config.model User do
     list do
-      scopes [nil, :admins, :non_admins]
+      scopes [ nil, :admins, :non_admins ]
       field :email, :string
       field :username, :string
       field :region, :belongs_to_association
@@ -632,7 +632,7 @@ RailsAdmin.config do |config|
           bindings[:view]._current_user.is_super_admin
         end
         render do
-          bindings[:view].render :partial => 'region_user', :locals => {:region_id => bindings[:object].region_id}
+          bindings[:view].render partial: "region_user", locals: { region_id: bindings[:object].region_id }
         end
       end
       field :operator_id do
@@ -640,7 +640,7 @@ RailsAdmin.config do |config|
           bindings[:view]._current_user.is_super_admin
         end
         render do
-          bindings[:view].render :partial => 'operator_user', :locals => {:operator_id => bindings[:object].operator_id}
+          bindings[:view].render partial: "operator_user", locals: { operator_id: bindings[:object].operator_id }
         end
       end
     end
@@ -649,7 +649,7 @@ RailsAdmin.config do |config|
       field :password, :password
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_user', :locals => {:region_id => nil}
+          bindings[:view].render partial: "region_user", locals: { region_id: nil }
         end
       end
     end
@@ -676,7 +676,7 @@ RailsAdmin.config do |config|
       field :is_primary, :boolean
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:view]._current_user.region_id, :object_type => 'zone'}
+          bindings[:view].render partial: "region_edit", locals: { region_id: bindings[:view]._current_user.region_id, object_type: "zone" }
         end
       end
     end
@@ -688,11 +688,11 @@ RailsAdmin.config do |config|
       field :score
       field :machine do
         eager_load true
-        searchable [:name]
+        searchable [ :name ]
       end
       field :location do
         eager_load true
-        searchable [:name]
+        searchable [ :name ]
       end
       field :user do
         searchable :username
@@ -702,11 +702,11 @@ RailsAdmin.config do |config|
       field :score
       field :machine do
         eager_load true
-        searchable [:name]
+        searchable [ :name ]
       end
       field :location do
         eager_load true
-        searchable [:name]
+        searchable [ :name ]
       end
       field :user do
         searchable :username
@@ -727,11 +727,11 @@ RailsAdmin.config do |config|
       end
       field :machine do
         eager_load true
-        searchable [:name]
+        searchable [ :name ]
       end
       field :location do
         eager_load true
-        searchable [:name]
+        searchable [ :name ]
       end
       field :created_at, :date
       field :updated_at, :date
@@ -744,11 +744,11 @@ RailsAdmin.config do |config|
       end
       field :machine do
         eager_load true
-        searchable [:name]
+        searchable [ :name ]
       end
       field :location do
         eager_load true
-        searchable [:name]
+        searchable [ :name ]
       end
       field :created_at, :date
       field :updated_at, :date
@@ -854,23 +854,23 @@ RailsAdmin.config do |config|
       field :name, :string
       field :region_id do
         render do
-          bindings[:view].render :partial => 'region_edit', :locals => {:region_id => bindings[:object].region_id, :object_type => 'suggested_location'}
+          bindings[:view].render partial: "region_edit", locals: { region_id: bindings[:object].region_id, object_type: "suggested_location" }
         end
       end
       field :admin_notes, :string
       field :location_type_id do
         render do
-          bindings[:view].render :partial => 'location_type_select', :locals => {:object_type => 'suggested_location', :location_type_id => bindings[:object].location_type_id}
+          bindings[:view].render partial: "location_type_select", locals: { object_type: "suggested_location", location_type_id: bindings[:object].location_type_id }
         end
       end
       field :operator_id do
         render do
-          bindings[:view].render :partial => 'operator_select', :locals => {:object_type => 'suggested_location', :operator_id => bindings[:object].operator_id}
+          bindings[:view].render partial: "operator_select", locals: { object_type: "suggested_location", operator_id: bindings[:object].operator_id }
         end
       end
       field :zone_id do
         render do
-          bindings[:view].render :partial => 'zone_select', :locals => {:object_type => 'suggested_location', :zone_id => bindings[:object].zone_id}
+          bindings[:view].render partial: "zone_select", locals: { object_type: "suggested_location", zone_id: bindings[:object].zone_id }
         end
       end
       field :street, :string
@@ -879,7 +879,7 @@ RailsAdmin.config do |config|
       field :zip, :string
       field :country do
         render do
-          bindings[:view].render :partial => 'country_select', :locals => {:object_type => 'suggested_location', :country => bindings[:object].country}
+          bindings[:view].render partial: "country_select", locals: { object_type: "suggested_location", country: bindings[:object].country }
         end
       end
       field :phone, :string
@@ -910,7 +910,7 @@ RailsAdmin.config do |config|
       field :full_street_address, :string do
         label "APPROVE LOCATION"
         pretty_value do
-          bindings[:view].render partial: 'convert_suggested_location_to_location', locals: {suggested_location: bindings[:object]}
+          bindings[:view].render partial: "convert_suggested_location_to_location", locals: { suggested_location: bindings[:object] }
         end
       end
       field :name, :string
