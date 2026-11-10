@@ -4,7 +4,7 @@ ESCALATING_BAN_TIERS = [
   { maxretry: 5, findtime: 30.minutes, bantime: 3.hours     }
 ].freeze
 
-ESCALATING_BAN_NAMES = %w[users_profile pages_recent_activity maps_general maps_region bot locations_render_location_detail_sustained maps_post_load].freeze
+ESCALATING_BAN_NAMES = %w[users_profile pages_recent_activity maps_general maps_region bot locations_render_location_detail_sustained locations_render_machines_sustained maps_post_load non_xhr].freeze
 
 # Mirrors the check that raises ActionDispatch::RemoteIp::IpSpoofAttackError
 def spoofed_client_ip?(req)

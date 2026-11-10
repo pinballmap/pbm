@@ -13,6 +13,12 @@ describe Api::V1::LocationTypesController, type: :request do
 
       expect(response).to be_successful
     end
+
+    it 'does not set a session cookie' do
+      get '/api/v1/location_types.json'
+
+      expect(response.headers['Set-Cookie'].to_s).not_to include('_pbm_session')
+    end
   end
 
   describe 'when the api_token gate is enabled' do

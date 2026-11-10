@@ -7,6 +7,10 @@ class LocationsController < ApplicationController
   rate_limit to: 100, within: 1.minute, only: :index, name: "locations_index"
   rate_limit to: 10, within: 5.seconds, only: :render_location_detail, name: "locations_render_location_detail"
   rate_limit to: 150, within: 10.minutes, only: :render_location_detail, name: "locations_render_location_detail_sustained"
+  rate_limit to: 10, within: 5.seconds, only: :render_machines, name: "locations_render_machines"
+  rate_limit to: 150, within: 10.minutes, only: :render_machines, name: "locations_render_machines_sustained"
+  # Browsers only reach these through jQuery; a switch to fetch() must add X-Requested-With
+  rate_limit to: 10, within: 10.minutes, only: %i[render_machines render_location_detail], if: -> { !request.xhr? && !bot? }, scope: "non_xhr", name: "non_xhr"
 
   def is_bot?
     browser.bot?

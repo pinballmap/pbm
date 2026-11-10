@@ -5,6 +5,7 @@ module Api
       GLOBAL_RATE_LIMIT_SCOPE = "api_v1".freeze
 
       before_action :require_api_token, if: -> { self.class.api_token_gate_enabled? }
+      skip_after_action :store_location
 
       rate_limit to: 120, within: 1.minute, by: :api_token_rate_limit_key, scope: GLOBAL_RATE_LIMIT_SCOPE, name: "api_v1_global",
         if: -> { self.class.api_token_gate_enabled? }, unless: -> { app_version_exempt? || token_exempt_from_rate_limit? }

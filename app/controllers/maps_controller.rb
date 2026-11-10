@@ -8,6 +8,8 @@ class MapsController < ApplicationController
   rate_limit to: 80, within: 1.minute, only: %i[region map operators_autocomplete map_location_data], name: "maps_general"
   # Tripping this triggers the escalating ban, and results reload on every pan
   rate_limit to: 200, within: 1.minute, only: %i[region_location_load map_location_load get_bounds_load nearby_locations_load get_bounds region_init_load], name: "maps_post_load"
+  # Browsers only reach these through jQuery; a switch to fetch() must add X-Requested-With
+  rate_limit to: 10, within: 10.minutes, only: %i[region_location_load map_location_load get_bounds_load nearby_locations_load get_bounds region_init_load map_location_data], if: -> { !request.xhr? && !bot? }, scope: "non_xhr", name: "non_xhr"
 
   def map
     if !params[:by_location_id].blank? && (loc = Location.includes(:machines).where(id: params[:by_location_id]).first)
