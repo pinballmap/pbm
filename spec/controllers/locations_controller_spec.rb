@@ -172,6 +172,29 @@ describe LocationsController, type: :controller do
     end
   end
 
+  describe '#index' do
+    render_views
+
+    it 'shows the location detail when the search has one result' do
+      FactoryBot.create(:location_machine_xref, location: @location, machine: @machine)
+
+      get 'index', params: { by_machine_single_id: [ @machine.id ] }
+
+      expect(response).to be_successful
+      expect(response.body).to include("metadata_show_location_#{@location.id}")
+    end
+
+    it 'shows a summary row on a last page with only one location' do
+      FactoryBot.create_list(:location, 51).each { |l| FactoryBot.create(:location_machine_xref, location: l, machine: @machine) }
+
+      get 'index', params: { by_machine_single_id: [ @machine.id ], sort: 'name', page: 2 }
+
+      expect(response).to be_successful
+      expect(response.body).to include('show_location_detail_location_')
+      expect(response.body).to_not include('metadata_show_location_')
+    end
+  end
+
   describe '#render_upcoming_events' do
     render_views
 

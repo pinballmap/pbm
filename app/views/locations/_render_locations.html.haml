@@ -7,7 +7,7 @@
 - life_list_machine_ids = @locations.present? ? user_life_list_machine_ids : Set.new
 - @locations.each do |l|
   %div.search_result[l]
-    - if (@locations.size == 1 && @results_init == true)
+    - if (@locations_size == 1 && @results_init == true)
       %div.location_detail
         = render :partial => 'locations/render_location_detail', :locals => {l: l}
     - else
