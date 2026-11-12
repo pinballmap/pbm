@@ -1,4 +1,5 @@
 require "active_support/core_ext/integer/time"
+require_relative "../compact_exception_log"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -58,7 +59,7 @@ Rails.application.configure do
 
   config.rails_semantic_logger.quiet_assets = true
   config.rails_semantic_logger.appenders do |appenders|
-    appenders.add(io: STDOUT, level: config.log_level, formatter: :color)
+    appenders.add(io: STDOUT, level: config.log_level, formatter: :color, filter: COMPACT_EXCEPTION_LOG)
   end
 
   config.log_tags = [ :request_id, lambda { |request| request.ip }, lambda { |request| request.headers["AppVersion"] }, lambda { |request| (request.params["api_token"].presence || request.headers["X-Api-Token"].presence)&.first(8) }, lambda { |request| request.user_agent } ]
