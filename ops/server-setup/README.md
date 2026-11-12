@@ -228,6 +228,43 @@ Reboot the new droplet once and confirm it comes back with SSH and the app up.
 Move the Reserved IP back, and swap the cron steps above. Keep the old
 droplet powered off for a couple of weeks before destroying it.
 
+## Routine updates
+
+Unattended upgrades install Ubuntu security updates on their own. To update
+everything else, run:
+
+```bash
+dokku-update run -s
+```
+
+In order, it:
+
+1. Upgrades all Ubuntu packages (`-s`), including `dokku`, `herokuish`,
+   `plugn` and `sshcommand`. Dokku's built-in plugins come with `dokku`.
+2. Runs `dokku plugin:update`, which updates the postgres and letsencrypt
+   plugins. Plain `apt upgrade` doesn't update these.
+3. Rebuilds the app (`dokku ps:rebuild --all`) and waits two minutes.
+4. Removes old containers and images (`dokku cleanup --global`).
+
+If Docker is upgraded, the app is down for a few seconds while Docker
+restarts. The rebuild in step 3 brings it back.
+
+Afterwards, if the login message says `System restart required`, check what
+needs it with `cat /var/run/reboot-required.pkgs` (usually a new kernel),
+then `reboot`. After about a minute, SSH back in and check:
+
+```bash
+uname -r                                     # the new kernel, if one was installed
+dokku ps:report pbm | grep -i running
+ipset list blackhole -t | grep entries       # if 0: systemctl start abuseipdb
+```
+
+Then load the site.
+
+Updating the postgres plugin doesn't change the Postgres version that
+`pbm-cache` runs. That's a separate `dokku postgres:upgrade`, and since the
+cache is fine to lose, there's no need to keep it current.
+
 ## Keeping this current
 
 Anything changed on the droplet by hand is lost the next time it's rebuilt,
