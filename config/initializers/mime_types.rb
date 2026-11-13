@@ -3,3 +3,5 @@
 # Add new mime types for use in respond_to blocks:
 # Mime::Type.register "text/richtext", :rtf
 Mime::Type.register "application/geo+json", :geojson
+
+Rack::Mime::MIME_TYPES[".txt"] = "text/plain; charset=utf-8"
