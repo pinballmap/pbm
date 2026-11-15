@@ -249,15 +249,21 @@ In order, it:
 If Docker is upgraded, the app is down for a few seconds while Docker
 restarts. The rebuild in step 3 brings it back.
 
-Afterwards, if the login message says `System restart required`, check what
-needs it with `cat /var/run/reboot-required.pkgs` (usually a new kernel),
-then `reboot`. After about a minute, SSH back in and check:
+When it finishes, always `reboot`, even if the login message doesn't say
+`System restart required`. A Docker restart can leave the Vector container
+running but unable to read app logs, so `pbm.log` stays empty (this happened
+in Nov 2026). A reboot also loads any new kernel. After about a minute, SSH
+back in and check:
 
 ```bash
 uname -r                                     # the new kernel, if one was installed
 dokku ps:report pbm | grep -i running
 ipset list blackhole -t | grep entries       # if 0: systemctl start abuseipdb
+tail -n 3 /var/log/dokku/apps/pbm/pbm.log    # should show requests from the last minute
 ```
+
+If `pbm.log` isn't getting new lines, run
+`dokku logs:vector-stop && dokku logs:vector-start`.
 
 Then load the site.
 
