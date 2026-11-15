@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :app_versions, only: [ :index ]
       resources :location_types, only: [ :index, :show ]
       resources :machine_conditions, only: [ :destroy, :update ]
       resources :events, only: [ :index, :show ]

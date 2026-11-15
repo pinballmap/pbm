@@ -942,6 +942,19 @@ RailsAdmin.config do |config|
       field :updated_at, :datetime
     end
   end
+  config.model AppVersion do
+    list do
+      field :platform, :string
+      field :latest, :string
+      field :updated_at, :datetime
+    end
+    edit do
+      field :platform, :enum
+      field :latest, :string do
+        help "e.g. 5.5.1"
+      end
+    end
+  end
   config.model ApiToken do
     list do
       field :user, :belongs_to_association

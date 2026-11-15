@@ -275,6 +275,38 @@ ALTER SEQUENCE public.api_tokens_id_seq OWNED BY public.api_tokens.id;
 
 
 --
+-- Name: app_versions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.app_versions (
+    id bigint NOT NULL,
+    platform character varying NOT NULL,
+    latest character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: app_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.app_versions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: app_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.app_versions_id_seq OWNED BY public.app_versions.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1625,6 +1657,13 @@ ALTER TABLE ONLY public.api_tokens ALTER COLUMN id SET DEFAULT nextval('public.a
 
 
 --
+-- Name: app_versions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.app_versions ALTER COLUMN id SET DEFAULT nextval('public.app_versions_id_seq'::regclass);
+
+
+--
 -- Name: banned_ips id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1915,6 +1954,14 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 ALTER TABLE ONLY public.api_tokens
     ADD CONSTRAINT api_tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: app_versions app_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.app_versions
+    ADD CONSTRAINT app_versions_pkey PRIMARY KEY (id);
 
 
 --
@@ -2280,6 +2327,13 @@ CREATE INDEX index_api_tokens_on_user_id ON public.api_tokens USING btree (user_
 --
 
 CREATE UNIQUE INDEX index_api_tokens_on_user_id_active_unique ON public.api_tokens USING btree (user_id) WHERE ((disabled_at IS NULL) AND (approved_at IS NOT NULL));
+
+
+--
+-- Name: index_app_versions_on_platform; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_app_versions_on_platform ON public.app_versions USING btree (platform);
 
 
 --
@@ -3004,6 +3058,7 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261114120000'),
 ('20261028130000'),
 ('20261028120000'),
 ('20261015120000'),
