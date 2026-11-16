@@ -40,7 +40,8 @@ gem "strip_attributes"
 gem "tzinfo-data"
 
 group :production, :development, :staging do
-  gem "rails_semantic_logger"
+  gem "semantic_logger", github: "reidmorrison/semantic_logger", branch: "main"
+  gem "rails_semantic_logger", github: "reidmorrison/rails_semantic_logger", branch: "main"
 end
 
 group :test do
