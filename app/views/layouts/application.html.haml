@@ -9,6 +9,8 @@
     %meta{:name => "keywords", :content => "pinball, map, locator, arcade, tournaments, league" }
     %meta{:name => "description", :content => "#{@title_params&.fetch(:title_meta, nil) || desc_for_path(request.path, @region)}" }
     %meta{:property => "og:description", :content => "#{@title_params&.fetch(:title_meta, nil) || desc_for_path(request.path, @region)}" }
+    - if @canonical_url
+      %link{:rel => "canonical", :href => @canonical_url}
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
     %meta{:property => "og:site_name", :content => "Pinball Map"}
     %meta{:property => "og:type", :content => "website"}

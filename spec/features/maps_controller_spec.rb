@@ -167,6 +167,28 @@ describe MapsController do
     end
   end
 
+  describe 'canonical link', type: :request do
+    let(:canonical) { %(<link href="https://www.example.com/map?by_location_id=#{@location.id}" rel="canonical">) }
+
+    it 'points a region location page at the global map URL' do
+      get "/portland", params: { by_location_id: @location.id, utf8: '✓' }
+
+      expect(response.body).to include(canonical)
+    end
+
+    it 'points a global map location page at itself' do
+      get map_path, params: { by_location_id: @location.id }
+
+      expect(response.body).to include(canonical)
+    end
+
+    it 'is omitted when no location is selected' do
+      get "/portland"
+
+      expect(response.body).not_to include('rel="canonical"')
+    end
+  end
+
   describe 'region_init_load', type: :request do
     it 'links later pages to region_location_load rather than re-running the initial load' do
       51.times { |i| FactoryBot.create(:location, region: @region, name: "Region Spot #{i}") }
