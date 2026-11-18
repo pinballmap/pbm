@@ -133,6 +133,8 @@ fi
 # shellcheck disable=SC2086
 dokku domains:set "$APP" $DOMAINS
 
+# Without this, Dokku would build from a Dockerfile if one ever appears in the repo.
+dokku builder:set "$APP" selected herokuish
 dokku buildpacks:clear "$APP"
 for bp in "${BUILDPACKS[@]}"; do
   dokku buildpacks:add "$APP" "$bp"

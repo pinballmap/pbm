@@ -85,24 +85,11 @@ If the site loads properly it will be an empty version of pinballmap.com. A data
 * `bin/rails create_developer_account` # creates user: `example@example.com` with password `example`
 
 
-## Docker Setup
+## Postgres in Docker (optional)
 
 _Warning_: None of us have used Docker since this was originally setup. We cannot vouch for the below steps at this point. If you want to update the instructions, please do.
 
-### Prerequisites
-* Docker >= v1.12.0+
-* Docker-Compose (comes with Docker for Mac. Separate install on Linux)
-* _Optional_: [direnv](http://direnv.net/) or some other way to source environment variables to override default ports in case of conflict
-
-### Usage
-#### Fully Containerized
-* Run `docker-compose up -d` to start containers
-* Navigate to `localhost:$PORT` (either specified, or defaults to `3000`)
-* Bring down containers with `docker-compose down`
-  * By default, the database will keep its state as a [docker volume](https://docs.docker.com/storage/volumes/). If you want to start fresh, run `docker-compose down -v` to destroy the volume. The next time you bring up this docker-compose file, `db:create` and `db:migrate` will re-populate the database.
-
-#### Postgres only
-If you just want to run postgres in a container and use your local filesystem for running Rails, you can use the postgres only compose file.
+If you want to run postgres in a container and use your local filesystem for running Rails, you can use the postgres only compose file.
 * Run `docker-compose -f docker-compose.postgres.yml up -d`
 * If first time running, run `bin/rake db:create db:migrate` to populate the postgres container.
 * Bring down containers with `docker-compose -f docker-compose.postgres.yml down`
