@@ -186,6 +186,18 @@ limit 25")
     render plain: robots
   end
 
+  def sitemap
+    xml = Rails.cache.fetch("sitemap_xml", expires_in: 1.day) do
+      @base_url = root_url(protocol: "https").chomp("/")
+      @regions = Region.order(:name).pluck(:id, :name)
+      @region_lastmods = Location.group(:region_id).maximum(:date_last_updated)
+      @locations = Location.order(:id).pluck(:id, :date_last_updated)
+      @machines = machine_sitemap_entries
+      render_to_string(template: "pages/sitemap", formats: [ :xml ], layout: false)
+    end
+    render xml: xml
+  end
+
   def apple_app_site_association
     aasa = File.read(Rails.root + ".well-known/apple-app-site-association")
     render json: aasa
@@ -269,5 +281,24 @@ limit 25")
     user = current_user.nil? ? nil : current_user
 
     redirect_to profile_user_path(user.id) if user
+  end
+
+  private
+
+  # Grouped versions share one page, canonicalized to the group's lowest machine id like MapsController#map
+  def machine_sitemap_entries
+    machines = Machine.pluck(:id, :machine_group_id)
+    on_map_ids = LocationMachineXref.distinct.pluck(:machine_id).to_set
+    group_canonical_ids = Machine.where.not(machine_group_id: nil).group(:machine_group_id).minimum(:id)
+    lastmods = UserSubmission.where(submission_type: [ UserSubmission::NEW_LMX_TYPE, UserSubmission::REMOVE_MACHINE_TYPE ]).where.not(machine_id: nil).group(:machine_id).maximum(:created_at)
+
+    entries = {}
+    listed = Set.new
+    machines.each do |id, group_id|
+      canonical_id = group_id ? group_canonical_ids[group_id] : id
+      entries[canonical_id] = [ entries[canonical_id], lastmods[id] ].compact.max
+      listed << canonical_id if on_map_ids.include?(id)
+    end
+    entries.slice(*listed).sort.to_h
   end
 end

@@ -1,4 +1,12 @@
 class MapsController < ApplicationController
+  MAP_FILTER_PARAMS = %i[
+    address by_machine_id by_machine_single_id by_machine_group_id by_machine_name by_location_name by_location_id
+    user_faved by_city_name by_city_id by_state_name by_city_no_state by_country by_at_least_n_machines
+    by_at_least_n_machines_type by_type_id by_ic_active by_is_stern_army by_machine_type by_machine_display
+    manufacturer by_operator_id by_operator_name by_machine_id_ic by_machine_single_id_ic by_machine_year_gte
+    by_machine_year_lte by_opdb_id by_ipdb_id by_all_ages by_payment_type
+  ].freeze
+
   before_action :normalize_array_params
   before_action :normalize_machine_lookup_params
   has_scope :by_location_name, :by_at_least_n_machines, :user_faved, :by_city_name, :by_city_no_state, :by_ic_active, :by_machine_year_gte, :by_machine_year_lte, :by_payment_type, :by_machine_name, :by_is_stern_army
@@ -18,6 +26,10 @@ class MapsController < ApplicationController
       machine_length = " - " + loc.machine_count.to_s + " " + "machine".pluralize(loc.machine_count) unless loc.machine_count.zero?
       machine_list = " - " + loc.machine_names_first_no_year.join(", ") unless loc.machine_names_first_no_year.empty?
       @title_params[:title_meta] = "#{loc.name} on Pinball Map! " + loc.full_street_address + machine_length.to_s + machine_list.to_s
+    elsif (machine = helpers.machine_page_machine(params))
+      @title_params[:title] = helpers.machine_page_title(machine)
+      @title_params[:title_meta] = helpers.machine_page_description(machine)
+      @canonical_url = map_url(by_machine_id: helpers.machine_page_canonical_id(machine), protocol: "https")
     end
 
     selected_machine_ids = (Array(params[:by_machine_id]) + Array(params[:by_machine_single_id]) + Array(params[:by_machine_id_ic]) + Array(params[:by_machine_single_id_ic])).map(&:to_i).uniq
@@ -30,7 +42,7 @@ class MapsController < ApplicationController
       by_machine_year: Array(params[:by_machine_year]).compact_blank.presence
     }.compact
 
-    @map_no_params = params[:address].blank? && params[:by_machine_id].blank? && params[:by_machine_single_id].blank? && params[:by_machine_group_id].blank? && params[:by_machine_name].blank? && params[:by_location_name].blank? && params[:by_location_id].blank? && params[:user_faved].blank? && params[:by_city_name].blank? && params[:by_city_id].blank? && params[:by_state_name].blank? && params[:by_city_no_state].blank? && params[:by_country].blank? && params[:by_at_least_n_machines].blank? && params[:by_at_least_n_machines_type].blank? && params[:by_type_id].blank? && params[:by_ic_active].blank? && params[:by_is_stern_army].blank? && params[:by_machine_type].blank? && params[:by_machine_display].blank? && params[:manufacturer].blank? && params[:by_operator_id].blank? && params[:by_operator_name].blank? && params[:by_machine_id_ic].blank? && params[:by_machine_single_id_ic].blank? && params[:by_machine_year_gte].blank? && params[:by_machine_year_lte].blank? && params[:by_opdb_id].blank? && params[:by_ipdb_id].blank? && params[:by_all_ages].blank? && params[:by_payment_type].blank?
+    @map_no_params = MAP_FILTER_PARAMS.all? { |key| params[key].blank? }
 
     @nearby_lat = 39.5718
     @nearby_lon = -99.1066

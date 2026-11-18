@@ -128,3 +128,5 @@ Disallow: /users/
 Disallow: /*activity?*page=
 Disallow: /poohbear
 Crawl-delay: 3
+
+Sitemap: https://pinballmap.com/sitemap.xml

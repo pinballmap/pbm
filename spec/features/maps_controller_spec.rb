@@ -189,6 +189,61 @@ describe MapsController do
     end
   end
 
+  describe 'machine page meta', type: :request do
+    before(:each) do
+      group = FactoryBot.create(:machine_group, name: 'Godzilla')
+      @pro = FactoryBot.create(:machine, name: 'Godzilla (Pro)', manufacturer: 'Stern', year: 2021, machine_group: group)
+      @premium = FactoryBot.create(:machine, name: 'Godzilla (Premium)', manufacturer: 'Stern', year: 2021, machine_group: group)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: @pro)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: @premium)
+    end
+
+    it 'titles a grouped machine page by group name and canonicalizes to the lowest machine id' do
+      get map_path, params: { by_machine_id: @premium.id }
+
+      expect(response.body).to include('<title>Godzilla - Where to Play - Pinball Map</title>')
+      expect(response.body).to include('Where to play Godzilla (Stern, 2021) pinball. Pinball Map lists it at 1 location. Versions: Pro, Premium.')
+      expect(response.body).to include(%(<link href="https://www.example.com/map?by_machine_id=#{@pro.id}" rel="canonical">))
+    end
+
+    it 'keeps the machine title when map results load' do
+      FactoryBot.create(:location_machine_xref, location: FactoryBot.create(:location, region: @region), machine: @pro)
+
+      get map_location_data_path, params: { by_machine_id: [ @premium.id ], by_at_least_n_machines: '', sort: 'massaged_name' }
+
+      expect(response.body).to include('document.title = "Godzilla - Where to Play - Pinball Map"')
+    end
+
+    it 'keeps the machine title when the machine is at a single location' do
+      get map_location_data_path, params: { by_machine_id: [ @premium.id ] }
+
+      expect(response.body).to include('document.title = "Godzilla - Where to Play - Pinball Map"')
+      expect(response.body).not_to include('var locationName')
+    end
+
+    it 'treats an ungrouped machine sent as by_machine_single_id as its machine page' do
+      solo = FactoryBot.create(:machine, name: 'Medieval Madness', manufacturer: 'Williams', year: 1997, machine_group: nil)
+
+      get map_path, params: { by_machine_single_id: [ solo.id ] }
+
+      expect(response.body).to include('<title>Medieval Madness - Where to Play - Pinball Map</title>')
+      expect(response.body).to include(%(<link href="https://www.example.com/map?by_machine_id=#{solo.id}" rel="canonical">))
+    end
+
+    it 'leaves a single version of a grouped machine untitled' do
+      get map_path, params: { by_machine_single_id: [ @pro.id ] }
+
+      expect(response.body).not_to include('Where to Play')
+    end
+
+    it 'is skipped when other filters are combined with the machine' do
+      get map_path, params: { by_machine_id: @pro.id, by_city_name: 'Portland' }
+
+      expect(response.body).not_to include('Where to Play')
+      expect(response.body).not_to include('rel="canonical"')
+    end
+  end
+
   describe 'region_init_load', type: :request do
     it 'links later pages to region_location_load rather than re-running the initial load' do
       51.times { |i| FactoryBot.create(:location, region: @region, name: "Region Spot #{i}") }

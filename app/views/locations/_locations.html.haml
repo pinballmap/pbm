@@ -27,7 +27,12 @@
 
       window.history.pushState('', '', a.pathname + a.search);
     }
-- if @locations_size == 1
+- machine_page = machine_page_machine(params)
+- if machine_page
+  :javascript
+    document.title = "#{j machine_page_title(machine_page)}";
+    $('meta[property="og:title"]').attr("content", "#{j machine_page_title(machine_page)}");
+- elsif @locations_size == 1
   :javascript
     var locationName = "#{j @locations.first&.name}";
 

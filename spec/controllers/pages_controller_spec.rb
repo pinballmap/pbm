@@ -9,6 +9,36 @@ describe PagesController, type: :controller do
     FactoryBot.create(:user, email: 'super_admin@bar.test', region: nil, is_super_admin: 1)
   end
 
+  describe '#sitemap' do
+    render_views
+
+    it 'lists canonical location urls and region homepages' do
+      @location.update_column(:date_last_updated, Date.new(2026, 1, 2))
+
+      get 'sitemap'
+
+      expect(response.media_type).to eq('application/xml')
+      expect(response.body).to include("<loc>https://test.host/map?by_location_id=#{@location.id}</loc>")
+      expect(response.body).to include('<lastmod>2026-01-02</lastmod>')
+      expect(response.body).to include('<loc>https://test.host/portland</loc>')
+      expect(response.body).not_to include('/portland?by_location_id')
+    end
+
+    it 'lists one url per machine group, only for machines on the map' do
+      group = FactoryBot.create(:machine_group, name: 'Godzilla')
+      pro = FactoryBot.create(:machine, name: 'Godzilla (Pro)', machine_group: group)
+      premium = FactoryBot.create(:machine, name: 'Godzilla (Premium)', machine_group: group)
+      unused = FactoryBot.create(:machine, name: 'Unused', machine_group: nil)
+      FactoryBot.create(:location_machine_xref, location: @location, machine: premium)
+
+      get 'sitemap'
+
+      expect(response.body).to match(%r{<loc>https://test.host/map\?by_machine_id=#{pro.id}</loc>\s*<lastmod>#{Date.today.iso8601}</lastmod>})
+      expect(response.body).not_to include("by_machine_id=#{premium.id}<")
+      expect(response.body).not_to include("by_machine_id=#{unused.id}<")
+    end
+  end
+
   describe '#photos' do
     it 'requires login' do
       get 'photos'

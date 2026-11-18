@@ -118,6 +118,7 @@ Rails.application.routes.draw do
   get ".well-known/apple-app-site-association" => "pages#apple_app_site_association"
   get "/apple-app-site-association" => "pages#apple_app_site_association"
   get "/robots.txt" => "pages#robots"
+  get "/sitemap.xml" => "pages#sitemap", format: false
   get "/activity" => "pages#recent_activity"
   post "/activity" => "pages#recent_activity"
   get "/stats" => "pages#stats"
