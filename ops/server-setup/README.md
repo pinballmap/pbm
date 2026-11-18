@@ -271,6 +271,38 @@ Updating the postgres plugin doesn't change the Postgres version that
 `pbm-cache` runs. That's a separate `dokku postgres:upgrade`, and since the
 cache is fine to lose, there's no need to keep it current.
 
+## Giving someone deploy access
+
+Adding their key in the DO panel isn't enough. DO only copies account keys
+onto a droplet when it's created. Ask them for their **public** key (e.g.
+`id_ed25519.pub`, one line starting `ssh-ed25519`).
+
+To let them deploy (`git push`), add the key to Dokku. The name is just a
+label for `ssh-keys:list` and `ssh-keys:remove`; it doesn't have to match the
+comment at the end of the key:
+
+```bash
+echo 'ssh-ed25519 AAAA...their key... comment' | dokku ssh-keys:add theirname
+dokku ssh-keys:list
+```
+
+They can check it with `ssh dokku@SERVER_IP apps:list`, which should show
+`pbm`.
+
+Only if they also need a root shell, append the key to root's keys. Use `>>`,
+not `>`, which would replace the file and lock you out. Keep the whole key on
+one line:
+
+```bash
+echo 'ssh-ed25519 AAAA...their key... comment' >> /root/.ssh/authorized_keys
+```
+
+Stay logged in until they've confirmed `ssh root@SERVER_IP` works.
+
+On a rebuild, `pbm-server-setup` adds every key in root's
+`authorized_keys` to Dokku. A key that's only in Dokku has to be added again
+by hand.
+
 ## Keeping this current
 
 Anything changed on the droplet by hand is lost the next time it's rebuilt,
