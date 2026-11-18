@@ -230,8 +230,11 @@ droplet powered off for a couple of weeks before destroying it.
 
 ## Routine updates
 
-Unattended upgrades install Ubuntu security updates on their own. To update
-everything else, run:
+Unattended upgrades install Ubuntu security updates on their own, but not
+nginx. nginx comes from nginx.org's apt repo, because Ubuntu's package lags
+behind on security releases, and only `dokku-update` (below) upgrades it.
+When nginx.org announces a security release, run it then rather than waiting
+for the next routine update. To update everything else, run:
 
 ```bash
 dokku-update run -s
@@ -261,6 +264,12 @@ dokku ps:report pbm | grep -i running
 ipset list blackhole -t | grep entries       # if 0: systemctl start abuseipdb
 tail -n 3 /var/log/dokku/apps/pbm/pbm.log    # should show requests from the last minute
 ```
+
+If apt asks whether to replace an nginx config file, keep the current
+`/etc/nginx/nginx.conf` (N): Dokku relies on it. Taking the new
+`/etc/logrotate.d/nginx` (Y) is fine. nginx stops while apt waits for the
+answer, so the site is down until the upgrade finishes. Before rebooting,
+check `nginx -t`.
 
 If `pbm.log` isn't getting new lines, run
 `dokku logs:vector-stop && dokku logs:vector-start`.

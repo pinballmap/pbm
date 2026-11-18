@@ -44,6 +44,11 @@ for f in "/home/dokku/$APP"/nginx.conf.d/*.conf; do
   [[ -e $f ]] && run cat "$f"
 done
 run ls -la /etc/nginx/conf.d
+run nginx -v
+run sh -c "grep -E '^\s*(user|pid|include)' /etc/nginx/nginx.conf"
+run ls -la /etc/nginx/modules-enabled
+run cat /etc/apt/sources.list.d/nginx.list
+run cat /etc/logrotate.d/nginx
 
 run dokku ssh-keys:list
 run ls -la /etc/cron.d

@@ -68,6 +68,41 @@ else
   rm -f "$bootstrap"
 fi
 
+step "nginx from nginx.org"
+# Ubuntu's nginx lags behind on security releases. This replaces the one Dokku
+# just installed. --force-confold keeps Ubuntu's nginx.conf (user www-data),
+# which Dokku expects. nginx.org's logrotate file is used instead of Ubuntu's,
+# whose postrotate needs Ubuntu's init script.
+apt-get install -y curl gnupg2 ca-certificates lsb-release ubuntu-keyring
+nginx_keyring=/usr/share/keyrings/nginx-archive-keyring.gpg
+# gpg fails without a home directory, which fresh droplets don't have.
+GNUPGHOME="$(mktemp -d)"
+export GNUPGHOME
+if [[ ! -f $nginx_keyring ]]; then
+  curl -fsSL https://nginx.org/keys/nginx_signing.key | gpg --dearmor > "$nginx_keyring"
+fi
+if ! gpg --dry-run --quiet --no-keyring --import --import-options import-show "$nginx_keyring" \
+    | grep -q 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; then
+  rm -f "$nginx_keyring"
+  echo "nginx.org signing key has the wrong fingerprint; see https://nginx.org/en/linux_packages.html" >&2
+  exit 1
+fi
+rm -rf "$GNUPGHOME"
+unset GNUPGHOME
+echo "deb [signed-by=$nginx_keyring] https://nginx.org/$NGINX_REPO_PATH $(lsb_release -cs) nginx" \
+  > /etc/apt/sources.list.d/nginx.list
+printf 'Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n' \
+  > /etc/apt/preferences.d/99nginx
+apt-get update
+apt-get install -y -o Dpkg::Options::=--force-confold nginx
+if [[ -f /etc/logrotate.d/nginx.dpkg-dist ]]; then
+  mv /etc/logrotate.d/nginx.dpkg-dist /etc/logrotate.d/nginx
+fi
+nginx -t
+systemctl enable nginx
+systemctl restart nginx
+nginx -v
+
 step "Dokku SSH keys (from root's authorized_keys)"
 existing="$(dokku ssh-keys:list 2>/dev/null || true)"
 n=0
@@ -159,11 +194,11 @@ install -m 644 "$here/logrotate-dokku-pbm" /etc/logrotate.d/dokku-pbm
 logrotate --debug /etc/logrotate.d/dokku-pbm > /dev/null
 
 step "Firewall (ufw)"
-# SSH (rate-limited) and nginx only. The Nginx Full profile comes with nginx,
-# which Dokku installed above.
+# SSH (rate-limited) and nginx only. Ports, not the 'Nginx Full' profile,
+# which only Ubuntu's nginx package provides.
 apt-get install -y ufw
 ufw limit 22/tcp
-ufw allow 'Nginx Full'
+ufw allow 80,443/tcp
 ufw --force enable
 
 step "IP blocklist (abuseipdb.sh)"

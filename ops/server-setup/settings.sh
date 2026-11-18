@@ -45,6 +45,10 @@ NGINX_PROPERTIES=(
   proxy-busy-buffers-size=61440
 )
 
+# nginx.org repo, from /etc/apt/sources.list.d/nginx.list: packages/ubuntu
+# (stable) or packages/mainline/ubuntu.
+NGINX_REPO_PATH=packages/ubuntu
+
 # Let's Encrypt account email is a personal address, so it's passed at run
 # time instead of kept in this public repo:
 #   LETSENCRYPT_EMAIL=you@example.com bash pbm-server-setup
