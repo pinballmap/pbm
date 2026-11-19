@@ -203,6 +203,8 @@ module Api
 
         user = User.new(email: params[:email], password: params[:password], password_confirmation: params[:confirm_password], username: params[:username])
         user.save ? return_response(user, "user", [], %i[username email authentication_token]) : return_response(user.errors.full_messages.join(","), "errors")
+      rescue ActiveRecord::RecordNotUnique
+        return_response("This email address already exists", "errors")
       end
 
       api :GET, "/api/v1/users/:id/profile_info.json", "Fetch profile info for a user"
