@@ -64,7 +64,7 @@ module Api
       description "This will also return a list of machines at each location"
       param :region, String, desc: "Name of the Region you want to see locations for", required: true
       param :by_location_name, String, desc: "Name of location to search for", required: false
-      param :by_location_id, Integer, desc: "Location ID to search for", required: false
+      param :by_location_id, Integer, desc: "Location ID to search for. Pass multiple as by_location_id[]=1&by_location_id[]=2", required: false
       param :by_machine_id, Integer, desc: "Machine ID to find in locations. Returns locations with all variant models of the machine", required: false
       param :by_machine_single_id, Integer, desc: "Machine ID to find in locations, returns only exact version", required: false
       param :by_machine_group_id, String, desc: "Machine Group to search for", required: false
